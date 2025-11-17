@@ -336,6 +336,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             CrashJump_Start,
             CrashJump_Loop,
             CrashJump_Crash,
+
+            PeenarBlast_Start,
+            PeenarBlast_Loop,
+            PeenarBlast_End,
+
             Despawn,
             Death
         }
@@ -377,6 +382,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
         }
         private float SpinSpeed;
+
+        private int PeenarBlastDamage => 150;
 
         private int WalkUpStompDamage => 100;
         private int SteamLaserDamage => 150;
@@ -642,6 +649,15 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 case AIState.WingTimeSnipe_End:
                     AI_WingTimeSnipeEnd();
                     break;
+                case AIState.PeenarBlast_Start:
+                    AI_PeenarBlastStart();
+                    break;
+                case AIState.PeenarBlast_Loop:
+                    AI_PeenarBlastLoop();
+                    break;
+                case AIState.PeenarBlast_End:
+                    AI_PeenarBlastEnd();
+                    break;
                 case AIState.Death:
                     AI_Death();
                     break;
@@ -652,7 +668,138 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         }
 
 
+        #region PeenarBlast
 
+        private Vector2 GetPeenarBlastPoint()
+        {
+            return NPC.Center + ((NPC.rotation+MathHelper.PiOver2).ToRotationVector2() * 111);
+        }
+        private void AI_PeenarBlastStart()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle wuhWoh = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBERWAKE");
+                wuhWoh.Pitch = -0.5f;
+                SoundEngine.PlaySound(wuhWoh, NPC.position);
+                
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+                StretchLegs();
+            }
+
+            NPC.velocity.X *= 0.5f;
+            ApplyStandingYVelocity();
+            if(Timer >= 60)
+            {
+                SwitchState(AIState.PeenarBlast_Loop);
+            }
+        }
+
+        private void AI_PeenarBlastLoop()
+        {
+            float chargeTime = 180f;
+            float fireDelay = 60;
+
+            Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle imReady = AssetRegistry.Sounds.STARBOMBER.Ommove1;
+                imReady.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(imReady, NPC.position);
+
+                SoundStyle chargeSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Charge");
+                SoundEngine.PlaySound(chargeSound, NPC.position);
+                NPC.TargetClosest();
+                NPC.direction = TargetDirection;
+            }
+
+            if(Timer < chargeTime)
+            {
+                float targetRotation = (MyTarget.Center - NPC.Center).ToRotation();
+                targetRotation -= MathHelper.ToRadians(90);
+                float lerpedRotation = Utils.AngleLerp(NPC.rotation, targetRotation, 0.1f);
+                NPC.rotation = lerpedRotation;
+            }
+
+            NPC.velocity.X *= 0.5f;
+            ApplyStandingYVelocity();
+
+
+            ShakeModSystem.Shake = 3;
+            if(Timer % 5 == 0)
+            {
+                Vector2 spawnPointOffset = Main.rand.NextVector2CircularEdge(64, 64);
+                Vector2 spawnPoint = GetPeenarBlastPoint();
+                spawnPoint += spawnPointOffset;
+                var p = FXUtil.GlowStretch(spawnPoint, -spawnPointOffset.SafeNormalize(Vector2.Zero) * 5);
+                p.color = Color.Pink;
+                p.InnerColor = Color.White;
+                p.OuterGlowColor = Color.Pink;
+                p.GlowColor = Color.Purple;
+            }
+
+            _spinTelegraphLerp = MathHelper.Lerp(0f, 1f, Timer / chargeTime);
+            int modulo = (int)MathHelper.Lerp(25, 5, Timer / chargeTime);
+            if(Timer % modulo== 0)
+            {
+                SpawnSteamParticle();
+            }
+
+
+            if(Timer == chargeTime)
+            {
+                //Burst
+                Vector2 spawnPoint = GetPeenarBlastPoint();
+                SoundStyle chargeSound = new SoundStyle("Stellamod/Assets/Sounds/Aurora");
+                chargeSound.PitchVariance = 0.5f;
+                SoundEngine.PlaySound(chargeSound, NPC.position);
+                FXUtil.ShakeCamera(NPC.position, 1024, 8);
+                for(float f = 0; f < 16; f++)
+                {
+                    Vector2 vel = Main.rand.NextVector2CircularEdge(16, 16);
+                    Particle.NewParticle<SparkParticle>(spawnPoint, vel, Scale: Main.rand.NextFloat(0.5f, 1f));
+                }
+            }
+
+            if(Timer % 12 == 0)
+            {
+                Vector2 spawnPointOffset = Main.rand.NextVector2Circular(64, 64);
+                Vector2 spawnPoint = GetPeenarBlastPoint();
+                spawnPoint += spawnPointOffset;
+                var zapParticle = Particle.NewParticle<ZapParticle>(spawnPoint, Main.rand.NextVector2Circular(32, 32), Scale: Main.rand.NextFloat(0.25f, 0.5f));
+                FXUtil.GlowCircleBoom(GetPeenarBlastPoint(), Color.White, Color.Pink, Color.Purple, baseSize: MathHelper.Lerp(0.04f, 0.12f, Timer / chargeTime));
+
+                FXUtil.GlowCircleBoom(spawnPoint, Color.White, Color.Pink, Color.Purple, baseSize: 0.03f);
+            }
+
+            if(Timer >= chargeTime + fireDelay)
+            {
+                SwitchState(AIState.PeenarBlast_End);
+            }
+        }
+
+        private void AI_PeenarBlastEnd()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Vector2 velocity = (NPC.rotation+MathHelper.PiOver2).ToRotationVector2();
+                    velocity *= 15;
+                    Projectile.NewProjectile(SourceFromThis, GetPeenarBlastPoint(), velocity,
+                        ModContent.ProjectileType<StarBeam>(), PeenarBlastDamage, 1, Main.myPlayer);
+                }
+            }
+            NPC.velocity.X *= 0.5f;
+            ApplyStandingYVelocity();
+            if(Timer >= 180)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+        #endregion
         private void ChooseAttack()
         {
             if (!MultiplayerHelper.IsHost)
@@ -660,6 +807,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             if (_patternManager == null)
             {
                 _patternManager = new PatternManager<AIState>(
+                    new Tuple<AIState, float>(AIState.PeenarBlast_Start, 0.1f),
                     new Tuple<AIState, float>(AIState.MachineGun_Start, 1.0f),
                     new Tuple<AIState, float>(AIState.LegUpSpin_Start, 1.0f),
                     new Tuple<AIState, float>(AIState.WalkUpStomp_Start, 1.0f),
@@ -670,7 +818,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
-          //  SwitchState(AIState.LegUpSpin_Start);
+           
         }
 
         private void SpawnSteamParticle()
