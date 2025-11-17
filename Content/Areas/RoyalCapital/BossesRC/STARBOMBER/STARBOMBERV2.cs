@@ -810,7 +810,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                     new Tuple<AIState, float>(AIState.PeenarBlast_Start, 0.1f),
                     new Tuple<AIState, float>(AIState.MachineGun_Start, 1.0f),
                     new Tuple<AIState, float>(AIState.LegUpSpin_Start, 1.0f),
-                    new Tuple<AIState, float>(AIState.WalkUpStomp_Start, 1.0f),
+                    new Tuple<AIState, float>(AIState.WalkUpStomp_Start, 2.0f),
                     new Tuple<AIState, float>(AIState.MissileLauncher_Start, 1.0f),
                     new Tuple<AIState, float>(AIState.SteamWhistle_Start, 1.0f),
                     new Tuple<AIState, float>(AIState.CrashJump_Start, 1.0f));

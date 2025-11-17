@@ -16,6 +16,7 @@ namespace Stellamod.Items.Weapons.Melee
         public override void SetDefaults2()
         {
             base.SetDefaults2();
+            Item.damage = 36;
             Item.shoot = ModContent.ProjectileType<InkingSpireSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<InkingSProj>();
             meleeWeaponType = MeleeWeaponType.Sword;
