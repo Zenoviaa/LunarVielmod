@@ -260,6 +260,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private float _afterImageTime;
         private float _oscTimer;
         private float _deathLerp;
+        private float _spinTelegraphLerp;
 
         private bool _contactDamage;
         private bool _namePlate;
@@ -669,6 +670,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
+          //  SwitchState(AIState.LegUpSpin_Start);
         }
 
         private void SpawnSteamParticle()
@@ -921,6 +923,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 SpawnSteamParticle();
             }
 
+            _spinTelegraphLerp *= 0.5f;
             _legsState = LegsState.Walk;
             StandRange = MathHelper.Lerp(StandRange, 290, 0.1f);
             NPC.velocity.X *= 0.9f;
@@ -964,6 +967,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             }
         
+            if(Timer == 5)
+            {
+                StretchLegs();
+            }
             NPC.direction = TargetDirection;
 
             if (!_namePlate)
@@ -980,6 +987,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _contactDamage = false;
             AttackCycle = 0;
             SpinSpeed = 0.5f;
+            _spinTelegraphLerp *= 0.5f;
 
             NPC.noTileCollide = true;
             NPC.noGravity = true;
@@ -1168,6 +1176,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
             if (Timer == 1)
             {
+                _gunShootTrackingVelocity = -Vector2.UnitY * 5;
                 _gunShootTargetPosition = GunMuzzlePosition;
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
@@ -1368,13 +1377,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private void AI_LegUpSpinLoop()
         {
             _legsState = LegsState.LegsUp;
-            _afterImageTime = MathHelper.Lerp(_afterImageTime, 0.5f, 0.1f);
+            _afterImageTime = MathHelper.Lerp(_afterImageTime, 1, 0.3f);
             _contactDamage = true;
             TargetOutlineColor = Color.Red;
             Timer++;
             if (Timer == 1)
             {
-                _squishScale = new Vector2(1.1f, 0.9f);
+              
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
                 SoundStyle spin = AssetRegistry.Sounds.STARBOMBER.Heavyspin;
@@ -1383,7 +1392,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
 
             float spinTime = 150;
-            float spinSpeed = 34;
+            float spinSpeed = 35;
             float targetSpinVelocity = NPC.direction * spinSpeed;
 
             SpinSpeed = MathHelper.Lerp(3, 0.2f, Timer / spinTime);
@@ -1396,7 +1405,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
             if (Timer >= spinTime / 4f)
             {
-                NPC.velocity.X *= 0.92f;
+                NPC.velocity.X *= 0.9f;
                 _afterImageTime *= 0.9f;
             }
             else
@@ -1410,10 +1419,33 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                     part.Rotation = Main.rand.NextFloat(-1f, 1f);
                 }
             }
+
+            if(Timer == 100)
+            {
+                _squishScale = new Vector2(0.9f, 1.2f);
+                NPC.velocity.Y = -5;
+            }
+            if(Timer >= spinTime / 1.5f)
+            {
+                float normTime = Timer - spinTime / 1.5f;
+                float denom = spinTime - spinTime / 1.5f;
+                float prog = normTime / denom;
+                _spinTelegraphLerp = prog;
+            }
+            else
+            {
+                _spinTelegraphLerp *= 0.5f;
+            }
+              
             NPC.velocity.Y -= 0.1f;
 
-            if (Timer >= spinTime)
+            if (Timer >= spinTime && NPC.collideY || Timer >= 200)
             {
+                _squishScale = new Vector2(1.5f, 0.9f);
+                SoundStyle impact = AssetRegistry.Sounds.STARBOMBER.HeavyCrush;
+                SoundEngine.PlaySound(impact, NPC.position);
+                FXUtil.PunchCamera(NPC.position, Vector2.UnitY, 8, 8, 8);
+                var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
                 Timer = 0;
                 AttackCycle++;
                 if (AttackCycle >= 5)
@@ -1428,7 +1460,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _afterImageTime *= 0.1f;
             _contactDamage = false;
             _legsState = LegsState.Walk;
-
+            _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
             SpinSpeed = 1f;
 
             Timer++;
@@ -2457,12 +2489,25 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 spriteBatch.Draw(texture, drawPos, NPC.frame, glowColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0);
                 spriteBatch.Draw(texture, drawPos, NPC.frame, glowColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0);
             }
+            if (_spinTelegraphLerp > 0)
+            {
+
+                Color flashColor = Color.Yellow;
+                flashColor *= ExtraMath.Osc(0f, 1f, speed: 32);
+
+                flashColor.A = 0;
+                flashColor *= _spinTelegraphLerp;
+                spriteBatch.Draw(texture, drawPos, NPC.frame, flashColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos, NPC.frame, flashColor, NPC.rotation, drawOrigin, NPC.scale * 2, SpriteEffects.None, 0);
+            }
+
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
 
             DrawBody(spriteBatch, screenPos, drawColor);
+    
             DrawHeldGun(spriteBatch, screenPos, drawColor);
             return false;
         }
