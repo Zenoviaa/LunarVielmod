@@ -40,7 +40,7 @@ namespace Stellamod.NPCs.Town
         public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {
             spawner.structureToSpawnIn = "Struct/Overworld/WitchTown";
-            spawner.spawnTileOffset = new Point(150, -19);
+            spawner.spawnTileOffset = new Point(150, -15);
         }
 
         public override void SetDefaults()
@@ -105,7 +105,7 @@ namespace Stellamod.NPCs.Town
             if (Animation == AnimationState.Brew)
             {
                 texture = ModContent.Request<Texture2D>(Texture + "_Brew").Value;
-                totalFrameCount = 25;
+                totalFrameCount = 30;
             }
 
 
