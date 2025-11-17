@@ -391,6 +391,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private int StarMissileDamage => 30;
         private int MachineGunDamage => 30;
         private int WingSnipeDamage => 150;
+
+        private int StarRockDamage => 50;
+
+        private bool InPhase2 => NPC.life < NPC.lifeMax / 2f;
         private ref float Timer => ref NPC.ai[0];
         private Color TargetOutlineColor;
         private Color TargetGunOutlineColor;
@@ -2020,6 +2024,19 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
                     Projectile.NewProjectile(SourceFromThis, _impactFootPosition, Vector2.Zero,
                         ModContent.ProjectileType<StarMissileBoom>(), StarMissileDamage, 1, Main.myPlayer);
+
+                    if (InPhase2)
+                    {
+                        Vector2 startPosition = MyTarget.Center - new Vector2(0, 1000);
+                        for(int i = 0; i < 6; i++)
+                        {
+                            Vector2 spawnPosition = startPosition;
+                            spawnPosition.X += Main.rand.NextFloat(-1000f, 1000f);
+                            Vector2 spawnVelocity = Vector2.Zero;
+                            spawnVelocity.X = Main.rand.NextFloat(-5f, 5f);
+                            Projectile.NewProjectile(SourceFromThis, spawnPosition, spawnVelocity, ModContent.ProjectileType<StarRock>(), StarRockDamage, 1, Main.myPlayer);
+                        }
+                    }
                 }
                 for (int i = 0; i < 1; i++)
                 {

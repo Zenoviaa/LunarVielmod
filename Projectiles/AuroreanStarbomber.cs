@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.STARBOMBER;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -128,8 +127,6 @@ namespace Stellamod.Projectiles
             if (Main.myPlayer == Projectile.owner)
             {
                 Main.NewText(LangText.Misc("AuroreanStarbomber"), Color.Pink);
-                int npcID = NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y,
-                    ModContent.NPCType<STARBOMBER>());
                 NetMessage.SendData(MessageID.SyncNPC);
             }
         }

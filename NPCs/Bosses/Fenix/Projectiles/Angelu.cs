@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.NPCs.Bosses.singularityFragment;
-using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
@@ -52,8 +51,8 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
             }
 
             var entitySource = Projectile.GetSource_FromThis();
-            NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
-            NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y - 600, ModContent.NPCType<STARBOMBERLASERWARN>());
+           // NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y - 200, ModContent.NPCType<STARBOMBERLASERWARN>());
+           // NPC.NewNPC(entitySource, (int)Projectile.Center.X, (int)Projectile.Center.Y - 600, ModContent.NPCType<STARBOMBERLASERWARN>());
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AssassinsKnifeHit"));
 
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.Center);

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.NPCs.Bosses.STARBOMBER.Projectiles;
 using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;

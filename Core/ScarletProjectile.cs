@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
+using static Stellamod.Tiles.SpecialDecorativeWall;
 
 namespace Stellamod.Core
 {
@@ -53,6 +55,19 @@ namespace Stellamod.Core
                 OldCenterRot[0] = Projectile.rotation;
             }
 
+        }
+
+        public void DrawAfterImageEffect(SpriteBatch spriteBatch, Texture2D texture, Rectangle drawFrame, Vector2 drawOrigin, Vector2 drawScale, SpriteEffects spriteEffects, Color startColor, float intensity)
+        {
+            for (int i = 0; i < TrailCacheLength; i++)
+            {
+                Vector2 oldPos = OldCenterPos[i];
+                Vector2 oldDrawPos = oldPos - Main.screenPosition;
+                float f = i;
+                float interpolant = f / (float)Projectile.oldPos.Length;
+                Color fadeColor = Color.Lerp(startColor, Color.Transparent, interpolant) * intensity;
+                spriteBatch.Draw(texture, oldDrawPos, drawFrame, fadeColor, OldCenterRot[i], drawOrigin, drawScale, spriteEffects, 0f);
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.STARBOMBER.Projectiles
+namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
 {
     public class STARSHOTT : ModProjectile
     {

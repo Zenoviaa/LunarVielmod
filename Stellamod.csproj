@@ -504,17 +504,6 @@
     <None Remove="NPCs\Bosses\singularityFragment\SoulBlast - Copy.png" />
     <None Remove="NPCs\Bosses\singularityFragment\VoidBeamIN.png" />
     <None Remove="NPCs\Bosses\singularityFragment\VoidFlame - Copy.png" />
-    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\SINESTAR.png" />
-    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\SPARKLYSTARBOOM.png" />
-    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBEAM.png" />
-    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBOMBERLASERWARN.png" />
-    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARBOMBERLASERWARNBIG.png" />
-    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARDREAM.png" />
-    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARLINGBIG.png" />
-    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARRAY.png" />
-    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STARSPAWNEFFECT.png" />
-    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STRIKEBULLET.png" />
-    <None Remove="NPCs\Bosses\STARBOMBER\Projectiles\STRIKEBULLET2.png" />
     <None Remove="NPCs\Bosses\SupernovaFragment\SupernovaExplosionSmall.png" />
     <None Remove="NPCs\Bosses\SupernovaFragment\SupernovaFinalExplosion.png" />
     <None Remove="NPCs\Bosses\SupernovaFragment\SupernovaGodExplosion.png" />

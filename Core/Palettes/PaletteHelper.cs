@@ -144,7 +144,12 @@ namespace Stellamod.Core.Palettes
             Lab.Z = MathF.Round(Lab.Z, 4);
             return Lab;
         }
+        public static float ColorDistance5(Color a, Color b)
+        {
+            float d = 0.3f * MathF.Pow(b.R - a.R, 2f) + 0.59f * MathF.Pow(b.G - a.G, 2f) + 0.11f * MathF.Pow(b.B - a.B, 2f);
 
+            return d;
+        }
         public static float ColorDistance4(Color a, Color b)
         {
             Vector3 lab1 = RGBToLab(a);
@@ -160,7 +165,15 @@ namespace Stellamod.Core.Palettes
 
             return d;
         }
+        public static float Grayscale(Color rgb)
+        {
+            return (rgb.R * 0.3f + rgb.G * 0.59f + rgb.B * 0.11f);
+        }
 
+        public static float ColorDistance6(Color a, Color b)
+        {
+            return MathF.Abs(Grayscale(b) - (Grayscale(a)));
+        }
         /// <summary>
         /// Returns the distance between two colors
         /// </summary>
@@ -195,6 +208,8 @@ namespace Stellamod.Core.Palettes
                 //Branchless way to do this
                 //We want to avoid using if-statements in shaders if possible, as creating branches GREATLY slows them down
                 //We can evaluate a check like this to a 0 or 1, and since only 1 can be true we can invert it simply :) 
+
+                float diff = dist - currentDist;
                 if (currentDist < dist)
                 {
                     selectedColor = palette[i];
