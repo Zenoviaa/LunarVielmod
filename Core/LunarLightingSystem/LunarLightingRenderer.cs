@@ -175,7 +175,7 @@ namespace Stellamod.Core.LunarLightingSystem
             BackLightColor = Color.Black;
             if (Main.LocalPlayer.ZoneUnderworldHeight)
             {
-                BackLightColor = Color.White * 0.5f;
+                BackLightColor = Color.White * 0.8f;
             }
 
             foreach (var backLightModifier in _backLightModifiers)
