@@ -14,7 +14,7 @@ namespace Stellamod.Core.LunarLightingSystem
             base.PostUpdateEverything();
             if (Main.LocalPlayer.ZoneUnderworldHeight)
             {
-                GlobalLum = 1f;
+                GlobalLum = 0.7f;
             }
             GlobalLightStrength = MathHelper.Lerp(GlobalLightStrength, GlobalLum, 0.1f);
             GlobalLum = 0.3f;
