@@ -1,37 +1,27 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.ScreenSystems;
-using Stellamod.Helpers;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Waters
 {
-    public class LavaAddon : WaterAddon
+    public class DefaultWaterAddon : WaterAddon
     {
-        public static bool ShouldShow
-        {
-            get
-            {
-                LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+        public static bool Biomes => !Main.LocalPlayer.ZoneSnow
+            && !Main.LocalPlayer.ZoneUnderworldHeight
+            && !Main.LocalPlayer.ZoneBeach
+            && !Main.LocalPlayer.ZoneCrimson
+            && !Main.LocalPlayer.ZoneCorrupt
+            && !Main.LocalPlayer.ZoneShimmer
+            && ModContent.GetInstance<LunarVeilClientConfig>().LiquidsToggle;
 
-                //Don't show if not in underworld
-                if (!Main.LocalPlayer.ZoneUnderworldHeight)
-                    return false;
-                
-                if (!clientConfig.LiquidsToggle)
-                    return false;
+        public static ScreenTarget BackTarget = new(RenderFront, () => Biomes, 1, (a) => Main.waterTarget.Size());
+        public static ScreenTarget FrontTarget = new(RenderBack, () => Biomes, 1, (a) => Main.instance.backWaterTarget.Size());
 
-                return true;
-            }
-        }
+        public override bool Visible => Biomes;
 
-
-        public static ScreenTarget BackTarget = new(RenderFront, () => ShouldShow, 1, (a) => Main.waterTarget.Size());
-        public static ScreenTarget FrontTarget = new(RenderBack, () => ShouldShow, 1, (a) => Main.instance.backWaterTarget.Size());
-
-        public override bool Visible => ShouldShow;
 
         public override Texture2D BlockTexture(Texture2D normal, int x, int y)
         {
@@ -45,7 +35,7 @@ namespace Stellamod.Core.Waters
             spriteBatch.End();
             Main.spriteBatch.Begin(default, BlendState.AlphaBlend, SamplerState.PointWrap, default, default);
 
-            Texture2D tex2 = TextureRegistry.LavaDepths.Value;
+            Texture2D tex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Water3", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
 
             for (int i = -tex2.Width; i <= Main.screenWidth + tex2.Width; i += tex2.Width)
             {
@@ -59,7 +49,7 @@ namespace Stellamod.Core.Waters
 
                     Vector2 tsp = Main.screenPosition;
 
-                    spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.Orange * 0.55f);
+                    spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White * 0.4f);
                 }
             }
         }
@@ -71,7 +61,7 @@ namespace Stellamod.Core.Waters
             spriteBatch.End();
             Main.spriteBatch.Begin(default, BlendState.AlphaBlend, SamplerState.PointWrap, default, default);
 
-            Texture2D tex2 = TextureRegistry.LavaDepths.Value;
+            Texture2D tex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Water3", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
 
             for (int i = -tex2.Width; i <= Main.screenWidth + tex2.Width; i += tex2.Width)
             {
@@ -85,14 +75,14 @@ namespace Stellamod.Core.Waters
 
                     Vector2 tsp = Main.screenPosition;
 
-                    spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.Orange * 0.55f);
+                    spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White * 0.4f);
                 }
             }
         }
 
         public override void SpritebatchChange()
         {
-            Effect effect = Filters.Scene["LunarVeil:Lava"].GetShader().Shader;
+            Effect effect = Filters.Scene["LunarVeil:Water"].GetShader().Shader;
             effect.Parameters["offset"].SetValue(Vector2.Zero);
             effect.Parameters["sampleTexture2"].SetValue(FrontTarget.RenderTarget);
             effect.Parameters["sampleTexture3"].SetValue(FrontTarget.RenderTarget);
@@ -103,7 +93,7 @@ namespace Stellamod.Core.Waters
 
         public override void SpritebatchChangeBack()
         {
-            Effect effect = Filters.Scene["LunarVeil:Lava"].GetShader().Shader;
+            Effect effect = Filters.Scene["LunarVeil:Water"].GetShader().Shader;
             effect.Parameters["offset"].SetValue(Vector2.Zero);
             effect.Parameters["sampleTexture2"].SetValue(BackTarget.RenderTarget);
             effect.Parameters["sampleTexture3"].SetValue(BackTarget.RenderTarget);
