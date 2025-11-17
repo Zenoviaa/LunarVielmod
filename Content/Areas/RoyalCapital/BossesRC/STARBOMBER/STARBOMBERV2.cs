@@ -1326,7 +1326,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
             if (Timer == 1)
             {
-                _gunShootTrackingVelocity = -Vector2.UnitY * 5;
+                _gunShootTrackingVelocity = -Vector2.UnitY * 10;
                 _gunShootTargetPosition = GunMuzzlePosition;
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;

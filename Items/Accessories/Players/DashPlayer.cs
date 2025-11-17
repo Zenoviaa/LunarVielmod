@@ -122,8 +122,10 @@ namespace Stellamod.Items.Accessories.Players
 
         public float DashRegenerationBonus;
         public float DashVelocityBonus;
+        public int ExtraImmunityFramesBonus;
         public override void ResetEffects()
         {
+            ExtraImmunityFramesBonus = 0;
             DashRegenerationBonus = 0f;
             MaxDashCountTimer = 140;
             MaxDashCount = 3;
@@ -220,7 +222,7 @@ namespace Stellamod.Items.Accessories.Players
                         return; // not moving fast enough, so don't start our dash
                 }
 
-                Player.SetImmuneTimeForAllTypes(DashDuration);
+                Player.SetImmuneTimeForAllTypes(DashDuration + ExtraImmunityFramesBonus);
                 DashItem?.BeginDash(Player);
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                     ModContent.ProjectileType<DashProjectile>(), 0, 0, Player.whoAmI);
