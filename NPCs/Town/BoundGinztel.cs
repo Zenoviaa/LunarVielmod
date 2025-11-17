@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.TriggersSystem.Triggers;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,8 @@ using Terraria.ModLoader.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
-    public class BoundGinztel : ModNPC
+    public class BoundGinztel : ModNPC,
+        INPCSpawnCondition
     {
         public override void SetStaticDefaults()
         {
@@ -102,6 +104,11 @@ namespace Stellamod.NPCs.Town
 
             NPC.Transform(ModContent.NPCType<Ginztel>());
             NPC.dontTakeDamage = false;
+        }
+
+        public bool CanSpawn()
+        {
+            return !ModContent.GetInstance<RescueNPCSystem>().rescuedGinztel;
         }
     }
 }
