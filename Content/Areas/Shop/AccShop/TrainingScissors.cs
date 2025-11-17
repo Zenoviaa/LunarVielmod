@@ -10,6 +10,7 @@ namespace Stellamod.Content.Areas.Shop.AccShop
         {
             base.SetDefaults();
             Item.DefaultToAccessory();
+            Item.rare = ModContent.RarityType<ShopRarity>();
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

@@ -50,6 +50,24 @@ namespace Stellamod.Content.Items.MoonlightMagic
             spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
         }
 
+        public static void DrawGlowingOutline(SpriteBatch spriteBatch,
+            Item item, DrawableTooltipLine line, ref int yOffset,
+            Color innerColor, Color outlineColor, Asset<Texture2D> glowTexture)
+        {
+            Vector2 textPosition = new Vector2(line.X, line.Y);
+            //Draw BackGlow
+
+            Vector2 scale = new Vector2(0.45f, 0.15f);
+
+            spriteBatch.End();
+            spriteBatch.Begin(default, BlendState.AlphaBlend, default, default, default, default, Main.UIScaleMatrix);
+
+            ChatManager.DrawColorCodedString(Main.spriteBatch, line.Font, line.Text, textPosition, outlineColor, line.Rotation, line.Origin, line.BaseScale * 1.5f);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, line.Font, line.Text, textPosition, line.Color, line.Rotation, line.Origin, line.BaseScale);
+
+            spriteBatch.End();
+            spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
+        }
         public static void DrawGlowingRarityLine(SpriteBatch spriteBatch,
             Item item, DrawableTooltipLine line, ref int yOffset,
             Color glowColor, Color primaryColor, Color noiseColor, Asset<Texture2D> glowTexture)
