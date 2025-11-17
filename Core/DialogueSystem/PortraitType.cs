@@ -66,6 +66,8 @@ namespace Stellamod.Core.DialogueSystem
         Veizal,
         Veldris,
         Verlia,
-        Zui
+        Zui,
+        Rysa,
+        Gilatine
     }
 }

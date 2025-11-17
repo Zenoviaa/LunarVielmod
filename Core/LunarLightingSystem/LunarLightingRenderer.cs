@@ -1,10 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
@@ -175,7 +177,7 @@ namespace Stellamod.Core.LunarLightingSystem
             BackLightColor = Color.Black;
             if (Main.LocalPlayer.ZoneUnderworldHeight)
             {
-                BackLightColor = Color.White * 0.5f;
+                BackLightColor = Color.White * 0.8f;
             }
 
             foreach (var backLightModifier in _backLightModifiers)
@@ -228,6 +230,39 @@ namespace Stellamod.Core.LunarLightingSystem
                 return false;
 
             return true;
+        }
+        private static void FindAmbientLights()
+        {
+            Vector2 cameraCenterWorld = Main.Camera.Center;
+            Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+            Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+
+            const float range = 256;
+            cameraTopLeft -= new Vector2(range);
+            cameraBottomRight += new Vector2(range);
+
+            Point topLeftTile = cameraTopLeft.ToTileCoordinates();
+            Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
+
+            for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
+            {
+                for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
+                {
+                    if (!WorldGen.InWorld(x, y))
+                        continue;
+                    Tile tile = Main.tile[x, y];
+                    Point lightTilePoint = new Point(x, y);
+                    if(tile.LiquidType == LiquidID.Lava)
+                    {
+                        TileAmbientLight ambientLight = new TileAmbientLight();
+                        ambientLight.color = Color.Red;
+                        ambientLight.position = lightTilePoint.ToWorldCoordinates();
+                        ambientLight.radius = 64;
+                        AddAmbientLight(ambientLight);
+                    }
+                 
+                }
+            }
         }
         private static void RenderLightsV2()
         {
@@ -317,6 +352,8 @@ namespace Stellamod.Core.LunarLightingSystem
                 }
             }
 
+            ClearAmbientLights();
+       //     FindAmbientLights();
 
             if (_ambientLightIndex > 0)
             {

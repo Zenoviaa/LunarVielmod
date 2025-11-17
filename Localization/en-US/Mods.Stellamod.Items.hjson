@@ -9715,7 +9715,32 @@ AnchorBottomLeft: {
 	DisplayName: Anchor Bottom Left
 }
 
-AcademyWood: {
+STARBOMBERBarrierBlockItem: {
+	DisplayName: S T A R B O M B E R Barrier Block Item
 	Tooltip: ""
+}
+
+AcademyChestItem: {
+	DisplayName: Academy Chest Item
+	Tooltip: ""
+}
+
+AcademyWood: {
 	DisplayName: Academy Wood
+	Tooltip: ""
+}
+
+WitchAcademyBannerItem: {
+	DisplayName: Witch Academy Banner Item
+	Tooltip: ""
+}
+
+WitchAcademyBookshelfItem: {
+	DisplayName: Witch Academy Bookshelf Item
+	Tooltip: ""
+}
+
+WitchAcademyPosterItem: {
+	DisplayName: Witch Academy Poster Item
+	Tooltip: ""
 }

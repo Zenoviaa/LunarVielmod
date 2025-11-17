@@ -109,7 +109,7 @@ namespace Stellamod.Assets.Biomes
 
         public void ModifyBackLight(ref Color backLightColor)
         {
-            backLightColor = Color.Lerp(backLightColor, Color.White, 0.4f);
+            backLightColor = Color.Lerp(backLightColor, Color.White, 0.8f);
         }
     }
 }

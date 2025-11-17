@@ -42,15 +42,11 @@ namespace Stellamod.UI.CauldronSystem
         {
             CalculatedStyle dimensions = GetDimensions();
             Point point = new Point((int)dimensions.X, (int)dimensions.Y);
-            Texture2D textureToDraw;
-            if (IsMouseHovering)
-            {
-                textureToDraw = ModContent.Request<Texture2D>($"{CauldronUISystem.RootTexturePath}CauldronPotSelected").Value;
-            }
-            else
-            {
-                textureToDraw = ModContent.Request<Texture2D>($"{CauldronUISystem.RootTexturePath}CauldronPot").Value;
-            }
+            Texture2D textureToDraw = ModContent.Request<Texture2D>($"{CauldronUISystem.RootTexturePath}CauldronPot").Value;
+
+            Rectangle rect = new Rectangle(point.X, point.Y, textureToDraw.Width, textureToDraw.Height);
+            rect.Location += new Point(0, (int)VectorHelper.Osc(-8f, 8f, 1f));
+
             bool contains = ContainsPoint(Main.MouseScreen);
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
@@ -63,12 +59,20 @@ namespace Stellamod.UI.CauldronSystem
             if (!uiSystem.CanCraft())
                 drawColor = drawColor.MultiplyRGB(Color.Gray);
 
-            Rectangle rect = new Rectangle(point.X, point.Y, textureToDraw.Width, textureToDraw.Height);
-            rect.Location += new Point(0, (int)VectorHelper.Osc(-8f, 8f, 1f));
+
             float rotation = 0;
 
 
             spriteBatch.Draw(textureToDraw, rect, null, drawColor, rotation, Vector2.Zero, SpriteEffects.None, 0);
+            if (IsMouseHovering)
+            {
+                drawColor.A = 0;
+                for(int i = 0; i < 3; i++)
+                {
+                    spriteBatch.Draw(textureToDraw, rect, null, drawColor, rotation, Vector2.Zero, SpriteEffects.None, 0);
+                }
+      
+            }
         }
     }
 }

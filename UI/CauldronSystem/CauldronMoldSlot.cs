@@ -13,7 +13,6 @@ namespace Stellamod.UI.CauldronSystem
 {
     public class CauldronMoldSlot : UIElement
     {
-        private Item _prevItem;
         private readonly int _context;
         private readonly float _scale;
 
@@ -21,9 +20,6 @@ namespace Stellamod.UI.CauldronSystem
         public Func<Item, bool> ValidItemFunc;
 
         public event Action<int> OnEmptyMouseover;
-
-        private int timer = 0;
-
         public CauldronMoldSlot(int context = ItemSlot.Context.BankItem, float scale = 1f)
         {
             _context = context;
@@ -50,8 +46,10 @@ namespace Stellamod.UI.CauldronSystem
         {
             if (Valid(Main.mouseItem))
             {
-                _prevItem = Item;
-                ItemSlot.Handle(ref Item, _context);
+                if(Main.mouseLeft && Main.mouseLeftRelease)
+                {
+                    ItemSlot.Handle(ref Item, _context);
+                }
             }
         }
 
@@ -81,16 +79,6 @@ namespace Stellamod.UI.CauldronSystem
             if (Item.stack > 1)
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, Item.stack.ToString(),
                     centerPos + new Vector2(10f, 26f) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
-            if (contains && Item.IsAir)
-            {
-                timer++;
-                OnEmptyMouseover?.Invoke(timer);
-            }
-            else if (!contains)
-            {
-                timer = 0;
-            }
-
             Main.inventoryScale = oldScale;
         }
     }

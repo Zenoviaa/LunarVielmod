@@ -13,7 +13,6 @@ namespace Stellamod.UI.CauldronSystem
 {
     public class CauldronMaterialSlot : UIElement
     {
-        private Item _prevItem;
         private readonly int _context;
         private readonly float _scale;
 
@@ -52,8 +51,10 @@ namespace Stellamod.UI.CauldronSystem
         {
             if (Valid(Main.mouseItem))
             {
-                _prevItem = Item;
-                ItemSlot.Handle(ref Item, _context);
+                if(Main.mouseLeft && Main.mouseLeftRelease)
+                {
+                    ItemSlot.Handle(ref Item, _context);
+                }  
             }
         }
 

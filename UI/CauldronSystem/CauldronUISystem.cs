@@ -78,14 +78,22 @@ namespace Stellamod.UI.CauldronSystem
         {
             ClearSlot();
             _cauldronInterface.SetState(null);
-            Item mold = cauldronUIState.cauldronUI.moldSlot.Item;
+            Item[] molds = GetMolds();
             Item material = cauldronUIState.cauldronUI.materialSlot.Item;
-            if (!mold.IsAir)
+            for(int i = 0; i < molds.Length; i++)
             {
-                Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), mold, mold.stack);
-                cauldronUIState.cauldronUI.moldSlot.Item = new Item();
-                cauldronUIState.cauldronUI.moldSlot.Item.SetDefaults(0);
+                Item mold = molds[i];
+                if (!mold.IsAir)
+                {
+                    Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), mold, mold.stack);
+     
+                }
             }
+            cauldronUIState.cauldronUI.moldSlot.Item = new Item();
+            cauldronUIState.cauldronUI.moldSlot.Item.SetDefaults(0);
+
+            cauldronUIState.cauldronUI.moldSlot2.Item = new Item();
+            cauldronUIState.cauldronUI.moldSlot2.Item.SetDefaults(0);
             if (!material.IsAir)
             {
                 Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), material, material.stack);
@@ -94,6 +102,14 @@ namespace Stellamod.UI.CauldronSystem
             }
         }
 
+        public Item[] GetMolds()
+        {
+            Item[] molds = new Item[2];
+            molds[0] = cauldronUIState.cauldronUI.moldSlot.Item;
+            molds[1] = cauldronUIState.cauldronUI.moldSlot2.Item;
+
+            return molds;
+        }
         public bool CanCraft()
         {
             Cauldron cauldron = ModContent.GetInstance<Cauldron>();
@@ -105,9 +121,9 @@ namespace Stellamod.UI.CauldronSystem
         {
             Cauldron cauldron = ModContent.GetInstance<Cauldron>();
 
-            Item mold = cauldronUIState.cauldronUI.moldSlot.Item;
+            Item[] molds = GetMolds();
             Item material = cauldronUIState.cauldronUI.materialSlot.Item;
-            var result = cauldron.Craft(mold, material);
+            var result = cauldron.Craft(molds, material);
             if (result.result == -1)
                 return;
 
@@ -115,11 +131,16 @@ namespace Stellamod.UI.CauldronSystem
             Player player = Main.LocalPlayer;
             int item = player.QuickSpawnItem(player.GetSource_FromThis(), result.result, result.yield);
 
-
-            if (mold.IsAir)
+ 
+            if (molds[0].IsAir)
             {
                 cauldronUIState.cauldronUI.moldSlot.Item = new Item();
                 cauldronUIState.cauldronUI.moldSlot.Item.SetDefaults(0);
+            }
+            if (molds[1].IsAir)
+            {
+                cauldronUIState.cauldronUI.moldSlot2.Item = new Item();
+                cauldronUIState.cauldronUI.moldSlot2.Item.SetDefaults(0);
             }
             if (material.IsAir)
             {

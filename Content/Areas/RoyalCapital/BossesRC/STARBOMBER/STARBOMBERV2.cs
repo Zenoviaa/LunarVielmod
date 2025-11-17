@@ -491,8 +491,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.npcSlots = 30f;
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Boss6");
-            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.3f};
-            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.3f };
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f};
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         }
 
         public override void FindFrame(int frameHeight)
@@ -1382,7 +1382,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             float targetSpinVelocity = NPC.direction * spinSpeed;
 
             SpinSpeed = MathHelper.Lerp(3, 0.2f, Timer / spinTime);
-            NPC.rotation = NPC.velocity.X * 0.025f;
+            NPC.rotation = NPC.velocity.X * 0.015f;
             if(Timer == 25)
             {
                 SoundStyle spin = AssetRegistry.Sounds.STARBOMBER.Ommove1;
@@ -1398,7 +1398,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             {
                 _afterImageTime = MathHelper.Lerp(_afterImageTime, 1f, 0.1f);
                 NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetSpinVelocity, 0.3f);
-                if(Timer % 5 == 0)
+                if(Timer % 2 == 0)
                 {
                     var part = FXUtil.GlowCircleDetailedBoom1(NPC.Bottom, Color.Yellow, Color.Orange, Color.DarkRed);
                     part.Scale *= 0.5f;

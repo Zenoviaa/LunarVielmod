@@ -144,8 +144,8 @@ MothlightBiome: {
 }
 
 WonderousDarkspaceBiome: {
-	DisplayName: Wonderous Darkspace Biome
-	TownNPCDialogueName: the Wonderous Darkspace Biome
+	DisplayName: Wonderous Darkspace
+	TownNPCDialogueName: the Wonderous Darkspace
 }
 
 SpringHillsBiome: {

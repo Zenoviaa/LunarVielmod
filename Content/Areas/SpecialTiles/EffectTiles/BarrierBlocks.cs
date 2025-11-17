@@ -50,6 +50,7 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
 
             Main.tileSolid[ModContent.TileType<BossBarrierBlock>()] = _hasLockedPlayerIn;
             Main.tileSolid[ModContent.TileType<StarrVeriplantBarrierBlock>()] = !DownedBossSystem.downedStoneGolemBoss;
+            Main.tileSolid[ModContent.TileType<STARBOMBERBarrierBlock>()] = !DownedBossSystem.downedSTARBoss;
         }
     }
 
@@ -250,6 +251,34 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
     }
 
     public class StarrVeriplantBarrierBlock : BaseBarrierBlock
+    {
+
+    }
+
+    public class STARBOMBERBarrierBlockItem : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            // Tooltip.SetDefault("Super silk!");
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
+        }
+
+        public override void SetDefaults()
+        {
+            Item.width = 12;
+            Item.height = 12;
+            Item.maxStack = Item.CommonMaxStack;
+            Item.useTurn = true;
+            Item.autoReuse = true;
+            Item.useAnimation = 10;
+            Item.useTime = 10;
+            Item.useStyle = ItemUseStyleID.Swing;
+            Item.consumable = true;
+            Item.createTile = ModContent.TileType<STARBOMBERBarrierBlock>();
+        }
+    }
+
+    public class STARBOMBERBarrierBlock : BaseBarrierBlock
     {
 
     }
