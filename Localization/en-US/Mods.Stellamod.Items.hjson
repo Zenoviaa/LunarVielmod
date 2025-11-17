@@ -9714,3 +9714,8 @@ AnchorBottomLeft: {
 	Tooltip: ""
 	DisplayName: Anchor Bottom Left
 }
+
+AcademyWood: {
+	Tooltip: ""
+	DisplayName: Academy Wood
+}
