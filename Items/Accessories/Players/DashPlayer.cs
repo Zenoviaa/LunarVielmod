@@ -222,6 +222,7 @@ namespace Stellamod.Items.Accessories.Players
                         return; // not moving fast enough, so don't start our dash
                 }
 
+
                 Player.SetImmuneTimeForAllTypes(DashDuration + ExtraImmunityFramesBonus);
                 DashItem?.BeginDash(Player);
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,

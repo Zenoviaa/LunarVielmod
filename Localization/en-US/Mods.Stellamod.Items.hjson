@@ -9744,3 +9744,8 @@ WitchAcademyPosterItem: {
 	DisplayName: Witch Academy Poster Item
 	Tooltip: ""
 }
+
+TrainingScissors: {
+	DisplayName: Training Scissors
+	Tooltip: Adds 3 extra immunity frames to your dodge!
+}

@@ -62,7 +62,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             spriteBatch.End();
             spriteBatch.Begin(default, BlendState.AlphaBlend, default, default, default, default, Main.UIScaleMatrix);
 
-            ChatManager.DrawColorCodedString(Main.spriteBatch, line.Font, line.Text, textPosition, outlineColor, line.Rotation, line.Origin, line.BaseScale * 1.5f);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, line.Font, line.Text, textPosition, outlineColor, line.Rotation, line.Origin, line.BaseScale);
             ChatManager.DrawColorCodedString(Main.spriteBatch, line.Font, line.Text, textPosition, line.Color, line.Rotation, line.Origin, line.BaseScale);
 
             spriteBatch.End();
