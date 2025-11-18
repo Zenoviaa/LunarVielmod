@@ -41,17 +41,47 @@ namespace Stellamod.Core.Palettes
                     {
                         using (var stream = mod.GetFileStream(file))
                         {
-                            Color[] palette = ReadPalette(stream);
+                            string fileName = new FileInfo(file).Name; ;
+                            Console.WriteLine(fileName);
+                            Vector3[] palette = ReadPaletteVector3(stream);
                             Texture3D colorSpectrum = CreateColorSpectrumTexture(palette);
 
-                            string fileName = new FileInfo(file).Name; ;
-
+                          
                             _colorAtlas.Add(fileName, colorSpectrum);
-                            Console.WriteLine(fileName);
+                           
                         }
                     });
 
                 }
+            }
+        }
+        public static Vector3[] ReadPaletteVector3(Stream stream)
+        {
+            int lineNum = 1;
+            int pal = 0;
+            List<Vector3> palette = new List<Vector3>();
+          
+            using (var streamReader = new StreamReader(stream))
+            {
+                String line;
+                while ((line = streamReader.ReadLine()) != null)
+                {
+                    // Process line
+                    if (lineNum > 3)
+                    {
+                        //We have colors to parse!!!
+                        string[] rgb = line.Split(null);
+                        float r = float.Parse(rgb[0]);
+                        float g = float.Parse(rgb[1]);
+                        float b = float.Parse(rgb[2]);
+                        pal++;
+                        palette.Add(new Vector3(r, g, b));
+                    }
+                    lineNum++;
+                    Console.WriteLine($"{line}");
+                }
+                Console.WriteLine($"{lineNum} lines, {pal} colors");
+                return palette.ToArray();
             }
         }
 
@@ -188,7 +218,36 @@ namespace Stellamod.Core.Palettes
             float d = ar + ag + ab;
             return d;
         }
+        public static float ColorDistance(Vector3 a, Vector3 b)
+        {
+            float ar = MathF.Abs(b.X - a.X);
+            float ag = MathF.Abs(b.Y - a.Y);
+            float ab = MathF.Abs(b.Z - a.Z);
+            float d = ar + ag + ab;
+            return d;
+        }
+        public static Vector3 FindNearestColorInPalette(Vector3 originalColor, Vector3[] palette)
+        {
+            Vector3 selectedColor = palette[0];
+            float dist = ColorDistance(originalColor, selectedColor);
+            float currentDist;
 
+            // For loop with the same loops than the color palette.
+            for (int i = 1; i < palette.Length; i++)
+            {
+                currentDist = ColorDistance(originalColor, palette[i]);
+                //Branchless way to do this
+                //We want to avoid using if-statements in shaders if possible, as creating branches GREATLY slows them down
+                //We can evaluate a check like this to a 0 or 1, and since only 1 can be true we can invert it simply :) 
+                if (currentDist < dist)
+                {
+                    selectedColor = palette[i];
+                    dist = currentDist;
+                }
+            }
+
+            return selectedColor;
+        }
         /// <summary>
         /// Finds the closet color to the base color in the specified palette
         /// </summary>
@@ -238,23 +297,62 @@ namespace Stellamod.Core.Palettes
                         int indexOfPixel = z * colorDimension * colorDimension + y * colorDimension + x;
 
                         //Calculate RGB values based on the size of the texture
-
                         float r = x;
                         r /= dimension;
-
+         
                         float g = y;
                         g /= dimension;
-
+    
                         float b = z;
                         b /= dimension;
 
-
-                        Color color = new Color(r, g, b);
+                        Color newColor = new Color(r, g, b);
                         if (palette != null)
                         {
-                            color = FindNearestColorInPalette(color, palette);
+                            newColor = FindNearestColorInPalette(newColor, palette);
                         }
-                        pixelsToSet[indexOfPixel] = color;
+
+                        pixelsToSet[indexOfPixel] = newColor;
+                    });
+                }
+            }
+
+            colorSpectrumTexture.SetData(pixelsToSet);
+            Console.WriteLine($"Created Color Spectrum, with color dimension {colorDimension}, {pixelsToSet.Length}");
+            return colorSpectrumTexture;
+        }
+        public static Texture3D CreateColorSpectrumTexture(Vector3[] palette)
+        {
+            int colorDimension = 16;
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            Texture3D colorSpectrumTexture = new Texture3D(graphicsDevice, colorDimension, colorDimension, colorDimension, false, SurfaceFormat.Color);
+
+            float numColors = colorDimension * colorDimension * colorDimension;
+            Color[] pixelsToSet = new Color[colorDimension * colorDimension * colorDimension];
+            float dimension = colorDimension - 1;
+            for (int x = 0; x < colorDimension; x++)
+            {
+                for (int y = 0; y < colorDimension; y++)
+                {
+                    Parallel.For(0, colorDimension, z =>
+                    {
+                        int indexOfPixel = z * colorDimension * colorDimension + y * colorDimension + x;
+
+                        //Calculate RGB values based on the size of the texture
+
+                        Vector3 rgb = new Vector3();
+                        rgb.X = ((float)x / dimension) * 255f;
+                        rgb.Y = ((float)y / dimension) * 255f;
+                        rgb.Z = ((float)z / dimension) * 255f;
+
+      
+                        if (palette != null)
+                        {
+                            rgb = FindNearestColorInPalette(rgb, palette);
+                        }
+
+                        Color newColor = new Color((int)rgb.X, (int)rgb.Y, (int)rgb.Z);
+                        pixelsToSet[indexOfPixel] = newColor;
                     });
                 }
             }
