@@ -1,11 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
@@ -15,6 +19,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
     {
         private Vector2 _squish;
         private ref float Timer => ref Projectile.ai[0];
+        private ref float BounceCount => ref Projectile.ai[1];
+        private ref float KillTimer => ref Projectile.ai[2];
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -29,7 +35,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             Projectile.height = 32;
             Projectile.hostile = true;
             Projectile.penetrate = -1;
-            Projectile.tileCollide = false;
+            Projectile.tileCollide = true;
             Projectile.timeLeft = 300;
         }
 
@@ -52,18 +58,59 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             _squish = Vector2.Lerp(_squish, Vector2.One, 0.1f);
 
             //Gravity
-            if (Projectile.velocity.Y < 10)
+            if (Projectile.velocity.Y < 12)
             {
-                Projectile.velocity.Y += 0.5f;
+                Projectile.velocity.Y += 0.25f;
             }
-            Projectile.velocity.X *= 0.9f;
-            Projectile.rotation += Projectile.velocity.Length() * 0.05f;
+            if (BounceCount >= 1f)
+            {
+                KillTimer++;
+                if(KillTimer >= 60f)
+                {
+                    Projectile.Kill();
+                }
+    
+            }
+            Projectile.velocity.X *= 0.94f;
+            Projectile.rotation += Projectile.velocity.Length() * 0.0125f;
         }
 
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            for(float f = 0; f  <16f; f++)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(4, 4);
+                Dust.NewDustPerfect(Projectile.Center, DustID.Stone, vel, Scale: Main.rand.NextFloat(0.75f, 1.5f));
+            }
+            
+            for(float f = 0; f < 8f; f++)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(4, 4);
+                Particle.NewParticle<BlackSmokeParticle>(Projectile.Center, vel);
+
+            }
+            FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGray, Color.Black);
+
+        }
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+         
+            if(Projectile.velocity.Y != oldVelocity.Y)
+            {
+                _squish = new Vector2(1.5f, 0.7f);
+                SoundStyle rockSound = SoundID.DD2_MonkStaffGroundImpact;
+                SoundEngine.PlaySound(rockSound, Projectile.position);
+                Projectile.velocity.Y = -oldVelocity.Y * 0.6f;
+                BounceCount++;
+            }
+
+            return false;
+        }
         public override bool PreDraw(ref Color lightColor)
         {
             Rectangle drawFrame = Projectile.Frame();
-            DrawAfterImageEffect(Main.spriteBatch, ModContent.Request<Texture2D>(Texture).Value, drawFrame, drawFrame.Size() / 2f, _squish, SpriteEffects.None, Color.White, 1f);
+            DrawAfterImageEffect(Main.spriteBatch, ModContent.Request<Texture2D>(Texture).Value, drawFrame, drawFrame.Size() / 2f, _squish, SpriteEffects.None, Color.White, 0.1f);
             this.DrawCentered(ref lightColor, _squish);
             return false;
         }

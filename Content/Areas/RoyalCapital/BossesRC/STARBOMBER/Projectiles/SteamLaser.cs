@@ -172,7 +172,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             shader.PrimaryTexture2 = TrailRegistry.StarTrail;
             shader.InnerColor = Color.Aqua;
             shader.OuterColor = Color.LightBlue;
-            shader.Distortion = MathHelper.Lerp(0.6f, 0.2f, EasingFunction.InOutSine(Timer / 30f)) * MathHelper.Lerp(1, 0, EasingFunction.InOutExpo(Timer / 90f));
+            shader.Distortion = 0.1f;
             shader.Time = Timer * 0.07f;
             TrailDrawer.Draw(spriteBatch, LaserPoints, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
 

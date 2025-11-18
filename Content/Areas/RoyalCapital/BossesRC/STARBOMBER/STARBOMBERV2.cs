@@ -259,6 +259,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private float _oscTimer;
         private float _deathLerp;
         private float _spinTelegraphLerp;
+        private float _acceleration;
 
         private bool _contactDamage;
         private bool _namePlate;
@@ -820,9 +821,24 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
+            //SwitchState(AIState.MachineGun_Start);
 
         }
 
+        private void SpawnSteamParticleBottom()
+        {
+            Vector2 spawnPosition = NPC.Bottom;
+            spawnPosition.X += Main.rand.NextFloat(-64, 64);
+
+            Vector2 spawnVelocity = Vector2.Zero;
+            spawnVelocity.Y = Main.rand.NextFloat(-10, -1f);
+
+            float spawnScale = Main.rand.NextFloat(0.75f, 1f);
+            var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
+            steamParticle.innerColor = Color.DarkGray;
+            steamParticle.outerColor = Color.Black;
+            steamParticle.fadeToColor = Color.Black;
+        }
         private void SpawnSteamParticle()
         {
             Vector2 spawnPosition = NPC.Top;
@@ -1037,6 +1053,23 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             return aimDirection;
         }
 
+        private void SpawnFallingRocks()
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Vector2 startPosition = MyTarget.Center - new Vector2(0, 1000);
+                for (int i = 0; i < 6; i++)
+                {
+                    Vector2 spawnPosition = startPosition;
+                    spawnPosition.X += Main.rand.NextFloat(-1000f, 1000f);
+                    Vector2 spawnVelocity = Vector2.Zero;
+                    spawnVelocity.X = Main.rand.NextFloat(-5f, 5f);
+                    spawnVelocity.Y -= Main.rand.NextFloat(0f, 12f);
+                    Projectile.NewProjectile(SourceFromThis, spawnPosition, spawnVelocity, ModContent.ProjectileType<StarRock>(), StarRockDamage, 1, Main.myPlayer);
+                }
+            }
+
+        }
         private void PrimeReticle()
         {
             if (MultiplayerHelper.IsHost)
@@ -1062,17 +1095,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private void AI_Spawn()
         {
 
-            Timer++;
-            if (Timer == 1)
-            {
-                StretchLegs();
-            }
-
-            if (Timer % 10 == 0)
-            {
-                SpawnSteamParticle();
-            }
-
+   
             _spinTelegraphLerp *= 0.5f;
             _legsState = LegsState.Walk;
             StandRange = MathHelper.Lerp(StandRange, 290, 0.1f);
@@ -1082,9 +1105,50 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.noGravity = false;
             NPC.boss = false;
             //ApplyStandingYVelocity();
+
+
+
+            _shakeOffset *= 0.9f;
             if (_aggroed)
             {
-                SwitchState(AIState.Idle);
+                Timer++;
+                _spinTelegraphLerp = MathHelper.Lerp(_spinTelegraphLerp, 1f, 0.1f);
+                float progress = Timer / 180f;
+                int denom = (int)MathHelper.Lerp(15, 5, progress);
+                if(Timer == 1)
+                {
+                    SoundStyle move1Sound = AssetRegistry.Sounds.STARBOMBER.Ommove5;
+                    move1Sound.PitchVariance = 0.1f;
+                    SoundEngine.PlaySound(move1Sound, NPC.position);
+                } else if (Timer == 60)
+                {
+                    SoundStyle move2Sound = AssetRegistry.Sounds.STARBOMBER.Ommove2;
+                    move2Sound.PitchVariance = 0.1f;
+                    SoundEngine.PlaySound(move2Sound, NPC.position);
+                } else if (Timer == 120)
+                {
+                    SoundStyle move3Sound = AssetRegistry.Sounds.STARBOMBER.Ommove3;
+                    move3Sound.PitchVariance = 0.1f;
+                    SoundEngine.PlaySound(move3Sound, NPC.position);
+                }
+                if (Timer % 2 == 0)
+                {
+                    float range = MathHelper.Lerp(4, 16, progress);
+                    _shakeOffset = Main.rand.NextVector2CircularEdge(range, range);
+                }
+                if (Timer % denom == 0)
+                {
+                    SpawnSteamParticleBottom();
+                    SpawnSteamParticle();
+                }
+
+                ShakeModSystem.Shake = MathHelper.Lerp(1f, 6f, progress);
+                if(Timer >= 180)
+                {
+                    SoundStyle wakeSound = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBERWAKE");
+                    SoundEngine.PlaySound(wakeSound, NPC.position);
+                    SwitchState(AIState.Idle);
+                }
             }
         }
 
@@ -1094,11 +1158,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             float distanceToGround = Vector2.Distance(NPC.Center, groundPoint);
             if (distanceToGround > StandHeight)
             {
-                NPC.velocity.Y += 0.5f;
+                NPC.velocity.Y += 0.5f * _acceleration;
             }
             else if (distanceToGround < StandHeight / 2f)
             {
-                NPC.velocity.Y -= 0.5f;
+                NPC.velocity.Y -= 0.5f * _acceleration;
             }
             else
             {
@@ -1131,7 +1195,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             HeldGun = null;
             _legsState = LegsState.Walk;
             _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
-
+            if(_acceleration < 1f)
+            {
+                _acceleration += 0.005f;
+                if (_acceleration >= 1f)
+                    _acceleration = 1f;
+            }
             //Set some defaults
             GunVDirection = -1;
             _contactDamage = false;
@@ -1142,8 +1211,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.noTileCollide = true;
             NPC.noGravity = true;
             float targetRotation = NPC.velocity.X * 0.05f;
-            NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.03f);
-            NPC.rotation = MathHelper.WrapAngle(NPC.rotation);
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRotation, 0.03f);
+    
             StandRange = MathHelper.Lerp(StandRange, 290, 0.1f);
             TargetGunOutlineColor = Color.Transparent;
             TargetOutlineColor = Color.Transparent;
@@ -1158,6 +1227,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             if (xDist > StandRange)
             {
                 float speed = MathHelper.Lerp(2, 3, MathHelper.Clamp(xDist / 16f, 0f, 1f));
+                speed *= _acceleration;
                 float targetX = NPC.direction * speed;
                 NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetX, 0.1f);
 
@@ -1165,6 +1235,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             else
             {
                 float targetX = NPC.direction * 2f;
+                targetX *= _acceleration;
                 NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetX, 0.1f);
             }
 
@@ -1326,7 +1397,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             Timer++;
             if (Timer == 1)
             {
-                _gunShootTrackingVelocity = -Vector2.UnitY * 10;
+                _gunShootTrackingVelocity = -Vector2.UnitY * 7;
                 _gunShootTargetPosition = GunMuzzlePosition;
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
@@ -1812,6 +1883,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                     particle.VectorScale *= 0.5f;
                 }
 
+                if (InPhase2)
+                {
+                    SpawnFallingRocks();
+                }
+
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), NPC.position);
 
                 FXUtil.ShakeCamera(NPC.position, 2000, 100);
@@ -2025,15 +2101,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
                     if (InPhase2)
                     {
-                        Vector2 startPosition = MyTarget.Center - new Vector2(0, 1000);
-                        for (int i = 0; i < 6; i++)
-                        {
-                            Vector2 spawnPosition = startPosition;
-                            spawnPosition.X += Main.rand.NextFloat(-1000f, 1000f);
-                            Vector2 spawnVelocity = Vector2.Zero;
-                            spawnVelocity.X = Main.rand.NextFloat(-5f, 5f);
-                            Projectile.NewProjectile(SourceFromThis, spawnPosition, spawnVelocity, ModContent.ProjectileType<StarRock>(), StarRockDamage, 1, Main.myPlayer);
-                        }
+                        SpawnFallingRocks();
                     }
                 }
                 for (int i = 0; i < 1; i++)
@@ -2228,6 +2296,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 {
                     Projectile.NewProjectile(SourceFromThis, GunMuzzlePosition, GunDirection * 1200,
                         ModContent.ProjectileType<SteamLaser>(), SteamLaserDamage, 1, Main.myPlayer);
+                }
+
+                if (InPhase2)
+                {
+                    SpawnFallingRocks();
                 }
                 SoundStyle tireSound = new SoundStyle("Stellamod/Assets/Sounds/STARWAVE");
                 tireSound.PitchVariance = 0.15f;
