@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace Stellamod.Helpers
 {
@@ -9,6 +10,23 @@ namespace Stellamod.Helpers
         //REFERENCE:
         //https://easings.net/
 
+        public static Vector2 CubicBezier(float t, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3)
+        {
+            //B(t) = (1-t)^3 * P0 + 3*(1-t)^2 * t * P1 + 3*(1-t) * t^2 * P2 + t^3 * P3
+
+            Vector2 t0 = MathF.Pow(1 - t, 3) * p0;
+            Vector2 t1 = 3 * MathF.Pow(1 - t, 2) * t * p1;
+            Vector2 t2 = 3 * (1 - t) * t * t * p2;
+            Vector2 t3 = MathF.Pow(t, 3) * p3;
+
+            return t0 + t1 + t2 + t3;
+        }
+
+        public static float BezierEase(float t, Vector2 control1, Vector2 control2)
+        {
+            Vector2 point = CubicBezier(t, Vector2.Zero, control1, control2, Vector2.One);
+            return point.Y;
+        }
         public static float Clamp(float t)
         {
             return Math.Clamp(t, 0, 1);

@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Dialogue;
 using Stellamod.Core;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Melee.Swords;
-using Stellamod.Items.Weapons.Ranged;
-using Stellamod.Items.Weapons.Ranged.GunSwapping;
-using Stellamod.Items.Weapons.Thrown;
-
-using Stellamod.UI.ArmorReforgeSystem;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -52,11 +47,6 @@ namespace Stellamod.NPCs.Town
 
             // Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
 
-
-
-
-
-            ; // < Mind the semicolon!
         }
 
         public override void SetDefaults()
@@ -145,6 +135,14 @@ namespace Stellamod.NPCs.Town
 
             //This pulls from the new Dialogue localization
             text = "ZuiOpenDialogue1";
+        }
+
+        public override void Talk()
+        {
+            base.Talk();
+            OpenTalkOptions(
+                ModContent.GetInstance<RysaGotAnythingDialogue>(), 
+                ModContent.GetInstance<RysaLivingDialogue>());
         }
 
         public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)

@@ -4,19 +4,233 @@ using ReLogic.Content;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Helpers;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.UI.Elements;
+using Terraria.UI;
 
 namespace Stellamod.UI.DialogueTowning
 {
+    public class TalkingOptionsButtonGroupUI : UIPanel
+    {
+        private List<TalkingOptionButtonUI> _buttons;
+        private UIGrid _buttonsGrid;
+        public int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2) + 80;
+        public int RelativeTop => Main.screenHeight - 300;
+        public Vector2 DrawPos => new Vector2(Left.Pixels, Top.Pixels);
+
+
+        public TalkingOptionsButtonGroupUI()
+        {
+            _buttons = new List<TalkingOptionButtonUI>();
+        }
+        public Vector2 Offset { get; set; }
+        public float Alpha { get; set; }
+
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            Width.Pixels = 480;
+            Height.Pixels = 200;
+            Left.Pixels = RelativeLeft;
+            Top.Pixels = RelativeTop;
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
+
+            _buttonsGrid = new UIGrid();
+            _buttonsGrid.Width.Set(0, 1f);
+            _buttonsGrid.Height.Set(0, 1f);
+            _buttonsGrid.HAlign = 0.5f;
+            _buttonsGrid.ListPadding = 2f;
+            Append(_buttonsGrid);
+        }
+
+        public void ClearButtons()
+        {
+            foreach(var btn in _buttons)
+            {
+                RemoveChild(btn);
+            }
+
+            _buttons.Clear();
+        }
+
+        public void AddButton(DialogueTalkingOption dialogueTalkingOption)
+        {
+            TalkingOptionButtonUI button = new TalkingOptionButtonUI(dialogueTalkingOption);
+            _buttons.Add(button);
+            Append(button);
+        }
+
+
+        public override void Update(GameTime gameTime)
+        {
+            BackgroundColor = Color.Transparent;
+
+            base.Update(gameTime);
+            //Constantly lock the UI in the position regardless of resolution changes
+            Left.Pixels = RelativeLeft;
+            Top.Pixels = RelativeTop;
+            for(int y = 0; y < _buttons.Count; y++)
+            {
+                var btn = _buttons[y];
+                btn.Top.Pixels = y * 48;
+            }
+            foreach (var btn in _buttons)
+            {
+                btn.Alpha = Alpha;
+            }
+            Alpha = 1f;
+        }
+    }
+    public class TalkingOptionButtonUI : UIPanel
+    {
+        private float _timer;
+        private readonly ITalkingOption _talkingOption;
+        public TalkingOptionButtonUI(ITalkingOption talkingOption)
+        {
+            _talkingOption = talkingOption;
+            Text = new UIText("This is placeholder text", 0.5f, true);
+            Text.SetText(talkingOption.GetDisplayName());
+        }
+
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            Width.Pixels = 214;
+            Height.Pixels = 44;
+
+            Text.Width.Set(0, 1);
+            Text.Height.Set(0, 1);
+            Text.TextColor = Color.White;
+            Text.IsWrapped = false;
+            Text.Top.Pixels = 0;
+            Append(Text);
+
+ 
+   
+            OnLeftClick += OnButtonClick;
+            OnMouseOver += OnMouseHover;
+        }
+
+        public UIText Text { get; set; }
+        public float Alpha { get; set; }
+        private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
+        {
+            SoundStyle soundStyle = SoundID.MenuTick;
+            SoundEngine.PlaySound(soundStyle);
+            _talkingOption?.Talk();
+        }
+
+        private void OnMouseHover(UIMouseEvent evt, UIElement listeningElement)
+        {
+
+        }
+
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+ 
+
+ 
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
+       
+            bool contains = ContainsPoint(Main.MouseScreen);
+            if (contains && !PlayerInput.IgnoreMouseInterface)
+            {
+                Main.LocalPlayer.mouseInterface = true;
+            }
+        }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+  
+            base.DrawSelf(spriteBatch);
+            Color drawColor = Color.White.MultiplyRGB(Color.DarkGray);
+            drawColor *= 0.2f;
+            if (IsMouseHovering)
+            {
+                float progress = _timer / 0.12f;
+                Color colorToMultiplyBy = Color.Lerp(Color.White, Color.LightGoldenrodYellow, progress);
+                drawColor = drawColor.MultiplyRGB(colorToMultiplyBy);
+            }
+            CalculatedStyle dimensions = GetDimensions();
+            Point point = new Point((int)dimensions.X, (int)dimensions.Y);
+            Texture2D textureToDraw = ModContent.Request<Texture2D>($"{DialogueTowningUISystem.RootTexturePath}DialogueBoxButton").Value;
+
+
+            spriteBatch.Draw(textureToDraw, point.ToVector2(), null,
+                drawColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+            _talkingOption?.Show(spriteBatch);
+         
+        }
+    }
+
+
+
+    /// <summary>
+    /// Interface for creation a dialogue option on the talk menu
+    /// </summary>
+    public interface ITalkingOption
+    {
+        string GetDisplayName();
+        void Talk();
+        void Show(SpriteBatch spriteBatch);
+    }
+
+    public class DialogueTalkingOption : ITalkingOption
+    {
+        public DialogueTalkingOption(string localizedText, BaseDialogue dialogue)
+        {
+            LocalizedText = localizedText;
+            Dialogue = dialogue;
+        }
+
+        public readonly string LocalizedText;
+        public readonly BaseDialogue Dialogue;
+
+        public string GetDisplayName()
+        {
+            return LocalizedText;
+        }
+
+        public void Talk()
+        {
+            DialogueSystemV2 dialogueSystem = ModContent.GetInstance<DialogueSystemV2>();
+            dialogueSystem.StartDialogueSequence(Dialogue);
+        }
+
+        public void Show(SpriteBatch spriteBatch)
+        {
+
+        }
+    }
+
+    public enum DialogueBoxState : byte
+    {
+        Speaking = 0,
+        Shrinking = 1,
+        WaitingForTalk = 2,
+        Expanding = 3,
+
+    }
     public class DialogueTowningUI : UIPanel
     {
         private string _localizedText;
         private float _timer;
+        private float _stateTimer;
+        private float _scale;
         private int _textIndex;
         private UIText _text;
+        private DialogueBoxState _state;
 
         public int RelativeLeft => Main.screenWidth / 2;
         public int RelativeTop => Main.screenHeight - 300;
@@ -43,6 +257,8 @@ namespace Stellamod.UI.DialogueTowning
 
         public float Duration { get; set; }
         public float Alpha { get; set; }
+
+        public float ScaleTime => 0.5f;
         public override void OnInitialize()
         {
             base.OnInitialize();
@@ -75,6 +291,67 @@ namespace Stellamod.UI.DialogueTowning
             _text.Top.Pixels = 16 + Offset.Y;
             _text.TextColor = Color.White * Alpha;
 
+            switch (_state)
+            {
+                case DialogueBoxState.Speaking:
+                    AI_Speaking(gameTime);
+                    break;
+                case DialogueBoxState.Expanding:
+                    AI_Expanding(gameTime);
+                    break;
+                case DialogueBoxState.WaitingForTalk:
+                    AI_WaitingForTalk(gameTime);
+                    break;
+                case DialogueBoxState.Shrinking:
+                    AI_Shrinking(gameTime);
+                    break;
+            }
+        }
+
+
+        public void PrepareForTalkingOptions()
+        {
+
+        }
+        private void SwitchState(DialogueBoxState state)
+        {
+            _state = state;
+            _stateTimer = 0;
+        }
+
+        private void AI_Shrinking(GameTime gameTime)
+        {
+            _stateTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float progress = _stateTimer / ScaleTime;
+            float easing = EasingFunction.BezierEase(progress, new Vector2(0.8f, -0.4f), new Vector2(0.5f, 1f));
+            _scale = MathHelper.Lerp(1f, 0f, easing);
+            if (_stateTimer >= ScaleTime)
+            {
+                SwitchState(DialogueBoxState.WaitingForTalk);
+            }
+        }
+
+
+        private void AI_WaitingForTalk(GameTime gameTime)
+        {
+
+        }
+
+
+        private void AI_Expanding(GameTime gameTime)
+        {
+            _stateTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float progress = _stateTimer / ScaleTime;
+            float easing = EasingFunction.BezierEase(progress, new Vector2(0.8f, -0.4f), new Vector2(0.5f, 1f));
+            _scale = MathHelper.Lerp(0f, 1f, easing);
+            if (_stateTimer >= ScaleTime)
+            {
+                SwitchState(DialogueBoxState.Speaking);
+            }
+        }
+
+        private void AI_Speaking(GameTime gameTime)
+        {
             if (!IsFinishedTyping())
             {
                 _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -91,14 +368,11 @@ namespace Stellamod.UI.DialogueTowning
                     _text.SetText(realText);
                     _textIndex++;
                     _timer = 0;
-                    if(_textIndex % 3 == 0)
+                    if (_textIndex % 3 == 0)
                         SoundEngine.PlaySound(TalkingSound);
                 }
             }
         }
-
-
-
 
         private void DrawBackground(SpriteBatch spriteBatch)
         {
@@ -108,9 +382,14 @@ namespace Stellamod.UI.DialogueTowning
 
             float rotation = 0;
             Vector2 drawOrigin = new Vector2(0, 0);
-            float drawScale = 1f;
+            Vector2 drawScale = Vector2.One;
             Color drawColor = Color.White.MultiplyRGB(Color.Gray);
             drawColor *= Alpha;
+
+            //Ok so basically we're gonna draw a part of the texture to get a cool effect
+            //For now let's test how this looks
+            //Might do something with a render target actually
+            drawScale.X *= _scale;
             spriteBatch.Draw(texture, drawPos, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
 
@@ -132,6 +411,7 @@ namespace Stellamod.UI.DialogueTowning
 
             spriteBatch.Draw(texture, finalDrawPos, null, Color.White * Alpha, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
+
 
         private bool IsFinishedTyping()
         {
@@ -164,9 +444,9 @@ namespace Stellamod.UI.DialogueTowning
                 text = text.Substring(indexOfRightBracket, text.Length - indexOfRightBracket);
             }
         }
+
         public void ResetText()
         {
-
             _text.SetText(string.Empty);
             _textIndex = 0;
         }

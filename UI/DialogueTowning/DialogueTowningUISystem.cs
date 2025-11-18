@@ -128,6 +128,10 @@ namespace Stellamod.UI.DialogueTowning
 
         public void ChatWith(VeilTownNPC veilTownNPC)
         {
+
+
+
+            /*
             string text = string.Empty;
             string portrait = "FenixPortrait";
             float timeBetweenTexts = 0.05f;
@@ -136,7 +140,23 @@ namespace Stellamod.UI.DialogueTowning
             dialogueTowningUIState.dialogueTownUI.ResetText();
             dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
             dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
-            SetPortrait(portrait);
+            SetPortrait(portrait);*/
+        }
+
+        public void OpenTalkOptions(BaseDialogue[] dialogues)
+        {
+            DialogueTowningUI ui = dialogueTowningUIState.dialogueTownUI;
+            ui.ResetText();
+            ui.PrepareForTalkingOptions();
+
+            TalkingOptionsButtonGroupUI options = dialogueTowningUIState.talkingOptionsUI;
+            options.ClearButtons();
+            foreach(BaseDialogue dialogue in dialogues)
+            {
+                DialogueTalkingOption talkingoption = new DialogueTalkingOption(dialogue.DisplayName, dialogue);
+                options.AddButton(talkingoption);
+          
+            }
         }
 
         public void SetPortrait(string portrait)

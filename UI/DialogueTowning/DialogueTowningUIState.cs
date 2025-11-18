@@ -6,6 +6,7 @@ namespace Stellamod.UI.DialogueTowning
     {
         public DialogueTowningUI dialogueTownUI;
         public DialogueTowningButtonGroupUI dialogueTownButtonsUI;
+        public TalkingOptionsButtonGroupUI talkingOptionsUI;
         public DialogueTowningUIState() : base()
         {
 
@@ -18,6 +19,10 @@ namespace Stellamod.UI.DialogueTowning
 
             dialogueTownButtonsUI = new DialogueTowningButtonGroupUI();
             Append(dialogueTownButtonsUI);
+
+
+            talkingOptionsUI = new TalkingOptionsButtonGroupUI();
+            Append(talkingOptionsUI);
         }
     }
 }

@@ -79,6 +79,55 @@ BishinineStart: {
 		[PORTRAIT=Bishinine]
 		Prepare yourself!
 		'''
+	DisplayName: ""
+}
+
+RysaGotAnythingDialogue: {
+	Line0:
+		'''
+		[PORTRAIT=Rysa]
+		Hey dude!
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Rysa]
+		Um yeah, I have some items in my shop with some vanitites and whatnot, why don't you take a peak?
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Rysa]
+		I'm Rysa by the way, I just make some goofy little things in my shop.
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Rysa]
+		Nice to meet you.
+		'''
+	DisplayName: Got anything for me?
+}
+
+RysaLivingDialogue: {
+	Line0:
+		'''
+		[PORTRAIT=Rysa]
+		Yep, I work best out here honestly.
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Rysa]
+		I was thinking of attending the witch academy, but I need to make up some money to go.
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Rysa]
+		Speaking of money, I've got a shop that I've spent a lot of work organizing, so please get some stuff!
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Rysa]
+		It'd help me a lot.
+		'''
+	DisplayName: Living all out on your own?
 }
 
 BaseDialogue.Line0: ""

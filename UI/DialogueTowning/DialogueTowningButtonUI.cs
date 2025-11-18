@@ -21,8 +21,6 @@ namespace Stellamod.UI.DialogueTowning
             Text = new UIText("This is placeholder text", 0.5f, true);
             Text.Height.Pixels = 44;
             Text.Width.Pixels = 214;
-            Text.IsWrapped = true;
-            Text.Top.Pixels = 22;
             Append(Text);
 
             Width.Pixels = 214;

@@ -1,4 +1,5 @@
-﻿using Stellamod.UI.Dialogue;
+﻿using Stellamod.Helpers;
+using Stellamod.UI.Dialogue;
 using Stellamod.UI.DialogueTowning;
 using Terraria;
 using Terraria.ModLoader;
@@ -69,6 +70,15 @@ namespace Stellamod.Core.DialogueSystem
     {
         public int Type { get; internal set; }
         public string LocalizationCategory => "TownDialogue";
+
+        public string DisplayName
+        {
+            get
+            {
+                return LangText.Dialogue(this, "DisplayName");
+            }
+        }
+
         protected sealed override void Register()
         {
             ModTypeLookup<BaseDialogue>.Register(this);
@@ -93,6 +103,7 @@ namespace Stellamod.Core.DialogueSystem
         {
             base.SetupContent();
             SetStaticDefaults();
+            this.GetLocalization($"DisplayName", () => "");
             for (int i = 0; i < GetLength(); i++)
             {
                 this.GetLocalization($"Line{i}", () => "");

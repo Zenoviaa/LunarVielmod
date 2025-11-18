@@ -1589,8 +1589,19 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 FXUtil.ShakeCamera(NPC.position, 2000, 8);
                 FXUtil.PunchCamera(NPC.position, Vector2.UnitY, 8, 8, 8);
             }
+
+            if(Timer == prepTime - 5)
+            {
+                _squishScale = new Vector2(0.9f, 1.2f);
+                NPC.velocity.Y = -7;
+            }
             if (Timer >= prepTime && NPC.collideY)
             {
+                _squishScale = new Vector2(1.5f, 0.9f);
+                SoundStyle impact = AssetRegistry.Sounds.STARBOMBER.HeavyCrush;
+                SoundEngine.PlaySound(impact, NPC.position);
+                FXUtil.PunchCamera(NPC.position, Vector2.UnitY, 8, 8, 8);
+                var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
 
                 SwitchState(AIState.LegUpSpin_Loop);
             }
