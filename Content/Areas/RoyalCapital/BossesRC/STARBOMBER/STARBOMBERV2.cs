@@ -273,7 +273,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         private Color _outlineColor;
         private Color _gunOutlineColor;
         private Vector2 _shakeOffset;
-        private Vector2 _startFootPosition;
         private Vector2 _impactFootPosition;
         private Vector2 _squishScale;
         private Vector2[] _lightningPos;
@@ -543,6 +542,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             writer.Write(_contactDamage);
             writer.Write((byte)_legsState);
             writer.Write(_aggroed);
+            writer.WriteVector2(_impactFootPosition);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -552,6 +552,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _contactDamage = reader.ReadBoolean();
             _legsState = (LegsState)reader.ReadByte();
             _aggroed = reader.ReadBoolean();
+            _impactFootPosition = reader.ReadVector2();
         }
 
         public override void AI()
@@ -2065,7 +2066,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 Vector2 groundPoint = FindGround();
                 groundPoint += new Vector2(200, 0);
                 _impactFootPosition = groundPoint;
-
+                NPC.netUpdate = true;
 
                 Legs.rightLegData.startWalkPosition = Legs.rightLegData.footPosition;
             }
