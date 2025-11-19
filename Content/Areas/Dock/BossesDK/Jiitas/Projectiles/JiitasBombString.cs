@@ -110,7 +110,6 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas.Projectiles
                 DrawStrings(lightColor);
 
             //draw after image trail
-            spriteBatch.Restart(effect: _silhouetteShader.Effect);
             for (int i = 0; i < OldCenterPos.Length; i++)
             {
                 Vector2 centerPos = OldCenterPos[i];
@@ -119,10 +118,10 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas.Projectiles
                 Color drawColor = Color.Lerp(Color.Red, Color.Yellow, interpolant);
                 drawColor *= MathHelper.SmoothStep(1.0f, 0f, interpolant);
                 drawColor = drawColor.MultiplyRGB(lightColor);
+                drawColor.A = 0;
                 spriteBatch.Draw(texture, drawPos, null, drawColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, layerDepth: 0);
             }
 
-            spriteBatch.RestartDefaults();
             spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, layerDepth: 0);
             return false; ;
         }

@@ -173,3 +173,8 @@ SplitPaletteShaders: {
 	Label: Split Palette Shaders
 	Tooltip: ""
 }
+
+DisableBossNameHover: {
+	Label: Disable Boss Name Hover
+	Tooltip: ""
+}

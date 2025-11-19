@@ -129,7 +129,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
         public override void AI()
         {
             DrawOffset = new Vector2(0, 8);
-            NPC.spriteDirection = -NPC.direction;
+            NPC.spriteDirection = NPC.direction;
             if (NPC.AnyNPCs(ModContent.NPCType<Jiitas>()))
             {
                 NPC.Kill();

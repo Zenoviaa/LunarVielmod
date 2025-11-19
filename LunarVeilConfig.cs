@@ -112,12 +112,27 @@ namespace Stellamod
 
     }
 
+    public class DisableBossNameHover : GlobalNPC
+    {
+
+        public override void AI(NPC npc)
+        {
+            base.AI(npc);
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if(npc.boss && config.DisableBossNameHover)
+            {
+                npc.ShowNameOnHover = false;
+            }
+        }
+    }
+
     public class LunarVeilClientConfig : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
         [Header("Visual")] // Headers are like titles in a config. You only need to declare a header on the item it should appear over, not every item in the category.                                       // [Tooltip("$Some.Key")] // A tooltip is a description showed when you hover your mouse over the option. It can be used as a more in-depth explanation of the option. Like with Label, a specific key can be provided.
-
+        [DefaultValue(true)]
+        public bool DisableBossNameHover;
 
         [DefaultValue(true)]
         public bool BeamingLights;

@@ -247,8 +247,6 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             Vector2 drawOrigin = frame.Size() / 2f;
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            _silhouetteShader ??= new SilhouetteShader();
-            spriteBatch.Restart(effect: _silhouetteShader.Effect, blendState: BlendState.Additive);
             SpriteEffects effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             for (int i = 0; i < OldCenterPos.Length; i++)
             {
@@ -260,10 +258,10 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
                 Color drawColor = Color.Lerp(Color.Blue, Color.LightBlue, interpolant);
                 drawColor *= MathHelper.SmoothStep(1.0f, 0f, interpolant);
                 drawColor = drawColor.MultiplyRGB(lightColor);
+                drawColor.A = 0;
                 spriteBatch.Draw(texture, drawPos, frame, drawColor * PrimaryDrawAlpha, NPC.rotation, drawOrigin, NPC.scale, effects, layerDepth: 0);
             }
 
-            spriteBatch.RestartDefaults();
 
         }
 

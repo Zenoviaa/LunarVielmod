@@ -251,6 +251,10 @@ namespace Stellamod.UI.DialogueTowning
         {
             if (_animation != Animation.Open)
             {
+                DialogueTowningUI ui = dialogueTowningUIState.dialogueTownUI;
+                ui.ClearText();
+                ui.PrepareForTalking();
+                ClearOptions();
                 TakeSlot();
                 SwitchState(Animation.Open);
                 if (_userInterface.CurrentState == null)
