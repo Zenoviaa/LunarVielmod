@@ -99,8 +99,7 @@ namespace Stellamod.Core.Palettes
 
         public void UsePaletteShader(string palFile, bool isActive, ref float progress)
         {
-            RenderEdits edits = ModContent.GetInstance<RenderEdits>();
-            edits.UsePaletteShader(palFile, isActive, ref progress);
+            OldUsePaletteShader(palFile, isActive, ref progress);
         }
 
         private void OldUsePaletteShader(string palFile, bool isActive, ref float progress)
