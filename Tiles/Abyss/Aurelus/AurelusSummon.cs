@@ -2,11 +2,9 @@
 
 using Microsoft.Xna.Framework;
 using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
-using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
-using Stellamod.NPCs.Bosses.singularityFragment;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;

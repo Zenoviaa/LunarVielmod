@@ -23,7 +23,6 @@ using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
-using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.Projectiles;
@@ -31,7 +30,6 @@ using Stellamod.Projectiles.Ambient;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Projectiles.Swords;
-using Stellamod.UI.Dialogue;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -675,14 +673,16 @@ namespace Stellamod
         public override void OnEnterWorld()
         {
             Main.NewText(LangText.Misc("EnterWorld"));
-        }private bool _pressed;
+        }
+        private bool _pressed;
         public override void PostUpdate()
         {
             Keys keys = Keys.OemTilde;
             if (!_pressed)
             {
                 _pressed = Main.keyState.IsKeyDown(keys);
-            } else if (_pressed)
+            }
+            else if (_pressed)
             {
                 if (Main.keyState.IsKeyUp(keys))
                 {
@@ -692,7 +692,7 @@ namespace Stellamod
                 }
             }
 
-    
+
             /*
             if (Main.netMode != NetmodeID.Server)
             {
@@ -859,7 +859,7 @@ namespace Stellamod
                 heartDead = 0;
             }
 
-            if (NPC.AnyNPCs(ModContent.NPCType<SingularityFragment>()) ||
+            if (
                 NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
@@ -2690,22 +2690,6 @@ namespace Stellamod
 
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
-            if (ThornedBook)
-            {
-                if (npc.type != ModContent.NPCType<SingularityFragment>() && npc.type != ModContent.NPCType<Rek>() && npc.type != ModContent.NPCType<SupernovaFragment>())
-                {
-                    npc.SimpleStrikeNPC(hurtInfo.Damage * 5, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
-                }
-            }
-
-            if (Lovestruck)
-            {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<LovestruckP>(), 4, 1f, Player.whoAmI);
-                if (npc.type != ModContent.NPCType<SingularityFragment>() && npc.type != ModContent.NPCType<Rek>())
-                {
-                    npc.SimpleStrikeNPC(hurtInfo.Damage * 3, hurtInfo.HitDirection, crit: false, hurtInfo.Knockback);
-                }
-            }
 
 
             if (ADisease)

@@ -5,7 +5,6 @@ using ReLogic.Content;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;
-using Stellamod.NPCs.Bosses.singularityFragment;
 using Stellamod.Utilis;
 using System;
 using Terraria;
@@ -171,8 +170,7 @@ namespace Stellamod.NPCs.Abyssal
                 float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                 float offsetY = Main.rand.Next(-50, 50) * 0.01f;
                 int damage = Main.expertMode ? 40 : 43;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<VoidFlame>(), damage, 1, Main.myPlayer, 0, 0);
+      
             }
             if (NPC.ai[0] == 300)
             {
