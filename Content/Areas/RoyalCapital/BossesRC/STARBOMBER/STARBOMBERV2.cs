@@ -10,6 +10,7 @@ using Stellamod.Core.Camera;
 using Stellamod.Core.InverseKinematics;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
+using Stellamod.Core.TriggersSystem.Triggers;
 using Stellamod.Dusts;
 using Stellamod.Gores;
 using Stellamod.Helpers;
@@ -251,6 +252,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
     }
 
     public class STARBOMBERV2 : ScarletBoss,
+        INPCSpawnCondition
         IDrawOutlines
     {
         private float _gunHoldInterpolant;
@@ -578,10 +580,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             float i = (MathF.Sin(osc) + 0.5f) / 0.5f;
             StandHeight = MathHelper.Lerp(270, 300, i);
             MyTarget.AddBuff(ModContent.BuffType<BurnedWings>(), 2);
-            if (NPC.collideX)
-            {
-                Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
-            }
+
             switch (State)
             {
                 case AIState.Despawn:
@@ -822,6 +821,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
+        //    SwitchState(AIState.CrashJump_Start);
         }
 
         private void SpawnSteamParticleBottom()
@@ -1968,8 +1968,15 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
             NPC.rotation += NPC.velocity.X * 0.025f;
             NPC.velocity.X = MathHelper.Lerp(NPC.direction * 32, 0, Timer / 100f);
+
+            //This looks dumb but its to correct his position after he lands so he doesn't end up stuck in the ground.
+            //We substract 16 cause thats the length of a tile
+            if (NPC.collideY)
+            {
+                NPC.position.Y -= 16;
+            }
             NPC.noTileCollide = false;
-            NPC.noGravity = false;
+            NPC.noGravity = true;
             if (MathF.Abs(NPC.velocity.X) <= 1f && Timer >= 60)
             {
                 SwitchState(AIState.Idle);
@@ -2796,6 +2803,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             starFieldDrawColor.A = 0;
 
             starFieldDrawColor *= ExtraMath.Osc(0.5f, 1f);
+        }
+
+        public bool CanSpawn()
+        {
+            return !DownedBossSystem.downedSTARBoss && !NPC.AnyNPCs(Type);
         }
         #endregion
     }

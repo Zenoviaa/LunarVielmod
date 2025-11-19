@@ -23,6 +23,7 @@ namespace Stellamod.Core
         {
             base.SetDefaults();
             NPC.boss = true;
+
         }
 
 
