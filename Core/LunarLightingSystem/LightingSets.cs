@@ -11,9 +11,8 @@ namespace Stellamod.Core.LunarLightingSystem
         public static Color[] PointLitTiles = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
         public static Color[] GlowingTiles = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
         public static bool[] NoShadows = TileID.Sets.Factory.CreateBoolSet();
-        public override void PostSetupContent()
+        public override void SetupContent()
         {
-            base.PostSetupContent();
             EmissiveHeldItems = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
             PointLitTiles = TileID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
             GlowingTiles = TileID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
@@ -56,9 +55,9 @@ namespace Stellamod.Core.LunarLightingSystem
                 }
 
             }
-
-
+            base.SetupContent();
         }
+
 
         public static void RegisterTorchColor(int itemID)
         {
