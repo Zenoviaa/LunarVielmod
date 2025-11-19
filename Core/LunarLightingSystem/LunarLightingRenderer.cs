@@ -33,6 +33,12 @@ namespace Stellamod.Core.LunarLightingSystem
         public static Color SunColor;
         public static Vector3 AmbientLight;
         public const int Max_Ambient_Lights = 2000;
+
+        public static RenderTarget2D GetAccumulatedLightMap()
+        {
+            return _accumulatedLightRT;
+        }
+
         public override void Load()
         {
       

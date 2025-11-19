@@ -16,25 +16,46 @@ namespace Stellamod
         {
             base.OnModLoad();
 
+            On_Main.RenderBackground += NewRenderBackground;
+            On_Main.DrawBG += NewDrawBG;
             On_Main.DrawSurfaceBG += NoSurfaceBG;
             On_Main.DrawBackground += NoBackground;
-            On_Main.DrawToMap_Section += NoMapSection;
+         
             On_Main.DrawWaters += NoWaterDraw;
             On_Main.DrawTileInWater += NoTileWaterDraw;
             On_Main.DoDraw_Waterfalls += NoWaterfallDraw;
         }
 
+
         public override void OnModUnload()
         {
             base.OnModUnload();
+
+            On_Main.RenderBackground -= NewRenderBackground;
+            On_Main.DrawBG -= NewDrawBG;
             On_Main.DrawSurfaceBG -= NoSurfaceBG;
             On_Main.DrawBackground -= NoBackground;
-            On_Main.DrawToMap_Section -= NoMapSection;
+      
             On_Main.DrawWaters -= NoWaterDraw;
             On_Main.DrawTileInWater -= NoTileWaterDraw;
             On_Main.DoDraw_Waterfalls -= NoWaterfallDraw;
         }
+        private void NewRenderBackground(On_Main.orig_RenderBackground orig, Main self)
+        {
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (config.DisableBackgroundForReal)
+                return;
+            orig(self);
+        }
 
+
+        private void NewDrawBG(On_Main.orig_DrawBG orig, Main self)
+        {
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (config.DisableBackgroundForReal)
+                return;
+            orig(self);
+        }
 
         private void NoSurfaceBG(On_Main.orig_DrawSurfaceBG orig, Main self)
         {
@@ -74,16 +95,6 @@ namespace Stellamod
             if (config.DisableWaterRendering)
                 return;
             orig(self, isBackground);
-        }
-
-
-        private void NoMapSection(On_Main.orig_DrawToMap_Section orig, Main self, int secX, int secY)
-        {
-            var config = ModContent.GetInstance<LunarVeilClientConfig>();
-            if (config.DisableMinimapDraws)
-                return;
-
-            orig(self, secX, secY);
         }
     }
 
@@ -190,11 +201,12 @@ namespace Stellamod
         [Header("Experimental")]
         [DefaultValue(false)]
         public bool UseLunarLightingEngine;
-        [DefaultValue(false)]
-        public bool DisableBackgroundForReal;
 
         [DefaultValue(false)]
-        public bool DisableMinimapDraws;
+        public bool SplitPaletteShaders;
+
+        [DefaultValue(false)]
+        public bool DisableBackgroundForReal;
 
         [DefaultValue(false)]
         public bool DisableTileRendering;

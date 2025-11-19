@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Biomes;
+using Stellamod.Core.NewRenderPipeline;
 using Stellamod.Effects;
 using Stellamod.Helpers;
 using System;
@@ -98,6 +99,12 @@ namespace Stellamod.Core.Palettes
 
         public void UsePaletteShader(string palFile, bool isActive, ref float progress)
         {
+            RenderEdits edits = ModContent.GetInstance<RenderEdits>();
+            edits.UsePaletteShader(palFile, isActive, ref progress);
+        }
+
+        private void OldUsePaletteShader(string palFile, bool isActive, ref float progress)
+        {
             float speed = 0.05f;
             if (isActive)
             {
@@ -116,7 +123,7 @@ namespace Stellamod.Core.Palettes
             }
 
 
-            if(progress > 0)
+            if (progress > 0)
             {
                 ScreenShaderData screenShaderData = FilterManager[screenShaderName].GetShader();
                 screenShaderData.UseProgress(progress);

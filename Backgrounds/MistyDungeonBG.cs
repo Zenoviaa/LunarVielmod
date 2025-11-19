@@ -42,7 +42,7 @@ namespace Stellamod.Backgrounds
             midFogLayer.DrawOffset = Vector2.Zero;
 
 
-            /*
+            
             CustomBGLayer midFogLayer2 = new CustomBGLayer();
             midFogLayer2.SetTexture("Assets/Textures/Backgrounds/RainforestMiddleGradient");
             midFogLayer2.Parallax = 0.35f;
@@ -50,10 +50,10 @@ namespace Stellamod.Backgrounds
 
             MistShader midMistShader2 = new MistShader();
             midMistShader2.StartColor = Color.Transparent;
-            midMistShader2.EndColor = Color.Blue * 0.25f;
+            midMistShader2.EndColor = Color.Blue * 0.5f;
             midFogLayer2.Shader = midMistShader2;
             AddLayer(midFogLayer2);
-            */
+            
 
 
             CustomBGLayer frontLayer = new CustomBGLayer();

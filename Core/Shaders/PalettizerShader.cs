@@ -1,14 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.Assets;
-using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace Stellamod.Core.Shaders
 {
@@ -26,14 +16,23 @@ namespace Stellamod.Core.Shaders
         }
 
 
-        public Asset<Texture2D> PaletteTexture
+
+        public Texture3D PaletteTexture
         {
             set
             {
-                Data.UseImage1(value);
+                Effect.Parameters["ColorSpectrumTexture"].SetValue(value);
             }
         }
-       
+        public float Progress
+        {
+            set
+            {
+                Effect.Parameters["uProgress"].SetValue(value);
+            }
+        }
+
+
         public override void SetDefaults()
         {
             base.SetDefaults();

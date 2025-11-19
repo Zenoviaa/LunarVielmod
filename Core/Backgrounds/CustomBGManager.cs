@@ -2,9 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Effects;
 using Stellamod.Core.LunarLightingSystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Backgrounds
@@ -54,18 +56,30 @@ namespace Stellamod.Core.Backgrounds
         {
             base.OnModLoad();
             On_Main.DoDraw_WallsTilesNPCs += DrawBehindWalls;
+            On_OverlayManager.Draw += DrawBackgrounds;
             Backgrounds = ModContent.GetContent<CustomBG>().ToList();
         }
+
 
         public override void OnModUnload()
         {
             base.OnModUnload();        
             On_Main.DoDraw_WallsTilesNPCs -= DrawBehindWalls;
+            On_OverlayManager.Draw -= DrawBackgrounds;
+        }
+        private void DrawBackgrounds(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
+        {
+            if(layer == RenderLayers.Background)
+            {
+                DrawLoop();
+            }
+            orig(self, spriteBatch, layer, beginSpriteBatch);
+
         }
 
         private void DrawBehindWalls(On_Main.orig_DoDraw_WallsTilesNPCs orig, Main self)
         {
-            DrawLoop();
+           // DrawLoop();
             orig(self);
         }
 
@@ -159,7 +173,7 @@ namespace Stellamod.Core.Backgrounds
                 bgLayer.Texture.Value,
                 drawPosition,
                 new Rectangle(parallaxX, 0, width, height),
-                drawColor.MultiplyRGB(bg.DrawColor),
+                drawColor.MultiplyRGB(bg.DrawColor) * bg.Alpha,
                 0f,
                 default,
                 scale: drawScale,

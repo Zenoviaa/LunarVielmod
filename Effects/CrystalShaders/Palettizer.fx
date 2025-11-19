@@ -20,56 +20,30 @@ float uSaturation;
 float4 uSourceRect;
 float2 uZoom;
 
-
-float colorDistance2(float3 a, float3 b)
+Texture3D ColorSpectrumTexture;
+sampler3D ColorSpectrumTextureSampler = sampler_state
 {
-    float ar = abs(b.r - a.r);
-    float ag = abs(b.g - a.g);
-    float ab = abs(b.b - a.b);
-    float d = ar + ag + ab;
-    return d;
-}
-
-
-float3 calculateColor(float3 color)
-{
-
-    float3 selectedColor = tex2D(uImage1, float2(0.0, 0.0));
-    float dist = colorDistance2(color, selectedColor);
-    float currentDist;
-
-    // For loop with the same loops than the color palette.
-    const int maxColors = 32;
-    for (int i = 1; i < maxColors; i++)
-    {
-        //Non array version to do this, pretty sure this would be slower?
-        //There's more instructions than the array so there's no shot it's faster
-      
-        float2 coords = float2(i / maxColors, 0.0);
-        float3 sampleColor = tex2D(uImage1, coords);
-        currentDist = colorDistance2(color, sampleColor);
-        
-        //Branchless way to do this
-        //We want to avoid using if-statements in shaders if possible, as creating branches GREATLY slows them down
-        //We can evaluate a check like this to a 0 or 1, and since only 1 can be true we can invert it simply :) 
-        float a = currentDist < dist;
-        float b = 1.0 - a;
-        dist = a * currentDist + b * dist;
-        selectedColor = a * sampleColor + b * selectedColor;
-    }
-    
-    float3 finalColor = lerp(color, selectedColor, uProgress);
-    return finalColor;
-}
-
+    Texture = <ColorSpectrumTexture>;
+    magfilter = POINT;
+    minfilter = POINT;
+    mipfilter = POINT;
+    AddressU = clamp;
+    AddressV = clamp;
+};
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 {
-    float4 color = tex2D(uImage0, coords);
-    float3 newColor = calculateColor(color.rgb);
-    color.rgb = newColor;
-    return color;
+    float4 baseColor = tex2D(uImage0, coords);
+   
+    //The colors bug out if it ever reaches 1, so we need to just make it barely under
+    //Smh this is stupid, so the bug was with the texture sampling.
+    baseColor.rgb *= 0.99;
+    
+    float4 colorToMapTo = tex3D(ColorSpectrumTextureSampler, baseColor.rgb);
+    baseColor.rgb = lerp(baseColor.rgb, colorToMapTo.rgb, uProgress);
+    return baseColor;
 }
+
 
 technique SpriteDrawing
 {

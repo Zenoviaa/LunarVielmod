@@ -168,3 +168,8 @@ DisableBackgroundForReal: {
 	Label: Disable Background For Real
 	Tooltip: ""
 }
+
+SplitPaletteShaders: {
+	Label: Split Palette Shaders
+	Tooltip: ""
+}
