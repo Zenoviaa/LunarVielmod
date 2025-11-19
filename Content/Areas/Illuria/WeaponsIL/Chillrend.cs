@@ -264,7 +264,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 
     public class ChillrendBlizzardProj : ModProjectile
     {
-        public override string Texture => TextureRegistry.VoxTexture3;
+        public override string Texture => TextureRegistry.EmptyTexture;
         private float Timer
         {
             get => Projectile.ai[0];

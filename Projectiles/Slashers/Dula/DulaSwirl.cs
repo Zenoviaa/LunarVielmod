@@ -10,7 +10,7 @@ namespace Stellamod.Projectiles.Slashers.Dula
 {
     public class DulaSwirl : ModProjectile
     {
-        public override string Texture => TextureRegistry.VoxTexture4;
+        public override string Texture => TextureRegistry.EmptyTexture;
         private float Timer
         {
             get => Projectile.ai[0];

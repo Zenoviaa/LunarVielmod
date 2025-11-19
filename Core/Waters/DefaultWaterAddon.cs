@@ -11,9 +11,7 @@ namespace Stellamod.Core.Waters
     {
         public static bool Biomes => !Main.LocalPlayer.ZoneSnow
             && !Main.LocalPlayer.ZoneUnderworldHeight
-            && !Main.LocalPlayer.ZoneBeach
             && !Main.LocalPlayer.ZoneCrimson
-            && !Main.LocalPlayer.ZoneCorrupt
             && !Main.LocalPlayer.ZoneShimmer
             && ModContent.GetInstance<LunarVeilClientConfig>().LiquidsToggle;
 
