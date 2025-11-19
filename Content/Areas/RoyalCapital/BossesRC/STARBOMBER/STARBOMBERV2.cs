@@ -822,8 +822,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
 
             SwitchState(_patternManager.NextPattern());
-            //SwitchState(AIState.MachineGun_Start);
-
         }
 
         private void SpawnSteamParticleBottom()
@@ -1625,11 +1623,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
 
             float spinTime = 150;
-            float spinSpeed = 35;
+            float spinSpeed = 30;
             float targetSpinVelocity = NPC.direction * spinSpeed;
 
             SpinSpeed = MathHelper.Lerp(3, 0.2f, Timer / spinTime);
             NPC.rotation = NPC.velocity.X * 0.015f;
+            NPC.noTileCollide = false;
+            NPC.noGravity = false;
             if (Timer == 25)
             {
                 SoundStyle spin = AssetRegistry.Sounds.STARBOMBER.Ommove1;
@@ -1969,7 +1969,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             NPC.rotation += NPC.velocity.X * 0.025f;
             NPC.velocity.X = MathHelper.Lerp(NPC.direction * 32, 0, Timer / 100f);
             NPC.noTileCollide = false;
-
+            NPC.noGravity = false;
             if (MathF.Abs(NPC.velocity.X) <= 1f && Timer >= 60)
             {
                 SwitchState(AIState.Idle);

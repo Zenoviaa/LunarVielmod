@@ -4682,13 +4682,14 @@ namespace Stellamod.WorldG
                     Point Loc = new Point(smx + 20, smyy + 10);
                     rectangle.Location = Loc;
                     NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
-                    Structurizer.ProtectStructure(Loc, "Struct/Alcad/RoyalCapital3");
+                    Structurizer.ProtectStructure(Loc, "Structures/RoyalCapital");
                     var tileBlend = new int[]
                     {
                         TileID.RubyGemspark
                     };
 
-                    int[] ChestIndexs = Structurizer.ReadStruct(Loc, "Struct/Alcad/RoyalCapital3", tileBlend);
+                    int[] ChestIndexs = Structurizer.ReadStruct(Loc, "Structures/RoyalCapital", tileBlend);
+
                     foreach (int chestIndex in ChestIndexs)
                     {
                         var chest = Main.chest[chestIndex];
