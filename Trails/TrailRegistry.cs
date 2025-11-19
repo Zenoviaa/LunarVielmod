@@ -51,8 +51,6 @@ ModContent.Request<Texture2D>($"{BasePath}Beamlight");
 
         public static Asset<Texture2D> Dashtrail => ModContent.Request<Texture2D>(BasePath + "DashTrail");
 
-        public static Asset<Texture2D> SlicingTrail => ModContent.Request<Texture2D>(BasePath + "Slice");
-
         public static Asset<Texture2D> STARTRAIL => ModContent.Request<Texture2D>(BasePath + "BeamTrail");
         public static Asset<Texture2D> STARTRAIL2 => ModContent.Request<Texture2D>(BasePath + "Beamlight");
         public static MiscShaderData GenericLaserVertexShader => GameShaders.Misc["VampKnives:GenericLaserShader"];
