@@ -109,7 +109,7 @@ namespace Stellamod.UI.DialogueTowning
             string text = string.Empty;
             string portrait = "FenixPortrait";
             float timeBetweenTexts = 0.05f;
-            SoundStyle? talkingSound = null;
+            SoundStyle? talkingSound = SoundID.Item1;
             quest.QuestIntroDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
             dialogueTowningUIState.dialogueTownUI.ResetText();
             dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
@@ -124,7 +124,7 @@ namespace Stellamod.UI.DialogueTowning
             ui.PrepareForTalking();
             _talkWorld = Main.LocalPlayer.position;
             OpenUI();
-            SoundStyle? talkingSound = null;
+            SoundStyle? talkingSound = SoundID.Item1;
             dialogueTowningUIState.dialogueTownUI.ResetText();
             dialogueTowningUIState.dialogueTownUI.LocalizedText = dialogue.GetLine(lineNumber);
             dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
