@@ -45,7 +45,7 @@ ModContent.Request<Texture2D>($"{BasePath}Beamlight");
         public static Asset<Texture2D> DottedTrailOutline => ModContent.Request<Texture2D>(BasePath + "DottedTrailOutline");
         public static Asset<Texture2D> DreadTrail => ModContent.Request<Texture2D>(BasePath + "DreadTrail");
         public static Asset<Texture2D> Clouds3 => ModContent.Request<Texture2D>(BasePath + "Clouds3");
-        public static Asset<Texture2D> BeamTrail => ModContent.Request<Texture2D>(BasePath + "Beam");
+        public static Asset<Texture2D> BeamTrail => ModContent.Request<Texture2D>(BasePath + "BeamTrail");
         public static Asset<Texture2D> BeamTrail2 => ModContent.Request<Texture2D>(BasePath + "BeamTrail");
         public static Asset<Texture2D> BulbTrail => ModContent.Request<Texture2D>(BasePath + "BulbTrail");
 
