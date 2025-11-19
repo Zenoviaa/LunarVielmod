@@ -252,7 +252,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
     }
 
     public class STARBOMBERV2 : ScarletBoss,
-        INPCSpawnCondition
+        INPCSpawnCondition,
         IDrawOutlines
     {
         private float _gunHoldInterpolant;
