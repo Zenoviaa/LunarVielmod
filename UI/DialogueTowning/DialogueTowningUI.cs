@@ -3,32 +3,32 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 
 namespace Stellamod.UI.DialogueTowning
 {
     public class TalkingOptionsButtonGroupUI : UIPanel
     {
-        private List<TalkingOptionButtonUI> _buttons;
-        private UIGrid _buttonsGrid;
+        private int _index;
+        private TalkingOptionButtonUI[] _buttons;
         public int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2) + 80;
         public int RelativeTop => Main.screenHeight - 300;
         public Vector2 DrawPos => new Vector2(Left.Pixels, Top.Pixels);
 
-
+        public const int Max_Dialogue_Options = 4;
         public TalkingOptionsButtonGroupUI()
         {
-            _buttons = new List<TalkingOptionButtonUI>();
+            _buttons = new TalkingOptionButtonUI[Max_Dialogue_Options];
+            for (int i = 0; i < _buttons.Length; i++)
+            {
+                _buttons[i] = new TalkingOptionButtonUI();
+            }
         }
         public Vector2 Offset { get; set; }
         public float Alpha { get; set; }
@@ -43,29 +43,23 @@ namespace Stellamod.UI.DialogueTowning
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
-            _buttonsGrid = new UIGrid();
-            _buttonsGrid.Width.Set(0, 1f);
-            _buttonsGrid.Height.Set(0, 1f);
-            _buttonsGrid.HAlign = 0.5f;
-            _buttonsGrid.ListPadding = 2f;
-            Append(_buttonsGrid);
+            for (int i = 0; i < _buttons.Length; i++)
+            {
+                var btn = _buttons[i];
+                Append(_buttons[i]);
+            }
         }
 
         public void ClearButtons()
         {
-            foreach(var btn in _buttons)
-            {
-                RemoveChild(btn);
-            }
+            _index = 0;
 
-            _buttons.Clear();
         }
 
-        public void AddButton(DialogueTalkingOption dialogueTalkingOption)
+        public void AddButton(ITalkingOption talkingOption)
         {
-            TalkingOptionButtonUI button = new TalkingOptionButtonUI(dialogueTalkingOption);
-            _buttons.Add(button);
-            Append(button);
+            _buttons[_index].SetTalkingOption(talkingOption);
+            _index++;
         }
 
 
@@ -77,32 +71,32 @@ namespace Stellamod.UI.DialogueTowning
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
-            for(int y = 0; y < _buttons.Count; y++)
+            for (int y = 0; y < _buttons.Length; y++)
             {
                 var btn = _buttons[y];
                 btn.Top.Pixels = y * 48;
+                btn.Alpha = y < _index ? 1 : 0;
             }
-            foreach (var btn in _buttons)
-            {
-                btn.Alpha = Alpha;
-            }
+
             Alpha = 1f;
         }
     }
     public class TalkingOptionButtonUI : UIPanel
     {
+        private float _alpha;
         private float _timer;
-        private readonly ITalkingOption _talkingOption;
-        public TalkingOptionButtonUI(ITalkingOption talkingOption)
+        private ITalkingOption _talkingOption;
+        public TalkingOptionButtonUI()
         {
-            _talkingOption = talkingOption;
             Text = new UIText("This is placeholder text", 0.5f, true);
-            Text.SetText(talkingOption.GetDisplayName());
         }
 
         public override void OnInitialize()
         {
             base.OnInitialize();
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
+
             Width.Pixels = 214;
             Height.Pixels = 44;
 
@@ -113,16 +107,22 @@ namespace Stellamod.UI.DialogueTowning
             Text.Top.Pixels = 0;
             Append(Text);
 
- 
-   
             OnLeftClick += OnButtonClick;
             OnMouseOver += OnMouseHover;
         }
 
+        public void SetTalkingOption(ITalkingOption talkingOption)
+        {
+            _talkingOption = talkingOption;
+            Text.SetText(talkingOption.GetDisplayName());
+        }
         public UIText Text { get; set; }
         public float Alpha { get; set; }
         private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
+            if (Alpha == 0)
+                return;
+
             SoundStyle soundStyle = SoundID.MenuTick;
             SoundEngine.PlaySound(soundStyle);
             _talkingOption?.Talk();
@@ -137,12 +137,12 @@ namespace Stellamod.UI.DialogueTowning
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
- 
+            _alpha = MathHelper.Lerp(_alpha, Alpha, 0.1f);
+            Text.TextColor = Color.White * _alpha;
+            Text.ShadowColor = Color.Black * _alpha;
 
- 
-            BackgroundColor = Color.Transparent;
-            BorderColor = Color.Transparent;
-       
+
+  
             bool contains = ContainsPoint(Main.MouseScreen);
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
@@ -152,10 +152,11 @@ namespace Stellamod.UI.DialogueTowning
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-  
+
             base.DrawSelf(spriteBatch);
             Color drawColor = Color.White.MultiplyRGB(Color.DarkGray);
             drawColor *= 0.2f;
+  
             if (IsMouseHovering)
             {
                 float progress = _timer / 0.12f;
@@ -165,12 +166,12 @@ namespace Stellamod.UI.DialogueTowning
             CalculatedStyle dimensions = GetDimensions();
             Point point = new Point((int)dimensions.X, (int)dimensions.Y);
             Texture2D textureToDraw = ModContent.Request<Texture2D>($"{DialogueTowningUISystem.RootTexturePath}DialogueBoxButton").Value;
-
+            drawColor *= _alpha;
 
             spriteBatch.Draw(textureToDraw, point.ToVector2(), null,
                 drawColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
             _talkingOption?.Show(spriteBatch);
-         
+
         }
     }
 
@@ -311,7 +312,17 @@ namespace Stellamod.UI.DialogueTowning
 
         public void PrepareForTalkingOptions()
         {
+            if (_state == DialogueBoxState.Shrinking || _state == DialogueBoxState.WaitingForTalk)
+                return;
 
+            SwitchState(DialogueBoxState.Shrinking);
+        }
+        public void PrepareForTalking()
+        {
+            if (_state == DialogueBoxState.Speaking || _state == DialogueBoxState.Expanding)
+                return;
+
+            SwitchState(DialogueBoxState.Expanding);
         }
         private void SwitchState(DialogueBoxState state)
         {
@@ -389,8 +400,19 @@ namespace Stellamod.UI.DialogueTowning
             //Ok so basically we're gonna draw a part of the texture to get a cool effect
             //For now let's test how this looks
             //Might do something with a render target actually
-            drawScale.X *= _scale;
-            spriteBatch.Draw(texture, drawPos, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            int openWidth = 150;
+            Rectangle openRectangle = new Rectangle(0, 0, openWidth, texture.Height);
+
+            int closeWidth = (int)((texture.Width - openWidth) * _scale);
+            closeWidth += 200;
+            Rectangle closeRectangle = new Rectangle(texture.Width - closeWidth, 0, closeWidth, texture.Height);
+
+
+            Vector2 edgeDrawPos = drawPos;
+            edgeDrawPos.X += 16;
+            spriteBatch.Draw(texture, edgeDrawPos, closeRectangle, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos, openRectangle, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+           
         }
 
         private void DrawPortrait(SpriteBatch spriteBatch)
@@ -449,6 +471,11 @@ namespace Stellamod.UI.DialogueTowning
         {
             _text.SetText(string.Empty);
             _textIndex = 0;
+        }
+        public void ClearText()
+        {
+            _text.SetText(string.Empty);
+          //  _textIndex = 200;
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

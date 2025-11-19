@@ -22,9 +22,19 @@ namespace Stellamod.Core.DialogueSystem
                 {
                     _dialogueActor.dialogue.OnComplete();
                     _hasCompleted = true;
-                    _dialogueActor = null;
+
                     DialogueTowningUISystem uiSystem = ModContent.GetInstance<DialogueTowningUISystem>();
-                    uiSystem.CloseUI();
+                    if (_dialogueActor.dialogue.CloseOnComplete)
+                    {
+                        uiSystem.CloseUI();
+                    }
+                    else
+                    {
+                        uiSystem.RefreshTalkOptions();
+                    }
+
+                        _dialogueActor = null;
+           
                 }
                 else
                 {
@@ -41,6 +51,8 @@ namespace Stellamod.Core.DialogueSystem
             dialogue.OnStart();
             _dialogueActor = new DialogueActor(dialogue);
             _dialogueActor.ProgressLine();
+            DialogueTowningUISystem uiSystem = ModContent.GetInstance<DialogueTowningUISystem>();
+            uiSystem.ClearOptions();
 
         }
     }
@@ -70,7 +82,7 @@ namespace Stellamod.Core.DialogueSystem
     {
         public int Type { get; internal set; }
         public string LocalizationCategory => "TownDialogue";
-
+        public bool CloseOnComplete { get; set; }
         public string DisplayName
         {
             get

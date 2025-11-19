@@ -17,6 +17,7 @@ namespace Stellamod.UI.DialogueTowning
     [Autoload(Side = ModSide.Client)]
     public class DialogueTowningUISystem : BaseUISystem
     {
+        private BaseDialogue[] _oldDialogues;
         private float _dialogueTimer;
         public enum Animation
         {
@@ -118,6 +119,9 @@ namespace Stellamod.UI.DialogueTowning
 
         public void ChatWith(BaseDialogue dialogue, int lineNumber)
         {
+            DialogueTowningUI ui = dialogueTowningUIState.dialogueTownUI;
+            ui.ClearText();
+            ui.PrepareForTalking();
             _talkWorld = Main.LocalPlayer.position;
             OpenUI();
             SoundStyle? talkingSound = null;
@@ -146,7 +150,7 @@ namespace Stellamod.UI.DialogueTowning
         public void OpenTalkOptions(BaseDialogue[] dialogues)
         {
             DialogueTowningUI ui = dialogueTowningUIState.dialogueTownUI;
-            ui.ResetText();
+            ui.ClearText();
             ui.PrepareForTalkingOptions();
 
             TalkingOptionsButtonGroupUI options = dialogueTowningUIState.talkingOptionsUI;
@@ -157,6 +161,17 @@ namespace Stellamod.UI.DialogueTowning
                 options.AddButton(talkingoption);
           
             }
+            _oldDialogues = dialogues;
+        }
+
+        public void RefreshTalkOptions()
+        {
+            OpenTalkOptions(_oldDialogues);
+        }
+        public void ClearOptions()
+        {
+            TalkingOptionsButtonGroupUI options = dialogueTowningUIState.talkingOptionsUI;
+            options.ClearButtons();
         }
 
         public void SetPortrait(string portrait)

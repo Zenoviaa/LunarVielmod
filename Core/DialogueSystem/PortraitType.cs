@@ -68,6 +68,7 @@ namespace Stellamod.Core.DialogueSystem
         Verlia,
         Zui,
         Rysa,
-        Gilatine
+        Gilatine,
+        Jiitas
     }
 }

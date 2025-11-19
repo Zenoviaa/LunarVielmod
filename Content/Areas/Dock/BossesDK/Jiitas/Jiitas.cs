@@ -567,6 +567,11 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
                     SwitchState(ActionState.Death);
             }
         }
+        public override void OnKill()
+        {
+            base.OnKill();
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedJiitasBoss, -1);
+        }
     }
 }
 

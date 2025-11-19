@@ -50,7 +50,7 @@ namespace Stellamod.Helpers
         public static bool downedSkullrunnerBoss = false;
         public static bool downedMinervaBoss = false;
         public static bool downedRavagerBoss = false;
-
+        public static bool downedJiitasBoss = false;
         public static void ResetFlags()
         {
             downedVeriBoss = false;
@@ -91,6 +91,7 @@ namespace Stellamod.Helpers
             downedSkullrunnerBoss = false;
             downedMinervaBoss = false;
             downedRavagerBoss = false;
+            downedJiitasBoss = false;
         }
 
         public override void ClearWorld()
@@ -138,6 +139,7 @@ namespace Stellamod.Helpers
             tag["downedRavagerBoss"] = downedRavagerBoss;
             tag["downedSkullrunnerBoss"] = downedSkullrunnerBoss;
             tag["downedMinervaBoss"] = downedMinervaBoss;
+            tag["downedJiitasBoss"] = downedJiitasBoss;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -180,6 +182,7 @@ namespace Stellamod.Helpers
             downedRavagerBoss = tag.GetBool("downedRavagerBoss");
             downedMinervaBoss = tag.GetBool("downedMinervaBoss");
             downedSkullrunnerBoss = tag.GetBool("downedSkullrunnerBoss");
+            downedJiitasBoss = tag.GetBool("downedJiitasBoss");
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -239,6 +242,7 @@ namespace Stellamod.Helpers
                 [1] = downedRavagerBoss,
                 [2] = downedMinervaBoss,
                 [3] = downedSkullrunnerBoss,
+                [4] = downedJiitasBoss
             });
         }
 
@@ -290,6 +294,7 @@ namespace Stellamod.Helpers
             downedRavagerBoss = flags[1];
             downedMinervaBoss = flags[2];
             downedSkullrunnerBoss = flags[3];
+            downedJiitasBoss = flags[4];
         }
     }
 }

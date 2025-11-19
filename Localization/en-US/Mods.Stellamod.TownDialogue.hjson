@@ -130,4 +130,34 @@ RysaLivingDialogue: {
 	DisplayName: Living all out on your own?
 }
 
+JiitasStartDialogue: {
+	Line0:
+		'''
+		[PORTRAIT=Jiitas]
+		Wait...
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Jiitas]
+		NONONONo.
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Jiitas]
+		You don’t want to worship Sirestias, our great and eldest???? 
+		That cannot stand, not under my rule...
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Jiitas]
+		You scareeeee me.
+		'''
+	Line4:
+		'''
+		[PORTRAIT=Jiitas]
+		I’m gonna get ya.
+		'''
+	DisplayName: I don't want to worship...
+}
+
 BaseDialogue.Line0: ""
