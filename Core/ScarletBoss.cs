@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.SpecialTiles.EffectTiles;
 using Stellamod.Core.HealthbarSystem;
 using Stellamod.Core.TitleSystem;
+using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -11,6 +13,7 @@ namespace Stellamod.Core
 {
     public abstract class ScarletBoss : ModNPC
     {
+        private Vector2 _arenaCenter;
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {
             DifficultyChanges.ApplyDifficultyAndScaling(NPC, numPlayers);
@@ -21,7 +24,21 @@ namespace Stellamod.Core
             base.SetDefaults();
             NPC.boss = true;
         }
-   
+
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            
+            base.SendExtraAI(writer);
+            writer.WriteVector2(_arenaCenter);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _arenaCenter = reader.ReadVector2();
+        }
+
         public Player MyTarget => Main.player[NPC.target];
         public float FacingDirectionToTarget => MyTarget.Center.X < NPC.Center.X ? -1 : 1;
         public int TargetDirection => (int)FacingDirectionToTarget;
@@ -37,6 +54,13 @@ namespace Stellamod.Core
         public override void AI()
         {
             base.AI();
+            if(_arenaCenter == Vector2.Zero)
+            {
+                _arenaCenter = NPC.Center;
+                NPC.netUpdate = true;
+            }
+
+            BarrierBlockSystem.BossArenaCenter = _arenaCenter;
             if (Main.netMode == NetmodeID.Server)
                 return;
 

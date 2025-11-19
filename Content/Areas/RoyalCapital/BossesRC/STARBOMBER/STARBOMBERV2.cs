@@ -1209,7 +1209,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             SpinSpeed = 0.5f;
             _spinTelegraphLerp *= 0.5f;
 
-            NPC.noTileCollide = true;
+            NPC.noTileCollide = false;
             NPC.noGravity = true;
             float targetRotation = NPC.velocity.X * 0.05f;
             NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRotation, 0.03f);
@@ -1968,7 +1968,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
             NPC.rotation += NPC.velocity.X * 0.025f;
             NPC.velocity.X = MathHelper.Lerp(NPC.direction * 32, 0, Timer / 100f);
-
+            NPC.noTileCollide = false;
 
             if (MathF.Abs(NPC.velocity.X) <= 1f && Timer >= 60)
             {

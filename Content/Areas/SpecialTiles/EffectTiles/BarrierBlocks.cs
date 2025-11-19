@@ -2,8 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Core.Foggy;
-using Stellamod.Helpers;
+using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Shaders;
+using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -14,45 +16,86 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
 {
     public class BarrierBlockSystem : ModSystem
     {
-
-        private bool _hasLockedPlayerIn;
-        public override void PostUpdateEverything()
+        public override void OnModLoad()
         {
-            base.PostUpdateEverything();
+            base.OnModLoad();
+            On_Player.DryCollision += PreDryCollision;
+        }
 
+        public override void OnModUnload()
+        {
+            base.OnModUnload();
+            On_Player.DryCollision -= PreDryCollision;
+        }
+        public static Vector2 BossArenaCenter;
+
+        private bool GetNearestBarrierBlock(Player player, out Vector2 worldPoint)
+        {
+            Vector2 cameraCenterWorld = player.Center;
+            Vector2 cameraTopLeft = cameraCenterWorld;// - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+            Vector2 cameraBottomRight = cameraCenterWorld; // + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+
+            const float range = 64;
+            cameraTopLeft -= new Vector2(range);
+            cameraBottomRight += new Vector2(range);
+
+            Point topLeftTile = cameraTopLeft.ToTileCoordinates();
+            Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
+
+            Vector2 nearest = Vector2.Zero;
+            float nearestDistance = 9999f;
+            bool success = false;
+            for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
+            {
+                for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
+                {
+                    if (!WorldGen.InWorld(x, y))
+                        continue;
+                    Tile tile = Main.tile[x, y];
+                    if (tile.TileType != ModContent.TileType<BossBarrierBlock>())
+                        continue;
+
+                    Point tilePoint = new Point(x, y);
+                    Vector2 position = tilePoint.ToWorldCoordinates();
+                    float distToPoint = Vector2.Distance(player.Center, position);
+                    if(distToPoint < nearestDistance)
+                    {
+                        nearest = position;
+                        nearestDistance = distToPoint;
+                        success = true;
+                    }
+                }
+            }
+            
+            worldPoint = nearest;
+            return success;
+        }
+        private void PreDryCollision(On_Player.orig_DryCollision orig, Player self, bool fallThrough, bool ignorePlats)
+        {
+            int barrierBlockType = ModContent.TileType<BossBarrierBlock>();
             Player player = Main.LocalPlayer;
-            //This should only run on the client :P
-            if (!_hasLockedPlayerIn && NPC.AnyDanger())
+            if(NPC.AnyDanger() && GetNearestBarrierBlock(player, out Vector2 worldPoint))
             {
-                //Raycast to see if straight shot to boss
-                NPC boss = null;
-                foreach (var npc in Main.ActiveNPCs)
+                Vector2 tileDirectionToBoss = (BossArenaCenter - worldPoint).SafeNormalize(Vector2.Zero);
+                Vector2 tileDirectionToPlayer = (player.Center - worldPoint).SafeNormalize(Vector2.Zero);
+                //Need to check if the vectors are within 180 degrees of each other, if not then well you can walk through
+                float dp = Vector2.Dot(tileDirectionToBoss, tileDirectionToPlayer);
+                if(dp < 0)
                 {
-                    if (npc.boss)
-                    {
-                        boss = npc;
-                    }
-                }
-
-                if (boss != null)
-                {
-                    //Raycast to this boss            
-                    if (Collision.CanHitLine(player.position, 1, 1, boss.position, 1, 1))
-                    {
-                        _hasLockedPlayerIn = true;
-                    }
+                    Main.tileSolid[barrierBlockType] = false;
                 }
             }
-            if (player.dead || !NPC.AnyDanger())
-            {
-                _hasLockedPlayerIn = false;
-            }
-
-            Main.tileSolid[ModContent.TileType<BossBarrierBlock>()] = _hasLockedPlayerIn;
+            orig(self, fallThrough, ignorePlats);
+        }
+        public override void PostUpdatePlayers()
+        {
+            base.PostUpdatePlayers();
+            Main.tileSolid[ModContent.TileType<BossBarrierBlock>()] = NPC.AnyDanger();
             Main.tileSolid[ModContent.TileType<StarrVeriplantBarrierBlock>()] = !DownedBossSystem.downedStoneGolemBoss;
             Main.tileSolid[ModContent.TileType<STARBOMBERBarrierBlock>()] = !DownedBossSystem.downedSTARBoss;
         }
     }
+
 
     public abstract class BaseBarrierBlock : ModTile
     {
