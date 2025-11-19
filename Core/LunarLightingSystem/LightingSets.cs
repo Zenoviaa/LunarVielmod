@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.SpecialTiles.EffectTiles;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,12 +10,17 @@ namespace Stellamod.Core.LunarLightingSystem
         public static Color[] EmissiveHeldItems = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
         public static Color[] PointLitTiles = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
         public static Color[] GlowingTiles = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
-        public override void SetupContent()
+        public static bool[] NoShadows = TileID.Sets.Factory.CreateBoolSet();
+        public override void PostSetupContent()
         {
+            base.PostSetupContent();
             EmissiveHeldItems = ItemID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
             PointLitTiles = TileID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
             GlowingTiles = TileID.Sets.Factory.CreateCustomSet<Color>(Color.Black * 0);
-
+            NoShadows = TileID.Sets.Factory.CreateBoolSet();
+            NoShadows[ModContent.TileType<BossBarrierBlock>()] = true;
+            NoShadows[ModContent.TileType<STARBOMBERBarrierBlock>()] = true;
+            NoShadows[ModContent.TileType<StarrVeriplantBarrierBlock>()] = true;
 
             RegisterTorchColor(ItemID.Torch);
             RegisterTorchColor(ItemID.BlueTorch);
@@ -40,9 +46,9 @@ namespace Stellamod.Core.LunarLightingSystem
             RegisterTorchColor(ItemID.JungleTorch);
             RegisterTorchColor(ItemID.MushroomTorch);
             RegisterTorchColor(ItemID.ShimmerTorch);
-         
+
             GlowingTiles[TileID.MushroomGrass] = Color.LightBlue;
-            for(int i = 0; i < TileID.Sets.Torch.Length; i++)
+            for (int i = 0; i < TileID.Sets.Torch.Length; i++)
             {
                 if (TileID.Sets.Torch[i])
                 {
@@ -52,7 +58,6 @@ namespace Stellamod.Core.LunarLightingSystem
             }
 
 
-            base.SetupContent();
         }
 
         public static void RegisterTorchColor(int itemID)

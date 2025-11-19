@@ -518,6 +518,9 @@ namespace Stellamod.Core.LunarLightingSystem
                     if (!Main.tileSolid[tile.TileType])
                         continue;
 
+                    if (LightingSets.NoShadows[tile.TileType])
+                        continue;
+
                     Point tilePoint = new Point(x, y);
                     Vector2 worldPoint = tilePoint.ToWorldCoordinates(0, 0);
 
