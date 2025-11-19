@@ -1,17 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Biomes;
-using Stellamod.Core.NewRenderPipeline;
-using Stellamod.Effects;
 using Stellamod.Helpers;
-using System;
-using System.Diagnostics;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.GameContent.TextureAssets;
 
 namespace Stellamod.Core.Palettes
 {
@@ -65,7 +59,7 @@ namespace Stellamod.Core.Palettes
             hasSunGlyph = false;
             darkness = 0;
             darknessCurve = 0;
-            
+
             //Curve based
             float progress = (float)(Player.position.ToTileCoordinates().Y - Main.worldSurface) / 1000;
             progress = MathHelper.Clamp(progress, 0, 1);
@@ -138,7 +132,7 @@ namespace Stellamod.Core.Palettes
                 return;
             if (Main.myPlayer != Player.whoAmI)
                 return;
-          
+
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
             ScreenShaderData screenShaderData;
             bool abyssPaletteActive = (MyPlayer.ZoneAbyss || MyPlayer.ZoneAurelus || MyPlayer.ZoneMechanics || MyPlayer.ZoneIshtar) && clientConfig.PaletteShadersToggle;
@@ -147,7 +141,7 @@ namespace Stellamod.Core.Palettes
 
             if (Player.GetModPlayer<MyPlayer>().ZoneWonder)
                 hellPaletteActive = false;
-                
+
             bool royalCapitalPaletteActive = MyPlayer.ZoneAlcadzia && clientConfig.PaletteShadersToggle;
 
             bool dungeonPaletteActive = clientConfig.VanillaBiomesPaletteShadersToggle && Player.ZoneDungeon;
@@ -187,7 +181,7 @@ namespace Stellamod.Core.Palettes
             UsePaletteShader("IllurianMistyDungeon.pal", mistyPaletteActive, ref paletteUseProgress[8]);
             UsePaletteShader("BloodHound.pal", bloodPaletteActive, ref paletteUseProgress[9]);
 
-      
+
 
             CalculateDarkness();
             TogglePaletteShader("LunarVeil:DarknessVignette", darkness != 0);
