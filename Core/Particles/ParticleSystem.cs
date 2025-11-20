@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -24,6 +26,7 @@ namespace Stellamod.Core.Particles
             base.Load();
             _particleComparer = new ParticleComparer();
             On_Main.DrawDust += DrawMainParticles;
+            PixelationManager.OnDrawPixelation += DrawPixelatedParticles;
         }
 
         public override void PostAddRecipes()
@@ -44,11 +47,13 @@ namespace Stellamod.Core.Particles
         public override void Unload()
         {
             On_Main.DrawDust -= DrawMainParticles;
+            PixelationManager.OnDrawPixelation -= DrawPixelatedParticles;
             ParticleLoader.Unload();
 
             ParticleAssets = null;
             Particles = null;
         }
+
 
         public override void PostUpdateDusts()
         {
@@ -107,8 +112,18 @@ namespace Stellamod.Core.Particles
             BlackParticles.RemoveAll(p => p == null || !p.active);
         }
 
+        private void DrawPixelatedParticles()
+        {
+       
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
+            DrawParticles(spriteBatch);
+            spriteBatch.End();
+
+        }
         private void DrawMainParticles(On_Main.orig_DrawDust orig, Main self)
         {
+            return;
             if (Main.netMode == NetmodeID.Server)
                 return;
             orig(self);

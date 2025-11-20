@@ -12,12 +12,14 @@ namespace Stellamod.Visual.Particles
         public int FrameWidth = 64;
         public int FrameHeight = 64;
         public int MaxFrameCount = 3;
+        public Color GlowColor;
         public override void OnSpawn()
         {
             Rotation = Main.rand.NextFloat(0, 3.14f);
-            Scale = Main.rand.NextFloat(0.5f, 1f);
+            Scale = Main.rand.NextFloat(0.5f, 0.66f);
             Frame = new Rectangle(0, Main.rand.Next(3) * FrameHeight, FrameWidth, FrameHeight);
             customShader = StarryGlowShader.Instance;
+            GlowColor = Color.Pink;
             color = Color.Purple;
         }
 
@@ -25,11 +27,16 @@ namespace Stellamod.Visual.Particles
         {
             Velocity *= 0.98f;
             Rotation += 0.01f;
-            Scale *= 0.994f;
-            color *= 0.99f;
+            if(fadeIn > 60)
+            {
+                Scale *= 0.9f;
+                color *= 0.99f;
+            }
+      
+         
 
             fadeIn++;
-            if (fadeIn > 60)
+            if (fadeIn > 120)
                 active = false;
         }
 
@@ -37,7 +44,7 @@ namespace Stellamod.Visual.Particles
         {
             Vector2 centerPos = Center - Main.screenPosition;
             var shader = StarryGlowShader.Instance;
-            shader.GlowColor = Color.Pink;
+            shader.GlowColor = GlowColor;
             shader.Apply();
 
 
