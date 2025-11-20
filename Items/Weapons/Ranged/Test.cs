@@ -32,7 +32,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Projectile.height = 16;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            TrailCacheLength = 200; 
+            TrailCacheLength = 64; 
         }
         public override void AI()
         {
@@ -43,13 +43,14 @@ namespace Stellamod.Items.Weapons.Ranged
                 Particle.NewParticle<ConstellationParticle>(Projectile.Center + Main.rand.NextVector2Circular(64, 64), Vector2.Zero);
       
                 var p = FXUtil.GlowStretch(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity * 6);
-                p.Scale *= 0.5f;
+                p.Scale *= 0.25f;
 
             }
             if(Timer % 4 == 0)
             {
                 var p2 = FXUtil.GlowStretch(Projectile.Center, -Projectile.velocity * 3);
                 p2.VectorScale.Y *= 3;
+                p2.Scale *= 0.5f;
                 p2.OuterGlowColor = Color.Pink;
                 p2.GlowColor = Color.Goldenrod;
             }

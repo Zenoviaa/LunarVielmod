@@ -46,7 +46,20 @@ namespace Stellamod.Core.LunarLightingSystem
             ScissorRasterizer = new RasterizerState();
             ScissorRasterizer.ScissorTestEnable = true;
             ShadowColor = Color.Black * 0.3f;
+
+          //  On_Lighting.AddLight_int_int_float_float_float += AddTilePointLight;
+          //  On_Lighting.AddLight_int_int_int_float += AddTorchPointLight;
+          //  On_Lighting.AddLight_Vector2_int += AddTorchPointLight;
         }
+        public override void OnModUnload()
+        {
+            base.OnModUnload();
+
+         //   On_Lighting.AddLight_int_int_float_float_float -= AddTilePointLight;
+         //   On_Lighting.AddLight_int_int_int_float -= AddTorchPointLight;
+        //    On_Lighting.AddLight_Vector2_int -= AddTorchPointLight;
+        }
+
         public override void ClearWorld()
         {
             base.ClearWorld();
@@ -124,6 +137,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static void FindPointLightSourcesFromTiles()
         {
+ 
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
@@ -162,7 +176,50 @@ namespace Stellamod.Core.LunarLightingSystem
                 }
             }
         }
+        private void AddTilePointLight(On_Lighting.orig_AddLight_int_int_float_float_float orig, int i, int j, float r, float g, float b)
+        {
+            /*
+            TileAmbientLight tileAmbientLight = new TileAmbientLight();
+            tileAmbientLight.position = new Vector2(i * 16, j * 16);
+            tileAmbientLight.color = new Color(r, g, b);
+            AddAmbientLight(tileAmbientLight);*/
+        }
 
+        private void AddTorchPointLight(Point coordinates, Color lightColor)
+        {
+       
+
+            Tile tile = Main.tile[coordinates.X, coordinates.Y];
+            if (LightingSets.PointLitTiles[tile.TileType].A > 0)
+            {
+                if (!EmittingTiles[coordinates.X, coordinates.Y])
+                {
+                    Vector2 position = coordinates.ToWorldCoordinates();
+                    PointLightData pointLightData = new PointLightData(lightColor, position, 0.5f, 800);
+                    int index = AddPointLight(pointLightData);
+                    if (index == -1)
+                        return;
+                    EmittingTiles[coordinates.X, coordinates.Y] = true;
+                    LightPoints[index] = coordinates;
+                }
+            }
+        }
+
+        private void AddTorchPointLight(On_Lighting.orig_AddLight_Vector2_int orig, Vector2 position, int torchID)
+        {
+            Point tileCoordinates = position.ToTileCoordinates();
+            TorchID.TorchColor(torchID, out float r, out float g, out float b);
+            Color torchColor = new Color(r, g, b);
+            AddTorchPointLight(tileCoordinates, torchColor);
+        }
+
+        private void AddTorchPointLight(On_Lighting.orig_AddLight_int_int_int_float orig, int i, int j, int torchID, float lightAmount)
+        {
+            Point tilePoint = new Point(i, j);
+            TorchID.TorchColor(torchID, out float r, out float g, out float b);
+            Color torchColor = new Color(r, g, b);
+            AddTorchPointLight(tilePoint, torchColor);
+        }
 
         public static Vector3 GetPlayerLightColor()
         {
