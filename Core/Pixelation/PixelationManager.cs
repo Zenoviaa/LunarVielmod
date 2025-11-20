@@ -14,13 +14,23 @@ namespace Stellamod.Core.Pixelation
     {
         void DrawPixelated();
     }
+    public static class RenderTargetExtensions
+    {
+        public static void Release(this RenderTarget2D rt)
+        {
+            if (rt != null && !rt.IsDisposed)
+                rt.Dispose();
+        }
+    }
 
     [Autoload(Side = ModSide.Client)]
     public class PixelationManager : ModSystem
     {
         private Point _oldScreenSize;
         private RenderTarget2D _pixelRenderRT;
-        private RenderTarget2D _screenRenderRT;
+        private RenderTarget2D _pixelScreenRenderRT;
+        private RenderTarget2D _smokePixelRenderRT;
+        private RenderTarget2D _smokeScreenRenderRT;
         private List<IDrawPixelated> _draws = new List<IDrawPixelated>(100);
 
         public int DownSamples => 3;
@@ -31,10 +41,13 @@ namespace Stellamod.Core.Pixelation
             On_Main.CheckMonoliths += RenderToPixelationRT;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRTToScreen;
             Main.OnResolutionChanged += ResizeTargets;
-            ResizeRenderTargets();
         }
 
-
+        public override void Load()
+        {
+            base.Load();
+            ResizeRenderTargets();
+        }
         public override void OnModUnload()
         {
             base.OnModUnload();
@@ -46,8 +59,11 @@ namespace Stellamod.Core.Pixelation
         private void RenderToPixelationRT(On_Main.orig_CheckMonoliths orig)
         {
             orig();
+            if (Main.gameMenu)
+                return;
+
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_screenRenderRT);
+            graphicsDevice.SetRenderTarget(_pixelScreenRenderRT);
             graphicsDevice.Clear(Color.Black);
             if (_draws.Count > 0)
             {
@@ -72,7 +88,7 @@ namespace Stellamod.Core.Pixelation
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             float denom = DownSamples;
             float scale = 1f / denom;
-            spriteBatch.Draw(_screenRenderRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(_pixelScreenRenderRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             spriteBatch.End();
         }
 
@@ -80,6 +96,9 @@ namespace Stellamod.Core.Pixelation
         private void DrawPixelRTToScreen(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
         {
             orig(self);
+            if (Main.gameMenu)
+                return;
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             // Draw our RT. The scale is important, it is 2 here as this RT is 0.5x the main screen size.
@@ -94,13 +113,21 @@ namespace Stellamod.Core.Pixelation
             {
                 Main.QueueMainThreadAction(() =>
                 {
-                    if (_pixelRenderRT != null && !_pixelRenderRT.IsDisposed)
-                        _pixelRenderRT.Dispose();
+                    _pixelRenderRT.Release();
                     _pixelRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X / DownSamples, screenSize.Y / DownSamples);
 
-                    if (_screenRenderRT != null && !_screenRenderRT.IsDisposed)
-                        _screenRenderRT.Dispose();
-                    _screenRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y);
+                    _pixelScreenRenderRT.Release();
+                    _pixelScreenRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y);
+
+
+                    //Smoke screen render targets
+                    _smokePixelRenderRT.Release();
+                    _smokePixelRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X / DownSamples, screenSize.Y / DownSamples);
+
+
+                    _smokeScreenRenderRT.Release();
+                    _smokeScreenRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y);
+
                 });
                 _oldScreenSize = screenSize; 
             }

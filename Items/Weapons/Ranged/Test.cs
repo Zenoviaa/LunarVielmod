@@ -78,6 +78,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
             Projectile.velocity.Y += 0.125f;
             Projectile.velocity.X *= 1.01f;
+            Projectile.rotation = Projectile.velocity.ToRotation();
  
         }
         private void SpawnParticle()
@@ -94,14 +95,22 @@ namespace Stellamod.Items.Weapons.Ranged
         }
         public override bool PreDraw(ref Color lightColor)
         {
-     
+            FlamingTrailShader flamingTrailShader = FlamingTrailShader.Instance;
+            flamingTrailShader.OuterColor = Color.DarkViolet;
+            flamingTrailShader.InnerColor = Color.Goldenrod;
+            flamingTrailShader.Power = 0.2f;
+            flamingTrailShader.Distortion = 0.1f;
+            flamingTrailShader.Tiling = Vector2.One * 0.5f;
+            flamingTrailShader.BlendState = BlendState.AlphaBlend;
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, TrailColorFunction2, TrailWidthFunction2, flamingTrailShader);
+
             var shader = StarryMagicShader.Instance;
 
 
-            shader.GlowColor = Color.Goldenrod;
+            shader.GlowColor = Color.Magenta;
             shader.GlowColor2 = Color.Blue;
             shader.Tiling = new Vector2(3, 1);
-            
+            shader.BlendState = BlendState.Additive;
             
            // TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, TrailColorFunction2, TrailWidthFunction, shader);
             TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, TrailColorFunction, TrailWidthFunction2, shader);
@@ -118,7 +127,13 @@ namespace Stellamod.Items.Weapons.Ranged
 
             spriteBatch.Restart(effect: shader2.Effect, blendState: BlendState.Additive);
             for(float f = 0; f < 3; f++)
-                spriteBatch.Draw(glowStarTexture, drawPos, null, glowColor, 0, drawOrigin, 0.15f + Main.rand.NextFloat(0.8f, 1.2f), SpriteEffects.None, 0);
+            {
+                Vector2 scale = Vector2.One;
+                scale.X *= 2.5f;
+                scale.Y *= 0.91f;
+                scale *= Main.rand.NextFloat(0.99f, 1f);
+                spriteBatch.Draw(glowStarTexture, drawPos, null, glowColor, Projectile.rotation, drawOrigin, scale, SpriteEffects.None, 0);
+            }
    
             spriteBatch.RestartDefaults();
             return false;
@@ -136,15 +151,15 @@ namespace Stellamod.Items.Weapons.Ranged
 
         private Color TrailColorFunction(float arg)
         {
-            Color trailColor = Color.Lerp(Color.White, Color.BlueViolet,arg);
-        //    trailColor *= MathHelper.SmoothStep(1.0f, 0.0f, arg);
+            Color trailColor = Color.Lerp(Color.Goldenrod, Color.DarkViolet,arg);
+            trailColor *= MathHelper.Lerp(1.0f, 0.0f, EasingFunction.InExpo(arg));
             return trailColor;
         }
         private Color TrailColorFunction2(float arg)
         {
             Color trailColor = Color.Lerp(Color.DarkBlue, Color.BlueViolet, EasingFunction.QuadraticBump(arg));
-            trailColor *= MathHelper.SmoothStep(1.0f, 0.0f, arg);
-            return trailColor * 0.5f;
+            trailColor *= MathHelper.Lerp(1.0f, 0.0f, EasingFunction.InExpo(arg));
+            return trailColor ;
         }
     }
 

@@ -92,7 +92,7 @@ float rand(float2 co)
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
 
-    return StarryV1(input);
+   return StarryV1(input);
 }
 
 technique Technique1
