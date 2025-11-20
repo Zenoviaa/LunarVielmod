@@ -9,6 +9,7 @@ namespace Stellamod.Visual.Particles
     {
         public int FrameWidth = 64;
         public int FrameHeight = 64;
+        public bool fast;
         public override void OnSpawn()
         {
             Scale = Main.rand.NextFloat(0.13f, 0.7f);
@@ -23,10 +24,14 @@ namespace Stellamod.Visual.Particles
             Velocity = Velocity.RotatedByRandom(0.09f);
             Rotation += 0.01f;
             //   Scale *= 0.997f;c
-            color = Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(fadeIn / 180f));
+
+            float denom = 180f;
+            if (fast)
+                denom *= 0.25f;
+            color = Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(fadeIn / denom));
 
             fadeIn++;
-            if (fadeIn > 180)
+            if (fadeIn > denom)
                 active = false;
 
         }
