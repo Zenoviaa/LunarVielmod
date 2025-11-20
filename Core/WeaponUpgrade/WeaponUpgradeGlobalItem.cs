@@ -18,7 +18,7 @@ namespace Stellamod.Core.WeaponUpgrade
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
             base.ModifyWeaponDamage(item, player, ref damage);
-            float damageModifier = weaponLevel * 0.1f;
+            float damageModifier = weaponLevel * 0.15f;
             damage += damageModifier;
         }
 
@@ -62,7 +62,7 @@ namespace Stellamod.Core.WeaponUpgrade
         {
             int mat = GetMaterialType();
             int amt = GetUpgradeAmt();
-            return player.CountItem(mat) >= amt && item.damage > 0 && weaponLevel < 20;
+            return player.CountItem(mat) >= amt && item.damage > 0 && weaponLevel < 100;
         }
 
         public void Upgrade(Item item, Player player)
