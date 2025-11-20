@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Core;
+using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,5 +88,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
     public partial class RoyalFox : ScarletBoss
     {
+        public override string Texture => TextureRegistry.EmptyTexture;
     }
 }
