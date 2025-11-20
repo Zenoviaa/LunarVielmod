@@ -14,7 +14,7 @@ sampler2D starryTex = sampler_state
     minfilter = LINEAR;
     mipfilter = LINEAR;
     AddressU = wrap;
-    AddressV = clamp;
+    AddressV = wrap;
 };
 
 struct VertexShaderInput
@@ -47,8 +47,10 @@ float QuadraticBump(float t)
     return t * (factor - t * factor);
 }
 
-float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
+
+float4 StarryV1(VertexShaderOutput input)
 {
+        
     //First we unpack our texture with some nice scrolling
     float2 coords = input.TextureCoordinates;
     coords *= tiling;
@@ -81,7 +83,16 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float4 finalColor = float4(mix, 1.0) * input.Color.a;
     finalColor *= QuadraticBump(coords.y);
     return finalColor;
+}
+float rand(float2 co)
+{
+    return frac(sin(dot(co.xy, float2(12.9898, 78.233))) * 43758.5453);
+}
 
+float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
+{
+
+    return StarryV1(input);
 }
 
 technique Technique1

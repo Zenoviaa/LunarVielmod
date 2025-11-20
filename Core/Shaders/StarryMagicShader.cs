@@ -86,7 +86,7 @@ namespace Stellamod.Core.Shaders
             TransformMatrix = TrailDrawer.WorldViewPoint2;
             GlowColor = Color.Violet;
             BlendState = BlendState.Additive;
-            Time = Main.GlobalTimeWrappedHourly * 4;
+            Time = Main.GlobalTimeWrappedHourly * 12;
             Tiling = Vector2.One;
         }
     }

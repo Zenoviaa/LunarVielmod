@@ -32,7 +32,8 @@ namespace Stellamod.Items.Weapons.Ranged
             Projectile.height = 16;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            TrailCacheLength = 64; 
+            TrailCacheLength = 48;
+            Projectile.extraUpdates = 1;
         }
         public override void AI()
         {
@@ -42,17 +43,14 @@ namespace Stellamod.Items.Weapons.Ranged
             {
                 Particle.NewParticle<ConstellationParticle>(Projectile.Center + Main.rand.NextVector2Circular(64, 64), Vector2.Zero);
       
-                var p = FXUtil.GlowStretch(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity * 6);
+                var p = FXUtil.GlowStretch(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity * 2);
                 p.Scale *= 0.25f;
 
             }
-            if(Timer % 4 == 0)
+            if(Timer % 1 == 0)
             {
-                var p2 = FXUtil.GlowStretch(Projectile.Center, -Projectile.velocity * 3);
-                p2.VectorScale.Y *= 3;
-                p2.Scale *= 0.5f;
-                p2.OuterGlowColor = Color.Pink;
-                p2.GlowColor = Color.Goldenrod;
+
+                SpawnParticle();
             }
             if (Timer % 8 == 0)
             {
@@ -69,17 +67,31 @@ namespace Stellamod.Items.Weapons.Ranged
             Projectile.velocity.X *= 1.01f;
  
         }
+        private void SpawnParticle()
+        {
+            Vector2 pos = Projectile.Center;
+            pos += Main.rand.NextVector2Circular(16, 16);
+            var p2 = FXUtil.GlowStretch(pos, -Projectile.velocity * 1.2f);
+            p2.VectorScale.Y *= Main.rand.NextFloat(2f, 8);
+            p2.Scale *= 0.5f;
+            p2.InnerColor = Color.Lerp(Color.Pink, Color.Goldenrod, Main.rand.NextFloat(0f, 1f));
+            p2.OuterGlowColor = Color.Lerp(Color.Blue, Color.DarkViolet, Main.rand.NextFloat(0f, 1f));
+            p2.GlowColor = Color.Blue;
+            p2.color *= 0.25f;
+        }
         public override bool PreDraw(ref Color lightColor)
         {
+     
             var shader = StarryMagicShader.Instance;
 
 
-            shader.GlowColor = Color.Pink;
-            shader.GlowColor2 = Color.BlueViolet;
-            shader.Tiling = new Vector2(5, 1);
+            shader.GlowColor = Color.Goldenrod;
+            shader.GlowColor2 = Color.Blue;
+            shader.Tiling = new Vector2(8, 1);
             
-           // TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, TrailColorFunction2, TrailWidthFunction, shader);
-  TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, TrailColorFunction, TrailWidthFunction2, shader);
+            
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, TrailColorFunction2, TrailWidthFunction, shader);
+    //    TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, TrailColorFunction, TrailWidthFunction2, shader);
 
             Texture2D glowStarTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -101,7 +113,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         private float TrailWidthFunction(float arg)
         {
-            return MathHelper.Lerp(48, 24, EasingFunction.InOutSine(arg));
+            return MathHelper.Lerp(64, 48, EasingFunction.InOutSine(arg));
         }
         private float TrailWidthFunction2(float arg)
         {
@@ -111,8 +123,8 @@ namespace Stellamod.Items.Weapons.Ranged
 
         private Color TrailColorFunction(float arg)
         {
-            Color trailColor = Color.Lerp(Color.DarkBlue, Color.BlueViolet, EasingFunction.QuadraticBump(arg));
-            trailColor *= MathHelper.SmoothStep(1.0f, 0.0f, arg);
+            Color trailColor = Color.Lerp(Color.White, Color.BlueViolet,arg);
+        //    trailColor *= MathHelper.SmoothStep(1.0f, 0.0f, arg);
             return trailColor;
         }
         private Color TrailColorFunction2(float arg)
