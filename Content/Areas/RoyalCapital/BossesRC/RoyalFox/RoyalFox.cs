@@ -69,6 +69,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public float localLength;
         public float localHeight;
         public float drawHeight;
+        public float localAngle;
 
         public int sortingOrder;
         public int frameHeight;
@@ -93,6 +94,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             SetPerspective();
             if (parent == null)
                 return;
+
+            //Calculate the angle
+            angle = parent.angle + localAngle;
             position = parent.position + (parent.length * attachmentPoint) * parent.angle.ToRotationVector2();
             position += angle.ToRotationVector2() * localLength;
 
@@ -449,18 +453,18 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         private void UpdateRig()
         {
             Rig.RootSegment.position = NPC.Center;
+            Rig.rootSegment.angle += 0.05f;
+            Rig.backFrontLeg[0].localAngle = MathHelper.Lerp(-0.05f, 0.05f, ExtraMath.Osc(0f, 1f));
+            Rig.backFrontLeg[1].localAngle = Rig.backFrontLeg[0].localAngle + MathHelper.ToRadians(90);
 
-            Rig.backFrontLeg[0].angle = MathHelper.Lerp(-0.05f, 0.05f, ExtraMath.Osc(0f, 1f));
-            Rig.backFrontLeg[1].angle = Rig.backFrontLeg[0].angle + MathHelper.ToRadians(90);
+            Rig.backBehindLeg[0].localAngle = Rig.backBehindLeg[0].localAngle;
+            Rig.backBehindLeg[1].localAngle = Rig.backBehindLeg[0].localAngle + MathHelper.ToRadians(90);
 
-            Rig.backBehindLeg[0].angle = Rig.backBehindLeg[0].angle;
-            Rig.backBehindLeg[1].angle = Rig.backBehindLeg[0].angle + MathHelper.ToRadians(90);
+            Rig.frontFrontLeg[0].localAngle = MathHelper.Lerp(-0.05f, 0.05f, ExtraMath.Osc(0f, 1f));
+            Rig.frontFrontLeg[1].localAngle = Rig.frontFrontLeg[0].localAngle + MathHelper.ToRadians(90);
 
-            Rig.frontFrontLeg[0].angle = MathHelper.Lerp(-0.05f, 0.05f, ExtraMath.Osc(0f, 1f));
-            Rig.frontFrontLeg[1].angle = Rig.frontFrontLeg[0].angle + MathHelper.ToRadians(90);
-
-            Rig.frontBehindLeg[0].angle = Rig.frontFrontLeg[0].angle;
-            Rig.frontBehindLeg[1].angle = Rig.frontBehindLeg[0].angle + MathHelper.ToRadians(90);
+            Rig.frontBehindLeg[0].localAngle = Rig.frontFrontLeg[0].localAngle;
+            Rig.frontBehindLeg[1].localAngle = Rig.frontBehindLeg[0].localAngle + MathHelper.ToRadians(90);
 
             Rig.Update();
 
