@@ -1,14 +1,59 @@
 
-Maybe a big blast coming out of his peenar
-
-add boss barriers for both sides so players cant escape when his bossfight starts
-cant get into royal capital until you beat him (red blocks like stone golem)
-
-barriers
-netcode
-make the yellows white please
 
 
-make the starting animation more like man at legs opening
-make bullets for starbomber travel faster for minigun, make it way harder to dodge it horizontally (make them a little bigger too, and make them white)
-everytime he hits the ground heavily, astral rocks hit the ground like meteors
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Before the fight starts, she heads off screen and then comes to grabs you in her dragon form really fast out to the open (she transforms off screen and saves an animation)
+
+Starts by resting usually when she transforms, 
+a bunch of little stars come out onto the screen 
+and do a little sparkle before they hit you and hone in (she does this when she's also exhausted too)
+	-We'll make a four pointed star with some interesting galaxy/comet like trailing, we made some stuff similar to this and we have more refs in pins
+	-Make the smoke trailing thing that we were working on the other night, should be pretty simple
+
+
+Squishes in her body parts as a starting charge (first time this happens is at the drop, then it's random), 
+then she starts her zoom mode, before she takes off she has an arrow deciding which direction she’ll go, 
+and it tries to follow the player loosely.
+And she does an extremely fast dash, with a super star trail and comets flying down from her starting point in a lobbing motion, 
+she zooms, straight and goes off screen, and then another line will come and you have to dodge before she zooms really fast with the same attack,
+this is a one shot btw, having the cool uh circles and whatnot idk look at bayle
+
+	-
