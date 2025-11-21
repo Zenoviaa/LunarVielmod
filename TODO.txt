@@ -38,7 +38,18 @@
 
 
 
+For fenix's rigging, it might be easier to just construct her rig in 3D, do the rotation in 3D and then read it as a 2D point for where to place her joints
+We can use matrices to represent everything, we can calculate draw order based off of that too
+	-The origin point would be her butt, Vector3.Zero
+	-Then we create local points from that
+	-So the thigh would for example be at Vector3(0, 0, -1)
+	-Back thigh would be at Vector3(0, 0, 1)
+	-etc
+	-We'd rotate around the X-axis, and get y positions based off of that
+	-at the end we add the world position
 
+
+	-So first we'd need to represent her as an array of 3d points
 
 Before the fight starts, she heads off screen and then comes to grabs you in her dragon form really fast out to the open (she transforms off screen and saves an animation)
 
@@ -56,4 +67,17 @@ And she does an extremely fast dash, with a super star trail and comets flying d
 she zooms, straight and goes off screen, and then another line will come and you have to dodge before she zooms really fast with the same attack,
 this is a one shot btw, having the cool uh circles and whatnot idk look at bayle
 
-	-
+	-Blurring and afterimage effect for the dash, we'll need a new blur shader
+	-I think we can do a cool little stylish rotation as anticipation for the first line
+
+Fenix flies up and does the like cogwork dancers thing where a bunch of lines appear and she dashes through them really fast, this is a two shot btw
+
+	-Probably the easiest attack to make
+
+Teleports to a point and charges a big laser with a big ball in front of it, as it gets bigger,
+circles come in like bayle and a like “Sans eye flash” happens and then she blows out a big star laser that sweeps like a 75 degree angle, towards you. This is a 2 shot btw
+
+	-Make a new laser shader for this, I think I can do something really cool with smoke
+
+
+Magic platform thing that makes the arena with alcad background after she drags you
