@@ -34,12 +34,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
     public class FoxSegment
     {
         //Represents a body part
-        public FoxSegment(Texture2D texture, FoxSegment parent, float length, float angle, Vector2 origin)
+        public FoxSegment(Texture2D texture, FoxSegment parent, Vector2 origin)
         {
             this.texture = texture;
             this.parent = parent;
-            this.length = length;
-            this.angle = angle;
             this.origin = origin;
             this.scale = Vector2.One;
 
@@ -64,8 +62,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public Vector2 origin;
         public Vector2 scale;
 
-        public float length;
-        public float angle;
         public float drawAngleOffset;
         public float attachmentPoint;
         public bool flipX;
@@ -75,6 +71,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public float localAngle;
 
         public float xAxisRotation;
+        public float zAxisRotation;
+        public float fullRotation;
+        public float angle;
         public int frameHeight;
         public int frameWidth;
         public FoxDegrees perspectiveRotation;
@@ -96,6 +95,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             Quaternion quaternion = Quaternion.CreateFromAxisAngle(axis, xRotation);
             Vector3 currentVector = new Vector3(0, 1, 0);
             currentVector = Vector3.Transform(currentVector, quaternion);
+
+
+
 
             for (int i = 0; i < 8; i++)
             {
@@ -193,12 +195,32 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             }
             return xRot;
         }
+        public float GetFullZRotation()
+        {
+            float zRot = zAxisRotation;
+            FoxSegment next = parent;
+            while (next != null)
+            {
+                zRot += next.zAxisRotation;
+                next = next.parent;
+            }
+            return zRot;
+        }
         public void Update()
         {
             //Calculate frame based on the direction
     
-            Vector3 combinedPosition = initialPosition;
-          
+            Vector3 positionToRotate = initialPosition;
+
+
+            //Apply z transformations first
+            //Then we'll do x
+            float z = GetFullZRotation();
+            Vector3 axisZ = new Vector3(0, 0, 1);
+            Matrix orbit = Matrix.CreateFromAxisAngle(axisZ, z);
+            Vector3 ancor = parent != null ? parent.initialPosition : positionToRotate;
+            positionToRotate = Vector3.Transform(positionToRotate - ancor, orbit) + ancor;
+  
             float xRotation = GetFullXRotation();
             //Butt = 0, 0, 0,
             //Thigh = 0, 2, -1
@@ -213,10 +235,24 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             //We have an initial position to work with, which is just the leg extended downward
             //We can just rotate around 0,0,0 since the rig is based there, think of this like vertices in a model
 
-            Vector3 rotatedPosition = Vector3.Transform(combinedPosition, quaternion);
-      
+            Vector3 rotatedPosition = Vector3.Transform(positionToRotate, quaternion);
+
+
+            /*
+            float zRotation = zAxisRotation;
+            Vector3 zAxis = new Vector3(0, 0, 1);
+            Vector3 anchorOffset = parent != null ? rotatedPosition - parent.position : Vector3.Zero;
+            Vector3 anchorPosition = parent != null ? parent.position : rotatedPosition;
+            anchorPosition += anchorOffset;
+            Matrix orbit = Matrix.CreateFromAxisAngle(zAxis, zRotation);
+            rotatedPosition = Vector3.Transform(rotatedPosition - anchorPosition, orbit) + anchorPosition;*/
+
             //Now that we have the position relative to the rotation that we want
             //We can apply other transformations
+            //We don't need to be in 3d space for this one
+            //just rotate about the origin point
+
+            angle = z;
             position = rotatedPosition;
 
             Vector2 rootPosition = GetRoot().worldPosition;
@@ -233,10 +269,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
          
             Vector2 drawPosition = worldPosition - screenPos;
 
-            float upAngle = angle - MathHelper.PiOver2;
-            Vector2 upVector = upAngle.ToRotationVector2();
-            upVector *= drawHeight;
-            drawPosition += upVector;
 
             Color finalColor = drawColor.MultiplyRGB(lightColor);
 
@@ -255,7 +287,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                 }
             }
 
-            float drawAngle = angle + drawAngleOffset;
+            float drawAngle = angle;
+
+            //Just calculate the angle based on the direction
             spriteBatch.Draw(textureToDraw, drawPosition, frame, finalColor, drawAngle, drawOrigin, scale, spriteEffects, 0);
         }
 
@@ -315,19 +349,19 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             //This needs to be built from back t o front
             //So we should start with the butt
             //Only segment with no parent
-            FoxSegment butt = new FoxSegment(body[0], null, 25, 0, new Vector2(33, 27));
+            FoxSegment butt = new FoxSegment(body[0], null, new Vector2(33, 27));
  
 
-            FoxSegment mid = new FoxSegment(body[1], butt, 40, 0, new Vector2(22, 20));
+            FoxSegment mid = new FoxSegment(body[1], butt, new Vector2(22, 20));
             mid.initialPosition = new Vector3(25, 4, -0.01f);
 
-            FoxSegment body3 = new FoxSegment(body[2], mid, 40, 0, new Vector2(36, 26));
+            FoxSegment body3 = new FoxSegment(body[2], mid, new Vector2(36, 26));
             body3.initialPosition = new Vector3(62, 0, -0.02f);
 
-            FoxSegment neck = new FoxSegment(body[3], body3, 40, 0, new Vector2(25, 20));
+            FoxSegment neck = new FoxSegment(body[3], body3, new Vector2(25, 20));
             neck.initialPosition = new Vector3(108, -4, 0.01f);
 
-            FoxSegment headSegment = new FoxSegment(head, neck, 40, 0, new Vector2(48, 42));
+            FoxSegment headSegment = new FoxSegment(head, neck, new Vector2(48, 42));
             headSegment.initialPosition = new Vector3(140, -13, -0.05f);
 
             bodyParts = new FoxSegment[5];
@@ -415,7 +449,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public FoxSegment[] CreateBackLeg(Texture2D[] backLeg, FoxSegment butt, bool isBehind)
         {
             FoxSegment[] segments = new FoxSegment[3];
-            FoxSegment backLegThighFront = new FoxSegment(backLeg[0], butt, 20, 0, new Vector2(19, 25));
+            FoxSegment backLegThighFront = new FoxSegment(backLeg[0], butt, new Vector2(19, 25));
 
             float depth = LegDepth;
             backLegThighFront.initialPosition = new Vector3(0, -7, -depth);
@@ -423,13 +457,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             //backLegThighFront.attachmentPoint = 0f;
             //backLegThighFront.localHeight = 16;
 
-            FoxSegment backLegLegFront = new FoxSegment(backLeg[1], backLegThighFront, 35, 0, new Vector2(19, 45));
+            FoxSegment backLegLegFront = new FoxSegment(backLeg[1], backLegThighFront, new Vector2(19, 45));
             backLegLegFront.initialPosition = backLegThighFront.initialPosition + new Vector3(5, 23, 0.1f);
             //backLegLegFront.drawAngleOffset = MathHelper.ToRadians(-90);
             //backLegLegFront.attachmentPoint = 0.5f;
             //backLegLegFront.localLength = 25;
 
-            FoxSegment backFootFront = new FoxSegment(backLeg[2], backLegLegFront, 20, 0, new Vector2(7, 6));
+            FoxSegment backFootFront = new FoxSegment(backLeg[2], backLegLegFront, new Vector2(7, 6));
             backFootFront.initialPosition = backLegLegFront.initialPosition + new Vector3(0, 32, -0.1f);
 
             segments[0] = backLegThighFront;
@@ -452,13 +486,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
             float depth = LegDepth;
 
-            FoxSegment frontLegThighFront = new FoxSegment(frontLeg[0], neck, 5, 0, new Vector2(8, 21));
+            FoxSegment frontLegThighFront = new FoxSegment(frontLeg[0], neck, new Vector2(8, 21));
             frontLegThighFront.initialPosition = new Vector3(90, 3, -depth);
 
-            FoxSegment frontLegLegFront = new FoxSegment(frontLeg[1], frontLegThighFront, 40, 0, new Vector2(12, 40));
+            FoxSegment frontLegLegFront = new FoxSegment(frontLeg[1], frontLegThighFront, new Vector2(12, 40));
             frontLegLegFront.initialPosition = frontLegThighFront.initialPosition + new Vector3(5, 13, 0.1f);
 
-            FoxSegment frontLegFootFront = new FoxSegment(frontLeg[2], frontLegLegFront, 20, 0, new Vector2(7, 6));
+            FoxSegment frontLegFootFront = new FoxSegment(frontLeg[2], frontLegLegFront, new Vector2(7, 6));
             frontLegFootFront.initialPosition = frontLegLegFront.initialPosition + new Vector3(0, 32, 0f);
 
             segments[0] = frontLegThighFront;
@@ -495,6 +529,36 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                 segment.Draw(spriteBatch, screenPos, lightColor);
             }
         }
+    }
+    public class FoxTail
+    {
+
+        public FoxTail(int segmentCount)
+        {
+            positions = new Vector2[segmentCount];
+        }
+
+        public Vector2 rootPosition;
+        public Vector2 endPosition;
+        public Vector2[] positions;
+    
+        public void Update()
+        {
+
+            //So I'm thinking we just lerp between the root and end position and add some sining motions?
+            //That'd be the easiest way to do it I think
+
+        }
+
+        public void Draw()
+        {
+
+        }
+    }
+
+    public class RoyalFoxTails
+    {
+
     }
     public partial class RoyalFox : ScarletBoss
     {
@@ -595,22 +659,29 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         private void UpdateRig()
         {
+            if (Main.mouseRight)
+            {
+                Rig.rootSegment.fullRotation -= 0.05f;
 
+            }
             if (Main.mouseLeft && Main.mouseLeftRelease)
             {
                 Rig.rootSegment.xAxisRotation -= MathHelper.PiOver4;
                 Main.mouseLeftRelease = false;
             }
-            if (Main.mouseRightRelease && Main.mouseRight)
-            {
-                Rig.rootSegment.xAxisRotation += MathHelper.PiOver4;
-                Main.mouseRightRelease = false;
-            }
+
+            Rig.frontFrontLeg[0].zAxisRotation += 0;
+
+            Rig.frontFrontLeg[1].zAxisRotation += 0.05f;
 
             if (Main.mouseMiddle)
             {
+                Rig.rootSegment.fullRotation = 0;
                 Rig.rootSegment.xAxisRotation = 0;
+                Rig.rootSegment.zAxisRotation = 0;
+
             }
+
             Rig.rootSegment.worldPosition = NPC.Center;
 
             //Calling update twice sine it has to calculate the new x axis position
