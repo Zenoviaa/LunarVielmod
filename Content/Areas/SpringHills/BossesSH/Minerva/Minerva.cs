@@ -64,7 +64,8 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             BowDaggerThrow,
 
             Stunned,
-            Death
+            Death,
+            Despawn
 
         }
 
@@ -283,8 +284,19 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             {
                 SwitchState(AIState.Stunned);
             }
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget && State != AIState.Despawn)
+                {
+                    SwitchState(AIState.Despawn);
+                }
+            }
             switch (State)
             {
+                case AIState.Despawn:
+                    AI_Despawn();
+                    break;
                 case AIState.Idle:
                     AI_Idle();
                     if (_phase2)
@@ -349,6 +361,18 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             if (NPC.life <= 0)
             {
                 NPC.life = 1;
+            }
+        }
+        private void AI_Despawn()
+        {
+            Timer++;
+            NPC.noTileCollide = true;
+            NPC.velocity.X *= 0.9f;
+            NPC.noGravity = false;
+            TargetScale = Vector2.Zero;
+            if(Timer >= 60)
+            {
+                NPC.active = false;
             }
         }
 
