@@ -389,11 +389,13 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             if (Timer >= 60)
             {
                 FXUtil.ShakeCamera(NPC.position, 1024, 12);
+                FXUtil.GlowCircleBoom(NPC.Center, Color.Green, Color.GreenYellow, Color.DarkGreen);
                 CreateJumpParticle();
                 CreateIvythornSplash(NPC.Center, Vector2.Zero);
                 NPC.Kill();
             }
         }
+
         private void AI_Stunned()
         {
             Timer++;
