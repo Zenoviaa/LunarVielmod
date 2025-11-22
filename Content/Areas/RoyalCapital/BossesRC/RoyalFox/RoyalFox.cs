@@ -81,15 +81,15 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         public bool flipX;
 
-        public float xAxisRotation;
-        public float zAxisRotation;
+
+        public Vector4 eulerAngles;
         public float fullRotation;
         public bool useFreeAngle;
         public float angle;
         public int frameHeight;
         public int frameWidth;
         public FoxDegrees perspectiveRotation;
-
+        public bool noDarken;
 
         private void SetPerspective()
         {
@@ -103,7 +103,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             int y = directionIndex * frameHeight;
             frame = new Rectangle(0, y, frameWidth, frameHeight);
 
-            float xRotation = GetFullXRotation();
+            float xRotation = GetFullEulerAngles().X;
             Vector3 axis = new Vector3(1, 0, 0);
             Quaternion quaternion = Quaternion.CreateFromAxisAngle(axis, xRotation);
             Vector3 currentVector = new Vector3(0, 1, 0);
@@ -181,7 +181,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             {
                 drawColor = Color.White;
             }
-            else if (position.Z >= 12)
+            else if (position.Z >= 12 && !noDarken)
             {
                 drawColor = Color.Lerp(Color.White, Color.Black, 0.75f);
             }
@@ -194,29 +194,17 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             return root;
         }
 
-        public float GetFullXRotation()
+        public Vector4 GetFullEulerAngles()
         {
-            float xRot = xAxisRotation;
-            FoxSegment next = parent;
-            while(next != null)
-            {
-                xRot += next.xAxisRotation;
-                next = next.parent;
-            }
-            return xRot;
-        }
-        public float GetFullZRotation()
-        {
-            float zRot = zAxisRotation;
+            Vector4 angles = eulerAngles;
             FoxSegment next = parent;
             while (next != null)
             {
-                zRot += next.zAxisRotation;
+                angles += next.eulerAngles;
                 next = next.parent;
             }
-            return zRot;
+            return angles;
         }
-
 
         public void ResetTransformations()
         {
@@ -231,11 +219,22 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             }
         }
 
-        public void ApplyZTransformations()
+        public void ApplyEulerAngles()
+        {
+            Vector4 eulerAngles = GetFullEulerAngles();
+
+            //We have 2 z transformations here, which may be a bit confusing
+            //This is because the first z transformation happens in 2D space,
+            //The second Z tranformation is in 3d space and actually gives us the full range of rotations
+            ApplyZTransformations(eulerAngles.Z);
+            ApplyXTransformations(eulerAngles.X);
+            ApplyYTransformations(eulerAngles.Y);
+            ApplyZTransformations(eulerAngles.W);
+        }
+        public void ApplyZTransformations(float zRotation)
         {
             //Let's just split it, I think we're getting race conditioned?
             //So first we apply the z rotation to the forward vector so it rotates around the joints properly
-            float zRotation = GetFullZRotation();
             Vector3 zAxis = new Vector3(0, 0, 1);
             Quaternion rotation = Quaternion.CreateFromAxisAngle(zAxis, zRotation);
             for(int i = 0; i < children.Count; i++)
@@ -243,10 +242,18 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                 forwardVectors[i] = Vector3.Transform(forwardVectors[i], rotation);
             }
         }
-
-        public void ApplyXTransformations()
+        public void ApplyYTransformations(float yRotation)
         {
-            float xRotation = GetFullXRotation();
+            Vector3 yAxis = new Vector3(0, 1, 0);
+            Quaternion yQuaternion = Quaternion.CreateFromAxisAngle(yAxis, yRotation);
+            for (int i = 0; i < children.Count; i++)
+            {
+                forwardVectors[i] = Vector3.Transform(forwardVectors[i], yQuaternion);
+            }
+        }
+
+        public void ApplyXTransformations(float xRotation)
+        {
             Vector3 xAxis = new Vector3(1, 0, 0);
             Quaternion xQuaternion = Quaternion.CreateFromAxisAngle(xAxis, xRotation);
             for (int i = 0; i < children.Count; i++)
@@ -294,10 +301,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                             break;
                     }
 
+                    Vector4 eulers = GetFullEulerAngles();
                     angle += angleOffset * direction;
                     if (perspectiveRotation == FoxDegrees._270_CC || perspectiveRotation == FoxDegrees._90_CC)
                     {
-                        angle = 0;
+                        angle = eulers.W;
                     }
                 }
             } 
@@ -443,6 +451,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
             FoxSegment headSegment = new FoxSegment(head, neck, new Vector2(48, 42));
             headSegment.initialPosition = new Vector3(140, -13, -0.05f);
+            headSegment.noDarken = true;
 
             bodyParts = new FoxSegment[5];
             bodyParts[0] = butt;
@@ -610,12 +619,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             for (int i = 0; i < segmentsByNumberOfParents.Length; i++)
             {
                 var segment = segmentsByNumberOfParents[i];
-                segment.ApplyZTransformations();
-            }
-            for (int i = 0; i < segmentsByNumberOfParents.Length; i++)
-            {
-                var segment = segmentsByNumberOfParents[i];
-                segment.ApplyXTransformations();
+                segment.ApplyEulerAngles();
             }
             for (int i = 0; i < segmentsByNumberOfParents.Length; i++)
             {
@@ -777,18 +781,16 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             }
             if (Main.mouseLeft && Main.mouseLeftRelease)
             {
-                Rig.rootSegment.xAxisRotation -= MathHelper.PiOver4;
+                Rig.rootSegment.eulerAngles.X -= MathHelper.PiOver4;
                 Main.mouseLeftRelease = false;
             }
-
-            Rig.rootSegment.zAxisRotation += 0.025f;
-            Rig.frontFrontLeg[0].zAxisRotation += 0.05f;
-            Rig.frontFrontLeg[1].zAxisRotation = 0f;
+         //   Rig.rootSegment.eulerAngles.Y += 0.0125f;
+           // Rig.rootSegment.eulerAngles.Z += 0.025f;
+            Rig.rootSegment.eulerAngles.Z = 0;
+            Rig.rootSegment.eulerAngles.W += 0.02f;
             if (Main.mouseMiddle)
             {
-                Rig.rootSegment.fullRotation = 0;
-                Rig.rootSegment.xAxisRotation = 0;
-                Rig.rootSegment.zAxisRotation = 0;
+                Rig.rootSegment.eulerAngles = Vector4.Zero;
 
             }
         }
