@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Core;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -673,8 +674,11 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
     {
 
     }
-    public partial class RoyalFox : ScarletBoss
+    public partial class RoyalFox : ScarletBoss,
+        IDrawOutlines
     {
+        private Color _outlineColor;
+        private Color TargetOutlineColor;
         private RoyalFoxRig _rigBackingField;
         private RoyalFoxRig Rig
         {
@@ -765,7 +769,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public override void AI()
         {
             base.AI();
-
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             NPC.velocity.X *= 0;
             AI_DebugRig();
             UpdateRig();
@@ -816,6 +820,17 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         {
             Rig.Draw(spriteBatch, screenPos, drawColor);
             return false;
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            float outlineOffset = 2;
+            Vector2 h = Vector2.UnitX * outlineOffset;
+            Vector2 v = Vector2.UnitY * outlineOffset;  
+            Rig.Draw(spriteBatch, screenPos + h, _outlineColor);
+            Rig.Draw(spriteBatch, screenPos - h, _outlineColor);
+            Rig.Draw(spriteBatch, screenPos + v, _outlineColor);
+            Rig.Draw(spriteBatch, screenPos - v, _outlineColor);
         }
     }
 }
