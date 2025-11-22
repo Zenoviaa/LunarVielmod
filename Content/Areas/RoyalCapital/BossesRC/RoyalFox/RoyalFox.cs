@@ -804,6 +804,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
             Rig.rootSegment.worldPosition = NPC.Center;
             Rig.Update();
+            Rig.Update();
         }
 
         public override void OnKill()
