@@ -344,7 +344,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             Vector2 drawPosition = worldPosition - screenPos;
 
 
-            Color finalColor = drawColor.MultiplyRGB(lightColor);
+            Color finalColor = drawColor.MultiplyRGBA(lightColor);
 
             Vector2 drawOrigin = origin;
             SpriteEffects spriteEffects = SpriteEffects.None;
@@ -778,20 +778,20 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         private void AI_DebugRig()
         {
+            TargetOutlineColor = Color.Transparent;
             if (Main.mouseRight)
             {
-                Rig.rootSegment.fullRotation -= 0.05f;
-
+                Rig.rootSegment.eulerAngles.W += 0.02f;
             }
             if (Main.mouseLeft && Main.mouseLeftRelease)
             {
                 Rig.rootSegment.eulerAngles.X -= MathHelper.PiOver4;
                 Main.mouseLeftRelease = false;
             }
-         //   Rig.rootSegment.eulerAngles.Y += 0.0125f;
+
            // Rig.rootSegment.eulerAngles.Z += 0.025f;
             Rig.rootSegment.eulerAngles.Z = 0;
-            Rig.rootSegment.eulerAngles.W += 0.02f;
+            Rig.frontFrontLeg[1].eulerAngles.Z += 0.02f;
             if (Main.mouseMiddle)
             {
                 Rig.rootSegment.eulerAngles = Vector4.Zero;
@@ -824,6 +824,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
+
             float outlineOffset = 2;
             Vector2 h = Vector2.UnitX * outlineOffset;
             Vector2 v = Vector2.UnitY * outlineOffset;  
