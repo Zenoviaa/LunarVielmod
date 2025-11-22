@@ -400,6 +400,9 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             if (Timer == 1)
             {
                 NPC.velocity.Y = -8;
+                SoundStyle stunned = new SoundStyle("Stellamod/Assets/Sounds/Stunned");
+                SoundEngine.PlaySound(stunned, NPC.position);
+                FXUtil.ShakeCamera(NPC.position, 1024, 4);
             }
         
             _animation = AnimationState.Stunned;
