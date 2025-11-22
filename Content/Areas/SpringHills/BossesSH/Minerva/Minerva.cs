@@ -486,7 +486,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             _afterImageTime *= 0.9f;
             _animation = AnimationState.IdleDance;
             TargetOutlineColor = Color.Transparent;
-            NPC.TargetClosest();
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+        
             if (NPC.HasValidTarget)
             {
                 NPC.spriteDirection = -NPC.direction;
@@ -540,6 +544,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             Timer++;
             if (Timer == 1)
             {
+                NPC.TargetClosest();
                 //Set dash velocity
                 _dashXSpeed = NPC.direction * 21;
 
@@ -748,6 +753,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             TargetOutlineColor = Color.Yellow;
             if (Timer == 1)
             {
+                NPC.TargetClosest();
                 SoundStyle voice1 = AssetRegistry.Sounds.Minerva.MinervaVoice2;
                 SoundEngine.PlaySound(voice1, NPC.position);
                 SoundStyle voice21 = AssetRegistry.Sounds.Minerva.MinervaSpin;
@@ -882,6 +888,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             NPC.noGravity = false;
             if (Timer == 1)
             {
+                NPC.TargetClosest();
                 NPC.velocity.X = NPC.direction;
                 NPC.velocity.Y = -14;
                 TargetScale = new Vector2(0.9f, 1.5f);
@@ -1035,6 +1042,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             Timer++;
             if (Timer == 1)
             {
+                NPC.TargetClosest();
                 SoundStyle spins2 = AssetRegistry.Sounds.Minerva.MinervaLaugh;
                 SoundEngine.PlaySound(spins2, NPC.position);
             }
