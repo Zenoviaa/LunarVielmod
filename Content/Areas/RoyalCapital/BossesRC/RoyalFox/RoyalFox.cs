@@ -68,7 +68,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public List<FoxSegment> children;
         public List<Vector3> initialForwardVectors;
         public List<Vector3> forwardVectors;
-
+        public float angleOffset;
         public Vector3 position;
         public Vector3 initialPosition;
         public Vector2 worldPosition;
@@ -222,6 +222,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             return zRot;
         }
 
+
         public void ResetTransformations()
         {
             //Set to the initial positions of the rig
@@ -272,18 +273,52 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             {
                 Vector3 forwardVector = parent.GetForwardVector(this);
                 position = parent.position + forwardVector;
+                if (children.Count > 0)
+                {
+                    Vector3 rotationVector = forwardVectors[0];
+                    angle = MathF.Atan2(rotationVector.Y, rotationVector.X);
+                    
+                }
+                else
+                {
+                    angle = MathF.Atan2(forwardVector.Y, forwardVector.X);
+                }
+                if(angleOffset != 0)
+                {
+                    //225
+                    //180
+                    //135
+                    float direction = 1;
+                    switch (perspectiveRotation)
+                    {
+                        case FoxDegrees._225_CC:
+                        case FoxDegrees._180_CC:
+                        case FoxDegrees._135_CC:
+                            direction = -1;
+                            break;
+                    }
+
+                    angle += angleOffset * direction;
+                    if (perspectiveRotation == FoxDegrees._270_CC || perspectiveRotation == FoxDegrees._90_CC)
+                    {
+                        angle = 0;
+                    }
+                }
 
             } else
             {
                 position = Vector3.Zero;
 
             }
+
+   
             Vector2 rootPosition = GetRoot().worldPosition;
             worldPosition = rootPosition + new Vector2(position.X, position.Y);
         }
 
         public void Update()
         {
+      
             SetWorldPosition();
             SetPerspective();
             SetDrawColor();
@@ -320,7 +355,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
             //Just calculate the angle based on the direction
             spriteBatch.Draw(textureToDraw, drawPosition, frame, finalColor, drawAngle, drawOrigin, scale, spriteEffects, 0);
-           // DrawWireframe(spriteBatch, drawPosition);
+            DrawWireframe(spriteBatch, drawPosition);
         }
 
         private void DrawWireframe(SpriteBatch spriteBatch, Vector2 drawPosition)
@@ -517,7 +552,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             segments[0] = backLegThighFront;
             segments[1] = backLegLegFront;
             segments[2] = backFootFront;
-
+            for (int i = 0; i < segments.Length; i++)
+            {
+                segments[i].angleOffset = -MathHelper.PiOver2;
+            }
             if (isBehind)
             {
                 for(int i = 0; i < segments.Length; i++)
@@ -549,7 +587,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             segments[0] = frontLegThighFront;
             segments[1] = frontLegLegFront;
             segments[2] = frontLegFootFront;
-
+            for(int i = 0; i < segments.Length; i++)
+            {
+                segments[i].angleOffset = -MathHelper.PiOver2;
+            }
             if (isBehind)
             {
                 for (int i = 0; i < segments.Length; i++)
