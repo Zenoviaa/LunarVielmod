@@ -8,6 +8,7 @@ using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Dusts;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -357,18 +358,18 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             _animation = AnimationState.Stunned;
             if(Timer == 1)
             {
-                NPC.velocity.Y = -10;
+                NPC.velocity.Y = -15;
                 SoundStyle death = AssetRegistry.Sounds.Minerva.MinervaDeath;
                 SoundEngine.PlaySound(death, NPC.position);
             }
 
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            if(Timer < 60)
+                RetargetCameraModifier.ReTargetPosition = NPC.Center;
             NPC.rotation += NPC.direction * 0.05f;
             NPC.noTileCollide = true;
             NPC.velocity.X *= 0.91f;
             if(NPC.velocity.Y >= 0)
             {
-                NPC.noGravity = true;
                 if(NPC.velocity.Y < 10)
                 {
                     NPC.velocity.Y += 0.5f;
@@ -385,11 +386,41 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                 }
 
             }
+
+
             TargetOutlineColor = Color.Transparent;
-            if (Timer >= 60)
+            if (Timer >= 130)
             {
                 FXUtil.ShakeCamera(NPC.position, 1024, 12);
-                FXUtil.GlowCircleBoom(NPC.Center, Color.Green, Color.GreenYellow, Color.DarkGreen);
+                var p =FXUtil.GlowCircleBoom(NPC.Center, Color.Green, Color.GreenYellow, Color.DarkGreen);
+                p.Scale *= 2f;
+                var p2 = FXUtil.GlowCircleBoom(NPC.Center, Color.Green, Color.GreenYellow, Color.DarkGreen);
+                p2.Scale *= 1.2f;
+
+
+                FXUtil.GlowCircleBoom(NPC.Center,
+                   innerColor: Color.White,
+                   glowColor: Color.Yellow,
+                   outerGlowColor: Color.Red, duration: 15, baseSize: 0.12f);
+
+                FXUtil.ShakeCamera(NPC.Center, 1024, 32);
+                SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger2;
+                hitSound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(hitSound, NPC.position);
+
+                for (int i = 0; i < 7; i++)
+                {
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Green, 1f).noGravity = true;
+                }
+                for (int i = 0; i < 7; i++)
+                {
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkOliveGreen, 1f).noGravity = true;
+                }
+
+                FXUtil.GlowCircleBoom(NPC.Center,
+                    innerColor: Color.Yellow,
+                    glowColor: Color.Green,
+                    outerGlowColor: Color.Black, duration: 25, baseSize: 0.24f);
                 CreateJumpParticle();
                 CreateIvythornSplash(NPC.Center, Vector2.Zero);
                 NPC.Kill();
@@ -401,6 +432,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             Timer++;
             if (Timer == 1)
             {
+                _phase2 = true;
                 NPC.velocity.Y = -8;
                 SoundStyle stunned = AssetRegistry.Sounds.Minerva.Stunned;
                 SoundEngine.PlaySound(stunned, NPC.position);
@@ -413,7 +445,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             NPC.velocity.X *= 0.9f;
             if (Timer >= 240)
             {
-                _phase2 = true;
+            
                 SwitchState(AIState.Idle);
             }
         }
