@@ -4,6 +4,7 @@ using Stellamod.Assets;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva.Projectiles;
 using Stellamod.Content.Gores;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
@@ -357,7 +358,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             if(Timer == 1)
             {
                 NPC.velocity.Y = -10;
+                SoundStyle death = AssetRegistry.Sounds.Minerva.MinervaDeath;
+                SoundEngine.PlaySound(death, NPC.position);
             }
+
+            RetargetCameraModifier.ReTargetPosition = NPC.Center;
             NPC.rotation += NPC.direction * 0.05f;
             NPC.noTileCollide = true;
             NPC.velocity.X *= 0.91f;
