@@ -46,16 +46,17 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             frameWidth = texture.Width;
             frameHeight = texture.Height / Num_Perspectives;
             perspectiveRotation = FoxDegrees._0_CC;
-            attachmentPoint = 1f;
-
 
             children = new List<FoxSegment>(Default_Capacity);
             initialForwardVectors = new List<Vector3>(Default_Capacity);
             forwardVectors = new List<Vector3>(Default_Capacity);
+
+            //Add to the parent
             parent?.children.Add(this);
             parent?.initialForwardVectors.Add(Vector3.UnitX);
             parent?.forwardVectors.Add(Vector3.UnitX);
         }
+
         public const int Num_Perspectives = 8;
         public const int Default_Capacity = 3;
 
@@ -76,17 +77,14 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public Vector2 origin;
         public Vector2 scale;
 
-        public float drawAngleOffset;
-        public float attachmentPoint;
+
+
         public bool flipX;
-        public float localLength;
-        public float localHeight;
-        public float drawHeight;
-        public float localAngle;
 
         public float xAxisRotation;
         public float zAxisRotation;
         public float fullRotation;
+        public bool useFreeAngle;
         public float angle;
         public int frameHeight;
         public int frameWidth;
@@ -111,13 +109,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             Vector3 currentVector = new Vector3(0, 1, 0);
             currentVector = Vector3.Transform(currentVector, quaternion);
 
-
-
-
             for (int i = 0; i < 8; i++)
             {
                 FoxDegrees degrees = (FoxDegrees)i;
-                if(SetIfInPerspective2(degrees, currentVector))
+                if(SetIfInPerspective(degrees, currentVector))
                 {
                     break;
                 }
@@ -136,7 +131,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             }
             return index;
         }
-        private bool SetIfInPerspective2(FoxDegrees degrees, Vector3 currentVector)
+        private bool SetIfInPerspective(FoxDegrees degrees, Vector3 currentVector)
         {
             Vector3 forwardVector = new Vector3(0, 1, 0);
             currentVector.Y = MathF.Round(currentVector.Y);
@@ -267,7 +262,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                 return new Vector3(1, 0, 0);
             return forwardVectors[indexOfChild];
         }
-        public void SetWorldPosition()
+        public void SetWorldTransformations()
         {
             if(parent != null)
             {
@@ -283,7 +278,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                 {
                     angle = MathF.Atan2(forwardVector.Y, forwardVector.X);
                 }
-                if(angleOffset != 0)
+
+                if(angleOffset != 0 && !useFreeAngle)
                 {
                     //225
                     //180
@@ -304,8 +300,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                         angle = 0;
                     }
                 }
-
-            } else
+            } 
+            else
             {
                 position = Vector3.Zero;
 
@@ -319,7 +315,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public void Update()
         {
       
-            SetWorldPosition();
+            SetWorldTransformations();
             SetPerspective();
             SetDrawColor();
         }
@@ -355,7 +351,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
             //Just calculate the angle based on the direction
             spriteBatch.Draw(textureToDraw, drawPosition, frame, finalColor, drawAngle, drawOrigin, scale, spriteEffects, 0);
-            DrawWireframe(spriteBatch, drawPosition);
+            //DrawWireframe(spriteBatch, drawPosition);
         }
 
         private void DrawWireframe(SpriteBatch spriteBatch, Vector2 drawPosition)
@@ -455,7 +451,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             //Create back leg
             backFrontLeg = CreateBackLeg(backLeg, butt, false);
             backBehindLeg = CreateBackLeg(backLeg, butt, isBehind: true);
-            backBehindLeg[0].attachmentPoint += 0.75f;
 
             MakeBehind(backBehindLeg);
             MakeFront(backFrontLeg);
@@ -463,7 +458,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             //Create front leg
             frontFrontLeg = CreateFrontLeg(frontLeg, body3, false);
             frontBehindLeg = CreateFrontLeg(frontLeg, body3, true);
-            frontBehindLeg[0].attachmentPoint -= 0.25f;
 
             MakeBehind(frontBehindLeg);
             MakeFront(frontFrontLeg);
@@ -491,8 +485,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
 
             headPart = headSegment;
-            headPart.localHeight = 10;
-            headPart.localLength = 0;
             segmentsByZLayer = segmentsList.ToArray();
 
 
