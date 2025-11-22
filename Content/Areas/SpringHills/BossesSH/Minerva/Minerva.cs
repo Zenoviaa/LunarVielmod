@@ -12,7 +12,8 @@ using static Stellamod.UI.DialogueTowning.DialogueTowningUISystem;
 
 namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 {
-    public class Minerva : ScarletBoss
+    public class Minerva : ScarletBoss,
+        IDrawOutlines
     {
         private enum AnimationState
         {
@@ -222,32 +223,21 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             }
             NPC.frame.Y = frameHeight * _frame;
         }
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+
+
+        private void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawPos = NPC.position - screenPos + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
-            drawPos.Y -= 12;
-
-            float outlineOffset = 2;
-            Vector2 left = Vector2.UnitX * -outlineOffset;
-            Vector2 right = Vector2.UnitX * outlineOffset;
-            Vector2 up = Vector2.UnitY * -outlineOffset;
-            Vector2 down = Vector2.UnitY * outlineOffset;
+            Vector2 drawPos = NPC.Center - screenPos;
             SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
-
-            Color outlineColor = _outlineColor;
             Vector2 drawOrigin = NPC.frame.Size() / 2;
-            spriteBatch.Restart(effect: whiteShader.Effect);
-
-
-            spriteBatch.Draw(texture, drawPos + left, NPC.frame, outlineColor, NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
-            spriteBatch.Draw(texture, drawPos + right, NPC.frame, outlineColor, NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
-            spriteBatch.Draw(texture, drawPos + up, NPC.frame, outlineColor, NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
-            spriteBatch.Draw(texture, drawPos + down, NPC.frame, outlineColor, NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
-
-            spriteBatch.RestartDefaults();
             spriteBatch.Draw(texture, drawPos, NPC.frame, Color.White.MultiplyRGB(drawColor), NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
+        }
+
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Draw(spriteBatch, screenPos, drawColor);
             return false;
         }
 
@@ -721,6 +711,18 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                     AttackCycle = 0;
                 }
             }
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            float outlineOffset = 2;
+            Vector2 h = Vector2.UnitX * outlineOffset;
+            Vector2 v = Vector2.UnitY * outlineOffset;
+            Draw(spriteBatch, screenPos + h, _outlineColor);
+            Draw(spriteBatch, screenPos - h, _outlineColor);
+            Draw(spriteBatch, screenPos + v, _outlineColor);
+            Draw(spriteBatch, screenPos - v, _outlineColor);
+
         }
     }
 
