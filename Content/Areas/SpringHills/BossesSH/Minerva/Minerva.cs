@@ -7,7 +7,6 @@ using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Dusts;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -17,8 +16,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.Tiles.SpecialDecorativeWall;
-using static Stellamod.UI.DialogueTowning.DialogueTowningUISystem;
 
 namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 {
@@ -44,6 +41,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 
         private enum AIState
         {
+
             Idle,
 
 
@@ -145,27 +143,27 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             switch (_animation)
             {
                 case AnimationState.IdleDance:
-                    if(_frame >= 10)
+                    if (_frame >= 10)
                     {
                         _frame = 0;
                     }
                     break;
                 case AnimationState.SpinDanceStartup:
-                    if(_frame < 10)
+                    if (_frame < 10)
                     {
                         _frame = 10;
                     }
-                    if(_frame >= 14)
+                    if (_frame >= 14)
                     {
                         _frame = 13;
                     }
                     break;
                 case AnimationState.SpinDance:
-                    if(_frame < 14)
+                    if (_frame < 14)
                     {
                         _frame = 14;
                     }
-                    if(_frame >= 18)
+                    if (_frame >= 18)
                     {
                         _frame = 14;
                     }
@@ -174,11 +172,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                     _frame = 18;
                     break;
                 case AnimationState.LeafGlide:
-                    if(_frame < 19)
+                    if (_frame < 19)
                     {
                         _frame = 19;
                     }
-                    if(_frame >= 23)
+                    if (_frame >= 23)
                     {
                         _frame = 19;
                     }
@@ -198,27 +196,27 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                     {
                         _frame = 26;
                     }
-                    if(_frame >= 33)
+                    if (_frame >= 33)
                     {
                         _frame = 32;
                     }
                     break;
                 case AnimationState.Bow:
-                    if(_frame < 33)
+                    if (_frame < 33)
                     {
                         _frame = 33;
                     }
-                    if(_frame >= 39)
+                    if (_frame >= 39)
                     {
                         _frame = 38;
                     }
                     break;
                 case AnimationState.GroundedKnivesWindup:
-                    if(_frame < 39)
+                    if (_frame < 39)
                     {
                         _frame = 39;
                     }
-                    if(_frame >= 42)
+                    if (_frame >= 42)
                     {
                         _frame = 41;
                     }
@@ -242,7 +240,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         }
 
 
-     
+
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             return base.CanHitPlayer(target, ref cooldownSlot) && (State == AIState.SpinDash);
@@ -402,7 +400,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             {
                 TargetScale = Vector2.One;
                 ChooseAttack();
-                
+
             }
         }
 
@@ -442,7 +440,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 
 
             //Create some gores
-            if(Timer % 5 == 0)
+            if (Timer % 5 == 0)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Grass);
             }
@@ -455,22 +453,23 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             float targetSpeed = MathHelper.Lerp(-NPC.direction * 3, 0, ease);
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetSpeed, 0.1f);
 
-            if(Timer < readyTime / 2f)
+            if (Timer < readyTime / 2f)
             {
                 NPC.rotation += NPC.direction * 0.12f;
                 _animation = AnimationState.SpinDanceStartup;
-            } else
+            }
+            else
             {
                 NPC.rotation += NPC.direction * 0.2f;
                 _animation = AnimationState.KnifeSpin;
             }
 
-            if(MultiplayerHelper.IsHost && Timer % 5 == 0 && Timer < 12)
+            if (MultiplayerHelper.IsHost && Timer % 5 == 0 && Timer < 12)
             {
                 Vector2 velocity = MyTarget.Center - NPC.Center;
                 velocity = velocity.SafeNormalize(Vector2.Zero);
                 velocity *= 4;
-                Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity, 
+                Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
                     ModContent.ProjectileType<LeafBlade>(), LeafBladeDamage, 1, Main.myPlayer);
             }
             NPC.rotation = MathHelper.WrapAngle(NPC.rotation);
@@ -487,7 +486,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             Timer++;
             if (Timer == 1)
             {
-               
+
                 SoundStyle voice1 = AssetRegistry.Sounds.Minerva.MinervaVoice2;
                 SoundEngine.PlaySound(voice1, NPC.position);
                 SoundStyle voice21 = AssetRegistry.Sounds.Minerva.MinervaSpin;
@@ -512,7 +511,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                 Particle.NewParticle<EmberParticle>(NPC.Bottom, -Vector2.UnitY, newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
             }
 
-            if(Timer % 3 == 0)
+            if (Timer % 3 == 0)
             {
                 int gore1 = GoreHelper.TypeFallingLeafWhite;
                 int gore2 = GoreHelper.TypeFallingLeafRed;
@@ -572,7 +571,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 
 
             NPC.velocity.X *= 0.97f;
-  
+
 
             float endTicks = 60;
 
@@ -594,15 +593,15 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                 _animation = AnimationState.LeafGlide;
                 NPC.rotation = NPC.velocity.X * 0.05f;
                 NPC.noGravity = true;
-                if(NPC.velocity.Y < 5)
+                if (NPC.velocity.Y < 5)
                     NPC.velocity.Y += 0.5f;
-                if(Timer % 5 == 0)
+                if (Timer % 5 == 0)
                 {
                     CreateJumpParticle();
                 }
 
             }
-          
+
 
             //Create a little bit of a lean towards the direction she's moving
             if (Timer >= 5 && NPC.collideY)
@@ -616,7 +615,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         #region Leaf Glide
         private void AI_LeafGlideJump()
         {
-      
+
             Timer++;
             TargetOutlineColor = Color.Yellow;
             if (Timer == 1)
@@ -666,12 +665,12 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                 {
                     NPC.velocity.Y += 1;
                 }
-              
+
             }
             else
             {
                 _animation = AnimationState.LeafJump;
-          
+
                 NPC.velocity.Y *= 0.98f;
                 if (Timer >= 30)
                 {
@@ -684,7 +683,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         {
             _animation = AnimationState.LeafGlide;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle voice1 = AssetRegistry.Sounds.Minerva.MinervaLaugh;
                 SoundEngine.PlaySound(voice1, NPC.position);
@@ -745,7 +744,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             }
         }
         #endregion
-     
+
         #region Aerial Knife Throw
         private void AI_KnifeThrowJump()
         {
@@ -786,7 +785,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             _afterImageTime = MathHelper.Lerp(_afterImageTime, 1f, 0.1f);
 
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
                 NPC.velocity.X = NPC.direction;
@@ -808,7 +807,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 
             }
 
-            if(Timer % 5 == 0)
+            if (Timer % 5 == 0)
             {
                 var p = Particle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity);
                 p.fadeToColor = Color.DarkGreen;
@@ -818,7 +817,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             }
             TargetOutlineColor = Color.Yellow;
             NPC.velocity.Y *= 0.9f;
-            NPC.velocity.X *= 1.1f; 
+            NPC.velocity.X *= 1.1f;
             NPC.rotation += NPC.direction * 0.15f;
             if (Timer >= 30)
             {
@@ -832,11 +831,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             Timer++;
             TargetOutlineColor = Color.Red;
 
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.rotation = NPC.direction * 0.05f;
             }
-          
+
             if (Timer == 7)
             {
                 if (MultiplayerHelper.IsHost)
@@ -854,11 +853,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                     var source = NPC.GetSource_FromThis();
                     int projType = ModContent.ProjectileType<LeafBoomerang>();
                     Projectile.NewProjectile(source, NPC.Center, leftVelocity, projType, LeafBoomerangDamage, 1, Main.myPlayer);
-              
+
                 }
             }
 
-            if(Timer == 15)
+            if (Timer == 15)
             {
                 if (MultiplayerHelper.IsHost)
                 {
@@ -868,11 +867,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                     Projectile.NewProjectile(source, NPC.Center, rightVelocity, projType, LeafBoomerangDamage, 1, Main.myPlayer);
                 }
             }
-            if(Timer >= 15)
+            if (Timer >= 15)
             {
                 NPC.rotation -= NPC.direction * NPC.velocity.Length() * 0.0025f;
                 NPC.noGravity = true;
-                if(NPC.velocity.Y < 5)
+                if (NPC.velocity.Y < 5)
                     NPC.velocity.Y += 0.5f;
                 if (NPC.collideY)
                 {
@@ -906,7 +905,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         {
             _animation = AnimationState.Bow;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle spins2 = AssetRegistry.Sounds.Minerva.MinervaLaugh;
                 SoundEngine.PlaySound(spins2, NPC.position);
@@ -923,7 +922,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         {
             _animation = AnimationState.GroundedKnivesWindup;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
 
 
@@ -952,16 +951,16 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         {
             _animation = AnimationState.KnifeThrowGrounded;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.velocity.X = NPC.direction * 2;
                 if (MultiplayerHelper.IsHost)
                 {
                     Vector2 rightVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 15;
 
-                     var source = NPC.GetSource_FromThis();
+                    var source = NPC.GetSource_FromThis();
                     int projType = ModContent.ProjectileType<LeafBlade>();
-                    Projectile.NewProjectile(source, NPC.Center, 
+                    Projectile.NewProjectile(source, NPC.Center,
                         rightVelocity, projType, LeafBladeDamage, 1, Main.myPlayer, ai1: 1);
                     Projectile.NewProjectile(source, NPC.Center,
                         rightVelocity.RotatedBy(MathHelper.ToRadians(-22)), projType, LeafBladeDamage, 1, Main.myPlayer, ai1: 1);
@@ -985,6 +984,12 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             }
         }
         #endregion
+
+        public override void OnKill()
+        {
+            base.OnKill();
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedMinervaBoss, -1);
+        }
 
         private void DoRandomAttack()
         {

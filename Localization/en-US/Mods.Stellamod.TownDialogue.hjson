@@ -159,5 +159,28 @@ JiitasStartDialogue: {
 		'''
 	DisplayName: I don't want to worship...
 }
-
+MinervaStartDialogue: {
+	Line0:
+		'''
+		[PORTRAIT=Minerva]
+		What are you doing down here?
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Minerva]
+		Are you yet another that is trying to trample upon my garden?
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Minerva]
+		I'm sorry, but this pretty refuge is mine and mine alone!
+		You have no place in it!
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Minerva]
+		Begone!
+		'''
+	DisplayName: Trample Garden
+}
 BaseDialogue.Line0: ""

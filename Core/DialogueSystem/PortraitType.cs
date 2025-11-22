@@ -69,6 +69,7 @@ namespace Stellamod.Core.DialogueSystem
         Zui,
         Rysa,
         Gilatine,
-        Jiitas
+        Jiitas,
+        Minerva
     }
 }
