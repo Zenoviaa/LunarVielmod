@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine;
 using Stellamod.Core.DialogueSystem;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace Stellamod.Content.Dialogue
 
         public override int GetLength()
         {
-            return 8;
+            return 4;
         }
 
         public override void OnComplete()
@@ -42,7 +43,7 @@ namespace Stellamod.Content.Dialogue
             }
             else
             {
-                int index = NPC.FindFirstNPC(ModContent.NPCType<BishinineIdle>());
+                int index = NPC.FindFirstNPC(ModContent.NPCType<MinervaIdle>());
                 if (index == -1)
                     return;
 

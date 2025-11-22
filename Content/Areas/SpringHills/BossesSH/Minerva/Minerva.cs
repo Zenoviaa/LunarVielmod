@@ -61,7 +61,8 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             BowWindup,
             BowDaggerThrow,
 
-            Stunned
+            Stunned,
+            Death
 
         }
 
@@ -328,6 +329,64 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                 case AIState.Stunned:
                     AI_Stunned();
                     break;
+                case AIState.Death:
+                    AI_Death();
+                    break;
+            }
+        }
+
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+            if (NPC.life <= 0 && State != AIState.Death)
+            {
+                NPC.life = 1;
+                SwitchState(AIState.Death);
+            }
+
+            if (NPC.life <= 0)
+            {
+                NPC.life = 1;
+            }
+        }
+
+        private void AI_Death()
+        {
+            Timer++;
+            _animation = AnimationState.Stunned;
+            if(Timer == 1)
+            {
+                NPC.velocity.Y = -10;
+            }
+            NPC.rotation += NPC.direction * 0.05f;
+            NPC.noTileCollide = true;
+            NPC.velocity.X *= 0.91f;
+            if(NPC.velocity.Y >= 0)
+            {
+                NPC.noGravity = true;
+                if(NPC.velocity.Y < 10)
+                {
+                    NPC.velocity.Y += 0.5f;
+                }
+            }
+            if (Timer % 5 == 0)
+            {
+                int gore1 = GoreHelper.TypeFallingLeafWhite;
+                int gore2 = GoreHelper.TypeFallingLeafRed;
+                for (int i = 0; i < 2; i++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                    Gore.NewGore(SourceFromThis, NPC.Center + Main.rand.NextVector2Circular(4, 4), velocity, gore1);
+                }
+
+            }
+            TargetOutlineColor = Color.Transparent;
+            if (Timer >= 60)
+            {
+                FXUtil.ShakeCamera(NPC.position, 1024, 12);
+                CreateJumpParticle();
+                CreateIvythornSplash(NPC.Center, Vector2.Zero);
+                NPC.Kill();
             }
         }
         private void AI_Stunned()
@@ -335,9 +394,12 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             Timer++;
             if (Timer == 1)
             {
-                NPC.velocity.Y = -5;
+                NPC.velocity.Y = -8;
             }
+        
             _animation = AnimationState.Stunned;
+            TargetOutlineColor = Color.Transparent;
+            NPC.noGravity = false;
             NPC.velocity.X *= 0.9f;
             if (Timer >= 240)
             {
