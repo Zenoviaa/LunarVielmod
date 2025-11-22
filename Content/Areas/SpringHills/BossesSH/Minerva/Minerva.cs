@@ -1,13 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva.Projectiles;
+using Stellamod.Content.Gores;
 using Stellamod.Core;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Dusts;
+using Stellamod.Gores;
 using Stellamod.Helpers;
+using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Stellamod.Tiles.SpecialDecorativeWall;
 using static Stellamod.UI.DialogueTowning.DialogueTowningUISystem;
 
 namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
@@ -39,6 +49,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 
             SpinDashWindup,
             SpinDash,
+            SpinDashEnd,
 
             LeafGlideJump,
             LeafGlideSpin,
@@ -56,8 +67,10 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 
         }
 
+        private bool _namePlate;
         private bool _resetAnimation;
         private bool _phase2;
+        private float _afterImageTime;
         private float _dashXSpeed;
         private Vector2 _scale;
         private AnimationState _animation;
@@ -92,8 +105,10 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         public override void SetDefaults()
         {
             base.SetDefaults();
+            _scale = Vector2.One;
+            TargetScale = Vector2.One;
             NPC.width = 64;
-            NPC.height = 48;
+            NPC.height = 100;
             NPC.damage = 32;
             NPC.defense = 10;
             NPC.lifeMax = 1500;
@@ -178,7 +193,8 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                     _frame = 25;
                     break;
                 case AnimationState.KnifeTrowAerial:
-                    if(_frame < 26)
+                    NPC.frameCounter += 0.1f;
+                    if (_frame < 26)
                     {
                         _frame = 26;
                     }
@@ -208,6 +224,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                     }
                     break;
                 case AnimationState.KnifeThrowGrounded:
+                    NPC.frameCounter += 0.1f;
                     if (_frame < 42)
                     {
                         _frame = 42;
@@ -225,22 +242,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         }
 
 
-        private void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawPos = NPC.Center - screenPos;
-            SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            Vector2 drawOrigin = NPC.frame.Size() / 2;
-            spriteBatch.Draw(texture, drawPos, NPC.frame, Color.White.MultiplyRGB(drawColor), NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
-        }
-
-
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            Draw(spriteBatch, screenPos, drawColor);
-            return false;
-        }
-
+     
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             return base.CanHitPlayer(target, ref cooldownSlot) && (State == AIState.SpinDash);
@@ -274,7 +276,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         public override void AI()
         {
             base.AI();
-            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.3f);
             _scale = Vector2.Lerp(_scale, TargetScale, 0.1f);
             if (NPC.life < NPC.lifeMax / 2f && !_phase2 && State != AIState.Stunned)
             {
@@ -294,6 +296,9 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                     break;
                 case AIState.SpinDash:
                     AI_SpinDash();
+                    break;
+                case AIState.SpinDashEnd:
+                    AI_SpinDashEnd();
                     break;
                 case AIState.LeafGlideJump:
                     AI_LeafGlideJump();
@@ -345,7 +350,14 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 
         private void AI_Idle()
         {
+
+            if (!_namePlate)
+            {
+                ShowNamePlate();
+                _namePlate = true;
+            }
             Timer++;
+            _afterImageTime *= 0.9f;
             _animation = AnimationState.IdleDance;
             TargetOutlineColor = Color.Transparent;
             NPC.TargetClosest();
@@ -353,7 +365,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             {
                 NPC.spriteDirection = -NPC.direction;
             }
-
+            NPC.noGravity = false;
             //During idle she just dances around in place moving side to side for a while;
             if (Timer % 60 == 0)
             {
@@ -389,10 +401,12 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             if (Timer >= 240)
             {
                 TargetScale = Vector2.One;
-                //  ChooseAttack();
-                SwitchState(AIState.SpinDashWindup);
+                ChooseAttack();
+                
             }
         }
+
+
 
         #region Spin Dash
         private void AI_SpinDashWindup()
@@ -401,19 +415,66 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             if (Timer == 1)
             {
                 //Set dash velocity
-                _dashXSpeed = NPC.direction * 15;
-            }
+                _dashXSpeed = NPC.direction * 21;
 
-            _animation = AnimationState.SpinDanceStartup;
+                //Tiny hop should look nice
+                NPC.velocity.Y = -8;
+
+
+                //We're finally adding sound effects!
+                SoundStyle leafSound = Main.rand.NextBool(2) ? AssetRegistry.Sounds.Nature.LeafRustle1 : AssetRegistry.Sounds.Nature.LeafRustle2;
+                leafSound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(leafSound, NPC.position);
+
+                SoundStyle voice1 = AssetRegistry.Sounds.Minerva.MinervaVoice1;
+                SoundEngine.PlaySound(voice1, NPC.position);
+
+                CreateJumpParticle();
+                CreateIvythornSplash(NPC.Bottom, -Vector2.UnitY * 4);
+                _afterImageTime = 0.5f;
+                TargetScale = new Vector2(0.8f, 1.4f);
+            }
+            TargetScale = Vector2.Lerp(TargetScale, Vector2.One, 0.1f);
+            _afterImageTime *= 0.9f;
+
+
             TargetOutlineColor = Color.Yellow;
 
 
+            //Create some gores
+            if(Timer % 5 == 0)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Grass);
+            }
+
+
+            //Slow down to get ready for the dash
             float readyTime = 35;
             float interpolant = Timer / (readyTime - 5f);
             float ease = EasingFunction.InOutSine(interpolant);
             float targetSpeed = MathHelper.Lerp(-NPC.direction * 3, 0, ease);
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetSpeed, 0.1f);
-            if (Timer >= readyTime)
+
+            if(Timer < readyTime / 2f)
+            {
+                NPC.rotation += NPC.direction * 0.12f;
+                _animation = AnimationState.SpinDanceStartup;
+            } else
+            {
+                NPC.rotation += NPC.direction * 0.2f;
+                _animation = AnimationState.KnifeSpin;
+            }
+
+            if(MultiplayerHelper.IsHost && Timer % 5 == 0 && Timer < 12)
+            {
+                Vector2 velocity = MyTarget.Center - NPC.Center;
+                velocity = velocity.SafeNormalize(Vector2.Zero);
+                velocity *= 4;
+                Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity, 
+                    ModContent.ProjectileType<LeafBlade>(), LeafBladeDamage, 1, Main.myPlayer);
+            }
+            NPC.rotation = MathHelper.WrapAngle(NPC.rotation);
+            if (Timer >= readyTime && NPC.collideY)
             {
                 SwitchState(AIState.SpinDash);
             }
@@ -421,25 +482,130 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 
         private void AI_SpinDash()
         {
+            //After image effect to make it look cooler
+            _afterImageTime = MathHelper.Lerp(_afterImageTime, 1f, 0.1f);
             Timer++;
             if (Timer == 1)
             {
+               
+                SoundStyle voice1 = AssetRegistry.Sounds.Minerva.MinervaVoice2;
+                SoundEngine.PlaySound(voice1, NPC.position);
+                SoundStyle voice21 = AssetRegistry.Sounds.Minerva.MinervaSpin;
+                SoundEngine.PlaySound(voice21, NPC.position);
+                int gore1 = GoreHelper.TypeFallingLeafWhite;
+                int gore2 = GoreHelper.TypeFallingLeafRed;
+                for (int i = 0; i < 2; i++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                    Gore.NewGore(SourceFromThis, NPC.Center, velocity, gore1);
+
+                    velocity = velocity.RotatedByRandom(MathHelper.TwoPi);
+                    Gore.NewGore(SourceFromThis, NPC.Center, velocity, gore2);
+                }
 
             }
 
-            if(Timer % 4 == 0)
+            if (Timer % 4 == 0)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Grass);
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.WoodFurniture);
+                Particle.NewParticle<EmberParticle>(NPC.Bottom, -Vector2.UnitY, newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+            }
+
+            if(Timer % 3 == 0)
+            {
+                int gore1 = GoreHelper.TypeFallingLeafWhite;
+                int gore2 = GoreHelper.TypeFallingLeafRed;
+                for (int i = 0; i < 2; i++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                    Gore.NewGore(SourceFromThis, NPC.Center + Main.rand.NextVector2Circular(4, 4), velocity, gore1);
+                }
+
             }
             TargetOutlineColor = Color.Red;
             _animation = AnimationState.SpinDance;
 
-            float dashTicks = 60;
+            float dashTicks = 55;
             float interpolant = Timer / dashTicks;
-            float ease = EasingFunction.InExpo(interpolant);
-            NPC.velocity.X = MathHelper.Lerp(_dashXSpeed, 0f, ease);
-            if (Timer >= dashTicks)
+
+            //Anticipation ease
+            //https://easingwizard.com/
+            Vector2 control1 = new Vector2(0.8f, -0.4f);
+            Vector2 control2 = new Vector2(0.5f, 1f);
+            float easing = EasingFunction.BezierEase(interpolant, control1, control2);
+            NPC.velocity.X = MathHelper.Lerp(-_dashXSpeed / 3f, _dashXSpeed, easing);
+
+
+            //Create a little bit of a lean towards the direction she's moving
+            float targetRotation = NPC.velocity.X * 0.025f;
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRotation, 0.1f);
+            NPC.rotation = MathHelper.WrapAngle(NPC.rotation);
+            if (Timer >= dashTicks + 10)
+            {
+                SwitchState(AIState.SpinDashEnd);
+            }
+        }
+
+        private void AI_SpinDashEnd()
+        {
+            //After image effect to make it look cooler
+            _afterImageTime *= 0.92f;
+            Timer++;
+            if (Timer == 1)
+            {
+                SoundStyle voice1 = AssetRegistry.Sounds.Minerva.MinervaVoice3;
+                SoundEngine.PlaySound(voice1, NPC.position);
+
+                NPC.velocity.Y = -8;
+
+                //We're finally adding sound effects!
+                CreateJumpParticle();
+                CreateIvythornSplash(NPC.Bottom, -Vector2.UnitY * 4);
+                _afterImageTime = 0.5f;
+                TargetScale = new Vector2(0.8f, 1.4f);
+            }
+
+            TargetScale = Vector2.Lerp(TargetScale, Vector2.One, 0.1f);
+            TargetOutlineColor = Color.Transparent;
+
+
+
+            NPC.velocity.X *= 0.97f;
+  
+
+            float endTicks = 60;
+
+            if (Timer < endTicks / 2f)
+            {
+                if (MultiplayerHelper.IsHost && Timer == 18)
+                {
+                    Vector2 velocity = MyTarget.Center - NPC.Center;
+                    velocity = velocity.SafeNormalize(Vector2.Zero);
+                    velocity *= 13;
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
+                        ModContent.ProjectileType<LeafBlade>(), LeafBladeDamage, 1, Main.myPlayer, ai1: 1);
+                }
+                _animation = AnimationState.KnifeSpin;
+                NPC.rotation += NPC.direction * 0.2f;
+            }
+            else if (NPC.velocity.Y > 0)
+            {
+                _animation = AnimationState.LeafGlide;
+                NPC.rotation = NPC.velocity.X * 0.05f;
+                NPC.noGravity = true;
+                if(NPC.velocity.Y < 5)
+                    NPC.velocity.Y += 0.5f;
+                if(Timer % 5 == 0)
+                {
+                    CreateJumpParticle();
+                }
+
+            }
+          
+
+            //Create a little bit of a lean towards the direction she's moving
+            if (Timer >= 5 && NPC.collideY)
             {
                 SwitchState(AIState.Idle);
             }
@@ -450,29 +616,62 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         #region Leaf Glide
         private void AI_LeafGlideJump()
         {
-            _animation = AnimationState.LeafJump;
+      
             Timer++;
             TargetOutlineColor = Color.Yellow;
             if (Timer == 1)
             {
+                SoundStyle voice1 = AssetRegistry.Sounds.Minerva.MinervaVoice2;
+                SoundEngine.PlaySound(voice1, NPC.position);
+                SoundStyle voice21 = AssetRegistry.Sounds.Minerva.MinervaSpin;
+                SoundEngine.PlaySound(voice21, NPC.position);
+                int gore1 = GoreHelper.TypeFallingLeafWhite;
+                int gore2 = GoreHelper.TypeFallingLeafRed;
+                for (int i = 0; i < 2; i++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                    Gore.NewGore(SourceFromThis, NPC.Center, velocity, gore1);
+
+                    velocity = velocity.RotatedByRandom(MathHelper.TwoPi);
+                    Gore.NewGore(SourceFromThis, NPC.Center, velocity, gore2);
+                }
+
+                CreateJumpParticle();
                 NPC.velocity.X = NPC.direction;
-                NPC.velocity.Y = -25;
-                TargetScale = new Vector2(0.9f, 1.1f);
+                NPC.velocity.Y = -21;
+                TargetScale = new Vector2(0.9f, 1.31f);
             }
             else if (Timer > 4 && Timer < 15)
             {
+                _animation = AnimationState.KnifeJump;
+
                 NPC.velocity.Y *= 0.98f;
             }
             else if (Timer < 25)
             {
+
+                if (Timer % 3 == 0)
+                {
+                    int gore1 = GoreHelper.TypeFallingLeafWhite;
+                    int gore2 = GoreHelper.TypeFallingLeafRed;
+                    for (int i = 0; i < 2; i++)
+                    {
+                        Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                        Gore.NewGore(SourceFromThis, NPC.Center + Main.rand.NextVector2Circular(4, 4), velocity, gore1);
+                    }
+
+                }
                 TargetScale = Vector2.One;
                 if (NPC.velocity.Y < 0.5f)
                 {
                     NPC.velocity.Y += 1;
                 }
+              
             }
             else
             {
+                _animation = AnimationState.LeafJump;
+          
                 NPC.velocity.Y *= 0.98f;
                 if (Timer >= 30)
                 {
@@ -485,19 +684,30 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         {
             _animation = AnimationState.LeafGlide;
             Timer++;
-            TargetOutlineColor = Color.Red;
+            if(Timer == 1)
+            {
+                SoundStyle voice1 = AssetRegistry.Sounds.Minerva.MinervaLaugh;
+                SoundEngine.PlaySound(voice1, NPC.position);
+            }
+            TargetOutlineColor = Color.Lerp(Color.Transparent,
+                Color.Lerp(Color.Transparent, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 24)), Timer % 60 / 60f);
 
             float targetVelocityX = NPC.direction * 0.4f;
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocityX, 0.1f);
             NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, 0.2f, 0.1f);
             NPC.rotation = NPC.velocity.X * 0.05f;
+            NPC.noGravity = true;
 
-            if (Timer % 70 == 0)
+            if (Timer % 60 == 0)
             {
+                NPC.velocity.X = -NPC.direction * 3;
+                SoundStyle voice1 = AssetRegistry.Sounds.Minerva.MinervaVoice1;
+                SoundEngine.PlaySound(voice1, NPC.position);
                 if (MultiplayerHelper.IsHost)
                 {
-                    Vector2 leftVelocity = -Vector2.UnitX * 10;
-                    Vector2 rightVelocity = Vector2.UnitX * 10;
+                    float speedModifier = MathHelper.Lerp(0.5f, 2f, Timer / 240f);
+                    Vector2 leftVelocity = -Vector2.UnitX * 10 * speedModifier;
+                    Vector2 rightVelocity = Vector2.UnitX * 10 * speedModifier;
                     var source = NPC.GetSource_FromThis();
                     int projType = ModContent.ProjectileType<LeafBoomerang>();
                     Projectile.NewProjectile(source, NPC.Center, leftVelocity, projType, LeafBoomerangDamage, 1, Main.myPlayer);
@@ -518,6 +728,16 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             {
                 NPC.velocity.Y = 1;
             }
+            if (Timer % 3 == 0)
+            {
+                int gore1 = GoreHelper.TypeFallingLeafWhite;
+                int gore2 = GoreHelper.TypeFallingLeafRed;
+                for (int i = 0; i < 1; i++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                    Gore.NewGore(SourceFromThis, NPC.Center + Main.rand.NextVector2Circular(4, 4), velocity, gore1);
+                }
+            }
 
             if (NPC.collideY || Timer >= 30)
             {
@@ -525,17 +745,22 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             }
         }
         #endregion
+     
         #region Aerial Knife Throw
         private void AI_KnifeThrowJump()
         {
             _animation = AnimationState.KnifeJump;
             Timer++;
             TargetOutlineColor = Color.Yellow;
+            NPC.noGravity = false;
             if (Timer == 1)
             {
                 NPC.velocity.X = NPC.direction;
-                NPC.velocity.Y = -15;
-                TargetScale = new Vector2(0.9f, 1.1f);
+                NPC.velocity.Y = -14;
+                TargetScale = new Vector2(0.9f, 1.5f);
+                CreateJumpParticle();
+                CreateIvythornSplash(NPC.Bottom, -Vector2.UnitY * 2);
+
             }
             else if (Timer > 4 && Timer < 15)
             {
@@ -544,10 +769,6 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             else if (Timer < 25)
             {
                 TargetScale = Vector2.One;
-                if (NPC.velocity.Y < 1)
-                {
-                    NPC.velocity.Y += 1;
-                }
             }
             else
             {
@@ -562,10 +783,43 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         private void AI_KnifeThrowSpin()
         {
             _animation = AnimationState.KnifeSpin;
+            _afterImageTime = MathHelper.Lerp(_afterImageTime, 1f, 0.1f);
+
             Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.velocity.X = NPC.direction;
+                SoundStyle voice1 = AssetRegistry.Sounds.Minerva.MinervaVoice2;
+                SoundEngine.PlaySound(voice1, NPC.position);
+
+                SoundStyle spins2 = AssetRegistry.Sounds.Minerva.MinervaSpin;
+                SoundEngine.PlaySound(spins2, NPC.position);
+            }
+            if (Timer % 3 == 0)
+            {
+                int gore1 = GoreHelper.TypeFallingLeafWhite;
+                int gore2 = GoreHelper.TypeFallingLeafRed;
+                for (int i = 0; i < 2; i++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                    Gore.NewGore(SourceFromThis, NPC.Center + Main.rand.NextVector2Circular(4, 4), velocity, gore1);
+                }
+
+            }
+
+            if(Timer % 5 == 0)
+            {
+                var p = Particle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity);
+                p.fadeToColor = Color.DarkGreen;
+                p.shrink = true;
+                p.color *= 0.8f;
+                p.Scale *= 0.6f;
+            }
             TargetOutlineColor = Color.Yellow;
             NPC.velocity.Y *= 0.9f;
-            NPC.velocity.X *= 0.9f;
+            NPC.velocity.X *= 1.1f; 
+            NPC.rotation += NPC.direction * 0.15f;
             if (Timer >= 30)
             {
                 SwitchState(AIState.KnifeThrowDaggers);
@@ -577,9 +831,13 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             _animation = AnimationState.KnifeTrowAerial;
             Timer++;
             TargetOutlineColor = Color.Red;
-            NPC.velocity.Y = 1;
-            NPC.velocity.Y *= 0.8f;
-            if (Timer >= 15)
+
+            if(Timer == 1)
+            {
+                NPC.rotation = NPC.direction * 0.05f;
+            }
+          
+            if (Timer == 7)
             {
                 if (MultiplayerHelper.IsHost)
                 {
@@ -588,15 +846,57 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                     int projType = ModContent.ProjectileType<LeafBlade>();
                     Projectile.NewProjectile(source, NPC.Center, rightVelocity, projType, LeafBoomerangDamage, 1, Main.myPlayer);
                 }
-                Cycle++;
-                if (Cycle >= 3)
+                SoundStyle voice1 = AssetRegistry.Sounds.Minerva.MinervaVoice1;
+                SoundEngine.PlaySound(voice1, NPC.position);
+                if (MultiplayerHelper.IsHost)
                 {
-                    SwitchState(AIState.LeafGlideLand);
+                    Vector2 leftVelocity = Vector2.UnitX * 7 * -NPC.direction;
+                    var source = NPC.GetSource_FromThis();
+                    int projType = ModContent.ProjectileType<LeafBoomerang>();
+                    Projectile.NewProjectile(source, NPC.Center, leftVelocity, projType, LeafBoomerangDamage, 1, Main.myPlayer);
+              
                 }
-                else
+            }
+
+            if(Timer == 15)
+            {
+                if (MultiplayerHelper.IsHost)
                 {
-                    SwitchState(AIState.KnifeThrowSpin);
+                    Vector2 rightVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 15;
+                    var source = NPC.GetSource_FromThis();
+                    int projType = ModContent.ProjectileType<LeafBlade>();
+                    Projectile.NewProjectile(source, NPC.Center, rightVelocity, projType, LeafBoomerangDamage, 1, Main.myPlayer);
                 }
+            }
+            if(Timer >= 15)
+            {
+                NPC.rotation -= NPC.direction * NPC.velocity.Length() * 0.0025f;
+                NPC.noGravity = true;
+                if(NPC.velocity.Y < 5)
+                    NPC.velocity.Y += 0.5f;
+                if (NPC.collideY)
+                {
+                    SoundStyle voice = AssetRegistry.Sounds.Minerva.MinervaVoice3;
+                    voice.PitchVariance = 0.3f;
+                    SoundEngine.PlaySound(voice, NPC.position);
+
+                    CreateIvythornSplash(NPC.position, NPC.direction * Vector2.UnitX);
+                    _scale = new Vector2(1.5f, 0.85f);
+                    Cycle++;
+                    if (Cycle >= 3)
+                    {
+                        SwitchState(AIState.LeafGlideLand);
+                    }
+                    else
+                    {
+                        SwitchState(AIState.KnifeThrowJump);
+                    }
+                }
+            }
+            else
+            {
+                NPC.velocity.Y = 1;
+                NPC.velocity.Y *= 0.8f;
             }
         }
         #endregion
@@ -606,6 +906,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         {
             _animation = AnimationState.Bow;
             Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle spins2 = AssetRegistry.Sounds.Minerva.MinervaLaugh;
+                SoundEngine.PlaySound(spins2, NPC.position);
+            }
             TargetOutlineColor = Color.Yellow;
             NPC.velocity.X = 0;
             if (Timer >= 60)
@@ -618,8 +923,25 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         {
             _animation = AnimationState.GroundedKnivesWindup;
             Timer++;
+            if(Timer == 1)
+            {
+
+
+                if (Cycle == 2)
+                {
+                    SoundStyle voice3 = AssetRegistry.Sounds.Minerva.MinervaVoice3;
+                    SoundEngine.PlaySound(voice3, NPC.position);
+                }
+                else
+                {
+                    SoundStyle spins2 = AssetRegistry.Sounds.Minerva.MinervaVoice1;
+                    SoundEngine.PlaySound(spins2, NPC.position);
+
+                }
+            }
             TargetOutlineColor = Color.Yellow;
-            NPC.velocity.X = 0;
+            NPC.velocity.X *= 0.93f;
+            NPC.rotation = NPC.velocity.X * 0.05f;
             if (Timer >= 30)
             {
                 SwitchState(AIState.BowDaggerThrow);
@@ -630,17 +952,27 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         {
             _animation = AnimationState.KnifeThrowGrounded;
             Timer++;
-            TargetOutlineColor = Color.Red;
-            if (Timer >= 15)
+            if(Timer == 1)
             {
-                NPC.velocity.X = -NPC.direction;
+                NPC.velocity.X = NPC.direction * 2;
                 if (MultiplayerHelper.IsHost)
                 {
                     Vector2 rightVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 15;
-                    var source = NPC.GetSource_FromThis();
+
+                     var source = NPC.GetSource_FromThis();
                     int projType = ModContent.ProjectileType<LeafBlade>();
-                    Projectile.NewProjectile(source, NPC.Center, rightVelocity, projType, LeafBladeDamage, 1, Main.myPlayer);
+                    Projectile.NewProjectile(source, NPC.Center, 
+                        rightVelocity, projType, LeafBladeDamage, 1, Main.myPlayer, ai1: 1);
+                    Projectile.NewProjectile(source, NPC.Center,
+                        rightVelocity.RotatedBy(MathHelper.ToRadians(-22)), projType, LeafBladeDamage, 1, Main.myPlayer, ai1: 1);
+                    Projectile.NewProjectile(source, NPC.Center,
+                          rightVelocity.RotatedBy(MathHelper.ToRadians(22)), projType, LeafBladeDamage, 1, Main.myPlayer, ai1: 1);
                 }
+            }
+            TargetOutlineColor = Color.Red;
+            if (Timer >= 12)
+            {
+                _resetAnimation = true;
                 Cycle++;
                 if (Cycle >= 3)
                 {
@@ -712,6 +1044,94 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                 }
             }
         }
+        #region Draw Code
+        private GlowDonutParticle CreateJumpParticle()
+        {
+            var jumpParticle = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+            jumpParticle.Scale *= 1;
+            jumpParticle.fadeToColor = Color.DarkGreen;
+            jumpParticle.shrink = true;
+            return jumpParticle;
+
+        }
+        private void CreateIvythornSplash(Vector2 position, Vector2 velocity)
+        {
+            int[] gores = AutoGoreLoader.FindGores("IvynWood");
+            foreach (int g in gores)
+            {
+                Gore.NewGore(NPC.GetSource_FromThis(),
+                    position,
+                    velocity.RotatedByRandom(MathHelper.ToRadians(20)), g, 1f);
+            }
+            SoundStyle soundStyle = AssetRegistry.Sounds.Magic.VineWrap;
+            soundStyle.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(soundStyle, position);
+
+            for (float f = 0; f < 16; f++)
+            {
+                Vector2 vel = velocity.RotatedByRandom(MathHelper.ToRadians(30));
+                vel *= Main.rand.NextFloat(0f, 1f);
+                Dust.NewDustPerfect(position, DustID.t_LivingWood, vel, newColor: Color.White);
+            }
+        }
+
+        private float WidthFunction(float completionRatio)
+        {
+            return MathHelper.SmoothStep(48, 32, completionRatio);
+        }
+        private Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.White * 0.5f, Color.White * 0f, completionRatio) * _afterImageTime;
+        }
+
+        private void DrawWindTrailing()
+        {
+            var shader = MagicNormalShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.Dashtrail;
+            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 0.5f;
+            shader.Repeats = 1f;
+            //This just applis the shader changes
+            TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, ColorFunction, WidthFunction, shader, offset: NPC.Size / 2);
+        }
+        private void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPos = NPC.Center - screenPos;
+            SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Vector2 drawOrigin = NPC.frame.Size() / 2;
+            spriteBatch.Draw(texture, drawPos, NPC.frame, Color.White.MultiplyRGBA(drawColor), NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
+        }
+
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            DrawWindTrailing();
+            DrawAfterImage(spriteBatch, screenPos);
+            Draw(spriteBatch, screenPos, drawColor);
+            return false;
+        }
+
+        private void DrawAfterImage(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawOrigin = NPC.frame.Size() / 2f;
+            for (int i = 0; i < NPC.oldPos.Length; i++)
+            {
+                Vector2 oldPos = NPC.oldPos[i];
+                Vector2 oldDrawPos = oldPos - screenPos;
+
+                float f = i;
+                float interpolant = f / (float)NPC.oldPos.Length;
+                Color fadeColor = Color.Lerp(Color.White, Color.Transparent, interpolant);
+                fadeColor *= _afterImageTime;
+                oldDrawPos += NPC.Size / 2f;
+                fadeColor *= 0.1f;
+                spriteBatch.Draw(texture, oldDrawPos, NPC.frame, fadeColor, NPC.oldRot[i], drawOrigin, NPC.scale, SpriteEffects.None, 0f);
+            }
+        }
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
@@ -724,6 +1144,6 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             Draw(spriteBatch, screenPos - v, _outlineColor);
 
         }
+        #endregion
     }
-
 }

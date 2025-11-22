@@ -50,6 +50,14 @@ namespace Stellamod.Assets
                 public static SoundStyle STARWALK = new SoundStyle($"{Path}STARBOMBER/STARWALK");
                 public static SoundStyle STARSTEP = new SoundStyle($"{Path}STARBOMBER/STARSTEP");
             }
+            public static class Minerva
+            {
+                public static SoundStyle MinervaVoice1 = new SoundStyle($"{Path}Minerva/MinervaVoice1");
+                public static SoundStyle MinervaVoice2 = new SoundStyle($"{Path}Minerva/MinervaVoice2");
+                public static SoundStyle MinervaVoice3 = new SoundStyle($"{Path}Minerva/MinervaVoice3");
+                public static SoundStyle MinervaLaugh = new SoundStyle($"{Path}Minerva/MinervaLaugh");
+                public static SoundStyle MinervaSpin = new SoundStyle($"{Path}Minerva/MinervaSpin");
+            }
 
             public static class Bishinine
             {
