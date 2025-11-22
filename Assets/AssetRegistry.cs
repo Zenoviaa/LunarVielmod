@@ -58,6 +58,7 @@ namespace Stellamod.Assets
                 public static SoundStyle MinervaLaugh = new SoundStyle($"{Path}Minerva/MinervaLaugh");
                 public static SoundStyle MinervaSpin = new SoundStyle($"{Path}Minerva/MinervaSpin");
                 public static SoundStyle MinervaDeath = new SoundStyle($"{Path}Minerva/MinervaDeath");
+                public static SoundStyle Stunned = new SoundStyle($"{Path}Minerva/Stunned");
             }
 
             public static class Bishinine

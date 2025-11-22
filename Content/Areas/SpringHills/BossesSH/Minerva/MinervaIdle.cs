@@ -69,7 +69,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 
         public override void FindFrame(int frameHeight)
         {
-            NPC.frameCounter += 0.2f;
+            NPC.frameCounter += 0.1f;
             if (NPC.frameCounter >= 1f)
             {
                 _frame++;

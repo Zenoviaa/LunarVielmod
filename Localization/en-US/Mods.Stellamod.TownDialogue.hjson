@@ -144,7 +144,7 @@ JiitasStartDialogue: {
 	Line2:
 		'''
 		[PORTRAIT=Jiitas]
-		You don’t want to worship Sirestias, our great and eldest???? 
+		You donï¿½t want to worship Sirestias, our great and eldest???? 
 		That cannot stand, not under my rule...
 		'''
 	Line3:
@@ -155,10 +155,11 @@ JiitasStartDialogue: {
 	Line4:
 		'''
 		[PORTRAIT=Jiitas]
-		I’m gonna get ya.
+		Iï¿½m gonna get ya.
 		'''
 	DisplayName: I don't want to worship...
 }
+
 MinervaStartDialogue: {
 	Line0:
 		'''
@@ -183,4 +184,5 @@ MinervaStartDialogue: {
 		'''
 	DisplayName: Trample Garden
 }
+
 BaseDialogue.Line0: ""

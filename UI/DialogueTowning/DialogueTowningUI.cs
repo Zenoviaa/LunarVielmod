@@ -263,6 +263,7 @@ namespace Stellamod.UI.DialogueTowning
         public override void OnInitialize()
         {
             base.OnInitialize();
+            _state = DialogueBoxState.Expanding;
             Width.Pixels = 700;
             Height.Pixels = 200;
             Left.Pixels = RelativeLeft;
@@ -363,6 +364,7 @@ namespace Stellamod.UI.DialogueTowning
 
         private void AI_Speaking(GameTime gameTime)
         {
+            _scale = 1f;
             if (!IsFinishedTyping())
             {
                 _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
