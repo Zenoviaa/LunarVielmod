@@ -304,7 +304,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             else
             {
                 position = Vector3.Zero;
+                if (children.Count > 0)
+                {
+                    Vector3 rotationVector = forwardVectors[0];
+                    angle = MathF.Atan2(rotationVector.Y, rotationVector.X);
 
+                }
             }
 
    
@@ -758,11 +763,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             base.AI();
 
             NPC.velocity.X *= 0;
+            AI_DebugRig();
             UpdateRig();
         }
 
 
-        private void UpdateRig()
+        private void AI_DebugRig()
         {
             if (Main.mouseRight)
             {
@@ -775,6 +781,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                 Main.mouseLeftRelease = false;
             }
 
+            Rig.rootSegment.zAxisRotation += 0.025f;
             Rig.frontFrontLeg[0].zAxisRotation += 0.05f;
             Rig.frontFrontLeg[1].zAxisRotation = 0f;
             if (Main.mouseMiddle)
@@ -784,15 +791,17 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                 Rig.rootSegment.zAxisRotation = 0;
 
             }
+        }
 
- 
-            Rig.rootSegment.worldPosition = NPC.Center;
+        private void UpdateRig()
+        {
+
 
             //Calling update twice sine it has to calculate the new x axis position
             //Yeah this is technically inefficient but it's too inexpensive to matter, quick and dirty solution :p
+
+            Rig.rootSegment.worldPosition = NPC.Center;
             Rig.Update();
-
-
         }
 
         public override void OnKill()
