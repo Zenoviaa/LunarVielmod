@@ -8,6 +8,7 @@ namespace Stellamod.Helpers
     public enum DownedBossFlag : byte
     {
         Woodland_Ravager = 0,
+        Minerva=1
     }
 
     public class DownedBossTracker : ModSystem

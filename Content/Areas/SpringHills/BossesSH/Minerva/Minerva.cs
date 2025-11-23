@@ -1124,7 +1124,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         public override void OnKill()
         {
             base.OnKill();
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedMinervaBoss, -1);
+            DownedBossTracker.ClearFlag(DownedBossFlag.Minerva);
         }
 
         private void DoRandomAttack()
