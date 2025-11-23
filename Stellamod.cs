@@ -115,7 +115,6 @@ namespace Stellamod
                 Filters.Scene["Stellamod:Starbloom"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.3f, 0.8f).UseOpacity(0.375f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Govheil"] = new Filter(new AcidScreenShaderData("FilterMiniTower").UseColor(1f, 0.7f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:AuroreanStars"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(1.3f, 0.2f, 0.2f).UseOpacity(0.275f), EffectPriority.Medium);
-                Filters.Scene["Stellamod:Gintzing"] = new Filter(new GintzeScreenShaderData("FilterMiniTower").UseColor(0.4f, 0.4f, 0.6f).UseOpacity(0.275f), EffectPriority.Medium);
 
                 Filters.Scene["Stellamod:Illuria"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
 
