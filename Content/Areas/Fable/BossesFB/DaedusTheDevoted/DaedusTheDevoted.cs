@@ -454,7 +454,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             Jack_Fire, // P1
             Phase_2_Transition,
             Death,
-            Tired
+            Tired,
+            Despawn
         }
 
         private ref float Timer => ref NPC.ai[0];
@@ -733,10 +734,17 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
+                if(!NPC.HasValidTarget && State != AIState.Despawn)
+                {
+                    SwitchState(AIState.Despawn);
+                }
             }
 
             switch (State)
             {
+                case AIState.Despawn:
+                    AI_Despawn();
+                    break;
                 case AIState.Tired:
                     AI_Tired();
                     break;
@@ -843,23 +851,23 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             }
         }
 
+        private void AI_Despawn()
+        {
+            Timer++;
+            ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
+            FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
+            NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, -5, 0.1f);
+            NPC.velocity.X *= 0.9f;
+            NPC.rotation = NPC.velocity.X * 0.05f;
+            if(Timer >= 100)
+            {
+                NPC.active = false;
+            }
+        }
+
         private void AI_Tired()
         {
             Timer++;
-         
-            if (!NPC.HasValidTarget)
-            {
-                NPC.TargetClosest();
-              
-                if (!NPC.HasValidTarget)
-                {
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, -8), 0.025f);
-                    NPC.EncourageDespawn(60);
-                    return;
-                }
-              
-            }
-
             ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
             FaceSegment.Animation = DaedusFaceSegment.AnimationState.Scared;
             TargetOutlineColor = Color.Transparent;
@@ -2162,7 +2170,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
         public override void OnKill()
         {
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedDaedusBoss, -1);
+            DownedBossTracker.ClearFlag(DownedBossFlag.Daedus);
         }
     }
 }
