@@ -2,8 +2,6 @@
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
-using Stellamod.NPCs.Bosses.GothiviaNRek.Gothivia;
-using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
@@ -70,27 +68,6 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
         public override bool RightClick(int i, int j)
         {
             Player player = Main.LocalPlayer;
-            if (!NPC.AnyNPCs(ModContent.NPCType<Gothiviab>())
-                && !NPC.AnyNPCs(ModContent.NPCType<Rek>())
-                && !NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))
-            {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    int npcID = NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, ModContent.NPCType<Gothiviabb>());
-                    Main.npc[npcID].netUpdate2 = true;
-                }
-                else
-                {
-                    if (Main.netMode == NetmodeID.SinglePlayer)
-                        return false;
-
-                    MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Gothiviabb>(), i * 16, (j * 16));
-                }
-            }
-            else if (NPC.AnyNPCs(ModContent.NPCType<Gothiviab>()) || NPC.AnyNPCs(ModContent.NPCType<Gothiviabb>()))
-            {
-                Main.NewText("...", Color.Gold);
-            }
 
             return true;
         }

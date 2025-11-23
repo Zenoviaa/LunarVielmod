@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Dusts;
 using Stellamod.Items.Weapons.Mage.Stein;
-using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.Trails;
 using System;
 using Terraria;
@@ -203,7 +202,7 @@ namespace Stellamod.Projectiles.Steins
                         if (MultiplayerHelper.IsHost)
                         {
                             var entitySource = Projectile.GetSource_FromThis();
-                            NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
+                          //  NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
                         }
 
 
@@ -214,11 +213,12 @@ namespace Stellamod.Projectiles.Steins
                             float rot2 = MathHelper.TwoPi * progress;
                             Vector2 direction2 = Vector2.UnitY.RotatedBy(rot2);
                             Vector2 velocity = direction2 * 10;
+                            /*
                             int projectile = Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, velocity.X, velocity.Y, ModContent.ProjectileType<DreadSineSkull>(), Projectile.damage / 2, 0f, Owner: Main.myPlayer);
                             Main.projectile[projectile].timeLeft = 300;
                             Projectile ichor = Main.projectile[projectile];
                             ichor.hostile = false;
-                            ichor.friendly = true;
+                            ichor.friendly = true;*/
                         }
 
 
@@ -245,7 +245,7 @@ namespace Stellamod.Projectiles.Steins
                         if (MultiplayerHelper.IsHost)
                         {
                             var entitySource = Projectile.GetSource_FromThis();
-                            NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
+                         //   NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
                         }
 
 
@@ -256,11 +256,12 @@ namespace Stellamod.Projectiles.Steins
                             float rot2 = MathHelper.TwoPi * progress;
                             Vector2 direction2 = Vector2.UnitY.RotatedBy(rot2);
                             Vector2 velocity = direction2 * 10;
+                            /*
                             int projectile = Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, velocity.X, velocity.Y, ModContent.ProjectileType<DreadSineSkull>(), Projectile.damage / 2, 0f, Owner: Main.myPlayer);
                             Main.projectile[projectile].timeLeft = 300;
                             Projectile ichor = Main.projectile[projectile];
                             ichor.hostile = false;
-                            ichor.friendly = true;
+                            ichor.friendly = true;*/
                         }
 
 
@@ -288,7 +289,7 @@ namespace Stellamod.Projectiles.Steins
                         if (MultiplayerHelper.IsHost)
                         {
                             var entitySource = Projectile.GetSource_FromThis();
-                            NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
+                       //     NPC.NewNPC(entitySource, (int)player.Center.X, (int)player.Center.Y, ModContent.NPCType<DreadMirePentagramV2>());
                         }
 
 
@@ -299,11 +300,12 @@ namespace Stellamod.Projectiles.Steins
                             float rot2 = MathHelper.TwoPi * progress;
                             Vector2 direction2 = Vector2.UnitY.RotatedBy(rot2);
                             Vector2 velocity = direction2 * 10;
+                            /*
                             int projectile = Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center.X, player.Center.Y, velocity.X, velocity.Y, ModContent.ProjectileType<DreadSineSkull>(), Projectile.damage / 2, 0f, Owner: Main.myPlayer);
                             Main.projectile[projectile].timeLeft = 300;
                             Projectile ichor = Main.projectile[projectile];
                             ichor.hostile = false;
-                            ichor.friendly = true;
+                            ichor.friendly = true;*/
                         }
 
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.NPCs.Bosses.DreadMire;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -97,7 +96,6 @@ namespace Stellamod.NPCs.Bosses.Veiizal
                     LightPos.Y = NPC.position.Y - 500;
                     var EntitySource = NPC.GetSource_FromThis();
                     Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y, 0, 0, ProjectileType<Veiizallighting>(), 40, 1, Main.myPlayer, 0, 0);
-                    Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y, 0, 0, ProjectileType<DreadSpawnEffect>(), 40, 1, Main.myPlayer, 0, 0);
                 }
                 if (NPC.ai[0] >= 10)
                 {

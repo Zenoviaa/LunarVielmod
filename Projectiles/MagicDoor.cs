@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-
-using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -49,6 +47,7 @@ namespace Stellamod.Projectiles
             Projectile.scale = easedProgress;
             if (easedProgress >= 0.5f && !_hasSpawned && Main.myPlayer == Projectile.owner)
             {
+                /*
                 if (MultiplayerHelper.IsHost)
                 {
                     NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y, ModContent.NPCType<SupernovaFragment>());
@@ -58,7 +57,7 @@ namespace Stellamod.Projectiles
                     MultiplayerHelper.SpawnBossFromClient((byte)Projectile.owner,
                         ModContent.NPCType<SupernovaFragment>(), (int)Projectile.Center.X, (int)Projectile.Center.Y);
                 }
-
+                */
                 _hasSpawned = true;
             }
             if (Timer >= 144)

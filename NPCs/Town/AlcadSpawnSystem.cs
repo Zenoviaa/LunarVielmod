@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.DreadMire.Monolith;
 using Stellamod.NPCs.Bosses.Ereshkigal;
 using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
@@ -399,44 +398,9 @@ namespace Stellamod.NPCs.Town
                         (int)IshPinSpawnWorld.X, (int)IshPinSpawnWorld.Y,
                         ModContent.NPCType<Ishtar>());
                 }
-
-                else if (!DownedBossSystem.downedDreadMonolith1 && !IsDreadMonolithAlive(0))
-                {
-                    NPC.NewNPC(player.GetSource_FromThis(),
-                        (int)DreadMonolithSpawnWorld1.X, (int)DreadMonolithSpawnWorld1.Y,
-                        ModContent.NPCType<DreadMonolith>(), ai1: 0);
-                }
-
-                else if (!DownedBossSystem.downedDreadMonolith2 && !IsDreadMonolithAlive(1))
-                {
-                    NPC.NewNPC(player.GetSource_FromThis(),
-                        (int)DreadMonolithSpawnWorld2.X, (int)DreadMonolithSpawnWorld2.Y,
-                        ModContent.NPCType<DreadMonolith>(), ai1: 1);
-                }
-
-                else if (!DownedBossSystem.downedDreadMonolith3 && !IsDreadMonolithAlive(2))
-                {
-                    NPC.NewNPC(player.GetSource_FromThis(),
-                        (int)DreadMonolithSpawnWorld3.X, (int)DreadMonolithSpawnWorld3.Y,
-                        ModContent.NPCType<DreadMonolith>(), ai1: 2);
-                }
             }
         }
 
-        private bool IsDreadMonolithAlive(int number)
-        {
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC npc = Main.npc[i];
-                if (!npc.active)
-                    continue;
-                if (npc.type != ModContent.NPCType<DreadMonolith>())
-                    continue;
-                if (npc.ai[1] == number)
-                    return true;
-            }
-            return false;
-        }
 
         public override void PostUpdateNPCs()
         {

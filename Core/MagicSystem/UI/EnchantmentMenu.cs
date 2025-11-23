@@ -3,21 +3,16 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Players;
-using Stellamod.NPCs.Bosses.DaedusRework;
-using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.UI;
-using System.Reflection;
 using System;
+using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
-using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI.Elements;
-using Terraria.UI;
 
 namespace Stellamod.Core.MagicSystem.UI
 {
@@ -118,7 +113,7 @@ namespace Stellamod.Core.MagicSystem.UI
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
-           
+
             Append(_backgroundSquare);
 
             _grid.Width.Set(0, 0.8f);
@@ -170,7 +165,7 @@ namespace Stellamod.Core.MagicSystem.UI
             _backgroundSquare.Width = Width;
             _backgroundSquare.Height = Height;
 
-            
+
         }
         public override void Update(GameTime gameTime)
         {
@@ -195,7 +190,7 @@ namespace Stellamod.Core.MagicSystem.UI
         {
             base.DrawSelf(spriteBatch);
 
-    
+
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             Vector2 ratioPos = new Vector2(config.EnchantmentMenuX, config.EnchantmentMenuY);
             if (ratioPos.X < 0f || ratioPos.X > 100f)

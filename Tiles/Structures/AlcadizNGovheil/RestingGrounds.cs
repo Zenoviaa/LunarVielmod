@@ -4,7 +4,6 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable.Cathedral;
-using Stellamod.NPCs.Bosses.DaedusRework;
 using System;
 using Terraria;
 using Terraria.DataStructures;
@@ -92,68 +91,6 @@ namespace Stellamod.Tiles.Structures.AlcadizNGovheil
         public bool Checked = false;
         public override bool RightClick(int i, int j)
         {
-            Player player = Main.LocalPlayer;
-
-            if (NPC.AnyNPCs(ModContent.NPCType<DaedusR>()) || NPC.AnyNPCs(ModContent.NPCType<DaedusR>())) //Do nothing if the boss is alive
-                return false;
-
-
-
-            int key = ModContent.ItemType<GothiviasSeal>();
-
-
-
-
-
-
-
-
-            if (!player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<DaedusR>()))
-            {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    Main.NewText(LangText.Misc("RestingGrounds.1"), Color.Gold);
-                    int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<DaedusR>());
-                    Main.npc[npcID].netUpdate2 = true;
-                }
-                else
-                {
-                    if (Main.netMode == NetmodeID.SinglePlayer)
-                        return false;
-
-                    MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<DaedusR>(), i * 16, (j * 16) - 5);
-                }
-
-                return true;
-            }
-            if (NPC.AnyNPCs(ModContent.NPCType<DaedusR>()))
-            {
-
-                Main.NewText("...", Color.Gold);
-
-
-
-            }
-            else
-            {
-                if (player.HasItem(key) && !NPC.AnyNPCs(ModContent.NPCType<DaedusR>()))
-                {
-                    Main.NewText(LangText.Misc("RestingGrounds.2"), Color.Gold);
-                }
-
-                else
-                {
-                    Main.NewText(LangText.Misc("RestingGrounds.2"), Color.Gold);
-
-
-                }
-
-            }
-
-
-
-
-
             return true;
 
         }

@@ -5,13 +5,11 @@ using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
 {
@@ -338,10 +336,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                             NPC.netUpdate = true;
                         }
 
-                        int explosion = ModContent.ProjectileType<DaedusBombExplosion>();
-                        int damage = 0;
-                        int knockback = 2;
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, Vector2.Zero, explosion, damage, knockback);
+                        FXUtil.GlowCircleBoom(NPC.Bottom, Color.Yellow, Color.Orange, Color.Red);
 
                         //Dust Particles
                         for (int k = 0; k < 7; k++)
@@ -851,7 +846,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                 Animation = AnimationState.Summon_Hand_Up;
             }
 
-            if(Timer < 60)
+            if (Timer < 60)
             {
                 TargetOutlineColor = Color.Yellow;
             }
@@ -865,11 +860,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
 
                 float jumpHorizontalSpeed = 6;
                 NPC.velocity.X = DirectionToTarget.X * jumpHorizontalSpeed;
-
-                int explosion = ModContent.ProjectileType<DaedusBombExplosion>();
-                int damage = 24;
-                int knockback = 2;
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, Vector2.Zero, explosion, damage, knockback);
 
                 //Dust Particles
                 for (int k = 0; k < 7; k++)
@@ -925,7 +915,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                 SoundEngine.PlaySound(soundStyle, NPC.position);
             }
 
-            if(Timer < 20)
+            if (Timer < 20)
             {
                 TargetOutlineColor = Color.Yellow;
             }

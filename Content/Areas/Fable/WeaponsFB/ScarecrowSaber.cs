@@ -6,9 +6,7 @@ using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.NPCs.Bosses.DaedusRework;
 using Stellamod.Trailing;
-using Stellamod.Trails;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -243,11 +241,6 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
                 //Thrust the player
                 scarecrowSaberPlayer.DashVelocity = Projectile.velocity * 2;
 
-                int explosion = ModContent.ProjectileType<DaedusBombExplosion>();
-                int damage = 0;
-                int knockback = 2;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Bottom, Vector2.Zero, explosion, damage, knockback);
-
                 //Dust Particles
                 for (int k = 0; k < 7; k++)
                 {
@@ -292,7 +285,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             }
             Point point = new Vector2(Owner.BottomLeft.X, Owner.BottomLeft.Y).ToTileCoordinates();
             Tile? floorTile = Player.GetFloorTile(point.X, point.Y);
-                if ((Timer > 8 && Owner.velocity.Length() < 5 && floorTile.HasValue) || DeathTimer >= 25)
+            if ((Timer > 8 && Owner.velocity.Length() < 5 && floorTile.HasValue) || DeathTimer >= 25)
             {
                 //Fix the player's orientation
                 scarecrowSaberPlayer.DashRotation = false;
@@ -367,7 +360,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
         public override bool PreDraw(ref Color lightColor)
         {
-      
+
             //Draw Trail
             Projectile.oldPos = _oldSwingPos;
             Texture2D spinTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Spiin").Value;

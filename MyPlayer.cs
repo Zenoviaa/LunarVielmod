@@ -19,11 +19,7 @@ using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.NPCs.Bosses.DreadMire;
-using Stellamod.NPCs.Bosses.DreadMire.Heart;
 using Stellamod.NPCs.Bosses.Fenix;
-using Stellamod.NPCs.Bosses.GothiviaNRek.Reks;
-using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Ambient;
@@ -849,19 +845,8 @@ namespace Stellamod
             }
 
             bool expertMode = Main.expertMode;
-            if (NPC.AnyNPCs(ModContent.NPCType<DreadMire>()) || NPC.AnyNPCs(ModContent.NPCType<DreadMiresHeart>()))
-            {
-
-            }
-            else
-            {
-                heart = false;
-                heartDead = 0;
-            }
-
             if (
                 NPC.AnyNPCs(ModContent.NPCType<ALCADHOLE>()) ||
-                NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<VerliaB>()))
             {
                 SingularityFragment = true;

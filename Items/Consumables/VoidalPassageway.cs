@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.NPCs.Bosses.SupernovaFragment;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.DataStructures;
@@ -34,11 +33,7 @@ namespace Stellamod.Items.Consumables
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (NPC.AnyNPCs(ModContent.NPCType<SupernovaFragment>()))
-                return false;
-            if (player.ownedProjectileCounts[type] > 0)
-                return false;
-            Projectile.NewProjectile(source, player.Center + new Vector2(0, -128), velocity, type, damage, knockback, player.whoAmI);
+
             return false;
         }
     }

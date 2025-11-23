@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.DreadMire;
 using Stellamod.NPCs.Bosses.Verlia;
 using System;
 using Terraria;
@@ -308,8 +307,7 @@ namespace Stellamod.NPCs.Bosses.Veiizal
                             {
                                 for (int j = -1; j <= 1; j++)
                                 {
-                                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                                        Projectile.NewProjectile(entitySource, new Vector2(NPC.Center.X + 40, NPC.Center.Y + 10), new Vector2(0, 0), ModContent.ProjectileType<DreadSpawnEffect>(), damage, 0f);
+                               
                                     if (Main.netMode != NetmodeID.MultiplayerClient)
                                         Projectile.NewProjectile(entitySource, new Vector2(NPC.Center.X + 40, NPC.Center.Y + 10), new Vector2(30, 0), ModContent.ProjectileType<VeiizalBeam>(), damage, 0f);
                                 }
@@ -318,8 +316,7 @@ namespace Stellamod.NPCs.Bosses.Veiizal
                             {
                                 for (int j = -1; j <= 1; j++)
                                 {
-                                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                                        Projectile.NewProjectile(entitySource, new Vector2(NPC.Center.X - 40, NPC.Center.Y + 10), new Vector2(0, 0), ModContent.ProjectileType<DreadSpawnEffect>(), damage, 0f);
+                                    
                                     if (Main.netMode != NetmodeID.MultiplayerClient)
                                         Projectile.NewProjectile(entitySource, new Vector2(NPC.Center.X - 40, NPC.Center.Y + 10), new Vector2(-30, 0), ModContent.ProjectileType<VeiizalBeam>(), damage, 0f);
                                 }
@@ -456,8 +453,7 @@ namespace Stellamod.NPCs.Bosses.Veiizal
                                 {
                                     for (int j = -1; j <= 1; j++)
                                     {
-                                        if (Main.netMode != NetmodeID.MultiplayerClient)
-                                            Projectile.NewProjectile(entitySource, new Vector2(NPC.Center.X + 40, NPC.Center.Y + 10), new Vector2(0, 0), ModContent.ProjectileType<DreadSpawnEffect>(), damage, 0f);
+                                      
                                         if (Main.netMode != NetmodeID.MultiplayerClient)
                                             Projectile.NewProjectile(entitySource, new Vector2(NPC.Center.X + 40, NPC.Center.Y + 10), new Vector2(30, 0), ModContent.ProjectileType<VeiizalBullet>(), damage, 0f);
                                     }
@@ -466,8 +462,7 @@ namespace Stellamod.NPCs.Bosses.Veiizal
                                 {
                                     for (int j = -1; j <= 1; j++)
                                     {
-                                        if (Main.netMode != NetmodeID.MultiplayerClient)
-                                            Projectile.NewProjectile(entitySource, new Vector2(NPC.Center.X - 40, NPC.Center.Y + 10), new Vector2(0, 0), ModContent.ProjectileType<DreadSpawnEffect>(), damage, 0f);
+                                      
                                         if (Main.netMode != NetmodeID.MultiplayerClient)
                                             Projectile.NewProjectile(entitySource, new Vector2(NPC.Center.X - 40, NPC.Center.Y + 10), new Vector2(-30, 0), ModContent.ProjectileType<VeiizalBullet>(), damage, 0f);
                                     }
