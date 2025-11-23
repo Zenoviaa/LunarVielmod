@@ -35,7 +35,7 @@ namespace Stellamod.Helpers
                 float cos = MathF.Cos(radians) * height;
                 Vector2 offset = new Vector2(sin, cos);
                 Vector2 drawPosition = haloCenter + offset - Main.screenPosition;
-                spriteBatch.Draw(texture, drawPosition, null, color, 0, drawOrigin, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPosition, null, color, 0, drawOrigin, 0.5f, SpriteEffects.None, 0);
             }
         }
 

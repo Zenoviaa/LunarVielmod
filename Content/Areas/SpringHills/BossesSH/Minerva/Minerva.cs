@@ -76,10 +76,9 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         private float _dashXSpeed;
         private Vector2 _scale;
         private AnimationState _animation;
-        private bool _beatHit;
-        private float _beatCounter;
-        private Color _outlineColor;
 
+        private Color _outlineColor;
+        private Color _haloColor;
         private Vector2 TargetScale;
         private Color TargetOutlineColor;
         private ref float Timer => ref NPC.ai[0];
@@ -464,6 +463,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             }
         
             _animation = AnimationState.Stunned;
+            _haloColor = Color.Lerp(_haloColor, Color.Goldenrod, 0.1f);
             TargetOutlineColor = Color.Transparent;
             NPC.noGravity = false;
             NPC.velocity.X *= 0.9f;
@@ -482,6 +482,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
                 ShowNamePlate();
                 _namePlate = true;
             }
+            _haloColor *= 0.5f;
             Timer++;
             _afterImageTime *= 0.9f;
             _animation = AnimationState.IdleDance;
@@ -1284,6 +1285,15 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             Draw(spriteBatch, screenPos + v, _outlineColor);
             Draw(spriteBatch, screenPos - v, _outlineColor);
 
+        }
+
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            base.PostDraw(spriteBatch, screenPos, drawColor);
+            if(State == AIState.Stunned)
+            {
+                DrawHelper.DrawHalo(NPC.Center - new Vector2(0, 72), _haloColor, 3);
+            }
         }
         #endregion
     }

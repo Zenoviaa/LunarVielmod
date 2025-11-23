@@ -651,7 +651,6 @@ namespace Stellamod
 
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
             base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Mechanics", ZoneMechanics);
 
         }
 

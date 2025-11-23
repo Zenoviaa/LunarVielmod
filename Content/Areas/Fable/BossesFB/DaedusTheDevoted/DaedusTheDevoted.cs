@@ -478,7 +478,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         private bool Phase2Transition;
         private float Phase2WingsProgress;
 
-
+        private Color _haloColor;
         private Vector2 TargetMovePos;
         private Vector2 TeleportTarget;
         private Vector2 BigTeleportTarget;
@@ -840,7 +840,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             base.PostDraw(spriteBatch, screenPos, drawColor);
             if(State == AIState.Phase_2_Transition)
             {
-                DrawHelper.DrawHalo(NPC.Center - new Vector2(0, 72), Color.Goldenrod, 3);
+                DrawHelper.DrawHalo(NPC.Center - new Vector2(0, 72), _haloColor, 3);
             }
         }
 
@@ -947,7 +947,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     return;
                 }
             }
-
+            _haloColor *= 0.5f;
             ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
             FaceSegment.Animation = DaedusFaceSegment.AnimationState.Smile;
 
@@ -1012,6 +1012,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
         private void AI_Phase2Transition()
         {
+            _haloColor = Color.Lerp(_haloColor, Color.Goldenrod, 0.1f);
             _patternManager = null;
             switch (AttackCounter)
             {
