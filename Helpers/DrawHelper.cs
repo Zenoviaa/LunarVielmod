@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Core.Shaders;
 using Stellamod.Trails;
 using System;
@@ -13,6 +14,31 @@ namespace Stellamod.Helpers
 {
     public static class DrawHelper
     {
+        public static void DrawHalo(Vector2 haloCenter, Color color, float numStars)
+        {
+            Texture2D texture = AssetRegistry.Textures.Noise.CartoonyStar.Value;
+            color.A = 0;
+            DrawHalo(haloCenter, texture, color, numStars, Main.GlobalTimeWrappedHourly * 4);
+        }
+        public static void DrawHalo(Vector2 haloCenter, Texture2D texture, Color color, float numStars, float time)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            float width = 64;
+            float height = 32;
+            for(float n = 0; n < numStars; n++)
+            {
+                float ratio = n / numStars;
+                float radians = MathHelper.TwoPi * ratio;
+                radians += time;
+                float sin = MathF.Sin(radians) * width;
+                float cos = MathF.Cos(radians) * height;
+                Vector2 offset = new Vector2(sin, cos);
+                Vector2 drawPosition = haloCenter + offset - Main.screenPosition;
+                spriteBatch.Draw(texture, drawPosition, null, color, 0, drawOrigin, 1, SpriteEffects.None, 0);
+            }
+        }
+
         public static void DrawOutline(this ModNPC modNpc, Color outlineColor, float yOffset, Vector2 scale, string textureOverride, Rectangle? frameOverride)
         {
             if (outlineColor == Color.Transparent || outlineColor.A <= 0.01f)

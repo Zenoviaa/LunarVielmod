@@ -17,6 +17,7 @@ namespace Stellamod.Assets
                 public static Asset<Texture2D> CloudsSmall = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/SmallClouds");
                 public static Asset<Texture2D> Perlin = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/PerlinNoise");
                 public static Asset<Texture2D> CandleFlame = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/CandleFlame");
+                public static Asset<Texture2D> CartoonyStar = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/CartoonyStar");
             }
             public static class Trails
             {

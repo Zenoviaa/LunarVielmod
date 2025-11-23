@@ -838,6 +838,10 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             base.PostDraw(spriteBatch, screenPos, drawColor);
+            if(State == AIState.Phase_2_Transition)
+            {
+                DrawHelper.DrawHalo(NPC.Center - new Vector2(0, 72), Color.Goldenrod, 3);
+            }
         }
 
         private void SwitchState(AIState state)
