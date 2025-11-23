@@ -87,15 +87,6 @@ namespace Stellamod.Items.Weapons.Melee
         {
 
             int dir = AttackCounter;
-            if (player.direction == 1)
-            {
-                player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter;
-            }
-            else
-            {
-                player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter * -1;
-
-            }
             AttackCounter = -AttackCounter;
 
             int mult = 2;

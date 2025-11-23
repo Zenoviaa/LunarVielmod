@@ -74,16 +74,6 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             int dir = AttackCounter;
-            if (player.direction == 1)
-            {
-                player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter;
-            }
-            else
-            {
-                player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter * -1;
-
-            }
-
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwingyAr") { Pitch = Main.rand.NextFloat(-10f, 10f) }, player.Center);
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage * 3, knockback, player.whoAmI, 1, dir);

@@ -79,15 +79,6 @@ namespace Stellamod.Items.Weapons.Mage
         {
 
             int dir = AttackCounter;
-            if (player.direction == 1)
-            {
-                player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter;
-            }
-            else
-            {
-                player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter * -1;
-
-            }
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage * 4, knockback, player.whoAmI, 1, dir);
 

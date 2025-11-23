@@ -27,6 +27,14 @@ namespace Stellamod.Helpers
             Vector2 point = CubicBezier(t, Vector2.Zero, control1, control2, Vector2.One);
             return point.Y;
         }
+        public static readonly Easer Anticipation = delegate (float t)
+        {
+            t = Clamp(t);
+            Vector2 control1 = new Vector2(0.8f, -0.4f);
+            Vector2 control2 = new Vector2(0.5f, 1f);
+            return EasingFunction.BezierEase(t, control1, control2);
+        };
+
         public static float Clamp(float t)
         {
             return Math.Clamp(t, 0, 1);

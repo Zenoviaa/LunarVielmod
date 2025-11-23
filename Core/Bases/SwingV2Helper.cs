@@ -246,7 +246,7 @@ namespace Stellamod.Core.Bases
                 XSwingRadius = 64,
                 YSwingRadius = 48,
                 SwingDegrees=330,
-                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 10),
+                Easing = EasingFunction.Anticipation,
                 Sound = swingSound1,
             });
 
@@ -271,7 +271,7 @@ namespace Stellamod.Core.Bases
                 XSwingRadius = 84 / 1.5f,
                 YSwingRadius = 70 / 1.5f,
                 SwingDegrees =270,
-                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 10),
+                Easing = EasingFunction.Anticipation,
                 Sound = swingSound2,
             });
 
@@ -281,7 +281,7 @@ namespace Stellamod.Core.Bases
                 XSwingRadius = 84 / 1.5f,
                 YSwingRadius = 70 / 1.5f,
                 SwingDegrees = 270,
-                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 10),
+                Easing = EasingFunction.Anticipation,
                 Sound = swingSound2,
             });
 
@@ -291,7 +291,7 @@ namespace Stellamod.Core.Bases
                 YSwingRadius=64,
                 Duration = 48,
                 SwingDegrees = 330,
-                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 10),
+                Easing = EasingFunction.Anticipation,
                 Sound = swingSound1,
             });
 
@@ -301,7 +301,7 @@ namespace Stellamod.Core.Bases
                 YSwingRadius = 64,
                 Duration = 96,
                 SwingDegrees = 330,
-                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 10),
+                Easing = EasingFunction.Anticipation,
                 Sound = swingSound1,
             });
 
@@ -326,11 +326,12 @@ namespace Stellamod.Core.Bases
                 XSwingRadius = 64,
                 YSwingRadius = 64,
                 SwingDegrees = 770,
-                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 7),
+                Easing = EasingFunction.Anticipation,
                 Sound = swingSound3,
                 HitCount=6
             });
         }
+
         public static void AddSpearSwingStyle(ISwingProjectile swings)
         {
             SoundStyle spearSlash1 = SoundRegistry.SpearSlash1;

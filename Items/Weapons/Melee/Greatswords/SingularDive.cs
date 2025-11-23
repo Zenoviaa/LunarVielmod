@@ -115,15 +115,6 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 
 
                 int dir = AttackCounter;
-                if (player.direction == 1)
-                {
-                    player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter;
-                }
-                else
-                {
-                    player.GetModPlayer<CorrectSwing>().SwingChange = AttackCounter * -1;
-
-                }
                 AttackCounter = -AttackCounter;
                 Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SingularDiveProj>(), damage * 3, knockback, player.whoAmI, 1, dir);
 
