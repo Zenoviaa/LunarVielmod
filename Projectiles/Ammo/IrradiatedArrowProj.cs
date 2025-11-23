@@ -28,6 +28,7 @@ namespace Stellamod.Projectiles.Ammo
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.tileCollide = true; // Can the projectile collide with tiles?
             AIType = ProjAIStyleID.Arrow;
+     
         }
 
         public override void AI()
