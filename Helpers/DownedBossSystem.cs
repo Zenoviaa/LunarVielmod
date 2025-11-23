@@ -5,6 +5,99 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Helpers
 {
+    public enum DownedBossFlag : byte
+    {
+        Woodland_Ravager = 0,
+    }
+
+    public class DownedBossTracker : ModSystem
+    {
+        public static bool[] downedBossFlags = new bool[64];
+        public static void ResetFlags()
+        {
+            for(int i = 0; i < downedBossFlags.Length; i++)
+            {
+                downedBossFlags[i] = false;
+            }
+        }
+        
+        public override void ClearWorld()
+        {
+            base.ClearWorld();
+            ResetFlags();
+        }
+
+        public override void SaveWorldData(TagCompound tag)
+        {
+            tag["downedBossFlags"] = downedBossFlags;
+        }
+
+        public override void LoadWorldData(TagCompound tag)
+        {
+            downedBossFlags = tag.Get<bool[]>("downedBossFlags");
+        }
+
+        public static bool IsDowned(DownedBossFlag flag)
+        {
+            return IsDowned((int)flag);
+        }
+
+        public static bool IsDowned(int id)
+        {
+            return downedBossFlags[id];
+        }
+        public static void ClearFlag(DownedBossFlag flag)
+        {
+            ClearFlag((int)flag);
+        }
+
+        public static void ClearFlag(int id)
+        {
+            NPC.SetEventFlagCleared(ref downedBossFlags[id], -1);
+        }
+
+        public override void NetSend(BinaryWriter writer)
+        {
+            base.NetSend(writer);
+            int numBytes = downedBossFlags.Length / 8;
+            int j = 0;
+            for(int i = 0; i < numBytes; i++)
+            {
+                BitsByte b = new BitsByte
+                {
+                    [0] = downedBossFlags[j],
+                    [1] = downedBossFlags[j + 1],
+                    [2] = downedBossFlags[j + 2],
+                    [3] = downedBossFlags[j + 3],
+                    [4] = downedBossFlags[j + 4],
+                    [5] = downedBossFlags[j + 5],
+                    [6] = downedBossFlags[j + 6],
+                    [7] = downedBossFlags[j + 7]
+                };
+                writer.Write(b);
+                j += 8;
+            }
+        }
+        public override void NetReceive(BinaryReader reader)
+        {
+            base.NetReceive(reader);
+            int numBytes = downedBossFlags.Length / 8;
+            int j = 0;
+            for (int i = 0; i < numBytes; i++)
+            {
+                BitsByte flags = reader.ReadByte();
+                downedBossFlags[j] = flags[0];
+                downedBossFlags[j + 1] = flags[1];
+                downedBossFlags[j + 2] = flags[2];
+                downedBossFlags[j + 3] = flags[3];
+                downedBossFlags[j + 4] = flags[4];
+                downedBossFlags[j + 5] = flags[5];
+                downedBossFlags[j + 6] = flags[6];
+                downedBossFlags[j + 7] = flags[7];
+                j += 8;
+            }
+        }
+    }
     // Acts as a container for "downed boss" flags.
     // Set a flag like this in your bosses OnKill hook:
     //    NPC.SetEventFlagCleared(ref DownedBossSystem.downedMinionBoss, -1);

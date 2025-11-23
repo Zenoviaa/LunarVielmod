@@ -32,7 +32,8 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             Jump,
             Turn,
             Fall,
-            Crash
+            Crash,
+            Despawn
         }
         private Vector2 _scale;
         private Vector2 _crashPoint;
@@ -247,6 +248,15 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
                 OutlineColor = Color.Lerp(OutlineColor, Color.Transparent, 0.2f);
             }
 
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                if(!NPC.HasValidTarget && State != AIState.Despawn)
+                {
+                    SwitchState(AIState.Despawn);
+                }
+            }
+
             if (!_spawned)
             {
                 ShowNamePlate();
@@ -285,6 +295,29 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
                 case AIState.QuickRoar:
                     AI_QuickRoar();
                     break;
+                case AIState.Despawn:
+                    AI_Despawn();
+                    break;
+            }
+        }
+
+        private void AI_Despawn()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle soundStyle = AssetRegistry.Sounds.Ravager.RavagerAngry;
+                soundStyle.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(soundStyle, NPC.position);
+                NPC.velocity.Y = -5;
+            }
+
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.01f);
+            NPC.noTileCollide = true;
+            NPC.noGravity = false;
+            if(Timer >= 100)
+            {
+                NPC.active = false;
             }
         }
 
@@ -467,6 +500,10 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             _isWarning = false;
             _scale = Vector2.One;
             Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
             if (NPC.HasValidTarget)
             {
                 Player target = Main.player[NPC.target];
@@ -475,9 +512,6 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
 
             NPC.spriteDirection = -NPC.direction;
             NPC.velocity.X *= 0.9f;
-            NPC.TargetClosest();
-
-
             if (Timer >= IdleTime && NPC.HasValidTarget)
             {
                 SwitchState(AIState.IdleMad);
@@ -491,7 +525,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             Timer++;
             if (Timer == 1)
             {
-
+                NPC.TargetClosest();
                 SoundStyle soundStyle = AssetRegistry.Sounds.Ravager.RavagerAngry;
                 soundStyle.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(soundStyle, NPC.position);
@@ -499,7 +533,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             _scale = Vector2.Lerp(new Vector2(1.1f, 0.95f), Vector2.One, EasingFunction.InOutSine(Timer / 45f));
             NPC.spriteDirection = -NPC.direction;
             NPC.velocity.X *= 0.9f;
-            NPC.TargetClosest();
+ 
             if (NPC.HasValidTarget)
             {
                 if (Timer >= IdleMadTime)
@@ -713,6 +747,12 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             {
                 SwitchState(AIState.Charge);
             }
+        }
+
+        public override void OnKill()
+        {
+            base.OnKill();
+            DownedBossTracker.ClearFlag(DownedBossFlag.Woodland_Ravager);
         }
     }
 }
