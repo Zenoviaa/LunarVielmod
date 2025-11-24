@@ -85,6 +85,8 @@ namespace Stellamod.Core.Pixelation
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             float denom = DownSamples;
             float scale = 1f / denom;
+
+
             spriteBatch.Draw(_pixelScreenRenderRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             spriteBatch.End();
         }
@@ -99,7 +101,13 @@ namespace Stellamod.Core.Pixelation
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             // Draw our RT. The scale is important, it is 2 here as this RT is 0.5x the main screen size.
-            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, DownSamples, SpriteEffects.None, 0f);
+
+            float scale = DownSamples;
+            float zoomFix = 1f / Main.GameZoomTarget;
+    
+
+      
+            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             spriteBatch.End();
         }
 

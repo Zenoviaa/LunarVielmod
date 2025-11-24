@@ -516,9 +516,6 @@
     <None Remove="NPCs\Underground\AbandonedMinorSummon.png" />
     <None Remove="NPCs\Underground\FloweredRedLight.png" />
     <None Remove="NPCs\Underground\FloweredWhiteLight.png" />
-    <None Remove="Particles\GoldSparkleParticle2.png" />
-    <None Remove="Particles\SpinewBigOrange.png" />
-    <None Remove="Particles\TornadoParticle.png" />
     <None Remove="Projectiles\AlcadizBombExplosion - Copy.png" />
     <None Remove="Projectiles\Ammo\JackoShotBombArrow.png" />
     <None Remove="Projectiles\BloodWaterProj.png" />
