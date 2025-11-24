@@ -24,8 +24,8 @@ namespace Stellamod.Helpers
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             Vector2 drawOrigin = texture.Size() / 2f;
-            float width = 64;
-            float height = 32;
+            float width = 32;
+            float height = 8;
             for(float n = 0; n < numStars; n++)
             {
                 float ratio = n / numStars;
@@ -35,7 +35,7 @@ namespace Stellamod.Helpers
                 float cos = MathF.Cos(radians) * height;
                 Vector2 offset = new Vector2(sin, cos);
                 Vector2 drawPosition = haloCenter + offset - Main.screenPosition;
-                spriteBatch.Draw(texture, drawPosition, null, color, 0, drawOrigin, 0.5f, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPosition, null, color, 0, drawOrigin, 0.25f, SpriteEffects.None, 0);
             }
         }
 

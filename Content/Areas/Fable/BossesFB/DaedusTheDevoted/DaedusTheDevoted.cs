@@ -838,10 +838,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             base.PostDraw(spriteBatch, screenPos, drawColor);
-            if(State == AIState.Phase_2_Transition)
-            {
-                DrawHelper.DrawHalo(NPC.Center - new Vector2(0, 72), _haloColor, 3);
-            }
+            DrawHelper.DrawHalo(NPC.Center - new Vector2(0, 72), _haloColor, 3);
         }
 
         private void SwitchState(AIState state)
@@ -872,6 +869,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
         private void AI_Tired()
         {
             Timer++;
+            _haloColor = Color.Lerp(_haloColor, Color.Goldenrod, 0.1f);
             ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
             FaceSegment.Animation = DaedusFaceSegment.AnimationState.Scared;
             TargetOutlineColor = Color.Transparent;
@@ -1012,7 +1010,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
 
         private void AI_Phase2Transition()
         {
-            _haloColor = Color.Lerp(_haloColor, Color.Goldenrod, 0.1f);
+      
             _patternManager = null;
             switch (AttackCounter)
             {
@@ -1029,7 +1027,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                         NPC.velocity.Y += 0.33f;
                     }
 
-
+                    _haloColor = Color.Lerp(_haloColor, Color.Goldenrod, 0.1f);
                     ArmSegment.Animation = DaedusArmSegment.AnimationState.Lower;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Scared;
                     if (Timer >= 180)
@@ -1043,7 +1041,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
                     FaceSegment.Glow = true;
                     FaceSegment.Animation = DaedusFaceSegment.AnimationState.Laughing;
                     NPC.velocity = NPC.velocity.RotatedBy(0.05f);
-
+                    _haloColor = Color.Lerp(_haloColor, Color.Transparent, 0.1f);
                     float transitionProgress = Timer / 300f;
                     float divisor = (int)MathHelper.Lerp(60, 20, transitionProgress);
                     if (Timer % divisor == 0)

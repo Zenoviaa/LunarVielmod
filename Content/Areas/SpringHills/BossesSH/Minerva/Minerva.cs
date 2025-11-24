@@ -382,7 +382,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             _animation = AnimationState.Stunned;
             if(Timer == 1)
             {
-                NPC.velocity.Y = -15;
+                NPC.velocity.Y = -5;
                 SoundStyle death = AssetRegistry.Sounds.Minerva.MinervaDeath;
                 SoundEngine.PlaySound(death, NPC.position);
             }
@@ -392,12 +392,9 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             NPC.rotation += NPC.direction * 0.05f;
             NPC.noTileCollide = true;
             NPC.velocity.X *= 0.91f;
-            if(NPC.velocity.Y >= 0)
+            if (NPC.velocity.Y < 10)
             {
-                if(NPC.velocity.Y < 10)
-                {
-                    NPC.velocity.Y += 0.5f;
-                }
+                NPC.velocity.Y += 0.5f;
             }
             if (Timer % 5 == 0)
             {
@@ -1293,7 +1290,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             base.PostDraw(spriteBatch, screenPos, drawColor);
             if(State == AIState.Stunned)
             {
-                DrawHelper.DrawHalo(NPC.Center - new Vector2(0, 72), _haloColor, 3);
+                DrawHelper.DrawHalo(NPC.Center - new Vector2(0, 54), _haloColor, 3);
             }
         }
         #endregion

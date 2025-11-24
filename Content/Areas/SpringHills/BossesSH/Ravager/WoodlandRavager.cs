@@ -63,6 +63,8 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
         private float ChaseRange => 300;
         private int FallingRockDamage => 20;
         private int FallingRockKB => 2;
+
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
