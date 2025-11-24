@@ -12,7 +12,10 @@ namespace Stellamod.Helpers
         Jack=2,
         Daedus=3,
         Verlian_Singularity=4,
-        Skullrunner=5
+        Skullrunner=5,
+        Commander_Gintzia=6,
+        EliteCommander=7,
+        Gustbeak=8
     }
 
     public class DownedBossTracker : ModSystem

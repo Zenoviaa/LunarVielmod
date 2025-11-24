@@ -57,7 +57,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             Wind_Crash,
             Wind_Crash_End,
 
-            Death
+            Death,
+            Despawn
         }
 
         private ref float Timer => ref NPC.ai[0];
@@ -467,13 +468,22 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 
             Head.rotation = (Target.Center - Head.position).ToRotation();
 
+
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
+                if (!NPC.HasValidTarget)
+                {
+                    SwitchState(AIState.Despawn);
+                }
+
             }
 
             switch (State)
             {
+                case AIState.Despawn:
+                    AI_Despawn();
+                    break;
                 case AIState.Spawn:
                     AI_Spawn();
                     break;
@@ -569,6 +579,18 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             }
         }
 
+        private void AI_Despawn()
+        {
+            Timer++;
+            NPC.velocity.X *= 0.5f;
+            NPC.velocity.Y -= 0.5f;
+            NPC.noTileCollide = true;
+            NPC.noGravity = true;
+            if(Timer >= 100)
+            {
+                NPC.active = false;
+            }
+        }
         private void AI_Spawn()
         {
             Timer++;
@@ -1589,13 +1611,12 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             base.ModifyNPCLoot(npcLoot);
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<GustbeakBossRel>()));
         }
+
         public override void OnKill()
         {
             base.OnKill();
             ColosseumWaveManager.ColosseumEnemyKilled();
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedSunsBoss, -1);
+            DownedBossTracker.ClearFlag(DownedBossFlag.Gustbeak);
         }
-
-
     }
 }

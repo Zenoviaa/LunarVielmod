@@ -178,6 +178,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             return false;
         }
 
+
+
         public override void AI()
         {
             base.AI();
@@ -901,7 +903,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         {
             base.OnKill();
             ColosseumWaveManager.ColosseumEnemyKilled();
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedCommanderGintziaBoss, -1);
+            DownedBossTracker.ClearFlag(DownedBossFlag.Commander_Gintzia);
         }
     }
 }

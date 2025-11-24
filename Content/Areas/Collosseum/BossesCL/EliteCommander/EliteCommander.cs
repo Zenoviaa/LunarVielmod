@@ -233,10 +233,16 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander
                 ShowNamePlate();
                 _showNamePlate = true;
             }
+
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
+                if (!NPC.HasValidTarget)
+                {
+                    SwitchState(AIState.Despawn);
+                }
             }
+
             NPC.spriteDirection = NPC.direction;
             switch (State)
             {
@@ -268,16 +274,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander
             if (Timer == 1)
             {
                 NPC.TargetClosest();
-            }
-
-            if (!NPC.HasValidTarget)
-            {
-                NPC.TargetClosest();
-                if (!NPC.HasValidTarget)
-                {
-                    SwitchState(AIState.Despawn);
-                }
-
             }
 
             if (Timer >= 60)
@@ -518,7 +514,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander
         private void AI_Despawn()
         {
             Timer++;
-            if (Timer >= 60)
+            if (Timer >= 100)
             {
                 NPC.active = false;
             }
@@ -572,20 +568,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander
             }
         }
 
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            //Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
-
-            //Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-            //npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
-            // npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.GintzeBossRel>()));
-        }
-
 
         public override void OnKill()
         {
             base.OnKill();
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedGintzlBoss, -1);
+            DownedBossTracker.ClearFlag(DownedBossFlag.EliteCommander);
             ColosseumWaveManager.ColosseumEnemyKilled();
         }
 
