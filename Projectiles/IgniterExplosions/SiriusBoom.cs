@@ -63,7 +63,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
                     float progress = f / 24f;
                     float rot = progress * MathHelper.ToRadians(360);
                     rot += Main.rand.NextFloat(-0.5f, 0.5f);
-                    Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(4f, 25f);
+                    Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(4f, 64);
                     var particle = FXUtil.GlowStretch(Projectile.Center, velocity);
                     particle.InnerColor = Color.White;
                     particle.GlowColor = Color.LightCyan;

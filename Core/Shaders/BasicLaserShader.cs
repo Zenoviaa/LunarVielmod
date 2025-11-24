@@ -88,10 +88,10 @@ namespace Stellamod.Core.Shaders
             InnerColor = Color.Yellow;
             OuterColor = Color.Red;
 
-            BlendState = BlendState.Additive;
+            BlendState = BlendState.AlphaBlend;
             LaserTexture = TrailRegistry.BeamTrail;
-            Time = Main.GlobalTimeWrappedHourly * 4;
-            Tiling = Vector2.One * 1;
+            Time = Main.GlobalTimeWrappedHourly * 24;
+            Tiling = Vector2.One;
         }
     }
 }

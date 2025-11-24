@@ -52,9 +52,9 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float2 laserCoords = coords * tiling + offset;
     float n = tex2D(laserTex, laserCoords);
     
-    float3 glowingColor = lerp(innerColor, outerColor, QuadraticBump(coords.y));
-    float3 finalColor = glowingColor * input.Color.rgb * n;
-    return float4(finalColor, 1.0) * input.Color.a;
+    float3 glowingColor = lerp(outerColor, innerColor, n);
+    float3 finalColor = glowingColor * n;
+    return float4(finalColor, 0.0) * input.Color;
 }
 
 technique Technique1

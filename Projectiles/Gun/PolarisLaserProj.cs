@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
@@ -190,13 +191,12 @@ namespace Stellamod.Projectiles.Gun
             float osc = VectorHelper.Osc(0.75f, 1f);
 
             float width = (float)Projectile.timeLeft / 30f;
-            return (Projectile.width * Projectile.scale) * osc * width * Size;
+            return (Projectile.width * Projectile.scale) * osc * width * Size * 3;
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            Color color = Color.Lerp(Color.LightCyan, Color.White, VectorHelper.Osc(0, 1));
-            return color;
+            return Color.Lerp(Color.Cyan, Color.White, ExtraMath.Osc(0f, 1f, speed: 32));
         }
 
         public override bool PreDraw(ref Color lightColor) => false;
@@ -204,9 +204,6 @@ namespace Stellamod.Projectiles.Gun
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.White);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
 
             //Put in the points
             //This is just a straight beam that collides with tiles
@@ -217,7 +214,14 @@ namespace Stellamod.Projectiles.Gun
                 BeamPoints.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + direction * BeamLength, i / 8f));
             }
 
-            BeamDrawer.DrawPixelated(BeamPoints, -Main.screenPosition, 32);
+
+            var shader = BasicLaserShader.Instance;
+            shader.InnerColor = Color.White;
+            shader.OuterColor = Color.Blue;
+            shader.BlendState = BlendState.AlphaBlend;
+            shader.LaserTexture = TrailRegistry.StarTrail;
+            TrailDrawer.Draw(Main.spriteBatch, BeamPoints.ToArray(), ColorFunction, WidthFunction, shader);
+          //  BeamDrawer.DrawPixelated(BeamPoints, -Main.screenPosition, 32);
             Main.spriteBatch.ExitShaderRegion();
         }
     }
