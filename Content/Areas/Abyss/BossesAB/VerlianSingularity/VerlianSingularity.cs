@@ -1006,7 +1006,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         public override void OnKill()
         {
             base.OnKill();
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedSOMBoss, -1);
+            DownedBossTracker.ClearFlag(DownedBossFlag.Verlian_Singularity);
         }
 
         private void AI_SlowFallingStars()

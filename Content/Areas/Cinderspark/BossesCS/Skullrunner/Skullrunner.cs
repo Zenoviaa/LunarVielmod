@@ -58,7 +58,8 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             Dunkfail,
             Dunksucceed,
             Dunksink,
-            DunkRise
+            DunkRise,
+            Despawn
         }
         private float _lifeTimer;
         private AnimationState _animation;
@@ -306,9 +307,21 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 _showNamePlate = true;
             }
 
-                _lifeTimer++;
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                if(!NPC.HasValidTarget && State != AIState.Despawn)
+                {
+                    SwitchState(AIState.Despawn);
+                }
+            }
+               
+            _lifeTimer++;
             switch (State)
             {
+                case AIState.Despawn:
+                    AI_Despawn();
+                    break;
                 case AIState.OutOfBreath:
                     AI_OutOfBreath();
                     break;
@@ -396,6 +409,26 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         private bool BeatHit()
         {
             return _beatHit;
+        }
+
+        public override void OnKill()
+        {
+            base.OnKill();
+            DownedBossTracker.ClearFlag(DownedBossFlag.Skullrunner);
+        }
+
+        private void AI_Despawn()
+        {
+            Timer++;
+            NPC.velocity.X *= 0.5f;
+            NPC.velocity.Y += 0.5f;
+            NPC.noTileCollide = true;
+            NPC.noGravity = true;
+            NPC.rotation = NPC.velocity.X * 0.05f;
+            if (Timer >= 100)
+            {
+                NPC.active = false;
+            }
         }
         private void AI_DashStartupCircle()
         {

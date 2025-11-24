@@ -2,9 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -70,8 +67,8 @@ namespace Stellamod.Core.Pixelation
                 //Alright, so what we're going to do is actually use two render targets to get around the issue of misplaced pixels
                 //This costs a bit of extra performance but it'll look good
                 //So, first draw at fully quality to the screen render target
-          
-                for(int i = 0; i < _draws.Count; i++)
+
+                for (int i = 0; i < _draws.Count; i++)
                 {
                     IDrawPixelated draw = _draws[i];
                     draw.DrawPixelated();
@@ -109,7 +106,7 @@ namespace Stellamod.Core.Pixelation
         private void ResizeRenderTargets()
         {
             Point screenSize = Main.ScreenSize;
-            if(_oldScreenSize != screenSize)
+            if (_oldScreenSize != screenSize)
             {
                 Main.QueueMainThreadAction(() =>
                 {
@@ -129,7 +126,7 @@ namespace Stellamod.Core.Pixelation
                     _smokeScreenRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y);
 
                 });
-                _oldScreenSize = screenSize; 
+                _oldScreenSize = screenSize;
             }
         }
         private void ResizeTargets(Vector2 vector)

@@ -10,7 +10,9 @@ namespace Stellamod.Helpers
         Woodland_Ravager = 0,
         Minerva=1,
         Jack=2,
-        Daedus=3
+        Daedus=3,
+        Verlian_Singularity=4,
+        Skullrunner=5
     }
 
     public class DownedBossTracker : ModSystem
