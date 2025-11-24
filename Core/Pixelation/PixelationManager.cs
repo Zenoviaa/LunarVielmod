@@ -108,7 +108,6 @@ namespace Stellamod.Core.Pixelation
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
-            // Draw our RT. The scale is important, it is 2 here as this RT is 0.5x the main screen size.
 
             float scale = DownSamples;
 
