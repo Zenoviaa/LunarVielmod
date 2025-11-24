@@ -367,9 +367,10 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             Timer++;
             NPC.noTileCollide = true;
             NPC.velocity.X *= 0.9f;
+            if (NPC.velocity.Y < 0)
+                NPC.velocity.Y *= 0.8f;
             NPC.noGravity = false;
-            TargetScale = Vector2.Zero;
-            if(Timer >= 60)
+            if(Timer >= 100)
             {
                 NPC.active = false;
             }

@@ -6,12 +6,8 @@ using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Gores;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -19,6 +15,54 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva.Projectiles
 {
+    public class LeafBladeLodged : ScarletProjectile
+    {
+        private ref float Timer => ref Projectile.ai[0];
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 8;
+            Projectile.height = 8;
+            Projectile.friendly = false;
+            Projectile.hostile = false;
+            Projectile.tileCollide = false;
+            Projectile.ignoreWater = true;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 180;
+        }
+
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            Projectile.rotation = Projectile.velocity.ToRotation();
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            float outlineOffset = 2;
+            Vector2 left = Vector2.UnitX * -outlineOffset;
+            Vector2 right = Vector2.UnitX * outlineOffset;
+            Vector2 up = Vector2.UnitY * -outlineOffset;
+            Vector2 down = Vector2.UnitY * outlineOffset;
+            SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Rectangle drawFrame = Projectile.Frame();
+            Vector2 drawOrigin = drawFrame.Size() / 2;
+            float scale = Projectile.scale;
+            float rotation = Projectile.rotation;
+            float alpha = MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / 180f));
+            spriteBatch.Draw(texture, drawPos, drawFrame, Color.White.MultiplyRGB(lightColor) * alpha, rotation, drawOrigin, scale, spriteEffects, 0);
+            return false;
+        }
+    }
+
     public class LeafBlade : ScarletProjectile
     {
         public SlashTrailer Trailer { get; set; }
@@ -65,7 +109,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva.Projectiles
 
             Projectile.rotation = ShootVelocity.ToRotation();
 
-            if(NoDelay && Timer % 8 == 0)
+            if (NoDelay && Timer % 8 == 0)
             {
                 int gore1 = GoreHelper.TypeFallingLeafWhite;
                 int gore2 = GoreHelper.TypeFallingLeafRed;
@@ -75,7 +119,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva.Projectiles
                     Gore.NewGore(Projectile.GetSource_FromThis(), Projectile.Center + Main.rand.NextVector2Circular(4, 4), velocity, gore1);
                 }
 
-                if(Timer < 30)
+                if (Timer < 30)
                 {
                     var p = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity);
                     p.fadeToColor = Color.DarkGreen;
@@ -120,11 +164,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva.Projectiles
                 Trailer ??= new SlashTrailer();
                 Trailer.DrawTrail(ref lightColor, OldCenterPos);
             }
-     
+
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawOrigin = texture.Size() / 2f;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            if(Projectile.velocity.Length() > 0)
+            if (Projectile.velocity.Length() > 0)
             {
                 for (int i = 0; i < TrailCacheLength; i++)
                 {
@@ -142,6 +186,15 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva.Projectiles
             }
 
             return base.PreDraw(ref lightColor);
+        }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            if (Main.myPlayer == Projectile.owner)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + oldVelocity, oldVelocity, ModContent.ProjectileType<LeafBladeLodged>(), 0, 0, Projectile.owner);
+            }
+            return base.OnTileCollide(oldVelocity);
         }
 
         public override void OnKill(int timeLeft)
