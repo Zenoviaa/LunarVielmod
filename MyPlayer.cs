@@ -610,54 +610,21 @@ namespace Stellamod
                 Player.ZoneDesert = true;
         }
 
-
-
-
-        public override void UpdateDead()
-        {
-            ResetStats();
-
-        }
-
-        public void ResetStats()
-        {
-            Bossdeath = false;
-            WindRune = false;
-
-
-
-        }
-
-
         public static bool AuroreanBool;
         public static float Aurorean;
         public static float AuroreanB = 0.5f;
         public override void PostUpdateMiscEffects()
         {
-
             Player.ManageSpecialBiomeVisuals("Stellamod:VeilSky", ZoneVeil);
-
-            //     base.Player.ManageSpecialBiomeVisuals("Stellamod:GreenSunSky", EventWorld.GreenSun && ZoneAcid);
-
-            // base.Player.ManageSpecialBiomeVisuals("Stellamod:ChaosD", EventWorld.ChaosD && Player.ZoneBeach);
-            //     base.Player.ManageSpecialBiomeVisuals("Stellamod:Veil", ZoneVeil);
-
-            //base.Player.ManageSpecialBiomeVisuals("Stellamod:Starbloom", EventWorld.Aurorean && (Player.ZoneOverworldHeight || Player.ZoneSkyHeight));
-            //base.Player.ManageSpecialBiomeVisuals("Stellamod:Aurelus", ZoneAurelus);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
-            //    base.Player.ManageSpecialBiomeVisuals("Stellamod:Acid", ZoneAcid);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Lab", ZoneLab);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Ishtar", ZoneIshtar);
-
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
-            base.Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
-
+            Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
+            Player.ManageSpecialBiomeVisuals("Stellamod:Ishtar", ZoneIshtar);
+            Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
+            Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
         }
 
 
         public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
         {
-
             return (IEnumerable<Item>)(object)new Item[1]
             {
                 new Item(ModContent.ItemType<SiresMail>(), 1, 0),
@@ -668,6 +635,7 @@ namespace Stellamod
         {
             Main.NewText(LangText.Misc("EnterWorld"));
         }
+
         private bool _pressed;
         public override void PostUpdate()
         {
