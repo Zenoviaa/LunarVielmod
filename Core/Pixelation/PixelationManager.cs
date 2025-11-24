@@ -33,7 +33,7 @@ namespace Stellamod.Core.Pixelation
         private RenderTarget2D _smokeScreenRenderRT;
         private List<IDrawPixelated> _draws = new List<IDrawPixelated>(100);
 
-        public int DownSamples => 3;
+        public int DownSamples => 2;
         public static event Action OnDrawPixelation;
         public override void OnModLoad()
         {
