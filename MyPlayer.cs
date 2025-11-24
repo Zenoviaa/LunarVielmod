@@ -617,9 +617,6 @@ namespace Stellamod
         {
             Player.ManageSpecialBiomeVisuals("Stellamod:VeilSky", ZoneVeil);
             Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
-            Player.ManageSpecialBiomeVisuals("Stellamod:Ishtar", ZoneIshtar);
-            Player.ManageSpecialBiomeVisuals("Stellamod:Govheil", ZoneGovheil);
-            Player.ManageSpecialBiomeVisuals("Stellamod:Verlia", NPC.AnyNPCs(ModContent.NPCType<VerliaB>()));
         }
 
 
