@@ -15,7 +15,9 @@ namespace Stellamod.Helpers
         Skullrunner=5,
         Commander_Gintzia=6,
         EliteCommander=7,
-        Gustbeak=8
+        Gustbeak=8,
+        StarBomber=9,
+        Bishinine=10
     }
 
     public class DownedBossTracker : ModSystem

@@ -557,6 +557,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _impactFootPosition = reader.ReadVector2();
         }
 
+
         public override void AI()
         {
 
@@ -2663,7 +2664,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
         public override void OnKill()
         {
             base.OnKill();
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedSTARBoss, -1);
+            DownedBossTracker.ClearFlag(DownedBossFlag.StarBomber);
         }
 
 

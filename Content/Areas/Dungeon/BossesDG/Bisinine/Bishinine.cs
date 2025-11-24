@@ -1999,7 +1999,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         public override void OnKill()
         {
             base.OnKill();
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedBishinineBoss, -1);
+            DownedBossTracker.ClearFlag(DownedBossFlag.Bishinine);
         }
     }
 }

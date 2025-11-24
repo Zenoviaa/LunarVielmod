@@ -26,7 +26,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             Flamethrower,
             Flame_Pillar,
             Phase_2_Transition,
-            Death
+            Death,
+            Despawn
         }
 
         private enum AnimationState
@@ -246,8 +247,22 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
         {
             base.AI();
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget)
+                {
+                    SwitchState(AIState.Despawn);
+                }
+
+            }
+
             switch (State)
             {
+                case AIState.Despawn:
+                    AI_Despawn();
+                    break;
                 case AIState.Idle:
                     AI_Idle();
                     if (!_showNamePlate)
@@ -316,6 +331,21 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             if (NPC.life <= 0)
             {
                 NPC.life = 1;
+            }
+        }
+
+
+        private void AI_Despawn()
+        {
+            Timer++;
+            NPC.noTileCollide = true;
+            NPC.noGravity = true;
+            NPC.velocity.X *= 0.9f;
+            NPC.velocity.Y += 0.5f;
+            NPC.rotation = NPC.velocity.X * 0.05f;
+            if(Timer >= 100)
+            {
+                NPC.active = false;
             }
         }
 
@@ -1002,7 +1032,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
 
         public override void OnKill()
         {
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedJackBoss, -1);
+            DownedBossTracker.ClearFlag(DownedBossFlag.Jack);
         }
     }
 }
