@@ -75,7 +75,8 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             BombDrop,
             Empower,
             Phase2Transition,
-            Death
+            Death,
+            Despawn
         }
 
         private bool _showNamePlate;
@@ -513,9 +514,19 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
             }
 
             if (!NPC.HasValidTarget)
+            {
                 NPC.TargetClosest();
+                if(!NPC.HasValidTarget && State != ActionState.Despawn)
+                {
+                    SwitchState(ActionState.Despawn);
+                }
+            }
+           
             switch (State)
             {
+                case ActionState.Despawn:
+                    AI_Despawn();
+                    break;
                 case ActionState.Idle:
                     AI_Idle();
                     if (!_showNamePlate)
@@ -555,6 +566,19 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
         }
 
 
+        private void AI_Despawn()
+        {
+            Timer++;
+            NPC.noTileCollide = true;
+            NPC.noGravity = true;
+            NPC.velocity.X *= 0.5f;
+            NPC.velocity.Y -= 0.5f;
+            NPC.rotation = NPC.velocity.X * 0.05f;
+            if(Timer >= 100)
+            {
+                NPC.active = false;
+            }
+        }
         public override void HitEffect(NPC.HitInfo hit)
         {
             HasBeenHit = true;
@@ -568,7 +592,7 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
         public override void OnKill()
         {
             base.OnKill();
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedJiitasBoss, -1);
+            DownedBossTracker.ClearFlag(DownedBossFlag.Jiitas);
         }
     }
 }

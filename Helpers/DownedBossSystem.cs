@@ -17,7 +17,8 @@ namespace Stellamod.Helpers
         EliteCommander=7,
         Gustbeak=8,
         StarBomber=9,
-        Bishinine=10
+        Bishinine=10,
+        Jiitas=11
     }
 
     public class DownedBossTracker : ModSystem
