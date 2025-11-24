@@ -152,7 +152,9 @@ namespace Stellamod.Core.DungeonGeneration
                 BlendState.AlphaBlend,
                 SamplerState.PointWrap,
                 DepthStencilState.None,
-                RasterizerState.CullCounterClockwise);
+                RasterizerState.CullCounterClockwise,
+                null,
+                Main.GameViewMatrix.TransformationMatrix);
             foreach (var kvp in _doorsInWorld)
             {
                 Vector2 position = kvp.Key.ToWorldCoordinates();

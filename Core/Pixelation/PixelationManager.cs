@@ -59,6 +59,14 @@ namespace Stellamod.Core.Pixelation
             if (Main.gameMenu)
                 return;
 
+            _draws.Clear();
+            foreach(var proj in Main.ActiveProjectiles)
+            {
+                if(proj.ModProjectile is IDrawPixelated pixelated)
+                {
+                    _draws.Add(pixelated);
+                }
+            }
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             graphicsDevice.SetRenderTarget(_pixelScreenRenderRT);
             graphicsDevice.Clear(Color.Black);
@@ -82,7 +90,7 @@ namespace Stellamod.Core.Pixelation
             graphicsDevice.Clear(Color.Transparent);
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             float denom = DownSamples;
             float scale = 1f / denom;
 
@@ -99,14 +107,11 @@ namespace Stellamod.Core.Pixelation
                 return;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
             // Draw our RT. The scale is important, it is 2 here as this RT is 0.5x the main screen size.
 
             float scale = DownSamples;
-            float zoomFix = 1f / Main.GameZoomTarget;
-    
 
-      
             spriteBatch.Draw(_pixelRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             spriteBatch.End();
         }

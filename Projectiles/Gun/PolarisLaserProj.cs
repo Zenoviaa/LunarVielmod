@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -15,7 +16,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Projectiles.Gun
 {
     public class PolarisLaserProj : ModProjectile,
-        IPixelPrimitiveDrawer
+        IDrawPixelated
     {
         //Don't change the sample points, 3 is good enough
         private const int NumSamplePoints = 3;
@@ -24,7 +25,6 @@ namespace Stellamod.Projectiles.Gun
 
         public float BeamLength;
         public List<Vector2> BeamPoints;
-        public PrimitiveTrail BeamDrawer;
 
         //No texture for this
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -81,7 +81,7 @@ namespace Stellamod.Projectiles.Gun
                 for (float f = 0; f < 16; f++)
                 {
                     Dust.NewDustPerfect(explosionCenter, ModContent.DustType<GlowSparkleDust>(),
-                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Yellow, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 15)).RotatedByRandom(19.0), 0, Color.Yellow, Main.rand.NextFloat(1f, 3f)).noGravity = true;
                 }
 
                 SoundStyle morrowExp = new SoundStyle($"Stellamod/Assets/Sounds/MorrowExp");
@@ -201,17 +201,17 @@ namespace Stellamod.Projectiles.Gun
 
         public override bool PreDraw(ref Color lightColor) => false;
         public override bool ShouldUpdatePosition() => false;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
 
+        public void DrawPixelated()
+        {
             //Put in the points
             //This is just a straight beam that collides with tiles
             BeamPoints.Clear();
             Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
             for (int i = 0; i <= 8; i++)
             {
-                BeamPoints.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + direction * BeamLength, i / 8f));
+                Vector2 start = Projectile.Center;
+                BeamPoints.Add(Vector2.Lerp(start, start + direction * BeamLength, i / 8f));
             }
 
 
@@ -221,8 +221,6 @@ namespace Stellamod.Projectiles.Gun
             shader.BlendState = BlendState.AlphaBlend;
             shader.LaserTexture = TrailRegistry.StarTrail;
             TrailDrawer.Draw(Main.spriteBatch, BeamPoints.ToArray(), ColorFunction, WidthFunction, shader);
-          //  BeamDrawer.DrawPixelated(BeamPoints, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

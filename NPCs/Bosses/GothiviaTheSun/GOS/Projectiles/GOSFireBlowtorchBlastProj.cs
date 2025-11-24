@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
@@ -146,6 +147,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
 
         public void DrawPixelPrimitives(SpriteBatch spriteBatch)
         {
+
             BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
             if (Timer < LifeTime / 2f)
             {
@@ -172,10 +174,17 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
             }
 
 
+            var shader = BasicLaserShader.Instance;
+            shader.InnerColor = Color.White;
+            shader.OuterColor = Color.OrangeRed;
+            shader.BlendState = BlendState.AlphaBlend;
+            shader.LaserTexture = TrailRegistry.BeamTrail;
+            TrailDrawer.Draw(Main.spriteBatch, LinePos, ColorFunction, WidthFunction, shader);
+            /*
             BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
             BeamDrawer.SpecialShader.UseColor(Color.Lerp(Color.White, Color.OrangeRed, 0.3f));
             BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.BeamTrail);
-            BeamDrawer.DrawPixelated(LinePos, -Main.screenPosition, 32);
+            BeamDrawer.DrawPixelated(LinePos, -Main.screenPosition, 32);*/
             Main.spriteBatch.ExitShaderRegion();
         }
     }
