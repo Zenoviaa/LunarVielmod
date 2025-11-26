@@ -111,9 +111,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         }
 
         private bool _contactDamage;
-        private bool _headless;
-
-        private Vector2 _scale;
+   
         private Vector2 _runDirection;
 
         private SanguineDraw _draw;
@@ -369,7 +367,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
      
             }
 
-            _scale = Vector2.One;
+            _draw.scale = Vector2.One;
             _draw.alpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60f));
             _draw.afterImageAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60f));
 
@@ -451,7 +449,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
 
             _contactDamage = false;
-            _scale = Vector2.One;
+            _draw.scale = Vector2.One;
             _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
             _draw.afterImageAlpha *= 0.5f;
             _draw.headless = false;
@@ -619,7 +617,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _contactDamage = false;
             _animation = AnimationState.Walk;
             _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
-            _scale = Vector2.Lerp(new Vector2(1.2f, 1.2f), Vector2.One, ease);
+            _draw.scale = Vector2.Lerp(new Vector2(1.2f, 1.2f), Vector2.One, ease);
             if (Timer < time / 2f)
             {
                 _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 0f, 0.1f);
@@ -1234,7 +1232,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Color glowColor = Color.Red;
             glowColor.A = 0;
             glowColor *= _draw.flashAlpha;
-            spriteBatch.Draw(texture, drawCenter, frame, glowColor, NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
+            glowColor *= 0.5f;
+            spriteBatch.Draw(texture, drawCenter, frame, glowColor, NPC.rotation, drawOrigin, _draw.scale, spriteEffects, 0);
 
         }
         private void DrawSingularity(SpriteBatch spriteBatch, Vector2 screenPos, Color color)
