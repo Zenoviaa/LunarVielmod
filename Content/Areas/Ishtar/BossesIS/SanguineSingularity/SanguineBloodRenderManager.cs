@@ -64,6 +64,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Main.OnResolutionChanged -= ResizeTargets;
         }
 
+        public override void PostUpdateEverything()
+        {
+            base.PostUpdateEverything();
+            ResizeRenderTargets();
+        }
         private void RenderToPixelationRT(On_Main.orig_CheckMonoliths orig)
         {
             orig();
@@ -121,11 +126,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if (DrawBloodyBG)
             {
                 var bloodyShader = BloodyShader.Instance;
-                bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.9f);
+                bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.92f);
                 bloodyShader.OuterColor = Color.Black;
                 bloodyShader.Distortion = 1;
                 bloodyShader.Tiling = Vector2.One * 12;
-                bloodyShader.Time = Main.GlobalTimeWrappedHourly * 0.25f;
+                bloodyShader.Time = Main.GlobalTimeWrappedHourly * 3;
                 bloodyShader.NoiseTexture = TextureRegistry.Clouds6;
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.End();

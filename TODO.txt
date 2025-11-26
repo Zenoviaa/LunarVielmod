@@ -16,17 +16,26 @@
 
 Sanguien Singularity
 
+- stop with the teleports he's not spectral make it more seamless
+- maybe make a windup frame for the run
+- fix the offset on the thing
+- make it easier to react to the blood projectiles on that one attack
+- always in singularity when charginrg
+- explode on the spawn animation
+- blood palette thing
+- maybe the background can pulse to the bpm
+- maybe there's a singularity thing in the backgronud
+- make goober really fast in general
 
 use that for his spawn aniamtion and a lot of attacks and projectiles
 
-Make bloody line/trail particle, gonnna need to make a system for this
+
 Create extra gores for everything
 
 Create bloody splash particle effect/texture, this particle is kinda just drawn over everything, used for the exploding head thing
 Grab those bloody splashing sound effects from that one game
 
 Make the singularity visual with the rings and red
-
 Magic walking trail at his feet
 
 
@@ -36,11 +45,6 @@ Magic walking trail at his feet
 
 - Bloody Charge State
 	-Rushes you and then explodes into headless form with projectiles coming everywhere
-
-
-- Blood Rain
-	-Rises up and then rains down projectiles that use the blood masking effect thing
-	-Maybe also pixelate the effect
 
 
 - Blood Crack

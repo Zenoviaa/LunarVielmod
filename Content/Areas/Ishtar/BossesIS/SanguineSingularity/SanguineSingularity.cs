@@ -613,7 +613,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
    
             NPC.velocity = Vector2.Lerp(-_runDirection, _runDirection * 22, ease);
-            NPC.rotation = NPC.velocity.X * 0.025f;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
 
@@ -745,7 +744,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _animation = AnimationState.Run;
             TargetOutlineColor = Color.Transparent;
             NPC.velocity *= 0.9f;
-            NPC.rotation = NPC.velocity.X * 0.025f;
+
             NPC.noTileCollide = true;
             NPC.noGravity = true;
             if (MultiplayerHelper.IsHost)
@@ -1122,7 +1121,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             if (MultiplayerHelper.IsHost)
             {
-                Vector2 velocity = Main.rand.NextVector2CircularEdge(800, 800);
+                Vector2 velocity = Main.rand.NextVector2CircularEdge(1800, 1800);
                 Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
                     ModContent.ProjectileType<BloodGeyser>(), BloodGeyserDamage, 1, Main.myPlayer);
             }
