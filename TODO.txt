@@ -18,14 +18,10 @@ Sanguien Singularity
 
 - maybe make a windup frame for the run
 
-- explode on the spawn animation
 - blood palette thing
 - maybe the background can pulse to the bpm
 - maybe there's a singularity thing in the backgronud
 - make goober really fast in general
-
-use that for his spawn aniamtion and a lot of attacks and projectiles
-
 
 Create extra gores for everything
 

@@ -110,7 +110,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
             Phase2Transition
         }
-
+        private float _incresionDiskFrameBottom;
+        private float _incresionDiskFrameTop;
         private bool _contactDamage;
    
         private Vector2 _runDirection;
@@ -228,6 +229,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         public override void AI()
         {
             base.AI();
+
+            DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
+            DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
             _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
             if (!NPC.HasValidTarget)
             {
@@ -1303,20 +1307,75 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             for (float f = 0; f < 4; f++)
             {
 
-                spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(1.5f, 0.2f), SpriteEffects.None, 0);
+                spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(1.5f, 0.2f) * 0.66f, SpriteEffects.None, 0);
             }
-            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(3.5f, 0.2f), SpriteEffects.None, 0);
-            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor * 0.5f, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(7.5f, 0.2f), SpriteEffects.None, 0);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(3.5f, 0.2f) * 0.66f, SpriteEffects.None, 0);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor * 0.5f, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(7.5f, 0.2f) * 0.66f, SpriteEffects.None, 0);
 
             rotOffset = MathHelper.ToRadians(25f + ExtraMath.Osc(-10f, -5f, speed: 2, offset: 2));
             //Inverse rings
             for (float f = 0; f < 4; f++)
             {
 
-                spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(1.5f, 0.2f) * 0.66f, SpriteEffects.None, 0);
+                spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(1.5f, 0.2f) * 0.36f, SpriteEffects.None, 0);
             }
-            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(3.5f, 0.2f) * 0.66f, SpriteEffects.None, 0);
-            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor * 0.5f, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(7.5f, 0.2f) * 0.66f, SpriteEffects.None, 0);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(3.5f, 0.2f) * 0.36f, SpriteEffects.None, 0);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor * 0.5f, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(7.5f, 0.2f) * 0.36f, SpriteEffects.None, 0);
+            DrawIncresionDiskBottom(spriteBatch, screenPos, color);
+            DrawIncresionDiskTop(spriteBatch, screenPos, color);
+        }
+        private void DrawIncresionDiskBottom(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            //Draw Incresion Disk
+            Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameBottom, columns: 5, frameWidth: 400, frameHeight: 200);
+            Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(Texture + "_Disk").Value;
+
+            //Incresion Disk Draw Color
+            Color incresionDiskDrawColor = Color.White;
+            incresionDiskDrawColor *= 0.25f;
+            incresionDiskDrawColor.A = 0;
+
+            Vector2 drawPos = NPC.Center - screenPos;
+            Vector2 drawOrigin = incresionDiskRect.Size() / 2;
+            float drawScale = NPC.scale * _draw.singularityScale.X * 1.75f;
+            drawScale *= 0.4f;
+            float drawRotation = NPC.rotation;
+            drawRotation -= MathHelper.ToRadians(30);
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+
+            incresionDiskDrawColor = Color.Red;
+            incresionDiskDrawColor *= 0.25f;
+            incresionDiskDrawColor.A = 0;
+
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale * 1.5f, SpriteEffects.None, 0);
+
+            incresionDiskDrawColor = Color.DarkRed;
+            incresionDiskDrawColor *= 0.25f;
+            incresionDiskDrawColor.A = 0;
+
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale * 2, SpriteEffects.None, 0);
+        }
+
+
+        private void DrawIncresionDiskTop(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            //Draw Incresion Disk
+            Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameTop, columns: 4, frameWidth: 480, frameHeight: 200);
+            Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(Texture + "_Top").Value;
+
+            //Incresion Disk Draw Color
+            Color incresionDiskDrawColor = Color.White;
+            incresionDiskDrawColor *= 0.15f;
+            incresionDiskDrawColor.A = 0;
+
+            Vector2 drawPos = NPC.Center - screenPos;
+            Vector2 drawOrigin = incresionDiskRect.Size() / 2;
+
+            float drawScale = NPC.scale * 3 * _draw.singularityScale.X;
+            drawScale *= 0.4f;
+            float drawRotation = NPC.rotation;
+            drawRotation -= MathHelper.ToRadians(30);
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
 
         private int _frame;
