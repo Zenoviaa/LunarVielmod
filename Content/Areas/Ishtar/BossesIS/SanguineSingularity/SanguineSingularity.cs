@@ -331,6 +331,30 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
     public class SanguineSingularity : ScarletBoss,
         IDrawOutlines
     {
+        public struct SanguineDraw
+        {
+            public Color outlineColor;
+            public Vector2 scale;
+            public Vector2 shake;
+            public Vector2 singularityScale;
+            public float alpha;
+            public float flashAlpha;
+            public float afterImageAlpha;
+            public bool headless;
+
+
+            public void SetDefaults()
+            {
+                outlineColor = Color.Transparent;
+                scale = Vector2.One;
+                shake = Vector2.Zero;
+                singularityScale = Vector2.Zero;
+                alpha = 1f;
+                flashAlpha = 0f;
+                afterImageAlpha = 0f;
+                headless = false;
+            }
+        }
         private enum AnimationState
         {
             Idle,
@@ -372,18 +396,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Phase2Transition
         }
 
-        private float _alpha;
-        private float _animationTimer;
-        private float _afterImageAlpha;
-        private float _flashAlpha;
         private bool _contactDamage;
         private bool _headless;
-        private Color _outlineColor;
+
         private Vector2 _scale;
-        private Vector2 _shake;
-        private Vector2 _singularityScale;
         private Vector2 _runDirection;
 
+        private SanguineDraw _draw;
         private Vector2 _teleportPosition;
 
         private Color TargetOutlineColor;
@@ -482,7 +501,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         public override void AI()
         {
             base.AI();
-            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
@@ -499,8 +518,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 NPC.velocity = Vector2.Zero;
                 _teleportPosition = Vector2.Zero;
             }
-            _flashAlpha *= 0.99f;
-            _animationTimer++;
+            _draw.flashAlpha *= 0.99f;
             NPC.spriteDirection = NPC.direction;
             switch (State)
             {
@@ -600,8 +618,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
 
             _scale = Vector2.One;
-            _alpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60f));
-            _afterImageAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60f));
+            _draw.alpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60f));
+            _draw.afterImageAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60f));
 
             NPC.rotation = 0;
             NPC.noGravity = true;
@@ -686,8 +704,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
             _contactDamage = false;
             _scale = Vector2.One;
-            _alpha = MathHelper.Lerp(_alpha, 1f, 0.1f);
-            _afterImageAlpha *= 0.5f;
+            _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
+            _draw.afterImageAlpha *= 0.5f;
 
             AttackNumber = 0;
             NPC.direction = TargetDirection;
@@ -739,8 +757,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
 
             _animation = AnimationState.Walk;
-            _alpha = MathHelper.Lerp(_alpha, 1f, 0.1f);
-            _afterImageAlpha *= 0.9f;
+            _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
+            _draw.afterImageAlpha *= 0.9f;
 
             //I think for this I want to slow down the movement and make it violently shake before it explodes into bloody geysers
             //Yes this can kill you (lol)
@@ -772,7 +790,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             float completionRatio = Timer / deathTime;
             float shakeAmount = MathHelper.Lerp(0f, 16, completionRatio);
             Vector2 shake = Main.rand.NextVector2Circular(shakeAmount, shakeAmount);
-            _shake = shake;
+            _draw.shake = shake;
             if (Timer == deathTime)
             {
                 if (MultiplayerHelper.IsHost)
@@ -814,7 +832,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         #region Bloody Burst
         private void CreateRedFlash()
         {
-            _flashAlpha = 1f;
+            _draw.flashAlpha = 1f;
         }
 
         private void AI_BloodyBurst_Start()
@@ -853,16 +871,16 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
             _contactDamage = false;
             _animation = AnimationState.Walk;
-            _alpha = MathHelper.Lerp(_alpha, 1f, 0.1f);
+            _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
             _scale = Vector2.Lerp(new Vector2(1.2f, 1.2f), Vector2.One, ease);
             if (Timer < 30f)
             {
-                _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, 0f, 0.1f);
+                _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 0f, 0.1f);
                 _animation = AnimationState.Walk;
             }
             else
             {
-                _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, 1f, 0.1f);
+                _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
                 _animation = AnimationState.Run;
             }
 
@@ -888,8 +906,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             Timer++;
             float ease = EasingFunction.InOutSine(Timer / 60f);
-            _afterImageAlpha = MathHelper.Lerp(0f, 1f, ease);
-            _alpha = MathHelper.Lerp(1f, 0f, ease);
+            _draw.afterImageAlpha = MathHelper.Lerp(0f, 1f, ease);
+            _draw.alpha = MathHelper.Lerp(1f, 0f, ease);
             _animation = AnimationState.Run;
             _contactDamage = true;
             TargetOutlineColor = Color.Red;
@@ -960,8 +978,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 NPC.TargetClosest();
             }
 
-            _alpha *= 0.9f;
-            _afterImageAlpha *= 0.9f;
+            _draw.alpha *= 0.9f;
+            _draw.afterImageAlpha *= 0.9f;
             _animation = AnimationState.Run;
             TargetOutlineColor = Color.Transparent;
             NPC.velocity *= 0.9f;
@@ -1007,8 +1025,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 SoundEngine.PlaySound(preDash, NPC.position);
             }
 
-            _alpha = MathHelper.Lerp(_alpha, 1f, 0.1f);
-            _afterImageAlpha *= 0.5f;
+            _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
+            _draw.afterImageAlpha *= 0.5f;
             _animation = AnimationState.Run;
 
 
@@ -1037,8 +1055,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 SoundEngine.PlaySound(chargeSound, NPC.position);
             }
 
-            _alpha = MathHelper.Lerp(_alpha, 1f, 0.1f);
-            _afterImageAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 30f));
+            _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
+            _draw.afterImageAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 30f));
             _animation = AnimationState.Run;
 
             TargetOutlineColor = Color.Red;
@@ -1061,8 +1079,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private void AI_BloodyCharge_End()
         {
-            _alpha = MathHelper.Lerp(_alpha, 1f, 0.1f);
-            _afterImageAlpha *= 0.9f;
+            _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
+            _draw.afterImageAlpha *= 0.9f;
             _animation = AnimationState.Walk;
 
             Timer++;
@@ -1099,8 +1117,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             float siningEase = EasingFunction.InOutSine(Timer / chargeUpTime);
 
             _animation = AnimationState.Walk;
-            _alpha = MathHelper.Lerp(1f, 0f, siningEase);
-            _afterImageAlpha = MathHelper.Lerp(0f, 1f, siningEase);
+            _draw.alpha = MathHelper.Lerp(1f, 0f, siningEase);
+            _draw.afterImageAlpha = MathHelper.Lerp(0f, 1f, siningEase);
 
             NPC.noGravity = true;
             NPC.noTileCollide = true;
@@ -1126,8 +1144,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 SoundEngine.PlaySound(laughSound, NPC.position);
             }
 
-            _alpha = 0f;
-            _afterImageAlpha *= 0.9f;
+            _draw.alpha = 0f;
+            _draw.afterImageAlpha *= 0.9f;
             _animation = AnimationState.Walk;
 
             NPC.velocity = Vector2.Zero;
@@ -1165,7 +1183,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _animation = AnimationState.Walk;
 
             float time = 60f;
-            _alpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / time));
+            _draw.alpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / time));
             NPC.velocity.X = MathHelper.Lerp(3f, 0f, EasingFunction.InOutSine(Timer / time));
             if (Timer >= time)
             {
@@ -1325,7 +1343,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 float f = i;
                 float interpolant = f / (float)NPC.oldPos.Length;
                 Color fadeColor = Color.Lerp(Color.Red, Color.Transparent, interpolant);
-                fadeColor *= _afterImageAlpha;
+                fadeColor *= _draw.afterImageAlpha;
                 oldDrawPos += NPC.Size / 2f;
                 fadeColor *= 0.1f;
 
@@ -1359,7 +1377,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
             Color glowColor = Color.Red;
             glowColor.A = 0;
-            glowColor *= _flashAlpha;
+            glowColor *= _draw.flashAlpha;
             spriteBatch.Draw(texture, drawCenter, frame, glowColor, NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
 
         }
@@ -1369,13 +1387,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Vector2 drawPosition = NPC.Center - screenPos;
             Vector2 drawOrigin = texture.Size() / 2f;
             Vector2 drawScale = NPC.scale * Vector2.One;
-            drawScale *= _singularityScale;
+            drawScale *= _draw.singularityScale;
 
             var shader = SingularityShader.Instance;
             spriteBatch.Restart(effect: shader.Effect);
 
             Color redSingularity = Color.Red;
-            redSingularity *= _alpha;
+            redSingularity *= _draw.alpha;
             spriteBatch.Draw(texture, drawPosition, null, redSingularity, NPC.rotation, drawOrigin, drawScale * 0.25f, SpriteEffects.None, 0);
             spriteBatch.RestartDefaults();
 
@@ -1385,7 +1403,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Color diskDrawColor = Color.Lerp(Color.White, Color.Lerp(Color.White, Color.Red, 0.15f), ExtraMath.Osc(0f, 1f, speed: 2));
             diskDrawColor = diskDrawColor.MultiplyRGB(Color.Red);
             diskDrawColor.A = 0;
-            diskDrawColor *= _alpha;
+            diskDrawColor *= _draw.alpha;
 
             float scaleOsc = ExtraMath.Osc(0.5f, 0.65f, speed: 1);
             spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation, diskDrawOrigin, drawScale * 0.5f * scaleOsc, SpriteEffects.None, 0);
@@ -1479,7 +1497,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             if (spriteEffects == SpriteEffects.FlipHorizontally)
                 drawOrigin.X = (frame.Width - drawOrigin.X);
-            spriteBatch.Draw(texture, drawCenter, frame, color * _alpha, NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, drawCenter, frame, color * _draw.alpha, NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
         }
 
         private void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
@@ -1489,7 +1507,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private void DrawOutline(SpriteBatch spriteBatch, Vector2 screenPos)
         {
-            DrawSprite(spriteBatch, screenPos, _outlineColor);
+            DrawSprite(spriteBatch, screenPos, _draw.outlineColor);
         }
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
