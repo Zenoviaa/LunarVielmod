@@ -28,7 +28,6 @@ Create extra gores for everything
 Create bloody splash particle effect/texture, this particle is kinda just drawn over everything, used for the exploding head thing
 Grab those bloody splashing sound effects from that one game
 
-Make the singularity visual with the rings and red
 Magic walking trail at his feet
 
 

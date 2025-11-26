@@ -13,6 +13,7 @@ using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using Terraria;
@@ -1247,6 +1248,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            DrawWalkingTrail(spriteBatch, screenPos, drawColor);
             DrawAfterImage(spriteBatch, screenPos);
             DrawSingularity(spriteBatch, screenPos, drawColor);
             Draw(spriteBatch, screenPos, drawColor);
@@ -1255,6 +1257,23 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             return false;
         }
 
+        private Color GetWalkingTrailColor(float completionRatio)
+        {
+            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * _draw.afterImageAlpha;
+        }
+
+        private float GetWalkingTrailWidth(float completionRatio)
+        {
+            return MathHelper.SmoothStep(0f, 20f, EasingFunction.QuadraticBump(completionRatio));
+        }
+
+        private void DrawWalkingTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            var shader = BasicLaserShader.Instance;
+            shader.InnerColor = Color.Red;
+            shader.OuterColor = Color.Transparent;
+            TrailDrawer.Draw(spriteBatch, NPC.oldPos, GetWalkingTrailColor, GetWalkingTrailWidth, shader, offset: new Vector2(0, NPC.frame.Height)); ;
+        }
         private void DrawRedFlash(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
@@ -1343,17 +1362,21 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             drawRotation -= MathHelper.ToRadians(30);
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
 
-            incresionDiskDrawColor = Color.Red;
+            incresionDiskDrawColor = Color.White;
             incresionDiskDrawColor *= 0.25f;
             incresionDiskDrawColor.A = 0;
 
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale * 1.5f, SpriteEffects.None, 0);
 
-            incresionDiskDrawColor = Color.DarkRed;
+            incresionDiskDrawColor = Color.Blue;
             incresionDiskDrawColor *= 0.25f;
             incresionDiskDrawColor.A = 0;
 
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale * 2, SpriteEffects.None, 0);
+
+
+
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation - MathHelper.ToRadians(90), drawOrigin, drawScale * 2, SpriteEffects.None, 0);
         }
 
 
@@ -1375,6 +1398,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             drawScale *= 0.4f;
             float drawRotation = NPC.rotation;
             drawRotation -= MathHelper.ToRadians(30);
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+
+            drawRotation -= MathHelper.ToRadians(90);
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
 
