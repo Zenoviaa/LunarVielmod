@@ -43,6 +43,130 @@ using Terraria.ModLoader;
  */
 namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 {
+    public interface IDrawSanguineBlood
+    {
+        void DrawToSanguineMask(SpriteBatch spriteBatch);
+    }
+
+    [Autoload(Side = ModSide.Client)]
+    public class SanguineBloodRenderManager : ModSystem
+    {
+
+        private Point _oldScreenSize;
+        private RenderTarget2D _pixelRenderRT;
+        private RenderTarget2D _pixelScreenRenderRT;
+        private List<IDrawSanguineBlood> _draws = new List<IDrawSanguineBlood>(100);
+
+        public int DownSamples => 2;
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            On_Main.CheckMonoliths += RenderToPixelationRT;
+            On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRTToScreen;
+            Main.OnResolutionChanged += ResizeTargets;
+        }
+
+        public override void Load()
+        {
+            base.Load();
+            ResizeRenderTargets();
+        }
+        public override void OnModUnload()
+        {
+            base.OnModUnload();
+            On_Main.CheckMonoliths -= RenderToPixelationRT;
+            On_Main.DoDraw_DrawNPCsOverTiles -= DrawPixelRTToScreen;
+            Main.OnResolutionChanged -= ResizeTargets;
+        }
+
+        private void RenderToPixelationRT(On_Main.orig_CheckMonoliths orig)
+        {
+            orig();
+            if (Main.gameMenu)
+                return;
+
+            _draws.Clear();
+            foreach (var proj in Main.ActiveProjectiles)
+            {
+                if (proj.ModProjectile is IDrawSanguineBlood pixelated)
+                {
+                    _draws.Add(pixelated);
+                }
+            }
+
+            if (_draws.Count > 0)
+            {
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+                graphicsDevice.SetRenderTarget(_pixelScreenRenderRT);
+                graphicsDevice.Clear(Color.Transparent);
+
+                //Alright, so what we're going to do is actually use two render targets to get around the issue of misplaced pixels
+                //This costs a bit of extra performance but it'll look good
+                //So, first draw at fully quality to the screen render target
+
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                for (int i = 0; i < _draws.Count; i++)
+                {
+                    var draw = _draws[i];
+                    draw.DrawToSanguineMask(spriteBatch);
+                }
+                spriteBatch.End();
+
+
+                //Now we take that output and downscale it to the pixel RT
+                graphicsDevice.SetRenderTarget(_pixelRenderRT);
+                graphicsDevice.Clear(Color.Transparent);
+
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                float denom = DownSamples;
+                float scale = 1f / denom;
+                spriteBatch.Draw(_pixelScreenRenderRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+                spriteBatch.End();
+            }
+        }
+
+
+        private void DrawPixelRTToScreen(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
+        {
+            orig(self);
+            if (Main.gameMenu)
+                return;
+
+            if (_draws.Count <= 0)
+                return;
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+
+            float scale = DownSamples;
+
+            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.End();
+        }
+
+        private void ResizeRenderTargets()
+        {
+            Point screenSize = Main.ScreenSize;
+            if (_oldScreenSize != screenSize)
+            {
+                Main.QueueMainThreadAction(() =>
+                {
+                    _pixelRenderRT.Release();
+                    _pixelRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X / DownSamples, screenSize.Y / DownSamples);
+
+                    _pixelScreenRenderRT.Release();
+                    _pixelScreenRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y);
+
+                });
+                _oldScreenSize = screenSize;
+            }
+        }
+        private void ResizeTargets(Vector2 vector)
+        {
+            ResizeRenderTargets();
+        }
+    }
     public class SanguineGoreManager
     {
         private float _timer;
