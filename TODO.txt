@@ -14,20 +14,52 @@
 
 
 
+Sanguien Singularity
+
+Make the gores explode out of him and then orbiting in the third dimension (use a matrix, we did this on accident before lol)
+
+Make a blood particle render target masking thing that explodes out of him, 
+use that for his spawn aniamtion and a lot of attacks and projectiles
+These also have a black outline, don't forget that
 
 
+Make bloody line/trail particle, gonnna need to make a system for this
+Create extra gores for everything
+
+Create bloody splash particle effect/texture, this particle is kinda just drawn over everything, used for the exploding head thing
+Grab those bloody splashing sound effects from that one game
+
+Make the singularity visual with the rings and red
+
+Magic walking trail at his feet
 
 
+- Spawn State
+
+- Idle State
+
+- Bloody Burst State
+	-Gets faster over time
+	-Phase 2 has more projectiles
+
+- Bloody Charge State
+	-Rushes you and then explodes into headless form with projectiles coming everywhere
 
 
+- Blood Rain
+	-Rises up and then rains down projectiles that use the blood masking effect thing
+	-Maybe also pixelate the effect
 
 
+- Blood Crack
+	- Bloody cracks forming on  its body before it erupts into blood geysers
+	- Kinda like blowtorch blast but bloody, make sure to spam those new effects
 
 
+- Blood Boil, similar to Blood Crack but more visceral and violent, also short range
 
-
-
-
+- Ghastly Blood Dash
+	- He just keeps charging tbh
 
 
 
