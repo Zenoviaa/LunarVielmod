@@ -1232,7 +1232,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 Vector2 drawOrigin = new Vector2(128, 64);
                 float f = i;
                 float interpolant = f / (float)NPC.oldPos.Length;
-                Color fadeColor = Color.Lerp(Color.Red, Color.Transparent, interpolant);
+                Color fadeColor = Color.Lerp(Color.Lerp(Color.Red, Color.Blue, interpolant), Color.Transparent, interpolant);
                 fadeColor *= _draw.afterImageAlpha;
                 oldDrawPos += NPC.Size / 2f;
                 fadeColor *= 0.3f;
