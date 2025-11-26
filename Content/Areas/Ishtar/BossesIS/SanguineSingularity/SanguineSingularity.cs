@@ -1281,67 +1281,46 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             switch (_animation)
             {
                 case AnimationState.Idle:
-                    if (_draw.headless)
-                    {
-                        _frame = 1;
-                    }
-                    else
-                    {
-                        _frame = 0;
-                    }
-
+                    _frame = 0;
                     break;
                 case AnimationState.Walk:
-                    if (_draw.headless)
+                    if (_frame < 2)
                     {
-                        if (_frame < 10)
-                        {
-                            _frame = 10;
-                        }
-                        else if (_frame >= 18)
-                        {
-                            _frame = 10;
-                        }
+                        _frame = 2;
                     }
-                    else
+                    else if (_frame >= 10)
                     {
-                        if (_frame < 2)
-                        {
-                            _frame = 2;
-                        }
-                        else if (_frame >= 10)
-                        {
-                            _frame = 2;
-                        }
+                        _frame = 2;
                     }
-
                     break;
                 case AnimationState.Run:
-                    if (_draw.headless)
+                    if (_frame < 18)
                     {
-                        if (_frame < 23)
-                        {
-                            _frame = 23;
-                        }
-                        else if (_frame >= 28)
-                        {
-                            _frame = 23;
-                        }
+                        _frame = 18;
                     }
-                    else
+                    else if (_frame >= 23)
                     {
-                        if (_frame < 18)
-                        {
-                            _frame = 18;
-                        }
-                        else if (_frame >= 23)
-                        {
-                            _frame = 18;
-                        }
+                        _frame = 18;
                     }
                     break;
             }
-            NPC.frame.Y = frameHeight * _frame;
+            int frame = _frame;
+            if (_draw.headless)
+            {
+                switch (_animation)
+                {
+                    case AnimationState.Idle:
+                        frame += 1;
+                        break;
+                    case AnimationState.Walk:
+                        frame += 8;
+                        break;
+                    case AnimationState.Run:
+                        frame += 5;
+                        break;
+                }
+            }
+            NPC.frame.Y = frameHeight * frame;
         }
 
 
