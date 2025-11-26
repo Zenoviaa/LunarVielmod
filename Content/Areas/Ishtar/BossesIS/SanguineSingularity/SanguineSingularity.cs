@@ -41,6 +41,53 @@ using Terraria.ModLoader;
  */
 namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 {
+    public class SanguineGoreManager
+    {
+        public SanguineGoreManager()
+        {
+            gores = new SanguineGore[6];
+            for(int i = 0; i < gores.Length; i++)
+            {
+                gores[i] = SanguineGore()
+            }
+        }
+        public SanguineGore[] gores;
+
+        public void Update()
+        {
+            for(int i = 0; i < gores.Length; i++)
+            {
+                SanguineGore gore = gores[i];
+                //So we need to calculate some type of orbiting movement
+            }
+        }
+    }
+
+    public class SanguineGore
+    {
+        public SanguineGore(Texture2D texture, Rectangle frame)
+        {
+            this.position = Vector2.Zero;
+            this.texture = texture;
+            this.frame = frame;
+            this.color = Color.White;
+            this.scale = Vector2.One;
+        }
+        public Vector2 position;
+        public Vector2 scale;
+        public Rectangle frame;
+        public Texture2D texture;
+        public Color color;
+        public float rotation;
+        public float sortingOrder;
+        public void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            Vector2 drawCenter = position - screenPos;
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Color drawColor = color.MultiplyRGB(lightColor);
+            spriteBatch.Draw(texture, drawCenter, frame, drawColor, rotation, drawOrigin, scale, SpriteEffects.None, 0 );
+        }
+    }
 
     public class BloodGeyser : ModProjectile,
         IDrawPixelated
@@ -540,39 +587,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     AI_Phase2Transition();
                     break;
             }
-
-            switch (_animation)
-            {
-                case AnimationState.Idle:
-                    Animate_Idle();
-                    break;
-                case AnimationState.Walk:
-                    Animate_Walk();
-                    break;
-                case AnimationState.Run:
-                    Animate_Run();
-                    break;
-            }
         }
 
-
-        #region Animations
-
-        private void Animate_Idle()
-        {
-
-        }
-
-        private void Animate_Walk()
-        {
-
-        }
-
-        private void Animate_Run()
-        {
-
-        }
-        #endregion
 
         private void AI_Spawn()
         {
