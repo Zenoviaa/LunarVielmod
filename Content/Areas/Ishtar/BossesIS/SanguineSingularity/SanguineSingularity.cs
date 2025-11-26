@@ -458,9 +458,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         }
     }
 
-    public class BloodyChargeBoom : ModProjectile
+    public class BloodyChargeBoom : ModProjectile,
+        IDrawSanguineBlood
     {
-        public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
         public override void SetDefaults()
         {
@@ -472,7 +472,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 10;
+            Projectile.timeLeft = 30;
         }
 
         public override bool ShouldUpdatePosition()
@@ -492,7 +492,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 var p2 = FXUtil.GlowCircleBoom(Projectile.Center, Color.Red, Color.DarkBlue, Color.Black);
                 p2.Scale *= 2f;
 
-                ShakeModSystem.Shake = 8;
+                ShakeModSystem.Shake = 16;
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
                 for (float f = 0; f < 16f; f++)
                 {
@@ -509,6 +509,15 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     Particle.NewBlackParticle<BloodSparkleParticle>(Projectile.Center, velocity, color, Scale: Main.rand.NextFloat(0.5f, 3f));
                 }
             }
+        }
+
+        public void DrawToSanguineMask(SpriteBatch spriteBatch)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            Vector2 drawCenter = Projectile.Center - Main.screenPosition;
+            float drawScale = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(Timer / 30f));
+            spriteBatch.Draw(texture, drawCenter, null, Color.White, 0, drawOrigin, 1, SpriteEffects.None, 0);
         }
     }
 
@@ -991,7 +1000,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void ChooseAttack()
         {
             SwitchState(PatternManager.NextPattern());
-            SwitchState(AIState.BloodyBurst_Start);
+            SwitchState(AIState.BloodBoil_Start);
         }
 
         private void AI_Idle()
@@ -1007,7 +1016,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _scale = Vector2.One;
             _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
             _draw.afterImageAlpha *= 0.5f;
-
+            _draw.headless = false;
             AttackNumber = 0;
             NPC.direction = TargetDirection;
             NPC.noGravity = true;
@@ -1334,10 +1343,16 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Timer++;
             if (Timer == 1)
             {
+           
                 CreateRedFlash();
                 NPC.TargetClosest();
+
+                Vector2 directionToPlayer = (MyTarget.Center - NPC.Center);
+                directionToPlayer = directionToPlayer.SafeNormalize(Vector2.Zero);
+                _runDirection = directionToPlayer;
                 SoundStyle preDash = AssetRegistry.Sounds.SanguineSingularity.SanguinePreBurst;
                 SoundEngine.PlaySound(preDash, NPC.position);
+                NPC.direction = TargetDirection;
             }
 
             _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
@@ -1345,10 +1360,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _animation = AnimationState.Run;
 
 
-            Vector2 directionToPlayer = (MyTarget.Center - NPC.Center);
-            float chargeUpTime = 80f;
+ 
+            float chargeUpTime = 40f;
             float ease = EasingFunction.Anticipation2(Timer / chargeUpTime);
-            Vector2 velocity = Vector2.Lerp(-directionToPlayer, directionToPlayer * 5f, ease);
+            Vector2 velocity = Vector2.Lerp(-_runDirection, _runDirection * 35f, ease);
 
             TargetOutlineColor = Color.Yellow;
             NPC.velocity = velocity;
@@ -1365,24 +1380,33 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if (Timer == 1)
             {
                 CreateRedFlash();
-                NPC.TargetClosest();
                 SoundStyle chargeSound = AssetRegistry.Sounds.SanguineSingularity.SanguineCharge;
                 SoundEngine.PlaySound(chargeSound, NPC.position);
             }
 
             _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
-            _draw.afterImageAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 30f));
+            _draw.afterImageAlpha = MathHelper.Lerp(0f, 1f, 0.5f);
             _animation = AnimationState.Run;
-
+      
             TargetOutlineColor = Color.Red;
-            NPC.velocity *= 0.5f;
             NPC.rotation = NPC.velocity.X * 0.025f;
             if (Timer == 30)
             {
+                _draw.headless = true;
                 if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<BloodyChargeBoom>(), BloodyChargeBoomDamage, 1, Main.myPlayer);
+                    float num = 4f;
+                    for(float f = 0f;f < num; f++)
+                    {
+                        float completionRatio = f / num;
+                        Vector2 upVelocity = -Vector2.UnitY * NPC.direction * 8;
+                        upVelocity = upVelocity.RotatedBy(MathHelper.ToRadians(35 * NPC.direction * completionRatio));
+                        upVelocity = upVelocity.RotatedBy(MathHelper.ToRadians(65 * NPC.direction));
+                        int bloodyBurstProjectile = ModContent.ProjectileType<BloodyBurst>();
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, upVelocity, bloodyBurstProjectile, BloodyBurstDamage, 1, Main.myPlayer);
+                    }
                 }
             }
 
@@ -1407,7 +1431,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
 
             TargetOutlineColor = Color.Transparent;
-            NPC.velocity.X *= 0.5f;
+            NPC.velocity *= 0.5f;
             NPC.rotation = NPC.velocity.X * 0.025f;
             if (Timer >= 60f)
             {
