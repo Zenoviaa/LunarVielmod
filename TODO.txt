@@ -16,8 +16,6 @@
 
 Sanguien Singularity
 
-Make the gores explode out of him and then orbiting in the third dimension (use a matrix, we did this on accident before lol)
-
 Make a blood particle render target masking thing that explodes out of him, 
 use that for his spawn aniamtion and a lot of attacks and projectiles
 These also have a black outline, don't forget that
