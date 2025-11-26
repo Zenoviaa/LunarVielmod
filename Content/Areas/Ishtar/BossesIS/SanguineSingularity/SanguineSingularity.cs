@@ -18,7 +18,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 /*
 
@@ -329,6 +328,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
         private float _alpha;
         private float _animationTimer;
         private float _afterImageAlpha;
+        private float _flashAlpha;
         private bool _contactDamage;
         private bool _headless;
         private Color _outlineColor;
@@ -450,7 +450,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
                 NPC.velocity = Vector2.Zero;
                 _teleportPosition = Vector2.Zero;
             }
-
+            _flashAlpha *= 0.99f;
             _animationTimer++;
             switch (State)
             {
@@ -783,7 +783,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
         #region Bloody Burst
         private void CreateRedFlash()
         {
-
+            _flashAlpha = 1f;
         }
 
         private void AI_BloodyBurst_Start()
@@ -1270,9 +1270,26 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
         {
             DrawSingularity(spriteBatch, screenPos, drawColor);    
             Draw(spriteBatch, screenPos, drawColor);
+            DrawRedFlash(spriteBatch, screenPos, drawColor);
             return false;
         }
 
+        private void DrawRedFlash(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawCenter = NPC.Center - screenPos;
+            Rectangle frame = NPC.frame;
+            Vector2 drawOrigin = new Vector2(128, 64);
+            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            if (spriteEffects == SpriteEffects.FlipHorizontally)
+                drawOrigin.X = (frame.Width - drawOrigin.X);
+
+            Color glowColor = Color.Red;
+            glowColor.A = 0;
+            glowColor *= _flashAlpha;
+            spriteBatch.Draw(texture, drawCenter, frame, glowColor, NPC.rotation, drawOrigin, _scale, spriteEffects, 0);
+
+        }
         private void DrawSingularity(SpriteBatch spriteBatch, Vector2 screenPos, Color color)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
