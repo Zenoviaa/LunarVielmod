@@ -39,7 +39,7 @@ using Terraria.ModLoader;
  
 - In phase 2 every attack gets more deadlier, triggers at under 50% health
  */
-namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
+namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 {
 
     public class BloodGeyser : ModProjectile,
@@ -71,7 +71,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
             Timer++;
             List<Vector2> blastPoints = new List<Vector2>();
             float numPoints = 80;
-            for(float f = 0; f < numPoints; f++)
+            for (float f = 0; f < numPoints; f++)
             {
                 float completionRatio = f / numPoints;
                 Vector2 point = Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity, completionRatio);
@@ -336,7 +336,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
         private Vector2 _shake;
 
         private Vector2 _teleportPosition;
- 
+
         private Color TargetOutlineColor;
         private ref float Timer => ref NPC.ai[0];
 
@@ -670,7 +670,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
                 Vector2 directionToTarget = (MyTarget.Center - NPC.Center);
                 NPC.velocity = Vector2.Lerp(NPC.velocity, directionToTarget, 0.1f);
                 NPC.rotation *= 0.5f;
-            } else
+            }
+            else
             {
                 _animation = AnimationState.Idle;
             }
@@ -702,7 +703,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
         private void AI_Death()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
             }
@@ -716,10 +717,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
             //ok, so first slow down the velocity I think?
             NPC.velocity.X *= 0.99f;
             NPC.velocity.Y *= 0.99f;
-            
-            
+
+
             //Slowly hover upwards I think that'd be cool
-            if(NPC.velocity.Y < -1f)
+            if (NPC.velocity.Y < -1f)
                 NPC.velocity.Y -= 0.1f;
             NPC.rotation = NPC.velocity.X * 0.025f;
             RetargetCameraModifier.ReTargetPosition = NPC.Center;
@@ -728,12 +729,12 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
 
             //Shake the goober around quite a bit
             //Maybe emit some dusts?
-            if(Timer % 5 == 0)
+            if (Timer % 5 == 0)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 Color color = Color.Red;
-                Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), newColor: color, 
-                    Velocity: velocity, 
+                Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), newColor: color,
+                    Velocity: velocity,
                     Scale: Main.rand.NextFloat(0.5f, 1f)); ;
             }
 
@@ -758,10 +759,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
                 p.Scale *= 3;
                 p2.Scale *= 2;
 
-                for(float f = 0; f < 16; f++)
+                for (float f = 0; f < 16; f++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(16, 16);
-                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), vel, 
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), vel,
                         newColor: Color.Red,
                         Scale: Main.rand.NextFloat(0.5f, 3f));
                 }
@@ -825,7 +826,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
                 _animation = AnimationState.Run;
             }
 
-            if(Timer == 30f)
+            if (Timer == 30f)
             {
                 CreateRedFlash();
                 SoundStyle sanguineBurstReady = AssetRegistry.Sounds.SanguineSingularity.SanguineBurstReady;
@@ -860,7 +861,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
             if (NPC.velocity.Y > -3)
                 NPC.velocity.Y -= 0.5f;
 
-            if(Timer == 30f)
+            if (Timer == 30f)
             {
                 CreateRedFlash();
             }
@@ -904,7 +905,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
                 }
             }
 
-            if(Timer >= 60f)
+            if (Timer >= 60f)
             {
                 NPC.velocity *= 0.998f;
             }
@@ -975,7 +976,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
             float chargeUpTime = 80f;
             float ease = EasingFunction.Anticipation2(Timer / chargeUpTime);
             Vector2 velocity = Vector2.Lerp(-directionToPlayer, directionToPlayer * 5f, ease);
-           
+
             TargetOutlineColor = Color.Yellow;
             NPC.velocity = velocity;
             NPC.rotation = NPC.velocity.X * 0.025f;
@@ -1025,7 +1026,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
             _animation = AnimationState.Walk;
 
             Timer++;
-            if(Timer % 5 == 0)
+            if (Timer % 5 == 0)
             {
                 Color color = Color.White;
                 Vector2 velocity = Main.rand.NextVector2Circular(24, 24);
@@ -1192,12 +1193,12 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
         private void AI_BloodCrack_Start()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
             }
 
-            if(Timer >= 60)
+            if (Timer >= 60)
             {
                 SwitchState(AIState.BloodCrack_Geyser);
             }
@@ -1209,26 +1210,26 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
             {
                 Vector2 velocity = Main.rand.NextVector2CircularEdge(800, 800);
                 Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
-                    ModContent.ProjectileType<BloodGeyser>(), BloodGeyserDamage, 1, Main.myPlayer); 
+                    ModContent.ProjectileType<BloodGeyser>(), BloodGeyserDamage, 1, Main.myPlayer);
             }
         }
 
         private void AI_BloodCrack_Geyser()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
             }
 
-            if(Timer % 60 == 0)
+            if (Timer % 60 == 0)
             {
                 NPC.velocity = Vector2.Zero;
                 AttackNumber++;
                 CreateGeyser();
             }
 
-            if(AttackNumber >= 6)
+            if (AttackNumber >= 6)
             {
                 SwitchState(AIState.BloodCrack_End);
             }
@@ -1236,7 +1237,12 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
 
         private void AI_BloodCrack_End()
         {
-
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+            SwitchState(AIState.Idle);
         }
         #endregion
 
@@ -1268,7 +1274,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
         #region Drawcode
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            DrawSingularity(spriteBatch, screenPos, drawColor);    
+            DrawSingularity(spriteBatch, screenPos, drawColor);
             Draw(spriteBatch, screenPos, drawColor);
             DrawRedFlash(spriteBatch, screenPos, drawColor);
             return false;
@@ -1331,16 +1337,17 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
                     if (_headless)
                     {
                         _frame = 0;
-                    } else
+                    }
+                    else
                     {
                         _frame = 1;
                     }
-                        
+
                     break;
                 case AnimationState.Walk:
                     if (_headless)
                     {
-                        if(_frame < 10)
+                        if (_frame < 10)
                         {
                             _frame = 10;
                         }
@@ -1348,14 +1355,14 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
                         {
                             _frame = 10;
                         }
-                    } 
+                    }
                     else
                     {
-                        if(_frame < 2)
+                        if (_frame < 2)
                         {
                             _frame = 2;
-                        } 
-                        else if(_frame >= 10)
+                        }
+                        else if (_frame >= 10)
                         {
                             _frame = 2;
                         }
@@ -1365,20 +1372,22 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
                 case AnimationState.Run:
                     if (_headless)
                     {
-                        if(_frame < 23)
+                        if (_frame < 23)
                         {
                             _frame = 23;
-                        } else if (_frame >= 28)
+                        }
+                        else if (_frame >= 28)
                         {
                             _frame = 23;
                         }
                     }
                     else
                     {
-                        if(_frame < 18)
+                        if (_frame < 18)
                         {
                             _frame = 18;
-                        } else if (_frame >= 23)
+                        }
+                        else if (_frame >= 23)
                         {
                             _frame = 18;
                         }
@@ -1415,7 +1424,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
         {
             float outlineOffset = 2;
             Vector2 v = Vector2.UnitX * outlineOffset;
-            Vector2 h = Vector2.UnitY * outlineOffset;  
+            Vector2 h = Vector2.UnitY * outlineOffset;
             DrawOutline(spriteBatch, screenPos + v);
             DrawOutline(spriteBatch, screenPos - v);
             DrawOutline(spriteBatch, screenPos + h);
