@@ -387,10 +387,33 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             RetargetCameraModifier.ReTargetPosition = NPC.Center;
             if (Timer == 200)
             {
+                _draw.headless = true;
+                if (MultiplayerHelper.IsHost)
+                {
+                    float numProjectiles = 4;
+                    for(float f = 0f; f < numProjectiles; f++)
+                    {
+                        Vector2 velocity = -Vector2.UnitY;
+                        velocity = velocity.RotatedByRandom(0.5f);
+                        velocity *= Main.rand.NextFloat(5f, 12f);
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity, 
+                            ModContent.ProjectileType<BloodyBurst>(), BloodyBurstDamage, 1, Main.myPlayer);
+                    }
+
+                }
+
+                float numDust = 24;
+                for(float f = 0; f < numDust; f++)
+                {
+                    Vector2 dustVelocity = Main.rand.NextVector2Circular(20, 20);
+                    Dust.NewDustPerfect(NPC.Center, DustID.Blood, dustVelocity, Scale: Main.rand.NextFloat(0.5f, 1.2f));
+                }
+
                 ShowNamePlate();
                 CreateRedFlash();
+                ShakeModSystem.Shake = 12;
                 FXUtil.ShakeCamera(NPC.Center, 1024, 8);
-                SoundStyle spawnSound = AssetRegistry.Sounds.SanguineSingularity.SanguineSpawn;
+                SoundStyle spawnSound = AssetRegistry.Sounds.SanguineSingularity.SanguineCry;
                 SoundEngine.PlaySound(spawnSound, NPC.position);
             }
 
@@ -452,7 +475,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _draw.scale = Vector2.One;
             _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
             _draw.afterImageAlpha *= 0.5f;
-            _draw.headless = false;
             AttackNumber = 0;
             NPC.direction = TargetDirection;
             NPC.noGravity = true;
