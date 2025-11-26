@@ -38,6 +38,16 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+            public static class SanguineSingularity
+            {
+                public static SoundStyle SanguineLaugh = new SoundStyle($"{Path}SanguineSingularity/SanguineLaugh");
+                public static SoundStyle SanguineCharge = new SoundStyle($"{Path}SanguineSingularity/SanguineCharge");
+                public static SoundStyle SanguineSpawn = new SoundStyle($"{Path}SanguineSingularity/SanguineSpawn");
+                public static SoundStyle SanguineBurst = new SoundStyle($"{Path}SanguineSingularity/SanguineBurst");
+                public static SoundStyle SanguineBurstReady = new SoundStyle($"{Path}SanguineSingularity/SanguineBurstReady");
+                public static SoundStyle SanguinePreBurst = new SoundStyle($"{Path}SanguineSingularity/SanguinePreBurst");
+                public static SoundStyle SanguineDeath = new SoundStyle($"{Path}SanguineSingularity/SanguineDeath");
+            }
             public static class STARBOMBER
             {
                 public static SoundStyle Ommove5 = new SoundStyle($"{Path}STARBOMBER/Ommove5");
