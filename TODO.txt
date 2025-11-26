@@ -18,7 +18,7 @@ Sanguien Singularity
 
 - stop with the teleports he's not spectral make it more seamless
 - maybe make a windup frame for the run
-- fix the offset on the thing
+
 - make it easier to react to the blood projectiles on that one attack
 - always in singularity when charginrg
 - explode on the spawn animation

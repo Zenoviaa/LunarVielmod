@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
 using Stellamod.Content.Biomes;
 using Stellamod.Helpers;
 using Terraria;
@@ -159,6 +160,7 @@ namespace Stellamod.Core.Palettes
             bool fablePaletteActive = Player.GetModPlayer<MyPlayer>().ZoneFable && clientConfig.PaletteShadersToggle;
             bool mistyPaletteActive = Player.GetModPlayer<BiomePlayer>().ZoneMistyDungeon && clientConfig.PaletteShadersToggle;
             bool bloodPaletteActive = MyPlayer.ZoneBloodCathedral && !Main.dayTime && clientConfig.PaletteShadersToggle;
+          //  bloodPaletteActive |= NPC.AnyNPCs(ModContent.NPCType<SanguineSingularity>());
             if (abyssPaletteActive)
             {
                 darkness += 2;

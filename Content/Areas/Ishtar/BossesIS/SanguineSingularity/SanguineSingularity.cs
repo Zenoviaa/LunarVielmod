@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectiles;
@@ -459,7 +460,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void ChooseAttack()
         {
             SwitchState(PatternManager.NextPattern());
-            SwitchState(AIState.BloodRain_Start);
+            SwitchState(AIState.BloodyBurst_Start);
         }
 
         private void AI_Idle()
@@ -570,8 +571,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     }
                 }
 
-                var p = FXUtil.GlowCircleBoom(NPC.Center, Color.Red, Color.DarkBlue, Color.Black);
-                var p2 = FXUtil.GlowCircleBoom(NPC.Center, Color.Red, Color.DarkBlue, Color.Black);
+                var p = FXUtil.GlowCircleBoom(NPC.Center, Color.Red, Color.DarkRed, Color.Black);
+                var p2 = FXUtil.GlowCircleBoom(NPC.Center, Color.Red, Color.DarkRed, Color.Black);
                 p.Scale *= 3;
                 p2.Scale *= 2;
 
@@ -631,14 +632,22 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             float lerp = Timer / time;
             float ease = EasingFunction.Anticipation(lerp);
 
-   
-            NPC.velocity = Vector2.Lerp(-_runDirection, _runDirection * 22, ease);
+            if(AttackNumber == 0)
+            {
+                NPC.velocity = Vector2.Lerp(-_runDirection, _runDirection * 22, ease);
+            } else
+            {
+                float speed = MathHelper.Lerp(22, 33f, AttackNumber / 6f);
+                NPC.velocity = Vector2.Lerp(NPC.velocity, _runDirection * speed, 0.1f);
+            }
+
+                
             NPC.noTileCollide = true;
             NPC.noGravity = true;
 
             _contactDamage = false;
             _animation = AnimationState.Walk;
-            _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
+            _draw.headless = true;
             _draw.scale = Vector2.Lerp(new Vector2(1.2f, 1.2f), Vector2.One, ease);
             if (Timer < time / 2f)
             {
@@ -672,39 +681,20 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void AI_BloodyBurst()
         {
             Timer++;
-            if(Timer == 1)
-            {
-                _draw.headless = false;
-            }
-            float ease = EasingFunction.InOutSine(Timer / 60f);
-            _draw.afterImageAlpha = MathHelper.Lerp(0f, 1f, ease);
-            _draw.alpha = MathHelper.Lerp(1f, 0f, ease);
             _animation = AnimationState.Run;
             _contactDamage = true;
             TargetOutlineColor = Color.Red;
             if (NPC.velocity.Y > -3)
                 NPC.velocity.Y -= 0.5f;
 
-            if (Timer == 15f)
-            {
-              
-                CreateRedFlash();
-            }
-
-            if(Timer >= 15f && Timer < 30f)
-            {
-                NPC.velocity *= 0.9f;
-            }
-
-            NPC.rotation *= 0.99f;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
             if (Timer == 30f)
             {
-                _draw.headless = true;
+                _draw.scale = new Vector2(1.3f, 1.5f);
                 if (MultiplayerHelper.IsHost)
                 {
-                    float num = 6f;
+                    float num = 3f;
                     for(float f = 0; f < num; f++)
                     {
                         float completionRatio = f / num;
@@ -714,7 +704,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                         int bloodyBurstProjectile = ModContent.ProjectileType<BloodyBurst>();
                         Projectile.NewProjectile(SourceFromThis, NPC.Center, upVelocity, bloodyBurstProjectile, BloodyBurstDamage, 1, Main.myPlayer);
                     }
-
 
                 }
 
@@ -734,11 +723,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 for (float f = 0f; f < 4f; f++)
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(3, 3);
-                    var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.Red, Color.DarkBlue, Color.Black);
+                    var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.Red, Color.DarkRed, Color.Black);
                     boom.Scale *= Main.rand.NextFloat(1.5f, 5f);
                     boom.Velocity = velocity;
 
-                    var stretch = FXUtil.GlowStretch(NPC.Center, velocity * 4);
+                    var stretch = FXUtil.GlowStretch(NPC.Center, velocity * 32);
                     stretch.color = Color.Red;
                     stretch.OuterGlowColor = Color.Red;
                 }
@@ -758,22 +747,15 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             {
                 NPC.TargetClosest();
             }
-
-            _draw.alpha *= 0.9f;
+            _draw.scale = Vector2.Lerp(_draw.scale, Vector2.One, 0.1f);
             _draw.afterImageAlpha *= 0.9f;
             _animation = AnimationState.Run;
             TargetOutlineColor = Color.Transparent;
-            NPC.velocity *= 0.9f;
 
+            Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(NPC.Center, MyTarget.Center, NPC.velocity, degreesToRotate: 2);
+            NPC.velocity = homingVelocity;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
-            if (MultiplayerHelper.IsHost)
-            {
-                float direction = AttackNumber % 2 == 0 ? -1 : 1;
-                _teleportPosition = MyTarget.Center - new Vector2(500 * direction, 0);
-                NPC.netUpdate = true;
-            }
-
             if (Timer == 30)
             {
                 AttackNumber++;
@@ -785,6 +767,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 {
                     SwitchState(AIState.BloodyBurst_Start);
                 }
+            } else if (AttackNumber >= 5)
+            {
+                NPC.velocity *= 0.9f;
+
             }
         }
 
@@ -1220,7 +1206,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 Color fadeColor = Color.Lerp(Color.Red, Color.Transparent, interpolant);
                 fadeColor *= _draw.afterImageAlpha;
                 oldDrawPos += NPC.Size / 2f;
-                fadeColor *= 0.1f;
+                fadeColor *= 0.3f;
 
                 SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
                 if (spriteEffects == SpriteEffects.FlipHorizontally)
