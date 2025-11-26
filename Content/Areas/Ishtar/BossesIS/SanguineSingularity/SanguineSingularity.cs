@@ -269,6 +269,14 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 _draw.singularityScale = Vector2.Lerp(_draw.singularityScale, Vector2.Zero, 0.1f);
 
             }
+            if (Timer % 5 == 0)
+            {
+                Vector2 upVelocity = -Vector2.UnitY;
+                upVelocity *= 5;
+                upVelocity = upVelocity.RotateRandom(0.5f);
+                var d = Dust.NewDustPerfect(NPC.Center, DustID.Blood, upVelocity, Scale: Main.rand.NextFloat(1f, 2f));
+                d.noGravity = false;
+            }
             ModContent.GetInstance<SanguineBloodRenderManager>().DrawBloodyBG = true;
                 NPC.spriteDirection = NPC.direction;
             switch (State)
@@ -480,17 +488,23 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             NPC.direction = TargetDirection;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
+
             if (Timer > 60)
             {
                 _animation = AnimationState.Walk;
                 Vector2 directionToTarget = (MyTarget.Center - NPC.Center);
                 directionToTarget = directionToTarget.SafeNormalize(Vector2.Zero);
+
+                float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
+                float speedModifier = MathHelper.Lerp(6f, 12f, EasingFunction.InOutSine(distanceToTarget / 64f));
+                directionToTarget *= speedModifier;
                 NPC.velocity = Vector2.Lerp(NPC.velocity, directionToTarget, 0.1f);
                 NPC.rotation *= 0.5f;
             }
             else
             {
                 _animation = AnimationState.Idle;
+                NPC.velocity *= 0.9f;
             }
 
             TargetOutlineColor = Color.Transparent;
@@ -604,6 +618,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _draw.flashAlpha = 1f;
         }
 
+        private void SlightlyMoveCameraTowardsMe()
+        {
+
+            Vector2 cameraOffset = (NPC.Center - Main.LocalPlayer.Center);
+            cameraOffset *= 0.25f;
+            OffsetCameraModifier.FocusTargetOffset = cameraOffset;
+        }
         private void AI_BloodyBurst_Start()
         {
             Timer++;
@@ -641,15 +662,15 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 NPC.velocity = Vector2.Lerp(NPC.velocity, _runDirection * speed, 0.1f);
             }
 
-                
+            SlightlyMoveCameraTowardsMe();
             NPC.noTileCollide = true;
             NPC.noGravity = true;
 
             _contactDamage = false;
-            _animation = AnimationState.Walk;
+         
             _draw.headless = true;
             _draw.scale = Vector2.Lerp(new Vector2(1.2f, 1.2f), Vector2.One, ease);
-            if (Timer < time / 2f)
+            if (Timer < time / 2f && AttackNumber == 0)
             {
                 _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 0f, 0.1f);
                 _animation = AnimationState.Walk;
@@ -689,7 +710,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
             NPC.noTileCollide = true;
             NPC.noGravity = true;
-            if (Timer == 30f)
+
+            SlightlyMoveCameraTowardsMe();
+            int time = (int)MathHelper.Lerp(30f, 15f, AttackNumber / 6f);
+            if (Timer == time)
             {
                 _draw.scale = new Vector2(1.3f, 1.5f);
                 if (MultiplayerHelper.IsHost)
@@ -734,7 +758,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
 
 
-            if (Timer >= 30f)
+            if (Timer >= time)
             {
                 SwitchState(AIState.BloodyBurst_End);
             }
@@ -751,7 +775,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _draw.afterImageAlpha *= 0.9f;
             _animation = AnimationState.Run;
             TargetOutlineColor = Color.Transparent;
-
+            SlightlyMoveCameraTowardsMe();
             Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(NPC.Center, MyTarget.Center, NPC.velocity, degreesToRotate: 2);
             NPC.velocity = homingVelocity;
             NPC.noTileCollide = true;
@@ -759,7 +783,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if (Timer == 30)
             {
                 AttackNumber++;
-                if (AttackNumber >= 6)
+                if (AttackNumber >= 9)
                 {
                     SwitchState(AIState.Idle);
                 }
@@ -767,7 +791,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 {
                     SwitchState(AIState.BloodyBurst_Start);
                 }
-            } else if (AttackNumber >= 5)
+            } else if (AttackNumber >= 8)
             {
                 NPC.velocity *= 0.9f;
 
@@ -1251,14 +1275,14 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Vector2 drawOrigin = texture.Size() / 2f;
             Vector2 drawScale = NPC.scale * Vector2.One;
             drawScale *= _draw.singularityScale;
-            drawScale *= ExtraMath.Osc(0.9f, 1f, speed: 6f);
+            drawScale *= ExtraMath.Osc(0.9f, 1f, speed: 18f);
 
             var shader = SingularityShader.Instance;
             spriteBatch.Restart(effect: shader.Effect);
 
             Color redSingularity = Color.Red;
             redSingularity *= _draw.alpha;
-            spriteBatch.Draw(texture, drawPosition, null, redSingularity, NPC.rotation, drawOrigin, drawScale * 0.25f, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPosition, null, redSingularity, NPC.rotation, drawOrigin, drawScale * 0.5f, SpriteEffects.None, 0);
             spriteBatch.RestartDefaults();
 
 
@@ -1270,8 +1294,29 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             diskDrawColor *= _draw.alpha;
 
             float scaleOsc = ExtraMath.Osc(0.5f, 0.65f, speed: 1);
-            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation, diskDrawOrigin, drawScale * 0.5f * scaleOsc, SpriteEffects.None, 0);
-            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation, diskDrawOrigin, drawScale * 0.4f * scaleOsc, SpriteEffects.None, 0);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation, diskDrawOrigin, drawScale * scaleOsc * 0.5f, SpriteEffects.None, 0);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation, diskDrawOrigin, drawScale * scaleOsc * 0.45f, SpriteEffects.None, 0);
+
+
+            diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SF2").Value;
+            float rotOffset = MathHelper.ToRadians(-30f + ExtraMath.Osc(5f, 10f, speed: 2));
+            for (float f = 0; f < 4; f++)
+            {
+
+                spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(1.5f, 0.2f), SpriteEffects.None, 0);
+            }
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(3.5f, 0.2f), SpriteEffects.None, 0);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor * 0.5f, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(7.5f, 0.2f), SpriteEffects.None, 0);
+
+            rotOffset = MathHelper.ToRadians(25f + ExtraMath.Osc(-10f, -5f, speed: 2, offset: 2));
+            //Inverse rings
+            for (float f = 0; f < 4; f++)
+            {
+
+                spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(1.5f, 0.2f) * 0.66f, SpriteEffects.None, 0);
+            }
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(3.5f, 0.2f) * 0.66f, SpriteEffects.None, 0);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor * 0.5f, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(7.5f, 0.2f) * 0.66f, SpriteEffects.None, 0);
         }
 
         private int _frame;
