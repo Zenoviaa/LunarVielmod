@@ -10,6 +10,7 @@ using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
@@ -53,17 +54,21 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
     {
 
         private Point _oldScreenSize;
+        private RenderTarget2D _bloodBGRenderRT;
         private RenderTarget2D _pixelRenderRT;
         private RenderTarget2D _pixelScreenRenderRT;
         private List<IDrawSanguineBlood> _draws = new List<IDrawSanguineBlood>(100);
 
-        public int DownSamples => 2;
+        public int DownSamples => 4;
+        public bool DrawBloodyBG;
         public override void OnModLoad()
         {
             base.OnModLoad();
             On_Main.CheckMonoliths += RenderToPixelationRT;
+            On_Main.DoDraw_WallsTilesNPCs += DrawBloodRTToScreen;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRTToScreen;
             Main.OnResolutionChanged += ResizeTargets;
+
         }
 
         public override void Load()
@@ -82,9 +87,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void RenderToPixelationRT(On_Main.orig_CheckMonoliths orig)
         {
             orig();
+   
             if (Main.gameMenu)
                 return;
-
+      
             _draws.Clear();
             foreach (var proj in Main.ActiveProjectiles)
             {
@@ -93,11 +99,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     _draws.Add(pixelated);
                 }
             }
-
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             if (_draws.Count > 0)
             {
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+
                 graphicsDevice.SetRenderTarget(_pixelScreenRenderRT);
                 graphicsDevice.Clear(Color.Transparent);
 
@@ -105,7 +111,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 //This costs a bit of extra performance but it'll look good
                 //So, first draw at fully quality to the screen render target
 
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
                 for (int i = 0; i < _draws.Count; i++)
                 {
                     var draw = _draws[i];
@@ -118,14 +124,43 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 graphicsDevice.SetRenderTarget(_pixelRenderRT);
                 graphicsDevice.Clear(Color.Transparent);
 
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                 float denom = DownSamples;
                 float scale = 1f / denom;
                 spriteBatch.Draw(_pixelScreenRenderRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
                 spriteBatch.End();
             }
+            graphicsDevice.SetRenderTarget(_bloodBGRenderRT);
+            graphicsDevice.Clear(Color.White);
         }
 
+
+        private void DrawBloodRTToScreen(On_Main.orig_DoDraw_WallsTilesNPCs orig, Main self)
+   
+        {
+            if (DrawBloodyBG)
+            {
+                var bloodyShader = BloodyShader.Instance;
+                bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.9f);
+                bloodyShader.OuterColor = Color.Black;
+                bloodyShader.Distortion = 1;
+                bloodyShader.Tiling = Vector2.One * 12;
+                bloodyShader.Time = Main.GlobalTimeWrappedHourly * 0.25f;
+                bloodyShader.NoiseTexture = TextureRegistry.Clouds6;
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, bloodyShader.Effect, Main.Transform);
+                spriteBatch.Draw(_bloodBGRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+                DrawBloodyBG = false;
+            }
+          
+            orig(self);
+            if (Main.gameMenu)
+                return;
+         
+        }
 
         private void DrawPixelRTToScreen(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
         {
@@ -138,15 +173,31 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
             var bloodyShader = BloodyShader.Instance;
             bloodyShader.InnerColor = Color.Red;
-            bloodyShader.OuterColor = Color.Lerp(Color.Red, Color.Black, 0.6f);
-            bloodyShader.Distortion = 0.2f;
-            bloodyShader.Tiling = Vector2.One * 2f;
+            bloodyShader.OuterColor = Color.Black;
+            bloodyShader.Distortion = 0.1f;
+            bloodyShader.Tiling = Vector2.One * 8;
 
+            bloodyShader.NoiseTexture = TextureRegistry.CloudNoise2;
             SpriteBatch spriteBatch = Main.spriteBatch;
+            float scale = DownSamples;
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
+                DepthStencilState.Default, RasterizerState.CullNone, null);
+
+
+            float outlineOffset = 2;
+            Vector2 v = Vector2.UnitY * outlineOffset;
+            Vector2 h = Vector2.UnitX * outlineOffset;
+            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero + v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero - v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero + h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero - h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.End();
+
+
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, 
                 DepthStencilState.Default, RasterizerState.CullNone, bloodyShader.Effect);
 
-            float scale = DownSamples;
+     
 
             spriteBatch.Draw(_pixelRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             spriteBatch.End();
@@ -160,10 +211,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 Main.QueueMainThreadAction(() =>
                 {
                     _pixelRenderRT.Release();
-                    _pixelRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X / DownSamples, screenSize.Y / DownSamples);
+                    _pixelRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X / DownSamples, screenSize.Y / DownSamples, false, SurfaceFormat.Color, DepthFormat.None);
 
                     _pixelScreenRenderRT.Release();
-                    _pixelScreenRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y);
+                    _pixelScreenRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y, false, SurfaceFormat.Color, DepthFormat.None);
+                  
+                    _bloodBGRenderRT.Release();
+                    _bloodBGRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y, false, SurfaceFormat.Color, DepthFormat.None);
 
                 });
                 _oldScreenSize = screenSize;
@@ -212,13 +266,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         public void Update(Vector2 orbitCenter)
         {
-            _orbitRadius = MathHelper.Lerp(_orbitRadius, orbitingRadius, 0.01f);
+            _orbitRadius = MathHelper.Lerp(_orbitRadius, orbitingRadius, 0.1f);
 
             //Rotate the damn thing
             _timer++;
 
-            float angle = _timer * 0.05f;
-            Quaternion quaternion = Quaternion.CreateFromAxisAngle(new Vector3(-0.2f, -0.2f, 1f), angle);
+            float angle = _timer * 0.1f;
+            Quaternion quaternion = Quaternion.CreateFromAxisAngle(new Vector3(0f, 0.5f, 1f), angle);
             Matrix rotationMatrix = Matrix.CreateFromQuaternion(quaternion);
             for(int i = 0; i < gores.Length; i++)
             {
@@ -459,15 +513,16 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
     }
 
     public class BloodyBurst : ScarletProjectile,
-        IDrawPixelated
+        IDrawSanguineBlood
     {
+        private float _trailWidth;
         public override string Texture => TextureRegistry.EmptyTexture;
 
         private ref float Timer => ref Projectile.ai[0];
         public override void SetDefaults()
         {
             base.SetDefaults();
-            TrailCacheLength = 32;
+            TrailCacheLength = 128;
             Projectile.width = 16;
             Projectile.height = 16;
             Projectile.tileCollide = false;
@@ -475,17 +530,33 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Projectile.ignoreWater = true;
             Projectile.hostile = true;
             Projectile.friendly = false;
+
+            Projectile.extraUpdates = 1;
         }
 
         public override void AI()
         {
             base.AI();
             Timer++;
-            Player closest = PlayerHelper.FindClosestPlayer(Projectile.position, 10000);
-            if (closest != null)
+            if(Projectile.velocity.Y < 25)
             {
-                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, 1);
+                Projectile.velocity.Y += 0.25f;
             }
+
+            if (Timer >= 240f)
+            {
+                _trailWidth = MathHelper.Lerp(_trailWidth, 0f, 0.1f);
+                Projectile.velocity *= 0.9f;
+                if(Projectile.velocity.Length() <= 1f)
+                {
+                    Projectile.Kill();
+                }
+            }
+            else
+            {
+                _trailWidth = MathHelper.Lerp(_trailWidth, 1f, 0.1f);
+            }
+
 
             if (Timer % 7 == 0)
             {
@@ -502,24 +573,23 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Black, Color.White, completionRatio);
+            return Color.White;
         }
 
         private float WidthFunction(float completionRatio)
         {
-            float width = 18 * 1.5f;
-            return MathHelper.Lerp(width, 0, EasingFunction.InOutExpo(completionRatio));
+            return MathHelper.SmoothStep(56, 0, completionRatio) * _trailWidth * MathF.Sin(completionRatio * 4);
         }
-        public void DrawPixelated()
+
+        public void DrawToSanguineMask(SpriteBatch spriteBatch)
         {
-            FlamingTrailShader flamingTrailShader = FlamingTrailShader.Instance;
-            flamingTrailShader.OuterColor = Color.DarkBlue;
-            flamingTrailShader.InnerColor = Color.Red;
-            flamingTrailShader.Power = 0.3f;
-            flamingTrailShader.Distortion = 6;
-            flamingTrailShader.Tiling = Vector2.One * 0.5f;
+            var flamingTrailShader = BasicLaserAlphaShader.Instance;
+            flamingTrailShader.Tiling = Vector2.One * 1;
+            flamingTrailShader.LaserTexture = TrailRegistry.LightningTrail2;
+            flamingTrailShader.BlendState = BlendState.AlphaBlend;
             //This just applis the shader changes
             TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, ColorFunction, WidthFunction, flamingTrailShader);
+       //     spriteBatch.Draw(ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value, Projectile.Center - Main.screenPosition, Color.White);
         }
     }
 
@@ -740,7 +810,17 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 }
             }
                 GoreManager.Update(NPC.Center);
-            NPC.spriteDirection = NPC.direction;
+            if (_draw.headless)
+            {
+                _draw.singularityScale = Vector2.Lerp(_draw.singularityScale, Vector2.One, 0.1f);
+            }
+            else
+            {
+                _draw.singularityScale = Vector2.Lerp(_draw.singularityScale, Vector2.Zero, 0.1f);
+
+            }
+            ModContent.GetInstance<SanguineBloodRenderManager>().DrawBloodyBG = true;
+                NPC.spriteDirection = NPC.direction;
             switch (State)
             {
                 case AIState.Spawn:
@@ -1080,7 +1160,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 NPC.direction = TargetDirection;
             }
 
-            float time = MathHelper.Lerp(60f, 30f, AttackNumber / 6f);
+            float time = MathHelper.Lerp(40, 20f, AttackNumber / 6f);
             float lerp = Timer / time;
             float ease = EasingFunction.Anticipation(lerp);
 
@@ -1094,7 +1174,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _animation = AnimationState.Walk;
             _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
             _scale = Vector2.Lerp(new Vector2(1.2f, 1.2f), Vector2.One, ease);
-            if (Timer < 30f)
+            if (Timer < time / 2f)
             {
                 _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 0f, 0.1f);
                 _animation = AnimationState.Walk;
@@ -1126,6 +1206,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void AI_BloodyBurst()
         {
             Timer++;
+            if(Timer == 1)
+            {
+                _draw.headless = false;
+            }
             float ease = EasingFunction.InOutSine(Timer / 60f);
             _draw.afterImageAlpha = MathHelper.Lerp(0f, 1f, ease);
             _draw.alpha = MathHelper.Lerp(1f, 0f, ease);
@@ -1137,12 +1221,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
             if (Timer == 15f)
             {
+              
                 CreateRedFlash();
             }
 
             if(Timer >= 15f && Timer < 30f)
             {
-                NPC.velocity *= 1.01f;
+                NPC.velocity *= 0.9f;
             }
 
             NPC.rotation *= 0.99f;
@@ -1150,18 +1235,27 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             NPC.noGravity = true;
             if (Timer == 30f)
             {
+                _draw.headless = true;
                 if (MultiplayerHelper.IsHost)
                 {
-                    Vector2 upVelocity = -Vector2.UnitY * Main.rand.NextFloat(3f, 6f);
-                    upVelocity = upVelocity.RotatedByRandom(MathHelper.ToRadians(35));
-                    int bloodyBurstProjectile = ModContent.ProjectileType<BloodyBurst>();
-                    Projectile.NewProjectile(SourceFromThis, NPC.Center, upVelocity, bloodyBurstProjectile, BloodyBurstDamage, 1, Main.myPlayer);
+                    float num = 6f;
+                    for(float f = 0; f < num; f++)
+                    {
+                        float completionRatio = f / num;
+                        Vector2 upVelocity = -Vector2.UnitX * NPC.direction * 17;
+                        upVelocity = upVelocity.RotatedBy(MathHelper.ToRadians(35 * NPC.direction * completionRatio));
+                        upVelocity = upVelocity.RotatedBy(MathHelper.ToRadians(65 * NPC.direction));
+                        int bloodyBurstProjectile = ModContent.ProjectileType<BloodyBurst>();
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, upVelocity, bloodyBurstProjectile, BloodyBurstDamage, 1, Main.myPlayer);
+                    }
+
+
                 }
 
                 for (float f = 0f; f < 16; f++)
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(32, 32);
-                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), velocity, newColor: Color.Red, Scale: Main.rand.NextFloat(1f, 3f));
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), velocity, newColor: Color.Red, Scale: Main.rand.NextFloat(0.5f, 1f));
                 }
 
                 SoundStyle burstSound = AssetRegistry.Sounds.SanguineSingularity.SanguineBurst;
@@ -1169,13 +1263,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 SoundEngine.PlaySound(burstSound, NPC.position);
 
 
-                ShakeModSystem.Shake = 4;
+                ShakeModSystem.Shake = 8;
                 FXUtil.ShakeCamera(NPC.Center, 1024, 8);
                 for (float f = 0f; f < 4f; f++)
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(3, 3);
                     var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.Red, Color.DarkBlue, Color.Black);
-                    boom.Scale *= Main.rand.NextFloat(1.5f, 2f);
+                    boom.Scale *= Main.rand.NextFloat(1.5f, 5f);
                     boom.Velocity = velocity;
 
                     var stretch = FXUtil.GlowStretch(NPC.Center, velocity * 4);
@@ -1610,6 +1704,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Vector2 drawOrigin = texture.Size() / 2f;
             Vector2 drawScale = NPC.scale * Vector2.One;
             drawScale *= _draw.singularityScale;
+            drawScale *= ExtraMath.Osc(0.9f, 1f, speed: 6f);
 
             var shader = SingularityShader.Instance;
             spriteBatch.Restart(effect: shader.Effect);
@@ -1646,7 +1741,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             switch (_animation)
             {
                 case AnimationState.Idle:
-                    if (_headless)
+                    if (_draw.headless)
                     {
                         _frame = 1;
                     }
@@ -1657,7 +1752,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
                     break;
                 case AnimationState.Walk:
-                    if (_headless)
+                    if (_draw.headless)
                     {
                         if (_frame < 10)
                         {
@@ -1682,7 +1777,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
                     break;
                 case AnimationState.Run:
-                    if (_headless)
+                    if (_draw.headless)
                     {
                         if (_frame < 23)
                         {

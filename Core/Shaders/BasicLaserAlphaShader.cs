@@ -1,23 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Assets;
 using Stellamod.Trails;
 using Terraria;
 
 namespace Stellamod.Core.Shaders
 {
-    public class BloodyShader : BaseShader
+    public class BasicLaserAlphaShader : BaseShader
     {
         private EffectParameter _tilingParam;
-        private EffectParameter _noiseTextureParam;
-        private EffectParameter _distortionTextureParam;
+        private EffectParameter _matrixParam;
+        private EffectParameter _laserTextureParam;
         private EffectParameter _timeParam;
-        private EffectParameter _distortionParam;
         private EffectParameter _innerColorParam;
         private EffectParameter _outerColorParam;
-        private static BloodyShader _instance;
-        public static BloodyShader Instance
+
+        private static BasicLaserAlphaShader _instance;
+        public static BasicLaserAlphaShader Instance
         {
             get
             {
@@ -27,23 +26,24 @@ namespace Stellamod.Core.Shaders
             }
         }
 
+        public Matrix TransformMatrix
+        {
+            set
+            {
+                _matrixParam ??= Effect.Parameters["transformMatrix"];
+                _matrixParam.SetValue(value);
+            }
+        }
 
-        public Asset<Texture2D> NoiseTexture
+        public Asset<Texture2D> LaserTexture
         {
             set
             {
-                _noiseTextureParam ??= Effect.Parameters["noiseTexture"];
-                _noiseTextureParam.SetValue(value.Value);
+                _laserTextureParam ??= Effect.Parameters["laserTexture"];
+                _laserTextureParam.SetValue(value.Value);
             }
         }
-        public Asset<Texture2D> DistortionTexture
-        {
-            set
-            {
-                _distortionTextureParam ??= Effect.Parameters["distortionTexture"];
-                _distortionTextureParam.SetValue(value.Value);
-            }
-        }
+
 
         public Color InnerColor
         {
@@ -73,15 +73,6 @@ namespace Stellamod.Core.Shaders
         }
 
 
-        public float Distortion
-        {
-            set
-            {
-                _distortionParam ??= Effect.Parameters["distortion"];
-                _distortionParam.SetValue(value);
-            }
-        }
-
         public Vector2 Tiling
         {
             set
@@ -93,16 +84,13 @@ namespace Stellamod.Core.Shaders
         public override void SetDefaults()
         {
             base.SetDefaults();
-            InnerColor = Color.Lerp(Color.DarkRed, Color.Black, 0.75f);
-            OuterColor = Color.Lerp(Color.DarkGray, Color.Black, 0.9f);
+            TransformMatrix = TrailDrawer.WorldViewPoint2;
+            //InnerColor = Color.Yellow;
+          //  OuterColor = Color.Red;
 
-            BlendState = BlendState.AlphaBlend;
-            Distortion = 0.15f;
-
-            NoiseTexture = TrailRegistry.Clouds3;
-            DistortionTexture = AssetRegistry.Textures.Noise.Perlin;
-            Time = Main.GlobalTimeWrappedHourly * 18;
-            Tiling = Vector2.One * 8;
+            LaserTexture = TrailRegistry.BeamTrail;
+            Time = Main.GlobalTimeWrappedHourly * 24;
+            Tiling = Vector2.One;
         }
     }
 }

@@ -66,8 +66,8 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     
     float n = tex2D(noiseTex, sampleCoords);
     float3 color = lerp(innerColor, outerColor, n);
-    float4 finalColor = float4(color, 1.0) * sampleColor;
-    return baseColor * finalColor;
+    float4 finalColor = float4(color * baseColor.rgb, 1.0) * sampleColor * baseColor.a;
+    return finalColor;
 }
 
 technique SpriteDrawing

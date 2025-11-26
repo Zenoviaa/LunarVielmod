@@ -16,10 +16,8 @@
 
 Sanguien Singularity
 
-Make a blood particle render target masking thing that explodes out of him, 
-use that for his spawn aniamtion and a lot of attacks and projectiles
-These also have a black outline, don't forget that
 
+use that for his spawn aniamtion and a lot of attacks and projectiles
 
 Make bloody line/trail particle, gonnna need to make a system for this
 Create extra gores for everything
