@@ -34,10 +34,6 @@ Magic walking trail at his feet
 
 - Idle State
 
-- Bloody Burst State
-	-Gets faster over time
-	-Phase 2 has more projectiles
-
 - Bloody Charge State
 	-Rushes you and then explodes into headless form with projectiles coming everywhere
 

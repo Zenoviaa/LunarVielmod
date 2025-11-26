@@ -35,30 +35,32 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
         IDrawSanguineBlood
     {
         private float _trailWidth;
+
         private ref float Timer => ref Projectile.ai[0];
+        private ref float Size => ref Projectile.ai[1];
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            TrailCacheLength = 32;
+            TrailCacheLength = 16;
             Projectile.width = 8;
             Projectile.height = 8;
             Projectile.penetrate = -1;
             Projectile.hostile = true;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 180;
+            Projectile.timeLeft = 600;
         }
 
         public override void AI()
         {
             base.AI();
             Timer++;
-            if (Projectile.velocity.Y < 5)
+            if (Projectile.velocity.Y < 20)
             {
                 Projectile.velocity.Y += 0.4f;
             }
-            if (Timer >= 120f)
+            if (Timer >= 540f)
             {
                 _trailWidth = MathHelper.Lerp(_trailWidth, 0f, 0.1f);
                 Projectile.velocity *= 0.9f;
@@ -84,7 +86,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
 
         private float WidthFunction(float completionRatio)
         {
-            return MathHelper.SmoothStep(56, 0, completionRatio) * _trailWidth * MathF.Sin(completionRatio * 4);
+            return MathHelper.SmoothStep(Size, 0, completionRatio) * _trailWidth * MathF.Sin(completionRatio * 4);
         }
 
         public void DrawToSanguineMask(SpriteBatch spriteBatch)

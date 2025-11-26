@@ -83,13 +83,17 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
             }
         }
 
+        public override bool PreDraw(ref Color lightColor)
+        {
+            return false;
+        }
         public void DrawToSanguineMask(SpriteBatch spriteBatch)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawOrigin = texture.Size() / 2f;
             Vector2 drawCenter = Projectile.Center - Main.screenPosition;
             float drawScale = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(Timer / 30f));
-            spriteBatch.Draw(texture, drawCenter, null, Color.White, 0, drawOrigin, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawCenter, null, Color.White, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
     }
 }
