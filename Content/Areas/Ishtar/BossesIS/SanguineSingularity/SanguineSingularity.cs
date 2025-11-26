@@ -1268,13 +1268,33 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSIngularity
         #region Drawcode
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            DrawSingularity(spriteBatch, screenPos, drawColor);    
             Draw(spriteBatch, screenPos, drawColor);
             return false;
         }
 
         private void DrawSingularity(SpriteBatch spriteBatch, Vector2 screenPos, Color color)
         {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawPosition = NPC.Center - screenPos;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            Vector2 drawScale = NPC.scale * Vector2.One;
 
+            var shader = SingularityShader.Instance;
+            spriteBatch.Restart(effect: shader.Effect);
+            spriteBatch.Draw(texture, drawPosition, null, Color.White, NPC.rotation, drawOrigin, drawScale * 1.5f, SpriteEffects.None, 0);
+            spriteBatch.RestartDefaults();
+
+
+            Texture2D diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SF").Value;
+            Vector2 diskDrawOrigin = diskTexture.Size() / 2f;
+            Color diskDrawColor = Color.Lerp(Color.White, Color.Lerp(Color.White, Color.Red, 0.15f), ExtraMath.Osc(0f, 1f, speed: 2));
+            diskDrawColor = diskDrawColor.MultiplyRGB(Color.Red);
+            diskDrawColor.A = 0;
+
+            float scaleOsc = ExtraMath.Osc(0.5f, 0.65f, speed: 1);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation, diskDrawOrigin, drawScale * 0.8f * scaleOsc, SpriteEffects.None, 0);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation, diskDrawOrigin, drawScale * 0.7f * scaleOsc, SpriteEffects.None, 0);
         }
 
         private int _frame;
