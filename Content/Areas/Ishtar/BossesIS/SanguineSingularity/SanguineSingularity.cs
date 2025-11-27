@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectiles;
+using Stellamod.Content.Gores;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
@@ -418,6 +419,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
                 }
 
+                CreateGoreBurst(NPC.Center, -Vector2.UnitY * 8);
                 float numDust = 24;
                 for(float f = 0; f < numDust; f++)
                 {
@@ -620,6 +622,25 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         }
 
         #region Bloody Burst
+        private void CreateGoreBurst(Vector2 position, Vector2 velocity)
+        {
+            int[] gores = AutoGoreLoader.FindGores("BloodChunk");
+            foreach (int g in gores)
+            {
+                Gore.NewGore(NPC.GetSource_FromThis(),
+                    position,
+                    velocity.RotatedByRandom(MathHelper.ToRadians(20)), g, 1f);
+            }
+
+            for (float f = 0; f < 16; f++)
+            {
+                Vector2 vel = velocity.RotatedByRandom(MathHelper.ToRadians(30));
+                vel *= Main.rand.NextFloat(0f, 1f);
+                var d = Dust.NewDustPerfect(position, DustID.Blood, vel, newColor: Color.White);
+                d.noGravity = false;
+            }
+        }
+
         private void CreateRedFlash()
         {
             _draw.flashAlpha = 1f;
