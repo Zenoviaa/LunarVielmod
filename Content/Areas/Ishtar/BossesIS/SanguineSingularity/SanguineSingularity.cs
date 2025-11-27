@@ -117,6 +117,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Phase2Transition
         }
 
+        private float _dashLineRotation;
         private float _traveledDistance;
         private float _bloodyBurstTimer;
         private float _incresionDiskFrameBottom;
@@ -415,6 +416,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
 
             float time = 60f;
+            if(AttackNumber == 0)
+            {
+                time += 30;
+            }
             int halfTime = (int)(time - 15);
             if (Timer == halfTime)
             {
@@ -436,6 +441,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 velocity = velocity.SafeNormalize(Vector2.Zero);
                 velocity *= MathHelper.Lerp(0f, 6f, easing);
                 NPC.velocity = Vector2.Lerp(NPC.velocity, velocity, 0.3f);
+                _dashLineRotation = NPC.velocity.ToRotation();
             }
 
                 
@@ -1711,6 +1717,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            DrawDashLine(spriteBatch, screenPos, drawColor);
             DrawWalkingTrail(spriteBatch, screenPos, drawColor);
             DrawAfterImage(spriteBatch, screenPos);
             DrawSingularity(spriteBatch, screenPos, drawColor);
@@ -1730,6 +1737,23 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             return MathHelper.SmoothStep(0f, 20f, EasingFunction.QuadraticBump(completionRatio));
         }
 
+        private void DrawDashLine(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            float rotation = _dashLineRotation;
+            Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+            Vector2 drawOrigin = new Vector2(lineTexture.Width / 2, 0);
+            Vector2 drawCenter = NPC.Center - Main.screenPosition;
+            drawColor = Color.Red;
+            drawColor.A = 0;
+            drawColor *= 0.5f;
+            drawColor *= Timer / 30f;
+            if (State != AIState.BloodyMegaCharge_Start)
+                return;
+
+            Vector2 scale = Vector2.One;
+            scale.Y = 2;
+            spriteBatch.Draw(lineTexture, drawCenter, null, drawColor, rotation - MathHelper.ToRadians(90), drawOrigin, scale, SpriteEffects.None, 0);
+        }
         private void DrawWalkingTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             var shader = BasicLaserShader.Instance;
