@@ -1526,6 +1526,15 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.TintScreen(Color.Red * 0.5f, 1f, 15);
             }
+
+            if(Timer < 60)
+            {
+                if(Timer % 5 == 0)
+                {
+                    var p = Particle.NewParticle<GlowDonutParticle>(NPC.Center, -Vector2.UnitX * 2, newColor: Color.Red);
+                    p.Scale *= 0.33f;
+                }
+            }
             _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
             _contactDamage = true;
             TargetOutlineColor = Color.Red;
