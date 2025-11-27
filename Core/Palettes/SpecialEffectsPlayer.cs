@@ -160,7 +160,9 @@ namespace Stellamod.Core.Palettes
             bool fablePaletteActive = Player.GetModPlayer<MyPlayer>().ZoneFable && clientConfig.PaletteShadersToggle;
             bool mistyPaletteActive = Player.GetModPlayer<BiomePlayer>().ZoneMistyDungeon && clientConfig.PaletteShadersToggle;
             bool bloodPaletteActive = MyPlayer.ZoneBloodCathedral && !Main.dayTime && clientConfig.PaletteShadersToggle;
-          //  bloodPaletteActive |= NPC.AnyNPCs(ModContent.NPCType<SanguineSingularity>());
+            //  bloodPaletteActive |= NPC.AnyNPCs(ModContent.NPCType<SanguineSingularity>());
+
+            bool sanguinePaletteActive = NPC.AnyNPCs(ModContent.NPCType<SanguineSingularity>());
             if (abyssPaletteActive)
             {
                 darkness += 2;
@@ -182,6 +184,7 @@ namespace Stellamod.Core.Palettes
             UsePaletteShader("Fable.pal", fablePaletteActive, ref paletteUseProgress[7]);
             UsePaletteShader("IllurianMistyDungeon.pal", mistyPaletteActive, ref paletteUseProgress[8]);
             UsePaletteShader("BloodHound.pal", bloodPaletteActive, ref paletteUseProgress[9]);
+            UsePaletteShader("SanguineSingularity.pal", sanguinePaletteActive, ref paletteUseProgress[10]);
 
 
 
