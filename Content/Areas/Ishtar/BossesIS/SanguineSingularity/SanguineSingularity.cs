@@ -180,12 +180,18 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             base.SendExtraAI(writer);
             writer.WriteVector2(_teleportPosition);
+            writer.WriteVector2(_runDirection);
+            writer.Write(_bloodyBurstTimer);
         }
+        
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             _teleportPosition = reader.ReadVector2();
+            _runDirection = reader.ReadVector2();
+            _bloodyBurstTimer = reader.ReadSingle();
         }
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
