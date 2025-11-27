@@ -45,6 +45,12 @@ namespace Stellamod.Core.Pixelation
             base.Load();
             ResizeRenderTargets();
         }
+        public override void PostUpdateEverything()
+        {
+            base.PostUpdateEverything();
+            ResizeRenderTargets();
+        }
+
         public override void OnModUnload()
         {
             base.OnModUnload();
