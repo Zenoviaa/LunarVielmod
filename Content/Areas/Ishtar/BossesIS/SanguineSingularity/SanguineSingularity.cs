@@ -122,6 +122,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private float _incresionDiskFrameBottom;
         private float _incresionDiskFrameTop;
         private bool _contactDamage;
+        private bool _closeEnough;
    
         private Vector2 _runDirection;
 
@@ -184,6 +185,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             writer.WriteVector2(_runDirection);
             writer.Write(_bloodyBurstTimer);
             writer.Write(_traveledDistance);
+            writer.Write(_closeEnough);
         }
         
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -193,6 +195,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _runDirection = reader.ReadVector2();
             _bloodyBurstTimer = reader.ReadSingle();
             _traveledDistance = reader.ReadSingle();
+            _closeEnough = reader.ReadBoolean();
         }
 
         public override void SetStaticDefaults()
@@ -636,6 +639,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if (Timer == 1)
             {
                 NPC.TargetClosest();
+                _closeEnough = false;
             }
 
 
@@ -648,17 +652,25 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             NPC.noGravity = true;
             NPC.noTileCollide = true;
 
+            float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
             if (Timer > 60)
             {
                 _animation = AnimationState.Walk;
                 Vector2 directionToTarget = (MyTarget.Center - NPC.Center);
                 directionToTarget = directionToTarget.SafeNormalize(Vector2.Zero);
 
-                float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
-                float speedModifier = MathHelper.Lerp(6f, 12f, EasingFunction.InOutSine(distanceToTarget / 64f));
-                directionToTarget *= speedModifier;
-                NPC.velocity = Vector2.Lerp(NPC.velocity, directionToTarget, 0.1f);
-                NPC.rotation *= 0.5f;
+                if(distanceToTarget > 100 && !_closeEnough)
+                {
+                    float speedModifier = MathHelper.Lerp(6f, 20f, EasingFunction.InOutSine(distanceToTarget / 64f));
+                    directionToTarget *= speedModifier;
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, directionToTarget, 0.1f);
+                } else
+                {
+                   
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, directionToTarget, 0.1f);
+                }
+
+                    NPC.rotation *= 0.5f;
             }
             else
             {
@@ -667,7 +679,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
 
             TargetOutlineColor = Color.Transparent;
-            if (Timer >= 120f)
+            if(distanceToTarget <= 200f)
+            {
+                _closeEnough = true;
+            }
+            if (Timer >= 180f && _closeEnough)
             {
                 ChooseAttack();
             }
@@ -705,8 +721,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             //I think for this I want to slow down the movement and make it violently shake before it explodes into bloody geysers
             //Yes this can kill you (lol)
             //ok, so first slow down the velocity I think?
-            NPC.velocity.X *= 0.99f;
-            NPC.velocity.Y *= 0.99f;
+            NPC.velocity.X *= 0.9f;
+            NPC.velocity.Y *= 0.9f;
 
 
             //Slowly hover upwards I think that'd be cool
@@ -732,6 +748,17 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             float shakeAmount = MathHelper.Lerp(0f, 16, completionRatio);
             Vector2 shake = Main.rand.NextVector2Circular(shakeAmount, shakeAmount);
             _draw.shake = shake;
+
+            if(Timer == 100)
+            {
+                SoundEngine.PlaySound(AssetRegistry.Sounds.SanguineSingularity.SanguineCry, NPC.position);
+            }
+
+            if(Timer >= 100 && Timer % 10 == 0)
+            {
+                Particle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+                ShakeModSystem.Shake = 8;
+            }
             if (Timer == deathTime)
             {
                 if (MultiplayerHelper.IsHost)
@@ -743,6 +770,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     }
                 }
 
+                CreateGoreBurst(NPC.Center, -Vector2.UnitY * 3);
+                CreateGoreBurst(NPC.Center, -Vector2.UnitY * 6);
+                CreateGoreBurst(NPC.Center, -Vector2.UnitY * 12);
+                var shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                shaderSystem.TintScreen(Color.Red, 1, 30);
                 var p = FXUtil.GlowCircleBoom(NPC.Center, Color.Red, Color.DarkRed, Color.Black);
                 var p2 = FXUtil.GlowCircleBoom(NPC.Center, Color.Red, Color.DarkRed, Color.Black);
                 p.Scale *= 3;
@@ -828,8 +860,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Timer++;
             if (Timer == 1)
             {
+            
                 NPC.TargetClosest();
 
+                if(AttackNumber == 0)
+                {
+                    _bloodyBurstTimer = 0f;
+                }
                 if(AttackNumber == 3)
                 {
                     SoundStyle telegraphSound = AssetRegistry.Sounds.SanguineSingularity.SanguineCry2;
