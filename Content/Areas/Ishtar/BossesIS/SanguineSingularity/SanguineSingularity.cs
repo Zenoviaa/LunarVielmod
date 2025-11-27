@@ -628,7 +628,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void ChooseAttack()
         {
             SwitchState(PatternManager.NextPattern());
-            SwitchState(AIState.BloodCrack_Start);
         }
 
         private void AI_Idle()
@@ -713,7 +712,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             //Slowly hover upwards I think that'd be cool
             if (NPC.velocity.Y < -1f)
                 NPC.velocity.Y -= 0.1f;
-            NPC.rotation = NPC.velocity.X * 0.025f;
             RetargetCameraModifier.ReTargetPosition = NPC.Center;
             TargetOutlineColor = Color.Yellow;
 
@@ -1159,7 +1157,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             float yVelocity = MathHelper.Lerp(2f, -4f, ease);
             NPC.velocity.Y = yVelocity;
             NPC.velocity.X *= 0.9f;
-            NPC.rotation = NPC.velocity.X * 0.025f;
+
             if (Timer >= chargeUpTime)
             {
                 SwitchState(AIState.BloodRain_Rain);
@@ -1210,7 +1208,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 float ease = EasingFunction.Anticipation(lerp);
                 _draw.scale = Vector2.Lerp(Vector2.One * 0.5f, Vector2.One, ease);
                 NPC.velocity = Vector2.Lerp(-_runDirection, _runDirection * 13, ease);
-                NPC.rotation = NPC.velocity.X * 0.0125f;
+            
                 if(Timer2 == 30)
                 {
                     CreateRedFlash();
@@ -1256,7 +1254,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 _draw.afterImageAlpha *= 0.9f;
                 _animation = AnimationState.Walk;
                 NPC.velocity = Vector2.Zero;
-                NPC.rotation = 0;
+ 
             }
 
   
@@ -1312,15 +1310,27 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if (Timer == 1)
             {
                 NPC.TargetClosest();
+                var cyst = AssetRegistry.Sounds.SanguineSingularity.SanguineCyst;
+                cyst.Pitch = 0.66f;
+                SoundEngine.PlaySound(cyst, NPC.position);
             }
 
-            _animation = AnimationState.Walk;
-            TargetOutlineColor = Color.Yellow;
-            NPC.velocity.X *= 0.9f;
-            NPC.velocity.Y *= 0.95f;
-            NPC.rotation = NPC.velocity.X * 0.025f;
+            _animation = AnimationState.Idle;
 
-            if (Timer >= 30)
+            float maxScale = MathHelper.Lerp(1f, 1.15f, Timer / 30f);
+            _draw.scale = Vector2.One * ExtraMath.Osc(0.9f, maxScale, speed: 24f);
+            _contactDamage = false;
+
+            TargetOutlineColor = Color.Yellow;
+            NPC.velocity = Vector2.Zero;
+            NPC.rotation = 0;
+            if(Timer % 5 == 0)
+            {
+                var d = Dust.NewDustPerfect(NPC.Center, DustID.Blood, Main.rand.NextVector2Circular(4, 4));
+                d.noGravity = false;
+            }
+
+            if (Timer >= 60f)
             {
                 SwitchState(AIState.BloodBoil_Walk);
             }
@@ -1333,15 +1343,56 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             {
                 NPC.TargetClosest();
             }
+
+            float time = 10;
+
+            NPC.velocity = Vector2.Zero;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
 
-            _animation = AnimationState.Walk;
+            _animation = AnimationState.Idle;
             TargetOutlineColor = Color.Red;
+            if(Timer == time)
+            {
+                var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                screenShaderSystem.TintScreen(Color.Red * 0.3f, 0.5f, 30);
+                CreateRedFlash();
+                SoundStyle chargeSound = AssetRegistry.Sounds.SanguineSingularity.SanguineBurstReady;
+                chargeSound.PitchVariance = 0.5f;
+                chargeSound.Pitch = -0.5f;
+                SoundEngine.PlaySound(chargeSound, NPC.position);
+
+                var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.Red, Color.DarkBlue, Color.Black);
+                boom.Scale *= 2;
+                ShakeModSystem.Shake = 32;
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<BloodyChargeBoom>(), BloodyChargeBoomDamage, 1, Main.myPlayer);
+                    float num = 6f;
+                    for (float f = 0f; f < num; f++)
+                    {
+                        float completionRatio = f / num;
+                        Vector2 upVelocity = -Vector2.UnitY * 15;
+
+                        float range = 35f;
+                        upVelocity = upVelocity.RotatedBy(MathHelper.ToRadians(range * completionRatio));
+                        upVelocity = upVelocity.RotatedBy(-MathHelper.ToRadians(range / 2f));
+                        int bloodyBurstProjectile = ModContent.ProjectileType<BloodyBurst>();
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, upVelocity, bloodyBurstProjectile, BloodyBurstDamage, 1, Main.myPlayer);
+                    }
+                }
+            }
+
+            if(Timer >= time)
+            {
+                SwitchState(AIState.BloodBoil_End);
+            }
         }
 
         private void AI_BloodBoil_End()
         {
+            float time = 15f;
             Timer++;
             if (Timer == 1)
             {
@@ -1349,7 +1400,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
 
             _animation = AnimationState.Walk;
-            if (Timer >= 60)
+            if (Timer >= time)
             {
                 SwitchState(AIState.Idle);
             }
