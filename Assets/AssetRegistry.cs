@@ -53,6 +53,7 @@ namespace Stellamod.Assets
                 public static SoundStyle SanguineBurstReady = new SoundStyle($"{Path}SanguineSingularity/SanguineBurstReady");
                 public static SoundStyle SanguinePreBurst = new SoundStyle($"{Path}SanguineSingularity/SanguinePreBurst");
                 public static SoundStyle SanguineDeath = new SoundStyle($"{Path}SanguineSingularity/SanguineDeath");
+                public static SoundStyle SanguineDash = new SoundStyle($"{Path}SanguineSingularity/SanguineDash");
             }
             public static class STARBOMBER
             {

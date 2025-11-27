@@ -126,15 +126,16 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if (DrawBloodyBG)
             {
                 var bloodyShader = BloodyShader.Instance;
-                bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.92f);
+                bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.82f);
                 bloodyShader.OuterColor = Color.Black;
                 bloodyShader.Distortion = 1;
                 bloodyShader.Tiling = Vector2.One * 12;
                 bloodyShader.Time = Main.GlobalTimeWrappedHourly * 3;
                 bloodyShader.NoiseTexture = TextureRegistry.Clouds6;
+
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, bloodyShader.Effect, Main.Transform);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodyShader.Effect, Main.Transform);
                 spriteBatch.Draw(_bloodBGRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);

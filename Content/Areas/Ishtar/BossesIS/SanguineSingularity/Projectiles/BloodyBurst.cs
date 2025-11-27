@@ -38,10 +38,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
         public override string Texture => TextureRegistry.EmptyTexture;
 
         private ref float Timer => ref Projectile.ai[0];
+        private ref float Version => ref Projectile.ai[1];
         public override void SetDefaults()
         {
             base.SetDefaults();
-            TrailCacheLength = 128;
+            TrailCacheLength = 80;
             Projectile.width = 16;
             Projectile.height = 16;
             Projectile.tileCollide = false;
@@ -53,20 +54,49 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
             Projectile.extraUpdates = 1;
         }
 
-        public override void AI()
+        private void AI_Gravity()
         {
-            base.AI();
-            Timer++;
-            if(Projectile.velocity.Y < 25)
+            if (Projectile.velocity.Y < 25)
             {
                 Projectile.velocity.Y += 0.25f;
             }
 
+
+        }
+
+        private void AI_Homing()
+        {
+            Projectile.extraUpdates = 2;
+            var closest = PlayerHelper.FindClosestPlayer(Projectile.position, 2048);
+            if(closest != null)
+            {
+                if(Timer < 100)
+                {
+                    float degreesToRotate = MathHelper.Lerp(0.1f, 6f, EasingFunction.InOutSine(Timer / 100f));
+                    Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, degreesToRotate);
+                    Projectile.velocity = homingVelocity;
+                }
+               
+            }
+        }
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            switch (Version)
+            {
+                case 0:
+                    AI_Gravity();
+                    break;
+                case 1:
+                    AI_Homing();
+                    break;
+            }
             if (Timer >= 240f)
             {
                 _trailWidth = MathHelper.Lerp(_trailWidth, 0f, 0.1f);
                 Projectile.velocity *= 0.9f;
-                if(Projectile.velocity.Length() <= 1f)
+                if (Projectile.velocity.Length() <= 1f)
                 {
                     Projectile.Kill();
                 }
@@ -75,7 +105,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
             {
                 _trailWidth = MathHelper.Lerp(_trailWidth, 1f, 0.1f);
             }
-
 
             if (Timer % 7 == 0)
             {
@@ -87,7 +116,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            FXUtil.GlowCircleBoom(Projectile.Center, Color.Red, Color.DarkBlue, Color.Black);
+
         }
 
         private Color ColorFunction(float completionRatio)
