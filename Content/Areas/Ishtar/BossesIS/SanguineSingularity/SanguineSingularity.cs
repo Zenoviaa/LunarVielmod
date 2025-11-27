@@ -628,7 +628,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void ChooseAttack()
         {
             SwitchState(PatternManager.NextPattern());
-            SwitchState(AIState.GhastlyBloodDash_Start);
+            SwitchState(AIState.BloodCrack_Start);
         }
 
         private void AI_Idle()
@@ -1364,9 +1364,30 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if (Timer == 1)
             {
                 NPC.TargetClosest();
+                SoundStyle sanguineCyst = AssetRegistry.Sounds.SanguineSingularity.SanguineCyst;
+                sanguineCyst.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(sanguineCyst, NPC.position);
+                CreateGoreBurst(NPC.Center, -Vector2.UnitY * 4);
             }
 
-            if (Timer >= 60)
+            float time = 60;
+            float interp = Timer / time;
+            float ease = EasingFunction.InOutSine(interp);
+
+            TargetOutlineColor = Color.Yellow;
+            _draw.scale = Vector2.Lerp(Vector2.One, new Vector2(1.5f, 0.9f), ease);
+            _animation = AnimationState.Walk;
+            Vector2 velocity = (MyTarget.Center - NPC.Center);
+            velocity = velocity.SafeNormalize(Vector2.Zero);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velocity, 0.1f);
+            NPC.rotation = 0;
+       
+            if(Timer % 5 == 0)
+            {
+                var d =  Dust.NewDustPerfect(NPC.Center, DustID.Blood, Main.rand.NextVector2Circular(8, 8), Scale: Main.rand.NextFloat(0.5f, 2.5f));
+                d.noGravity = false;
+            }
+            if (Timer >= time)
             {
                 SwitchState(AIState.BloodCrack_Geyser);
             }
@@ -1378,26 +1399,63 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             {
                 Vector2 velocity = Main.rand.NextVector2CircularEdge(1800, 1800);
                 Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
-                    ModContent.ProjectileType<BloodGeyser>(), BloodGeyserDamage, 1, Main.myPlayer);
+                    ModContent.ProjectileType<BloodGeyser>(), BloodGeyserDamage, 1, Main.myPlayer, ai1: NPC.whoAmI);
             }
         }
+        private void CreateAimedGeyser()
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Vector2 velocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 1800;
+                Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
+                    ModContent.ProjectileType<BloodGeyser>(), BloodGeyserDamage, 1, Main.myPlayer, ai1: NPC.whoAmI);
+            }
+        }
+
 
         private void AI_BloodCrack_Geyser()
         {
             Timer++;
             if (Timer == 1)
             {
+                SoundStyle cry = AssetRegistry.Sounds.SanguineSingularity.SanguineCry;
+                SoundEngine.PlaySound(cry, NPC.position);
                 NPC.TargetClosest();
             }
+            _animation = AnimationState.Walk;
+            TargetOutlineColor = Color.Red;
 
-            if (Timer % 60 == 0)
+            if(Timer < 100 && Timer % 10 == 0)
             {
-                NPC.velocity = Vector2.Zero;
-                AttackNumber++;
-                CreateGeyser();
+                Particle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
             }
 
-            if (AttackNumber >= 6)
+            Vector2 velocityToTarget = (MyTarget.Center - NPC.Center);
+            velocityToTarget = velocityToTarget.SafeNormalize(Vector2.Zero);
+            velocityToTarget *= 3f;
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToTarget, 0.1f);
+            SlightlyMoveCameraTowardsMeNoY();
+            if (Timer % 20 == 0)
+            {
+                _draw.scale = new Vector2(1.5f, 0.9f);
+                NPC.velocity = Vector2.Zero;
+                AttackNumber++;
+                if(AttackNumber % 2 == 0)
+                {
+                    CreateAimedGeyser();
+                }
+                else
+                {
+                    CreateGeyser();
+                }
+            
+                CreateGoreBurst(NPC.Center, -Vector2.UnitY * 4);
+            }
+
+        
+
+            _draw.scale = Vector2.Lerp(_draw.scale, Vector2.One, 0.1f);
+            if (AttackNumber >= 9)
             {
                 SwitchState(AIState.BloodCrack_End);
             }
@@ -1405,11 +1463,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private void AI_BloodCrack_End()
         {
-            Timer++;
-            if (Timer == 1)
-            {
-                NPC.TargetClosest();
-            }
             SwitchState(AIState.Idle);
         }
         #endregion
