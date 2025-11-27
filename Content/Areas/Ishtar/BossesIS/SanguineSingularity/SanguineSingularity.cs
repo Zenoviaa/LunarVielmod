@@ -424,7 +424,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 for(float f = 0; f < numDust; f++)
                 {
                     Vector2 dustVelocity = Main.rand.NextVector2Circular(20, 20);
-                    Dust.NewDustPerfect(NPC.Center, DustID.Blood, dustVelocity, Scale: Main.rand.NextFloat(0.5f, 1.2f));
+                    var d = Dust.NewDustPerfect(NPC.Center, DustID.Blood, dustVelocity, Scale: Main.rand.NextFloat(0.5f, 1.2f));
+                    d.noGravity = false;
                 }
 
                 ShowNamePlate();
