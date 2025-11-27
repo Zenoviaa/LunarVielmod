@@ -434,6 +434,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 FXUtil.ShakeCamera(NPC.Center, 1024, 8);
                 SoundStyle spawnSound = AssetRegistry.Sounds.SanguineSingularity.SanguineCry;
                 SoundEngine.PlaySound(spawnSound, NPC.position);
+
+                SoundStyle explosionSound = AssetRegistry.Sounds.SanguineSingularity.BloodyExplosion;
+                SoundEngine.PlaySound(explosionSound, NPC.position);
             }
 
             if (Timer >= 200 && Timer < 300)
