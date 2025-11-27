@@ -117,6 +117,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Phase2Transition
         }
 
+        private float _traveledDistance;
         private float _bloodyBurstTimer;
         private float _incresionDiskFrameBottom;
         private float _incresionDiskFrameTop;
@@ -182,6 +183,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             writer.WriteVector2(_teleportPosition);
             writer.WriteVector2(_runDirection);
             writer.Write(_bloodyBurstTimer);
+            writer.Write(_traveledDistance);
         }
         
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -190,6 +192,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _teleportPosition = reader.ReadVector2();
             _runDirection = reader.ReadVector2();
             _bloodyBurstTimer = reader.ReadSingle();
+            _traveledDistance = reader.ReadSingle();
         }
 
         public override void SetStaticDefaults()
@@ -625,7 +628,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void ChooseAttack()
         {
             SwitchState(PatternManager.NextPattern());
-            SwitchState(AIState.BloodyMegaCharge_Start);
+            SwitchState(AIState.GhastlyBloodDash_Start);
         }
 
         private void AI_Idle()
@@ -1415,17 +1418,110 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private void AI_GhastlyBloodDash_Start()
         {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+                CreateGoreBurst(NPC.Center, -Vector2.UnitY * 2);
+                SoundStyle cry = AssetRegistry.Sounds.SanguineSingularity.SanguineCry;
+                SoundEngine.PlaySound(cry, NPC.position);
+            }
+            float time = 30f;
+            _animation = AnimationState.Walk;
+            _draw.afterImageAlpha = 0f;
+            Vector2 velocity = (MyTarget.Center - NPC.Center);
+            velocity = velocity.SafeNormalize(Vector2.Zero);
+            velocity *= MathHelper.Lerp(0f, 3f, EasingFunction.InOutSine(Timer / time));
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velocity, 0.1f);
+            NPC.direction = 1;
+            _contactDamage = false;
+            TargetOutlineColor = Color.Yellow;
 
+            if(Timer >= time)
+            {
+                SwitchState(AIState.GhastlyBloodDash_Run);
+            }
         }
 
         private void AI_GhastlyBloodDash_Run()
         {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                _traveledDistance = 0f;
+            }
 
+            _animation = AnimationState.Run;
+            if(Timer == 5)
+            {
+                CreateGoreBurst(NPC.Center, Vector2.UnitX * 2);
+                SoundStyle burstSound = AssetRegistry.Sounds.SanguineSingularity.BloodyExplosion;
+                burstSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(burstSound, NPC.position);
+
+
+            }
+
+
+            if(Timer == 15)
+            {
+                SoundStyle burstSound2 = AssetRegistry.Sounds.SanguineSingularity.SanguineDash;
+                burstSound2.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(burstSound2, NPC.position);
+
+                var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                screenShaderSystem.TintScreen(Color.Red * 0.5f, 1f, 15);
+            }
+            _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
+            _contactDamage = true;
+            TargetOutlineColor = Color.Red;
+            OffsetCameraModifier.FocusTargetOffset = new Vector2(-300, 0);
+            Vector2 rightVelocity = Vector2.UnitX;
+            float speedDivisor = AttackNumber / 12f;
+            float speed = MathHelper.Lerp(25f, 70, speedDivisor);
+            rightVelocity *= speed;
+            NPC.velocity = Vector2.Lerp(NPC.velocity, rightVelocity, 0.3f);
+            NPC.direction = 1;
+            if(Timer >= 5)
+            {
+                float distTraveled = Vector2.Distance(NPC.position, NPC.oldPosition);
+                _traveledDistance += distTraveled;
+            }
+    
+            if(_traveledDistance >= 2500f)
+            {
+                _traveledDistance = 0;
+                AttackNumber++;
+
+                float numDashes = 32;
+                if(AttackNumber >= numDashes)
+                {
+                    SwitchState(AIState.GhastlyBloodDash_End);
+                }
+                else if (AttackNumber <= numDashes)
+                {
+                    if (MultiplayerHelper.IsHost)
+                    {
+                        _teleportPosition = MyTarget.Center + new Vector2(-1500, 0);
+                        SwitchState(AIState.GhastlyBloodDash_Run);
+                        NPC.netUpdate = true;
+                    }
+                }
+            }
         }
 
         private void AI_GhastlyBloodDash_End()
         {
+            _animation = AnimationState.Idle;
+            Timer++;
+            TargetOutlineColor = Color.Transparent;
 
+            float time = 15;
+            if(Timer >= time)
+            {
+                SwitchState(AIState.Idle);
+            }
         }
 
         #endregion
