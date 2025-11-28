@@ -283,7 +283,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private Vector2 _hoverCenter;
         private Color TargetOutlineColor;
         private ref float Timer => ref NPC.ai[0];
-
+        private PunkerPrimeArm[] _arms;
+        private ref PunkerPrimeArm Chainsaw1 => ref _arms[0];
+        private ref PunkerPrimeArm Chainsaw2 => ref _arms[1];
+        private ref PunkerPrimeArm Drill => ref _arms[2];
+        private ref PunkerPrimeArm Pincher => ref _arms[3];
+        private ref PunkerPrimeArm SawbladeLauncher => ref _arms[4];
         private AIState State
         {
             get => (AIState)NPC.ai[1];
@@ -411,6 +416,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SoundStyle mechTurnSound = AssetRegistry.Sounds.SteamPunking.MechTurn;
                 mechTurnSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(mechTurnSound, NPC.position);
+
+                SummonArms();
             }
 
             TargetOutlineColor = Color.Transparent;
@@ -448,6 +455,30 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             //This is going to check all of the arms and check how many of them are moving
             return true;
+        }
+
+        private T SummonArm<T>() where T  : PunkerPrimeArm
+        {
+            T t = ModContent.GetInstance<T>();
+            int type = t.Type;
+            int x = (int)NPC.Center.X;
+            int y = (int)NPC.Center.Y;
+            int npcIndex = NPC.NewNPC(SourceFromThis, x, y, type, ai1: NPC.whoAmI);
+            T arm = Main.npc[npcIndex].ModNPC as T;
+            return arm;
+        }
+
+        private void SummonArms()
+        {
+            if (!MultiplayerHelper.IsHost)
+                return;
+
+            _arms = new PunkerPrimeArm[5];
+            _arms[0] = SummonArm<Chainsaw>();
+            _arms[1] = SummonArm<Chainsaw>();
+            _arms[2] = SummonArm<Drill>();
+            _arms[3] = SummonArm<Pincher>();
+            _arms[4] = SummonArm<SawbladeLauncher>();
         }
 
         private void AI_Idle()
