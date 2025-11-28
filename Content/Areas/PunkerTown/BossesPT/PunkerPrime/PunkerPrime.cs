@@ -282,7 +282,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Vector2 aimVelocity = (Target.Center - NPC.Center);
             aimVelocity = aimVelocity.SafeNormalize(Vector2.Zero);
             float rotation = aimVelocity.ToRotation();
-            NPC.rotation = Utils.AngleLerp(NPC.rotation, rotation, 0.01f);
+            //NPC.rotation = Utils.AngleLerp(NPC.rotation, rotation, 0.01f);//
             if (Timer >= 60f)
             {
                 SwitchState(AIState.Shoot);
