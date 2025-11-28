@@ -177,7 +177,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SoundEngine.PlaySound(mechTurnSound, NPC.position);
             }
 
-
+            TargetOutlineColor = Color.Transparent;
             RetargetCameraModifier.ReTargetPosition = NPC.Center;
 
             float time = 120f;
@@ -195,6 +195,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private void AI_Despawn()
         {
+            TargetOutlineColor = Color.Transparent;
             //Just fly up and despawn, very simepl
             Timer++;
             float despawnTime = 90;
@@ -234,6 +235,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SwitchState(AIState.RePosition);
             }
 
+            TargetOutlineColor = Color.Transparent;
             Vector2 hoverVelocity = Vector2.Zero;
             hoverVelocity.Y = MathF.Sin(Timer * 0.25f) * 0.5f + 0.5f;
             hoverVelocity.X = FacingDirectionToTarget;
@@ -259,6 +261,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             }
 
 
+            TargetOutlineColor = Color.Transparent;
             _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 1f, 0.1f);
             float repositionTime = 60f;
             float completionRatio = Timer / repositionTime;
