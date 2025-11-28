@@ -109,10 +109,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Timer++;
             float osc = MathF.Sin(Timer * 0.06f) * 0.5f + 0.5f;
 
-            Segments[0].angle = MathHelper.ToRadians(-115) + MathHelper.ToRadians(MathHelper.Lerp(0, 10, osc));
-            Segments[1].angle = Segments[0].angle + MathHelper.ToRadians(75);
+            Segments[0].angle = MathHelper.ToRadians(-90) + MathHelper.ToRadians(MathHelper.Lerp(0, 10, osc));
+            Segments[1].angle = Segments[0].angle + MathHelper.ToRadians(-75);
             Segments[2].angle = Segments[1].angle;
-            Segments[3].angle = Segments[2].angle + MathHelper.ToRadians(80);
+            Segments[3].angle = Segments[2].angle + MathHelper.ToRadians(-80);
             AimGunTowardTarget();
             if (DoAttack)
             {

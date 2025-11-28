@@ -159,8 +159,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         public override void SetDefaults()
         {
             base.SetDefaults();
-            NPC.width = 128;
-            NPC.height = 128;
+            NPC.width = 32;
+            NPC.height = 32;
             NPC.damage = 100;
             NPC.defense = 14;
             NPC.lifeMax = 6000;
@@ -195,6 +195,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 PunkerPrimeArmPart segment = Segments[i];
                 segment.Update();
             }
+            Lighting.AddLight(NPC.Center, TorchID.Red);
         }
 
 
@@ -205,7 +206,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         protected void SetRootToParentCenter()
         {
-            Segments[0].rootPosition = Parent.Center;
+            Segments[0].rootPosition = Parent.Bottom;
         }
         protected void AimGunTowardTarget()
         {
@@ -366,6 +367,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 _teleportPosition = Vector2.Zero;
             }
 
+            Lighting.AddLight(NPC.Center, TorchID.Red);
             switch (State)
             {
                 case AIState.Spawn:
@@ -517,11 +519,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             TargetOutlineColor = Color.Transparent;
             Vector2 hoverVelocity = Vector2.Zero;
-            hoverVelocity.Y = MathF.Sin(Timer * 0.25f) * 0.5f;
+            hoverVelocity.Y = MathF.Sin(Timer * 0.125f) * 0.5f;
             float xDistance = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
             if(xDistance > 200)
                 hoverVelocity.X = FacingDirectionToTarget;
 
+            float yDistance = MathF.Abs(MyTarget.Center.Y - NPC.Center.Y);
+            if(yDistance > 300)
+            {
+                hoverVelocity.Y += MathF.Sign(MyTarget.Center.Y - NPC.Center.Y);
+            }
             NPC.noGravity = true;
             NPC.velocity = hoverVelocity;
             NPC.rotation = NPC.velocity.X * 0.02f;
@@ -537,7 +544,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 NPC.TargetClosest();
                 _startCenter = NPC.Center;
-                _hoverCenter = MyTarget.Center + new Vector2(0, -300);
+                _hoverCenter = MyTarget.Center + new Vector2(0, -150);
 
                 SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
                 mechMove.PitchVariance = 0.2f;
@@ -666,6 +673,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             DrawBodyAfterImage(spriteBatch, screenPos);
             DrawBodySprite(spriteBatch, screenPos, drawColor);
+            DrawGlowSprite(spriteBatch, screenPos, Color.Red * ExtraMath.Osc(0.1f, 0.25f));
             return false;
         }
 
@@ -680,9 +688,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 float f = i;
                 float completionRatio = f / length;
                 Vector2 oldPosition = NPC.oldPos[i];
-                Vector2 oldCenter = oldPosition + NPC.Size / 2f;
-                Color color = Color.White;
-                color *= 0.4f;
+                Vector2 oldCenter = oldPosition + NPC.Size / 2f - screenPos;
+                Color color = Color.Red;
+                color *= 0.1f;
                 color *= _draw.afterImageStrength;
                 color *= MathHelper.SmoothStep(1f, 0f, completionRatio);
                 spriteBatch.Draw(texture, oldCenter, frame, color, NPC.rotation, drawOrigin, _draw.scale, SpriteEffects.None, 0);
@@ -697,6 +705,15 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Vector2 drawOrigin = frame.Size() / 2f;
             drawCenter += _draw.shakeOffset;
             spriteBatch.Draw(texture, drawCenter, frame, color, NPC.rotation, drawOrigin, _draw.scale, SpriteEffects.None, 0);
+        }
+        private void DrawGlowSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color color)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
+            Rectangle frame = NPC.frame;
+            Vector2 drawCenter = NPC.Center - screenPos;
+            Vector2 drawOrigin = frame.Size() / 2f;
+            drawCenter += _draw.shakeOffset;
+            spriteBatch.Draw(texture, drawCenter, frame, color, NPC.rotation, drawOrigin, _draw.scale * ExtraMath.Osc(1f, 1.25f), SpriteEffects.None, 0);
         }
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
