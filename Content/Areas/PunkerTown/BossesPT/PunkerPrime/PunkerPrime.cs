@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using Stellamod.Assets;
-using Stellamod.Content.Areas.Jungle.WeaponsRadiant;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
@@ -14,17 +12,12 @@ using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
-using System.Collections.Generic;
 
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.Tiles.SpecialDecorativeWall;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 {
@@ -34,9 +27,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         public Vector2 scale;
         public Vector2 shakeOffset;
         public float afterImageStrength;
-     
+
         public void SetDefaults()
         {
+            scale = Vector2.One;
             outlineColor = Color.Transparent;
             afterImageStrength = 0f;
         }
@@ -67,7 +61,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         public void Update()
         {
-            if(parent != null)
+            if (parent != null)
             {
                 rootPosition = parent.endPosition;
             }
@@ -84,7 +78,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
     }
 
 
-    public class PrimeSawblade : ScarletProjectile, 
+    public class PrimeSawblade : ScarletProjectile,
         IDrawOutlines
     {
         private float _flashAlpha;
@@ -110,14 +104,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             base.AI();
             Timer++;
-            if(Timer % 15 == 0)
+            if (Timer % 15 == 0)
             {
                 var d = Dust.NewDustPerfect(Projectile.Center, DustID.FireworkFountain_Yellow, Scale: Main.rand.NextFloat(0.5f, 1f));
                 d.noGravity = false;
             }
 
             var closest = PlayerHelper.FindClosestPlayer(Projectile.position, 1000);
-            if(Timer == 60)
+            if (Timer == 60)
             {
                 SoundStyle mechSaw = AssetRegistry.Sounds.SteamPunking.MechSaw;
                 mechSaw.PitchVariance = 0.3f;
@@ -150,7 +144,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Rectangle frame = Projectile.Frame();
             Vector2 drawOrigin = frame.Size() / 2f;
             float length = TrailCacheLength;
-            for(int i = 0; i < TrailCacheLength; i++)
+            for (int i = 0; i < TrailCacheLength; i++)
             {
                 float f = i;
                 float completionRatio = f / length;
@@ -173,21 +167,21 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Color finalColor = Color.White.MultiplyRGB(lightColor);
             spriteBatch.Draw(texture, Projectile.Center - screenPos, frame, finalColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
 
-            if(_flashAlpha > 0)
+            if (_flashAlpha > 0)
             {
                 Color redColor = Color.Red;
                 redColor.A = 0;
                 redColor *= _flashAlpha;
                 spriteBatch.Draw(texture, Projectile.Center - screenPos, frame, redColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
-       
+
 
         }
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             float outlineOffset = 2;
             Vector2 h = Vector2.UnitX * outlineOffset;
-            Vector2 v = Vector2.UnitY  * outlineOffset;
+            Vector2 v = Vector2.UnitY * outlineOffset;
             DrawBlade(spriteBatch, screenPos + h, Color.Red);
             DrawBlade(spriteBatch, screenPos - h, Color.Red);
             DrawBlade(spriteBatch, screenPos + v, Color.Red);
@@ -269,7 +263,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private void AI_ShootStart()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
             }
@@ -297,7 +291,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             int fireTime = 45;
             int fireCount = 3;
-            if(Timer % fireTime == 0)
+            if (Timer % fireTime == 0)
             {
                 SoundStyle mechShoot = AssetRegistry.Sounds.SteamPunking.MechShoot1;
                 mechShoot.PitchVariance = 0.3f;
@@ -308,11 +302,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 {
                     Vector2 fireVelocity = NPC.rotation.ToRotationVector2();
                     fireVelocity *= 7f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, fireVelocity, 
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, fireVelocity,
                         ModContent.ProjectileType<PrimeSawblade>(), SawbladeDamage, 1, Main.myPlayer);
                 }
                 float numDust = 8;
-                for(float f = 0; f < numDust; f++)
+                for (float f = 0; f < numDust; f++)
                 {
                     Vector2 dustVelocity = NPC.rotation.ToRotationVector2();
                     dustVelocity *= Main.rand.NextFloat(1f, 10f);
@@ -324,7 +318,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 stretchParticle.GlowColor = Color.Violet;
             }
 
-            if(Timer >= (fireTime * fireCount))
+            if (Timer >= (fireTime * fireCount))
             {
                 SwitchState(AIState.Idle);
             }
@@ -344,17 +338,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         protected Color _outlineColor;
         protected Color TargetOutlineColor;
         protected PunkerPrimeArmPart[] _segmentsBackingField;
-       
+
         protected PunkerPrimeArmPart[] Segments
         {
             get
             {
-                if(_segmentsBackingField == null)
+                if (_segmentsBackingField == null)
                 {
                     Texture2D[] armTextures = RequestArmTextures();
                     _segmentsBackingField = new PunkerPrimeArmPart[armTextures.Length];
 
-                    for(int a = 0; a < armTextures.Length; a++)
+                    for (int a = 0; a < armTextures.Length; a++)
                     {
                         PunkerPrimeArmPart parent = a == 0 ? null : _segmentsBackingField[a - 1];
                         PunkerPrimeArmPart armPart = new PunkerPrimeArmPart(parent, armTextures[a], 0);
@@ -465,13 +459,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private void DrawArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            for(int i = 0; i < Segments.Length; i++)
+            for (int i = 0; i < Segments.Length; i++)
             {
                 PunkerPrimeArmPart segment = Segments[i];
                 segment.Draw(spriteBatch, screenPos, drawColor);
             }
         }
-        
+
         private void DrawGun(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
@@ -490,7 +484,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             DrawArm(spriteBatch, screenPos, drawColor);
             DrawGun(spriteBatch, screenPos, drawColor);
-            return false;   
+            return false;
         }
 
 
@@ -528,7 +522,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private Vector2 _hoverCenter;
         private Color TargetOutlineColor;
         private ref float Timer => ref NPC.ai[0];
-        
+
         private AIState State
         {
             get => (AIState)NPC.ai[1];
@@ -576,7 +570,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.npcSlots = 30f;
-           
+
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/PunkerPrime");
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
@@ -596,7 +590,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 }
             }
 
-            if(_teleportPosition != Vector2.Zero)
+            if (_teleportPosition != Vector2.Zero)
             {
                 NPC.position = _teleportPosition;
                 _teleportPosition = Vector2.Zero;
@@ -645,7 +639,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private void AI_Spawn()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
 
@@ -668,7 +662,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             NPC.velocity.Y = yVelocity;
             NPC.velocity.X = 0;
             NPC.rotation = 0;
-            if(Timer >= time)
+            if (Timer >= time)
             {
                 SwitchState(AIState.Idle);
             }
@@ -705,7 +699,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             //The extension from melee should make it easy to hit the cores
             //Hopefully;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
             }
@@ -724,7 +718,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             hoverVelocity.X = FacingDirectionToTarget;
             NPC.velocity = Vector2.Lerp(NPC.velocity, hoverVelocity, 0.1f);
             NPC.rotation = NPC.velocity.X * 0.02f;
-            if(Timer >= idleTime)
+            if (Timer >= idleTime)
             {
                 ChooseAttack();
             }
@@ -732,7 +726,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private void AI_RePosition()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
                 _startCenter = NPC.Center;
@@ -753,7 +747,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Vector2 velocity = (positionToMoveTo - NPC.Center);
             NPC.velocity = velocity;
             NPC.rotation = NPC.velocity.X * 0.025f;
-            if(Timer >= repositionTime)
+            if (Timer >= repositionTime)
             {
                 SwitchState(AIState.Idle);
             }
@@ -769,24 +763,24 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private void AI_Death()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
             }
 
             float deathTime = 300f;
-            if(Timer % 5 == 0)
+            if (Timer % 5 == 0)
             {
                 SpawnSteamParticle();
             }
 
-            if(Timer % 15 == 0)
+            if (Timer % 15 == 0)
             {
                 _draw.shakeOffset = Main.rand.NextVector2Circular(16, 16);
                 NPC.rotation = _draw.shakeOffset.X * 0.05f;
             }
 
-            if(Timer % 12 == 0)
+            if (Timer % 12 == 0)
             {
                 Vector2 spawnPoint = NPC.Top;
                 spawnPoint.X += Main.rand.NextFloat(-64f, 64f);
@@ -797,7 +791,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             NPC.velocity = Vector2.Zero;
             _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 0f, 0.1f);
             _draw.outlineColor = Color.Lerp(Color.Transparent, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 12f));
-            if(Timer >= deathTime)
+            if (Timer >= deathTime)
             {
                 for (int i = 0; i < 16; i++)
                 {
@@ -811,7 +805,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 }
 
                 float numDust = 32;
-                for(float n = 0; n < numDust; n++)
+                for (float n = 0; n < numDust; n++)
                 {
                     Vector2 dustVelocity = Main.rand.NextVector2Circular(32, 32);
                     Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), dustVelocity,
