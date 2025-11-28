@@ -9,6 +9,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
@@ -80,6 +81,169 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         }
     }
 
+
+    public class PrimeSawblade : ScarletProjectile, IDrawOutlines
+    {
+        private ref float Timer => ref Projectile.ai[0];
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            Main.projFrames[Type] = 3;
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            TrailCacheLength = 16;
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.hostile = true;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 300;
+            Projectile.extraUpdates = 1;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if(Timer % 15 == 0)
+            {
+                var d = Dust.NewDustPerfect(Projectile.Center, DustID.FireworkFountain_Yellow, Scale: Main.rand.NextFloat(0.5f, 1f));
+                d.noGravity = false;
+            }
+
+            var closest = PlayerHelper.FindClosestPlayer(Projectile.position, 1000);
+            if(Timer == 60)
+            {
+
+            }
+            if(Timer >= 60 && Timer < 150 && closest != null)
+            {
+                float degreesToRotate = 1;
+                Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, degreesToRotate);
+                Projectile.velocity = homingVelocity;
+            }
+        }
+
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            return false;
+        }
+
+        private void DrawAfterImage(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+            float length = TrailCacheLength;
+            for(int i = 0; i < TrailCacheLength; i++)
+            {
+                float f = i;
+                float completionRatio = f / length;
+                Vector2 drawCenter = OldCenterPos[i] - screenPos;
+                Color afterImageColor = Color.White;
+
+                float alpha = MathHelper.SmoothStep(1f, 0f, completionRatio);
+                afterImageColor *= alpha;
+                afterImageColor *= 0.3f;
+
+                spriteBatch.Draw(texture, drawCenter, frame, afterImageColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+            }
+        }
+        private void DrawBlade(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Color finalColor = Color.White.MultiplyRGB(lightColor);
+            spriteBatch.Draw(texture, Projectile.Center - screenPos, frame, finalColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+        }
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            float outlineOffset = 2;
+            Vector2 h = Vector2.UnitX * outlineOffset;
+            Vector2 v = Vector2.UnitY  * outlineOffset;
+            DrawBlade(spriteBatch, screenPos + h, Color.Red);
+            DrawBlade(spriteBatch, screenPos - h, Color.Red);
+            DrawBlade(spriteBatch, screenPos + v, Color.Red);
+            DrawBlade(spriteBatch, screenPos - v, Color.Red);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            DrawAfterImage(spriteBatch, Main.screenPosition, lightColor);
+            DrawBlade(spriteBatch, Main.screenPosition, lightColor);
+            return false;
+        }
+    }
+    public class SawbladeLauncher : PunkerPrimeArm
+    {
+        private enum AIState
+        {
+            Idle,
+            Shoot_Start,
+            Shoot
+        }
+
+        private AIState State
+        {
+            get => (AIState)NPC.ai[3];
+            set => NPC.ai[3] = (float)value;
+        }
+        public override void ArmAI()
+
+        {
+            base.ArmAI();
+            Segments[0].rootPosition = Parent.Center;
+            switch (State)
+            {
+                case AIState.Idle:
+                    AI_Idle();
+                    break;
+                case AIState.Shoot_Start:
+                    AI_ShootStart();
+                    break;
+                case AIState.Shoot:
+                    AI_Shoot();
+                    break;
+            }
+
+        }
+
+
+        private void SwitchState(AIState state)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                State = state;
+                Timer = 0;
+                NPC.netUpdate = true;
+            }
+        }
+
+        private void AI_Idle()
+        {
+            Timer++;
+            if (DoAttack)
+            {
+                SwitchState(AIState.Shoot_Start);
+            }
+        }
+
+        private void AI_ShootStart()
+        {
+
+        }
+
+        private void AI_Shoot()
+        {
+
+        }
+    }
+
+
     //ALright so now we need to think about punker prime's arms
     //The arms are able to operate individually of the boss
     //The easiest way to do this is to make separate NPCs for each of them
@@ -136,12 +300,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         protected Texture2D[] RequestArmTextures()
         {
-            Texture2D[] textures = new Texture2D[5];
+            Texture2D[] textures = new Texture2D[4];
             textures[0] = RequestSubTexture("_Shoulder");
             textures[1] = RequestSubTexture("_Arm");
             textures[2] = RequestSubTexture("_Elbow");
             textures[3] = RequestSubTexture("_ForeArm");
-            textures[4] = ModContent.Request<Texture2D>(Texture, AssetRequestMode.ImmediateLoad).Value;
             return textures;
         }
 
@@ -168,18 +331,36 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.npcSlots = 30f;
-            
+
+            NPC.hide = true;
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
             NPC.dontTakeDamageFromHostiles = true;
         }
 
-        public override void AI()
+        public override void DrawBehind(int index)
         {
-            base.AI();
-            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            base.DrawBehind(index);
+            Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
         }
 
+        //Sealing this just so don't accidentally override it, we don't want to remove the base functionailty
+        public sealed override void AI()
+        {
+            base.AI();
+            ArmAI();
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            for (int i = 0; i < Segments.Length; i++)
+            {
+                PunkerPrimeArmPart segment = Segments[i];
+                segment.Update();
+            }
+        }
+
+        public virtual void ArmAI()
+        {
+
+        }
         private void DrawArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             for(int i = 0; i < Segments.Length; i++)
