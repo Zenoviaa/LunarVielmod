@@ -72,6 +72,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         public override void ArmAI()
         {
             base.ArmAI();
+            SetRootToParentCenter();
             switch (State)
             {
                 case AIState.Idle:
@@ -104,7 +105,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private void AI_Idle()
         {
             _revvedUp = false;
-            Timer++;
+            Timer++; 
+        
             AimGunTowardTarget();
             if (DoAttack)
             {

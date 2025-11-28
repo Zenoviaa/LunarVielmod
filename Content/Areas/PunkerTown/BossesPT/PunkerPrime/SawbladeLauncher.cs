@@ -28,7 +28,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         {
             base.ArmAI();
-            Segments[0].rootPosition = Parent.Center;
+            SetRootToParentCenter();
             switch (State)
             {
                 case AIState.Idle:

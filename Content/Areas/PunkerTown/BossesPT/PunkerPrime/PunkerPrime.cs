@@ -134,10 +134,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         protected Texture2D[] RequestArmTextures()
         {
             Texture2D[] textures = new Texture2D[4];
-            textures[0] = RequestSubTexture("_Shoulder");
-            textures[1] = RequestSubTexture("_Arm");
-            textures[2] = RequestSubTexture("_Elbow");
-            textures[3] = RequestSubTexture("_ForeArm");
+            textures[0] = RequestSubTexture("Shoulder");
+            textures[1] = RequestSubTexture("Arm");
+            textures[2] = RequestSubTexture("Elbow");
+            textures[3] = RequestSubTexture("ForeArm");
             return textures;
         }
 
@@ -203,6 +203,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         }
 
+        protected void SetRootToParentCenter()
+        {
+            Segments[0].rootPosition = Parent.Center;
+        }
         protected void AimGunTowardTarget()
         {
             Vector2 holdCenter = GetGunHoldCenter();
