@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -16,7 +18,20 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 {
-    public class PunkerPrime : ScarletBoss
+    public struct PunkerPrimeDraw
+    {
+        public Color outlineColor;
+        public Vector2 scale;
+        public float afterImageStrength;
+     
+        public void SetDefaults()
+        {
+            outlineColor = Color.Transparent;
+            afterImageStrength = 0f;
+        }
+    }
+    public class PunkerPrime : ScarletBoss,
+        IDrawOutlines
     {
         private Vector2 _teleportPosition;
         private enum AIState
@@ -25,8 +40,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Despawn,
             Idle,
             Death,
+
+            RePosition
         }
 
+        private PunkerPrimeDraw _draw;
+        private Vector2 _startCenter;
+        private Vector2 _hoverCenter;
+        private Color TargetOutlineColor;
         private ref float Timer => ref NPC.ai[0];
         
         private AIState State
@@ -39,11 +60,15 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             base.SendExtraAI(writer);
             writer.WriteVector2(_teleportPosition);
+            writer.WriteVector2(_hoverCenter);
+            writer.WriteVector2(_startCenter);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             _teleportPosition = reader.ReadVector2();
+            _hoverCenter = reader.ReadVector2();
+            _startCenter = reader.ReadVector2();
         }
 
         public override void SetStaticDefaults()
@@ -78,6 +103,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         public override void AI()
         {
             base.AI();
+            _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
@@ -102,8 +128,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                     AI_Despawn();
                     break;
                 case AIState.Idle:
+                    AI_Idle();
                     break;
                 case AIState.Death:
+                    break;
+                case AIState.RePosition:
+                    AI_RePosition();
                     break;
             }
         }
@@ -152,6 +182,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             float ease = EasingFunction.InOutSine(completionRatio);
             float yVelocity = MathHelper.Lerp(3f, 0f, ease);
             NPC.velocity.Y = yVelocity;
+            NPC.velocity.X = 0;
+            NPC.rotation = 0;
             if(Timer >= time)
             {
                 SwitchState(AIState.Idle);
@@ -172,8 +204,71 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             }
         }
 
+        private bool CanAttack()
+        {
+            //This is going to check all of the arms and check how many of them are moving
+            return true;
+        }
+
         private void AI_Idle()
         {
+            _draw.afterImageStrength *= 0.5f;
+
+            //Steampunker prime is just going to hover around and above you most of the time for the most part
+            //If you get far from him he'll track you, but otherwise he's mostly stationary and doesn't move too much
+            //Which should be easy to deal with?
+            //The extension from melee should make it easy to hit the cores
+            //Hopefully;
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+            float idleTime = 120f;
+            float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
+            if (distanceToTarget > 800)
+            {
+                SwitchState(AIState.RePosition);
+            }
+
+            Vector2 hoverVelocity = Vector2.Zero;
+            hoverVelocity.Y = MathF.Sin(Timer * 0.25f) * 0.5f + 0.5f;
+            hoverVelocity.X = FacingDirectionToTarget;
+            NPC.velocity = Vector2.Lerp(NPC.velocity, hoverVelocity, 0.1f);
+            NPC.rotation = NPC.velocity.X * 0.02f;
+            if(Timer >= idleTime)
+            {
+                ChooseAttack();
+            }
+        }
+        private void AI_RePosition()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+                _startCenter = NPC.Center;
+                _hoverCenter = MyTarget.Center + new Vector2(0, -300);
+            }
+
+            _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 1f, 0.1f);
+            float repositionTime = 60f;
+            float completionRatio = Timer / repositionTime;
+            float ease = EasingFunction.Anticipation2(completionRatio);
+            Vector2 positionToMoveTo = Vector2.Lerp(_startCenter, _hoverCenter, ease);
+            Vector2 velocity = (positionToMoveTo - NPC.Center);
+            NPC.velocity = velocity;
+            NPC.rotation = NPC.velocity.X * 0.025f;
+            if(Timer >= repositionTime)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
+        private void ChooseAttack()
+        {
+            if (!CanAttack())
+                return;
 
         }
 
@@ -195,6 +290,28 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 NPC.life = 1;
             }
+        }
+
+        private void DrawBodySprite(SpriteBatch spriteBatch, Vector2 screenPos, Color color)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Rectangle frame = NPC.frame;
+            Vector2 drawCenter = NPC.Center - screenPos;
+            Vector2 drawOrigin = frame.Size() / 2f;
+            spriteBatch.Draw(texture, drawCenter, frame, color, NPC.rotation, drawOrigin, _draw.scale, SpriteEffects.None, 0);
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            float outlineOffset = 2f;
+            if (_draw.outlineColor == Color.Transparent)
+                return;
+            Vector2 h = Vector2.UnitX * outlineOffset;
+            Vector2 v = Vector2.UnitY * outlineOffset;
+            DrawBodySprite(spriteBatch, screenPos + h, _draw.outlineColor);
+            DrawBodySprite(spriteBatch, screenPos - h, _draw.outlineColor);
+            DrawBodySprite(spriteBatch, screenPos + v, _draw.outlineColor);
+            DrawBodySprite(spriteBatch, screenPos - v, _draw.outlineColor);
         }
     }
 }
