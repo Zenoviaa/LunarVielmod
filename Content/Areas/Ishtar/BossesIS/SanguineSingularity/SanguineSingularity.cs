@@ -1630,7 +1630,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 }
             }
             _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
-            _contactDamage = true;
+            if(AttackNumber > 0)
+            {
+                _contactDamage = true;
+            }
+     
             TargetOutlineColor = Color.Red;
             OffsetCameraModifier.FocusTargetOffset = new Vector2(-300, 0);
             Vector2 rightVelocity = Vector2.UnitX;
@@ -1840,6 +1844,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Color incresionDiskDrawColor = Color.White;
             incresionDiskDrawColor *= 0.25f;
             incresionDiskDrawColor.A = 0;
+            incresionDiskDrawColor *= _draw.alpha;
 
             Vector2 drawPos = NPC.Center - screenPos;
             Vector2 drawOrigin = incresionDiskRect.Size() / 2;
@@ -1852,12 +1857,14 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             incresionDiskDrawColor = Color.White;
             incresionDiskDrawColor *= 0.25f;
             incresionDiskDrawColor.A = 0;
+            incresionDiskDrawColor *= _draw.alpha;
 
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale * 1.5f, SpriteEffects.None, 0);
 
             incresionDiskDrawColor = Color.Blue;
             incresionDiskDrawColor *= 0.25f;
             incresionDiskDrawColor.A = 0;
+            incresionDiskDrawColor *= _draw.alpha;
 
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale * 2, SpriteEffects.None, 0);
 
@@ -1877,6 +1884,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Color incresionDiskDrawColor = Color.White;
             incresionDiskDrawColor *= 0.15f;
             incresionDiskDrawColor.A = 0;
+            incresionDiskDrawColor *= _draw.alpha;
 
             Vector2 drawPos = NPC.Center - screenPos;
             Vector2 drawOrigin = incresionDiskRect.Size() / 2;
