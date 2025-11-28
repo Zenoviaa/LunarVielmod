@@ -252,7 +252,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 NPC.TargetClosest();
                 _startCenter = NPC.Center;
                 _hoverCenter = MyTarget.Center + new Vector2(0, -300);
+
+                SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
+                mechMove.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(mechMove, NPC.position);
             }
+
 
             _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 1f, 0.1f);
             float repositionTime = 60f;
