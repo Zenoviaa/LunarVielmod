@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
+using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
@@ -36,6 +38,177 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             afterImageStrength = 0f;
         }
     }
+
+    //On top of that we need to make the custom draw code for the armrs
+    //We're just going to do this with forward kinematics since the arms don't need to be super precisely reaching for something, just coming out of the body really
+    //So let's make a simple system
+    public class PunkerPrimeArmPart
+    {
+        public PunkerPrimeArmPart(PunkerPrimeArmPart parent, Texture2D texture, float initialAngle)
+        {
+            this.parent = parent;
+            this.texture = texture;
+            this.drawOrigin = new Vector2(0f, texture.Height / 2f);
+            this.angle = initialAngle;
+            this.length = texture.Width;
+            this.color = Color.White;
+        }
+        public PunkerPrimeArmPart parent;
+        public Texture2D texture;
+        public Vector2 drawOrigin;
+        public Vector2 rootPosition;
+        public Vector2 endPosition;
+        public float angle;
+        public float length;
+        public Color color;
+
+        public void Update()
+        {
+            if(parent != null)
+            {
+                rootPosition = parent.endPosition;
+            }
+            endPosition = rootPosition + angle.ToRotationVector2() * length;
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Vector2 drawPosition = rootPosition - screenPos;
+            Color finalColor = color.MultiplyRGB(drawColor);
+            Vector2 drawScale = Vector2.One;
+            spriteBatch.Draw(texture, drawPosition, null, finalColor, angle, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
+    }
+
+    //ALright so now we need to think about punker prime's arms
+    //The arms are able to operate individually of the boss
+    //The easiest way to do this is to make separate NPCs for each of them
+    //So we should probably have a base NPC for PunkerPrime's arms
+
+    public abstract class PunkerPrimeArm : ModNPC,
+        IDrawOutlines
+    {
+        protected Color _outlineColor;
+        protected Color TargetOutlineColor;
+        protected PunkerPrimeArmPart[] _segmentsBackingField;
+       
+        protected PunkerPrimeArmPart[] Segments
+        {
+            get
+            {
+                if(_segmentsBackingField == null)
+                {
+                    Texture2D[] armTextures = RequestArmTextures();
+                    _segmentsBackingField = new PunkerPrimeArmPart[armTextures.Length];
+
+                    for(int a = 0; a < armTextures.Length; a++)
+                    {
+                        PunkerPrimeArmPart parent = a == 0 ? null : _segmentsBackingField[a - 1];
+                        PunkerPrimeArmPart armPart = new PunkerPrimeArmPart(parent, armTextures[a], 0);
+                        _segmentsBackingField[a] = armPart;
+                    }
+                }
+
+                return _segmentsBackingField;
+            }
+        }
+        protected bool DoAttack
+        {
+            get => NPC.ai[0] == 1;
+            set => NPC.ai[0] = value ? 1 : 0;
+        }
+
+        protected NPC Parent
+        {
+            get => Main.npc[(int)NPC.ai[1]];
+            set => NPC.ai[1] = value.whoAmI;
+        }
+
+        protected ref float Timer => ref NPC.ai[2];
+
+        protected Texture2D RequestSubTexture(string spriteName)
+        {
+            string texturePath = ModContent.GetInstance<PunkerPrime>().Texture;
+            string subTexturePath = texturePath + "_" + spriteName;
+            Texture2D texture = ModContent.Request<Texture2D>(subTexturePath, AssetRequestMode.ImmediateLoad).Value;
+            return texture;
+        }
+
+        protected Texture2D[] RequestArmTextures()
+        {
+            Texture2D[] textures = new Texture2D[5];
+            textures[0] = RequestSubTexture("_Shoulder");
+            textures[1] = RequestSubTexture("_Arm");
+            textures[2] = RequestSubTexture("_Elbow");
+            textures[3] = RequestSubTexture("_ForeArm");
+            textures[4] = ModContent.Request<Texture2D>(Texture, AssetRequestMode.ImmediateLoad).Value;
+            return textures;
+        }
+
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            Main.npcFrameCount[NPC.type] = 1;
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+            NPCID.Sets.TrailCacheLength[NPC.type] = 16;
+            NPCID.Sets.TrailingMode[Type] = 3;
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            NPC.width = 128;
+            NPC.height = 128;
+            NPC.damage = 100;
+            NPC.defense = 14;
+            NPC.lifeMax = 6000;
+
+            NPC.value = Item.buyPrice(gold: 5);
+            NPC.knockBackResist = 0f;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            NPC.npcSlots = 30f;
+            
+            NPC.dontTakeDamage = true;
+            NPC.dontCountMe = true;
+            NPC.dontTakeDamageFromHostiles = true;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+        }
+
+        private void DrawArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            for(int i = 0; i < Segments.Length; i++)
+            {
+                PunkerPrimeArmPart segment = Segments[i];
+                segment.Draw(spriteBatch, screenPos, drawColor);
+            }
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            DrawArm(spriteBatch, screenPos, drawColor);
+            return false;   
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            if (_outlineColor == Color.Transparent)
+                return;
+
+            float outlineOffset = 2;
+            Vector2 h = Vector2.UnitX * outlineOffset;
+            Vector2 v = Vector2.UnitY * outlineOffset;
+            DrawArm(spriteBatch, screenPos + h, _outlineColor);
+            DrawArm(spriteBatch, screenPos - h, _outlineColor);
+            DrawArm(spriteBatch, screenPos + v, _outlineColor);
+            DrawArm(spriteBatch, screenPos - v, _outlineColor);
+        }
+    }
+
     public class PunkerPrime : ScarletBoss,
         IDrawOutlines
     {
@@ -90,6 +263,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         public override void SetDefaults()
         {
             base.SetDefaults();
+            _draw.SetDefaults();
             NPC.width = 128;
             NPC.height = 128;
             NPC.damage = 100;
