@@ -3,8 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 
@@ -23,6 +27,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
     {
         public Color outlineColor;
         public Vector2 scale;
+        public Vector2 shakeOffset;
         public float afterImageStrength;
      
         public void SetDefaults()
@@ -134,6 +139,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                     AI_Idle();
                     break;
                 case AIState.Death:
+                    AI_Death();
                     break;
                 case AIState.RePosition:
                     AI_RePosition();
@@ -235,6 +241,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SwitchState(AIState.RePosition);
             }
 
+            _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 0f, 0.1f);
+
             TargetOutlineColor = Color.Transparent;
             Vector2 hoverVelocity = Vector2.Zero;
             hoverVelocity.Y = MathF.Sin(Timer * 0.25f) * 0.5f + 0.5f;
@@ -285,7 +293,69 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private void AI_Death()
         {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
 
+            float deathTime = 300f;
+            if(Timer % 5 == 0)
+            {
+                SpawnSteamParticle();
+            }
+
+            if(Timer % 15 == 0)
+            {
+                _draw.shakeOffset = Main.rand.NextVector2Circular(16, 16);
+                NPC.rotation = _draw.shakeOffset.X * 0.05f;
+            }
+
+            if(Timer % 12 == 0)
+            {
+                Vector2 spawnPoint = NPC.Top;
+                spawnPoint.X += Main.rand.NextFloat(-64f, 64f);
+                var fireDust = Dust.NewDustPerfect(spawnPoint, DustID.FireworkFountain_Red, Scale: Main.rand.NextFloat(0.5f, 1f));
+                fireDust.noGravity = false;
+            }
+
+            NPC.velocity = Vector2.Zero;
+            _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 0f, 0.1f);
+            _draw.outlineColor = Color.Lerp(Color.Transparent, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 12f));
+            if(Timer >= deathTime)
+            {
+                for (int i = 0; i < 16; i++)
+                {
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(),
+                        (Vector2.One * Main.rand.Next(5, 15)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
+                }
+                for (float f = 0; f < 12; f++)
+                {
+                    Vector2 v = Main.rand.NextVector2Circular(128, 128);
+                    FXUtil.GlowStretch(NPC.Center, v);
+                }
+
+                float numDust = 32;
+                for(float n = 0; n < numDust; n++)
+                {
+                    Vector2 dustVelocity = Main.rand.NextVector2Circular(32, 32);
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), dustVelocity,
+                        newColor: Color.Red,
+                        Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                }
+                SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/GlocketRouncher");
+                SoundEngine.PlaySound(explosionSound, NPC.position);
+                FXUtil.ShakeCamera(NPC.position, 1024, 8);
+                ShakeModSystem.Shake = 16;
+                var p = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Red, Color.Black);
+                NPC.Kill();
+            }
+        }
+
+        public override void OnKill()
+        {
+            base.OnKill();
+            DownedBossTracker.ClearFlag(DownedBossFlag.PunkerPrime);
         }
 
         public override void HitEffect(NPC.HitInfo hit)
@@ -302,7 +372,20 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 NPC.life = 1;
             }
         }
+        private void SpawnSteamParticle()
+        {
+            Vector2 spawnPosition = NPC.Top;
+            spawnPosition.X += Main.rand.NextFloat(-64, 64);
 
+            Vector2 spawnVelocity = Vector2.Zero;
+            spawnVelocity.Y = Main.rand.NextFloat(-10, -1f);
+
+            float spawnScale = Main.rand.NextFloat(0.75f, 1f);
+            var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
+            steamParticle.innerColor = Color.DarkGray;
+            steamParticle.outerColor = Color.Black;
+            steamParticle.fadeToColor = Color.Black;
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             DrawBodyAfterImage(spriteBatch, screenPos);
@@ -336,6 +419,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Rectangle frame = NPC.frame;
             Vector2 drawCenter = NPC.Center - screenPos;
             Vector2 drawOrigin = frame.Size() / 2f;
+            drawCenter += _draw.shakeOffset;
             spriteBatch.Draw(texture, drawCenter, frame, color, NPC.rotation, drawOrigin, _draw.scale, SpriteEffects.None, 0);
         }
 

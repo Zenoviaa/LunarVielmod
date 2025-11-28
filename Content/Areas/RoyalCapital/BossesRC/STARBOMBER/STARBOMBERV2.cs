@@ -1284,7 +1284,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 for (float f = 0; f < 12; f++)
                 {
                     Vector2 v = Main.rand.NextVector2Circular(128, 128);
-                    FXUtil.GlowStretch(NPC.Center, velocity);
+                    FXUtil.GlowStretch(NPC.Center, v);
                 }
                 FXUtil.ShakeCamera(NPC.position, 1024, 8);
                 ShakeModSystem.Shake = 8;
