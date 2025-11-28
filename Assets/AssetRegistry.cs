@@ -40,6 +40,7 @@ namespace Stellamod.Assets
             private static string Path => "Stellamod/Assets/Sounds/";
             public static class SteamPunking
             {
+                public static SoundStyle MechShoot1 = new SoundStyle($"{Path}SteamPunking/MechShoot1");
                 public static SoundStyle MechSaw = new SoundStyle($"{Path}SteamPunking/MechSaw");
                 public static SoundStyle MechMove = new SoundStyle($"{Path}SteamPunking/MechMove");
                 public static SoundStyle MechTurn = new SoundStyle($"{Path}SteamPunking/MechTurn");
