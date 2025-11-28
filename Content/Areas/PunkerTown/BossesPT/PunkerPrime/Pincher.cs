@@ -3,6 +3,7 @@ using Stellamod.Assets;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 
@@ -108,6 +109,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             _revvedUp = false;
             Timer++;
+
+            float osc = MathF.Sin(Timer * 0.1f) * 0.5f + 0.5f;
+
+            Segments[0].angle = MathHelper.ToRadians(-165) + MathHelper.ToRadians(MathHelper.Lerp(0, 10, osc));
+            Segments[1].angle = Segments[0].angle + MathHelper.ToRadians(-75);
+            Segments[2].angle = Segments[1].angle;
+            Segments[3].angle = Segments[2].angle + MathHelper.ToRadians(-80);
             AimGunTowardTarget();
             if (DoAttack)
             {

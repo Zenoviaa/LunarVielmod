@@ -214,7 +214,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             NPC.velocity = Vector2.Lerp(Vector2.Zero, targetVelocity, EasingFunction.InOutSine(Timer / 60f));
 
             float targetAngle = Segments[Segments.Length - 1].angle;
-            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.01f);
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
         }
 
         protected void CreateMuzzleFlash()
@@ -479,7 +479,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             _arms = new PunkerPrimeArm[5];
             _arms[0] = SummonArm<Chainsaw>();
-            _arms[1] = SummonArm<Chainsaw>();
+            _arms[1] = SummonArm<Chainsaw2>();
             _arms[2] = SummonArm<Drill>();
             _arms[3] = SummonArm<Pincher>();
             _arms[4] = SummonArm<SawbladeLauncher>();
@@ -505,14 +505,25 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 SwitchState(AIState.RePosition);
             }
-
+            if (Timer % 15 == 0)
+            {
+                SpawnSteamParticle();
+                if (Main.rand.NextBool(3))
+                {
+                    var d = Dust.NewDustPerfect(NPC.Top, ModContent.DustType<TSmokeDust>(), Scale: Main.rand.NextFloat(0.5f, 1.2f));
+                }
+            }
             _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 0f, 0.1f);
 
             TargetOutlineColor = Color.Transparent;
             Vector2 hoverVelocity = Vector2.Zero;
-            hoverVelocity.Y = MathF.Sin(Timer * 0.25f) * 0.5f + 0.5f;
-            hoverVelocity.X = FacingDirectionToTarget;
-            NPC.velocity = Vector2.Lerp(NPC.velocity, hoverVelocity, 0.1f);
+            hoverVelocity.Y = MathF.Sin(Timer * 0.25f) * 0.5f;
+            float xDistance = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
+            if(xDistance > 200)
+                hoverVelocity.X = FacingDirectionToTarget;
+
+            NPC.noGravity = true;
+            NPC.velocity = hoverVelocity;
             NPC.rotation = NPC.velocity.X * 0.02f;
             if (Timer >= idleTime)
             {

@@ -2,6 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -57,14 +58,22 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private void AI_Idle()
         {
+          
+
+            Timer++;
+
+            float osc = MathF.Sin(Timer * 0.02f) * 0.5f + 0.5f;
+
+            Segments[0].angle = MathHelper.ToRadians(-135) + MathHelper.ToRadians(MathHelper.Lerp(0, 10, osc));
+            Segments[1].angle = Segments[0].angle + MathHelper.ToRadians(-75);
+            Segments[2].angle = Segments[1].angle;
+            Segments[3].angle = Segments[2].angle + MathHelper.ToRadians(-80);
             Vector2 holdCenter = GetGunHoldCenter();
             Vector2 targetVelocity = (holdCenter - NPC.Center);
             NPC.velocity = Vector2.Lerp(Vector2.Zero, targetVelocity, EasingFunction.InOutSine(Timer / 60f));
 
             float targetAngle = Segments[Segments.Length - 1].angle;
-            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.01f);
-
-            Timer++;
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
             if (DoAttack)
             {
                 DoAttack = false;

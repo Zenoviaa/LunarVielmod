@@ -9,7 +9,7 @@ using Terraria.Audio;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 {
-    public class Drill : PunkerPrimeArm
+    public class Chainsaw2 : PunkerPrimeArm
     {
         private enum AIState
         {
@@ -107,9 +107,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             _revvedUp = false;
             Timer++;
-            float osc = MathF.Sin(Timer * 0.05f) * 0.5f + 0.5f;
+            float osc = MathF.Sin(Timer * 0.06f) * 0.5f + 0.5f;
 
-            Segments[0].angle = MathHelper.ToRadians(-90) + MathHelper.ToRadians(MathHelper.Lerp(0, 10, osc));
+            Segments[0].angle = MathHelper.ToRadians(-115) + MathHelper.ToRadians(MathHelper.Lerp(0, 10, osc));
             Segments[1].angle = Segments[0].angle + MathHelper.ToRadians(75);
             Segments[2].angle = Segments[1].angle;
             Segments[3].angle = Segments[2].angle + MathHelper.ToRadians(80);
