@@ -82,8 +82,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
     }
 
 
-    public class PrimeSawblade : ScarletProjectile, IDrawOutlines
+    public class PrimeSawblade : ScarletProjectile, 
+        IDrawOutlines
     {
+        private float _flashAlpha;
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
@@ -115,9 +117,18 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             var closest = PlayerHelper.FindClosestPlayer(Projectile.position, 1000);
             if(Timer == 60)
             {
-
+                SoundStyle mechSaw = AssetRegistry.Sounds.SteamPunking.MechSaw;
+                mechSaw.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(mechSaw, Projectile.position);
+                _flashAlpha = 1f;
             }
-            if(Timer >= 60 && Timer < 150 && closest != null)
+            else
+            {
+                _flashAlpha *= 0.9f;
+            }
+
+
+            if (Timer >= 60 && Timer < 150 && closest != null)
             {
                 float degreesToRotate = 1;
                 Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, degreesToRotate);
@@ -151,6 +162,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 spriteBatch.Draw(texture, drawCenter, frame, afterImageColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
         }
+
         private void DrawBlade(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
@@ -158,6 +170,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Vector2 drawOrigin = frame.Size() / 2f;
             Color finalColor = Color.White.MultiplyRGB(lightColor);
             spriteBatch.Draw(texture, Projectile.Center - screenPos, frame, finalColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+
+            if(_flashAlpha > 0)
+            {
+                Color redColor = Color.Red;
+                redColor.A = 0;
+                redColor *= _flashAlpha;
+                spriteBatch.Draw(texture, Projectile.Center - screenPos, frame, redColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+            }
+       
+
         }
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
