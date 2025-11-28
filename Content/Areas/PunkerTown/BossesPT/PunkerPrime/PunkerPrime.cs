@@ -7,6 +7,7 @@ using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -77,6 +78,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Main.npcFrameCount[NPC.type] = 1;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
+            NPCID.Sets.TrailCacheLength[NPC.type] = 16;
+            NPCID.Sets.TrailingMode[Type] = 3;
         }
 
         public override void SetDefaults()
@@ -289,6 +292,33 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             if (NPC.life <= 0)
             {
                 NPC.life = 1;
+            }
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            DrawBodyAfterImage(spriteBatch, screenPos);
+            DrawBodySprite(spriteBatch, screenPos, drawColor);
+            return false;
+        }
+
+        private void DrawBodyAfterImage(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Rectangle frame = NPC.frame;
+            Vector2 drawOrigin = frame.Size() / 2f;
+            float length = NPCID.Sets.TrailCacheLength[Type];
+            for (int i = 0; i < length; i++)
+            {
+                float f = i;
+                float completionRatio = f / length;
+                Vector2 oldPosition = NPC.oldPos[i];
+                Vector2 oldCenter = oldPosition + NPC.Size / 2f;
+                Color color = Color.White;
+                color *= 0.4f;
+                color *= _draw.afterImageStrength;
+                color *= MathHelper.SmoothStep(1f, 0f, completionRatio);
+                spriteBatch.Draw(texture, oldCenter, frame, color, NPC.rotation, drawOrigin, _draw.scale, SpriteEffects.None, 0);
             }
         }
 
