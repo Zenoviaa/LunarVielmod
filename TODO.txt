@@ -6,45 +6,10 @@
 
 
 
-
-
-Punker Prime
-
-Phase 2:
-	Laser Arm
-	Electric Field Arm
-	Assault Rifel Arm
-
 Sanguine Singularity
 Put some blood fire behind the dashing effects, it'd be really cool
 New second phae attack where the singularity gets big and the deer detaches from it
 New second phase thing with hallucinations
-
-
-
-Punker PRiem
-
-Steampunker Prime
-Robotic octopus looking things that has 3 cores, each arm has a different weapon like Skeletron Prime but all of his attacks are mainly physical based
-
-Sawblade Launcher - (like that one moorwing attack)
-
-Chainsaw - Positions his arm next to you and tries to shred you with the Chainsaw, if it connects it hits multiple times for low amounts of damage. He has two chainsaws, the 2nd saw has a slightly different design
-
-Drill - It winds up and then stabs very quickly into you
-
-Pincher - Grab that deals a low amount of damage, it’s a setup attack to hit you with something else. You can get free if you wiggle enough
-
-Mega Saw - Rolls up his arms around him and saws orbit his head, then he rolls around and tries to dash at you, mega saw cannot be disabled
-
-When you destroy one of his cores, some of his arms fall off and his remaining attacks get stronger/faster
-
-Core 1 - Chainsaw #1 + Pincher
-Core 2 - Chainsaw #2 + Drill
-Core 3 - Sawblade Launcher
-
-The cores have a like electric magic line showing which is powering which weapons
-
 
 
 
