@@ -32,6 +32,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             }
         }
         private ref float Timer => ref Projectile.ai[0];
+        public override string Texture => TextureRegistry.EmptyTexture;
         private NPC Parent
         {
             get => Main.npc[(int)Projectile.ai[1]];
@@ -63,6 +64,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             base.AI();
             Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle fireSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Shot1");
+                fireSound.Pitch = 0.6f;
+                fireSound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(fireSound, Projectile.position);
+            }
             float numPoints = LaserPoints.Length;
             for (int i = 0; i < LaserPoints.Length; i++)
             {
@@ -81,16 +89,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private Color ColorFunction(float completionRatio)
         {
-            float oscillate = MathF.Sin(completionRatio * 8) * 0.5f + 0.5f;
-            Color oscillatingColor = Color.Lerp(Color.Yellow, Color.Red, oscillate);
-            Color glowingColor = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f, speed: 32));
+            float oscillate = MathF.Sin(completionRatio * 32 - Main.GlobalTimeWrappedHourly * 32) * 0.5f + 0.5f;
+            Color oscillatingColor = Color.Lerp(Color.DarkRed, Color.Red, oscillate);
+            Color glowingColor = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f, speed: 64));
             return oscillatingColor.MultiplyRGB(glowingColor);
         }
 
         private float WidthFunction(float completionRatio)
         {
             float inScale = EasingFunction.InOutSine(Timer / 30f);
-            float outScale = (float)((float)Projectile.timeLeft / 30f);
+            float outScale = EasingFunction.InOutSine((float)(((float)Projectile.timeLeft) / 30f));
             return 32 * inScale * outScale;
         }
 
@@ -98,8 +106,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             var shader = BasicLaserShader.Instance;
             shader.LaserTexture = TrailRegistry.BeamTrail;
-            shader.BlendState = BlendState.Additive;
+            shader.BlendState = BlendState.AlphaBlend;
             shader.SamplerState = SamplerState.PointWrap;
+            shader.Time = Main.GlobalTimeWrappedHourly * 32;
+            shader.InnerColor = Color.White;
+            shader.OuterColor = Color.Red;
             //This just applis the shader changes
             TrailDrawer.Draw(Main.spriteBatch, LaserPoints, ColorFunction, WidthFunction, shader);
         }
@@ -120,7 +131,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         }
 
         private int LaserDamage => 30;
-        private float BaseAngle => 45;
+        private float BaseAngle => -160;
         public override void ArmAI()
 
         {
@@ -262,14 +273,15 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
 
 
-            int fireTime = 100;
+            int fireTime = 240;
             float completionRatio = Timer / fireTime;
             SetAngles(MathHelper.Lerp(BaseAngle - 90, BaseAngle, completionRatio));
             telegraphLineColor = Color.Red;
 
 
-            NPC.velocity.Y *= 0.9f;
-            NPC.velocity.X = MathHelper.Lerp(5, -5, EasingFunction.Anticipation(completionRatio));
+            int targetDirection = Target.Center.X > NPC.Center.X ? 1 : -1;
+            NPC.velocity.Y = MathHelper.Lerp(1, -2, EasingFunction.Anticipation(Timer / 30f));
+            NPC.velocity.X = MathHelper.Lerp(5 * -targetDirection, -5 * -targetDirection, EasingFunction.Anticipation(Timer / 30f));
 
             Vector2 targetFireVelocity = Vector2.UnitY * 1000;
             float targetRotation = targetFireVelocity.ToRotation();
@@ -284,7 +296,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, targetFireVelocity,
-                        ModContent.ProjectileType<PunkingLaser>(), LaserDamage, 1, Main.myPlayer);
+                        ModContent.ProjectileType<PunkingLaser>(), LaserDamage, 1, Main.myPlayer, ai1: NPC.whoAmI);
                 }
 
                 float numDust = 8;

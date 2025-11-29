@@ -1293,3 +1293,6 @@ Chainsaw.DisplayName: Chainsaw
 Drill.DisplayName: Drill
 Pincher.DisplayName: Pincher
 Chainsaw2.DisplayName: Chainsaw2
+AssaultRifle.DisplayName: Assault Rifle
+ElectroFieldLauncher.DisplayName: Electro Field Launcher
+LaserRifle.DisplayName: Laser Rifle

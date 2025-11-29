@@ -501,6 +501,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                     while(_armQueueBacking.Count < 5)
                     {
                         int armToSummon = Main.rand.Next(0, 5);
+                        if (InPhase2)
+                        {
+                            armToSummon = Main.rand.Next(0, 8);
+                        }
                         if (_armQueueBacking.Contains(armToSummon))
                             continue;
                         _armQueueBacking.Enqueue(armToSummon);
@@ -668,12 +672,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                     AI_SpecialEnd();
                     break;
             }
-            if (MultiplayerHelper.IsHost)
-            {
-                _disabledArms[5] = !InPhase2;
-                _disabledArms[6] = !InPhase2;
-                _disabledArms[7] = !InPhase2;
-            }
+
         }
 
         private bool CanUseArm(int armIndex)
@@ -805,7 +804,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             float endTime = 240;
             Vector2 velToTarget = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-            velToTarget *= 5f;
+            velToTarget *= 8f;
             NPC.velocity = Vector2.Lerp(NPC.velocity, velToTarget, 0.1f);
             _draw.shakeOffset = Main.rand.NextVector2Circular(2, 2);
             NPC.rotation = _draw.shakeOffset.ToRotation() * 0.02f;

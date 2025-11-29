@@ -51,7 +51,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private float WidthFunction(float completionRatio)
         {
-            float w = 100;
+            float w = 5;
             float ew = w / 10;
             float width = w;
 
@@ -104,7 +104,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         }
 
         private int RifleDamage => 13;
-        private float BaseAngle => 45;
+        private float BaseAngle => -15;
         public override void ArmAI()
 
         {
@@ -246,8 +246,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             NPC.velocity *= 0.1f;
 
-            int fireTime = 25;
-            int fireCount = 15;
+            int fireTime = 35;
+            int fireCount = 12;
 
             AimGunTowardTarget();
             float fullFireTime = (fireTime * fireCount);
@@ -260,7 +260,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             if (Timer % fireTime == 0)
             {
-                SoundStyle mechShoot = AssetRegistry.Sounds.SteamPunking.MechShoot1;
+                SoundStyle mechShoot = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew1");
                 mechShoot.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(mechShoot, NPC.position);
 

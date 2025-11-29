@@ -34,22 +34,34 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
+            Projectile.timeLeft = 369;
         }
 
+        public override bool PreDraw(ref Color lightColor)
+        {
+            return false;
+        }
         public override void AI()
         {
             base.AI();
+            float outScale = (float)Projectile.timeLeft / 30f;
+            Projectile.scale = MathHelper.SmoothStep(0f, 0.5f, EasingFunction.InOutSine(outScale));
             Timer++;
             if(Timer < 60)
             {
-                Projectile.velocity *= 0.9f;
+                Projectile.velocity *= 0.95f;
+            }
+
+            if(Timer  % 15 == 0)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworkFountain_Red);
             }
 
             if(Timer >= 300)
             {
                 Projectile.Kill();
             }
-            DrawHelper.AnimateTopToBottom(Projectile, 3);
+            DrawHelper.AnimateTopToBottom(Projectile, 2);
         }
         
         public void DrawPixelated()
@@ -71,6 +83,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             float rotation =Projectile.rotation;
             Color glowColor = Color.Lerp(Color.Yellow, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16f));
             glowColor.A = 0;
+           
             spriteBatch.Draw(texture, drawPos, drawFrame, glowColor, rotation, drawOrigin, scale, spriteEffects, 0);
         }
     }
@@ -109,7 +122,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                     AI_Shoot();
                     break;
             }
-
         }
 
 
@@ -254,7 +266,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 if (MultiplayerHelper.IsHost)
                 {
                     Vector2 fireVelocity = NPC.rotation.ToRotationVector2();
-                    fireVelocity *= 12;
+                    fireVelocity *= 21;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, fireVelocity,
                         ModContent.ProjectileType<ElectroField>(), ElectroSphereDamage, 1, Main.myPlayer);
                 }

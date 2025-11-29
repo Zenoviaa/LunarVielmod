@@ -73,6 +73,7 @@ namespace Stellamod.Core.Pixelation
                     _draws.Add(pixelated);
                 }
             }
+            SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             graphicsDevice.SetRenderTarget(_pixelScreenRenderRT);
             graphicsDevice.Clear(Color.Black);
@@ -81,13 +82,13 @@ namespace Stellamod.Core.Pixelation
                 //Alright, so what we're going to do is actually use two render targets to get around the issue of misplaced pixels
                 //This costs a bit of extra performance but it'll look good
                 //So, first draw at fully quality to the screen render target
-
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
                 for (int i = 0; i < _draws.Count; i++)
                 {
                     IDrawPixelated draw = _draws[i];
                     draw.DrawPixelated();
                 }
-
+                spriteBatch.End();
             }
             OnDrawPixelation?.Invoke();
 
@@ -95,7 +96,7 @@ namespace Stellamod.Core.Pixelation
             graphicsDevice.SetRenderTarget(_pixelRenderRT);
             graphicsDevice.Clear(Color.Transparent);
 
-            SpriteBatch spriteBatch = Main.spriteBatch;
+     
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             float denom = DownSamples;
             float scale = 1f / denom;
