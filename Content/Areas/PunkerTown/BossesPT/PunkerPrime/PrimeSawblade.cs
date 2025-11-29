@@ -32,12 +32,22 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Projectile.penetrate = -1;
             Projectile.timeLeft = 300;
             Projectile.extraUpdates = 1;
+            Projectile.tileCollide = false;
         }
 
         public override void AI()
         {
             base.AI();
             Timer++;
+            if(Timer < 30)
+            {
+                Projectile.velocity *= 0.995f;
+            }
+
+            if(Timer >= 60)
+            {
+                Projectile.velocity *= 0.998f;
+            }
             if (Timer % 15 == 0)
             {
                 var d = Dust.NewDustPerfect(Projectile.Center, DustID.FireworkFountain_Yellow, Scale: Main.rand.NextFloat(0.5f, 1f));
@@ -60,10 +70,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             if (Timer >= 60 && Timer < 150 && closest != null)
             {
-                float degreesToRotate = 1;
+                float distToTarget = Vector2.Distance(Projectile.Center, closest.Center);
+                float degreesToRotate = MathHelper.Lerp(1f, 4f, distToTarget / 1000f);
                 Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, degreesToRotate);
                 Projectile.velocity = homingVelocity;
             }
+            DrawHelper.AnimateTopToBottom(Projectile, 4);
         }
 
 

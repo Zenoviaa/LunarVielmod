@@ -286,6 +286,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             Color color = telegraphLineColor;
             color.A = 0;
+            color *= 0.5f;
             float rotation = NPC.rotation - MathHelper.ToRadians(90);
             spriteBatch.Draw(bloomLineTexture, drawCenter, null, color, rotation, drawOrigin, scale, SpriteEffects.None, 0);
         }
@@ -321,7 +322,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         }
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Transparent, Color.Gray, EasingFunction.QuadraticBump(completionRatio)) * heldLightningScale;
+            return Color.Lerp(Color.Transparent, Color.Gray, EasingFunction.QuadraticBump(completionRatio)) * heldLightningScale * 0.5f;
         }
 
         private float WidthFunction(float completionRatio)
@@ -860,6 +861,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/GlocketRouncher");
                 SoundEngine.PlaySound(explosionSound, NPC.position);
                 FXUtil.ShakeCamera(NPC.position, 1024, 8);
+                var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Yellow, Color.Red);
+                boom.Scale *= 3f;
                 ShakeModSystem.Shake = 16;
                 var p = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Red, Color.Black);
                 NPC.Kill();
