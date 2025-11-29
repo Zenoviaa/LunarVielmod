@@ -439,6 +439,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private Vector2 _hoverCenter;
         private Color TargetOutlineColor;
         private bool[] _disabledArms;
+        private bool _showNamePlate;
         private Queue<int> _armQueueBacking;
         private Queue<int> ArmQueue
         {
@@ -730,8 +731,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 NPC.TargetClosest();
             }
-            float idleTime = 60f;
 
+            //Starts slow and gets faster over time
+            float fightRatio = (float)NPC.life / (float)NPC.lifeMax;
+            float idleTime = MathHelper.Lerp(60f, 180, fightRatio);
+   
             float yDistance = MathF.Abs(MyTarget.Center.Y - NPC.Center.Y);
             float xDistance = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
             float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
@@ -749,6 +753,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             }
             _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 0f, 0.1f);
 
+            if (!_showNamePlate)
+            {
+                ShowNamePlate();
+                _showNamePlate = true;
+            }
             TargetOutlineColor = Color.Transparent;
             Vector2 hoverVelocity = Vector2.Zero;
             hoverVelocity.Y = MathF.Sin(Timer * 0.125f) * 0.5f;
