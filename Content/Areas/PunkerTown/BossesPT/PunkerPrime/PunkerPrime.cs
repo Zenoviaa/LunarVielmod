@@ -114,6 +114,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         }
 
         public bool isAttacking;
+        public float superChargeTimer;
         public float afterImageStrength;
         public Color telegraphLineColor;
         public float heldLightningScale;
@@ -158,11 +159,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             base.SendExtraAI(writer);
             writer.Write(isAttacking);
+            writer.Write(superChargeTimer);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             isAttacking = reader.ReadBoolean();
+            superChargeTimer = reader.ReadSingle();
         }
 
 
@@ -208,6 +211,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             if (!Parent.active)
                 NPC.active = false;
             ArmAI();
+            if(superChargeTimer > 0)
+            {
+                ArmAI();
+                superChargeTimer--;
+            }
             _flashAlpha *= 0.92f;
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             for (int i = 0; i < Segments.Length; i++)
@@ -238,6 +246,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
 
         }
+        public void SuperchargeAttack()
+        {
+            DoAttack = true;
+            superChargeTimer = 300;
+            NPC.netUpdate = true;
+            SoundStyle superCharge = AssetRegistry.Sounds.SteamPunking.MechSupercharge;
+            superCharge.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(superCharge, NPC.position);
+        }
+
 
         public void Attack()
         {
@@ -376,13 +394,34 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             DrawHeldLightning(spriteBatch, screenPos, drawColor);
             DrawTelegraphLine(spriteBatch, screenPos, drawColor);
             DrawGunAfterImage(spriteBatch, screenPos, drawColor);
-            DrawArm(spriteBatch, screenPos, drawColor);
+            
+            if(superChargeTimer > 0f)
+            {
+                DrawSuperchargedArm(spriteBatch, screenPos, drawColor);
+            }
+            else
+            {
+                DrawArm(spriteBatch, screenPos, drawColor);
+            }
+              
+            
+            
             DrawGun(spriteBatch, screenPos, drawColor);
 
             DrawGlowBall(spriteBatch, screenPos, drawColor);
             return false;
         }
 
+        private void DrawSuperchargedArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            for (int i = 0; i < Segments.Length; i++)
+            {
+                PunkerPrimeArmPart segment = Segments[i];
+                Color finalColor = Color.Red;
+                finalColor = Color.Lerp(finalColor, drawColor, ExtraMath.Osc(0f, 1f, speed: 16f));
+                segment.Draw(spriteBatch, screenPos, finalColor);
+            }
+        }
         private void DrawGlowBall(SpriteBatch spriteBatch, Vector2 screen, Color drawColor)
         {
             if (heldLightningScale <= 0.02f)
@@ -440,6 +479,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private Color TargetOutlineColor;
         private bool[] _disabledArms;
         private bool _showNamePlate;
+        private bool _phaseTransition;
         private Queue<int> _armQueueBacking;
         private Queue<int> ArmQueue
         {
@@ -464,18 +504,22 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         }
 
         private ref float Timer => ref NPC.ai[0];
+
         private PunkerPrimeArm[] _arms;
         private ref PunkerPrimeArm Chainsaw1 => ref _arms[0];
         private ref PunkerPrimeArm Chainsaw2 => ref _arms[1];
         private ref PunkerPrimeArm Drill => ref _arms[2];
         private ref PunkerPrimeArm Pincher => ref _arms[3];
         private ref PunkerPrimeArm SawbladeLauncher => ref _arms[4];
+
+        public bool InPhase2 => NPC.life < NPC.lifeMax / 2;
         private AIState State
         {
             get => (AIState)NPC.ai[1];
             set => NPC.ai[1] = (float)value;
         }
 
+        private ref float SuperchargeTimer => ref NPC.ai[2];
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
@@ -546,6 +590,41 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 NPC.position = _teleportPosition;
                 _teleportPosition = Vector2.Zero;
             }
+
+            if(!_phaseTransition && InPhase2)
+            {
+                float numDust = 16;
+                for(float d = 0; d < numDust; d++)
+                {
+                    Vector2 spawnPosition = NPC.Top;
+                    spawnPosition.X += Main.rand.NextFloat(-64, 64);
+
+                    Vector2 spawnVelocity = Vector2.Zero;
+                    spawnVelocity.Y = Main.rand.NextFloat(-10, -1f);
+                    spawnVelocity += Main.rand.NextVector2Circular(8, 8);
+                    
+                    
+                    float spawnScale = Main.rand.NextFloat(0.75f, 1f);
+                    var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
+                    steamParticle.innerColor = Color.DarkGray;
+                    steamParticle.outerColor = Color.Black;
+                    steamParticle.fadeToColor = Color.Black;
+                }
+
+                var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.Yellow, Color.Red, Color.DarkRed);
+                boom.Scale *= 2f;
+
+                float numGlowDust = 16f;
+                for(float d = 0; d < numGlowDust; d++)
+                {
+                    Vector2 dustVelocity = Main.rand.NextVector2Circular(16, 16);
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), newColor: Color.Red, Scale: Main.rand.NextFloat(0.5f, 1f));
+                }
+
+                SoundStyle mechSteaming = AssetRegistry.Sounds.SteamPunking.MechSteaming;
+                SoundEngine.PlaySound(mechSteaming, NPC.position);
+                _phaseTransition = true;
+            }
             MoveSlightlyTowardMe();
             Lighting.AddLight(NPC.Center, TorchID.Red);
             switch (State)
@@ -596,9 +675,21 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 AI_SummonArms();
                 return;
             }
+            if (MultiplayerHelper.IsHost)
+            {
+                PunkerPrimeArm arm = _arms[armToSummon];
+     
+                if (InPhase2 && SuperchargeTimer > 600)
+                {
+                    arm.SuperchargeAttack();
+                }
+                else
+                {
+                    arm.Attack();
+                }
+            }
 
-            PunkerPrimeArm arm = _arms[armToSummon];
-            arm.Attack();
+ 
             SwitchState(AIState.Idle);
         }
 
@@ -731,6 +822,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 NPC.TargetClosest();
             }
+
+            SuperchargeTimer++;
 
             //Starts slow and gets faster over time
             float fightRatio = (float)NPC.life / (float)NPC.lifeMax;
