@@ -309,7 +309,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             Color color = telegraphLineColor;
             color.A = 0;
-            color *= 0.5f;
+            color *= 0.35f;
             float rotation = NPC.rotation - MathHelper.ToRadians(90);
             spriteBatch.Draw(bloomLineTexture, drawCenter, null, color, rotation, drawOrigin, scale, SpriteEffects.None, 0);
         }
@@ -345,7 +345,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         }
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Transparent, Color.Gray, EasingFunction.QuadraticBump(completionRatio)) * heldLightningScale * 0.5f;
+            return Color.Lerp(Color.Transparent, Color.Gray, EasingFunction.QuadraticBump(completionRatio)) * heldLightningScale * 0.35f;
         }
 
         private float WidthFunction(float completionRatio)
