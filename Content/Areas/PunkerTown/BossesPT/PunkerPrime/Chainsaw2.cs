@@ -2,10 +2,13 @@
 using Stellamod.Assets;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
+using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 {
@@ -21,6 +24,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private bool _revvedUp;
         private int _frame;
+        private Vector2 _oldTargetCenter;
         private AIState State
         {
             get => (AIState)NPC.ai[3];
@@ -46,6 +50,18 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Main.npcFrameCount[Type] = 3;
         }
 
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(_oldTargetCenter);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _oldTargetCenter = reader.ReadVector2();
+        }
+
         public override void FindFrame(int frameHeight)
         {
             base.FindFrame(frameHeight);
@@ -69,7 +85,15 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             NPC.frame.Y = frameHeight * _frame;
         }
+        private void SetAngles(float baseAngle)
+        {
+            float osc = MathF.Sin(Timer * 0.06f) * 0.5f + 0.5f;
 
+            Segments[0].angle = MathHelper.ToRadians(baseAngle) + MathHelper.ToRadians(MathHelper.Lerp(0, 10, osc));
+            Segments[1].angle = Segments[0].angle + MathHelper.ToRadians(-75);
+            Segments[2].angle = Segments[1].angle;
+            Segments[3].angle = Segments[2].angle + MathHelper.ToRadians(-80);
+        }
         public override void ArmAI()
         {
             base.ArmAI();
@@ -105,16 +129,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private void AI_Idle()
         {
+            Timer++;
             isAttacking = false;
             _revvedUp = false;
-            Timer++;
-            float osc = MathF.Sin(Timer * 0.06f) * 0.5f + 0.5f;
-
-            Segments[0].angle = MathHelper.ToRadians(-90) + MathHelper.ToRadians(MathHelper.Lerp(0, 10, osc));
-            Segments[1].angle = Segments[0].angle + MathHelper.ToRadians(-75);
-            Segments[2].angle = Segments[1].angle;
-            Segments[3].angle = Segments[2].angle + MathHelper.ToRadians(-80);
+            heldLightningScale *= 0.9f;
+            telegraphLineColor *= 0.2f;
             AimGunTowardTarget();
+            SetAngles(-90);
+          
             if (DoAttack)
             {
                 DoAttack = false;
@@ -135,14 +157,20 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SoundEngine.PlaySound(revSound, NPC.position);
                 CreateMuzzleFlash();
             }
-
             if (Timer % 5 == 0)
             {
                 SpawnSteamParticle();
             }
 
             TargetOutlineColor = Color.Yellow;
-            float revTime = 60;
+
+
+            float revTime = 80;
+            float completionRatio = Timer / revTime;
+            telegraphLineColor = Color.Lerp(Color.Transparent, Color.Red, completionRatio);
+            heldLightningScale = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(completionRatio));
+            SetAngles(MathHelper.Lerp(-90, -45, EasingFunction.OutExpo(completionRatio)));
+            AimGunTowardTarget();
             if (Timer >= revTime)
             {
                 SwitchState(AIState.Saw);
@@ -161,24 +189,68 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 revLoopSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(revLoopSound, NPC.position);
 
-                Vector2 targetVelocity = (Target.Center - NPC.Center);
-                targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
-                targetVelocity *= 3f;
-                NPC.velocity = targetVelocity;
-            }
+                Vector2 rocketVelocity = NPC.rotation.ToRotationVector2() * 40;
+                NPC.velocity = rocketVelocity;
+                ShakeModSystem.Shake = 8;
+                CreateMuzzleFlash();
+                FXUtil.ShakeCamera(NPC.position, 1024, 8);
 
+
+                float numDust = 24;
+                for (float f = 0; f < numDust; f++)
+                {
+                    Vector2 dustVelocity = NPC.velocity * 0.2f;
+                    dustVelocity = dustVelocity.RotatedByRandom(0.5f);
+                    Dust.NewDustPerfect(NPC.Center, DustID.FireworkFountain_Red, dustVelocity, Scale: Main.rand.NextFloat(0.5f, 1f));
+                }
+            }
+            telegraphLineColor *= 0.2f;
             if (Timer % 10 == 0)
             {
                 SpawnSteamParticle();
             }
 
+            if (Timer % 5 == 0)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.FireworkFountain_Red);
+            }
+
+            if (Timer % 10 == 0)
+            {
+                var spawnPos = NPC.Center;
+                spawnPos += Main.rand.NextVector2Circular(8, 8);
+                var p = Particle.NewParticle<ZapParticle>(spawnPos, Main.rand.NextVector2Circular(4, 4), Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+            }
+
             _revvedUp = true;
             float sawTime = 180;
-            Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(NPC.Center, Target.Center, NPC.velocity);
-            NPC.velocity = Vector2.Lerp(NPC.velocity, homingVelocity, 0.1f);
-            NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.01f);
+            float divisor = sawTime / 6f;
+            if (Timer >= 5 && Timer < 15)
+            {
+                NPC.velocity *= 0.94f;
+            }
+            if (Timer <= 5)
+            {
+                _oldTargetCenter = Target.Center;
+            }
+            if (Timer >= 30)
+            {
+                float degreesToRotate = MathHelper.Lerp(9f, 1, EasingFunction.Anticipation2((Timer - 30f) / divisor));
+                Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(NPC.Center, _oldTargetCenter, NPC.velocity, degreesToRotate);
+                NPC.velocity = homingVelocity;
+                NPC.velocity *= 1.01f;
+            }
 
+            if (Timer >= 145f)
+            {
+                NPC.velocity *= 0.96f;
+            }
+            afterImageStrength = EasingFunction.QuadraticBump(Timer / sawTime);
+            NPC.rotation = NPC.velocity.ToRotation();
             TargetOutlineColor = Color.Red;
+
+
+            SetAngles(MathHelper.Lerp(-45, -90, Timer / sawTime));
             if (Timer >= sawTime)
             {
                 SwitchState(AIState.Idle);

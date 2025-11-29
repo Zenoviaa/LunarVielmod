@@ -195,10 +195,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             NPC.dontTakeDamageFromHostiles = true;
         }
 
-        public override void DrawBehind(int index)
+        public override bool CheckActive()
         {
-            base.DrawBehind(index);
-   
+            return false;
         }
 
         //Sealing this just so don't accidentally override it, we don't want to remove the base functionailty
@@ -207,7 +206,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             base.AI();
 
             if (!Parent.active)
-                NPC.Kill();
+                NPC.active = false;
             ArmAI();
             _flashAlpha *= 0.92f;
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
@@ -263,6 +262,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         protected void CreateMuzzleFlash()
         {
             _flashAlpha = 1f;
+            var bigPart = FXUtil.GlowCircleBoom(GetGunHoldCenter(), Color.White, Color.Red, Color.DarkRed);
+            var littlePart = FXUtil.GlowCircleBoom(GetGunHoldCenter(), Color.White, Color.Red, Color.DarkRed);
+            littlePart.Scale *= 0.6f;
+
+            float numParticles = 4;
+            for(float n = 0; n < numParticles; n++)
+            {
+                Vector2 fireVelocity = NPC.rotation.ToRotationVector2() * 5f;
+                fireVelocity *= Main.rand.NextFloat(0.5f, 1f);
+                Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), fireVelocity, Scale: Main.rand.NextFloat(0.5f, 1f));
+            }
         }
 
         private void DrawTelegraphLine(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -511,6 +521,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return base.CanHitPlayer(target, ref cooldownSlot) && false;
+        }
 
         public override void AI()
         {
@@ -805,7 +819,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SpawnSteamParticle();
             }
 
-            if (Timer % 15 == 0)
+            if (Timer % 3 == 0)
             {
                 _draw.shakeOffset = Main.rand.NextVector2Circular(16, 16);
                 NPC.rotation = _draw.shakeOffset.X * 0.05f;

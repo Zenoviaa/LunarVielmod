@@ -266,6 +266,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 Main.dust[d].velocity += upVelocity;
             }
 
+            if(Timer % 6 == 0)
+            {
+                var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity, Color.Red);
+                donut.shrink = true;
+                donut.innerColor = Color.Yellow;
+                donut.outerColor = Color.Red;
+                donut.fadeToColor = Color.Black;
+            }
             _revvedUp = true;
 
             telegraphLineColor *= 0.5f;
