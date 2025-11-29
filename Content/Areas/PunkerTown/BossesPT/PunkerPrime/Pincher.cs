@@ -152,7 +152,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 SpawnSteamParticle();
             }
-
+            TargetOutlineColor = Color.Yellow;
 
             float revTime = 100;
             float completionRatio = Timer / revTime;

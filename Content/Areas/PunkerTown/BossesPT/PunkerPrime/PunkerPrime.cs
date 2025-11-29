@@ -796,7 +796,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             }
 
             float endTime = 240;
-            NPC.velocity *= 0.8f;
+            Vector2 velToTarget = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+            velToTarget *= 5f;
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velToTarget, 0.1f);
             _draw.shakeOffset = Main.rand.NextVector2Circular(2, 2);
             NPC.rotation = _draw.shakeOffset.ToRotation() * 0.02f;
             if(Timer >= endTime)
