@@ -1611,6 +1611,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
 
 
+            if(Timer % 5 == 0)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Lava);
+            }
+
             if(Timer == 15)
             {
                 SoundStyle burstSound2 = AssetRegistry.Sounds.SanguineSingularity.SanguineDash;
@@ -1723,6 +1728,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             DrawDashLine(spriteBatch, screenPos, drawColor);
             DrawWalkingTrail(spriteBatch, screenPos, drawColor);
+            if(State == AIState.GhastlyBloodDash_Run)
+            {
+                DrawFlamingTrail(spriteBatch, screenPos, drawColor);
+            }
+
             DrawAfterImage(spriteBatch, screenPos);
             DrawSingularity(spriteBatch, screenPos, drawColor);
             Draw(spriteBatch, screenPos, drawColor);
@@ -1764,6 +1774,24 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             shader.InnerColor = Color.Red;
             shader.OuterColor = Color.Transparent;
             TrailDrawer.Draw(spriteBatch, NPC.oldPos, GetWalkingTrailColor, GetWalkingTrailWidth, shader, offset: new Vector2(0, NPC.frame.Height)); ;
+        }
+
+
+        private Color GetFlamingTrailColor(float completionRatio)
+        {
+            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * _draw.afterImageAlpha;
+        }
+
+        private float GetFlamingTrailWidth(float completionRatio)
+        {
+            return MathHelper.SmoothStep(0f, 64f, completionRatio);
+        }
+
+
+        private void DrawFlamingTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            var shader = BlackFireShader.Instance;
+            TrailDrawer.Draw(spriteBatch, NPC.oldPos, GetFlamingTrailColor, GetFlamingTrailWidth, shader, offset: NPC.Size / 2f); 
         }
         private void DrawRedFlash(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
