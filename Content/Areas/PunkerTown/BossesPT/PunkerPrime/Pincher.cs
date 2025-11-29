@@ -29,7 +29,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            return base.CanHitPlayer(target, ref cooldownSlot);
+            return base.CanHitPlayer(target, ref cooldownSlot) && State == AIState.Pinching;
         }
 
         private void SwitchState(AIState state)
@@ -107,6 +107,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private void AI_Idle()
         {
+            isAttacking = false;
             _revvedUp = false;
             Timer++;
 
@@ -127,6 +128,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private void AI_SawStart()
         {
+            isAttacking = true;
             Timer++;
             if (Timer == 1)
             {
@@ -153,6 +155,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private void AI_Saw()
         {
+            isAttacking = true;
             Timer++;
             if (Timer == 1)
             {

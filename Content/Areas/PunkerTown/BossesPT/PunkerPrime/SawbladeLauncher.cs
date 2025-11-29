@@ -58,12 +58,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private void AI_Idle()
         {
-          
+            isAttacking = false;
 
             Timer++;
 
             float osc = MathF.Sin(Timer * 0.02f) * 0.5f + 0.5f;
-
+            TargetOutlineColor = Color.Transparent;
             Segments[0].angle = MathHelper.ToRadians(-135) + MathHelper.ToRadians(MathHelper.Lerp(0, 10, osc));
             Segments[1].angle = Segments[0].angle + MathHelper.ToRadians(-75);
             Segments[2].angle = Segments[1].angle;
@@ -83,6 +83,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private void AI_ShootStart()
         {
+            isAttacking = true;
             Timer++;
             if (Timer == 1)
             {
@@ -106,6 +107,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private void AI_Shoot()
         {
+            isAttacking = true;
             Timer++;
 
             NPC.velocity *= 0.1f;

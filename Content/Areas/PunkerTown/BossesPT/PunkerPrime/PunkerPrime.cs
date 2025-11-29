@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Core;
@@ -8,6 +9,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
@@ -110,6 +112,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 return _segmentsBackingField;
             }
         }
+
+        public bool isAttacking;
+        public float afterImageStrength;
+        public Color telegraphLineColor;
+        public float heldLightningScale;
         protected bool DoAttack
         {
             get => NPC.ai[0] == 1;
@@ -147,6 +154,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             return Segments[Segments.Length - 1].endPosition;
         }
 
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(isAttacking);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            isAttacking = reader.ReadBoolean();
+        }
+
 
         public override void SetStaticDefaults()
         {
@@ -172,7 +190,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             NPC.noTileCollide = true;
             NPC.npcSlots = 30f;
 
-            NPC.hide = true;
             NPC.dontTakeDamage = true;
             NPC.dontCountMe = true;
             NPC.dontTakeDamageFromHostiles = true;
@@ -181,13 +198,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         public override void DrawBehind(int index)
         {
             base.DrawBehind(index);
-            Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
+   
         }
 
         //Sealing this just so don't accidentally override it, we don't want to remove the base functionailty
         public sealed override void AI()
         {
             base.AI();
+
+            if (!Parent.active)
+                NPC.Kill();
             ArmAI();
             _flashAlpha *= 0.92f;
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
@@ -195,6 +215,21 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 PunkerPrimeArmPart segment = Segments[i];
                 segment.Update();
+            }
+            if (isAttacking)
+            {
+                if (Main.rand.NextBool(16))
+                {
+                    Vector2 gunHoldCenter = GetGunHoldCenter();
+                    Vector2 spawnPos = gunHoldCenter;
+                    spawnPos += Main.rand.NextVector2Circular(8, 8);
+                    var zapParticle = Particle.NewParticle<SparkParticle>(spawnPos, Main.rand.NextVector2Circular(4, 4), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                    zapParticle.innerColor = Color.White;
+                    zapParticle.outerColor = Color.Red;
+                    zapParticle.fadeToColor = Color.Yellow;
+                }
+           
+
             }
             Lighting.AddLight(NPC.Center, TorchID.Red);
         }
@@ -230,6 +265,21 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             _flashAlpha = 1f;
         }
 
+        private void DrawTelegraphLine(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D bloomLineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+            Vector2 drawOrigin = new Vector2(bloomLineTexture.Width / 2f, 0f);
+            Vector2 drawCenter = NPC.Center - screenPos;
+            Vector2 scale = Vector2.One;
+            scale.X = 0.35f;
+            scale.Y = 2;
+
+            Color color = telegraphLineColor;
+            color.A = 0;
+            float rotation = NPC.rotation - MathHelper.ToRadians(90);
+            spriteBatch.Draw(bloomLineTexture, drawCenter, null, color, rotation, drawOrigin, scale, SpriteEffects.None, 0);
+        }
+
         private void DrawArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             for (int i = 0; i < Segments.Length; i++)
@@ -239,11 +289,68 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             }
         }
 
+        private void DrawGunAfterImage(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Rectangle frame = NPC.frame;
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Vector2 drawScale = Vector2.One;
+            float length = NPCID.Sets.TrailCacheLength[Type];
+            for (int i = 0; i < length; i++)
+            {
+                float f = i;
+                float completionRatio = f / length;
+                Vector2 oldPosition = NPC.oldPos[i];
+                Vector2 oldCenter = oldPosition + NPC.Size / 2f - screenPos;
+                Color color = Color.Red;
+                color *= 0.1f;
+                color *= afterImageStrength;
+                color *= MathHelper.SmoothStep(1f, 0f, completionRatio);
+                spriteBatch.Draw(texture, oldCenter, frame, color, NPC.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            }
+        }
+        private Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Transparent, Color.Gray, EasingFunction.QuadraticBump(completionRatio)) * heldLightningScale;
+        }
+
+        private float WidthFunction(float completionRatio)
+        {
+            return 16 * heldLightningScale;
+        }
+        private void DrawHeldLightning(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (heldLightningScale <= 0.02f)
+                return;
+
+            List<Vector2> conjureLightningPositions = new List<Vector2>();
+            float numPoints = 32;
+            for(float n = 0; n < numPoints; n++)
+            {
+                float completionRatio = n / numPoints;
+                Vector2 position = Vector2.Lerp(GetGunHoldCenter(), NPC.Center, completionRatio);
+                conjureLightningPositions.Add(position);
+            }
+
+            BlackFireShader shader = BlackFireShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.LightningTrail2;
+            shader.PrimaryTexture2 = TrailRegistry.LightningTrail;
+            shader.InnerColor = Color.White;
+            shader.OuterColor = Color.Red;
+            shader.Distortion = 0.2f;
+            shader.Time = Main.GlobalTimeWrappedHourly * 16;
+            TrailDrawer.Draw(spriteBatch, conjureLightningPositions.ToArray(), ColorFunction, WidthFunction, shader);
+
+           
+        }
         private void DrawGun(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPosition = NPC.Center - screenPos;
-            Color finalColor = Color.White.MultiplyRGB(drawColor);
+
+
+            Color baseColor = isAttacking ? Color.White : Color.Lerp(Color.White, Color.Black, 0.6f);
+            Color finalColor = baseColor.MultiplyRGB(drawColor);
             Vector2 drawScale = Vector2.One;
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
             spriteBatch.Draw(texture, drawPosition, NPC.frame, finalColor, NPC.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
@@ -255,9 +362,27 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            DrawHeldLightning(spriteBatch, screenPos, drawColor);
+            DrawTelegraphLine(spriteBatch, screenPos, drawColor);
+            DrawGunAfterImage(spriteBatch, screenPos, drawColor);
             DrawArm(spriteBatch, screenPos, drawColor);
             DrawGun(spriteBatch, screenPos, drawColor);
+
+            DrawGlowBall(spriteBatch, screenPos, drawColor);
             return false;
+        }
+
+        private void DrawGlowBall(SpriteBatch spriteBatch, Vector2 screen, Color drawColor)
+        {
+            if (heldLightningScale <= 0.02f)
+                return;
+            Texture2D glowballTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_56").Value;
+            Vector2 drawCenter = GetGunHoldCenter() - Main.screenPosition;
+            Vector2 drawOrigin = glowballTexture.Size() / 2f;
+            Color glowColor = Color.Lerp(Color.Red, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 16));
+            glowColor.A = 0;
+            glowColor *= ExtraMath.Osc(0.5f, 1f, speed: 64);
+            spriteBatch.Draw(glowballTexture, drawCenter, null, glowColor, 0, drawOrigin, heldLightningScale * 0.35f * ExtraMath.Osc(0.9f, 1f, speed: 64), SpriteEffects.None, 0);
         }
 
 
@@ -273,6 +398,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             DrawArm(spriteBatch, screenPos - h, _outlineColor);
             DrawArm(spriteBatch, screenPos + v, _outlineColor);
             DrawArm(spriteBatch, screenPos - v, _outlineColor);
+
+
+            DrawGun(spriteBatch, screenPos + h, _outlineColor);
+            DrawGun(spriteBatch, screenPos - h, _outlineColor);
+            DrawGun(spriteBatch, screenPos + v, _outlineColor);
+            DrawGun(spriteBatch, screenPos - v, _outlineColor);
         }
     }
 
@@ -365,8 +496,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             NPC.width = 128;
             NPC.height = 128;
             NPC.damage = 100;
-            NPC.defense = 14;
-            NPC.lifeMax = 6000;
+            NPC.defense = 18;
+            NPC.lifeMax = 12000;
 
             NPC.value = Item.buyPrice(gold: 5);
             NPC.knockBackResist = 0f;
@@ -399,7 +530,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 NPC.position = _teleportPosition;
                 _teleportPosition = Vector2.Zero;
             }
-
+            MoveSlightlyTowardMe();
             Lighting.AddLight(NPC.Center, TorchID.Red);
             switch (State)
             {
@@ -429,7 +560,15 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private bool CanUseArm(int armIndex)
         {
-            return _disabledArms[armIndex];
+            return !_disabledArms[armIndex];
+        }
+
+        private void MoveSlightlyTowardMe()
+        {
+            Player player = Main.LocalPlayer;
+            Vector2 vectorHere = (NPC.Center - player.Center);
+            vectorHere *= 0.2f;
+            OffsetCameraModifier.FocusTargetOffset = vectorHere;
         }
         private void AI_SummonArms()
         {
@@ -525,7 +664,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private bool CanAttack()
         {
             //This is going to check all of the arms and check how many of them are moving
-            return true;
+            int attackingArmCount = 0;
+            for(int i = 0; i < _arms.Length; i++)
+            {
+                PunkerPrimeArm arm = _arms[i];
+
+                //wait
+                if (arm.isAttacking)
+                    attackingArmCount++;
+            }
+            return attackingArmCount < 2;
         }
 
         private T SummonArm<T>() where T  : PunkerPrimeArm
@@ -567,9 +715,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 NPC.TargetClosest();
             }
-            float idleTime = 120f;
+            float idleTime = 60f;
+
+            float yDistance = MathF.Abs(MyTarget.Center.Y - NPC.Center.Y);
+            float xDistance = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
             float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
-            if (distanceToTarget > 800)
+            if (distanceToTarget > 800 || yDistance < 150)
             {
                 SwitchState(AIState.RePosition);
             }
@@ -586,11 +737,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             TargetOutlineColor = Color.Transparent;
             Vector2 hoverVelocity = Vector2.Zero;
             hoverVelocity.Y = MathF.Sin(Timer * 0.125f) * 0.5f;
-            float xDistance = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
+   
             if(xDistance > 200)
                 hoverVelocity.X = FacingDirectionToTarget;
 
-            float yDistance = MathF.Abs(MyTarget.Center.Y - NPC.Center.Y);
+          
             if(yDistance > 300)
             {
                 hoverVelocity.Y += MathF.Sign(MyTarget.Center.Y - NPC.Center.Y);
@@ -637,7 +788,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             if (!CanAttack())
                 return;
-
+            SwitchState(AIState.SummonArms);
         }
 
         private void AI_Death()
