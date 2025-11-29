@@ -418,7 +418,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 PunkerPrimeArmPart segment = Segments[i];
                 Color finalColor = Color.Red;
-                finalColor = Color.Lerp(finalColor, drawColor, ExtraMath.Osc(0f, 1f, speed: 16f));
+                finalColor = Color.Lerp(finalColor, drawColor, ExtraMath.Osc(0f, 1f, speed: 32f));
                 segment.Draw(spriteBatch, screenPos, finalColor);
             }
         }
