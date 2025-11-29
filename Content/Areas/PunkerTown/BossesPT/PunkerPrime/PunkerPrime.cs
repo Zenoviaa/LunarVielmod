@@ -326,7 +326,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private float WidthFunction(float completionRatio)
         {
-            return 16 * heldLightningScale;
+            return 8 * heldLightningScale;
         }
         private void DrawHeldLightning(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

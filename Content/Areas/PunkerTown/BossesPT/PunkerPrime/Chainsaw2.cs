@@ -67,7 +67,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             base.FindFrame(frameHeight);
             if (_revvedUp)
             {
-                NPC.frameCounter += 0.15f;
+                NPC.frameCounter += 0.5f;
                 if (NPC.frameCounter >= 1f)
                 {
                     _frame++;
