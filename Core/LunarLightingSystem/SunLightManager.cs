@@ -26,7 +26,9 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public static void Update()
         {
-            if (!Main.LocalPlayer.ZoneOverworldHeight)
+            Point point = Main.LocalPlayer.position.ToTileCoordinates();
+            bool overworld = (double)point.Y <= Main.worldSurface && (double)point.Y > Main.worldSurface * 0.4499999940395355;
+            if (!overworld)
             {
                 _overSunTimer--;
                 if (_overSunTimer <= 0)

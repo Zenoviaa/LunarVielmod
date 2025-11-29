@@ -594,6 +594,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 }
             }
 
+
+
             if (_teleportPosition != Vector2.Zero)
             {
                 NPC.position = _teleportPosition;
@@ -665,6 +667,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 case AIState.Special_End:
                     AI_SpecialEnd();
                     break;
+            }
+            if (MultiplayerHelper.IsHost)
+            {
+                _disabledArms[5] = !InPhase2;
+                _disabledArms[6] = !InPhase2;
+                _disabledArms[7] = !InPhase2;
             }
         }
 
@@ -906,13 +914,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             if (!MultiplayerHelper.IsHost)
                 return;
 
-            _arms = new PunkerPrimeArm[5];
-            _disabledArms = new bool[5];
+            _arms = new PunkerPrimeArm[8];
+            _disabledArms = new bool[8];
             _arms[0] = SummonArm<Chainsaw>();
             _arms[1] = SummonArm<Chainsaw2>();
             _arms[2] = SummonArm<Drill>();
             _arms[3] = SummonArm<Pincher>();
             _arms[4] = SummonArm<SawbladeLauncher>();
+            _arms[5] = SummonArm<AssaultRifle>();
+            _arms[6] = SummonArm<AssaultRifle>();
+            _arms[7] = SummonArm<AssaultRifle>();
         }
 
         private void AI_Idle()

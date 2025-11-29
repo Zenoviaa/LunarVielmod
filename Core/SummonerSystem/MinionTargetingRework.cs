@@ -44,6 +44,7 @@ namespace Stellamod.Core.SummonerSystem
             NPC.friendly = true;
             NPC.aiStyle = 7;
             NPC.ShowNameOnHover = false;
+            NPC.takenDamageMultiplier = 0.8f;
         }
 
         public override void AI()
@@ -58,6 +59,7 @@ namespace Stellamod.Core.SummonerSystem
                 NPC.active = false;
             }
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             return false;

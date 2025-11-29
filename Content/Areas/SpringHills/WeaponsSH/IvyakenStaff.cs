@@ -24,7 +24,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 6;
+            Item.damage = 9;
             Item.knockBack = 3f;
             Item.shoot = ModContent.ProjectileType<IvyakenMinionProj>();
         }
