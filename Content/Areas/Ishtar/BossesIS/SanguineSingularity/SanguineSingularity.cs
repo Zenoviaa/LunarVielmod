@@ -117,6 +117,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Phase2Transition
         }
 
+        private float _hallucinationSpawnTimer;
         private float _dashLineRotation;
         private float _traveledDistance;
         private float _bloodyBurstTimer;
@@ -157,6 +158,12 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private int BloodyChargeBoomDamage => 30;
         private int BloodRainDamage => 18;
         private int BloodGeyserDamage => 26;
+        private int BloodHallucinationDamage => 20;
+        private bool InPhase2
+        {
+            get => NPC.life <= NPC.lifeMax / 2f;
+        }
+
 
         private AnimationState _animation;
         private PatternManager<AIState> _patternManagerBacking;
@@ -187,6 +194,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             writer.Write(_bloodyBurstTimer);
             writer.Write(_traveledDistance);
             writer.Write(_closeEnough);
+            writer.Write(_hallucinationSpawnTimer);
         }
         
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -197,6 +205,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _bloodyBurstTimer = reader.ReadSingle();
             _traveledDistance = reader.ReadSingle();
             _closeEnough = reader.ReadBoolean();
+            _hallucinationSpawnTimer = reader.ReadSingle();
         }
 
         public override void SetStaticDefaults()
@@ -305,6 +314,34 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
             ModContent.GetInstance<SanguineBloodRenderManager>().DrawBloodyBG = true;
                 NPC.spriteDirection = NPC.direction;
+
+            if (InPhase2 && MultiplayerHelper.IsHost)
+            {
+                _hallucinationSpawnTimer++;
+                if (_hallucinationSpawnTimer >= 300)
+                {
+                    List<Player> possiblePlayers = new List<Player>();
+                    foreach(var player in Main.ActivePlayers)
+                    {
+                        possiblePlayers.Add(player);
+                    }
+
+                    if(possiblePlayers.Count > 0)
+                    {
+                        Player playerToTraumatize = possiblePlayers[Main.rand.Next(0, possiblePlayers.Count)];
+                        Vector2 spawnPoint = playerToTraumatize.Center;
+                        spawnPoint += Main.rand.NextVector2CircularEdge(360, 360);
+
+                        Vector2 velocity = (playerToTraumatize.Center - spawnPoint);
+                        velocity = velocity.SafeNormalize(Vector2.Zero);
+                        velocity *= 12;
+
+                        Projectile.NewProjectile(SourceFromThis, spawnPoint, velocity,
+                            ModContent.ProjectileType<BloodyHallucination>(), BloodHallucinationDamage, 1, playerToTraumatize.whoAmI);
+                    }
+                    _hallucinationSpawnTimer = 0;
+                }
+            }
             switch (State)
             {
                 case AIState.Spawn:
