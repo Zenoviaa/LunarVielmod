@@ -45,6 +45,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Timer++;
             if (Timer == 1)
             {
+                Projectile.scale = 0.0001f;
                 //Cool sound
                 SoundStyle revUpSound = AssetRegistry.Sounds.SteamPunking.MechSaw;
                 revUpSound.Pitch = 0.5f;

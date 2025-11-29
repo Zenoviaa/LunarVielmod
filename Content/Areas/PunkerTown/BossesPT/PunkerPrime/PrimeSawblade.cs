@@ -39,6 +39,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             base.AI();
             Timer++;
+
             if(Timer < 30)
             {
                 Projectile.velocity *= 0.995f;

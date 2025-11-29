@@ -470,7 +470,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             RePosition,
             SummonArms,
-            Special
+            Special_Start,
+            Special_Loop,
+            Special_End
         }
 
         private PunkerPrimeDraw _draw;
@@ -520,6 +522,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         }
 
         private ref float SuperchargeTimer => ref NPC.ai[2];
+        private ref float SpecialTimer => ref NPC.ai[3];
+        private int PrimeSawbladeDamage => 30;
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
@@ -647,8 +651,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 case AIState.SummonArms:
                     AI_SummonArms();
                     break;
-                case AIState.Special:
+                case AIState.Special_Start:
                     AI_Special();
+                    break;
+                case AIState.Special_Loop:
+                    AI_SpecialLoop();
+                    break;
+                case AIState.Special_End:
+                    AI_SpecialEnd();
                     break;
             }
         }
@@ -696,9 +706,91 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private void AI_Special()
         {
             //This is the saw attack that this goober has
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+                _startCenter = NPC.Center;
+                _hoverCenter = MyTarget.Center + new Vector2(0, -300);
+                SoundStyle prepSound = AssetRegistry.Sounds.SteamPunking.MechSaw;
+                prepSound.PitchVariance = 0.3f;
+                prepSound.Pitch = -0.5f;
+                SoundEngine.PlaySound(prepSound, NPC.position);
+            }
+
+            TargetOutlineColor = Color.Yellow;
+            float revTime = 60f;
+            float completionRatio = Timer / revTime;
+            float ease = EasingFunction.Anticipation2(completionRatio);
+            Vector2 targetCenter = Vector2.Lerp(_startCenter, _hoverCenter, ease);
+            Vector2 velocity = (targetCenter - NPC.Center);
+            NPC.velocity = velocity;
+            NPC.rotation = NPC.velocity.X * 0.02f;
+
+            _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 1f, 0.1f);
+            if(Timer >= revTime)
+            {
+                SwitchState(AIState.Special_Loop);
+            }
         }
 
+        private void AI_SpecialLoop()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                _startCenter = _hoverCenter;
+                _hoverCenter = MyTarget.Center;
 
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(SourceFromThis, NPC.Bottom, Vector2.Zero,
+                        ModContent.ProjectileType<PrimeMegaSaw>(), PrimeSawbladeDamage, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                }
+            }
+
+            TargetOutlineColor = Color.Red;
+            float revTime = 60f;
+            float completionRatio = Timer / revTime;
+            float ease = EasingFunction.Anticipation2(completionRatio);
+            Vector2 targetCenter = Vector2.Lerp(_startCenter, _hoverCenter, ease);
+            Vector2 velocity = (targetCenter - NPC.Center);
+            NPC.velocity = velocity;
+            NPC.rotation = NPC.velocity.X * 0.02f;
+
+            _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 1f, 0.1f);
+            if(Timer >= revTime)
+            {
+                SwitchState(AIState.Special_End);
+            }
+        }
+
+        private void AI_SpecialEnd()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+
+            if(Timer % 5 == 0)
+            {
+                Dust.NewDust(NPC.BottomLeft, NPC.width, 2, DustID.FireworkFountain_Red);
+            }
+
+            if(Timer % 3 == 0)
+            {
+                SpawnSteamParticle();
+            }
+
+            float endTime = 100;
+            NPC.velocity *= 0.8f;
+            NPC.rotation = NPC.velocity.X * 0.02f;
+            if(Timer >= endTime)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
         private void SwitchState(AIState state)
         {
             if (MultiplayerHelper.IsHost)
@@ -822,8 +914,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 NPC.TargetClosest();
             }
+            if (InPhase2)
+            {
+                SuperchargeTimer++;
+            }
 
-            SuperchargeTimer++;
+            SpecialTimer++;
 
             //Starts slow and gets faster over time
             float fightRatio = (float)NPC.life / (float)NPC.lifeMax;
@@ -905,7 +1001,15 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             if (!CanAttack())
                 return;
-            SwitchState(AIState.SummonArms);
+            if(SpecialTimer >= 1000)
+            {
+                SwitchState(AIState.Special_Start);
+            }
+            else
+            {
+                SwitchState(AIState.SummonArms);
+            }
+
         }
 
         private void AI_Death()
@@ -922,7 +1026,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SpawnSteamParticle();
             }
 
-            if (Timer % 3 == 0)
+            if (Timer % 2 == 0)
             {
                 _draw.shakeOffset = Main.rand.NextVector2Circular(16, 16);
                 NPC.rotation = _draw.shakeOffset.X * 0.05f;
