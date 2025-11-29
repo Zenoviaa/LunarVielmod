@@ -923,7 +923,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             _arms[4] = SummonArm<SawbladeLauncher>();
             _arms[5] = SummonArm<AssaultRifle>();
             _arms[6] = SummonArm<LaserRifle>();
-            _arms[7] = SummonArm<AssaultRifle>();
+            _arms[7] = SummonArm<ElectroFieldLauncher>();
         }
 
         private void AI_Idle()
