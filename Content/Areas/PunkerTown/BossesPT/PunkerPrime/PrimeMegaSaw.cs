@@ -47,7 +47,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 Projectile.scale = 0.0001f;
                 //Cool sound
-                SoundStyle revUpSound = AssetRegistry.Sounds.SteamPunking.MechSaw;
+                SoundStyle revUpSound = AssetRegistry.Sounds.SteamPunking.MechSawRevLoop;
                 revUpSound.Pitch = 0.5f;
                 SoundEngine.PlaySound(revUpSound, Projectile.position);
             }
@@ -57,6 +57,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             if (Timer % 5 == 0)
             {
                 //Cool little sparks and dust
+                var d = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Red);
+                Vector2 upVelocity = -Vector2.UnitY * 15;
+                Main.dust[d].velocity += upVelocity;
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Red);
             }
 
@@ -83,7 +86,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             //Changing the scale after set defaults will not affect the projectile size thankfully
             float inScale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60f));
-            float outScale = MathHelper.Lerp(1f, 0f, EasingFunction.Anticipation((float)Projectile.timeLeft / 30f));
+            float outScale = MathHelper.Lerp(0f, 1f, EasingFunction.Anticipation((float)Projectile.timeLeft / 30f));
             float scale = inScale * outScale;
             Projectile.scale = scale;
             Projectile.Center = Parent.Bottom;
@@ -107,7 +110,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Vector2 drawOrigin = frame.Size() / 2f;
             Vector2 drawCenter = Projectile.Center - screenPos;
             drawColor.A = 0;
-            drawColor *= ExtraMath.Osc(0f, 1f, speed: 16);
+            drawColor *= ExtraMath.Osc(0f, 1f, speed: 32);
             spriteBatch.Draw(drawTexture, drawCenter, frame, drawColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
         }
         public override bool PreDraw(ref Color lightColor)

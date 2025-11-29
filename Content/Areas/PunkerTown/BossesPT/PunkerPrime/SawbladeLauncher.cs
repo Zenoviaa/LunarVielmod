@@ -128,7 +128,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             TargetOutlineColor = Color.Yellow;
 
             AimGunTowardTarget();
-            float revTime = 80;
+            float revTime = 100;
             float completionRatio = Timer / revTime;
             telegraphLineColor = Color.Lerp(Color.Transparent, Color.Red, completionRatio);
             heldLightningScale = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(completionRatio));

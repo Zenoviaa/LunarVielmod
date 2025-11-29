@@ -192,7 +192,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
 
             TargetOutlineColor = Color.Yellow;
-            float revTime = 60;
+            float revTime = 100;
             float completionRatio = Timer / revTime;
             float ease = EasingFunction.Anticipation2(completionRatio);
 

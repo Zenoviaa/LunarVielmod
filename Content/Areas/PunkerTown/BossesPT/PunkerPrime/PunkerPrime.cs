@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using Stellamod.Assets;
@@ -213,7 +214,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             ArmAI();
             if(superChargeTimer > 0)
             {
-                ArmAI();
+                if(superChargeTimer % 2 == 0)
+                {
+                    ArmAI();
+                }
+         
                 superChargeTimer--;
             }
             _flashAlpha *= 0.92f;
@@ -556,8 +561,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             NPC.width = 128;
             NPC.height = 128;
             NPC.damage = 100;
-            NPC.defense = 18;
-            NPC.lifeMax = 12000;
+            NPC.defense = 28;
+            NPC.lifeMax = 18000;
 
             NPC.value = Item.buyPrice(gold: 5);
             NPC.knockBackResist = 0f;
@@ -691,6 +696,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
      
                 if (InPhase2 && SuperchargeTimer > 600)
                 {
+                    SuperchargeTimer = 0f;
                     arm.SuperchargeAttack();
                 }
                 else
@@ -740,7 +746,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             if(Timer == 1)
             {
                 _startCenter = _hoverCenter;
-                _hoverCenter = MyTarget.Center;
+                _hoverCenter = MyTarget.Center + new Vector2(0, -64);
 
                 if (MultiplayerHelper.IsHost)
                 {
@@ -756,7 +762,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Vector2 targetCenter = Vector2.Lerp(_startCenter, _hoverCenter, ease);
             Vector2 velocity = (targetCenter - NPC.Center);
             NPC.velocity = velocity;
-            NPC.rotation = NPC.velocity.X * 0.02f;
+            _draw.shakeOffset = Main.rand.NextVector2Circular(2, 2);
+            NPC.rotation = _draw.shakeOffset.ToRotation() * 0.02f;
 
             _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 1f, 0.1f);
             if(Timer >= revTime)
@@ -778,14 +785,20 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 Dust.NewDust(NPC.BottomLeft, NPC.width, 2, DustID.FireworkFountain_Red);
             }
 
+            if(Timer % 6 == 0)
+            {
+                Particle.NewParticle<SparkParticle>(NPC.Bottom + Main.rand.NextVector2Circular(16, 16), 
+                    Main.rand.NextVector2Circular(4, 4), Color.Red);
+            }
             if(Timer % 3 == 0)
             {
                 SpawnSteamParticle();
             }
 
-            float endTime = 100;
+            float endTime = 240;
             NPC.velocity *= 0.8f;
-            NPC.rotation = NPC.velocity.X * 0.02f;
+            _draw.shakeOffset = Main.rand.NextVector2Circular(2, 2);
+            NPC.rotation = _draw.shakeOffset.ToRotation() * 0.02f;
             if(Timer >= endTime)
             {
                 SwitchState(AIState.Idle);
@@ -974,7 +987,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 NPC.TargetClosest();
                 _startCenter = NPC.Center;
-                _hoverCenter = MyTarget.Center + new Vector2(0, -150);
+                _hoverCenter = MyTarget.Center + new Vector2(0, -250);
 
                 SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
                 mechMove.PitchVariance = 0.2f;
@@ -1003,6 +1016,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 return;
             if(SpecialTimer >= 1000)
             {
+                SpecialTimer = 0f;
                 SwitchState(AIState.Special_Start);
             }
             else
@@ -1065,6 +1079,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                         Scale: Main.rand.NextFloat(0.5f, 1.5f));
                 }
                 SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/GlocketRouncher");
+                explosionSound.Pitch = -0.5f;
                 SoundEngine.PlaySound(explosionSound, NPC.position);
                 FXUtil.ShakeCamera(NPC.position, 1024, 8);
                 var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Yellow, Color.Red);
