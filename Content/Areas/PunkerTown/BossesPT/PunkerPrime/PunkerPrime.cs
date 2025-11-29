@@ -11,7 +11,8 @@ using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
-
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -204,6 +205,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         }
 
+        public void Attack()
+        {
+            DoAttack = true;
+            NPC.netUpdate = true;
+        }
+
         protected void SetRootToParentCenter()
         {
             Segments[0].rootPosition = Parent.Bottom;
@@ -280,13 +287,39 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Idle,
             Death,
 
-            RePosition
+            RePosition,
+            SummonArms,
+            Special
         }
 
         private PunkerPrimeDraw _draw;
         private Vector2 _startCenter;
         private Vector2 _hoverCenter;
         private Color TargetOutlineColor;
+        private bool[] _disabledArms;
+        private Queue<int> _armQueueBacking;
+        private Queue<int> ArmQueue
+        {
+            get
+            {
+                if(_armQueueBacking == null)
+                {
+                    _armQueueBacking = new Queue<int>();
+                }
+                if(_armQueueBacking.Count <= 0)
+                {
+                    while(_armQueueBacking.Count < 5)
+                    {
+                        int armToSummon = Main.rand.Next(0, 5);
+                        if (_armQueueBacking.Contains(armToSummon))
+                            continue;
+                        _armQueueBacking.Enqueue(armToSummon);
+                    }
+                }
+                return _armQueueBacking;
+            }
+        }
+
         private ref float Timer => ref NPC.ai[0];
         private PunkerPrimeArm[] _arms;
         private ref PunkerPrimeArm Chainsaw1 => ref _arms[0];
@@ -385,8 +418,40 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 case AIState.RePosition:
                     AI_RePosition();
                     break;
+                case AIState.SummonArms:
+                    AI_SummonArms();
+                    break;
+                case AIState.Special:
+                    AI_Special();
+                    break;
             }
         }
+
+        private bool CanUseArm(int armIndex)
+        {
+            return _disabledArms[armIndex];
+        }
+        private void AI_SummonArms()
+        {
+            int armToSummon = ArmQueue.Dequeue();
+            
+            //Just recall this function until you get to an arm that you can summon
+            if (!CanUseArm(armToSummon))
+            {
+                AI_SummonArms();
+                return;
+            }
+
+            PunkerPrimeArm arm = _arms[armToSummon];
+            arm.Attack();
+            SwitchState(AIState.Idle);
+        }
+
+        private void AI_Special()
+        {
+            //This is the saw attack that this goober has
+        }
+
 
         private void SwitchState(AIState state)
         {
@@ -480,6 +545,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 return;
 
             _arms = new PunkerPrimeArm[5];
+            _disabledArms = new bool[5];
             _arms[0] = SummonArm<Chainsaw>();
             _arms[1] = SummonArm<Chainsaw2>();
             _arms[2] = SummonArm<Drill>();
