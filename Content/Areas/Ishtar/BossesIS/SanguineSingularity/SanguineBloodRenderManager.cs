@@ -126,7 +126,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if (DrawBloodyBG)
             {
                 var bloodyShader = BloodyShader.Instance;
-                bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.82f);
+                bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.7f);
                 bloodyShader.OuterColor = Color.Black;
                 bloodyShader.Distortion = 1;
                 bloodyShader.Tiling = Vector2.One * 12;

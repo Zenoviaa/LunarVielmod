@@ -11,6 +11,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
@@ -114,6 +115,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             BloodyMegaCharge_Rush,
             BloodyMegaCharge_End,
 
+            Special_Start,
+            Special_Loop,
+            Special_End,
+
             Phase2Transition
         }
 
@@ -123,9 +128,12 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private float _bloodyBurstTimer;
         private float _incresionDiskFrameBottom;
         private float _incresionDiskFrameTop;
+        private float _chainAlpha;
         private bool _contactDamage;
         private bool _closeEnough;
-   
+        private Vector2 _singularityDrawOverridePosition;
+        private Vector2 _startVector;
+
         private Vector2 _runDirection;
 
         private SanguineDraw _draw;
@@ -174,13 +182,15 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 if (_patternManagerBacking == null)
                 {
                     _patternManagerBacking = new PatternManager<AIState>(
-                        new Tuple<AIState, float>(AIState.BloodyMegaCharge_Start, 1f),
-                        new Tuple<AIState, float>(AIState.BloodyBurst_Start, 1f),
-                        new Tuple<AIState, float>(AIState.BloodyCharge_Start, 1f),
-                        new Tuple<AIState, float>(AIState.BloodRain_Start, 1f),
-                        new Tuple<AIState, float>(AIState.BloodBoil_Start, 1f),
-                        new Tuple<AIState, float>(AIState.BloodCrack_Start, 1f),
-                        new Tuple<AIState, float>(AIState.GhastlyBloodDash_Start, 1f));
+                             new Tuple<AIState, float>(AIState.BloodyMegaCharge_Start, 1f),
+                             new Tuple<AIState, float>(AIState.BloodyBurst_Start, 1f),
+                             new Tuple<AIState, float>(AIState.BloodyCharge_Start, 1f),
+                             new Tuple<AIState, float>(AIState.BloodRain_Start, 1f),
+                             new Tuple<AIState, float>(AIState.BloodBoil_Start, 1f),
+                             new Tuple<AIState, float>(AIState.BloodCrack_Start, 1f),
+                             new Tuple<AIState, float>(AIState.GhastlyBloodDash_Start, 1f),
+                             new Tuple<AIState, float>(AIState.Special_Start, 1f));
+                        
                 }
                 return _patternManagerBacking;
             }
@@ -195,6 +205,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             writer.Write(_traveledDistance);
             writer.Write(_closeEnough);
             writer.Write(_hallucinationSpawnTimer);
+            writer.WriteVector2(_singularityDrawOverridePosition);
+            writer.WriteVector2(_startVector);
         }
         
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -206,6 +218,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _traveledDistance = reader.ReadSingle();
             _closeEnough = reader.ReadBoolean();
             _hallucinationSpawnTimer = reader.ReadSingle();
+            _singularityDrawOverridePosition = reader.ReadVector2();
+            _startVector = reader.ReadVector2();
         }
 
         public override void SetStaticDefaults()
@@ -318,7 +332,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if (InPhase2 && MultiplayerHelper.IsHost)
             {
                 _hallucinationSpawnTimer++;
-                if (_hallucinationSpawnTimer >= 300)
+                if (_hallucinationSpawnTimer >= 150)
                 {
                     List<Player> possiblePlayers = new List<Player>();
                     foreach(var player in Main.ActivePlayers)
@@ -330,11 +344,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     {
                         Player playerToTraumatize = possiblePlayers[Main.rand.Next(0, possiblePlayers.Count)];
                         Vector2 spawnPoint = playerToTraumatize.Center;
-                        spawnPoint += Main.rand.NextVector2CircularEdge(360, 360);
+                        spawnPoint += Main.rand.NextVector2CircularEdge(800, 800);
 
                         Vector2 velocity = (playerToTraumatize.Center - spawnPoint);
                         velocity = velocity.SafeNormalize(Vector2.Zero);
-                        velocity *= 12;
+                        velocity *= 7;
 
                         Projectile.NewProjectile(SourceFromThis, spawnPoint, velocity,
                             ModContent.ProjectileType<BloodyHallucination>(), BloodHallucinationDamage, 1, playerToTraumatize.whoAmI);
@@ -432,14 +446,195 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     AI_GhastlyBloodDash_End();
                     break;
 
+
+                case AIState.Special_Start:
+                    AI_SpecialStart();
+                    break;
+                case AIState.Special_Loop:
+                    AI_SpecialLoop();
+                    break;
+                case AIState.Special_End:
+                    AI_SpecialEnd();
+                    break;
+
                 case AIState.Phase2Transition:
                     AI_Phase2Transition();
                     break;
             }
         }
 
+        #region Expanding Singularity Special
+        private void AI_SpecialStart()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                SoundStyle laughSound = AssetRegistry.Sounds.SanguineSingularity.SanguineLaugh;
+                laughSound.Pitch = -0.5f;
+                SoundEngine.PlaySound(laughSound, NPC.position);
+
+                var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                screenShaderSystem.TintScreen(Color.Red * 0.3f, 1f, 10f);
+            }
+
+            ShakeModSystem.Shake = 4;
+            _animation = AnimationState.Idle;
+            _singularityDrawOverridePosition = NPC.Center;
+
+            float expandingTime = 120;
+            float completionRatio = Timer / expandingTime;
+            float ease = EasingFunction.Anticipation(completionRatio);
+            _draw.singularityScale = Vector2.Lerp(Vector2.One, Vector2.One * 3f, ease);
+            NPC.velocity *= 0;
+            NPC.rotation = 0;
+            TargetOutlineColor = Color.Yellow;
+
+
+            if(Timer % 5 == 0)
+            {
+                Vector2 spawnPos = NPC.Center + Main.rand.NextVector2CircularEdge(164, 164);
+                Vector2 velocity = (NPC.Center - spawnPos);
+                velocity = velocity.SafeNormalize(Vector2.Zero);
+                velocity *= 4;
+
+                var stretch = FXUtil.GlowStretch(spawnPos, velocity);
+                stretch.InnerColor = Color.White;
+                stretch.OuterGlowColor = Color.Red;
+            }
+
+            if(Timer >= expandingTime)
+            {
+                SwitchState(AIState.Special_Loop);
+            }
+        }
+        private Color ColorFunction(float completionRatio)
+        {
+            return Color.White * _chainAlpha;
+        }
+
+        private float WidthFunction(float completionRatio)
+        {
+            return 16 * EasingFunction.QuadraticBump(completionRatio);
+        }
+        private void DrawChainTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (_chainAlpha <= 0.1f)
+                return;
+            List<Vector2> conjureLightningPositions = new List<Vector2>();
+            float numPoints = 32;
+            for (float n = 0; n < numPoints; n++)
+            {
+                float completionRatio = n / numPoints;
+                Vector2 position = Vector2.Lerp(_singularityDrawOverridePosition, NPC.Center, completionRatio);
+                conjureLightningPositions.Add(position);
+            }
+
+            BlackFireShader shader = BlackFireShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.LightningTrail2;
+            shader.PrimaryTexture2 = TrailRegistry.LightningTrail;
+            shader.InnerColor = Color.White;
+            shader.OuterColor = Color.Red;
+            shader.Distortion = 0.2f;
+            shader.Time = Main.GlobalTimeWrappedHourly * 16;
+            TrailDrawer.Draw(spriteBatch, conjureLightningPositions.ToArray(), ColorFunction, WidthFunction, shader);
+        }
+
+        private void AI_SpecialLoop()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+
+
+            if(Timer % 100 == 0)
+            {
+                _draw.singularityScale *= 0.5f;
+                CreateRedFlash();
+                CreateGoreBurst(NPC.Center, -Vector2.UnitY * 4);
+                if (MultiplayerHelper.IsHost)
+                {
+                    float numProjectiles = 4;
+                    for (float f = 0f; f < numProjectiles; f++)
+                    {
+                        Vector2 velocity = -Vector2.UnitY;
+                        velocity = velocity.RotatedByRandom(0.5f);
+                        velocity *= Main.rand.NextFloat(4, 10);
+                        Projectile.NewProjectile(SourceFromThis, _singularityDrawOverridePosition, velocity,
+                            ModContent.ProjectileType<BloodyBurst>(), BloodyBurstDamage, 1, Main.myPlayer, ai1: 1);
+                    }
+
+                }
+                ShakeModSystem.Shake = 4;
+                var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                screenShaderSystem.TintScreen(Color.Red, 1f, 10f);
+                SoundStyle burstSound = AssetRegistry.Sounds.SanguineSingularity.SanguineBurst;
+                burstSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(burstSound, NPC.position);
+            }
+            float attackTime = 600f;
+
+            _animation = AnimationState.Run;
+            _contactDamage = true;
+            _chainAlpha = MathHelper.Lerp(_chainAlpha, 1f, 0.1f);
+            _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
+            _draw.singularityScale = Vector2.Lerp(_draw.singularityScale, Vector2.One * 3f, 0.1f);
+            TargetOutlineColor = Color.Red;
+
+            Vector2 velocityToTarget = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+            velocityToTarget *= 9f;
+
+            Vector2 velocityFromSingularityToTarget = (MyTarget.Center - _singularityDrawOverridePosition).SafeNormalize(Vector2.Zero);
+            velocityFromSingularityToTarget *= 4;
+            _singularityDrawOverridePosition += velocityFromSingularityToTarget;
+
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToTarget, 0.1f);
+            NPC.direction = NPC.velocity.X < 0 ? -1 : 1;
+            if(Timer >= attackTime)
+            {
+                SwitchState(AIState.Special_End);
+            }
+        }
+        private void AI_SpecialEnd()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                _startVector = _singularityDrawOverridePosition;
+            }
+            float endTime = 60f;
+            float completionRatio = Timer / endTime;
+            float ease = EasingFunction.Anticipation(completionRatio);
+            _singularityDrawOverridePosition = Vector2.Lerp(_startVector, NPC.Center, ease);
+            _chainAlpha = MathHelper.Lerp(_chainAlpha, 0f, 0.1f);
+            _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 0f, 0.1f);
+            _draw.singularityScale = Vector2.Lerp(Vector2.One * 3f, Vector2.One, ease);
+            TargetOutlineColor = Color.Transparent;
+
+            NPC.velocity *= 0.9f;
+            if(NPC.velocity.Length() < 0.1f)
+            {
+                _animation = AnimationState.Idle;
+            }
+            else
+            {
+                _animation = AnimationState.Walk;
+            }
+              
+            NPC.rotation = 0;
+            if(Timer >= endTime)
+            {
+                _singularityDrawOverridePosition = Vector2.Zero;
+                SwitchState(AIState.Idle);
+            }
+        }
+
+        #endregion
+
         #region Bloody Mega Charge
-        
+
         private void AI_BloodyMegaCharge_Start()
         {
             Timer++;
@@ -671,9 +866,23 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
         }
 
+        private bool IsBanned(AIState state)
+        {
+            if (state == AIState.Special_Start && !InPhase2)
+                return true;
+            return false;
+        }
+
         private void ChooseAttack()
         {
-            SwitchState(PatternManager.NextPattern());
+            AIState nextPattern = PatternManager.NextPattern();
+            if (IsBanned(nextPattern))
+            {
+                ChooseAttack();
+                return;
+            }
+            SwitchState(nextPattern);
+    
         }
 
         private void AI_Idle()
@@ -684,8 +893,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 NPC.TargetClosest();
                 _closeEnough = false;
             }
-
-
+            _chainAlpha *= 0.9f;
+            _singularityDrawOverridePosition = Vector2.Zero;
             _contactDamage = false;
             _draw.scale = Vector2.One;
             _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
@@ -1770,6 +1979,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 DrawFlamingTrail(spriteBatch, screenPos, drawColor);
             }
 
+            DrawChainTrail(spriteBatch, screenPos, drawColor);
             DrawAfterImage(spriteBatch, screenPos);
             DrawSingularity(spriteBatch, screenPos, drawColor);
             Draw(spriteBatch, screenPos, drawColor);
@@ -1810,7 +2020,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             var shader = BasicLaserShader.Instance;
             shader.InnerColor = Color.Red;
             shader.OuterColor = Color.Transparent;
-            TrailDrawer.Draw(spriteBatch, NPC.oldPos, GetWalkingTrailColor, GetWalkingTrailWidth, shader, offset: new Vector2(0, NPC.frame.Height)); ;
+            TrailDrawer.Draw(spriteBatch, NPC.oldPos, GetWalkingTrailColor, GetWalkingTrailWidth, shader, offset: new Vector2(0, NPC.frame.Height - 10)); ;
         }
 
 
@@ -1821,13 +2031,14 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private float GetFlamingTrailWidth(float completionRatio)
         {
-            return MathHelper.SmoothStep(0f, 64f, completionRatio);
+            return MathHelper.SmoothStep(180, 180, completionRatio);
         }
 
 
         private void DrawFlamingTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             var shader = BlackFireShader.Instance;
+            shader.Time = Main.GlobalTimeWrappedHourly * 16;
             TrailDrawer.Draw(spriteBatch, NPC.oldPos, GetFlamingTrailColor, GetFlamingTrailWidth, shader, offset: NPC.Size / 2f); 
         }
         private void DrawRedFlash(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -1850,7 +2061,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void DrawSingularity(SpriteBatch spriteBatch, Vector2 screenPos, Color color)
         {
             Texture2D texture = ModContent.Request<Texture2D>(TextureRegistry.EmptyBigTexture).Value;
-            Vector2 drawPosition = NPC.Center - screenPos;
+
+            Vector2 center = _singularityDrawOverridePosition != Vector2.Zero ? _singularityDrawOverridePosition : NPC.Center;
+            Vector2 drawPosition = center - screenPos;
             Vector2 drawOrigin = texture.Size() / 2f;
             Vector2 drawScale = NPC.scale * Vector2.One;
             drawScale *= _draw.singularityScale;
@@ -1911,7 +2124,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             incresionDiskDrawColor.A = 0;
             incresionDiskDrawColor *= _draw.alpha;
 
-            Vector2 drawPos = NPC.Center - screenPos;
+            Vector2 center = _singularityDrawOverridePosition != Vector2.Zero ? _singularityDrawOverridePosition : NPC.Center;
+            Vector2 drawPos = center - screenPos;
+
             Vector2 drawOrigin = incresionDiskRect.Size() / 2;
             float drawScale = NPC.scale * _draw.singularityScale.X * 1.75f;
             drawScale *= 0.4f;
@@ -1951,7 +2166,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             incresionDiskDrawColor.A = 0;
             incresionDiskDrawColor *= _draw.alpha;
 
-            Vector2 drawPos = NPC.Center - screenPos;
+            Vector2 center = _singularityDrawOverridePosition != Vector2.Zero ? _singularityDrawOverridePosition : NPC.Center;
+            Vector2 drawPos = center - screenPos;
+    
             Vector2 drawOrigin = incresionDiskRect.Size() / 2;
 
             float drawScale = NPC.scale * 3 * _draw.singularityScale.X;

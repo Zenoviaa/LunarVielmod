@@ -54,6 +54,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
             float inAlpha = EasingFunction.InOutSine(Timer / 30f);
             float outAlpha = ((float)Projectile.timeLeft) / 30f;
             _alpha = inAlpha * outAlpha;
+            Projectile.velocity = Projectile.velocity.RotatedBy(0.02f);
             DrawHelper.AnimateTopToBottom(Projectile, 4);
         }
         private void DrawAfterImage(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
@@ -67,7 +68,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
                 float a = i;
                 float completionRatio = a / numAfterImages;
                 Color afterImageColor = Color.Lerp(Color.White, Color.Transparent, MathHelper.SmoothStep(0f, 1f, completionRatio));
-                afterImageColor *= 0.5f;
+                afterImageColor *= 0.15f;
                 afterImageColor *= _alpha;
 
                 Vector2 drawCenter = Projectile.oldPos[i] + Projectile.Size / 2f - screenPos;
