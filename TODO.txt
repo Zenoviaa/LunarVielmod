@@ -6,24 +6,6 @@
 
 
 
-Sanguine Singularity
-
-New second phae attack where the singularity gets big and the deer detaches from it
-
-
-
-Sanguien Singularity
-
-- maybe make a windup frame for the run
-- maybe the background can pulse to the bpm
-- maybe there's a singularity thing in the backgronud
-
-
-
-
-
-
-
 For fenix's rigging, it might be easier to just construct her rig in 3D, do the rotation in 3D and then read it as a 2D point for where to place her joints
 We can use matrices to represent everything, we can calculate draw order based off of that too
 	-The origin point would be her butt, Vector3.Zero
