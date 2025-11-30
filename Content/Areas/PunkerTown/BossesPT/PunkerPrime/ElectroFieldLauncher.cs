@@ -49,7 +49,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Timer++;
             if(Timer < 60)
             {
-                Projectile.velocity *= 0.95f;
+                Projectile.velocity *= 0.96f;
             }
 
             if(Timer  % 15 == 0)
