@@ -20,7 +20,8 @@ namespace Stellamod.Helpers
         Bishinine=10,
         Jiitas=11,
         SanguineSingularity=12,
-        PunkerPrime=13
+        PunkerPrime=13,
+        CrumblingTowerOfIlluria=14
     }
 
     public class DownedBossTracker : ModSystem
