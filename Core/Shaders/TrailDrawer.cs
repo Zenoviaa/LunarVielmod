@@ -210,27 +210,5 @@ namespace Stellamod.Core.Shaders
             graphicsDevice.BlendState = originalBlendState;
             graphicsDevice.SamplerStates[0] = originalSamplerState;
         }
-
-        private static void DrawPrimsStrip(List<VertexPositionColorTexture> vertices, BaseShader shader)
-        {
-            if (vertices.Count % 2 != 0 || vertices.Count <= 1)
-                return;
-
-            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
-            BlendState originalBlendState = graphicsDevice.BlendState;
-            CullMode oldCullMode = graphicsDevice.RasterizerState.CullMode;
-            SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
-
-            graphicsDevice.RasterizerState.CullMode = CullMode.None;
-            graphicsDevice.BlendState = shader.BlendState;
-            graphicsDevice.SamplerStates[0] = shader.SamplerState;
-
-            graphicsDevice.DrawUserPrimitives(
-              PrimitiveType.TriangleStrip, vertices.ToArray(), 0, vertices.Count / 2);
-
-            graphicsDevice.RasterizerState.CullMode = oldCullMode;
-            graphicsDevice.BlendState = originalBlendState;
-            graphicsDevice.SamplerStates[0] = originalSamplerState;
-        }
     }
 }

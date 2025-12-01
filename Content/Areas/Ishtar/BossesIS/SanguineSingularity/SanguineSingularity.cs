@@ -59,6 +59,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             public float flashAlpha;
             public float afterImageAlpha;
             public bool headless;
+            public float flamingTrailAlpha;
 
 
             public void SetDefaults()
@@ -899,6 +900,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _draw.scale = Vector2.One;
             _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
             _draw.afterImageAlpha *= 0.5f;
+            _draw.flamingTrailAlpha *= 0.5f;
             AttackNumber = 0;
             NPC.direction = TargetDirection;
             NPC.noGravity = true;
@@ -1156,10 +1158,12 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if (Timer < time / 2f && AttackNumber == 0)
             {
                 _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 0f, 0.1f);
+                _draw.flamingTrailAlpha = MathHelper.Lerp(_draw.flamingTrailAlpha, 0f, 0.1f);
                 _animation = AnimationState.Walk;
             }
             else
             {
+                _draw.flamingTrailAlpha = MathHelper.Lerp(_draw.flamingTrailAlpha, 1f, 0.1f);
                 _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
                 _animation = AnimationState.Run;
             }
@@ -1263,6 +1267,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
             _draw.scale = Vector2.Lerp(_draw.scale, Vector2.One, 0.1f);
             _draw.afterImageAlpha *= 0.9f;
+            _draw.flamingTrailAlpha *= 0.9f;
             _animation = AnimationState.Run;
             TargetOutlineColor = Color.Transparent;
             SlightlyMoveCameraTowardsMe();
@@ -1313,6 +1318,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         
             _draw.afterImageAlpha *= 0.5f;
+            _draw.flamingTrailAlpha *= 0.5f;
             _animation = AnimationState.Run;
             SlightlyMoveCameraTowardsMe();
 
@@ -1340,7 +1346,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 SoundEngine.PlaySound(chargeSound, NPC.position);
             }
 
-            _draw.afterImageAlpha = MathHelper.Lerp(0f, 1f, 0.5f);
+            _draw.flamingTrailAlpha = MathHelper.Lerp(_draw.flamingTrailAlpha, 1f, 0.1f);
+            _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
             _contactDamage = true;
             SlightlyMoveCameraTowardsMe();
             TargetOutlineColor = Color.Red;
@@ -1391,6 +1398,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void AI_BloodyCharge_End()
         {
             _draw.afterImageAlpha *= 0.9f;
+            _draw.flamingTrailAlpha *= 0.9f;
             _animation = AnimationState.Walk;
             _contactDamage = false;
             Timer++;
@@ -1822,6 +1830,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             float time = 30f;
             _animation = AnimationState.Walk;
             _draw.afterImageAlpha = 0f;
+            _draw.flamingTrailAlpha = 0f;
+
             Vector2 velocity = (MyTarget.Center - NPC.Center);
             velocity = velocity.SafeNormalize(Vector2.Zero);
             velocity *= MathHelper.Lerp(0f, 3f, EasingFunction.InOutSine(Timer / time));
@@ -1852,8 +1862,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 SoundStyle burstSound = AssetRegistry.Sounds.SanguineSingularity.BloodyExplosion;
                 burstSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(burstSound, NPC.position);
-
-
             }
 
 
@@ -1880,6 +1888,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     p.Scale *= 0.33f;
                 }
             }
+            _draw.flamingTrailAlpha = MathHelper.Lerp(_draw.flamingTrailAlpha, 1f, 0.1f);
             _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
             if(AttackNumber > 0)
             {
@@ -1974,11 +1983,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             DrawDashLine(spriteBatch, screenPos, drawColor);
             DrawWalkingTrail(spriteBatch, screenPos, drawColor);
-            if(State == AIState.GhastlyBloodDash_Run)
-            {
-                DrawFlamingTrail(spriteBatch, screenPos, drawColor);
-            }
-
+            DrawFlamingTrail(spriteBatch, screenPos, drawColor);
             DrawChainTrail(spriteBatch, screenPos, drawColor);
             DrawAfterImage(spriteBatch, screenPos);
             DrawSingularity(spriteBatch, screenPos, drawColor);
@@ -2026,7 +2031,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private Color GetFlamingTrailColor(float completionRatio)
         {
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * _draw.afterImageAlpha;
+            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * _draw.afterImageAlpha * _draw.flamingTrailAlpha;
         }
 
         private float GetFlamingTrailWidth(float completionRatio)
