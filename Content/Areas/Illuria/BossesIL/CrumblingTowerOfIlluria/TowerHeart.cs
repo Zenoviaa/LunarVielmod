@@ -10,6 +10,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
 {
     public class TowerHeart : ModNPC
     {
+        private float _immuneTimer;
         private ref float Timer => ref NPC.ai[0];
         private NPC Parent
         {
@@ -55,7 +56,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         public override void AI()
         {
             base.AI();
-            Timer += 0.01f;
+            if (Parent.ai[1] == 5)
+            {
+                _immuneTimer = 180;
+     
+            }
+
+            if(_immuneTimer > 0)
+            {
+                Timer += 0.02f;
+                _immuneTimer--;
+            }
+            NPC.dontTakeDamage = _immuneTimer > 0 ? true : false;
+                Timer += 0.01f;
             float radians = Timer * 0.015f;
             float x = MathF.Sin(Timer) * OrbitRadiusX;
             float y = MathF.Cos(Timer) * OrbitRadiusY;
@@ -82,6 +95,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
 
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 drawPosition, Color drawColor)
         {
+            if (NPC.dontTakeDamage)
+            {
+                drawColor = Color.Lerp(drawColor, Color.Black, 0.5f);
+            }
+
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Rectangle frame = NPC.frame;
             Vector2 drawOrigin = frame.Size() / 2f;

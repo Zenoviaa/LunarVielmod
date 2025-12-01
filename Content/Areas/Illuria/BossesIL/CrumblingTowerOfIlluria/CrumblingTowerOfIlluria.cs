@@ -33,11 +33,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
     public class CrumblingTowerOfIlluria : ScarletBoss,
         IDrawOutlines
     {
+
+        private float _enrageTimer;
+        private int _heartCount;
+        private float _shineTimer;
         private float _hoverTimer;
         private bool _inPhase2;
         private bool _showNamePlate;
         private bool _setTowerPosition;
         private bool _summonedHearts;
+        private Vector2 _shakeOffset;
         private TowerOfIlluraDraw _draw;
         private enum AIState
         {
@@ -47,6 +52,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             Death,
 
             LaserBolt,
+            LaserBolt_Enrage,
             PhaseTransition,
 
             BouncingIdle,
@@ -117,8 +123,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.width = 64;
             NPC.height = 64;
             NPC.damage = 100;
-            NPC.defense = 33;
-            NPC.lifeMax = 18000;
+            NPC.defense = 40;
+            NPC.lifeMax = 12000;
             NPC.scale = 1f;
             NPC.aiStyle = -1;
 
@@ -149,6 +155,36 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             modifiers.FinalDamage *= 0;
         }
 
+        private int CountHearts()
+        {
+            int count = 0;
+            foreach(var npc in Main.ActiveNPCs)
+            {
+                if(npc.type == ModContent.NPCType<TowerHeart>() && npc.ai[1] == NPC.whoAmI)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+        private void Shine()
+        {
+            if (!MultiplayerHelper.IsHost)
+                return;
+            _shineTimer++;
+            if(_shineTimer >= 100)
+            {
+                float radians = Main.rand.NextFloat(0f, 1f) * MathHelper.TwoPi;
+                Vector2 velocity = radians.ToRotationVector2();
+                velocity *= 800;
+                Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
+                    ModContent.ProjectileType<DiscoLight>(), WhiteWhipDamage, 1, Main.myPlayer, ai1: Main.rand.Next(2, 4), ai2: NPC.whoAmI);
+                _shineTimer = 0;
+            }
+
+        }
+
         public override void AI()
         {
             base.AI();
@@ -163,8 +199,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
         
             ManageTowerPosition();
-                SummonHearts();
-
+            SummonHearts();
+            Shine();
+            int newHeartCount = CountHearts();
+            if (newHeartCount < _heartCount)
+            {
+             
+                _heartCount = newHeartCount;
+                SwitchState(AIState.LaserBolt_Enrage);
+            }
+            Inner_AI();
+        }
+        private void Inner_AI()
+        {
             switch (State)
             {
                 case AIState.SpawnIdle:
@@ -184,6 +231,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                     break;
                 case AIState.LaserBolt:
                     AI_LaserBolt();
+                    break;
+                case AIState.LaserBolt_Enrage:
+                    AI_LaserBoltEnrage();
                     break;
                 case AIState.PhaseTransition:
                     AI_PhaseTransition();
@@ -229,6 +279,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             SummonHeart(MathHelper.PiOver2, 400, 100);
             SummonHeart(MathHelper.PiOver2 * 2, 400, 100);
             SummonHeart(MathHelper.PiOver2 * 3, 400, 100);
+            _heartCount = 8;
             _summonedHearts = true;
 
         }
@@ -523,6 +574,35 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 SwitchState(AIState.Idle);
             }
         }
+        private void AI_LaserBoltEnrage()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
+                part.Scale *= 4;
+                part.shrink = true;
+                part.noStretch = true;
+                NPC.TargetClosest();
+            }
+
+            TargetOutlineColor = Color.Yellow;
+            Hover();
+            Hover();
+            ShakeModSystem.Shake = 2;
+            _shakeOffset = Main.rand.NextVector2Circular(3, 3);
+            if (Timer % 20 == 0 && MultiplayerHelper.IsHost)
+            {
+                Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.UnitX * 8,
+                    ModContent.ProjectileType<IllurianSnipe>(), IllurianSnipeDamage, 1, Main.myPlayer, ai2: NPC.whoAmI);
+            }
+
+            NPC.AddBuff(BuffID.Frostburn, 2);
+            if (Timer >= 120)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
 
         private void AI_SpawnIdle()
         {
@@ -668,14 +748,32 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 ShakeModSystem.Shake = 12;
                 var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Cyan, Color.Purple);
                 boom.Scale *= 2f;
-                float numDust = 64;
+
+                boom = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Cyan, Color.Purple);
+                boom.Scale *= 1.2f;
+                float numDust = 16;
                 for(float n = 0; n < numDust; n++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(64, 64);
                     Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), vel, newColor: Color.Cyan, Scale: Main.rand.NextFloat(0.5f, 3f));
                 }
+                for (float f = 0; f < 3; f++)
+                {
+                    float radius = 800;
+                    Vector2 spawnPos = NPC.Center + Main.rand.NextVector2CircularEdge(radius, radius);
+                    Vector2 velocity = NPC.Center - spawnPos;
+                    velocity = velocity.SafeNormalize(Vector2.Zero);
+                    velocity *= Main.rand.NextFloat(16, 64);
+                    FXUtil.GlowStretch(spawnPos, velocity);
+                }
 
-                FXUtil.ShakeCamera(NPC.position, 1024, 4);
+                for (float f = 0; f < 16; f++)
+                {
+                    Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi);
+                    pVelocity *= Main.rand.NextFloat(0.5f, 8f);
+                    var spark = Particle.NewParticle<EmberParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                }
+                FXUtil.ShakeCamera(NPC.position, 1024, 16);
                 var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, newColor: Color.Cyan);
                 donut.shrink = true;
                 NPC.Kill();
@@ -707,10 +805,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         #region Draw Code
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            DrawAfterImages(spriteBatch, screenPos, drawColor);
-            DrawBase(spriteBatch, screenPos, drawColor);
-            DrawSprite(spriteBatch, NPC.Center - screenPos, drawColor);
-            DrawGlow(spriteBatch, screenPos, drawColor);
+            DrawAfterImages(spriteBatch, screenPos + _shakeOffset, drawColor);
+            DrawBase(spriteBatch, screenPos + _shakeOffset, drawColor);
+            DrawSprite(spriteBatch, NPC.Center - screenPos + _shakeOffset, drawColor);
+            DrawGlow(spriteBatch, screenPos + _shakeOffset, drawColor);
+            _shakeOffset = Vector2.Zero;
             return false;
         }
 

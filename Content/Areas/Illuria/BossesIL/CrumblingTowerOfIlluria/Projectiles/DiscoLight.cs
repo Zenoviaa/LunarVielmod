@@ -49,6 +49,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
                 case 1:
                     discoColor = Color.Cyan;
                     break;
+                case 2:
+                    discoColor = Color.White * 0.5f;
+                    break;
+                case 3:
+                    discoColor = Color.Cyan * 0.5f;
+                    break;
             }
             Timer++;
             float discoTime = 120;
