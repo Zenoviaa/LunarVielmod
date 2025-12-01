@@ -630,12 +630,39 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private void AI_Death()
         {
             Timer++;
+            if (Timer % 16 == 0)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    float radians = Main.rand.NextFloat(0f, 1f) * MathHelper.TwoPi;
+                    Vector2 velocity = radians.ToRotationVector2();
+                    velocity *= 800;
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
+                        ModContent.ProjectileType<DiscoLight>(), WhiteWhipDamage, 1, Main.myPlayer, ai1: Main.rand.Next(0, 2), ai2: NPC.whoAmI);
+                }
+            }
+
+            if (Timer % 10 == 0)
+            {
+                Vector2 spawnPos = NPC.Center + Main.rand.NextVector2CircularEdge(200, 200);
+                Vector2 spawnVelocity = (NPC.Center - spawnPos).SafeNormalize(Vector2.Zero);
+                spawnVelocity *= 24;
+                var stretch = FXUtil.GlowStretch(spawnPos, spawnVelocity);
+                stretch.Scale *= Main.rand.NextFloat(0.5f, 1f);
+                stretch.VectorScale.X *= Main.rand.NextFloat(0.5f, 1f);
+            }
+
+            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            ShakeModSystem.Shake = 4;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
-            NPC.velocity.X = 0;
-            NPC.velocity.Y = 0;
-            if (Timer >= 200)
+            NPC.velocity.X *= 0.95f;
+            NPC.velocity.Y *= 0.95f;
+            if (Timer >= 400)
             {
+                ShakeModSystem.Shake = 12;
+                var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Cyan, Color.Purple);
+                boom.Scale *= 2f;
                 NPC.Kill();
             }
         }
@@ -646,6 +673,21 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             DownedBossTracker.ClearFlag(DownedBossFlag.CrumblingTowerOfIlluria);
         }
 
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+            if (NPC.life <= 0 && State != AIState.Death)
+            {
+                NPC.life = 1;
+                SwitchState(AIState.Death);
+            }
+
+
+            if (NPC.life <= 0)
+            {
+                NPC.life = 1;
+            }
+        }
 
         #region Draw Code
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
