@@ -389,7 +389,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.velocity.Y = 0;
             TargetOutlineColor = Color.Yellow;
 
-            float degreesBetween = 30;
+    
             float totalNumWhips = 36;
             float loops = 4;
             if(Timer % 16 == 0)
