@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Projectiles;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -75,6 +76,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.HitInfo hitInfo = NPC.CalculateHitInfo(Parent.lifeMax / 16, 1, true, 0, DamageClass.Generic);
             NPC.StrikeNPC(hitInfo, fromNet: false);
             NetMessage.SendStrikeNPC(Parent, hitInfo);
+            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<CrumblingSoul>(), 0, 0, Main.myPlayer,
+                ai1: Parent.whoAmI);
         }
 
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 drawPosition, Color drawColor)

@@ -34,6 +34,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private bool _inPhase2;
         private bool _showNamePlate;
         private bool _setTowerPosition;
+        private bool _summonedHearts;
         private TowerOfIlluraDraw _draw;
         private enum AIState
         {
@@ -127,8 +128,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 }
             }
             _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
+            SummonHearts();
             //Check for all hearts dying to do the phase transition
-            if (!_inPhase2 && AllHeartsDead)
+            if (MultiplayerHelper.IsHost && !_inPhase2 && AllHeartsDead)
             {
                 SwitchState(AIState.PhaseTransition);
                 _inPhase2 = true;
@@ -169,8 +171,33 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         }
 
         #region Tower of Illuria
+        private void SummonHearts()
+        {
+            if (!MultiplayerHelper.IsHost)
+                return;
+
+            if (_summonedHearts)
+                return;
+
+            int numHearts = 8;
+            int heartType = ModContent.NPCType<TowerHeart>();
+            for(int n = 0; n < numHearts; n++)
+            {
+                int xRadius = Main.rand.Next(64, 256);
+                int yRadius = Main.rand.Next(64, 256);
+                int x = (int)NPC.Center.X;
+                int y = (int)NPC.Center.Y;
+                NPC.NewNPC(SourceFromThis, x, y, heartType, ai2: xRadius, ai3: yRadius);
+            }
+
+            _summonedHearts = true;
+
+        }
         private void ManageTowerPosition()
         {
+            if (!MultiplayerHelper.IsHost)
+                return;
+
             if (!_setTowerPosition)
             {
                 Vector2 ground = FindGround();
