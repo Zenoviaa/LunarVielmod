@@ -47,7 +47,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
                     discoColor = Color.White;
                     break;
                 case 1:
-                    discoColor = Color.Blue;
+                    discoColor = Color.Cyan;
                     break;
             }
             Timer++;
@@ -55,8 +55,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             float completionRatio = Timer / discoTime;
             _lightAlpha = EasingFunction.QuadraticBump(completionRatio);
 
+            float direction = Style == 0 ? 1 : -1;
+            Projectile.velocity = Projectile.velocity.RotatedBy(0.02f * direction);
             Projectile.Center = Parent.Center;
-            RayCast(Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero), 64, Projectile.velocity.Length() * _lightAlpha);
+            RayCast(Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero), 800, Projectile.velocity.Length() * _lightAlpha);
         }
 
 

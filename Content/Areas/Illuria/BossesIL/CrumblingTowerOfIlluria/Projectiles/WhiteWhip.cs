@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
@@ -10,6 +11,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Projectiles
@@ -29,6 +31,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             get => (AIState)Projectile.ai[1];
             set => Projectile.ai[1] = (float)value;
         }
+        private NPC Parent
+        {
+            get => Main.npc[(int)Projectile.ai[2]];
+        }
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
@@ -41,6 +47,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.extraUpdates = 1;
+            Projectile.tileCollide = false;
         }
 
         public override bool ShouldUpdatePosition()
@@ -87,12 +94,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), vel, newColor: Color.White);
                 }
 
+       
             }
 
             float chargeTime = 80f;
             float completionRatio = Timer / chargeTime;
             float ease = EasingFunction.QuadraticBump(completionRatio);
-            _bloomLineAlpha = MathHelper.Lerp(0f, 1f, ease);
+            _bloomLineAlpha = MathHelper.Lerp(0f, 0.5f, ease);
+            Projectile.Center = Parent.Center;
             if (Timer >= chargeTime)
             {
                 SwitchState(AIState.Fire);
@@ -102,24 +111,52 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
         private void AI_Fire()
         {
             Timer++;
+            if(Timer == 1)
+            {
+                float numDust = 6;
+                for (float f = 0; f < numDust; f++)
+                {
+                    Vector2 dustVelocity = Projectile.velocity;
+                    dustVelocity = dustVelocity.RotatedByRandom(0.25f);
+                    dustVelocity *= Main.rand.NextFloat(2, 9);
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), dustVelocity, newColor: Color.White, Scale: Main.rand.NextFloat(0.3f, 0.8f));
+                }
+
+                var donut = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity, newColor: Color.Cyan);
+                SoundStyle fireSound = AssetRegistry.Sounds.Magic.AutomationCast1;
+                fireSound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(fireSound, Projectile.position);
+            }
             if (Timer % 7 == 0)
             {
-                Particle.NewParticle<ZapParticle>(Projectile.Center, Main.rand.NextVector2Circular(2, 2), newColor: Color.White, Scale: 0.75f);
+                var zap = Particle.NewParticle<ZapParticle>(Projectile.Center, Main.rand.NextVector2Circular(2, 2), newColor: Color.White, Scale: 0.75f);
+                zap.Scale *= 0.2f;
+                zap.innerColor = Color.White;
+                zap.outerColor = Color.Cyan;
+                zap.fadeToColor = Color.Purple;
             }
 
-            Projectile.velocity *= 1.01f;
+            if(Timer % 15 == 0)
+            {
+                var spark = Particle.NewParticle<SparkParticle>(Projectile.Center, Main.rand.NextVector2Circular(2, 2), newColor: Color.White, Scale: 0.75f);
+                spark.innerColor = Color.White;
+                spark.outerColor = Color.Cyan;
+                spark.fadeToColor = Color.Purple;
+            }
+
+            Projectile.velocity *= 1.015f;
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
 
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(new Color(69, 196, 182), Color.SpringGreen, completionRatio);
+            return Color.Lerp(Color.White, Color.SpringGreen * 0.2f, completionRatio);
         }
 
         private float WidthFunction(float completionRatio)
         {
-            return MathHelper.SmoothStep(0, 16, completionRatio);
+            return MathHelper.SmoothStep(8, 0, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -132,23 +169,31 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Color drawColor = Color.White;
             drawColor.A = 0;
             drawColor *= _bloomLineAlpha;
-            spriteBatch.Draw(bloomlineTexture, drawCenter, null, drawColor, rot, drawOrigin, 1f, SpriteEffects.None, 0);
+
+            Vector2 scale = Vector2.One;
+            scale.X *= 0.2f;
+            scale.Y *= 2f;
+            scale.Y *= _bloomLineAlpha;
+            spriteBatch.Draw(bloomlineTexture, drawCenter, null, drawColor, rot, drawOrigin, scale, SpriteEffects.None, 0);
             return false;
         }
 
         public void DrawPixelated()
         {
 
+            if(State == AIState.Fire)
+            {
+                var shader = MagicNormalShader.Instance;
+                shader.PrimaryTexture = TrailRegistry.GlowTrail;
+                shader.NoiseTexture = TrailRegistry.SpikyTrail1;
+                shader.BlendState = BlendState.Additive;
+                shader.SamplerState = SamplerState.PointWrap;
+                shader.Speed = 0.5f;
+                shader.Repeats = 1f;
+                //This just applis the shader changes
+                TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, ColorFunction, WidthFunction, shader);
+            }
 
-            var shader = MagicNormalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.GlowTrail;
-            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
-            shader.BlendState = BlendState.Additive;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 0.5f;
-            shader.Repeats = 1f;
-            //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, ColorFunction, WidthFunction, shader);
         }
     }
 }

@@ -149,7 +149,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
                 fireSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(fireSound, Projectile.position);
             }
-            Projectile.velocity *= 1.01f;
+            Projectile.velocity *= 1.02f;
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
