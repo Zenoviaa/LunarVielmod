@@ -1,0 +1,85 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core;
+using Stellamod.Core.Pixelation;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
+using Stellamod.Trails;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.ModLoader;
+
+namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Projectiles
+{
+    public class CrumblingSoul : ScarletProjectile, 
+        IDrawPixelated
+    {
+        private float _completionRatio;
+        private Vector2 _startCenter;
+        private ref float Timer => ref Projectile.ai[0];
+        private NPC Target
+        {
+            get => Main.npc[(int)Projectile.ai[1]];
+        }
+        public override string Texture =>  TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            TrailCacheLength = 32;
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.friendly = false;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 180;
+            Projectile.ignoreWater = true;
+            Projectile.extraUpdates = 1;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            Vector2 endCenter = Target.Center;
+            float flyTime = 180f;
+            _completionRatio = Timer / flyTime;
+            float ease = EasingFunction.Anticipation2(_completionRatio);
+            Vector2 between = Vector2.Lerp(_startCenter, endCenter, ease);
+            Vector2 velocityTo = (between - Projectile.Center);
+            Projectile.velocity = velocityTo;
+            Projectile.rotation = Projectile.velocity.ToRotation();
+            if(Timer % 10 == 0)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Vector2.Zero, newColor: Color.White, Scale: 0.5f);
+            }
+        }
+
+        private Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(new Color(69, 196, 182), Color.SpringGreen, completionRatio);
+        }
+
+        private float WidthFunction(float completionRatio)
+        {
+            return MathHelper.SmoothStep(0, 32, completionRatio) * EasingFunction.InExpo(_completionRatio);
+        }
+
+        public void DrawPixelated()
+        {
+            var shader = MagicNormalShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
+            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 0.5f;
+            shader.Repeats = 1f;
+            //This just applis the shader changes
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, ColorFunction, WidthFunction, shader);
+        }
+    }
+}

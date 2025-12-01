@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json.Linq;
 using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
@@ -69,7 +68,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         {
             base.ReceiveExtraAI(reader);
             _setTowerPosition = reader.ReadBoolean();
-            _inPhase2 = reader.ReadBoolean();   
+            _inPhase2 = reader.ReadBoolean();
         }
 
         public override void SetStaticDefaults()
@@ -106,6 +105,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         }
 
+        public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitByProjectile(projectile, ref modifiers);
+            if (_inPhase2)
+                return;
+
+            //Here we want to set the damage of the projectile to NOTHING if it's not the IllurianSoul
+            modifiers.FinalDamage *= 0;
+        }
+
         public override void AI()
         {
             base.AI();
@@ -119,7 +128,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             }
             _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
             //Check for all hearts dying to do the phase transition
-            if(!_inPhase2 && AllHeartsDead)
+            if (!_inPhase2 && AllHeartsDead)
             {
                 SwitchState(AIState.PhaseTransition);
                 _inPhase2 = true;
@@ -195,13 +204,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             TargetOutlineColor = Color.Yellow;
             NPC.velocity.Y *= 0.9f;
             NPC.velocity.X = 0;
-            if(Timer == 60 && MultiplayerHelper.IsHost)
+            if (Timer == 60 && MultiplayerHelper.IsHost)
             {
                 Projectile.NewProjectile(SourceFromThis, NPC.Top, Vector2.UnitX * 8,
                     ModContent.ProjectileType<IllurianSnipe>(), IllurianSnipeDamage, 1, Main.myPlayer);
             }
 
-            if(Timer >= 120)
+            if (Timer >= 120)
             {
                 SwitchState(AIState.Idle);
             }
@@ -242,7 +251,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 ShowNamePlate();
                 _showNamePlate = true;
             }
-  
+
             _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
             NPC.noTileCollide = true;
             NPC.noGravity = true;
@@ -250,12 +259,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.velocity.X = 0;
             NPC.rotation = 0;
             TargetOutlineColor = Color.Transparent;
-            if(Timer >= 100)
+            if (Timer >= 100)
             {
                 if (!_inPhase2)
                 {
                     ChoosePhase1Attack();
-                }    
+                }
             }
         }
 
@@ -303,7 +312,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         {
             DrawAfterImages(spriteBatch, screenPos, drawColor);
             DrawBase(spriteBatch, screenPos, drawColor);
-            DrawSprite(spriteBatch, screenPos, drawColor);
+            DrawSprite(spriteBatch, NPC.Center - screenPos, drawColor);
             DrawGlow(spriteBatch, screenPos, drawColor);
             return false;
         }
@@ -311,7 +320,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private void DrawAfterImages(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             int trailLength = NPC.oldPos.Length;
-            for(int i = 0; i < trailLength; i++)
+            for (int i = 0; i < trailLength; i++)
             {
                 float f = i;
                 float numAfterImages = trailLength;
@@ -344,7 +353,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private void DrawGlow(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             float numAfterImages = 8;
-            for(float n = 0; n < numAfterImages; n++)
+            for (float n = 0; n < numAfterImages; n++)
             {
                 float completionRatio = n / numAfterImages;
                 float rot = MathHelper.TwoPi * completionRatio;
