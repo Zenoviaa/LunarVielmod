@@ -9,11 +9,6 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -84,21 +79,21 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             if (Timer == 1)
             {
                 float numDust = 2;
-                for(float d = 0; d < numDust; d++)
+                for (float d = 0; d < numDust; d++)
                 {
                     Vector2 vel = Projectile.velocity;
                     vel = vel.RotatedByRandom(0.3f);
                     vel *= Main.rand.NextFloat(0.5f, 1f);
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), vel, newColor: Color.White);
                 }
-                
+
             }
 
             float chargeTime = 80f;
             float completionRatio = Timer / chargeTime;
             float ease = EasingFunction.QuadraticBump(completionRatio);
             _bloomLineAlpha = MathHelper.Lerp(0f, 1f, ease);
-            if(Timer >= chargeTime)
+            if (Timer >= chargeTime)
             {
                 SwitchState(AIState.Fire);
             }
@@ -107,7 +102,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
         private void AI_Fire()
         {
             Timer++;
-            if(Timer % 7 == 0)
+            if (Timer % 7 == 0)
             {
                 Particle.NewParticle<ZapParticle>(Projectile.Center, Main.rand.NextVector2Circular(2, 2), newColor: Color.White, Scale: 0.75f);
             }

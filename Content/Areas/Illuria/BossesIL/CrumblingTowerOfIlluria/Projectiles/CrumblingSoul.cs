@@ -7,17 +7,12 @@ using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Projectiles
 {
-    public class CrumblingSoul : ScarletProjectile, 
+    public class CrumblingSoul : ScarletProjectile,
         IDrawPixelated
     {
         private float _completionRatio;
@@ -27,7 +22,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
         {
             get => Main.npc[(int)Projectile.ai[1]];
         }
-        public override string Texture =>  TextureRegistry.EmptyTexture;
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -53,7 +48,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Vector2 velocityTo = (between - Projectile.Center);
             Projectile.velocity = velocityTo;
             Projectile.rotation = Projectile.velocity.ToRotation();
-            if(Timer % 10 == 0)
+            if (Timer % 10 == 0)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Vector2.Zero, newColor: Color.White, Scale: 0.5f);
             }
