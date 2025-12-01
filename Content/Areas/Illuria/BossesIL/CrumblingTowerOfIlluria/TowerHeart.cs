@@ -48,5 +48,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         {
             base.AI();
         }
+
+        public override void OnKill()
+        {
+            base.OnKill();
+
+        }
     }
 }
