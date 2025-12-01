@@ -33,6 +33,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
     public class CrumblingTowerOfIlluria : ScarletBoss,
         IDrawOutlines
     {
+        private float _hoverTimer;
         private bool _inPhase2;
         private bool _showNamePlate;
         private bool _setTowerPosition;
@@ -124,7 +125,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.value = Item.buyPrice(gold: 5);
             NPC.knockBackResist = 0f;
             NPC.boss = true;
-            NPC.noGravity = false;
+            NPC.noGravity = true;
             NPC.noTileCollide = false;
             NPC.npcSlots = 30f;
 
@@ -155,15 +156,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 }
             }
             _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
-            SummonHearts();
-            //Check for all hearts dying to do the phase transition
-            if (MultiplayerHelper.IsHost && !_inPhase2 && AllHeartsDead)
-            {
-                SwitchState(AIState.PhaseTransition);
-                _inPhase2 = true;
-            }
-
+        
             ManageTowerPosition();
+                SummonHearts();
+
             switch (State)
             {
                 case AIState.SpawnIdle:
@@ -218,19 +214,29 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             if (_summonedHearts)
                 return;
 
-            int numHearts = 8;
-            int heartType = ModContent.NPCType<TowerHeart>();
-            for(int n = 0; n < numHearts; n++)
-            {
-                int xRadius = Main.rand.Next(64, 256);
-                int yRadius = Main.rand.Next(64, 256);
-                int x = (int)NPC.Center.X;
-                int y = (int)NPC.Center.Y;
-                NPC.NewNPC(SourceFromThis, x, y, heartType, ai2: xRadius, ai3: yRadius);
-            }
 
+            SummonHeart(0, 200, 150);
+            SummonHeart(MathHelper.Pi, 200, 150);
+            SummonHeart(MathHelper.PiOver2, 200, 150);
+            SummonHeart(MathHelper.Pi + MathHelper.PiOver2, 200, 150);
+
+            SummonHeart(0, 400, 100);
+            SummonHeart(MathHelper.PiOver2, 400, 100);
+            SummonHeart(MathHelper.PiOver2 * 2, 400, 100);
+            SummonHeart(MathHelper.PiOver2 * 3, 400, 100);
             _summonedHearts = true;
 
+        }
+
+        private void SummonHeart(float radiansOffset, float xRadius, float yRadius)
+        {
+            int heartType = ModContent.NPCType<TowerHeart>();
+
+
+            int x = (int)NPC.Center.X;
+            int y = (int)NPC.Center.Y;
+
+            NPC.NewNPC(SourceFromThis, x, y, heartType, ai0: radiansOffset, ai1: NPC.whoAmI, ai2: xRadius, ai3: yRadius);
         }
         private void ManageTowerPosition()
         {
@@ -240,6 +246,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             if (!_setTowerPosition)
             {
                 Vector2 ground = FindGround();
+                ground.Y -= 125;
                 _draw.towerDrawCenter = ground;
                 NPC.Center = ground - new Vector2(0, 250);
                 NPC.netUpdate = true;
@@ -339,11 +346,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             TargetOutlineColor = Color.Transparent;
             NPC.noGravity = false;
             NPC.noTileCollide = false;
-            NPC.velocity.X = MathF.Sin(BounceTimer * 0.05f) * 0.5f;
+            NPC.velocity.X = MathF.Sin(BounceTimer * 0.03f) * 8;
             NPC.rotation += NPC.velocity.X * 0.03f;
             if (NPC.collideY)
             {
-                NPC.velocity.Y = -5;
+                NPC.velocity.Y = -15;
                 Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, -Vector2.UnitY, Color.White, Scale: 0.2f);
                 CreateShockwaveParticles();
                 if (MultiplayerHelper.IsHost)
@@ -466,12 +473,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             }
 
             TargetOutlineColor = Color.Yellow;
-            NPC.velocity.Y *= 0.9f;
-            NPC.velocity.X = 0;
+            Hover();
+
             if (Timer == 60 && MultiplayerHelper.IsHost)
             {
-                Projectile.NewProjectile(SourceFromThis, NPC.Top, Vector2.UnitX * 8,
-                    ModContent.ProjectileType<IllurianSnipe>(), IllurianSnipeDamage, 1, Main.myPlayer);
+                Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.UnitX * 8,
+                    ModContent.ProjectileType<IllurianSnipe>(), IllurianSnipeDamage, 1, Main.myPlayer, ai2: NPC.whoAmI);
             }
 
             if (Timer >= 120)
@@ -499,7 +506,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 Particle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
             }
 
-            NPC.noGravity = false;
+            Hover();
+            NPC.noGravity = true;
             NPC.noTileCollide = false;
             RetargetCameraModifier.ReTargetPosition = NPC.Center;
             if (Timer >= 100)
@@ -507,9 +515,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 SwitchState(AIState.Idle);
             }
         }
+        private void Hover()
+        {
+            _hoverTimer++;
+            Vector2 startPosition = _draw.towerDrawCenter;
+            startPosition.Y += MathF.Sin(_hoverTimer * 0.05f) * 32;
+            startPosition.Y -= 180;
+            Vector2 h = startPosition - NPC.Center;
+            NPC.velocity = h;
+        }
 
         private void AI_Idle()
         {
+          
             Timer++;
             if (Timer == 1)
             {
@@ -520,15 +538,21 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 ShowNamePlate();
                 _showNamePlate = true;
             }
+            //Check for all hearts dying to do the phase transition
+            if (MultiplayerHelper.IsHost && !_inPhase2 && AllHeartsDead)
+            {
+                SwitchState(AIState.PhaseTransition);
+                _inPhase2 = true;
+            }
 
             _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
             NPC.noTileCollide = true;
             NPC.noGravity = true;
-            NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 0.5f + 0.5f;
-            NPC.velocity.X = 0;
+            Hover();
+
             NPC.rotation = 0;
             TargetOutlineColor = Color.Transparent;
-            if (Timer >= 100)
+            if (Timer >= 120)
             {
                 if (!_inPhase2)
                 {
@@ -536,11 +560,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 }
             }
 
-            if(MultiplayerHelper.IsHost && Main.rand.NextBool(200))
+            if(MultiplayerHelper.IsHost && Main.rand.NextBool(50))
             {
                 Vector2 offset = Main.rand.NextVector2Circular(256, 256);
                 Vector2 spawnPos = NPC.Center + offset;
-                Vector2 velocity = -Vector2.UnitY * 6;
+                Vector2 velocity = -Vector2.UnitY * 7;
 
                 Projectile.NewProjectile(SourceFromThis, spawnPos, velocity, ModContent.ProjectileType<HomingWhiteMoth>(), HomingWhiteMothDamage, 1, Main.myPlayer);
             }
@@ -623,7 +647,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             Rectangle? frame = null;
             Vector2 drawOrigin = towerTexture.Size() / 2f;
             Vector2 drawCenter = _draw.towerDrawCenter - screenPos;
-            spriteBatch.Draw(towerTexture, drawCenter, frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(towerTexture, drawCenter, frame, drawColor, 0, drawOrigin, NPC.scale, SpriteEffects.None, 0);
         }
 
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 drawPosition, Color drawColor)

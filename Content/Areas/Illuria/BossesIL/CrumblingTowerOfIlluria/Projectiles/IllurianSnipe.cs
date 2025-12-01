@@ -2,12 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Core;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -32,6 +34,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
         private float _telegraphLineAlpha;
         private float _telegraphLineRot;
         private ref float Timer => ref Projectile.ai[0];
+        private NPC Parent
+        {
+            get => Main.npc[(int)Projectile.ai[2]];
+        }
         private enum AIState
         {
             Charge = 0,
@@ -89,15 +95,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
         private void AI_Charge()
         {
             Timer++;
-            float chargeTime = 100;
+            float chargeTime = 250;
             float completionRatio = Timer / chargeTime;
+            Projectile.Center = Parent.Center;
             Projectile.scale = MathHelper.Lerp(1.5f, 1f, EasingFunction.Anticipation2(completionRatio));
             if(Timer % 10 == 0)
             {
-                Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2CircularEdge(64, 64);
+                Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2CircularEdge(200, 200);
                 Vector2 spawnVelocity = (Projectile.Center - spawnPos).SafeNormalize(Vector2.Zero);
-                spawnVelocity *= 2;
+                spawnVelocity *= 24;
                 var stretch = FXUtil.GlowStretch(spawnPos, spawnVelocity);
+                stretch.Scale *= Main.rand.NextFloat(0.5f, 1f);
+                stretch.VectorScale.X *= Main.rand.NextFloat(0.5f, 1f);
             }
             if(Timer >= chargeTime)
             {
@@ -130,11 +139,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
                 for(float f = 0; f < numDust; f++)
                 {
                     Vector2 dustVelocity = Projectile.velocity;
-                    dustVelocity = dustVelocity.RotatedByRandom(0.5f);
-                    dustVelocity *= Main.rand.NextFloat(1f, 5f);
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), newColor: Color.White, Scale: Main.rand.NextFloat(0.3f, 0.8f));
+                    dustVelocity = dustVelocity.RotatedByRandom(0.25f);
+                    dustVelocity *= Main.rand.NextFloat(2, 9);
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), dustVelocity, newColor: Color.White, Scale: Main.rand.NextFloat(0.3f, 0.8f));
                 }
 
+                var donut = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity, newColor: Color.Cyan);
                 SoundStyle fireSound = AssetRegistry.Sounds.Magic.AutomationCast1;
                 fireSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(fireSound, Projectile.position);
@@ -150,8 +160,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             for(float n = 0; n < numDust; n++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), velocity, newColor: Color.White, Scale: Main.rand.NextFloat(0.4f, 0.75f));
+                velocity += -Projectile.oldVelocity * Main.rand.NextFloat(0.5f, 1f);
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), velocity, newColor: Color.Cyan, Scale: Main.rand.NextFloat(0.4f, 0.75f));
             }
+            var part = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Cyan, Color.Blue);
+            part.Scale *= 0.66f;
         }
 
         private Color ColorFunction(float completionRatio)
@@ -161,7 +174,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
 
         private float WidthFunction(float completionRatio)
         {
-            return MathHelper.SmoothStep(0, 16, completionRatio);
+            return MathHelper.SmoothStep(8, 0, completionRatio);
         }
 
         public void DrawPixelated()
@@ -173,18 +186,36 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Color drawColor = Color.White;
             drawColor.A = 0;
             drawColor *= _telegraphLineAlpha;
-            spriteBatch.Draw(bloomlineTexture, drawCenter, null, drawColor, _telegraphLineRot, drawOrigin, 1f, SpriteEffects.None, 0);
+            drawColor *= 0.5f;
+            Vector2 scale = Vector2.One;
+            scale.Y *= 2;
+            scale.X *= 0.15f;
+            spriteBatch.Draw(bloomlineTexture, drawCenter, null, drawColor, _telegraphLineRot, drawOrigin, scale, SpriteEffects.None, 0);
 
+            if(State == AIState.Charge)
+            {
+                Texture2D glowballTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
+                scale = Vector2.One * _telegraphLineAlpha;
+                drawOrigin = glowballTexture.Size() / 2f;
+                for(float r = 0; r < 4; r++)
+                    spriteBatch.Draw(glowballTexture, drawCenter, null, drawColor, 0, drawOrigin, scale, SpriteEffects.None, 0);
 
-            var shader = MagicNormalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.GlowTrail;
-            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
-            shader.BlendState = BlendState.Additive;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 0.5f;
-            shader.Repeats = 1f;
-            //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, ColorFunction, WidthFunction, shader);
+            }
+
+    
+            if(State == AIState.Fire)
+            {
+                var shader = MagicNormalShader.Instance;
+                shader.PrimaryTexture = TrailRegistry.GlowTrail;
+                shader.NoiseTexture = TrailRegistry.SpikyTrail1;
+                shader.BlendState = BlendState.Additive;
+                shader.SamplerState = SamplerState.PointWrap;
+                shader.Speed = 0.5f;
+                shader.Repeats = 1f;
+                //This just applis the shader changes
+                TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, ColorFunction, WidthFunction, shader);
+            }
+
         }
     }
 }

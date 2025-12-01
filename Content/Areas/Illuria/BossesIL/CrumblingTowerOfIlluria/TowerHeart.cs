@@ -55,10 +55,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         public override void AI()
         {
             base.AI();
-            Timer++;
-            float radians = Timer * 0.05f;
-            float x = MathF.Sin(radians) * OrbitRadiusX;
-            float y = MathF.Cos(radians) * OrbitRadiusY;
+            Timer += 0.01f;
+            float radians = Timer * 0.015f;
+            float x = MathF.Sin(Timer) * OrbitRadiusX;
+            float y = MathF.Cos(Timer) * OrbitRadiusY;
 
             Vector2 offset = new Vector2();
             offset.X = x;

@@ -63,7 +63,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
         public void RayCast(Vector2 position, Vector2 direction, float edgeLightWidth, float distance)
         {
 
-
+            _vertices ??= new VertexPositionColorTexture[12];
             float edgeLightRadius = edgeLightWidth / 2f;
             float castMultiplier = 0.1f;
             float edgeColorMultiplier = 0f;
