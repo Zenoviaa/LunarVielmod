@@ -745,7 +745,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.velocity.Y *= 0.95f;
             if (Timer >= 400)
             {
-                ShakeModSystem.Shake = 12;
+                FXUtil.ShakeCamera(NPC.position, 1024, 32);
+                ShakeModSystem.Shake = 20;
                 var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Cyan, Color.Purple);
                 boom.Scale *= 2f;
 
@@ -757,14 +758,25 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                     Vector2 vel = Main.rand.NextVector2Circular(64, 64);
                     Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), vel, newColor: Color.LightCyan, Scale: Main.rand.NextFloat(0.5f, 1f));
                 }
-                for (float f = 0; f < 3; f++)
+                for (float f = 0; f < 42; f++)
                 {
-                    float radius = 800;
-                    Vector2 spawnPos = NPC.Center + Main.rand.NextVector2CircularEdge(radius, radius);
-                    Vector2 velocity = NPC.Center - spawnPos;
-                    velocity = velocity.SafeNormalize(Vector2.Zero);
-                    velocity *= Main.rand.NextFloat(16, 64);
-                    FXUtil.GlowStretch(spawnPos, velocity);
+                    Vector2 velocity = Main.rand.NextVector2Circular(128, 128);
+                    FXUtil.GlowStretch(NPC.Center, velocity);
+                }
+                for (float i = 0; i < 8; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(NPC.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.LightCyan,
+                        outerGlowColor: Color.Blue,
+                        baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                        duration: Main.rand.NextFloat(15, 25));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                    particle.Scale *= 4;
                 }
 
                 for (float f = 0; f < 16; f++)
@@ -773,7 +785,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                     pVelocity *= Main.rand.NextFloat(0.5f, 8f);
                     var spark = Particle.NewParticle<EmberParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
                 }
-                FXUtil.ShakeCamera(NPC.position, 1024, 16);
+        
                 var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, newColor: Color.Cyan);
                 donut.shrink = true;
                 NPC.Kill();
