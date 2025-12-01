@@ -134,6 +134,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return false;
+        }
+
         public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
         {
             base.ModifyHitByProjectile(projectile, ref modifiers);
@@ -410,14 +415,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
              TargetOutlineColor = Color.Yellow;
 
     
-            float totalNumWhips = 72;
+            float totalNumWhips = 36;
             float loops = 4;
             if(Timer % 10 == 0 && Timer < 100)
             {
                 if (MultiplayerHelper.IsHost)
                 {
                     float radians = (AttackCounter / totalNumWhips) * MathHelper.TwoPi * loops;
-                    radians *= 3;
+                    radians *= 2;
                     Vector2 velocity = radians.ToRotationVector2();
                     velocity *= 7;
                     Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity, 
@@ -487,7 +492,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             {
                 if (MultiplayerHelper.IsHost)
                 {
-                    Vector2 offset = Main.rand.NextVector2Circular(256, 256);
+                    Vector2 offset = Main.rand.NextVector2Circular(32, 32);
                     Vector2 spawnPos = NPC.Center + offset;
                     Vector2 velocity = -Vector2.UnitY * 7;
 
@@ -663,6 +668,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 ShakeModSystem.Shake = 12;
                 var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Cyan, Color.Purple);
                 boom.Scale *= 2f;
+                float numDust = 64;
+                for(float n = 0; n < numDust; n++)
+                {
+                    Vector2 vel = Main.rand.NextVector2Circular(64, 64);
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), vel, newColor: Color.Cyan, Scale: Main.rand.NextFloat(0.5f, 3f));
+                }
+
+                FXUtil.ShakeCamera(NPC.position, 1024, 4);
+                var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, newColor: Color.Cyan);
+                donut.shrink = true;
                 NPC.Kill();
             }
         }

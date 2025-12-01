@@ -33,13 +33,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Projectile.tileCollide = false;
             Projectile.timeLeft = 180;
             Projectile.ignoreWater = true;
-            Projectile.extraUpdates = 1;
+            Projectile.extraUpdates = 3;
         }
 
         public override void AI()
         {
             base.AI();
             Timer++;
+            if(Timer == 1)
+            {
+                _startCenter = Projectile.Center;
+            }
+
             Vector2 endCenter = Target.Center;
             float flyTime = 180f;
             _completionRatio = Timer / flyTime;
@@ -61,7 +66,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
 
         private float WidthFunction(float completionRatio)
         {
-            return MathHelper.SmoothStep(0, 32, completionRatio) * EasingFunction.InExpo(_completionRatio);
+            return MathHelper.SmoothStep(16, 0, completionRatio) * EasingFunction.InExpo(_completionRatio);
         }
 
         public void DrawPixelated()

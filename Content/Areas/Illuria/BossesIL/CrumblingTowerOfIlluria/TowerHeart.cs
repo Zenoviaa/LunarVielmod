@@ -35,7 +35,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.height = 32;
             NPC.damage = 100;
             NPC.defense = 33;
-            NPC.lifeMax = 500;
+            NPC.lifeMax = 1000;
             NPC.scale = 1f;
             NPC.aiStyle = -1;
 
@@ -76,7 +76,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.HitInfo hitInfo = NPC.CalculateHitInfo(Parent.lifeMax / 16, 1, true, 0, DamageClass.Generic);
             NPC.StrikeNPC(hitInfo, fromNet: false);
             NetMessage.SendStrikeNPC(Parent, hitInfo);
-            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<CrumblingSoul>(), 0, 0, Main.myPlayer,
+            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<CrumblingSoul>(), 1, 1, Main.myPlayer,
                 ai1: Parent.whoAmI);
         }
 
