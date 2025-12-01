@@ -9,6 +9,8 @@ using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
+using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -30,7 +32,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
     public class CrumblingTowerOfIlluria : ScarletBoss,
         IDrawOutlines
     {
+        private bool _inPhase2;
         private bool _showNamePlate;
+        private bool _setTowerPosition;
         private TowerOfIlluraDraw _draw;
         private enum AIState
         {
@@ -40,8 +44,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             Death,
 
             LaserBolt,
-
+            PhaseTransition,
         }
+
+
         private ref float Timer => ref NPC.ai[0];
         private AIState State
         {
@@ -49,8 +55,23 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             set => NPC.ai[1] = (float)value;
         }
 
+        private bool AllHeartsDead => !NPC.AnyNPCs(ModContent.NPCType<TowerHeart>());
         private Color TargetOutlineColor;
         private int IllurianSnipeDamage => 28;
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(_setTowerPosition);
+            writer.Write(_inPhase2);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _setTowerPosition = reader.ReadBoolean();
+            _inPhase2 = reader.ReadBoolean();   
+        }
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -97,6 +118,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 }
             }
             _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
+            //Check for all hearts dying to do the phase transition
+            if(!_inPhase2 && AllHeartsDead)
+            {
+                SwitchState(AIState.PhaseTransition);
+                _inPhase2 = true;
+            }
+
+            ManageTowerPosition();
             switch (State)
             {
                 case AIState.Spawn:
@@ -114,6 +143,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 case AIState.LaserBolt:
                     AI_LaserBolt();
                     break;
+                case AIState.PhaseTransition:
+                    AI_PhaseTransition();
+                    break;
             }
         }
 
@@ -127,6 +159,31 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             }
         }
 
+        #region Tower of Illuria
+        private void ManageTowerPosition()
+        {
+            if (!_setTowerPosition)
+            {
+                Vector2 ground = FindGround();
+                _draw.towerDrawCenter = ground;
+                NPC.Center = ground - new Vector2(0, 250);
+                NPC.netUpdate = true;
+                _setTowerPosition = true;
+            }
+        }
+
+        private Vector2 FindGround()
+        {
+            Vector2 groundPoint = CollisionHelper.RayCast(NPC.Top, Vector2.UnitY, 2000, 3);
+            return groundPoint;
+        }
+
+        #endregion
+        private void AI_PhaseTransition()
+        {
+
+        }
+
         private void AI_LaserBolt()
         {
             Timer++;
@@ -135,10 +192,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 NPC.TargetClosest();
             }
 
-            if (MultiplayerHelper.IsHost)
+            TargetOutlineColor = Color.Yellow;
+            NPC.velocity.Y *= 0.9f;
+            NPC.velocity.X = 0;
+            if(Timer == 60 && MultiplayerHelper.IsHost)
             {
                 Projectile.NewProjectile(SourceFromThis, NPC.Top, Vector2.UnitX * 8,
                     ModContent.ProjectileType<IllurianSnipe>(), IllurianSnipeDamage, 1, Main.myPlayer);
+            }
+
+            if(Timer >= 120)
+            {
+                SwitchState(AIState.Idle);
             }
         }
 
@@ -177,7 +242,30 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 ShowNamePlate();
                 _showNamePlate = true;
             }
+  
+            _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
+            NPC.noTileCollide = true;
+            NPC.noGravity = true;
+            NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 0.5f + 0.5f;
+            NPC.velocity.X = 0;
+            NPC.rotation = 0;
+            TargetOutlineColor = Color.Transparent;
+            if(Timer >= 100)
+            {
+                if (!_inPhase2)
+                {
+                    ChoosePhase1Attack();
+                }    
+            }
+        }
 
+        private void ChoosePhase1Attack()
+        {
+            SwitchState(AIState.LaserBolt);
+        }
+
+        private void ChoosePhase2Attack()
+        {
 
         }
 
