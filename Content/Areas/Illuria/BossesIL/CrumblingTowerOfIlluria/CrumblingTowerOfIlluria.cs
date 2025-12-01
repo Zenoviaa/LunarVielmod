@@ -19,9 +19,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
     public struct TowerOfIlluraDraw
     {
         public Color outlineColor;
+        public Vector2 towerDrawCenter;
+        public float afterImageAlpha;
         public void SetDefaults()
         {
             outlineColor = Color.Transparent;
+            afterImageAlpha = 1f;
         }
     }
     public class CrumblingTowerOfIlluria : ScarletBoss,
@@ -63,7 +66,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             base.SetDefaults();
             _draw.SetDefaults();
             NPC.width = 64;
-            NPC.height = 128;
+            NPC.height = 64;
             NPC.damage = 100;
             NPC.defense = 33;
             NPC.lifeMax = 18000;
@@ -208,13 +211,63 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
 
 
         #region Draw Code
-        private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            DrawAfterImages(spriteBatch, screenPos, drawColor);
+            DrawBase(spriteBatch, screenPos, drawColor);
+            DrawSprite(spriteBatch, screenPos, drawColor);
+            DrawGlow(spriteBatch, screenPos, drawColor);
+            return false;
+        }
+
+        private void DrawAfterImages(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            int trailLength = NPC.oldPos.Length;
+            for(int i = 0; i < trailLength; i++)
+            {
+                float f = i;
+                float numAfterImages = trailLength;
+                float completionRatio = f / numAfterImages;
+                Color afterImageColor = Color.Lerp(Color.White, Color.Transparent, completionRatio);
+                afterImageColor *= 0.2f;
+                afterImageColor *= _draw.afterImageAlpha;
+                Vector2 drawPosition = NPC.oldPos[i] + NPC.Size / 2f;
+                DrawSprite(spriteBatch, drawPosition - screenPos, afterImageColor);
+            }
+        }
+
+        private void DrawBase(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D towerTexture = ModContent.Request<Texture2D>(Texture + "_Tower").Value;
+            Rectangle? frame = null;
+            Vector2 drawOrigin = towerTexture.Size() / 2f;
+            Vector2 drawCenter = _draw.towerDrawCenter - screenPos;
+            spriteBatch.Draw(towerTexture, drawCenter, frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0);
+        }
+
+        private void DrawSprite(SpriteBatch spriteBatch, Vector2 drawPosition, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Rectangle frame = NPC.frame;
             Vector2 drawOrigin = frame.Size() / 2f;
-            Vector2 drawCenter = NPC.Center - screenPos;
-            spriteBatch.Draw(texture, drawCenter, frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPosition, frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0);
+        }
+
+        private void DrawGlow(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            float numAfterImages = 8;
+            for(float n = 0; n < numAfterImages; n++)
+            {
+                float completionRatio = n / numAfterImages;
+                float rot = MathHelper.TwoPi * completionRatio;
+                Vector2 offset = rot.ToRotationVector2();
+                offset *= ExtraMath.Osc(16, 24, speed: 2);
+                Color glowColor = Color.White;
+                glowColor.A = 0;
+                glowColor *= 0.2f;
+                glowColor *= ExtraMath.Osc(0.2f, 0.5f, speed: 1);
+                DrawSprite(spriteBatch, NPC.Center - screenPos + offset, glowColor);
+            }
         }
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
@@ -222,10 +275,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             float outlineOffset = 2;
             Vector2 v = Vector2.UnitX * outlineOffset;
             Vector2 h = Vector2.UnitY * outlineOffset;
-            DrawSprite(spriteBatch, screenPos + v, _draw.outlineColor);
-            DrawSprite(spriteBatch, screenPos - v, _draw.outlineColor);
-            DrawSprite(spriteBatch, screenPos + h, _draw.outlineColor);
-            DrawSprite(spriteBatch, screenPos - h, _draw.outlineColor);
+            DrawSprite(spriteBatch, NPC.Center - screenPos + v, _draw.outlineColor);
+            DrawSprite(spriteBatch, NPC.Center - screenPos - v, _draw.outlineColor);
+            DrawSprite(spriteBatch, NPC.Center - screenPos + h, _draw.outlineColor);
+            DrawSprite(spriteBatch, NPC.Center - screenPos - h, _draw.outlineColor);
         }
         #endregion
     }
