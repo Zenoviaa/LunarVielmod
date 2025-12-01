@@ -1,6 +1,7 @@
 
 
-Add flaming trail on every fast moving things
+// Add flaming trail on every fast moving things
+
 Footstep circles underneath the boss
 make the background scale in and out
 Scale and flip from center of boss not head, trails should also start like that too
