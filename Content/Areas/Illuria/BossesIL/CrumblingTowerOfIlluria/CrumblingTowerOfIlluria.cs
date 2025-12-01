@@ -755,7 +755,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 for(float n = 0; n < numDust; n++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(64, 64);
-                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), vel, newColor: Color.Cyan, Scale: Main.rand.NextFloat(0.5f, 3f));
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), vel, newColor: Color.Cyan, Scale: Main.rand.NextFloat(0.5f, 1f));
                 }
                 for (float f = 0; f < 3; f++)
                 {
