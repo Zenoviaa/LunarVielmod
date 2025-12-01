@@ -50,7 +50,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
 
             BouncingIdle,
             WhiteWhips,
-            DiscoHead
+            DiscoHead,
+
+            SpawnIdle
         }
 
 
@@ -163,6 +165,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             ManageTowerPosition();
             switch (State)
             {
+                case AIState.SpawnIdle:
+                    AI_SpawnIdle();
+                    break;
                 case AIState.Spawn:
                     AI_Spawn();
                     break;
@@ -410,9 +415,45 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             }
         }
 
+
         private void AI_DiscoHead()
         {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+                float numDust = 8;
+                for (float d = 0; d < numDust; d++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                    Vector2 spawnPos = NPC.Center;
+                    Dust.NewDustPerfect(spawnPos, ModContent.DustType<GlowDust>(), velocity,
+                        newColor: Color.White,
+                        Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                }
+            }
 
+            NPC.noGravity = true;
+            NPC.velocity.X = 0;
+            NPC.velocity.Y = 0;
+            TargetOutlineColor = Color.Yellow;
+            float totalNumLights = 36;
+            if (Timer % 16 == 0)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    float radians = Main.rand.NextFloat(0f, 1f) * MathHelper.TwoPi;
+                    Vector2 velocity = radians.ToRotationVector2();
+                    velocity *= 256;
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
+                        ModContent.ProjectileType<DiscoLight>(), WhiteWhipDamage, 1, Main.myPlayer);
+                    AttackCounter++;
+                    if (AttackCounter >= totalNumLights)
+                    {
+                        SwitchState(AIState.BouncingIdle);
+                    }
+                }
+            }
         }
 
         private void AI_LaserBolt()
@@ -436,6 +477,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             {
                 SwitchState(AIState.Idle);
             }
+        }
+
+        private void AI_SpawnIdle()
+        {
+
         }
 
         private void AI_Spawn()
