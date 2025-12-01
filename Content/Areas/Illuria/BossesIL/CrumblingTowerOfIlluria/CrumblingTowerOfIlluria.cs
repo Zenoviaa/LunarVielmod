@@ -128,7 +128,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.noTileCollide = false;
             NPC.npcSlots = 30f;
 
-            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/SanguineSingularity");
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MothlightBoss");
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         }
