@@ -43,6 +43,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private bool _setTowerPosition;
         private bool _summonedHearts;
         private Vector2 _shakeOffset;
+        private Vector2 _startDeath;
         private TowerOfIlluraDraw _draw;
         private enum AIState
         {
@@ -98,12 +99,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             base.SendExtraAI(writer);
             writer.Write(_setTowerPosition);
             writer.Write(_inPhase2);
+            writer.WriteVector2(_startDeath);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             _setTowerPosition = reader.ReadBoolean();
             _inPhase2 = reader.ReadBoolean();
+            _startDeath = reader.ReadVector2();
         }
 
         public override void SetStaticDefaults()
@@ -715,6 +718,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private void AI_Death()
         {
             Timer++;
+            if(Timer == 1)
+            {
+                _startDeath = NPC.Center;
+            }
+
             if (Timer % 16 == 0)
             {
                 if (MultiplayerHelper.IsHost)
@@ -741,9 +749,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             ShakeModSystem.Shake = 4;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
-            NPC.velocity.X *= 0.95f;
-            NPC.velocity.Y *= 0.95f;
-            if (Timer >= 400)
+
+            float deathTime = 400;
+            float completionRatio = Timer / deathTime;
+            float ease = EasingFunction.Anticipation2(completionRatio);
+            Vector2 endDeath = _startDeath + new Vector2(0, -252);
+            Vector2 inBetwen = Vector2.Lerp(_startDeath, endDeath, ease);
+            Vector2 v = (inBetwen - NPC.Center);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, v, 0.1f);
+
+            if (Timer >= deathTime)
             {
                 FXUtil.ShakeCamera(NPC.position, 1024, 32);
                 ShakeModSystem.Shake = 20;
