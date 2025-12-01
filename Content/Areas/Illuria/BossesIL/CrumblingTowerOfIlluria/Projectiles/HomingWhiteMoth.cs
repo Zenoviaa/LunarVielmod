@@ -26,12 +26,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Projectile.hostile = true;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
+            Projectile.timeLeft = 120;
         }
 
         public override void AI()
         {
             base.AI();
             Timer++;
+
+
             Player closest = PlayerHelper.FindClosestPlayer(Projectile.position, 2000);
             if(closest != null)
             {
@@ -47,6 +50,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
                 Dust.NewDustPerfect(Projectile.Center, DustID.GemDiamond, Main.rand.NextVector2Circular(1, 1));
             }
 
+            float inTime = 30f;
+            float inRatio = Timer / inTime;
+            float ease = EasingFunction.InOutSine(inRatio);
+            float inScale = MathHelper.Lerp(0f, 1f, ease);
+            Projectile.scale = inScale;
             Projectile.rotation = Projectile.velocity.X * 0.05f;
             DrawHelper.AnimateTopToBottom(Projectile, 4);
         }

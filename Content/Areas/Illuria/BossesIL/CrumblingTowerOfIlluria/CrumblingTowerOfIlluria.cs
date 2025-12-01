@@ -84,6 +84,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private int IllurianSnipeDamage => 28;
         private int ShockwaveDamage => 20;
         private int WhiteWhipDamage => 15;
+        private int HomingWhiteMothDamage => 18;
 
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -534,6 +535,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                     ChoosePhase1Attack();
                 }
             }
+
+            if(MultiplayerHelper.IsHost && Main.rand.NextBool(200))
+            {
+                Vector2 offset = Main.rand.NextVector2Circular(256, 256);
+                Vector2 spawnPos = NPC.Center + offset;
+                Vector2 velocity = -Vector2.UnitY * 6;
+
+                Projectile.NewProjectile(SourceFromThis, spawnPos, velocity, ModContent.ProjectileType<HomingWhiteMoth>(), HomingWhiteMothDamage, 1, Main.myPlayer);
+            }
         }
 
         private void ChoosePhase1Attack()
@@ -564,6 +574,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private void AI_Death()
         {
             Timer++;
+            NPC.noTileCollide = true;
+            NPC.noGravity = true;
+            NPC.velocity.X = 0;
+            NPC.velocity.Y = 0;
             if (Timer >= 200)
             {
                 NPC.Kill();
