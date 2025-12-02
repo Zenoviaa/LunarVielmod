@@ -137,11 +137,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Texture2D glowingBallTexture = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
             Vector2 drawOrigin = glowingBallTexture.Size() / 2f;
             Vector2 drawCenter = Projectile.Center - Main.screenPosition;
-            Color glowColor = Color.White;
+            Color glowColor = Color.Cyan;
             glowColor.A = 0;
             glowColor *= 0.5f;
-            glowColor *= ExtraMath.Osc(0f, 1f, speed: 8);
-            spriteBatch.Draw(glowingBallTexture, drawCenter, null, glowColor, Projectile.rotation, drawOrigin, Projectile.scale * 0.3f, SpriteEffects.None, 0);
+            glowColor *= ExtraMath.Osc(0.6f, 0.8f, speed: 8);
+            spriteBatch.Draw(glowingBallTexture, drawCenter, null, glowColor, 0, drawOrigin, Projectile.scale * 0.6f, SpriteEffects.None, 0);
         }
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

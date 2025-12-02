@@ -99,7 +99,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             float completionRatio = Timer / chargeTime;
             Projectile.Center = Parent.Center;
             Projectile.scale = MathHelper.Lerp(1.5f, 1f, EasingFunction.Anticipation2(completionRatio));
-            if(Timer % 10 == 0)
+            if(Timer % 20 == 0)
             {
                 Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2CircularEdge(200, 200);
                 Vector2 spawnVelocity = (Projectile.Center - spawnPos).SafeNormalize(Vector2.Zero);
