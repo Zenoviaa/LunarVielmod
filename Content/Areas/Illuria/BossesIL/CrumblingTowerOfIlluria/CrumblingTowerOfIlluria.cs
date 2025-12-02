@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
 using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Projectiles;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles;
@@ -574,9 +575,24 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             float completionRatio = Timer / scatterTime;
             _draw.scale = Vector2.Lerp(Vector2.One * 1.05f, Vector2.One * 1f, completionRatio);
             _shakeOffset = Main.rand.NextVector2Circular(2, 2);
-            NPC.velocity.X *= 0.9f;
-            Hover();
-            if(Timer % 30 == 0)
+
+            NPC.velocity.X *= 0.95f;
+            NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer * 0.05f) * 2, 0.2f);
+
+            Vector2 ground = FindGround();
+            float yGroundDist = MathF.Abs(ground.Y - NPC.Center.Y);
+
+            float range = 150;
+            if (yGroundDist < range)
+            {
+                NPC.velocity.Y -= 1;
+            }
+            else if (MathF.Abs(NPC.velocity.Y) > 3)
+            {
+                NPC.velocity.Y *= 0.5f;
+            }
+
+            if (Timer % 30 == 0)
             {
                 var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
                 part.Scale *= 3;
@@ -694,6 +710,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.rotation += NPC.velocity.X * 0.03f;
             if (NPC.collideY)
             {
+                SoundStyle bounceSound = Main.rand.NextBool(2) ? AssetRegistry.Sounds.Bishinine.BellHit1 : AssetRegistry.Sounds.Bishinine.BellHit2;
+                bounceSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(bounceSound, NPC.position);
                 Squish();
                 if (MultiplayerHelper.IsHost)
                 {
@@ -773,10 +792,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                         newColor: Color.White, 
                         Scale: Main.rand.NextFloat(0.5f, 1.5f));
                 }
+
+                var magicalIce = AssetRegistry.Sounds.Illuria.MagicalIce;
+                magicalIce.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(magicalIce, NPC.position);
             }
 
-            NPC.velocity.X *= 0.9f;
-            NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer * 0.05f) * 0.5f, 0.2f);
+            NPC.velocity.X *= 0.95f;
+            NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer * 0.05f) * 2, 0.2f);
         
             Vector2 ground = FindGround();
             float yGroundDist = MathF.Abs(ground.Y - NPC.Center.Y);
@@ -807,6 +830,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 if (MultiplayerHelper.IsHost)
                 {
                     float radians = (AttackCounter / totalNumWhips) * MathHelper.TwoPi * loops;
+                    radians += Timer * 0.05f;
                     radians *= 2;
                     Vector2 velocity = radians.ToRotationVector2();
                     velocity *= 7;
@@ -859,6 +883,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 SoundStyle boom = new SoundStyle("Stellamod/Assets/Sounds/RocketExplosion");
                 boom.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(boom, NPC.position);
+
+                SoundStyle bounceSound = AssetRegistry.Sounds.Bishinine.BigBellGroundhit;
+                bounceSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(bounceSound, NPC.position);
                 if (MultiplayerHelper.IsHost)
                 {
                     //This is the part where you spawn the cool ahh shockwaves

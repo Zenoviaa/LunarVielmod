@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Stellamod.Tiles.SpecialDecorativeWall;
@@ -40,6 +42,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
         {
             base.AI();
             Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle holySound = Main.rand.NextBool(2) ? AssetRegistry.Sounds.Magic.HolyCast1 : AssetRegistry.Sounds.Magic.HolyCast2;
+                holySound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(holySound, Projectile.position);
+            }
             if (Timer < 60)
             {
                 _outlineColor = Color.Lerp(_outlineColor, Color.Yellow, 0.1f);
@@ -83,6 +91,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Projectile.scale = inScale;
             Projectile.rotation = Projectile.velocity.X * 0.05f;
             DrawHelper.AnimateTopToBottom(Projectile, 4);
+            Lighting.AddLight(Projectile.Center, TorchID.Ice);
         }
 
         private Color ColorFunction(float completionRatio)

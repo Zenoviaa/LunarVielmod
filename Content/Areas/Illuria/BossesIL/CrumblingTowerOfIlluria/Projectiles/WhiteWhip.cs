@@ -46,7 +46,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Projectile.timeLeft = 300;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
-            Projectile.tileCollide = false;
+            Projectile.tileCollide = true;
             Projectile.extraUpdates = 1;
         }
 
@@ -181,6 +181,25 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
                 TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, ColorFunction, WidthFunction, shader);
             }
 
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            float numDust = 3;
+            for (float n = 0; n < numDust; n++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
+                velocity += -Projectile.oldVelocity * Main.rand.NextFloat(0.5f, 1f);
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), velocity, newColor: Color.Cyan, Scale: Main.rand.NextFloat(0.4f, 0.75f));
+            }
+            var part = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Cyan, Color.Blue);
+            part.Scale *= 0.66f;
+
+            SoundStyle hitSound = Main.rand.NextBool(2) ? AssetRegistry.Sounds.Illuria.IceImpact1 : AssetRegistry.Sounds.Illuria.IceImpact2;
+            hitSound.PitchVariance = 0.3f;
+            hitSound.Volume = 0.5f;
+            SoundEngine.PlaySound(hitSound, Projectile.position);
         }
     }
 }

@@ -165,6 +165,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             }
             var part = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Cyan, Color.Blue);
             part.Scale *= 0.66f;
+
+            SoundStyle hitSound = Main.rand.NextBool(2) ? AssetRegistry.Sounds.Illuria.IceImpact1 : AssetRegistry.Sounds.Illuria.IceImpact2;
+            hitSound.PitchVariance = 0.3f;
+            hitSound.Volume = 0.5f;
+            SoundEngine.PlaySound(hitSound, Projectile.position);
         }
 
         private Color ColorFunction(float completionRatio)
