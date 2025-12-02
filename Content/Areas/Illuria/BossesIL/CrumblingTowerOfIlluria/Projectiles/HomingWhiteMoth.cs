@@ -62,7 +62,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
 
             if(Timer % 8 == 0)
             {
-                Dust.NewDustPerfect(Projectile.Center, DustID.GemDiamond, Main.rand.NextVector2Circular(1, 1));
+                var d = Dust.NewDustPerfect(Projectile.Center, DustID.GemDiamond, Main.rand.NextVector2Circular(1, 1));
+                d.noGravity = true;
             }
             if(Projectile.timeLeft == 2)
             {

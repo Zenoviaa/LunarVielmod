@@ -76,7 +76,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             Roll_End,
 
             Scatter_Start,
-            Scatter
+            Scatter,
+
+            Scatter_TopStart,
+            Scatter_Top
         }
 
 
@@ -115,7 +118,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                         new Tuple<AIState, float>(AIState.WhiteWhips, 1.0f),
                         new Tuple<AIState, float>(AIState.DiscoHead, 1.0f),
                         new Tuple<AIState, float>(AIState.Roll_Fall, 1.0f),
-                        new Tuple<AIState, float>(AIState.MegaSlam, 2.0f));
+                        new Tuple<AIState, float>(AIState.MegaSlam, 2.0f),
+                        new Tuple<AIState, float>(AIState.Scatter_TopStart, 1.0f));
                 }
                 return _p2PatternBackingField;
             }
@@ -312,6 +316,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 case AIState.Scatter:
                     AI_Scatter();
                     break;
+
+                case AIState.Scatter_TopStart:
+                    AI_ScatterTopStart();
+                    break;
+                case AIState.Scatter_Top:
+                    AI_ScatterTop();
+                    break;
             }
         }
 
@@ -327,17 +338,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
 
         #region Tower of Illuria
 
-        private void SummonExplodingMoths()
-        {
-            if (!MultiplayerHelper.IsHost)
-                return;
-
-            Vector2 leftMothPos = NPC.Center + new Vector2(-100, Main.rand.NextFloat(-100f, 100f));
-            Projectile.NewProjectile(SourceFromThis, leftMothPos, Vector2.Zero, ModContent.ProjectileType<ExplodingMoth>(), ExplodingMothDamage, 1, Main.myPlayer);
-
-            Vector2 rightMothPos = NPC.Center + new Vector2(100, Main.rand.NextFloat(-100f, 100f));
-            Projectile.NewProjectile(SourceFromThis, rightMothPos, Vector2.Zero, ModContent.ProjectileType<ExplodingMoth>(), ExplodingMothDamage, 1, Main.myPlayer);
-        }
         private void SummonHearts()
         {
             if (!MultiplayerHelper.IsHost)
@@ -464,7 +464,63 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 particle.VectorScale *= 0.5f;
             }
         }
-        
+
+        private void AI_ScatterTopStart()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+            float releaseTime = 60;
+            float completionRatio = Timer / releaseTime;
+            float ease = EasingFunction.Anticipation(completionRatio);
+            _draw.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.1f, ease);
+            TargetOutlineColor = Color.Yellow;
+            if (Timer >= releaseTime)
+            {
+                SwitchState(AIState.Scatter_Top);
+            }
+        }
+
+        private void AI_ScatterTop()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+
+
+            TargetOutlineColor = Color.Yellow;
+            float scatterTime = 120;
+            float completionRatio = Timer / scatterTime;
+            _draw.scale = Vector2.Lerp(Vector2.One * 1.1f, Vector2.One, completionRatio);
+            NPC.velocity.X *= 0.9f;
+            if (Timer % 20 == 0)
+            {
+                var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
+                part.Scale *= 4;
+                part.shrink = true;
+                part.noStretch = true;
+                if (MultiplayerHelper.IsHost)
+                {
+
+                    Vector2 leftMothPos = NPC.Center + new Vector2(-100, Main.rand.NextFloat(-100f, 100f));
+                    Projectile.NewProjectile(SourceFromThis, leftMothPos, Vector2.Zero, ModContent.ProjectileType<ExplodingMoth>(), ExplodingMothDamage, 1, Main.myPlayer);
+
+                    Vector2 rightMothPos = NPC.Center + new Vector2(100, Main.rand.NextFloat(-100f, 100f));
+                    Projectile.NewProjectile(SourceFromThis, rightMothPos, Vector2.Zero, ModContent.ProjectileType<ExplodingMoth>(), ExplodingMothDamage, 1, Main.myPlayer);
+                }
+            }
+
+            if (Timer >= scatterTime)
+            {
+                SwitchState(AIState.BouncingIdle);
+            }
+        }
+
+
         private void AI_ScatterStart()
         {
             Timer++;
@@ -475,7 +531,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             float releaseTime = 60;
             float completionRatio = Timer / releaseTime;
             float ease = EasingFunction.Anticipation(completionRatio);
-            _draw.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.5f, ease);
+            _draw.scale = Vector2.Lerp(Vector2.One * 0.9f, Vector2.One * 1.05f, ease);
+            Hover();
             TargetOutlineColor = Color.Yellow;
             if(Timer >= releaseTime)
             {
@@ -496,13 +553,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             TargetOutlineColor = Color.Yellow;
             float scatterTime = 120;
             float completionRatio = Timer / scatterTime;
-            _draw.scale = Vector2.Lerp(Vector2.One * 1.5f, Vector2.One, completionRatio);
+            _draw.scale = Vector2.Lerp(Vector2.One * 1.05f, Vector2.One * 1f, completionRatio);
+            _shakeOffset = Main.rand.NextVector2Circular(2, 2);
             NPC.velocity.X *= 0.9f;
-            if(Timer % 20 == 0) 
+            Hover();
+            if(Timer % 30 == 0)
             {
+                var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
+                part.Scale *= 4;
+                part.shrink = true;
+                part.noStretch = true;
                 if (MultiplayerHelper.IsHost)
                 {
-                    Projectile.NewProjectile(SourceFromThis, NPC.Center, Main.rand.NextVector2CircularEdge(5, 5), 
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center, Main.rand.NextVector2CircularEdge(3, 3), 
                         ModContent.ProjectileType<HomingWhiteMoth>(), HomingWhiteMothDamage, 1, Main.myPlayer);
                 }
             
@@ -663,11 +726,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, 
                     ModContent.DustType<Sparkle>());
-            }
-
-            if(Timer == 180)
-            {
-                SummonExplodingMoths();
             }
 
             if(Timer >= 360 && NPC.velocity.Y < -2)
