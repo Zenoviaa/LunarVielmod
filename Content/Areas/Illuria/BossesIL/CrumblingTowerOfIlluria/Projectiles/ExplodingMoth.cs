@@ -124,15 +124,34 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Timer = 0;
             Projectile.netUpdate = true;
         }
+        private Vector2 FindCeiling()
+        {
+            Vector2 groundPoint = CollisionHelper.RayCast(Projectile.Top, -Vector2.UnitY, 2000, 3);
+            return groundPoint;
+        }
 
         private void AI_Idle()
         {
             _outlineColor = Color.Yellow;
 
-            Projectile.velocity.X = 0;
+            Projectile.velocity.X = MathF.Sin(Timer * 0.05f) * 4;
             Projectile.velocity.Y = MathF.Sin(Timer * 0.05f) * 0.5f;
+            Vector2 ceiling = FindCeiling();
+            float yDist = MathF.Abs(ceiling.Y - Projectile.Center.Y);
+            if(yDist > 64)
+            {
+                Projectile.velocity.Y -= 2;
+            }
+            else if (yDist < 64)
+            {
+                Projectile.velocity.Y += 2;
+            }
+            else
+            {
+                Projectile.velocity.Y *= 0.5f;
+            }
 
-            float inTime = 30f;
+                float inTime = 30f;
             float inRatio = Timer / inTime;
             float ease = EasingFunction.InOutSine(inRatio);
             float inScale = MathHelper.Lerp(0f, 1f, ease);
@@ -151,6 +170,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
                     {
                         SwitchState(AIState.Explode);
                     }
+                }
+                float xDistance = MathF.Abs(closest.Center.X - Projectile.Center.X);
+                if(xDistance > 32)
+                {
+                    Projectile.velocity.X += MathF.Sign(closest.Center.X - Projectile.Center.X) * 2;
                 }
             }
         }

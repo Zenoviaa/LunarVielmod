@@ -36,7 +36,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.height = 32;
             NPC.damage = 100;
             NPC.defense = 33;
-            NPC.lifeMax = 1000;
+            NPC.lifeMax = 2000;
             NPC.scale = 1f;
             NPC.aiStyle = -1;
 

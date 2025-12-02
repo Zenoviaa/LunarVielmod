@@ -49,6 +49,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private bool _summonedHearts;
         private Vector2 _shakeOffset;
 
+        private float _squishTimer;
+        private Vector2 _squishScale;
+        private Vector2 _startSquish;
+
         private Vector2 _startDeath;
         private Vector2 _rollVelocity;
         private TowerOfIlluraDraw _draw;
@@ -166,11 +170,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         {
             base.SetDefaults();
             _draw.SetDefaults();
+            _squishScale = Vector2.One;
             NPC.width = 100;
             NPC.height = 100;
             NPC.damage = 100;
-            NPC.defense = 40;
-            NPC.lifeMax = 12000;
+            NPC.defense = 30;
+            NPC.lifeMax = 28000;
             NPC.scale = 1f;
             NPC.aiStyle = -1;
 
@@ -231,6 +236,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
 
         }
 
+        private void KillAllProjectiles()
+        {
+            foreach(var proj in Main.ActiveProjectiles)
+            {
+                if (proj.type == ModContent.ProjectileType<IllurianSnipe>() || proj.type == ModContent.ProjectileType<HomingWhiteMoth>())
+                    proj.Kill();
+            }
+        }
         public override void AI()
         {
             base.AI();
@@ -254,6 +267,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 _heartCount = newHeartCount;
                 SwitchState(AIState.LaserBolt_Enrage);
             }
+            _squishTimer++;
+            float squishTime = 30;
+            float squishCompletionRatio = _squishTimer / squishTime;
+            float ease = EasingFunction.InOutSine(squishCompletionRatio);
+            _squishScale = Vector2.Lerp(_startSquish, Vector2.One, ease);
             Inner_AI();
         }
         private void Inner_AI()
@@ -398,6 +416,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             {
                 NPC.TargetClosest();
                 NPC.velocity.Y = -5;
+                KillAllProjectiles();
             }
 
             TargetOutlineColor = Color.Yellow;
@@ -496,7 +515,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             float scatterTime = 120;
             float completionRatio = Timer / scatterTime;
             _draw.scale = Vector2.Lerp(Vector2.One * 1.1f, Vector2.One, completionRatio);
-            NPC.velocity.X *= 0.9f;
+
+            FloatAround();
             if (Timer % 20 == 0)
             {
                 var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
@@ -505,11 +525,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 part.noStretch = true;
                 if (MultiplayerHelper.IsHost)
                 {
-
-                    Vector2 leftMothPos = NPC.Center + new Vector2(-100, Main.rand.NextFloat(-100f, 100f));
+                    Vector2 leftMothPos = NPC.Top + new Vector2(-Main.rand.NextFloat(0, 50), Main.rand.NextFloat(-100f, 0));
                     Projectile.NewProjectile(SourceFromThis, leftMothPos, Vector2.Zero, ModContent.ProjectileType<ExplodingMoth>(), ExplodingMothDamage, 1, Main.myPlayer);
 
-                    Vector2 rightMothPos = NPC.Center + new Vector2(100, Main.rand.NextFloat(-100f, 100f));
+                    Vector2 rightMothPos = NPC.Top + new Vector2(Main.rand.NextFloat(0, 50), Main.rand.NextFloat(-100f, 0));
                     Projectile.NewProjectile(SourceFromThis, rightMothPos, Vector2.Zero, ModContent.ProjectileType<ExplodingMoth>(), ExplodingMothDamage, 1, Main.myPlayer);
                 }
             }
@@ -560,7 +579,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             if(Timer % 30 == 0)
             {
                 var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
-                part.Scale *= 4;
+                part.Scale *= 3;
                 part.shrink = true;
                 part.noStretch = true;
                 if (MultiplayerHelper.IsHost)
@@ -653,6 +672,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             Timer++;
             NPC.velocity.X *= 0.95f;
             NPC.rotation += NPC.velocity.X * 0.5f;
+            if(Timer == 58)
+            {
+                NPC.velocity.Y = -7;
+            }
             if(Timer >= 60)
             {
                 SwitchState(AIState.BouncingIdle);
@@ -671,6 +694,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.rotation += NPC.velocity.X * 0.03f;
             if (NPC.collideY)
             {
+                Squish();
                 if (MultiplayerHelper.IsHost)
                 {
                     if (_miniBounceCount <= 0)
@@ -751,13 +775,33 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 }
             }
 
-            Bounce();
+            NPC.velocity.X *= 0.9f;
+            NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer * 0.05f) * 0.5f, 0.2f);
+            Vector2 ground = FindGround();
+            float yGroundDist = MathF.Abs(ground.Y - NPC.Center.Y);
+
+            float range = 150;
+            if (yGroundDist < range)
+            {
+                NPC.velocity.Y -= 1;
+            }
+            else
+            {
+                NPC.velocity.Y *= 0.5f;
+            }
+    
+
+            NPC.rotation += NPC.velocity.X * 0.05f + 0.05f;
+            NPC.noGravity = true;
+
+
+            //Bounce();
              TargetOutlineColor = Color.Yellow;
 
     
-            float totalNumWhips = 18;
+            float totalNumWhips = 36;
             float loops = 4;
-            if(Timer % 20 == 0 && Timer < 100)
+            if(Timer % 10 == 0 && Timer < 100)
             {
                 if (MultiplayerHelper.IsHost)
                 {
@@ -768,15 +812,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                     Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity, 
                         ModContent.ProjectileType<WhiteWhip>(), WhiteWhipDamage, 1, Main.myPlayer, ai2: NPC.whoAmI);
                     AttackCounter++;
-                    if(AttackCounter >= totalNumWhips)
-                    {
-                        SwitchState(AIState.BouncingIdle);
-                    }
+       
                 }
             }
             if(Timer >= 200)
             { 
                 Timer = 0;
+                if (AttackCounter >= totalNumWhips)
+                {
+                    SwitchState(AIState.BouncingIdle);
+                }
             }
         }
 
@@ -796,6 +841,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.velocity.X *= 0.95f;
             if(NPC.velocity.Y < 25)
                 NPC.velocity.Y += 0.5f;
+
+            bool isAbovePlayer = MyTarget.Top.Y > NPC.Bottom.Y;
+            NPC.noTileCollide = NPC.velocity.Y < 0 || isAbovePlayer;
             if (Timer % 5 == 0)
             {
                 var p2 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, -NPC.velocity);
@@ -804,6 +852,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             TargetOutlineColor = Color.Yellow;
             if (NPC.collideY)
             {
+                Squish();
                 ShakeModSystem.Shake = 16;
                 FXUtil.ShakeCamera(NPC.position, 1024, 129);
                 SoundStyle boom = new SoundStyle("Stellamod/Assets/Sounds/RocketExplosion");
@@ -826,6 +875,45 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 SwitchState(AIState.BouncingIdle);
             }
         }
+        private Vector2 FindCeiling()
+        {
+            Vector2 groundPoint = CollisionHelper.RayCast(NPC.Bottom, -Vector2.UnitY, 2000, 3);
+            return groundPoint;
+        }
+
+        private void FloatAround()
+        {
+
+            NPC.velocity.X *= 0.9f;
+            if (NPC.collideX)
+            {
+                NPC.velocity.X *= -1;
+            }
+
+            Vector2 ceiling = FindCeiling();
+            float yDist = MathF.Abs(ceiling.Y - NPC.Center.Y);
+
+
+            Vector2 ground = FindGround();
+            float yGroundDist = MathF.Abs(ground.Y - NPC.Center.Y);
+
+            float range = 150;
+            if (yDist < range)
+            {
+                NPC.velocity.Y += 1;
+            }
+            else if (yGroundDist < range)
+            {
+                NPC.velocity.Y -= 1;
+            }
+            else
+            {
+                NPC.velocity.Y *= 0.5f;
+            }
+            NPC.rotation += NPC.velocity.X * 0.02f + 0.02f;
+            NPC.noGravity = true;
+
+        }
         private void AI_DiscoHead()
         {
             Timer++;
@@ -834,17 +922,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 NPC.TargetClosest();
             }
 
+
             if (Timer % 10 == 0)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height,
                     ModContent.DustType<Sparkle>());
             }
 
-            if(NPC.velocity.Y > 1)
-            {
-                NPC.velocity.Y -= 0.5f;
-            }
-            Bounce();
+            FloatAround();
+
             TargetOutlineColor = Color.Yellow;
             float totalNumLights = 36;
             if (Timer % 16 == 0)
@@ -863,14 +949,20 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                     }
                 }
             }
-
-            if(Timer % 150 == 0)
+            float scatterTime = 159;
+            float completionRatio = Timer % 150 / scatterTime;
+            _draw.scale = Vector2.Lerp(Vector2.One * 1, Vector2.One * 1.2f, completionRatio);
+            if (Timer % 150 == 0)
             {
+                var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
+                part.Scale *= 3;
+                part.shrink = true;
+                part.noStretch = true;
                 if (MultiplayerHelper.IsHost)
                 {
-                    Vector2 offset = Main.rand.NextVector2Circular(32, 32);
+                    Vector2 offset = Main.rand.NextVector2Circular(16, 16);
                     Vector2 spawnPos = NPC.Center + offset;
-                    Vector2 velocity = -Vector2.UnitY * 4;
+                    Vector2 velocity = -Vector2.UnitY * 3.5f;
 
                     Projectile.NewProjectile(SourceFromThis, spawnPos, velocity, 
                         ModContent.ProjectileType<HomingWhiteMoth>(), HomingWhiteMothDamage, 1, Main.myPlayer);
@@ -958,6 +1050,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 SwitchState(AIState.Idle);
             }
         }
+
+        private void Squish()
+        {
+            _squishTimer = 0;
+            _squishScale = new Vector2(1.2f, 0.9f);
+            _startSquish = new Vector2(1.2f, 0.9f);
+        }
+
         private void Hover()
         {
             _hoverTimer++;
@@ -1199,7 +1299,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Rectangle frame = NPC.frame;
             Vector2 drawOrigin = frame.Size() / 2f;
-            spriteBatch.Draw(texture, drawPosition, frame, drawColor, NPC.rotation, drawOrigin, _draw.scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPosition, frame, drawColor, NPC.rotation, drawOrigin, _draw.scale * _squishScale, SpriteEffects.None, 0);
         }
 
         private void DrawGlow(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

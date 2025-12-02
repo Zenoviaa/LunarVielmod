@@ -46,8 +46,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Projectile.timeLeft = 300;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
-            Projectile.extraUpdates = 1;
             Projectile.tileCollide = false;
+            Projectile.extraUpdates = 1;
         }
 
         public override bool ShouldUpdatePosition()
@@ -83,24 +83,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
         private void AI_Charge()
         {
             Timer++;
-            if (Timer == 1)
-            {
-                float numDust = 2;
-                for (float d = 0; d < numDust; d++)
-                {
-                    Vector2 vel = Projectile.velocity;
-                    vel = vel.RotatedByRandom(0.3f);
-                    vel *= Main.rand.NextFloat(0.5f, 1f);
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), vel, newColor: Color.White);
-                }
 
-       
-            }
-
-            float chargeTime = 80f;
+            float chargeTime = 250f;
             float completionRatio = Timer / chargeTime;
             float ease = EasingFunction.QuadraticBump(completionRatio);
-            _bloomLineAlpha = MathHelper.Lerp(0f, 0.5f, ease);
+            _bloomLineAlpha = MathHelper.Lerp(0f, 0.7f, ease);
             Projectile.Center = Parent.Center;
             if (Timer >= chargeTime)
             {
@@ -113,13 +100,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             Timer++;
             if(Timer == 1)
             {
-                float numDust = 6;
+                float numDust = 5;
                 for (float f = 0; f < numDust; f++)
                 {
                     Vector2 dustVelocity = Projectile.velocity;
                     dustVelocity = dustVelocity.RotatedByRandom(0.25f);
-                    dustVelocity *= Main.rand.NextFloat(2, 9);
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), dustVelocity, newColor: Color.White, Scale: Main.rand.NextFloat(0.3f, 0.8f));
+                    dustVelocity *= Main.rand.NextFloat(0.3f, 1f);
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), dustVelocity, newColor: Color.White, Scale: Main.rand.NextFloat(0.3f, 0.5f));
                 }
 
                 var donut = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity, newColor: Color.Cyan);
