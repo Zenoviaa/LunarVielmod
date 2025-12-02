@@ -977,7 +977,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             hoverVelocity.Y = MathF.Sin(Timer * 0.125f) * 0.5f;
    
             if(xDistance > 200)
-                hoverVelocity.X = FacingDirectionToTarget;
+            {
+                float xSpeed = FacingDirectionToTarget * 3f;
+                hoverVelocity.X = xSpeed;
+            }
+           
 
           
             if(yDistance > 300)
