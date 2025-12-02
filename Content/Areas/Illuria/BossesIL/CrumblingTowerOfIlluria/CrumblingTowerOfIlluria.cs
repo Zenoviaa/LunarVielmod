@@ -777,6 +777,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
 
             NPC.velocity.X *= 0.9f;
             NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer * 0.05f) * 0.5f, 0.2f);
+        
             Vector2 ground = FindGround();
             float yGroundDist = MathF.Abs(ground.Y - NPC.Center.Y);
 
@@ -785,7 +786,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             {
                 NPC.velocity.Y -= 1;
             }
-            else
+            else if (MathF.Abs(NPC.velocity.Y) > 3)
             {
                 NPC.velocity.Y *= 0.5f;
             }

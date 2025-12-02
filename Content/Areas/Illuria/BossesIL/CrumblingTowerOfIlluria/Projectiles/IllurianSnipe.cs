@@ -140,7 +140,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
                 {
                     Vector2 dustVelocity = Projectile.velocity;
                     dustVelocity = dustVelocity.RotatedByRandom(0.25f);
-                    dustVelocity *= Main.rand.NextFloat(2, 9);
+                    dustVelocity *= Main.rand.NextFloat(0.5f, 1f);
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), dustVelocity, newColor: Color.White, Scale: Main.rand.NextFloat(0.3f, 0.8f));
                 }
 
