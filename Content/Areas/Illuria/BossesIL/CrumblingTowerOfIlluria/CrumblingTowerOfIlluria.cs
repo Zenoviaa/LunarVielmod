@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
 using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Projectiles;
+using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
@@ -24,10 +25,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         public Color outlineColor;
         public Vector2 towerDrawCenter;
         public float afterImageAlpha;
+        public Vector2 scale;
         public void SetDefaults()
         {
             outlineColor = Color.Transparent;
             afterImageAlpha = 1f;
+            scale = Vector2.One;
         }
     }
     public class CrumblingTowerOfIlluria : ScarletBoss,
@@ -35,6 +38,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
     {
 
         private float _enrageTimer;
+        private bool _contactDamage;
+        private float _miniBounceCount;
         private int _heartCount;
         private float _shineTimer;
         private float _hoverTimer;
@@ -43,7 +48,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private bool _setTowerPosition;
         private bool _summonedHearts;
         private Vector2 _shakeOffset;
+
         private Vector2 _startDeath;
+        private Vector2 _rollVelocity;
         private TowerOfIlluraDraw _draw;
         private enum AIState
         {
@@ -60,7 +67,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             WhiteWhips,
             DiscoHead,
 
-            SpawnIdle
+            SpawnIdle,
+            MegaSlam,
+
+            Roll_Fall,
+            Roll_Start,
+            Roll,
+            Roll_End,
+
+            Scatter_Start,
+            Scatter
         }
 
 
@@ -72,6 +88,22 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         }
         private ref float BounceTimer => ref NPC.ai[2];
         private ref float AttackCounter => ref NPC.ai[3];
+
+        private PatternManager<AIState> _p1PatternBackingField;
+        private PatternManager<AIState> P1PatternManager
+        {
+            get
+            {
+                if (_p1PatternBackingField == null)
+                {
+                    _p1PatternBackingField = new PatternManager<AIState>(
+                        new Tuple<AIState, float>(AIState.Scatter_Start, 1.0f),
+                        new Tuple<AIState, float>(AIState.LaserBolt, 1.0f));
+                }
+                return _p1PatternBackingField;
+            }
+        }
+
         private PatternManager<AIState> _p2PatternBackingField;
         private PatternManager<AIState> P2PatternManager
         {
@@ -81,7 +113,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 {
                     _p2PatternBackingField = new PatternManager<AIState>(
                         new Tuple<AIState, float>(AIState.WhiteWhips, 1.0f),
-                        new Tuple<AIState, float>(AIState.DiscoHead, 1.0f));
+                        new Tuple<AIState, float>(AIState.DiscoHead, 1.0f),
+                        new Tuple<AIState, float>(AIState.Roll_Fall, 1.0f),
+                        new Tuple<AIState, float>(AIState.MegaSlam, 2.0f));
                 }
                 return _p2PatternBackingField;
             }
@@ -94,12 +128,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private int WhiteWhipDamage => 15;
         private int HomingWhiteMothDamage => 18;
 
+        private int ExplodingMothDamage => 20;
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
             writer.Write(_setTowerPosition);
             writer.Write(_inPhase2);
             writer.WriteVector2(_startDeath);
+            writer.Write(_miniBounceCount);
+            writer.WriteVector2(_rollVelocity);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
@@ -107,6 +144,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             _setTowerPosition = reader.ReadBoolean();
             _inPhase2 = reader.ReadBoolean();
             _startDeath = reader.ReadVector2();
+            _miniBounceCount = reader.ReadSingle();
+            _rollVelocity = reader.ReadVector2();
         }
 
         public override void SetStaticDefaults()
@@ -123,8 +162,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         {
             base.SetDefaults();
             _draw.SetDefaults();
-            NPC.width = 64;
-            NPC.height = 64;
+            NPC.width = 100;
+            NPC.height = 100;
             NPC.damage = 100;
             NPC.defense = 40;
             NPC.lifeMax = 12000;
@@ -145,7 +184,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            return false;
+            return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
         }
 
         public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
@@ -200,7 +239,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 }
             }
             _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
-        
+
             ManageTowerPosition();
             SummonHearts();
             Shine();
@@ -250,6 +289,29 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 case AIState.DiscoHead:
                     AI_DiscoHead();
                     break;
+                case AIState.MegaSlam:
+                    AI_BigSlam();
+                    break;
+
+                case AIState.Roll_Fall:
+                    AI_RollFall();
+                    break;
+                case AIState.Roll_Start:
+                    AI_RollStart();
+                    break;
+                case AIState.Roll:
+                    AI_Roll();
+                    break;
+                case AIState.Roll_End:
+                    AI_RollEnd();
+                    break;
+
+                case AIState.Scatter_Start:
+                    AI_ScatterStart();
+                    break;
+                case AIState.Scatter:
+                    AI_Scatter();
+                    break;
             }
         }
 
@@ -264,6 +326,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         }
 
         #region Tower of Illuria
+
+        private void SummonExplodingMoths()
+        {
+            if (!MultiplayerHelper.IsHost)
+                return;
+
+            Vector2 leftMothPos = NPC.Center + new Vector2(-100, Main.rand.NextFloat(-100f, 100f));
+            Projectile.NewProjectile(SourceFromThis, leftMothPos, Vector2.Zero, ModContent.ProjectileType<ExplodingMoth>(), ExplodingMothDamage, 1, Main.myPlayer);
+
+            Vector2 rightMothPos = NPC.Center + new Vector2(100, Main.rand.NextFloat(-100f, 100f));
+            Projectile.NewProjectile(SourceFromThis, rightMothPos, Vector2.Zero, ModContent.ProjectileType<ExplodingMoth>(), ExplodingMothDamage, 1, Main.myPlayer);
+        }
         private void SummonHearts()
         {
             if (!MultiplayerHelper.IsHost)
@@ -272,7 +346,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             if (_summonedHearts)
                 return;
 
-
+            
             SummonHeart(0, 200, 150);
             SummonHeart(MathHelper.Pi, 200, 150);
             SummonHeart(MathHelper.PiOver2, 200, 150);
@@ -290,11 +364,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private void SummonHeart(float radiansOffset, float xRadius, float yRadius)
         {
             int heartType = ModContent.NPCType<TowerHeart>();
-
-
             int x = (int)NPC.Center.X;
             int y = (int)NPC.Center.Y;
-
             NPC.NewNPC(SourceFromThis, x, y, heartType, ai0: radiansOffset, ai1: NPC.whoAmI, ai2: xRadius, ai3: yRadius);
         }
         private void ManageTowerPosition()
@@ -393,39 +464,191 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 particle.VectorScale *= 0.5f;
             }
         }
+        
+        private void AI_ScatterStart()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+            float releaseTime = 60;
+            float completionRatio = Timer / releaseTime;
+            float ease = EasingFunction.Anticipation(completionRatio);
+            _draw.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.5f, ease);
+            TargetOutlineColor = Color.Yellow;
+            if(Timer >= releaseTime)
+            {
+                SwitchState(AIState.Scatter);
+            }
+        }
+
+        private void AI_Scatter()
+        {
+            //Scatter moths everywhere
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+
+
+            TargetOutlineColor = Color.Yellow;
+            float scatterTime = 120;
+            float completionRatio = Timer / scatterTime;
+            _draw.scale = Vector2.Lerp(Vector2.One * 1.5f, Vector2.One, completionRatio);
+            NPC.velocity.X *= 0.9f;
+            if(Timer % 20 == 0) 
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center, Main.rand.NextVector2CircularEdge(5, 5), 
+                        ModContent.ProjectileType<HomingWhiteMoth>(), HomingWhiteMothDamage, 1, Main.myPlayer);
+                }
+            
+            }
+            if (Timer >= scatterTime)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
+        private void AI_RollFall()
+        {    
+            //Rolls along the ground during phase 2, trying to ram you, hitting walls to bounce back and forth at high speeds (has contact damage)
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+            NPC.noTileCollide = false;
+            NPC.GravityMultiplier *= 2;
+            NPC.velocity.X *= 0.95f;
+            if (NPC.collideY)
+            {
+                SwitchState(AIState.Roll_Start);
+            }
+        }
+
+        private void AI_RollStart()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+
+            float dirToSpin = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
+            TargetOutlineColor = Color.Yellow;
+            float rollPrepTime = 60;
+            float completionRatio = Timer / rollPrepTime;
+            float ease = EasingFunction.Anticipation(completionRatio);
+            NPC.rotation += ease * 0.3f * dirToSpin;
+            NPC.velocity.X *= 0.95f;
+            if(Timer >= rollPrepTime * 2)
+            {
+                SwitchState(AIState.Roll);
+            }
+        }
+        private void AI_Roll()
+        { 
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+                _rollVelocity = MyTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
+                _rollVelocity *= 20;
+                NPC.velocity.X = _rollVelocity.X;
+            }
+            TargetOutlineColor = Color.Red;
+            NPC.rotation += NPC.velocity.X * 0.2f;
+ 
+            if (NPC.collideX)
+            {
+                _rollVelocity.X *= -1;
+                _rollVelocity.X *= 1.005f;
+                var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Center, -_rollVelocity);
+                donut.Scale *= 0.5f;
+
+                SoundStyle boom = SoundID.DD2_ExplosiveTrapExplode;
+                boom.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(boom, NPC.position);
+                AttackCounter++;
+            }
+            NPC.velocity.X = _rollVelocity.X;
+            if (AttackCounter >= 5)
+            {
+                SwitchState(AIState.Roll_End);
+            }
+            _contactDamage = true;
+        }
+        
+        private void AI_RollEnd()
+        {
+            _contactDamage = false;
+            TargetOutlineColor = Color.Yellow;
+            Timer++;
+            NPC.velocity.X *= 0.95f;
+            NPC.rotation += NPC.velocity.X * 0.5f;
+            if(Timer >= 60)
+            {
+                SwitchState(AIState.BouncingIdle);
+            }
+        }
+
         private void Bounce()
         {
             BounceTimer++;
+            NPC.GravityMultiplier *= 1.5f;
             NPC.noGravity = false;
             NPC.noTileCollide = false;
-            float baseX = MathF.Sin(BounceTimer * 0.03f) * 8;
+            float baseX = MathF.Sin(BounceTimer * 0.015f) * 5;
             float slightX = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, baseX + slightX, 0.1f);
             NPC.rotation += NPC.velocity.X * 0.03f;
             if (NPC.collideY)
             {
-                NPC.velocity.Y = -15;
-                Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, -Vector2.UnitY, Color.White, Scale: 0.2f);
-                CreateShockwaveParticles();
                 if (MultiplayerHelper.IsHost)
                 {
-                    //This is the part where you spawn the cool ahh shockwaves
-                    //But we have to make cool ahh shockwaves :(
-                    int knockback = 1;
-                    Vector2 velocity = Vector2.UnitX;
-                    velocity *= 4;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
-                        ModContent.ProjectileType<WindShockwave>(), ShockwaveDamage, knockback, Main.myPlayer);
-                    velocity = -velocity;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
-                        ModContent.ProjectileType<WindShockwave>(), ShockwaveDamage, knockback, Main.myPlayer);
+                    if (_miniBounceCount <= 0)
+                    {
+                        //This is the part where you spawn the cool ahh shockwaves
+                        //But we have to make cool ahh shockwaves :(
+                        int knockback = 1;
+                        Vector2 velocity = Vector2.UnitX;
+                        velocity *= 8;
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
+                            ModContent.ProjectileType<WindShockwave>(), ShockwaveDamage, knockback, Main.myPlayer);
+                        velocity = -velocity;
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
+                            ModContent.ProjectileType<WindShockwave>(), ShockwaveDamage, knockback, Main.myPlayer);
+                    }
+
+                    if (Main.rand.NextBool(4) && _miniBounceCount <= 0)
+                    {
+                        _miniBounceCount = 3;
+                        NPC.netUpdate = true;
+                    }
                 }
+                if (_miniBounceCount > 0)
+                {
+                    NPC.velocity.Y = -5;
+                    _miniBounceCount--;
+                } 
+                else
+                {
+                    NPC.velocity.Y = -15;
+                }
+                
+                Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, -Vector2.UnitY, Color.White, Scale: 0.2f);
+                CreateShockwaveParticles();
+
             }
         }
 
         private void AI_BouncingIdle()
         {
-        
+            _contactDamage = false;
             Timer++;
             if(Timer == 1)
             {
@@ -440,6 +663,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, 
                     ModContent.DustType<Sparkle>());
+            }
+
+            if(Timer == 180)
+            {
+                SummonExplodingMoths();
             }
 
             if(Timer >= 360 && NPC.velocity.Y < -2)
@@ -469,9 +697,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
              TargetOutlineColor = Color.Yellow;
 
     
-            float totalNumWhips = 36;
+            float totalNumWhips = 18;
             float loops = 4;
-            if(Timer % 10 == 0 && Timer < 100)
+            if(Timer % 20 == 0 && Timer < 100)
             {
                 if (MultiplayerHelper.IsHost)
                 {
@@ -489,27 +717,63 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 }
             }
             if(Timer >= 200)
-            {
+            { 
                 Timer = 0;
             }
         }
 
 
+        private void AI_BigSlam()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+                NPC.velocity.Y = -18;
+                var donuit = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+
+            }
+
+            NPC.noGravity = true;
+            NPC.velocity.X *= 0.95f;
+            if(NPC.velocity.Y < 25)
+                NPC.velocity.Y += 0.5f;
+            if (Timer % 5 == 0)
+            {
+                var p2 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, -NPC.velocity);
+                p2.Scale *= 0.5f;
+            }
+            TargetOutlineColor = Color.Yellow;
+            if (NPC.collideY)
+            {
+                ShakeModSystem.Shake = 16;
+                FXUtil.ShakeCamera(NPC.position, 1024, 129);
+                SoundStyle boom = new SoundStyle("Stellamod/Assets/Sounds/RocketExplosion");
+                boom.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(boom, NPC.position);
+                if (MultiplayerHelper.IsHost)
+                {
+                    //This is the part where you spawn the cool ahh shockwaves
+                    //But we have to make cool ahh shockwaves :(
+                    int shockwaveDamage = 80;
+                    int knockback = 1;
+                    Vector2 velocity = Vector2.UnitX;
+                    velocity *= 4;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
+                        ModContent.ProjectileType<SuperShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                    velocity = -velocity;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
+                        ModContent.ProjectileType<SuperShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                }
+                SwitchState(AIState.BouncingIdle);
+            }
+        }
         private void AI_DiscoHead()
         {
             Timer++;
             if(Timer == 1)
             {
                 NPC.TargetClosest();
-                float numDust = 8;
-                for (float d = 0; d < numDust; d++)
-                {
-                    Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
-                    Vector2 spawnPos = NPC.Center;
-                    Dust.NewDustPerfect(spawnPos, ModContent.DustType<GlowDust>(), velocity,
-                        newColor: Color.White,
-                        Scale: Main.rand.NextFloat(0.5f, 1.5f));
-                }
             }
 
             if (Timer % 10 == 0)
@@ -542,15 +806,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 }
             }
 
-            if(Timer % 100 == 0)
+            if(Timer % 150 == 0)
             {
                 if (MultiplayerHelper.IsHost)
                 {
                     Vector2 offset = Main.rand.NextVector2Circular(32, 32);
                     Vector2 spawnPos = NPC.Center + offset;
-                    Vector2 velocity = -Vector2.UnitY * 7;
+                    Vector2 velocity = -Vector2.UnitY * 4;
 
-                    Projectile.NewProjectile(SourceFromThis, spawnPos, velocity, ModContent.ProjectileType<HomingWhiteMoth>(), HomingWhiteMothDamage, 1, Main.myPlayer);
+                    Projectile.NewProjectile(SourceFromThis, spawnPos, velocity, 
+                        ModContent.ProjectileType<HomingWhiteMoth>(), HomingWhiteMothDamage, 1, Main.myPlayer);
                 }
             }
         }
@@ -647,8 +912,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
 
         private void AI_Idle()
         {
-          
-            Timer++;
+            _contactDamage = false;
+              Timer++;
             if (Timer == 1)
             {
                 NPC.TargetClosest();
@@ -679,27 +944,33 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                     ChoosePhase1Attack();
                 }
             }
-
-            if(MultiplayerHelper.IsHost && Timer == 60)
-            {
-                Vector2 offset = Main.rand.NextVector2Circular(256, 256);
-                Vector2 spawnPos = NPC.Center + offset;
-                Vector2 velocity = -Vector2.UnitY * 7;
-
-                Projectile.NewProjectile(SourceFromThis, spawnPos, velocity, ModContent.ProjectileType<HomingWhiteMoth>(), HomingWhiteMothDamage, 1, Main.myPlayer);
-            }
         }
 
         private void ChoosePhase1Attack()
         {
-            SwitchState(AIState.LaserBolt);
+            AIState nextState = P1PatternManager.NextPattern();
+            SwitchState(nextState);
         }
 
+        private bool IsAllowed(AIState state)
+        {
+            if (state == AIState.Roll_Fall)
+                return NPC.life < NPC.lifeMax * 0.5f;
+            if (state == AIState.MegaSlam)
+                return NPC.life < NPC.lifeMax * 0.75f;
+            return true;
+        }
         private void ChoosePhase2Attack()
         {
             if (!MultiplayerHelper.IsHost)
                 return;
-            SwitchState(P2PatternManager.NextPattern());
+            AIState nextState = P2PatternManager.NextPattern();
+            if (!IsAllowed(nextState))
+            {
+                ChoosePhase2Attack();
+                return;
+            }
+            SwitchState(nextState);
         }
 
         private void AI_Despawn()
@@ -862,7 +1133,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             Rectangle? frame = null;
             Vector2 drawOrigin = towerTexture.Size() / 2f;
             Vector2 drawCenter = _draw.towerDrawCenter - screenPos;
-            spriteBatch.Draw(towerTexture, drawCenter, frame, drawColor, 0, drawOrigin, NPC.scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(towerTexture, drawCenter, frame, drawColor, 0, drawOrigin, 1, SpriteEffects.None, 0);
         }
 
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 drawPosition, Color drawColor)
@@ -870,7 +1141,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Rectangle frame = NPC.frame;
             Vector2 drawOrigin = frame.Size() / 2f;
-            spriteBatch.Draw(texture, drawPosition, frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPosition, frame, drawColor, NPC.rotation, drawOrigin, _draw.scale, SpriteEffects.None, 0);
         }
 
         private void DrawGlow(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
