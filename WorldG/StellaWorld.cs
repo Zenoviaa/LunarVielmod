@@ -4804,7 +4804,7 @@ namespace Stellamod.WorldG
                             case 1:
                                 for (int da = 0; da < 1; da++)
                                 {
-                                    Point Loc = new Point(smx, smy - 8);
+                                    Point Loc = new Point(smx, smy + 5);
                                     string path = "Struct/IceStruct/HouseSurfaceIce2";//
 
                                     Structurizer.ProtectStructure(Loc, path);
