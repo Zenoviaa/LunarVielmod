@@ -427,6 +427,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             NPC.rotation = 0;
             if (NPC.collideY)
             {
+                CreateShockwaveParticles();
                 NPC.velocity.Y = -2;
                 Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, -Vector2.UnitY, Color.White, Scale: 0.2f);
             }
