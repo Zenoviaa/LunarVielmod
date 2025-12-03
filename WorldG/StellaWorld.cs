@@ -221,6 +221,7 @@ namespace Stellamod.WorldG
             while (!placed && attempts++ < 10000000)
             {
                 int centerX = Main.maxTilesX - Main.maxTilesX / 6;
+                centerX += 200;
                 int smx = WorldGen.genRand.Next(centerX, centerX + 500);
                 int smy = ((int)(Main.worldSurface - 200));
 
@@ -4672,7 +4673,7 @@ namespace Stellamod.WorldG
                             new Actions.SetTile(TileID.SnowBlock)
                                    //new Actions.Smooth(true)
                                }));
-
+        
                             Rectangle areaToPlaceIn = new Rectangle(
                                 (int)WallPosition.X - 12,
                                 (int)WallPosition.Y - 12,
