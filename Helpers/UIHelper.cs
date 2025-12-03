@@ -42,17 +42,20 @@ namespace Stellamod.Helpers
             float outlineOffset = 2;
             Vector2 h = Vector2.UnitX * outlineOffset;
             Vector2 v = Vector2.UnitY * outlineOffset;
-
+            RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+            Rectangle scissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+            SamplerState anisotropicClamp = SamplerState.AnisotropicClamp;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, default, default, default, whiteShader.Effect, Main.UIScaleMatrix);
-
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
             spriteBatch.Draw(texture, drawPosition + h, null, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, drawPosition - h, null, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, drawPosition + v, null, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, drawPosition - v, null, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
 
             spriteBatch.End();
-            spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
+
+           
         }
     }
 }
