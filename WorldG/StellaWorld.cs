@@ -2482,7 +2482,7 @@ namespace Stellamod.WorldG
                 int cathedralY = tileToPlaceOn.Y;
 
                 //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-                Point Loc = new Point(x, cathedralY);
+                Point Loc = tileToPlaceOn;
                 if (!Structurizer.TryPlaceAndProtectStructure(Loc, structure))
                     continue;
                 Structurizer.ReadStruct(Loc, structure, tileBlend);
