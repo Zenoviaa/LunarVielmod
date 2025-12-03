@@ -11,6 +11,7 @@ namespace Stellamod.Core.BossBannerSystem
     public class BossPage : ModType,
         ILocalizedModType
     {
+        public static List<BossPage> Pages { get; private set; }
         public string LocalizationCategory => "BossPages";
         public string DisplayName
         {
@@ -51,6 +52,8 @@ namespace Stellamod.Core.BossBannerSystem
             base.SetupContent();
             Rewards = new List<Item>();
             NoHitRewards = new List<Item>();
+            Pages ??= new List<BossPage>();
+            Pages.Add(this);
             SetStaticDefaults();
             this.GetLocalization(nameof(DisplayName), () => "Who???");
             this.GetLocalization(nameof(WhereToFind), () => "In Your Mom");
@@ -70,7 +73,12 @@ namespace Stellamod.Core.BossBannerSystem
         public Asset<Texture2D> RequestBossPhoto()
         {
             Type type = this.GetType();
-            return ModContent.Request<Texture2D>(type.DirectoryHere() + "/" + type.Name);
+            string path = type.DirectoryHere() + "/" + type.Name;
+            if(ModContent.RequestIfExists<Texture2D>(path, out var asset))
+            {
+                return asset;
+            }
+            return ModContent.Request<Texture2D>(TextureRegistry.EmptyTexture);
         }
 
         public Asset<Texture2D> RequestBossIcon()

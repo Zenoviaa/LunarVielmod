@@ -13,6 +13,7 @@ namespace Stellamod.Core.BossBannerSystem
 {
     public class BossTabUI : UIPanel
     {
+        private bool _init;
         private UIList _uiList;
         private UIPanel _panel;
         private UIGrid _slotGrid;
@@ -69,14 +70,7 @@ namespace Stellamod.Core.BossBannerSystem
             _uiList.SetScrollbar(_scrollbar);
             Append(_uiList);
 
-            int length = Enum.GetNames<BossBannerType>().Length;
-            for (int n = 0; n < length; n++)
-            {
-                BossBannerType banner = (BossBannerType)n;
-                BossBannerButton btn = new BossBannerButton(_pageUI, banner);
-                btn.Activate();
-                _slotGrid.Add(btn);
-            }
+
         }
 
         public override void Recalculate()
@@ -84,12 +78,25 @@ namespace Stellamod.Core.BossBannerSystem
             base.Recalculate();
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
-         
+ 
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            if (!_init)
+            {
+                int length = Enum.GetNames<BossBannerType>().Length;
+                for (int n = 0; n < length; n++)
+                {
+                    BossBannerType banner = (BossBannerType)n;
+                    BossBannerButton btn = new BossBannerButton(_pageUI, banner);
+                    btn.Activate();
+                    _slotGrid.Add(btn);
+                }
+                _init = true;
+            }
+
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;

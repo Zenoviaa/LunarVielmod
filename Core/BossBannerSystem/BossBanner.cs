@@ -53,7 +53,7 @@ namespace Stellamod.Core.BossBannerSystem
         public static BossPage[] GetBossPages(BossBannerType banner)
         {
             List<BossPage> pages = new List<BossPage>();
-            foreach(var bossPage in ModContent.GetContent<BossPage>())
+            foreach(var bossPage in BossPage.Pages)
             {
                 if(bossPage.banner == banner)
                 {
