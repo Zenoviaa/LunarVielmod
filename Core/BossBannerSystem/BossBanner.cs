@@ -65,6 +65,8 @@ namespace Stellamod.Core.BossBannerSystem
             _slotGrid.Height.Set(0, 1f);
             _slotGrid.ListPadding = 6f;
 
+            //Get all the banner types and add them to a button
+
             _panel.Append(_slotGrid);
 
             _scrollbar = new FancyScrollbar();
@@ -83,31 +85,24 @@ namespace Stellamod.Core.BossBannerSystem
             _uiList.Add(_panel);
             _uiList.SetScrollbar(_scrollbar);
             Append(_uiList);
-
-            _slotGrid.Clear();
-
-            //Get all the banner types and add them to a button
-            int length = Enum.GetNames<BossBannerType>().Length;
-            for (int n = 0; n < length; n++)
-            {
-                BossBannerType banner = (BossBannerType)n;
-                BossBannerButton btn = new BossBannerButton(_pageUI, banner);
-                _slotGrid.Add(btn);
-            }
-
-            _slotGrid.Recalculate();
         }
 
         public override void Recalculate()
         {
             //Recalculate the UI when there is some sort of update
-            Left.Pixels = RelativeLeft;
-            Top.Pixels = RelativeTop;
-            if (Main.gameMenu)
-                return;
- 
+            if (_slotGrid != null && (_slotGrid.Count == 0))
+            {
+                int length = Enum.GetNames<BossBannerType>().Length;
+                for (int n = 0; n < length; n++)
+                {
+                    BossBannerType banner = (BossBannerType)n;
+                    BossBannerButton btn = new BossBannerButton(_pageUI, banner);
+                    _slotGrid.Add(btn);
+                }
 
 
+                _slotGrid.Recalculate();
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -118,10 +113,11 @@ namespace Stellamod.Core.BossBannerSystem
             Top.Pixels = RelativeTop;
 
             _panel.Height.Pixels = _slotGrid.GetTotalHeight() + 32;
+    
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
             _scrollbar.Height.Set(Height.Pixels * progress, 0);
-
+          
             //Hacky way to get invisible scrollbar when there's no need for it
             if (_panel.Height.Pixels < Height.Pixels)
             {
@@ -131,6 +127,12 @@ namespace Stellamod.Core.BossBannerSystem
             {
                 _scrollbar.Top.Set(0.05f, 0f);
             }
+        }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+
         }
     }
     public class BossBannerTabUIState : UIState
@@ -261,7 +263,9 @@ namespace Stellamod.Core.BossBannerSystem
             {
                 UIHelper.QuickOutline(spriteBatch, bossIcon.Value, topLeft, Color.Yellow);
             }
+          
             spriteBatch.Draw(bossIcon.Value, topLeft, Color.White);
+ 
         }
     }
 
@@ -300,7 +304,8 @@ namespace Stellamod.Core.BossBannerSystem
             Asset<Texture2D> bossBannerTexture = BossBanner.RequestBannerTexture();
             Rectangle frame = BossBanner.GetBannerFrame(_banner);
             Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
-            spriteBatch.Draw(bossBannerTexture.Value, topLeft, Color.White);
+            spriteBatch.Draw(bossBannerTexture.Value, topLeft, frame, Color.White);
+        
         }
 
     }
@@ -542,6 +547,7 @@ namespace Stellamod.Core.BossBannerSystem
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
+
         }
 
 

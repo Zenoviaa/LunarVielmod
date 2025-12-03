@@ -2,6 +2,7 @@
 using Stellamod.Core.BossBannerSystem;
 using Stellamod.Core.QuestSystem;
 using Stellamod.UI.CollectionSystem.Quests;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -223,7 +224,7 @@ namespace Stellamod.UI.CollectionSystem
         public void OpenBossBannersTabUI()
         {
             PageTurnSound();
-           
+            bossBannerTabUIState.ui.Recalculate();
             _tabsUserInterface.SetState(bossBannerTabUIState);
             _rightInfoUserInterface.SetState(null);
         }
