@@ -133,10 +133,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         private bool AllHeartsDead => !NPC.AnyNPCs(ModContent.NPCType<TowerHeart>());
         private Color TargetOutlineColor;
         private int IllurianSnipeDamage => 28;
-        private int ShockwaveDamage => 20;
+        private int ShockwaveDamage => 40;
         private int WhiteWhipDamage => 15;
         private int HomingWhiteMothDamage => 18;
-
         private int ExplodingMothDamage => 20;
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -834,6 +833,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                     radians *= 2;
                     Vector2 velocity = radians.ToRotationVector2();
                     velocity *= 7;
+                    velocity = velocity.RotatedByRandom(0.5);
                     Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity, 
                         ModContent.ProjectileType<WhiteWhip>(), WhiteWhipDamage, 1, Main.myPlayer, ai2: NPC.whoAmI);
                     AttackCounter++;
