@@ -42,8 +42,6 @@ namespace Stellamod.Helpers
             float outlineOffset = 2;
             Vector2 h = Vector2.UnitX * outlineOffset;
             Vector2 v = Vector2.UnitY * outlineOffset;
-            spriteBatch.Restart(effect: whiteShader.Effect);
-
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, default, default, default, whiteShader.Effect, Main.UIScaleMatrix);

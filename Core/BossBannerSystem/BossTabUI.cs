@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Items;
 using Stellamod.UI;
 using Stellamod.UI.CollectionSystem;
+using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
@@ -17,7 +18,7 @@ namespace Stellamod.Core.BossBannerSystem
         private UIGrid _slotGrid;
         private FancyScrollbar _scrollbar;
         private BossPageUI _pageUI;
-        public BossTabUI(BossPageUI pageUI)
+        public BossTabUI(BossPageUI pageUI) : base()
         {
             _pageUI = pageUI;
         }
@@ -67,49 +68,23 @@ namespace Stellamod.Core.BossBannerSystem
             _uiList.Add(_panel);
             _uiList.SetScrollbar(_scrollbar);
             Append(_uiList);
+
+            int length = Enum.GetNames<BossBannerType>().Length;
+            for (int n = 0; n < length; n++)
+            {
+                BossBannerType banner = (BossBannerType)n;
+                BossBannerButton btn = new BossBannerButton(_pageUI, banner);
+                btn.Activate();
+                _slotGrid.Add(btn);
+            }
         }
 
         public override void Recalculate()
         {
+            base.Recalculate();
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
-           // _slotGrid?.Clear();
-            if (Main.gameMenu)
-                return;
-            _slotGrid?.Clear();
-            if (Main.gameMenu)
-                return;
-       
-            //We just need to get the number of unique materials since that's how we're sorting things
-
-            var cauldron = ModContent.GetInstance<Cauldron>();
-            Item[] materialsYouCanCraftWith = cauldron.GetMaterials();
-            for (int i = 0; i < materialsYouCanCraftWith.Length; i++)
-            {
-                Item mat = materialsYouCanCraftWith[i];
-                CollectionItemTabSlot slot = new CollectionItemTabSlot();
-                slot.Item = mat;
-                slot.Glow = 1;
-                _slotGrid.Add(slot);
-            }
-
-            _slotGrid.Recalculate();
-            /*
-            //Recalculate the UI when there is some sort of update
-            if (_slotGrid != null && (_slotGrid.Count == 0))
-            {
-                int length = Enum.GetNames<BossBannerType>().Length;
-                for (int n = 0; n < length; n++)
-                {
-                    BossBannerType banner = (BossBannerType)n;
-                    BossBannerButton btn = new BossBannerButton(_pageUI, banner);
-                    _slotGrid.Add(btn);
-                }
-
-
-
-            }
-            _slotGrid.Recalculate();*/
+         
         }
 
         public override void Update(GameTime gameTime)
@@ -118,8 +93,9 @@ namespace Stellamod.Core.BossBannerSystem
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
-
+       
             _panel.Height.Pixels = _slotGrid.GetTotalHeight() + 32;
+      
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
             _scrollbar.Height.Set(Height.Pixels * progress, 0);

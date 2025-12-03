@@ -37,6 +37,8 @@ namespace Stellamod.Core.BossBannerSystem
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
             Rectangle rectangle = UIHelper.MouseInterfaceInteraction(this);
             Vector2 topLeft = rectangle.TopLeft();
             Asset<Texture2D> bossIcon = _bossPage.RequestBossIcon();
