@@ -25,8 +25,10 @@ namespace Stellamod.Core.BossBannerSystem
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Width.Pixels = 48;
-            Height.Pixels = 48;
+            Width.Pixels = 24;
+            Height.Pixels = 24;
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
         }
 
         private void OpenBossPage(UIMouseEvent evt, UIElement listeningElement)
@@ -37,17 +39,16 @@ namespace Stellamod.Core.BossBannerSystem
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
-            BackgroundColor = Color.Transparent;
-            BorderColor = Color.Transparent;
             Rectangle rectangle = UIHelper.MouseInterfaceInteraction(this);
             Vector2 topLeft = rectangle.TopLeft();
             Asset<Texture2D> bossIcon = _bossPage.RequestBossIcon();
+            float drawScale = 0.5f;
             if (IsMouseHovering)
             {
-                UIHelper.QuickOutline(spriteBatch, bossIcon.Value, topLeft, Color.Yellow);
+                UIHelper.QuickOutline(spriteBatch, bossIcon.Value, topLeft, Color.Yellow, drawScale);
             }
           
-            spriteBatch.Draw(bossIcon.Value, topLeft, Color.White);
+            spriteBatch.Draw(bossIcon.Value, topLeft, null, Color.White, 0, Vector2.Zero, drawScale, SpriteEffects.None, 0);
  
         }
     }
