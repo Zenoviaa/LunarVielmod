@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.BossBannerSystem;
 using Stellamod.Core.QuestSystem;
 using Stellamod.UI.CollectionSystem.Quests;
 using System.Collections.Generic;
@@ -27,7 +28,8 @@ namespace Stellamod.UI.CollectionSystem
 
         public QuestTabUIState questTabUIState;
         public ActiveQuestUIState activeQuestUIState;
-
+        public BossPageUIState bossPageUIState;
+        public BossBannerTabUIState bossBannerTabUIState;
         public override int uiSlot => Slot_MajorUI;
         public override void OnModLoad()
         {
@@ -54,6 +56,12 @@ namespace Stellamod.UI.CollectionSystem
 
             activeQuestUIState = new ActiveQuestUIState();
             activeQuestUIState.Activate();
+
+            bossPageUIState = new BossPageUIState();
+            bossPageUIState.Activate();
+
+            bossBannerTabUIState= new BossBannerTabUIState(bossPageUIState.ui);
+            bossBannerTabUIState.Activate();
 
             _userInterface.SetState(null);
             _hudUserInterface.SetState(null);
@@ -183,9 +191,8 @@ namespace Stellamod.UI.CollectionSystem
 
         public void OpenQuestsTabUI()
         {
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");
-            soundStyle.PitchVariance = 0.1f;
-            SoundEngine.PlaySound(soundStyle);
+            PageTurnSound();
+
             questTabUIState.ui.Glow = 1f;
             _tabsUserInterface.SetState(questTabUIState);
             _rightInfoUserInterface.SetState(null);
@@ -193,9 +200,7 @@ namespace Stellamod.UI.CollectionSystem
 
         public void OpenQuestInfoUI(Quest quest)
         {
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");
-            soundStyle.PitchVariance = 0.1f;
-            SoundEngine.PlaySound(soundStyle);
+            PageTurnSound();
 
             activeQuestUIState.ui.Quest = quest;
             activeQuestUIState.ui.Glow = 1f;
@@ -208,6 +213,27 @@ namespace Stellamod.UI.CollectionSystem
 
         }
 
+
+        private void PageTurnSound()
+        {
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");
+            soundStyle.PitchVariance = 0.1f;
+            SoundEngine.PlaySound(soundStyle);
+        }
+        public void OpenBossBannersTabUI()
+        {
+            PageTurnSound();
+           
+            _tabsUserInterface.SetState(bossBannerTabUIState);
+            _rightInfoUserInterface.SetState(null);
+        }
+
+        public void OpenBossPageUI(BossPage bossPage)
+        {
+            PageTurnSound();
+            bossPageUIState.ui.SetBossPage(bossPage);
+            _rightInfoUserInterface.SetState(bossPageUIState);
+        }
         public void CloseTabUI()
         {
             _tabsUserInterface.SetState(null);

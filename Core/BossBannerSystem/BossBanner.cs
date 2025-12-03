@@ -1,12 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
+using Stellamod.Core.QuestSystem;
 using Stellamod.Helpers;
+using Stellamod.UI;
+using Stellamod.UI.CollectionSystem.Quests;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
+using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 
 namespace Stellamod.Core.BossBannerSystem
@@ -22,6 +27,127 @@ namespace Stellamod.Core.BossBannerSystem
         MechanizedRevivals = 6
     }
 
+    public class BossTabUI : UIPanel
+    {
+        private UIList _uiList;
+        private UIPanel _panel;
+        private UIGrid _slotGrid;
+        private FancyScrollbar _scrollbar;
+        private BossPageUI _pageUI;
+        public BossTabUI(BossPageUI pageUI)
+        {
+            _pageUI = pageUI;
+        }
+        public const int width = 480;
+        public const int height = 155;
+
+        public int RelativeLeft => Main.screenWidth / 2 - width / 2 - 64;
+        public int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            Width.Pixels = 48 * 6f;
+            Height.Pixels = 48 * 9;
+            Left.Pixels = RelativeLeft;
+            Top.Pixels = RelativeTop;
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
+
+            _panel = new UIPanel();
+            _panel.Width.Pixels = Width.Pixels;
+            _panel.Height.Pixels = Height.Pixels;
+            _panel.BackgroundColor = Color.Transparent;
+            _panel.BorderColor = Color.Transparent;
+            Append(_panel);
+
+            _slotGrid = new UIGrid();
+            _slotGrid.Width.Set(0, 1f);
+            _slotGrid.Height.Set(0, 1f);
+            _slotGrid.ListPadding = 6f;
+
+            _panel.Append(_slotGrid);
+
+            _scrollbar = new FancyScrollbar();
+            _scrollbar.Width.Set(20, 0);
+            _scrollbar.Height.Set(340, 0);
+            _scrollbar.Left.Set(0, 0.9f);
+            _scrollbar.Top.Set(0, 0.05f);
+
+            float maxViewSize = 48 * 8f;
+            _scrollbar.SetView(0, maxViewSize);
+            Append(_scrollbar);
+
+            _uiList = new UIList();
+            _uiList.Width.Pixels = Width.Pixels;
+            _uiList.Height.Pixels = Height.Pixels;
+            _uiList.Add(_panel);
+            _uiList.SetScrollbar(_scrollbar);
+            Append(_uiList);
+
+            _slotGrid.Clear();
+
+            //Get all the banner types and add them to a button
+            int length = Enum.GetNames<BossBannerType>().Length;
+            for (int n = 0; n < length; n++)
+            {
+                BossBannerType banner = (BossBannerType)n;
+                BossBannerButton btn = new BossBannerButton(_pageUI, banner);
+                _slotGrid.Add(btn);
+            }
+
+            _slotGrid.Recalculate();
+        }
+
+        public override void Recalculate()
+        {
+            //Recalculate the UI when there is some sort of update
+            Left.Pixels = RelativeLeft;
+            Top.Pixels = RelativeTop;
+            if (Main.gameMenu)
+                return;
+ 
+
+
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            //Constantly lock the UI in the position regardless of resolution changes
+            Left.Pixels = RelativeLeft;
+            Top.Pixels = RelativeTop;
+
+            _panel.Height.Pixels = _slotGrid.GetTotalHeight() + 32;
+            float progress = _panel.Height.Pixels / Height.Pixels;
+            progress = MathHelper.Clamp(progress, 0f, 1f);
+            _scrollbar.Height.Set(Height.Pixels * progress, 0);
+
+            //Hacky way to get invisible scrollbar when there's no need for it
+            if (_panel.Height.Pixels < Height.Pixels)
+            {
+                _scrollbar.Top.Set(500000, 0f);
+            }
+            else
+            {
+                _scrollbar.Top.Set(0.05f, 0f);
+            }
+        }
+    }
+    public class BossBannerTabUIState : UIState
+    {
+        private BossPageUI _pageUI;
+        public BossTabUI ui;
+        public BossBannerTabUIState(BossPageUI pageUI) : base()
+        {
+            _pageUI  = pageUI;
+        }
+
+        public override void OnInitialize()
+        {
+            ui = new BossTabUI(_pageUI);
+            Append(ui);
+        }
+    }
     public class BossPageUIState : UIState
     {
         public BossPageUI ui;
@@ -95,7 +221,88 @@ namespace Stellamod.Core.BossBannerSystem
         {
             base.SetStaticDefaults();
             banner = BossBannerType.LifeNPlants;
+            bossNPC = ModContent.GetInstance<StarrVeriplant>();
         }
+    }
+
+    /// <summary>
+    /// Opens a boss page
+    /// </summary>
+    public class BossButton : UIPanel
+    {
+        private BossPage _bossPage;
+        private BossPageUI _ui;
+        public BossButton(BossPageUI ui, BossPage bossPage)
+        {
+            _ui = ui;
+            _bossPage = bossPage;
+            OnLeftClick += OpenBossPage;
+        }
+
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            Width.Pixels = 48;
+            Height.Pixels = 48;
+        }
+
+        private void OpenBossPage(UIMouseEvent evt, UIElement listeningElement)
+        {
+            _ui.SetBossPage(_bossPage);
+        }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            Rectangle rectangle = UIHelper.MouseInterfaceInteraction(this);
+            Vector2 topLeft = rectangle.TopLeft();
+            Asset<Texture2D> bossIcon = _bossPage.RequestBossIcon();
+            if (IsMouseHovering)
+            {
+                UIHelper.QuickOutline(spriteBatch, bossIcon.Value, topLeft, Color.Yellow);
+            }
+            spriteBatch.Draw(bossIcon.Value, topLeft, Color.White);
+        }
+    }
+
+    /// <summary>
+    /// Holds the icons for a boss
+    /// </summary>
+    public class BossBannerButton : UIPanel
+    {
+        private readonly BossBannerType _banner;
+        private BossButton[] _bossButtons;
+        public BossBannerButton(BossPageUI parent, BossBannerType banner)
+        {
+            _banner = banner;
+            BossPage[] pages = BossBanner.GetBossPages(banner);
+            _bossButtons = new BossButton[pages.Length];
+            for(int b = 0; b < _bossButtons.Length; b++)
+            {
+                _bossButtons[b] = new BossButton(parent, pages[b]);
+            }
+        }
+
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            Width.Pixels = 226;
+            Height.Pixels = 74;
+            for(int i = 0; i < _bossButtons.Length; i++)
+            {
+                Append(_bossButtons[i]);
+            }
+        }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            Asset<Texture2D> bossBannerTexture = BossBanner.RequestBannerTexture();
+            Rectangle frame = BossBanner.GetBannerFrame(_banner);
+            Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
+            spriteBatch.Draw(bossBannerTexture.Value, topLeft, Color.White);
+        }
+
     }
 
     /// <summary>
@@ -340,12 +547,12 @@ namespace Stellamod.Core.BossBannerSystem
 
         public void ToggleLocationWindow(UIMouseEvent evt, UIElement listeningElement)
         {
-            throw new NotImplementedException();
+         //   throw new NotImplementedException();
         }
 
         public void ToggleLoreWindow(UIMouseEvent evt, UIElement listeningElement)
         {
-            throw new NotImplementedException();
+        //    throw new NotImplementedException();
         }
     }
 
@@ -381,6 +588,7 @@ namespace Stellamod.Core.BossBannerSystem
         public List<Item> NoHitRewards;
         public int StarRanking;
         public BossBannerType banner;
+        public ModNPC bossNPC;
         protected sealed override void Register()
         {
             ModTypeLookup<BossPage>.Register(this);
@@ -412,6 +620,15 @@ namespace Stellamod.Core.BossBannerSystem
             Type type = this.GetType();
             return ModContent.Request<Texture2D>(type.DirectoryHere() + "/" + type.Name);
         }
+
+        public Asset<Texture2D> RequestBossIcon()
+        {
+            if(bossNPC is ScarletBoss boss)
+            {
+                return ModContent.Request<Texture2D>(boss.Texture_BossIcon);
+            }
+            return ModContent.Request<Texture2D>(TextureRegistry.EmptyTexture);
+        }
     }
 
     public class BossBanner : ModType,
@@ -436,7 +653,7 @@ namespace Stellamod.Core.BossBannerSystem
 
 
         public BossPage[] Pages;
-        public Asset<Texture2D> BannerTextureAsset;
+        public static Asset<Texture2D> BannerTextureAsset;
         protected sealed override void Register()
         {
             ModTypeLookup<BossBanner>.Register(this);
@@ -450,6 +667,20 @@ namespace Stellamod.Core.BossBannerSystem
             this.GetLocalization(nameof(Description), () => "");
             BannerTextureAsset = RequestBannerTexture();
         }
+
+        public static BossPage[] GetBossPages(BossBannerType banner)
+        {
+            List<BossPage> pages = new List<BossPage>();
+            foreach(var bossPage in ModContent.GetContent<BossPage>())
+            {
+                if(bossPage.banner == banner)
+                {
+                    pages.Add(bossPage);    
+                }
+            }
+            return pages.ToArray();
+        }
+
         public static Asset<Texture2D> RequestTexture(string fileName)
         {
             Type type = typeof(BossBanner);
@@ -477,7 +708,7 @@ namespace Stellamod.Core.BossBannerSystem
             return RequestTexture("Star");
         }
 
-        public Rectangle GetBannerFrame(BossBannerType type)
+        public static Rectangle GetBannerFrame(BossBannerType type)
         {
             int frameIndex = (int)type;
             const int Frame_Height = 74;

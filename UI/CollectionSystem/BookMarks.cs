@@ -89,7 +89,7 @@ namespace Stellamod.UI.CollectionSystem
         public override string TextureAsset => "LoreTab";
         protected override void Trigger(CollectionBookUISystem uiSystem)
         {
-            uiSystem.OpenLoreTabUI();
+            uiSystem.OpenBossBannersTabUI();
         }
     }
 
