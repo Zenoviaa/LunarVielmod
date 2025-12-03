@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.ID;
 
 namespace Stellamod.Core.Waters
 {
@@ -22,7 +21,6 @@ namespace Stellamod.Core.Waters
         public override void Load()
         {
             WaterPlayer.PostUpdateEvent += UpdateActiveAddon;
-
             IL_Main.DoDraw += AddWaterShader;
             //IL.Terraria.Main.DrawTiles += SwapBlockTexture;//TODO: Figure out where this logic moved in vanilla
         }
@@ -34,33 +32,10 @@ namespace Stellamod.Core.Waters
 
         public override void Unload()
         {
+            WaterPlayer.PostUpdateEvent -= UpdateActiveAddon;
+            IL_Main.DoDraw -= AddWaterShader;
             addons ??= null;
             activeAddon ??= null;
-        }
-
-        private void SwapBlockTexture(ILContext il)
-        {
-            var c = new ILCursor(il);
-            c.TryGotoNext(n => n.MatchLdsfld(typeof(Main), "liquidTexture"));
-            c.Index += 3;
-            c.Emit(OpCodes.Ldloc, 16);
-            c.Emit(OpCodes.Ldloc, 15);
-
-            c.EmitDelegate<Func<Texture2D, int, int, Texture2D>>(LavaBlockBody);
-        }
-
-        private Texture2D LavaBlockBody(Texture2D arg, int x, int y)
-        {
-            Tile tile = Framing.GetTileSafely(x, y);
-
-            if (tile.LiquidType != LiquidID.Water)
-                return arg;
-
-            if (activeAddon is null) //putting this in the same check as above dosent seem to short circuit properly? 
-                return arg;
-
-            return activeAddon.BlockTexture(arg, x, y);
-
         }
 
         private void AddWaterShader(ILContext il)
@@ -96,7 +71,6 @@ namespace Stellamod.Core.Waters
         private void NewDrawBack()
         {
             SpriteBatch sb = Main.spriteBatch;
-
             if (activeAddon != null)
             {
                 sb.End();
@@ -104,7 +78,6 @@ namespace Stellamod.Core.Waters
             }
 
             Main.spriteBatch.Draw(Main.instance.backWaterTarget, Main.sceneBackgroundPos - Main.screenPosition, Color.White);
-
             if (activeAddon != null)
             {
                 sb.End();
@@ -115,7 +88,6 @@ namespace Stellamod.Core.Waters
         private void NewDraw()
         {
             SpriteBatch sb = Main.spriteBatch;
-
             if (activeAddon != null)
             {
                 sb.End();
@@ -123,7 +95,6 @@ namespace Stellamod.Core.Waters
             }
 
             Main.spriteBatch.Draw(Main.waterTarget, Main.sceneWaterPos - Main.screenPosition, Color.White);
-
             if (activeAddon != null)
             {
                 sb.End();

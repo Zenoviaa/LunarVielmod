@@ -7,34 +7,85 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Waters
 {
-    public class DefaultWaterAddon : WaterAddon
+    public enum WaterStyle : byte
     {
-        public static bool Biomes => !Main.LocalPlayer.ZoneSnow
-            && !Main.LocalPlayer.ZoneUnderworldHeight
-            && !Main.LocalPlayer.ZoneCrimson
-            && !Main.LocalPlayer.ZoneShimmer
-            && ModContent.GetInstance<LunarVeilClientConfig>().LiquidsToggle;
+        Default,
+        Icey,
+        Bloody,
+        Shimmer
+    }
 
-        public static ScreenTarget BackTarget = new(RenderFront, () => Biomes, 1, (a) => Main.waterTarget.Size());
-        public static ScreenTarget FrontTarget = new(RenderBack, () => Biomes, 1, (a) => Main.instance.backWaterTarget.Size());
+    public class CustomWaters : WaterAddon
+    {
+        private static WaterStyle _style;
+        public static bool Biomes => ModContent.GetInstance<LunarVeilClientConfig>().LiquidsToggle;
 
-        public override bool Visible => Biomes;
+        public static ScreenTarget BackTarget = new ScreenTarget(RenderFront, () => Biomes, 1, (a) => Main.waterTarget.Size());
+        public static ScreenTarget FrontTarget = new ScreenTarget(RenderBack, () => Biomes, 1, (a) => Main.instance.backWaterTarget.Size());
 
-
+        public override bool Visible => true;
         public override Texture2D BlockTexture(Texture2D normal, int x, int y)
         {
             return normal;
         }
 
+        private static void ChooseWaterStyle()
+        {
+            Player player = Main.LocalPlayer;
+            _style = WaterStyle.Default;
+            if (player.ZoneCrimson)
+            {
+                _style = WaterStyle.Bloody;
+            }
+
+            if (player.ZoneSnow)
+            {
+                _style = WaterStyle.Icey;
+            }
+
+            if (player.ZoneShimmer || player.GetModPlayer<MyPlayer>().ZoneWonder)
+            {
+                _style = WaterStyle.Shimmer;
+            }
+        }
+
+        private static Texture2D GetWaterStyleNoiseTexture(WaterStyle waterStyle)
+        {
+            Texture2D tex2;
+            switch (waterStyle)
+            {
+                case WaterStyle.Default:
+                default:
+                    tex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Water3", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+                    break;
+
+                case WaterStyle.Icey:
+                    tex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Water", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+                    break;
+
+                case WaterStyle.Bloody:
+                    tex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloodWater", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+                    break;
+
+                case WaterStyle.Shimmer:
+                    tex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Refraction", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+                    break;
+            }
+            return tex2;
+        }
+
         private static void RenderFront(SpriteBatch spriteBatch)
         {
+            ChooseWaterStyle();
             Main.graphics.GraphicsDevice.Clear(Color.Transparent);
-
             spriteBatch.End();
             Main.spriteBatch.Begin(default, BlendState.AlphaBlend, SamplerState.PointWrap, default, default);
+            Texture2D tex2 = GetWaterStyleNoiseTexture(_style);
+            RenderFront_Inner(spriteBatch, tex2);
+        }
 
-            Texture2D tex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Water3", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
-
+        private static void RenderFront_Inner(SpriteBatch spriteBatch, Texture2D tex2)
+        {
             for (int i = -tex2.Width; i <= Main.screenWidth + tex2.Width; i += tex2.Width)
             {
                 for (int j = -tex2.Height; j <= Main.screenHeight + tex2.Height; j += tex2.Height)
@@ -46,7 +97,6 @@ namespace Stellamod.Core.Waters
                         pos -= Main.sceneWaterPos - Main.screenPosition;
 
                     Vector2 tsp = Main.screenPosition;
-
                     spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White * 0.4f);
                 }
             }
@@ -54,13 +104,17 @@ namespace Stellamod.Core.Waters
 
         private static void RenderBack(SpriteBatch spriteBatch)
         {
+            ChooseWaterStyle();
             Main.graphics.GraphicsDevice.Clear(Color.Transparent);
-
             spriteBatch.End();
             Main.spriteBatch.Begin(default, BlendState.AlphaBlend, SamplerState.PointWrap, default, default);
 
-            Texture2D tex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Water3", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+            Texture2D tex2 = GetWaterStyleNoiseTexture(_style);
+            RenderBack_Inner(spriteBatch, tex2);
+        }
 
+        private static void RenderBack_Inner(SpriteBatch spriteBatch, Texture2D tex2)
+        {
             for (int i = -tex2.Width; i <= Main.screenWidth + tex2.Width; i += tex2.Width)
             {
                 for (int j = -tex2.Height; j <= Main.screenHeight + tex2.Height; j += tex2.Height)
@@ -72,7 +126,6 @@ namespace Stellamod.Core.Waters
                         pos -= Main.sceneWallPos - Main.screenPosition;
 
                     Vector2 tsp = Main.screenPosition;
-
                     spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White * 0.4f);
                 }
             }
@@ -85,7 +138,6 @@ namespace Stellamod.Core.Waters
             effect.Parameters["sampleTexture2"].SetValue(FrontTarget.RenderTarget);
             effect.Parameters["sampleTexture3"].SetValue(FrontTarget.RenderTarget);
             effect.Parameters["time"].SetValue(Main.GameUpdateCount / 20f);
-
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, effect, Main.Transform);
         }
 
@@ -96,7 +148,6 @@ namespace Stellamod.Core.Waters
             effect.Parameters["sampleTexture2"].SetValue(BackTarget.RenderTarget);
             effect.Parameters["sampleTexture3"].SetValue(BackTarget.RenderTarget);
             effect.Parameters["time"].SetValue(Main.GameUpdateCount / 20f);
-
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, effect, Main.Transform);
         }
     }
