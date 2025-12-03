@@ -4658,7 +4658,7 @@ namespace Stellamod.WorldG
 
                     if (Main.tile[smx, smy].TileType == TileID.SnowBlock || (Main.tile[smx, smy].TileType == ModContent.TileType<RunicIceCathedralTile>()))
                     {
-                        Vector2 WallPosition = new Vector2(smx + 8, smy + 1);
+                        Vector2 WallPosition = new Vector2(smx + 8, smy + 11);
 
                         if (!WorldGen.SolidTile(smx, smy))
                             continue;
