@@ -21,7 +21,8 @@ namespace Stellamod.Helpers
         Jiitas=11,
         SanguineSingularity=12,
         PunkerPrime=13,
-        CrumblingTowerOfIlluria=14
+        CrumblingTowerOfIlluria=14,
+        StoneGolem=15
     }
 
     public class DownedBossTracker : ModSystem

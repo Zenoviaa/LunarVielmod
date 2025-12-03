@@ -808,7 +808,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
 
         public override void OnKill()
         {
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedStoneGolemBoss, -1);
+            DownedBossTracker.ClearFlag(DownedBossFlag.StoneGolem);
         }
 
         public override bool CanFight()

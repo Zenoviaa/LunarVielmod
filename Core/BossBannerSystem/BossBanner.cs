@@ -13,16 +13,6 @@ namespace Stellamod.Core.BossBannerSystem
 {
 
 
-    public class StoneGolemPage : BossPage
-    {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            banner = BossBannerType.LifeNPlants;
-            bossNPC = ModContent.GetInstance<StarrVeriplant>();
-        }
-    }
-
     public class BossBanner : ModType,
         ILocalizedModType
     {

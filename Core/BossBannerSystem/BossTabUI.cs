@@ -54,7 +54,7 @@ namespace Stellamod.Core.BossBannerSystem
             _scrollbar = new FancyScrollbar();
             _scrollbar.Width.Set(20, 0);
             _scrollbar.Height.Set(340, 0);
-            _scrollbar.Left.Set(0, 0.9f);
+            _scrollbar.Left.Set(0, 0.98f);
             _scrollbar.Top.Set(0, 0.05f);
 
             float maxViewSize = 48 * 8f;
@@ -93,7 +93,7 @@ namespace Stellamod.Core.BossBannerSystem
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
-       
+
             _panel.Height.Pixels = _slotGrid.GetTotalHeight() + 32;
       
             float progress = _panel.Height.Pixels / Height.Pixels;
