@@ -159,13 +159,7 @@ namespace Stellamod.Core.BossBannerSystem
 
             //Draw the glass texture
             Asset<Texture2D> texture = BossBanner.RequestGlassTexture();
-            Rectangle rectangle = GetDimensions().ToRectangle();
-            bool contains = ContainsPoint(Main.MouseScreen);
-            if (contains && !PlayerInput.IgnoreMouseInterface)
-            {
-                Main.LocalPlayer.mouseInterface = true;
-            }
-
+            Rectangle rectangle = UIHelper.MouseInterfaceInteraction(this);
             Vector2 drawPosition = rectangle.TopLeft();
 
             //Adding a little bit of hover would be cool
@@ -175,23 +169,7 @@ namespace Stellamod.Core.BossBannerSystem
             //I think I have a white shader somewhere
             if (IsMouseHovering)
             {
-                var whiteShader = SpriteWhiteShader.Instance;
-                float outlineOffset = 2;
-                Vector2 h = Vector2.UnitX * outlineOffset;
-                Vector2 v = Vector2.UnitY * outlineOffset;
-                spriteBatch.Restart(effect: whiteShader.Effect);
-
-                Color outlineColor = Color.Yellow;
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, default, default, default, whiteShader.Effect, Main.UIScaleMatrix);
-
-                spriteBatch.Draw(texture.Value, drawPosition + h, null, outlineColor, 0f, default, 1, SpriteEffects.None, 0f);
-                spriteBatch.Draw(texture.Value, drawPosition - h, null, outlineColor, 0f, default, 1, SpriteEffects.None, 0f);
-                spriteBatch.Draw(texture.Value, drawPosition + v, null, outlineColor, 0f, default, 1, SpriteEffects.None, 0f);
-                spriteBatch.Draw(texture.Value, drawPosition - v, null, outlineColor, 0f, default, 1, SpriteEffects.None, 0f);
-
-                spriteBatch.End();
-                spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
+                UIHelper.QuickOutline(spriteBatch, texture.Value, drawPosition, Color.Yellow);
             }
 
             spriteBatch.Draw(texture.Value, drawPosition, null, Color.White, 0f, default, 1, SpriteEffects.None, 0f);
