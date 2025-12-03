@@ -58,33 +58,26 @@ namespace Stellamod.WorldG
             progress.Message = "Generating Terrain";
             TerrainFeatureType terrainFeatureType = TerrainFeatureType.Plateau;
             int num2 = 0;
-            double num3 = Main.maxTilesY * 0.3;
-            num3 *= GenBase._random.Next(90, 110) * 0.005;
-            double num4 = num3 + Main.maxTilesY * 0.2;
-            num4 *= GenBase._random.Next(90, 110) * 0.01;
-            if (WorldGen.remixWorldGen)
-            {
-                num4 = Main.maxTilesY * 0.5;
-                if (Main.maxTilesX > 2500)
-                    num4 = Main.maxTilesY * 0.6;
+            double worldSurface = Main.maxTilesY * 0.65;
+            worldSurface *= GenBase._random.Next(90, 110) * 0.005;
+            double rockLayer = worldSurface + Main.maxTilesY * 0.13;
+            rockLayer *= GenBase._random.Next(90, 110) * 0.01;
 
-                num4 *= GenBase._random.Next(95, 106) * 0.01;
-            }
-
-            double num5 = num3;
-            double num6 = num3;
-            double num7 = num4;
-            double num8 = num4;
+            double worldSurfaceLow = worldSurface;
+            double worldSurfaceHigh = worldSurface;
+            double rockLayerLow = rockLayer;
+            double rockLayerHigh = rockLayer;
             double num9 = Main.maxTilesY * 0.23;
+
             SurfaceHistory surfaceHistory = new SurfaceHistory(500);
             num2 = GenVars.leftBeachEnd + num;
             for (int i = 0; i < Main.maxTilesX; i++)
             {
                 progress.Set(i / (double)Main.maxTilesX);
-                num5 = Math.Min(num3, num5);
-                num6 = Math.Max(num3, num6);
-                num7 = Math.Min(num4, num7);
-                num8 = Math.Max(num4, num8);
+                worldSurfaceLow = Math.Min(worldSurface, worldSurfaceLow);
+                worldSurfaceHigh = Math.Max(worldSurface, worldSurfaceHigh);
+                rockLayerLow = Math.Min(rockLayer, rockLayerLow);
+                rockLayerHigh = Math.Max(rockLayer, rockLayerHigh);
                 if (num2 <= 0)
                 {
                     terrainFeatureType = TerrainFeatureType.Plateau;
@@ -100,95 +93,50 @@ namespace Stellamod.WorldG
                 if (i > Main.maxTilesX * 0.48 && i < Main.maxTilesX * 0.52)
                     terrainFeatureType = TerrainFeatureType.Plateau;
 
-                num3 += GenerateWorldSurfaceOffset(terrainFeatureType);
-                double num10 = 0.17;
-                double num11 = 0.26;
-                if (WorldGen.drunkWorldGen)
-                {
-                    num10 = 0.15;
-                    num11 = 0.28;
-                }
-
-                if (i < GenVars.leftBeachEnd + num || i > GenVars.rightBeachStart - num)
-                {
-                    num3 = Utils.Clamp(num3, Main.maxTilesY * 0.17, num9);
-                }
-                else if (num3 < Main.maxTilesY * num10)
-                {
-                    num3 = Main.maxTilesY * num10;
-                    num2 = 0;
-                }
-                else if (num3 > Main.maxTilesY * num11)
-                {
-                    num3 = Main.maxTilesY * num11;
-                    num2 = 0;
-                }
-
+                worldSurface += GenerateWorldSurfaceOffset(terrainFeatureType);
                 while (GenBase._random.Next(0, 3) == 0)
                 {
-                    num4 += GenBase._random.Next(-2, 3);
+                    rockLayer += GenBase._random.Next(-2, 3);
                 }
 
-                if (WorldGen.remixWorldGen)
-                {
-                    if (Main.maxTilesX > 2500)
-                    {
-                        if (num4 > Main.maxTilesY * 0.7)
-                            num4 -= 1.0;
-                    }
-                    else if (num4 > Main.maxTilesY * 0.6)
-                    {
-                        num4 -= 1.0;
-                    }
-                }
-                else
-                {
-                    if (num4 < num3 + Main.maxTilesY * 0.06)
-                        num4 += 1.0;
+                if (rockLayer < worldSurface + Main.maxTilesY * 0.06)
+                    rockLayer += 1.0;
 
-                    if (num4 > num3 + Main.maxTilesY * 0.35)
-                        num4 -= 1.0;
-                }
+                if (rockLayer > worldSurface + Main.maxTilesY * 0.35)
+                    rockLayer -= 1.0;
 
-                surfaceHistory.Record(num3);
-                FillColumn(i, num3, num4);
-                if (i == GenVars.rightBeachStart - num)
-                {
-                    if (num3 > num9)
-                        RetargetSurfaceHistory(surfaceHistory, i, num9);
 
-                    terrainFeatureType = TerrainFeatureType.Plateau;
-                    num2 = Main.maxTilesX - i;
-                }
+                surfaceHistory.Record(worldSurface);
+                FillColumn(i, worldSurface, rockLayer);
             }
 
-            Main.worldSurface = (int)(num6 + 25.0);
-            Main.rockLayer = num8;
+            Main.worldSurface = (int)(worldSurfaceHigh + 25.0);
+            Main.rockLayer = rockLayerHigh;
             double num12 = (int)((Main.rockLayer - Main.worldSurface) / 6.0) * 6;
             Main.rockLayer = (int)(Main.worldSurface + num12);
             int num13 = (int)(Main.rockLayer + Main.maxTilesY) / 2 + GenBase._random.Next(-100, 20);
             int lavaLine = num13 + GenBase._random.Next(50, 80);
             if (WorldGen.remixWorldGen)
-                lavaLine = (int)(Main.worldSurface * 4.0 + num4) / 5;
+                lavaLine = (int)(Main.worldSurface * 4.0 + rockLayer) / 5;
 
             int num14 = 20;
-            if (num7 < num6 + num14)
+            if (rockLayerLow < worldSurfaceHigh + num14)
             {
-                double num15 = (num7 + num6) / 2.0;
-                double num16 = Math.Abs(num7 - num6);
+                double num15 = (rockLayerLow + worldSurfaceHigh) / 2.0;
+                double num16 = Math.Abs(rockLayerLow - worldSurfaceHigh);
                 if (num16 < num14)
                     num16 = num14;
 
-                num7 = num15 + num16 / 2.0;
-                num6 = num15 - num16 / 2.0;
+                rockLayerLow = num15 + num16 / 2.0;
+                worldSurfaceHigh = num15 - num16 / 2.0;
             }
 
-            GenVars.rockLayer = num4;
-            GenVars.rockLayerHigh = num8;
-            GenVars.rockLayerLow = num7;
-            GenVars.worldSurface = num3;
-            GenVars.worldSurfaceHigh = num6;
-            GenVars.worldSurfaceLow = num5;
+            GenVars.rockLayer = rockLayer;
+            GenVars.rockLayerHigh = rockLayerHigh;
+            GenVars.rockLayerLow = rockLayerLow;
+            GenVars.worldSurface = worldSurface;
+            GenVars.worldSurfaceHigh = worldSurfaceHigh;
+            GenVars.worldSurfaceLow = worldSurfaceLow;
             GenVars.waterLine = num13;
             GenVars.lavaLine = lavaLine;
         }

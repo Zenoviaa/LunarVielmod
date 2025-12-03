@@ -12,38 +12,30 @@ namespace Stellamod.WorldG
 {
     public class WorldExtenderer : ModSystem
     {
-        FieldInfo WorldGen_lastMaxTilesX;
-        FieldInfo WorldGen_lastMaxTilesY;
-
 
         //We can set the world size to anything, 8400x2400 is large world
         public int NewMaxTilesX => 9400;
-        public int NewMaxTilesY => 2400;
+        public int NewMaxTilesY => 3400;
         //Original 8400x 2400y
         public override void Load()
         {
-            //if (ModLoader.version < new Version(0, 10))
-            //{
-            //	throw new Exception("\nThis mod uses functionality only present in the latest tModLoader versions. Please update tModLoader to use this mod\n\n");
-            //}
             IL_WorldGen.CreateNewWorld += WorldGen_EditWorldSize;
             IL_WorldFile.LoadWorld += WorldGen_EditWorldSize;
-        
-            WorldGen_lastMaxTilesX = typeof(WorldGen).GetField("lastMaxTilesX", BindingFlags.Static | BindingFlags.NonPublic);
-            WorldGen_lastMaxTilesY = typeof(WorldGen).GetField("lastMaxTilesY", BindingFlags.Static | BindingFlags.NonPublic);
         }
-
         public override void Unload()
         {
             base.Unload();
             IL_WorldGen.CreateNewWorld -= WorldGen_EditWorldSize;
             IL_WorldFile.LoadWorld -= WorldGen_EditWorldSize;
         }
-
         private void WorldGen_EditWorldSize(ILContext il)
         {
             var cursor = new ILCursor(il);
             cursor.EmitDelegate(EditWorldSize);
+        }
+        private void EditWorldSize()
+        {
+            SetWorldSize();
         }
 
         public override void ClearWorld()
@@ -56,47 +48,39 @@ namespace Stellamod.WorldG
 
             ResizeMapTarget();
         }
-      
-        private void ResizeMapTarget()
+
+        private void SetWorldSize()
         {
-            if (Main.maxTilesX < NewMaxTilesX)
-                return;
-
-            Main.mapTargetX = 10; // change that 4 in vanilla to target-x
-            Main.mapTargetY = 2; // change that 
-            Main.instance.mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
-
-            int intendedMaxX = Math.Max(Main.maxTilesX + 1, NewMaxTilesX + 1);
-            int intendedMaxY = Math.Max(Main.maxTilesY + 1, NewMaxTilesY + 1);
-
-            // Individual map tiles
-            Main.Map = new WorldMap(intendedMaxX, intendedMaxY);
-
-            // Space for more tiles -- Actual tiles
-
-            Tilemap tileMap = (Tilemap)typeof(Tilemap).GetConstructor(
-              BindingFlags.NonPublic | BindingFlags.Instance,
-              null, new Type[] { typeof(ushort), typeof(ushort) }, null).Invoke(new object[]
-              { (ushort)intendedMaxX, (ushort)intendedMaxY });
-            Main.tile = tileMap;
-
-            // Color for each tile
-
-            Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
-            Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
-
-        }
-        private void EditWorldSize()
-        {
-            int lastMaxTilesX = (int)WorldGen_lastMaxTilesX.GetValue(null);
-            int lastMaxTilesY = (int)WorldGen_lastMaxTilesY.GetValue(null);
-
-            // TODO: investigate cpu/ram trade-off for reducing this later when regular-sized worlds loaded.
-
-            // Goal: Increase limits, don't decrease anything lower than normal max for compatibility.
             Main.maxTilesX = NewMaxTilesX;
             Main.maxTilesY = NewMaxTilesY;
             ResizeMapTarget();
+        }
+        private void ResizeMapTarget()
+        {
+            if (8400 < Main.maxTilesX || 2400 < Main.maxTilesY)
+            {
+                int chunkX = (Main.maxTilesX - 1) / Main.sectionWidth + 1;
+                int chunkY = (Main.maxTilesY - 1) / Main.sectionHeight + 1;
+                int newSizeX = Math.Max(chunkX * Main.sectionWidth, 8400);
+                int newSizeY = Math.Max(chunkY * Main.sectionHeight, 2400);
+
+                Main.Map = new WorldMap(newSizeX, newSizeY);
+
+                ConstructorInfo constructorInfo = typeof(Tilemap).GetConstructor(
+                    BindingFlags.NonPublic | BindingFlags.Instance, new[] { typeof(ushort), typeof(ushort) })!;
+                Main.tile = (Tilemap)constructorInfo.Invoke(new object?[] { (ushort)newSizeX, (ushort)newSizeY });
+            }
+
+            int newWidth = Main.maxTilesX / Main.textureMaxWidth + 2;
+            int newHeight = Main.maxTilesY / Main.textureMaxHeight + 2;
+            if (newWidth > Main.mapTargetX || newHeight > Main.mapTargetY)
+            {
+                Main.mapTargetX = Math.Max(5, newWidth);
+                Main.mapTargetY = Math.Max(3, newHeight);
+                Main.instance.mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
+                Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
+                Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
+            }
         }
     }
 }

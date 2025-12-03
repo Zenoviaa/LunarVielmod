@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -246,7 +247,6 @@ namespace Stellamod.WorldG
                     new Actions.Smooth(true)
                 }));
             }
-
 
             for (int j = 0; j < caveSteps; j++)
             {
