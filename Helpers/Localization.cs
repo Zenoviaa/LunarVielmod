@@ -1,4 +1,5 @@
 using Stellamod.Core.ArmorReforge;
+using Stellamod.Core.BossBannerSystem;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.QuestSystem;
 using Terraria.Localization;
@@ -17,6 +18,15 @@ namespace Stellamod.Helpers
         {
             return Language.GetTextValue($"Mods.Stellamod.Quests.{quest.Name}." + Path);
         }
+        public static string BossBanners(BossBanner item, string Path)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.BossBanners.{item.Name}." + Path);
+        }
+        public static string BossPages(BossPage item, string Path)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.BossPages.{item.Name}." + Path);
+        }
+
 
         public static string TownDialogue(string Path)
         {

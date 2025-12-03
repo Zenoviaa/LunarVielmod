@@ -3,6 +3,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.QuestSystem
 {
+
     public class QuestLoader : ModSystem
     {
         public static readonly IDictionary<int, Quest> quests = new Dictionary<int, Quest>();
