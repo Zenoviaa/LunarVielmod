@@ -1,13 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
-using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -38,7 +36,10 @@ namespace Stellamod.Core.BossBannerSystem
         }
     }
 
-    public class RightPageUI : UIPanel
+    /// <summary>
+    /// Base class for the right side page of the collection book
+    /// </summary>
+    public abstract class RightPageUI : UIPanel
     {
         public int RelativeLeft => 0;
         public int RelativeTop => 0;
@@ -68,7 +69,7 @@ namespace Stellamod.Core.BossBannerSystem
             Height.Pixels = 186;
         }
 
-        public void SetPhotoTexture(BossPage bossPage)
+        public void SetBossPage(BossPage bossPage)
         {
             BossPhotoTextureAsset = bossPage.RequestBossPhoto();
         }
@@ -82,20 +83,119 @@ namespace Stellamod.Core.BossBannerSystem
         {
             base.DrawSelf(spriteBatch);
             Asset<Texture2D> texture = BossPhotoTextureAsset;
-            Rectangle rectangle = GetDimensions().ToRectangle();
-            bool contains = ContainsPoint(Main.MouseScreen);
-            if (contains && !PlayerInput.IgnoreMouseInterface)
-            {
-                Main.LocalPlayer.mouseInterface = true;
-            }
+            Rectangle rectangle = UIHelper.MouseInterfaceInteraction(this);
             spriteBatch.Draw(texture.Value, rectangle.TopLeft(), null, Color.White, 0f, default, 1, SpriteEffects.None, 0f);
         }
     }
 
-    public class BossLoreUI : UIPanel
+
+    public class StoneGolemPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.LifeNPlants;
+        }
+    }
+
+    /// <summary>
+    /// Draws the star ranking of a boss
+    /// </summary>
+    public class BossStarsUI : UIPanel
+    {
+        private BossPage _bossPage;
+        private readonly BossPageUI _parent;
+        public BossStarsUI(BossPageUI parent)
+        {
+            _parent = parent;
+        }
+
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            Width = _parent.Width;
+            Height.Pixels = 32;
+        }
+
+        public void SetBossPage(BossPage bossPage)
+        {
+            _bossPage = bossPage;
+        }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            DrawStars(spriteBatch);
+        }
+
+        private void DrawStars(SpriteBatch spriteBatch)
+        {
+            Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
+            var texture = BossBanner.RequestStarTexture();
+            Color darkColor = Color.Lerp(Color.White, Color.Black, 0.8f);
+            for (int i = 0; i < 7; i++)
+            {
+                float distanceBetween = 16;
+                Vector2 drawPosition = topLeft + new Vector2(distanceBetween * i, 0);
+                Color drawColor = i < _bossPage.StarRanking ? Color.White : darkColor;
+                spriteBatch.Draw(texture.Value, drawPosition, null, drawColor, 0f, default, 1, SpriteEffects.None, 0f);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Draws the rewards that a boss hass
+    /// </summary>
+    public class BossRewardsUI : UIPanel
+    {
+        private readonly int _rewardContext;
+        private readonly BossPageUI _parent;
+        private BossPage _bossPage;
+        public BossRewardsUI(BossPageUI parent)
+        {
+            _parent = parent;
+            _rewardContext = ItemSlot.Context.BankItem;
+        }
+
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            Width = _parent.Width;
+            Height.Pixels = 32;
+        }
+
+        public void SetBossPage(BossPage bossPage)
+        {
+            _bossPage = bossPage;
+        }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            DrawRewards(spriteBatch);
+        }
+
+        private void DrawRewards(SpriteBatch spriteBatch)
+        {
+            Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
+            List<Item> rewards = _bossPage.Rewards;
+            for (int i = 0; i < rewards.Count; i++)
+            {
+                Item reward = rewards[i];
+                float distanceBetween = 16;
+                Vector2 drawPosition = topLeft + new Vector2(distanceBetween * i, 0);
+                ItemSlot.DrawItemIcon(reward, _rewardContext, spriteBatch, drawPosition, 2, 32, Color.White);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Opens up the lore tab for the boss
+    /// </summary>
+    public class BossLoreButtonUI : UIPanel
     {
         private readonly BossPageUI _parent;
-        public BossLoreUI(BossPageUI parent)
+        public BossLoreButtonUI(BossPageUI parent)
         {
             _parent = parent;
         }
@@ -104,33 +204,32 @@ namespace Stellamod.Core.BossBannerSystem
             base.OnInitialize();
             Width.Pixels = 32;
             Height.Pixels = 32;
-        }
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
+            OnLeftClick += _parent.ToggleLoreWindow;
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
             Asset<Texture2D> glassTexture = BossBanner.RequestScrollTexture();
-            Rectangle rectangle = GetDimensions().ToRectangle();
-            bool contains = ContainsPoint(Main.MouseScreen);
-            if (contains && !PlayerInput.IgnoreMouseInterface)
+            Rectangle rectangle = UIHelper.MouseInterfaceInteraction(this);
+            Vector2 drawPosition = rectangle.TopLeft();
+            drawPosition.Y += ExtraMath.Osc(0f, 2f);
+            if (IsMouseHovering)
             {
-                Main.LocalPlayer.mouseInterface = true;
+                UIHelper.QuickOutline(spriteBatch, glassTexture, drawPosition, Color.Yellow);
             }
-            spriteBatch.Draw(glassTexture.Value, rectangle.TopLeft(), null, Color.White, 0f, default, 1, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(glassTexture.Value, drawPosition, null, Color.White, 0f, default, 1, SpriteEffects.None, 0f);
         }
     }
 
     /// <summary>
     /// Opens a window that shows where you can find the boss
     /// </summary>
-    public class BossGlassUI : UIPanel
+    public class BossFindButtonUI : UIPanel
     {
         private readonly BossPageUI _parent;
-        public BossGlassUI(BossPageUI parent)
+        public BossFindButtonUI(BossPageUI parent)
         {
             //I love dependency injection
             _parent = parent;
@@ -142,7 +241,7 @@ namespace Stellamod.Core.BossBannerSystem
             //Width/Height doesn't need to be accurate thankfully
             Width.Pixels = 32;
             Height.Pixels = 32;
-            OnLeftClick += _parent.ShowLocationWindow;
+            OnLeftClick += _parent.ToggleLocationWindow;
         }
 
         public override void Update(GameTime gameTime)
@@ -176,18 +275,25 @@ namespace Stellamod.Core.BossBannerSystem
         }
     }
 
+    /// <summary>
+    /// Opens a window that shows all information about the boss
+    /// </summary>
     public class BossPageUI : RightPageUI
     {
         private UIText _displayNameText;
-        private BossGlassUI _glassUI;
-        private BossLoreUI _bossLoreUI;
+        private BossFindButtonUI _glassUI;
+        private BossLoreButtonUI _bossLoreUI;
         private BossPhotoUI _bossPhotoUI;
+        private BossRewardsUI _bossRewardsUI;
+        private BossStarsUI _bossStarsUI;
         public BossPageUI()
         {
             _displayNameText = new UIText("Your Mom");
-            _glassUI = new BossGlassUI(this);
-            _bossLoreUI = new BossLoreUI(this);
+            _glassUI = new BossFindButtonUI(this);
+            _bossLoreUI = new BossLoreButtonUI(this);
             _bossPhotoUI = new BossPhotoUI(this);
+            _bossRewardsUI = new BossRewardsUI(this);
+            _bossStarsUI = new BossStarsUI(this);
         }
 
         public BossPage BossPage { get; private set; }
@@ -210,11 +316,15 @@ namespace Stellamod.Core.BossBannerSystem
             Append(_bossLoreUI);
             Append(_glassUI);
             Append(_bossPhotoUI);
+            Append(_bossRewardsUI);
         }
 
-        public void UpdateUI(BossPage bossPage)
+        public void SetBossPage(BossPage bossPage)
         {
             BossPage = bossPage;
+            _bossStarsUI.SetBossPage(bossPage);
+            _bossRewardsUI.SetBossPage(bossPage);
+            _bossPhotoUI.SetBossPage(bossPage);
             _displayNameText.SetText(bossPage.DisplayName);
         }
 
@@ -227,7 +337,13 @@ namespace Stellamod.Core.BossBannerSystem
             Top.Pixels = RelativeTop;
         }
 
-        public void ShowLocationWindow(UIMouseEvent evt, UIElement listeningElement)
+
+        public void ToggleLocationWindow(UIMouseEvent evt, UIElement listeningElement)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ToggleLoreWindow(UIMouseEvent evt, UIElement listeningElement)
         {
             throw new NotImplementedException();
         }
@@ -264,6 +380,7 @@ namespace Stellamod.Core.BossBannerSystem
         public List<Item> Rewards;
         public List<Item> NoHitRewards;
         public int StarRanking;
+        public BossBannerType banner;
         protected sealed override void Register()
         {
             ModTypeLookup<BossPage>.Register(this);
