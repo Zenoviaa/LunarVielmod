@@ -404,7 +404,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
                         Vector2 velocity = (playerToTraumatize.Center - spawnPoint);
                         velocity = velocity.SafeNormalize(Vector2.Zero);
-                        velocity *= 5;
+                        velocity *= 3.8f;
 
                         Projectile.NewProjectile(SourceFromThis, spawnPoint, velocity,
                             ModContent.ProjectileType<BloodyHallucination>(), BloodHallucinationDamage, 1, playerToTraumatize.whoAmI);
@@ -698,7 +698,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         #endregion
 
         #region Bloody Mega Charge
-
+        private Vector2 _startDashPosition;
+        private Vector2 _nextDashPosition;
         private void AI_BloodyMegaCharge_Start()
         {
             Timer++;
@@ -710,50 +711,47 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             }
 
 
-
-            float time = 60f;
-            if(AttackNumber == 0)
-            {
-                time += 30;
-            }
-            int halfTime = (int)(time - 15);
-            if (Timer == halfTime)
-            {
-                CreateRedFlash();
-                CreateGoreBurst(NPC.Center, -Vector2.UnitY);
-                SoundStyle burstSound = AssetRegistry.Sounds.SanguineSingularity.BloodyGrab;
-                SoundEngine.PlaySound(burstSound, NPC.position);
-            }
-            if(Timer >= halfTime)
-            {
-                NPC.velocity = Vector2.Zero;
-                _animation = AnimationState.Idle;
-            }
-            else
-            {
-                _animation = AnimationState.Walk;
-                float easing = EasingFunction.InOutSine(Timer / (float)halfTime);
-                Vector2 velocity = (MyTarget.Center - NPC.Center);
-                velocity = velocity.SafeNormalize(Vector2.Zero);
-                velocity *= MathHelper.Lerp(0f, 6f, easing);
-                NPC.velocity = Vector2.Lerp(NPC.velocity, velocity, 0.3f);
-                _dashLineRotation = NPC.velocity.ToRotation();
-            }
-
-                
-            TargetOutlineColor = Color.Yellow;
-            _contactDamage = false;
+            //Get our cool trailing effects back
+            _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
+            _draw.flamingTrailAlpha = MathHelper.Lerp(_draw.flamingTrailAlpha, 1f, 0.1f);
             _draw.alpha = 1f;
-            if(Timer >= time)
+            _draw.scale = Vector2.Lerp(_draw.scale, Vector2.One, 0.1f);
+            _contactDamage = false;
+            TargetOutlineColor = Color.Yellow;
+
+            Vector2 targetNormal = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+            _dashLineRotation = targetNormal.ToRotation();
+            //NEW IDEA
+            //Just add an impulse velocity and then slowly lerp back, and then dot product
+            if(Timer == 1)
+            {
+                NPC.velocity = -targetNormal * 15;
+                _draw.scale = new Vector2(1.2f, 0.8f);
+            }
+
+            Vector2 prepVelocity = targetNormal * 15;
+
+            float attackRatio = AttackNumber / 3f;
+            float lerpFactor = MathHelper.Lerp(0.01f, 0.03f, attackRatio);
+            NPC.velocity += prepVelocity * lerpFactor;
+            NPC.spriteDirection = NPC.velocity.X > 0 ? 1 : -1;
+         
+            float dp = Vector2.Dot(targetNormal, NPC.velocity.SafeNormalize(Vector2.Zero));
+            //If we're aiming towards our target we'll go to our dash state
+            //Make sure to also check if timer is greater than the min prep time
+            if (dp > 0f && NPC.velocity.Length() > 10) 
             {
                 SwitchState(AIState.BloodyMegaCharge_Rush);
             }
         }
 
+
+
         private void AI_BloodyMegaCharge_Rush()
         {
             Timer++;
             bool superDash = AttackNumber == 3;
+
             if(Timer == 1)
             {
                 NPC.TargetClosest();
@@ -766,8 +764,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 
                 var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.TintScreen(Color.Red * 0.3f, 1f, 15f);
-                
-
+               
                 if (superDash)
                 {
                     ShakeModSystem.Shake = 24;
@@ -781,7 +778,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 }
             }
 
-            float time = 30f;
+            float time = 20f;
             _contactDamage=true;
             _animation = AnimationState.Run;
             _draw.afterImageAlpha = 1f;
@@ -790,7 +787,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             float speed = superDash ? 70 : 55;
             Vector2 targetVelocity = _runDirection * speed;
             NPC.velocity = targetVelocity;
-            NPC.direction = _runDirection.X > 0 ? 1 : -1;
+            NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
             if (superDash)
             {
                 if (Timer % 3 == 0)
@@ -808,20 +805,18 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void AI_BloodyMegaCharge_End()
         {
             Timer++;
-            NPC.velocity *= 0.85f;
-
-            if(Timer >= 15f)
+            NPC.velocity *= 0.95f;
+            if(Timer >= 5f)
             {
                 AttackNumber++;
-                if(AttackNumber >= 4)
+                if(AttackNumber >= 11)
                 {
                     SwitchState(AIState.Idle);
                 }
                 else
                 {
                     SwitchState(AIState.BloodyMegaCharge_Start);
-                }
-              
+                }  
             }
         }
 
@@ -1006,7 +1001,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 return;
             }
             SwitchState(nextPattern);
-    
         }
 
         private void AI_Idle()
@@ -1392,8 +1386,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 NPC.TargetClosest();
             }
             _draw.scale = Vector2.Lerp(_draw.scale, Vector2.One, 0.1f);
-            _draw.afterImageAlpha *= 0.9f;
-            _draw.flamingTrailAlpha *= 0.9f;
             _animation = AnimationState.Run;
             TargetOutlineColor = Color.Transparent;
             SlightlyMoveCameraTowardsMe();
