@@ -2283,7 +2283,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             incresionDiskDrawColor.A = 0;
             incresionDiskDrawColor *= _draw.alpha;
 
-            Vector2 center = _singularityDrawOverridePosition != Vector2.Zero ? _singularityDrawOverridePosition : NPC.Center;
+            Vector2 center = _singularityDrawOverridePosition != Vector2.Zero ? _singularityDrawOverridePosition : NPC.Center + GetDrawOffset();
 
             Vector2 drawPos = center - screenPos;
             drawPos += GetDrawOffset();
