@@ -87,6 +87,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
             Vector2 drawCenter = Projectile.Center - screenPos;
             Color finalColor = Color.White.MultiplyRGB(lightColor);
             finalColor *= _alpha;
+            finalColor *= 0.5f;
             SpriteEffects flip = Projectile.velocity.X < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(texture, drawCenter, frame, finalColor, Projectile.rotation, drawOrigin, Projectile.scale, flip, 0);
         }

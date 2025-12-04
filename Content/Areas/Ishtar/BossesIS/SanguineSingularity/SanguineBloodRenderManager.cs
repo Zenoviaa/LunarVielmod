@@ -78,11 +78,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private void DrawBlack(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
-            if(FlickerTimer > 0)
-            {
-
-            }
-            else if (DrawBloodyBG)
+            if (DrawBloodyBG)
             {
                 GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
                 graphicsDevice.Clear(Color.Transparent);
@@ -98,7 +94,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodyShader.Effect, Main.Transform);
-                spriteBatch.Draw(_bloodBGRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+
+                float alpha = FlickerTimer > 0 ? ExtraMath.Osc(0f, 1f, speed: 2) : 1;
+                spriteBatch.Draw(_bloodBGRenderRT, Vector2.Zero, null, Color.White * alpha, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
 
