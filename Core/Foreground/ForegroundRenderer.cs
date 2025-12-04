@@ -122,7 +122,7 @@ namespace Stellamod.Core.Foreground
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer,
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
                 null, Main.GameViewMatrix.TransformationMatrix);
 
             for (int i = 0; i < _layers.Length; i++)
@@ -148,8 +148,9 @@ namespace Stellamod.Core.Foreground
             Vector2 drawOrigin = Vector2.Zero;
             Color drawColor = Color.White * layer.fade;
 
-
-            int y = (Main.screenHeight - foregroundTexture.Height);
+            float drawWidth = foregroundTexture.Width;
+            float drawHeight = foregroundTexture.Height;
+        
             int worldSurfaceY = (int)((Main.worldSurface - 50) * 16);
             int cameraY = (int)Main.Camera.Center.Y;
             int diff = cameraY - worldSurfaceY;
@@ -162,14 +163,48 @@ namespace Stellamod.Core.Foreground
             float zLayer = 0f;
             layer.SetLayering(ref zLayer, ref parallax);
 
-            int yParallax = (int)(diff * parallax.Y);
+            float yParallax = (diff * parallax.Y);
+            float xParallax = (Main.screenPosition.X * parallax.X);
 
-            Rectangle locationRectangle = new Rectangle(0, y + yParallax, Main.screenWidth, foregroundTexture.Height);
+            float y = (Main.screenHeight - drawHeight);
+            Vector2 drawPosition = Vector2.Zero;
+            drawPosition.Y += y;
+            drawPosition.Y += yParallax;
+            drawPosition.X -= xParallax;
+            drawPosition.X -= 15000;
+            bool hasDrawnTextures = false;
 
-            int xParallax = (int)(Main.screenPosition.X * parallax.X);
-          
-            Rectangle sourceRectangle = new Rectangle(xParallax, 0, foregroundTexture.Width, foregroundTexture.Height);
-            spriteBatch.Draw(foregroundTexture, locationRectangle, sourceRectangle, drawColor);
+            Vector2 cameraCenterWorld = Main.Camera.Center;
+            Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+            Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+
+        
+            for (int i = 0; i < 100; i++)
+            {
+                Vector2 leftPosition = drawPosition;
+                leftPosition.X += i * drawWidth;
+                        
+
+                //Check if the x position is on screen
+                float worldX = leftPosition.X + Main.screenPosition.X;
+                float leftX = worldX;
+                float rightX = leftX + drawWidth;
+
+
+           
+                bool isLeftXInBounds = leftX >= cameraTopLeft.X && leftX <= cameraBottomRight.X;
+                bool isRightXInBounds = rightX >= cameraTopLeft.X && rightX <= cameraBottomRight.X;
+                if(isLeftXInBounds || isRightXInBounds)
+                {
+                    spriteBatch.Draw(foregroundTexture, leftPosition, null, drawColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                    hasDrawnTextures = true;
+                }
+
+            }
+
+
+        
+
         }
     }
 }
