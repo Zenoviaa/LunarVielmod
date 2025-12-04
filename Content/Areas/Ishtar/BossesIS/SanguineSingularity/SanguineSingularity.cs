@@ -281,7 +281,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             float traveledDistance = Vector2.Distance(NPC.position, NPC.oldPosition);
             _stepDistance += traveledDistance;
-            if(_stepDistance >= 64)
+            if(_stepDistance >= 100)
             {
                 Vector2 pos = NPC.Bottom + new Vector2(Main.rand.NextFloat(-32f, 32f), 0) + GetDrawOffset();
                 pos.Y += 64;
