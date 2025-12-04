@@ -127,6 +127,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         }
 
         private bool _playedInSound;
+        private float _circleRadius;
         private float _blackTimer;
         private float _hallucinationSpawnTimer;
         private float _dashLineRotation;
@@ -213,6 +214,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             writer.Write(_hallucinationSpawnTimer);
             writer.WriteVector2(_singularityDrawOverridePosition);
             writer.WriteVector2(_startVector);
+            writer.Write(_circleRadius);
         }
         
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -226,6 +228,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _hallucinationSpawnTimer = reader.ReadSingle();
             _singularityDrawOverridePosition = reader.ReadVector2();
             _startVector = reader.ReadVector2();
+            _circleRadius = reader.ReadSingle();
         }
 
         public override void SetStaticDefaults()
@@ -1219,9 +1222,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void SetBloodyBurstVelocity()
         {
             _bloodyBurstTimer += MathHelper.Lerp(0.5f, 1f, AttackNumber / 6f);
+       
             float radians = _bloodyBurstTimer * 0.1f;
             Vector2 ovalOffset = new Vector2();
-            ovalOffset.X = MathF.Cos(radians) * 512;
+            ovalOffset.X = MathF.Cos(radians) * MathF.Max(_circleRadius, 512);
             ovalOffset.Y = MathF.Sin(radians) * 128;
             Vector2 targetCenter = MyTarget.Center + ovalOffset;
             Vector2 velocity = (targetCenter - NPC.Center);
@@ -1325,6 +1329,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 _draw.scale = new Vector2(1.3f, 1.5f);
                 if (MultiplayerHelper.IsHost)
                 {
+                    _circleRadius = Main.rand.NextFloat(512, 800);
+                    NPC.netUpdate = true;
                     int bloodyBurstProjectile = ModContent.ProjectileType<BloodyBurst>();
                     float num = 2f;
                     for(float f = 0; f < num; f++)
