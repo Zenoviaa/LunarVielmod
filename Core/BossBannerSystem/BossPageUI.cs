@@ -107,6 +107,7 @@ namespace Stellamod.Core.BossBannerSystem
             {
                 _bossRewardsUI.Top.Pixels = 10000;
             }
+     
             _pageText.Top.Pixels = 250;
         }
 

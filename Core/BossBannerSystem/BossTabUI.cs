@@ -48,7 +48,7 @@ namespace Stellamod.Core.BossBannerSystem
             _slotGrid = new UIGrid();
             _slotGrid.Width.Set(0, 1f);
             _slotGrid.Height.Set(0, 1f);
-            _slotGrid.ListPadding = 2f;
+            _slotGrid.ListPadding = 12f;
 
             _panel.Append(_slotGrid);
 

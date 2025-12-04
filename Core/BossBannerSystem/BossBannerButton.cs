@@ -41,11 +41,14 @@ namespace Stellamod.Core.BossBannerSystem
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            float leftPixels = 0;
             for(int i = 0; i < _bossButtons.Length; i++)
             {
                 var btn = _bossButtons[i];
-                btn.Left.Pixels = i * 32;
-                btn.Top.Pixels = Height.Pixels / 2 - 6;
+                btn.Left.Pixels = leftPixels;
+                btn.Top.Pixels = Height.Pixels / 2 - btn.Height.Pixels / 2;
+                leftPixels += btn.Width.Pixels;
+                leftPixels += 4;
             }
         }
 

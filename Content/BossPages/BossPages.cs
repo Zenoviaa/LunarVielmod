@@ -38,6 +38,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.WitchAcademy;
             bossNPC = ModContent.GetInstance<JackTheScholar>();
+            StarRanking = 1;
         }
     }
 
