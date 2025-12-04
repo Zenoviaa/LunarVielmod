@@ -21,6 +21,8 @@ namespace Stellamod.Core.BossBannerSystem
         public override void OnInitialize()
         {
             base.OnInitialize();
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
             Width = _parent.Width;
             Height.Pixels = 32;
         }
@@ -32,8 +34,7 @@ namespace Stellamod.Core.BossBannerSystem
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            BackgroundColor = Color.Transparent;
-            BorderColor = Color.Transparent;
+
             base.DrawSelf(spriteBatch);
             DrawStars(spriteBatch);
         }
