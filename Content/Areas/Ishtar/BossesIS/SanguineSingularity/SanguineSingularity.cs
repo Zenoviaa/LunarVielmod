@@ -2286,7 +2286,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Vector2 center = _singularityDrawOverridePosition != Vector2.Zero ? _singularityDrawOverridePosition : NPC.Center + GetDrawOffset();
 
             Vector2 drawPos = center - screenPos;
-            drawPos += GetDrawOffset();
     
             Vector2 drawOrigin = incresionDiskRect.Size() / 2;
 
