@@ -276,13 +276,21 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
         }
 
-        public override void AI()
-        {
-            base.AI();
 
-            DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
-            DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
-            _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
+        private void EnablePlatformArena()
+        {
+            SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            fallSystem.noWings = true;
+            fallSystem.inSpace = true;
+            fallSystem.hoveringPlatform = true;
+            fallSystem.hoverPlatformY = 5000;
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            ModContent.GetInstance<SanguineBloodRenderManager>().DrawBloodyBG = true;
+        }
+
+        private void DespawnIfNoValidTarget()
+        {
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
@@ -292,6 +300,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 }
             }
 
+        }
+
+        private void ReceiveTeleport()
+        {
             if (_teleportPosition != Vector2.Zero)
             {
                 NPC.position.X = _teleportPosition.X;
@@ -299,6 +311,17 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 NPC.velocity = Vector2.Zero;
                 _teleportPosition = Vector2.Zero;
             }
+        }
+
+        public override void AI()
+        {
+            base.AI();
+
+            DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
+            DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
+            _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
+            DespawnIfNoValidTarget();
+            ReceiveTeleport();
             _draw.flashAlpha *= 0.99f;
             if (_draw.headless)
             {
@@ -331,9 +354,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 var d = Dust.NewDustPerfect(NPC.Center, DustID.Blood, upVelocity, Scale: Main.rand.NextFloat(1f, 2f));
                 d.noGravity = false;
             }
-            ModContent.GetInstance<SanguineBloodRenderManager>().DrawBloodyBG = true;
-                NPC.spriteDirection = NPC.direction;
-
+  
+              
+            NPC.spriteDirection = NPC.direction;
+            EnablePlatformArena();
             if (InPhase2 && MultiplayerHelper.IsHost)
             {
                 _hallucinationSpawnTimer++;
@@ -362,11 +386,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 }
             }
 
-            SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
-            fallSystem.noWings = true;
-            fallSystem.inSpace = true;
-            fallSystem.hoveringPlatform = true;
-            fallSystem.hoverPlatformY = 5000;
             switch (State)
             {
                 case AIState.Eviling:
@@ -786,6 +805,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         }
         private void AI_Eviling()
         {
+            NPC.boss = false;
             Timer++;
             if(Timer == 1)
             {

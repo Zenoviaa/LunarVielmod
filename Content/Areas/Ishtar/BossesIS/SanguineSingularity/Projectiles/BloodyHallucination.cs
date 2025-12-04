@@ -51,10 +51,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Lava, Scale: Main.rand.NextFloat(0.2f, 0.5f));
             }
 
+            Player target = Owner;
+
             float inAlpha = EasingFunction.InOutSine(Timer / 30f);
             float outAlpha = ((float)Projectile.timeLeft) / 30f;
             _alpha = inAlpha * outAlpha;
-            Projectile.velocity = Projectile.velocity.RotatedBy(0.02f);
+            Vector2 targetVelocity = Projectile.velocity.Length() * (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.1f);
             DrawHelper.AnimateTopToBottom(Projectile, 4);
         }
         private void DrawAfterImage(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
