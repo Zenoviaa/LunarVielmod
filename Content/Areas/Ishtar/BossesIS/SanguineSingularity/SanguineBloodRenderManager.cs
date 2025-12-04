@@ -60,12 +60,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             base.Load();
             ResizeRenderTargets();
         }
-        public override void PostUpdateNPCs()
-        {
-            base.PostUpdateNPCs();
-            if (FlickerTimer > 0)
-                FlickerTimer--;
-        }
+
         public override void OnModUnload()
         {
             base.OnModUnload();
@@ -74,6 +69,59 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             On_Main.DoDraw_WallsTilesNPCs -= DrawBloodRTToScreen;
             On_Main.DoDraw_DrawNPCsOverTiles -= DrawPixelRTToScreen;
             Main.OnResolutionChanged -= ResizeTargets;
+        }
+
+        private float _beatCounter;
+        private float _beatTimer;
+        private bool _in;
+        private float _timer;
+        private float _scale;
+
+        public void ResetMetronome()
+        {
+            _beatTimer = 0f;
+            _beatCounter = 0f;
+            _beatTimer = 0f;
+            _in = false;
+        }
+
+        private void Metronome()
+        {
+
+            float beatsPerTick = 130 / 60f / 60f;
+            _beatTimer += beatsPerTick;
+
+  
+            while (_beatTimer >= 1f)
+            {
+                _beatTimer -= 1f;
+                _beatCounter++;
+            }
+            if(_beatCounter % 8 == 0)
+            {
+                _in = !_in;
+            }
+
+            if (_in)
+            {
+                _timer++;
+            }
+            else
+            {
+                _timer--;
+            }
+
+            float time = 600f;
+            _timer = MathHelper.Clamp(_timer, 0, time);
+            float completionRatio = _timer / time;
+            _scale = MathHelper.Lerp(1f, 1.5f, completionRatio);
+        }
+        public override void PostUpdateNPCs()
+        {
+            base.PostUpdateNPCs();
+            if (FlickerTimer > 0)
+                FlickerTimer--;
+            Metronome();
         }
 
         private void DrawBlack(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
@@ -96,7 +144,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodyShader.Effect, Main.Transform);
 
                 float alpha = FlickerTimer > 0 ? ExtraMath.Osc(0f, 1f, speed: 2) : 1;
-                spriteBatch.Draw(_bloodBGRenderRT, Vector2.Zero, null, Color.White * alpha, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+
+                Vector2 centerOrigin = _bloodBGRenderRT.Size() / 2f;
+                spriteBatch.Draw(_bloodBGRenderRT, centerOrigin, null, Color.White * alpha, 0f, centerOrigin, _scale, SpriteEffects.None, 0f);
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
 
@@ -212,10 +262,19 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
                 DepthStencilState.Default, RasterizerState.CullNone, null);
 
+            float redOutlineOffset = 4;
+            Vector2 v = Vector2.UnitY * redOutlineOffset;
+            Vector2 h = Vector2.UnitX * redOutlineOffset;
+            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero + v, null, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero - v, null, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero + h, null, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_pixelRenderRT, Vector2.Zero - h, null, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 
             float outlineOffset = 2;
-            Vector2 v = Vector2.UnitY * outlineOffset;
-            Vector2 h = Vector2.UnitX * outlineOffset;
+            v = Vector2.UnitY * outlineOffset;
+            h = Vector2.UnitX * outlineOffset;
+
+
             spriteBatch.Draw(_pixelRenderRT, Vector2.Zero + v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(_pixelRenderRT, Vector2.Zero - v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(_pixelRenderRT, Vector2.Zero + h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);

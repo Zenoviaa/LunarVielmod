@@ -22,7 +22,6 @@ namespace Stellamod.Content.Areas.Collosseum.TilesCL
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            StructureColor = BackgroundColor;
         }
     }
     public class SandCastle2Item : DecorativeWallItem
@@ -39,7 +38,6 @@ namespace Stellamod.Content.Areas.Collosseum.TilesCL
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            StructureColor = BackgroundColor;
         }
     }
     public class SandCastle3Item : DecorativeWallItem
@@ -56,7 +54,6 @@ namespace Stellamod.Content.Areas.Collosseum.TilesCL
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            StructureColor = BackgroundColor;
         }
     }
     public class SandCastle4Item : DecorativeWallItem
@@ -73,7 +70,6 @@ namespace Stellamod.Content.Areas.Collosseum.TilesCL
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            StructureColor = BackgroundColor;
         }
     }
     public class SandCastle5Item : DecorativeWallItem
@@ -90,7 +86,6 @@ namespace Stellamod.Content.Areas.Collosseum.TilesCL
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            StructureColor = BackgroundColor;
         }
     }
     public class SandCastle6Item : DecorativeWallItem
@@ -107,7 +102,6 @@ namespace Stellamod.Content.Areas.Collosseum.TilesCL
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            StructureColor = BackgroundColor;
         }
     }
     public class SandCastle7Item : DecorativeWallItem
@@ -124,7 +118,6 @@ namespace Stellamod.Content.Areas.Collosseum.TilesCL
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            StructureColor = BackgroundColor;
         }
     }
 
@@ -142,7 +135,6 @@ namespace Stellamod.Content.Areas.Collosseum.TilesCL
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            StructureColor = BackgroundColor;
         }
     }
 }

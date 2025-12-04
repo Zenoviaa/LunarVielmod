@@ -287,7 +287,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 Vector2 pos = NPC.Bottom + new Vector2(Main.rand.NextFloat(-32f, 32f), 0);
                 pos.Y += 40;
                 var circleStep = Particle.NewParticle<CircleStepParticle>(pos, Vector2.UnitY);
-                circleStep.color = Color.Red * 0.5f;
+                circleStep.color = Color.Red;
             
                 _stepDistance = 0;
             }
@@ -782,6 +782,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _contactDamage=true;
             _animation = AnimationState.Run;
             _draw.afterImageAlpha = 1f;
+            _draw.flamingTrailAlpha = 1f;
 
             float speed = superDash ? 70 : 55;
             Vector2 targetVelocity = _runDirection * speed;
@@ -898,12 +899,18 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
           
             if(Timer < 200)
             {
+                if(Main.netMode != NetmodeID.Server)
+                {
+                    SanguineBloodRenderManager bloodRenderManager = ModContent.GetInstance<SanguineBloodRenderManager>();
+                    bloodRenderManager.ResetMetronome();
+                }
                 NPC.boss = false;
                 for (int i = 0; i < Main.musicFade.Length; i++)
                 {
                     Main.musicFade[i] = 0;
                 }
             }
+
             if (Timer == 200)
             {
                 _draw.headless = true;
@@ -2121,6 +2128,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             drawColor.A = 0;
             drawColor *= 0.5f;
             drawColor *= Timer / 30f;
+            drawColor *= ExtraMath.Osc(0f, 1f, speed: 12);
             if (State != AIState.BloodyMegaCharge_Start)
                 return;
 
