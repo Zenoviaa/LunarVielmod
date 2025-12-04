@@ -9,11 +9,14 @@ using Terraria.UI;
 
 namespace Stellamod.Core.BossBannerSystem
 {
+
+
     /// <summary>
     /// Draws the rewards that a boss hass
     /// </summary>
     public class BossRewardsUI : UIPanel
     {
+        private BossPageRewardType _rewardsToShow;
         private readonly int _rewardContext;
         private readonly BossPageUI _parent;
         private BossPage _bossPage;
@@ -23,6 +26,7 @@ namespace Stellamod.Core.BossBannerSystem
             _rewardContext = ItemSlot.Context.BankItem;
         }
 
+     
         public override void OnInitialize()
         {
             base.OnInitialize();
@@ -37,17 +41,22 @@ namespace Stellamod.Core.BossBannerSystem
             _bossPage = bossPage;
         }
 
+        public void SetRewardsToShow(BossPageRewardType rewardType)
+        {
+            _rewardsToShow = rewardType;
+        }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
             DrawRewards(spriteBatch);
         }
 
+      
         private void DrawRewards(SpriteBatch spriteBatch)
         {
 
             Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
-            List<Item> rewards = _bossPage.Rewards;
+            List<Item> rewards = _bossPage.GetRewards(_rewardsToShow);
             if(rewards.Count == 0)
             {
                 rewards.Add(ModContent.GetInstance<Ivythorn>().Item);

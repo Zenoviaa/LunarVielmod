@@ -9,6 +9,13 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.BossBannerSystem
 {
+    public enum BossPageRewardType : byte
+    {
+        Rewards,
+        MasterModeRewards,
+        NoHitRewards
+    }
+
     public class BossPage : ModType,
         ILocalizedModType
     {
@@ -39,6 +46,7 @@ namespace Stellamod.Core.BossBannerSystem
         }
 
         public List<Item> Rewards;
+        public List<Item> MasterModeRewards;
         public List<Item> NoHitRewards;
         public int StarRanking;
         public BossBannerType banner;
@@ -52,6 +60,7 @@ namespace Stellamod.Core.BossBannerSystem
         {
             base.SetupContent();
             Rewards = new List<Item>();
+            MasterModeRewards = new List<Item>();
             NoHitRewards = new List<Item>();
             Pages ??= new List<BossPage>();
             Pages.Add(this);
@@ -71,6 +80,19 @@ namespace Stellamod.Core.BossBannerSystem
             NoHitRewards.Add(item);
         }
 
+        public List<Item> GetRewards(BossPageRewardType rewardType)
+        {
+            switch (rewardType)
+            {
+                default:
+                case BossPageRewardType.Rewards:
+                    return Rewards;
+                case BossPageRewardType.MasterModeRewards:
+                    return MasterModeRewards;
+                case BossPageRewardType.NoHitRewards:
+                    return NoHitRewards;
+            }
+        }
         public Asset<Texture2D> RequestBossPhoto()
         {
             Type type = this.GetType();

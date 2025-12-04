@@ -42,7 +42,7 @@ GustbeakPage: {
 
 JackPage: {
 	DisplayName: Jack the Scholar
-	WhereToFind: In Your Mom
+	WhereToFind: He's hanging out in the Fable, go talk to him!
 	Lore: Birthed by your mom
 }
 

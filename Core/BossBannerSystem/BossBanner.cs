@@ -74,6 +74,10 @@ namespace Stellamod.Core.BossBannerSystem
             Type type = typeof(BossBanner);
             return RequestTexture(type.Name);
         }
+        public static Asset<Texture2D> RequestTreasureTexture()
+        {
+            return RequestTexture("Treasure");
+        }
 
         public static Asset<Texture2D> RequestGlassTexture()
         {
@@ -89,7 +93,13 @@ namespace Stellamod.Core.BossBannerSystem
         {
             return RequestTexture("Star");
         }
-
+        public static Rectangle GetTreasureFrame(BossPageRewardType type)
+        {
+            int frameIndex = (int)type;
+            const int Frame_Height = 26;
+            Rectangle frame = new Rectangle(0, frameIndex * Frame_Height, 28, Frame_Height);
+            return frame;
+        }
         public static Rectangle GetBannerFrame(BossBannerType type)
         {
             int frameIndex = (int)type;

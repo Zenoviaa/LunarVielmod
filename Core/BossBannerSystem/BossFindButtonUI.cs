@@ -52,12 +52,26 @@ namespace Stellamod.Core.BossBannerSystem
 
             //We also need a hover outline probably
             //I think I have a white shader somewhere
+            Color drawColor = _parent.Page == 0 ? Color.White : Color.DarkGray;
+            if (_parent.Page == 0)
+            {
+                UIHelper.QuickOutline(spriteBatch, texture.Value, drawPosition, Color.White);
+            }
             if (IsMouseHovering)
             {
                 UIHelper.QuickOutline(spriteBatch, texture.Value, drawPosition, Color.Yellow);
             }
 
-            spriteBatch.Draw(texture.Value, drawPosition, null, Color.White, 0f, default, 1, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture.Value, drawPosition, null, drawColor, 0f, default, 1, SpriteEffects.None, 0f);
+
+
+            if (IsMouseHovering)
+            {
+                Color hoverColor = Color.White;
+                hoverColor.A = 0;
+                hoverColor *= 0.5f;
+                spriteBatch.Draw(texture.Value, drawPosition, null, hoverColor, 0f, default, 1, SpriteEffects.None, 0f);
+            }
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Stellamod.Helpers
             Rectangle scissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
             SamplerState anisotropicClamp = SamplerState.AnisotropicClamp;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, anisotropicClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
             spriteBatch.Draw(texture, drawPosition + h, null, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, drawPosition - h, null, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, drawPosition + v, null, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
@@ -55,7 +55,28 @@ namespace Stellamod.Helpers
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
 
-           
+
+        }
+        public static void QuickOutline(SpriteBatch spriteBatch, Texture2D texture, Rectangle frame, Vector2 drawPosition, Color outlineColor, float scale = 1f)
+        {
+            var whiteShader = SpriteWhiteShader.Instance;
+            float outlineOffset = 2;
+            Vector2 h = Vector2.UnitX * outlineOffset;
+            Vector2 v = Vector2.UnitY * outlineOffset;
+            RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+            Rectangle scissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+            SamplerState anisotropicClamp = SamplerState.AnisotropicClamp;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, anisotropicClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
+            spriteBatch.Draw(texture, drawPosition + h, frame, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, drawPosition - h, frame, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, drawPosition + v, frame, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, drawPosition - v, frame, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
+
+
         }
     }
 }
