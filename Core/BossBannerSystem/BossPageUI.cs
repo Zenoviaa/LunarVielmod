@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Helpers;
 using Stellamod.UI;
 using Stellamod.UI.CollectionSystem;
 using System;
@@ -59,10 +60,21 @@ namespace Stellamod.Core.BossBannerSystem
             _displayNameText.ShadowColor = Color.Black;
 
 
-            _pageText.Height.Pixels = Height.Pixels;
+            _pageText.Height.Pixels = 32;
             _pageText.Width.Pixels = Width.Pixels;
             _pageText.IsWrapped = true;
             _pageText.ShadowColor = Color.Black;
+
+
+
+
+            _panel.Append(_displayNameText);
+            _panel.Append(_bossLoreUI);
+            _panel.Append(_glassUI);
+            _panel.Append(_bossPhotoUI);
+            _panel.Append(_bossRewardsUI);
+            _panel.Append(_bossStarsUI);
+            _panel.Append(_bossRewardsButton);
 
 
             _panel.Width.Pixels = Width.Pixels;
@@ -73,9 +85,9 @@ namespace Stellamod.Core.BossBannerSystem
 
       
             _scrollbar.Width.Set(20, 0);
-            _scrollbar.Height.Set(340, 0);
+            _scrollbar.Height.Set(150, 0);
             _scrollbar.Left.Set(0, 0.98f);
-            _scrollbar.Top.Set(0, 0.05f);
+            _scrollbar.Top.Set(0, 0.6f);
 
             float maxViewSize = 48 * 8f;
             _scrollbar.SetView(0, maxViewSize);
@@ -83,21 +95,11 @@ namespace Stellamod.Core.BossBannerSystem
 
 
             _uiList = new UIList();
-            _uiList.Width.Pixels = Width.Pixels;
-            _uiList.Height.Pixels = Height.Pixels;
-            _uiList.Add(_panel);
+            _uiList.Top.Pixels = 250;
+            _uiList.Height.Pixels = 150;
+            _uiList.Add(_pageText);
             _uiList.SetScrollbar(_scrollbar);
             Append(_uiList);
-
-
-            _panel.Append(_displayNameText);
-            _panel.Append(_bossLoreUI);
-            _panel.Append(_glassUI);
-            _panel.Append(_bossPhotoUI);
-            _panel.Append(_bossRewardsUI);
-            _panel.Append(_bossStarsUI);
-            _panel.Append(_pageText);
-            _panel.Append(_bossRewardsButton);
 
 
         }
@@ -146,27 +148,22 @@ namespace Stellamod.Core.BossBannerSystem
             //rewards
             _bossRewardsUI.Top.Pixels = 380;
             _bossRewardsUI.Left.Pixels = 16;
-            if(Page != 2)
+
+            if (Page == 2)
             {
-                _bossRewardsUI.Top.Pixels = 10000;
+
+             
             }
+
+            float listHeight = _uiList.GetTotalHeight();
      
-            _pageText.Top.Pixels = 250;
-
-
-
-            _panel.Height.Pixels = _uiList.GetTotalHeight() + 32;
-            float progress = _panel.Height.Pixels / Height.Pixels;
-            progress = MathHelper.Clamp(progress, 0f, 1f);
-            _scrollbar.Height.Set(Height.Pixels * progress, 0);
-            //Hacky way to get invisible scrollbar when there's no need for it
-            if (_panel.Height.Pixels < Height.Pixels)
+            if (listHeight < _uiList.Height.Pixels)
             {
                 _scrollbar.Top.Set(500000, 0f);
             }
             else
             {
-                _scrollbar.Top.Set(0, 0f);
+                _scrollbar.Top.Set(0, 0.6f);
             }
         }
 

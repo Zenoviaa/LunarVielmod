@@ -103,7 +103,7 @@ namespace Stellamod.Core.BossBannerSystem
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
-            UIHelper.SizePanelandScrollbar(_scrollbar, _panel, Height.Pixels, _uiList.GetTotalHeight());
+            UIHelper.SizePanelandScrollbar(_scrollbar, _panel, Height.Pixels, _slotGrid.GetTotalHeight());
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

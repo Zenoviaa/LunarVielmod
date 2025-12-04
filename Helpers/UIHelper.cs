@@ -19,6 +19,46 @@ namespace Stellamod.Helpers
         public static int BookLeftPageY => Main.screenHeight / 2 - height / 2 - 196;
  
 
+        public static float GetTotalPanelHeight(this UIPanel panel)
+        {
+
+
+            var rect = panel.GetInnerDimensions().ToRectangle();
+            float top = rect.Y;
+            float lowestTop = rect.Y + rect.Height;
+            foreach (var child in panel.Children)
+            {
+                var dimensions = child.GetInnerDimensions().ToRectangle();
+                float bottom = dimensions.Y + dimensions.Height;
+                if(bottom > lowestTop)
+                {
+                    lowestTop = bottom;
+                }
+            }
+
+            return lowestTop - top;
+
+        }
+        public static float GetTotalPanelHeight(this UIPanel panel, float startingHeight)
+        {
+
+
+            var rect = panel.GetInnerDimensions().ToRectangle();
+            float top = rect.Y;
+            float lowestTop = rect.Y + startingHeight;
+            foreach (var child in panel.Children)
+            {
+                var dimensions = child.GetInnerDimensions().ToRectangle();
+                float bottom = dimensions.Y + dimensions.Height;
+                if (bottom > lowestTop)
+                {
+                    lowestTop = bottom;
+                }
+            }
+
+            return lowestTop - top;
+
+        }
 
         public static void SizePanelandScrollbar(FancyScrollbar scrollbar, UIPanel panel, float height, float totalHeight)
         {

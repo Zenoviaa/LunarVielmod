@@ -76,9 +76,16 @@ namespace Stellamod.Core.BossBannerSystem
         private void DrawRewards(SpriteBatch spriteBatch)
         {
             _difficultyText.Top.Pixels = -48;
+            if (_parent.Page != 2)
+            {
+                _difficultyText.SetText(string.Empty);
+                return;
+            }
+
+
             Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
             List<Item> rewards = _bossPage.GetRewards(_rewardsToShow);
-     if(rewards.Count == 0)
+            if(rewards.Count == 0)
             {
                 for(int i =0; i < 7; i++)
                 {
