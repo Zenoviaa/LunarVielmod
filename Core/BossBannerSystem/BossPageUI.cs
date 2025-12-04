@@ -96,12 +96,11 @@ namespace Stellamod.Core.BossBannerSystem
 
             _uiList = new UIList();
             _uiList.Top.Pixels = 260;
-            _uiList.Height.Pixels = 150;
+            _uiList.Width.Pixels = Width.Pixels;
+            _uiList.Height.Pixels = 140;
             _uiList.Add(_pageText);
             _uiList.SetScrollbar(_scrollbar);
             Append(_uiList);
-
-
         }
 
         public void SetBossPage(BossPage bossPage)
@@ -149,11 +148,16 @@ namespace Stellamod.Core.BossBannerSystem
             _bossRewardsUI.Top.Pixels = 380;
             _bossRewardsUI.Left.Pixels = 16;
 
+            if (Page == 2)
+            {
 
-
-            //Hacky way to get invisible scrollbar 
+             
+            }
+    
             float listHeight = _uiList.GetTotalHeight();
-     
+            _pageText.Height.Pixels = 32;
+            _pageText.Top.Pixels = 0;
+
             if (listHeight < _uiList.Height.Pixels)
             {
                 _scrollbar.Top.Set(500000, 0f);
