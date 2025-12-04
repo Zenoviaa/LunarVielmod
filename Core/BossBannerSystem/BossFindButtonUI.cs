@@ -25,6 +25,8 @@ namespace Stellamod.Core.BossBannerSystem
             //Width/Height doesn't need to be accurate thankfully
             Width.Pixels = 32;
             Height.Pixels = 32;
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
             OnLeftClick += _parent.ToggleLocationWindow;
         }
 

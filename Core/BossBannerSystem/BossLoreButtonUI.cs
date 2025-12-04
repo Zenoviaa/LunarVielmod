@@ -27,7 +27,9 @@ namespace Stellamod.Core.BossBannerSystem
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            base.DrawSelf(spriteBatch);
+            base.DrawSelf(spriteBatch); 
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
             Asset<Texture2D> glassTexture = BossBanner.RequestScrollTexture();
             Rectangle rectangle = UIHelper.MouseInterfaceInteraction(this);
             Vector2 drawPosition = rectangle.TopLeft();

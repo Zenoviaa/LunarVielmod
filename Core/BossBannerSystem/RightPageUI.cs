@@ -1,4 +1,5 @@
-﻿using Terraria.GameContent.UI.Elements;
+﻿using Terraria;
+using Terraria.GameContent.UI.Elements;
 
 namespace Stellamod.Core.BossBannerSystem
 {
@@ -7,16 +8,19 @@ namespace Stellamod.Core.BossBannerSystem
     /// </summary>
     public abstract class RightPageUI : UIPanel
     {
-        public int RelativeLeft => 0;
-        public int RelativeTop => 0;
+        public const int width = 480;
+        public const int height = 155;
+
+        public int RelativeLeft => Main.screenWidth / 2 - width / 2 + 280;
+        public int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
         public int GetPageWidth()
         {
-            return 200;
+            return 300;
         }
 
         public int GetPageHeight()
         {
-            return 250;
+            return 444;
         }
     }
 }

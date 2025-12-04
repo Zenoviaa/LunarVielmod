@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Items.Materials;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace Stellamod.Core.BossBannerSystem
@@ -26,6 +28,8 @@ namespace Stellamod.Core.BossBannerSystem
             base.OnInitialize();
             Width = _parent.Width;
             Height.Pixels = 32;
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
         }
 
         public void SetBossPage(BossPage bossPage)
@@ -41,14 +45,22 @@ namespace Stellamod.Core.BossBannerSystem
 
         private void DrawRewards(SpriteBatch spriteBatch)
         {
+
             Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
             List<Item> rewards = _bossPage.Rewards;
+            if(rewards.Count == 0)
+            {
+                rewards.Add(ModContent.GetInstance<Ivythorn>().Item);
+                rewards.Add(ModContent.GetInstance<Ivythorn>().Item);
+                rewards.Add(ModContent.GetInstance<Ivythorn>().Item);
+                rewards.Add(ModContent.GetInstance<Ivythorn>().Item);
+            }
             for (int i = 0; i < rewards.Count; i++)
             {
                 Item reward = rewards[i];
-                float distanceBetween = 16;
+                float distanceBetween = 32;
                 Vector2 drawPosition = topLeft + new Vector2(distanceBetween * i, 0);
-                ItemSlot.DrawItemIcon(reward, _rewardContext, spriteBatch, drawPosition, 2, 32, Color.White);
+                ItemSlot.DrawItemIcon(reward, _rewardContext, spriteBatch, drawPosition, 1, 32, Color.White);
             }
         }
     }

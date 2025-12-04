@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.UI.CollectionSystem;
+using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace Stellamod.Core.BossBannerSystem
@@ -46,6 +49,7 @@ namespace Stellamod.Core.BossBannerSystem
             Append(_glassUI);
             Append(_bossPhotoUI);
             Append(_bossRewardsUI);
+            Append(_bossStarsUI);
         }
 
         public void SetBossPage(BossPage bossPage)
@@ -54,7 +58,8 @@ namespace Stellamod.Core.BossBannerSystem
             _bossStarsUI.SetBossPage(bossPage);
             _bossRewardsUI.SetBossPage(bossPage);
             _bossPhotoUI.SetBossPage(bossPage);
-            _displayNameText.SetText(bossPage.DisplayName);
+            _displayNameText.SetText(bossPage.DisplayName, 1.35f, false);
+
         }
 
         public override void Update(GameTime gameTime)
@@ -65,6 +70,22 @@ namespace Stellamod.Core.BossBannerSystem
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
 
+
+            _bossPhotoUI.Top.Pixels = 32;
+            _bossPhotoUI.Left.Pixels = 0;
+
+            _displayNameText.Top.Pixels = 8;
+            _glassUI.Top.Pixels = 220;
+            _bossLoreUI.Top.Pixels = _glassUI.Top.Pixels;
+            _bossLoreUI.Left.Pixels = _glassUI.Left.Pixels + 48;
+
+            int width = BossPage.RequestBossIcon().Width();
+            _bossStarsUI.Left.Pixels = width + 4;
+            _bossStarsUI.Top.Pixels = 48;
+
+            //rewards
+            _bossRewardsUI.Top.Pixels = 380;
+            _bossRewardsUI.Left.Pixels = 16;
         }
 
 

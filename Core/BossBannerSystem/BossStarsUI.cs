@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 
@@ -31,6 +32,8 @@ namespace Stellamod.Core.BossBannerSystem
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
             base.DrawSelf(spriteBatch);
             DrawStars(spriteBatch);
         }
@@ -44,7 +47,13 @@ namespace Stellamod.Core.BossBannerSystem
             {
                 float distanceBetween = 16;
                 Vector2 drawPosition = topLeft + new Vector2(distanceBetween * i, 0);
-                Color drawColor = i < _bossPage.StarRanking ? Color.White : darkColor;
+                bool isLit = i < _bossPage.StarRanking;
+                Color drawColor = isLit ? Color.White : darkColor;
+                if (isLit)
+                {
+                    drawPosition.Y += ExtraMath.Osc(0f, 3f, speed: 2, offset: i);
+                }
+
                 spriteBatch.Draw(texture.Value, drawPosition, null, drawColor, 0f, default, 1, SpriteEffects.None, 0f);
             }
         }

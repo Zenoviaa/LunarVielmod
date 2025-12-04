@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -78,7 +79,7 @@ namespace Stellamod.Core.BossBannerSystem
             {
                 return asset;
             }
-            return ModContent.Request<Texture2D>(TextureRegistry.EmptyTexture);
+            return ModContent.Request<Texture2D>(ModContent.GetInstance<GoTrainII>().BigTexture);
         }
 
         public Asset<Texture2D> RequestBossIcon()

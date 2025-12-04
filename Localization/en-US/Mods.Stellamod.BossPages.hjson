@@ -41,7 +41,7 @@ GustbeakPage: {
 }
 
 JackPage: {
-	DisplayName: Who???
+	DisplayName: Jack the Scholar
 	WhereToFind: In Your Mom
 	Lore: Birthed by your mom
 }

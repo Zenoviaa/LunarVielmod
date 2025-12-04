@@ -2,8 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Helpers;
+using Stellamod.UI.CollectionSystem;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace Stellamod.Core.BossBannerSystem
@@ -33,7 +35,8 @@ namespace Stellamod.Core.BossBannerSystem
 
         private void OpenBossPage(UIMouseEvent evt, UIElement listeningElement)
         {
-            _ui.SetBossPage(_bossPage);
+            CollectionBookUISystem uiSystem = ModContent.GetInstance<CollectionBookUISystem>();
+            uiSystem.OpenBossPageUI(_bossPage);
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
