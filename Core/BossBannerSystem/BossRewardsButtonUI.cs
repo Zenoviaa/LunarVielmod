@@ -57,6 +57,7 @@ namespace Stellamod.Core.BossBannerSystem
 
             if (IsMouseHovering)
             {
+                BossTooltipItem.Hover(BossTooltipType.Treasure);
                 Color hoverColor = Color.White;
                 hoverColor.A = 0;
                 hoverColor *= 0.5f;

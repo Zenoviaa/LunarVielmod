@@ -1,9 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Accord.Math.Geometry;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using ReLogic.Graphics;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
+using Terraria.UI.Chat;
 
 namespace Stellamod.Core.BossBannerSystem
 {
@@ -63,10 +68,10 @@ namespace Stellamod.Core.BossBannerSystem
             }
 
             spriteBatch.Draw(texture.Value, drawPosition, null, drawColor, 0f, default, 1, SpriteEffects.None, 0f);
-
-
+            
             if (IsMouseHovering)
             {
+                BossTooltipItem.Hover(BossTooltipType.WhereToFindThem);
                 Color hoverColor = Color.White;
                 hoverColor.A = 0;
                 hoverColor *= 0.5f;

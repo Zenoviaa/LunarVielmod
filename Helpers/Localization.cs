@@ -26,6 +26,10 @@ namespace Stellamod.Helpers
         {
             return Language.GetTextValue($"Mods.Stellamod.BossBanners.{type.ToString()}." + Path);
         }
+        public static string BossBanners(string Path)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.BossBanners." + Path);
+        }
         public static string BossPages(BossPage item, string Path)
         {
             return Language.GetTextValue($"Mods.Stellamod.BossPages.{item.Name}." + Path);

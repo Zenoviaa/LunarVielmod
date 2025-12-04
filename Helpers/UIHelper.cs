@@ -2,12 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Core.Shaders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stellamod.UI;
 using Terraria;
+using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.UI;
 
@@ -15,6 +12,31 @@ namespace Stellamod.Helpers
 {
     public static class UIHelper
     {
+        public const int width = 480;
+        public const int height = 155;
+
+        public static int BookLeftPageX => Main.screenWidth / 2 - width / 2 - 64;
+        public static int BookLeftPageY => Main.screenHeight / 2 - height / 2 - 196;
+ 
+
+
+        public static void SizePanelandScrollbar(FancyScrollbar scrollbar, UIPanel panel, float height, float totalHeight)
+        {
+
+            panel.Height.Pixels = totalHeight + 32;
+            float progress = panel.Height.Pixels / height;
+            progress = MathHelper.Clamp(progress, 0f, 1f);
+            scrollbar.Height.Set(height * progress, 0);
+            //Hacky way to get invisible scrollbar when there's no need for it
+            if (panel.Height.Pixels < height)
+            {
+                scrollbar.Top.Set(500000, 0f);
+            }
+            else
+            {
+                scrollbar.Top.Set(0, 0f);
+            }
+        }
         /// <summary>
         /// Helper function for setting the mouse interface to true
         /// </summary>

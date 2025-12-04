@@ -37,3 +37,10 @@ MechanizedRevivals: {
 	DisplayName: Mechanized Revivals
 	Description: ""
 }
+
+WhereHelp: Find Them!
+TreasureHelp: Rewards, Click to Swap!
+LoreHelp: Lore
+RewardsNormal: Rewards
+RewardsNoHit: No-hit Rewards
+RewardsMaster: Master Mode Rewards

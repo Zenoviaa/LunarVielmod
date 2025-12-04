@@ -9749,3 +9749,8 @@ TrainingScissors: {
 	DisplayName: Training Scissors
 	Tooltip: Adds 3 extra immunity frames to your dodge!
 }
+
+BossTooltipItem: {
+	DisplayName: Boss Tooltip Item
+	Tooltip: ""
+}

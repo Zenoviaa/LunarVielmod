@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.BossBannerSystem
@@ -16,6 +18,46 @@ namespace Stellamod.Core.BossBannerSystem
         NoHitRewards
     }
 
+    public enum BossTooltipType : byte
+    {
+        WhereToFindThem,
+        Lore,
+        Treasure
+    }
+
+    public class BossTooltipItem : ModItem
+    {
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public BossTooltipType tooltipType;
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            base.ModifyTooltips(tooltips);
+            tooltips.Clear();
+            TooltipLine line;
+            switch (tooltipType)
+            {
+                default:
+                case BossTooltipType.WhereToFindThem:
+                    line = new TooltipLine(Mod, "helpme", LangText.BossBanners("WhereHelp"));
+                    break;
+                case BossTooltipType.Lore:
+                    line = new TooltipLine(Mod, "helpme", LangText.BossBanners("LoreHelp"));
+                    break;
+                case BossTooltipType.Treasure:
+                    line = new TooltipLine(Mod, "helpme", LangText.BossBanners("TreasureHelp"));
+                    break;
+            }
+            tooltips.Add(line);
+        }
+        public static void Hover(BossTooltipType tooltipType)
+        {
+            Main.hoverItemName = "123";
+            var tooltipItem = ModContent.GetInstance<BossTooltipItem>();
+            tooltipItem.tooltipType = tooltipType;
+            Main.HoverItem = tooltipItem.Item;
+        }
+
+    }
     public class BossPage : ModType,
         ILocalizedModType
     {
