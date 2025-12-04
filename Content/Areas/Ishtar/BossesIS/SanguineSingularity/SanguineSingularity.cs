@@ -281,10 +281,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             float traveledDistance = Vector2.Distance(NPC.position, NPC.oldPosition);
             _stepDistance += traveledDistance;
-            if(_stepDistance >= 32)
+            if(_stepDistance >= 64)
             {
-                var circleStep = Particle.NewParticle<CircleStepParticle>(NPC.Bottom + new Vector2(Main.rand.NextFloat(-32f, 32f), 0), Vector2.UnitY);
+                Vector2 pos = NPC.Bottom + new Vector2(Main.rand.NextFloat(-32f, 32f), 0) + GetDrawOffset();
+                pos.Y += 64;
+                var circleStep = Particle.NewParticle<CircleStepParticle>(pos, Vector2.UnitY);
                 circleStep.color = Color.Red;
+            
                 _stepDistance = 0;
             }
         }
@@ -397,6 +400,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     }
                     _hallucinationSpawnTimer = 0;
                 }
+            }
+            if(State != AIState.Eviling)
+            {
+                NPC.boss = true;
             }
 
             switch (State)
@@ -818,7 +825,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         }
         private void AI_Eviling()
         {
-            AudioHelper.Mute(Music);
+            //  AudioHelper.Mute(Music);
+
+            NPC.boss = false;
+            for(int i =0; i < Main.musicFade.Length; i++)
+            {
+                Main.musicFade[i] = 0;
+            }
             Timer++;
             if(Timer == 1)
             {
