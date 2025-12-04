@@ -1943,15 +1943,15 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 SoundStyle cry = AssetRegistry.Sounds.SanguineSingularity.SanguineCry;
                 SoundEngine.PlaySound(cry, NPC.position);
             }
-            float time = 30f;
+            float time = 60f;
             _animation = AnimationState.Walk;
             _draw.afterImageAlpha = 0f;
             _draw.flamingTrailAlpha = 0f;
 
             Vector2 velocity = (MyTarget.Center - NPC.Center);
             velocity = velocity.SafeNormalize(Vector2.Zero);
-            velocity *= MathHelper.Lerp(0f, 3f, EasingFunction.InOutSine(Timer / time));
-            NPC.velocity = Vector2.Lerp(NPC.velocity, velocity, 0.1f);
+            velocity *= MathHelper.Lerp(-5f, 10, EasingFunction.Anticipation(Timer / time));
+            NPC.velocity = velocity;
             NPC.direction = 1;
             _contactDamage = false;
             TargetOutlineColor = Color.Yellow;
