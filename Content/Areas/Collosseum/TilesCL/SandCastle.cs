@@ -127,4 +127,22 @@ namespace Stellamod.Content.Areas.Collosseum.TilesCL
             StructureColor = BackgroundColor;
         }
     }
+
+    public class SandEreshkigalItem : DecorativeWallItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.createWall = ModContent.WallType<SandEreshkigal>();
+        }
+    }
+
+    public class SandEreshkigal : DecorativeWall
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            StructureColor = BackgroundColor;
+        }
+    }
 }
