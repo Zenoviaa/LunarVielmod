@@ -96,7 +96,7 @@ namespace Stellamod.Core.BossBannerSystem
                 }
                 _init = true;
             }
-            _slotGrid.ListPadding = 48;
+            _slotGrid.ListPadding = 0;
 
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;

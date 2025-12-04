@@ -57,12 +57,13 @@ namespace Stellamod.Core.BossBannerSystem
 
             Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
             List<Item> rewards = _bossPage.GetRewards(_rewardsToShow);
-            if(rewards.Count == 0)
+     if(rewards.Count == 0)
             {
-                rewards.Add(ModContent.GetInstance<Ivythorn>().Item);
-                rewards.Add(ModContent.GetInstance<Ivythorn>().Item);
-                rewards.Add(ModContent.GetInstance<Ivythorn>().Item);
-                rewards.Add(ModContent.GetInstance<Ivythorn>().Item);
+                for(int i =0; i < 7; i++)
+                {
+                    var ivythorn = ModContent.GetInstance<Ivythorn>();
+                    rewards.Add(ivythorn.Item);
+                }
             }
             for (int i = 0; i < rewards.Count; i++)
             {

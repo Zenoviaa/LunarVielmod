@@ -33,7 +33,7 @@ namespace Stellamod.Core.BossBannerSystem
         {
             base.OnInitialize();
             Width.Pixels = 226;
-            Height.Pixels = 74;
+            Height.Pixels = 122;
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
@@ -53,13 +53,15 @@ namespace Stellamod.Core.BossBannerSystem
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+  
             float leftPixels = 0;
             for(int i = 0; i < _bossButtons.Length; i++)
             {
                 var btn = _bossButtons[i];
                 btn.Left.Pixels = leftPixels;
-                btn.Top.Pixels = Height.Pixels / 2 - btn.Height.Pixels / 2;
+                btn.Top.Pixels = 74 / 2 - btn.Height.Pixels / 2;
                 btn.Top.Pixels += 40;
+                btn.Top.Pixels += ExtraMath.Osc(0f, -3f, 1, i);
                 leftPixels += btn.Width.Pixels;
                 leftPixels += 4;
             }

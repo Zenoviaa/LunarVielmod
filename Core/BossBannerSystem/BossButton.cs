@@ -46,6 +46,7 @@ namespace Stellamod.Core.BossBannerSystem
             Vector2 topLeft = rectangle.TopLeft();
             Asset<Texture2D> bossIcon = _bossPage.RequestBossIcon();
             float drawScale = 0.75f;
+            Color drawColor = _bossPage.IsHidden() ? Color.Black : Color.White;
             if (IsMouseHovering)
             {
                 UIHelper.QuickOutline(spriteBatch, bossIcon.Value, topLeft, Color.Yellow, drawScale);
@@ -54,7 +55,7 @@ namespace Stellamod.Core.BossBannerSystem
 
             Width.Pixels = bossIcon.Width() * drawScale;
             Height.Pixels = bossIcon.Height() * drawScale;
-            spriteBatch.Draw(bossIcon.Value, topLeft, null, Color.White, 0, Vector2.Zero, drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(bossIcon.Value, topLeft, null, drawColor, 0, Vector2.Zero, drawScale, SpriteEffects.None, 0);
  
         }
     }

@@ -39,13 +39,8 @@ namespace Stellamod.Core.BossBannerSystem
             Rectangle frame = BossBanner.GetTreasureFrame(_parent.RewardType);
 
 
-            Color drawColor = _parent.Page == 2 ? Color.White : Color.DarkGray;
-            bool isHidden = _parent.BossPage.IsHidden();
-            if (isHidden)
-            {
-                drawColor = Color.Black;
-            }
-
+            Color drawColor = Color.White;
+ 
             if (_parent.Page == 2)
             {
                 UIHelper.QuickOutline(spriteBatch, glassTexture.Value, frame, drawPosition, Color.White);

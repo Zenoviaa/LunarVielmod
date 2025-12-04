@@ -15,6 +15,7 @@ using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
 using Stellamod.Core.BossBannerSystem;
+using Stellamod.Helpers;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.BossPages
@@ -28,6 +29,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.WitchAcademy;
             bossNPC = ModContent.GetInstance<StarrVeriplant>();
             progression = 0;
+            flag = DownedBossFlag.StoneGolem;
         }
     }
 
@@ -41,6 +43,7 @@ namespace Stellamod.Content.BossPages
             bossNPC = ModContent.GetInstance<JackTheScholar>();
             StarRanking = 1;
             progression = 1;
+            flag = DownedBossFlag.Jack;
         }
     }
 
@@ -53,6 +56,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.WitchAcademy;
             bossNPC = ModContent.GetInstance<DaedusTheDevoted>();
             progression = 4;
+            flag = DownedBossFlag.Daedus;
         }
     }
 
@@ -64,7 +68,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.LifeNPlants;
             bossNPC = ModContent.GetInstance<WoodlandRavager>();
             progression = 3;
-
+            flag = DownedBossFlag.Woodland_Ravager;
         }
     }
 
@@ -76,7 +80,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.LifeNPlants;
             bossNPC = ModContent.GetInstance<Minerva>();
             progression = 8;
-
+            flag = DownedBossFlag.Minerva;
         }
     }
 
@@ -88,6 +92,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.ColosseumOfProtection;
             bossNPC = ModContent.GetInstance<EliteCommander>();
             progression = 5;
+            flag = DownedBossFlag.EliteCommander;
         }
     }
 
@@ -99,6 +104,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.ColosseumOfProtection;
             bossNPC = ModContent.GetInstance<Gustbeak>();
             progression = 6;
+            flag = DownedBossFlag.Gustbeak;
         }
     }
 
@@ -110,6 +116,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.ColosseumOfProtection;
             bossNPC = ModContent.GetInstance<CommanderGintzia>();
             progression = 7;
+            flag = DownedBossFlag.Commander_Gintzia;
         }
     }
 
@@ -121,6 +128,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.ForgottenWarriors;
             bossNPC = ModContent.GetInstance<Jiitas>();
             progression = 2;
+            flag = DownedBossFlag.Jiitas;
         }
     }
     public class SkullrunnerPage : BossPage
@@ -131,6 +139,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.ForgottenWarriors;
             bossNPC = ModContent.GetInstance<Skullrunner>();
             progression = 11;
+            flag = DownedBossFlag.Skullrunner;
         }
     }
 
@@ -142,6 +151,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.FountainOfMagic;
             bossNPC = ModContent.GetInstance<STARBOMBERV2>();
             progression = 12;
+            flag = DownedBossFlag.StarBomber;
         }
     }
 
@@ -153,6 +163,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.IllurianTroupe;
             bossNPC = ModContent.GetInstance<VerlianSingularity>();
             progression = 9;
+            flag = DownedBossFlag.Verlian_Singularity;
         }
     }
 
@@ -164,6 +175,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.IllurianTroupe;
             bossNPC = ModContent.GetInstance<Bishinine>();
             progression = 13;
+            flag = DownedBossFlag.Bishinine;
         }
     }
 
@@ -175,6 +187,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.IllurianTroupe;
             bossNPC = ModContent.GetInstance<SanguineSingularity>();
             progression = 20;
+            flag = DownedBossFlag.SanguineSingularity;
         }
     }
 
@@ -185,7 +198,8 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.MechanizedRevivals;
             bossNPC = ModContent.GetInstance<PunkerPrime>();
-            progression = 15;
+            progression = 15; 
+            flag = DownedBossFlag.PunkerPrime;
         }
     }
 
@@ -197,6 +211,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.IllurianTroupe;
             bossNPC = ModContent.GetInstance<CrumblingTowerOfIlluria>();
             progression = 18;
+            flag = DownedBossFlag.CrumblingTowerOfIlluria;
         }
     }
 }
