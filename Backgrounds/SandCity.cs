@@ -14,6 +14,7 @@ namespace Stellamod.Backgrounds
         {
             base.SetLayering(ref zLayer, ref parallax);
             parallax.X = 0.5f;
+            parallax.Y = 0.2f;
         }
     }
 }

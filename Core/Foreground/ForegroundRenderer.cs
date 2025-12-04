@@ -150,18 +150,21 @@ namespace Stellamod.Core.Foreground
 
 
             int y = (Main.screenHeight - foregroundTexture.Height);
-            int worldSurfaceY = (int)(Main.worldSurface * 16);
+            int worldSurfaceY = (int)((Main.worldSurface - 50) * 16);
             int cameraY = (int)Main.Camera.Center.Y;
             int diff = cameraY - worldSurfaceY;
-            
-            if (diff < 0)
+            if (diff > 0)
                 diff = 0;
-
+            diff = Math.Abs(diff);
+       
 
             Vector2 parallax = Vector2.Zero;
             float zLayer = 0f;
             layer.SetLayering(ref zLayer, ref parallax);
-            Rectangle locationRectangle = new Rectangle(0, y + diff, Main.screenWidth, foregroundTexture.Height);
+
+            int yParallax = (int)(diff * parallax.Y);
+
+            Rectangle locationRectangle = new Rectangle(0, y + yParallax, Main.screenWidth, foregroundTexture.Height);
 
             int xParallax = (int)(Main.screenPosition.X * parallax.X);
           
