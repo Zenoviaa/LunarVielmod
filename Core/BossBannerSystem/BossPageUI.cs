@@ -95,7 +95,7 @@ namespace Stellamod.Core.BossBannerSystem
 
 
             _uiList = new UIList();
-            _uiList.Top.Pixels = 250;
+            _uiList.Top.Pixels = 260;
             _uiList.Height.Pixels = 150;
             _uiList.Add(_pageText);
             _uiList.SetScrollbar(_scrollbar);
