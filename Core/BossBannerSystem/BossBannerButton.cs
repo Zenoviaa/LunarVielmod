@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.QuestSystem;
+using Stellamod.Helpers;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 
@@ -15,12 +18,16 @@ namespace Stellamod.Core.BossBannerSystem
         private readonly BossBannerType _banner;
         private BossButton[] _bossButtons;
         private BossPageUI _parent;
+        private UIText _bannerTitle;
+        private static ProgressionComparer _progressionComparer;
         public BossBannerButton(BossPageUI parent, BossBannerType banner)
         {
             _parent = parent;
             _banner = banner;
-
+            _bannerTitle = new UIText(LangText.BossBanners(banner, "DisplayName"), 1);
+            _progressionComparer ??= new ProgressionComparer();
         }
+
 
         public override void OnInitialize()
         {
@@ -30,13 +37,18 @@ namespace Stellamod.Core.BossBannerSystem
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
+            _bannerTitle.IgnoresMouseInteraction = true;
+            Append(_bannerTitle);
             BossPage[] pages = BossBanner.GetBossPages(_banner);
+            Array.Sort(pages, _progressionComparer);
             _bossButtons = new BossButton[pages.Length];
             for (int b = 0; b < _bossButtons.Length; b++)
             {
                 _bossButtons[b] = new BossButton(_parent, pages[b]);
                 Append(_bossButtons[b]);
             }
+
+       
         }
         public override void Update(GameTime gameTime)
         {
@@ -47,9 +59,13 @@ namespace Stellamod.Core.BossBannerSystem
                 var btn = _bossButtons[i];
                 btn.Left.Pixels = leftPixels;
                 btn.Top.Pixels = Height.Pixels / 2 - btn.Height.Pixels / 2;
+                btn.Top.Pixels += 40;
                 leftPixels += btn.Width.Pixels;
                 leftPixels += 4;
             }
+
+
+
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -63,5 +79,12 @@ namespace Stellamod.Core.BossBannerSystem
         
         }
 
+    }
+    public class ProgressionComparer : IComparer<BossPage>
+    {
+        public int Compare(BossPage x, BossPage y)
+        {
+            return x.progression.CompareTo(y.progression);
+        }
     }
 }

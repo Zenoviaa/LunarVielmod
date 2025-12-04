@@ -2,3 +2,38 @@ BossBanner: {
 	DisplayName: ""
 	Description: ""
 }
+
+WitchAcademy: {
+	DisplayName: Witch Academy
+	Description: ""
+}
+
+LifeNPlants: {
+	DisplayName: Life and Plants
+	Description: ""
+}
+
+ForgottenWarriors: {
+	DisplayName: Forgotten Warriors
+	Description: ""
+}
+
+FountainOfMagic: {
+	DisplayName: Fountain of Magic
+	Description: ""
+}
+
+IllurianTroupe: {
+	DisplayName: Illurian Troupe
+	Description: ""
+}
+
+ColosseumOfProtection: {
+	DisplayName: Colosseum of Protection
+	Description: ""
+}
+
+MechanizedRevivals: {
+	DisplayName: Mechanized Revivals
+	Description: ""
+}

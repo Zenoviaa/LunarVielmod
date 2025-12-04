@@ -51,6 +51,8 @@ namespace Stellamod.Core.BossBannerSystem
         public int StarRanking;
         public BossBannerType banner;
         public ModNPC bossNPC;
+        public float progression;
+        public DownedBossFlag flag;
         protected sealed override void Register()
         {
             ModTypeLookup<BossPage>.Register(this);
@@ -78,6 +80,11 @@ namespace Stellamod.Core.BossBannerSystem
         public void AddNoHitReward(Item item)
         {
             NoHitRewards.Add(item);
+        }
+
+        public bool IsHidden()
+        {
+            return !DownedBossTracker.IsDowned(flag);
         }
 
         public List<Item> GetRewards(BossPageRewardType rewardType)

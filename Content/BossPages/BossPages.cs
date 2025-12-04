@@ -27,6 +27,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.WitchAcademy;
             bossNPC = ModContent.GetInstance<StarrVeriplant>();
+            progression = 0;
         }
     }
 
@@ -39,6 +40,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.WitchAcademy;
             bossNPC = ModContent.GetInstance<JackTheScholar>();
             StarRanking = 1;
+            progression = 1;
         }
     }
 
@@ -50,6 +52,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.WitchAcademy;
             bossNPC = ModContent.GetInstance<DaedusTheDevoted>();
+            progression = 4;
         }
     }
 
@@ -60,6 +63,8 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.LifeNPlants;
             bossNPC = ModContent.GetInstance<WoodlandRavager>();
+            progression = 3;
+
         }
     }
 
@@ -70,6 +75,8 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.LifeNPlants;
             bossNPC = ModContent.GetInstance<Minerva>();
+            progression = 8;
+
         }
     }
 
@@ -80,6 +87,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.ColosseumOfProtection;
             bossNPC = ModContent.GetInstance<EliteCommander>();
+            progression = 5;
         }
     }
 
@@ -90,6 +98,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.ColosseumOfProtection;
             bossNPC = ModContent.GetInstance<Gustbeak>();
+            progression = 6;
         }
     }
 
@@ -100,6 +109,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.ColosseumOfProtection;
             bossNPC = ModContent.GetInstance<CommanderGintzia>();
+            progression = 7;
         }
     }
 
@@ -110,6 +120,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.ForgottenWarriors;
             bossNPC = ModContent.GetInstance<Jiitas>();
+            progression = 2;
         }
     }
     public class SkullrunnerPage : BossPage
@@ -119,6 +130,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.ForgottenWarriors;
             bossNPC = ModContent.GetInstance<Skullrunner>();
+            progression = 11;
         }
     }
 
@@ -129,6 +141,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.FountainOfMagic;
             bossNPC = ModContent.GetInstance<STARBOMBERV2>();
+            progression = 12;
         }
     }
 
@@ -139,6 +152,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.IllurianTroupe;
             bossNPC = ModContent.GetInstance<VerlianSingularity>();
+            progression = 9;
         }
     }
 
@@ -149,6 +163,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.IllurianTroupe;
             bossNPC = ModContent.GetInstance<Bishinine>();
+            progression = 13;
         }
     }
 
@@ -159,6 +174,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.IllurianTroupe;
             bossNPC = ModContent.GetInstance<SanguineSingularity>();
+            progression = 20;
         }
     }
 
@@ -169,6 +185,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.MechanizedRevivals;
             bossNPC = ModContent.GetInstance<PunkerPrime>();
+            progression = 15;
         }
     }
 
@@ -179,6 +196,7 @@ namespace Stellamod.Content.BossPages
             base.SetStaticDefaults();
             banner = BossBannerType.IllurianTroupe;
             bossNPC = ModContent.GetInstance<CrumblingTowerOfIlluria>();
+            progression = 18;
         }
     }
 }

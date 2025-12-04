@@ -103,7 +103,7 @@ namespace Stellamod.Core.BossBannerSystem
         public static Rectangle GetBannerFrame(BossBannerType type)
         {
             int frameIndex = (int)type;
-            const int Frame_Height = 74;
+            const int Frame_Height = 128;
             Rectangle frame = new Rectangle(0, frameIndex * Frame_Height, BannerTextureAsset.Value.Width, Frame_Height);
             return frame;
         }
