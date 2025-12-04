@@ -43,6 +43,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         public int DownSamples => 4;
         public bool DrawBloodyBG;
+        public float FlickerTimer;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -59,6 +60,12 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             base.Load();
             ResizeRenderTargets();
         }
+        public override void PostUpdateNPCs()
+        {
+            base.PostUpdateNPCs();
+            if (FlickerTimer > 0)
+                FlickerTimer--;
+        }
         public override void OnModUnload()
         {
             base.OnModUnload();
@@ -71,7 +78,11 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private void DrawBlack(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
-            if (DrawBloodyBG)
+            if(FlickerTimer > 0)
+            {
+
+            }
+            else if (DrawBloodyBG)
             {
                 GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
                 graphicsDevice.Clear(Color.Transparent);
@@ -111,6 +122,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 }
                 DrawBloodyBG = false;
             }
+  
             orig(self, behindTiles);
         }
 

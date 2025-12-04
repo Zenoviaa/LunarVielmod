@@ -85,6 +85,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private enum AIState
         {
+            Eviling,
             Spawn,
             Idle,
             Despawn,
@@ -125,6 +126,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Phase2Transition
         }
 
+        private bool _playedInSound;
         private float _hallucinationSpawnTimer;
         private float _dashLineRotation;
         private float _traveledDistance;
@@ -359,16 +361,17 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     _hallucinationSpawnTimer = 0;
                 }
             }
-            if(State != AIState.Spawn)
-            {
-                SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
-                fallSystem.noWings = true;
-                fallSystem.inSpace = true;
-                fallSystem.hoveringPlatform = true;
-                fallSystem.hoverPlatformY = 5000;
-            }
+
+            SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            fallSystem.noWings = true;
+            fallSystem.inSpace = true;
+            fallSystem.hoveringPlatform = true;
+            fallSystem.hoverPlatformY = 5000;
             switch (State)
             {
+                case AIState.Eviling:
+                    AI_Eviling();
+                    break;
                 case AIState.Spawn:
                     AI_Spawn();
                     break;
@@ -774,6 +777,43 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         }
 
         #endregion
+        private void EvilFlicker(float duration)
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            SanguineBloodRenderManager bloodManager = ModContent.GetInstance<SanguineBloodRenderManager>();
+            bloodManager.FlickerTimer = duration;
+        }
+        private void AI_Eviling()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+            if (!_playedInSound)
+            {
+                SoundEngine.PlaySound(AssetRegistry.Sounds.SanguineSingularity.ChangeTheWorldo);
+                _playedInSound = true;
+            }
+
+            ShakeModSystem.Shake = 3;
+            if (Main.rand.NextBool(40))
+            {
+                EvilFlicker(20);
+            }
+
+            _draw.alpha = 0;
+            _draw.afterImageAlpha = 0;
+            _contactDamage = false;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            NPC.Center = MyTarget.Center + -NPC.spriteDirection * new Vector2(150, 0);
+            if(Timer >= 500)
+            {
+                SwitchState(AIState.Spawn);
+            }
+        }
         private void AI_Spawn()
         {
             Timer++;
