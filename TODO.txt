@@ -4,10 +4,6 @@
 
 Footstep circles underneath the boss
 make the background scale in and out
-
-Hallucinattions start walking to you from far out
-
-
 Illurian Soaker Insource - Summons 3 balls, they float around you that can reduce all incoming damage by half for 3 hits (120 seconds) 
 
 

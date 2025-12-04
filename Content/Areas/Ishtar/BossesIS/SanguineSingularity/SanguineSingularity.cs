@@ -276,6 +276,18 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
         }
 
+        private float _stepDistance;
+        private void CreateFootsteps()
+        {
+            float traveledDistance = Vector2.Distance(NPC.position, NPC.oldPosition);
+            _stepDistance += traveledDistance;
+            if(_stepDistance >= 32)
+            {
+                var circleStep = Particle.NewParticle<CircleStepParticle>(NPC.Bottom + new Vector2(Main.rand.NextFloat(-32f, 32f), 0), Vector2.UnitY);
+                circleStep.color = Color.Red;
+                _stepDistance = 0;
+            }
+        }
 
         private void EnablePlatformArena()
         {
@@ -358,6 +370,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
               
             NPC.spriteDirection = NPC.direction;
             EnablePlatformArena();
+            CreateFootsteps();
             if (InPhase2 && MultiplayerHelper.IsHost)
             {
                 _hallucinationSpawnTimer++;
@@ -805,7 +818,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         }
         private void AI_Eviling()
         {
-            NPC.boss = false;
+            AudioHelper.Mute(Music);
             Timer++;
             if(Timer == 1)
             {
