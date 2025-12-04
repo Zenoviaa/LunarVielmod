@@ -9754,3 +9754,43 @@ BossTooltipItem: {
 	DisplayName: Boss Tooltip Item
 	Tooltip: ""
 }
+
+SandCastle1Item: {
+	DisplayName: Sand Castle1 Item
+	Tooltip: ""
+}
+
+SandCastle2Item: {
+	DisplayName: Sand Castle2 Item
+	Tooltip: ""
+}
+
+SandCastle3Item: {
+	DisplayName: Sand Castle3 Item
+	Tooltip: ""
+}
+
+SandCastle4Item: {
+	DisplayName: Sand Castle4 Item
+	Tooltip: ""
+}
+
+SandCastle5Item: {
+	DisplayName: Sand Castle5 Item
+	Tooltip: ""
+}
+
+SandCastle6Item: {
+	DisplayName: Sand Castle6 Item
+	Tooltip: ""
+}
+
+SandCastle7Item: {
+	DisplayName: Sand Castle7 Item
+	Tooltip: ""
+}
+
+SandEreshkigalItem: {
+	DisplayName: Sand Ereshkigal Item
+	Tooltip: ""
+}

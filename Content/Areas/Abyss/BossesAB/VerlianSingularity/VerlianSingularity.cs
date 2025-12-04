@@ -76,7 +76,9 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
     public class SingularityFallSystem : ModSystem
     {
         public bool inSpace;
-
+        public bool noWings;
+        public bool hoveringPlatform;
+        public float hoverPlatformY;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -142,6 +144,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
         private bool NoSolid(On_Collision.orig_IsWorldPointSolid orig, Vector2 pos, bool treatPlatformsAsNonSolid)
         {
+
             if (!inSpace)
             {
                 return orig(pos, treatPlatformsAsNonSolid);
@@ -151,6 +154,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
         private bool NoSolidCollision2(On_Collision.orig_SolidCollision_Vector2_int_int_bool orig, Vector2 Position, int Width, int Height, bool acceptTopSurfaces)
         {
+           
             if (!inSpace)
             {
                 return orig(Position, Width, Height, acceptTopSurfaces);
@@ -161,6 +165,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
         private bool NoSolidCollision(On_Collision.orig_SolidCollision_Vector2_int_int orig, Vector2 Position, int Width, int Height)
         {
+          
             if (!inSpace)
             {
                 return orig(Position, Width, Height);
@@ -169,6 +174,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         }
         private bool AllEmptyTiles(On_Collision.orig_EmptyTile orig, int i, int j, bool ignoreTiles)
         {
+        
             if (!inSpace)
             {
                 return orig(i, j, ignoreTiles);
@@ -201,6 +207,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
         {
             base.PreUpdateNPCs();
             inSpace = false;
+            noWings = false;
+            hoveringPlatform = false;
         }
         private Vector4 NoSlopeCollision(On_Collision.orig_SlopeCollision orig, Vector2 Position, Vector2 Velocity, int Width, int Height, float gravity, bool fall)
         {
@@ -218,8 +226,18 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
         private Vector2 NoCollision(On_Collision.orig_TileCollision orig, Vector2 Position, Vector2 Velocity, int Width, int Height, bool fallThrough, bool fall2, int gravDir)
         {
+            
             if (!inSpace)
                 return orig(Position, Velocity, Width, Height, fallThrough, fall2, gravDir);
+            if (hoveringPlatform)
+            {
+                Vector2 vel = Velocity;
+                if (Position.Y > hoverPlatformY)
+                    vel.Y = -16;
+                else if (Position.Y + Velocity.Y > hoverPlatformY)
+                    vel.Y = 0;
+                return vel;
+            }
             return Velocity;
         }
 
@@ -268,6 +286,9 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
             if (!fallSystem.inSpace)
                 return;
+            if (fallSystem.noWings)
+                return;
+
 
             _wingTimer++;
             if (_wingTimer % 7 == 0)
@@ -462,8 +483,6 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             _spinTimer++;
             if (_starField)
             {
-                RoyalCapitalStars stars = ModContent.GetInstance<RoyalCapitalStars>();
-                stars.inStarField = true;
 
 
                 SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();

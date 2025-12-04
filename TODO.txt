@@ -1,6 +1,6 @@
 
 
-// Add flaming trail on every fast moving things
+
 
 Footstep circles underneath the boss
 make the background scale in and out

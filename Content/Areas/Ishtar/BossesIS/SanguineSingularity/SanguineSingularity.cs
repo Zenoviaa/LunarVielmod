@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectiles;
 using Stellamod.Content.Gores;
 using Stellamod.Core;
@@ -11,6 +12,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Skies;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
@@ -356,6 +358,14 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     }
                     _hallucinationSpawnTimer = 0;
                 }
+            }
+            if(State != AIState.Spawn)
+            {
+                SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+                fallSystem.noWings = true;
+                fallSystem.inSpace = true;
+                fallSystem.hoveringPlatform = true;
+                fallSystem.hoverPlatformY = 5000;
             }
             switch (State)
             {
@@ -1962,7 +1972,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             {
                 Vector2 oldPos = NPC.oldPos[i];
                 Vector2 oldDrawPos = oldPos - screenPos;
-                Vector2 drawOrigin = new Vector2(128, 64);
+                Vector2 drawOrigin = NPC.frame.Size() / 2f;
                 float f = i;
                 float interpolant = f / (float)NPC.oldPos.Length;
                 Color fadeColor = Color.Lerp(Color.Lerp(Color.Red, Color.Blue, interpolant), Color.Transparent, interpolant);
@@ -1971,9 +1981,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 fadeColor *= 0.5f;
 
                 SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-                if (spriteEffects == SpriteEffects.FlipHorizontally)
-                    drawOrigin.X = (frame.Width - drawOrigin.X);
-
+                Vector2 drawOffset = GetDrawOffset();
+                oldDrawPos += drawOffset;
                 spriteBatch.Draw(texture, oldDrawPos, NPC.frame, fadeColor, NPC.oldRot[i], drawOrigin, NPC.scale, spriteEffects, 0f);
             }
         }
@@ -2051,10 +2060,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawCenter = NPC.Center - screenPos;
             Rectangle frame = NPC.frame;
-            Vector2 drawOrigin = new Vector2(128, 64);
+            Vector2 drawOrigin = frame.Size() / 2f;
             SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            if (spriteEffects == SpriteEffects.FlipHorizontally)
-                drawOrigin.X = (frame.Width - drawOrigin.X);
+            Vector2 drawOffset = GetDrawOffset();
+            drawCenter += drawOffset;
 
             Color glowColor = Color.Red;
             glowColor.A = 0;
@@ -2243,15 +2252,24 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         }
 
 
+        private Vector2 GetDrawOffset()
+        {
+            Vector2 drawOffset = Vector2.Zero;
+            drawOffset.X -= 60 * NPC.spriteDirection;
+            drawOffset.Y += 60;
+            return drawOffset;
+        }
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color color)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawCenter = NPC.Center - screenPos;
             Rectangle frame = NPC.frame;
-            Vector2 drawOrigin = new Vector2(136, 54);
+            Vector2 drawOrigin = frame.Size() / 2f;
             SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            if (spriteEffects == SpriteEffects.FlipHorizontally)
-                drawOrigin.X = (frame.Width - drawOrigin.X);
+
+
+            Vector2 drawOffset = GetDrawOffset();
+            drawCenter += drawOffset;
             spriteBatch.Draw(texture, drawCenter, frame, color * _draw.alpha, NPC.rotation, drawOrigin, _draw.scale, spriteEffects, 0);
         }
 

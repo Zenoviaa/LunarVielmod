@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -45,6 +47,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             base.OnModLoad();
             On_Main.CheckMonoliths += RenderToPixelationRT;
+            On_Main.DrawNPCs += DrawBlack;
             On_Main.DoDraw_WallsTilesNPCs += DrawBloodRTToScreen;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRTToScreen;
             Main.OnResolutionChanged += ResizeTargets;
@@ -60,8 +63,55 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             base.OnModUnload();
             On_Main.CheckMonoliths -= RenderToPixelationRT;
+            On_Main.DrawNPCs -= DrawBlack;
+            On_Main.DoDraw_WallsTilesNPCs -= DrawBloodRTToScreen;
             On_Main.DoDraw_DrawNPCsOverTiles -= DrawPixelRTToScreen;
             Main.OnResolutionChanged -= ResizeTargets;
+        }
+
+        private void DrawBlack(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
+        {
+            if (DrawBloodyBG)
+            {
+                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+                graphicsDevice.Clear(Color.Transparent);
+
+                var bloodyShader = BloodyShader.Instance;
+                bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.7f);
+                bloodyShader.OuterColor = Color.Black;
+                bloodyShader.Distortion = 1;
+                bloodyShader.Tiling = Vector2.One * 12;
+                bloodyShader.Time = Main.GlobalTimeWrappedHourly * 3;
+                bloodyShader.NoiseTexture = TextureRegistry.Clouds6;
+
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodyShader.Effect, Main.Transform);
+                spriteBatch.Draw(_bloodBGRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+
+  
+                SingularityFallSystem singularityFallSystem = ModContent.GetInstance<SingularityFallSystem>();
+                if (singularityFallSystem.hoveringPlatform)
+                {
+                    Texture2D bloomLine = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+                    Vector2 drawOrigin = new Vector2(bloomLine.Size().X / 2, 0);
+                    float rotation = MathHelper.PiOver2;
+                    Color drawColor = Color.Red;
+                    drawColor.A = 0;
+                    drawColor *= 0.5f;
+                    drawColor *= ExtraMath.Osc(0.5f, 1f);
+                    Vector2 drawPosition = new Vector2(Main.LocalPlayer.Center.X, singularityFallSystem.hoverPlatformY);
+                    drawPosition -= Main.screenPosition;
+                    drawPosition.Y += 48;
+                    Vector2 drawScale = new Vector2(1, 2);
+                    spriteBatch.Draw(bloomLine, drawPosition, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+                    spriteBatch.Draw(bloomLine, drawPosition, null, drawColor, -rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+                }
+                DrawBloodyBG = false;
+            }
+            orig(self, behindTiles);
         }
 
         public override void PostUpdateEverything()
@@ -123,24 +173,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private void DrawBloodRTToScreen(On_Main.orig_DoDraw_WallsTilesNPCs orig, Main self)
    
         {
-            if (DrawBloodyBG)
-            {
-                var bloodyShader = BloodyShader.Instance;
-                bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.7f);
-                bloodyShader.OuterColor = Color.Black;
-                bloodyShader.Distortion = 1;
-                bloodyShader.Tiling = Vector2.One * 12;
-                bloodyShader.Time = Main.GlobalTimeWrappedHourly * 3;
-                bloodyShader.NoiseTexture = TextureRegistry.Clouds6;
-
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodyShader.Effect, Main.Transform);
-                spriteBatch.Draw(_bloodBGRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
-                DrawBloodyBG = false;
-            }
+  
           
             orig(self);
             if (Main.gameMenu)
