@@ -72,8 +72,15 @@ namespace Stellamod.Core.BossBannerSystem
             _bossStarsUI.SetBossPage(bossPage);
             _bossRewardsUI.SetBossPage(bossPage);
             _bossPhotoUI.SetBossPage(bossPage);
-            _displayNameText.SetText(bossPage.DisplayName, 1.35f, false);
             _pageText.SetText(bossPage.WhereToFind);
+            bool isHidden = bossPage.IsHidden();
+            if (isHidden)
+            {
+                _displayNameText.SetText("???", 1.35f, false);
+            } else
+            {
+                _displayNameText.SetText(bossPage.DisplayName, 1.35f, false);
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -115,12 +122,18 @@ namespace Stellamod.Core.BossBannerSystem
         public void ToggleLocationWindow(UIMouseEvent evt, UIElement listeningElement)
         {
             _pageText.SetText(BossPage.WhereToFind);
+
             Page = 0;
         }
 
         public void ToggleLoreWindow(UIMouseEvent evt, UIElement listeningElement)
         {
             _pageText.SetText(BossPage.Lore);
+            if (BossPage.IsHidden())
+            {
+                _pageText.SetText(string.Empty);
+            }
+
             Page = 1;
         }
 

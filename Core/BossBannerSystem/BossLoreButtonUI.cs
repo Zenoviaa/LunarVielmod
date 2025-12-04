@@ -36,6 +36,12 @@ namespace Stellamod.Core.BossBannerSystem
             drawPosition.Y += ExtraMath.Osc(0f, 2f);
 
             Color drawColor = _parent.Page == 1 ? Color.White : Color.DarkGray;
+            bool isHidden = _parent.BossPage.IsHidden();
+            if (isHidden)
+            {
+                drawColor = Color.Black;
+            }
+
             if (_parent.Page == 1)
             {
                 UIHelper.QuickOutline(spriteBatch, glassTexture.Value, drawPosition, Color.White);

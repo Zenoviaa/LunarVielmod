@@ -53,6 +53,11 @@ namespace Stellamod.Core.BossBannerSystem
             Vector2 pos = rectangle.TopLeft();
             pos.X -= 32;
 
+            bool isHidden = _parent.BossPage.IsHidden();
+            if (isHidden)
+            {
+                texture = BossBanner.RequestFogTexture();
+            }
 
             Texture2D backgroundTexture = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}QuestImageBackground").Value;
             Texture2D bigPictureTexture = texture.Value;
@@ -97,7 +102,13 @@ namespace Stellamod.Core.BossBannerSystem
             glowPos.Y += 8;
             zuiGlowColor *= ExtraMath.Osc(0.5f, 1f);
             spriteBatch.Draw(zuiGlow, glowPos, null, zuiGlowColor, 0f, zuiGlow.Size() / 2f, 0.5f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(BossIconTextureAsset.Value, topLeft, null, Color.White, 0f, default, 1, SpriteEffects.None, 0f);
+
+            Color drawColor = Color.White;
+            if (isHidden)
+            {
+                drawColor = Color.Black;
+            }
+            spriteBatch.Draw(BossIconTextureAsset.Value, topLeft, null, drawColor, 0f, default, 1, SpriteEffects.None, 0f);
 
         }
     }

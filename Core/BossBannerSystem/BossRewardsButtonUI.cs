@@ -22,14 +22,15 @@ namespace Stellamod.Core.BossBannerSystem
             base.OnInitialize();
             Width.Pixels = 32;
             Height.Pixels = 32;
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
             OnLeftClick += _parent.CycleRewardsType;
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
-            BackgroundColor = Color.Transparent;
-            BorderColor = Color.Transparent;
+
             Asset<Texture2D> glassTexture = BossBanner.RequestTreasureTexture();
             Rectangle rectangle = UIHelper.MouseInterfaceInteraction(this);
             Vector2 drawPosition = rectangle.TopLeft();
@@ -39,6 +40,12 @@ namespace Stellamod.Core.BossBannerSystem
 
 
             Color drawColor = _parent.Page == 2 ? Color.White : Color.DarkGray;
+            bool isHidden = _parent.BossPage.IsHidden();
+            if (isHidden)
+            {
+                drawColor = Color.Black;
+            }
+
             if (_parent.Page == 2)
             {
                 UIHelper.QuickOutline(spriteBatch, glassTexture.Value, frame, drawPosition, Color.White);

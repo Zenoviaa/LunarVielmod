@@ -93,6 +93,10 @@ namespace Stellamod.Core.BossBannerSystem
         {
             return RequestTexture("Star");
         }
+        public static Asset<Texture2D> RequestFogTexture()
+        {
+            return RequestTexture("Fog");
+        }
         public static Rectangle GetTreasureFrame(BossPageRewardType type)
         {
             int frameIndex = (int)type;
