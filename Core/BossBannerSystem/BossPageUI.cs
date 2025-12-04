@@ -149,12 +149,9 @@ namespace Stellamod.Core.BossBannerSystem
             _bossRewardsUI.Top.Pixels = 380;
             _bossRewardsUI.Left.Pixels = 16;
 
-            if (Page == 2)
-            {
 
-             
-            }
 
+            //Hacky way to get invisible scrollbar 
             float listHeight = _uiList.GetTotalHeight();
      
             if (listHeight < _uiList.Height.Pixels)
