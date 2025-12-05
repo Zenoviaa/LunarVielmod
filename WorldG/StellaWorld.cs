@@ -43,6 +43,7 @@ using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Biomes;
@@ -57,11 +58,11 @@ using Terraria.WorldBuilding;
 namespace Stellamod.WorldG
 {
 
-
     public class StellaWorld : ModSystem
     {
         public Point WitchTownLocation { get; private set; }
         public Point ManorLocation { get; private set; }
+
         private void DisableGenTask(List<GenPass> tasks, string passName)
         {
             tasks.Find(x => x.Name.Equals(passName)).Disable();
@@ -69,6 +70,7 @@ namespace Stellamod.WorldG
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
+
             //We don't need this for now
             int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Micro Biomes"));
             int RoyalGen = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));
@@ -304,7 +306,7 @@ namespace Stellamod.WorldG
                     //This hsould give us an outline of bricks, I think
                     Point topLeftRoom = room.bounds.TopLeft().ToPoint() + new Point(-padding / 2, -padding / 2);
                     Point offset = rectangle.Top().ToPoint();
-                    offset.Y -= outlineHeight / 2;
+                    offset.Y -= outlineHeight;
                     topLeftRoom += offset;
                     WorldUtils.Gen(topLeftRoom, new Shapes.Rectangle(outlineWidth, outlineHeight),
                        Actions.Chain(

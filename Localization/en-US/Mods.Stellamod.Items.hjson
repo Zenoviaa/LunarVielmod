@@ -9797,5 +9797,10 @@ SandEreshkigalItem: {
 
 RibbonWand: {
 	DisplayName: Ribbon Wand
-	Tooltip: ""
+	Tooltip: "Allows you to place ribbons that flow freely in the wind, right click to change the color!"
+}
+
+DesertMap: {
+	DisplayName: Desert Map
+	Tooltip: "Reveals the entirety of the desert, now you can see where you're going!"
 }

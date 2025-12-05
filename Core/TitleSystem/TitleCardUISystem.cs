@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.NPCs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -44,6 +45,7 @@ namespace Stellamod.Core.TitleSystem
         public void OpenUI(string text, float duration)
         {
             //Set State
+
             titleUIState.titleCardUI.ShowWave(text, duration);
             _userInterface.SetState(titleUIState);
         }
