@@ -21,6 +21,7 @@ namespace Stellamod.Core.Foreground
     public abstract class ForegroundLayer : ModTexturedType
     {
         public float fade;
+        public bool tilingInBothAxes;
         public sealed override void SetupContent()
         {
             base.SetupContent();
@@ -112,13 +113,72 @@ namespace Stellamod.Core.Foreground
             for (int i = 0; i < _layers.Length; i++)
             {
                 ForegroundLayer layer = _layers[i];
-                if (layer.fade > 0)
+                if (layer.fade > 0 )
                 {
-                    DrawForeground(spriteBatch, layer);
+                    if (layer.tilingInBothAxes)
+                    {
+                        DrawForegroundXY(spriteBatch, layer);
+                    }
+                    else
+                    {
+                        DrawForeground(spriteBatch, layer);
+                    }
                 }
             }
             spriteBatch.End();
         
+        }
+
+        private void DrawForegroundXY(SpriteBatch spriteBatch, ForegroundLayer layer)
+        {
+            float scale = 4;
+            Texture2D foregroundTexture = ModContent.Request<Texture2D>(layer.Texture).Value;
+            Vector2 drawOrigin = Vector2.Zero;
+            Color drawColor = Color.White * layer.fade;
+
+            float drawWidth = foregroundTexture.Width * scale;
+            float drawHeight = foregroundTexture.Height * scale;
+
+
+            Vector2 parallax = Vector2.Zero;
+            float zLayer = 0f;
+            layer.SetLayering(ref zLayer, ref parallax);
+
+            float cameraX = (Main.Camera.Center.X);
+            float cameraY = (Main.Camera.Center.Y);
+            float xParallax = (cameraX * parallax.X);
+            float yParallax = (cameraY * parallax.Y);
+
+
+            Vector2 drawPosition = Vector2.Zero;
+            drawPosition.Y -= yParallax;
+            drawPosition.X -= xParallax;
+
+
+            Vector2 cameraCenterWorld = Main.Camera.Center;
+            Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+            Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+
+            int repeats = 50;
+
+            //Offset the draw position so we have a bit of breathing room
+            drawPosition -= new Vector2(drawWidth, drawHeight) * repeats / 2;
+            Rectangle scissorRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+            for (int x = 0; x < repeats; x++)
+            {
+                for(int y = 0; y < repeats; y++)
+                {
+                    Vector2 foregroundPosition = drawPosition;
+                    foregroundPosition.X += x * drawWidth;
+                    foregroundPosition.Y += y * drawHeight;
+                    Rectangle drawRectangle = new Rectangle((int)foregroundPosition.X, (int)foregroundPosition.Y, (int)drawWidth, (int)drawHeight);
+                    if(scissorRectangle.Contains(drawRectangle) || scissorRectangle.Intersects(drawRectangle))
+                    {
+                        spriteBatch.Draw(foregroundTexture, foregroundPosition, null, drawColor * 0.62f, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+                    }
+               
+                }
+            }
         }
 
         /// <summary>
@@ -157,23 +217,22 @@ namespace Stellamod.Core.Foreground
             drawPosition.Y += yParallax;
             drawPosition.X -= xParallax;
 
-        //    drawPosition.X += 20000;
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
-            Rectangle cameraRectangle = new Rectangle((int)cameraTopLeft.X, (int)cameraTopLeft.Y,
-                (int)(cameraBottomRight.X - cameraBottomRight.X),
-                (int)(cameraBottomRight.Y - cameraTopLeft.Y));
+
             float width = drawWidth * scale;
             float height = drawHeight;
     
+            //Set the scissor rectangle so sprites outside don't get drawn
+            Rectangle scissorRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+
+            spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
             for (int i = 0; i < 10; i++)
             {
                 Vector2 leftPosition = drawPosition;
                 leftPosition.X += i * width;
-
                 spriteBatch.Draw(foregroundTexture, leftPosition, null, drawColor * 0.62f, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-
             }
         }
 
