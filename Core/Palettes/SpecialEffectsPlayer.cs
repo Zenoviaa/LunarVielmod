@@ -163,7 +163,7 @@ namespace Stellamod.Core.Palettes
                 return;
             if (Main.myPlayer != Player.whoAmI)
                 return;
-
+            return;
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
             ScreenShaderData screenShaderData;
             bool abyssPaletteActive = (MyPlayer.ZoneAbyss || MyPlayer.ZoneAurelus || MyPlayer.ZoneMechanics || MyPlayer.ZoneIshtar) && clientConfig.PaletteShadersToggle;
