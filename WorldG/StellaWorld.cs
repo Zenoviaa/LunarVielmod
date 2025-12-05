@@ -105,7 +105,8 @@ namespace Stellamod.WorldG
             if (terrainIndex != -1)
             {
                 tasks.Insert(terrainIndex + 1, new VanillaTerrainPass());
-                tasks.Insert(terrainIndex + 2, new PassLegacy("World Gen GenVar Locations", WorldGenVarLocations));
+                tasks.Insert(terrainIndex + 2, new PassLegacy("Desert Pyr", InitializePyr));
+                tasks.Insert(terrainIndex + 3, new PassLegacy("World Gen GenVar Locations", WorldGenVarLocations));
             }
 
             int iceGen = tasks.FindIndex(genpass => genpass.Name.Equals("Generate Ice Biome"));
@@ -186,6 +187,13 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
                 tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
             }
+        }
+
+        private void InitializePyr(GenerationProgress progress, GameConfiguration configuration)
+        {
+            var genRand = WorldGen.genRand;
+            GenVars.PyrX = new int[ 3];
+			GenVars.PyrY = new int[ 3];
         }
 
         private void GenerateMistyDungeon(GenerationProgress progress, GameConfiguration configuration)
@@ -300,7 +308,7 @@ namespace Stellamod.WorldG
             DesertBiome desertBiome = GenVars.configuration.CreateBiome<DesertBiome>();
             var genRand = WorldGen.genRand;
             int x = (Main.maxTilesX / 2 - 700);
-            while (!desertBiome.Place(new Point(x, (int)GenVars.worldSurfaceHigh + 25), GenVars.structures))
+            while (!desertBiome.Place(new Point(x, (int)GenVars.worldSurfaceHigh + genRand.Next(25, 50)), GenVars.structures))
             {
                 x = (Main.maxTilesX / 2 - 700) + genRand.Next(-200, 0);
             }
@@ -316,7 +324,7 @@ namespace Stellamod.WorldG
 
 
             //Actually, it should be safe to just replace solid tiles, the colosseum doesn't exist yet
-            int maxDesertDepth = 70;
+            int maxDesertDepth = 150;
             float steps = newDesertRight - newDesertLeft;
             for (int dx = newDesertLeft; dx < newDesertRight; dx++)
             {
@@ -343,7 +351,11 @@ namespace Stellamod.WorldG
                 int bottom = startY + depth;
                 for(int dy = startY; dy < bottom; dy++)
                 {
-                    WorldGen.PlaceTile(tileX, dy, TileID.Sand);
+                    if(WorldGen.SolidTile(tileX, dy))
+                    {
+                        WorldGen.PlaceTile(tileX, dy, TileID.Sand);
+                    }
+            
                     WorldGen.TileRunner(tileX, dy, 3, 10, TileID.Sand);
                 }    
             }
@@ -565,7 +577,19 @@ namespace Stellamod.WorldG
             Point colosseumPoint = new Point(colosseumX, colosseumY);
 
 
+            //Place the colosseum
             VeilGen.GenerateColosseum(colosseumPoint);
+
+            
+            //Generate the desert hide out
+            var genRand = WorldGen.genRand;
+            int desertWidth = GenVars.desertHiveRight - GenVars.desertHiveLeft;
+            int halfDesertWidth = desertWidth / 2;
+            int minJailY = (int)(Main.worldSurface + 300);
+            int randX = desertCenterX + genRand.Next(-halfDesertWidth, halfDesertWidth);
+            int randY = minJailY + genRand.Next(0, 300);
+            Point structurePoint = new Point(randX, randY);
+            Structurizer.ReadStruct(structurePoint, "Structures/UndergroundDesertHideout");
         }
 
         private void WorldGenDock(GenerationProgress progress, GameConfiguration configuration)

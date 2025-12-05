@@ -217,7 +217,7 @@ namespace Stellamod.Core.Foreground
             drawPosition.Y += yParallax;
             drawPosition.X -= xParallax;
             drawPosition.X += 20000;
-            drawPosition.Y += 222;
+            drawPosition.Y += 50;
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
