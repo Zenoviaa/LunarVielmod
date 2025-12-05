@@ -224,14 +224,15 @@ namespace Stellamod.Core.RibbonSystem
             float paddedLength = length + ribbonPadding;
             Vector2 velocity = normalVelocity * length;
             float distance = Vector2.Distance(startPosition, endPosition);
-            float steps = MathF.Ceiling(distance / length);
-            Vector2[] ribbonPositions = new Vector2[(int)steps];
+            float steps = MathF.Ceiling(distance / paddedLength);
+            Vector2[] linePoints = new Vector2[(int)steps];
 
             float maxSlack = Vector2.Distance(startPosition, endPosition) / 64f;
-            for(int r = 0; r < ribbonPositions.Length; r++)
+            for(int r = 0; r < linePoints.Length; r++)
             {
                 float completionRatio = (float)r / steps;
-                current += velocity;// + velocity.SafeNormalize(Vector2.Zero) * ribbonPadding;
+                //Make sure to apply the padding
+                current += velocity + velocity.SafeNormalize(Vector2.Zero) * ribbonPadding;
 
                 float slack = EasingFunction.QuadraticBump(completionRatio);
                 slack *= maxSlack;
@@ -243,15 +244,20 @@ namespace Stellamod.Core.RibbonSystem
                 if (perpVector.Y < 0)
                     perpVector = velocity.RotatedBy(-MathHelper.PiOver2);
                 Vector2 newStart = current + perpVector * slack;
-                ribbonPositions[r] = newStart;
+                linePoints[r] = newStart;
             }
+
+
             for (int i = 0; i < steps - 1; i++)
             {
                 float completionRatio = (float)i / steps;
-                Vector2 point1 = ribbonPositions[i];
-                Vector2 point2 = ribbonPositions[i + 1];
+                Vector2 point1 = linePoints[i];
+                Vector2 point2 = linePoints[i + 1];
                 Vector2 mid = (point1 + point2) / 2f;
+
+                //Clamp the velocity to the length of the ribbon
                 Vector2 vel = (point2 - point1);
+                vel = vel.SafeNormalize(Vector2.Zero) * ribbonLength;
                 Vector2 perpVector = vel.RotatedBy(MathHelper.PiOver2);
 
                 //There's probably a better way to do this but eh
