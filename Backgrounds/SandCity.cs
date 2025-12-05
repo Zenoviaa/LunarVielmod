@@ -8,7 +8,7 @@ namespace Stellamod.Backgrounds
     {
         public override bool IsActive()
         {
-            return Main.LocalPlayer.ZoneDesert && !Main.LocalPlayer.ZoneUndergroundDesert;
+            return Main.LocalPlayer.ZoneDesert;
         }
         public override void SetLayering(ref float zLayer, ref Vector2 parallax)
         {

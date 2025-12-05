@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.DungeonGeneration;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.SilkSystem;
@@ -15,8 +16,18 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Core.RibbonSystem
 {
+    public enum RibbonWandType : byte
+    {
+        Red,
+        Blue,
+        Green,
+        Purple,
+        Multicolor
+    }
+
     public class RibbonWand : ModItem
     {
+        public RibbonWandType style;
         public Vector2? startPosition;
         public Vector2? endPosition;
         public override void SetDefaults()
@@ -27,49 +38,74 @@ namespace Stellamod.Core.RibbonSystem
             Item.rare = ItemRarityID.Green;
             Item.useTime = 2;
             Item.useAnimation = 2;
-            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.useStyle = ItemUseStyleID.HiddenAnimation;
             Item.autoReuse = false;
+            Item.noUseGraphic = true;
+            Item.noMelee = true;
         }
+
 
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            int frameHeight = frame.Height / 5;
+            int y = (int)style * frameHeight;
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Rectangle sourceFrame = new Rectangle(0, y, texture.Width, texture.Height / 5);
+
+
+            spriteBatch.Draw(texture, position, sourceFrame, Color.White, 0, sourceFrame.Size() / 2f, 0.75f, SpriteEffects.None, 0);
+            return false;
+        }
         public override bool? UseItem(Player player)
         {
-            int mouseX = (int)(Main.MouseWorld.X / 16);
-            int mouseY = (int)(Main.MouseWorld.Y / 16);
-
-            //Just some position clamping so it's not connecting floating points and it looks a bit better
-            mouseX *= 16;
-            mouseY *= 16;
-
-            if (startPosition == null)
+            if(player.altFunctionUse == 2)
             {
-
-                startPosition = new Vector2(mouseX, mouseY);
-                Main.NewText(startPosition);
+                int ribbonType = (int)style;
+                ribbonType++;
+                if(ribbonType >= 5)
+                {
+                    ribbonType = 0;
+                }
+                style = (RibbonWandType)ribbonType;
             }
-            else if (endPosition == null)
+            else
             {
-                endPosition = new Vector2(mouseX, mouseY);
-                Main.NewText(endPosition);
+                int mouseX = (int)(Main.MouseWorld.X / 16);
+                int mouseY = (int)(Main.MouseWorld.Y / 16);
+
+                //Just some position clamping so it's not connecting floating points and it looks a bit better
+                mouseX *= 16;
+                mouseY *= 16;
+
+                if (startPosition == null)
+                {
+                    startPosition = new Vector2(mouseX, mouseY);
+                }
+                else if (endPosition == null)
+                {
+                    endPosition = new Vector2(mouseX, mouseY);
+                }
+
+                if (startPosition != null && endPosition != null)
+                {
+                    Vector2 start = startPosition.Value;
+                    Vector2 end = endPosition.Value;
+                    Vector2 temp = start;
+
+
+
+                    RibbonRenderer ribbonRenderer = ModContent.GetInstance<RibbonRenderer>();
+                    Ribbon ribbon = new Ribbon(start, end, 16, style);
+                    ribbonRenderer.AddRibbon(ribbon);
+                    startPosition = null;
+                    endPosition = null;
+                }
             }
 
-            if (startPosition != null && endPosition != null)
-            {
-                Vector2 start = startPosition.Value;
-                Vector2 end = endPosition.Value;
-                Vector2 temp = start;
-
-
-
-                RibbonRenderer ribbonRenderer = ModContent.GetInstance<RibbonRenderer>();
-                Ribbon ribbon = new Ribbon(start, end, 16, Color.DarkRed);
-                ribbonRenderer.AddRibbon(ribbon);
-                startPosition = null;
-                endPosition = null;
-            }
 
             return true;
         }
@@ -81,8 +117,8 @@ namespace Stellamod.Core.RibbonSystem
             Point tile1 = tag.Get<Point>("tile1");
             Point tile2 = tag.Get<Point>("tile2");
             float length = tag.GetFloat("length");
-            Vector3 color = tag.Get<Vector3>("color");
-            return new Ribbon(tile1.ToWorldCoordinates(), tile2.ToWorldCoordinates(), length, new Color(color));
+            int style = tag.Get<int>("style");
+            return new Ribbon(tile1.ToWorldCoordinates(), tile2.ToWorldCoordinates(), length, (RibbonWandType)style);
         }
 
         public override TagCompound Serialize(Ribbon value)
@@ -92,7 +128,7 @@ namespace Stellamod.Core.RibbonSystem
                 ["tile1"] = value.GetStartTile(),
                 ["tile2"] = value.GetEndTile(),
                 ["length"] = value.ribbonLength,
-                ["color"] = value.ribbonColor.ToVector3()
+                ["style"] = (int)value.style
             };
         }
     }
@@ -106,17 +142,18 @@ namespace Stellamod.Core.RibbonSystem
         private float _windOffset;
         public VertexPositionColor[] vertices;
         public Vector2[] originalPositions;
-        public Color ribbonColor;
         public Vector2 startPosition;
         public Vector2 endPosition;
         public float ribbonLength;
-
-        public Ribbon(Vector2 startPosition, Vector2 endPosition, float ribbonLength, Color ribbonColor)
+        public float ribbonPadding;
+        public RibbonWandType style;
+        public Ribbon(Vector2 startPosition, Vector2 endPosition, float ribbonLength, RibbonWandType style)
         {
             this.startPosition = startPosition;
             this.endPosition = endPosition;
             this.ribbonLength = ribbonLength;
-            this.ribbonColor = ribbonColor;
+            this.style = style;
+            this.ribbonPadding = 32;
             CalculateVertices();
         }
 
@@ -146,6 +183,35 @@ namespace Stellamod.Core.RibbonSystem
                 vertices[i].Position = new Vector3(originalPosition.X, originalPosition.Y, 0) + windOffset;
             });
         }
+        private Color GetColor(int offset)
+        {
+            switch (style)
+            {
+                default:
+                case RibbonWandType.Red:
+                    return Color.DarkRed;
+                case RibbonWandType.Blue:
+                    return Color.Lerp(Color.Blue, Color.White, 0.25f);
+                case RibbonWandType.Green:
+                    return Color.ForestGreen;
+                case RibbonWandType.Purple:
+                    return Color.MediumPurple;
+                case RibbonWandType.Multicolor:
+                    int i = offset % 4;
+                    switch (i)
+                    {
+                        default:
+                        case 0:
+                            return Color.DarkRed;
+                        case 1:
+                            return Color.Lerp(Color.Blue, Color.White, 0.25f);
+                        case 2:
+                            return Color.ForestGreen;
+                        case 3:
+                            return Color.MediumPurple;
+                    }
+            }
+        }
 
         public void CalculateVertices()
         {
@@ -153,9 +219,11 @@ namespace Stellamod.Core.RibbonSystem
             List<VertexPositionColor> ribbonVertices = new List<VertexPositionColor>();
             Vector2 current = startPosition;
             Vector2 normalVelocity = (endPosition - startPosition).SafeNormalize(Vector2.Zero);
-            Vector2 velocity = normalVelocity * ribbonLength;
+
+            float length = ribbonLength;
+            Vector2 velocity = normalVelocity * length;
             float distance = Vector2.Distance(startPosition, endPosition);
-            float steps = MathF.Ceiling(distance / ribbonLength);
+            float steps = MathF.Ceiling(distance / length);
             Vector2[] ribbonPositions = new Vector2[(int)steps];
 
             float maxSlack = Vector2.Distance(startPosition, endPosition) / 64f;
@@ -168,6 +236,7 @@ namespace Stellamod.Core.RibbonSystem
                 slack *= maxSlack;
 
                 Vector2 next = current + velocity;
+
                 Vector2 midPosition = (current + next) / 2f;
                 Vector2 perpVector = velocity.RotatedBy(MathHelper.PiOver2);
                 if (perpVector.Y < 0)
@@ -189,9 +258,10 @@ namespace Stellamod.Core.RibbonSystem
                     perpVector = velocity.RotatedBy(-MathHelper.PiOver2);
                 Vector2 point3 = mid + perpVector / 2f;
 
-                VertexPositionColor v1 = new VertexPositionColor(new Vector3(point1, 0), ribbonColor);
-                VertexPositionColor v2 = new VertexPositionColor(new Vector3(point2, 0), ribbonColor);
-                VertexPositionColor v3 = new VertexPositionColor(new Vector3(point3, 0), ribbonColor);
+                Color color = GetColor(i);
+                VertexPositionColor v1 = new VertexPositionColor(new Vector3(point1, 0), color);
+                VertexPositionColor v2 = new VertexPositionColor(new Vector3(point2, 0), color);
+                VertexPositionColor v3 = new VertexPositionColor(new Vector3(point3, 0), color);
 
                 ribbonVertices.Add(v1);
                 ribbonOriginalPositions.Add(point1);
@@ -219,14 +289,6 @@ namespace Stellamod.Core.RibbonSystem
         private List<Ribbon> _ribbons;
         private List<VertexPositionColor> _vertexBufferArr;
         public int DownSamples => 2;
-        public override void OnModLoad()
-        {
-            base.OnModLoad();
-            _ribbons = new List<Ribbon>(100);
-            _vertexBufferArr = new List<VertexPositionColor>();
-            On_Main.CheckMonoliths += RenderToPixelationRT;
-            On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRTToScreen;
-        }
 
         public override void Load()
         {
@@ -284,6 +346,7 @@ namespace Stellamod.Core.RibbonSystem
                 writer.WriteVector2(str.startPosition);
                 writer.WriteVector2(str.endPosition);
                 writer.Write(str.ribbonLength);
+                writer.Write((int)str.style);
             }
         }
         public override void NetReceive(BinaryReader reader)
@@ -296,20 +359,63 @@ namespace Stellamod.Core.RibbonSystem
                 Vector2 startPosition = reader.ReadVector2();
                 Vector2 endPosition = reader.ReadVector2();
                 float length = reader.ReadSingle();
-                Ribbon str = new Ribbon(startPosition, endPosition, length, Ribbon.RibbonColor);
+                int style = reader.ReadInt32();
+
+                Ribbon str = new Ribbon(startPosition, endPosition, length, (RibbonWandType)style);
                 _ribbons.Add(str);
             }
         }
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            _ribbons = new List<Ribbon>(100);
+            _vertexBufferArr = new List<VertexPositionColor>();
+            On_Main.CheckMonoliths += RenderToPixelationRT;
+            On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRTToScreen;
+            On_Main.DoDraw_DrawNPCsBehindTiles += DrawPixelRTToScreen;
+        }
+
         public override void OnModUnload()
         {
             base.OnModUnload();
             On_Main.CheckMonoliths -= RenderToPixelationRT;
             On_Main.DoDraw_DrawNPCsOverTiles -= DrawPixelRTToScreen;
+            On_Main.DoDraw_DrawNPCsBehindTiles -= DrawPixelRTToScreen;
+        }
+
+        private void DrawPixelRTToScreen(On_Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
+        {
+            GatherRibbonVertices();
+            if (ShouldRender() && !Main.gameMenu)
+            {
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+
+                float scale = DownSamples;
+
+                //Draw the outline for the ribbonbs
+                float outlineOffset = 2;
+                Vector2 v = Vector2.UnitY * outlineOffset;
+                Vector2 h = Vector2.UnitX * outlineOffset;
+                spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero + v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero - v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero + h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero - h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+
+
+                spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                spriteBatch.End();
+            }
+
+            orig(self);
+
+
+
         }
 
         private bool ShouldRender()
         {
-            return _ribbons.Count >= 1;
+            return _vertexBufferArr.Count >= 3;
         }
 
         private void GatherRibbonVertices()
@@ -335,70 +441,49 @@ namespace Stellamod.Core.RibbonSystem
         private void RenderToPixelationRT(On_Main.orig_CheckMonoliths orig)
         {
             orig();
-            if (Main.gameMenu)
-                return;
-            if (!ShouldRender())
-                return;
-     
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_pixelScreenRenderRT);
-            graphicsDevice.Clear(Color.Transparent);
-
-            //Apply the flag shader :p 
-            var flagShader = FlagShader.Instance;
-            flagShader.ApplyPasses();
-            GatherRibbonVertices();
-
-            //We can get all the ribbons in a single draw call
-            graphicsDevice.BlendState = BlendState.AlphaBlend;
-            graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-
-            Rectangle scissorRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-            graphicsDevice.ScissorRectangle = scissorRectangle;
-            graphicsDevice.DrawUserPrimitives(
-                  PrimitiveType.TriangleList, _vertexBufferArr.ToArray(), 0, _vertexBufferArr.Count / 3);
-
-            //Now we take that output and downscale it to the pixel RT
-            graphicsDevice.SetRenderTarget(_pixelatedRibbonRT);
-            graphicsDevice.Clear(Color.Transparent);
+            if (ShouldRender() && !Main.gameMenu)
+            {
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+                graphicsDevice.SetRenderTarget(_pixelScreenRenderRT);
+                graphicsDevice.Clear(Color.Transparent);
 
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            float denom = DownSamples;
-            float scale = 1f / denom;
+
+                //Apply the flag shader :p 
+                var flagShader = FlagShader.Instance;
+                flagShader.ApplyPasses();
+
+                //We can get all the ribbons in a single draw call
+                graphicsDevice.BlendState = BlendState.AlphaBlend;
+                graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+                graphicsDevice.DrawUserPrimitives(
+                      PrimitiveType.TriangleList, _vertexBufferArr.ToArray(), 0, _vertexBufferArr.Count / 3);
+
+                //Now we take that output and downscale it to the pixel RT
+                graphicsDevice.SetRenderTarget(_pixelatedRibbonRT);
+                graphicsDevice.Clear(Color.Transparent);
 
 
-            spriteBatch.Draw(_pixelScreenRenderRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-            spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                float denom = DownSamples;
+                float scale = 1f / denom;
+
+
+                spriteBatch.Draw(_pixelScreenRenderRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+                spriteBatch.End();
+            }
         }
 
 
         private void DrawPixelRTToScreen(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
         {
+
             orig(self);
-            if (Main.gameMenu)
-                return;
-            if (!ShouldRender())
-                return;
+
+
          
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
 
-            float scale = DownSamples;
-
-            //Draw the outline for the ribbonbs
-            float outlineOffset = 2;
-            Vector2 v = Vector2.UnitY * outlineOffset;
-            Vector2 h = Vector2.UnitX * outlineOffset;
-            spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero + v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero - v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero + h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero - h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-
-
-            spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            spriteBatch.End();
         }
 
         private void ResizeRenderTargets()

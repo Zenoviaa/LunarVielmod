@@ -153,7 +153,7 @@ namespace Stellamod.Core.Foreground
             Vector2 drawPosition = Vector2.Zero;
             drawPosition.Y -= yParallax;
             drawPosition.X -= xParallax;
-
+      
 
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
@@ -174,7 +174,7 @@ namespace Stellamod.Core.Foreground
                     Rectangle drawRectangle = new Rectangle((int)foregroundPosition.X, (int)foregroundPosition.Y, (int)drawWidth, (int)drawHeight);
                     if(scissorRectangle.Contains(drawRectangle) || scissorRectangle.Intersects(drawRectangle))
                     {
-                        spriteBatch.Draw(foregroundTexture, foregroundPosition, null, drawColor * 0.62f, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+                        spriteBatch.Draw(foregroundTexture, foregroundPosition, null, Color.White * 0.6f *layer.fade , 0, Vector2.Zero, scale, SpriteEffects.None, 0);
                     }
                
                 }
@@ -188,7 +188,7 @@ namespace Stellamod.Core.Foreground
         /// <param name="layer"></param>
         private void DrawForeground(SpriteBatch spriteBatch, ForegroundLayer layer)
         {
-            float scale = 4;
+            float scale = 3;
             Texture2D foregroundTexture = ModContent.Request<Texture2D>(layer.Texture).Value;
             Vector2 drawOrigin = Vector2.Zero;
             Color drawColor = Color.White * layer.fade;
@@ -216,7 +216,8 @@ namespace Stellamod.Core.Foreground
             drawPosition.Y += y;
             drawPosition.Y += yParallax;
             drawPosition.X -= xParallax;
-
+            drawPosition.X += 20000;
+            drawPosition.Y += 222;
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
@@ -227,11 +228,11 @@ namespace Stellamod.Core.Foreground
             //Set the scissor rectangle so sprites outside don't get drawn
             Rectangle scissorRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
 
-            spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 20; i++)
             {
                 Vector2 leftPosition = drawPosition;
                 leftPosition.X += i * width;
+
                 spriteBatch.Draw(foregroundTexture, leftPosition, null, drawColor * 0.62f, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             }
         }
