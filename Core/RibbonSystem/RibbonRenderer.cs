@@ -221,6 +221,7 @@ namespace Stellamod.Core.RibbonSystem
             Vector2 normalVelocity = (endPosition - startPosition).SafeNormalize(Vector2.Zero);
 
             float length = ribbonLength;
+            float paddedLength = length + ribbonPadding;
             Vector2 velocity = normalVelocity * length;
             float distance = Vector2.Distance(startPosition, endPosition);
             float steps = MathF.Ceiling(distance / length);
@@ -230,7 +231,7 @@ namespace Stellamod.Core.RibbonSystem
             for(int r = 0; r < ribbonPositions.Length; r++)
             {
                 float completionRatio = (float)r / steps;
-                current += velocity;
+                current += velocity;// + velocity.SafeNormalize(Vector2.Zero) * ribbonPadding;
 
                 float slack = EasingFunction.QuadraticBump(completionRatio);
                 slack *= maxSlack;
