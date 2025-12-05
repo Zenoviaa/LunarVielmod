@@ -58,7 +58,7 @@ namespace Stellamod.Core.RibbonSystem
 
 
                 RibbonRenderer ribbonRenderer = ModContent.GetInstance<RibbonRenderer>();
-                Ribbon ribbon = new Ribbon(start, end, 16, Color.Red);
+                Ribbon ribbon = new Ribbon(start, end, 16, Color.DarkRed);
                 ribbonRenderer.AddRibbon(ribbon);
                 startPosition = null;
                 endPosition = null;
@@ -73,12 +73,14 @@ namespace Stellamod.Core.RibbonSystem
     /// </summary>
     public class Ribbon
     {
+        private float _windOffset;
         public VertexPositionColor[] vertices;
         public Vector2[] originalPositions;
         public Color ribbonColor;
         public Vector2 startPosition;
         public Vector2 endPosition;
         public float ribbonLength;
+   
 
         public Ribbon(Vector2 startPosition, Vector2 endPosition, float ribbonLength, Color ribbonColor)
         {
@@ -93,11 +95,11 @@ namespace Stellamod.Core.RibbonSystem
         {
             float windSpeed = Main.windSpeedCurrent;
             float windMove = windSpeed * 4;
-
+            _windOffset += windSpeed * 0.1f;
             Parallel.For(0, vertices.Length, i =>
             {
-                float xWind = ExtraMath.Osc(0f, 1f, speed: windMove, offset: originalPositions[i].Y * 0.02f) * windSpeed * 24;
-                float yWind = ExtraMath.Osc(0f, 1f, speed: windMove, offset: originalPositions[i].Y * 0.02f) * windSpeed * 4;
+                float xWind = ExtraMath.Osc(0f, 1f, speed: 0.8f, offset: originalPositions[i].Y * 0.02f + _windOffset) * windSpeed * 12;
+                float yWind = ExtraMath.Osc(0f, 1f, speed: 0.8f, offset: originalPositions[i].Y * 0.02f + _windOffset) * windSpeed * 4;
                 Vector3 windOffset = new Vector3(new Vector2(xWind, yWind), 0);
                 Vector2 originalPosition = originalPositions[i];
                 vertices[i].Position = new Vector3(originalPosition.X, originalPosition.Y, 0) + windOffset;
