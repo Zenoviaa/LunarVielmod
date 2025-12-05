@@ -258,6 +258,9 @@ namespace Stellamod.WorldG
                 int height = rectangle.Height;
 
 
+                //Not generating a large square anymore that looked weird
+
+                /*
                 Point rectanglePoint = point;
                 rectanglePoint.X -= width / 2;
                 rectanglePoint.Y += 30;
@@ -268,6 +271,7 @@ namespace Stellamod.WorldG
                         new Actions.ClearWall(),
                         new Actions.SetTile((ushort)ModContent.TileType<MothlightBrick>()))
                    );
+                */
                 //Override dungeon variables
                 GenVars.dungeonLocation = point.X;
                 GenVars.dungeonX = point.X;
@@ -284,12 +288,33 @@ namespace Stellamod.WorldG
                 Main.npc[num297].homeTileY = oldManPoint.Y;
                 Main.npc[num297].direction = 1;
                 Main.npc[num297].homeless = true;
+
+
+                //The first room is the starting room, we don't want to outline that one
+                //So we're just gonna start from index 1 to skip it
+                for (int r = 1; r < map.Length; r++)
+                {
+                    Room room = map[r];
+                    int padding = 10;
+                    Rectangle roomRectangle = Structurizer.ReadRectangle(room.prefab);
+                    int outlineWidth = roomRectangle.Width + padding;
+                    int outlineHeight = roomRectangle.Height + padding;
+
+                    //This hsould give us an outline of bricks, I think
+                    Point topLeftRoom = room.bounds.TopLeft().ToPoint() + new Point(-padding / 2, -padding / 2);
+                    WorldUtils.Gen(topLeftRoom, new Shapes.Rectangle(outlineWidth, outlineHeight),
+                       Actions.Chain(
+                            new Actions.ClearWall(),
+                            new Actions.SetTile((ushort)ModContent.TileType<MothlightBrick>()))
+                       );
+                }
+
                 for (int r = 0; r < map.Length; r++)
                 {
                     Room room = map[r];
                     Point bottomLeft = room.bounds.BottomLeft().ToPoint();
                     Point offset = rectangle.Top().ToPoint();
-                    Vector2 mouseWorld = Main.MouseWorld;
+  
                     int tileX = offset.X;
                     int tileY = offset.Y;
 
@@ -304,7 +329,7 @@ namespace Stellamod.WorldG
         }
         private void LockDesert(GenerationProgress progress, GameConfiguration configuration)
         {
-            progress.Message = "Full Desert Rework";
+            progress.Message = "Expanding the Desert";
             DesertBiome desertBiome = GenVars.configuration.CreateBiome<DesertBiome>();
             var genRand = WorldGen.genRand;
             int x = (Main.maxTilesX / 2 - 700);
