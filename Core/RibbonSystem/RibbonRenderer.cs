@@ -233,6 +233,13 @@ namespace Stellamod.Core.RibbonSystem
             base.Load();
             ResizeRenderTargets();
         }
+
+        public override void ClearWorld()
+        {
+            base.ClearWorld();
+            _ribbons.Clear();
+
+        }
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
