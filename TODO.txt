@@ -4,6 +4,8 @@
 Illurian Soaker Insource - Summons 3 balls, they float around you that can reduce all incoming damage by half for 3 hits (120 seconds) 
 
 
+
+Keep sanguine singularity on screen for the dash thingy
 Ribbon finishing: Add random spacing, sometimes, be able to break it and have anchor points when using the ribbon staff, also only be able to use it on tiles
 Make desert bigger
 Maybe make some Desert house structures for the surface
@@ -14,6 +16,8 @@ Allow for 2 specific things to generate once (Lists House and The statue locatio
 Colosseum enemies and balance generally
 Lunar key sits in the middle at the top surrounded in a bubble or something floating around gintzia
 Ginztia dialogue for when you beat levels of the colosseum and enter the colosseum
+Place the sand decorations in the desert
+Generate bound goober in the underground desert
 
 For fenix's rigging, it might be easier to just construct her rig in 3D, do the rotation in 3D and then read it as a 2D point for where to place her joints
 We can use matrices to represent everything, we can calculate draw order based off of that too
