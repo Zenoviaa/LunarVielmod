@@ -3,10 +3,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
-using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,8 +13,11 @@ namespace Stellamod.Core.LunarLightingSystem
 
 
     [Autoload(Side = ModSide.Client)]
-    public class LunarLightingRenderer : ModSystem
+    public class LunarLightingRenderer : ModSystem,
+        IPostProcessingPass
     {
+        public int PostProcessPriority => 0;
+
         private static Color _backLightColor;
         private static Vector2 _previousScreenSize;
         private static RenderTarget2D _accumulatedLightRT;
@@ -43,12 +44,10 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public override void Load()
         {
-      
+
             _backLightModifiers = new List<IBackLightModifier>();
             _emitters = new List<ILightEmitter>();
             ResizeRenderTarget(true);
-
-            On_OverlayManager.Draw += DrawLights;
             On_Main.DoDraw += LightRenderLoop;
         }
 
@@ -57,7 +56,12 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             base.Unload();
             On_Main.DoDraw -= LightRenderLoop;
-            On_OverlayManager.Draw -= DrawLights;
+     
+        }
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            PostProcessingRenderer.AddPass(this);
         }
 
         public override void ClearWorld()
@@ -71,15 +75,6 @@ namespace Stellamod.Core.LunarLightingSystem
             _emitters.Clear();
             _backLightModifiers.Clear();
             ClearAmbientLights();
-        }
-
-        private void DrawLights(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
-        {
-            if (layer == RenderLayers.All && beginSpriteBatch)
-            {
-                DrawToScreen();
-            }
-            orig(self, spriteBatch, layer, beginSpriteBatch);
         }
 
         private static void DrawToScreen()
@@ -260,7 +255,7 @@ namespace Stellamod.Core.LunarLightingSystem
                         continue;
                     Tile tile = Main.tile[x, y];
                     Point lightTilePoint = new Point(x, y);
-                    if(tile.LiquidType == LiquidID.Lava)
+                    if (tile.LiquidType == LiquidID.Lava)
                     {
                         TileAmbientLight ambientLight = new TileAmbientLight();
                         ambientLight.color = Color.Red;
@@ -268,7 +263,7 @@ namespace Stellamod.Core.LunarLightingSystem
                         ambientLight.radius = 64;
                         AddAmbientLight(ambientLight);
                     }
-                 
+
                 }
             }
         }
@@ -361,7 +356,7 @@ namespace Stellamod.Core.LunarLightingSystem
             }
 
             ClearAmbientLights();
-       //     FindAmbientLights();
+            //     FindAmbientLights();
 
             if (_ambientLightIndex > 0)
             {
@@ -419,6 +414,11 @@ namespace Stellamod.Core.LunarLightingSystem
                 // Set the current one to the previous one for next frame.
                 _previousScreenSize = currentScreenSize;
             }
+        }
+
+        public void RenderToScreen()
+        {
+            DrawToScreen();
         }
     }
 }
