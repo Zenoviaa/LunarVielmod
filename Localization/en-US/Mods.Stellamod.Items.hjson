@@ -9794,3 +9794,8 @@ SandEreshkigalItem: {
 	DisplayName: Sand Ereshkigal Item
 	Tooltip: ""
 }
+
+RibbonWand: {
+	DisplayName: Ribbon Wand
+	Tooltip: ""
+}
