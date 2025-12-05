@@ -51,11 +51,11 @@ namespace Stellamod.Core.PaletteShadingSystem
                 PaletteEffect paletteEffect = _paletteEffects[i];
                 if (paletteEffect.IsActive(Main.LocalPlayer))
                 {
-                    paletteEffect.fade += 0.01f;
+                    paletteEffect.fade += 0.02f;
                 }
                 else
                 {
-                    paletteEffect.fade -= 0.01f;
+                    paletteEffect.fade -= 0.02f;
                 }
                 paletteEffect.fade = MathHelper.Clamp(paletteEffect.fade, 0f, 1f);
 

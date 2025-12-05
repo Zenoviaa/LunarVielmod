@@ -52,35 +52,19 @@ namespace Stellamod.Core.Foreground
     }
 
     [Autoload(Side = ModSide.Client)]
-    public class ForegroundRenderer : ModSystem
+    public class ForegroundRenderer : ModSystem,
+        IPostProcessingPass
     {
         private bool _drawForeground;
         private ForegroundLayer[] _layers;
+
+        public int PostProcessPriority => 20;
+
         public override void OnModLoad()
         {
             base.OnModLoad();
             _layers = ModContent.GetContent<ForegroundLayer>().ToArray();
-        }
-        public override void Load()
-        {
-            base.Load();
-            On_OverlayManager.Draw += DrawActiveForegrounds;
-        }
-
-        public override void Unload()
-        {
-            base.Unload();
-            On_OverlayManager.Draw -= DrawActiveForegrounds;
-        }
-
-        private void DrawActiveForegrounds(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
-        {
-            orig(self, spriteBatch, layer, beginSpriteBatch);
-            //Gotta make sure we're in front of the water layer
-            if (layer == RenderLayers.ForegroundWater)
-            {
-                DrawActiveForegrounds();
-            }
+            PostProcessingRenderer.AddPass(this);
         }
 
         public override void PostUpdateDusts()
@@ -121,7 +105,7 @@ namespace Stellamod.Core.Foreground
                 return;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.End();
+  
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
                 null, Main.GameViewMatrix.TransformationMatrix);
 
@@ -134,7 +118,7 @@ namespace Stellamod.Core.Foreground
                 }
             }
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+        
         }
 
         /// <summary>
@@ -205,6 +189,11 @@ namespace Stellamod.Core.Foreground
 
 
 
+        }
+
+        public void RenderToScreen()
+        {
+            DrawActiveForegrounds();
         }
     }
 }
