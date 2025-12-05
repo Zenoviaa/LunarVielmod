@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Effects;
@@ -11,6 +12,81 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
+
+    [Autoload(Side = ModSide.Client)]
+    public class PaletteShaderRenderer : ModSystem
+    {
+        private RenderTarget2D _paletteRenderRT;
+        private Vector2 _previousScreenSize;
+
+        public Effect paletteEffect;
+        public override void Load()
+        {
+            ResizeRenderTarget(true);
+            On_OverlayManager.Draw += DrawPalette;
+        }
+
+
+
+        public override void Unload()
+        {
+            base.Unload();
+            On_OverlayManager.Draw -= DrawPalette;
+        }
+        private void DrawPalette(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
+        {
+            if (layer == RenderLayers.All && beginSpriteBatch)
+            {
+                DrawToScreen();
+            }
+            orig(self, spriteBatch, layer, beginSpriteBatch);
+        }
+        public override void PostUpdateEverything()
+        {
+            base.PostUpdateEverything();
+            ResizeRenderTarget(false);
+        }
+
+        private void DrawToScreen()
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
+            graphicsDevice.SetRenderTarget(_paletteRenderRT);
+            graphicsDevice.Clear(Color.Transparent);
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, paletteEffect);
+            spriteBatch.Draw(Main.screenTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+            spriteBatch.End();
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            spriteBatch.Draw(_paletteRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+            spriteBatch.End();
+        }
+
+        private void ResizeRenderTarget(bool load)
+        {
+            if (!Main.gameMenu && !Main.dedServ || load && !Main.dedServ)
+            {
+                Vector2 currentScreenSize = new(Main.screenWidth, Main.screenHeight);
+                if (currentScreenSize != _previousScreenSize)
+                {
+                    Main.QueueMainThreadAction(() =>
+                    {
+                        if (_paletteRenderRT != null && !_paletteRenderRT.IsDisposed)
+                            _paletteRenderRT.Dispose();
+
+
+                        _paletteRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false,
+                            SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+
+                    });
+                }
+
+                _previousScreenSize = currentScreenSize;
+            }
+        }
+    }
+
 
     [Autoload(Side = ModSide.Client)]
     public class LunarLightingRenderer : ModSystem

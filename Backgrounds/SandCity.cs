@@ -13,8 +13,8 @@ namespace Stellamod.Backgrounds
         public override void SetLayering(ref float zLayer, ref Vector2 parallax)
         {
             base.SetLayering(ref zLayer, ref parallax);
-            parallax.X = 0.15f;
-            parallax.Y = 0.6f;
+            parallax.X = 1.2f;
+            parallax.Y = 1;
         }
     }
 }

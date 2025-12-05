@@ -581,21 +581,6 @@ namespace Stellamod.Core.LunarLightingSystem
                     Point tilePoint = new Point(x, y);
                     Vector2 worldPoint = tilePoint.ToWorldCoordinates(0, 0);
 
-                    //TODO: directional lights should be somewhere else
-                    /*
-                    if (lightNormal != Vector2.Zero)
-                    {
-                        Vector2 lightPosition = position;
-
-                        //Calculate normal
-                        Vector2 tileNormal = worldPoint - lightPosition;
-                        tileNormal = tileNormal.SafeNormalize(Vector2.Zero);
-
-                        float dot = Vector2.Dot(lightNormal, tileNormal);
-                        if (dot < threshold)
-                            continue;
-                    }*/
-
                     //Now we calculate vertices
                     //There's no texture here so it doesn't matter what order we do the triangles in
                     //Pretty sure we start from top left?

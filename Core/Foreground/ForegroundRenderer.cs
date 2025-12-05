@@ -144,19 +144,18 @@ namespace Stellamod.Core.Foreground
         /// <param name="layer"></param>
         private void DrawForeground(SpriteBatch spriteBatch, ForegroundLayer layer)
         {
+            float scale = 4;
             Texture2D foregroundTexture = ModContent.Request<Texture2D>(layer.Texture).Value;
             Vector2 drawOrigin = Vector2.Zero;
             Color drawColor = Color.White * layer.fade;
 
             float drawWidth = foregroundTexture.Width;
-            float drawHeight = foregroundTexture.Height;
+            float drawHeight = foregroundTexture.Height * scale;
         
             int worldSurfaceY = (int)((Main.worldSurface - 50) * 16);
             int cameraY = (int)Main.Camera.Center.Y;
             int diff = cameraY - worldSurfaceY;
-            if (diff > 0)
-                diff = 0;
-            diff = Math.Abs(diff);
+            diff = -diff;
        
 
             Vector2 parallax = Vector2.Zero;
@@ -171,24 +170,25 @@ namespace Stellamod.Core.Foreground
             drawPosition.Y += y;
             drawPosition.Y += yParallax;
             drawPosition.X -= xParallax;
-            drawPosition.X -= 15000;
-            bool hasDrawnTextures = false;
+            drawPosition.X -= 25000;
 
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
 
-        
+
+  
+            float width = drawWidth * scale;
+            float height = drawHeight;
             for (int i = 0; i < 100; i++)
             {
                 Vector2 leftPosition = drawPosition;
-                leftPosition.X += i * drawWidth;
-                        
-
+                leftPosition.X += i * width;
+        
                 //Check if the x position is on screen
                 float worldX = leftPosition.X + Main.screenPosition.X;
                 float leftX = worldX;
-                float rightX = leftX + drawWidth;
+                float rightX = leftX + width;
 
 
            
@@ -196,14 +196,14 @@ namespace Stellamod.Core.Foreground
                 bool isRightXInBounds = rightX >= cameraTopLeft.X && rightX <= cameraBottomRight.X;
                 if(isLeftXInBounds || isRightXInBounds)
                 {
-                    spriteBatch.Draw(foregroundTexture, leftPosition, null, drawColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-                    hasDrawnTextures = true;
+                   
                 }
+                spriteBatch.Draw(foregroundTexture, leftPosition, null, drawColor * 0.5f, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
 
             }
 
 
-        
+
 
         }
     }

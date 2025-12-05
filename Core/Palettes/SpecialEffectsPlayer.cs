@@ -97,6 +97,36 @@ namespace Stellamod.Core.Palettes
             OldUsePaletteShader(palFile, isActive, ref progress);
         }
 
+        private void NewUsePaletteShader(string palFile, bool isActive, ref float progress)
+        {
+            float speed = 0.05f;
+            if (isActive)
+            {
+                progress += speed;
+            }
+            else
+            {
+                progress -= speed;
+            }
+            progress = MathHelper.Clamp(progress, 0f, 1f);
+
+            string screenShaderName = $"LunarVeil:{palFile}";
+            if (!ShaderRegistry.ScreenShaders.Contains(screenShaderName))
+            {
+                return;
+            }
+            if (progress > 0)
+            {
+                ScreenShaderData screenShaderData = FilterManager[screenShaderName].GetShader();
+                screenShaderData.UseProgress(progress);
+                screenShaderData.Shader.Parameters["ColorSpectrumTexture"].SetValue(PaletteHelper.GetColorSpectrum(palFile));
+            }
+
+            if (!ShaderRegistry.ScreenShaders.Contains(screenShaderName))
+                return;
+            LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+
+        }
         private void OldUsePaletteShader(string palFile, bool isActive, ref float progress)
         {
             float speed = 0.05f;

@@ -392,5 +392,15 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
             }
         }
+
+        public void RandomizeEnchantments()
+        {
+            for(int i = 0; i < equippedEnchantments.Length; i++)
+            {
+                var enchantmentsToSpawn = BaseEnchantment.AllEnchantments;
+                BaseEnchantment enchantmentToSwapTo = enchantmentsToSpawn[Main.rand.Next(0, enchantmentsToSpawn.Length)];
+                equippedEnchantments[i] = enchantmentToSwapTo.Item;
+            }
+        }
     }
 }
