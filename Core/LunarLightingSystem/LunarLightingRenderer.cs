@@ -16,7 +16,7 @@ namespace Stellamod.Core.LunarLightingSystem
     public class LunarLightingRenderer : ModSystem,
         IPostProcessingPass
     {
-        public int PostProcessPriority => 0;
+        public int PostProcessPriority => 15;
 
         private static Color _backLightColor;
         private static Vector2 _previousScreenSize;
