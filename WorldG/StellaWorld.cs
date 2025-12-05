@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using ReLogic.Utilities;
 using Stellamod.Buffs;
 using Stellamod.Content.Areas.Abyss.WeaponsAB;
+using Stellamod.Content.Areas.Collosseum.TilesCL;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
@@ -142,7 +143,7 @@ namespace Stellamod.WorldG
 
             if (MorrowGen != -1)
             {
-                tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital)); 
+                tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
                 tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
                 tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
                 tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Illuria", WorldGenIlluria));
@@ -192,8 +193,8 @@ namespace Stellamod.WorldG
         private void InitializePyr(GenerationProgress progress, GameConfiguration configuration)
         {
             var genRand = WorldGen.genRand;
-            GenVars.PyrX = new int[ 3];
-			GenVars.PyrY = new int[ 3];
+            GenVars.PyrX = new int[3];
+            GenVars.PyrY = new int[3];
         }
 
         private void GenerateMistyDungeon(GenerationProgress progress, GameConfiguration configuration)
@@ -252,7 +253,7 @@ namespace Stellamod.WorldG
                 //Just a failsafe
                 while (rectangle.Right().X >= Main.maxTilesX)
                     rectangle.Location -= new Point(32, 0);
-    
+
                 int width = rectangle.Width;
                 width -= 150;
                 int height = rectangle.Height;
@@ -281,7 +282,7 @@ namespace Stellamod.WorldG
                 Point oldManPoint = point;
                 oldManPoint.X += 10;
                 oldManPoint.Y -= 20;
-  
+
                 int npcType = NPCID.OldMan;
                 int num297 = NPC.NewNPC(new EntitySource_WorldGen(), oldManPoint.X, oldManPoint.Y, npcType);
                 Main.npc[num297].homeTileX = oldManPoint.X;
@@ -314,7 +315,7 @@ namespace Stellamod.WorldG
                     Room room = map[r];
                     Point bottomLeft = room.bounds.BottomLeft().ToPoint();
                     Point offset = rectangle.Top().ToPoint();
-  
+
                     int tileX = offset.X;
                     int tileY = offset.Y;
 
@@ -361,12 +362,13 @@ namespace Stellamod.WorldG
                 int startY = (int)(Main.worldSurface - 100);
 
                 //Move down until we hit a solid tile
-                for(int k = 0;  k < 300; k++)
+                for (int k = 0; k < 300; k++)
                 {
-                    if(!WorldGen.SolidTile(dx, startY))
+                    if (!WorldGen.SolidTile(dx, startY))
                     {
                         startY++;
-                    } else
+                    }
+                    else
                     {
                         break;
                     }
@@ -374,15 +376,48 @@ namespace Stellamod.WorldG
 
                 //Now we have the position we want to start from
                 int bottom = startY + depth;
-                for(int dy = startY; dy < bottom; dy++)
+                for (int dy = startY; dy < bottom; dy++)
                 {
-                    if(WorldGen.SolidTile(tileX, dy))
+                    if (WorldGen.SolidTile(tileX, dy))
                     {
                         WorldGen.PlaceTile(tileX, dy, TileID.Sand);
                     }
-            
+
                     WorldGen.TileRunner(tileX, dy, 3, 10, TileID.Sand);
-                }    
+                }
+            }
+
+
+            //Place sand decorations
+            int numSandDecorations = genRand.Next(20, 40);
+            int[] wallTypesToPlace = new int[]
+            {
+                ModContent.WallType<SandCastle1>(),              
+                ModContent.WallType<SandCastle2>(),                 
+                ModContent.WallType<SandCastle3>(),                 
+                ModContent.WallType<SandCastle4>(),                      
+                ModContent.WallType<SandCastle5>(),                    
+                ModContent.WallType<SandCastle6>(),                
+                ModContent.WallType<SandCastle7>()
+            };
+
+            for (int n = 0; n < numSandDecorations; n++)
+            {
+                int randX = genRand.Next(newDesertLeft, newDesertRight);
+                int y = (int)(Main.worldSurface - 200);
+                for (int yOffset = 0; yOffset < 500; yOffset++)
+                {
+                    y++;
+                    if (!WorldGen.SolidTile(randX, y))
+                        continue;
+                    Tile tile = Main.tile[randX, y];
+                    if (tile.TileType == TileID.Sand)
+                        break;
+                }
+
+                int randSandCastle = genRand.Next(0, wallTypesToPlace.Length);
+                int sandCastleType = wallTypesToPlace[randSandCastle];
+                WorldGen.PlaceWall(randX, y, sandCastleType);
             }
         }
 
@@ -605,7 +640,7 @@ namespace Stellamod.WorldG
             //Place the colosseum
             VeilGen.GenerateColosseum(colosseumPoint);
 
-            
+
             //Generate the desert hide out
             var genRand = WorldGen.genRand;
             int desertWidth = GenVars.desertHiveRight - GenVars.desertHiveLeft;
@@ -1709,7 +1744,7 @@ namespace Stellamod.WorldG
             progress.Message = "Moving the dungeon, smh";
 
             //GenVars.dungeonLocation is the x value of the dungeon
-          
+
         }
 
         private void WorldGenFabledTrees(GenerationProgress progress, GameConfiguration configuration)
@@ -2545,9 +2580,9 @@ namespace Stellamod.WorldG
         {
             Point start = new Point(x, y);
             Point current = start;
-            for(int i = 0; i < 1000; i++)
+            for (int i = 0; i < 1000; i++)
             {
- 
+
                 if (WorldGen.SolidTile(current.X, current.Y))
                     return current;
                 current.Y += 1;
@@ -4578,7 +4613,7 @@ namespace Stellamod.WorldG
                 int X = WorldGen.genRand.Next(GenVars.snowOriginLeft, GenVars.snowOriginRight);
                 int Y = (int)(Main.worldSurface - 200);
                 int yBelow = Y + 1;
-                for(int yOffset = 0; yOffset < 1000; yOffset++)
+                for (int yOffset = 0; yOffset < 1000; yOffset++)
                 {
                     yBelow++;
                     if (WorldGen.SolidTile(X, yBelow))
@@ -4611,7 +4646,7 @@ namespace Stellamod.WorldG
                 int Y = (int)(Main.worldSurface - 100);
                 int yBelow = Y + 1;
                 Vector2 WallPosition = new Vector2(X, yBelow);
-                for(int yOffset = 0; yOffset < 1000; yOffset++)
+                for (int yOffset = 0; yOffset < 1000; yOffset++)
                 {
                     yBelow++;
                     if (WorldGen.SolidTile(X, yBelow))
@@ -4619,7 +4654,7 @@ namespace Stellamod.WorldG
                         break;
                     }
                 }
-  
+
                 if (Main.tile[X, yBelow].TileType == TileID.SnowBlock)
                 {
                     StructureMap structures = GenVars.structures;
@@ -4765,7 +4800,7 @@ namespace Stellamod.WorldG
                             new Actions.SetTile(TileID.SnowBlock)
                                    //new Actions.Smooth(true)
                                }));
-        
+
                             Rectangle areaToPlaceIn = new Rectangle(
                                 (int)WallPosition.X - 12,
                                 (int)WallPosition.Y - 12,
@@ -5298,7 +5333,7 @@ namespace Stellamod.WorldG
             //Place the center like a circle
 
             ushort abyssTile = (ushort)ModContent.TileType<AbyssalDirt>();
-            for(int i = 0; i < 100; i++)
+            for (int i = 0; i < 100; i++)
             {
                 WorldGen.TileRunner(AbyssCenter.X, AbyssCenter.Y, 30, 150, abyssTile, false);
             }
@@ -5306,7 +5341,7 @@ namespace Stellamod.WorldG
             int width = GenVars.snowOriginRight - GenVars.snowOriginLeft;
             int radius = width / 2;
             int heightRadius = radius / 2;
-            for(int i = 0; i < 350; i++)
+            for (int i = 0; i < 350; i++)
             {
                 Point abyssClump = AbyssCenter;
                 abyssClump.X += WorldGen.genRand.Next(-radius, radius);
@@ -5339,10 +5374,10 @@ namespace Stellamod.WorldG
             {
                 // How far away from center
                 double away = awayStep * theta;
-                
+
                 // How far around the center.
                 double around = theta + rotation;
-                
+
                 // Convert 'around' and 'away' to X and Y.
                 double x = centerX + Math.Cos(around) * away;
                 double y = centerY + Math.Sin(around) * away;
@@ -5396,17 +5431,17 @@ namespace Stellamod.WorldG
             }
 
             ushort abyssalIce = (ushort)ModContent.TileType<AbyssalIce>();
-            for(int x = 0; x < Main.maxTilesX; x++)
+            for (int x = 0; x < Main.maxTilesX; x++)
             {
-                for(int y = 0; y < Main.maxTilesY; y++)
+                for (int y = 0; y < Main.maxTilesY; y++)
                 {
-              
+
                     Vector2 tilePosition = new Vector2(x, y);
                     float distance = Vector2.Distance(AbyssCenter.ToVector2(), tilePosition);
-                    if(distance < spiralRadius)
+                    if (distance < spiralRadius)
                     {
                         Tile tile = Main.tile[x, y];
-                        if(tile.HasTile && (tile.TileType == TileID.IceBlock))
+                        if (tile.HasTile && (tile.TileType == TileID.IceBlock))
                         {
                             WorldGen.PlaceTile(x, y, abyssalIce, forced: true);
                         }
@@ -8156,7 +8191,7 @@ namespace Stellamod.WorldG
 
                 }
             }
-            
+
 
         }
 
