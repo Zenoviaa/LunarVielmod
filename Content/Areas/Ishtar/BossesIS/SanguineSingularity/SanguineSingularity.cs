@@ -302,7 +302,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             fallSystem.noWings = true;
             fallSystem.inSpace = true;
             fallSystem.hoveringPlatform = true;
-            fallSystem.hoverPlatformY = 5000;
+            fallSystem.hoverPlatformY = 6000;
             if (Main.netMode == NetmodeID.Server)
                 return;
             _blackTimer++;
@@ -698,8 +698,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         #endregion
 
         #region Bloody Mega Charge
-        private Vector2 _startDashPosition;
-        private Vector2 _nextDashPosition;
         private void AI_BloodyMegaCharge_Start()
         {
             Timer++;
@@ -737,9 +735,14 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             NPC.spriteDirection = NPC.velocity.X > 0 ? 1 : -1;
          
             float dp = Vector2.Dot(targetNormal, NPC.velocity.SafeNormalize(Vector2.Zero));
+
+            //Quick distance check so never dodging from off screen
+            float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
+            bool isCloseEnoughToDash = distanceToTarget < 500;
+
             //If we're aiming towards our target we'll go to our dash state
             //Make sure to also check if timer is greater than the min prep time
-            if (dp > 0f && NPC.velocity.Length() > 10) 
+            if (dp > 0f && NPC.velocity.Length() > 10 && isCloseEnoughToDash) 
             {
                 SwitchState(AIState.BloodyMegaCharge_Rush);
             }

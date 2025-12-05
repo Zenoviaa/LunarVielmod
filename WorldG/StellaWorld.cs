@@ -299,10 +299,53 @@ namespace Stellamod.WorldG
             progress.Message = "Full Desert Rework";
             DesertBiome desertBiome = GenVars.configuration.CreateBiome<DesertBiome>();
             var genRand = WorldGen.genRand;
-            int x = (Main.maxTilesX / 2 - 500);
+            int x = (Main.maxTilesX / 2 - 700);
             while (!desertBiome.Place(new Point(x, (int)GenVars.worldSurfaceHigh + 25), GenVars.structures))
             {
-                x = (Main.maxTilesX / 2 - 500) + genRand.Next(-200, 0);
+                x = (Main.maxTilesX / 2 - 700) + genRand.Next(-200, 0);
+            }
+
+
+            //About to give the desert an extension
+            int desertPadding = 200;
+            int newDesertLeft = GenVars.desertHiveLeft - desertPadding;
+            int newDesertRight = GenVars.desertHiveRight + desertPadding;
+
+            //Adding surface sands
+            //This is our desert extension, we just gonna replcae dirt/stone/clay tiles
+
+
+            //Actually, it should be safe to just replace solid tiles, the colosseum doesn't exist yet
+            int maxDesertDepth = 70;
+            float steps = newDesertRight - newDesertLeft;
+            for (int dx = newDesertLeft; dx < newDesertRight; dx++)
+            {
+                float marker = (dx - newDesertLeft);
+                float completionRatio = marker / steps;
+                float ease = EasingFunction.QuadraticBump(completionRatio);
+                int depth = (int)MathHelper.Lerp(1, maxDesertDepth, ease);
+                int tileX = dx;
+                int startY = (int)(Main.worldSurface - 100);
+
+                //Move down until we hit a solid tile
+                for(int k = 0;  k < 300; k++)
+                {
+                    if(!WorldGen.SolidTile(dx, startY))
+                    {
+                        startY++;
+                    } else
+                    {
+                        break;
+                    }
+                }
+
+                //Now we have the position we want to start from
+                int bottom = startY + depth;
+                for(int dy = startY; dy < bottom; dy++)
+                {
+                    WorldGen.PlaceTile(tileX, dy, TileID.Sand);
+                    WorldGen.TileRunner(tileX, dy, 3, 10, TileID.Sand);
+                }    
             }
         }
 

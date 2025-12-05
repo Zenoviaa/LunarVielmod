@@ -41,14 +41,6 @@ namespace Stellamod.Core.Palettes
         public float blackWhiteThreshold;
 
 
-        public Vector2 rippleCenter;
-        public float rippleCount;
-        public float rippleRadius;
-        public float rippleSize;
-        public float rippleSpeed;
-        public float rippleDistortStrength;
-        public float rippleTimer;
-
         //Progress Variables
         public float darknessCurveProgress = 1f;
         public float[] paletteUseProgress = new float[16];
@@ -163,7 +155,7 @@ namespace Stellamod.Core.Palettes
                 return;
             if (Main.myPlayer != Player.whoAmI)
                 return;
-            return;
+ 
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
             ScreenShaderData screenShaderData;
             bool abyssPaletteActive = (MyPlayer.ZoneAbyss || MyPlayer.ZoneAurelus || MyPlayer.ZoneMechanics || MyPlayer.ZoneIshtar) && clientConfig.PaletteShadersToggle;
@@ -203,6 +195,8 @@ namespace Stellamod.Core.Palettes
                 darkness += 1;
             }
 
+            /*
+
 
             UsePaletteShader("Abyss.pal", abyssPaletteActive, ref paletteUseProgress[0]);
             UsePaletteShader("VilepipesNGarden.pal", rustyPaletteActive, ref paletteUseProgress[1]);
@@ -217,7 +211,7 @@ namespace Stellamod.Core.Palettes
             UsePaletteShader("SanguineSingularity.pal", sanguinePaletteActive, ref paletteUseProgress[10]);
 
 
-
+            */
             CalculateDarkness();
             TogglePaletteShader("LunarVeil:DarknessVignette", darkness != 0);
 
@@ -295,20 +289,6 @@ namespace Stellamod.Core.Palettes
             screenShaderData.Shader.Parameters["strength"].SetValue(strength);
             screenShaderData.Shader.Parameters["brightnessThreshold"].SetValue(blackWhiteThreshold);
             TogglePaletteShader("LunarVeil:BlackWhite", _blackWhiteLerp != 0);
-
-            rippleTimer--;
-            if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive() && rippleTimer > 0)
-            {
-                Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", rippleCenter).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(rippleCenter);
-
-            }
-
-            if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive() && rippleTimer == 0)
-            {
-                float progress = (180f - rippleTimer) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
-                progress = 1f - progress;
-                Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(rippleDistortStrength * (1 - progress / 3f));
-            }
         }
 
         private void CalculateDarkness()
@@ -327,7 +307,6 @@ namespace Stellamod.Core.Palettes
             }
             _targetVignetteStrength = darkness;
         }
-
 
         public override void PostUpdate()
         {
