@@ -2,9 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
+using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
@@ -35,8 +37,13 @@ namespace Stellamod.Core.RibbonSystem
         }
         public override bool? UseItem(Player player)
         {
-            int mouseX = (int)(Main.MouseWorld.X);
-            int mouseY = (int)(Main.MouseWorld.Y);
+            int mouseX = (int)(Main.MouseWorld.X / 16);
+            int mouseY = (int)(Main.MouseWorld.Y / 16);
+
+            //Just some position clamping so it's not connecting floating points and it looks a bit better
+            mouseX *= 16;
+            mouseY *= 16;
+
             if (startPosition == null)
             {
 
@@ -67,12 +74,35 @@ namespace Stellamod.Core.RibbonSystem
             return true;
         }
     }
+    public class RibbonSerializer : TagSerializer<Ribbon, TagCompound>
+    {
+        public override Ribbon Deserialize(TagCompound tag)
+        {
+            Point tile1 = tag.Get<Point>("tile1");
+            Point tile2 = tag.Get<Point>("tile2");
+            float length = tag.GetFloat("length");
+            Vector3 color = tag.Get<Vector3>("color");
+            return new Ribbon(tile1.ToWorldCoordinates(), tile2.ToWorldCoordinates(), length, new Color(color));
+        }
 
+        public override TagCompound Serialize(Ribbon value)
+        {
+            return new TagCompound
+            {
+                ["tile1"] = value.GetStartTile(),
+                ["tile2"] = value.GetEndTile(),
+                ["length"] = value.ribbonLength,
+                ["color"] = value.ribbonColor.ToVector3()
+            };
+        }
+    }
     /// <summary>
     /// Represents a long trail of flag like things basically
     /// </summary>
     public class Ribbon
     {
+        public const float Ribbon_Length = 16;
+        public static Color RibbonColor => Color.DarkRed;
         private float _windOffset;
         public VertexPositionColor[] vertices;
         public Vector2[] originalPositions;
@@ -80,7 +110,6 @@ namespace Stellamod.Core.RibbonSystem
         public Vector2 startPosition;
         public Vector2 endPosition;
         public float ribbonLength;
-   
 
         public Ribbon(Vector2 startPosition, Vector2 endPosition, float ribbonLength, Color ribbonColor)
         {
@@ -91,8 +120,20 @@ namespace Stellamod.Core.RibbonSystem
             CalculateVertices();
         }
 
+        //Get the start and ending tiles for the save data of the ribbons
+        public Point GetStartTile()
+        {
+            return startPosition.ToTileCoordinates();
+        }
+
+        public Point GetEndTile()
+        {
+            return endPosition.ToTileCoordinates();
+        }
+
         public void SimulateWind()
         {
+            //Simulate the movement on the flags
             float windSpeed = Main.windSpeedCurrent;
             float windMove = windSpeed * 4;
             _windOffset += windSpeed * 0.1f;
@@ -142,6 +183,8 @@ namespace Stellamod.Core.RibbonSystem
                 Vector2 mid = (point1 + point2) / 2f;
                 Vector2 vel = (point2 - point1);
                 Vector2 perpVector = vel.RotatedBy(MathHelper.PiOver2);
+
+                //There's probably a better way to do this but eh
                 if (perpVector.Y < 0)
                     perpVector = velocity.RotatedBy(-MathHelper.PiOver2);
                 Vector2 point3 = mid + perpVector / 2f;
@@ -214,12 +257,42 @@ namespace Stellamod.Core.RibbonSystem
         public override void SaveWorldData(TagCompound tag)
         {
             base.SaveWorldData(tag);
+            tag["ribbons"] = _ribbons;
         }
+
         public override void LoadWorldData(TagCompound tag)
         {
             base.LoadWorldData(tag);
+            _ribbons = new List<Ribbon>();
+            _ribbons = tag.Get<List<Ribbon>>("ribbons");
         }
 
+        public override void NetSend(BinaryWriter writer)
+        {
+            base.NetSend(writer);
+            writer.Write(_ribbons.Count);
+            for (int i = 0; i < _ribbons.Count; i++)
+            {
+                var str = _ribbons[i];
+                writer.WriteVector2(str.startPosition);
+                writer.WriteVector2(str.endPosition);
+                writer.Write(str.ribbonLength);
+            }
+        }
+        public override void NetReceive(BinaryReader reader)
+        {
+            base.NetReceive(reader);
+            int silkStringCount = reader.ReadInt32();
+            _ribbons.Clear();
+            for (int s = 0; s < silkStringCount; s++)
+            {
+                Vector2 startPosition = reader.ReadVector2();
+                Vector2 endPosition = reader.ReadVector2();
+                float length = reader.ReadSingle();
+                Ribbon str = new Ribbon(startPosition, endPosition, length, Ribbon.RibbonColor);
+                _ribbons.Add(str);
+            }
+        }
         public override void OnModUnload()
         {
             base.OnModUnload();
@@ -230,6 +303,26 @@ namespace Stellamod.Core.RibbonSystem
         private bool ShouldRender()
         {
             return _ribbons.Count >= 1;
+        }
+
+        private void GatherRibbonVertices()
+        {
+            _vertexBufferArr.Clear();
+            Vector2 cameraCenterWorld = Main.Camera.Center;
+            Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+            Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+            Rectangle cameraRectangle = new Rectangle((int)cameraTopLeft.X, (int)cameraTopLeft.Y, (int)(cameraBottomRight.X - cameraTopLeft.X), (int)(cameraBottomRight.Y - cameraTopLeft.Y));
+            for (int i = 0; i < _ribbons.Count; i++)
+            {
+                Ribbon ribbon = _ribbons[i];
+                Vector2 start = ribbon.startPosition;
+                Vector2 end = ribbon.endPosition;
+
+                if (cameraRectangle.Contains(start.ToPoint()) || cameraRectangle.Contains(end.ToPoint()))
+                {
+                    _vertexBufferArr.AddRange(ribbon.vertices);
+                }
+            }
         }
 
         private void RenderToPixelationRT(On_Main.orig_CheckMonoliths orig)
@@ -248,16 +341,14 @@ namespace Stellamod.Core.RibbonSystem
             //Apply the flag shader :p 
             var flagShader = FlagShader.Instance;
             flagShader.ApplyPasses();
+            GatherRibbonVertices();
 
-            _vertexBufferArr.Clear();
-            for (int i = 0; i < _ribbons.Count; i++)
-            {
-                Ribbon ribbon = _ribbons[i];
-                _vertexBufferArr.AddRange(ribbon.vertices);
-            }
-
+            //We can get all the ribbons in a single draw call
             graphicsDevice.BlendState = BlendState.AlphaBlend;
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+
+            Rectangle scissorRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+            graphicsDevice.ScissorRectangle = scissorRectangle;
             graphicsDevice.DrawUserPrimitives(
                   PrimitiveType.TriangleList, _vertexBufferArr.ToArray(), 0, _vertexBufferArr.Count / 3);
 
