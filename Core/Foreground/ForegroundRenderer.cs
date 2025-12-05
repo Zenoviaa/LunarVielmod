@@ -147,48 +147,34 @@ namespace Stellamod.Core.Foreground
             layer.SetLayering(ref zLayer, ref parallax);
 
             float yParallax = (diff * parallax.Y);
-            float xParallax = (Main.screenPosition.X * parallax.X);
+
+            float cameraX = (Main.Camera.Center.X);
+            float xParallax = (cameraX * parallax.X);
 
             float y = (Main.screenHeight - drawHeight);
             Vector2 drawPosition = Vector2.Zero;
             drawPosition.Y += y;
             drawPosition.Y += yParallax;
             drawPosition.X -= xParallax;
-            drawPosition.X -= 25000;
 
+        //    drawPosition.X += 20000;
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
-
-
-  
+            Rectangle cameraRectangle = new Rectangle((int)cameraTopLeft.X, (int)cameraTopLeft.Y,
+                (int)(cameraBottomRight.X - cameraBottomRight.X),
+                (int)(cameraBottomRight.Y - cameraTopLeft.Y));
             float width = drawWidth * scale;
             float height = drawHeight;
-            for (int i = 0; i < 100; i++)
+    
+            for (int i = 0; i < 10; i++)
             {
                 Vector2 leftPosition = drawPosition;
                 leftPosition.X += i * width;
-        
-                //Check if the x position is on screen
-                float worldX = leftPosition.X + Main.screenPosition.X;
-                float leftX = worldX;
-                float rightX = leftX + width;
 
-
-           
-                bool isLeftXInBounds = leftX >= cameraTopLeft.X && leftX <= cameraBottomRight.X;
-                bool isRightXInBounds = rightX >= cameraTopLeft.X && rightX <= cameraBottomRight.X;
-                if(isLeftXInBounds || isRightXInBounds)
-                {
-                   
-                }
-                spriteBatch.Draw(foregroundTexture, leftPosition, null, drawColor * 0.5f, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(foregroundTexture, leftPosition, null, drawColor * 0.62f, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
 
             }
-
-
-
-
         }
 
         public void RenderToScreen()
