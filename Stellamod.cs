@@ -6,6 +6,7 @@ using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Skies;
+
 using System.IO;
 using System.Reflection;
 using Terraria;
@@ -393,8 +394,18 @@ namespace Stellamod
 
         public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor)
         {
-            return true;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.UIScaleMatrix);
+            Texture2D logo = MenuLoader.CurrentMenu.Logo.Value;
+            Vector2 logoDrawPos = new Vector2(Main.screenWidth / 2, 100f);
+            float scale = logoScale;
+            scale *= 0.3f;
+            spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), drawColor, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), scale, SpriteEffects.None, 0f);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.Default, Main.Rasterizer, null, Main.UIScaleMatrix);
+            return false;
         }
+
     }
 }
 

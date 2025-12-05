@@ -303,6 +303,9 @@ namespace Stellamod.WorldG
 
                     //This hsould give us an outline of bricks, I think
                     Point topLeftRoom = room.bounds.TopLeft().ToPoint() + new Point(-padding / 2, -padding / 2);
+                    Point offset = rectangle.Top().ToPoint();
+                    offset.Y -= outlineHeight / 2;
+                    topLeftRoom += offset;
                     WorldUtils.Gen(topLeftRoom, new Shapes.Rectangle(outlineWidth, outlineHeight),
                        Actions.Chain(
                             new Actions.ClearWall(),
