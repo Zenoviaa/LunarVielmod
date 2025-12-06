@@ -248,8 +248,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             NPC.width = 64;
             NPC.height = 64;
             NPC.damage = 100;
-            NPC.defense = 20;
-            NPC.lifeMax = 18000;
+            NPC.defense = 40;
+            NPC.lifeMax = 27000;
             NPC.scale = 1f;
             NPC.aiStyle = -1;
 
@@ -1065,7 +1065,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 return;
             }
             SwitchState(nextPattern);
-            SwitchState(AIState.BloodyMegaCharge_Start);
         }
 
         private void AI_Idle()
