@@ -342,7 +342,7 @@ namespace Stellamod.WorldG
             DesertBiome desertBiome = GenVars.configuration.CreateBiome<DesertBiome>();
             var genRand = WorldGen.genRand;
             int x = (Main.maxTilesX / 2 - 700);
-            while (!desertBiome.Place(new Point(x, (int)GenVars.worldSurfaceHigh + genRand.Next(25, 50)), GenVars.structures))
+            while (!desertBiome.Place(new Point(x, (int)GenVars.worldSurfaceHigh + genRand.Next(25, 75)), GenVars.structures))
             {
                 x = (Main.maxTilesX / 2 - 700) + genRand.Next(-200, 0);
             }
