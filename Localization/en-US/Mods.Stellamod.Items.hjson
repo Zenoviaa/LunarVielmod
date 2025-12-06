@@ -9798,7 +9798,11 @@ SandEreshkigalItem: {
 
 RibbonWand: {
 	DisplayName: Ribbon Wand
-	Tooltip: Allows you to place ribbons that flow freely in the wind, right click to change the color!
+	Tooltip:
+		'''
+		Allows you to place ribbons that flow freely in the wind, right click to change the color!
+		Click an anchor point to break the ribbon
+		'''
 }
 
 DesertMap: {

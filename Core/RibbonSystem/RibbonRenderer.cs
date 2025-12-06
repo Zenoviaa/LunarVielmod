@@ -2,15 +2,20 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Core.DungeonGeneration;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
+using Stellamod.Tiles;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -30,8 +35,8 @@ namespace Stellamod.Core.RibbonSystem
     public class RibbonWand : ModItem
     {
         public RibbonWandType style;
-        public Vector2? startPosition;
-        public Vector2? endPosition;
+        public static Vector2? startPosition;
+        public static Vector2? endPosition;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -44,6 +49,7 @@ namespace Stellamod.Core.RibbonSystem
             Item.autoReuse = false;
             Item.noUseGraphic = true;
             Item.noMelee = true;
+            Item.UseSound = SoundID.Item42;
         }
 
 
@@ -86,30 +92,37 @@ namespace Stellamod.Core.RibbonSystem
             else
             {
 
+                Tile tile = Main.tile[tileMouseX, tileMouseY];
+                Vector2 proposedPosition = new Vector2(mouseX, mouseY);
 
-                if (startPosition == null)
+                if (WorldGen.SolidTile(tile))
                 {
-                    startPosition = new Vector2(mouseX, mouseY);
+                    if (startPosition == null)
+                    {
+                        startPosition = proposedPosition;
+ 
+                    }
+                    else if (endPosition == null)
+                    {
+                        endPosition = proposedPosition;
+                    }
+
+                    if (startPosition != null && endPosition != null)
+                    {
+                        Vector2 start = startPosition.Value;
+                        Vector2 end = endPosition.Value;
+                        Vector2 temp = start;
+
+
+
+                        RibbonRenderer ribbonRenderer = ModContent.GetInstance<RibbonRenderer>();
+                        Ribbon ribbon = new Ribbon(start, end, 16, style);
+                        ribbonRenderer.AddRibbon(ribbon);
+                        startPosition = null;
+                        endPosition = null;
+                    }
                 }
-                else if (endPosition == null)
-                {
-                    endPosition = new Vector2(mouseX, mouseY);
-                }
-
-                if (startPosition != null && endPosition != null)
-                {
-                    Vector2 start = startPosition.Value;
-                    Vector2 end = endPosition.Value;
-                    Vector2 temp = start;
-
-
-
-                    RibbonRenderer ribbonRenderer = ModContent.GetInstance<RibbonRenderer>();
-                    Ribbon ribbon = new Ribbon(start, end, 16, style);
-                    ribbonRenderer.AddRibbon(ribbon);
-                    startPosition = null;
-                    endPosition = null;
-                }
+             
             }
 
 
@@ -189,6 +202,12 @@ namespace Stellamod.Core.RibbonSystem
                 Vector2 originalPosition = originalPositions[i];
                 vertices[i].Position = new Vector3(originalPosition.X, originalPosition.Y, 0) + windOffset;
             });
+        }
+        public bool IsConnectedToTile(int i, int j)
+        {
+            Point tile1 = startPosition.ToTileCoordinates();
+            Point tile2 = endPosition.ToTileCoordinates();
+            return (tile1.X == i && tile1.Y == j) || (tile2.X == i && tile2.Y == j);
         }
         private Color GetColor(int offset)
         {
@@ -305,7 +324,6 @@ namespace Stellamod.Core.RibbonSystem
     /// <summary>
     /// Renders strands of ribbonbs
     /// </summary>
-    [Autoload(Side = ModSide.Client)]
     public class RibbonRenderer : ModSystem
     {
         private Point _oldScreenSize;
@@ -414,6 +432,83 @@ namespace Stellamod.Core.RibbonSystem
             On_Main.DoDraw_DrawNPCsOverTiles -= DrawPixelRTToScreen;
             On_Main.DoDraw_DrawNPCsBehindTiles -= DrawPixelRTToScreen;
         }
+        public override void PostDrawTiles()
+        {
+            base.PostDrawTiles();
+            Player localPlayer = Main.LocalPlayer;
+            if(localPlayer.HeldItem.type == ModContent.ItemType<RibbonWand>())
+            {
+                Vector2 mouseWorld = Main.MouseWorld;
+                int i = (int)(mouseWorld.X / 16f);
+                int j = (int)(mouseWorld.Y / 16f);
+
+                Texture2D wallTexture = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
+                Vector2 drawOrigin = wallTexture.Size() / 2f;
+
+                Rectangle frame = new Rectangle(0, 0, 16, 16);
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+
+                Vector2 tilePos = new Vector2(i, j) * 16;
+                spriteBatch.Draw(TextureAssets.Tile[0].Value, tilePos - Main.screenPosition, frame, Color.Green * 0.5f, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+
+
+                Vector2 cameraCenterWorld = Main.Camera.Center;
+                Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+                Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+                Rectangle cameraRectangle = new Rectangle((int)cameraTopLeft.X, (int)cameraTopLeft.Y, (int)(cameraBottomRight.X - cameraTopLeft.X), (int)(cameraBottomRight.Y - cameraTopLeft.Y));
+
+                foreach (var ribbon in _ribbons)
+                {
+                    Vector2 startDrawPos = ribbon.startPosition.ToTileCoordinates().ToWorldCoordinates();
+                    Vector2 endDrawPos = ribbon.endPosition.ToTileCoordinates().ToWorldCoordinates();
+                    Color drawColor = Color.Red;
+
+                    if(cameraRectangle.Contains(startDrawPos.ToPoint()) || cameraRectangle.Contains(endDrawPos.ToPoint()))
+                    {
+                        spriteBatch.Draw(TextureAssets.Tile[0].Value, startDrawPos - Main.screenPosition, frame, drawColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+                        spriteBatch.Draw(TextureAssets.Tile[0].Value, endDrawPos - Main.screenPosition, frame, drawColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+                    }
+                 
+                }
+
+                spriteBatch.End();
+            }
+        }
+
+        public void ReceiveBreakRibbonSync(int i, int j)
+        {
+            Ribbon connectedString = _ribbons.Find(x => x.IsConnectedToTile(i, j));
+            if (connectedString == null)
+                return;
+            _ribbons.Remove(connectedString);
+        }
+
+        public void ReceivePlaceRibbonSync(Vector2 startPosition, Vector2 endPosition, RibbonWandType style)
+        {
+            Ribbon ribbon = new Ribbon(startPosition, endPosition, 16, style);
+            AddRibbon(ribbon);
+        }
+
+        public void PlaceRibbon(Vector2 startPosition, Vector2 endPosition, RibbonWandType style)
+        {
+            ReceivePlaceRibbonSync(startPosition, endPosition, style);
+            int ignoreClient = Main.LocalPlayer.whoAmI;
+            Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.PlaceRibbon, 
+                startPosition.X, 
+                startPosition.Y,
+                endPosition.X, 
+                endPosition.Y,
+                (int)style).Send(ignoreClient);
+        }
+
+        public void BreakRibbon(int i, int j)
+        {
+            ReceiveBreakRibbonSync(i, j);
+            int ignoreClient = Main.LocalPlayer.whoAmI;
+            Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.BreakRibbon, i, j).Send(ignoreClient);
+        }
+
 
         private void DrawPixelRTToScreen(On_Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
         {

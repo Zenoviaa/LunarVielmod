@@ -20,7 +20,10 @@
         ResetColosseum,
         StartColosseum,
         HandleDoor,
-        ScarecrowPlayerSync
+        ScarecrowPlayerSync,
+
+        PlaceRibbon,
+        BreakRibbon
     }
 
     public enum DialogueType : byte

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Core.DungeonGeneration;
+using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
@@ -169,6 +170,29 @@ namespace Stellamod
                             dashPlayer.SyncPlayer(-1, whoAmI, false);
                         }
                     }
+                    break;
+                case MessageType.BreakRibbon:
+                    {
+                        int rx = reader.ReadInt32();
+                        int ry = reader.ReadInt32();
+                        RibbonRenderer ribbonRenderer = ModContent.GetInstance<RibbonRenderer>();
+                        ribbonRenderer.ReceiveBreakRibbonSync(rx, ry);
+                    }
+           
+                    break;
+                case MessageType.PlaceRibbon:
+                    {
+                        float x1 = reader.ReadSingle();
+                        float y1 = reader.ReadSingle();
+                        float x2 = reader.ReadSingle();
+                        float y2 = reader.ReadSingle();
+                        RibbonWandType wandType = (RibbonWandType)reader.ReadInt32();
+                        RibbonRenderer ribbonRenderer = ModContent.GetInstance<RibbonRenderer>();
+                        Vector2 start = new Vector2(x1, y1);
+                        Vector2 end = new Vector2(x2, y2);
+                        ribbonRenderer.ReceivePlaceRibbonSync(start, end, wandType);
+                    }
+
                     break;
             }
         }
