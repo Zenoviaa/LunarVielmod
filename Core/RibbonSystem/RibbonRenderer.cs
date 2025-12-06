@@ -64,7 +64,16 @@ namespace Stellamod.Core.RibbonSystem
         }
         public override bool? UseItem(Player player)
         {
-            if(player.altFunctionUse == 2)
+            int mouseX = (int)(Main.MouseWorld.X / 16);
+            int mouseY = (int)(Main.MouseWorld.Y / 16);
+
+            int tileMouseX = mouseX;
+            int tileMouseY = mouseY;
+           
+            //Just some position clamping so it's not connecting floating points and it looks a bit better
+            mouseX *= 16;
+            mouseY *= 16;
+            if (player.altFunctionUse == 2)
             {
                 int ribbonType = (int)style;
                 ribbonType++;
@@ -76,12 +85,7 @@ namespace Stellamod.Core.RibbonSystem
             }
             else
             {
-                int mouseX = (int)(Main.MouseWorld.X / 16);
-                int mouseY = (int)(Main.MouseWorld.Y / 16);
 
-                //Just some position clamping so it's not connecting floating points and it looks a bit better
-                mouseX *= 16;
-                mouseY *= 16;
 
                 if (startPosition == null)
                 {
