@@ -46,7 +46,7 @@ Hotsprings (Has gradientized oasis water with plants inside) Waterfalls and only
 Element of Nature - Accessory that pushes back enemies if they hit you (doesnt work on bosses)
 
 // # Keep sanguine singularity on screen for the dash thingy
-Ribbon finishing: Add random spacing, sometimes, be able to break it and have anchor points when using the ribbon staff, also only be able to use it on tiles
+// Ribbon finishing: Add random spacing, sometimes, be able to break it and have anchor points when using the ribbon staff, also only be able to use it on tiles
 // # Make desert bigger
 Maybe make some Desert house structures for the surface
 Ribbon generation along houses

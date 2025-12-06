@@ -1,21 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Core.DungeonGeneration;
-using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
-using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.Tiles;
-using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -32,6 +24,41 @@ namespace Stellamod.Core.RibbonSystem
         Multicolor
     }
 
+    public class RibbonScissors : ModItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.width = 16;
+            Item.height = 16;
+            Item.rare = ItemRarityID.Green;
+            Item.useTime = 2;
+            Item.useAnimation = 2;
+            Item.useStyle = ItemUseStyleID.HiddenAnimation;
+            Item.autoReuse = false;
+            Item.noUseGraphic = true;
+            Item.noMelee = true;
+            Item.UseSound = SoundID.Item42;
+        }
+
+        public override bool? UseItem(Player player)
+        {
+            if (Main.myPlayer == player.whoAmI)
+            {
+                int mouseX = (int)(Main.MouseWorld.X / 16);
+                int mouseY = (int)(Main.MouseWorld.Y / 16);
+
+                //Just some position clamping so it's not connecting floating points and it looks a bit better
+                mouseX *= 16;
+                mouseY *= 16;
+                RibbonRenderer ribbonRenderer = ModContent.GetInstance<RibbonRenderer>();
+                ribbonRenderer.TryBreakRibbon(new Vector2(mouseX, mouseY));
+            }
+
+
+            return true;
+        }
+    }
     public class RibbonWand : ModItem
     {
         public RibbonWandType style;
@@ -70,59 +97,61 @@ namespace Stellamod.Core.RibbonSystem
         }
         public override bool? UseItem(Player player)
         {
-            int mouseX = (int)(Main.MouseWorld.X / 16);
-            int mouseY = (int)(Main.MouseWorld.Y / 16);
-
-            int tileMouseX = mouseX;
-            int tileMouseY = mouseY;
-           
-            //Just some position clamping so it's not connecting floating points and it looks a bit better
-            mouseX *= 16;
-            mouseY *= 16;
-            if (player.altFunctionUse == 2)
+            if (Main.myPlayer == player.whoAmI)
             {
-                int ribbonType = (int)style;
-                ribbonType++;
-                if(ribbonType >= 5)
+                int mouseX = (int)(Main.MouseWorld.X / 16);
+                int mouseY = (int)(Main.MouseWorld.Y / 16);
+
+                int tileMouseX = mouseX;
+                int tileMouseY = mouseY;
+
+                //Just some position clamping so it's not connecting floating points and it looks a bit better
+                mouseX *= 16;
+                mouseY *= 16;
+                if (player.altFunctionUse == 2)
                 {
-                    ribbonType = 0;
+                    int ribbonType = (int)style;
+                    ribbonType++;
+                    if (ribbonType >= 5)
+                    {
+                        ribbonType = 0;
+                    }
+                    style = (RibbonWandType)ribbonType;
                 }
-                style = (RibbonWandType)ribbonType;
-            }
-            else
-            {
-
-                Tile tile = Main.tile[tileMouseX, tileMouseY];
-                Vector2 proposedPosition = new Vector2(mouseX, mouseY);
-
-                if (WorldGen.SolidTile(tile))
+                else
                 {
-                    if (startPosition == null)
+
+                    Tile tile = Main.tile[tileMouseX, tileMouseY];
+                    Vector2 proposedPosition = new Vector2(mouseX, mouseY);
+
+                    if (WorldGen.SolidTile(tile))
                     {
-                        startPosition = proposedPosition;
- 
-                    }
-                    else if (endPosition == null)
-                    {
-                        endPosition = proposedPosition;
-                    }
+                        if (startPosition == null)
+                        {
+                            startPosition = proposedPosition;
 
-                    if (startPosition != null && endPosition != null)
-                    {
-                        Vector2 start = startPosition.Value;
-                        Vector2 end = endPosition.Value;
-                        Vector2 temp = start;
+                        }
+                        else if (endPosition == null)
+                        {
+                            endPosition = proposedPosition;
+                        }
+
+                        if (startPosition != null && endPosition != null)
+                        {
+                            Vector2 start = startPosition.Value;
+                            Vector2 end = endPosition.Value;
+                            Vector2 temp = start;
 
 
 
-                        RibbonRenderer ribbonRenderer = ModContent.GetInstance<RibbonRenderer>();
-                        Ribbon ribbon = new Ribbon(start, end, 16, style);
-                        ribbonRenderer.AddRibbon(ribbon);
-                        startPosition = null;
-                        endPosition = null;
+                            RibbonRenderer ribbonRenderer = ModContent.GetInstance<RibbonRenderer>();
+                            ribbonRenderer.PlaceRibbon(start, end, style);
+                            startPosition = null;
+                            endPosition = null;
+                        }
                     }
                 }
-             
+
             }
 
 
@@ -248,18 +277,18 @@ namespace Stellamod.Core.RibbonSystem
 
             float length = ribbonLength;
             float paddedLength = length + ribbonPadding;
-           
+
             float distance = Vector2.Distance(startPosition, endPosition);
             float steps = MathF.Ceiling(distance / paddedLength);
             linePoints = new Vector2[(int)steps];
 
             float maxSlack = Vector2.Distance(startPosition, endPosition) / 64f;
-            for(int r = 0; r < linePoints.Length; r++)
+            for (int r = 0; r < linePoints.Length; r++)
             {
                 float completionRatio = (float)r / steps;
-            
+
                 Vector2 linePoint = Vector2.Lerp(startPosition, endPosition, completionRatio);
-     
+
                 float slack = EasingFunction.QuadraticBump(completionRatio);
                 slack *= maxSlack;
 
@@ -278,7 +307,7 @@ namespace Stellamod.Core.RibbonSystem
             {
                 float completionRatio = (float)i / steps;
                 Vector2 point1 = linePoints[i];
-                
+
                 Vector2 point2 = linePoints[i + 1];
 
                 //Get the end point of this ribbon, going towards the next point
@@ -293,9 +322,9 @@ namespace Stellamod.Core.RibbonSystem
                 Vector2 vel = (ribbonEnd - ribbonStart);
                 vel = vel.SafeNormalize(Vector2.Zero) * ribbonLength;
                 Vector2 perpVector = vel.RotatedBy(MathHelper.PiOver2);
-             
-                
- 
+
+
+
                 //There's probably a better way to do this but eh
                 if (perpVector.Y < 0)
                     perpVector = vel.RotatedBy(-MathHelper.PiOver2);
@@ -436,7 +465,7 @@ namespace Stellamod.Core.RibbonSystem
         {
             base.PostDrawTiles();
             Player localPlayer = Main.LocalPlayer;
-            if(localPlayer.HeldItem.type == ModContent.ItemType<RibbonWand>())
+            if (localPlayer.HeldItem.type == ModContent.ItemType<RibbonWand>() || localPlayer.HeldItem.type == ModContent.ItemType<RibbonScissors>())
             {
                 Vector2 mouseWorld = Main.MouseWorld;
                 int i = (int)(mouseWorld.X / 16f);
@@ -449,10 +478,7 @@ namespace Stellamod.Core.RibbonSystem
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
-                Vector2 tilePos = new Vector2(i, j) * 16;
-                spriteBatch.Draw(TextureAssets.Tile[0].Value, tilePos - Main.screenPosition, frame, Color.Green * 0.5f, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
-
-
+     
                 Vector2 cameraCenterWorld = Main.Camera.Center;
                 Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
                 Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
@@ -460,17 +486,21 @@ namespace Stellamod.Core.RibbonSystem
 
                 foreach (var ribbon in _ribbons)
                 {
-                    Vector2 startDrawPos = ribbon.startPosition.ToTileCoordinates().ToWorldCoordinates();
-                    Vector2 endDrawPos = ribbon.endPosition.ToTileCoordinates().ToWorldCoordinates();
+                    Vector2 startDrawPos = ribbon.startPosition.ToTileCoordinates().ToWorldCoordinates(0,0);
+                    Vector2 endDrawPos = ribbon.endPosition.ToTileCoordinates().ToWorldCoordinates(0,0);
                     Color drawColor = Color.Red;
 
-                    if(cameraRectangle.Contains(startDrawPos.ToPoint()) || cameraRectangle.Contains(endDrawPos.ToPoint()))
+                    if (cameraRectangle.Contains(startDrawPos.ToPoint()) || cameraRectangle.Contains(endDrawPos.ToPoint()))
                     {
                         spriteBatch.Draw(TextureAssets.Tile[0].Value, startDrawPos - Main.screenPosition, frame, drawColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
                         spriteBatch.Draw(TextureAssets.Tile[0].Value, endDrawPos - Main.screenPosition, frame, drawColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
                     }
-                 
+
                 }
+                Vector2 tilePos = new Vector2(i, j) * 16;
+                spriteBatch.Draw(TextureAssets.Tile[0].Value, tilePos - Main.screenPosition, frame, Color.Green * 0.5f, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+
+
 
                 spriteBatch.End();
             }
@@ -493,22 +523,40 @@ namespace Stellamod.Core.RibbonSystem
         public void PlaceRibbon(Vector2 startPosition, Vector2 endPosition, RibbonWandType style)
         {
             ReceivePlaceRibbonSync(startPosition, endPosition, style);
-            int ignoreClient = Main.LocalPlayer.whoAmI;
-            Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.PlaceRibbon, 
-                startPosition.X, 
-                startPosition.Y,
-                endPosition.X, 
-                endPosition.Y,
-                (int)style).Send(ignoreClient);
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                int ignoreClient = Main.LocalPlayer.whoAmI;
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.PlaceRibbon,
+                    startPosition.X,
+                    startPosition.Y,
+                    endPosition.X,
+                    endPosition.Y,
+                    (int)style).Send(ignoreClient);
+            }
         }
 
         public void BreakRibbon(int i, int j)
         {
             ReceiveBreakRibbonSync(i, j);
-            int ignoreClient = Main.LocalPlayer.whoAmI;
-            Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.BreakRibbon, i, j).Send(ignoreClient);
+            if(Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                int ignoreClient = Main.LocalPlayer.whoAmI;
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.BreakRibbon, i, j).Send(ignoreClient);
+            }
+
         }
 
+        public bool TryBreakRibbon(Vector2 position)
+        {
+            Point tilePoint = position.ToTileCoordinates();
+            Ribbon connectedString = _ribbons.Find(x => x.IsConnectedToTile(tilePoint.X, tilePoint.Y));
+            if (connectedString != null)
+            {
+                BreakRibbon(tilePoint.X, tilePoint.Y);
+                return true;
+            }
+            return false;
+        }
 
         private void DrawPixelRTToScreen(On_Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
         {
@@ -545,7 +593,7 @@ namespace Stellamod.Core.RibbonSystem
             return _vertexIndex >= 3;
         }
 
-       
+
         private void GatherRibbonVertices()
         {
             _vertexIndex = 0;
@@ -562,13 +610,13 @@ namespace Stellamod.Core.RibbonSystem
 
                 if (cameraRectangle.Contains(start.ToPoint()) || cameraRectangle.Contains(end.ToPoint()))
                 {
-                    for(int j = 0; j < ribbon.vertices.Length && _vertexIndex < _vertexBufferArr.Length; j++)
+                    for (int j = 0; j < ribbon.vertices.Length && _vertexIndex < _vertexBufferArr.Length; j++)
                     {
                         _vertexBufferArr[_vertexIndex] = ribbon.vertices[j];
                         _vertexIndex++;
                     }
 
-                    for(int j = 0; j < ribbon.linePoints.Length && _lineIndex < _linesBufferArr.Length; j++)
+                    for (int j = 0; j < ribbon.linePoints.Length && _lineIndex < _linesBufferArr.Length; j++)
                     {
                         _linesBufferArr[_lineIndex] = ribbon.linePoints[j];
                         _lineIndex++;
@@ -640,7 +688,7 @@ namespace Stellamod.Core.RibbonSystem
             orig(self);
 
 
-         
+
 
         }
 

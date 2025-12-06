@@ -51,7 +51,7 @@ namespace Stellamod.Helpers
             structures.AddProtectedStructure(rectangle);
         }
 
-        public static bool SafePlaceAndProtectStructure(Point tilePoint, string structureFile, StructureMap structures, out int[] chestIndices)
+        public static bool SafePlaceAndProtectStructure(Point tilePoint, string structureFile, StructureMap structures, int[] tileBlend, out int[] chestIndices)
         {
             Rectangle rectangle = ReadRectangle(structureFile);
             Point protectionPoint = tilePoint;
@@ -66,7 +66,7 @@ namespace Stellamod.Helpers
             }
 
             structures.AddProtectedStructure(rectangle);
-            chestIndices = ReadStruct(tilePoint, structureFile);
+            chestIndices = ReadStruct(tilePoint, structureFile, tileBlend);
             return true;
         }
 

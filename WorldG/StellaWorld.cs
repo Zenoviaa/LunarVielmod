@@ -9,6 +9,7 @@ using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.DungeonGeneration;
+using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
@@ -32,6 +33,7 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
+using Stellamod.NPCs;
 using Stellamod.Projectiles.Swords.Altride;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
@@ -394,6 +396,7 @@ namespace Stellamod.WorldG
             }
 
 
+      
         }
 
         private void WorldGenVarLocations(GenerationProgress progress, GameConfiguration configuration)
@@ -596,6 +599,125 @@ namespace Stellamod.WorldG
 
         }
         #region Cave Formation
+        private void PlaceDesertBeams(Rectangle rectangle, Point location)
+        {
+            rectangle.Location = location;
+            for (int beamX = rectangle.Location.X;
+                beamX < rectangle.Location.X + rectangle.Width; beamX+=2)
+            {
+                //Place beams
+                int beamY = rectangle.Location.Y;
+                if (beamX < Main.maxTilesX && beamY < Main.maxTilesY)
+                {
+
+                    Tile tile = Main.tile[beamX, beamY];
+                    int solidCount = 0;
+                    while (solidCount < 5)
+                    {
+                        if (!WorldGen.SolidTile(beamX, beamY))
+                        {
+                            WorldGen.PlaceTile(beamX, beamY, TileID.SandstoneColumn);
+                        }
+                        else
+                        {
+                            solidCount++;
+                        }
+                        beamY++;
+                    }
+                }
+            }
+        }
+        private bool TryPlaceDesertHouse(Point tilePoint, StructureMap structures)
+        {
+            string[] houseStructureFiles = new string[]
+            {
+                "Structures/DesertSurhouse1",
+                "Structures/DesertSurhouse2",
+                "Structures/DesertSurhouse3"
+            };
+
+
+            var genRand = WorldGen.genRand;
+            string structureFile = houseStructureFiles[genRand.Next(0, houseStructureFiles.Length)];
+            int[] tileBlend = new int[]
+            {
+                TileID.RubyGemspark
+            };
+            if (Structurizer.SafePlaceAndProtectStructure(tilePoint, structureFile, structures, tileBlend, out int[] chestIndices))
+            {
+                //Get top left tile
+                Point leftRibbon = tilePoint;
+
+          
+                Rectangle structureRect = Structurizer.ReadRectangle(structureFile);
+                PlaceDesertBeams(structureRect, tilePoint);
+                //Structures place from the bottom left, so we need to subtract theheight to convert them
+                leftRibbon.Y -= structureRect.Height;
+
+                //Set the right ribbon to the left ribbon and offset it
+                Point rightRibbon = leftRibbon;
+                rightRibbon.X += structureRect.Width;
+                for (int i = 0; i < 1000; i++)
+
+                {
+                    if(WorldGen.SolidTile(leftRibbon.X, leftRibbon.Y))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        leftRibbon.Y++;
+                    }
+            
+                }
+
+
+            
+              
+                for (int i = 0; i < 1000; i++)
+                {
+                    if (WorldGen.SolidTile(rightRibbon.X, rightRibbon.Y))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        rightRibbon.Y++;
+                    }
+                }
+
+
+                PlaceRibbon(leftRibbon, -1, genRand.Next(8, 15));
+                PlaceRibbon(rightRibbon, 1, genRand.Next(8, 15));
+
+
+
+                return true;
+            }
+            return false;
+        }
+
+        private void PlaceRibbon(Point tilePoint, int dir, int xLength)
+        {
+            Point highPoint = tilePoint;
+            highPoint.X += dir * xLength;
+            for(int i = 0; i < 100; i++)
+            {
+                if (WorldGen.SolidTile(highPoint))
+                {
+                    break;
+                }
+                else
+                {
+                    highPoint.Y++;
+                }
+            }
+
+            //Now that we have the ribbons we can yeah
+            RibbonRenderer ribbonRenderer = ModContent.GetInstance<RibbonRenderer>();
+            RibbonWandType style = (RibbonWandType)WorldGen.genRand.Next(0, 5);
+            ribbonRenderer.PlaceRibbon(tilePoint.ToWorldCoordinates(), highPoint.ToWorldCoordinates(), style);
+        }
         private void WorldGenColosseum(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Gintzing all over the desert";
@@ -626,6 +748,10 @@ namespace Stellamod.WorldG
             int halfDesertWidth = desertWidth / 2;
             int minJailY = (int)(Main.worldSurface + 300);
 
+            int[] tileBlend = new int[]
+            {
+                TileID.RubyGemspark
+            };
             string hideoutStructureFile = "Structures/UndergroundDesertHideout";
             for (int attempts = 0; attempts < 10000; attempts++)
             {
@@ -633,7 +759,7 @@ namespace Stellamod.WorldG
                 int randX = colosseumPoint.X + genRand.Next(-hideoutSpawnRadius, hideoutSpawnRadius);
                 int randY = minJailY + genRand.Next(0, 300);
                 Point structurePoint = new Point(randX, randY);
-                if(Structurizer.SafePlaceAndProtectStructure(structurePoint, hideoutStructureFile, desertStructures, out int[] chestIndices))
+                if(Structurizer.SafePlaceAndProtectStructure(structurePoint, hideoutStructureFile, desertStructures, tileBlend, out int[] chestIndices))
                 {
                     break;
                 }
@@ -650,13 +776,17 @@ namespace Stellamod.WorldG
                     y++;
                     if(WorldGen.SolidTile(randDesertX, y))
                     {
+
+         
                         break;
                     }
                 }
 
                 Point tilePoint = new Point(randDesertX, y);
-                if (Structurizer.SafePlaceAndProtectStructure(tilePoint, listHouseStructureFile, desertStructures, out int[] chestIndices))
+                if (Structurizer.SafePlaceAndProtectStructure(tilePoint, listHouseStructureFile, desertStructures, tileBlend, out int[] chestIndices))
                 {
+                    Rectangle structureRect = Structurizer.ReadRectangle(listHouseStructureFile);
+                    PlaceDesertBeams(structureRect, tilePoint);
                     break;
                 }
             }
@@ -677,14 +807,52 @@ namespace Stellamod.WorldG
                 }
 
                 Point tilePoint = new Point(randDesertX, y);
-                if (Structurizer.SafePlaceAndProtectStructure(tilePoint, ereshStructureFile, desertStructures, out int[] chestIndices))
+
+                if (Structurizer.SafePlaceAndProtectStructure(tilePoint, ereshStructureFile, desertStructures, tileBlend, out int[] chestIndices))
+                {
+                    Rectangle structureRect = Structurizer.ReadRectangle(ereshStructureFile);
+                    PlaceDesertBeams(structureRect, tilePoint);
+                    break;
+                }
+            }
+
+            int newDesertLeft = GenVars.desertHiveLeft - Desert_Padding;
+            int newDesertRight = GenVars.desertHiveRight + Desert_Padding;
+
+            //Place Houses
+            int numHouses = genRand.Next(12, 15);
+            int houseCount = 0;
+            for(int attempts = 0; attempts < 10000; attempts++)
+            {
+                int randX = genRand.Next(newDesertLeft, newDesertRight);
+                int y = (int)(Main.worldSurface - 200);
+                for (int yOffset = 0; yOffset < 500; yOffset++)
+                {
+                    y++;
+                    if (!WorldGen.SolidTile(randX, y))
+                        continue;
+
+                    Tile tile = Main.tile[randX, y];
+                    if (Main.tile[randX, y - 1].LiquidAmount > 0)
+                        continue;
+
+                    if (tile.TileType == TileID.Sand)
+                        break;
+               
+                }
+
+                if(TryPlaceDesertHouse(new Point(randX, y), desertStructures))
+                {
+                    houseCount++;
+                }
+                if(houseCount >= numHouses)
                 {
                     break;
                 }
             }
 
             //Place sand decorations
-            int numSandDecorations = genRand.Next(20, 40);
+            int numSandDecorations = genRand.Next(40, 60);
             int[] wallTypesToPlace = new int[]
             {
                 ModContent.WallType<SandCastle1>(),
@@ -696,8 +864,7 @@ namespace Stellamod.WorldG
                 ModContent.WallType<SandCastle7>()
             };
 
-            int newDesertLeft = GenVars.desertHiveLeft - Desert_Padding;
-            int newDesertRight = GenVars.desertHiveRight + Desert_Padding;
+         
             for (int n = 0; n < numSandDecorations; n++)
             {
                 int randX = genRand.Next(newDesertLeft, newDesertRight);

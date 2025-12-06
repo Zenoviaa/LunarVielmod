@@ -9842,3 +9842,8 @@ WindingInsource: {
 	DisplayName: Winding Insource
 	Tooltip: Your attacker takes 500% damage of the hit that you take!
 }
+
+RibbonScissors: {
+	DisplayName: Ribbon Scissors
+	Tooltip: ""
+}

@@ -55,7 +55,9 @@ namespace Stellamod.Content.Areas.Collosseum.NPCsCL
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            float spawnChance = SpawnCondition.Overworld.Chance * (spawnInfo.Player.ZoneDesert ? 1f : 0f);
+            if (!Main.dayTime)
+                return 0f;
+            float spawnChance = SpawnCondition.Overworld.Chance * (spawnInfo.Player.ZoneDesert ? 3 : 0f);
             return spawnChance;
         }
 
