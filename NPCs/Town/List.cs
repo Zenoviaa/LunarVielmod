@@ -171,7 +171,11 @@ namespace Stellamod.NPCs.Town
                 shopCustomPrice = 20,
                 shopSpecialCurrency = Stellamod.MedalCurrencyID
             })
-            .Add(new Item(ItemID.Mace) { shopCustomPrice = Item.buyPrice(gold: 5) })
+            .Add(new Item(ModContent.ItemType<GreenCarpet>())
+            {
+                shopCustomPrice = 20,
+                shopSpecialCurrency = Stellamod.MedalCurrencyID
+            })
             .Add(new Item(ModContent.ItemType<WindingInsource>())
             {
                 shopCustomPrice = 20,
