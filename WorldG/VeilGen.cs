@@ -2364,7 +2364,7 @@ namespace Stellamod.WorldG
             float tilePercent = (float)count / (float)tileM;
             return tilePercent;
         }
-        public static void GenerateColosseum(Point tilePoint, StructureMap structureMap)
+        public static void GenerateColosseum(Point tilePoint, StructureMap structureMap= null)
         {
             var genRand = WorldGen.genRand;
             string GetMiniStructurePath()
