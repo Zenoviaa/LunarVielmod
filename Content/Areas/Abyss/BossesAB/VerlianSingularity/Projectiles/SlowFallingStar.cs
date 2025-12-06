@@ -12,7 +12,6 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
     public class SlowFallingStar : VSProjectile
     {
         private float _scale;
-        private Vector2 _stretchScale;
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float ZigZagOffsetRadians => ref Projectile.ai[2];
         public override void SetDefaults()

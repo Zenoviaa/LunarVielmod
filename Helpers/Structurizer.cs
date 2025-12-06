@@ -54,8 +54,10 @@ namespace Stellamod.Helpers
         public static bool SafePlaceAndProtectStructure(Point tilePoint, string structureFile, StructureMap structures, out int[] chestIndices)
         {
             Rectangle rectangle = ReadRectangle(structureFile);
-            tilePoint.Y -= rectangle.Height;
-            rectangle.Location = tilePoint;
+            Point protectionPoint = tilePoint;
+            protectionPoint.Y -= rectangle.Height;
+      
+            rectangle.Location = protectionPoint;
 
             if (!structures.CanPlace(rectangle))
             {

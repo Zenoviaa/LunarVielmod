@@ -333,6 +333,7 @@ namespace Stellamod.WorldG
                 placed = true;
             }
         }
+        private const int Desert_Padding = 200;
         private void LockDesert(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Expanding the Desert";
@@ -346,9 +347,9 @@ namespace Stellamod.WorldG
 
 
             //About to give the desert an extension
-            int desertPadding = 200;
-            int newDesertLeft = GenVars.desertHiveLeft - desertPadding;
-            int newDesertRight = GenVars.desertHiveRight + desertPadding;
+      
+            int newDesertLeft = GenVars.desertHiveLeft - Desert_Padding;
+            int newDesertRight = GenVars.desertHiveRight + Desert_Padding;
 
             //Adding surface sands
             //This is our desert extension, we just gonna replcae dirt/stone/clay tiles
@@ -383,47 +384,16 @@ namespace Stellamod.WorldG
                 int bottom = startY + depth;
                 for (int dy = startY; dy < bottom; dy++)
                 {
-                    if (WorldGen.SolidTile(tileX, dy))
+                    if(WorldGen.SolidTile(tileX, dy))
                     {
                         WorldGen.PlaceTile(tileX, dy, TileID.Sand);
                     }
-
+              
                     WorldGen.TileRunner(tileX, dy, 3, 10, TileID.Sand);
                 }
             }
 
 
-            //Place sand decorations
-            int numSandDecorations = genRand.Next(20, 40);
-            int[] wallTypesToPlace = new int[]
-            {
-                ModContent.WallType<SandCastle1>(),              
-                ModContent.WallType<SandCastle2>(),                 
-                ModContent.WallType<SandCastle3>(),                 
-                ModContent.WallType<SandCastle4>(),                      
-                ModContent.WallType<SandCastle5>(),                    
-                ModContent.WallType<SandCastle6>(),                
-                ModContent.WallType<SandCastle7>()
-            };
-
-            for (int n = 0; n < numSandDecorations; n++)
-            {
-                int randX = genRand.Next(newDesertLeft, newDesertRight);
-                int y = (int)(Main.worldSurface - 200);
-                for (int yOffset = 0; yOffset < 500; yOffset++)
-                {
-                    y++;
-                    if (!WorldGen.SolidTile(randX, y))
-                        continue;
-                    Tile tile = Main.tile[randX, y];
-                    if (tile.TileType == TileID.Sand)
-                        break;
-                }
-
-                int randSandCastle = genRand.Next(0, wallTypesToPlace.Length);
-                int sandCastleType = wallTypesToPlace[randSandCastle];
-                WorldGen.PlaceWall(randX, y, sandCastleType);
-            }
         }
 
         private void WorldGenVarLocations(GenerationProgress progress, GameConfiguration configuration)
@@ -711,6 +681,40 @@ namespace Stellamod.WorldG
                 {
                     break;
                 }
+            }
+
+            //Place sand decorations
+            int numSandDecorations = genRand.Next(20, 40);
+            int[] wallTypesToPlace = new int[]
+            {
+                ModContent.WallType<SandCastle1>(),
+                ModContent.WallType<SandCastle2>(),
+                ModContent.WallType<SandCastle3>(),
+                ModContent.WallType<SandCastle4>(),
+                ModContent.WallType<SandCastle5>(),
+                ModContent.WallType<SandCastle6>(),
+                ModContent.WallType<SandCastle7>()
+            };
+
+            int newDesertLeft = GenVars.desertHiveLeft - Desert_Padding;
+            int newDesertRight = GenVars.desertHiveRight + Desert_Padding;
+            for (int n = 0; n < numSandDecorations; n++)
+            {
+                int randX = genRand.Next(newDesertLeft, newDesertRight);
+                int y = (int)(Main.worldSurface - 200);
+                for (int yOffset = 0; yOffset < 500; yOffset++)
+                {
+                    y++;
+                    if (!WorldGen.SolidTile(randX, y))
+                        continue;
+                    Tile tile = Main.tile[randX, y];
+                    if (tile.TileType == TileID.Sand)
+                        break;
+                }
+
+                int randSandCastle = genRand.Next(0, wallTypesToPlace.Length);
+                int sandCastleType = wallTypesToPlace[randSandCastle];
+                WorldGen.PlaceWall(randX, y, sandCastleType);
             }
         }
 
