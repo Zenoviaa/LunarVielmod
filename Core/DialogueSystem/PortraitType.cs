@@ -70,6 +70,7 @@ namespace Stellamod.Core.DialogueSystem
         Rysa,
         Gilatine,
         Jiitas,
-        Minerva
+        Minerva,
+        List
     }
 }

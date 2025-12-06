@@ -2223,6 +2223,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             var shader = BlackFireShader.Instance;
             shader.Time = Main.GlobalTimeWrappedHourly * 16;
+            shader.InnerColor = Color.Red;
             TrailDrawer.Draw(spriteBatch, NPC.oldPos, GetFlamingTrailColor, GetFlamingTrailWidth, shader, offset: NPC.Size / 2f); 
         }
         private void DrawRedFlash(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

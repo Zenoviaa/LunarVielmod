@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Buffs;
+using Stellamod.Content.Areas.Shop.AccShop;
 using Stellamod.Content.Areas.Snow.WeaponsSN;
 using Stellamod.Dusts;
 using Stellamod.Helpers;

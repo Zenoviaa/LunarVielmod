@@ -1,3 +1,7 @@
+KEY: 
+	// = Coded but not tested/tuned
+	# = Tested but needs approval
+
 Pharaoh's Blade - Sword that shoots little sand wind tornados on hits of the combo
 Stamina - 2 stamina, A small gust starts from the sword and continues to constant wind gust forward like an artifact, and uses mana for how long it stays
 
@@ -8,6 +12,25 @@ Illurian Soaker Insource - Summons 3 balls, they float around you that can reduc
 Dusty Chakrams
 
 Hunting Swing Hook
+
+// # Desert map (Shows the entire desert on the map)
+// # Whatever the sand boots are
+// # Green carpet (our version of a magic carpet, except it can fly up a bit and is a mount)
+// # Winding Insource (The next attack that hits you deals 5x damage back to the enemy or boss)
+// # Paper Paws (Adds +1 Accessory slot and buffs your main minions damage by 20%)
+// # Traveller's Backsack - Open it up for more inventory (works as long as its in your vanity or accessory slot)
+
+Locations! I - Find the gintze guy (100 Ginzte Metal)
+I remember hearing about a citizen who got wrongly convicted of not liking ereshkigal and was trapped underground. I happened to hear about it and I think I can pinpoint them, so go out and free them!
+
+
+Locations! II - Find the Ashoti Temple (Wind Element)
+Heard of an underground temple that gives Ereshkigal her power deep underground, since people go missing by the day. People have seen others fall underground and it takes the least powerful I’ve noticed. Can you go check it out and see if you find anything?
+
+
+Locations my my… - Take a picture of Zui (Random element box)
+As for my last place I want to see, could you like, go look at Zui and use this camera when she comes here, I mean uh nevermind. I’ll just give this to you for free… Can you at least tell her to give me a chance? I mean uh- nevermind.
+
 
 
 unar Scarab (U)
@@ -22,9 +45,9 @@ Hotsprings (Has gradientized oasis water with plants inside) Waterfalls and only
 
 Element of Nature - Accessory that pushes back enemies if they hit you (doesnt work on bosses)
 
-// Keep sanguine singularity on screen for the dash thingy
+// # Keep sanguine singularity on screen for the dash thingy
 Ribbon finishing: Add random spacing, sometimes, be able to break it and have anchor points when using the ribbon staff, also only be able to use it on tiles
-// Make desert bigger
+// # Make desert bigger
 Maybe make some Desert house structures for the surface
 Ribbon generation along houses
 Make the people spawn pretty often along the ground (not in the collosseum)
@@ -33,8 +56,8 @@ Allow for 2 specific things to generate once (Lists House and The statue locatio
 Colosseum enemies and balance generally
 Lunar key sits in the middle at the top surrounded in a bubble or something floating around gintzia
 Ginztia dialogue for when you beat levels of the colosseum and enter the colosseum
-// Place the sand decorations in the desert
-// Generate bound goober in the underground desert
+// # Place the sand decorations in the desert
+// # Generate bound goober in the underground desert
 
 For fenix's rigging, it might be easier to just construct her rig in 3D, do the rotation in 3D and then read it as a 2D point for where to place her joints
 We can use matrices to represent everything, we can calculate draw order based off of that too

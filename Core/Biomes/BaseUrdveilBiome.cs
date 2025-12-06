@@ -10,6 +10,10 @@ namespace Stellamod.Core.Biomes
         public override void OnEnter(Player player)
         {
             base.OnEnter(player);
+            if (Main.CurrentFrameFlags.AnyActiveBossNPC)
+            {
+                return;
+            }
             TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
             uiSystem.OpenUI(DisplayName.Value, 7);
             uiSystem.titleUIState.titleCardUI.LineTexture = ModContent.Request<Texture2D>(TitleCardUISystem.RootTexturePath + "UnderlineBiome");

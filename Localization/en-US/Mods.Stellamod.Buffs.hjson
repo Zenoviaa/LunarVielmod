@@ -927,3 +927,13 @@ BurnedWings: {
 	DisplayName: Burned Wings
 	Description: Mods.Stellamod.Buffs.BurnedWings.Description
 }
+
+GreenCarpetMountBuff: {
+	DisplayName: Green Carpet Mount Buff
+	Description: Mods.Stellamod.Buffs.GreenCarpetMountBuff.Description
+}
+
+WindingInsourceBuff: {
+	DisplayName: Winding Insource Buff
+	Description: Mods.Stellamod.Buffs.WindingInsourceBuff.Description
+}

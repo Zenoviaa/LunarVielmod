@@ -37,11 +37,7 @@ namespace Stellamod.Content
                     noiseColor: new Color(206, 101, 0), TrailRegistry.LightningTrail2);
                 return false;
             }*/
-            if(item.rare == ModContent.RarityType<ShopRarity>())
-            {
-                EnchantmentDrawHelper.DrawGlowingOutline(Main.spriteBatch, item, line, ref yOffset, Color.Gold, Color.DarkGoldenrod, null);
-                return false;
-            }
+
             return base.PreDrawTooltipLine(item, line, ref yOffset);
         }
     }

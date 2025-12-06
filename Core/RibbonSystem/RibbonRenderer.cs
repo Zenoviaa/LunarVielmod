@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core.DungeonGeneration;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -142,6 +144,7 @@ namespace Stellamod.Core.RibbonSystem
         private float _windOffset;
         public VertexPositionColor[] vertices;
         public Vector2[] originalPositions;
+        public Vector2[] linePoints;
         public Vector2 startPosition;
         public Vector2 endPosition;
         public float ribbonLength;
@@ -153,7 +156,7 @@ namespace Stellamod.Core.RibbonSystem
             this.endPosition = endPosition;
             this.ribbonLength = ribbonLength;
             this.style = style;
-            this.ribbonPadding = 32;
+            this.ribbonPadding = 16;
             CalculateVertices();
         }
 
@@ -222,28 +225,28 @@ namespace Stellamod.Core.RibbonSystem
 
             float length = ribbonLength;
             float paddedLength = length + ribbonPadding;
-            Vector2 velocity = normalVelocity * length;
+           
             float distance = Vector2.Distance(startPosition, endPosition);
             float steps = MathF.Ceiling(distance / paddedLength);
-            Vector2[] linePoints = new Vector2[(int)steps];
+            linePoints = new Vector2[(int)steps];
 
             float maxSlack = Vector2.Distance(startPosition, endPosition) / 64f;
             for(int r = 0; r < linePoints.Length; r++)
             {
                 float completionRatio = (float)r / steps;
-                //Make sure to apply the padding
-                current += velocity + velocity.SafeNormalize(Vector2.Zero) * ribbonPadding;
-
+            
+                Vector2 linePoint = Vector2.Lerp(startPosition, endPosition, completionRatio);
+     
                 float slack = EasingFunction.QuadraticBump(completionRatio);
                 slack *= maxSlack;
 
-                Vector2 next = current + velocity;
 
-                Vector2 midPosition = (current + next) / 2f;
+
+                Vector2 velocity = normalVelocity * length;
                 Vector2 perpVector = velocity.RotatedBy(MathHelper.PiOver2);
                 if (perpVector.Y < 0)
                     perpVector = velocity.RotatedBy(-MathHelper.PiOver2);
-                Vector2 newStart = current + perpVector * slack;
+                Vector2 newStart = linePoint + perpVector * slack;
                 linePoints[r] = newStart;
             }
 
@@ -252,32 +255,43 @@ namespace Stellamod.Core.RibbonSystem
             {
                 float completionRatio = (float)i / steps;
                 Vector2 point1 = linePoints[i];
+                
                 Vector2 point2 = linePoints[i + 1];
-                Vector2 mid = (point1 + point2) / 2f;
+
+                //Get the end point of this ribbon, going towards the next point
+                Vector2 ribbonStart = point1;
+                Vector2 ribbonNormalVelocity = (point2 - point1).SafeNormalize(Vector2.Zero);
+                Vector2 ribbonEnd = ribbonStart + ribbonNormalVelocity * ribbonLength;
+
+                Vector2 ribbonMiddle = (ribbonStart + ribbonEnd) / 2f;
 
                 //Clamp the velocity to the length of the ribbon
-                Vector2 vel = (point2 - point1);
+                //Calculate the perpendicular velocity
+                Vector2 vel = (ribbonEnd - ribbonStart);
                 vel = vel.SafeNormalize(Vector2.Zero) * ribbonLength;
                 Vector2 perpVector = vel.RotatedBy(MathHelper.PiOver2);
-
+             
+                
+ 
                 //There's probably a better way to do this but eh
                 if (perpVector.Y < 0)
-                    perpVector = velocity.RotatedBy(-MathHelper.PiOver2);
-                Vector2 point3 = mid + perpVector / 2f;
+                    perpVector = vel.RotatedBy(-MathHelper.PiOver2);
+
+                Vector2 ribbonBottom = ribbonMiddle + Vector2.UnitY * 8;
 
                 Color color = GetColor(i);
-                VertexPositionColor v1 = new VertexPositionColor(new Vector3(point1, 0), color);
-                VertexPositionColor v2 = new VertexPositionColor(new Vector3(point2, 0), color);
-                VertexPositionColor v3 = new VertexPositionColor(new Vector3(point3, 0), color);
+                VertexPositionColor v1 = new VertexPositionColor(new Vector3(ribbonStart, 0), color);
+                VertexPositionColor v2 = new VertexPositionColor(new Vector3(ribbonEnd, 0), color);
+                VertexPositionColor v3 = new VertexPositionColor(new Vector3(ribbonBottom, 0), color);
 
                 ribbonVertices.Add(v1);
-                ribbonOriginalPositions.Add(point1);
+                ribbonOriginalPositions.Add(ribbonStart);
 
                 ribbonVertices.Add(v2);
-                ribbonOriginalPositions.Add(point2);
+                ribbonOriginalPositions.Add(ribbonEnd);
 
                 ribbonVertices.Add(v3);
-                ribbonOriginalPositions.Add(point3);
+                ribbonOriginalPositions.Add(ribbonBottom);
             }
             vertices = ribbonVertices.ToArray();
             originalPositions = ribbonOriginalPositions.ToArray();
@@ -294,9 +308,15 @@ namespace Stellamod.Core.RibbonSystem
         private RenderTarget2D _pixelatedRibbonRT;
         private RenderTarget2D _pixelScreenRenderRT;
         private List<Ribbon> _ribbons;
-        private List<VertexPositionColor> _vertexBufferArr;
-        public int DownSamples => 2;
+        private VertexPositionColor[] _vertexBufferArr;
+        private int _vertexIndex;
 
+        private Vector2[] _linesBufferArr;
+        private int _lineIndex;
+
+        public int DownSamples => 2;
+        public const int Max_Ribbon_Vertex_Count = 3 * 300;
+        public const int Max_Line_Count = 300;
         public override void Load()
         {
             base.Load();
@@ -376,7 +396,8 @@ namespace Stellamod.Core.RibbonSystem
         {
             base.OnModLoad();
             _ribbons = new List<Ribbon>(100);
-            _vertexBufferArr = new List<VertexPositionColor>();
+            _vertexBufferArr = new VertexPositionColor[Max_Ribbon_Vertex_Count];
+            _linesBufferArr = new Vector2[Max_Line_Count];
             On_Main.CheckMonoliths += RenderToPixelationRT;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRTToScreen;
             On_Main.DoDraw_DrawNPCsBehindTiles += DrawPixelRTToScreen;
@@ -422,12 +443,14 @@ namespace Stellamod.Core.RibbonSystem
 
         private bool ShouldRender()
         {
-            return _vertexBufferArr.Count >= 3;
+            return _vertexIndex >= 3;
         }
 
+       
         private void GatherRibbonVertices()
         {
-            _vertexBufferArr.Clear();
+            _vertexIndex = 0;
+            _lineIndex = 0;
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
@@ -440,7 +463,17 @@ namespace Stellamod.Core.RibbonSystem
 
                 if (cameraRectangle.Contains(start.ToPoint()) || cameraRectangle.Contains(end.ToPoint()))
                 {
-                    _vertexBufferArr.AddRange(ribbon.vertices);
+                    for(int j = 0; j < ribbon.vertices.Length && _vertexIndex < _vertexBufferArr.Length; j++)
+                    {
+                        _vertexBufferArr[_vertexIndex] = ribbon.vertices[j];
+                        _vertexIndex++;
+                    }
+
+                    for(int j = 0; j < ribbon.linePoints.Length && _lineIndex < _linesBufferArr.Length; j++)
+                    {
+                        _linesBufferArr[_lineIndex] = ribbon.linePoints[j];
+                        _lineIndex++;
+                    }
                 }
             }
         }
@@ -455,6 +488,25 @@ namespace Stellamod.Core.RibbonSystem
                 graphicsDevice.SetRenderTarget(_pixelScreenRenderRT);
                 graphicsDevice.Clear(Color.Transparent);
 
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+
+                Texture2D ribbonLineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Line").Value;
+                Vector2 drawOrigin = new Vector2(0, ribbonLineTexture.Height / 2);
+                for (int i = 0; i < _lineIndex - 1; i++)
+                {
+                    Vector2 position = _linesBufferArr[i];
+                    Vector2 nextPosition = _linesBufferArr[i + 1];
+                    float rotation = (nextPosition - position).ToRotation();
+
+                    position -= Main.screenPosition;
+
+                    Vector2 drawScale = new Vector2(0.1f, 1f);
+
+                    spriteBatch.Draw(ribbonLineTexture, position, null, Color.White * 0.5f, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+                }
+
+                spriteBatch.End();
 
 
                 //Apply the flag shader :p 
@@ -465,12 +517,12 @@ namespace Stellamod.Core.RibbonSystem
                 graphicsDevice.BlendState = BlendState.AlphaBlend;
                 graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
                 graphicsDevice.DrawUserPrimitives(
-                      PrimitiveType.TriangleList, _vertexBufferArr.ToArray(), 0, _vertexBufferArr.Count / 3);
+                      PrimitiveType.TriangleList, _vertexBufferArr, 0, _vertexIndex / 3);
+
 
                 //Now we take that output and downscale it to the pixel RT
                 graphicsDevice.SetRenderTarget(_pixelatedRibbonRT);
                 graphicsDevice.Clear(Color.Transparent);
-
 
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
                 float denom = DownSamples;

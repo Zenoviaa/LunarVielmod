@@ -421,6 +421,7 @@ PaperPaws: {
 		'''
 		Why don't you give your summons more credit?
 		+1 summon
+		20% increased guardian damage
 		'''
 }
 
@@ -9797,5 +9798,43 @@ SandEreshkigalItem: {
 
 RibbonWand: {
 	DisplayName: Ribbon Wand
+	Tooltip: Allows you to place ribbons that flow freely in the wind, right click to change the color!
+}
+
+DesertMap: {
+	DisplayName: Desert Map
+	Tooltip: Reveals the entirety of the desert, now you can see where you're going!
+}
+
+DesertCatacombPillar11Item: {
+	DisplayName: Desert Catacomb Pillar11 Item
 	Tooltip: ""
+}
+
+DesertCatacombPillar2Item: {
+	DisplayName: Desert Catacomb Pillar2 Item
+	Tooltip: ""
+}
+
+GreenCarpet: {
+	DisplayName: Green Carpet
+	Tooltip:
+		'''
+		Summons a rideable Green Carpet Mount
+		It can fly and hover for a short time, and has low gravity
+		'''
+}
+
+TravelersBackpack: {
+	DisplayName: Travelers Backpack
+	Tooltip:
+		'''
+		Allows you to carry 20 extra items in your inventory!
+		Still works in vanity slots
+		'''
+}
+
+WindingInsource: {
+	DisplayName: Winding Insource
+	Tooltip: Your attacker takes 500% damage of the hit that you take!
 }

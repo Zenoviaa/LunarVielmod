@@ -43,6 +43,7 @@ using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Biomes;
@@ -57,11 +58,11 @@ using Terraria.WorldBuilding;
 namespace Stellamod.WorldG
 {
 
-
     public class StellaWorld : ModSystem
     {
         public Point WitchTownLocation { get; private set; }
         public Point ManorLocation { get; private set; }
+
         private void DisableGenTask(List<GenPass> tasks, string passName)
         {
             tasks.Find(x => x.Name.Equals(passName)).Disable();
@@ -69,6 +70,7 @@ namespace Stellamod.WorldG
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
+
             //We don't need this for now
             int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Micro Biomes"));
             int RoyalGen = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));
@@ -304,7 +306,7 @@ namespace Stellamod.WorldG
                     //This hsould give us an outline of bricks, I think
                     Point topLeftRoom = room.bounds.TopLeft().ToPoint() + new Point(-padding / 2, -padding / 2);
                     Point offset = rectangle.Top().ToPoint();
-                    offset.Y -= outlineHeight / 2;
+                    offset.Y -= outlineHeight;
                     topLeftRoom += offset;
                     WorldUtils.Gen(topLeftRoom, new Shapes.Rectangle(outlineWidth, outlineHeight),
                        Actions.Chain(
@@ -331,6 +333,7 @@ namespace Stellamod.WorldG
                 placed = true;
             }
         }
+        private const int Desert_Padding = 200;
         private void LockDesert(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Expanding the Desert";
@@ -344,9 +347,9 @@ namespace Stellamod.WorldG
 
 
             //About to give the desert an extension
-            int desertPadding = 200;
-            int newDesertLeft = GenVars.desertHiveLeft - desertPadding;
-            int newDesertRight = GenVars.desertHiveRight + desertPadding;
+      
+            int newDesertLeft = GenVars.desertHiveLeft - Desert_Padding;
+            int newDesertRight = GenVars.desertHiveRight + Desert_Padding;
 
             //Adding surface sands
             //This is our desert extension, we just gonna replcae dirt/stone/clay tiles
@@ -381,47 +384,16 @@ namespace Stellamod.WorldG
                 int bottom = startY + depth;
                 for (int dy = startY; dy < bottom; dy++)
                 {
-                    if (WorldGen.SolidTile(tileX, dy))
+                    if(WorldGen.SolidTile(tileX, dy))
                     {
                         WorldGen.PlaceTile(tileX, dy, TileID.Sand);
                     }
-
+              
                     WorldGen.TileRunner(tileX, dy, 3, 10, TileID.Sand);
                 }
             }
 
 
-            //Place sand decorations
-            int numSandDecorations = genRand.Next(20, 40);
-            int[] wallTypesToPlace = new int[]
-            {
-                ModContent.WallType<SandCastle1>(),              
-                ModContent.WallType<SandCastle2>(),                 
-                ModContent.WallType<SandCastle3>(),                 
-                ModContent.WallType<SandCastle4>(),                      
-                ModContent.WallType<SandCastle5>(),                    
-                ModContent.WallType<SandCastle6>(),                
-                ModContent.WallType<SandCastle7>()
-            };
-
-            for (int n = 0; n < numSandDecorations; n++)
-            {
-                int randX = genRand.Next(newDesertLeft, newDesertRight);
-                int y = (int)(Main.worldSurface - 200);
-                for (int yOffset = 0; yOffset < 500; yOffset++)
-                {
-                    y++;
-                    if (!WorldGen.SolidTile(randX, y))
-                        continue;
-                    Tile tile = Main.tile[randX, y];
-                    if (tile.TileType == TileID.Sand)
-                        break;
-                }
-
-                int randSandCastle = genRand.Next(0, wallTypesToPlace.Length);
-                int sandCastleType = wallTypesToPlace[randSandCastle];
-                WorldGen.PlaceWall(randX, y, sandCastleType);
-            }
         }
 
         private void WorldGenVarLocations(GenerationProgress progress, GameConfiguration configuration)
@@ -636,12 +608,16 @@ namespace Stellamod.WorldG
             {
                 colosseumY++;
             }
+
             colosseumY += 40;
             Point colosseumPoint = new Point(colosseumX, colosseumY);
 
-
             //Place the colosseum
-            VeilGen.GenerateColosseum(colosseumPoint);
+            StructureMap desertStructures = new StructureMap();
+            VeilGen.GenerateColosseum(colosseumPoint, desertStructures);
+
+            //Ok, since the desert hive is a protected structure, we need to make a local structure map to safely place things on it
+            //This is a bit annoying but it'll work
 
 
             //Generate the desert hide out
@@ -649,10 +625,97 @@ namespace Stellamod.WorldG
             int desertWidth = GenVars.desertHiveRight - GenVars.desertHiveLeft;
             int halfDesertWidth = desertWidth / 2;
             int minJailY = (int)(Main.worldSurface + 300);
-            int randX = desertCenterX + genRand.Next(-halfDesertWidth, halfDesertWidth);
-            int randY = minJailY + genRand.Next(0, 300);
-            Point structurePoint = new Point(randX, randY);
-            Structurizer.ReadStruct(structurePoint, "Structures/UndergroundDesertHideout");
+
+            string hideoutStructureFile = "Structures/UndergroundDesertHideout";
+            for (int attempts = 0; attempts < 10000; attempts++)
+            {
+                int hideoutSpawnRadius = 50;
+                int randX = colosseumPoint.X + genRand.Next(-hideoutSpawnRadius, hideoutSpawnRadius);
+                int randY = minJailY + genRand.Next(0, 300);
+                Point structurePoint = new Point(randX, randY);
+                if(Structurizer.SafePlaceAndProtectStructure(structurePoint, hideoutStructureFile, desertStructures, out int[] chestIndices))
+                {
+                    break;
+                }
+            }
+
+            //Place List House
+            string listHouseStructureFile = "Structures/ListsHouse";
+            for (int attempts = 0; attempts < 10000; attempts++)
+            {
+                int randDesertX = genRand.Next(GenVars.desertHiveLeft, GenVars.desertHiveRight);
+                int y = (int)(Main.worldSurface - 300);
+                for(int m = 0; m < 1000; m++)
+                {
+                    y++;
+                    if(WorldGen.SolidTile(randDesertX, y))
+                    {
+                        break;
+                    }
+                }
+
+                Point tilePoint = new Point(randDesertX, y);
+                if (Structurizer.SafePlaceAndProtectStructure(tilePoint, listHouseStructureFile, desertStructures, out int[] chestIndices))
+                {
+                    break;
+                }
+            }
+
+            //Place Eresh place
+            string ereshStructureFile = "Structures/DesertEresh";
+            for (int attempts = 0; attempts < 10000; attempts++)
+            {
+                int randDesertX = genRand.Next(GenVars.desertHiveLeft, GenVars.desertHiveRight);
+                int y = (int)(Main.worldSurface - 300);
+                for (int m = 0; m < 1000; m++)
+                {
+                    y++;
+                    if (WorldGen.SolidTile(randDesertX, y))
+                    {
+                        break;
+                    }
+                }
+
+                Point tilePoint = new Point(randDesertX, y);
+                if (Structurizer.SafePlaceAndProtectStructure(tilePoint, ereshStructureFile, desertStructures, out int[] chestIndices))
+                {
+                    break;
+                }
+            }
+
+            //Place sand decorations
+            int numSandDecorations = genRand.Next(20, 40);
+            int[] wallTypesToPlace = new int[]
+            {
+                ModContent.WallType<SandCastle1>(),
+                ModContent.WallType<SandCastle2>(),
+                ModContent.WallType<SandCastle3>(),
+                ModContent.WallType<SandCastle4>(),
+                ModContent.WallType<SandCastle5>(),
+                ModContent.WallType<SandCastle6>(),
+                ModContent.WallType<SandCastle7>()
+            };
+
+            int newDesertLeft = GenVars.desertHiveLeft - Desert_Padding;
+            int newDesertRight = GenVars.desertHiveRight + Desert_Padding;
+            for (int n = 0; n < numSandDecorations; n++)
+            {
+                int randX = genRand.Next(newDesertLeft, newDesertRight);
+                int y = (int)(Main.worldSurface - 200);
+                for (int yOffset = 0; yOffset < 500; yOffset++)
+                {
+                    y++;
+                    if (!WorldGen.SolidTile(randX, y))
+                        continue;
+                    Tile tile = Main.tile[randX, y];
+                    if (tile.TileType == TileID.Sand)
+                        break;
+                }
+
+                int randSandCastle = genRand.Next(0, wallTypesToPlace.Length);
+                int sandCastleType = wallTypesToPlace[randSandCastle];
+                WorldGen.PlaceWall(randX, y, sandCastleType);
+            }
         }
 
         private void WorldGenDock(GenerationProgress progress, GameConfiguration configuration)
