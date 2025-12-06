@@ -655,6 +655,29 @@ namespace Stellamod.WorldG
             int randY = minJailY + genRand.Next(0, 300);
             Point structurePoint = new Point(randX, randY);
             Structurizer.ReadStruct(structurePoint, "Structures/UndergroundDesertHideout");
+
+            //Place List House
+           
+            for(int attempts = 0; attempts < 10000; attempts++)
+            {
+                int randDesertX = genRand.Next(GenVars.desertHiveLeft, GenVars.desertHiveRight);
+                int y = (int)(Main.worldSurface - 300);
+                for(int m = 0; m < 1000; m++)
+                {
+                    y++;
+                    if(WorldGen.SolidTile(randDesertX, y))
+                    {
+                        break;
+                    }
+                }
+
+                var structure = "Structures/ListsHouse";
+                Point tilePoint = new Point(randDesertX, y);
+                if(Structurizer.TryPlaceAndProtectStructure(tilePoint, structure))
+                {
+                    break;
+                }
+            }
         }
 
         private void WorldGenDock(GenerationProgress progress, GameConfiguration configuration)

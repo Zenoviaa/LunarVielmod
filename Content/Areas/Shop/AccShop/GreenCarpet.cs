@@ -118,7 +118,7 @@ namespace Stellamod.Content.Areas.Shop.AccShop
         {
             base.UpdateEffects(player);
             MountData.flightTimeMax = 30;
-            MountData.runSpeed = 6;
+            MountData.runSpeed = 5;
             player.waterWalk = true;
             player.waterWalk2 = true;
             player.gravity *= 0.5f;
