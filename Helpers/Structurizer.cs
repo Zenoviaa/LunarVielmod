@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.Xna.Framework;
 using Stellamod.Core.DungeonGeneration;
+using Stellamod.NPCs;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,13 +41,31 @@ namespace Stellamod.Helpers
             return rectangle;
         }
 
-        public static void ProtectStructure(Point location, string path)
+        public static void ProtectStructure(Point location, string path, StructureMap structures = null)
         {
-            StructureMap structures = GenVars.structures;
+
+            structures ??= GenVars.structures;
             Rectangle rectangle = ReadRectangle(path);
             location.Y -= rectangle.Height;
             rectangle.Location = location;
             structures.AddProtectedStructure(rectangle);
+        }
+
+        public static bool SafePlaceAndProtectStructure(Point tilePoint, string structureFile, StructureMap structures, out int[] chestIndices)
+        {
+            Rectangle rectangle = ReadRectangle(structureFile);
+            tilePoint.Y -= rectangle.Height;
+            rectangle.Location = tilePoint;
+
+            if (!structures.CanPlace(rectangle))
+            {
+                chestIndices = null;
+                return false;
+            }
+
+            structures.AddProtectedStructure(rectangle);
+            chestIndices = ReadStruct(tilePoint, structureFile);
+            return true;
         }
 
         public static bool TryPlaceAndProtectStructure(Point location, string path, bool ignoreStructures = false)

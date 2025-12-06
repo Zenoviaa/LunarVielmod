@@ -2364,7 +2364,7 @@ namespace Stellamod.WorldG
             float tilePercent = (float)count / (float)tileM;
             return tilePercent;
         }
-        public static void GenerateColosseum(Point tilePoint)
+        public static void GenerateColosseum(Point tilePoint, StructureMap structureMap)
         {
             var genRand = WorldGen.genRand;
             string GetMiniStructurePath()
@@ -2392,7 +2392,7 @@ namespace Stellamod.WorldG
                 Rectangle rectangle = Structurizer.ReadRectangle(structure);
                 rectangle.Location = tilePoint;
                 Structurizer.ReadStruct(tilePoint, structure, tileBlend);
-                Structurizer.ProtectStructure(tilePoint, structure);
+                Structurizer.ProtectStructure(tilePoint, structure, structureMap);
                 for (int beamX = rectangle.Location.X;
                  beamX < rectangle.Location.X + rectangle.Width; beamX += 8)
                 {
@@ -2424,7 +2424,7 @@ namespace Stellamod.WorldG
                 Rectangle rectangle = Structurizer.ReadRectangle(structure);
                 rectangle.Location = tilePoint;
                 var chestIndices = Structurizer.ReadStruct(tilePoint, structure, tileBlend);
-                Structurizer.ProtectStructure(tilePoint, structure);
+                Structurizer.ProtectStructure(tilePoint, structure, structureMap);
             }
 
             void PlaceBigStructure(Point tilePoint)
@@ -2479,7 +2479,7 @@ namespace Stellamod.WorldG
                         beamY++;
                     }
                 }
-                Structurizer.ProtectStructure(tilePoint, structure);
+                Structurizer.ProtectStructure(tilePoint, structure, structureMap);
             }
             void PlaceSmallStructure(Point tilePoint)
             {
@@ -2509,7 +2509,7 @@ namespace Stellamod.WorldG
                         }
                     }
                 }
-                Structurizer.ProtectStructure(tilePoint, structure);
+                Structurizer.ProtectStructure(tilePoint, structure, structureMap);
 
                 for (int beamX = rectangle.Location.X;
                     beamX < rectangle.Location.X + rectangle.Width; beamX += 8)

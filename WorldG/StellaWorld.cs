@@ -638,12 +638,16 @@ namespace Stellamod.WorldG
             {
                 colosseumY++;
             }
+
             colosseumY += 40;
             Point colosseumPoint = new Point(colosseumX, colosseumY);
 
-
             //Place the colosseum
-            VeilGen.GenerateColosseum(colosseumPoint);
+            StructureMap desertStructures = new StructureMap();
+            VeilGen.GenerateColosseum(colosseumPoint, desertStructures);
+
+            //Ok, since the desert hive is a protected structure, we need to make a local structure map to safely place things on it
+            //This is a bit annoying but it'll work
 
 
             //Generate the desert hide out
@@ -651,14 +655,23 @@ namespace Stellamod.WorldG
             int desertWidth = GenVars.desertHiveRight - GenVars.desertHiveLeft;
             int halfDesertWidth = desertWidth / 2;
             int minJailY = (int)(Main.worldSurface + 300);
-            int randX = desertCenterX + genRand.Next(-halfDesertWidth, halfDesertWidth);
-            int randY = minJailY + genRand.Next(0, 300);
-            Point structurePoint = new Point(randX, randY);
-            Structurizer.ReadStruct(structurePoint, "Structures/UndergroundDesertHideout");
+
+            string hideoutStructureFile = "Structures/UndergroundDesertHideout";
+            for (int attempts = 0; attempts < 10000; attempts++)
+            {
+                int hideoutSpawnRadius = 50;
+                int randX = colosseumPoint.X + genRand.Next(-hideoutSpawnRadius, hideoutSpawnRadius);
+                int randY = minJailY + genRand.Next(0, 300);
+                Point structurePoint = new Point(randX, randY);
+                if(Structurizer.SafePlaceAndProtectStructure(structurePoint, hideoutStructureFile, desertStructures, out int[] chestIndices))
+                {
+                    break;
+                }
+            }
 
             //Place List House
-           
-            for(int attempts = 0; attempts < 10000; attempts++)
+            string listHouseStructureFile = "Structures/ListsHouse";
+            for (int attempts = 0; attempts < 10000; attempts++)
             {
                 int randDesertX = genRand.Next(GenVars.desertHiveLeft, GenVars.desertHiveRight);
                 int y = (int)(Main.worldSurface - 300);
@@ -671,9 +684,30 @@ namespace Stellamod.WorldG
                     }
                 }
 
-                var structure = "Structures/ListsHouse";
                 Point tilePoint = new Point(randDesertX, y);
-                if(Structurizer.TryPlaceAndProtectStructure(tilePoint, structure))
+                if (Structurizer.SafePlaceAndProtectStructure(tilePoint, listHouseStructureFile, desertStructures, out int[] chestIndices))
+                {
+                    break;
+                }
+            }
+
+            //Place Eresh place
+            string ereshStructureFile = "Structures/DesertEresh";
+            for (int attempts = 0; attempts < 10000; attempts++)
+            {
+                int randDesertX = genRand.Next(GenVars.desertHiveLeft, GenVars.desertHiveRight);
+                int y = (int)(Main.worldSurface - 300);
+                for (int m = 0; m < 1000; m++)
+                {
+                    y++;
+                    if (WorldGen.SolidTile(randDesertX, y))
+                    {
+                        break;
+                    }
+                }
+
+                Point tilePoint = new Point(randDesertX, y);
+                if (Structurizer.SafePlaceAndProtectStructure(tilePoint, ereshStructureFile, desertStructures, out int[] chestIndices))
                 {
                     break;
                 }
