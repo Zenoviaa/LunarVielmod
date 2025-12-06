@@ -1,41 +1,29 @@
-﻿using Terraria;
+﻿using Stellamod.Core.SummonerSystem;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Accessories
+namespace Stellamod.Content.Areas.Shop.AccShop
 {
     public class PaperPaws : ModItem
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Paper Paws");
-            /* Tooltip.SetDefault("Why don't you give your summons more credit?" +
-				"\n+1 summon"); */
-
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
         public override void SetDefaults()
         {
-            Item.width = 24;
-            Item.height = 28;
-            Item.value = 200;
-            Item.rare = ItemRarityID.Green;
-            Item.accessory = true;
+            Item.DefaultToAccessory();
+            Item.rare = ModContent.RarityType<ShopRarity>();
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-
-
             player.maxMinions += 1;
-
-
+            BellPlayer bellPlayer = player.GetModPlayer<BellPlayer>();
+            bellPlayer.standDamageBonus += 0.2f;
         }
-
-
-
-
     }
 }

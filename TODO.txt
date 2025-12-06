@@ -1,3 +1,7 @@
+KEY: 
+	// = Coded but not tested/tuned
+	# = Tested but needs approval
+
 Pharaoh's Blade - Sword that shoots little sand wind tornados on hits of the combo
 Stamina - 2 stamina, A small gust starts from the sword and continues to constant wind gust forward like an artifact, and uses mana for how long it stays
 
@@ -11,9 +15,9 @@ Hunting Swing Hook
 
 // Desert map (Shows the entire desert on the map)
 // Whatever the sand boots are
-Green carpet (our version of a magic carpet, except it can fly up a bit and is a mount)
-Winding Insource (The next attack that hits you deals 5x damage back to the enemy or boss)
-Paper Paws (Adds +1 Accessory slot and buffs your main minions damage by 20%)
+// Green carpet (our version of a magic carpet, except it can fly up a bit and is a mount)
+// Winding Insource (The next attack that hits you deals 5x damage back to the enemy or boss)
+// Paper Paws (Adds +1 Accessory slot and buffs your main minions damage by 20%)
 
 Traveller's Backsack - Open it up for more inventory (works as long as its in your vanity or accessory slot)
 

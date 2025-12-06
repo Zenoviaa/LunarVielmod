@@ -3,6 +3,7 @@ using Stellamod.Content.Areas.Shop.AccShop;
 using Stellamod.Content.Dialogue;
 using Stellamod.Core;
 using Stellamod.Helpers;
+using Stellamod.Items.Insources;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -140,7 +141,7 @@ namespace Stellamod.NPCs.Town
         {
             base.Talk();
             OpenTalkOptions(
-                ModContent.GetInstance<ListUmDialogue>(), 
+                ModContent.GetInstance<ListUmDialogue>(),
                 ModContent.GetInstance<ListWhyHereDialogue>(),
                 ModContent.GetInstance<ListZuiDialogue>(),
                 ModContent.GetInstance<ListAloneDialogue>());
@@ -171,8 +172,16 @@ namespace Stellamod.NPCs.Town
                 shopSpecialCurrency = Stellamod.MedalCurrencyID
             })
             .Add(new Item(ItemID.Mace) { shopCustomPrice = Item.buyPrice(gold: 5) })
-            .Add(new Item(ItemID.Mace) { shopCustomPrice = Item.buyPrice(gold: 5) })
-            .Add(new Item(ItemID.Mace) { shopCustomPrice = Item.buyPrice(gold: 5) });
+            .Add(new Item(ModContent.ItemType<WindingInsource>())
+            {
+                shopCustomPrice = 20,
+                shopSpecialCurrency = Stellamod.MedalCurrencyID
+            })
+            .Add(new Item(ModContent.ItemType<PaperPaws>())
+            {
+                shopCustomPrice = 20,
+                shopSpecialCurrency = Stellamod.MedalCurrencyID
+            });
             npcShop.Register(); // Name of this shop t
         }
     }

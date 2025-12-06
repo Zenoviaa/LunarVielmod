@@ -45,12 +45,12 @@ namespace Stellamod.Core.SummonerSystem
         public bool isSummoning;
         public bool hasBellMinions;
         public float summonRatio => castTimer / GetCastingTime();
-
+        public float standDamageBonus;
         public override void ResetEffects()
         {
             base.ResetEffects();
             castingTime = 60;
-
+            standDamageBonus = 0f;
 
             isSummoning = false;
             hasBellMinions = false;
