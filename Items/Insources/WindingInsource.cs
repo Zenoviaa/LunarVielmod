@@ -65,10 +65,9 @@ namespace Stellamod.Items.Insources
                 Color drawColor = Color.Tan.MultiplyRGB(lightingColor);
                 Vector2 drawOrigin = BubbleTextureAsset.Size() / 2f;
                 Vector2 drawScale = Vector2.Lerp(new Vector2(0.65f), new Vector2(0.75f), ExtraMath.Osc(0f, 1f, speed: 12));
-                spriteBatch.Restart(blendState: BlendState.Additive);
+                drawColor.A = 0;
+                drawColor *= 0.5f;
                 spriteBatch.Draw(BubbleTextureAsset.Value, drawPosition, null, drawColor, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
-                spriteBatch.Draw(BubbleTextureAsset.Value, drawPosition, null, drawColor, 0, drawOrigin, drawScale * 0.6f, SpriteEffects.None, 0);
-                spriteBatch.RestartDefaults();
 
             }
         }

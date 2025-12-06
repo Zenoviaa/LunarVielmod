@@ -185,6 +185,11 @@ namespace Stellamod.NPCs.Town
             {
                 shopCustomPrice = 20,
                 shopSpecialCurrency = Stellamod.MedalCurrencyID
+            })
+            .Add(new Item(ModContent.ItemType<TravelersBackpack>())
+            {
+                shopCustomPrice = 20,
+                shopSpecialCurrency = Stellamod.MedalCurrencyID
             });
             npcShop.Register(); // Name of this shop t
         }

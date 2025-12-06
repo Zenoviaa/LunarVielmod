@@ -91,7 +91,7 @@ namespace Stellamod.Core.XixianFlaskSystem.UI
             base.Update(gameTime);
             Width.Pixels = 118;
             Height.Pixels = 216;
-            _panel.Height.Pixels = _grid.GetTotalHeight() + 64;
+            _panel.Height.Pixels = _grid.GetTotalHeight();
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
             _scrollbar.Height.Set(Height.Pixels * progress, 0);

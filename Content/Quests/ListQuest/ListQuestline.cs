@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace Stellamod.Content.Quests.ListQuest
 {
-    internal class ListQuestline
-    {
-    }
+
 }

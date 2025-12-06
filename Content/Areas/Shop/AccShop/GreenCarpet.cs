@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -46,6 +45,8 @@ namespace Stellamod.Content.Areas.Shop.AccShop
     }
     public class GreenCarpetMount : ModMount
     {
+        private int _frameIndex;
+        private int _frameTimer;
         // Since only a single instance of ModMountData ever exists, we can use player.mount._mountSpecificData to store additional data related to a specific mount.
         // Using something like this for gameplay effects would require ModPlayer syncing, but this example is purely visual.
         protected class CarSpecificData
@@ -74,7 +75,7 @@ namespace Stellamod.Content.Areas.Shop.AccShop
             MountData.fallDamage = 0.5f; // Fall damage multiplier.
             MountData.runSpeed = 11f; // The speed of the mount
             MountData.dashSpeed = 8f; // The speed the mount moves when in the state of dashing.
-            MountData.flightTimeMax = 120; // The amount of time in frames a mount can be in the state of flying.
+            MountData.flightTimeMax = 30; // The amount of time in frames a mount can be in the state of flying.
 
             // Misc
             MountData.fatigueMax = 0;
@@ -86,39 +87,8 @@ namespace Stellamod.Content.Areas.Shop.AccShop
             // Frame data and player offsets
             MountData.totalFrames = 60; // Amount of animation frames for the mount
             MountData.playerYOffsets = Enumerable.Repeat(20, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
-            MountData.xOffset = 13;
-            MountData.yOffset = -12;
+
             MountData.playerHeadOffset = 22;
-            MountData.bodyFrame = 3;
-            // Standing
-            MountData.standingFrameCount = 60;
-            MountData.standingFrameDelay = 12;
-            MountData.standingFrameStart = 0;
-            // Running
-            MountData.runningFrameCount = 60;
-            MountData.runningFrameDelay = 12;
-            MountData.runningFrameStart = 0;
-
-            // Flying
-            MountData.flyingFrameCount = 60;
-            MountData.flyingFrameDelay = 12;
-            MountData.flyingFrameStart = 0;
-
-            // In-air
-            MountData.inAirFrameCount = 60;
-            MountData.inAirFrameDelay = 12;
-            MountData.inAirFrameStart = 0;
-         
-            // Idle
-            MountData.idleFrameCount = 60;
-            MountData.idleFrameDelay = 12;
-            MountData.idleFrameStart = 0;
-            MountData.idleFrameLoop = true;
-
-            // Swim
-            MountData.swimFrameCount = MountData.inAirFrameCount;
-            MountData.swimFrameDelay = MountData.inAirFrameDelay;
-            MountData.swimFrameStart = MountData.inAirFrameStart;
 
             if (!Main.dedServ)
             {
@@ -143,6 +113,33 @@ namespace Stellamod.Content.Areas.Shop.AccShop
 
                 skipDust = true;
             }
+        }
+        public override void UpdateEffects(Player player)
+        {
+            base.UpdateEffects(player);
+            MountData.flightTimeMax = 30;
+            MountData.runSpeed = 6;
+            player.waterWalk = true;
+            player.waterWalk2 = true;
+            player.gravity *= 0.5f;
+
+         //   player.velocity.Y -= 0.1f;
+            if (Main.rand.NextBool(16))
+            {
+                Dust.NewDustPerfect(player.Bottom, ModContent.DustType<Sparkle>());
+            }
+        }
+ 
+        public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Rectangle idleFrame = new Rectangle(0, 0, frame.Width, frame.Height);
+            int frameCount = 60;
+            Rectangle drawFrame = texture.AnimationFrame(ref _frameIndex, ref _frameTimer, 8, frameCount, true);
+            drawPosition.X -= drawFrame.Width / 2;
+            drawPosition.Y += ExtraMath.Osc(0f, 8);
+            spriteBatch.Draw(texture, drawPosition, drawFrame, drawColor);
+            return false;
         }
     }
 }

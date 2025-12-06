@@ -186,3 +186,43 @@ MinervaStartDialogue: {
 }
 
 BaseDialogue.Line0: ""
+
+ListAloneDialogue: {
+	DisplayName: ""
+	Line0: ""
+	Line1: ""
+	Line2: ""
+	Line3: ""
+	Line4: ""
+	Line5: ""
+	Line6: ""
+	Line7: ""
+}
+
+ListUmDialogue: {
+	DisplayName: ""
+	Line0: ""
+	Line1: ""
+	Line2: ""
+	Line3: ""
+	Line4: ""
+}
+
+ListWhyHereDialogue: {
+	DisplayName: ""
+	Line0: ""
+	Line1: ""
+	Line2: ""
+}
+
+ListZuiDialogue: {
+	DisplayName: ""
+	Line0: ""
+	Line1: ""
+	Line2: ""
+	Line3: ""
+	Line4: ""
+	Line5: ""
+	Line6: ""
+	Line7: ""
+}
