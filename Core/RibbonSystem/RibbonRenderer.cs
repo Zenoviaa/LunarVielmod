@@ -450,7 +450,6 @@ namespace Stellamod.Core.RibbonSystem
             _vertexBufferArr = new VertexPositionColor[Max_Ribbon_Vertex_Count];
             _linesBufferArr = new Vector2[Max_Line_Count];
             On_Main.CheckMonoliths += RenderToPixelationRT;
-            On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRTToScreen;
             On_Main.DoDraw_DrawNPCsBehindTiles += DrawPixelRTToScreen;
         }
 
@@ -458,7 +457,6 @@ namespace Stellamod.Core.RibbonSystem
         {
             base.OnModUnload();
             On_Main.CheckMonoliths -= RenderToPixelationRT;
-            On_Main.DoDraw_DrawNPCsOverTiles -= DrawPixelRTToScreen;
             On_Main.DoDraw_DrawNPCsBehindTiles -= DrawPixelRTToScreen;
         }
         public override void PostDrawTiles()
@@ -679,17 +677,6 @@ namespace Stellamod.Core.RibbonSystem
                 spriteBatch.Draw(_pixelScreenRenderRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
                 spriteBatch.End();
             }
-        }
-
-
-        private void DrawPixelRTToScreen(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
-        {
-
-            orig(self);
-
-
-
-
         }
 
         private void ResizeRenderTargets()
