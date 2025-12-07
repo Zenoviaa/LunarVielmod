@@ -99,6 +99,14 @@ namespace Stellamod.Core.SwingSystem
 
         }
 
+        public bool IsFinishingSwing()
+        {
+            //If we haven't initialized then yeah, though that won't happen lol
+            if (!_hasInitialized)
+                return false;
+            return ComboIndex == _swings.Count - 1;
+        }
+
         public virtual Color GetAfterImageColor(float interpolant)
         {
             return Color.Lerp(Color.White, Color.Transparent, MathHelper.SmoothStep(0, 1, interpolant));
@@ -118,8 +126,8 @@ namespace Stellamod.Core.SwingSystem
             if (!_hasInitialized)
             {
                 _swings = new List<ISwing>();
-                swingTrailCache = new Vector2[252];
-                bigSwingTrailCache = new Vector2[252];
+                swingTrailCache = new Vector2[200];
+                bigSwingTrailCache = new Vector2[200];
                 afterImageCache = new Vector2[16];
                 swingRotationCache = new float[16];
                 oldTime = new float[252];

@@ -349,6 +349,8 @@ namespace Stellamod.Core.Bases
 
             Asset<Texture2D> heldTexture = ModContent.Request<Texture2D>(heldItem.ModItem.Texture);
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            drawPos += DrawOriginOffset;
+
             Vector2 drawOrigin = heldTexture.Size() / 2f;
             //  drawPos += DrawOriginOffset;
             SpriteEffects spriteEffects = SpriteEffects.None;
@@ -405,15 +407,11 @@ namespace Stellamod.Core.Bases
             float drawRotation = Projectile.rotation;
             if (Projectile.spriteDirection == -1)
                 drawRotation += MathHelper.ToRadians(90);
-
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            for (int i = 0; i < 3; i++)
-            {
-                Color glowColor = drawColor * GlowProgress;
-                spriteBatch.Draw(heldTexture.Value, drawPos, null, glowColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
-            }
-
-            spriteBatch.RestartDefaults();
+            if (Owner.direction == -1)
+                spriteEffects |= SpriteEffects.FlipVertically;
+            Color glowColor = drawColor * GlowProgress;
+            glowColor.A = 0;
+            spriteBatch.Draw(heldTexture.Value, drawPos, null, glowColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
         }
 
         public override bool PreDraw(ref Color lightColor)

@@ -24,6 +24,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
         public override void SetDefaults2()
         {
             base.SetDefaults2();
+            Item.damage = 14;
             Item.shoot = ModContent.ProjectileType<GladiatorSpearSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<GladiatorSpearStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Spear;
@@ -55,9 +56,9 @@ namespace Stellamod.Items.Weapons.Melee.Spears
             SoundStyle spearHit = SoundRegistry.SpearHit1;
             spearHit.PitchVariance = 0.5f;
             SoundEngine.PlaySound(spearHit, Projectile.position);
-            if (ComboIndex == 5)
+            if (IsFinishingSwing())
             {
-                modifiers.FinalDamage *= 2;
+                DamageHelper.PercentIncreasedamage(ref modifiers, 1f);
             }
         }
     }

@@ -2,6 +2,11 @@ KEY:
 	// = Coded but not tested/tuned
 	# = Tested but needs approval
 
+
+Test Gladiator Spear
+Test Spear Combo
+Test Stalkers Tallon
+
 Pharaoh's Blade - Sword that shoots little sand wind tornados on hits of the combo
 Stamina - 2 stamina, A small gust starts from the sword and continues to constant wind gust forward like an artifact, and uses mana for how long it stays
 
@@ -27,12 +32,12 @@ As for my last place I want to see, could you like, go look at Zui and use this 
 
 
 
-unar Scarab (U)
+Lunar Scarab (U)
 Ruby beetle (S, night)
 Antlion swarmers (B)
 Miitas Dune Worm (U)
 Tornado (Only in Sandstorm)
-Remove surface enemies (until nighttime)
+// Remove surface enemies (until nighttime)
 Tomb Crawler (Crawls along the ground and shoots treasure pieces at you), (Tombs)
 Hidden Sarcophagus (Hidden until you walk in front of it and it holds you in the tomb until you die) (Tombs)
 Hotsprings (Has gradientized oasis water with plants inside) Waterfalls and only peaceful critters like (Lunar scarabs and other sand critters can spawn there)

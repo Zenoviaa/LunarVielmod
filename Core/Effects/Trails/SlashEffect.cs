@@ -5,6 +5,32 @@ using Stellamod.Helpers;
 using Terraria;
 namespace Stellamod.Core.Effects.Trails
 {
+
+    public abstract class BaseTrailing : Trailer
+    {
+        public BaseTrailing()
+        {
+            Shader = new SlashEffect();
+            TrailWidthFunction = WidthFunction;
+            TrailColorFunction = ColorFunction;
+            ApplyShader();
+        }
+
+        public virtual void ApplyShader()
+        {
+            //We do a set defaults function here cause we don't want the base functionality to get overwritten by accident
+        }
+
+        public virtual float WidthFunction(float completionRatio)
+        {
+            return EasingFunction.QuadraticBump(completionRatio) * 12;
+        }
+        public virtual Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.White, Color.Transparent, completionRatio);
+        }
+    }
+
     public class SlashTrailer : Trailer
     {
         public SlashTrailer()

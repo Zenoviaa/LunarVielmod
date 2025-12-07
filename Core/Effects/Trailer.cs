@@ -7,24 +7,6 @@ namespace Stellamod.Core.Effects
 {
     public abstract class Trailer : ITrailer
     {
-
-        public static Matrix WorldViewPoint
-        {
-            get
-            {
-                GraphicsDevice graphics = Main.graphics.GraphicsDevice;
-                Vector2 screenZoom = Main.GameViewMatrix.Zoom;
-                int width = graphics.Viewport.Width;
-                int height = graphics.Viewport.Height;
-
-                var zoom = Matrix.CreateLookAt(Vector3.Zero, Vector3.UnitZ, Vector3.Up) *
-                    Matrix.CreateTranslation(width / 2f, height / -2f, 0) *
-                    Matrix.CreateRotationZ(MathHelper.Pi) * Matrix.CreateScale(screenZoom.X, screenZoom.Y, 1f);
-                var projection = Matrix.CreateOrthographic(width, height, 0, 1000);
-                return zoom * projection;
-            }
-        }
-
         public static Matrix WorldViewPoint2
         {
             get
@@ -93,6 +75,7 @@ namespace Stellamod.Core.Effects
 
         private void DrawPrimsTriangles(List<VertexPositionColorTexture> vertices, IShader shader)
         {
+            //TODO: Edit this for optimization purposes, we should create buffers
             if (vertices.Count % 6 != 0 || vertices.Count <= 3)
                 return;
 

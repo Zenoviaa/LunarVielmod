@@ -51,7 +51,7 @@ namespace Stellamod.Core.Bases
             {
                 CrossbowOldPos = new Vector2[32];
 
-                projectile.extraUpdates += 4;
+                projectile.extraUpdates += 3;
                 projectile.ArmorPenetration += 10;
                 Initialized = true;
             }
@@ -63,7 +63,8 @@ namespace Stellamod.Core.Bases
             if (CrossbowOldPos.Length > 0)
                 CrossbowOldPos[0] = projectile.position;
 
-          //  projectile.velocity.Y -= 0.075f;
+            projectile.velocity.Y -= 0.075f;
+       
         }
         private Color ColorFunction(float completionRatio)
         {
@@ -129,7 +130,7 @@ namespace Stellamod.Core.Bases
             for (int i = 0; i < 2; i++)
             {
                 Dust.NewDustPerfect(projectile.Center, ModContent.DustType<GlowDust>(),
-                    projectile.oldVelocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f), 0, Color.White, 1f).noGravity = true;
+                    projectile.oldVelocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f), 0, Color.White, 0.5f).noGravity = true;
             }
 
             FXUtil.GlowCircleBoom(projectile.Center,

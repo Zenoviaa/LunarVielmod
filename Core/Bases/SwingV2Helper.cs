@@ -346,7 +346,7 @@ namespace Stellamod.Core.Bases
                 XSwingRadius = 100,
                 YSwingRadius = 50,
                 SwingDegrees = 90,
-                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 10),
+                Easing = (float lerpValue) => EasingFunction.Anticipation(lerpValue),
                 Sound = spearSlash1,
             });
 
@@ -356,14 +356,14 @@ namespace Stellamod.Core.Bases
                 XSwingRadius = 100,
                 YSwingRadius = 50,
                 SwingDegrees = 90,
-                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 10),
+                Easing = (float lerpValue) => EasingFunction.Anticipation(lerpValue),
                 Sound = spearSlash1,
             });
 
 
             swings.Add(new ThrustSwing
             {
-                Duration = 12,
+                Duration = 15,
                 ThrowDistance = 90,
                 Easing = (float lerpValue) => Easing.SpikeOutExpo(lerpValue),
                 Sound = spearSlash2
@@ -372,7 +372,7 @@ namespace Stellamod.Core.Bases
 
             swings.Add(new ThrustSwing
             {
-                Duration = 12,
+                Duration = 15,
                 ThrowDistance = 90,
                 Easing = (float lerpValue) => Easing.SpikeOutExpo(lerpValue),
                 Sound = spearSlash2
@@ -385,7 +385,7 @@ namespace Stellamod.Core.Bases
                 XSwingRadius = 100,
                 YSwingRadius = 50,
                 SwingDegrees = 90,
-                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 10),
+                Easing = (float lerpValue) => EasingFunction.Anticipation(lerpValue),
                 Sound = spearSlash1,
             });
 
@@ -395,7 +395,7 @@ namespace Stellamod.Core.Bases
                 XSwingRadius = 100,
                 YSwingRadius = 50,
                 SwingDegrees = 90,
-                Easing = (float lerpValue) => Easing.InOutExpo(lerpValue, 10),
+                Easing = (float lerpValue) => EasingFunction.Anticipation(lerpValue),
                 Sound = spearSlash1,
             });
             swings.Add(new OvalSwing
@@ -411,7 +411,7 @@ namespace Stellamod.Core.Bases
 
             swings.Add(new ThrustSwing
             {
-                Duration = 30,
+                Duration = 32,
                 ThrowDistance = 128,
                 Easing = (float lerpValue) => Easing.SpikeOutExpo(lerpValue),
                 Sound = spearSlash2

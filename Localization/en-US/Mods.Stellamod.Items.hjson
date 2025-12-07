@@ -2771,7 +2771,9 @@ Infernis: {
 
 StalkersTallon: {
 	DisplayName: Stalkers Tallon
-	Tooltip: Shoots spectral versions of itself
+	Tooltip: Shoots spectral versions of itself	
+	BasicSlash: ""
+	StaminaSlash: Throws out a spectral version of itself that picks up an enemy and explodes them in the sky!
 }
 
 TheIrradiaspear: {
@@ -2953,7 +2955,13 @@ VoidBlaster: {
 
 WingedFury: {
 	DisplayName: Winged Fury
-	Tooltip: Every few shots, launch a very powerful sun-charged arrow!
+	Tooltip: Empowered with the remains of a long-dead sun-powered avian...
+	BasicSlash: Shoots a burst of two arrows
+	StaminaSlash:
+		'''
+		Shoots out a barrage of sun feathers into the sky...
+		After a short time, the feathers slow down and aggressively home into nearby enemies!
+		'''
 }
 
 ArncharRemote: {
@@ -6821,7 +6829,12 @@ MahoganyStorm: {
 
 Dunderbustion: {
 	DisplayName: Dunderbustion
-	Tooltip: A burst rifle with some serious mechanical malfunctions since it was handmade.
+	Tooltip:
+		'''
+		A burst rifle with some serious mechanical malfunctions since it was handmade. 
+		Bullets will bounce once time off of walls, and gain speed!
+		'''
+		
 }
 
 Polaris: {
@@ -9845,5 +9858,10 @@ WindingInsource: {
 
 RibbonScissors: {
 	DisplayName: Ribbon Scissors
+	Tooltip: ""
+}
+
+EreshStatueItem: {
+	DisplayName: Eresh Statue Item
 	Tooltip: ""
 }
