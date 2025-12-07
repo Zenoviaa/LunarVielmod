@@ -95,7 +95,6 @@ namespace Stellamod.Core.Waters
             Effect effect = Filters.Scene["LunarVeil:Lava"].GetShader().Shader;
             effect.Parameters["offset"].SetValue(Vector2.Zero);
             effect.Parameters["sampleTexture2"].SetValue(FrontTarget.RenderTarget);
-            effect.Parameters["sampleTexture3"].SetValue(FrontTarget.RenderTarget);
             effect.Parameters["time"].SetValue(Main.GameUpdateCount / 20f);
 
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, effect, Main.Transform);
@@ -106,7 +105,6 @@ namespace Stellamod.Core.Waters
             Effect effect = Filters.Scene["LunarVeil:Lava"].GetShader().Shader;
             effect.Parameters["offset"].SetValue(Vector2.Zero);
             effect.Parameters["sampleTexture2"].SetValue(BackTarget.RenderTarget);
-            effect.Parameters["sampleTexture3"].SetValue(BackTarget.RenderTarget);
             effect.Parameters["time"].SetValue(Main.GameUpdateCount / 20f);
 
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, effect, Main.Transform);

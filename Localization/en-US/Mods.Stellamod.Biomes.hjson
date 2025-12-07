@@ -162,3 +162,13 @@ MistyDungeonBiome: {
 	DisplayName: Misty Dungeon
 	TownNPCDialogueName: the Misty Dungeon
 }
+
+DesertTownBiome: {
+	TownNPCDialogueName: the Desert Town Biome
+	DisplayName: Gintze Village
+}
+
+BeachBiome: {
+	DisplayName: Beach Biome
+	TownNPCDialogueName: the Beach Biome
+}

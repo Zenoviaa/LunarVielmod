@@ -11,6 +11,7 @@ namespace Stellamod.Content.Biomes
         private float _windCounter;
         public bool ZoneSpringHills;
         public bool ZoneMistyDungeon;
+        public bool ZoneDesertTown;
         public override void ResetEffects()
         {
             base.ResetEffects();

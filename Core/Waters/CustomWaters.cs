@@ -14,6 +14,16 @@ namespace Stellamod.Core.Waters
         Bloody,
         Shimmer
     }
+    public struct WaterGradient
+    {
+        public WaterGradient(Color startColor, Color endColor)
+        {
+            this.startColor = startColor;
+            this.endColor = endColor;
+        }
+        public Color startColor;
+        public Color endColor;
+    }
 
     public class CustomWaters : WaterAddon
     {
@@ -131,23 +141,50 @@ namespace Stellamod.Core.Waters
             }
         }
 
-        public override void SpritebatchChange()
+        private WaterGradient GetGradient()
+        {
+            WaterGradient gradient = new WaterGradient(Color.White, Color.Green);
+            return gradient;
+        }
+
+        private Effect GetWaterEffect()
         {
             Effect effect = Filters.Scene["LunarVeil:Water"].GetShader().Shader;
+            return effect;
+        }
+
+        private void ApplyOffsetAndTime(Effect effect)
+        {
             effect.Parameters["offset"].SetValue(Vector2.Zero);
-            effect.Parameters["sampleTexture2"].SetValue(FrontTarget.RenderTarget);
-            effect.Parameters["sampleTexture3"].SetValue(FrontTarget.RenderTarget);
             effect.Parameters["time"].SetValue(Main.GameUpdateCount / 20f);
+        }
+
+        private void ApplyGradient(Effect effect, WaterGradient gradient)
+        {
+            effect.Parameters["startGradientColor"].SetValue(gradient.startColor.ToVector3());
+            effect.Parameters["endGradientColor"].SetValue(gradient.endColor.ToVector3());
+        }
+
+        public override void SpritebatchChange()
+        {
+            Effect effect = GetWaterEffect();
+            ApplyOffsetAndTime(effect);
+
+            WaterGradient gradient = GetGradient();
+            ApplyGradient(effect, gradient);
+            effect.Parameters["sampleTexture2"].SetValue(FrontTarget.RenderTarget);
+
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, effect, Main.Transform);
         }
 
         public override void SpritebatchChangeBack()
         {
-            Effect effect = Filters.Scene["LunarVeil:Water"].GetShader().Shader;
-            effect.Parameters["offset"].SetValue(Vector2.Zero);
+            Effect effect = GetWaterEffect();
+            ApplyOffsetAndTime(effect);
+
+            WaterGradient gradient = GetGradient();
+            ApplyGradient(effect, gradient);
             effect.Parameters["sampleTexture2"].SetValue(BackTarget.RenderTarget);
-            effect.Parameters["sampleTexture3"].SetValue(BackTarget.RenderTarget);
-            effect.Parameters["time"].SetValue(Main.GameUpdateCount / 20f);
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, effect, Main.Transform);
         }
     }

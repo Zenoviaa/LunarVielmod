@@ -24,16 +24,8 @@ sampler2D samplerTex2 = sampler_state
     AddressV = wrap;
 };
 
-texture sampleTexture3;
-sampler2D samplerTex3 = sampler_state
-{
-    texture = <sampleTexture3>;
-    magfilter = LINEAR;
-    minfilter = LINEAR;
-    mipfilter = LINEAR;
-    AddressU = wrap;
-    AddressV = wrap;
-};
+float3 startGradientColor;
+float3 endGradientColor;
 
 float4 PixelShaderFunction(float4 screenSpace : TEXCOORD0) : COLOR0
 {
@@ -43,7 +35,6 @@ float4 PixelShaderFunction(float4 screenSpace : TEXCOORD0) : COLOR0
     float4 color = tex2D(samplerTex, st + offset);
     
     // Bootleg way to stop lava from being transformed
-
     if (color.r > color.b)
         return color;
     
@@ -56,15 +47,26 @@ float4 PixelShaderFunction(float4 screenSpace : TEXCOORD0) : COLOR0
     color2.g = lerp(color.g, 1.3 * bright, (power + factor) / 2.0);
     color2.b = lerp(color.b, 1.2 * bright, (power + factor) / 2.0);
 
-    float4 color3 = tex2D(samplerTex3, st + offset + float2(time * 0.002, time * 0.002)) * 0.5;
-    color3 += tex2D(samplerTex3, st + offset + float2(time * -0.0015, time * 0.0012)) * 0.35;
+    float4 color3 = tex2D(samplerTex2, st + offset + float2(time * 0.002, time * 0.002)) * 0.5;
+    color3 += tex2D(samplerTex2, st + offset + float2(time * -0.0015, time * 0.0012)) * 0.35;
 
     bright = min(bright, 0.25);
 
     color2.g += color3.r * power * pow(bright, 2) * 60.0;
     color2.b += color3.r * power * pow(bright, 2) * 60.0;
     color2.r += color3.r * power * pow(bright, 2) * 40.0;
+    
+    //This should add a gradient?
+    //I'm not sure if this value is already clamped between 0 - 1
+    //If it is it'll work well, if not we're cooked
+    float gradientLerp = st.y;
+    float smoothGradientLerp = smoothstep(0.0, 1.0, gradientLerp);
+    float3 gradient = lerp(startGradientColor, endGradientColor, smoothGradientLerp);
 
+    color2.g += gradient.g * power * pow(bright, 2) * 60.0;
+    color2.b += gradient.b * power * pow(bright, 2) * 60.0;
+    color2.r += gradient.r * power * pow(bright, 2) * 40.0;
+    
     return color2 * ((1.0 - power * 0.8));
 }
 

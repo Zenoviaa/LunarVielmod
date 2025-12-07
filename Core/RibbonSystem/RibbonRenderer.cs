@@ -694,8 +694,14 @@ namespace Stellamod.Core.RibbonSystem
 
         private void ResizeRenderTargets()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+            if (Main.dedServ)
+                return;
+
             Point screenSize = Main.ScreenSize;
-            if (_oldScreenSize != screenSize)
+            if (_oldScreenSize != screenSize && Main.netMode != NetmodeID.Server)
             {
                 Main.QueueMainThreadAction(() =>
                 {

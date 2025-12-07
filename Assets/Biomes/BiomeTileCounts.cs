@@ -105,6 +105,9 @@ namespace Stellamod
         public static bool InSpringHills => ModContent.GetInstance<BiomeTileCounts>().SpringGrassCount > 80;
         public int MistyDungeonCount;
         public static bool InMistyDungeon => ModContent.GetInstance<BiomeTileCounts>().MistyDungeonCount > 80;
+
+        public int DesertTownCount;
+        public static bool InDesertTown => ModContent.GetInstance<BiomeTileCounts>().DesertTownCount > 45;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             MistyDungeonCount = tileCounts[TileID.BlueDungeonBrick] + tileCounts[TileID.GreenDungeonBrick] + tileCounts[TileID.PinkDungeonBrick] + tileCounts[ModContent.TileType<MothlightBrick>()];
@@ -136,6 +139,7 @@ namespace Stellamod
             ColosseumCount = tileCounts[ModContent.TileType<ChiseledSandstoneT>()];
    //         MothlightCount = tileCounts[ModContent.TileType<MothlightBrick>()];
             DarkspaceCount = tileCounts[TileID.Granite];
+            DesertTownCount = tileCounts[TileID.SmoothSandstone];
         }
     }
 }

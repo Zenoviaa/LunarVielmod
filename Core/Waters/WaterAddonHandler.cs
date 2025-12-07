@@ -76,7 +76,6 @@ namespace Stellamod.Core.Waters
                 sb.End();
                 activeAddon.SpritebatchChangeBack();
             }
-
             Main.spriteBatch.Draw(Main.instance.backWaterTarget, Main.sceneBackgroundPos - Main.screenPosition, Color.White);
             if (activeAddon != null)
             {
