@@ -722,8 +722,10 @@ namespace Stellamod.WorldG
         }
         private void WorldGenColosseum(GenerationProgress progress, GameConfiguration configuration)
         {
+            var genRand = WorldGen.genRand;
             progress.Message = "Gintzing all over the desert";
             int desertCenterX = (GenVars.desertHiveLeft + GenVars.desertHiveRight) / 2;
+            int desertSurfaceY = 0;
             int colosseumX = desertCenterX - 71;
             colosseumX += 35;
 
@@ -733,6 +735,7 @@ namespace Stellamod.WorldG
                 colosseumY++;
             }
 
+            desertSurfaceY = colosseumY;
             colosseumY += 40;
             Point colosseumPoint = new Point(colosseumX, colosseumY);
 
@@ -740,12 +743,42 @@ namespace Stellamod.WorldG
             StructureMap desertStructures = new StructureMap();
             VeilGen.GenerateColosseum(colosseumPoint, desertStructures);
 
+            //Basically we're just gonna get random points on the colosseum and palce ribbons
+            //This should look aight?
+            //Hopefully lol
+            int ribbonPlacementRange = 50;
+            int numColosseumRibbons = 18;
+            int ribbons = 0;
+            for(int attempts = 0; attempts < 100000; attempts++)
+            {
+                //Just get some random points tbh, I forgot how big the colosseum is
+                int randX = desertCenterX + genRand.Next(-ribbonPlacementRange, ribbonPlacementRange);
+
+                //We want to use where the desert surface was cause the colosseum is in the gorund
+                int randY = desertSurfaceY + genRand.Next(-100, -10);
+                Point placementPoint = new Point(randX, randY);
+                if (WorldGen.SolidTile(placementPoint))
+                {
+                    int dir = Math.Sign(randX - desertCenterX);
+                    PlaceRibbon(placementPoint, dir, genRand.Next(8, 15));
+                    ribbons++;
+                    if(ribbons >= numColosseumRibbons)
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
             //Ok, since the desert hive is a protected structure, we need to make a local structure map to safely place things on it
             //This is a bit annoying but it'll work
 
 
             //Generate the desert hide out
-            var genRand = WorldGen.genRand;
+
             int desertWidth = GenVars.desertHiveRight - GenVars.desertHiveLeft;
             int halfDesertWidth = desertWidth / 2;
             int minJailY = (int)(Main.worldSurface + 300);

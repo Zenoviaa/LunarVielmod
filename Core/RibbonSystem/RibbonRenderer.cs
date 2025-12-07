@@ -366,8 +366,8 @@ namespace Stellamod.Core.RibbonSystem
         private int _lineIndex;
 
         public int DownSamples => 2;
-        public const int Max_Ribbon_Vertex_Count = 3 * 300;
-        public const int Max_Line_Count = 300;
+        public const int Max_Ribbon_Vertex_Count = 3 * 500;
+        public const int Max_Line_Count = 500;
         public override void Load()
         {
             base.Load();
