@@ -365,7 +365,7 @@ namespace Stellamod.Core.Bases
             {
                 Duration = 15,
                 ThrowDistance = 90,
-                Easing = (float lerpValue) => Easing.SpikeOutExpo(lerpValue),
+                Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
                 Sound = spearSlash2
             });
 
@@ -374,7 +374,7 @@ namespace Stellamod.Core.Bases
             {
                 Duration = 15,
                 ThrowDistance = 90,
-                Easing = (float lerpValue) => Easing.SpikeOutExpo(lerpValue),
+                Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
                 Sound = spearSlash2
             });
 
@@ -413,7 +413,7 @@ namespace Stellamod.Core.Bases
             {
                 Duration = 32,
                 ThrowDistance = 128,
-                Easing = (float lerpValue) => Easing.SpikeOutExpo(lerpValue),
+                Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
                 Sound = spearSlash2
             });
 
@@ -421,7 +421,7 @@ namespace Stellamod.Core.Bases
             {
                 Duration = 60,
                 ThrowDistance = 200,
-                Easing = (float lerpValue) => Easing.SpikeOutExpo(lerpValue),
+                Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
                 Sound = spearSlash2
             });
         }

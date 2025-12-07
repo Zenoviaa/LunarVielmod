@@ -165,7 +165,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                 particle.OuterGlowColor = Color.Black;
                 particle.Duration = Main.rand.NextFloat(12, 25);
                 particle.BaseSize = Main.rand.NextFloat(0.09f, 0.18f);
-                particle.VectorScale *= 0.5f;
+                particle.VectorScale *= 0.25f;
             }
 
         }
@@ -182,6 +182,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
         {
             FunctionRepeatHelper.Repeat(() =>
                 base.ShootBow(player, source, shootParams), repeats: 2, rate: 5);
+
         }
 
         public override void StaminaShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)

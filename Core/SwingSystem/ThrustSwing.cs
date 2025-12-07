@@ -9,6 +9,7 @@ namespace Stellamod.Core.SwingSystem
     {
         private int _dir;
         private bool _hasThrust;
+        private bool _hasPlayedSound;
         public ThrustSwing()
         {
             //Set some default values
@@ -79,8 +80,12 @@ namespace Stellamod.Core.SwingSystem
                 FXUtil.SimpleImpactEffect(position + ThrustParticleOffset * velocity.SafeNormalize(Vector2.Zero), velocity, Main.rand.Next(4, 8), Color.White, Color.LightGray, Color.Black);
                 _hasThrust = true;
             }
+            if (!_hasPlayedSound && time >= 0.35f && Sound != null)
+            {
+                SoundEngine.PlaySound(Sound, position);
+                _hasPlayedSound = true;
+            }
 
-             
             CalculateOffset(time, velocity, out Vector2 offset);
             var projectile = swingProjectile.Projectile;
             projectile.Center = swingProjectile.Owner.Center + offset;

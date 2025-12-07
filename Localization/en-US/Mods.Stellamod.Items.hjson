@@ -2771,7 +2771,7 @@ Infernis: {
 
 StalkersTallon: {
 	DisplayName: Stalkers Tallon
-	Tooltip: Shoots spectral versions of itself	
+	Tooltip: Shoots spectral versions of itself
 	BasicSlash: ""
 	StaminaSlash: Throws out a spectral version of itself that picks up an enemy and explodes them in the sky!
 }
@@ -6834,7 +6834,6 @@ Dunderbustion: {
 		A burst rifle with some serious mechanical malfunctions since it was handmade. 
 		Bullets will bounce once time off of walls, and gain speed!
 		'''
-		
 }
 
 Polaris: {

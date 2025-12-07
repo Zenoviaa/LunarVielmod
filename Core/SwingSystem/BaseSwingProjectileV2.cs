@@ -6,6 +6,7 @@ using Stellamod.Core.Effects;
 using Stellamod.Core.Players;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -130,7 +131,7 @@ namespace Stellamod.Core.SwingSystem
                 bigSwingTrailCache = new Vector2[200];
                 afterImageCache = new Vector2[16];
                 swingRotationCache = new float[16];
-                oldTime = new float[252];
+                oldTime = new float[200];
                 DefineCombo();
                 ISwing swing = GetSwing();
                 swing.SetDirection((int)SwingDirection);
@@ -142,6 +143,7 @@ namespace Stellamod.Core.SwingSystem
 
                     Projectile.localNPCHitCooldown = (int)duration;
                 }
+                Projectile.ResetLocalNPCHitImmunity();
                 _hasInitialized = true;
             }
         }
@@ -173,16 +175,23 @@ namespace Stellamod.Core.SwingSystem
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
+  
             //Check if the sword is colliding, this does a line check instead of terraria default box.
             Texture2D texture = GetTexture();
             float length = texture.Width / 2 + texture.Height / 2;
             length *= 1.6f;
             length += swordBeamLength / 2;
             length += extraLength;
-            Vector2 start = Projectile.Center - Projectile.rotation.ToRotationVector2() * length;
-            Vector2 end = Projectile.Center + Projectile.rotation.ToRotationVector2() * length;
+
+            float rotation = Projectile.rotation;
+
+            //Oopsie
+            //Ourh itboxes were 45 degrees off!!
+            rotation += MathHelper.PiOver4;
+            Vector2 start = Projectile.Center - rotation.ToRotationVector2() * length;
+            Vector2 end = Projectile.Center + rotation.ToRotationVector2() * length;
             float collisionPoint = 0f;
-            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 8, ref collisionPoint);
+            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 12, ref collisionPoint);
         }
 
         public override void AI()
