@@ -4,13 +4,46 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials.Molds;
+using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Melee.Safunai.Alcarish
+namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
 {
+    public class Alcarish : BaseSafunaiItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 16;
+            Item.height = 16;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.useTime = Item.useAnimation = 18;
+            Item.shootSpeed = 1f;
+            Item.knockBack = 4f;
+            Item.UseSound = SoundID.Item116;
+            Item.shoot = ModContent.ProjectileType<AlcarishProj>();
+
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
+            Item.channel = true;
+            Item.autoReuse = true;
+            Item.DamageType = DamageClass.Ranged;
+            Item.damage = 12;
+            Item.rare = ItemRarityID.Blue;
+            Item.value = 10000;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankSafunai>(),
+                material: ModContent.ItemType<GintzlMetal>());
+        }
+    }
     public class AlcarishProj : BaseSafunaiProjectile
     {
         public SlashEffect SlashEffect { get; set; }

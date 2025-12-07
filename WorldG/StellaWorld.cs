@@ -2,6 +2,7 @@
 using ReLogic.Utilities;
 using Stellamod.Content.Areas.Abyss.WeaponsAB;
 using Stellamod.Content.Areas.Collosseum.TilesCL;
+using Stellamod.Content.Areas.Collosseum.WeaponsCL;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
