@@ -17,6 +17,7 @@ using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -106,6 +107,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
         }
 
         private ref float Timer => ref Projectile.ai[0];
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -174,8 +176,8 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             Projectile.width = 24;
             Projectile.height = 24;
             Projectile.penetrate = -1;
-            Projectile.extraUpdates = 1;
             Projectile.friendly = true;
+            Projectile.extraUpdates = 1;
         }
 
         public override void AI()
@@ -217,10 +219,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
 
             Vector2 drawCenter = Projectile.Center - Main.screenPosition;
             drawCenter.Y += ExtraMath.Osc(0f, -4f, speed: 3);
-
-            Color drawColor = Color.White;
-            drawColor.A = 0;
-            spriteBatch.Draw(texture, drawCenter, null, drawColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawCenter, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
 
@@ -261,16 +260,16 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             spearSlash2.PitchVariance = 0.25f;
             Add(new ThrustSwing
             {
-                Duration = 64,
+                Duration = 25,
                 Easing = EasingFunction.Anticipation2,
                 OverrideVelocity = -Vector2.UnitY,
-                ThrowDistance = 128,
+                ThrowDistance = 64,
                 Sound = chargeSound,
             });
 
             Add(new ThrustSwing
             {
-                Duration = 60,
+                Duration = 25,
                 ThrowDistance = 200,
                 Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
                 Sound = spearSlash2
@@ -290,7 +289,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                         SoundEngine.PlaySound(windThrow, Projectile.position);
 
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Vector2.Zero,
-                            ModContent.ProjectileType<GutinierGustBlast>(), Projectile.damage, 2, Projectile.owner);
+                            ModContent.ProjectileType<GutinierGustBlast>(), Projectile.damage, 8, Projectile.owner);
                         _shotProjectile = true;
                     }
                     break;
@@ -301,15 +300,8 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                         windThrow.PitchVariance = 0.3f;
                         SoundEngine.PlaySound(windThrow, Projectile.position);
 
-                        float numDust = 4;
-                        for(float n = 0; n < numDust; n++)
-                        {
-                            Vector2 velocity = Projectile.velocity.RotatedByRandom(0.5f);
-                            velocity *= Main.rand.NextFloat(0.2f, 0.75f);
-                            Particle.NewParticle<EmberParticle>(Projectile.Center, velocity);
-                        }
 
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity,
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity.SafeNormalize(Vector2.Zero) * 15,
                             ModContent.ProjectileType<GutinierSpearThrow>(), Projectile.damage, 2, Projectile.owner);
                         _shotProjectile = true;
                     }
@@ -323,8 +315,8 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             SwingPlayerV2 comboPlayer = Owner.GetModPlayer<SwingPlayerV2>();
             int combo = ComboIndex + 1;
             int dir = comboPlayer.ComboDirection;
-
-            if (ComboIndex < ComboCount)
+      
+            if (combo < ComboCount)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Main.MouseWorld - Owner.Center, Projectile.type, Projectile.damage, Projectile.knockBack,
                             Projectile.owner, ai2: combo, ai1: dir);

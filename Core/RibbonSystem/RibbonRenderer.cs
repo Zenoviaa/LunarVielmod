@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Threading;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
@@ -88,15 +89,18 @@ namespace Stellamod.Core.RibbonSystem
             float windSpeed = Main.windSpeedCurrent;
             float windMove = windSpeed * 4;
             _windOffset += windSpeed * 0.1f;
-            Parallel.For(0, vertices.Length, i =>
-            {
-                float xWind = ExtraMath.Osc(0f, 1f, speed: 0.8f, offset: originalPositions[i].Y * 0.02f + _windOffset) * windSpeed * 12;
-                float yWind = ExtraMath.Osc(0f, 1f, speed: 0.8f, offset: originalPositions[i].Y * 0.02f + _windOffset) * windSpeed * 4;
-                Vector3 windOffset = new Vector3(new Vector2(xWind, yWind), 0);
-                Vector2 originalPosition = originalPositions[i];
-                vertices[i].Position = new Vector3(originalPosition.X, originalPosition.Y, 0) + windOffset;
+            FastParallel.For(0, vertices.Length, delegate (int start, int end, object context) {
+                for (int i = start; i < end; i++)
+                {
+                    float xWind = ExtraMath.Osc(0f, 1f, speed: 0.8f, offset: originalPositions[i].Y * 0.02f + _windOffset) * windSpeed * 12;
+                    float yWind = ExtraMath.Osc(0f, 1f, speed: 0.8f, offset: originalPositions[i].Y * 0.02f + _windOffset) * windSpeed * 4;
+                    Vector3 windOffset = new Vector3(new Vector2(xWind, yWind), 0);
+                    Vector2 originalPosition = originalPositions[i];
+                    vertices[i].Position = new Vector3(originalPosition.X, originalPosition.Y, 0) + windOffset;
+                }
             });
         }
+
         public bool IsConnectedToTile(int i, int j)
         {
             Point tile1 = startPosition.ToTileCoordinates();
@@ -249,13 +253,27 @@ namespace Stellamod.Core.RibbonSystem
         {
             base.PostUpdateEverything();
             ResizeRenderTargets();
+            SimulateRibbons();
+        }
+
+        private void SimulateRibbons()
+        {
+            Vector2 cameraCenterWorld = Main.Camera.Center;
+            Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+            Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+            Rectangle cameraRectangle = new Rectangle((int)cameraTopLeft.X, (int)cameraTopLeft.Y, (int)(cameraBottomRight.X - cameraTopLeft.X), (int)(cameraBottomRight.Y - cameraTopLeft.Y));
             for (int i = 0; i < _ribbons.Count; i++)
             {
                 Ribbon ribbon = _ribbons[i];
-                ribbon.SimulateWind();
+                Vector2 start = ribbon.startPosition;
+                Vector2 end = ribbon.endPosition;
+
+                if (cameraRectangle.Contains(start.ToPoint()) || cameraRectangle.Contains(end.ToPoint()))
+                {
+                    ribbon.SimulateWind();
+                }
             }
         }
-
         public void AddRibbon(Ribbon ribbon)
         {
             _ribbons.Add(ribbon);

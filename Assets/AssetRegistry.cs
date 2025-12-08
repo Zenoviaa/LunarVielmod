@@ -138,6 +138,10 @@ namespace Stellamod.Assets
             }
             public static class Gun
             {
+                public static SoundStyle GrappleWindWhoosh = new SoundStyle($"{Path}Gun/GrappleWindWhoosh");
+                public static SoundStyle GrappleWindUpStart = new SoundStyle($"{Path}Gun/GrappleWindUpStart");
+                public static SoundStyle GrappleShoot = new SoundStyle($"{Path}Gun/GrappleShoot");
+                public static SoundStyle GrappleCharge = new SoundStyle($"{Path}Gun/GrappleCharge");
                 public static SoundStyle GunJam = new SoundStyle($"{Path}Gun/GunJam");
                 public static SoundStyle GunReload = new SoundStyle($"{Path}Gun/GunReload");
                 public static SoundStyle GunToss = new SoundStyle($"{Path}Gun/GunToss");

@@ -364,7 +364,7 @@ namespace Stellamod.Core.Bases
             swings.Add(new ThrustSwing
             {
                 Duration = 15,
-                ThrowDistance = 90,
+                ThrowDistance = 120,
                 Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
                 Sound = spearSlash2
             });
@@ -373,7 +373,7 @@ namespace Stellamod.Core.Bases
             swings.Add(new ThrustSwing
             {
                 Duration = 15,
-                ThrowDistance = 90,
+                ThrowDistance = 120,
                 Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
                 Sound = spearSlash2
             });

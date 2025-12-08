@@ -9864,3 +9864,13 @@ EreshStatueItem: {
 	DisplayName: Eresh Statue Item
 	Tooltip: ""
 }
+
+TestGrappleItem: {
+	DisplayName: Test Grapple Item
+	Tooltip: ""
+}
+
+HuntingSwingHook: {
+	DisplayName: Hunting Swing Hook
+	Tooltip: ""
+}

@@ -8,6 +8,7 @@ namespace Stellamod.Helpers;
 
 public class ForegroundHelper : ModSystem
 {
+    private static readonly List<ForegroundItem> _foregroundItemsToRemove = new List<ForegroundItem>();
     public static readonly List<ForegroundItem> Items = new List<ForegroundItem>();
     public static readonly List<ForegroundItem> PlayerLayerItems = new();
 
@@ -36,13 +37,17 @@ public class ForegroundHelper : ModSystem
     private static void PlayerLayerHook(On_Main.orig_DrawProjectiles orig, Main self)
     {
         orig(self);
+        if (PlayerLayerItems.Count > 0)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
 
-        Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+            foreach (var val in PlayerLayerItems)
+                val.Draw();
 
-        foreach (var val in PlayerLayerItems)
-            val.Draw();
+            spriteBatch.End();
+        }
 
-        Main.spriteBatch.End();
     }
 
 
@@ -64,18 +69,17 @@ public class ForegroundHelper : ModSystem
 
     private static void UpdateSet(List<ForegroundItem> set)
     {
-        List<ForegroundItem> removals = new();
-
+        _foregroundItemsToRemove.Clear();
         foreach (var val in set)
         {
             if (!Main.gamePaused)
                 val.Update();
 
             if (val.killMe)
-                removals.Add(val);
+                _foregroundItemsToRemove.Add(val);
         }
 
-        foreach (var item in removals)
+        foreach (var item in _foregroundItemsToRemove)
             set.Remove(item);
     }
 
@@ -95,13 +99,5 @@ public class ForegroundHelper : ModSystem
             Items.Add(item);
             return Items.IndexOf(item);
         }
-    }
-
-    public static ForegroundItem AddItemDirect(ForegroundItem item, bool forced = false, bool playerLayer = false)
-    {
-        if (!playerLayer)
-            return Items[AddItem(item, forced, playerLayer)];
-        else
-            return PlayerLayerItems[AddItem(item, forced, playerLayer)];
     }
 }

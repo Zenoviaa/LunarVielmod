@@ -45,6 +45,10 @@ namespace Stellamod.Helpers
             source = new Rectangle(0, 0, Texture.Width(), Texture.Height());
         }
 
+        public virtual void SetDefaults()
+        {
+
+        }
         public virtual void Update()
         {
             position += velocity;
