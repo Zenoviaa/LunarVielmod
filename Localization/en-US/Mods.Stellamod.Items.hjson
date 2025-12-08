@@ -9874,3 +9874,8 @@ HuntingSwingHook: {
 	DisplayName: Hunting Swing Hook
 	Tooltip: ""
 }
+
+ShockingTethergun: {
+	DisplayName: Shocking Tethergun
+	Tooltip: ""
+}

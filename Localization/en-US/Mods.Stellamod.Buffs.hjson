@@ -937,3 +937,8 @@ WindingInsourceBuff: {
 	DisplayName: Winding Insource Buff
 	Description: Mods.Stellamod.Buffs.WindingInsourceBuff.Description
 }
+
+TetheredBuff: {
+	DisplayName: Tethered Buff
+	Description: Mods.Stellamod.Buffs.TetheredBuff.Description
+}
