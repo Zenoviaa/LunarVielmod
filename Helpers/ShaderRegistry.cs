@@ -146,6 +146,7 @@ namespace Stellamod.Helpers
             RegisterScreenShader("LunarVeil:DarknessCurve", "Effects/DarknessCurve", EffectPriority.High);
             RegisterScreenShader("LunarVeil:Blur", "Effects/Blur", EffectPriority.High);
             RegisterScreenShader("LunarVeil:BlackWhite", "Effects/BlackWhite");
+            RegisterScreenShader("LunarVeil:Bloom", "Effects/Bloom");
             Mod mod = Stellamod.Instance;
             foreach (var file in mod.GetFileNames())
             {

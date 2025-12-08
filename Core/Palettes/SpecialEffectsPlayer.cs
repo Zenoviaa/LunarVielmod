@@ -63,7 +63,7 @@ namespace Stellamod.Core.Palettes
             _targetVignetteOpacity = 0.5f;
         }
 
-        private void TogglePaletteShader(string name, bool isActive)
+        private void ToggleScreenShader(string name, bool isActive)
         {
             if (!ShaderRegistry.ScreenShaders.Contains(name))
                 return;
@@ -146,7 +146,22 @@ namespace Stellamod.Core.Palettes
                 screenShaderData.Shader.Parameters["ColorSpectrumTexture"].SetValue(PaletteHelper.GetColorSpectrum(palFile));
             }
 
-            TogglePaletteShader(screenShaderName, progress != 0);
+            ToggleScreenShader(screenShaderName, progress != 0);
+        }
+
+        private void ApplyBloom()
+        {
+            string bloomShaderName = "LunarVeil:Bloom";
+            ToggleScreenShader(bloomShaderName, true);
+            ScreenShaderData screenShaderData = FilterManager[bloomShaderName].GetShader();
+            float blurSize = 2;
+            float bloomIntensity = MathHelper.Lerp(0.1f, 2f, Main.MouseScreen.X / (float)Main.screenWidth);
+            float bloomThreshold = MathHelper.Lerp(0.1f, 1f, Main.MouseScreen.Y / (float)Main.screenHeight);
+            bloomIntensity = 0.5f;
+            bloomThreshold = 0.5f;
+            Vector3 bloomVector = new Vector3(blurSize, bloomIntensity, bloomThreshold);
+            screenShaderData.Shader.Parameters["bloom"].SetValue(bloomVector);
+        //    Main.NewText(bloomVector);
         }
         private void SpecialBiomeEffects()
         {
@@ -213,7 +228,9 @@ namespace Stellamod.Core.Palettes
 
             */
             CalculateDarkness();
-            TogglePaletteShader("LunarVeil:DarknessVignette", darkness != 0);
+            ApplyBloom();
+
+            ToggleScreenShader("LunarVeil:DarknessVignette", darkness != 0);
 
 
 
@@ -227,7 +244,7 @@ namespace Stellamod.Core.Palettes
             screenShaderData.UseProgress(darknessCurve);
             screenShaderData.Shader.Parameters["blackCurve"].SetValue(blackCurve);
             screenShaderData.Shader.Parameters["whiteCurve"].SetValue(whiteCurve);
-            TogglePaletteShader("LunarVeil:DarknessCurve", darknessCurve != 0);
+            ToggleScreenShader("LunarVeil:DarknessCurve", darknessCurve != 0);
 
 
             if (hellPaletteActive || desertPaletteActive || desertTopPaletteActive)
@@ -257,7 +274,7 @@ namespace Stellamod.Core.Palettes
 
             screenShaderData = FilterManager["LunarVeil:Blur"].GetShader();
             screenShaderData.UseProgress(blurStrength * _blurLerp);
-            TogglePaletteShader("LunarVeil:Blur", blurActive);
+            ToggleScreenShader("LunarVeil:Blur", blurActive);
 
 
             bool blackWhiteActive = blackWhiteStrength != 0;
@@ -288,7 +305,7 @@ namespace Stellamod.Core.Palettes
             screenShaderData = FilterManager["LunarVeil:BlackWhite"].GetShader();
             screenShaderData.Shader.Parameters["strength"].SetValue(strength);
             screenShaderData.Shader.Parameters["brightnessThreshold"].SetValue(blackWhiteThreshold);
-            TogglePaletteShader("LunarVeil:BlackWhite", _blackWhiteLerp != 0);
+            ToggleScreenShader("LunarVeil:BlackWhite", _blackWhiteLerp != 0);
         }
 
         private void CalculateDarkness()
