@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
@@ -17,6 +18,7 @@ namespace Stellamod.Core.Bases
     public class GrapplePlayer : ModPlayer
     {
         public Vector2? ropePosition;
+        public bool slowFall;
         public override void PreUpdateMovement()
         {
             base.PreUpdateMovement();
@@ -27,6 +29,30 @@ namespace Stellamod.Core.Bases
                 Player.velocity = targetVelocity;
                 ropePosition = null;
             }
+            if (slowFall)
+            {
+                Player.velocity.Y *= 0.95f;
+                slowFall = false;
+            }
+        }
+    }
+
+    public abstract class BaseGrappleGun : ModItem
+    {
+        public virtual float GetGrappleLineTiles()
+        {
+            return 16;
+        }
+
+        public override bool CanShoot(Player player)
+        {
+            return player.ownedProjectileCounts[Item.shoot] == 0;
+        }
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai2: GetGrappleLineTiles() * 16 * 2);
+            return false;
         }
     }
 
@@ -36,11 +62,12 @@ namespace Stellamod.Core.Bases
         private enum AIState
         {
             Shoot,
-            Hook
+            Hook,
+            Retract
         }
 
-        private Vector2 _startPosition;
-        private Vector2 _hookPosition;
+        private float _traveledDistance;
+
         private Vector2[] _grappleLinePoints;
         private Vector2[] GrappleLinePoints
         {
@@ -64,6 +91,8 @@ namespace Stellamod.Core.Bases
             get => (AIState)Projectile.ai[1];
             set => Projectile.ai[1] = (float)value;
         }
+
+        private ref float Distance => ref Projectile.ai[2];
         private Player Owner => Main.player[Projectile.owner];
         public override void SetDefaults()
         {
@@ -75,7 +104,6 @@ namespace Stellamod.Core.Bases
             Projectile.height = 16;
             Projectile.friendly = false;
             Projectile.hostile = false;
-        
         }
 
         public override void AI()
@@ -89,8 +117,14 @@ namespace Stellamod.Core.Bases
                 case AIState.Hook:
                     AI_Hook();
                     break;
+                case AIState.Retract:
+                    AI_Retract();
+                    break;
             }
 
+            Owner.itemAnimation = 2;
+            Owner.itemTime = 2;
+            Owner.heldProj = Projectile.whoAmI;
             VerletChain?.Update();
         }
 
@@ -123,15 +157,25 @@ namespace Stellamod.Core.Bases
             Timer++;
             if (Timer == 1)
             {
-                _startPosition = Projectile.Center;
                 SoundStyle hookSound = AssetRegistry.Sounds.Gun.GrappleShoot;
                 hookSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(hookSound, Projectile.Center);
             }
 
-         
+            if(Timer >= 2)
+            {
+                float distance = Vector2.Distance(Projectile.position, Projectile.oldPosition);
+                _traveledDistance += distance;
+                if(_traveledDistance >= Distance)
+                {
+                    SwitchState(AIState.Retract);
+                }
+            }
+
+            GrapplePlayer grapplePlayer = Owner.GetModPlayer<GrapplePlayer>();
+            grapplePlayer.slowFall = true;
             Projectile.rotation = Projectile.velocity.ToRotation();
-            Projectile.extraUpdates = 1;
+            Projectile.extraUpdates = 2;
         }
 
         public override bool ShouldUpdatePosition()
@@ -141,6 +185,20 @@ namespace Stellamod.Core.Bases
             return base.ShouldUpdatePosition();
         }
 
+        private void AI_Retract()
+        {
+            Timer++;
+            Projectile.extraUpdates = 1;
+            Vector2 directionToPlayer = (Owner.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+            Vector2 velocityToPlayer = directionToPlayer * Projectile.velocity.Length();
+            Projectile.velocity = velocityToPlayer;
+            Projectile.rotation = -Projectile.velocity.ToRotation();
+            float distance = Vector2.Distance(Owner.Center, Projectile.Center);
+            if(distance <= 32 || Timer >= 60)
+            {
+                Projectile.Kill();
+            }
+        }
         private void AI_Hook()
         {
             Projectile.extraUpdates = 0;
@@ -152,6 +210,21 @@ namespace Stellamod.Core.Bases
                 SoundStyle hookSound = AssetRegistry.Sounds.Gun.GrappleCharge;
                 hookSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(hookSound, Projectile.Center);
+
+                float num = 4;
+                for (float f = 0; f < num; f++)
+                {
+                    Vector2 velocity = -Projectile.velocity;
+                    velocity = velocity.RotatedByRandom(0.5f);
+                    velocity *= Main.rand.NextFloat(0.3f, 0.6f);
+                    var particle = FXUtil.GlowStretch(Projectile.Center, velocity);
+                    particle.InnerColor = Color.White;
+                    particle.GlowColor = Color.LightGray;
+                    particle.OuterGlowColor = Color.Black;
+                    particle.Duration = Main.rand.NextFloat(12, 25);
+                    particle.BaseSize = Main.rand.NextFloat(0.09f, 0.18f);
+                    particle.VectorScale *= 0.25f;
+                }
             }
             if (VerletChain == null)
                 return;
@@ -165,6 +238,11 @@ namespace Stellamod.Core.Bases
             GrapplePlayer grapplePlayer = Owner.GetModPlayer<GrapplePlayer>();
             grapplePlayer.ropePosition = ropePosition;
             Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation();
+            Owner.itemRotation = Projectile.rotation;
+            if(Owner.direction == -1)
+            {
+                Owner.itemRotation -= MathHelper.Pi;
+            }
             if (Owner.controlJump)
             {
                 Projectile.Kill();
@@ -214,14 +292,14 @@ namespace Stellamod.Core.Bases
             shader.SamplerState = SamplerState.PointWrap;
 
             float segmentLength = 16;
-            float numPoints = Vector2.Distance(_startPosition, Projectile.Center) / segmentLength;
+            float numPoints = Vector2.Distance(Owner.Center, Projectile.Center) / segmentLength;
             numPoints += 1;
       
             List<Vector2> hookTrail = new List<Vector2>();
             for (float n = 0; n < numPoints; n++)
             {
                 float completionRatio = n / numPoints;
-                Vector2 position = Vector2.Lerp(_startPosition, Projectile.Center, completionRatio);
+                Vector2 position = Vector2.Lerp(Owner.Center, Projectile.Center, completionRatio);
                 hookTrail.Add(position);
             }
 
@@ -235,7 +313,7 @@ namespace Stellamod.Core.Bases
                 return;
 
             var shader = BasicLaserAlphaShader.Instance;
-            shader.LaserTexture = TrailRegistry.GlowTrailNoBlack;
+            shader.LaserTexture = TrailRegistry.LightningTrail2;
             shader.BlendState = BlendState.AlphaBlend;
             shader.SamplerState = SamplerState.PointWrap;
 

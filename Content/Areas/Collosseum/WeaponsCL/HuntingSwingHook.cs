@@ -1,7 +1,11 @@
-﻿using Stellamod.Core.Bases;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Bases;
+using Stellamod.Core.DungeonGeneration;
 using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,7 +17,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
 
     }
 
-    public class HuntingSwingHook : ModItem
+    public class HuntingSwingHook : BaseGrappleGun
     {
         public override void SetStaticDefaults()
         {
@@ -27,12 +31,22 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             Item.damage = 16;
             Item.DamageType = DamageClass.Ranged;
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.useTime = Item.useAnimation = 18;
+            Item.useTime = Item.useAnimation = 36;
             Item.shoot = ModContent.ProjectileType<HuntingSwingHookLine>();
-            Item.shootSpeed = 15;
+            Item.shootSpeed = 20;
             Item.autoReuse = false;
         }
+        public override float GetGrappleLineTiles()
+        {
+            return 24;
+        }
 
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>(Texture + "_Hook").Value;
+            spriteBatch.Draw(texture, position, null, Color.White, 0, texture.Size() / 2f, scale, SpriteEffects.None, 0);
+            return false;
+        }
         public override void AddRecipes()
         {
             base.AddRecipes();
