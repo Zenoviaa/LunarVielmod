@@ -9884,5 +9884,10 @@ PharaohsBlade: {
 	BasicSlash: Shoots little sand wind tornados on hits of the combo
 	StaminaSlash: Creates a larger and more powerful dustnado that consumes mana to stay alive!
 	DisplayName: Pharaoh's Blade
-	Tooltip: "I'm a Pharaoh now!"
+	Tooltip: I'm a Pharaoh now!
+}
+
+ZuisGiftedWand: {
+	DisplayName: Zuis Gifted Wand
+	Tooltip: ""
 }

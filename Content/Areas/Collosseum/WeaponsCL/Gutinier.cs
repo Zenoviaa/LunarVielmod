@@ -261,7 +261,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             Add(new ThrustSwing
             {
                 Duration = 25,
-                Easing = EasingFunction.Anticipation2,
+                Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
                 OverrideVelocity = -Vector2.UnitY,
                 ThrowDistance = 64,
                 Sound = chargeSound,

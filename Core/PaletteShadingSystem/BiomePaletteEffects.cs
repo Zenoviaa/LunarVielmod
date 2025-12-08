@@ -94,7 +94,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.VanillaShader;
         public override bool IsActive(Player player)
         {
-            if (player.ZoneUndergroundDesert)
+            if (player.ZoneUndergroundDesert && !Main.LocalPlayer.ZoneOverworldHeight)
                 return true;
             return false;
         }

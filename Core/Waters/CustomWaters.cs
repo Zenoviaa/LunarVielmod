@@ -33,7 +33,14 @@ namespace Stellamod.Core.Waters
         public static ScreenTarget BackTarget = new ScreenTarget(RenderFront, () => Biomes, 1, (a) => Main.waterTarget.Size());
         public static ScreenTarget FrontTarget = new ScreenTarget(RenderBack, () => Biomes, 1, (a) => Main.instance.backWaterTarget.Size());
 
-        public override bool Visible => true;
+        public override bool Visible
+        {
+            get
+            {
+
+                return true;
+            }
+        }
         public override Texture2D BlockTexture(Texture2D normal, int x, int y)
         {
             return normal;

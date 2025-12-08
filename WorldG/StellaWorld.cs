@@ -5,6 +5,7 @@ using Stellamod.Content.Areas.Collosseum.TilesCL;
 using Stellamod.Content.Areas.Collosseum.WeaponsCL;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Areas.SpringHills.AccSH;
+using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.DungeonGeneration;
@@ -32,6 +33,7 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
+using Stellamod.NPCs;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
@@ -175,18 +177,19 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 8, new PassLegacy("World Gen Stone Golem Cave", WorldGenStoneGolemCave));
 
                 tasks.Insert(CathedralGen2 + 9, new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
-                tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Manor", WorldGenManor));
-                tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
-                tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
-                tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
-                tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
-                tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
-                tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Dock", WorldGenDock));
-                tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Evil", WorldGenEvil));
-                tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
-                tasks.Insert(CathedralGen2 + 19, new PassLegacy("Grassing Caves", WorldGenGrassPass));
-                tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
-                tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+                tasks.Insert(CathedralGen2 + 10, new PassLegacy("World Gen Rysa House", WorldGenRysaHouse));
+                tasks.Insert(CathedralGen2 + 11, new PassLegacy("World Gen Manor", WorldGenManor));
+                tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
+                tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
+                tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
+                tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
+                tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
+                tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Dock", WorldGenDock));
+                tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Evil", WorldGenEvil));
+                tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
+                tasks.Insert(CathedralGen2 + 20, new PassLegacy("Grassing Caves", WorldGenGrassPass));
+                tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
+                tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
             }
         }
 
@@ -2647,6 +2650,146 @@ namespace Stellamod.WorldG
 
         #region Small Surface Structures
 
+        private void AddChestLoot(Chest chest, List<(int type, int stack)> itemsToAdd)
+        {
+            // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+            int chestItemIndex = 0;
+            foreach (var itemToAdd in itemsToAdd)
+            {
+                Item item = new Item();
+                item.SetDefaults(itemToAdd.type);
+                item.stack = itemToAdd.stack;
+                chest.item[chestItemIndex] = item;
+                chestItemIndex++;
+                if (chestItemIndex >= 40)
+                    break; // Make sure not to exceed the capacity of the chest
+            }
+        }
+
+        private void GenerateFallingWoodenBeams(Rectangle structureRectangle, Point Loc)
+        {
+            structureRectangle.Location = Loc;
+            for (int beamX = structureRectangle.Location.X;
+                beamX < structureRectangle.Location.X + structureRectangle.Width; beamX += 4)
+            {
+                int beamY = structureRectangle.Location.Y;
+                int solidCount = 0;
+                while (solidCount < 5)
+                {
+                    if (!WorldGen.SolidTile(beamX, beamY))
+                    {
+                        WorldGen.PlaceTile(beamX, beamY, TileID.WoodenBeam);
+                    }
+                    else
+                    {
+                        solidCount++;
+                    }
+                    beamY++;
+                }
+            }
+        }
+        private void GenerateFallingWoodenBeams(Rectangle structureRectangle, Point Loc, int onTileType)
+        {
+            //Need to substract the height of the rectangle here because of how we place structures
+            //They place from the bottom left.
+            structureRectangle.Location = Loc - new Point(0, structureRectangle.Height);
+            List<Point> tilesToFallFrom = new List<Point>();
+            for (int x = structureRectangle.Location.X;
+              x < structureRectangle.Location.X + structureRectangle.Width; x++)
+            {
+                for(int y = structureRectangle.Location.Y; y < structureRectangle.Location.Y + structureRectangle.Height; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    if(tile.HasTile && tile.TileType == onTileType)
+                    {
+                        tilesToFallFrom.Add(new Point(x, y));
+                    }
+                }
+            }
+                
+            foreach(var point in tilesToFallFrom)
+            {
+                int beamX = point.X;
+                int beamY = point.Y;
+                int solidCount = 0;
+                while (solidCount < 5)
+                {
+                    if (!WorldGen.SolidTile(beamX, beamY))
+                    {
+                        WorldGen.PlaceTile(beamX, beamY, TileID.WoodenBeam);
+                    }
+                    else
+                    {
+                        solidCount++;
+                    }
+                    beamY++;
+                }
+            }
+        }
+        private void WorldGenRysaHouse(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Rysa is Moving In!";
+            bool placed = false;
+            int attempts = 0;
+            var genRand = WorldGen.genRand;
+            int[] tileBlend = new int[]
+            {
+                TileID.RubyGemspark
+            };
+            while (!placed && attempts++ < 10000000)
+            {
+                //Left Side Placement
+                int smx = genRand.Next(400, (Main.maxTilesX / 3));
+
+                //Right Side Placement
+                if (genRand.NextBool(2))
+                {
+                    smx = genRand.Next((Main.maxTilesX) - (Main.maxTilesX / 3), (Main.maxTilesX) - 200);
+                }
+
+                int smy = ((int)(Main.worldSurface - 250));
+
+                // We go down until we hit a solid tile or go under the world's surface
+                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
+                {
+                    smy++;
+                }
+
+                // If we went under the world's surface, try again
+                if (smy > Main.worldSurface - 20)
+                {
+                    continue;
+                }
+
+                Tile tile = Main.tile[smx, smy];
+                // If the type of the tile we are placing the tower on doesn't match what we want, try again
+                if (!(tile.TileType == TileID.Dirt
+                    || tile.TileType == TileID.Stone
+                    || tile.TileType == TileID.Grass))
+                {
+                    continue;
+                }
+
+                Point Loc = new Point(smx, smy + 1);
+                string structure = "Structures/Rysahouse";
+                Rectangle rectangle = Structurizer.ReadRectangle(structure);
+                int[] ChestIndexs = Structurizer.ReadStruct(Loc, structure, tileBlend);
+                GenerateFallingWoodenBeams(rectangle, Loc);
+
+                foreach (int chestIndex in ChestIndexs)
+                {
+                    if (chestIndex == -1)
+                        continue;
+                    var chest = Main.chest[chestIndex];
+                    var itemsToAdd = new List<(int type, int stack)>();
+                    itemsToAdd.Add((ModContent.ItemType<ZuisGiftedWand>(), 1));
+                    AddChestLoot(chest, itemsToAdd);
+                }
+
+                placed = true;
+            }
+        }
+
         private void WorldGenStoneGolemCave(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Stone Golem Cave";
@@ -2673,7 +2816,7 @@ namespace Stellamod.WorldG
                 string path = "Structures/Overworld/StoneGolemCave";
 
 
-                var rectangle = Structurizer.ReadRectangle(path);
+                var stoneGolemCaveRectangle = Structurizer.ReadRectangle(path);
                 int[] ChestIndexs = Structurizer.ReadStruct(Loc, path, null);
                 Structurizer.ProtectStructure(Loc, path);
                 placed = true;
@@ -2685,6 +2828,27 @@ namespace Stellamod.WorldG
                 spawnLocation.Y -= 44;
                 Main.spawnTileX = spawnLocation.X;
                 Main.spawnTileY = spawnLocation.Y;
+
+                //Place the Training Grounds
+                string trainingGroundsPath = "Structures/TrainingGrounds";
+                Point trainingGroundsSpawnPoint = Loc - new Point(0, stoneGolemCaveRectangle.Height);
+                ChestIndexs = Structurizer.ReadStruct(trainingGroundsSpawnPoint, trainingGroundsPath, null);
+                Structurizer.ProtectStructure(trainingGroundsSpawnPoint, path);
+
+                //Place the Jiitas Bridge
+                string jiitasPath = "Structures/TrainingbridgeJiitas";
+                var jiitasRectangle = Structurizer.ReadRectangle(jiitasPath);
+                
+                
+                Point jiitasSpawnPoint = trainingGroundsSpawnPoint - new Point(jiitasRectangle.Width, 0);
+                
+                //Offset it down by 10 tiles so it's level with the training ground
+                jiitasSpawnPoint.Y += 10;
+
+                ChestIndexs = Structurizer.ReadStruct(jiitasSpawnPoint, jiitasPath, null);
+                Structurizer.ProtectStructure(jiitasSpawnPoint, path);
+                GenerateFallingWoodenBeams(jiitasRectangle, jiitasSpawnPoint, TileID.BoneBlock);
+
             }
         }
 

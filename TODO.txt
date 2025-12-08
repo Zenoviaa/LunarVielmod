@@ -3,14 +3,19 @@ KEY:
 	# = Tested but needs approval
 
 
-Pharaoh's Blade - Sword that shoots little sand wind tornados on hits of the combo
-Stamina - 2 stamina, A small gust starts from the sword and continues to constant wind gust forward like an artifact, and uses mana for how long it stays
 
+Place Trainining Grounds and Bridge
 Cursed Coin artifact - Shoots a coin that ricochets off of enemies and walls to create a really fast moving projectile, the more it bounces, the more damage it does 40 mana
 
 Illurian Soaker Insource - Summons 3 balls, they float around you that can reduce all incoming damage by half for 3 hits (120 seconds) 
 
 Dusty Chakrams
+
+Hypnotized Soul Fix
+
+Wonderous Darkspace light lerp
+
+
 
 
 Locations! I - Find the gintze guy (100 Ginzte Metal)

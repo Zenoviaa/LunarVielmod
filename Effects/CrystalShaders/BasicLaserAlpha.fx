@@ -44,7 +44,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float2 offset = float2(time * -0.05, 0.0);
     float2 laserCoords = coords * tiling + offset;
     float4 sampleColor = tex2D(laserTex, laserCoords);
-    return sampleColor;
+    return sampleColor * input.Color;
 }
 
 technique Technique1

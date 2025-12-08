@@ -51,6 +51,7 @@ namespace Stellamod.Content.Areas.Collosseum.NPCsCL
             NPC.noGravity = false;
             NPC.noTileCollide = false;
             NPC.dontTakeDamage = true;
+            NPC.friendly = true;
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)

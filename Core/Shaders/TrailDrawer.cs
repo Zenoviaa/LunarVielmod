@@ -128,6 +128,7 @@ namespace Stellamod.Core.Shaders
             }
         }
 
+
         private static List<VertexPositionColorTexture> CalculateVertices(Vector2[] oldPos,
             float[] oldRot,
             Func<float, Color> colorFunc,
