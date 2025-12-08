@@ -36,8 +36,6 @@ namespace Stellamod.Backgrounds
         public override int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b)
         {
             parallax = 0.3;
-            scale *= 0.7f;
-            b -= 100;
             return BackgroundTextureLoader.GetBackgroundSlot("Stellamod/Assets/Textures/Backgrounds/FableBiomeBackground");
         }
     }

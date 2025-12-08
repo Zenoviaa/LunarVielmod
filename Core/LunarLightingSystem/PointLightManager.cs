@@ -7,6 +7,7 @@ using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Terraria;
 using Terraria.Graphics.Light;
 using Terraria.ID;
@@ -149,6 +150,10 @@ namespace Stellamod.Core.LunarLightingSystem
             Point topLeftTile = cameraTopLeft.ToTileCoordinates();
             Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
 
+            LightingEngine lightingEngine = typeof(Lighting).GetField("_activeEngine", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null) as LightingEngine;
+            TileLightScanner tileScanner = typeof(LightingEngine).GetField("_tileScanner", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as TileLightScanner;
+
+            int numTilesProducingLight = 0;
             for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
             {
                 for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
@@ -156,70 +161,39 @@ namespace Stellamod.Core.LunarLightingSystem
                     if (!WorldGen.InWorld(x, y))
                         continue;
                     Tile tile = Main.tile[x, y];
+            
+                    if (!Main.tileLighted[tile.TileType])
+                        continue;
                     Point lightTilePoint = new Point(x, y);
-                    if (LightingSets.PointLitTiles[tile.TileType].A > 0)
-                    {
 
-                        if (!EmittingTiles[lightTilePoint.X, lightTilePoint.Y] )
-                        {
-                            Vector2 position = lightTilePoint.ToWorldCoordinates();
-                            Color lightColor = LightingSets.PointLitTiles[tile.TileType];
-                            lightColor.A = 1;
-                            PointLightData pointLightData = new PointLightData(lightColor, position, 0.5f, 800);
-                            int index = AddPointLight(pointLightData);
-                            if (index == -1)
-                                continue;
-                            EmittingTiles[lightTilePoint.X, lightTilePoint.Y] = true;
-                            LightPoints[index] = lightTilePoint;
-                        }
+  
+                    Vector3 color;
+                    tileScanner.GetTileLight(x, y, out color);
+                 
+                    float luminosity = color.X + color.Y + color.Z / 3f;
+
+                    if (luminosity < 1f)
+                        continue;
+                    numTilesProducingLight++;
+
+                    if (!EmittingTiles[lightTilePoint.X, lightTilePoint.Y] && luminosity >= 1f)
+                    {
+                      
+                        Vector2 position = lightTilePoint.ToWorldCoordinates();
+                        Color lightColor = new Color(color);
+                        lightColor.A = 1;
+                        PointLightData pointLightData = new PointLightData(lightColor, position, 0.5f, 800);
+                        int index = AddPointLight(pointLightData);
+                        if (index == -1)
+                            continue;
+                        EmittingTiles[lightTilePoint.X, lightTilePoint.Y] = true;
+                        LightPoints[index] = lightTilePoint;
                     }
                 }
             }
-        }
-        private void AddTilePointLight(On_Lighting.orig_AddLight_int_int_float_float_float orig, int i, int j, float r, float g, float b)
-        {
-            /*
-            TileAmbientLight tileAmbientLight = new TileAmbientLight();
-            tileAmbientLight.position = new Vector2(i * 16, j * 16);
-            tileAmbientLight.color = new Color(r, g, b);
-            AddAmbientLight(tileAmbientLight);*/
+
         }
 
-        private void AddTorchPointLight(Point coordinates, Color lightColor)
-        {
-       
-
-            Tile tile = Main.tile[coordinates.X, coordinates.Y];
-            if (LightingSets.PointLitTiles[tile.TileType].A > 0)
-            {
-                if (!EmittingTiles[coordinates.X, coordinates.Y])
-                {
-                    Vector2 position = coordinates.ToWorldCoordinates();
-                    PointLightData pointLightData = new PointLightData(lightColor, position, 0.5f, 800);
-                    int index = AddPointLight(pointLightData);
-                    if (index == -1)
-                        return;
-                    EmittingTiles[coordinates.X, coordinates.Y] = true;
-                    LightPoints[index] = coordinates;
-                }
-            }
-        }
-
-        private void AddTorchPointLight(On_Lighting.orig_AddLight_Vector2_int orig, Vector2 position, int torchID)
-        {
-            Point tileCoordinates = position.ToTileCoordinates();
-            TorchID.TorchColor(torchID, out float r, out float g, out float b);
-            Color torchColor = new Color(r, g, b);
-            AddTorchPointLight(tileCoordinates, torchColor);
-        }
-
-        private void AddTorchPointLight(On_Lighting.orig_AddLight_int_int_int_float orig, int i, int j, int torchID, float lightAmount)
-        {
-            Point tilePoint = new Point(i, j);
-            TorchID.TorchColor(torchID, out float r, out float g, out float b);
-            Color torchColor = new Color(r, g, b);
-            AddTorchPointLight(tilePoint, torchColor);
-        }
 
         public static Vector3 GetPlayerLightColor()
         {
@@ -420,7 +394,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private static bool IsEmittingLight(int i, int j)
         {
             Tile tile = Main.tile[i, j];
-            return tile.HasTile && TileID.Sets.Torch[tile.TileType];
+            return tile.HasTile && Main.tileLighted[tile.TileType];
         }
 
         public static void ProcessLight(int index)

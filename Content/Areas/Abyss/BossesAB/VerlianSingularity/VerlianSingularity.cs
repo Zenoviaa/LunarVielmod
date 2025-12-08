@@ -487,6 +487,8 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
                 SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
                 fallSystem.inSpace = true;
+                RoyalCapitalStars stars = ModContent.GetInstance<RoyalCapitalStars>();
+                stars.inStarField = true;
             }
 
             if (NPC.rotation == 0f)
