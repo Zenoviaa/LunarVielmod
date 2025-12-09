@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Effects;
+using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Trailing;
+using Stellamod.Visual.Particles;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -214,7 +217,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             NPC.direction = NPC.velocity.X < 0 ? -1 : 1;
             NPC.rotation = NPC.velocity.X * 0.02f;
             NPC.spriteDirection = -NPC.direction;
-
+            NPC.noTileCollide = true;
             NPC.TargetClosest();
             if (NPC.HasValidTarget && Vector2.Distance(NPC.Center, Main.player[NPC.target].Center) < 180)
             {
@@ -243,6 +246,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             NPC.direction = NPC.velocity.X < 0 ? -1 : 1;
             NPC.spriteDirection = -NPC.direction;
             NPC.rotation = NPC.velocity.X * 0.01f;
+            NPC.noTileCollide = true;
             if (!NPC.HasValidTarget)
             {
                 SwitchState(AIState.Idle);
@@ -258,7 +262,9 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
         {
             Timer++;
             OutlineColor = Color.Lerp(OutlineColor, Color.Red, 0.1f);
+            NPC.noTileCollide = false;
 
+            
             if (!NPC.HasValidTarget)
             {
                 SwitchState(AIState.Idle);
@@ -267,10 +273,30 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             {
                 Player target = Main.player[NPC.target];
                 HypnotizedSoulModPlayer hypnotizedSoulModPlayer = target.GetModPlayer<HypnotizedSoulModPlayer>();
-                hypnotizedSoulModPlayer.targetSuckPosition = NPC.Center;
-                NPC.velocity = Vector2.Lerp(NPC.velocity, -Vector2.UnitY * 1f, 0.1f);
-                //  NPC.Center = target.Center + _suckOffset;
-                NPC.spriteDirection = -NPC.direction;
+                hypnotizedSoulModPlayer.targetSuckPosition = NPC.Center + Vector2.UnitY * 32;
+
+                if(Timer % 8 == 0)
+                {
+                    Vector2 spawnPoint = hypnotizedSoulModPlayer.targetSuckPosition.Value + Main.rand.NextVector2CircularEdge(128, 128);
+                    Vector2 velocity = (hypnotizedSoulModPlayer.targetSuckPosition.Value - spawnPoint) * 0.1f;
+                    var p = FXUtil.GlowStretch(spawnPoint, velocity);
+    
+                    p.VectorScale *= 0.5f;
+                }
+
+
+                if(Timer >= 200)
+                {
+                //    NPC.velocity *= 0.5f;
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, Vector2.UnitY * MathF.Sin(Timer * 0.1f), 0.1f);
+                }
+                else
+                {
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, -Vector2.UnitY * 1f + Vector2.UnitY * MathF.Sin(Timer * 0.1f), 0.1f);
+                }
+
+                    //  NPC.Center = target.Center + _suckOffset;
+                    NPC.spriteDirection = -NPC.direction;
             }
         }
 
