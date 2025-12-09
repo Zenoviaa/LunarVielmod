@@ -25,12 +25,11 @@ namespace Stellamod.Helpers
         public static string SelectedStructure = string.Empty;
         public static Rectangle ReadRectangle(string Path)
         {
-            using var stream = Mod.GetFileStream(Path + ".str");
-            using var reader = new BinaryReader(stream, Encoding.UTF8, false);
-            int width = reader.ReadInt32();
-            int height = reader.ReadInt32();
-            Rectangle rectangle = new Rectangle(0, 0, width, height);
-            return rectangle;
+            string path = Path;
+            if (!path.Contains(".str"))
+                path += ".str";
+            using var stream = Mod.GetFileStream(path);
+            return ReadRectangle(stream);
         }
         public static Rectangle ReadRectangle(Stream stream)
         {
@@ -362,6 +361,30 @@ namespace Stellamod.Helpers
             return paths.ToArray();
         }
 
+        private static void ClearTrees(Point bottomLeft, string path)
+        {
+            Rectangle rectangle = ReadRectangle(path);
+            rectangle.Location = bottomLeft - new Point(0, rectangle.Height);
+
+            int startX = rectangle.Location.X;
+            int endX = startX + rectangle.Width;
+            int startY = rectangle.Location.Y;
+            int endY = rectangle.Location.Y + rectangle.Height;
+            for (int x = startX; x < endX; x++)
+            {
+                for (int y = startY; y < endY; y++)
+                {
+                    if (!WorldGen.InWorld(x, y))
+                        continue;
+
+                    Tile tile = Main.tile[x, y];
+                    if (TileID.Sets.IsATreeTrunk[tile.TileType])
+                    {  
+                        WorldGen.KillTile(x, y, noItem: true);
+                    }
+                }
+            }
+        }
         /// <summary>
         /// reads a .str file and places its structure
         /// </summary>
@@ -370,9 +393,12 @@ namespace Stellamod.Helpers
         /// <returns>A array of ints, corrsponding to the index of chests placed in the struct, from bottom left to top right</returns>
         public static int[] ReadStruct(Point BottomLeft, string Path, int[] tileBlend = null)
         {
+            ClearTrees(BottomLeft, Path);
             using Stream stream = Mod.GetFileStream(Path + ".str");
             OnStructPlace?.Invoke(BottomLeft, Path);
+        
             int[] indices = ReadStruct(stream, BottomLeft, tileBlend);
+
             TriggerStructurizer.ReadStruct(Path, BottomLeft);
             TileEntityStructurizer.ReadStruct(Path, BottomLeft);
             DungeonGenerationHelper.ReadStruct(Path, BottomLeft);
@@ -380,16 +406,14 @@ namespace Stellamod.Helpers
 
         }
 
-        public static int[] ReadSavedStruct(Point BottomLeft, int[] tileBlend = null)
-        {
-            using FileStream stream = File.Open(Main.SavePath + "/SavedStruct.str", FileMode.Open);
-            return ReadStruct(stream, BottomLeft, tileBlend);
-        }
         public static int[] ReadSavedStruct(string filePath, Point BottomLeft, int[] tileBlend = null)
         {
+   
             if (!filePath.Contains(".str"))
                 filePath += ".str";
             string savedPath = Main.SavePath + "/ModSources/" + Mod.Name + "/" + filePath;
+
+            ClearTrees(BottomLeft, savedPath);
             using FileStream stream = File.Open(savedPath, FileMode.Open);
             return ReadStruct(stream, BottomLeft, tileBlend);
         }
@@ -406,17 +430,17 @@ namespace Stellamod.Helpers
             using FileStream stream = File.Open(savedPath, FileMode.Open);
             return ReadRectangle(stream);
         }
-
-        public static Rectangle ReadSavedRectangle()
+        public static Rectangle ReadRectangleDirect(string filePath)
         {
-            if (!File.Exists(Main.SavePath + "/SavedStruct.str"))
+            if (!File.Exists(filePath))
             {
                 return new Rectangle(0, 0, 1, 1);
             }
 
-            using FileStream stream = File.Open(Main.SavePath + "/SavedStruct.str", FileMode.Open);
+            using FileStream stream = File.Open(filePath, FileMode.Open);
             return ReadRectangle(stream);
         }
+
 
         public static int ReadModWall(BinaryReader reader)
         {

@@ -117,14 +117,14 @@ namespace Stellamod.WorldG
             tasks.Insert(iceGen + 2, new PassLegacy("Ice Clumping", IceClump));
             //  tasks.Insert(iceGen + 3, new PassLegacy("Ice Housing 1", InGroundIceHouses));
             //tasks.Insert(iceGen + 4, new PassLegacy("Ice Housing 2", RuneBridges));
-            tasks.Insert(iceGen + 3, new PassLegacy("Ice Housing 3", SurfaceIceHouses));
-            tasks.Insert(iceGen + 4, new PassLegacy("Ice Spikes", MakingIcyRandomness));
-            tasks.Insert(iceGen + 5, new PassLegacy("World Gen Abysm", WorldGenAbysm));
-            tasks.Insert(iceGen + 6, new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
-            tasks.Insert(iceGen + 7, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-            tasks.Insert(iceGen + 8, new PassLegacy("Icey Caverns", WorldGenIceCaverns));
-            tasks.Insert(iceGen + 9, new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
-
+    
+            tasks.Insert(iceGen + 3, new PassLegacy("Ice Spikes", MakingIcyRandomness));
+            tasks.Insert(iceGen + 4, new PassLegacy("World Gen Abysm", WorldGenAbysm));
+            tasks.Insert(iceGen + 5, new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
+            tasks.Insert(iceGen + 6, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+            tasks.Insert(iceGen + 7, new PassLegacy("Icey Caverns", WorldGenIceCaverns));
+            tasks.Insert(iceGen + 8, new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
+            tasks.Insert(iceGen + 9, new PassLegacy("Ice Housing 3", SurfaceIceHouses));
             int shimmerGen = tasks.FindIndex(x => x.Name.Equals("Shimmer"));
             if (shimmerGen != -1)
             {
@@ -192,6 +192,7 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
             }
         }
+
 
         private void InitializePyr(GenerationProgress progress, GameConfiguration configuration)
         {
@@ -2864,7 +2865,9 @@ namespace Stellamod.WorldG
             while (!placed && attempts++ < 10000000)
             {
                 int centerX = Main.maxTilesX / 2;
-                int smx = WorldGen.genRand.Next(centerX - 1000, centerX + 1000);
+                int maxRange = attempts;
+                maxRange = Math.Min(1000, maxRange);
+                int smx = WorldGen.genRand.Next(centerX - maxRange, centerX + maxRange);
                 int smy = ((int)(Main.worldSurface - 200));
 
                 // We go down until we hit a solid tile or go under the world's surface
@@ -3037,7 +3040,7 @@ namespace Stellamod.WorldG
             for (int a = 0; a < maxAttemptCount; a++)
             {
                 // Select a place in the first 6th of the world, avoiding the oceans
-                int x = GenVars.snowOriginRight;
+                int x = GenVars.snowOriginRight + WorldGen.genRand.Next(0, 300);
                 int y = (int)(Main.worldSurface - 200);
                 Point tileToPlaceOn = FallToSolidTile(x, y);
                 int cathedralY = tileToPlaceOn.Y;

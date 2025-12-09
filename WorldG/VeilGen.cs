@@ -39,13 +39,15 @@ namespace Stellamod.WorldG
 
         public override bool? UseItem(Player player)
         {
-        //    GenerateDungeon();
+            GenerateDungeon();
             return base.UseItem(player);
         }
 
         public static void GenerateDungeon()
         {
-
+            int tileX = (int)Main.MouseWorld.X / 16;
+            int tileY = (int)Main.MouseWorld.Y / 16;
+            WorldGen.KillTile(tileX, tileY, noItem: true);
         }
 
         private void GenerateSkullrunnerCircle()
