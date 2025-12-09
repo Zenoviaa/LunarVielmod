@@ -1,18 +1,11 @@
-﻿using Accord.Math.Geometry;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Threading;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Trails;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -45,7 +38,7 @@ namespace Stellamod.Core.WindLineSystem
         {
             base.Load();
             _windLines = new WindLine[Max_WindLine_Count];
-            for(int i = 0; i < Max_WindLine_Count; i++)
+            for (int i = 0; i < Max_WindLine_Count; i++)
             {
                 _windLines[i] = new WindLine(trailCacheLength: 24);
             }
@@ -146,17 +139,17 @@ namespace Stellamod.Core.WindLineSystem
             {
 
                 Vector2 pos = Main.Camera.Center;
-   
+
 
                 float height = Main.screenHeight / 2f;
                 pos.Y += Main.rand.NextFloat(-height, height);
 
 
-                float edgeOffset = Main.screenWidth / 2f; 
+                float edgeOffset = Main.screenWidth / 2f;
                 Vector2 initialWindVelocity = Main.windSpeedCurrent * Vector2.UnitX * 40;
                 edgeOffset *= -MathF.Sign(Main.windSpeedCurrent);
                 pos.X += edgeOffset;
-    
+
                 NewWindLine(pos, initialWindVelocity);
             }
         }
@@ -165,14 +158,14 @@ namespace Stellamod.Core.WindLineSystem
 
         private void UpdateWindLines()
         {
-            for(int i = 0; i < _windLines.Length; i++)
+            for (int i = 0; i < _windLines.Length; i++)
             {
                 WindLine line = _windLines[i];
                 //Don't update lines that aren't doing anything
                 if (!line.active)
                     continue;
 
-   
+
                 for (int j = line.oldPosition.Length - 1; j > 0; j--)
                 {
                     line.oldPosition[j] = line.oldPosition[j - 1];
@@ -182,7 +175,7 @@ namespace Stellamod.Core.WindLineSystem
                 line.position += line.velocity;
                 line.velocity.Y += MathF.Sin(Main.GlobalTimeWrappedHourly * 4 + i) * 0.05f;
                 line.lifetime--;
-                if(line.lifetime <= 0)
+                if (line.lifetime <= 0)
                 {
                     line.active = false;
                 }
@@ -194,7 +187,7 @@ namespace Stellamod.Core.WindLineSystem
         {
             return Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(completionRatio)) * 0.3f;
         }
-        
+
         public float GetTrailWidth(float completionRatio)
         {
             return MathHelper.Lerp(0f, 4, EasingFunction.QuadraticBump(completionRatio));
@@ -222,7 +215,7 @@ namespace Stellamod.Core.WindLineSystem
                 if (!line.active)
                     continue;
 
-                for(int j = 0; j < line.oldPosition.Length - 1; j++)
+                for (int j = 0; j < line.oldPosition.Length - 1; j++)
                 {
                     float uv = j / (float)line.oldPosition.Length;
                     float uv2 = (j + 1) / (float)line.oldPosition.Length;
@@ -297,7 +290,7 @@ namespace Stellamod.Core.WindLineSystem
             if (windLine == null)
                 return;
             windLine.position = initialPosition;
-            for(int i = 0; i < windLine.oldPosition.Length; i++)
+            for (int i = 0; i < windLine.oldPosition.Length; i++)
             {
                 windLine.oldPosition[i] = windLine.position;
             }
