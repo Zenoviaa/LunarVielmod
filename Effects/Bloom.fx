@@ -21,16 +21,13 @@ float4 uSourceRect;
 float2 uZoom;
 float3 bloom;
 
-float3 getTexure(float2 coords)
-{
-    return tex2D(uImage0, coords).rgb;
-}
 
 float4 getCoords(float2 coords, float mipBias)
 {
     float4 newCoords = float4(coords.x, coords.y, 0.0, mipBias);
     return newCoords;
 }
+
 float3 calculateBlur(float2 coords, float mipBias)
 {
 
