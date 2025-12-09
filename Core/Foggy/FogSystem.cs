@@ -113,7 +113,7 @@ namespace Stellamod.Core.Foggy
                 Fog fog = kvp.Value;
                 fog.Update();
                 float dist = Vector2.Distance(fog.position, Main.LocalPlayer.position);
-                if (dist > 1000)
+                if (dist > 2000)
                 {
                     _fogsToRemove.Add(fog);
                 }

@@ -84,8 +84,8 @@ namespace Stellamod.Content.Areas.Dock.BossesDK.Jiitas
 
         public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {
-            spawner.structureToSpawnIn = "Struct/Overworld/TheDock";
-            spawner.spawnTileOffset = new Point(67, -12);
+            spawner.structureToSpawnIn = "Structures/TrainingbridgeJiitas";
+            spawner.spawnTileOffset = new Point(60, -30);
         }
 
         public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
