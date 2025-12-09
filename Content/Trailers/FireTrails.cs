@@ -25,7 +25,7 @@ namespace Stellamod.Content.Trailers
         public override Color ColorFunction(float completionRatio)
         {
             Color lerp1 = Color.Lerp(Color.OrangeRed, Color.RosyBrown, completionRatio);
-            return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(completionRatio)) * 0.5f;
+            return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(completionRatio));
         }
     }
 }

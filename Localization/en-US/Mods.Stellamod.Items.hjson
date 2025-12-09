@@ -2763,11 +2763,7 @@ GladiatorSpear: {
 Infernis: {
 	DisplayName: Infernis
 	Tooltip: Flamin' hot!
-
-	StaminaSlash: 	
-		'''
-		Throws a spear that eventually falls down and violent explodes
-		'''
+	StaminaSlash: Throws a spear that eventually falls down and violent explodes
 	BasicSlash: ""
 }
 
@@ -7264,6 +7260,11 @@ BasicBaseball: {
 Volcant: {
 	Tooltip: A fiery Greatsword to swing out your enemies' knees.
 	DisplayName: Volcant
+	BasicSlash: ""
+	StaminaSlash: 
+		'''
+		Spins the sword into a blazing inferno! It sends out fireballs all around you!
+		'''
 }
 
 SmallVeilPottery: {

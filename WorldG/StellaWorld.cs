@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Utilities;
 using Stellamod.Content.Areas.Abyss.WeaponsAB;
+using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Content.Areas.Collosseum.TilesCL;
 using Stellamod.Content.Areas.Collosseum.WeaponsCL;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
@@ -26,7 +27,6 @@ using Stellamod.Items.Special.MinerLogs;
 using Stellamod.Items.Tools;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
