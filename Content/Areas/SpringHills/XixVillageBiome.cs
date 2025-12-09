@@ -16,7 +16,20 @@ namespace Stellamod.Content.Areas.SpringHills
         // Select Music
         public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
 
-        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Witchtown4");
+        public override int Music
+        {
+            get
+            {
+                if (Main.dayTime)
+                {
+                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/Witchtown4");
+                }
+                else
+                {
+                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/LibraryWorld");
+                }
+            }
+        }
 
 
         public override string BestiaryIcon => base.BestiaryIcon;

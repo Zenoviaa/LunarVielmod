@@ -19,7 +19,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 16;
+            Item.damage = 26;
             Item.shoot = ModContent.ProjectileType<VolcantSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<VolcantStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Greatsword;
@@ -62,8 +62,8 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             base.AI();
             if(Main.rand.NextBool(16) && Main.myPlayer == Projectile.owner)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Main.rand.NextVector2CircularEdge(8, 8) - Vector2.UnitY * 8, ProjectileID.WandOfSparkingSpark, Projectile.damage, Projectile.knockBack, Projectile.owner);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Main.rand.NextVector2CircularEdge(8, 8) - Vector2.UnitY * 8, ModContent.ProjectileType<CinderFlameball>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Main.rand.NextVector2CircularEdge(8, 8) - Vector2.UnitY * 8, ProjectileID.WandOfSparkingSpark, Projectile.damage / 3, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Main.rand.NextVector2CircularEdge(8, 8) - Vector2.UnitY * 8, ModContent.ProjectileType<CinderFlameball>(), Projectile.damage / 3, Projectile.knockBack, Projectile.owner);
             }
             glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.QuadraticBump(Interpolant));
             growScale = MathHelper.Lerp(0f, 0.15f, EasingFunction.QuadraticBump(Interpolant));

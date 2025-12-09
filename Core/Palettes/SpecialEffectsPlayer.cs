@@ -158,7 +158,7 @@ namespace Stellamod.Core.Palettes
             float blurSize = 2;
             float bloomIntensity = MathHelper.Lerp(0.1f, 2f, Main.MouseScreen.X / (float)Main.screenWidth);
             float bloomThreshold = MathHelper.Lerp(0.1f, 1f, Main.MouseScreen.Y / (float)Main.screenHeight);
-            bloomIntensity = 0.5f;
+            bloomIntensity = 0.6f;
             bloomThreshold = 0.5f;
             Vector3 bloomVector = new Vector3(blurSize, bloomIntensity, bloomThreshold);
             screenShaderData.Shader.Parameters["bloom"].SetValue(bloomVector);
