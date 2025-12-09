@@ -4,17 +4,12 @@ KEY:
 
 
 
-Place Trainining Grounds and Bridge
+
 Cursed Coin artifact - Shoots a coin that ricochets off of enemies and walls to create a really fast moving projectile, the more it bounces, the more damage it does 40 mana
 
 Illurian Soaker Insource - Summons 3 balls, they float around you that can reduce all incoming damage by half for 3 hits (120 seconds) 
 
 Dusty Chakrams
-
-Hypnotized Soul Fix
-
-Wonderous Darkspace light lerp
-
 
 
 
@@ -43,9 +38,6 @@ Hotsprings (Has gradientized oasis water with plants inside) Waterfalls and only
 
 Element of Nature - Accessory that pushes back enemies if they hit you (doesnt work on bosses)
 
-
-Maybe make some Desert house structures for the surface
-Make the people spawn pretty often along the ground (not in the collosseum)
 not allow people to break items around the collosseum
 Colosseum enemies and balance generally
 Lunar key sits in the middle at the top surrounded in a bubble or something floating around gintzia

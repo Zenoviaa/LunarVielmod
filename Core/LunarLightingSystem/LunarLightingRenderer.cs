@@ -404,7 +404,7 @@ namespace Stellamod.Core.LunarLightingSystem
             //Prepare to draw to the accumulate light render target
            
             graphicsDevice.SetRenderTarget(_accumulatedLightRT);
-            graphicsDevice.Clear(BackLightColor);
+            graphicsDevice.Clear(_backLightColor);
 
             //Render Sun
             SunLightManager.RenderSunLight();
