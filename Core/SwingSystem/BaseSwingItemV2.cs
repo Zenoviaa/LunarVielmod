@@ -16,6 +16,7 @@ namespace Stellamod.Core.SwingSystem
         public int staminaProjectileShoot;
         public int staminaCost = 2;
 
+
         public MeleeWeaponType meleeWeaponType;
 
         public string BasicSlash
@@ -100,13 +101,23 @@ namespace Stellamod.Core.SwingSystem
 
         public virtual void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
-            SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
-            int combo = comboPlayer.StaminaComboCounter;
-            int dir = comboPlayer.ComboDirection;
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback,
-                player.whoAmI, ai1: dir, ai2: combo);
-            comboPlayer.IncreaseCombo();
+            //Only do the swinging initialization if it is a swing projectile lol
+            var proj = ModContent.GetModProjectile(type);
+            if(proj is BaseSwingProjectileV2)
+            {
+                DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+                SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
+                int combo = comboPlayer.StaminaComboCounter;
+                int dir = comboPlayer.ComboDirection;
+
+                Projectile.NewProjectile(source, position, velocity, type, damage, knockback,
+                    player.whoAmI, ai1: dir, ai2: combo);
+                comboPlayer.IncreaseCombo();
+            }
+            else
+            {
+                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+            }
         }
 
         public override bool AltFunctionUse(Player player)

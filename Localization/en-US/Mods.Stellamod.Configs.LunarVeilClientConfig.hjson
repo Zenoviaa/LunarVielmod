@@ -178,3 +178,13 @@ DisableBossNameHover: {
 	Label: Disable Boss Name Hover
 	Tooltip: ""
 }
+
+Bloom: {
+	Tooltip: ""
+	Label: Bloom
+}
+
+SunShadows2: {
+	Tooltip: ""
+	Label: Sun Shadows2
+}

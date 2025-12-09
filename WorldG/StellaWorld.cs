@@ -8054,7 +8054,6 @@ namespace Stellamod.WorldG
                                 switch (Main.rand.Next(9))
                                 {
                                     case 0:
-                                        itemsToAdd.Add((ModContent.ItemType<Infernis>(), Main.rand.Next(1, 1)));
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
                                         itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -8193,7 +8192,6 @@ namespace Stellamod.WorldG
                                 switch (Main.rand.Next(9))
                                 {
                                     case 0:
-                                        itemsToAdd.Add((ModContent.ItemType<Infernis>(), Main.rand.Next(1, 1)));
                                         itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
                                         itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
@@ -8327,7 +8325,6 @@ namespace Stellamod.WorldG
                                     switch (Main.rand.Next(9))
                                     {
                                         case 0:
-                                            itemsToAdd.Add((ModContent.ItemType<Infernis>(), Main.rand.Next(1, 1)));
                                             itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
                                             itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));

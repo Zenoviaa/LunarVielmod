@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 
 namespace Stellamod.Helpers
 {
@@ -16,7 +11,7 @@ namespace Stellamod.Helpers
         /// <param name="pctIncrease"></param>
         public static void PercentIncreasedamage(ref NPC.HitModifiers modifiers, float pctIncrease)
         {
-            modifiers.FinalDamage *= 1.0f + pctIncrease;
+            modifiers.FinalDamage += pctIncrease;
         }
     }
 }

@@ -2762,11 +2762,13 @@ GladiatorSpear: {
 
 Infernis: {
 	DisplayName: Infernis
-	Tooltip:
+	Tooltip: Flamin' hot!
+
+	StaminaSlash: 	
 		'''
 		Throws a spear that eventually falls down and violent explodes
-		Flamin'
 		'''
+	BasicSlash: ""
 }
 
 StalkersTallon: {
