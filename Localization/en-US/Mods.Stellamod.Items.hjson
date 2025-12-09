@@ -7261,10 +7261,7 @@ Volcant: {
 	Tooltip: A fiery Greatsword to swing out your enemies' knees.
 	DisplayName: Volcant
 	BasicSlash: ""
-	StaminaSlash: 
-		'''
-		Spins the sword into a blazing inferno! It sends out fireballs all around you!
-		'''
+	StaminaSlash: Spins the sword into a blazing inferno! It sends out fireballs all around you!
 }
 
 SmallVeilPottery: {
