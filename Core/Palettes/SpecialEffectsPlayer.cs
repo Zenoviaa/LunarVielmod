@@ -152,7 +152,8 @@ namespace Stellamod.Core.Palettes
         private void ApplyBloom()
         {
             string bloomShaderName = "LunarVeil:Bloom";
-            ToggleScreenShader(bloomShaderName, true);
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            ToggleScreenShader(bloomShaderName, config.Bloom);
             ScreenShaderData screenShaderData = FilterManager[bloomShaderName].GetShader();
             float blurSize = 2;
             float bloomIntensity = MathHelper.Lerp(0.1f, 2f, Main.MouseScreen.X / (float)Main.screenWidth);

@@ -62,7 +62,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void DrawShadowsBehindTiles(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
         {
-            if (behindTiles)
+            if (behindTiles && DrawSunShadows2())
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.Draw(_tileSunShadowRT, Vector2.Zero, Color.White);
@@ -138,9 +138,19 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
         }
 
+
+        private static bool DrawSunShadows2()
+        {
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            return config.SunShadows;
+        }
+
         private static void DrawTileShadowMapToScreen()
         {
             if (Main.gameMenu)
+                return;
+
+            if (!DrawSunShadows2())
                 return;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -210,6 +220,8 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             RenderLightsV2();
             orig(self, gameTime);
+            if (!DrawSunShadows2())
+                return;
             RenderShadows();
         }
 

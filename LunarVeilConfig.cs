@@ -140,6 +140,12 @@ namespace Stellamod
         [DefaultValue(true)]
         public bool SunShadows;
 
+        [DefaultValue(true)]
+        public bool SunShadows2;
+
+        [DefaultValue(true)]
+        public bool Bloom;
+
         [DefaultValue(true)] // This sets the configs default value.
         [ReloadRequired] // Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
         public bool VanillaTexturesToggle;
