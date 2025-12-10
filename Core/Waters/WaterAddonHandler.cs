@@ -20,8 +20,9 @@ namespace Stellamod.Core.Waters
 
         public override void Load()
         {
-            WaterPlayer.PostUpdateEvent += UpdateActiveAddon;
-            IL_Main.DoDraw += AddWaterShader;
+            //WaterPlayer.PostUpdateEvent += UpdateActiveAddon;
+           // IL_Main.DoDraw += AddWaterShader;
+      
             //IL.Terraria.Main.DrawTiles += SwapBlockTexture;//TODO: Figure out where this logic moved in vanilla
         }
 
@@ -32,8 +33,8 @@ namespace Stellamod.Core.Waters
 
         public override void Unload()
         {
-            WaterPlayer.PostUpdateEvent -= UpdateActiveAddon;
-            IL_Main.DoDraw -= AddWaterShader;
+           // WaterPlayer.PostUpdateEvent -= UpdateActiveAddon;
+           // IL_Main.DoDraw -= AddWaterShader;
             addons ??= null;
             activeAddon ??= null;
         }

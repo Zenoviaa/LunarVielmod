@@ -166,6 +166,7 @@ namespace Stellamod.Helpers
 
             RegisterMiscShader("LunarVeil:SunShadow", "Effects/SunShadow", "ScreenPass");
             RegisterMiscShader("LunarVeil:SunBlur", "Effects/SunBlur", "ScreenPass");
+            RegisterMiscShader("LunarVeil:MoonWaters", "Effects/MoonWaters", "P0");
 
             //White Flame Pixel Shader
             RegisterMiscShader(FireWhitePixelShaderName, "Effects/WhiteflamePixelShader", "TrailPass");

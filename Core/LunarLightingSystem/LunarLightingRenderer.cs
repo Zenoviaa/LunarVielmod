@@ -59,6 +59,13 @@ namespace Stellamod.Core.LunarLightingSystem
             On_Main.DoDraw += LightRenderLoop;
             On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
         }
+        public override void Unload()
+        {
+            base.Unload();
+            On_Main.DoDraw -= LightRenderLoop;
+            On_Main.DrawCachedNPCs -= DrawShadowsBehindTiles;
+
+        }
 
         private void DrawShadowsBehindTiles(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
         {
@@ -70,13 +77,6 @@ namespace Stellamod.Core.LunarLightingSystem
             orig(self, npcCache, behindTiles);
         }
 
-        public override void Unload()
-        {
-            base.Unload();
-            On_Main.DoDraw -= LightRenderLoop;
-            On_Main.DrawCachedNPCs -= DrawShadowsBehindTiles;
-
-        }
 
         private void DrawShadowsBehindTiles(On_Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
         {
@@ -155,7 +155,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-             spriteBatch.Draw(_tileSunShadowRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+          //   spriteBatch.Draw(_tileSunShadowRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
             spriteBatch.End();
 
         }
