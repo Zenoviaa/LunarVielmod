@@ -20,9 +20,15 @@ namespace Stellamod.Core.RenderTargetSystem
         private readonly int _downSamples;
         private readonly ResizeFunction _resizeFunction;
         private RenderTarget2D _renderTarget;
-        private ManagedRenderTarget(ResizeFunction resizeFunction, int downSamples = 1)
+        private bool _mipMap;
+        private SurfaceFormat _surfaceFormat;
+        private DepthFormat _depthFormat;
+        private ManagedRenderTarget(ResizeFunction resizeFunction, int downSamples = 1, bool mipMap = true, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
         {
             _resizeFunction = resizeFunction;
+            _mipMap = mipMap;
+            _surfaceFormat = surfaceFormat;
+            _depthFormat = depthFormat;
             _downSamples = downSamples;
 
             //Setting to 1 here just incase we get a division by 0 somewhere for like a single frame
@@ -39,7 +45,7 @@ namespace Stellamod.Core.RenderTargetSystem
             Point screenSize = _resizeFunction();
             Point newSize = new Point(screenSize.X / _downSamples, screenSize.Y / _downSamples);
             _renderTarget.Release();
-            _renderTarget = new RenderTarget2D(Main.graphics.GraphicsDevice, newSize.X, newSize.Y);
+            _renderTarget = new RenderTarget2D(Main.graphics.GraphicsDevice, newSize.X, newSize.Y, mipMap: _mipMap, _surfaceFormat, _depthFormat);
             Width = newSize.X;
             Height = newSize.Y;
         }
@@ -55,10 +61,10 @@ namespace Stellamod.Core.RenderTargetSystem
         }
 
 
-        public static ManagedRenderTarget New( ResizeFunction resizeFunction, int downSamples = 1)
+        public static ManagedRenderTarget New( ResizeFunction resizeFunction, int downSamples = 1, bool mipMap = true, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
         {
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            ManagedRenderTarget managedRenderTarget = new ManagedRenderTarget(resizeFunction, downSamples);
+            ManagedRenderTarget managedRenderTarget = new ManagedRenderTarget(resizeFunction, downSamples, mipMap, surfaceFormat, depthFormat);
 
             ManagedRenderTargetManager managedRenderTargetManager = ModContent.GetInstance<ManagedRenderTargetManager>();
             managedRenderTargetManager.AddManagedRenderTarget(managedRenderTarget);

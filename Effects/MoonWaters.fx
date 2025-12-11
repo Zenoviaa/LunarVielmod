@@ -26,6 +26,8 @@ sampler2D HeightMapTextureSampler = sampler_state
 {
     Texture = <HeightMapTexture>;
 };
+
+
 Texture2D WaterTexture;
 sampler2D WaterTextureSampler = sampler_state
 {
@@ -35,11 +37,26 @@ sampler2D WaterTextureSampler = sampler_state
 };
 
 
+Texture2D NoiseTexture;
+sampler2D NoiseTextureSampler = sampler_state
+{
+    Texture = <NoiseTexture>;
+    AddressU = wrap;
+    AddressV = wrap;
+};
+
 struct VertexShaderOutput
 {
     float4 Position : SV_POSITION;
     float4 Color : COLOR0;
     float2 TextureCoordinates : TEXCOORD0;
+};
+
+
+struct HeightPixelShaderOutput
+{
+    float4 Height : SV_Target0;
+    float4 Light : SV_Target1;
 };
 
 float time;
@@ -86,7 +103,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     return finalColor;
 }
 
-float4 HeightPS(VertexShaderOutput input) : COLOR
+HeightPixelShaderOutput HeightPS(VertexShaderOutput input)
 {
     float2 coords = input.TextureCoordinates;
     float4 color = input.Color;
@@ -103,7 +120,13 @@ float4 HeightPS(VertexShaderOutput input) : COLOR
     //Step 3. Calculate our new alpha value
     //Make sure to invert it, low depth means it's at the surface and should be bright
     float newAlpha = pixelDepth / Max_Depth;
-    return float4(newAlpha, newAlpha, newAlpha, newAlpha);
+    
+    
+
+    HeightPixelShaderOutput output;
+    output.Height = newAlpha;
+    output.Light = float4(color.r, color.g, color.b, 1.0);
+    return output;
 }
 
 
@@ -130,6 +153,13 @@ float4 ReflectPS(VertexShaderOutput input) : COLOR
     //Step 3. Sample the new coordinates, that's our pixel
     //With how this works, it should also flip the sprite I think
     float2 reflectedCoords = coords + reflectionOffset;
+    
+    //Step 4. Distortion
+    float d = tex2D(NoiseTextureSampler, coords + float2(time * -0.02, time * -0.04) + screenOffset).r;
+    float rotOffset = d * 3.14;
+    float2 distortionOffset = float2(sin(rotOffset), 0.0) * distortion;
+ 
+    reflectedCoords += distortionOffset;
     float4 color = tex2D(ClampTextureSampler, reflectedCoords);
     
     //Step 4. blend the reflection with the height gradient so there's no reflection deep in the water
