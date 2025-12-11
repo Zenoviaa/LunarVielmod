@@ -119,10 +119,10 @@ namespace Stellamod.Core.MoonWaters
         private void ApplyWaterShader(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
         {
             orig(self, spriteBatch, layer, beginSpriteBatch);
-            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+                    var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.LiquidsToggle)
                 return;
-            if (layer == RenderLayers.ForegroundWater)
+            if(layer == RenderLayers.ForegroundWater)
             {
                 //This is called right before the front water gets drawn
                 //We can apply our shader here.
