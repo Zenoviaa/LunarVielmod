@@ -288,15 +288,14 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 BackLightColor = Color.White * 0.8f;
             }
-
+     
             foreach (var backLightModifier in _backLightModifiers)
             {
                 backLightModifier.ModifyBackLight(ref BackLightColor);
             }
-
-
-            _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.01f);
-            SunColor = Color.Lerp(SunColor, Main.ColorOfTheSkies, 0.01f);
+           
+            _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
+            SunColor = Color.Lerp(SunColor, Main.ColorOfTheSkies, 0.1f);
 
         }
 
@@ -402,7 +401,7 @@ namespace Stellamod.Core.LunarLightingSystem
             }
 
             //Prepare to draw to the accumulate light render target
-           
+     
             graphicsDevice.SetRenderTarget(_accumulatedLightRT);
             graphicsDevice.Clear(_backLightColor);
 
