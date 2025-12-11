@@ -14,6 +14,8 @@ namespace Stellamod.Core.Waters
         {
             get
             {
+                return false;
+          
                 LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
 
                 //Don't show if not in underworld

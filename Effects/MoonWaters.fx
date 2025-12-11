@@ -239,6 +239,10 @@ float4 CombinePS(VertexShaderOutput input) : COLOR
     //First let's calculate the gradient
     float4 baseWaterColor = tex2D(SpriteTextureSampler, coords);
     
+    //Don't want to write if statements in a shader if possible
+    //Branchless programming is best for multi-threading
+    float lavaMult = baseWaterColor.r > baseWaterColor.b;
+    
     //Add the water gradient to our fancy color
     //Hopefully this looks the way I want it to, I think it's gonna go to white though instead of alpha blend :sob:
     float4 fancyWaterColor = tex2D(WaterTextureSampler, coords);
@@ -246,7 +250,7 @@ float4 CombinePS(VertexShaderOutput input) : COLOR
     
     //Let's just multiply for now
     //if this works it'll create a funny effect where there's no water 
-    return fancyWaterColor * baseWaterColor.a;
+    return fancyWaterColor * baseWaterColor.a * (1.0 - lavaMult) + baseWaterColor * lavaMult;
 
 }
 
