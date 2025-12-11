@@ -4,9 +4,6 @@ Texture2D SpriteTexture;
 sampler2D SpriteTextureSampler = sampler_state
 {
     Texture = <SpriteTexture>;
-    magfilter = POINT;
-    minfilter = POINT;
-    mipfilter = POINT;
     AddressU = wrap;
     AddressV = wrap;
 };
@@ -14,9 +11,6 @@ sampler2D SpriteTextureSampler = sampler_state
 sampler2D ClampTextureSampler = sampler_state
 {
     Texture = <SpriteTexture>;
-    magfilter = POINT;
-    minfilter = POINT;
-    mipfilter = POINT;
     AddressU = clamp;
     AddressV = clamp;
 };
@@ -257,6 +251,32 @@ float4 FoamPS(VertexShaderOutput input) : COLOR
 }
 
 
+//Based on https://www.shadertoy.com/view/4sdBRl
+//Edited to hopefully be a bit simpler and more performance
+float4 GetBlurCoords(float2 uv, float lod)
+{
+    float4 blurredCoords = float4(uv.x, uv.y, 0.0, lod);
+    return blurredCoords;
+}
+
+float4 BlurPS(VertexShaderOutput input) : COLOR
+{
+    const float lod = 4.0;
+    const float samples = 6.0;
+    
+    float2 coords = input.TextureCoordinates;
+
+    float4 currentColor = tex2Dlod(SpriteTextureSampler, GetBlurCoords(coords, lod));
+    float2 d = float2(0.0, 0.001);
+    for (float i = 1.0; i < samples; i++)
+    {
+        currentColor += tex2Dlod(SpriteTextureSampler, GetBlurCoords(coords + d * i, lod));
+        currentColor += tex2Dlod(SpriteTextureSampler, GetBlurCoords(coords - d * i, lod));
+
+    }
+    return currentColor / (samples * 2.0);
+}
+
 float4 CombinePS(VertexShaderOutput input) : COLOR
 {
     //Combine Water Target, Water Shader, and Height Map
@@ -339,6 +359,13 @@ technique PosterizeDrawing
     pass P0
     {
         PixelShader = compile PS_SHADERMODEL PosterizePS();
+    }
+};
+technique BlurDrawing
+{
+    pass P0
+    {
+        PixelShader = compile PS_SHADERMODEL BlurPS();
     }
 };
 technique CombineRTDrawing

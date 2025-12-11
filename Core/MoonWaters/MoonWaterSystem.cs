@@ -523,7 +523,7 @@ namespace Stellamod.Core.MoonWaters
         {
             _drawLocation = new Rectangle(0, 0, _waterTextureRT.Width, _waterTextureRT.Height);
 
-            float mipBias = 1.2f;
+            float mipBias = 1;
             float reflectionDistance = 128;
             Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2((float)_reflectionRT.Width, (float)_reflectionRT.Height);
 
@@ -557,7 +557,9 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.Draw(_waterTextureRTSwap, _drawLocation, null, Color.White * 1f);
             spriteBatch.End();
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.Multiply, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null);
+
+            _waterEffect.CurrentTechnique = _waterEffect.Techniques["BlurDrawing"];
+            spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.Multiply, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
             spriteBatch.Draw(_waterLightMapRT, _drawLocation, null, Color.White * 1);
             spriteBatch.End();
 

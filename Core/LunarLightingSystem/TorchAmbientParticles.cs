@@ -15,7 +15,7 @@ namespace Stellamod.Core.LunarLightingSystem
             if (!TileID.Sets.Torch[tileCache.TileType])
                 return;
 
-            if (Main.rand.NextBool(32))
+            if (Main.rand.NextBool(100))
             {
                 Vector2 worldPosition = new Vector2(i * 16, j * 16);
                 Vector2 spawnPosition = worldPosition + Main.rand.NextVector2Circular(16, 16);
