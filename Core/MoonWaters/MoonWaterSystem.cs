@@ -50,7 +50,7 @@ namespace Stellamod.Core.MoonWaters
         private Texture2D _waterNoise1;
         private Texture2D _waterNoise2;
         public int DownSamples => 2;
-        public Vector2 Tiling => new Vector2(1f, 1.5f) * 0.75f;
+        public Vector2 Tiling => new Vector2(1.5f, 1.5f) * 0.75f;
         public override void Load()
         {
             ResizeRenderTargets();
@@ -104,9 +104,9 @@ namespace Stellamod.Core.MoonWaters
         private void CopyScreenTarget(On_Main.orig_DoDraw orig, Main self, GameTime gameTime)
         {
             orig(self, gameTime);
-            if(Main.mouseMiddle)
+            if (Main.mouseMiddle)
                 DrawHeightMapToScreen();
-            }
+        }
 
 
 
@@ -238,6 +238,7 @@ namespace Stellamod.Core.MoonWaters
             //Draw the base texture
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
 
+           
             Color baseColor = Color.CornflowerBlue * 0.75f;
             baseColor = baseColor.MultiplyRGB(Main.ColorOfTheSkies);
             spriteBatch.Draw(_waterNoise1, _drawLocation, null, baseColor);
@@ -347,17 +348,18 @@ namespace Stellamod.Core.MoonWaters
             _drawLocation = new Rectangle(0, 0, _waterTextureRT.Width, _waterTextureRT.Height);
 
             float mipBias = 1f;
-            float reflectionDistance = 200;
-            Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2((float)Main.screenWidth, (float)Main.screenHeight);
+            float reflectionDistance = 128;
+            Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2((float)_reflectionRT.Width, (float)_reflectionRT.Height);
 
 
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["ReflectionDrawing"];
             _waterEffect.Parameters["reflectionDistance"].SetValue(reflectionDistance);
             _waterEffect.Parameters["reflectionTexelSize"].SetValue(reflectionTexelSize);
+            _waterEffect.Parameters["reflectionPower"].SetValue(3.5f);
             _waterEffect.Parameters["HeightMapTexture"].SetValue(_waterHeightMapRT);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-            spriteBatch.Draw(_reflectionRT, Vector2.Zero, null, Color.White,0, Vector2.Zero, new Vector2(1f, 1f), SpriteEffects.None, 0);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
+            spriteBatch.Draw(_reflectionRT, Vector2.Zero, null, Color.White * 1f,0, Vector2.Zero, new Vector2(1f, 1f), SpriteEffects.None, 0);
             spriteBatch.End();
         }
 
@@ -372,7 +374,7 @@ namespace Stellamod.Core.MoonWaters
             graphicsDevice.Clear(Color.DeepSkyBlue);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-            spriteBatch.Draw(_waterTextureRTSwap, _drawLocation, null, Color.Blue);
+            spriteBatch.Draw(_waterTextureRTSwap, _drawLocation, null, Color.White * 1f);
             spriteBatch.End();
 
             /*
@@ -395,6 +397,7 @@ namespace Stellamod.Core.MoonWaters
             DrawWaterBase(spriteBatch);
             DrawWaterGradient(spriteBatch);
             DrawWaterCaustics(spriteBatch);
+         
             DrawWaterSparkle(spriteBatch);
             DrawWaterFoam(spriteBatch);
             DrawReflection(spriteBatch);

@@ -11,6 +11,16 @@ sampler2D SpriteTextureSampler = sampler_state
     AddressV = wrap;
 };
 
+sampler2D ClampTextureSampler = sampler_state
+{
+    Texture = <SpriteTexture>;
+    magfilter = POINT;
+    minfilter = POINT;
+    mipfilter = POINT;
+    AddressU = clamp;
+    AddressV = clamp;
+};
+
 Texture2D HeightMapTexture;
 sampler2D HeightMapTextureSampler = sampler_state
 {
@@ -43,6 +53,7 @@ float2 screenOffset;
 
 float reflectionDistance;
 float2 reflectionTexelSize;
+float reflectionPower;
 
 float posterize(float v, float k)
 {
@@ -107,8 +118,7 @@ float4 ReflectPS(VertexShaderOutput input) : COLOR
     
     //Cubing the height gradient so it's not so long
     //For some reason this is faster than using pow
-    float heightGradient = heightSample * heightSample * heightSample;
-   
+    float heightGradient = pow(heightSample, reflectionPower);
     
     //Step 2. Using the height map gradient, calculate how far upwards we should get the pixel
     //A value of 1 means were at the surface, so we shouldn't look that far upward
@@ -120,7 +130,7 @@ float4 ReflectPS(VertexShaderOutput input) : COLOR
     //Step 3. Sample the new coordinates, that's our pixel
     //With how this works, it should also flip the sprite I think
     float2 reflectedCoords = coords + reflectionOffset;
-    float4 color = tex2D(SpriteTextureSampler, reflectedCoords);
+    float4 color = tex2D(ClampTextureSampler, reflectedCoords);
     
     //Step 4. blend the reflection with the height gradient so there's no reflection deep in the water
     float4 fadedColor = color * heightGradient;
@@ -170,7 +180,7 @@ float4 PosterizePS(VertexShaderOutput input) : COLOR
     finalColor.r = posterize(finalColor.r, levels);
     finalColor.g = posterize(finalColor.g, levels);
     finalColor.b = posterize(finalColor.b, levels);
-    return finalColor;
+    return finalColor * input.Color;
 }
 
 float4 SparklingCausticsPS(VertexShaderOutput input) : COLOR
