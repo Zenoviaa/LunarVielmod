@@ -205,6 +205,7 @@ namespace Stellamod.WorldG
             int radius = 32;
             for (int n = 0; n < weDrowningOutHereCount; n++)
             {
+                //make sure to pad with the radius so it doesn't go out of bounds
                 int randTileX = genRand.Next(radius, Main.maxTilesX - radius);
                 int randTileY = genRand.Next(radius, Main.maxTilesY - radius);
                 Point point = new Point(randTileX, randTileY); 

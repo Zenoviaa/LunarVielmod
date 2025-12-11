@@ -59,6 +59,12 @@ namespace Stellamod.Core.MoonWaters
             On_OverlayManager.Draw += ApplyWaterShader;
             On_Main.DoDraw += CopyScreenTarget;
         }
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            LoadAssets();
+        }
+
         public override void Unload()
         {
             base.Unload();
@@ -74,6 +80,7 @@ namespace Stellamod.Core.MoonWaters
             if (_reflectionRT == null)
                 return;
             SpriteBatch spriteBatch = Main.spriteBatch;
+
             //Copy the current screen target for reflections
             //If we do this after the water renders we get an infinite reflection loops lmao that's bad.
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
@@ -83,12 +90,9 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.Draw(Main.screenTarget, Vector2.Zero, null, Color.White);
             spriteBatch.End();
 
-
-
             graphicsDevice.SetRenderTarget(_reflectionRT);
             graphicsDevice.Clear(Color.Black);
 
-      
             spriteBatch.Begin();
             spriteBatch.Draw(Main.screenTarget, Vector2.Zero + new Vector2(Main.offScreenRange) / 2f, null, Color.White, 0, Vector2.Zero, 1f / (float)DownSamples, SpriteEffects.None, 0f);
             spriteBatch.End();
@@ -104,8 +108,10 @@ namespace Stellamod.Core.MoonWaters
         private void CopyScreenTarget(On_Main.orig_DoDraw orig, Main self, GameTime gameTime)
         {
             orig(self, gameTime);
+            
             if (Main.mouseMiddle)
                 DrawHeightMapToScreen();
+            
         }
 
 
@@ -168,9 +174,10 @@ namespace Stellamod.Core.MoonWaters
 
             if (_hasLoaded && !Main.gameMenu)
             {
+                ForceRenderIntoWaterTarget();
                 RenderIntoHeightMapTarget();
                 RenderIntoWaterTextureTarget();
-                ForceRenderIntoWaterTarget();
+               
             }
         }
 
@@ -314,8 +321,9 @@ namespace Stellamod.Core.MoonWaters
         private void ApplyScreenOffset()
         {
             Vector2 screenOffset = Main.screenPosition;
-
-            _waterEffect.Parameters["screenOffset"].SetValue(screenOffset * 0.0005f);
+            float mipBias = 1f;
+            Vector2 texelSize = (Vector2.One * mipBias) / new Vector2(_waterTextureRT.Width, _waterTextureRT.Height);
+            _waterEffect.Parameters["screenOffset"].SetValue(screenOffset * texelSize  * 1.5f);
         }
         private void RenderReflectionRT(SpriteBatch spriteBatch)
         {
@@ -422,17 +430,22 @@ namespace Stellamod.Core.MoonWaters
                 for (int j = (int)args[2] - 2; j < (int)args[3] + 2; j++)
                 {
                     Tile tile = Main.tile[j, i];
+                    Tile firstAboveTile = Main.tile[j, i - 1];
                     if (tile == null)
                         continue;
 
-                    if (tile.LiquidAmount > 0)
+                    int height = 0;
+                    if (firstAboveTile.LiquidAmount > 0)
+                    {
+                        height++;
+                    }
+                    if (tile.LiquidAmount > 0 || firstAboveTile.LiquidAmount > 0)
                     {
                         //Move upward until we hit an air tile, so we know how deep this water tile is
-                        int height = 0;
                         while (height < maxGradientHeight)
                         {
                             Tile aboveTile = Main.tile[j, i - height];
-                            if (aboveTile.LiquidAmount == 0)
+                            if (aboveTile.LiquidAmount == 0 && !WorldGen.SolidTile(j, i))
                             {
                                 break;
                             }
