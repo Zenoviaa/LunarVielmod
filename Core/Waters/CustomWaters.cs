@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.MoonWaters;
 using Stellamod.Core.ScreenSystems;
 using Terraria;
 using Terraria.Graphics.Effects;
@@ -30,15 +31,18 @@ namespace Stellamod.Core.Waters
         private static WaterStyle _style;
         public static bool Biomes => ModContent.GetInstance<LunarVeilClientConfig>().LiquidsToggle;
 
-        public static ScreenTarget BackTarget = new ScreenTarget(RenderFront, () => Biomes, 1, (a) => Main.waterTarget.Size());
-        public static ScreenTarget FrontTarget = new ScreenTarget(RenderBack, () => Biomes, 1, (a) => Main.instance.backWaterTarget.Size());
-
+        public static ScreenTarget FrontTarget = new ScreenTarget(RenderFront, () => Biomes, 1, (a) => Main.waterTarget.Size());
+        public static ScreenTarget BackTarget = new ScreenTarget(RenderBack, () => Biomes, 1, (a) => Main.instance.backWaterTarget.Size());
+        public CustomWaters()
+        {
+            changeBack = false;
+        }
         public override bool Visible
         {
             get
             {
 
-                return true;
+                return false;
             }
         }
         public override Texture2D BlockTexture(Texture2D normal, int x, int y)
@@ -88,6 +92,7 @@ namespace Stellamod.Core.Waters
                     tex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Refraction", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
                     break;
             }
+
             return tex2;
         }
 

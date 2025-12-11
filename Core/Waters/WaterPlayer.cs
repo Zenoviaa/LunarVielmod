@@ -10,7 +10,7 @@ namespace Stellamod.Core.Waters
         public override void PostUpdate()
         {
             base.PostUpdate();
-            //PostUpdateEvent.Invoke(Player);
+            PostUpdateEvent?.Invoke(Player);
         }
     }
 }

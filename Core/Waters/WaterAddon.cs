@@ -6,7 +6,7 @@ namespace Stellamod.Core.Waters
     public abstract class WaterAddon : IOrderedLoadable
     {
         public float Priority => 1f;
-
+        public bool changeBack = true;
         /// <summary>
         /// call Main.SpriteBatch.Begin with the parameters you want for the front of water. Primarily used for applying shaders
         /// </summary>

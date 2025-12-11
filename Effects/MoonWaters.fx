@@ -38,6 +38,11 @@ float distortion;
 float3 startGradient;
 float3 endGradient;
 float2 tiling;
+float2 screenOffset;
+
+
+float reflectionDistance;
+float2 reflectionTexelSize;
 
 float posterize(float v, float k)
 {
@@ -53,6 +58,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float d = tex2D(SpriteTextureSampler, coords);
     float2 distortionOffset = float2(sin(d), cos(d)) * distortion;
     coords *= tiling;
+    coords += screenOffset;
     coords += distortionOffset;
     
     float2 offset = float2(time * -0.05, 0.0);
@@ -69,7 +75,58 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     return finalColor;
 }
 
+float4 HeightPS(VertexShaderOutput input) : COLOR
+{
+    float2 coords = input.TextureCoordinates;
+    float4 color = input.Color;
+    
+    //Calculate how many tiles down we are
+    //Step 1. Calculate the depth that we would be fading to
+    const float Max_Depth = 32.0;
+    float heightGradient = color.a;
+    float depth = heightGradient * Max_Depth;
+    
+    //Step 2. calculate depth of htis pixel
+    float pixelDepth = depth - coords.y;
+    
+    //Step 3. Calculate our new alpha value
+    //Make sure to invert it, low depth means it's at the surface and should be bright
+    float newAlpha = pixelDepth / Max_Depth;
+    return float4(newAlpha, newAlpha, newAlpha, newAlpha);
+}
 
+
+float4 ReflectPS(VertexShaderOutput input) : COLOR
+{
+    //This will flip the sprite within itself
+    //Here's how I think it should have to work
+    
+    //Step 1. Sample the current height map at this point
+    float2 coords = input.TextureCoordinates;
+    float heightSample = tex2D(HeightMapTextureSampler, coords).a;
+    
+    //Cubing the height gradient so it's not so long
+    //For some reason this is faster than using pow
+    float heightGradient = heightSample * heightSample * heightSample;
+   
+    
+    //Step 2. Using the height map gradient, calculate how far upwards we should get the pixel
+    //A value of 1 means were at the surface, so we shouldn't look that far upward
+    //A value of 0 means we're at the bottom so we should go very far upward
+    //We'll control this with a parameter
+    float reflectionFactor = smoothstep(1.0, 0.1, heightGradient);
+    float2 reflectionOffset = float2(0.0, -reflectionDistance * reflectionFactor) * reflectionTexelSize;
+    
+    //Step 3. Sample the new coordinates, that's our pixel
+    //With how this works, it should also flip the sprite I think
+    float2 reflectedCoords = coords + reflectionOffset;
+    float4 color = tex2D(SpriteTextureSampler, reflectedCoords);
+    
+    //Step 4. blend the reflection with the height gradient so there's no reflection deep in the water
+    float4 fadedColor = color * heightGradient;
+    float4 finalColor = fadedColor * input.Color;
+    return finalColor;
+}
 
 
 float4 GradientPS(VertexShaderOutput input) : COLOR
@@ -90,11 +147,13 @@ float4 CausticsPS(VertexShaderOutput input) : COLOR
     float2 coords = input.TextureCoordinates;
     coords *= tiling;
 
+    
     float d = tex2D(SpriteTextureSampler, coords + float2(time * -0.02, time * -0.04)).r;
     float rotOffset = d * 3.14;
     float2 distortionOffset = float2(sin(rotOffset), cos(rotOffset)) * distortion;
  
     float2 distortedCoords = coords + distortionOffset;
+    distortedCoords += screenOffset;
     float2 offset = float2(time * -0.05, 0.0);
     float2 offset2 = float2(time * 0.05, 0.3);
     
@@ -123,11 +182,14 @@ float4 SparklingCausticsPS(VertexShaderOutput input) : COLOR
     alpha = pow(alpha, 4.0);
     coords *= tiling;
 
+    
     float d = tex2D(SpriteTextureSampler, coords + float2(time * -0.02, time * -0.04)).r;
     float rotOffset = d * 3.14;
     float2 distortionOffset = float2(sin(rotOffset), cos(rotOffset)) * distortion;
  
     float2 distortedCoords = coords + distortionOffset;
+    distortedCoords += screenOffset;
+    
     float2 offset = float2(time * -0.05, 0.0);
     float2 offset2 = float2(time * 0.05, 0.3);
     
@@ -145,11 +207,13 @@ float4 FoamPS(VertexShaderOutput input) : COLOR
     float2 coords = input.TextureCoordinates;
     float4 heightMapColor = tex2D(HeightMapTextureSampler, coords);
     float2 offsetCoords = (coords * tiling) + float2(0.0, time * -0.05);
+    offsetCoords += coords + screenOffset;
+    
     float foam = tex2D(SpriteTextureSampler, offsetCoords);
     float power = lerp(8.0, 0.3, heightMapColor.a);
     foam = pow(foam, power);
     float4 foamColor = float4(foam, foam, foam, 1.0);
-    return foamColor * foam;
+    return foamColor * foam * 2.0;
 }
 
 
@@ -183,7 +247,20 @@ technique SpriteDrawing
         PixelShader = compile PS_SHADERMODEL MainPS();
     }
 };
-
+technique HeightDrawing
+{
+    pass P0
+    {
+        PixelShader = compile PS_SHADERMODEL HeightPS();
+    }
+};
+technique ReflectionDrawing
+{
+    pass P0
+    {
+        PixelShader = compile PS_SHADERMODEL ReflectPS();
+    }
+};
 technique GradientDrawing
 {
     pass P0

@@ -20,8 +20,8 @@ namespace Stellamod.Core.Waters
 
         public override void Load()
         {
-            //WaterPlayer.PostUpdateEvent += UpdateActiveAddon;
-           // IL_Main.DoDraw += AddWaterShader;
+            WaterPlayer.PostUpdateEvent += UpdateActiveAddon;
+            IL_Main.DoDraw += AddWaterShader;
       
             //IL.Terraria.Main.DrawTiles += SwapBlockTexture;//TODO: Figure out where this logic moved in vanilla
         }
@@ -33,8 +33,8 @@ namespace Stellamod.Core.Waters
 
         public override void Unload()
         {
-           // WaterPlayer.PostUpdateEvent -= UpdateActiveAddon;
-           // IL_Main.DoDraw -= AddWaterShader;
+            WaterPlayer.PostUpdateEvent -= UpdateActiveAddon;
+            IL_Main.DoDraw -= AddWaterShader;
             addons ??= null;
             activeAddon ??= null;
         }
@@ -71,34 +71,34 @@ namespace Stellamod.Core.Waters
 
         private void NewDrawBack()
         {
-            SpriteBatch sb = Main.spriteBatch;
-            if (activeAddon != null)
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            if (activeAddon != null && activeAddon.changeBack)
             {
-                sb.End();
+                spriteBatch.End();
                 activeAddon.SpritebatchChangeBack();
             }
-            Main.spriteBatch.Draw(Main.instance.backWaterTarget, Main.sceneBackgroundPos - Main.screenPosition, Color.White);
-            if (activeAddon != null)
+            spriteBatch.Draw(Main.instance.backWaterTarget, Main.sceneBackgroundPos - Main.screenPosition, Color.White);
+            if (activeAddon != null && activeAddon.changeBack)
             {
-                sb.End();
-                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
             }
         }
 
         private void NewDraw()
         {
-            SpriteBatch sb = Main.spriteBatch;
+            SpriteBatch spriteBatch = Main.spriteBatch;
             if (activeAddon != null)
             {
-                sb.End();
+                spriteBatch.End();
                 activeAddon.SpritebatchChange();
             }
 
-            Main.spriteBatch.Draw(Main.waterTarget, Main.sceneWaterPos - Main.screenPosition, Color.White);
+            spriteBatch.Draw(Main.waterTarget, Main.sceneWaterPos - Main.screenPosition, Color.White);
             if (activeAddon != null)
             {
-                sb.End();
-                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
             }
         }
     }
