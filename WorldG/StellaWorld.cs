@@ -34,6 +34,7 @@ using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs;
+using Stellamod.Projectiles.Swords.Altride;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
@@ -190,10 +191,28 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 20, new PassLegacy("Grassing Caves", WorldGenGrassPass));
                 tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
                 tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+                tasks.Insert(CathedralGen2 + 23, new PassLegacy("World Gen Water", WorldGenWater));
             }
         }
 
 
+        private void WorldGenWater(GenerationProgress progress, GameConfiguration configuration)
+        {
+            var genRand = WorldGen.genRand;
+            progress.Message = "POV: You live in Florida";
+            int weDrowningOutHereCount = 200;
+
+            int radius = 32;
+            for (int n = 0; n < weDrowningOutHereCount; n++)
+            {
+                int randTileX = genRand.Next(radius, Main.maxTilesX - radius);
+                int randTileY = genRand.Next(radius, Main.maxTilesY - radius);
+                Point point = new Point(randTileX, randTileY); 
+                WorldUtils.Gen(point, 
+                    new Shapes.Circle(radius / 2, radius / 2), 
+                    new Actions.SetLiquid(type: LiquidID.Water));
+            }
+        }
         private void InitializePyr(GenerationProgress progress, GameConfiguration configuration)
         {
             var genRand = WorldGen.genRand;

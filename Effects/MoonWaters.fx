@@ -133,7 +133,7 @@ float4 ReflectPS(VertexShaderOutput input) : COLOR
     float4 color = tex2D(ClampTextureSampler, reflectedCoords);
     
     //Step 4. blend the reflection with the height gradient so there's no reflection deep in the water
-    float4 fadedColor = color * heightGradient;
+    float4 fadedColor = color * heightGradient * heightGradient;
     float4 finalColor = fadedColor * input.Color;
     return finalColor;
 }
