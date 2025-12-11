@@ -12,6 +12,9 @@ namespace Stellamod.Assets
             public static Asset<Texture2D> EmptyBigTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/EmptyBigTexture");
             public static class Noise
             {
+                public static Asset<Texture2D> ShimmerWaterCaustics = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/ShimmerWaterCaustics");
+                public static Asset<Texture2D> IceWaterCaustics = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/IceWaterCaustics");
+
                 public static Asset<Texture2D> BasicGlow = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/BasicGlow");
                 public static Asset<Texture2D> Clouds3 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/Clouds3");
                 public static Asset<Texture2D> CloudsSmall = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Noise/SmallClouds");
