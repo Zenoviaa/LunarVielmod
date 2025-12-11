@@ -66,7 +66,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float2 coords = input.TextureCoordinates;
         
     //Distort the coordinates
-    float d = tex2D(SpriteTextureSampler, coords);
+    float d = tex2D(SpriteTextureSampler, coords + screenOffset);
     float2 distortionOffset = float2(sin(d), cos(d)) * distortion;
     coords *= tiling;
     coords += screenOffset;
@@ -158,7 +158,7 @@ float4 CausticsPS(VertexShaderOutput input) : COLOR
     coords *= tiling;
 
     
-    float d = tex2D(SpriteTextureSampler, coords + float2(time * -0.02, time * -0.04)).r;
+    float d = tex2D(SpriteTextureSampler, coords + float2(time * -0.02, time * -0.04) + screenOffset).r;
     float rotOffset = d * 3.14;
     float2 distortionOffset = float2(sin(rotOffset), cos(rotOffset)) * distortion;
  
@@ -193,7 +193,7 @@ float4 SparklingCausticsPS(VertexShaderOutput input) : COLOR
     coords *= tiling;
 
     
-    float d = tex2D(SpriteTextureSampler, coords + float2(time * -0.02, time * -0.04)).r;
+    float d = tex2D(SpriteTextureSampler, coords + float2(time * -0.02, time * -0.04) + screenOffset).r;
     float rotOffset = d * 3.14;
     float2 distortionOffset = float2(sin(rotOffset), cos(rotOffset)) * distortion;
  

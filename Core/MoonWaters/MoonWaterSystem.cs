@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Core.Foreground;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.RenderTargetSystem;
 using Stellamod.Core.Waters;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -175,17 +176,12 @@ namespace Stellamod.Core.MoonWaters
             public float height;
         }
 
-        //So that we can have accurate gradients, we need to draw a height map based on how far the water tile is from the surface
-        private bool _hasLoaded;
-        private Point _oldRenderTargetSize;
-
-        private RenderTarget2D _waterTargetCopy;
-        private RenderTarget2D _waterHeightMapRT;
-        private RenderTarget2D _waterTextureRT;
-        private RenderTarget2D _waterTextureRTSwap;
-        private RenderTarget2D _waterTextureRTOutput;
-        private RenderTarget2D _reflectionRT;
-        private RenderTarget2D _waterLightMapRT;
+        private ManagedRenderTarget _waterHeightMapRT;
+        private ManagedRenderTarget _waterTextureRT;
+        private ManagedRenderTarget _waterTextureRTSwap;
+        private ManagedRenderTarget _waterTextureRTOutput;
+        private ManagedRenderTarget _reflectionRT;
+        private ManagedRenderTarget _waterLightMapRT;
 
         private PixelWaterStyle[] _pixelWaterStyles;
         private PixelWaterStyle _activePixelWaterStyle;
@@ -197,17 +193,15 @@ namespace Stellamod.Core.MoonWaters
         private float _time;
         private Effect _waterEffect;
         private Rectangle _drawLocation;
-        private Texture2D _waterCaustics;
         private Texture2D _perlinNoise;
         private Texture2D _waterNoise1;
-        private Texture2D _waterNoise2;
+
 
         //This will give us a cool pixelation effect
         public int DownSamples => 2;
         public Vector2 Tiling => new Vector2(1.5f, 1.5f) * 0.75f;
         public override void Load()
         {
-            ResizeRenderTargets();
             On_Main.CheckMonoliths += RenderHook;
             On_Main.DrawDust += CopyScreenTarget;
             On_OverlayManager.Draw += ApplyWaterShader;
@@ -217,13 +211,26 @@ namespace Stellamod.Core.MoonWaters
         {
             base.OnModLoad();
             LoadAssets();
+            InitializeRenderTargets();
 
             //Get all of our available pixel water styles and sort them
             _pixelWater = new PixelWater();
             _pixelWaterStyles = ModContent.GetContent<PixelWaterStyle>().ToArray();
-
         }
 
+        private Point GetWaterTargetSize()
+        {
+            return new Point(Main.waterTarget.Width, Main.waterTarget.Height);
+        }
+        private void InitializeRenderTargets()
+        {
+            _reflectionRT = ManagedRenderTarget.New(GetWaterTargetSize, DownSamples);
+            _waterTextureRT = ManagedRenderTarget.New(GetWaterTargetSize, DownSamples);
+            _waterTextureRTSwap = ManagedRenderTarget.New(GetWaterTargetSize, DownSamples);
+            _waterLightMapRT = ManagedRenderTarget.New(GetWaterTargetSize);
+            _waterHeightMapRT = ManagedRenderTarget.New(GetWaterTargetSize);
+            _waterTextureRTOutput = ManagedRenderTarget.New(GetWaterTargetSize);
+        }
         private PixelWaterStyle GetActivePixelWaterStyle()
         {
             for(int i = 0; i < _pixelWaterStyles.Length; i++)
@@ -359,9 +366,7 @@ namespace Stellamod.Core.MoonWaters
                 return;
 
             _waterEffect = GameShaders.Misc["LunarVeil:MoonWaters"].Shader;
-            _waterCaustics = LoadTexture("WaterCaustics");
             _waterNoise1 = LoadTexture("WaterNoise1");
-            _waterNoise2 = LoadTexture("WaterNoise2");
             _perlinNoise = LoadTexture("PerlinNoise");
         }
 
@@ -372,7 +377,7 @@ namespace Stellamod.Core.MoonWaters
             if (!config.LiquidsToggle)
                 return;
 
-            if (_hasLoaded && !Main.gameMenu)
+            if (!Main.gameMenu)
             {
               
                 CalculateHeightsToDraw();
@@ -419,12 +424,6 @@ namespace Stellamod.Core.MoonWaters
             graphicsDevice.SetRenderTarget(null);
         }
 
-
-        public override void PostUpdateEverything()
-        {
-            base.PostUpdateEverything();
-            ResizeRenderTargets();
-        }
 
         private void DrawWaterBase(SpriteBatch spriteBatch)
         {
@@ -518,7 +517,7 @@ namespace Stellamod.Core.MoonWaters
             Vector2 screenOffset = Main.screenPosition;
             float mipBias = 1f;
             Vector2 texelSize = (Vector2.One * mipBias) / new Vector2(_waterTextureRT.Width, _waterTextureRT.Height);
-            _waterEffect.Parameters["screenOffset"].SetValue(screenOffset * texelSize * 1.5f);
+            _waterEffect.Parameters["screenOffset"].SetValue(screenOffset * texelSize * 1);
         }
 
         private void DrawReflection(SpriteBatch spriteBatch)
@@ -719,46 +718,5 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.End();
         }
 
-
-
-        private void ResizeRenderTargets()
-        {
-            if (Main.gameMenu)
-                return;
-
-            Point screenSize = new Point(Main.waterTarget.Width, Main.waterTarget.Height);
-            if (_oldRenderTargetSize != screenSize)
-            {
-                Main.QueueMainThreadAction(InitializeRenderTargets);
-                _oldRenderTargetSize = screenSize;
-            }
-        }
-        private void InitializeRenderTargets()
-        {
-            Point screenSize = new Point(Main.waterTarget.Width, Main.waterTarget.Height);
-        
-            _waterTextureRT.Release();
-            _waterTextureRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X / DownSamples, screenSize.Y / DownSamples);
-
-            _waterTextureRTSwap.Release();
-            _waterTextureRTSwap = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X / DownSamples, screenSize.Y / DownSamples);
-
-            _waterTextureRTOutput.Release();
-            _waterTextureRTOutput = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y);
-
-
-            _waterHeightMapRT.Release();
-            _waterHeightMapRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y);
-
-            _waterLightMapRT.Release();
-            _waterLightMapRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y);
-
-            _reflectionRT.Release();
-            _reflectionRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X / DownSamples, screenSize.Y / DownSamples);
-
-            _waterTargetCopy.Release();
-            _waterTargetCopy = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y);
-            _hasLoaded = true;
-        }
     }
 }
