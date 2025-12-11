@@ -82,7 +82,10 @@ namespace Stellamod.Assets.Biomes
 
         // Populate the Bestiary Filter
 
-        public override bool IsBiomeActive(Player player) => BiomeTileCounts.InDarkspace;
+        public override bool IsBiomeActive(Player player)
+        {
+            return BiomeTileCounts.InDarkspace && !player.ZoneOverworldHeight && !player.ZoneSkyHeight;
+        }
 
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => base.BackgroundPath;
