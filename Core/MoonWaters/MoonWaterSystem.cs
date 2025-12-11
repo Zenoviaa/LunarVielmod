@@ -288,12 +288,12 @@ namespace Stellamod.Core.MoonWaters
         {
             orig(self, gameTime);
 
-            
+            /*
             if (Main.mouseMiddle)
                 DrawLightMapToScreen();
             if (Main.mouseRight)
                 DrawWaterTargetToScreen();
-            
+            */
         }
 
         private void ApplyWaterShader(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
