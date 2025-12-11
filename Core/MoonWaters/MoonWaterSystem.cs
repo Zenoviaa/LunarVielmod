@@ -52,7 +52,7 @@ namespace Stellamod.Core.MoonWaters
             pixelWater.EndGradientColor = Color.Green;
             pixelWater.BackgroundColor = Color.DarkGreen;
             pixelWater.CausticsColor = Color.Olive * 0.75f;
-            pixelWater.CausticsTexture = TrailRegistry.NoiseTextureLeaves;
+            pixelWater.CausticsTexture = AssetRegistry.Textures.Noise.JungleWaterCaustics;
         }
     }
 
