@@ -48,7 +48,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 {
 
-    public class SanguineSingularity : ScarletBoss,
+    public partial class SanguineSingularity : ScarletBoss,
         IDrawOutlines
     {
         public struct SanguineDraw
@@ -80,7 +80,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             Idle,
             Walk,
-            Run
+            Run,
+            Prepare
         }
 
         private enum AIState
@@ -123,6 +124,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Special_Loop,
             Special_End,
 
+            Tired,
+
             Phase2Transition
         }
 
@@ -136,9 +139,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         private float _incresionDiskFrameBottom;
         private float _incresionDiskFrameTop;
         private float _chainAlpha;
+        private float _attackCount;
         private bool _rotatingWalk;
         private bool _contactDamage;
-        private bool _closeEnough;
+
         private Vector2 _singularityDrawOverridePosition;
         private Vector2 _startVector;
 
@@ -211,11 +215,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             writer.WriteVector2(_runDirection);
             writer.Write(_bloodyBurstTimer);
             writer.Write(_traveledDistance);
-            writer.Write(_closeEnough);
             writer.Write(_hallucinationSpawnTimer);
             writer.WriteVector2(_singularityDrawOverridePosition);
             writer.WriteVector2(_startVector);
             writer.Write(_circleRadius);
+            writer.Write(_attackCount);
+            writer.WriteVector2(_rushPivot);
+            writer.WriteVector2(_iniitalRushVector);
         }
         
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -225,17 +231,19 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _runDirection = reader.ReadVector2();
             _bloodyBurstTimer = reader.ReadSingle();
             _traveledDistance = reader.ReadSingle();
-            _closeEnough = reader.ReadBoolean();
             _hallucinationSpawnTimer = reader.ReadSingle();
             _singularityDrawOverridePosition = reader.ReadVector2();
             _startVector = reader.ReadVector2();
             _circleRadius = reader.ReadSingle();
+            _attackCount = reader.ReadSingle();
+            _rushPivot = reader.ReadVector2();
+            _iniitalRushVector = reader.ReadVector2();
         }
 
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            Main.npcFrameCount[NPC.type] = 28;
+            Main.npcFrameCount[NPC.type] = 33;
             NPCID.Sets.TrailCacheLength[NPC.type] = 16;
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
@@ -245,8 +253,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         public override void SetDefaults()
         {
             base.SetDefaults();
-            NPC.width = 64;
-            NPC.height = 64;
+            NPC.width = 48;
+            NPC.height = 48;
             NPC.damage = 100;
             NPC.defense = 40;
             NPC.lifeMax = 27000;
@@ -281,21 +289,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
         }
 
-        private float _stepDistance;
-        private void CreateFootsteps()
-        {
-            float traveledDistance = Vector2.Distance(NPC.position, NPC.oldPosition);
-            _stepDistance += traveledDistance;
-            if(_stepDistance >= 100)
-            {
-                Vector2 pos = NPC.Bottom + new Vector2(Main.rand.NextFloat(-32f, 32f), 0);
-                pos.Y += 40;
-                var circleStep = Particle.NewParticle<CircleStepParticle>(pos, Vector2.UnitY);
-                circleStep.color = Color.Red;
-            
-                _stepDistance = 0;
-            }
-        }
 
         private void EnablePlatformArena()
         {
@@ -321,7 +314,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     SwitchState(AIState.Despawn);
                 }
             }
-
         }
 
         private void ReceiveTeleport()
@@ -357,35 +349,10 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             base.AI();
 
-            DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
-            DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
-            _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
             DespawnIfNoValidTarget();
             ReceiveTeleport();
-            _draw.flashAlpha *= 0.99f;
-            HandleGores();
-            if (_draw.headless)
-            {
-                _draw.singularityScale = Vector2.Lerp(_draw.singularityScale, Vector2.One, 0.1f);
-            }
-            else
-            {
-                _draw.singularityScale = Vector2.Lerp(_draw.singularityScale, Vector2.Zero, 0.1f);
-
-            }
-            if (Timer % 5 == 0)
-            {
-                Vector2 upVelocity = -Vector2.UnitY;
-                upVelocity *= 5;
-                upVelocity = upVelocity.RotateRandom(0.5f);
-                var d = Dust.NewDustPerfect(NPC.Center, DustID.Blood, upVelocity, Scale: Main.rand.NextFloat(1f, 2f));
-                d.noGravity = false;
-            }
-  
-              
-            NPC.spriteDirection = NPC.direction;
             EnablePlatformArena();
-            CreateFootsteps();
+
             if (InPhase2 && MultiplayerHelper.IsHost)
             {
                 _hallucinationSpawnTimer++;
@@ -417,7 +384,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             {
                 NPC.boss = true;
             }
+
             _rotatingWalk = false;
+            TargetHaloColor = Color.Transparent;
             switch (State)
             {
                 case AIState.Eviling:
@@ -427,7 +396,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     AI_Spawn();
                     break;
                 case AIState.Idle:
-                    AI_Idle();
+                    AI_RepositioningIdle();
                     break;
                 case AIState.Despawn:
                     AI_Despawn();
@@ -522,10 +491,15 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     AI_SpecialEnd();
                     break;
 
+                case AIState.Tired:
+                    AI_Tired();
+                    break;
+
                 case AIState.Phase2Transition:
                     AI_Phase2Transition();
                     break;
             }
+            UpdateDraw();
         }
 
         #region Expanding Singularity Special
@@ -699,8 +673,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         #endregion
 
         #region Bloody Mega Charge
-        private Vector2 _startDash;
-        private Vector2 _endDash;
+        private Vector2 _rushPivot;
+        private Vector2 _iniitalRushVector;
         private void AI_BloodyMegaCharge_Start()
         {
             Timer++;
@@ -711,7 +685,18 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 SoundEngine.PlaySound(laughSound, NPC.position);
             }
 
+            if(AttackNumber == 0)
+            {
+                AI_BloodyMegaChargeFirstStart();
+            }
+            else
+            {
+                AI_BloodyMegaChargeContinuousStart();
+            }
+        }
 
+        private void AI_BloodyMegaChargeContinuousStart()
+        {
             //Get our cool trailing effects back
             _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
             _draw.flamingTrailAlpha = MathHelper.Lerp(_draw.flamingTrailAlpha, 1f, 0.1f);
@@ -725,82 +710,97 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             _dashLineRotation = targetNormal.ToRotation();
             //NEW IDEA
             //Just add an impulse velocity and then slowly lerp back, and then dot product
-            if(Timer == 1)
+            if (Timer == 1)
             {
-                NPC.velocity = -targetNormal * 15;
                 _draw.scale = new Vector2(1.2f, 0.8f);
+                _rushPivot = MyTarget.Center;
+                _iniitalRushVector = NPC.velocity.SafeNormalize(Vector2.Zero);
             }
 
-            Vector2 prepVelocity = targetNormal * 15;
+            float windupTime = 70f;
+            float completionRatio = Timer / windupTime;
+            float radiansToRotate = MathHelper.TwoPi;
+            radiansToRotate *= AttackNumber % 2 == 0 ? 1 : -1;
+            float movementDistance = 128;
+            Vector2 rushVector = _iniitalRushVector.RotatedBy(radiansToRotate * completionRatio);
 
-            float attackRatio = AttackNumber / 3f;
-            float lerpFactor = MathHelper.Lerp(0.01f, 0.03f, attackRatio);
-            NPC.velocity += prepVelocity * lerpFactor;
-            NPC.velocity = Vector2.Lerp(NPC.velocity, prepVelocity, 0.01f);
-            NPC.spriteDirection = 1;
+
+            Vector2 pivot = Vector2.Lerp(NPC.Center, _rushPivot, Timer / windupTime / 2f);
+            Vector2 positionToRaget = pivot + rushVector * movementDistance;
+            Vector2 vectorToTarget = positionToRaget - NPC.Center;
+            NPC.velocity = vectorToTarget;
             NPC.rotation = NPC.velocity.ToRotation();
-            float dp = Vector2.Dot(targetNormal, NPC.velocity.SafeNormalize(Vector2.Zero));
-
-            //Quick distance check so never dodging from off screen
-            float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
-            bool isCloseEnoughToDash = distanceToTarget < 380;
-
-            //If we're aiming towards our target we'll go to our dash state
-            //Make sure to also check if timer is greater than the min prep time
-            if ( isCloseEnoughToDash && NPC.velocity.Length() > 5) 
+            if(Timer == windupTime)
+            {
+                NPC.velocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * NPC.velocity.Length();
+            }
+            if(Timer >= windupTime)
             {
                 SwitchState(AIState.BloodyMegaCharge_Rush);
             }
         }
 
+        private void AI_BloodyMegaChargeFirstStart()
+        {            
+            //Get our cool trailing effects back
+            _draw.afterImageAlpha = MathHelper.Lerp(_draw.afterImageAlpha, 1f, 0.1f);
+            _draw.flamingTrailAlpha = MathHelper.Lerp(_draw.flamingTrailAlpha, 1f, 0.1f);
+            _draw.alpha = 1f;
+            _draw.scale = Vector2.Lerp(_draw.scale, Vector2.One, 0.1f);
+            _contactDamage = false;
+            _rotatingWalk = true;
+
+            Vector2 targetNormal = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+            _dashLineRotation = targetNormal.ToRotation();
+            TargetOutlineColor = Color.Yellow;
+
+            //Slowly lerp towards the target and rotate towards them
 
 
+            float prepTime = 180f;
+            float windUpTime = 60;
+            float hitTime = prepTime - windUpTime;
+            if (Timer > hitTime)
+            {
+                _animation = AnimationState.Run;
+                float completionRatio = (Timer - hitTime) / windUpTime;
+                float anticipating = EasingFunction.Anticipation(completionRatio);
+                float speed = MathHelper.Lerp(0f, 45f, completionRatio / 0.5f);
+                Vector2 targetVelocity = Vector2.Lerp(-targetNormal * speed, targetNormal * speed / 2f, anticipating);
+                NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.75f);
+            } else
+            {
+                _animation = AnimationState.Prepare;
+               
+                NPC.velocity = Vector2.Lerp(NPC.velocity, targetNormal, 0.1f);
+
+
+            }
+            NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
+            NPC.rotation = NPC.velocity.ToRotation();
+            if (Timer >= prepTime)
+            {
+                SwitchState(AIState.BloodyMegaCharge_Rush);
+            }
+        }
+
+        private void AI_BloodyMegaChargeFirstRush()
+        {
+
+        }
+        private void AI_BloodyMegaChargeContinuousRush()
+        {
+
+        }
         private void AI_BloodyMegaCharge_Rush()
         {
-            Timer++;
             _rotatingWalk = true;
-            //Extra wind up
-            bool superDash = AttackNumber >= 3;
-            float speed = superDash ? 70 : 55;
-
-            float attackRatio = AttackNumber / 3f;
-            attackRatio = MathHelper.Clamp(attackRatio, 0f, 1f);
-            float windUpTime = (int)MathHelper.Lerp(60, 30, attackRatio);
-            float radians = -MathHelper.TwoPi / windUpTime;
-            if(Timer < windUpTime)
+            if(NPC.velocity.Length() < 50)
             {
-                NPC.velocity = NPC.velocity.RotatedBy(radians);
-                if(NPC.velocity.Length() <= speed)
-                {
-                    NPC.velocity *= 1.01f;
-                }
+                NPC.velocity *= 1.8f;
             }
-
-            /*
-            float attackRatio = AttackNumber / 3f;
-            attackRatio = MathHelper.Clamp(attackRatio, 0f, 1f);
-            float windUpTime = (int)MathHelper.Lerp(60, 30, attackRatio);
-            float completionRatio = Timer / windUpTime;
-            float ease = EasingFunction.QuadraticBump(completionRatio);
-
-            Vector2 positionToMoveTo = Vector2.Lerp(_startDash, _endDash, ease);
-
-            Vector2 endPointOffset = (_endDash - _startDash);
-            float radians = -MathHelper.TwoPi / windUpTime;
-            radians *= AttackNumber % 2 == 0 ? 1 : -1;
-            endPointOffset = endPointOffset.RotatedBy(radians);
-            _endDash = _startDash + endPointOffset;
-   
-            Vector2 velocityToPoint = positionToMoveTo - NPC.Center;*/
-            if (Timer == windUpTime)
-            {
-                _runDirection = (MyTarget.Center - NPC.Center);
-                _runDirection = _runDirection.SafeNormalize(Vector2.Zero);
-            }
-
-
-
-            if (Timer == windUpTime)
+            Timer++;
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
                 float num = 4;
@@ -808,13 +808,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 {
                     float f = d;
                     float completionRatio = f / num;
-                    var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Center, (-_runDirection + - _runDirection * completionRatio) *7, Color.Red);
+                    var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Center, (-NPC.velocity.SafeNormalize(Vector2.Zero) + -NPC.velocity.SafeNormalize(Vector2.Zero) * completionRatio) *7, Color.Red);
                     donut.Scale *= 2 + completionRatio * 1;
                 }
                 SoundStyle dashSound = AssetRegistry.Sounds.SanguineSingularity.SanguineDash;
                 dashSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(dashSound, NPC.position);
-                CreateGoreBurst(NPC.Center, _runDirection * 8);
+                CreateGoreBurst(NPC.Center, NPC.velocity.SafeNormalize(Vector2.Zero) * 8);
                 
                 var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.TintScreen(Color.Red * 0.3f, 1f, 15f);
@@ -832,34 +832,15 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 }
             }
 
-            float time = 20f;
+            float time = 10f;
     
             _animation = AnimationState.Run;
             _draw.afterImageAlpha = 1f;
             _draw.flamingTrailAlpha = 1f;
-
-            if(Timer < windUpTime)
-            {
-                _contactDamage = false;
-                TargetOutlineColor = Color.Yellow;
-            }
-            if(Timer >= windUpTime)
-            {
-                _contactDamage = true;
-                TargetOutlineColor = Color.Red;
-                Vector2 targetVelocity = _runDirection * speed;
-                NPC.velocity = targetVelocity;
-            }
+            _contactDamage = true;
+            TargetOutlineColor = Color.Red;
             NPC.rotation = NPC.velocity.ToRotation();
-            if (superDash)
-            {
-                if (Timer % 3 == 0)
-                {
-                    Particle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
-                }
-            }
-
-            if(Timer >= time + windUpTime)
+            if(Timer >= time)
             {
                 SwitchState(AIState.BloodyMegaCharge_End);
             }
@@ -869,18 +850,23 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         {
             _rotatingWalk = true;
             Timer++;
-            NPC.velocity *= 0.95f;
-            if(Timer >= 5f)
+
+            NPC.velocity = NPC.velocity.RotatedBy(-0.05f);
+            NPC.rotation = NPC.velocity.ToRotation();
+
+            Vector2 targetNormal = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, targetNormal * 20f, 0.05f);
+            if (Timer >= 25)
             {
                 AttackNumber++;
-                if(AttackNumber >= 11)
+                if (AttackNumber >= 11)
                 {
                     SwitchState(AIState.Idle);
                 }
                 else
                 {
                     SwitchState(AIState.BloodyMegaCharge_Start);
-                }  
+                }
             }
         }
 
@@ -892,6 +878,58 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             SanguineBloodRenderManager bloodManager = ModContent.GetInstance<SanguineBloodRenderManager>();
             bloodManager.FlickerTimer = duration;
         }
+
+        private void AI_Tired()
+        {
+            //Reset the attack count
+            _attackCount = 0;
+            _contactDamage = false;
+
+            //Tired state, we're going to make this guy do a thing like daedus where he quickly cycles 3 attacks and then goes into a tired phase, giving you a chance to hit him
+            //Alright so
+            Timer++;
+
+            //Step. 1 Slow down the velocity, slowing transitioning from the run state to the idle state if need be
+            float direction = MathF.Sign(NPC.velocity.X);
+            NPC.velocity.Y *= 0.9f;
+            if(MathF.Abs(NPC.velocity.X) > 0.5f)
+            {
+                NPC.velocity.X *= 0.95f;
+            }
+
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
+
+            TargetHaloColor = Color.Yellow;
+            //Set the direction of sanguine singularity
+            NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
+
+            //Check the velocity of the movement for setting the animation
+            float velocityLength = NPC.velocity.Length();
+            if(velocityLength > 5)
+            {
+                _animation = AnimationState.Run;
+            }
+            else if (velocityLength > 1)
+            {
+                _animation = AnimationState.Walk;
+            } 
+            else
+            {
+                _animation = AnimationState.Idle;
+            }
+            
+            //We need to have the stars like daedus has
+
+            //We don't want him to be tired for too long
+            //Anyways we need to keep a variable of how many attacks he's done
+            //His idle states are also going to be very quick
+            float tiredTime = 300f;
+            if(Timer >= tiredTime)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
         private void AI_Eviling()
         {
             //  AudioHelper.Mute(Music);
@@ -1058,70 +1096,77 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private void ChooseAttack()
         {
+            //Actual cycling code
             AIState nextPattern = PatternManager.NextPattern();
             if (IsBanned(nextPattern))
             {
                 ChooseAttack();
                 return;
             }
+
+            if(_attackCount >= 3)
+            {
+                SwitchState(AIState.Tired);
+                return;
+            }
+
+            _attackCount++;
             SwitchState(nextPattern);
         }
 
-        private void AI_Idle()
+        private void AI_RepositioningIdle()
         {
-            Timer++;
+            //Just to force a target closest
+            if(Timer < 1)
+            {
+                Timer++;
+            }
+
             if (Timer == 1)
             {
                 NPC.TargetClosest();
-                _closeEnough = false;
             }
+
             _chainAlpha *= 0.9f;
             _singularityDrawOverridePosition = Vector2.Zero;
             _contactDamage = false;
+
             _draw.scale = Vector2.One;
             _draw.alpha = MathHelper.Lerp(_draw.alpha, 1f, 0.1f);
             _draw.afterImageAlpha *= 0.5f;
             _draw.flamingTrailAlpha *= 0.5f;
+
             AttackNumber = 0;
             NPC.direction = TargetDirection;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.3f);
 
             float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
-            if (Timer > 60)
+            bool isCloseToPlayer = distanceToTarget < 300;
+            if (isCloseToPlayer || Timer > 5)
             {
                 _animation = AnimationState.Walk;
-                Vector2 directionToTarget = (MyTarget.Center - NPC.Center);
-                directionToTarget = directionToTarget.SafeNormalize(Vector2.Zero);
+                //Slow down the velocity or we'll overshot
+                NPC.velocity *= 0.95f;
 
-                if(distanceToTarget > 100 && !_closeEnough)
+                Timer++;
+                if(Timer >= 30)
                 {
-                    float speedModifier = MathHelper.Lerp(6f, 20f, EasingFunction.InOutSine(distanceToTarget / 64f));
-                    directionToTarget *= speedModifier;
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, directionToTarget, 0.1f);
-                } else
-                {
-                   
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, directionToTarget, 0.1f);
+                    ChooseAttack();
                 }
-
-                    NPC.rotation *= 0.5f;
             }
             else
             {
-                _animation = AnimationState.Idle;
-                NPC.velocity *= 0.9f;
+                _animation = AnimationState.Run;
+                //If we're not close enough to the player, we need to speed up and get to them lol
+                Vector2 vectorToTarget = (MyTarget.Center - NPC.Center);
+                Vector2 normalVeclocity = vectorToTarget.SafeNormalize(Vector2.Zero);
+                Vector2 movementVelocity = normalVeclocity * distanceToTarget / 32f;
+                NPC.velocity = movementVelocity;
             }
 
             TargetOutlineColor = Color.Transparent;
-            if(distanceToTarget <= 200f)
-            {
-                _closeEnough = true;
-            }
-            if (Timer >= 180f && _closeEnough)
-            {
-                ChooseAttack();
-            }
         }
 
 
@@ -1400,7 +1445,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                       
                         Projectile.NewProjectile(SourceFromThis, NPC.Center, upVelocity, bloodyBurstProjectile, BloodyBurstDamage, 1, Main.myPlayer);
                     }
-               //     Projectile.NewProjectile(SourceFromThis, NPC.Center, -Vector2.UnitY * 5, bloodyBurstProjectile, BloodyBurstDamage, 1, Main.myPlayer, ai1: 1);
                 }
 
                 for (float f = 0f; f < 16; f++)
@@ -1467,7 +1511,8 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 {
                     SwitchState(AIState.BloodyBurst_Start);
                 }
-            } else if (AttackNumber >= 20)
+            }
+            else if (AttackNumber >= 20)
             {
                 NPC.velocity *= 0.9f;
 
@@ -2132,337 +2177,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         }
 
 
-        #region Drawcode
-        private void DrawAfterImage(SpriteBatch spriteBatch, Vector2 screenPos)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-      
-            Rectangle frame = NPC.frame;
-            for (int i = 0; i < NPC.oldPos.Length; i++)
-            {
-                Vector2 oldPos = NPC.oldPos[i];
-                Vector2 oldDrawPos = oldPos - screenPos;
-                Vector2 drawOrigin = NPC.frame.Size() / 2f;
-                float f = i;
-                float interpolant = f / (float)NPC.oldPos.Length;
-                Color fadeColor = Color.Lerp(Color.Lerp(Color.Red, Color.Blue, interpolant), Color.Transparent, interpolant);
-                fadeColor *= _draw.afterImageAlpha;
-                oldDrawPos += NPC.Size / 2f;
-                fadeColor *= 0.5f;
 
-                SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-                spriteBatch.Draw(texture, oldDrawPos, NPC.frame, fadeColor, NPC.oldRot[i], drawOrigin, NPC.scale, spriteEffects, 0f);
-            }
-        }
-
-
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            DrawDashLine(spriteBatch, screenPos, drawColor);
-            DrawWalkingTrail(spriteBatch, screenPos, drawColor);
-            DrawFlamingTrail(spriteBatch, screenPos, drawColor);
-            DrawChainTrail(spriteBatch, screenPos, drawColor);
-            DrawAfterImage(spriteBatch, screenPos);
-            DrawSingularity(spriteBatch, screenPos, drawColor);
-            Draw(spriteBatch, screenPos, drawColor);
-            DrawRedFlash(spriteBatch, screenPos, drawColor);
-            GoreManager.Draw(spriteBatch, screenPos, drawColor);
-            return false;
-        }
-
-        private Color GetWalkingTrailColor(float completionRatio)
-        {
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * _draw.afterImageAlpha;
-        }
-
-        private float GetWalkingTrailWidth(float completionRatio)
-        {
-            return MathHelper.SmoothStep(0f, 20f, EasingFunction.QuadraticBump(completionRatio));
-        }
-
-        private void DrawDashLine(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            float rotation = _dashLineRotation;
-            Texture2D lineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
-            Vector2 drawOrigin = new Vector2(lineTexture.Width / 2, 0);
-            Vector2 drawCenter = NPC.Center - Main.screenPosition;
-            drawColor = Color.Red;
-            drawColor.A = 0;
-            drawColor *= 0.5f;
-            drawColor *= Timer / 30f;
-            drawColor *= ExtraMath.Osc(0f, 1f, speed: 12);
-            if (State != AIState.BloodyMegaCharge_Start)
-                return;
-
-            Vector2 scale = Vector2.One;
-            scale.Y = 3;
-            spriteBatch.Draw(lineTexture, drawCenter, null, drawColor, rotation - MathHelper.ToRadians(90), drawOrigin, scale, SpriteEffects.None, 0);
-        }
-        private void DrawWalkingTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            var shader = BasicLaserShader.Instance;
-            shader.InnerColor = Color.Red;
-            shader.OuterColor = Color.Transparent;
-            TrailDrawer.Draw(spriteBatch, NPC.oldPos, GetWalkingTrailColor, GetWalkingTrailWidth, shader, offset: new Vector2(0, NPC.frame.Height / 2)); ;
-        }
-
-
-        private Color GetFlamingTrailColor(float completionRatio)
-        {
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * _draw.afterImageAlpha * _draw.flamingTrailAlpha;
-        }
-
-        private float GetFlamingTrailWidth(float completionRatio)
-        {
-            return MathHelper.SmoothStep(180, 180, completionRatio);
-        }
-
-
-        private void DrawFlamingTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            var shader = BlackFireShader.Instance;
-            shader.Time = Main.GlobalTimeWrappedHourly * 16;
-            shader.InnerColor = Color.Red;
-            TrailDrawer.Draw(spriteBatch, NPC.oldPos, GetFlamingTrailColor, GetFlamingTrailWidth, shader, offset: NPC.Size / 2f); 
-        }
-        private void DrawRedFlash(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawCenter = NPC.Center - screenPos;
-            Rectangle frame = NPC.frame;
-            Vector2 drawOrigin = frame.Size() / 2f;
-            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            if (_rotatingWalk)
-                spriteEffects = SpriteEffects.None;
-            Color glowColor = Color.Red;
-            glowColor.A = 0;
-            glowColor *= _draw.flashAlpha;
-            glowColor *= 0.5f;
-            spriteBatch.Draw(texture, drawCenter, frame, glowColor, NPC.rotation, drawOrigin, _draw.scale, spriteEffects, 0);
-
-        }
-        private void DrawSingularity(SpriteBatch spriteBatch, Vector2 screenPos, Color color)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>(TextureRegistry.EmptyBigTexture).Value;
-
-            Vector2 center = _singularityDrawOverridePosition != Vector2.Zero ? _singularityDrawOverridePosition : NPC.Center + GetDrawOffset();
-            Vector2 drawPosition = center - screenPos;
-            Vector2 drawOrigin = texture.Size() / 2f;
-            Vector2 drawScale = NPC.scale * Vector2.One;
-            drawScale *= _draw.singularityScale;
-            drawScale *= ExtraMath.Osc(0.9f, 1f, speed: 18f);
-
-            var shader = SingularityShader.Instance;
-            spriteBatch.Restart(effect: shader.Effect);
-
-            Color redSingularity = Color.Red;
-            redSingularity *= _draw.alpha;
-            spriteBatch.Draw(texture, drawPosition, null, redSingularity, NPC.rotation, drawOrigin, drawScale * 0.5f, SpriteEffects.None, 0);
-            spriteBatch.RestartDefaults();
-
-
-            Texture2D diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SF").Value;
-            Vector2 diskDrawOrigin = diskTexture.Size() / 2f;
-            Color diskDrawColor = Color.Lerp(Color.White, Color.Lerp(Color.White, Color.Red, 0.15f), ExtraMath.Osc(0f, 1f, speed: 2));
-            diskDrawColor = diskDrawColor.MultiplyRGB(Color.Red);
-            diskDrawColor.A = 0;
-            diskDrawColor *= _draw.alpha;
-
-            float scaleOsc = ExtraMath.Osc(0.5f, 0.65f, speed: 1);
-            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation, diskDrawOrigin, drawScale * scaleOsc * 0.5f, SpriteEffects.None, 0);
-            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation, diskDrawOrigin, drawScale * scaleOsc * 0.45f, SpriteEffects.None, 0);
-
-
-            diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SF2").Value;
-            float rotOffset = MathHelper.ToRadians(-30f + ExtraMath.Osc(5f, 10f, speed: 2));
-            for (float f = 0; f < 4; f++)
-            {
-
-                spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(1.5f, 0.2f) * 0.66f, SpriteEffects.None, 0);
-            }
-            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(3.5f, 0.2f) * 0.66f, SpriteEffects.None, 0);
-            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor * 0.5f, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(7.5f, 0.2f) * 0.66f, SpriteEffects.None, 0);
-
-            rotOffset = MathHelper.ToRadians(25f + ExtraMath.Osc(-10f, -5f, speed: 2, offset: 2));
-            //Inverse rings
-            for (float f = 0; f < 4; f++)
-            {
-
-                spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(1.5f, 0.2f) * 0.36f, SpriteEffects.None, 0);
-            }
-            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(3.5f, 0.2f) * 0.36f, SpriteEffects.None, 0);
-            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor * 0.5f, NPC.rotation + rotOffset, diskDrawOrigin, drawScale * 0.4f * scaleOsc * new Vector2(7.5f, 0.2f) * 0.36f, SpriteEffects.None, 0);
-            DrawIncresionDiskBottom(spriteBatch, screenPos, color);
-            DrawIncresionDiskTop(spriteBatch, screenPos, color);
-        }
-        private void DrawIncresionDiskBottom(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            //Draw Incresion Disk
-            Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameBottom, columns: 5, frameWidth: 400, frameHeight: 200);
-            Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(Texture + "_Disk").Value;
-
-            //Incresion Disk Draw Color
-            Color incresionDiskDrawColor = Color.White;
-            incresionDiskDrawColor *= 0.25f;
-            incresionDiskDrawColor.A = 0;
-            incresionDiskDrawColor *= _draw.alpha;
-
-            Vector2 center = _singularityDrawOverridePosition != Vector2.Zero ? _singularityDrawOverridePosition : NPC.Center   + GetDrawOffset();
-            Vector2 drawPos = center - screenPos;
-
-            Vector2 drawOrigin = incresionDiskRect.Size() / 2;
-            float drawScale = NPC.scale * _draw.singularityScale.X * 1.75f;
-            drawScale *= 0.4f;
-            float drawRotation = NPC.rotation;
-            drawRotation -= MathHelper.ToRadians(30);
-            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-
-            incresionDiskDrawColor = Color.White;
-            incresionDiskDrawColor *= 0.25f;
-            incresionDiskDrawColor.A = 0;
-            incresionDiskDrawColor *= _draw.alpha;
-
-            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale * 1.5f, SpriteEffects.None, 0);
-
-            incresionDiskDrawColor = Color.Blue;
-            incresionDiskDrawColor *= 0.25f;
-            incresionDiskDrawColor.A = 0;
-            incresionDiskDrawColor *= _draw.alpha;
-
-            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale * 2, SpriteEffects.None, 0);
-
-
-
-            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation - MathHelper.ToRadians(90), drawOrigin, drawScale * 2, SpriteEffects.None, 0);
-        }
-
-
-        private void DrawIncresionDiskTop(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            //Draw Incresion Disk
-            Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameTop, columns: 4, frameWidth: 480, frameHeight: 200);
-            Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(Texture + "_Top").Value;
-
-            //Incresion Disk Draw Color
-            Color incresionDiskDrawColor = Color.White;
-            incresionDiskDrawColor *= 0.15f;
-            incresionDiskDrawColor.A = 0;
-            incresionDiskDrawColor *= _draw.alpha;
-
-            Vector2 center = _singularityDrawOverridePosition != Vector2.Zero ? _singularityDrawOverridePosition : NPC.Center + GetDrawOffset();
-
-            Vector2 drawPos = center - screenPos;
-    
-            Vector2 drawOrigin = incresionDiskRect.Size() / 2;
-
-            float drawScale = NPC.scale * 3 * _draw.singularityScale.X;
-            drawScale *= 0.4f;
-            float drawRotation = NPC.rotation;
-            drawRotation -= MathHelper.ToRadians(30);
-            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-
-            drawRotation -= MathHelper.ToRadians(90);
-            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-        }
-
-        private int _frame;
-        public override void FindFrame(int frameHeight)
-        {
-            base.FindFrame(frameHeight);
-            NPC.frameCounter += 0.2f;
-            if (NPC.frameCounter >= 1f)
-            {
-                _frame++;
-                NPC.frameCounter = 0f;
-            }
-
-            switch (_animation)
-            {
-                case AnimationState.Idle:
-                    _frame = 0;
-                    break;
-                case AnimationState.Walk:
-                    if (_frame < 2)
-                    {
-                        _frame = 2;
-                    }
-                    else if (_frame >= 10)
-                    {
-                        _frame = 2;
-                    }
-                    break;
-                case AnimationState.Run:
-                    if (_frame < 18)
-                    {
-                        _frame = 18;
-                    }
-                    else if (_frame >= 23)
-                    {
-                        _frame = 18;
-                    }
-                    break;
-            }
-            int frame = _frame;
-            if (_draw.headless)
-            {
-                switch (_animation)
-                {
-                    case AnimationState.Idle:
-                        frame += 1;
-                        break;
-                    case AnimationState.Walk:
-                        frame += 8;
-                        break;
-                    case AnimationState.Run:
-                        frame += 5;
-                        break;
-                }
-            }
-            NPC.frame.Y = frameHeight * frame;
-        }
-
-
-        private Vector2 GetDrawOffset()
-        {
-            Vector2 drawOffset = Vector2.Zero;
-            drawOffset.X += 60 * NPC.spriteDirection;
-            drawOffset.Y -= 35;
-            drawOffset = drawOffset.RotatedBy(NPC.rotation);
-            return drawOffset;
-        }
-        private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color color)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawCenter = NPC.Center - screenPos;
-            Rectangle frame = NPC.frame;
-            Vector2 drawOrigin = frame.Size() / 2f;
-            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            if (_rotatingWalk)
-                spriteEffects = SpriteEffects.None;
-            spriteBatch.Draw(texture, drawCenter, frame, color * _draw.alpha, NPC.rotation, drawOrigin, _draw.scale, spriteEffects, 0);
-        }
-
-        private void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
-        {
-            DrawSprite(spriteBatch, screenPos, Color.White.MultiplyRGB(lightColor));
-        }
-
-        private void DrawOutline(SpriteBatch spriteBatch, Vector2 screenPos)
-        {
-            DrawSprite(spriteBatch, screenPos, _draw.outlineColor);
-        }
-
-        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
-        {
-            float outlineOffset = 2;
-            Vector2 v = Vector2.UnitX * outlineOffset;
-            Vector2 h = Vector2.UnitY * outlineOffset;
-            DrawOutline(spriteBatch, screenPos + v);
-            DrawOutline(spriteBatch, screenPos - v);
-            DrawOutline(spriteBatch, screenPos + h);
-            DrawOutline(spriteBatch, screenPos - h);
-        }
-
-        #endregion
     }
 }
