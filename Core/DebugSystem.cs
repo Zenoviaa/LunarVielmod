@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using Stellamod.Core.Camera;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -15,18 +16,19 @@ namespace Stellamod.Core
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
-            if (InputHelper.KeyDown(Keys.OemComma))
-            {
-                _pressed = true;
-
-            }
-            if (InputHelper.KeyUp(Keys.OemComma) && !_pressed)
+            if (InputHelper.KeyUp(Keys.J) && _pressed)
             {
                 _pressed = false;
                 _lock = !_lock;
                 _lockPosition = Main.Camera.Center;
             }
+            if (InputHelper.KeyDown(Keys.J))
+            {
+                _pressed = true;
 
+            }
+
+ 
             if (_lock)
             {
                 RetargetCameraModifier.ReTargetPosition = _lockPosition;
