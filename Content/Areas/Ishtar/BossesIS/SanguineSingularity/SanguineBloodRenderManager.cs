@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
+using Stellamod.Assets;
 using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -114,7 +117,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             float time = 600f;
             _timer = MathHelper.Clamp(_timer, 0, time);
             float completionRatio = _timer / time;
-            _scale = MathHelper.Lerp(1f, 1.5f, completionRatio);
+            _scale = MathHelper.Lerp(1f, 1.1f, completionRatio);
         }
         public override void PostUpdateNPCs()
         {
@@ -124,33 +127,55 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             Metronome();
         }
 
+
+        private void DrawBloodyBG1()
+        {
+            var bloodyShader = BloodyShader.Instance;
+            bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.7f);
+            bloodyShader.OuterColor = Color.Black;
+            bloodyShader.Distortion = 1;
+            bloodyShader.Tiling = Vector2.One * 12;
+            bloodyShader.Time = Main.GlobalTimeWrappedHourly * 3;
+            bloodyShader.NoiseTexture = TextureRegistry.Clouds6;
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodyShader.Effect, Main.Transform);
+
+            float alpha = FlickerTimer > 0 ? ExtraMath.Osc(0f, 1f, speed: 2) : 1;
+
+            Vector2 centerOrigin = _bloodBGRenderRT.Size() / 2f;
+            spriteBatch.Draw(_bloodBGRenderRT, centerOrigin, null, Color.White * alpha * 0.55f, 0f, centerOrigin, _scale, SpriteEffects.None, 0f);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+        }
+
+        private void DrawBloodyBG2()
+        {
+            var bloodStormShader = BloodStormShader.Instance;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodStormShader.Effect, Main.Transform);
+
+            Vector2 centerOrigin = _bloodBGRenderRT.Size() / 2f;
+
+            float alpha = FlickerTimer > 0 ? ExtraMath.Osc(0f, 1f, speed: 2) : 1;
+            Texture2D vortexTexture = AssetRegistry.Textures.Noise.JungleWaterCaustics.Value;
+            Vector2 scaleMult = _bloodBGRenderRT.Size() / vortexTexture.Size();
+            spriteBatch.Draw(vortexTexture, centerOrigin, null, Color.White * alpha, 0f, vortexTexture.Size() / 2f, scaleMult * _scale, SpriteEffects.None, 0f);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+        }
         private void DrawBlack(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
+            SpriteBatch spriteBatch = Main.spriteBatch;
             if (DrawBloodyBG)
             {
                 GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
                 graphicsDevice.Clear(Color.Transparent);
-
-                var bloodyShader = BloodyShader.Instance;
-                bloodyShader.InnerColor = Color.Lerp(Color.Red, Color.Black, 0.7f);
-                bloodyShader.OuterColor = Color.Black;
-                bloodyShader.Distortion = 1;
-                bloodyShader.Tiling = Vector2.One * 12;
-                bloodyShader.Time = Main.GlobalTimeWrappedHourly * 3;
-                bloodyShader.NoiseTexture = TextureRegistry.Clouds6;
-
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, bloodyShader.Effect, Main.Transform);
-
-                float alpha = FlickerTimer > 0 ? ExtraMath.Osc(0f, 1f, speed: 2) : 1;
-
-                Vector2 centerOrigin = _bloodBGRenderRT.Size() / 2f;
-                spriteBatch.Draw(_bloodBGRenderRT, centerOrigin, null, Color.White * alpha, 0f, centerOrigin, _scale, SpriteEffects.None, 0f);
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
-
-  
+                DrawBloodyBG2();
+                DrawBloodyBG1();
                 SingularityFallSystem singularityFallSystem = ModContent.GetInstance<SingularityFallSystem>();
                 if (singularityFallSystem.hoveringPlatform)
                 {

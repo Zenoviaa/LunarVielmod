@@ -129,7 +129,7 @@ namespace Stellamod.Core.WindLineSystem
             ResizeRenderTargets();
 
 
-            float windSpeed = MathF.Abs(Main.windSpeedCurrent);
+            float windSpeed = MathHelper.Clamp(MathF.Abs(Main.windSpeedCurrent), 0f, 1f);
             int denom = (int)MathHelper.Lerp(30, 15, windSpeed);
 
 

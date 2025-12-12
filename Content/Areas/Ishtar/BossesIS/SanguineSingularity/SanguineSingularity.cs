@@ -385,6 +385,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 NPC.boss = true;
             }
 
+            Main.windSpeedTarget = 2;
             _rotatingWalk = false;
             TargetHaloColor = Color.Transparent;
             switch (State)
