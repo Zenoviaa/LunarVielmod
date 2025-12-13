@@ -128,6 +128,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             Despawn,
             Death,
             HammerDrop,
+
         }
         private bool InPhase2
         {

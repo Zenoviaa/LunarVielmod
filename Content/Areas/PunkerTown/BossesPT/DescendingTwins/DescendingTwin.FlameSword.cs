@@ -1,8 +1,17 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets;
+using Stellamod.Core.Particles;
+using Stellamod.Helpers;
+using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 {
@@ -122,6 +131,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Timer++;
             if (Timer == 1)
             {
+                _simpleDashNormal = NPC.rotation.ToRotationVector2().SafeNormalize(Vector2.Zero);
                 SoundStyle flamethrower = AssetRegistry.Sounds.SteamPunking.DescendingFlamethrower;
                 flamethrower.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(flamethrower, NPC.position);
@@ -140,8 +150,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             float completionRatio = Timer / continuosTime;
             float ease = EasingFunction.Anticipation2(completionRatio / 0.5f);
             NPC.velocity = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 10f, ease);
-            _telegraphLineAlpha = MathHelper.Lerp(1f, 0f, ease);
-            TargetOutlineColor = Color.Yellow;
+
+            float directionToRotate = _simpleDashNormal.X > 0 ? 1f : -1f;
+            float radiansOffset = MathHelper.Lerp(0f, MathHelper.PiOver2 * directionToRotate, completionRatio);
+
+            //That new direction that we are facing
+            Vector2 newNormal = _simpleDashNormal.RotatedBy(radiansOffset);
+            NPC.rotation = newNormal.ToRotation();
+
+            _telegraphLineAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(completionRatio / 0.3f));
+            _telegraphLineRot = NPC.rotation;
+            TargetOutlineColor = Color.Red;
             ShakeModSystem.Shake = 4;
             if (Timer % 5 == 0)
             {

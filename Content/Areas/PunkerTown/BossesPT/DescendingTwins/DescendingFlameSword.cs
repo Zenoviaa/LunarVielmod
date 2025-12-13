@@ -13,6 +13,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 {
     public class DescendingFlameSword : ModProjectile
     {
+        private Vector2 InitialVelocity;
         private Vector2[] FlamePos = new Vector2[64];
         private ref float Timer => ref Projectile.ai[0];
         private NPC Parent => Main.npc[(int)Projectile.ai[1]];
@@ -47,9 +48,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             {
                 ShakeModSystem.Shake = 2;
                 FXUtil.ShakeCamera(Projectile.position, 1024, 6);
-
+                InitialVelocity = Projectile.velocity;
 
             }
+
+            float cRatio = Timer / 100f;
+            float directionToRotate = InitialVelocity.X > 0 ? 1f : -1f;
+            float radiansOffset = MathHelper.Lerp(0f, MathHelper.PiOver2 * directionToRotate, EasingFunction.Anticipation2(cRatio));
+
+            //That new direction that we are facing
+            Vector2 newNormal = InitialVelocity.RotatedBy(radiansOffset);
+            Projectile.velocity = newNormal;
 
             float numFlamePos = FlamePos.Length;
             for (int n = 0; n < numFlamePos; n++)

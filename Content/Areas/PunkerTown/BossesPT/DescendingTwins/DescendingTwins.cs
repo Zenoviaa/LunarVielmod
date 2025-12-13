@@ -253,6 +253,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             if (MultiplayerHelper.IsHost)
             {
                 SwitchState(PatternManager.NextPattern());
+                SwitchState(TwinAttackState.TwinFlameSword);
             }
         }
 
