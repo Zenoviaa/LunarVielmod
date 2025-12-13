@@ -83,6 +83,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 spriteBatch.Draw(drawTexture, centerPos, null, drawColor, OldCenterRot[i], drawOrigin, scale, SpriteEffects.None, 0f);
             }
         }
+
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            FXUtil.GlowCircleBoom(Projectile.Center, Color.Red, Color.DarkRed, Color.Black);
+        }
     }
 
 
@@ -213,6 +219,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
+        }
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return false;
         }
 
         public override void AI()
