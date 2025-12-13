@@ -1271,7 +1271,25 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                     particle.Scale *= 8f;
                 }
+
+
+                if (Projectile.owner == Main.myPlayer)
+                {
+                    if(Variant == 0)
+                    {
+                        float numCursedFlames = 8f;
+                        for (float n = 0; n < numCursedFlames; n++)
+                        {
+                            float completionRatio = n / numCursedFlames;
+                            float rot = completionRatio * MathHelper.TwoPi;
+                            Vector2 vel = rot.ToRotationVector2() * 12;
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, vel, ProjectileID.CursedFlameHostile, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                        }
+                    } 
+
+                }
             }
+
         }
 
         private Color GetTwinColor()
