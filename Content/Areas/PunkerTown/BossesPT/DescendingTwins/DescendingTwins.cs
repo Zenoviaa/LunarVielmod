@@ -6,6 +6,7 @@ using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
@@ -29,6 +30,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             DashDance_Part1,
             DashDance_Part2,
             TwinFlameSword,
+            HighSpeedCrash
         }
 
         private ref float Timer => ref NPC.ai[0];
@@ -121,6 +123,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAttackState.TwinFlameSword:
                     AI_TwinFlameSword();
                     break;
+                case TwinAttackState.HighSpeedCrash:
+                    AI_HighSpeedCrash();
+                    break;
             }
         }
 
@@ -160,7 +165,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private void ChooseAttack()
         {
-            SwitchState(TwinAttackState.TwinFlameSword);
+            SwitchState(TwinAttackState.HighSpeedCrash);
         }
 
         private void AI_Idle()
@@ -249,14 +254,32 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void AI_TwinFlameSword()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
                 CommandSpazz(DescendingTwin.TwinAIState.FlameSwordStart);
                 CommandRetina(DescendingTwin.TwinAIState.FlameSwordStart);
             }
 
-            if(Timer >= 60)
+            if (Timer >= 60)
+            {
+                if (SpazzAwaitingCommand && RetinaAwaitingCommand)
+                {
+                    SwitchState(TwinAttackState.Idle);
+                }
+            }
+        }
+        private void AI_HighSpeedCrash()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                CommandSpazz(DescendingTwin.TwinAIState.HighSpeedCrashStart);
+                CommandRetina(DescendingTwin.TwinAIState.HighSpeedCrashStart);
+            }
+
+            if (Timer >= 60)
             {
                 if (SpazzAwaitingCommand && RetinaAwaitingCommand)
                 {
@@ -267,6 +290,120 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         }
     }
 
+    public class DescendingBigBoom : ModProjectile
+    {
+        private ref float Timer => ref Projectile.ai[0];
+        private int Variant => (int)Projectile.ai[1];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 120;
+            Projectile.height = 120;
+            Projectile.hostile = true;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 15;
+        }
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            ShakeModSystem.Shake = 10;
+            if(Timer == 1)
+            {
+                SoundStyle boomSound = AssetRegistry.Sounds.SteamPunking.DescendingBoom;
+                boomSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(boomSound, Projectile.position);
+
+                for (float f = 0; f < 4; f++)
+                {
+                    Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                    pVelocity *= Main.rand.NextFloat(0.5f, 1f);
+                    var spark = Particle.NewParticle<ZapParticle>(Projectile.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                    spark.innerColor = Color.White;
+                    spark.outerColor = GetTwinColor();
+                    spark.fadeToColor = Color.Blue;
+                }
+
+                var part = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+                part.Scale *= 2;
+                part.noStretch = true;
+                part.innerColor = GetTwinColor();
+                part.outerColor = Color.Lerp(GetTwinColor(), Color.Blue, 0.25f);
+                part.fadeToColor = Color.Lerp(GetTwinColor(), Color.Black, 0.5f);
+                for (float f = 0; f < 8; f++)
+                {
+                    float radius = 800;
+                    Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2CircularEdge(radius, radius);
+                    Vector2 velocity = Projectile.Center - spawnPos;
+                    velocity = velocity.SafeNormalize(Vector2.Zero);
+                    velocity *= Main.rand.NextFloat(8, 32);
+                    var p = FXUtil.GlowStretch(spawnPos, velocity);
+                    p.InnerColor = GetTwinColor();
+                    p.GlowColor = Color.Lerp(GetTwinColor(), Color.Blue, 0.25f);
+                    p.OuterGlowColor = Color.Lerp(GetTwinColor(), Color.Black, 0.5f);
+                    p.Scale *= 3f;
+                }
+
+                FXUtil.ShakeCamera(Projectile.position, 1024, 10);
+                for (float f = 0; f < 8; f++)
+                {
+                    Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi);
+                    pVelocity *= Main.rand.NextFloat(0.5f, 8f);
+                    var spark = Particle.NewParticle<EmberParticle>(Projectile.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                }
+
+                float numDust = 16;
+                for(float n = 0; n < numDust; n++)
+                {
+                    SpawnFlameDust(Projectile.Center, Main.rand.NextVector2Circular(16, 16));
+                    SpawnGlowDust(Projectile.Center, Main.rand.NextVector2Circular(64, 64));
+                }
+                for (float i = 0; i < 8; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: GetTwinColor(),
+                        outerGlowColor: Color.Lerp(GetTwinColor(), Color.DarkBlue, 0.5f),
+                        baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                        duration: Main.rand.NextFloat(15, 25));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                    particle.Scale *= 4f;
+                }
+            }
+        }
+
+        private Color GetTwinColor()
+        {
+            switch (Variant)
+            {
+                default:
+                case 0:
+                    return Color.Green;
+                case 1:
+                    return Color.Red;
+            }
+        }
+
+        private void SpawnFlameDust(Vector2 position, Vector2 velocity)
+        {
+            var p = Particle.NewParticle<GlowFragmentParticle>(position, velocity, Color.White, Scale: 4f);
+            Color twinColor = GetTwinColor();
+            p.innerColor = twinColor;
+            p.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
+            p.fadeToColor = Color.Lerp(twinColor, Color.DarkBlue, 0.5f);
+        }
+        private void SpawnGlowDust(Vector2 position, Vector2 velocity)
+        {
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), velocity, newColor: GetTwinColor(), Scale: 2f);
+        }
+    }
 
     public class DescendingFlameSword : ModProjectile
     {
@@ -421,6 +558,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             FlameSwordWindup,
             FlameSwordContinuous,
             FlameSwordEnd,
+
+            HighSpeedCrashStart,
+            HighSpeedCrashQuickStart,
+            HighSpeedCrashPreDash,
+            HighSpeedCrashWindup,
+            HighSpeedCrashCrash,
+            HIghSpeedCrashEnd
         }
 
 
@@ -448,6 +592,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private ref float AttackNumber => ref NPC.ai[3];
         private TwinVariant Variant;
         private int FlameSwordDamage => 20;
+        private int DescendingBigBoomDamage => 30;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -494,6 +639,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             base.SendExtraAI(writer);
             writer.WriteVector2(_simpleDashNormal);
+            writer.WriteVector2(_highSpeedTargetPosition);
             writer.Write((float)Variant);
             writer.Write(_parentIndex);
         }
@@ -501,6 +647,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             base.ReceiveExtraAI(reader);
             _simpleDashNormal = reader.ReadVector2();
+            _highSpeedTargetPosition = reader.ReadVector2();
             Variant = (TwinVariant)reader.ReadSingle();
             _parentIndex = reader.ReadInt32();
         }
@@ -578,6 +725,25 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAIState.FlameSwordEnd:
                     AI_FlameSwordEnd();
                     break;
+
+                case TwinAIState.HighSpeedCrashStart:
+                    AI_HighSpeedCrashStart();
+                    break;
+                case TwinAIState.HighSpeedCrashQuickStart:
+                    AI_HighSpeedCrashQuickStart();
+                    break;
+                case TwinAIState.HighSpeedCrashPreDash:
+                    AI_HighSpeedCrashPreDash();
+                    break;
+                case TwinAIState.HighSpeedCrashWindup:
+                    AI_HighSpeedCrashWindup();
+                    break;
+                case TwinAIState.HighSpeedCrashCrash:
+                    AI_HighSpeedCrashCrash();
+                    break;
+                case TwinAIState.HIghSpeedCrashEnd:
+                    AI_HighSpeedCrashEnd();
+                    break;
             }
             Lighting.AddLight(NPC.Center, Variant == TwinVariant.Spazz ? TorchID.Cursed : TorchID.Red);
             UpdateDraw();
@@ -586,6 +752,273 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private Player Target => Main.player[NPC.target];
         private Vector2 TargetNormal => NPC.DirectionTo(Target.Center);
 
+
+        #region High Speed Crash
+        private Vector2 _highSpeedTargetPosition;
+        private Vector2 GetHighSpeedCrashStartOffset()
+        {
+            float distanceOffset = 200;
+            switch (Variant)
+            {
+                default:
+                case TwinVariant.Spazz:
+                    return -Vector2.UnitX * distanceOffset;
+                case TwinVariant.Retina:
+                    return Vector2.UnitX * distanceOffset;
+            }
+        }
+
+        private void AI_HighSpeedCrashStart()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }            /*
+             * 
+             * Both of them aim above you, shooting a type of fire (Descender Retina), shoots a red fire,
+             * while Descender Spazz, shoots a green flame, and they make a crossing sword, and continuously going downwards, making you dodge
+             */
+
+            //So first we need to get them ina  good position for doing this attack
+            //I think it'd be best if they position themselves on opposite sides of you
+            //Alright so
+            //First let's get that position and move to it
+            Vector2 highSpeedCrashStartOffset = GetHighSpeedCrashStartOffset();
+            Vector2 positionToMoveTo = Target.Center + highSpeedCrashStartOffset;
+
+
+            float windupTime = 80f;
+            float completionRatio = Timer / windupTime;
+            float ease = EasingFunction.InOutSine(completionRatio);
+            Vector2 movementVelocity = (positionToMoveTo - NPC.Center);
+            NPC.velocity = Vector2.Lerp(_simpleDashNormal, movementVelocity, completionRatio);
+
+            //Look at the player
+            Vector2 targetNormal = TargetNormal;
+            float targetAngle = targetNormal.ToRotation();
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
+
+            _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, completionRatio);
+            _telegraphLineRot = NPC.rotation;
+
+            //There's no afterimage on this preparation state
+            _afterImageAlpha = 0f;
+
+            //Alert the player that something is about to happen fr
+            TargetOutlineColor = Color.Yellow;
+
+            //Here we wait a bit longer before they do the sword so that you get a bit of time to react
+            if (Timer >= windupTime * 1.3f)
+            {
+                SwitchState(TwinAIState.HighSpeedCrashWindup);
+            }
+        }
+        private void AI_HighSpeedCrashQuickStart()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+            }            /*
+             * 
+             * Both of them aim above you, shooting a type of fire (Descender Retina), shoots a red fire,
+             * while Descender Spazz, shoots a green flame, and they make a crossing sword, and continuously going downwards, making you dodge
+             */
+
+            //So first we need to get them ina  good position for doing this attack
+            //I think it'd be best if they position themselves on opposite sides of you
+            //Alright so
+            //First let's get that position and move to it
+            Vector2 highSpeedCrashStartOffset = GetHighSpeedCrashStartOffset();
+            highSpeedCrashStartOffset = highSpeedCrashStartOffset.RotatedBy(AttackNumber * MathHelper.PiOver4);
+            Vector2 positionToMoveTo = Target.Center + highSpeedCrashStartOffset;
+
+
+            float windupTime = 25f;
+            float completionRatio = Timer / windupTime;
+            float ease = EasingFunction.InOutSine(completionRatio);
+            Vector2 movementVelocity = (positionToMoveTo - NPC.Center);
+            NPC.velocity = Vector2.Lerp(_simpleDashNormal, movementVelocity, completionRatio);
+
+            //Look at the player
+            Vector2 targetNormal = TargetNormal;
+            float targetAngle = targetNormal.ToRotation();
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
+
+            _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, completionRatio);
+            _telegraphLineRot = NPC.rotation;
+
+            //There's no afterimage on this preparation state
+            _afterImageAlpha = 0f;
+
+            //Alert the player that something is about to happen fr
+            TargetOutlineColor = Color.Yellow;
+
+            //Here we wait a bit longer before they do the sword so that you get a bit of time to react
+            if (Timer >= windupTime * 1.3f)
+            {
+                SwitchState(TwinAIState.HighSpeedCrashWindup);
+            }
+        }
+
+        private void AI_HighSpeedCrashWindup()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                _simpleDashNormal = NPC.rotation.ToRotationVector2();
+                _highSpeedTargetPosition = Target.Center;
+            }
+
+            if(Timer % 5 == 0)
+            {
+                SpawnFlameDust();
+            }
+            //High speed crash set the rotation
+            const float windupTime = 30f;
+            float completionRatio = Timer / windupTime;
+            float directionToRotate = _simpleDashNormal.X > 0 ? 1f : -1f;
+            float radiansToRotateBy = MathHelper.Lerp(0f, -MathHelper.Pi * directionToRotate, completionRatio);
+
+            Vector2 newDashNormal = _simpleDashNormal.RotatedBy(radiansToRotateBy);
+            NPC.rotation = newDashNormal.ToRotation();
+            _afterImageAlpha = MathHelper.Lerp(0f, 1f, completionRatio);
+            _telegraphLineAlpha = MathHelper.Lerp(1f, 0f, completionRatio);
+
+            float speed = MathHelper.Lerp(4f, 50f, completionRatio);
+            NPC.velocity = newDashNormal * speed;
+            TargetOutlineColor = Color.Yellow;
+            if(Timer >= windupTime)
+            {
+                SwitchState(TwinAIState.HighSpeedCrashPreDash);
+            }
+        }
+
+        private void AI_HighSpeedCrashPreDash()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                _simpleDashNormal = (_highSpeedTargetPosition - NPC.Center).SafeNormalize(Vector2.Zero);
+                //Play a cool little dash sound
+                //Wait, I have an idea for how this can sound like
+                SoundStyle dashSound = AssetRegistry.Sounds.SteamPunking.DescendingBeep;
+                dashSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(dashSound, NPC.position);
+            }
+            const float windUpTime = 15f;
+            float completionRatio = Timer / windUpTime;
+            float ease = EasingFunction.Anticipation2(completionRatio);
+            NPC.velocity = Vector2.Lerp(Vector2.Zero, _simpleDashNormal * 5f, ease);
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
+            if(Timer >= windUpTime)
+            {
+                SwitchState(TwinAIState.HighSpeedCrashCrash);
+            }
+        }
+
+        private void AI_HighSpeedCrashCrash()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                _simpleDashNormal = (_highSpeedTargetPosition - NPC.Center).SafeNormalize(Vector2.Zero);
+                //Play a cool little dash sound
+                //Wait, I have an idea for how this can sound like
+                SoundStyle dashSound = AttackNumber % 2 == 0 ?
+                    AssetRegistry.Sounds.SteamPunking.DescendingDash1
+                    : AssetRegistry.Sounds.SteamPunking.DescendingDash2;
+                dashSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(dashSound, NPC.position);
+            }
+
+            _afterImageAlpha = 1f;
+            ShakeModSystem.Shake = 2;
+
+            if(Timer % 5 == 0)
+            {
+                SpawnSteamParticle();
+            }
+
+            if(Timer % 2 == 0)
+            {
+    
+                SpawnFlameDonut();
+                SpawnFlameDust();
+            }
+
+            //We need to zoom really quickly to the target position
+            //Not sure how to do that tbh
+            float dashTime = 25f;
+            float completionRatio = Timer / dashTime;
+            float dashSpeed = MathHelper.Lerp(25f, 65, completionRatio);
+            NPC.velocity = _simpleDashNormal * dashSpeed;
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.5f);
+
+            if(Timer == (int)(dashTime - 5))
+            {
+
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<DescendingBigBoom>(), DescendingBigBoomDamage, 1, Main.myPlayer, ai1: (int)Variant);
+                }
+            }
+            //Enable the contact damage as per usual
+            _contactDamage = true;
+            TargetOutlineColor = Color.Red;
+            if(Timer >= dashTime)
+            {
+                SwitchState(TwinAIState.HIghSpeedCrashEnd);
+            }
+        }
+
+        private void AI_HighSpeedCrashEnd()
+        {
+            Timer++;
+            Vector2 targetNormal = TargetNormal;
+            float targetAngle = targetNormal.ToRotation();
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
+
+            //Step 2. Check the distance between this current twin and the player
+            //If the distance is too far we'll move closer to them, if not we just slow down/sit there
+            float distanceToTarget = Vector2.Distance(NPC.Center, Target.Center);
+            float maxDistance = 400;
+            if (distanceToTarget > maxDistance)
+            {
+                //We should scale the movement velocity based on the distance, so the farther they are the faster we'll move
+                Vector2 movementVelocity = targetNormal * distanceToTarget / 32f;
+                NPC.velocity = Vector2.Lerp(NPC.velocity, movementVelocity, 0.1f);
+            }
+            else
+            {
+                //Otherwise, we'll just slow down
+                //We want to keep a little bit of movement velocity so it's not just completely static
+                NPC.velocity *= 0.8f;
+
+                //Stpe 3. Add a little bit of hovering velocity for a cool effect
+                float yHover = MathF.Sin(Timer * 0.1f) * 0.5f;
+                NPC.velocity.Y += yHover;
+            }
+
+            if (Timer >= 42)
+            {
+                AttackNumber++;
+                if(AttackNumber < 6)
+                {
+                    SwitchState(TwinAIState.HighSpeedCrashQuickStart);
+                }
+                else
+                {
+                    SwitchState(TwinAIState.Idle);
+                }
+        
+            }
+        }
+
+        #endregion
+
+        #region Flame Sword
         private Vector2 GetFlameSwordStartOffset()
         {
             float distanceOffset = 300f;
@@ -745,7 +1178,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 SwitchState(TwinAIState.Idle);
             }
         }
-
+        #endregion
         private void AI_SpawnRetina()
         {
             Variant = TwinVariant.Retina;
@@ -762,20 +1195,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             SwitchState(TwinAIState.Idle);
         }
 
-        private void AI_Idle()
+        private void IdleMovement()
         {
-            //Ok, so in the idle state, the goober is basically waiting on a command from the commander
-            //So it should just slowly wander around and target the player
-            Timer++;
-            if (Timer == 1)
-            {
-                NPC.TargetClosest();
-            }
-
-     
-            //Reset draw variables
-            _scale = Vector2.One;
-            _afterImageAlpha = 0f;
 
             //So we should slowly move towards the player if they're far, if not we'll just hover in place.
             //Step 1. Look towards the player, we can do this by calculating a target normal, calculating an angle and then lerping to it
@@ -803,6 +1224,23 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 float yHover = MathF.Sin(Timer * 0.1f) * 0.5f;
                 NPC.velocity.Y += yHover;
             }
+        }
+
+        private void AI_Idle()
+        {
+            //Ok, so in the idle state, the goober is basically waiting on a command from the commander
+            //So it should just slowly wander around and target the player
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+
+     
+            //Reset draw variables
+            _scale = Vector2.One;
+            _afterImageAlpha = 0f;
+            IdleMovement();
 
             //Remember, we're just waiting on a command from up above, so we don't actually need to do anything else here
             //However, we will create a few steam particles just for funsies
