@@ -15,7 +15,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 {
@@ -739,12 +738,29 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             FlameTornado,
         }
 
+        private bool _showNamePlate;
         private ref float Timer => ref NPC.ai[0];
 
         private int _retinaIndex;
         private int _spazzIndex;
         private NPC Retina => Main.npc[_retinaIndex];
         private NPC Spazz => Main.npc[_spazzIndex];
+
+        private PatternManager<TwinAttackState> _patternManager;
+        private PatternManager<TwinAttackState> PatternManager
+        {
+            get
+            {
+                _patternManager ??= new PatternManager<TwinAttackState>(
+                    new Tuple<TwinAttackState, float>(TwinAttackState.DashDance_Part1, 1.0f),
+                    new Tuple<TwinAttackState, float>(TwinAttackState.BouncingDash, 0.5f),
+                    new Tuple<TwinAttackState, float>(TwinAttackState.TwinFlameSword, 1.0f),
+                    new Tuple<TwinAttackState, float>(TwinAttackState.HighSpeedCrash, 1.0f),
+                    new Tuple<TwinAttackState, float>(TwinAttackState.NodeLay, 0.5f),
+                    new Tuple<TwinAttackState, float>(TwinAttackState.FlameTornado, 0.1f));
+                return _patternManager;
+            }
+        }
 
         public Vector2 GetBouncingDashAnchorPoint()
         {
@@ -815,9 +831,28 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return false;
+        }
+
         public override void AI()
         {
             base.AI();
+            if (!_showNamePlate)
+            {
+                ShowNamePlate();
+                _showNamePlate = true;
+            }
+
+            if(State != TwinAttackState.SummonTwins)
+            {
+                //Shared health pool
+                NPC.life = Math.Min(Spazz.life, Retina.life);
+                Spazz.life = NPC.life;
+                Retina.life = NPC.life;
+            }
+
             switch (State)
             {
                 case TwinAttackState.SummonTwins:
@@ -886,7 +921,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private void ChooseAttack()
         {
-            SwitchState(TwinAttackState.FlameTornado);
+            if (MultiplayerHelper.IsHost)
+            {
+                SwitchState(PatternManager.NextPattern());
+                SwitchState(TwinAttackState.NodeLay);
+            }
         }
 
         private void AI_Idle()
@@ -1037,7 +1076,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             {
                 NPC.TargetClosest();
                 CommandSpazz(DescendingTwin.TwinAIState.SpazzNodeLayWindup);
-                CommandRetina(DescendingTwin.TwinAIState.RetinaNodeLayWindup);
+                CommandRetina(DescendingTwin.TwinAIState.RetineNodeLayStart);
             }
 
             if (Timer >= 60)
@@ -1630,6 +1669,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             SpazzNodeLayWindup,
             SpazzNodeLayShoot,
+            RetineNodeLayStart,
             RetinaNodeLayWindup,
             RetinaNodeLayShoot,
             NodeEnd,
@@ -1637,7 +1677,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             FlameTornadoStart,
             FlameTornadoWindup,
             FlameTornadoShoot,
-            FlameTornadoEnd
+            FlameTornadoEnd,
+
+            Death
         }
 
 
@@ -1698,9 +1740,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             NPC.noTileCollide = true;
             NPC.npcSlots = 30f;
 
-            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Boss6");
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Descender");
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
+        }
+
+        public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+        {
+            return false;
         }
 
         public override bool CheckActive()
@@ -1844,6 +1891,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAIState.SpazzNodeLayShoot:
                     AI_SpazzNodeLayShoot();
                     break;
+                case TwinAIState.RetineNodeLayStart:
+                    AI_RetinaNodeLaySlowStart();
+                    break;
                 case TwinAIState.RetinaNodeLayWindup:
                     AI_RetinaNodeLayWindup();
                     break;
@@ -1876,6 +1926,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private Vector2 TargetNormal => NPC.DirectionTo(Target.Center);
         private DescendingTwins Commander => (DescendingTwins)Main.npc[_parentIndex].ModNPC;
 
+
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+          
+        }
         #region Flame Tornado
         private Vector2 GetFlameTornadoStartOffset()
         {
@@ -2044,6 +2100,19 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
             return null;
         }
+        private void AI_RetinaNodeLaySlowStart()
+        {
+            if (Timer < 1)
+            {
+                Timer++;
+            }
+            LayMovement();
+            NPC.rotation += MathHelper.Lerp(0f, 0.1f, Timer / 120f);
+            if(Timer >= 120)
+            {
+                SwitchState(TwinAIState.RetinaNodeLayWindup);
+            }
+        }
         private void AI_RetinaNodeLayWindup()
         {
             if(Timer < 1)
@@ -2113,7 +2182,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             _afterImageAlpha = 0f;
             TargetOutlineColor = Color.Yellow;
 
-            IdleMovement();
+            LayMovement();
             if (Timer >= shootTime)
             {
                 SwitchState(TwinAIState.RetinaNodeLayWindup);
