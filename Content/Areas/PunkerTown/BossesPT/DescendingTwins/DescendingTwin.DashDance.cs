@@ -35,11 +35,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
 
             //2. Calculate anticipation
-            float windUpTime = 20f;
+            float windUpTime = 30f;
             if (AttackNumber == 0)
             {
                 windUpTime *= 2f;
             }
+
+            if (_phaseShift)
+            {
+                windUpTime *= 0.5f;
+            }
+
             float completionRatio = Timer / windUpTime;
             float ease = EasingFunction.Anticipation2(completionRatio);
             Vector2 movementNormal = Vector2.Lerp(-_simpleDashNormal * 0.5f, _simpleDashNormal, ease);
@@ -124,15 +130,21 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             {
                 SpawnFlameDust();
             }
+
             //Fade out the dash line and just move in the direction that we were moving
             //We can just multiply the velocity
-            float dashTime = 20f;
+            float dashTime = 25f;
             float completionRatio = Timer / dashTime;
 
             float dashSpeed = 35f;
             if (NPC.velocity.Length() < dashSpeed)
             {
                 NPC.velocity *= 1.5f;
+            }
+
+            if (_phaseShift)
+            {
+                dashTime *= 0.5f;
             }
 
             NPC.rotation = NPC.velocity.ToRotation();

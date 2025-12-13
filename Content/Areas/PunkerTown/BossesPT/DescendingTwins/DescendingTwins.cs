@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Newtonsoft.Json.Linq;
 using Stellamod.Core;
 using Stellamod.Helpers;
 using System;
@@ -137,6 +136,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         public override void AI()
         {
             base.AI();
+         
             if (!_showNamePlate)
             {
                 ShowNamePlate();
@@ -203,7 +203,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
         }
 
-        
+
 
         private void SwitchState(TwinAttackState state)
         {
@@ -234,7 +234,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
 
             NPC.velocity = Vector2.Zero;
-     
+
             if (Timer >= deathTime)
             {
                 NPC.Kill();

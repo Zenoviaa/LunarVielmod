@@ -91,8 +91,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private bool _contactDamage;
         private float _rotationTimer;
         private int _parentIndex;
-        private VerletChain _verletChain1;
-        private VerletChain _verletChain2;
+
         private ref float Timer => ref NPC.ai[0];
         private TwinAIState State
         {
@@ -109,23 +108,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private ref float AttackNumber => ref NPC.ai[3];
         private TwinVariant Variant;
 
-        private VerletChain VerletChain1
-        {
-            get
-            {
-                _verletChain1 ??= new VerletChain(16, NPC.Center, Vector2.UnitX);
-                return _verletChain1;
-            }
-        }
-
-        private VerletChain VerletChain2
-        {
-            get
-            {
-                _verletChain2 ??= new VerletChain(16, NPC.Center, Vector2.UnitX);
-                return _verletChain2;
-            }
-        }
         private int FlameSwordDamage => 20;
         private int DescendingBigBoomDamage => 30;
 
@@ -210,7 +192,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         public override void AI()
         {
             base.AI();
-
             //If we don't have a valid target automatically retarget.
             if (!NPC.HasValidTarget)
             {

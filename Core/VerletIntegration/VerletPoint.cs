@@ -56,6 +56,7 @@ namespace Stellamod.Core.VerletIntegration
         public float gravity;
         public float segmentLength;
         public int subdivisionCount;
+        public Vector2 g;
         public void Update()
         {
             UpdateVelocities();
@@ -80,6 +81,7 @@ namespace Stellamod.Core.VerletIntegration
 
                 Vector2 velocity = point.position - point.oldPosition;
                 velocity.Y += gravity;
+                velocity += g;
                 point.oldPosition = point.position;
 
                 //Interact with tiles, the tile collision function returns an inverse velocity I think?

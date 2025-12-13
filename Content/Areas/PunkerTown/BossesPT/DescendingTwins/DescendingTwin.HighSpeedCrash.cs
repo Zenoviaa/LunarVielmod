@@ -46,6 +46,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
 
             float windupTime = 80f;
+            if (_phaseShift)
+            {
+                windupTime *= 0.8f;
+            }
+
             float completionRatio = Timer / windupTime;
             float ease = EasingFunction.InOutSine(completionRatio);
             Vector2 movementVelocity = (positionToMoveTo - NPC.Center);
@@ -78,7 +83,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             {
                 NPC.TargetClosest();
                 _simpleDashNormal = NPC.velocity;
-            }            /*
+            }           
+            
+            /*
              * 
              * Both of them aim above you, shooting a type of fire (Descender Retina), shoots a red fire,
              * while Descender Spazz, shoots a green flame, and they make a crossing sword, and continuously going downwards, making you dodge
@@ -94,6 +101,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
 
             float windupTime = 50f;
+            if (_phaseShift)
+            {
+                windupTime *= 0.8f;
+            }
+
             float completionRatio = Timer / windupTime;
             float ease = EasingFunction.InOutSine(completionRatio);
             Vector2 movementVelocity = (positionToMoveTo - NPC.Center);
@@ -134,7 +146,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 SpawnFlameDust();
             }
             //High speed crash set the rotation
-            const float windupTime = 30f;
+            float windupTime = 30f;
+            if (_phaseShift)
+            {
+                windupTime *= 0.8f;
+            }
+
             float completionRatio = Timer / windupTime;
             float directionToRotate = _simpleDashNormal.X > 0 ? 1f : -1f;
             float radiansToRotateBy = MathHelper.Lerp(0f, -MathHelper.Pi * directionToRotate, completionRatio);
@@ -165,7 +182,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 dashSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(dashSound, NPC.position);
             }
-            const float windUpTime = 15f;
+            float windUpTime = 15f;
+            if (_phaseShift)
+            {
+                windUpTime *= 0.8f;
+            }
+
             float completionRatio = Timer / windUpTime;
             float ease = EasingFunction.Anticipation2(completionRatio);
             NPC.velocity = Vector2.Lerp(Vector2.Zero, _simpleDashNormal * 5f, ease);
