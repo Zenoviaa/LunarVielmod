@@ -235,13 +235,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             {
                 default:
                 case 0:
-                    return Color.Green;
+                    return Color.GreenYellow;
                 case 1:
-                    return Color.Red;
-                case 2:
-                    return Color.Blue;
-                case 3:
                     return Color.Yellow;
+                case 2:
+                    return Color.LightSeaGreen;
+                case 3:
+                    return Color.Orange;
             }
         }
         private void SwitchState(TwinAttackState state)
