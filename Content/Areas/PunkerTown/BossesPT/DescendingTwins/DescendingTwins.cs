@@ -4,8 +4,11 @@ using Newtonsoft.Json.Linq;
 using Stellamod.Assets;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using Stellamod.Trails;
+using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.IO;
@@ -25,6 +28,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Idle,
             DashDance_Part1,
             DashDance_Part2,
+            TwinFlameSword,
         }
 
         private ref float Timer => ref NPC.ai[0];
@@ -114,6 +118,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAttackState.DashDance_Part2:
                     AI_DashDancePart2();
                     break;
+                case TwinAttackState.TwinFlameSword:
+                    AI_TwinFlameSword();
+                    break;
             }
         }
 
@@ -153,7 +160,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private void ChooseAttack()
         {
-            SwitchState(TwinAttackState.DashDance_Part1);
+            SwitchState(TwinAttackState.TwinFlameSword);
         }
 
         private void AI_Idle()
@@ -238,9 +245,150 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 SwitchState(TwinAttackState.Idle);
             }
         }
+
+        private void AI_TwinFlameSword()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+                CommandSpazz(DescendingTwin.TwinAIState.FlameSwordStart);
+                CommandRetina(DescendingTwin.TwinAIState.FlameSwordStart);
+            }
+
+            if(Timer >= 60)
+            {
+                if (SpazzAwaitingCommand && RetinaAwaitingCommand)
+                {
+                    SwitchState(TwinAttackState.Idle);
+                }
+            }
+
+        }
     }
 
 
+    public class DescendingFlameSword : ModProjectile
+    {
+        private Vector2[] FlamePos = new Vector2[64];
+        private ref float Timer => ref Projectile.ai[0];
+        private NPC Parent => Main.npc[(int)Projectile.ai[1]];
+        private int Variant => (int)Projectile.ai[2];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.hostile = true;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 100;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            return ProjectileHelper.OldPosColliding(FlamePos, projHitbox, targetHitbox);
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if(Timer == 1)
+            {
+                ShakeModSystem.Shake = 2;
+                FXUtil.ShakeCamera(Projectile.position, 1024, 6);
+
+             
+            }
+
+            float numFlamePos = FlamePos.Length;
+            for(int n = 0; n < numFlamePos; n++)
+            {
+                float completionRatio = (float)n / numFlamePos;
+                FlamePos[n] = Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity, completionRatio);
+                if (Main.rand.NextBool(32))
+                {
+                    SpawnFlameDust(FlamePos[n]);
+
+                }
+        
+            }
+            Projectile.Center = Parent.Center;
+        }
+        private Color GetTwinColor()
+        {
+            switch (Variant)
+            {
+                default:
+                case 0:
+                    return Color.Green;
+                case 1:
+                    return Color.Red;
+            }
+        }
+        private void SpawnFlameDust(Vector2 position)
+        {
+            var p = Particle.NewParticle<GlowFragmentParticle>(position, Projectile.velocity.SafeNormalize(Vector2.Zero) * 5f, Color.White);
+            Color twinColor = GetTwinColor();
+            p.innerColor = twinColor;
+            p.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
+            p.fadeToColor = Color.Lerp(twinColor, Color.DarkBlue, 0.5f);
+        }   
+
+
+        private Color GetTrailColor(float completionRatio)
+        {
+            return Color.Lerp(Color.White, Color.White, completionRatio) * EasingFunction.QuadraticBump(completionRatio);
+        }
+
+        private float GetTrailWidth(float completionRatio)
+        {
+            float outScale = (float)Projectile.timeLeft / 30f;
+            float inScale = EasingFunction.InOutSine(Timer / 30f);
+            float ease = EasingFunction.InOutSine(outScale);
+            return MathHelper.SmoothStep(0, 32, completionRatio) * ease * inScale * 2 * MathHelper.Lerp(8, 1f, EasingFunction.InOutSine(Timer / 30f));
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            DescendingFlameTrailShader flameTrailShader = DescendingFlameTrailShader.Instance;
+            flameTrailShader.LaserTexture = AssetRegistry.Textures.Noise.JungleWaterCaustics;
+    
+            flameTrailShader.Tiling = Vector2.One * new Vector2(4, 0.85f);
+            Color innerColor;
+            Color outerColor;
+            switch (Variant)
+            {
+                default:
+                case 0:
+                    innerColor = Color.GreenYellow;
+                    outerColor = Color.Green; 
+                    break;
+                case 1:
+                    innerColor = Color.Yellow;
+                    outerColor = Color.Red;
+                    break;
+            }
+
+
+            float lerp = EasingFunction.InOutSine(Timer / 20f);
+            flameTrailShader.InnerColor = Color.Lerp(Color.White, innerColor, lerp);
+            flameTrailShader.OuterColor = Color.Lerp(Color.White, outerColor, lerp);
+            flameTrailShader.BlendState = BlendState.AlphaBlend;
+            TrailDrawer.Draw(Main.spriteBatch, FlamePos, GetTrailColor, GetTrailWidth, flameTrailShader);
+
+            flameTrailShader.BlendState = BlendState.Additive;
+            TrailDrawer.Draw(Main.spriteBatch, FlamePos, GetTrailColor, GetTrailWidth, flameTrailShader);
+            return false;
+        }
+
+    }
     //The thing with this boss is that it's a dual synced boss
     //I think the easiest way to do that is to have a single twin npc, and a controller npc
     //That basically sends commands to them telling them what to do
@@ -266,7 +414,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             DashDancePrepare,
             DashDance,
             DashDanceTwirl,
-            DashDanceEnd
+            DashDanceEnd,
+
+
+            FlameSwordStart,
+            FlameSwordWindup,
+            FlameSwordContinuous,
+            FlameSwordEnd,
         }
 
 
@@ -293,6 +447,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private ref float AttackNumber => ref NPC.ai[3];
         private TwinVariant Variant;
+        private int FlameSwordDamage => 20;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -410,6 +565,19 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAIState.DashDanceEnd:
                     AI_DashDanceEnd();
                     break;
+
+                case TwinAIState.FlameSwordStart:
+                    AI_FlameSwordStart();
+                    break;
+                case TwinAIState.FlameSwordWindup:
+                    AI_FlameSwordAim();
+                    break;
+                case TwinAIState.FlameSwordContinuous:
+                    AI_FlameSwordContinuous();
+                    break;
+                case TwinAIState.FlameSwordEnd:
+                    AI_FlameSwordEnd();
+                    break;
             }
             Lighting.AddLight(NPC.Center, Variant == TwinVariant.Spazz ? TorchID.Cursed : TorchID.Red);
             UpdateDraw();
@@ -417,6 +585,167 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private Player Target => Main.player[NPC.target];
         private Vector2 TargetNormal => NPC.DirectionTo(Target.Center);
+
+        private Vector2 GetFlameSwordStartOffset()
+        {
+            float distanceOffset = 300f;
+            switch (Variant)
+            {
+                default:
+                case TwinVariant.Spazz:
+                    return -Vector2.UnitX * distanceOffset;
+                case TwinVariant.Retina:
+                    return Vector2.UnitX * distanceOffset;
+            }
+        }
+        private void SpawnSteamParticle()
+        {
+            Vector2 spawnPosition = NPC.Top;
+            spawnPosition.X += Main.rand.NextFloat(-64, 64);
+
+            Vector2 spawnVelocity = Vector2.Zero;
+            spawnVelocity.Y = Main.rand.NextFloat(-10, -1f);
+
+            float spawnScale = Main.rand.NextFloat(0.75f, 1f);
+            var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
+            steamParticle.innerColor = Color.DarkGray;
+            steamParticle.outerColor = Color.Black;
+            steamParticle.fadeToColor = Color.Black;
+        }
+        private void AI_FlameSwordStart()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+                _simpleDashNormal = NPC.velocity;
+            }
+
+            /*
+             * 
+             * Both of them aim above you, shooting a type of fire (Descender Retina), shoots a red fire,
+             * while Descender Spazz, shoots a green flame, and they make a crossing sword, and continuously going downwards, making you dodge
+             */
+
+            //So first we need to get them ina  good position for doing this attack
+            //I think it'd be best if they position themselves on opposite sides of you
+            //Alright so
+            //First let's get that position and move to it
+            Vector2 flameSwordOffset = GetFlameSwordStartOffset();
+            Vector2 positionToMoveTo = Target.Center + flameSwordOffset;
+
+
+            float windupTime = 80f;
+            float completionRatio = Timer / windupTime;
+            float ease = EasingFunction.InOutSine(completionRatio);
+            Vector2 movementVelocity = (positionToMoveTo - NPC.Center);
+            NPC.velocity = Vector2.Lerp(_simpleDashNormal, movementVelocity, completionRatio);
+
+            //Look at the player
+            Vector2 targetNormal = TargetNormal;
+            float targetAngle = targetNormal.ToRotation();
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
+
+            //There's no afterimage on this preparation state
+            _afterImageAlpha = 0f;
+
+            //Alert the player that something is about to happen fr
+            TargetOutlineColor = Color.Yellow;
+            
+            //Here we wait a bit longer before they do the sword so that you get a bit of time to react
+            if(Timer >= windupTime * 1.3f)
+            {
+                SwitchState(TwinAIState.FlameSwordWindup);
+            }
+            
+        }
+
+        private void AI_FlameSwordAim()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle beep = AssetRegistry.Sounds.SteamPunking.DescendingBeep;
+                beep.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(beep, NPC.position);
+             
+                _simpleDashNormal = TargetNormal;
+            }
+
+            NPC.velocity.Y -= 1;
+            NPC.velocity *= 0.9f;
+
+            //We need to look up at a 30 degree angle, shoot, and then move downward
+            //Alright
+            float windupTime = 30f;
+            float completionRatio = Timer / windupTime;
+            float ease = EasingFunction.Anticipation(completionRatio);
+            float directionToRotate = _simpleDashNormal.X > 0 ? 1f : -1f;
+            float radiansOffset = MathHelper.Lerp(0f, -MathHelper.PiOver4 / 2f * directionToRotate, ease);
+            
+            //That new direction that we are facing
+            Vector2 newNormal = _simpleDashNormal.RotatedBy(radiansOffset);
+            NPC.rotation = newNormal.ToRotation();
+            TargetOutlineColor = Color.Yellow;
+
+            _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, completionRatio);
+            _telegraphLineRot = NPC.rotation;
+            if(Timer >= windupTime)
+            {
+                SwitchState(TwinAIState.FlameSwordContinuous);
+            }
+        }
+        private void AI_FlameSwordContinuous()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                SoundStyle flamethrower = AssetRegistry.Sounds.SteamPunking.DescendingFlamethrower;
+                flamethrower.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(flamethrower, NPC.position);
+                if (MultiplayerHelper.IsHost)
+                {
+                    Vector2 fireVelocity = NPC.rotation.ToRotationVector2() * 800;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, fireVelocity,
+                        ModContent.ProjectileType<DescendingFlameSword>(), FlameSwordDamage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: (int)Variant);
+                }
+                SpawnFlameDonut();
+            }
+
+           
+            //Move downward whiel shooting
+            float continuosTime = 100f;
+            float completionRatio = Timer / continuosTime;
+            float ease = EasingFunction.Anticipation2(completionRatio / 0.5f);
+            NPC.velocity = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 10f, ease);
+            _telegraphLineAlpha = MathHelper.Lerp(1f, 0f, ease);
+            TargetOutlineColor = Color.Yellow;
+            ShakeModSystem.Shake = 4;
+            if (Timer % 5 == 0)
+            {
+                SpawnFlameDust();
+                SpawnSteamParticle();
+            }
+
+            if(Timer >= continuosTime)
+            {
+                SwitchState(TwinAIState.FlameSwordEnd);
+            }
+        }
+
+        private void AI_FlameSwordEnd()
+        {
+            float endTime = 15f;
+            Timer++;
+       
+            NPC.velocity *= 0.9f;
+            TargetOutlineColor = Color.Transparent;
+            if (Timer >= endTime)
+            {
+                SwitchState(TwinAIState.Idle);
+            }
+        }
+
         private void AI_SpawnRetina()
         {
             Variant = TwinVariant.Retina;
@@ -941,12 +1270,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-
             DrawAfterImages(spriteBatch, screenPos);
-            DrawFlamingTrail(spriteBatch, screenPos, drawColor);
             DrawFlamingTrail(spriteBatch, screenPos, drawColor);
             DrawTelegraphLine(spriteBatch, screenPos);
             DrawSprite(spriteBatch, screenPos, drawColor);
+
+            //This is just to create a nice little glowy effect
             drawColor *= ExtraMath.Osc(0f, 0.5f, speed: 3f);
             drawColor.A = 0;
             DrawSprite(spriteBatch, screenPos, drawColor);
