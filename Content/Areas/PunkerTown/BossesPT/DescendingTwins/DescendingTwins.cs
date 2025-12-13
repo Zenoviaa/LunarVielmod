@@ -735,7 +735,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             TwinFlameSword,
             HighSpeedCrash,
             BouncingDash,
-            NodeLay
+            NodeLay,
+            FlameTornado,
         }
 
         private ref float Timer => ref NPC.ai[0];
@@ -843,6 +844,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAttackState.NodeLay:
                     AI_NodeLay();
                     break;
+                case TwinAttackState.FlameTornado:
+                    AI_FlameTornado();
+                    break;
             }
         }
 
@@ -882,7 +886,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private void ChooseAttack()
         {
-            SwitchState(TwinAttackState.NodeLay);
+            SwitchState(TwinAttackState.FlameTornado);
         }
 
         private void AI_Idle()
@@ -1045,6 +1049,25 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
         }
 
+
+        private void AI_FlameTornado()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                CommandSpazz(DescendingTwin.TwinAIState.FlameTornadoStart);
+                CommandRetina(DescendingTwin.TwinAIState.FlameTornadoStart);
+            }
+
+            if (Timer >= 60)
+            {
+                if (SpazzAwaitingCommand && RetinaAwaitingCommand)
+                {
+                    SwitchState(TwinAttackState.Idle);
+                }
+            }
+        }
     }
 
     public class DescendingBigBoom : ModProjectile
@@ -1162,6 +1185,264 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         }
     }
 
+    public class DescendingTornadoBoom : ModProjectile
+    {
+        private ref float Timer => ref Projectile.ai[0];
+        private int Variant => (int)Projectile.ai[1];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 256;
+            Projectile.height = 256;
+            Projectile.hostile = true;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 15;
+        }
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            ShakeModSystem.Shake = 15;
+            if (Timer == 1)
+            {
+                SoundStyle boomSound = AssetRegistry.Sounds.SteamPunking.DescendingBoom;
+                boomSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(boomSound, Projectile.position);
+
+                for (float f = 0; f < 4; f++)
+                {
+                    Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                    pVelocity *= Main.rand.NextFloat(0.5f, 1f);
+                    var spark = Particle.NewParticle<ZapParticle>(Projectile.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                    spark.innerColor = Color.White;
+                    spark.outerColor = GetTwinColor();
+                    spark.fadeToColor = Color.Blue;
+                }
+
+                var part = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+                part.Scale *= 2;
+                part.noStretch = true;
+                part.innerColor = GetTwinColor();
+                part.outerColor = Color.Lerp(GetTwinColor(), Color.Blue, 0.25f);
+                part.fadeToColor = Color.Lerp(GetTwinColor(), Color.Black, 0.5f);
+                for (float f = 0; f < 8; f++)
+                {
+                    float radius = 800;
+                    Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2CircularEdge(radius, radius);
+                    Vector2 velocity = Projectile.Center - spawnPos;
+                    velocity = velocity.SafeNormalize(Vector2.Zero);
+                    velocity *= Main.rand.NextFloat(8, 32);
+                    var p = FXUtil.GlowStretch(spawnPos, velocity);
+                    p.InnerColor = GetTwinColor();
+                    p.GlowColor = Color.Lerp(GetTwinColor(), Color.Blue, 0.25f);
+                    p.OuterGlowColor = Color.Lerp(GetTwinColor(), Color.Black, 0.5f);
+                    p.Scale *= 3f;
+                }
+
+                FXUtil.ShakeCamera(Projectile.position, 1024, 10);
+                for (float f = 0; f < 8; f++)
+                {
+                    Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi);
+                    pVelocity *= Main.rand.NextFloat(0.5f, 8f);
+                    var spark = Particle.NewParticle<EmberParticle>(Projectile.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                }
+
+                float numDust = 16;
+                for (float n = 0; n < numDust; n++)
+                {
+                    SpawnFlameDust(Projectile.Center, Main.rand.NextVector2Circular(16, 16));
+                    SpawnGlowDust(Projectile.Center, Main.rand.NextVector2Circular(64, 64));
+                }
+                for (float i = 0; i < 8; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: GetTwinColor(),
+                        outerGlowColor: Color.Lerp(GetTwinColor(), Color.DarkBlue, 0.5f),
+                        baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                        duration: Main.rand.NextFloat(15, 25));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                    particle.Scale *= 8f;
+                }
+            }
+        }
+
+        private Color GetTwinColor()
+        {
+            switch (Variant)
+            {
+                default:
+                case 0:
+                    return Color.Green;
+                case 1:
+                    return Color.Red;
+            }
+        }
+
+        private void SpawnFlameDust(Vector2 position, Vector2 velocity)
+        {
+            var p = Particle.NewParticle<GlowFragmentParticle>(position, velocity, Color.White, Scale: 4f);
+            Color twinColor = GetTwinColor();
+            p.innerColor = twinColor;
+            p.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
+            p.fadeToColor = Color.Lerp(twinColor, Color.DarkBlue, 0.5f);
+        }
+        private void SpawnGlowDust(Vector2 position, Vector2 velocity)
+        {
+            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), velocity, newColor: GetTwinColor(), Scale: 2f);
+        }
+    }
+
+    public class DescendingRisingTornado : ScarletProjectile
+    {
+        private Vector2 InitialVelocity;
+        private ref float Timer => ref Projectile.ai[0];
+        private int Variant => (int)Projectile.ai[2];
+        public Vector2 ReTargetPosition;
+        public override string Texture => TextureRegistry.EmptyTexture;
+
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            TrailCacheLength = 64;
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.hostile = true;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 1200;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+            Projectile.extraUpdates = 1;
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            return ProjectileHelper.OldPosColliding(OldCenterPos, projHitbox, targetHitbox);
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(ReTargetPosition);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            ReTargetPosition = reader.ReadVector2();
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if(Timer == 1)
+            {
+                InitialVelocity = Projectile.velocity;
+            }
+
+            if(Timer > 120f)
+            {
+                float completionRatio = (Timer - 120f) / 120f;
+                float ease = EasingFunction.InOutSine(completionRatio);
+                Vector2 targetVelocity = (ReTargetPosition - Projectile.Center);
+                Projectile.velocity = Vector2.Lerp(InitialVelocity, targetVelocity, ease);
+            }
+
+            if(Timer == 240)
+            {
+                if(Projectile.owner == Main.myPlayer)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                        ModContent.ProjectileType<DescendingTornadoBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: Variant);
+                    Projectile.Kill();
+                }
+            }
+            float numFlamePos = OldCenterPos.Length;
+            for (int n = 0; n < numFlamePos; n++)
+            {
+                if (Main.rand.NextBool(32))
+                {
+                    SpawnFlameDust(OldCenterPos[n]);
+                }
+            }
+        }
+
+        private Color GetTwinColor()
+        {
+            switch (Variant)
+            {
+                default:
+                case 0:
+                    return Color.Green;
+                case 1:
+                    return Color.Red;
+            }
+        }
+
+        private void SpawnFlameDust(Vector2 position)
+        {
+            var p = Particle.NewParticle<GlowFragmentParticle>(position, Projectile.velocity.SafeNormalize(Vector2.Zero) * 5f, Color.White);
+            Color twinColor = GetTwinColor();
+            p.innerColor = twinColor;
+            p.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
+            p.fadeToColor = Color.Lerp(twinColor, Color.DarkBlue, 0.5f);
+        }
+
+
+        private Color GetTrailColor(float completionRatio)
+        {
+            return Color.Lerp(Color.White, Color.White, completionRatio) * EasingFunction.QuadraticBump(completionRatio);
+        }
+
+        private float GetTrailWidth(float completionRatio)
+        {
+            float outScale = (float)Projectile.timeLeft / 30f;
+            float inScale = EasingFunction.InOutSine(Timer / 30f);
+            float ease = EasingFunction.InOutSine(outScale);
+            return MathHelper.SmoothStep(32, 0, completionRatio) * ease * inScale * 2 * MathHelper.Lerp(8, 1f, EasingFunction.InOutSine(Timer / 30f));
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            DescendingFlameTrailShader flameTrailShader = DescendingFlameTrailShader.Instance;
+            flameTrailShader.LaserTexture = AssetRegistry.Textures.Noise.JungleWaterCaustics;
+
+            flameTrailShader.Tiling = Vector2.One * new Vector2(4, 0.85f);
+            Color innerColor;
+            Color outerColor;
+            switch (Variant)
+            {
+                default:
+                case 0:
+                    innerColor = Color.GreenYellow;
+                    outerColor = Color.Green;
+                    break;
+                case 1:
+                    innerColor = Color.Yellow;
+                    outerColor = Color.Red;
+                    break;
+            }
+
+
+            float lerp = EasingFunction.InOutSine(Timer / 20f);
+            flameTrailShader.InnerColor = Color.Lerp(Color.White, innerColor, lerp);
+            flameTrailShader.OuterColor = Color.Lerp(Color.White, outerColor, lerp);
+            flameTrailShader.BlendState = BlendState.AlphaBlend;
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, GetTrailColor, GetTrailWidth, flameTrailShader);
+
+            flameTrailShader.BlendState = BlendState.Additive;
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, GetTrailColor, GetTrailWidth, flameTrailShader);
+            return false;
+        }
+
+    }
     public class DescendingFlameSword : ModProjectile
     {
         private Vector2[] FlamePos = new Vector2[64];
@@ -1334,6 +1615,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             RetinaNodeLayWindup,
             RetinaNodeLayShoot,
             NodeEnd,
+
+            FlameTornadoStart,
+            FlameTornadoWindup,
+            FlameTornadoShoot,
+            FlameTornadoEnd
         }
 
 
@@ -1549,6 +1835,20 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAIState.NodeEnd:
                     AI_NodeEnd();
                     break;
+
+                case TwinAIState.FlameTornadoStart:
+                    AI_FlameTornadoStart();
+                    break;
+                case TwinAIState.FlameTornadoWindup:
+                    AI_FlameTornadoWindup();
+                    break;
+                case TwinAIState.FlameTornadoShoot:
+                    AI_FlameTornadoShoot();
+                    break;
+                case TwinAIState.FlameTornadoEnd:
+                    AI_FlameTornadoEnd();
+                    break;
+
             }
             Lighting.AddLight(NPC.Center, Variant == TwinVariant.Spazz ? TorchID.Cursed : TorchID.Red);
             UpdateDraw();
@@ -1557,6 +1857,160 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private Player Target => Main.player[NPC.target];
         private Vector2 TargetNormal => NPC.DirectionTo(Target.Center);
         private DescendingTwins Commander => (DescendingTwins)Main.npc[_parentIndex].ModNPC;
+
+        #region Flame Tornado
+        private Vector2 GetFlameTornadoStartOffset()
+        {
+            float distanceOffset = 450f;
+            switch (Variant)
+            {
+                default:
+                case TwinVariant.Spazz:
+                    return -Vector2.UnitX * distanceOffset;
+                case TwinVariant.Retina:
+                    return Vector2.UnitX * distanceOffset;
+            }
+        }
+
+        private void AI_FlameTornadoStart()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                _simpleDashNormal = NPC.velocity;
+            }
+
+            if(Timer % 5 == 0)
+            {
+                SpawnSteamParticle();
+                SpawnFlameDust();
+            }
+
+            /*
+             * 
+             * Both of them aim above you, shooting a type of fire (Descender Retina), shoots a red fire,
+             * while Descender Spazz, shoots a green flame, and they make a crossing sword, and continuously going downwards, making you dodge
+             */
+
+            //So first we need to get them ina  good position for doing this attack
+            //I think it'd be best if they position themselves on opposite sides of you
+            //Alright so
+            //First let's get that position and move to it
+            Vector2 flameSwordOffset = GetFlameTornadoStartOffset();
+            Vector2 positionToMoveTo = Target.Center + flameSwordOffset;
+
+
+            float windupTime = 80f;
+            float completionRatio = Timer / windupTime;
+            float ease = EasingFunction.InOutSine(completionRatio);
+            Vector2 movementVelocity = (positionToMoveTo - NPC.Center);
+            NPC.velocity = Vector2.Lerp(_simpleDashNormal, movementVelocity, completionRatio);
+
+            //Look at the player
+            Vector2 targetNormal = TargetNormal;
+            float targetAngle = targetNormal.ToRotation();
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
+
+            //There's no afterimage on this preparation state
+            _afterImageAlpha = 0f;
+
+            //Alert the player that something is about to happen fr
+            TargetOutlineColor = Color.Yellow;
+
+            //Here we wait a bit longer before they do the sword so that you get a bit of time to react
+            if (Timer >= windupTime * 1.3f)
+            {
+                SwitchState(TwinAIState.FlameTornadoWindup);
+            }
+        }
+
+        private void AI_FlameTornadoWindup()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                SoundStyle beep = AssetRegistry.Sounds.SteamPunking.DescendingBeep;
+                beep.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(beep, NPC.position);
+
+                _simpleDashNormal = TargetNormal;
+            }
+
+            NPC.velocity.Y -= 1;
+            NPC.velocity *= 0.9f;
+
+            //We need to look up at a 30 degree angle, shoot, and then move downward
+            //Alright
+            float windupTime = 30f;
+            float completionRatio = Timer / windupTime;
+            float ease = EasingFunction.Anticipation(completionRatio);
+            float directionToRotate = _simpleDashNormal.X > 0 ? 1f : -1f;
+            float radiansOffset = MathHelper.Lerp(0f, -MathHelper.PiOver4 / 2f * directionToRotate, ease);
+
+            //That new direction that we are facing
+            Vector2 newNormal = _simpleDashNormal.RotatedBy(radiansOffset);
+            NPC.rotation = newNormal.ToRotation();
+            TargetOutlineColor = Color.Yellow;
+
+            _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, completionRatio);
+            _telegraphLineRot = NPC.rotation;
+            if (Timer >= windupTime)
+            {
+                SwitchState(TwinAIState.FlameTornadoShoot);
+            }
+        }
+
+        private void AI_FlameTornadoShoot()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                SoundStyle flamethrower = AssetRegistry.Sounds.SteamPunking.DescendingFlamethrower;
+                flamethrower.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(flamethrower, NPC.position);
+                if (MultiplayerHelper.IsHost)
+                {
+                    Vector2 fireVelocity = NPC.rotation.ToRotationVector2() * 15;
+                    DescendingRisingTornado tornado = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), NPC.Center, fireVelocity,
+                        ModContent.ProjectileType<DescendingRisingTornado>(), FlameSwordDamage, 1, Main.myPlayer, ai2: (int)Variant).ModProjectile as DescendingRisingTornado;
+                    tornado.ReTargetPosition = Target.Center;
+                }
+                SpawnFlameDonut();
+            }
+
+
+            //Move downward whiel shooting
+            float continuosTime = 100f;
+            float completionRatio = Timer / continuosTime;
+            float ease = EasingFunction.Anticipation2(completionRatio / 0.5f);
+            NPC.velocity = Vector2.Lerp(Vector2.Zero, -NPC.rotation.ToRotationVector2() * 10f, ease);
+            _telegraphLineAlpha = MathHelper.Lerp(1f, 0f, ease);
+            TargetOutlineColor = Color.Yellow;
+            ShakeModSystem.Shake = 4;
+            if (Timer % 5 == 0)
+            {
+                SpawnFlameDust();
+                SpawnSteamParticle();
+            }
+
+            if (Timer >= continuosTime)
+            {
+                SwitchState(TwinAIState.FlameTornadoEnd);
+            }
+        }
+
+        private void AI_FlameTornadoEnd()
+        {
+            Timer++;
+            NPC.velocity *= 0.9f;
+            if(Timer >= 15)
+            {
+                SwitchState(TwinAIState.Idle);
+            }
+        }
+
+        #endregion
 
         #region Node Lay
         private NPC GetNextNode()
