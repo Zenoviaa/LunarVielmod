@@ -20,6 +20,381 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 {
+    public class DescendingFire : ScarletProjectile
+    {
+        private float _fireTime;
+        private ref float Timer => ref Projectile.ai[0];
+        private int Variant => (int)Projectile.ai[1];
+        private Vector2[] _oldSmokeCenterPos;
+        public Vector2[] SmokeOldCenterPos
+        {
+            get
+            {
+                if (_oldSmokeCenterPos == null)
+                    _oldSmokeCenterPos = new Vector2[SmokeTrailCacheLength];
+                return _oldSmokeCenterPos;
+            }
+            private set
+            {
+                _oldSmokeCenterPos = value;
+            }
+        }
+
+
+        private Vector2 StartWhipPosition;
+        private Vector2 TargetWhipPosition;
+        private Vector2 InitialVelocity;
+        private Vector2 TargetVelocity;
+
+
+        public override string Texture => TextureRegistry.CandleFlame;
+
+        public int SmokeTrailCacheLength;
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(StartWhipPosition);
+            writer.WriteVector2(TargetWhipPosition);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            StartWhipPosition = reader.ReadVector2();
+            TargetWhipPosition = reader.ReadVector2();
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            TrailCacheLength = 15;
+            SmokeTrailCacheLength = 25;
+            Projectile.width = 11;
+            Projectile.height = 11;
+            Projectile.hostile = true;
+            Projectile.light = 0.278f;
+            Projectile.timeLeft = 300;
+            Projectile.tileCollide = true;
+            Projectile.penetrate = -1;
+            Projectile.extraUpdates = 1;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            if (SmokeTrailCacheLength > 0)
+            {
+                for (int i = SmokeTrailCacheLength - 1; i > 0; i--)
+                {
+                    SmokeOldCenterPos[i] = SmokeOldCenterPos[i - 1];
+                }
+                SmokeOldCenterPos[0] = Projectile.Center;
+            }
+
+            Color twinColor = GetTwinColor();
+            Timer++;
+            float lightningAuraProgress = Timer / 180f;
+            float easedLightningAuraProgress = Easing.SpikeOutCirc(lightningAuraProgress);
+            if (Timer == 1)
+            {
+                InitialVelocity = Projectile.velocity;
+                SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
+            }
+
+            if(Timer > 30f)
+            {
+                Projectile.extraUpdates = 0;
+            }
+            if (Timer % 12 == 0)
+            {
+                Vector2 vel = Vector2.Zero;
+                Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.Torch, vel, Scale: 1);
+                d.noGravity = true;
+            }
+            if (Timer % 6 == 0)
+            {
+                Vector2 vel = Vector2.Zero;
+                Dust d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(8, 8), DustID.Torch, vel, Scale: 1);
+                d.noGravity = true;
+            }
+
+            if (Timer < 30 && Timer % 5 == 0)
+            {
+                FXUtil.GlowCircleBoom(Projectile.Center,
+                  innerColor: twinColor,
+                  glowColor: Color.Lerp(twinColor, Color.Black, 0.5f),
+                  outerGlowColor: Color.Black, duration: 5, baseSize: 0.04f);
+            }
+            if (Timer == 30)
+            {
+                Particle.NewParticle<SkullParticle>(Projectile.Center, Vector2.Zero, Color.Red);
+            }
+            if (Timer == 70)
+            {
+                //Ping Sound
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/Jack_FirePing");
+                soundStyle.PitchVariance = 0.1f;
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
+
+                for (float i = 0; i < 2; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    //     rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(TargetWhipPosition,
+                        innerColor: Color.White,
+                        glowColor: GetTwinColor(),
+                        outerGlowColor: Color.Black,
+                        baseSize: 0.1f,
+                        duration: 15);
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+            }
+            if (Timer == 30)
+            {
+                //Ping Sound
+                var part = FXUtil.GlowCircleBoom(TargetWhipPosition,
+                                  innerColor: twinColor,
+                                  glowColor: Color.Lerp(twinColor, Color.Black, 0.5f),
+                                  outerGlowColor: Color.Red, duration: 12, baseSize: 0.06f);
+                part.Scale *= 0.5f;
+            }
+            if (Timer == 50)
+            {
+                //Ping Sound
+                var part = FXUtil.GlowCircleBoom(TargetWhipPosition,
+                                  innerColor: twinColor,
+                                  glowColor: Color.Lerp(twinColor, Color.Black, 0.5f),
+                                  outerGlowColor: Color.Black, duration: 12, baseSize: 0.06f);
+                part.Scale *= 0.5f;
+            }
+
+            if (Timer > 200)
+            {
+                _fireTime += MathHelper.Lerp(0.1f, 0.0f, (Timer - 200) / 40f);
+            }
+            else
+            {
+                _fireTime += 0.1f;
+            }
+
+            if (Timer > 90 && Timer % 4 == 0)
+            {
+                Particle.NewParticle<FlareParticle>(Projectile.Center + Main.rand.NextVector2Circular(16, 16), Vector2.Zero);
+            }
+            if (Timer > 90 && Timer < 100)
+            {
+                Projectile.velocity *= 1.1f;
+            }
+            else if (Timer > 100)
+            {
+                if (Projectile.velocity.Length() > InitialVelocity.Length())
+                {
+                    Projectile.velocity *= 0.9f;
+                }
+            }
+            if (Timer % 4 == 0)
+            {
+                var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center + Main.rand.NextVector2Circular(8, 8),
+                    innerColor: twinColor,
+                    glowColor: Color.Lerp(twinColor, Color.Black, 0.5f),
+                    outerGlowColor: Color.Black,
+                    baseSize: Main.rand.NextFloat(0.03f, 0.1f),
+                    duration: Main.rand.NextFloat(5, 25));
+                particle.Velocity = -Projectile.velocity.RotatedByRandom(0.6f);
+                particle.Scale *= 0.5f;
+                particle.Rotation = particle.Velocity.ToRotation();
+            }
+
+            if (Timer > 200)
+            {
+                Projectile.velocity *= 0.96f;
+            }
+            if (Timer % 6 == 0)
+            {
+                for (float f = 0; f < 1; f++)
+                {
+                    Vector2 pVelocity = -Projectile.velocity.RotatedByRandom(MathHelper.PiOver4);
+                    pVelocity *= Main.rand.NextFloat(0.5f, 1f);
+                    var spark = Particle.NewParticle<SparkParticle>(Projectile.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                    spark.innerColor = Color.Yellow;
+                    spark.outerColor = Color.Red;
+                }
+            }
+
+
+            if (Timer > 90)
+            {
+
+            }
+            if (Timer >= 120 && Projectile.velocity.Length() <= 3)
+            {
+                Projectile.Kill();
+            }
+
+            Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 1000);
+            if(player != null)
+            {
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 1);
+            }
+            Projectile.velocity *= 1.01f;
+            Projectile.rotation = Projectile.velocity.X * 0.05f;
+            DrawHelper.AnimateTopToBottom(Projectile, 4);
+        }
+        private Color GetTwinColor()
+        {
+            switch (Variant)
+            {
+                default:
+                case 0:
+                    return Color.Green;
+                case 1:
+                    return Color.Red;
+            }
+        }
+
+
+        public float WidthFunction(float completionRatio)
+        {
+            float w = MathHelper.SmoothStep(26, 54, EasingFunction.QuadraticBump(completionRatio));
+     //       w = MathHelper.Lerp(w, 0f, EasingFunction.InOutSine((Timer - 200) / 40f));
+            return w;
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            Color twinColor = GetTwinColor();
+            Color tipColor = Color.Lerp(twinColor, Color.Lerp(twinColor, Color.DarkBlue, 0.5f), completionRatio);
+            Color finalColor = Color.Lerp(twinColor, tipColor, EasingFunction.QuadraticBump(MathF.Pow(completionRatio, 0.5f)));
+            Color finalColor2 = Color.Lerp(Color.Transparent, finalColor, EasingFunction.QuadraticBump(completionRatio));
+            finalColor2 = Color.Lerp(finalColor2, Color.DarkRed, (Timer - 200) / 40f);
+            return finalColor2;
+        }
+        public float SmokeWidthFunction(float completionRatio)
+        {
+            float w = MathHelper.SmoothStep(0, 75, EasingFunction.QuadraticBump(completionRatio));
+            return w;
+        }
+
+        public Color SmokeColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Transparent, Color.White, EasingFunction.InOutSine(completionRatio));
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
+            TrailDrawer.Draw(Main.spriteBatch, SmokeOldCenterPos, OldCenterRot, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
+
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            blackFireShader.Time = _fireTime;
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, OldCenterRot, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
+
+            return false;
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            Color twinColor = GetTwinColor();
+            Color darkerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
+            SoundStyle shot = AssetRegistry.Sounds.Magic.RadiantCast1;
+            shot.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(shot, Projectile.position);
+            SoundStyle shot2 = SoundID.DD2_BetsyFireballImpact;
+            shot2.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(shot2, Projectile.position);
+            var part = FXUtil.GlowCircleBoom(Projectile.Center,
+                              innerColor: twinColor,
+                              glowColor: darkerColor,
+                              outerGlowColor: Color.Black, duration: 24, baseSize: 0.14f);
+            part.Scale *= 1.225f;
+            for (float f = 0; f < 32; f++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, DustID.Torch,
+                    (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+            }
+            for (int i = 0; i < SmokeOldCenterPos.Length; i++)
+            {
+                Vector2 pos = SmokeOldCenterPos[i];
+                if (i < 8)
+                    continue;
+                if (Main.rand.NextBool(4))
+                {
+                    Vector2 velocity = -Projectile.oldVelocity;
+                    Particle.NewBlackParticle<BlackSmokeParticle>(pos, velocity * 0.5f, Color.White);
+                }
+            }
+
+            for (float i = 0; i < 15; i++)
+            {
+                float rot = rot = -Vector2.UnitY.ToRotation();
+                rot += Main.rand.NextFloat(-0.5f, 0.5f);
+
+                Vector2 offset = rot.ToRotationVector2() * Main.rand.NextFloat(32, 64);
+                Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(2, 15);
+                var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center + offset,
+                    innerColor: GetTwinColor(),
+                    glowColor: darkerColor,
+                    outerGlowColor: Color.DarkBlue,
+                    baseSize: Main.rand.NextFloat(0.03f, 0.1f),
+                    duration: Main.rand.NextFloat(5, 25));
+                particle.Velocity = velocity;
+                particle.Scale *= 0.35f;
+                particle.Rotation = rot;
+            }
+
+            FXUtil.ShakeCamera(Projectile.position, 100, 4);
+            Vector2 position = Projectile.Center;
+            Vector2 lvelocity = -Projectile.oldVelocity.SafeNormalize(Vector2.Zero) * 8;
+            for (float f = 0; f < 8; f++)
+            {
+                Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                pVelocity *= Main.rand.NextFloat(0.5f, 2f);
+                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                FXUtil.GlowFragmentParticle(position, pVelocity,
+                    innerColor: twinColor,
+                    outerColor: darkerColor,
+                    fadeToColor: Color.Red,
+                    distortOut: true);
+
+                if (Main.rand.NextBool(4))
+                {
+                    Dust.NewDustPerfect(position, ModContent.DustType<TSmokeDust>(),
+                                     lvelocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 2);
+                }
+                if (Main.rand.NextBool(4))
+                {
+                    Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(),
+                                     lvelocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 3 * Main.rand.NextFloat(0.4f, 1f), newColor: Color.White, Scale: 0.2f);
+                }
+            }
+            for (float f = 0; f < 8; f++)
+            {
+                Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                pVelocity *= Main.rand.NextFloat(0.5f, 1f);
+                var spark = Particle.NewParticle<SparkParticle>(position + Main.rand.NextVector2Circular(64, 64), pVelocity);
+            }
+
+            var sear = Particle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
+            sear.innerColor = twinColor;
+            sear.outerColor = Color.Lerp(sear.innerColor, Color.Black, 0.5f);
+            sear.fadeToColor = Color.Black;
+            for (float f = 0; f < 4; f++)
+            {
+                Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                pVelocity *= Main.rand.NextFloat(0.5f, 1f);
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), pVelocity, newColor: Color.Black);
+            }
+
+        }
+
+        public override void PostDraw(Color lightColor)
+        {
+            base.PostDraw(lightColor);
+
+        }
+    }
 
     public class DescendingTwins : ScarletBoss
     {
@@ -30,7 +405,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             DashDance_Part1,
             DashDance_Part2,
             TwinFlameSword,
-            HighSpeedCrash
+            HighSpeedCrash,
+            BouncingDash
         }
 
         private ref float Timer => ref NPC.ai[0];
@@ -39,6 +415,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private int _spazzIndex;
         private NPC Retina => Main.npc[_retinaIndex];
         private NPC Spazz => Main.npc[_spazzIndex];
+
+        public Vector2 GetBouncingDashAnchorPoint()
+        {
+            return Spazz.Center;
+        }
 
         private bool IsAwaitingCommand(NPC npc)
         {
@@ -126,6 +507,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAttackState.HighSpeedCrash:
                     AI_HighSpeedCrash();
                     break;
+                case TwinAttackState.BouncingDash:
+                    AI_BouncingDash();
+                    break;
             }
         }
 
@@ -165,7 +549,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private void ChooseAttack()
         {
-            SwitchState(TwinAttackState.HighSpeedCrash);
+            SwitchState(TwinAttackState.BouncingDash);
         }
 
         private void AI_Idle()
@@ -283,6 +667,26 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             {
                 if (SpazzAwaitingCommand && RetinaAwaitingCommand)
                 {
+                    SwitchState(TwinAttackState.Idle);
+                }
+            }
+
+        }
+        private void AI_BouncingDash()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                CommandSpazz(DescendingTwin.TwinAIState.BouncingDashStartAnchor);
+                CommandRetina(DescendingTwin.TwinAIState.BouncingDashStart);
+            }
+
+            if (Timer >= 60)
+            {
+                if (RetinaAwaitingCommand)
+                {
+                    CommandSpazz(DescendingTwin.TwinAIState.BouncingDashEnd);
                     SwitchState(TwinAttackState.Idle);
                 }
             }
@@ -564,7 +968,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             HighSpeedCrashPreDash,
             HighSpeedCrashWindup,
             HighSpeedCrashCrash,
-            HIghSpeedCrashEnd
+            HIghSpeedCrashEnd,
+
+            BouncingDashStartAnchor,
+            BouncingDashStart,
+            BouncingDashIn,
+            BouncingDashOut,
+            BouncingDashEnd,
         }
 
 
@@ -575,6 +985,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         }
 
         private bool _contactDamage;
+        private float _rotationTimer;
         private int _parentIndex;
         private ref float Timer => ref NPC.ai[0];
         private TwinAIState State
@@ -593,6 +1004,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private TwinVariant Variant;
         private int FlameSwordDamage => 20;
         private int DescendingBigBoomDamage => 30;
+
+        private int DescendingFireDamage => 15;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -744,6 +1157,22 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAIState.HIghSpeedCrashEnd:
                     AI_HighSpeedCrashEnd();
                     break;
+
+                case TwinAIState.BouncingDashStart:
+                    AI_BouncingDashStart();
+                    break;
+                case TwinAIState.BouncingDashStartAnchor:
+                    AI_BouncingDashAnchor();
+                    break;
+                case TwinAIState.BouncingDashIn:
+                    AI_BouncingDashIn();
+                    break;
+                case TwinAIState.BouncingDashOut:
+                    AI_BouncingDashOut();
+                    break;
+                case TwinAIState.BouncingDashEnd:
+                    AI_BouncingDashEnd();
+                    break;
             }
             Lighting.AddLight(NPC.Center, Variant == TwinVariant.Spazz ? TorchID.Cursed : TorchID.Red);
             UpdateDraw();
@@ -751,8 +1180,180 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private Player Target => Main.player[NPC.target];
         private Vector2 TargetNormal => NPC.DirectionTo(Target.Center);
+        private DescendingTwins Commander => (DescendingTwins)Main.npc[_parentIndex].ModNPC;
+
+        #region BouncingDash
+        private Vector2 GetBounceDashAnchorPoint()
+        {
+            return Commander.GetBouncingDashAnchorPoint();
+        }
 
 
+        private void AI_BouncingDashStart()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+
+            }
+
+            float windupTime = 30f;
+            float completionRatio = Timer / windupTime;
+
+            Vector2 anchorPoint = GetBounceDashAnchorPoint();
+            Vector2 velocityThere = (anchorPoint - NPC.Center).SafeNormalize(Vector2.Zero);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityThere, 0.1f);
+
+            _simpleDashNormal = (NPC.Center - anchorPoint).SafeNormalize(Vector2.Zero);
+            if(Timer >= windupTime)
+            {
+                SwitchState(TwinAIState.BouncingDashIn);
+            }
+        }
+
+
+        private void AI_BouncingDashAnchor()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+
+            _afterImageAlpha = 1f;
+            //So we should slowly move towards the player if they're far, if not we'll just hover in place.
+            //Step 1. Look towards the player, we can do this by calculating a target normal, calculating an angle and then lerping to it
+            Vector2 targetNormal = TargetNormal;
+            float targetAngle = targetNormal.ToRotation();
+            //Step 2. Check the distance between this current twin and the player
+            //If the distance is too far we'll move closer to them, if not we just slow down/sit there
+            float distanceToTarget = Vector2.Distance(NPC.Center, Target.Center);
+            float maxDistance = 450;
+            if (distanceToTarget > maxDistance)
+            {
+                //We should scale the movement velocity based on the distance, so the farther they are the faster we'll move
+                Vector2 movementVelocity = targetNormal * distanceToTarget / 32f;
+                NPC.velocity = Vector2.Lerp(NPC.velocity, movementVelocity, 0.05f);
+            }
+            else
+            {
+                //Otherwise, we'll just slow down
+                //We want to keep a little bit of movement velocity so it's not just completely static
+                NPC.velocity = Vector2.Lerp(NPC.velocity, targetNormal * 3f, 0.1f);
+
+                //Stpe 3. Add a little bit of hovering velocity for a cool effect
+                float yHover = MathF.Sin(Timer * 0.1f) * 0.5f;
+                NPC.velocity.Y += yHover;
+            }
+
+            NPC.rotation += MathHelper.Lerp(0f, 0.2f, EasingFunction.InOutSine(Timer / 120f));
+            TargetOutlineColor = Color.Yellow;
+            //Receive the next command state.
+            //This should be automatically netcoded btw
+            if (NextCommandState == TwinAIState.BouncingDashEnd)
+            {
+                SwitchState(NextCommandState);
+                NextCommandState = TwinAIState.Idle;
+            }
+        }
+
+        private void AI_BouncingDashIn()
+        {
+            _rotationTimer++;
+            Timer++;
+            if(Timer == 1)
+            {
+                //Play a cool little dash sound
+                //Wait, I have an idea for how this can sound like
+                SoundStyle dashSound = AttackNumber % 2 == 0 ?
+                    AssetRegistry.Sounds.SteamPunking.DescendingDash1
+                    : AssetRegistry.Sounds.SteamPunking.DescendingDash2;
+                dashSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(dashSound, NPC.position);
+            }
+
+            float inTime = 30f;
+            float completionRatio = Timer / inTime;
+            float ease = EasingFunction.InExpo(completionRatio);
+            Vector2 anchorPoint = GetBounceDashAnchorPoint();
+            float offsetDistance = MathHelper.Lerp(300f, 0f, ease);
+            
+   
+            Vector2 bounceOffset = _simpleDashNormal * offsetDistance;
+            bounceOffset = bounceOffset.RotatedBy(_rotationTimer * 0.05f);
+
+            Vector2 targetPosition = anchorPoint + bounceOffset;
+            Vector2 targetVelocity = (targetPosition - NPC.Center);
+            NPC.velocity = targetVelocity;
+            NPC.rotation = NPC.velocity.ToRotation();
+
+            _afterImageAlpha = 1f;
+            _contactDamage = true;
+            TargetOutlineColor = Color.Red;
+            if(Timer >= inTime)
+            {
+                SwitchState(TwinAIState.BouncingDashOut);
+            }
+        }
+
+        private void AI_BouncingDashOut()
+        {
+            _rotationTimer++;
+            Timer++;
+            if(Timer == 1)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<DescendingBigBoom>(),
+                        DescendingBigBoomDamage, 1, Main.myPlayer, ai1: (int)Variant);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, TargetNormal * 12f, ModContent.ProjectileType<DescendingFire>(),
+                        DescendingFireDamage, 1, Main.myPlayer, ai1: (int)(1 - Variant));
+                }
+            }
+
+            float inTime = 30f;
+            float completionRatio = Timer / inTime;
+            float ease = EasingFunction.OutExpo(completionRatio);
+            Vector2 anchorPoint = GetBounceDashAnchorPoint();
+
+            float offsetDistance = MathHelper.Lerp(0f, 300f, ease);
+
+            Vector2 bounceOffset = _simpleDashNormal * offsetDistance ;
+            bounceOffset = bounceOffset.RotatedBy(_rotationTimer * 0.05f);
+
+            Vector2 targetPosition = anchorPoint + bounceOffset;
+            Vector2 targetVelocity = (targetPosition - NPC.Center);
+            NPC.velocity = targetVelocity;
+            NPC.rotation = NPC.velocity.ToRotation();
+
+            _afterImageAlpha = 1f;
+            _contactDamage = true;
+            TargetOutlineColor = Color.Red;
+            if(Timer >= inTime)
+            {
+                AttackNumber++;
+                if(AttackNumber >= 16)
+                {
+                    SwitchState(TwinAIState.BouncingDashEnd);
+                }
+                else
+                {
+                    SwitchState(TwinAIState.BouncingDashIn);
+                }
+            }
+        }
+
+        private void AI_BouncingDashEnd()
+        {
+            Timer++;
+            NPC.velocity *= 0.8f;
+            if(Timer >= 15f)
+            {
+                SwitchState(TwinAIState.Idle);
+            }
+        }
+        #endregion
         #region High Speed Crash
         private Vector2 _highSpeedTargetPosition;
         private Vector2 GetHighSpeedCrashStartOffset()
@@ -961,7 +1562,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
                 if (MultiplayerHelper.IsHost)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<DescendingBigBoom>(), DescendingBigBoomDamage, 1, Main.myPlayer, ai1: (int)Variant);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<DescendingBigBoom>(),
+                        DescendingBigBoomDamage, 1, Main.myPlayer, ai1: (int)Variant);
                 }
             }
             //Enable the contact damage as per usual
@@ -1653,7 +2255,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private float GetFlamingTrailWidth(float completionRatio)
         {
-            return MathHelper.SmoothStep(180, 180, completionRatio);
+            return MathHelper.SmoothStep(222, 222, completionRatio);
         }
 
 
