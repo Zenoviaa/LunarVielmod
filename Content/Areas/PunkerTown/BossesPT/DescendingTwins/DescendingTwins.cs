@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json.Linq;
 using Stellamod.Assets;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
@@ -8,7 +7,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
@@ -17,9 +15,328 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 {
+    public class DescendingNodeTriggeringBeam : ScarletProjectile,
+        IDrawPixelated
+    {
+        private ref float Timer => ref Projectile.ai[0];
+        private int TargetNPCIndex => (int)Projectile.ai[1];
+        private NPC Target => Main.npc[TargetNPCIndex];
+        public override string Texture => TextureRegistry.EmptyTexture;
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            TrailCacheLength = 24;
+            Projectile.width = 48;
+            Projectile.height = 48;
+            Projectile.friendly = true;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 1800;
+            Projectile.ignoreWater = true;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
+            Projectile.extraUpdates = 3;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if (Timer == 1)
+            {
+                SoundStyle shootSound = AssetRegistry.Sounds.SteamPunking.DescendingRetinaBeam;
+                shootSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(shootSound, Projectile.position);
+            }
+
+            float degreeToRotate = 15f;
+            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, Target.Center, degreeToRotate);
+        }
+
+        public void DrawPixelated()
+        {
+            float outScale = (float)Projectile.timeLeft / 10f;
+            float outScaleEase = EasingFunction.InOutSine(outScale);
+
+            Texture2D drawTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_56").Value;
+            Vector2 drawOrigin = drawTexture.Size() / 2f;
+            float numAfterImages = TrailCacheLength;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            for (int i = 0; i < TrailCacheLength; i++)
+            {
+                Vector2 centerPos = OldCenterPos[i] - Main.screenPosition;
+                float f = i;
+                float completionRatio = f / numAfterImages;
+
+                Color drawColor = Color.Lerp(Color.White, Color.Red, completionRatio);
+                drawColor.A = 0;
+                drawColor *= MathHelper.Lerp(1f, 0f, completionRatio);
+
+                float scale = MathHelper.SmoothStep(1f, 0f, completionRatio);
+                scale *= outScaleEase;
+                scale *= 0.25f;
+                spriteBatch.Draw(drawTexture, centerPos, null, drawColor, OldCenterRot[i], drawOrigin, scale, SpriteEffects.None, 0f);
+            }
+        }
+    }
+
+
+    public class DescendingNodeBeam : ScarletProjectile,
+        IDrawPixelated
+    {
+
+        private ref float Timer => ref Projectile.ai[0];
+        public override string Texture => TextureRegistry.EmptyTexture;
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            TrailCacheLength = 24;
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.hostile = true;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 120;
+            Projectile.ignoreWater = true;
+            Projectile.extraUpdates = 1;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if (Timer == 1)
+            {
+                SoundStyle shootSound = AssetRegistry.Sounds.SteamPunking.DescendingRetinaBeam;
+                shootSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(shootSound, Projectile.position);
+                SpawnFlameDonut();
+            }
+            if(Timer % 5 == 0)
+            {
+                var p = Particle.NewParticle<GlowFragmentParticle>(Projectile.Center, Vector2.Zero, Color.White, Scale: 4f);
+                Color twinColor = Color.Green;
+                p.innerColor = twinColor;
+                p.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
+                p.fadeToColor = Color.Lerp(twinColor, Color.DarkBlue, 0.5f);
+            }
+        }
+        private void SpawnFlameDonut()
+        {
+            //movement donut particles
+            var donut = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 2, newColor: Color.White);
+            Color twinColor = Color.Green;
+            donut.innerColor = twinColor;
+            donut.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
+            donut.fadeToColor = Color.Lerp(twinColor, Color.DarkBlue, 0.5f);
+        }
+
+        public void DrawPixelated()
+        {
+            float outScale = (float)Projectile.timeLeft / 10f;
+            float outScaleEase = EasingFunction.InOutSine(outScale);
+
+            Texture2D drawTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Backglow").Value;
+            Vector2 drawOrigin = drawTexture.Size() / 2f;
+            float numAfterImages = TrailCacheLength;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            for (int i = 0; i < TrailCacheLength; i++)
+            {
+                Vector2 centerPos = OldCenterPos[i] - Main.screenPosition;
+                float f = i;
+                float completionRatio = f / numAfterImages;
+
+                Color drawColor = Color.Lerp(Color.White, Color.Green, completionRatio);
+                drawColor.A = 0;
+                drawColor *= MathHelper.Lerp(1f, 0f, completionRatio);
+
+                float scale = MathHelper.SmoothStep(1f, 0f, completionRatio);
+                scale *= outScaleEase;
+                scale *= 0.5f;
+                spriteBatch.Draw(drawTexture, centerPos, null, drawColor, OldCenterRot[i], drawOrigin, scale, SpriteEffects.None, 0f);
+            }
+        }
+
+    }
+
+    public class DescendingNode : ModNPC,
+        IDrawOutlines
+    {
+        private enum AIState
+        {
+            Idle,
+            Death
+        }
+        private ref float Timer => ref NPC.ai[0];
+        private ref float StartRotation => ref NPC.ai[1];
+        private AIState State
+        {
+            get => (AIState)NPC.ai[2];
+            set => NPC.ai[2] = (float)value;
+        }
+
+        private ref float ShotAt => ref NPC.ai[3];
+        private int BeamDamage => 25;
+        private Color _outlineColor;
+        private void SwitchState(AIState state)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Timer = 0;
+                State = state;
+                NPC.netUpdate = true;
+            }
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            NPC.width = 96;
+            NPC.height = 96;
+            NPC.damage = 100;
+            NPC.defense = 19;
+            NPC.lifeMax = 6000;
+
+            NPC.value = Item.buyPrice(gold: 5);
+            NPC.knockBackResist = 0f;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            NPC.npcSlots = 30f;
+
+            NPC.dontTakeDamage = true;
+            NPC.dontCountMe = true;
+
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            switch (State)
+            {
+                case AIState.Idle:
+                    AI_Idle();
+                    break;
+                case AIState.Death:
+                    AI_Death();
+                    break;
+            }
+            _outlineColor = Color.Lerp(Color.Transparent, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 16));
+        }
+
+        private void AI_Idle()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                SoundStyle mineDeploy = AssetRegistry.Sounds.SteamPunking.DescendingMineDeploy;
+                mineDeploy.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(mineDeploy, NPC.position);
+            }
+
+            float inTime = 60f;
+            float completionRatio = Timer / inTime;
+            float ease = EasingFunction.OutExpo(completionRatio);
+            Vector2 initialVelocity = StartRotation.ToRotationVector2() * MathHelper.Lerp(75f, 0f, ease);
+            Vector2 hoverVelocity = new Vector2(0, MathF.Sin(Timer * 0.06f));
+            NPC.velocity = initialVelocity + hoverVelocity;
+            if(Timer > 5)
+            {
+                NPC.dontTakeDamage = false;
+            }
+        }
+
+        private void AI_Death()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                if (MultiplayerHelper.IsHost)
+                {
+                    Vector2 targetNormal = (Main.player[NPC.target].Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                    Vector2 fireVelocity = targetNormal * 15f;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, fireVelocity, 
+                        ModContent.ProjectileType<DescendingNodeBeam>(), BeamDamage, 1, Main.myPlayer);
+                }
+            }
+
+
+            //Make a cool little explosion
+            for (float i = 0; i < 8; i++)
+            {
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleDetailedBoom1(NPC.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Green,
+                    outerGlowColor: Color.Lerp(Color.Green, Color.DarkBlue, 0.5f),
+                    baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                    duration: Main.rand.NextFloat(15, 25));
+                particle.Rotation = rot + MathHelper.ToRadians(45);
+                particle.Scale *= 0.5f;
+            }
+
+            NPC.active = false;
+        }
+
+        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitByProjectile(projectile, hit, damageDone);
+
+            //This will be called on the server I'm pretty sure
+            //Since the server owns the projectile, meaning our method will work :)
+            if (projectile.type == ModContent.ProjectileType<DescendingNodeTriggeringBeam>())
+            {
+                projectile.Kill();
+                SwitchState(AIState.Death);
+            }
+        }
+
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            DrawSprite(spriteBatch, screenPos, drawColor);
+
+            drawColor *= ExtraMath.Osc(0f, 0.5f, speed: 10f);
+            drawColor.A = 0;
+            DrawSprite(spriteBatch, screenPos, drawColor);
+            return false;
+        }
+
+        private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D twinTexture = ModContent.Request<Texture2D>(Texture).Value;
+            Rectangle frame = NPC.frame;
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Vector2 drawCenter = NPC.Center - screenPos;
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            if (NPC.spriteDirection == -1)
+            {
+                spriteEffects = SpriteEffects.FlipVertically;
+            }
+            spriteBatch.Draw(twinTexture, drawCenter, frame, drawColor, NPC.rotation, drawOrigin, 1, spriteEffects, 0f);
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            float outlineOffset = 2;
+            DrawSprite(spriteBatch, screenPos + Vector2.UnitX * outlineOffset, _outlineColor);
+            DrawSprite(spriteBatch, screenPos - Vector2.UnitX * outlineOffset, _outlineColor);
+            DrawSprite(spriteBatch, screenPos + Vector2.UnitY * outlineOffset, _outlineColor);
+            DrawSprite(spriteBatch, screenPos - Vector2.UnitY * outlineOffset, _outlineColor);
+        }
+    }
+
     public class DescendingFire : ScarletProjectile
     {
         private float _fireTime;
@@ -101,7 +418,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
             }
 
-            if(Timer > 30f)
+            if (Timer > 30f)
             {
                 Projectile.extraUpdates = 0;
             }
@@ -234,7 +551,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
 
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 1000);
-            if(player != null)
+            if (player != null)
             {
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 1);
             }
@@ -258,7 +575,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         public float WidthFunction(float completionRatio)
         {
             float w = MathHelper.SmoothStep(26, 54, EasingFunction.QuadraticBump(completionRatio));
-     //       w = MathHelper.Lerp(w, 0f, EasingFunction.InOutSine((Timer - 200) / 40f));
+            //       w = MathHelper.Lerp(w, 0f, EasingFunction.InOutSine((Timer - 200) / 40f));
             return w;
         }
 
@@ -406,7 +723,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             DashDance_Part2,
             TwinFlameSword,
             HighSpeedCrash,
-            BouncingDash
+            BouncingDash,
+            NodeLay
         }
 
         private ref float Timer => ref NPC.ai[0];
@@ -439,6 +757,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void CommandRetina(DescendingTwin.TwinAIState state) => Command(Retina, state);
         private void CommandSpazz(DescendingTwin.TwinAIState state) => Command(Spazz, state);
 
+        public bool StopFiringAtNodes => SpazzAwaitingCommand;
         private TwinAttackState State
         {
             get => (TwinAttackState)NPC.ai[1];
@@ -510,6 +829,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAttackState.BouncingDash:
                     AI_BouncingDash();
                     break;
+                case TwinAttackState.NodeLay:
+                    AI_NodeLay();
+                    break;
             }
         }
 
@@ -541,7 +863,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     _spazzIndex = NPC.NewNPC(source, x, y, ModContent.NPCType<DescendingTwin>(), ai0: 0,
                         ai1: (int)DescendingTwin.TwinAIState.SpawnSpazz,
                         ai2: NPC.whoAmI);
-             
+
                     SwitchState(TwinAttackState.Idle);
                 }
             }
@@ -549,7 +871,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private void ChooseAttack()
         {
-            SwitchState(TwinAttackState.BouncingDash);
+            SwitchState(TwinAttackState.NodeLay);
         }
 
         private void AI_Idle()
@@ -557,7 +879,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             //Alright, So nowe have the commander setup, let's get this dash dance attack working
             AttackNumber = 0f;
-            if(SpazzAwaitingCommand && RetinaAwaitingCommand)
+            if (SpazzAwaitingCommand && RetinaAwaitingCommand)
             {
                 Timer++;
                 if (Timer == 1)
@@ -566,7 +888,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 }
 
 
-                if(Timer >= 60)
+                if (Timer >= 60)
                 {
                     ChooseAttack();
                 }
@@ -588,7 +910,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             //Then we'll wait for them to both stop and throw it into the second dash dance
             if (AttackNumber < 10)
             {
-                if(Timer >= 60)
+                if (Timer >= 60)
                 {                //Alternate between the twins and make them dash at you
                                  //The timing between these is based on the twin itself, not the commander
                                  //If you want to make it faster or slower, just edit that
@@ -692,6 +1014,26 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
 
         }
+
+        private void AI_NodeLay()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                CommandSpazz(DescendingTwin.TwinAIState.SpazzNodeLayWindup);
+                CommandRetina(DescendingTwin.TwinAIState.RetinaNodeLayWindup);
+            }
+
+            if (Timer >= 60)
+            {
+                if (SpazzAwaitingCommand && RetinaAwaitingCommand)
+                {
+                    SwitchState(TwinAttackState.Idle);
+                }
+            }
+        }
+
     }
 
     public class DescendingBigBoom : ModProjectile
@@ -715,7 +1057,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             base.AI();
             Timer++;
             ShakeModSystem.Shake = 10;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle boomSound = AssetRegistry.Sounds.SteamPunking.DescendingBoom;
                 boomSound.PitchVariance = 0.3f;
@@ -760,7 +1102,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 }
 
                 float numDust = 16;
-                for(float n = 0; n < numDust; n++)
+                for (float n = 0; n < numDust; n++)
                 {
                     SpawnFlameDust(Projectile.Center, Main.rand.NextVector2Circular(16, 16));
                     SpawnGlowDust(Projectile.Center, Main.rand.NextVector2Circular(64, 64));
@@ -841,16 +1183,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 ShakeModSystem.Shake = 2;
                 FXUtil.ShakeCamera(Projectile.position, 1024, 6);
 
-             
+
             }
 
             float numFlamePos = FlamePos.Length;
-            for(int n = 0; n < numFlamePos; n++)
+            for (int n = 0; n < numFlamePos; n++)
             {
                 float completionRatio = (float)n / numFlamePos;
                 FlamePos[n] = Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity, completionRatio);
@@ -859,7 +1201,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     SpawnFlameDust(FlamePos[n]);
 
                 }
-        
+
             }
             Projectile.Center = Parent.Center;
         }
@@ -881,7 +1223,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             p.innerColor = twinColor;
             p.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
             p.fadeToColor = Color.Lerp(twinColor, Color.DarkBlue, 0.5f);
-        }   
+        }
 
 
         private Color GetTrailColor(float completionRatio)
@@ -900,7 +1242,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             DescendingFlameTrailShader flameTrailShader = DescendingFlameTrailShader.Instance;
             flameTrailShader.LaserTexture = AssetRegistry.Textures.Noise.JungleWaterCaustics;
-    
+
             flameTrailShader.Tiling = Vector2.One * new Vector2(4, 0.85f);
             Color innerColor;
             Color outerColor;
@@ -909,7 +1251,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 default:
                 case 0:
                     innerColor = Color.GreenYellow;
-                    outerColor = Color.Green; 
+                    outerColor = Color.Green;
                     break;
                 case 1:
                     innerColor = Color.Yellow;
@@ -975,6 +1317,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             BouncingDashIn,
             BouncingDashOut,
             BouncingDashEnd,
+
+            SpazzNodeLayWindup,
+            SpazzNodeLayShoot,
+            RetinaNodeLayWindup,
+            RetinaNodeLayShoot,
+            NodeEnd,
         }
 
 
@@ -1006,6 +1354,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private int DescendingBigBoomDamage => 30;
 
         private int DescendingFireDamage => 15;
+        private int DescendingNodeLaserDamage => 15;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -1173,6 +1522,22 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAIState.BouncingDashEnd:
                     AI_BouncingDashEnd();
                     break;
+
+                case TwinAIState.SpazzNodeLayWindup:
+                    AI_SpazzNodeLayWindup();
+                    break;
+                case TwinAIState.SpazzNodeLayShoot:
+                    AI_SpazzNodeLayShoot();
+                    break;
+                case TwinAIState.RetinaNodeLayWindup:
+                    AI_RetinaNodeLayWindup();
+                    break;
+                case TwinAIState.RetinaNodeLayShoot:
+                    AI_RetinaNodeLayShoot();
+                    break;
+                case TwinAIState.NodeEnd:
+                    AI_NodeEnd();
+                    break;
             }
             Lighting.AddLight(NPC.Center, Variant == TwinVariant.Spazz ? TorchID.Cursed : TorchID.Red);
             UpdateDraw();
@@ -1181,6 +1546,224 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private Player Target => Main.player[NPC.target];
         private Vector2 TargetNormal => NPC.DirectionTo(Target.Center);
         private DescendingTwins Commander => (DescendingTwins)Main.npc[_parentIndex].ModNPC;
+
+        #region Node Lay
+        private NPC GetNextNode()
+        {
+            int type = ModContent.NPCType<DescendingNode>();
+            foreach (var npc in Main.ActiveNPCs)
+            {
+                if (npc.type == type)
+                {
+                    if (npc.ai[3] == 0)
+                        return npc;
+                }
+            }
+            return null;
+        }
+        private void AI_RetinaNodeLayWindup()
+        {
+            if(Timer < 1)
+            {
+                Timer++;
+            }
+       
+            if (Timer == 1)
+            {
+
+                SoundStyle beepSound = AssetRegistry.Sounds.SteamPunking.DescendingBeep;
+                beepSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(beepSound, NPC.position);
+            }
+
+            NPC nextNode = GetNextNode();
+            if (nextNode == null && Commander.StopFiringAtNodes)
+            {
+                SwitchState(TwinAIState.NodeEnd);
+            }
+            if (nextNode != null)
+            {
+                Timer++;
+                Vector2 targetNormal = (nextNode.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                Vector2 myNormal = NPC.rotation.ToRotationVector2();
+                float dp = Vector2.Dot(myNormal, targetNormal);
+                if(dp > 0.99f && Timer > 15)
+                {
+                    SwitchState(TwinAIState.RetinaNodeLayShoot);
+                }
+                NPC.rotation = Utils.AngleTowards(NPC.rotation, targetNormal.ToRotation(), 0.1f);
+
+                //Aim the telegraph
+
+                _afterImageAlpha = 0f;
+                _telegraphLineAlpha = MathHelper.Lerp(_telegraphLineAlpha, 1f, 0.01f);
+                _telegraphLineRot = NPC.rotation;
+                TargetOutlineColor = Color.Yellow;
+            }
+
+            LayMovement();
+        }
+
+        private void AI_RetinaNodeLayShoot()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    NPC nextNode = GetNextNode();
+                    if(nextNode != null)
+                    {
+                        nextNode.ai[3] = 1;
+                        nextNode.netUpdate = true;
+
+                        Vector2 fireVelocity = NPC.rotation.ToRotationVector2() * 8;
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, fireVelocity,
+                            ModContent.ProjectileType<DescendingNodeTriggeringBeam>(), DescendingNodeLaserDamage, 1, Main.myPlayer, ai1: nextNode.whoAmI);
+                    }
+                }
+            }
+            float shootTime = 5;
+            float completionRatio = Timer / shootTime;
+            float ease = EasingFunction.InOutSine(completionRatio);
+            _telegraphLineAlpha = MathHelper.Lerp(1f, 0f, ease);
+            _afterImageAlpha = 0f;
+            TargetOutlineColor = Color.Yellow;
+
+            IdleMovement();
+            if (Timer >= shootTime)
+            {
+                SwitchState(TwinAIState.RetinaNodeLayWindup);
+            }
+        }
+
+        private Vector2 _layStartCenter;
+        private void LayMovement()
+        {
+
+            //So we should slowly move towards the player if they're far, if not we'll just hover in place.
+            //Step 1. Look towards the player, we can do this by calculating a target normal, calculating an angle and then lerping to it
+
+            //So how do we want this attack to look?
+            //I think the twins should orbit around a circle for a bit, on opposite points
+            //Then after a while, they look towards you and dash to the point, when they touch each other
+            //They'll burst into the dash
+            //Alright so
+
+            //First we need to create a circle around our target
+            _rotationTimer++;
+            if(_rotationTimer == 1)
+            {
+                _layStartCenter = Target.Center;
+                _simpleDashNormal = NPC.velocity;
+            }
+
+            float circleRadius = 250f;
+            Vector2 initialDirection = -Vector2.UnitY;
+            Vector2 dashVector = initialDirection * circleRadius;
+
+            //Get an offset based on the variant that this goober is
+            float radiansOffset = Variant == TwinVariant.Spazz ? MathHelper.Pi : 0;
+            radiansOffset -= MathHelper.PiOver2;
+            radiansOffset += _rotationTimer * 0.05f;
+
+            Vector2 positionToMoveTo = _layStartCenter + dashVector.RotatedBy(radiansOffset);
+            Vector2 velThere = positionToMoveTo - NPC.Center;
+            NPC.velocity = Vector2.Lerp(_simpleDashNormal, velThere, EasingFunction.InOutSine(_rotationTimer / 120f));
+        }
+
+        private void AI_SpazzNodeLayWindup()
+        {
+            //For this attack we'll use an NPC for the nodes, it'll shoot a node NPC
+            //Then retina will look for these npcs as long as they exist he'll be shooting them
+            //Yeah, ok
+            //SO first we choose a random direction
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                if (MultiplayerHelper.IsHost)
+                {
+                    _simpleDashNormal = TargetNormal.RotatedByRandom(1.5f);
+                    NPC.netUpdate = true;
+                }
+            }
+
+            if (Timer % 5 == 0)
+            {
+                SpawnFlameDust();
+            }
+
+            float targetAngle = _simpleDashNormal.ToRotation();
+
+            LayMovement();
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
+
+            float windUpTime = 15f;
+            float completionRatio = Timer / windUpTime;
+            float ease = EasingFunction.InOutSine(completionRatio);
+            _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, ease);
+            _telegraphLineRot = NPC.rotation;
+            _afterImageAlpha = 0f;
+
+            TargetOutlineColor = Color.Yellow;
+            if (Timer >= windUpTime)
+            {
+                SwitchState(TwinAIState.SpazzNodeLayShoot);
+            }
+        }
+
+        private void AI_SpazzNodeLayShoot()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    int x = (int)NPC.Center.X;
+                    int y = (int)NPC.Center.Y;
+                    float fireRotation = NPC.rotation;
+                    NPC.NewNPC(NPC.GetSource_FromThis(), x, y,
+                        ModContent.NPCType<DescendingNode>(), ai1: fireRotation);
+                }
+            }
+            float shootTime = 5f;
+            float completionRatio = Timer / shootTime;
+            float ease = EasingFunction.InOutSine(completionRatio);
+            _telegraphLineAlpha = MathHelper.Lerp(1f, 0f, ease);
+            LayMovement();
+            TargetOutlineColor = Color.Yellow;
+            if (Timer >= shootTime)
+            {
+                AttackNumber++;
+                if (AttackNumber >= 12f)
+                {
+                    SwitchState(TwinAIState.NodeEnd);
+                }
+                else
+                {
+                    SwitchState(TwinAIState.SpazzNodeLayWindup);
+                }
+            }
+        }
+
+        private void AI_NodeEnd()
+        {
+            Timer++;
+            NPC.velocity *= 0.9f;
+
+            //Rotate towards the twarget
+            Vector2 targetNormal = TargetNormal;
+            float targetAngle = targetNormal.ToRotation();
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
+            _telegraphLineAlpha = MathHelper.Lerp(_telegraphLineAlpha, 0f, 0.1f);
+            TargetOutlineColor = Color.Transparent;
+            if (Timer >= 15)
+            {
+                SwitchState(TwinAIState.Idle);
+            }
+        }
+        #endregion
 
         #region BouncingDash
         private Vector2 GetBounceDashAnchorPoint()
@@ -1192,7 +1775,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void AI_BouncingDashStart()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
 
@@ -1206,7 +1789,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             NPC.velocity = Vector2.Lerp(NPC.velocity, velocityThere, 0.1f);
 
             _simpleDashNormal = (NPC.Center - anchorPoint).SafeNormalize(Vector2.Zero);
-            if(Timer >= windupTime)
+            if (Timer >= windupTime)
             {
                 SwitchState(TwinAIState.BouncingDashIn);
             }
@@ -1216,7 +1799,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void AI_BouncingDashAnchor()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
             }
@@ -1262,7 +1845,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             _rotationTimer++;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 //Play a cool little dash sound
                 //Wait, I have an idea for how this can sound like
@@ -1278,8 +1861,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             float ease = EasingFunction.InExpo(completionRatio);
             Vector2 anchorPoint = GetBounceDashAnchorPoint();
             float offsetDistance = MathHelper.Lerp(300f, 0f, ease);
-            
-   
+
+
             Vector2 bounceOffset = _simpleDashNormal * offsetDistance;
             bounceOffset = bounceOffset.RotatedBy(_rotationTimer * 0.05f);
 
@@ -1291,7 +1874,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             _afterImageAlpha = 1f;
             _contactDamage = true;
             TargetOutlineColor = Color.Red;
-            if(Timer >= inTime)
+            if (Timer >= inTime)
             {
                 SwitchState(TwinAIState.BouncingDashOut);
             }
@@ -1301,7 +1884,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             _rotationTimer++;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 if (MultiplayerHelper.IsHost)
                 {
@@ -1319,7 +1902,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             float offsetDistance = MathHelper.Lerp(0f, 300f, ease);
 
-            Vector2 bounceOffset = _simpleDashNormal * offsetDistance ;
+            Vector2 bounceOffset = _simpleDashNormal * offsetDistance;
             bounceOffset = bounceOffset.RotatedBy(_rotationTimer * 0.05f);
 
             Vector2 targetPosition = anchorPoint + bounceOffset;
@@ -1330,10 +1913,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             _afterImageAlpha = 1f;
             _contactDamage = true;
             TargetOutlineColor = Color.Red;
-            if(Timer >= inTime)
+            if (Timer >= inTime)
             {
                 AttackNumber++;
-                if(AttackNumber >= 16)
+                if (AttackNumber >= 16)
                 {
                     SwitchState(TwinAIState.BouncingDashEnd);
                 }
@@ -1348,12 +1931,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             Timer++;
             NPC.velocity *= 0.8f;
-            if(Timer >= 15f)
+            if (Timer >= 15f)
             {
                 SwitchState(TwinAIState.Idle);
             }
         }
         #endregion
+
         #region High Speed Crash
         private Vector2 _highSpeedTargetPosition;
         private Vector2 GetHighSpeedCrashStartOffset()
@@ -1372,7 +1956,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void AI_HighSpeedCrashStart()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
             }            /*
@@ -1472,7 +2056,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 _highSpeedTargetPosition = Target.Center;
             }
 
-            if(Timer % 5 == 0)
+            if (Timer % 5 == 0)
             {
                 SpawnFlameDust();
             }
@@ -1490,7 +2074,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             float speed = MathHelper.Lerp(4f, 50f, completionRatio);
             NPC.velocity = newDashNormal * speed;
             TargetOutlineColor = Color.Yellow;
-            if(Timer >= windupTime)
+            if (Timer >= windupTime)
             {
                 SwitchState(TwinAIState.HighSpeedCrashPreDash);
             }
@@ -1513,7 +2097,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             float ease = EasingFunction.Anticipation2(completionRatio);
             NPC.velocity = Vector2.Lerp(Vector2.Zero, _simpleDashNormal * 5f, ease);
             NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
-            if(Timer >= windUpTime)
+            if (Timer >= windUpTime)
             {
                 SwitchState(TwinAIState.HighSpeedCrashCrash);
             }
@@ -1522,7 +2106,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void AI_HighSpeedCrashCrash()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 _simpleDashNormal = (_highSpeedTargetPosition - NPC.Center).SafeNormalize(Vector2.Zero);
                 //Play a cool little dash sound
@@ -1537,14 +2121,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             _afterImageAlpha = 1f;
             ShakeModSystem.Shake = 2;
 
-            if(Timer % 5 == 0)
+            if (Timer % 5 == 0)
             {
                 SpawnSteamParticle();
             }
 
-            if(Timer % 2 == 0)
+            if (Timer % 2 == 0)
             {
-    
+
                 SpawnFlameDonut();
                 SpawnFlameDust();
             }
@@ -1557,7 +2141,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             NPC.velocity = _simpleDashNormal * dashSpeed;
             NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.5f);
 
-            if(Timer == (int)(dashTime - 5))
+            if (Timer == (int)(dashTime - 5))
             {
 
                 if (MultiplayerHelper.IsHost)
@@ -1569,7 +2153,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             //Enable the contact damage as per usual
             _contactDamage = true;
             TargetOutlineColor = Color.Red;
-            if(Timer >= dashTime)
+            if (Timer >= dashTime)
             {
                 SwitchState(TwinAIState.HIghSpeedCrashEnd);
             }
@@ -1606,7 +2190,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             if (Timer >= 42)
             {
                 AttackNumber++;
-                if(AttackNumber < 6)
+                if (AttackNumber < 6)
                 {
                     SwitchState(TwinAIState.HighSpeedCrashQuickStart);
                 }
@@ -1614,7 +2198,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 {
                     SwitchState(TwinAIState.Idle);
                 }
-        
+
             }
         }
 
@@ -1650,7 +2234,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void AI_FlameSwordStart()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
                 _simpleDashNormal = NPC.velocity;
@@ -1686,24 +2270,24 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             //Alert the player that something is about to happen fr
             TargetOutlineColor = Color.Yellow;
-            
+
             //Here we wait a bit longer before they do the sword so that you get a bit of time to react
-            if(Timer >= windupTime * 1.3f)
+            if (Timer >= windupTime * 1.3f)
             {
                 SwitchState(TwinAIState.FlameSwordWindup);
             }
-            
+
         }
 
         private void AI_FlameSwordAim()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle beep = AssetRegistry.Sounds.SteamPunking.DescendingBeep;
                 beep.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(beep, NPC.position);
-             
+
                 _simpleDashNormal = TargetNormal;
             }
 
@@ -1717,7 +2301,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             float ease = EasingFunction.Anticipation(completionRatio);
             float directionToRotate = _simpleDashNormal.X > 0 ? 1f : -1f;
             float radiansOffset = MathHelper.Lerp(0f, -MathHelper.PiOver4 / 2f * directionToRotate, ease);
-            
+
             //That new direction that we are facing
             Vector2 newNormal = _simpleDashNormal.RotatedBy(radiansOffset);
             NPC.rotation = newNormal.ToRotation();
@@ -1725,7 +2309,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, completionRatio);
             _telegraphLineRot = NPC.rotation;
-            if(Timer >= windupTime)
+            if (Timer >= windupTime)
             {
                 SwitchState(TwinAIState.FlameSwordContinuous);
             }
@@ -1747,7 +2331,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 SpawnFlameDonut();
             }
 
-           
+
             //Move downward whiel shooting
             float continuosTime = 100f;
             float completionRatio = Timer / continuosTime;
@@ -1762,7 +2346,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 SpawnSteamParticle();
             }
 
-            if(Timer >= continuosTime)
+            if (Timer >= continuosTime)
             {
                 SwitchState(TwinAIState.FlameSwordEnd);
             }
@@ -1772,7 +2356,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             float endTime = 15f;
             Timer++;
-       
+
             NPC.velocity *= 0.9f;
             TargetOutlineColor = Color.Transparent;
             if (Timer >= endTime)
@@ -1830,6 +2414,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private void AI_Idle()
         {
+            _rotationTimer = 0f;
+
             //Ok, so in the idle state, the goober is basically waiting on a command from the commander
             //So it should just slowly wander around and target the player
             Timer++;
@@ -1838,7 +2424,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 NPC.TargetClosest();
             }
 
-     
+
             //Reset draw variables
             _scale = Vector2.One;
             _afterImageAlpha = 0f;
@@ -1970,7 +2556,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 SpawnFlameDonut();
             }
 
-            if(Timer % 3 == 0)
+            if (Timer % 3 == 0)
             {
                 SpawnFlameDust();
             }
@@ -2236,7 +2822,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private Texture2D GetTwinTexture()
         {
-            if(Variant == TwinVariant.Spazz)
+            if (Variant == TwinVariant.Spazz)
             {
                 Texture2D twinTexture = ModContent.Request<Texture2D>(Texture + "_Spazz").Value;
                 return twinTexture;

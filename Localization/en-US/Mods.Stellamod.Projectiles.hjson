@@ -1642,3 +1642,5 @@ VolcantStaminaSlash.DisplayName: Volcant Stamina Slash
 DescendingFlameSword.DisplayName: Descending Flame Sword
 DescendingBigBoom.DisplayName: Descending Big Boom
 DescendingFire.DisplayName: Descending Fire
+DescendingNodeBeam.DisplayName: Descending Node Beam
+DescendingNodeTriggeringBeam.DisplayName: Descending Node Triggering Beam

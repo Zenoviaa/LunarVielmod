@@ -51,6 +51,9 @@ namespace Stellamod.Assets
 
             public static class SteamPunking
             {
+                public static SoundStyle DescendingRetinaBeam = new SoundStyle($"{Path}SteamPunking/DescendingRetinaBeam");
+                public static SoundStyle DescendingMineDeploy = new SoundStyle($"{Path}SteamPunking/DescendingMineDeploy");
+                public static SoundStyle DescendingNodeShoot = new SoundStyle($"{Path}SteamPunking/DescendingNodeShoot");
                 public static SoundStyle DescendingBoom = new SoundStyle($"{Path}SteamPunking/DescendingBoom");
                 public static SoundStyle DescendingFlamethrower = new SoundStyle($"{Path}SteamPunking/DescendingFlamethrower");
                 public static SoundStyle DescendingBeep = new SoundStyle($"{Path}SteamPunking/DescendingBeep");
