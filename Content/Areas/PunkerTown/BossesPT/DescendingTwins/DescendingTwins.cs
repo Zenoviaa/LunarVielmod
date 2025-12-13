@@ -25,6 +25,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             NodeLay,
             FlameTornado,
             PhaseShift,
+            SpeedyDash,
             Death,
         }
 
@@ -48,7 +49,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     new Tuple<TwinAttackState, float>(TwinAttackState.TwinFlameSword, 1.0f),
                     new Tuple<TwinAttackState, float>(TwinAttackState.HighSpeedCrash, 1.0f),
                     new Tuple<TwinAttackState, float>(TwinAttackState.NodeLay, 0.5f),
-                    new Tuple<TwinAttackState, float>(TwinAttackState.FlameTornado, 0.1f));
+                    new Tuple<TwinAttackState, float>(TwinAttackState.FlameTornado, 0.1f),
+                    new Tuple<TwinAttackState, float>(TwinAttackState.SpeedyDash, 1.0f));
                 return _patternManager;
             }
         }
@@ -197,6 +199,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAttackState.PhaseShift:
                     AI_PhaseShift();
                     break;
+                case TwinAttackState.SpeedyDash:
+                    AI_SpeedyDash();
+                    break;
                 case TwinAttackState.Death:
                     AI_Death();
                     break;
@@ -269,7 +274,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             if (MultiplayerHelper.IsHost)
             {
                 SwitchState(PatternManager.NextPattern());
-                SwitchState(TwinAttackState.HighSpeedCrash);
+                SwitchState(TwinAttackState.SpeedyDash);
             }
         }
 
@@ -463,6 +468,24 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 CommandRetina(DescendingTwin.TwinAIState.PhaseShiftStart);
             }
             _phase2 = true;
+            if (Timer >= 60)
+            {
+                if (SpazzAwaitingCommand && RetinaAwaitingCommand)
+                {
+                    SwitchState(TwinAttackState.Idle);
+                }
+            }
+        }
+        private void AI_SpeedyDash()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                CommandSpazz(DescendingTwin.TwinAIState.SpeedyDashStart);
+                CommandRetina(DescendingTwin.TwinAIState.SpeedyDashStart);
+            }
+
             if (Timer >= 60)
             {
                 if (SpazzAwaitingCommand && RetinaAwaitingCommand)

@@ -55,7 +55,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 Vector2 normalVelocity = -NPC.rotation.ToRotationVector2();
                 Vector2 velocity = normalVelocity * 24;
                 Vector2 prev = start;
-                float prevGravity = 9;
+  
                 for(int i = 0; i < _tendrilPoints.Length; i++)
                 {
                     Vector2 next = prev + velocity;

@@ -77,6 +77,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             PhaseShiftStart,
             PhaseShiftEnd,
+
+            SpeedyDashStart,
+            SpeedyDashWindup,
+            SpeedyDashLoop,
+            SpeedyDashEnd,
+
             Death
         }
 
@@ -92,6 +98,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private float _rotationTimer;
         private int _parentIndex;
 
+        private Vector2 _teleportPosition;
         private ref float Timer => ref NPC.ai[0];
         private TwinAIState State
         {
@@ -165,6 +172,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             base.SendExtraAI(writer);
             writer.WriteVector2(_simpleDashNormal);
             writer.WriteVector2(_highSpeedTargetPosition);
+            writer.WriteVector2(_teleportPosition);
             writer.Write((float)Variant);
             writer.Write(_parentIndex);
             writer.Write(_phaseShift);
@@ -174,6 +182,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             base.ReceiveExtraAI(reader);
             _simpleDashNormal = reader.ReadVector2();
             _highSpeedTargetPosition = reader.ReadVector2();
+            _teleportPosition = reader.ReadVector2();
             Variant = (TwinVariant)reader.ReadSingle();
             _parentIndex = reader.ReadInt32();
             _phaseShift = reader.ReadBoolean();
@@ -189,9 +198,24 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
         }
 
+        private void SetTargetToCommanderTarget()
+        {
+            NPC.target = Commander.NPC.target;
+        }
+        private void ReceiveTeleport()
+        {
+            if (_teleportPosition != Vector2.Zero)
+            {
+                NPC.position.X = _teleportPosition.X;
+                NPC.position.Y = _teleportPosition.Y;
+                _teleportPosition = Vector2.Zero;
+            }
+        }
+
         public override void AI()
         {
             base.AI();
+            ReceiveTeleport();
             //If we don't have a valid target automatically retarget.
             if (!NPC.HasValidTarget)
             {
@@ -328,6 +352,19 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     break;
                 case TwinAIState.PhaseShiftEnd:
                     AI_PhaseShiftEnd();
+                    break;
+
+                case TwinAIState.SpeedyDashStart:
+                    AI_SpeedyDashStart();
+                    break;
+                case TwinAIState.SpeedyDashWindup:
+                    AI_SpeedyDashWindup();
+                    break;
+                case TwinAIState.SpeedyDashLoop:
+                    AI_SpeedyDashLoop();
+                    break;
+                case TwinAIState.SpeedyDashEnd:
+                    AI_SpeedyDashEnd();
                     break;
 
             }
