@@ -77,6 +77,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             if (Timer == 1)
             {
                 NPC.TargetClosest();
+                _simpleDashNormal = NPC.velocity;
             }            /*
              * 
              * Both of them aim above you, shooting a type of fire (Descender Retina), shoots a red fire,
@@ -92,11 +93,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Vector2 positionToMoveTo = Target.Center + highSpeedCrashStartOffset;
 
 
-            float windupTime = 25f;
+            float windupTime = 50f;
             float completionRatio = Timer / windupTime;
             float ease = EasingFunction.InOutSine(completionRatio);
             Vector2 movementVelocity = (positionToMoveTo - NPC.Center);
-            NPC.velocity = Vector2.Lerp(_simpleDashNormal, movementVelocity, completionRatio);
+            NPC.velocity = Vector2.Lerp(_simpleDashNormal, movementVelocity, ease);
 
             //Look at the player
             Vector2 targetNormal = TargetNormal;
