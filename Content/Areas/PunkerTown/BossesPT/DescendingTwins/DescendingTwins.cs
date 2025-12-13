@@ -25,6 +25,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             BouncingDash,
             NodeLay,
             FlameTornado,
+            PhaseShift,
             Death,
         }
 
@@ -33,6 +34,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private int _retinaIndex;
         private int _spazzIndex;
+        private bool _phase2;
         private NPC Retina => Main.npc[_retinaIndex];
         private NPC Spazz => Main.npc[_spazzIndex];
 
@@ -126,6 +128,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             return false;
         }
 
+
+        private bool NeedsToTriggerPhase2()
+        {
+            return !_phase2 && State != TwinAttackState.PhaseShift && NPC.life < NPC.lifeMax / 2f;
+        }
+
         public override void AI()
         {
             base.AI();
@@ -150,6 +158,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 NPC.life = Math.Min(Spazz.life, Retina.life);
                 Spazz.life = NPC.life;
                 Retina.life = NPC.life;
+            }
+
+            if (NeedsToTriggerPhase2())
+            {
+                SwitchState(TwinAttackState.PhaseShift);
             }
 
             switch (State)
@@ -180,6 +193,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     break;
                 case TwinAttackState.FlameTornado:
                     AI_FlameTornado();
+                    break;
+                case TwinAttackState.PhaseShift:
+                    AI_PhaseShift();
                     break;
                 case TwinAttackState.Death:
                     AI_Death();
@@ -253,7 +269,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             if (MultiplayerHelper.IsHost)
             {
                 SwitchState(PatternManager.NextPattern());
-                SwitchState(TwinAttackState.TwinFlameSword);
+                SwitchState(TwinAttackState.HighSpeedCrash);
             }
         }
 
@@ -428,6 +444,25 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 CommandRetina(DescendingTwin.TwinAIState.FlameTornadoStart);
             }
 
+            if (Timer >= 60)
+            {
+                if (SpazzAwaitingCommand && RetinaAwaitingCommand)
+                {
+                    SwitchState(TwinAttackState.Idle);
+                }
+            }
+        }
+
+        private void AI_PhaseShift()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                CommandSpazz(DescendingTwin.TwinAIState.PhaseShiftStart);
+                CommandRetina(DescendingTwin.TwinAIState.PhaseShiftStart);
+            }
+            _phase2 = true;
             if (Timer >= 60)
             {
                 if (SpazzAwaitingCommand && RetinaAwaitingCommand)

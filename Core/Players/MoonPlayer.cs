@@ -39,6 +39,7 @@ namespace Stellamod.Core.Players
         public override void PostUpdate()
         {
 
+            /*
             if (Player.ZoneSnow)
             {
 
@@ -55,7 +56,7 @@ namespace Stellamod.Core.Players
 
                 Main.maxRain = 140;
 
-            }
+            }*/
 
         }
     }

@@ -34,7 +34,25 @@ namespace Stellamod.Core.MoonWaters
             priority = -1;
         }
     }
-
+    /// <summary>
+    /// Default pixel water that looks like the ocean
+    /// </summary>
+    public class BeachPixelWaterStyle : PixelWaterStyle
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
+        public override bool IsActive(Player player)
+        {
+            return player.ZoneBeach;
+        }
+        public override void ModifyPixelWater(ref PixelWater pixelWater)
+        {
+            base.ModifyPixelWater(ref pixelWater);
+            pixelWater.NoLighting = true;
+        }
+    }
     /// <summary>
     /// Pixel water style for the jungle, with greens, yellows, and leaves in the water!
     /// </summary>
@@ -51,8 +69,9 @@ namespace Stellamod.Core.MoonWaters
             pixelWater.StartGradientColor = Color.LightGoldenrodYellow;
             pixelWater.EndGradientColor = Color.Green;
             pixelWater.BackgroundColor = Color.DarkGreen;
-            pixelWater.CausticsColor = Color.Olive * 0.75f;
-            pixelWater.CausticsTexture = AssetRegistry.Textures.Noise.JungleWaterCaustics;
+            pixelWater.CausticsColor = Color.Yellow * 0.75f;
+            pixelWater.CausticsTexture = AssetRegistry.Textures.Noise.Clouds3;
+            pixelWater.TilingMultiplier = Vector2.One ;
         }
     }
 
@@ -157,6 +176,7 @@ namespace Stellamod.Core.MoonWaters
         public Vector2 TilingMultiplier;
         public Asset<Texture2D> NoiseTexture;
         public Asset<Texture2D> CausticsTexture;
+        public bool NoLighting;
     }
 
     public class PixelWaterStyleComparer : IComparer<PixelWaterStyle>
@@ -558,10 +578,13 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.End();
 
 
-            _waterEffect.CurrentTechnique = _waterEffect.Techniques["BlurDrawing"];
-            spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.Multiply, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
-            spriteBatch.Draw(_waterLightMapRT, _drawLocation, null, Color.White * 1);
-            spriteBatch.End();
+            if (!_pixelWater.NoLighting)
+            {
+                _waterEffect.CurrentTechnique = _waterEffect.Techniques["BlurDrawing"];
+                spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.Multiply, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
+                spriteBatch.Draw(_waterLightMapRT, _drawLocation, null, Color.White * 1);
+                spriteBatch.End();
+            }
 
             graphicsDevice.SetRenderTarget(null);
         }
@@ -585,12 +608,14 @@ namespace Stellamod.Core.MoonWaters
             UpdatePixelWater();
 
             DrawWaterBase(spriteBatch);
+    
             DrawWaterGradient(spriteBatch);
             DrawWaterCaustics(spriteBatch);
 
             DrawWaterSparkle(spriteBatch);
             DrawWaterFoam(spriteBatch);
             DrawReflection(spriteBatch);
+            // 
             DrawPosterization(spriteBatch);
         }
 
