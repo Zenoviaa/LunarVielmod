@@ -114,7 +114,26 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private ref float AttackNumber => ref NPC.ai[3];
         private TwinVariant Variant;
+        private int GetVariant()
+        {
+            switch (Variant)
+            {
+                default: 
+                case TwinVariant.Spazz:
+                    if (_phaseShift)
+                    {
+                        return 3;
+                    }
+                    return 0;
+                case TwinVariant.Retina:
+                    if (_phaseShift)
+                    {
+                        return 2;
+                    }
+                    return 1;
 
+            }
+        }
         private int FlameSwordDamage => 20;
         private int DescendingBigBoomDamage => 30;
 

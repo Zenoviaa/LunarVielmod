@@ -87,18 +87,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
         }
 
-        private Color GetTwinColor()
-        {
-            switch (Variant)
-            {
-                default:
-                case 0:
-                    return Color.Green;
-                case 1:
-                    return Color.Red;
-            }
-        }
-
+        private Color GetTwinColor() => DescendingTwins.GetTwinColor(Variant);
         private void SpawnFlameDust(Vector2 position)
         {
             var p = Particle.NewParticle<GlowFragmentParticle>(position, Projectile.velocity.SafeNormalize(Vector2.Zero) * 5f, Color.White);

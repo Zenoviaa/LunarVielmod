@@ -129,7 +129,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 {
                     Vector2 fireVelocity = NPC.rotation.ToRotationVector2() * 15;
                     DescendingRisingTornado tornado = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), NPC.Center, fireVelocity,
-                        ModContent.ProjectileType<DescendingRisingTornado>(), FlameSwordDamage, 1, Main.myPlayer, ai2: (int)Variant).ModProjectile as DescendingRisingTornado;
+                        ModContent.ProjectileType<DescendingRisingTornado>(), FlameSwordDamage, 1, Main.myPlayer, ai2: GetVariant()).ModProjectile as DescendingRisingTornado;
                     tornado.ReTargetPosition = Target.Center;
                 }
                 SpawnFlameDonut();

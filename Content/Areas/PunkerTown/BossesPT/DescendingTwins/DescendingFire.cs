@@ -237,17 +237,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Projectile.rotation = Projectile.velocity.X * 0.05f;
             DrawHelper.AnimateTopToBottom(Projectile, 4);
         }
-        private Color GetTwinColor()
-        {
-            switch (Variant)
-            {
-                default:
-                case 0:
-                    return Color.Green;
-                case 1:
-                    return Color.Red;
-            }
-        }
+
+        private Color GetTwinColor() => DescendingTwins.GetTwinColor(Variant);
 
 
         public float WidthFunction(float completionRatio)

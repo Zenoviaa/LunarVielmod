@@ -27,19 +27,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private Color _outlineColor;
         private Color TargetOutlineColor;
 
-        private VerletChain _tendrilChainBackingField;
-        private VerletChain TendrilChain
-        {
-            get
-            {
-                if(_tendrilChainBackingField == null)
-                {
-                    float length = 512;
-                    _tendrilChainBackingField = new VerletChain(NPC.Center, NPC.Center + Vector2.UnitX * length, 32);
-                }
-                return _tendrilChainBackingField;    
-            }
-        }
+
         private Vector2[] _tendrilPoints;
         private Vector2[] TendrilPoints
         {

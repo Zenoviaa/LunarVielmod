@@ -209,7 +209,41 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         }
 
 
-
+        /// <summary>
+        /// Returns the primary color associatiated with the twin
+        /// </summary>
+        /// <param name="variant"></param>
+        /// <returns></returns>
+        public static Color GetTwinColor(int variant)
+        {
+            switch (variant)
+            {
+                default:
+                case 0:
+                    return Color.Green;
+                case 1:
+                    return Color.Red;
+                case 2:
+                    return Color.Blue;
+                case 3:
+                    return Color.Yellow;
+            }
+        }
+        public static Color GetSecondaryTwinColor(int variant)
+        {
+            switch (variant)
+            {
+                default:
+                case 0:
+                    return Color.Green;
+                case 1:
+                    return Color.Red;
+                case 2:
+                    return Color.Blue;
+                case 3:
+                    return Color.Yellow;
+            }
+        }
         private void SwitchState(TwinAttackState state)
         {
             if (MultiplayerHelper.IsHost)

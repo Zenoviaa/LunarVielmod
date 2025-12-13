@@ -139,7 +139,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 {
                     Vector2 fireVelocity = NPC.rotation.ToRotationVector2() * 800;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, fireVelocity,
-                        ModContent.ProjectileType<DescendingFlameSword>(), FlameSwordDamage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: (int)Variant);
+                        ModContent.ProjectileType<DescendingFlameSword>(), FlameSwordDamage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: GetVariant());
                 }
                 SpawnFlameDonut();
             }

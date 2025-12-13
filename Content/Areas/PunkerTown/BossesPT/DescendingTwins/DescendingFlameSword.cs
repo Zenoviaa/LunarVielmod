@@ -74,17 +74,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
             Projectile.Center = Parent.Center;
         }
-        private Color GetTwinColor()
-        {
-            switch (Variant)
-            {
-                default:
-                case 0:
-                    return Color.Green;
-                case 1:
-                    return Color.Red;
-            }
-        }
+
+        private Color GetTwinColor() => DescendingTwins.GetTwinColor(Variant);
+        private Color GetSecondaryTwinColor() => DescendingTwins.GetSecondaryTwinColor(Variant);
         private void SpawnFlameDust(Vector2 position)
         {
             var p = Particle.NewParticle<GlowFragmentParticle>(position, Projectile.velocity.SafeNormalize(Vector2.Zero) * 5f, Color.White);
@@ -113,20 +105,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             flameTrailShader.LaserTexture = AssetRegistry.Textures.Noise.JungleWaterCaustics;
 
             flameTrailShader.Tiling = Vector2.One * new Vector2(4, 0.85f);
-            Color innerColor;
-            Color outerColor;
-            switch (Variant)
-            {
-                default:
-                case 0:
-                    innerColor = Color.GreenYellow;
-                    outerColor = Color.Green;
-                    break;
-                case 1:
-                    innerColor = Color.Yellow;
-                    outerColor = Color.Red;
-                    break;
-            }
+            Color innerColor = GetTwinColor();
+            Color outerColor = GetSecondaryTwinColor();
 
 
             float lerp = EasingFunction.InOutSine(Timer / 20f);
