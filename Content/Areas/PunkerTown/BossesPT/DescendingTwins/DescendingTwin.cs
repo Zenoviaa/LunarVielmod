@@ -1,0 +1,604 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
+using Stellamod.Core.Particles;
+using Stellamod.Core.Shaders;
+using Stellamod.Dusts;
+using Stellamod.Helpers;
+using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
+using System;
+using System.IO;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
+{
+    //The thing with this boss is that it's a dual synced boss
+    //I think the easiest way to do that is to have a single twin npc, and a controller npc
+    //That basically sends commands to them telling them what to do
+    //In that case, let's create a base class
+    //I'm also going to use partial classing here to see how I feel about organizing with it
+
+    public partial class DescendingTwin : ModNPC,
+        IDrawOutlines
+    {
+        public enum TwinAIState
+        {
+            SpawnSpazz,
+            SpawnRetina,
+
+            Idle,
+
+
+            SimpleDashStart,
+            SimpleDash,
+            SimpleDashEnd,
+
+            DashDanceStart,
+            DashDancePrepare,
+            DashDance,
+            DashDanceTwirl,
+            DashDanceEnd,
+
+
+            FlameSwordStart,
+            FlameSwordWindup,
+            FlameSwordContinuous,
+            FlameSwordEnd,
+
+            HighSpeedCrashStart,
+            HighSpeedCrashQuickStart,
+            HighSpeedCrashPreDash,
+            HighSpeedCrashWindup,
+            HighSpeedCrashCrash,
+            HIghSpeedCrashEnd,
+
+            BouncingDashStartAnchor,
+            BouncingDashStart,
+            BouncingDashIn,
+            BouncingDashOut,
+            BouncingDashEnd,
+
+            SpazzNodeLayWindup,
+            SpazzNodeLayShoot,
+            RetineNodeLayStart,
+            RetinaNodeLayWindup,
+            RetinaNodeLayShoot,
+            NodeEnd,
+
+            FlameTornadoStart,
+            FlameTornadoWindup,
+            FlameTornadoShoot,
+            FlameTornadoEnd,
+
+            Death
+        }
+
+
+        private enum TwinVariant
+        {
+            Spazz,
+            Retina
+        }
+
+        private bool _contactDamage;
+        private float _rotationTimer;
+        private int _parentIndex;
+        private ref float Timer => ref NPC.ai[0];
+        private TwinAIState State
+        {
+            get => (TwinAIState)NPC.ai[1];
+            set => NPC.ai[1] = (float)value;
+        }
+
+        private TwinAIState NextCommandState
+        {
+            get => (TwinAIState)NPC.ai[2];
+            set => NPC.ai[2] = (float)value;
+        }
+
+        private ref float AttackNumber => ref NPC.ai[3];
+        private TwinVariant Variant;
+        private int FlameSwordDamage => 20;
+        private int DescendingBigBoomDamage => 30;
+
+        private int DescendingFireDamage => 15;
+        private int DescendingNodeLaserDamage => 15;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            Main.npcFrameCount[NPC.type] = 1;
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+            NPCID.Sets.TrailCacheLength[NPC.type] = 16;
+            NPCID.Sets.TrailingMode[Type] = 3;
+        }
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            NPC.width = 64;
+            NPC.height = 64;
+            NPC.damage = 100;
+            NPC.defense = 20;
+            NPC.lifeMax = 18000;
+            NPC.scale = 1f;
+            NPC.aiStyle = -1;
+
+            NPC.value = Item.buyPrice(gold: 5);
+            NPC.knockBackResist = 0f;
+            NPC.boss = true;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            NPC.npcSlots = 30f;
+
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Descender");
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
+        }
+
+        public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+        {
+            return false;
+        }
+
+        public override bool CheckActive()
+        {
+            return false;
+        }
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(_simpleDashNormal);
+            writer.WriteVector2(_highSpeedTargetPosition);
+            writer.Write((float)Variant);
+            writer.Write(_parentIndex);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _simpleDashNormal = reader.ReadVector2();
+            _highSpeedTargetPosition = reader.ReadVector2();
+            Variant = (TwinVariant)reader.ReadSingle();
+            _parentIndex = reader.ReadInt32();
+        }
+
+        private void SwitchState(TwinAIState state)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Timer = 0;
+                State = state;
+                NPC.netUpdate = true;
+            }
+        }
+
+        public override void AI()
+        {
+            base.AI();
+
+            //If we don't have a valid target automatically retarget.
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+            }
+
+            _contactDamage = false;
+            switch (State)
+            {
+                case TwinAIState.SpawnSpazz:
+                    AI_SpawnSpazz();
+                    break;
+                case TwinAIState.SpawnRetina:
+                    AI_SpawnRetina();
+                    break;
+
+                case TwinAIState.Idle:
+                    AI_Idle();
+                    break;
+
+                case TwinAIState.Death:
+                    AI_Death();
+                    break;
+
+
+                case TwinAIState.SimpleDashStart:
+                    AI_SimpleDashStart();
+                    break;
+                case TwinAIState.SimpleDash:
+                    AI_SimpleDash();
+                    break;
+                case TwinAIState.SimpleDashEnd:
+                    AI_SimpleDashEnd();
+                    break;
+
+                case TwinAIState.DashDanceStart:
+                    AI_DashDanceStart();
+                    break;
+                case TwinAIState.DashDancePrepare:
+                    AI_DashDancePrepare();
+                    break;
+                case TwinAIState.DashDanceTwirl:
+                    AI_DashDanceTwirl();
+                    break;
+                case TwinAIState.DashDance:
+                    AI_DashDance();
+                    break;
+                case TwinAIState.DashDanceEnd:
+                    AI_DashDanceEnd();
+                    break;
+
+                case TwinAIState.FlameSwordStart:
+                    AI_FlameSwordStart();
+                    break;
+                case TwinAIState.FlameSwordWindup:
+                    AI_FlameSwordAim();
+                    break;
+                case TwinAIState.FlameSwordContinuous:
+                    AI_FlameSwordContinuous();
+                    break;
+                case TwinAIState.FlameSwordEnd:
+                    AI_FlameSwordEnd();
+                    break;
+
+                case TwinAIState.HighSpeedCrashStart:
+                    AI_HighSpeedCrashStart();
+                    break;
+                case TwinAIState.HighSpeedCrashQuickStart:
+                    AI_HighSpeedCrashQuickStart();
+                    break;
+                case TwinAIState.HighSpeedCrashPreDash:
+                    AI_HighSpeedCrashPreDash();
+                    break;
+                case TwinAIState.HighSpeedCrashWindup:
+                    AI_HighSpeedCrashWindup();
+                    break;
+                case TwinAIState.HighSpeedCrashCrash:
+                    AI_HighSpeedCrashCrash();
+                    break;
+                case TwinAIState.HIghSpeedCrashEnd:
+                    AI_HighSpeedCrashEnd();
+                    break;
+
+                case TwinAIState.BouncingDashStart:
+                    AI_BouncingDashStart();
+                    break;
+                case TwinAIState.BouncingDashStartAnchor:
+                    AI_BouncingDashAnchor();
+                    break;
+                case TwinAIState.BouncingDashIn:
+                    AI_BouncingDashIn();
+                    break;
+                case TwinAIState.BouncingDashOut:
+                    AI_BouncingDashOut();
+                    break;
+                case TwinAIState.BouncingDashEnd:
+                    AI_BouncingDashEnd();
+                    break;
+
+                case TwinAIState.SpazzNodeLayWindup:
+                    AI_SpazzNodeLayWindup();
+                    break;
+                case TwinAIState.SpazzNodeLayShoot:
+                    AI_SpazzNodeLayShoot();
+                    break;
+                case TwinAIState.RetineNodeLayStart:
+                    AI_RetinaNodeLaySlowStart();
+                    break;
+                case TwinAIState.RetinaNodeLayWindup:
+                    AI_RetinaNodeLayWindup();
+                    break;
+                case TwinAIState.RetinaNodeLayShoot:
+                    AI_RetinaNodeLayShoot();
+                    break;
+                case TwinAIState.NodeEnd:
+                    AI_NodeEnd();
+                    break;
+
+                case TwinAIState.FlameTornadoStart:
+                    AI_FlameTornadoStart();
+                    break;
+                case TwinAIState.FlameTornadoWindup:
+                    AI_FlameTornadoWindup();
+                    break;
+                case TwinAIState.FlameTornadoShoot:
+                    AI_FlameTornadoShoot();
+                    break;
+                case TwinAIState.FlameTornadoEnd:
+                    AI_FlameTornadoEnd();
+                    break;
+
+            }
+            Lighting.AddLight(NPC.Center, Variant == TwinVariant.Spazz ? TorchID.Cursed : TorchID.Red);
+            UpdateDraw();
+        }
+
+        private Player Target => Main.player[NPC.target];
+        private Vector2 TargetNormal => NPC.DirectionTo(Target.Center);
+        private DescendingTwins Commander => (DescendingTwins)Main.npc[_parentIndex].ModNPC;
+
+        private void AI_Death()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+
+            float deathTime = 300f;
+            if (Timer % 5 == 0)
+            {
+                SpawnSteamParticle();
+            }
+
+            if (Timer % 12 == 0)
+            {
+                Vector2 spawnPoint = NPC.Top;
+                spawnPoint.X += Main.rand.NextFloat(-64f, 64f);
+                var fireDust = Dust.NewDustPerfect(spawnPoint, DustID.FireworkFountain_Red, Scale: Main.rand.NextFloat(0.5f, 1f));
+                fireDust.noGravity = false;
+            }
+
+            NPC.velocity = Vector2.Zero;
+            _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, 0f, 0.1f);
+           
+            if (Timer >= deathTime)
+            {
+                for (int i = 0; i < 16; i++)
+                {
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(),
+                        (Vector2.One * Main.rand.Next(5, 15)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
+                }
+                for (float f = 0; f < 12; f++)
+                {
+                    Vector2 v = Main.rand.NextVector2Circular(128, 128);
+                    FXUtil.GlowStretch(NPC.Center, v);
+                }
+
+                float numDust = 32;
+                for (float n = 0; n < numDust; n++)
+                {
+                    Vector2 dustVelocity = Main.rand.NextVector2Circular(32, 32);
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), dustVelocity,
+                        newColor: Color.Red,
+                        Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                }
+                SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/GlocketRouncher");
+                explosionSound.Pitch = -0.5f;
+                SoundEngine.PlaySound(explosionSound, NPC.position);
+                FXUtil.ShakeCamera(NPC.position, 1024, 8);
+                var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Yellow, Color.Red);
+                boom.Scale *= 3f;
+                ShakeModSystem.Shake = 16;
+                var p = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Red, Color.Black);
+                NPC.Kill();
+            }
+        }
+
+        private void AI_SpawnRetina()
+        {
+            Variant = TwinVariant.Retina;
+            _parentIndex = (int)NPC.ai[2];
+            NPC.ai[2] = (float)TwinAIState.Idle;
+            SwitchState(TwinAIState.Idle);
+        }
+
+        private void AI_SpawnSpazz()
+        {
+            Variant = TwinVariant.Spazz;
+            _parentIndex = (int)NPC.ai[2];
+            NPC.ai[2] = (float)TwinAIState.Idle;
+            SwitchState(TwinAIState.Idle);
+        }
+
+        private void IdleMovement()
+        {
+
+            //So we should slowly move towards the player if they're far, if not we'll just hover in place.
+            //Step 1. Look towards the player, we can do this by calculating a target normal, calculating an angle and then lerping to it
+            Vector2 targetNormal = TargetNormal;
+            float targetAngle = targetNormal.ToRotation();
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
+
+            //Step 2. Check the distance between this current twin and the player
+            //If the distance is too far we'll move closer to them, if not we just slow down/sit there
+            float distanceToTarget = Vector2.Distance(NPC.Center, Target.Center);
+            float maxDistance = 400;
+            if (distanceToTarget > maxDistance)
+            {
+                //We should scale the movement velocity based on the distance, so the farther they are the faster we'll move
+                Vector2 movementVelocity = targetNormal * distanceToTarget / 32f;
+                NPC.velocity = Vector2.Lerp(NPC.velocity, movementVelocity, 0.05f);
+            }
+            else
+            {
+                //Otherwise, we'll just slow down
+                //We want to keep a little bit of movement velocity so it's not just completely static
+                NPC.velocity *= 0.8f;
+
+                //Stpe 3. Add a little bit of hovering velocity for a cool effect
+                float yHover = MathF.Sin(Timer * 0.1f) * 0.5f;
+                NPC.velocity.Y += yHover;
+            }
+        }
+
+        private void AI_Idle()
+        {
+            _rotationTimer = 0f;
+
+            //Ok, so in the idle state, the goober is basically waiting on a command from the commander
+            //So it should just slowly wander around and target the player
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+
+
+            //Reset draw variables
+            _scale = Vector2.One;
+            _afterImageAlpha = 0f;
+            IdleMovement();
+
+            //Remember, we're just waiting on a command from up above, so we don't actually need to do anything else here
+            //However, we will create a few steam particles just for funsies
+            if (Timer % 10 == 0)
+            {
+                Particle.NewParticle<BlackSmokeParticle>(
+                    NPC.Center + Main.rand.NextVector2Circular(64, 64),
+                    -Vector2.UnitY * Main.rand.NextFloat(0.2f, 0.5f), newColor: Color.White);
+            }
+
+            TargetOutlineColor = Color.Transparent;
+            AttackNumber = 0f;
+
+            //Receive the next command state.
+            //This should be automatically netcoded btw
+            if (NextCommandState != TwinAIState.Idle)
+            {
+                SwitchState(NextCommandState);
+                NextCommandState = TwinAIState.Idle;
+            }
+        }
+
+    
+
+
+        //telegraph line
+        #region Draw Code
+        private float _telegraphLineAlpha;
+        private float _telegraphLineRot;
+
+
+        private float _afterImageAlpha;
+        private Vector2 _scale;
+
+        private Color _outlineColor;
+        private Color TargetOutlineColor;
+        private void UpdateDraw()
+        {
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+        }
+
+        private void DrawTelegraphLine(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            Texture2D bloomLineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+            Vector2 drawOrigin = new Vector2(bloomLineTexture.Width / 2f, 0f);
+            Vector2 drawScale = Vector2.One;
+            drawScale.Y *= 2f;
+            drawScale.X *= 0.5f;
+
+            Color telegraphLineColor = Variant == TwinVariant.Spazz ? Color.Green : Color.Red;
+            telegraphLineColor.A = 0;
+            telegraphLineColor *= _telegraphLineAlpha;
+            spriteBatch.Draw(bloomLineTexture, NPC.Center - screenPos, null, telegraphLineColor, _telegraphLineRot - MathHelper.PiOver2, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
+
+
+        private Texture2D GetTwinTexture()
+        {
+            if (Variant == TwinVariant.Spazz)
+            {
+                Texture2D twinTexture = ModContent.Request<Texture2D>(Texture + "_Spazz").Value;
+                return twinTexture;
+            }
+            else
+            {
+                Texture2D twinTexture = ModContent.Request<Texture2D>(Texture).Value;
+                return twinTexture;
+            }
+        }
+
+        private Color GetFlamingTrailColor(float completionRatio)
+        {
+            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * _afterImageAlpha;
+        }
+
+        private float GetFlamingTrailWidth(float completionRatio)
+        {
+            return MathHelper.SmoothStep(222, 222, completionRatio);
+        }
+
+
+        private void DrawFlamingTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            var shader = BlackFireShader.Instance;
+            shader.Time = Main.GlobalTimeWrappedHourly * 16;
+            shader.InnerColor = Variant == TwinVariant.Spazz ? Color.Green : Color.Red;
+            shader.OuterColor = Variant == TwinVariant.Spazz ? Color.DarkGreen : Color.DarkRed;
+            TrailDrawer.Draw(spriteBatch, NPC.oldPos, GetFlamingTrailColor, GetFlamingTrailWidth, shader, offset: NPC.Size / 2f);
+        }
+        private void DrawAfterImages(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            Texture2D twinTexture = GetTwinTexture();
+            Rectangle frame = NPC.frame;
+            Vector2 drawOrigin = frame.Size() / 2f;
+            float trailLength = NPC.oldPos.Length;
+            for (int i = 0; i < NPC.oldPos.Length; i++)
+            {
+                Vector2 drawCenter = NPC.oldPos[i] + NPC.Size / 2f - screenPos;
+                float f = i;
+                float completionRatio = f / trailLength;
+
+                //After image
+                Color drawColor = Color.Lerp(Color.White, Color.Transparent, completionRatio);
+                drawColor *= _afterImageAlpha;
+
+                drawColor *= 0.5f;
+                SpriteEffects spriteEffects = SpriteEffects.None;
+                if (NPC.spriteDirection == -1)
+                {
+                    spriteEffects = SpriteEffects.FlipVertically;
+                }
+                spriteBatch.Draw(twinTexture, drawCenter, frame, drawColor, NPC.oldRot[i], drawOrigin, _scale, spriteEffects, 0f);
+            }
+        }
+
+
+        private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D twinTexture = GetTwinTexture();
+            Rectangle frame = NPC.frame;
+            Vector2 drawOrigin = frame.Size() / 2f;
+            Vector2 drawCenter = NPC.Center - screenPos;
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            if (NPC.spriteDirection == -1)
+            {
+                spriteEffects = SpriteEffects.FlipVertically;
+            }
+            spriteBatch.Draw(twinTexture, drawCenter, frame, drawColor, NPC.rotation, drawOrigin, _scale, spriteEffects, 0f);
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            DrawAfterImages(spriteBatch, screenPos);
+            DrawFlamingTrail(spriteBatch, screenPos, drawColor);
+            DrawTelegraphLine(spriteBatch, screenPos);
+            DrawSprite(spriteBatch, screenPos, drawColor);
+
+            //This is just to create a nice little glowy effect
+            drawColor *= ExtraMath.Osc(0f, 0.5f, speed: 3f);
+            drawColor.A = 0;
+            DrawSprite(spriteBatch, screenPos, drawColor);
+            return false;
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            float outlineOffset = 2;
+            DrawSprite(spriteBatch, screenPos + Vector2.UnitX * outlineOffset, _outlineColor);
+            DrawSprite(spriteBatch, screenPos - Vector2.UnitX * outlineOffset, _outlineColor);
+            DrawSprite(spriteBatch, screenPos + Vector2.UnitY * outlineOffset, _outlineColor);
+            DrawSprite(spriteBatch, screenPos - Vector2.UnitY * outlineOffset, _outlineColor);
+        }
+        #endregion
+    }
+}
