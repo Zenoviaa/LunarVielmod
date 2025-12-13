@@ -1,14 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
-using Stellamod.Core.VerletIntegration;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -33,7 +27,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             get
             {
-                if(_tendrilPoints == null)
+                if (_tendrilPoints == null)
                 {
                     _tendrilPoints = new Vector2[64];
                 }
@@ -43,13 +37,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 Vector2 normalVelocity = -NPC.rotation.ToRotationVector2();
                 Vector2 velocity = normalVelocity * 24;
                 Vector2 prev = start;
-  
-                for(int i = 0; i < _tendrilPoints.Length; i++)
+
+                for (int i = 0; i < _tendrilPoints.Length; i++)
                 {
                     Vector2 next = prev + velocity;
                     Vector2 gravity = Vector2.UnitY * 7 * i * ExtraMath.Osc(0.4f, 0.55f);
                     next += gravity;
- 
+
                     _tendrilPoints[i] = next;
                     prev = next;
                 }
@@ -70,7 +64,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             drawScale.Y *= 2f;
             drawScale.X *= 0.5f;
 
-            Color telegraphLineColor = Variant == TwinVariant.Spazz ? Color.Green : Color.Red;
+            Color telegraphLineColor = DescendingTwins.GetTwinColor(GetVariant());
             telegraphLineColor.A = 0;
             telegraphLineColor *= _telegraphLineAlpha;
             spriteBatch.Draw(bloomLineTexture, NPC.Center - screenPos, null, telegraphLineColor, _telegraphLineRot - MathHelper.PiOver2, drawOrigin, drawScale, SpriteEffects.None, 0);
@@ -122,8 +116,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             var shader = BlackFireShader.Instance;
             shader.Time = Main.GlobalTimeWrappedHourly * 16;
-            shader.InnerColor = Variant == TwinVariant.Spazz ? Color.Green : Color.Red;
-            shader.OuterColor = Variant == TwinVariant.Spazz ? Color.DarkGreen : Color.DarkRed;
+            Color innerColor = DescendingTwins.GetTwinColor(GetVariant());
+            shader.InnerColor = innerColor;
+            shader.OuterColor = Color.Lerp(innerColor, Color.Black, 0.5f);
             TrailDrawer.Draw(spriteBatch, NPC.oldPos, GetFlamingTrailColor, GetFlamingTrailWidth, shader, offset: NPC.Size / 2f);
         }
         private void DrawAfterImages(SpriteBatch spriteBatch, Vector2 screenPos)
