@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;

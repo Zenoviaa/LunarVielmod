@@ -10,7 +10,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
+namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles
 {
     public class DescendingNodeBeam : ScarletProjectile,
         IDrawPixelated

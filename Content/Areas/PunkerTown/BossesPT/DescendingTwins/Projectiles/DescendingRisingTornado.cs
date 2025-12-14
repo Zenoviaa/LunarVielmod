@@ -10,7 +10,7 @@ using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
+namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles
 {
     public class DescendingRisingTornado : ScarletProjectile
     {
