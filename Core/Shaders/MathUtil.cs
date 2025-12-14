@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Shaders;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -7,6 +8,7 @@ namespace Stellamod.Systems.MiscellaneousMath
 {
     public static class MathUtil
     {
+
         public static Vector2 GetRotation(Vector2[] oldPos, int index)
         {
             if (oldPos.Length == 1)

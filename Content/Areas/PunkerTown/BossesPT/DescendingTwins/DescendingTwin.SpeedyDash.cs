@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Core;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using System;
@@ -9,9 +12,89 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 {
+    public class DescendingTwinFlameTrail : ScarletProjectile
+    {
+        private float _deathTimer;
+
+        private int Variant => (int)Projectile.ai[0];
+        private NPC Parent
+        {
+            get => Main.npc[(int)Projectile.ai[1]];
+        }
+        private ref float DeathState => ref Projectile.ai[2];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
+        }
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            TrailCacheLength = 32;
+            Projectile.width = 1;
+            Projectile.height = 1;
+           
+        }
+
+        private Color GetFlamingTrailColor(float completionRatio)
+        {
+            float fade = 1f - (_deathTimer / 60f);
+            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * fade;
+        }
+
+        private float GetFlamingTrailWidth(float completionRatio)
+        {
+            float fade = 1f - (_deathTimer / 60f);
+            return MathHelper.SmoothStep(222, 222, completionRatio) * fade;
+        }
+
+
+        private void DrawFlamingTrail(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            var shader = BlackFireShader.Instance;
+            shader.Time = Main.GlobalTimeWrappedHourly * 16;
+            Color innerColor = DescendingTwins.GetTwinColor(Variant);
+            shader.InnerColor = innerColor;
+            shader.OuterColor = Color.Lerp(innerColor, Color.Black, 0.5f);
+            TrailDrawer.Draw(spriteBatch, OldCenterPos, GetFlamingTrailColor, GetFlamingTrailWidth, shader);
+        }
+        public override void AI()
+        {
+            base.AI();
+            if (DeathState == 1f)
+            {
+                _deathTimer++;
+                return;
+            }
+      
+       
+
+            Vector2 nextPos = Parent.Center;
+            float distanceToPos = Vector2.Distance(Projectile.Center, nextPos);
+            if(distanceToPos > 300 || !Parent.active || Parent.ai[1] == (int)DescendingTwin.TwinAIState.Idle)
+            {
+                DeathState = 1f;
+            }
+            else
+            {
+                Projectile.Center = Parent.Center;
+            }
+            Projectile.timeLeft = 60;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            DrawFlamingTrail(Main.spriteBatch, Main.screenPosition, Color.White);
+            return false;
+        }
+    }
     public partial class DescendingTwin
     {
         private float _traveledDistance;
@@ -105,6 +188,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
     : AssetRegistry.Sounds.SteamPunking.DescendingDash2;
                 dashSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(dashSound, NPC.position);
+
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<DescendingTwinFlameTrail>(), 0, 0, Main.myPlayer, ai0: GetVariant(), ai1: NPC.whoAmI);
+                }
             }
 
             float dashInterp = EasingFunction.InOutSine(AttackNumber / 9f);
@@ -144,8 +232,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             float distanceFactor = _traveledDistance / 2000f;
             float distanceLerp = EasingFunction.QuadraticBump(distanceFactor);
             _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, distanceLerp);
-            _afterImageAlpha = MathHelper.Lerp(0.5f, 1f, distanceLerp); 
-
+            _afterImageAlpha = 0f;
             //Set the contact damage to be enabled, turn on the cool trails
             _contactDamage = true;
             TargetOutlineColor = Color.Red;

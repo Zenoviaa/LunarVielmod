@@ -276,6 +276,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     return Color.Yellow;
             }
         }
+        
         public static Color GetSecondaryTwinColor(int variant)
         {
             switch (variant)
@@ -291,6 +292,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     return Color.Orange;
             }
         }
+
         private void SwitchState(TwinAttackState state)
         {
             if (MultiplayerHelper.IsHost)
@@ -368,7 +370,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 {
                     SwitchState(nextState);
                 }
-                SwitchState(TwinAttackState.SpeedyDash);
             }
         }
 

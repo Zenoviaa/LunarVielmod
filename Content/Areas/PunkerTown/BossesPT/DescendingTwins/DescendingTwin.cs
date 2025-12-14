@@ -248,21 +248,35 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             {
                 NPC.position.X = _teleportPosition.X;
                 NPC.position.Y = _teleportPosition.Y;
+                for(int i = 0; i < NPC.oldPos.Length; i++)
+                {
+                    NPC.oldPos[i] = NPC.position;
+                }
                 _teleportPosition = Vector2.Zero;
             }
         }
 
-        private float _time;
-        public override void AI()
+        private void UpdateTailSimulation()
         {
-            base.AI();
-
             TailSimulation.rootPosition = NPC.Center;
             TailSimulation.initialDirection = NPC.rotation.ToRotationVector2();
             TailSimulation.baseFrequency = 0.5f;
             TailSimulation.baseAmplitude = 32;
             TailSimulation.gravity = NPC.velocity * 4 + Vector2.UnitY * 32;
             TailSimulation.Update();
+        }
+
+        private void UpdateFadingTrail()
+        {
+
+        }
+
+        public override void AI()
+        {
+            base.AI();
+         
+            UpdateTailSimulation();
+            UpdateFadingTrail();
             ReceiveTeleport();
             //If we don't have a valid target automatically retarget.
             if (!NPC.HasValidTarget)
