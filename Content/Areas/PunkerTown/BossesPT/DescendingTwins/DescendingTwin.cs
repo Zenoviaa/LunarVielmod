@@ -83,6 +83,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             SpeedyDashLoop,
             SpeedyDashEnd,
 
+            ElectricBallStart,
+            ElectricBallWindup,
+            ElectricBallShoot,
+            ElectricBallEnd,
+
             Death
         }
 
@@ -384,6 +389,19 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     break;
                 case TwinAIState.SpeedyDashEnd:
                     AI_SpeedyDashEnd();
+                    break;
+
+                case TwinAIState.ElectricBallStart:
+                    AI_ElectricBallStart();
+                    break;
+                case TwinAIState.ElectricBallWindup:
+                    AI_ElectricBallWindup();
+                    break;
+                case TwinAIState.ElectricBallShoot:
+                    AI_ElectricBallShoot();
+                    break;
+                case TwinAIState.ElectricBallEnd:
+                    AI_ElectricBallEnd();
                     break;
 
             }

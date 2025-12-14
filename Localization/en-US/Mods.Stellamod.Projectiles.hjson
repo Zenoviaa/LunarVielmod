@@ -1646,3 +1646,5 @@ DescendingNodeBeam.DisplayName: Descending Node Beam
 DescendingNodeTriggeringBeam.DisplayName: Descending Node Triggering Beam
 DescendingRisingTornado.DisplayName: Descending Rising Tornado
 DescendingTornadoBoom.DisplayName: Descending Tornado Boom
+DescendingElectricBall.DisplayName: Descending Electric Ball
+DescendingElectricBoom.DisplayName: Descending Electric Boom
