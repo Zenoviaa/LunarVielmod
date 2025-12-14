@@ -367,10 +367,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 else
                 {
                     SwitchState(nextState);
-
                 }
-  
-                SwitchState(TwinAttackState.SpiralLaser);
             }
         }
 
