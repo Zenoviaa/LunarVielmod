@@ -11,8 +11,10 @@ namespace Stellamod.Helpers
     {
         private Dictionary<T, float> _defaultWeights;
         private Dictionary<T, float> _weights;
+        private Queue<T> _patternOverrideQueue;
         public PatternManager(params Tuple<T, float>[] defaultWeights)
         {
+            _patternOverrideQueue = new Queue<T>();
             _defaultWeights = new Dictionary<T, float>();
             _weights = new Dictionary<T, float>();
             for(int i = 0; i < defaultWeights.Length; i++)
@@ -45,8 +47,28 @@ namespace Stellamod.Helpers
             }
         }
 
+
+        public void ZeroWeights()
+        {
+            foreach (var kvp in _defaultWeights)
+            {
+                _weights[kvp.Key] = 0f;
+            }
+        }
+
+        public void SetWeight(T t, float weight)
+        {
+            _weights[t] = weight;
+        }
+
+        public void QueueSetPattern(T t)
+        {
+            _patternOverrideQueue.Enqueue(t);
+        }
         public T NextPattern()
         {
+            if (_patternOverrideQueue.Count > 0)
+                return _patternOverrideQueue.Dequeue();
             float weight = 0f;
             float totalWeight = 0f;
             foreach (var kvp in _weights)

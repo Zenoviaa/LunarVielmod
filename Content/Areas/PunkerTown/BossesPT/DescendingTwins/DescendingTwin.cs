@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles;
+using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.VerletIntegration;
@@ -109,6 +110,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Spazz,
             Retina
         }
+
+        private float _deathRotationOffset;
+        private Vector2 _deathPositionOffset;
 
         private bool _phaseShift;
         private bool _contactDamage;
@@ -260,6 +264,20 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             if (NPC.life <= 1 && State != TwinAIState.Death)
                 SwitchState(TwinAIState.Death);
+
+            if (_phaseShift)
+            {
+                //Idk cool ig
+                if (Main.rand.NextBool(12))
+                {
+                    var zap = Particle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(32, 32), Main.rand.NextVector2Circular(1, 1), Color.White, 1f);
+                    zap.innerColor = GetTwinColor();
+                    zap.outerColor = Color.Lerp(zap.innerColor, Color.Black, 0.5f);
+                    zap.fadeToColor = Color.Lerp(zap.outerColor, Color.Black, 0.5f);
+            
+                }
+            }
+
             _contactDamage = false;
             switch (State)
             {
@@ -491,6 +509,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 SpawnSteamParticle();
             }
 
+            if(Timer % 2 == 0)
+            {
+                _deathRotationOffset = Main.rand.NextFloat(-2f, 2f);
+                _deathPositionOffset = Main.rand.NextVector2Circular(2, 2);
+            }
+
             if (Timer % 12 == 0)
             {
                 Vector2 spawnPoint = NPC.Top;
@@ -500,8 +524,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
 
             NPC.velocity = Vector2.Zero;
+
+            _telegraphLineAlpha = MathHelper.Lerp(_telegraphLineAlpha, 0f, 0.1f);
             _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, 0f, 0.1f);
-           
+            _contactDamage = false;
 
             if (Timer >= deathTime)
             {
@@ -537,6 +563,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     steamParticle.outerColor = Color.Black;
                     steamParticle.fadeToColor = Color.Black;
                 }
+                int[] gores = AutoGoreLoader.FindGores("MechanicalEye");
+                foreach (int g in gores)
+                {
+                    Gore.NewGore(NPC.GetSource_FromThis(),
+                        NPC.Center,
+                        Main.rand.NextVector2Circular(8, 8).RotatedByRandom(MathHelper.ToRadians(20)), g, 1f);
+                }
+
+                var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                screenShaderSystem.TintScreen(Color.White, 0.5f, 30f);
 
                 float numDust = 32;
                 for (float n = 0; n < numDust; n++)

@@ -558,7 +558,19 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 CommandSpazz(DescendingTwin.TwinAIState.PhaseShiftStart);
                 CommandRetina(DescendingTwin.TwinAIState.PhaseShiftStart);
             }
-            _phase2 = true;
+            if (!_phase2)
+            {
+                //ALways do the spiral laser when entering phase 2
+                //Then loop through all of the new attacks before returning to a regular cycle
+                //So the player can get accustomed to all the new attacks before seeing sped up phase 1 ones.
+                PatternManager.ZeroWeights();
+                PatternManager.QueueSetPattern(TwinAttackState.SpiralLaser);
+                PatternManager.SetWeight(TwinAttackState.SpeedyDash, 1f);
+                PatternManager.SetWeight(TwinAttackState.SuperCrash, 1f);
+                PatternManager.SetWeight(TwinAttackState.ElectricBall, 1f);
+                _phase2 = true;
+            }
+           
             if (Timer >= 60)
             {
                 if (SpazzAwaitingCommand && RetinaAwaitingCommand)

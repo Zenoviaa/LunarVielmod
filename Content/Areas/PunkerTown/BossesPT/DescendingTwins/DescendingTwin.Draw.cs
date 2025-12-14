@@ -159,7 +159,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             {
                 spriteEffects = SpriteEffects.FlipVertically;
             }
-            spriteBatch.Draw(twinTexture, drawCenter, frame, drawColor, NPC.rotation, drawOrigin, _scale, spriteEffects, 0f);
+
+            float drawRotation = NPC.rotation + _deathRotationOffset;
+            spriteBatch.Draw(twinTexture, drawCenter, frame, drawColor, drawRotation, drawOrigin, _scale, spriteEffects, 0f);
         }
 
         private Color GetTendrilColorFunction(float completionRatio)
@@ -189,6 +191,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            screenPos += _deathPositionOffset;
+
             DrawTendril();
             DrawAfterImages(spriteBatch, screenPos);
             DrawFlamingTrail(spriteBatch, screenPos, drawColor);
