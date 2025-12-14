@@ -61,6 +61,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
 
                 }
             }
+            if (!Parent.active && Projectile.timeLeft > 10)
+                Projectile.timeLeft = 10;
         }
 
         private Color GetTwinColor() => DescendingTwins.GetTwinColor(Variant);
