@@ -193,6 +193,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             float ease = EasingFunction.Anticipation2(completionRatio);
             NPC.velocity = Vector2.Lerp(Vector2.Zero, _simpleDashNormal * 5f, ease);
             NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
+
+            _telegraphLineRot = _simpleDashNormal.ToRotation();
+            _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(completionRatio));
             if (Timer >= windUpTime)
             {
                 SwitchState(TwinAIState.HighSpeedCrashCrash);
