@@ -366,6 +366,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 {
                     SwitchState(nextState);
                 }
+                SwitchState(TwinAttackState.DashDance_Part2);
             }
         }
 

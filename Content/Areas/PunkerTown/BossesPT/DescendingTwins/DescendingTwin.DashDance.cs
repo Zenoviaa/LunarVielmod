@@ -197,7 +197,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             //Alright so
 
             //First we need to create a circle around our target
-            float windUpTime = 80f;
+            float windUpTime = 110;
             float circleRadius = 300f;
             Vector2 initialDirection = -Vector2.UnitY;
             Vector2 dashVector = initialDirection * circleRadius;
@@ -208,14 +208,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             //get a ratio of how far we are into this prepation state
             float completionRatio = Timer / windUpTime;
-            float rads = (MathHelper.TwoPi * 2);
-            float radiansToRotateBy = MathHelper.Lerp(0f, rads, completionRatio);
+            float rads = (MathHelper.TwoPi);
+            float radiansToRotateBy = MathHelper.Lerp(0f, rads, EasingFunction.InOutExpo7(completionRatio));
             Vector2 rotatedVector = dashVector.RotatedBy(radiansToRotateBy + radiansOffset);
             Vector2 positionToMoveTo = Target.Center + rotatedVector;
             Vector2 targetVelocity = positionToMoveTo - NPC.Center;
 
             float inLerp = EasingFunction.InOutSine(completionRatio / 0.5f);
-            NPC.velocity = Vector2.Lerp(_simpleDashNormal, targetVelocity, completionRatio);
+            NPC.velocity = Vector2.Lerp(_simpleDashNormal, targetVelocity, inLerp);
 
             //We also need to rotate towards the target, we are facing them after all!
             Vector2 targetNormal = TargetNormal;

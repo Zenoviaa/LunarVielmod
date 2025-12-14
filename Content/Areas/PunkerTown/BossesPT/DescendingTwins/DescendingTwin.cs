@@ -500,7 +500,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Timer++;
             if (Timer == 1)
             {
-      
+                SoundStyle steamingSound = AssetRegistry.Sounds.SteamPunking.SteamingDeathStart;
+                steamingSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(steamingSound, NPC.position);
             }
 
             float deathTime = 300f;
