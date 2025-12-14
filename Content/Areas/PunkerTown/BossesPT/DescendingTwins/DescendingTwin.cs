@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.VerletIntegration;
@@ -471,7 +472,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Timer++;
             if (Timer == 1)
             {
-                NPC.TargetClosest();
+      
             }
 
             float deathTime = 300f;
@@ -491,8 +492,15 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             NPC.velocity = Vector2.Zero;
             _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, 0f, 0.1f);
            
+
             if (Timer >= deathTime)
             {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<DescendingBigBoom>(),
+                        DescendingBigBoomDamage, 1, Main.myPlayer, ai1: (int)Variant);
+                }
+
                 for (int i = 0; i < 16; i++)
                 {
                     Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(),
