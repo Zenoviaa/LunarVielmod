@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -68,6 +70,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
         public override void AI()
         {
             base.AI();
+            if (Timer % 4 == 0)
+            {
+                Vector2 pos = NPC.Center;
+                pos += Main.rand.NextVector2Circular(32, 32);
+                var zap = Particle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(1, 4));
+                zap.Scale *= 0.2f;
+            }
+
             switch (State)
             {
                 case AIState.Idle:
@@ -112,7 +122,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
                 if (MultiplayerHelper.IsHost)
                 {
                     Vector2 targetNormal = (Main.player[NPC.target].Center - NPC.Center).SafeNormalize(Vector2.Zero);
-                    Vector2 fireVelocity = targetNormal * 15f;
+                    Vector2 fireVelocity = targetNormal * 5;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, fireVelocity, 
                         ModContent.ProjectileType<DescendingNodeBeam>(), BeamDamage, 1, Main.myPlayer);
                 }
@@ -147,8 +157,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
             //Since the server owns the projectile, meaning our method will work :)
             if (projectile.type == ModContent.ProjectileType<DescendingNodeTriggeringBeam>())
             {
-                projectile.Kill();
-                SwitchState(AIState.Death);
+                if (projectile.ai[1] == (int)NPC.whoAmI)
+                {
+                    projectile.Kill();
+                    SwitchState(AIState.Death);
+                }
+         
             }
         }
 

@@ -28,9 +28,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
             Projectile.hostile = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 240;
             Projectile.ignoreWater = true;
-            Projectile.extraUpdates = 1;
         }
 
         public override void AI()
@@ -44,20 +43,29 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
                 SoundEngine.PlaySound(shootSound, Projectile.position);
                 SpawnFlameDonut();
             }
-            if(Timer % 5 == 0)
+            float outScale = (float)Projectile.timeLeft / 10f;
+            float outScaleEase = EasingFunction.InOutSine(outScale);
+
+            if (Timer % 2 == 0)
             {
                 var p = Particle.NewParticle<GlowFragmentParticle>(Projectile.Center, Vector2.Zero, Color.White, Scale: 4f);
-                Color twinColor = Color.Green;
+                Color twinColor = Color.Yellow;
                 p.innerColor = twinColor;
-                p.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
+                p.outerColor = Color.Red;
                 p.fadeToColor = Color.Lerp(twinColor, Color.DarkBlue, 0.5f);
+                p.Rotation += Main.rand.NextFloat(-0.5f, 0.5f);
+                p.Scale *= 1.5f * outScaleEase;
+            }
+            if(Projectile.velocity.Length() < 10f)
+            {
+                Projectile.velocity *= 1.1f;
             }
         }
         private void SpawnFlameDonut()
         {
             //movement donut particles
             var donut = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 2, newColor: Color.White);
-            Color twinColor = Color.Green;
+            Color twinColor = Color.Red;
             donut.innerColor = twinColor;
             donut.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
             donut.fadeToColor = Color.Lerp(twinColor, Color.DarkBlue, 0.5f);
@@ -78,9 +86,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
                 float f = i;
                 float completionRatio = f / numAfterImages;
 
-                Color drawColor = Color.Lerp(Color.White, Color.Green, completionRatio);
+                Color drawColor = Color.Lerp(Color.Red, Color.DarkRed, completionRatio);
                 drawColor.A = 0;
-                drawColor *= MathHelper.Lerp(1f, 0f, completionRatio);
 
                 float scale = MathHelper.SmoothStep(1f, 0f, completionRatio);
                 scale *= outScaleEase;

@@ -208,6 +208,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             float completionRatio = Timer / shootTime;
             float ease = EasingFunction.InOutSine(completionRatio);
             _telegraphLineAlpha = MathHelper.Lerp(1f, 0f, ease);
+
             LayMovement();
             TargetOutlineColor = Color.Yellow;
             if (Timer >= shootTime)
