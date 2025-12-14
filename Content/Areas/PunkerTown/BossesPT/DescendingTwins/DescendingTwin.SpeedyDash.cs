@@ -199,7 +199,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             float maxSpeed = MathHelper.Lerp(100, 150f, dashInterp);
 
             float speedUp = EasingFunction.InOutSine(AttackNumber / 18f);
-            float lowerBound = MathHelper.Lerp(20f, 10f, speedUp);
+            float lowerBound = MathHelper.Lerp(20f, 12, speedUp);
             if(Timer < lowerBound)
             {
                 if(NPC.velocity.Length() > 2)
