@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 
-namespace Stellamod.Core.TailSystem
+namespace Stellamod.Core.Utilities
 {
     public struct TailPoint
     {
@@ -51,7 +47,7 @@ namespace Stellamod.Core.TailSystem
                 point.frequency = MathHelper.Lerp(baseFrequency, baseFrequency * 3f, completionRatio);
                 point.amplitude = MathHelper.Lerp(baseAmplitude * 0.15f, baseAmplitude, completionRatio);
             }
-                
+
             for (int i = 0; i < points.Length; i++)
             {
                 ref TailPoint point = ref points[i];
@@ -68,7 +64,7 @@ namespace Stellamod.Core.TailSystem
 
                 Vector2 newPosition = rootPosition + tailPoint;
                 Vector2 diff = newPosition - point.oldPosition;
- 
+
                 point.oldPosition = point.position;
 
                 Vector2 smoothedDiff = diff * MathHelper.SmoothStep(1.0f, 0.01f, weight);
@@ -78,13 +74,13 @@ namespace Stellamod.Core.TailSystem
                 if (distance > twoSegmentLength)
                 {
                     point.position = newPosition;
-                } 
+                }
             }
         }
 
         public void FillArr(Vector2[] positions)
         {
-            for(int i = 0; i < positions.Length; i++)
+            for (int i = 0; i < positions.Length; i++)
             {
                 positions[i] = points[i].position;
             }

@@ -5,15 +5,8 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 
-namespace Stellamod.Core.VerletIntegration
+namespace Stellamod.Core.Utilities
 {
-    public struct VerletPoint
-    {
-        public Vector2 position;
-        public Vector2 oldPosition;
-        public bool pinned;
-    }
-
     public class VerletChain
     {
         public VerletPoint[] points;
