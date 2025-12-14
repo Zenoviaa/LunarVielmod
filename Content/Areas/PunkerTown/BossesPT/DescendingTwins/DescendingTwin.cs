@@ -88,6 +88,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             ElectricBallShoot,
             ElectricBallEnd,
 
+            SuperCrashStart,
+            SuperCrashWindup,
+            SuperCrashCrash,
+            SuperCrashEnd,
+
             Death
         }
 
@@ -404,6 +409,19 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     AI_ElectricBallEnd();
                     break;
 
+
+                case TwinAIState.SuperCrashStart:
+                    AI_SuperCrashStart();
+                    break;
+                case TwinAIState.SuperCrashWindup:
+                    AI_SuperCrashWindup();
+                    break;
+                case TwinAIState.SuperCrashCrash:
+                    AI_SuperCrashCrash();
+                    break;
+                case TwinAIState.SuperCrashEnd:
+                    AI_SuperCrashEnd();
+                    break;
             }
             Lighting.AddLight(NPC.Center, Variant == TwinVariant.Spazz ? TorchID.Cursed : TorchID.Red);
             UpdateDraw();

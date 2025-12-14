@@ -27,6 +27,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             PhaseShift,
             SpeedyDash,
             ElectricBall,
+            SuperCrash,
             Death,
         }
 
@@ -206,6 +207,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAttackState.ElectricBall:
                     AI_ElectricBall();
                     break;
+                case TwinAttackState.SuperCrash:
+                    AI_SuperCrash();
+                    break;
                 case TwinAttackState.Death:
                     AI_Death();
                     break;
@@ -312,7 +316,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             if (MultiplayerHelper.IsHost)
             {
                 SwitchState(PatternManager.NextPattern());
-                SwitchState(TwinAttackState.NodeLay);
+                SwitchState(TwinAttackState.SuperCrash);
             }
         }
 
@@ -540,6 +544,24 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 NPC.TargetClosest();
                 CommandSpazz(DescendingTwin.TwinAIState.ElectricBallStart);
                 CommandRetina(DescendingTwin.TwinAIState.ElectricBallStart);
+            }
+
+            if (Timer >= 60)
+            {
+                if (SpazzAwaitingCommand && RetinaAwaitingCommand)
+                {
+                    SwitchState(TwinAttackState.Idle);
+                }
+            }
+        }
+        private void AI_SuperCrash()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                CommandSpazz(DescendingTwin.TwinAIState.SuperCrashStart);
+                CommandRetina(DescendingTwin.TwinAIState.SuperCrashStart);
             }
 
             if (Timer >= 60)
