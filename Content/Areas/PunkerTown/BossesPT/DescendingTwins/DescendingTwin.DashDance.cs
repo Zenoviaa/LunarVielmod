@@ -77,14 +77,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         }
         private Color GetTwinColor()
         {
-            switch (Variant)
-            {
-                default:
-                case TwinVariant.Spazz:
-                    return Color.Green;
-                case TwinVariant.Retina:
-                    return Color.Red;
-            }
+            return DescendingTwins.GetTwinColor(GetVariant());
         }
         private void SpawnFlameDust()
         {
@@ -134,6 +127,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             //Fade out the dash line and just move in the direction that we were moving
             //We can just multiply the velocity
             float dashTime = 25f;
+            if (_phaseShift)
+            {
+                dashTime *= 0.5f;
+            }
             float completionRatio = Timer / dashTime;
 
             float dashSpeed = 35f;
@@ -142,10 +139,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 NPC.velocity *= 1.5f;
             }
 
-            if (_phaseShift)
-            {
-                dashTime *= 0.5f;
-            }
+
 
             NPC.rotation = NPC.velocity.ToRotation();
 
@@ -243,6 +237,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             if (Timer == 1)
             {
                 _simpleDashNormal = NPC.rotation.ToRotationVector2();
+                _startVelocity = NPC.velocity;
                 SoundStyle windupPrepareSound = AssetRegistry.Sounds.SteamPunking.DescendingWindup;
                 windupPrepareSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(windupPrepareSound, NPC.position);

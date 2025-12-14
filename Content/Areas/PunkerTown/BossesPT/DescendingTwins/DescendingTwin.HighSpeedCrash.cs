@@ -32,6 +32,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             if (Timer == 1)
             {
                 SetTargetToCommanderTarget();
+                _highSpeedTargetPosition = Target.Center;
             }            /*
              * 
              * Both of them aim above you, shooting a type of fire (Descender Retina), shoots a red fire,
@@ -84,6 +85,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             {
                 SetTargetToCommanderTarget();
                 _simpleDashNormal = NPC.velocity;
+                _highSpeedTargetPosition = Target.Center;
             }           
             
             /*
@@ -246,7 +248,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<DescendingBigBoom>(),
-                        DescendingBigBoomDamage, 1, Main.myPlayer, ai1: (int)Variant);
+                        DescendingBigBoomDamage, 1, Main.myPlayer, ai1: GetVariant());
                 }
             }
             //Enable the contact damage as per usual

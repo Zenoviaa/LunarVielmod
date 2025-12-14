@@ -137,9 +137,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<DescendingBigBoom>(),
-                        DescendingBigBoomDamage, 1, Main.myPlayer, ai1: (int)Variant);
+                        DescendingBigBoomDamage, 1, Main.myPlayer, ai1: GetVariant());
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, TargetNormal * 9f, ModContent.ProjectileType<DescendingFire>(),
-                        DescendingFireDamage, 1, Main.myPlayer, ai1: (int)(1 - Variant));
+                        DescendingFireDamage, 1, Main.myPlayer, ai1: GetVariant());
                 }
             }
 

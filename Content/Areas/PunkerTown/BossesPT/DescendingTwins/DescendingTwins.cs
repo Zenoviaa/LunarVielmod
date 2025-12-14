@@ -269,7 +269,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case 1:
                     return Color.Red;
                 case 2:
-                    return Color.Blue;
+                    return Color.SkyBlue;
                 case 3:
                     return Color.Yellow;
             }
