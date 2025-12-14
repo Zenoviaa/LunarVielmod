@@ -522,6 +522,22 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     FXUtil.GlowStretch(NPC.Center, v);
                 }
 
+                float numSteam = 32;
+                for(float n = 0; n < numSteam; n++)
+                {
+                    Vector2 spawnPosition = NPC.Center;
+                    spawnPosition.X += Main.rand.NextFloat(-64, 64);
+                    spawnPosition.Y += Main.rand.NextFloat(-64, 64);
+
+                    Vector2 spawnVelocity = Main.rand.NextVector2Circular(2, 2);
+
+                    float spawnScale = Main.rand.NextFloat(0.75f, 1f);
+                    var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
+                    steamParticle.innerColor = Color.DarkGray;
+                    steamParticle.outerColor = Color.Black;
+                    steamParticle.fadeToColor = Color.Black;
+                }
+
                 float numDust = 32;
                 for (float n = 0; n < numDust; n++)
                 {
