@@ -258,6 +258,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 NPC.TargetClosest();
             }
 
+            if (NPC.life <= 1 && State != TwinAIState.Death)
+                SwitchState(TwinAIState.Death);
             _contactDamage = false;
             switch (State)
             {
@@ -455,6 +457,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private Vector2 TargetNormal => NPC.DirectionTo(Target.Center);
         private DescendingTwins Commander => (DescendingTwins)Main.npc[_parentIndex].ModNPC;
 
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+            if (NPC.life <= 0)
+            {
+                NPC.life = 1;
+            }
+        }
         private void AI_Despawn()
         {
             Timer++;

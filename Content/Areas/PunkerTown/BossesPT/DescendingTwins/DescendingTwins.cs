@@ -304,8 +304,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             if (Timer == 1)
             {
                 NPC.TargetClosest();
-                CommandSpazz(DescendingTwin.TwinAIState.Death);
-                CommandRetina(DescendingTwin.TwinAIState.Death);
             }
 
             float deathTime = 300f;
