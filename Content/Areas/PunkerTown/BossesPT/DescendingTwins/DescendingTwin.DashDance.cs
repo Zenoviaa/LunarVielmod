@@ -25,7 +25,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Timer++;
             if (Timer == 1)
             {
-                NPC.TargetClosest();
+                SetTargetToCommanderTarget();
                 _simpleDashNormal = TargetNormal;
                 AttackNumber++;
             }
@@ -189,7 +189,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Timer++;
             if (Timer == 1)
             {
-                NPC.TargetClosest();
+                SetTargetToCommanderTarget();
                 SoundStyle circlePrepareSound = AssetRegistry.Sounds.SteamPunking.DescendingCircle;
                 circlePrepareSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(circlePrepareSound, NPC.position);

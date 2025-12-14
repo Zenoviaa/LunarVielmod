@@ -26,8 +26,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Timer++;
             if (Timer == 1)
             {
-                NPC.TargetClosest();
-
+                SetTargetToCommanderTarget();
             }
 
             float windupTime = 30f;
@@ -50,7 +49,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Timer++;
             if (Timer == 1)
             {
-                NPC.TargetClosest();
+                SetTargetToCommanderTarget();
             }
 
             _afterImageAlpha = 1f;

@@ -4,11 +4,6 @@ using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -21,9 +16,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void AI_PhaseShiftStart()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
-                NPC.TargetClosest();
+                SetTargetToCommanderTarget();
                 SoundStyle phaseShift = AssetRegistry.Sounds.SteamPunking.DescendingPhaseShift;
                 phaseShift.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(phaseShift, NPC.position);
@@ -57,7 +52,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             float targetAngle = targetNormal.ToRotation();
             NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
 
-            if(Timer % 4 == 0)
+            if (Timer % 4 == 0)
             {
                 Color twinColor = GetTwinColor();
                 Color outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
@@ -83,14 +78,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 }
             }
 
-            if(Timer % 8 == 0)
+            if (Timer % 8 == 0)
             {
                 Vector2 pos = NPC.Center + Main.rand.NextVector2Circular(64, 64);
                 var zapParticle = Particle.NewParticle<ZapParticle>(pos, Main.rand.NextVector2Circular(4, 4), newColor: Color.White);
                 zapParticle.innerColor = GetTwinColor();
                 zapParticle.outerColor = Color.Lerp(zapParticle.innerColor, Color.Black, 0.5f);
                 zapParticle.fadeToColor = Color.Lerp(zapParticle.outerColor, Color.Black, 0.5f);
-                
+
                 //Add zap particle
                 SoundStyle zapSound = SoundID.DD2_LightningAuraZap;
                 zapSound.PitchVariance = 0.3f;
@@ -114,14 +109,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void AI_PhaseShiftEnd()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
 
             }
             _phaseShift = true;
 
             NPC.velocity *= 0.9f;
-            if(Timer >= 30)
+            if (Timer >= 30)
             {
                 SwitchState(TwinAIState.Idle);
             }

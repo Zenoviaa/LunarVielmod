@@ -44,7 +44,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Timer++;
             if (Timer == 1)
             {
-                NPC.TargetClosest();
+                SetTargetToCommanderTarget();
                 _simpleDashNormal = NPC.velocity;
             }
 

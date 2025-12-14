@@ -321,13 +321,19 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 if (MultiplayerHelper.IsHost)
                 {
                     var source = NPC.GetSource_FromThis();
-                    int x = (int)NPC.Center.X;
-                    int y = (int)NPC.Center.Y;
-                    _retinaIndex = NPC.NewNPC(source, x, y, ModContent.NPCType<DescendingTwin>(), ai0: 0,
+                    int x1 = (int)NPC.Center.X;
+                    int y1 = (int)NPC.Center.Y;
+
+                    x1 -= 1000;
+                    y1 -= 1000;
+
+                    _retinaIndex = NPC.NewNPC(source, x1, y1, ModContent.NPCType<DescendingTwin>(), ai0: 0,
                         ai1: (int)DescendingTwin.TwinAIState.SpawnRetina,
                         ai2: NPC.whoAmI);
 
-                    _spazzIndex = NPC.NewNPC(source, x, y, ModContent.NPCType<DescendingTwin>(), ai0: 0,
+                    int x2 = x1 + 2500;
+                    int y2 = y1;
+                    _spazzIndex = NPC.NewNPC(source, x2, y2, ModContent.NPCType<DescendingTwin>(), ai0: 0,
                         ai1: (int)DescendingTwin.TwinAIState.SpawnSpazz,
                         ai2: NPC.whoAmI);
 

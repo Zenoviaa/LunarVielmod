@@ -31,7 +31,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Timer++;
             if (Timer == 1)
             {
-                NPC.TargetClosest();
+                SetTargetToCommanderTarget();
             }            /*
              * 
              * Both of them aim above you, shooting a type of fire (Descender Retina), shoots a red fire,
@@ -82,7 +82,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Timer++;
             if (Timer == 1)
             {
-                NPC.TargetClosest();
+                SetTargetToCommanderTarget();
                 _simpleDashNormal = NPC.velocity;
             }           
             
