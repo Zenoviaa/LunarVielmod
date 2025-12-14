@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
+using Stellamod.Core.TailSystem;
+using Stellamod.Core.VerletIntegration;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -21,7 +23,18 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private Color _outlineColor;
         private Color TargetOutlineColor;
 
-
+        private TailSimulation _tailSimulation;
+        private TailSimulation TailSimulation
+        {
+            get
+            {
+                if(_tailSimulation == null)
+                {
+                    _tailSimulation = new TailSimulation(32, 384);
+                }
+                return _tailSimulation;
+            }
+        }
         private Vector2[] _tendrilPoints;
         private Vector2[] TendrilPoints
         {
@@ -29,24 +42,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             {
                 if (_tendrilPoints == null)
                 {
-                    _tendrilPoints = new Vector2[64];
+                    _tendrilPoints = new Vector2[TailSimulation.numPoints];
                 }
 
-                float numPoints = _tendrilPoints.Length;
-                Vector2 start = NPC.Center;
-                Vector2 normalVelocity = -NPC.rotation.ToRotationVector2();
-                Vector2 velocity = normalVelocity * 24;
-                Vector2 prev = start;
-
-                for (int i = 0; i < _tendrilPoints.Length; i++)
-                {
-                    Vector2 next = prev + velocity;
-                    Vector2 gravity = Vector2.UnitY * 7 * i * ExtraMath.Osc(0.4f, 0.55f);
-                    next += gravity;
-
-                    _tendrilPoints[i] = next;
-                    prev = next;
-                }
+                TailSimulation.FillArr(_tendrilPoints);
                 return _tendrilPoints;
             }
         }
@@ -166,14 +165,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private Color GetTendrilColorFunction(float completionRatio)
         {
-            Color fadeColor = Color.White;
+            Color fadeColor = GetTwinColor();
             Color flameColor = Color.Lerp(Color.Gray, Color.Lerp(Color.Blue, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 8, offset: NPC.whoAmI)), completionRatio) * EasingFunction.QuadraticBump(completionRatio);
             return flameColor * 3 * EasingFunction.QuadraticBump(completionRatio);
         }
 
         private float GetTendrilWidthFunction(float completionRatio)
         {
-            float width = MathHelper.SmoothStep(48, 0, completionRatio) * _scale.X;
+            float width = MathHelper.SmoothStep(96, 0, completionRatio) * _scale.X;
             return width;
         }
 
@@ -183,7 +182,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             shader.PrimaryTexture = TrailRegistry.WhispyTrail;
             shader.PrimaryTexture2 = TrailRegistry.StarTrail;
             shader.InnerColor = Color.Gray;
-            shader.OuterColor = Color.Lerp(Color.Blue, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 4, offset: NPC.whoAmI));
+            shader.OuterColor = Color.Lerp(GetTwinColor(), Color.Lerp(GetTwinColor(), Color.Black, 0.5f), ExtraMath.Osc(0f, 1f, speed: 2, offset: NPC.whoAmI));
             shader.Distortion = 0.2f;
             shader.Time = Main.GlobalTimeWrappedHourly * 10;
             TrailDrawer.Draw(Main.spriteBatch, TendrilPoints, GetTendrilColorFunction, GetTendrilWidthFunction, shader);

@@ -325,6 +325,13 @@ namespace Stellamod.Helpers
             t = Clamp(t);
             const float factor = 4;
             return t * (factor - t * factor);
+        }; 
+        
+        public static readonly Easer QuadraticBumpP05 = delegate (float t)
+        {
+            t = Clamp(t);
+            const float factor = 4;
+            return MathF.Pow(t * (factor - t * factor), 0.5f);
         };
     }
 }

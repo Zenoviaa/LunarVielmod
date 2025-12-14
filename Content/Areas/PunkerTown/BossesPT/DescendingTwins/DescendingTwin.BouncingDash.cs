@@ -82,7 +82,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             TargetOutlineColor = Color.Yellow;
             //Receive the next command state.
             //This should be automatically netcoded btw
-            if (NextCommandState == TwinAIState.BouncingDashEnd)
+            if (NextCommandState == TwinAIState.BouncingDashEnd || NextCommandState == TwinAIState.PhaseShiftStart)
             {
                 SwitchState(NextCommandState);
                 NextCommandState = TwinAIState.Idle;

@@ -109,7 +109,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             float dashInterp = EasingFunction.InOutSine(AttackNumber / 9f);
             float maxSpeed = MathHelper.Lerp(100, 150f, dashInterp);
-            if(Timer < 20)
+
+            float speedUp = EasingFunction.InOutSine(AttackNumber / 18f);
+            float lowerBound = MathHelper.Lerp(20f, 10f, speedUp);
+            if(Timer < lowerBound)
             {
                 if(NPC.velocity.Length() > 2)
                     NPC.velocity *= MathHelper.Lerp(0.5f, 0.75f, dashInterp);
@@ -137,9 +140,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 zoom.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(zoom, NPC.position);
             }
-            float distanceLerp = EasingFunction.QuadraticBump(_traveledDistance / 2000f);
+
+            float distanceFactor = _traveledDistance / 2000f;
+            float distanceLerp = EasingFunction.QuadraticBump(distanceFactor);
             _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, distanceLerp);
-            _afterImageAlpha = MathHelper.Lerp(0f, 1f, distanceLerp);
+            _afterImageAlpha = MathHelper.Lerp(0.5f, 1f, distanceLerp); 
 
             //Set the contact damage to be enabled, turn on the cool trails
             _contactDamage = true;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core;
+using Stellamod.Core.VerletIntegration;
 using Stellamod.Helpers;
 using System;
 using System.IO;
@@ -134,7 +135,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             NPC.height = 64;
             NPC.damage = 100;
             NPC.defense = 19;
-            NPC.lifeMax = 18000;
+            NPC.lifeMax = 23000;
 
             NPC.value = Item.buyPrice(gold: 5);
             NPC.knockBackResist = 0f;
@@ -164,6 +165,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             base.AI();
          
+           
             if (!_showNamePlate)
             {
                 ShowNamePlate();
@@ -366,6 +368,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 {
                     SwitchState(nextState);
                 }
+                SwitchState(TwinAttackState.SpeedyDash);
             }
         }
 

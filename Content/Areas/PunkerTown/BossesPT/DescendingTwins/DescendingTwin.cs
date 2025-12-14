@@ -166,7 +166,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Main.npcFrameCount[NPC.type] = 1;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
-            NPCID.Sets.TrailCacheLength[NPC.type] = 16;
+            NPCID.Sets.TrailCacheLength[NPC.type] = 32;
             NPCID.Sets.TrailingMode[Type] = 3;
         }
 
@@ -177,7 +177,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             NPC.height = 64;
             NPC.damage = 100;
             NPC.defense = 20;
-            NPC.lifeMax = 18000;
+            NPC.lifeMax = 23000;
             NPC.scale = 1f;
             NPC.aiStyle = -1;
 
@@ -252,9 +252,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
         }
 
+        private float _time;
         public override void AI()
         {
             base.AI();
+
+            TailSimulation.rootPosition = NPC.Center;
+            TailSimulation.initialDirection = NPC.rotation.ToRotationVector2();
+            TailSimulation.baseFrequency = 0.5f;
+            TailSimulation.baseAmplitude = 32;
+            TailSimulation.gravity = NPC.velocity * 4 + Vector2.UnitY * 32;
+            TailSimulation.Update();
             ReceiveTeleport();
             //If we don't have a valid target automatically retarget.
             if (!NPC.HasValidTarget)
