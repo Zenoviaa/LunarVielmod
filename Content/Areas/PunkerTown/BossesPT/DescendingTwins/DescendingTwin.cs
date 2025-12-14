@@ -93,6 +93,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             SuperCrashCrash,
             SuperCrashEnd,
 
+            SpiralLaserStart,
+            SpiralLaserWindup,
+            SpiralLaserLoop,
+            SpiralLaserEnd,
             Death
         }
 
@@ -421,6 +425,19 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     break;
                 case TwinAIState.SuperCrashEnd:
                     AI_SuperCrashEnd();
+                    break;
+
+                case TwinAIState.SpiralLaserStart:
+                    AI_SpiralLaserStart();
+                    break;
+                case TwinAIState.SpiralLaserWindup:
+                    AI_SpiralLaserWindup();
+                    break;
+                case TwinAIState.SpiralLaserLoop:
+                    AI_SpiralLaserLoop();
+                    break;
+                case TwinAIState.SpiralLaserEnd:
+                    AI_SpiralLaserEnd();
                     break;
             }
             Lighting.AddLight(NPC.Center, Variant == TwinVariant.Spazz ? TorchID.Cursed : TorchID.Red);

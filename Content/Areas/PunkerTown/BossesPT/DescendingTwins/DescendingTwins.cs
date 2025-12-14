@@ -28,6 +28,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             SpeedyDash,
             ElectricBall,
             SuperCrash,
+            SpiralLaser,
             Death,
         }
 
@@ -52,7 +53,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     new Tuple<TwinAttackState, float>(TwinAttackState.HighSpeedCrash, 1.0f),
                     new Tuple<TwinAttackState, float>(TwinAttackState.NodeLay, 0.5f),
                     new Tuple<TwinAttackState, float>(TwinAttackState.FlameTornado, 0.1f),
-                    new Tuple<TwinAttackState, float>(TwinAttackState.SpeedyDash, 1.0f));
+                    new Tuple<TwinAttackState, float>(TwinAttackState.SpeedyDash, 1.0f),
+                    new Tuple<TwinAttackState, float>(TwinAttackState.ElectricBall, 1.0f),
+                    new Tuple<TwinAttackState, float>(TwinAttackState.SuperCrash, 1.0f),
+                    new Tuple<TwinAttackState, float>(TwinAttackState.SpiralLaser, 1.0f));
                 return _patternManager;
             }
         }
@@ -62,6 +66,24 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             return Spazz.Center;
         }
 
+        private bool IsBannedAttack(TwinAttackState state)
+        {
+
+            switch (state)
+            {
+                default:
+                    return false;
+                case TwinAttackState.SpeedyDash:
+                case TwinAttackState.ElectricBall:
+                case TwinAttackState.SuperCrash:
+                case TwinAttackState.SpiralLaser:
+                    if (_phase2)
+                    {
+                        return false;
+                    }
+                    return true;
+            }
+        }
         private bool IsAwaitingCommand(NPC npc)
         {
             DescendingTwin.TwinAIState state = (DescendingTwin.TwinAIState)npc.ai[1];
@@ -210,6 +232,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAttackState.SuperCrash:
                     AI_SuperCrash();
                     break;
+                case TwinAttackState.SpiralLaser:
+                    AI_SpiralLaser();
+                    break;
                 case TwinAttackState.Death:
                     AI_Death();
                     break;
@@ -315,8 +340,19 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             if (MultiplayerHelper.IsHost)
             {
-                SwitchState(PatternManager.NextPattern());
-                SwitchState(TwinAttackState.HighSpeedCrash);
+                var nextState = PatternManager.NextPattern();
+                //skip phase 2 attacks until phase 2
+                if (IsBannedAttack(nextState))
+                {
+                    ChooseAttack();
+                }
+                else
+                {
+                    SwitchState(nextState);
+
+                }
+  
+                SwitchState(TwinAttackState.SpiralLaser);
             }
         }
 
@@ -562,6 +598,24 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 NPC.TargetClosest();
                 CommandSpazz(DescendingTwin.TwinAIState.SuperCrashStart);
                 CommandRetina(DescendingTwin.TwinAIState.SuperCrashStart);
+            }
+
+            if (Timer >= 60)
+            {
+                if (SpazzAwaitingCommand && RetinaAwaitingCommand)
+                {
+                    SwitchState(TwinAttackState.Idle);
+                }
+            }
+        }
+        private void AI_SpiralLaser()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                CommandSpazz(DescendingTwin.TwinAIState.SpiralLaserStart);
+                CommandRetina(DescendingTwin.TwinAIState.SpiralLaserStart);
             }
 
             if (Timer >= 60)
