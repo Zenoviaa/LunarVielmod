@@ -27,7 +27,7 @@ namespace Stellamod.Core.XixianFlaskSystem
         public override void PostUpdateEquips()
         {
             base.PostUpdateEquips();
-            if (LunarVeilKeybinds.FlaskKeybind.JustPressed)
+            if (Main.myPlayer == Player.whoAmI && LunarVeilKeybinds.FlaskKeybind.JustPressed)
             {
                 if (CanUseFlask())
                 {

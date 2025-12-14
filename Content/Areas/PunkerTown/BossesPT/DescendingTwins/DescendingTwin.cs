@@ -166,7 +166,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Main.npcFrameCount[NPC.type] = 1;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
-            NPCID.Sets.TrailCacheLength[NPC.type] = 32;
+            NPCID.Sets.TrailCacheLength[NPC.type] = 16;
             NPCID.Sets.TrailingMode[Type] = 3;
         }
 
@@ -210,22 +210,30 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
+      
             writer.WriteVector2(_simpleDashNormal);
+            writer.WriteVector2(_startVelocity);
             writer.WriteVector2(_highSpeedTargetPosition);
             writer.WriteVector2(_teleportPosition);
-            writer.Write((float)Variant);
+            writer.Write((int)Variant);
             writer.Write(_parentIndex);
             writer.Write(_phaseShift);
+            writer.Write(_startRotation);
+            
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
+            
             _simpleDashNormal = reader.ReadVector2();
+            _startVelocity = reader.ReadVector2();
             _highSpeedTargetPosition = reader.ReadVector2();
             _teleportPosition = reader.ReadVector2();
-            Variant = (TwinVariant)reader.ReadSingle();
+            Variant = (TwinVariant)reader.ReadInt32();
             _parentIndex = reader.ReadInt32();
             _phaseShift = reader.ReadBoolean();
+            _startRotation = reader.ReadSingle();
+   
         }
 
         private void SwitchState(TwinAIState state)
@@ -266,17 +274,24 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             TailSimulation.Update();
         }
 
-        private void UpdateFadingTrail()
+        private bool NeedsToSwitchToDeathState()
         {
-
+            return NPC.life <= 1 && State != TwinAIState.Death;
         }
 
+        private bool NeedsToSwitchToPhaseShiftState()
+        {
+            if (_phaseShift)
+                return false;
+            if (State == TwinAIState.PhaseShiftStart || State == TwinAIState.PhaseShiftEnd)
+                return false;
+            return NextCommandState == TwinAIState.PhaseShiftStart;
+        }
         public override void AI()
         {
             base.AI();
          
             UpdateTailSimulation();
-            UpdateFadingTrail();
             ReceiveTeleport();
             //If we don't have a valid target automatically retarget.
             if (!NPC.HasValidTarget)
@@ -284,8 +299,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 NPC.TargetClosest();
             }
 
-            if (NPC.life <= 1 && State != TwinAIState.Death)
+            if (NeedsToSwitchToDeathState())
                 SwitchState(TwinAIState.Death);
+            if (NeedsToSwitchToPhaseShiftState())
+            {
+                SwitchState(TwinAIState.PhaseShiftStart);
+                NextCommandState = TwinAIState.Idle;
+            }
 
             if (_phaseShift)
             {
@@ -640,12 +660,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private void IdleMovement()
         {
-
+            if(Timer == 1)
+            {
+                NPC.rotation = MathHelper.WrapAngle(NPC.rotation);
+                _startRotation = NPC.rotation;
+            }
             //So we should slowly move towards the player if they're far, if not we'll just hover in place.
             //Step 1. Look towards the player, we can do this by calculating a target normal, calculating an angle and then lerping to it
             Vector2 targetNormal = TargetNormal;
             float targetAngle = targetNormal.ToRotation();
-            NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
+            float angleRatio = EasingFunction.InOutSine(Timer / 15f);
+            NPC.rotation = Utils.AngleLerp(_startRotation, targetAngle, angleRatio);
 
             //Step 2. Check the distance between this current twin and the player
             //If the distance is too far we'll move closer to them, if not we just slow down/sit there

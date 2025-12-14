@@ -13,59 +13,109 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectiles
 {
-    public class BloodyHallucination : ModProjectile
+    public class BloodyHallucination : ModNPC
     {
         private float _alpha;
-        private ref float Timer => ref Projectile.ai[0];
-        private Player Owner => Main.player[Projectile.owner];
+        private float _outAlpha;
+        private ref float Timer => ref NPC.ai[0];
+        private Player Owner
+        {
+            get => Main.player[(int)NPC.ai[1]];
+        }
+
+        private Player Target => Main.player[NPC.target];
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            Main.projFrames[Type] = 5;
-            ProjectileID.Sets.TrailCacheLength[Type] = 15;
-            ProjectileID.Sets.TrailingMode[Type] = 2;
+            Main.npcFrameCount[Type] = 5;
+            NPCID.Sets.TrailCacheLength[Type] = 15;
+            NPCID.Sets.TrailingMode[Type] = 2;
         }
 
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 24;
-            Projectile.height = 24;
-            Projectile.hostile = true;
-            Projectile.timeLeft = 180;
-            Projectile.penetrate = -1;
-            Projectile.tileCollide = false;
+            NPC.width = 24;
+            NPC.height = 24;
+            NPC.damage = 30;
+            NPC.defense = 1;
+            NPC.lifeMax = 1000;
+            
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            NPC.dontTakeDamage = true;
+            NPC.dontCountMe = true;
+            NPC.dontTakeDamageFromHostiles = true;
         }
 
-        public override bool CanHitPlayer(Player target)
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            return target.whoAmI == Owner.whoAmI;
+            return base.CanHitPlayer(target, ref cooldownSlot) && target.whoAmI == Target.whoAmI;
         }
+        private int _frame;
+        public override void FindFrame(int frameHeight)
+        {
+            base.FindFrame(frameHeight);
 
+            //Animation Speed
+            NPC.frameCounter += 0.15f;
+            if (NPC.frameCounter >= 1f)
+            {
+                _frame++;
+                NPC.frameCounter = 0f;
+            }
+
+            if (_frame >= Main.npcFrameCount[Type])
+                _frame = 0;
+            NPC.frame.Y = frameHeight * _frame;
+        }
         public override void AI()
         {
             base.AI();
             Timer++;
-            if(Timer % 12 == 0)
+            if(Timer == 1)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Lava, Scale: Main.rand.NextFloat(0.2f, 0.5f));
+
+
             }
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                NPC.netUpdate = true;
 
-            Player target = Owner;
+            }
+            if (Timer % 12 == 0)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Lava, Scale: Main.rand.NextFloat(0.2f, 0.5f));
+            }
+            
+            Player target = Target;
 
+            float lifeTime = 180f;
+
+            float endTime = 10;
             float inAlpha = EasingFunction.InOutSine(Timer / 30f);
-            float outAlpha = ((float)Projectile.timeLeft) / 30f;
-            _alpha = inAlpha * outAlpha;
-            Vector2 targetVelocity = Projectile.velocity.Length() * (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-            Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.1f);
-            DrawHelper.AnimateTopToBottom(Projectile, 4);
+            if(Timer >= lifeTime - endTime)
+            {
+                _outAlpha *= 0.92f;
+            } else
+            {
+                _outAlpha = 1f;
+            }
+                _alpha = inAlpha * _outAlpha;
+            Vector2 targetVelocity = 3.5f * (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
+            if(Timer >= 180f)
+            {
+                NPC.active = false;
+            }
         }
         private void DrawAfterImage(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Rectangle frame = Projectile.Frame();
+            Rectangle frame = NPC.frame;
             Vector2 drawOrigin = frame.Size() / 2f;
-            float numAfterImages = Projectile.oldPos.Length;
+            float numAfterImages = NPC.oldPos.Length;
             for(int i = 0; i < numAfterImages; i++)
             {
                 float a = i;
@@ -74,32 +124,31 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
                 afterImageColor *= 0.15f;
                 afterImageColor *= _alpha;
 
-                Vector2 drawCenter = Projectile.oldPos[i] + Projectile.Size / 2f - screenPos;
-                SpriteEffects flip = Projectile.velocity.X < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-                spriteBatch.Draw(texture, drawCenter, frame, afterImageColor, Projectile.rotation, drawOrigin, Projectile.scale, flip, 0);
+                Vector2 drawCenter = NPC.oldPos[i] + NPC.Size / 2f - screenPos;
+                SpriteEffects flip = NPC.velocity.X < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+                spriteBatch.Draw(texture, drawCenter, frame, afterImageColor, NPC.rotation, drawOrigin, NPC.scale, flip, 0);
             }
         }
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Rectangle frame = Projectile.Frame();
+            Rectangle frame = NPC.frame;
             Vector2 drawOrigin = frame.Size() / 2f;
-            Vector2 drawCenter = Projectile.Center - screenPos;
+            Vector2 drawCenter = NPC.Center - screenPos;
             Color finalColor = Color.White.MultiplyRGB(lightColor);
             finalColor *= _alpha;
             finalColor *= 0.5f;
-            SpriteEffects flip = Projectile.velocity.X < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Draw(texture, drawCenter, frame, finalColor, Projectile.rotation, drawOrigin, Projectile.scale, flip, 0);
+            SpriteEffects flip = NPC.velocity.X < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            spriteBatch.Draw(texture, drawCenter, frame, finalColor, NPC.rotation, drawOrigin, NPC.scale, flip, 0);
         }
 
 
-        public override bool PreDraw(ref Color lightColor)
-        {
-            //This will make it so only the person who owns the projectile can see it
-            if(Main.LocalPlayer.whoAmI != Owner.whoAmI)
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {            //This will make it so only the person who owns the projectile can see it
+            if (Main.LocalPlayer.whoAmI != Target.whoAmI)
                 return false;
-            DrawAfterImage(Main.spriteBatch, Main.screenPosition, lightColor);
-            DrawSprite(Main.spriteBatch, Main.screenPosition, lightColor);
+            DrawAfterImage(Main.spriteBatch, Main.screenPosition, drawColor);
+            DrawSprite(Main.spriteBatch, Main.screenPosition, drawColor);
             return false;
         }
     }

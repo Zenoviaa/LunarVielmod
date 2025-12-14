@@ -329,6 +329,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private void HandleGores()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
             if (_draw.headless)
             {
                 GoreManager.orbitingRadius = 60f;
@@ -370,12 +373,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                         Vector2 spawnPoint = playerToTraumatize.Center;
                         spawnPoint += Main.rand.NextVector2CircularEdge(800, 800);
 
-                        Vector2 velocity = (playerToTraumatize.Center - spawnPoint);
-                        velocity = velocity.SafeNormalize(Vector2.Zero);
-                        velocity *= 3.8f;
-
-                        Projectile.NewProjectile(SourceFromThis, spawnPoint, velocity,
-                            ModContent.ProjectileType<BloodyHallucination>(), BloodHallucinationDamage, 1, playerToTraumatize.whoAmI);
+             
+                        NPC.NewNPC(NPC.GetSource_FromThis(), (int)spawnPoint.X, (int)spawnPoint.Y, 
+                            ModContent.NPCType<BloodyHallucination>());
                     }
                     _hallucinationSpawnTimer = 0;
                 }

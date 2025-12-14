@@ -94,6 +94,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             //There's no afterimage on this preparation state
             _afterImageAlpha = 0f;
+            _telegraphLineAlpha = 0f;
             _shiftAlpha = MathHelper.Lerp(0f, 1f, ease);
 
             //Alert the player that something is about to happen fr
@@ -114,7 +115,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             }
             _phaseShift = true;
-
+            _afterImageAlpha = 0f;
+            _telegraphLineAlpha = 0f;
             NPC.velocity *= 0.9f;
             if (Timer >= 30)
             {

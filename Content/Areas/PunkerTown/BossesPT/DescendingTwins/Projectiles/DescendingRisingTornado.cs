@@ -44,11 +44,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
         {
             base.SendExtraAI(writer);
             writer.WriteVector2(ReTargetPosition);
+            writer.WriteVector2(InitialVelocity);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             ReTargetPosition = reader.ReadVector2();
+            InitialVelocity = reader.ReadVector2();
         }
 
         public override void AI()
@@ -58,6 +60,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
             if(Timer == 1)
             {
                 InitialVelocity = Projectile.velocity;
+                Projectile.netUpdate = true;
             }
 
             if(Timer > 120f)

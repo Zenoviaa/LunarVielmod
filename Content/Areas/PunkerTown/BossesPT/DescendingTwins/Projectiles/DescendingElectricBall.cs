@@ -8,6 +8,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -134,6 +135,18 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
         {
             get => (AIState)Projectile.ai[1];
             set => Projectile.ai[1] = (float)value;
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(TargetVelocity);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            TargetVelocity = reader.ReadVector2();
         }
         public override void SetDefaults()
         {

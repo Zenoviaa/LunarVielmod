@@ -27,16 +27,32 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             if (Timer == 1)
             {
                 SetTargetToCommanderTarget();
+                _startVelocity = NPC.velocity;
+                _startRotation = NPC.rotation;
+                SoundStyle beepSound = AssetRegistry.Sounds.SteamPunking.DescendingBeep;
+                beepSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(beepSound, NPC.position);
             }
 
-            float windupTime = 30f;
+
+            //More wind up time for this attack since it kinda just happens
+            float windupTime = 100f;
             float completionRatio = Timer / windupTime;
+            float ease = EasingFunction.InOutSine(completionRatio);
 
             Vector2 anchorPoint = GetBounceDashAnchorPoint();
-            Vector2 velocityThere = (anchorPoint - NPC.Center).SafeNormalize(Vector2.Zero);
-            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityThere, 0.1f);
+
+            float offsetDistance = 300f;
+            Vector2 bounceOffset = -Vector2.UnitY * offsetDistance;
+            Vector2 startPoint = anchorPoint + bounceOffset;
+            Vector2 velocityThere = (startPoint - NPC.Center);
+            NPC.velocity = Vector2.Lerp(_startVelocity, velocityThere, ease);
+
+            float targetAngle = Vector2.UnitY.ToRotation();
+            NPC.rotation = Utils.AngleLerp(_startRotation, targetAngle, ease);
 
             _simpleDashNormal = (NPC.Center - anchorPoint).SafeNormalize(Vector2.Zero);
+            TargetOutlineColor = Color.Yellow;
             if (Timer >= windupTime)
             {
                 SwitchState(TwinAIState.BouncingDashIn);
@@ -102,6 +118,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     : AssetRegistry.Sounds.SteamPunking.DescendingDash2;
                 dashSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(dashSound, NPC.position);
+                _startRotation = NPC.rotation;
             }
 
             float inTime = 30f;
@@ -117,7 +134,19 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             Vector2 targetPosition = anchorPoint + bounceOffset;
             Vector2 targetVelocity = (targetPosition - NPC.Center);
             NPC.velocity = targetVelocity;
-            NPC.rotation = NPC.velocity.ToRotation();
+
+
+            if(AttackNumber == 0)
+            {
+                float targetAngle = NPC.velocity.ToRotation();
+                NPC.rotation = Utils.AngleLerp(_startRotation, targetAngle, EasingFunction.InOutSine(completionRatio));
+            }
+            else
+            {
+                float targetAngle = NPC.velocity.ToRotation();
+                NPC.rotation = targetAngle;
+
+            }
 
             _afterImageAlpha = 1f;
             _contactDamage = true;

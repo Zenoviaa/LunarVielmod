@@ -253,7 +253,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     float direction = NPC.velocity.X > 0 ? -1 : 1;
                     float range = 1200;
                     _teleportPosition = targetCenter + new Vector2(range * direction, -range * direction);
-                    _teleportPosition.X += Main.rand.NextFloat(-64, 64);
                     if(Variant == TwinVariant.Spazz)
                     {
                         _teleportPosition.X += Target.velocity.X * 80;

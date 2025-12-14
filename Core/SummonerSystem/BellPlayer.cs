@@ -60,7 +60,7 @@ namespace Stellamod.Core.SummonerSystem
         public override void PreUpdateBuffs()
         {
             base.PreUpdateBuffs();
-            if (LunarVeilKeybinds.BellKeybind.Current && Main.myPlayer == Player.whoAmI)
+            if (Main.myPlayer == Player.whoAmI  && LunarVeilKeybinds.BellKeybind.Current)
             {
                 Player.AddBuff(ModContent.BuffType<BellSummoning>(), 2);
             }
