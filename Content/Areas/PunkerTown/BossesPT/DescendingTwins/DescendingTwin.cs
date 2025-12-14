@@ -511,7 +511,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             if(Timer % 2 == 0)
             {
-                _deathRotationOffset = Main.rand.NextFloat(-2f, 2f);
+                _deathRotationOffset = Main.rand.NextFloat(-0.2f, 0.2f);
                 _deathPositionOffset = Main.rand.NextVector2Circular(2, 2);
             }
 
@@ -563,12 +563,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     steamParticle.outerColor = Color.Black;
                     steamParticle.fadeToColor = Color.Black;
                 }
-                int[] gores = AutoGoreLoader.FindGores("MechanicalEye");
-                foreach (int g in gores)
+                for(int i = 0; i < 4; i++)
                 {
-                    Gore.NewGore(NPC.GetSource_FromThis(),
-                        NPC.Center,
-                        Main.rand.NextVector2Circular(8, 8).RotatedByRandom(MathHelper.ToRadians(20)), g, 1f);
+                    int[] gores = AutoGoreLoader.FindGores("MechanicalEye");
+                    foreach (int g in gores)
+                    {
+                        Gore.NewGore(NPC.GetSource_FromThis(),
+                            NPC.Center,
+                            Main.rand.NextVector2Circular(8, 8).RotatedByRandom(MathHelper.ToRadians(20)), g, 1f);
+                    }
+
                 }
 
                 var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
