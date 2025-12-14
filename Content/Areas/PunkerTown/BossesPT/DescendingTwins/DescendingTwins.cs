@@ -202,6 +202,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     SwitchState(TwinAttackState.Despawn);
                 }
             }
+            NPC.Center = MyTarget.Center;
             switch (State)
             {
                 case TwinAttackState.SummonTwins:

@@ -287,6 +287,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 return false;
             return NextCommandState == TwinAIState.PhaseShiftStart;
         }
+        private bool NeedsToSwitchToDespawnState()
+        {
+            if (State == TwinAIState.Despawn)
+                return false;
+            return NextCommandState == TwinAIState.Despawn;
+        }
         public override void AI()
         {
             base.AI();
@@ -306,6 +312,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 SwitchState(TwinAIState.PhaseShiftStart);
                 NextCommandState = TwinAIState.Idle;
             }
+            if (NeedsToSwitchToDespawnState())
+            {
+                SwitchState(TwinAIState.Despawn);
+                NextCommandState = TwinAIState.Idle;
+            }
+
 
             if (_phaseShift)
             {
@@ -528,10 +540,18 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void AI_Despawn()
         {
             Timer++;
-            NPC.velocity.X *= 0.9f;
+            if(Timer < 10)
+            {
+                NPC.velocity *= 0.8f;
+                _startRotation = NPC.rotation;
+            }
+
+            float despawnTime = 100f;
+            float completionRatio = Timer / despawnTime;
+            float ease = EasingFunction.InOutSine(completionRatio);
             NPC.velocity.Y -= 0.2f;
-            NPC.rotation = Utils.AngleLerp(NPC.rotation, TargetNormal.ToRotation(), 0.1f);
-            if(Timer >= 100)
+            NPC.rotation = Utils.AngleLerp(_startRotation, -Vector2.UnitY.ToRotation(), ease);
+            if(Timer >= despawnTime)
             {
                 NPC.active = false;
             }

@@ -33,6 +33,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             {
                 SetTargetToCommanderTarget();
                 _highSpeedTargetPosition = Target.Center;
+                _simpleDashNormal = NPC.velocity;
             }            /*
              * 
              * Both of them aim above you, shooting a type of fire (Descender Retina), shoots a red fire,
