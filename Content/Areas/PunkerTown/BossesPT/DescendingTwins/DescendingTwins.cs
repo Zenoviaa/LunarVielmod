@@ -29,6 +29,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             ElectricBall,
             SuperCrash,
             SpiralLaser,
+            Despawn,
             Death,
         }
 
@@ -191,6 +192,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 SwitchState(TwinAttackState.PhaseShift);
             }
 
+            if (!NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget)
+                {
+                    SwitchState(TwinAttackState.Despawn);
+                }
+            }
             switch (State)
             {
                 case TwinAttackState.SummonTwins:
@@ -234,6 +243,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     break;
                 case TwinAttackState.SpiralLaser:
                     AI_SpiralLaser();
+                    break;
+                case TwinAttackState.Despawn:
+                    AI_Despawn();
                     break;
                 case TwinAttackState.Death:
                     AI_Death();
@@ -626,6 +638,25 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             if (Timer >= 60)
             {
+                if (SpazzAwaitingCommand && RetinaAwaitingCommand)
+                {
+                    SwitchState(TwinAttackState.Idle);
+                }
+            }
+        }
+        private void AI_Despawn()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                CommandSpazz(DescendingTwin.TwinAIState.Despawn);
+                CommandRetina(DescendingTwin.TwinAIState.Despawn);
+            }
+
+            if (Timer >= 60)
+            {
+                NPC.active = false;
                 if (SpazzAwaitingCommand && RetinaAwaitingCommand)
                 {
                     SwitchState(TwinAttackState.Idle);

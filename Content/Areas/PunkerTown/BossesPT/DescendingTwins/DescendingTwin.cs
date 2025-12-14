@@ -97,6 +97,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             SpiralLaserWindup,
             SpiralLaserLoop,
             SpiralLaserEnd,
+
+            Despawn,
             Death
         }
 
@@ -273,6 +275,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     AI_Death();
                     break;
 
+                case TwinAIState.Despawn:
+                    AI_Despawn();
+                    break;
 
                 case TwinAIState.SimpleDashStart:
                     AI_SimpleDashStart();
@@ -439,6 +444,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 case TwinAIState.SpiralLaserEnd:
                     AI_SpiralLaserEnd();
                     break;
+
             }
             Lighting.AddLight(NPC.Center, Variant == TwinVariant.Spazz ? TorchID.Cursed : TorchID.Red);
             UpdateDraw();
@@ -447,6 +453,18 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private Player Target => Main.player[NPC.target];
         private Vector2 TargetNormal => NPC.DirectionTo(Target.Center);
         private DescendingTwins Commander => (DescendingTwins)Main.npc[_parentIndex].ModNPC;
+
+        private void AI_Despawn()
+        {
+            Timer++;
+            NPC.velocity.X *= 0.9f;
+            NPC.velocity.Y -= 0.2f;
+            NPC.rotation = Utils.AngleLerp(NPC.rotation, TargetNormal.ToRotation(), 0.1f);
+            if(Timer >= 100)
+            {
+                NPC.active = false;
+            }
+        }
 
         private void AI_Death()
         {
