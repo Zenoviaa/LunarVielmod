@@ -40,7 +40,7 @@ namespace Stellamod.Core.ItemBrowser
             this.Items = items;
         }
         public Asset<Texture2D> SlotTextureAsset;
-
+        public string SearchFilter;
 
         public Item[] Items;
         public Item HoveringItem;
@@ -82,9 +82,20 @@ namespace Stellamod.Core.ItemBrowser
         
             //  Console.WriteLine(availableWidth);
             Point mousePoint = Main.MouseScreen.ToPoint();
+            string filter = string.Empty;
+            if (!string.IsNullOrEmpty(SearchFilter))
+                filter = SearchFilter.TrimStart().ToLower();
+            bool useFilter = !string.IsNullOrEmpty(filter);
             for (int i = 0; i < Items.Length; i++)
             {
                 Item item = Items[i];
+                if (useFilter)
+                {
+                    string itemLower = item.Name.ToLower();
+                    if (!itemLower.Contains(filter))
+                        continue;
+                }
+
                 if (left + outerDimensions.Width > availableWidth && left > 0)
                 {
                     top += maxRowHeight + listPadding;

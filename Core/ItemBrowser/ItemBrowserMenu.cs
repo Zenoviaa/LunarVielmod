@@ -90,22 +90,12 @@ namespace Stellamod.Core.ItemBrowser
             _grid.Clear();
             Item[] items = _lastCategory.items;
             _view = new ItemBrowserView(items);
+            _view.SearchFilter = _lastSearchFilter;
             _view.Width.Pixels = Width.Pixels;
             _view.Height.Pixels = Height.Pixels;
             _view.Activate();
             _grid.Add(_view);
-            /*
-            foreach (var item in items)
-            {
-                if (!string.IsNullOrEmpty(_lastSearchFilter))
-                {
-                    if (!item.ModItem.DisplayName.Value.ToLower().Contains(_lastSearchFilter.ToLower()))
-                        continue;
-                }
 
-                var slot = new ItemBrowserSlot(item);
-                _grid.Add(slot);
-            }*/
             _grid.Recalculate();
             base.Recalculate();
         }
