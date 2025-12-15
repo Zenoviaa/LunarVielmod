@@ -86,6 +86,8 @@ namespace Stellamod.Core.ItemBrowser
             if (!string.IsNullOrEmpty(SearchFilter))
                 filter = SearchFilter.TrimStart().ToLower();
             bool useFilter = !string.IsNullOrEmpty(filter);
+
+            //We're basically just reusing the grid code here lol
             for (int i = 0; i < Items.Length; i++)
             {
                 Item item = Items[i];
@@ -123,6 +125,7 @@ namespace Stellamod.Core.ItemBrowser
                     ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, item.stack.ToString(),
                         centerPos + new Vector2(0, 2) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
 
+                //Check if hovering for tooltip
                 Rectangle hoverRectangle = new Rectangle((int)tl.X, (int)tl.Y, 32, 32);
                 if (hoverRectangle.Contains(mousePoint))
                 {
@@ -134,6 +137,7 @@ namespace Stellamod.Core.ItemBrowser
             
             }
 
+            //Add a bit of extra padding so the items don't get clipped
             Height.Pixels = top + 32;
 
 
