@@ -62,6 +62,7 @@ namespace Stellamod.Core.ItemBrowser
         }
         private Category _lastCategory;
         private string _lastSearchFilter;
+        public bool modFilter;
         public void SetSearchFilter(string searchFilter)
         {
             //Set the text filter for items
@@ -104,6 +105,7 @@ namespace Stellamod.Core.ItemBrowser
         {
             base.Update(gameTime);
        
+            _view?.ModFilter = modFilter;   
             _panel.Height.Pixels = _view.Height.Pixels + 32;
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);

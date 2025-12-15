@@ -27,6 +27,7 @@ namespace Stellamod.Core.ItemBrowser
         private ItemBrowserMenu _inventoryMenu;
         private ItemBrowserTabMenu _tabMenu;
         private UIInputTextField _textBox;
+        private ItemBrowserModFilterButton _modFilterButton;
         private static readonly Asset<Texture2D> BackgroundSquareTexture;
         static ItemBrowserWindow()
         {
@@ -54,6 +55,7 @@ namespace Stellamod.Core.ItemBrowser
             _inventoryMenu = new ItemBrowserMenu(_scrollbar);
             _tabMenu = new ItemBrowserTabMenu(_inventoryMenu, _sortingScrollbar);
             _textBox = new UIInputTextField("Search...");
+            _modFilterButton = new ItemBrowserModFilterButton(_inventoryMenu);
         }
 
         public string SearchFilter => _textBox.Text;
@@ -106,6 +108,7 @@ namespace Stellamod.Core.ItemBrowser
             _textBox.VAlign = 0.1f;
             _textBox.Width.Pixels = 128;
             Append(_textBox);
+            Append(_modFilterButton);
             SetPos();
         }
 
@@ -144,6 +147,8 @@ namespace Stellamod.Core.ItemBrowser
         {
             base.Update(gameTime);
 
+            _modFilterButton.Left.Pixels = 64;
+            _modFilterButton.Top.Pixels = 128;
             //Constantly lock the UI in the position regardless of resolution changes
             _inventoryMenu.SetSearchFilter(SearchFilter);
             SetPos();

@@ -41,7 +41,7 @@ namespace Stellamod.Core.ItemBrowser
         }
         public Asset<Texture2D> SlotTextureAsset;
         public string SearchFilter;
-
+        public bool ModFilter;
         public Item[] Items;
         public Item HoveringItem;
         private void SpawnItemMaxStack(UIMouseEvent evt, UIElement listeningElement)
@@ -95,6 +95,14 @@ namespace Stellamod.Core.ItemBrowser
                 {
                     string itemLower = item.Name.ToLower();
                     if (!itemLower.Contains(filter))
+                        continue;
+                }
+
+                if (ModFilter)
+                {
+                    if (item.ModItem == null)
+                        continue;
+                    if (item.ModItem.Mod != Stellamod.Instance)
                         continue;
                 }
 
