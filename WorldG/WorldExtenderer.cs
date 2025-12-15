@@ -15,7 +15,7 @@ namespace Stellamod.WorldG
 
         //We can set the world size to anything, 8400x2400 is large world
         public int NewMaxTilesX => 9800;
-        public int NewMaxTilesY => 3400;
+        public int NewMaxTilesY => 3600;
         //Original 8400x 2400y
         public override void Load()
         {

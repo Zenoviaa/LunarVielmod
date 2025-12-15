@@ -27,20 +27,16 @@ using Stellamod.Items.Special.MinerLogs;
 using Stellamod.Items.Tools;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Melee.Spears;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
-using Stellamod.NPCs;
-using Stellamod.Projectiles.Swords.Altride;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
 using Stellamod.Tiles.Illuria;
 using Stellamod.Tiles.Veil;
-using Stellamod.TilesNew.IceTiles;
 using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;
 using System;
@@ -118,7 +114,7 @@ namespace Stellamod.WorldG
             tasks.Insert(iceGen + 2, new PassLegacy("Ice Clumping", IceClump));
             //  tasks.Insert(iceGen + 3, new PassLegacy("Ice Housing 1", InGroundIceHouses));
             //tasks.Insert(iceGen + 4, new PassLegacy("Ice Housing 2", RuneBridges));
-    
+
             tasks.Insert(iceGen + 3, new PassLegacy("Ice Spikes", MakingIcyRandomness));
             tasks.Insert(iceGen + 4, new PassLegacy("World Gen Abysm", WorldGenAbysm));
             tasks.Insert(iceGen + 5, new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
@@ -208,9 +204,9 @@ namespace Stellamod.WorldG
                 //make sure to pad with the radius so it doesn't go out of bounds
                 int randTileX = genRand.Next(radius, Main.maxTilesX - radius);
                 int randTileY = genRand.Next(radius, Main.maxTilesY - radius);
-                Point point = new Point(randTileX, randTileY); 
-                WorldUtils.Gen(point, 
-                    new Shapes.Circle(radius / 2, radius / 2), 
+                Point point = new Point(randTileX, randTileY);
+                WorldUtils.Gen(point,
+                    new Shapes.Circle(radius / 2, radius / 2),
                     new Actions.SetLiquid(type: LiquidID.Water));
             }
         }
@@ -715,7 +711,7 @@ namespace Stellamod.WorldG
             };
             if (Structurizer.SafePlaceAndProtectStructure(tilePoint, structureFile, structures, tileBlend, out int[] chestIndices))
             {
-              
+
 
                 Rectangle structureRect = Structurizer.ReadRectangle(structureFile);
                 PlaceRibbonsandBeams(structureRect, tilePoint);
@@ -774,7 +770,7 @@ namespace Stellamod.WorldG
             int ribbonPlacementRange = 50;
             int numColosseumRibbons = 18;
             int ribbons = 0;
-            for(int attempts = 0; attempts < 100000; attempts++)
+            for (int attempts = 0; attempts < 100000; attempts++)
             {
                 //Just get some random points tbh, I forgot how big the colosseum is
                 int randX = desertCenterX + genRand.Next(-ribbonPlacementRange, ribbonPlacementRange);
@@ -787,7 +783,7 @@ namespace Stellamod.WorldG
                     int dir = Math.Sign(randX - desertCenterX);
                     PlaceRibbon(placementPoint, dir, genRand.Next(8, 15));
                     ribbons++;
-                    if(ribbons >= numColosseumRibbons)
+                    if (ribbons >= numColosseumRibbons)
                     {
                         break;
                     }
@@ -2718,17 +2714,17 @@ namespace Stellamod.WorldG
             for (int x = structureRectangle.Location.X;
               x < structureRectangle.Location.X + structureRectangle.Width; x++)
             {
-                for(int y = structureRectangle.Location.Y; y < structureRectangle.Location.Y + structureRectangle.Height; y++)
+                for (int y = structureRectangle.Location.Y; y < structureRectangle.Location.Y + structureRectangle.Height; y++)
                 {
                     Tile tile = Main.tile[x, y];
-                    if(tile.HasTile && tile.TileType == onTileType)
+                    if (tile.HasTile && tile.TileType == onTileType)
                     {
                         tilesToFallFrom.Add(new Point(x, y));
                     }
                 }
             }
-                
-            foreach(var point in tilesToFallFrom)
+
+            foreach (var point in tilesToFallFrom)
             {
                 int beamX = point.X;
                 int beamY = point.Y;
@@ -2859,10 +2855,10 @@ namespace Stellamod.WorldG
                 //Place the Jiitas Bridge
                 string jiitasPath = "Structures/TrainingbridgeJiitas";
                 var jiitasRectangle = Structurizer.ReadRectangle(jiitasPath);
-                
-                
+
+
                 Point jiitasSpawnPoint = trainingGroundsSpawnPoint - new Point(jiitasRectangle.Width, 0);
-                
+
                 //Offset it down by 10 tiles so it's level with the training ground
                 jiitasSpawnPoint.Y += 10;
 
@@ -5206,27 +5202,17 @@ namespace Stellamod.WorldG
             StructureMap circleStructures = new StructureMap();
             for (int k = 0; k < 5; k++)
             {
-                bool placed = false;
                 int attempts = 0;
-                while (!placed && attempts++ < 10000000)
+                while (attempts++ < 10000000)
                 {
                     // Select a place in the first 6th of the world, avoiding the oceans
-                    int smx = WorldGen.genRand.Next(1000, (Main.maxTilesX - 1000)); // from 50 since there's a unaccessible area at the world's borders
-                                                                                    // 50% of choosing the last 6th of the world
-                                                                                    // Choose which side of the world to be on randomly
-                    ///if (WorldGen.genRand.NextBool())
-                    ///{
-                    ///	towerX = Main.maxTilesX - towerX;
-                    ///}
-
+                    int smx = WorldGen.genRand.Next(GenVars.snowOriginLeft, GenVars.snowOriginRight);
                     //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-                    int smy = (int)GenVars.worldSurfaceHigh - 500;
+                    int smy = (int)GenVars.worldSurfaceHigh - 700;
 
                     // We go down until we hit a solid tile or go under the world's surface
                     Tile tile = Main.tile[smx, smy];
-
-                    while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer
-                        || (!(tile.TileType == TileID.SnowBlock) && !(tile.TileType == ModContent.TileType<RunicIceCathedralTile>()) && WorldGen.SolidTile(smx, smy)))
+                    while (!WorldGen.SolidTile(smx, smy))
                     {
                         smy++;
                         tile = Main.tile[smx, smy];
@@ -5238,275 +5224,188 @@ namespace Stellamod.WorldG
                         continue;
                     }
 
-                    // If the type of the tile we are placing the tower on doesn't match what we want, try again
+                    Vector2 WallPosition = new Vector2(smx + 8, smy + 11);
 
-                    if (Main.tile[smx, smy].TileType == TileID.SnowBlock || (Main.tile[smx, smy].TileType == ModContent.TileType<RunicIceCathedralTile>()))
+                    Rectangle areaToPlaceIn = new Rectangle(
+                        (int)WallPosition.X - 12,
+                        (int)WallPosition.Y - 12,
+                        24, 24);
+                    bool success = circleStructures.CanPlace(areaToPlaceIn);
+                    if (!success)
+                        continue;
+
+                    //Place snow underneath of the house structure
+                    WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(12), Actions.Chain(new GenAction[]
                     {
-                        Vector2 WallPosition = new Vector2(smx + 8, smy + 11);
+                        new Actions.SetTile(TileID.SnowBlock)
+                    }));
 
-                        if (!WorldGen.SolidTile(smx, smy))
-                            continue;
+                    circleStructures.AddProtectedStructure(areaToPlaceIn);
 
-                        if (Main.tile[smx, smy].TileType == TileID.SnowBlock || (Main.tile[smx, smy].TileType == ModContent.TileType<RunicIceCathedralTile>()))
-                        {
+                    switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            //Start Left
+                            for (int da = 0; da < 1; da++)
+                            {
+                                Point Loc = new Point(smx, smy + 5);
+                                string path = "Struct/IceStruct/HouseSurfaceIce1";//
 
-                            WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(12), Actions.Chain(new GenAction[]
-                               {
+                                Structurizer.ProtectStructure(Loc, path);
+                                int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
 
-                            new Actions.SetTile(TileID.SnowBlock)
-                                   //new Actions.Smooth(true)
-                               }));
-
-                            Rectangle areaToPlaceIn = new Rectangle(
-                                (int)WallPosition.X - 12,
-                                (int)WallPosition.Y - 12,
-                                24, 24);
-                            bool success = circleStructures.CanPlace(areaToPlaceIn);
-                            if (!success)
-                                continue;
-                            circleStructures.AddProtectedStructure(areaToPlaceIn);
-                        }
-
-
-
-                        switch (Main.rand.Next(2))
-                        {
-                            case 0:
-                                //Start Left
-                                for (int da = 0; da < 1; da++)
+                                foreach (int chestIndex in ChestIndexs)
                                 {
-                                    Point Loc = new Point(smx, smy + 5);
-                                    string path = "Struct/IceStruct/HouseSurfaceIce1";//
+                                    var chest = Main.chest[chestIndex];
+                                    // etc
 
-                                    Structurizer.ProtectStructure(Loc, path);
-                                    int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
+                                    // itemsToAdd will hold type and stack data for each item we want to add to the chest
+                                    var itemsToAdd = new List<(int type, int stack)>();
 
-                                    foreach (int chestIndex in ChestIndexs)
+                                    // Using a switch statement and a random choice to add sets of items.
+                                    switch (Main.rand.Next(4))
                                     {
-                                        var chest = Main.chest[chestIndex];
-                                        // etc
+                                        case 0:
 
-                                        // itemsToAdd will hold type and stack data for each item we want to add to the chest
-                                        var itemsToAdd = new List<(int type, int stack)>();
-
-                                        // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-
-                                        /*
-                                        int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-                                            Tuple.Create(ModContent.ItemType<RainforestGrassBlock>(), 0.5)
+                                            itemsToAdd.Add((ItemID.ClimbingClaws, Main.rand.Next(1, 1)));
+                                            itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 2)));
+                                            itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
+                                            itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
+                                            itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
+                                            break;
 
 
-                                        // Choose no item with a high weight of 7.
-                                        );
-                                        if (specialItem != ItemID.None)
-                                        {
-                                            itemsToAdd.Add((specialItem, 1));
-                                        }
-                                        */
-                                        // Using a switch statement and a random choice to add sets of items.
-                                        switch (Main.rand.Next(4))
-                                        {
-                                            case 0:
-
-                                                itemsToAdd.Add((ItemID.ClimbingClaws, Main.rand.Next(1, 1)));
-                                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 2)));
-                                                itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
-                                                itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
-                                                itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
-                                                break;
+                                        case 1:
+                                            itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 2)));
+                                            itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
+                                            itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
+                                            itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
+                                            break;
 
 
-                                            case 1:
-                                                itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 2)));
-                                                itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
-                                                itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
-                                                itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
-                                                break;
+                                        case 2:
+                                            //   itemsToAdd.Add((ModContent.ItemType<VeroshotBow>(), Main.rand.Next(1, 1)));
+                                            //     itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
+                                            //  itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
 
 
-                                            case 2:
-                                                //   itemsToAdd.Add((ModContent.ItemType<VeroshotBow>(), Main.rand.Next(1, 1)));
-                                                //     itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
-                                                //  itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
+                                            itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 2)));
+                                            itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
+                                            itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
+                                            itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
+                                            break;
 
 
-                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 2)));
-                                                itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
-                                                itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
-                                                itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
-                                                break;
+                                        case 3:
 
-
-                                            case 3:
-
-                                                itemsToAdd.Add((ItemID.ShoeSpikes, Main.rand.Next(1, 1)));
-                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 2)));
-                                                itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
-                                                itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
-                                                itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
-                                                break;
+                                            itemsToAdd.Add((ItemID.ShoeSpikes, Main.rand.Next(1, 1)));
+                                            itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 2)));
+                                            itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
+                                            itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
+                                            itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
+                                            break;
 
 
 
 
 
-                                        }
-
-                                        // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-                                        int chestItemIndex = 0;
-                                        foreach (var itemToAdd in itemsToAdd)
-                                        {
-                                            Item item = new Item();
-                                            item.SetDefaults(itemToAdd.type);
-                                            item.stack = itemToAdd.stack;
-                                            chest.item[chestItemIndex] = item;
-                                            chestItemIndex++;
-                                            if (chestItemIndex >= 40)
-                                                break; // Make sure not to exceed the capacity of the chest
-                                        }
                                     }
 
-
-
-
-
-
-
-
-
-
-
-
-                                    // GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
-
-
-
-                                }
-                                break;
-                            case 1:
-                                for (int da = 0; da < 1; da++)
-                                {
-                                    Point Loc = new Point(smx, smy + 5);
-                                    string path = "Struct/IceStruct/HouseSurfaceIce2";//
-
-                                    Structurizer.ProtectStructure(Loc, path);
-                                    int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
-
-                                    foreach (int chestIndex in ChestIndexs)
+                                    // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+                                    int chestItemIndex = 0;
+                                    foreach (var itemToAdd in itemsToAdd)
                                     {
-                                        var chest = Main.chest[chestIndex];
-                                        // etc
+                                        Item item = new Item();
+                                        item.SetDefaults(itemToAdd.type);
+                                        item.stack = itemToAdd.stack;
+                                        chest.item[chestItemIndex] = item;
+                                        chestItemIndex++;
+                                        if (chestItemIndex >= 40)
+                                            break; // Make sure not to exceed the capacity of the chest
+                                    }
+                                }
+                            }
+                            break;
+                        case 1:
+                            for (int da = 0; da < 1; da++)
+                            {
+                                Point Loc = new Point(smx, smy + 5);
+                                string path = "Struct/IceStruct/HouseSurfaceIce2";//
 
-                                        // itemsToAdd will hold type and stack data for each item we want to add to the chest
-                                        var itemsToAdd = new List<(int type, int stack)>();
+                                Structurizer.ProtectStructure(Loc, path);
+                                int[] ChestIndexs = Structurizer.ReadStruct(Loc, path);
 
-                                        // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-                                        /*
-                                        int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+                                foreach (int chestIndex in ChestIndexs)
+                                {
+                                    var chest = Main.chest[chestIndex];
+                                    var itemsToAdd = new List<(int type, int stack)>();
+                                    // Using a switch statement and a random choice to add sets of items.
+                                    switch (Main.rand.Next(4))
+                                    {
+                                        case 0:
 
-                                            Tuple.Create(ModContent.ItemType<RainforestGrassBlock>(), 0.5)
-
-
-                                        // Choose no item with a high weight of 7.
-                                        );
-                                        if (specialItem != ItemID.None)
-                                        {
-                                            itemsToAdd.Add((specialItem, 1));
-                                        }
-
-                                        */
-                                        // Using a switch statement and a random choice to add sets of items.
-                                        switch (Main.rand.Next(4))
-                                        {
-                                            case 0:
-
-                                                itemsToAdd.Add((ItemID.ClimbingClaws, Main.rand.Next(1, 1)));
-                                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 2)));
-                                                itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
-                                                itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
-                                                itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
-                                                break;
-
-
-                                            case 1:
-                                                itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 2)));
-                                                itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
-                                                itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
-                                                itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
-                                                break;
+                                            itemsToAdd.Add((ItemID.ClimbingClaws, Main.rand.Next(1, 1)));
+                                            itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 2)));
+                                            itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
+                                            itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
+                                            itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
+                                            break;
 
 
-                                            case 2:
-                                                //   itemsToAdd.Add((ModContent.ItemType<VeroshotBow>(), Main.rand.Next(1, 1)));
-                                                //     itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
-                                                //  itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
+                                        case 1:
+                                            itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 2)));
+                                            itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
+                                            itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
+                                            itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
+                                            break;
 
 
-                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 2)));
-                                                itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
-                                                itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
-                                                itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
-                                                break;
+                                        case 2:
+                                            //   itemsToAdd.Add((ModContent.ItemType<VeroshotBow>(), Main.rand.Next(1, 1)));
+                                            //     itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
+                                            //  itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
 
 
-                                            case 3:
-
-                                                itemsToAdd.Add((ItemID.ShoeSpikes, Main.rand.Next(1, 1)));
-                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 2)));
-                                                itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
-                                                itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
-                                                itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
-                                                break;
+                                            itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 2)));
+                                            itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
+                                            itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
+                                            itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
+                                            break;
 
 
+                                        case 3:
+
+                                            itemsToAdd.Add((ItemID.ShoeSpikes, Main.rand.Next(1, 1)));
+                                            itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 2)));
+                                            itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 10)));
+                                            itemsToAdd.Add((ItemID.Torch, Main.rand.Next(1, 100)));
+                                            itemsToAdd.Add((ItemID.Rope, Main.rand.Next(10, 100)));
+                                            break;
 
 
 
-                                        }
 
-                                        // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-                                        int chestItemIndex = 0;
-                                        foreach (var itemToAdd in itemsToAdd)
-                                        {
-                                            Item item = new Item();
-                                            item.SetDefaults(itemToAdd.type);
-                                            item.stack = itemToAdd.stack;
-                                            chest.item[chestItemIndex] = item;
-                                            chestItemIndex++;
-                                            if (chestItemIndex >= 40)
-                                                break; // Make sure not to exceed the capacity of the chest
-                                        }
+
                                     }
 
-
-
-
-
-
-
-
-
-
-
-
-                                    // GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
-
-
-
+                                    // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+                                    int chestItemIndex = 0;
+                                    foreach (var itemToAdd in itemsToAdd)
+                                    {
+                                        Item item = new Item();
+                                        item.SetDefaults(itemToAdd.type);
+                                        item.stack = itemToAdd.stack;
+                                        chest.item[chestItemIndex] = item;
+                                        chestItemIndex++;
+                                        if (chestItemIndex >= 40)
+                                            break; // Make sure not to exceed the capacity of the chest
+                                    }
                                 }
-                                break;
-
-
-
-
-
-                        }
-
-                        placed = true;
+                            }
+                            break;
 
                     }
-
+                    break;
                 }
             }
 
