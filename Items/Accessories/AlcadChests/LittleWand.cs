@@ -150,8 +150,6 @@ namespace Stellamod.Items.Accessories.AlcadChests
                     {
                         int offsetX = Main.rand.Next(-10, 10) * 2;
                         int offsetY = Main.rand.Next(-500, 500) - 1700;
-                        Projectile.NewProjectile(player.GetSource_FromThis(), player.Center.X + offsetX, player.Center.Y + offsetY, 0f, 10f,
-                            ModContent.ProjectileType<AuroreanStarbomber>(), 0, 1, player.whoAmI);
                         Main.NewText(LangText.Misc("LittleWand"), 234, 96, 114);
                         SoundEngine.PlaySound(SoundID.AchievementComplete, player.position);
                     }

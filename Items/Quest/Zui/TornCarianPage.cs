@@ -27,12 +27,7 @@ namespace Stellamod.Items.Quest.Zui
 
         public override void UpdateInventory(Player player)
         {
-            //If htisi s the hsheld item
-            if (player.ownedProjectileCounts[ModContent.ProjectileType<CarianArrow>()] == 0 && player.HeldItem == Item)
-            {
-                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
-                    ModContent.ProjectileType<CarianArrow>(), 0, 0, player.whoAmI);
-            }
+
         }
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)

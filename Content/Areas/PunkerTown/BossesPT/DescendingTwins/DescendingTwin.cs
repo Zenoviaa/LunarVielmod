@@ -1,11 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
-using Stellamod.Core.VerletIntegration;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
@@ -139,7 +137,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             switch (Variant)
             {
-                default: 
+                default:
                 case TwinVariant.Spazz:
                     if (_phaseShift)
                     {
@@ -210,7 +208,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
-      
+
             writer.WriteVector2(_simpleDashNormal);
             writer.WriteVector2(_startVelocity);
             writer.WriteVector2(_highSpeedTargetPosition);
@@ -219,12 +217,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             writer.Write(_parentIndex);
             writer.Write(_phaseShift);
             writer.Write(_startRotation);
-            
+
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
-            
+
             _simpleDashNormal = reader.ReadVector2();
             _startVelocity = reader.ReadVector2();
             _highSpeedTargetPosition = reader.ReadVector2();
@@ -233,7 +231,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             _parentIndex = reader.ReadInt32();
             _phaseShift = reader.ReadBoolean();
             _startRotation = reader.ReadSingle();
-   
+
         }
 
         private void SwitchState(TwinAIState state)
@@ -256,7 +254,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             {
                 NPC.position.X = _teleportPosition.X;
                 NPC.position.Y = _teleportPosition.Y;
-                for(int i = 0; i < NPC.oldPos.Length; i++)
+                for (int i = 0; i < NPC.oldPos.Length; i++)
                 {
                     NPC.oldPos[i] = NPC.position;
                 }
@@ -296,7 +294,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         public override void AI()
         {
             base.AI();
-         
+
             UpdateTailSimulation();
             ReceiveTeleport();
             //If we don't have a valid target automatically retarget.
@@ -328,7 +326,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     zap.innerColor = GetTwinColor();
                     zap.outerColor = Color.Lerp(zap.innerColor, Color.Black, 0.5f);
                     zap.fadeToColor = Color.Lerp(zap.outerColor, Color.Black, 0.5f);
-            
+
                 }
             }
 
@@ -540,7 +538,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void AI_Despawn()
         {
             Timer++;
-            if(Timer < 10)
+            if (Timer < 10)
             {
                 NPC.velocity *= 0.8f;
                 _startRotation = NPC.rotation;
@@ -551,7 +549,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             float ease = EasingFunction.InOutSine(completionRatio);
             NPC.velocity.Y -= 0.2f;
             NPC.rotation = Utils.AngleLerp(_startRotation, -Vector2.UnitY.ToRotation(), ease);
-            if(Timer >= despawnTime)
+            if (Timer >= despawnTime)
             {
                 NPC.active = false;
             }
@@ -573,7 +571,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 SpawnSteamParticle();
             }
 
-            if(Timer % 2 == 0)
+            if (Timer % 2 == 0)
             {
                 _deathRotationOffset = Main.rand.NextFloat(-0.2f, 0.2f);
                 _deathPositionOffset = Main.rand.NextVector2Circular(2, 2);
@@ -613,7 +611,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 }
 
                 float numSteam = 32;
-                for(float n = 0; n < numSteam; n++)
+                for (float n = 0; n < numSteam; n++)
                 {
                     Vector2 spawnPosition = NPC.Center;
                     spawnPosition.X += Main.rand.NextFloat(-64, 64);
@@ -627,7 +625,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     steamParticle.outerColor = Color.Black;
                     steamParticle.fadeToColor = Color.Black;
                 }
-                for(int i = 0; i < 4; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     int[] gores = AutoGoreLoader.FindGores("MechanicalEye");
                     foreach (int g in gores)
@@ -680,7 +678,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private void IdleMovement()
         {
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.rotation = MathHelper.WrapAngle(NPC.rotation);
                 _startRotation = NPC.rotation;
@@ -753,6 +751,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
         }
 
-    
+
     }
 }

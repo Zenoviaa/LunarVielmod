@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core;
-using Stellamod.Core.VerletIntegration;
 using Stellamod.Helpers;
 using System;
 using System.IO;
@@ -164,8 +163,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         public override void AI()
         {
             base.AI();
-         
-           
+
+
             if (!_showNamePlate)
             {
                 ShowNamePlate();
@@ -277,7 +276,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     return Color.Yellow;
             }
         }
-        
+
         public static Color GetSecondaryTwinColor(int variant)
         {
             switch (variant)
@@ -371,7 +370,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 {
                     SwitchState(nextState);
                 }
-               // SwitchState(TwinAttackState.BouncingDash);
+                // SwitchState(TwinAttackState.BouncingDash);
             }
         }
 
@@ -576,7 +575,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 PatternManager.SetWeight(TwinAttackState.ElectricBall, 1f);
                 _phase2 = true;
             }
-           
+
             if (Timer >= 60)
             {
                 if (SpazzAwaitingCommand && RetinaAwaitingCommand)

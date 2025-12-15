@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
-using Stellamod.Core.VerletIntegration;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
@@ -28,7 +27,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         {
             get
             {
-                if(_tailSimulation == null)
+                if (_tailSimulation == null)
                 {
                     _tailSimulation = new TailSimulation(32, 384);
                 }

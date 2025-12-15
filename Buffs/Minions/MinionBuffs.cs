@@ -101,8 +101,6 @@ namespace Stellamod.Buffs.Minions
 
     public class JellyMinionBuff : MinionBuff<JellyMinionProj> { }
 
-    public class ReflectionSeekerMinionBuff : MinionBuff<ReflectionSeekerMinionProj> { }
-
     public class TheBurningRodMinionBuff : MinionBuff<TheBurningRodMinionProj> { }
 
     //  public class ToxicHornetMinionBuff : MinionBuff<ToxicHornetMinionProj> { }

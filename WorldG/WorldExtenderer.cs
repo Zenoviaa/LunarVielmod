@@ -30,6 +30,7 @@ namespace Stellamod.WorldG
         }
         private void WorldGen_EditWorldSize(ILContext il)
         {
+     
             var cursor = new ILCursor(il);
             cursor.EmitDelegate(EditWorldSize);
         }
@@ -45,7 +46,6 @@ namespace Stellamod.WorldG
             //Server does need to edit minimap drawing code im pretty sure
             if (Main.netMode == NetmodeID.Server)
                 return;
-
             ResizeMapTarget();
         }
 
