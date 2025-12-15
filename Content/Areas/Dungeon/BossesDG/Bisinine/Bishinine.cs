@@ -857,7 +857,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 NPC.TargetClosest();
                 NPC.direction = TargetDirection;
-
+                NPC.velocity = Vector2.Zero;
             }
             if (Timer < 15)
             {
@@ -1045,6 +1045,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             if (NPC.collideX)
             {
                 Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
+                NPC.direction = -NPC.direction;
             }
             if(Timer % 5 == 0)
             {

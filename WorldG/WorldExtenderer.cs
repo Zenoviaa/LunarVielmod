@@ -2,6 +2,7 @@
 using MonoMod.Cil;
 using System;
 using System.Reflection;
+using System.Security.Policy;
 using Terraria;
 using Terraria.ID;
 using Terraria.IO;
@@ -16,6 +17,9 @@ namespace Stellamod.WorldG
         //We can set the world size to anything, 8400x2400 is large world
         public int NewMaxTilesX => 9800;
         public int NewMaxTilesY => 3600;
+
+        public static int? XSizeOverride;
+        public static int? YSizeOverride;
         //Original 8400x 2400y
         public override void Load()
         {
@@ -36,6 +40,20 @@ namespace Stellamod.WorldG
         }
         private void EditWorldSize()
         {
+            Main.maxTilesX = NewMaxTilesX;
+            Main.maxTilesY = NewMaxTilesY;
+            if (XSizeOverride.HasValue)
+            {
+                Main.maxTilesX = XSizeOverride.Value;
+                XSizeOverride = null;
+            }
+              
+            if (YSizeOverride.HasValue)
+            {
+                Main.maxTilesY = YSizeOverride.Value;
+                YSizeOverride = null;
+            }
+             
             SetWorldSize();
         }
 
@@ -51,8 +69,7 @@ namespace Stellamod.WorldG
 
         private void SetWorldSize()
         {
-            Main.maxTilesX = NewMaxTilesX;
-            Main.maxTilesY = NewMaxTilesY;
+
             ResizeMapTarget();
         }
         private void ResizeMapTarget()

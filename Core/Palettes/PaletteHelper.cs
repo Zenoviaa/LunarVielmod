@@ -42,13 +42,11 @@ namespace Stellamod.Core.Palettes
                         using (var stream = mod.GetFileStream(file))
                         {
                             string fileName = new FileInfo(file).Name; ;
-                            Console.WriteLine(fileName);
+
                             Vector3[] palette = ReadPaletteVector3(stream);
                             Texture3D colorSpectrum = CreateColorSpectrumTexture(palette);
 
-                          
-                            _colorAtlas.Add(fileName, colorSpectrum);
-                           
+                            _colorAtlas.Add(fileName, colorSpectrum);                    
                         }
                     });
 
@@ -78,9 +76,7 @@ namespace Stellamod.Core.Palettes
                         palette.Add(new Vector3(r, g, b));
                     }
                     lineNum++;
-                    Console.WriteLine($"{line}");
                 }
-                Console.WriteLine($"{lineNum} lines, {pal} colors");
                 return palette.ToArray();
             }
         }

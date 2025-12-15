@@ -210,14 +210,14 @@ namespace Stellamod.Core.Palettes
             {
                 darkness += 1;
             }
-
+            UsePaletteShader("RoyalCapital.pal", royalCapitalPaletteActive, ref paletteUseProgress[3]);
             /*
 
 
             UsePaletteShader("Abyss.pal", abyssPaletteActive, ref paletteUseProgress[0]);
             UsePaletteShader("VilepipesNGarden.pal", rustyPaletteActive, ref paletteUseProgress[1]);
             UsePaletteShader("Hell.pal", hellPaletteActive, ref paletteUseProgress[2]);
-            UsePaletteShader("RoyalCapital.pal", royalCapitalPaletteActive, ref paletteUseProgress[3]);
+        
             UsePaletteShader("Dungeon.pal", dungeonPaletteActive, ref paletteUseProgress[4]);
             UsePaletteShader("Desert.pal", desertPaletteActive, ref paletteUseProgress[5]);
             UsePaletteShader("DesertTop.pal", desertTopPaletteActive, ref paletteUseProgress[6]);

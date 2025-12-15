@@ -14,7 +14,7 @@ namespace Stellamod.Core.RenderTargetSystem
     /// <summary>
     /// Wrapper class for a render target that automatically gets resized and disposed
     /// </summary>
-    public class ManagedRenderTarget : IDisposable
+    public class ManagedRenderTarget
     {
         private Point _oldScreenSize;
         private readonly int _downSamples;
@@ -71,10 +71,7 @@ namespace Stellamod.Core.RenderTargetSystem
             return managedRenderTarget;
         }
 
-        public void Dispose()
-        {
-            _renderTarget.Release();
-        }
+ 
 
         public static implicit operator RenderTarget2D(ManagedRenderTarget managedRenderTarget)
         {
@@ -102,10 +99,6 @@ namespace Stellamod.Core.RenderTargetSystem
             base.Unload();
 
             //Release all render targets
-            for(int i = 0; i < _managedRenderTargets.Count; i++)
-            {
-                _managedRenderTargets[i].Dispose();
-            }
             _managedRenderTargets.Clear();
         }
 

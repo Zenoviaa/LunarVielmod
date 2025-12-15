@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.VisualBasic.FileIO;
+using Microsoft.Xna.Framework;
 using ReLogic.Utilities;
 using Stellamod.Content.Areas.Abyss.WeaponsAB;
 using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
@@ -12,7 +13,9 @@ using Stellamod.Content.Items.Materials;
 using Stellamod.Core.DungeonGeneration;
 using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.SilkSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using Stellamod.Items;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.AlcadChests;
 using Stellamod.Items.Accessories.Brooches;
@@ -39,8 +42,11 @@ using Stellamod.Tiles.Illuria;
 using Stellamod.Tiles.Veil;
 using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;
+using Stellamod.UI.CauldronSystem;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Biomes;
@@ -65,9 +71,181 @@ namespace Stellamod.WorldG
             tasks.Find(x => x.Name.Equals(passName)).Disable();
         }
 
+        private void DisableAllGenTasks(List<GenPass> tasks)
+        {
+            foreach(GenPass task in tasks)
+            {
+                task.Disable();
+            }
+        }
+        #region Test World World Gen
+
+        private void ModifyWorldGenDebugTasks(List<GenPass> tasks, ref double totalWeight)
+        {
+            //This world is basically just going to create an empty world lol
+            DisableAllGenTasks(tasks);
+            tasks.Add(new VanillaTerrainPass());
+            tasks.Add(new PassLegacy("Test World", WorldGenTestWorld));
+          
+        }
+
+        private void WorldGenTestWorld(GenerationProgress progress, GameConfiguration configuration)
+        {
+            var genRand = WorldGen.genRand;
+            progress.Message = "Creating a Test World";
+            int width = 200;
+            Point placementPoint = new Point(Main.maxTilesX / 2 - width / 2, (int)Main.worldSurface - 100);
+            WorldUtils.Gen(placementPoint, new Shapes.Rectangle(200, 10), Actions.Chain(new GenAction[]
+            {
+                new Actions.SetTile(TileID.SnowBlock)
+            }));
+            Main.spawnTileX = placementPoint.X;
+            Main.spawnTileY = placementPoint.Y;
+
+
+
+
+            Cauldron cauldron = ModContent.GetInstance<Cauldron>();
+
+
+            int chestNumber = 0;
+
+            Point currentChestPoint = new Point(placementPoint.X, placementPoint.Y - 1);
+            Chest PlaceChest(List<(int type, int stack)> itemsToAdd)
+            {
+                currentChestPoint.X += 3;
+                int chestIndex = WorldGen.PlaceChest(currentChestPoint.X, currentChestPoint.Y);
+                if (chestIndex == -1)
+                {
+                    Console.WriteLine("COULDN'T PLACE CHEST LMAO");
+                    return null;
+                }
+
+                Chest chest = Main.chest[chestIndex];
+               
+                chestNumber++;
+                AddChestLoot(chest, itemsToAdd);
+                return chest;
+            }
+
+            Dictionary<int, List<Item>> cauldronInfo = ParseCauldronData();
+            List<(int type, int stack)> chestLoot = new List<(int type, int stack)>();
+            void PushToChestLoot(Item item)
+            {
+                chestLoot.Add((item.type, 1));
+            }
+
+            void FlushChestLoot(int materialType = -1)
+            {
+                Chest chest = PlaceChest(chestLoot);
+
+                //Name the chest the same as the material for it
+                //First we need to get the name of the material, so we have to get the item associated wtih it
+                if(materialType != -1)
+                {
+                    ModItem materialItem = ModContent.GetModItem(materialType);
+                    chest.name = materialItem.DisplayName.Value;
+                }
+         
+                chestLoot.Clear();
+            }
+            foreach (var kvp in cauldronInfo)
+            {
+                List<Item> itemsInThisTier = kvp.Value;
+                chestLoot.Clear();
+                foreach(var item in itemsInThisTier)
+                {
+                    PushToChestLoot(item);
+                    if (chestLoot.Count >= 40)
+                    {
+                        FlushChestLoot(kvp.Key);
+                    }
+                }
+                FlushChestLoot(kvp.Key);
+            }
+
+            Dictionary<DamageClass, List<Item>> classInfo = ParseClassData();
+
+            //Reset the placement point
+            currentChestPoint = new Point(placementPoint.X, placementPoint.Y - 1);
+            currentChestPoint.Y -= 10;
+            foreach (var kvp in classInfo)
+            {
+              
+                //Put two platforms underneath where the chest is going to place
+                WorldGen.PlaceTile(currentChestPoint.X, currentChestPoint.Y, TileID.Platforms);
+                WorldGen.PlaceTile(currentChestPoint.X + 1, currentChestPoint.Y, TileID.Platforms);
+
+                List<Item> itemsInThisTier = kvp.Value;
+                chestLoot.Clear();
+                foreach (var item in itemsInThisTier)
+                {
+                    PushToChestLoot(item);
+                    if (chestLoot.Count >= 40)
+                    {
+                        FlushChestLoot();
+                    }
+                }
+                FlushChestLoot();
+            }
+
+        }
+
+
+
+        private Dictionary<DamageClass, List<Item>> ParseClassData()
+        {
+            ModItem[] allItems = ModContent.GetContent<ModItem>().ToArray();
+            Dictionary<DamageClass, List<Item>> classItems = new Dictionary<DamageClass, List<Item>>();
+            classItems.Add(DamageClass.Melee, new List<Item>());
+            classItems.Add(DamageClass.Ranged, new List<Item>());
+            classItems.Add(DamageClass.Magic, new List<Item>());
+            classItems.Add(DamageClass.Summon, new List<Item>());
+            foreach (var item in allItems)
+            {
+                if (classItems.ContainsKey(item.Item.DamageType))
+                {
+                    classItems[item.Item.DamageType].Add(item.Item);
+                }
+            }
+            return classItems;
+        }
+        private Dictionary<int, List<Item>> ParseCauldronData()
+        {
+            ModItem[] allItems = ModContent.GetContent<ModItem>().ToArray();
+
+            //So here's wall we'll do
+            //Since we get the fields by line, which is perfect
+            //We can figure out what label each thing has
+            //Then we can loop over all our items and check if they have a match within each tier
+            //If they do they go in that tier
+            //We'll check by proximity to each name, if the distance is low enough it's most likely a match
+            //This may have errors in some cases
+            //But by doing it this way we guarantee no item gets missed, and any item that does get missed goes into an unsorted chest.
+
+
+            Console.WriteLine("Parsing Cauldron Data...");
+            Dictionary<int, List<Item>> output = new Dictionary<int, List<Item>>();
+            Cauldron cauldron = ModContent.GetInstance<Cauldron>();
+            Item[] materials = cauldron.GetMaterials();
+            foreach(var material in materials)
+            {
+                output.Add(material.type, new List<Item>());
+            }
+            foreach(var item in allItems)
+            {
+                Item materialIUse = cauldron.FindMaterial(item.Item);
+                int materialType = materialIUse.type;
+                if (output.ContainsKey(materialType))
+                {
+                    output[materialType].Add(item.Item);
+                }
+            }
+            return output;
+        }
+        #endregion
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
-
             //We don't need this for now
             int MorrowGen = tasks.FindIndex(genpass => genpass.Name.Equals("Micro Biomes"));
             int RoyalGen = tasks.FindIndex(genpass => genpass.Name.Equals("Corruption"));

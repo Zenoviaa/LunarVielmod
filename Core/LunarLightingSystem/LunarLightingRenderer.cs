@@ -14,7 +14,16 @@ using Terraria.ModLoader;
 namespace Stellamod.Core.LunarLightingSystem
 {
 
-
+    public class LightingPreDrawEdit : GlobalTile
+    {
+        public static bool DontRenderPreDraw;
+        public override bool PreDraw(int i, int j, int type, SpriteBatch spriteBatch)
+        {
+            if (type == TileID.FogMachine && DontRenderPreDraw)
+                return false;
+            return base.PreDraw(i, j, type, spriteBatch);
+        }
+    }
     [Autoload(Side = ModSide.Client)]
     public class LunarLightingRenderer : ModSystem,
         IPostProcessingPass
@@ -238,13 +247,15 @@ namespace Stellamod.Core.LunarLightingSystem
             graphicsDevice.SetRenderTarget(_tileShadowMap);
             graphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-     
+
+            LightingPreDrawEdit.DontRenderPreDraw = true;
             tilesRenderer.PreDrawTiles(true, true, true);
             tilesRenderer.Draw(true, true, true);
 
             tilesRenderer.PreDrawTiles(false, true, true);
             tilesRenderer.Draw(false, true, true);
             spriteBatch.End();
+            LightingPreDrawEdit.DontRenderPreDraw = false;
 
             graphicsDevice.SetRenderTarget(_tileBlurRT);
             graphicsDevice.Clear(Color.Transparent);

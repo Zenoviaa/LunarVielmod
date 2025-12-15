@@ -168,6 +168,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static void CastShadow()
         {
+
             _primitiveIndex = 0;
             Vector2 position = Main.LocalPlayer.position;
             float radius = 4000;
