@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.MagicSystem.UI;
+using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI.Elements;
@@ -12,10 +13,11 @@ namespace Stellamod.Core.ItemBrowser
     public class ItemBrowserMenu : UIPanel
     {
         private InventoryBackground _inventoryBackground;
-        private ItemBrowserGrid _grid;
+        private UIGrid _grid;
         private UIPanel _panel;
         private UIScrollbar _scrollbar;
         private UIList _uiList;
+        private ItemBrowserView _view;
         public ItemBrowserMenu(UIScrollbar scrollbar)
         {
             _inventoryBackground = new InventoryBackground();
@@ -84,8 +86,15 @@ namespace Stellamod.Core.ItemBrowser
             {
                 return;
             }
+
             _grid.Clear();
             Item[] items = _lastCategory.items;
+            _view = new ItemBrowserView(items);
+            _view.Width.Pixels = Width.Pixels;
+            _view.Height.Pixels = Height.Pixels;
+            _view.Activate();
+            _grid.Add(_view);
+            /*
             foreach (var item in items)
             {
                 if (!string.IsNullOrEmpty(_lastSearchFilter))
@@ -96,7 +105,7 @@ namespace Stellamod.Core.ItemBrowser
 
                 var slot = new ItemBrowserSlot(item);
                 _grid.Add(slot);
-            }
+            }*/
             _grid.Recalculate();
             base.Recalculate();
         }
@@ -105,7 +114,7 @@ namespace Stellamod.Core.ItemBrowser
         {
             base.Update(gameTime);
        
-            _panel.Height.Pixels = _grid.GetTotalHeight() + 32;
+            _panel.Height.Pixels = _view.Height.Pixels + 32;
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
             _scrollbar.Height.Set(Height.Pixels * progress, 0);
