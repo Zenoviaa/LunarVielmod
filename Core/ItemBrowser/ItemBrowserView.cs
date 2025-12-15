@@ -1,27 +1,31 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Accord.Statistics.Filters;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using Stellamod.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
+using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Core.ItemBrowser
 {
+    /// <summary>
+    /// Setups a view that lets you look over a massive grid of items
+    /// </summary>
     public class ItemBrowserView : UIPanel
     {
         private float _scale;
         private int _context;
+        private bool _oldModFilter;
+        private string _oldSearchFilter;
         //Basically, instead of ceratgin 6800 slots or whatever
         //We have a single view that takes an array of items
         //Uses that to calculate draw offsets for each item and draws them
@@ -29,29 +33,82 @@ namespace Stellamod.Core.ItemBrowser
         {
             _scale = 1f;
             _context = ItemSlot.Context.BankItem;
+            ElementsPerRow = 9;
+
+            //Set up the items we're going to iterate over
+            Items = items;
             HoveringItem = new Item();
             HoveringItem.SetDefaults(0);
-            string texturePath = this.GetType().DirectoryHere() + "/ItemBrowserSlot";
-            SlotTextureAsset = ModContent.Request<Texture2D>(texturePath, ReLogic.Content.AssetRequestMode.ImmediateLoad);
-            Width.Set(32, 0f);
-            Height.Set(32, 0f);
+
+            //Setup mouse interactions
             OnLeftClick += SpawnItem;
             OnRightClick += SpawnItemMaxStack;
-            this.Items = items;
+
+            //Setup drawing
+            string texturePath = this.GetType().DirectoryHere() + "/ItemBrowserSlot";
+            SlotTextureAsset = ModContent.Request<Texture2D>(texturePath, AssetRequestMode.AsyncLoad);
+            Width.Set(32, 0f);
+            Height.Set(32, 0f);
         }
+
+        public Item[] Items;
+        public Item[] SearchFilterItems;
+        public Item HoveringItem;
         public Asset<Texture2D> SlotTextureAsset;
         public string SearchFilter;
         public bool ModFilter;
-        public Item[] Items;
-        public Item HoveringItem;
+        public float ViewPosition;
+        public int ElementsPerRow;
         private void SpawnItemMaxStack(UIMouseEvent evt, UIElement listeningElement)
         {
-            Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), HoveringItem.type, HoveringItem.maxStack);
+      
+            if (InputHelper.KeyDown(Keys.LeftShift))
+            {
+                Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), HoveringItem.type, HoveringItem.maxStack);
+            } else
+            {
+                Main.mouseItem = HoveringItem.Clone();
+                Main.mouseItem.stack = HoveringItem.maxStack;
+            }
+            //
         }
 
         private void SpawnItem(UIMouseEvent evt, UIElement listeningElement)
         {
-            Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), HoveringItem.type);
+            if (InputHelper.KeyDown(Keys.LeftShift))
+            {
+                Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), HoveringItem.type);
+            }
+            else
+            {
+                Main.mouseItem = HoveringItem.Clone();
+            }
+
+            //
+        }
+
+        private bool NeedsUpdateCollection()
+        {
+            return _oldSearchFilter != SearchFilter || _oldModFilter != ModFilter ;
+        }
+        private void UpdateCollection()
+        {
+            IEnumerable<Item> collection = Items;
+            string filter = string.Empty;
+            if (!string.IsNullOrEmpty(SearchFilter))
+            {
+                filter = SearchFilter.TrimStart().ToLower();
+                collection = collection.Where(x => x.Name.ToLower().Contains(filter));
+            }
+
+            if (ModFilter)
+            {
+                collection = collection.Where(x => x.ModItem != null && x.ModItem.Mod == Stellamod.Instance);
+            }
+            
+            SearchFilterItems = collection.ToArray();
+            _oldSearchFilter = SearchFilter;
+            _oldModFilter = ModFilter;
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -66,21 +123,14 @@ namespace Stellamod.Core.ItemBrowser
 
             if (IsMouseHovering)
             {
-
                 Main.HoverItem = HoveringItem;
                 Main.hoverItemName = HoveringItem.HoverName;
             }
+
             Vector2 topLeft = rectangle.TopLeft();
             float availableWidth = GetInnerDimensions().Width;
-
-            float tlPadding = 8;
-            float top = tlPadding;
-            float left = 0;
-            float maxRowHeight = 0f;
-            float listPadding = 8;
+            float listPadding = 10;
             Rectangle outerDimensions = new Rectangle(0, 0, 32, 32);
-        
-            //  Console.WriteLine(availableWidth);
             Point mousePoint = Main.MouseScreen.ToPoint();
             string filter = string.Empty;
             if (!string.IsNullOrEmpty(SearchFilter))
@@ -88,50 +138,72 @@ namespace Stellamod.Core.ItemBrowser
             bool useFilter = !string.IsNullOrEmpty(filter);
 
             //We're basically just reusing the grid code here lol
-            for (int i = 0; i < Items.Length; i++)
+            //There's currently 9 items per row
+            //To optimize this, we can calculate the placement of an element with some simple math based on its index
+            //Instead of using left and top variables
+            //So let's do that
+
+
+            //We only want to draw the items that are actually in view
+            //So we should calculate a starting inde
+
+
+            //Define our width variables
+
+            if (NeedsUpdateCollection())
             {
-                Item item = Items[i];
-                if (useFilter)
-                {
-                    string itemLower = item.Name.ToLower();
-                    if (!itemLower.Contains(filter))
-                        continue;
-                }
+                UpdateCollection();
+            }
+            Item[] itemArr = SearchFilterItems;
+            int elementsPerRow = ElementsPerRow;
+            float elementWidth = outerDimensions.Width;
+            float viewWidth = availableWidth;
+            float elementHeight = outerDimensions.Height;
 
-                if (ModFilter)
-                {
-                    if (item.ModItem == null)
-                        continue;
-                    if (item.ModItem.Mod != Stellamod.Instance)
-                        continue;
-                }
+            //Calculate the maximum height of the grid
+            int itemRows = (itemArr.Length / elementsPerRow);
+            float maximumHeight = itemRows * (elementHeight + listPadding);
+            Height.Pixels = maximumHeight + 32;
 
-                if (left + outerDimensions.Width > availableWidth && left > 0)
-                {
-                    top += maxRowHeight + listPadding;
-                    left = 0;
-                    maxRowHeight = 0;
-                }
-                maxRowHeight = Math.Max(maxRowHeight, outerDimensions.Height);
-                float l = left;
- 
-                left += outerDimensions.Width + listPadding;
-                float t = top;
+
+            Texture2D slotTexture = SlotTextureAsset.Value;
+            Color drawColor = Color.Lerp(Color.White, Color.Black, 0.75f);
+            float drawScale = 1.2f;
+            Vector2 drawOrigin = slotTexture.Size() / 2;
+        
+            //The view position is the y offset of the scrollbar
+            //So to figure out where to start from
+            //We just divide the offset by 
+            //Caculate a starting and ending index for which items to draw
+            int numRowsDownward = (int)(ViewPosition / (elementHeight + listPadding));
+            int startIndex = numRowsDownward * elementsPerRow;
+            int endIndex = startIndex + elementsPerRow * 6;
+
+
+            //Now we're only loading the items that are in view! Yippee! Optimization!
+            for (int i = startIndex; i < endIndex && i < itemArr.Length; i++)
+            {
+                Item item = itemArr[i];
+
+                //Remmeber 9 elements per row
+                //We can use the modulus operator to get this to keep looping, since all elements are the same size
+                float leftOffset = i % elementsPerRow * (elementWidth + listPadding);
+                float topOffset = i / elementsPerRow * (elementHeight + listPadding);
 
                 //Enchantment Card
                 Vector2 tl = topLeft;
-                tl.X += l;
-                tl.Y += t;
+                tl.X += leftOffset;
+                tl.Y += topOffset;
                 Vector2 centerPos = tl + new Vector2(16);
-                Color color2 = Main.inventoryBack;
-                Texture2D slotTexture = SlotTextureAsset.Value;
-                Vector2 drawOrigin = slotTexture.Size() / 2;
+
                 Vector2 iconCenterPos = tl + slotTexture.Size() / 2;
-                spriteBatch.Draw(slotTexture, iconCenterPos, null, Color.Lerp(Color.White, Color.Black, 0.75f), 0f, drawOrigin, _scale, SpriteEffects.None, 0f);
-                ItemSlot.DrawItemIcon(item, _context, spriteBatch, centerPos, _scale * 1.25f, 32, Color.White);
+                spriteBatch.Draw(slotTexture, iconCenterPos, null, drawColor, 0f, drawOrigin, _scale, SpriteEffects.None, 0f);
+                ItemSlot.DrawItemIcon(item, _context, spriteBatch, centerPos, drawScale, 32, Color.White);
                 if (HoveringItem.stack > 1)
+                {
                     ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, item.stack.ToString(),
                         centerPos + new Vector2(0, 2) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
+                }
 
                 //Check if hovering for tooltip
                 Rectangle hoverRectangle = new Rectangle((int)tl.X, (int)tl.Y, 32, 32);
@@ -140,15 +212,8 @@ namespace Stellamod.Core.ItemBrowser
                     HoveringItem = item;
                     Main.HoverItem = item;
                     Main.hoverItemName = item.HoverName;
-
                 }
-            
             }
-
-            //Add a bit of extra padding so the items don't get clipped
-            Height.Pixels = top + 32;
-
-
 
             Main.inventoryScale = oldScale;
         }

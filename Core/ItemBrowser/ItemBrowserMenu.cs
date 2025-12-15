@@ -105,12 +105,17 @@ namespace Stellamod.Core.ItemBrowser
         {
             base.Update(gameTime);
        
-            _view?.ModFilter = modFilter;   
+   
             _panel.Height.Pixels = _view.Height.Pixels + 32;
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
+       
             _scrollbar.Height.Set(Height.Pixels * progress, 0);
+            float scrollRatio = _scrollbar.ViewPosition;
 
+            _view?.ModFilter = modFilter;
+            _view?.ViewPosition = scrollRatio;
+  
             //Hacky way to get invisible scrollbar when there's no need for it
             if (_panel.Height.Pixels < Height.Pixels)
             {
