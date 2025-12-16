@@ -359,7 +359,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             _timer++;
             //_timer = Main.Camera.Center.X / 16f;
-            if ( NPC.AnyNPCs(ModContent.NPCType<EStyr>()))
+            if ( NPC.AnyNPCs(ModContent.NPCType<E>()))
             {
                 SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
                 fallSystem.noWings = true;
@@ -612,7 +612,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void DrawBlackHurricaneRTToScreen(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            if (!Main.gameMenu && NPC.AnyNPCs(ModContent.NPCType<EStyr>()))
+            if (!Main.gameMenu && NPC.AnyNPCs(ModContent.NPCType<E>()))
             {
                 spriteBatch.GraphicsDevice.Clear(Color.Transparent);
                 spriteBatch.End();
@@ -633,7 +633,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ApplyReflection(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
         {
-            if (layer == RenderLayers.ForegroundWater && !Main.gameMenu && NPC.AnyNPCs(ModContent.NPCType<EStyr>()))
+            if (layer == RenderLayers.ForegroundWater && !Main.gameMenu && NPC.AnyNPCs(ModContent.NPCType<E>()))
             {
                 //  spriteBatch.GraphicsDevice.Clear(Color.Transparent);
                 spriteBatch.Draw(_magicGroundRT, Vector2.Zero, Color.White * 0.95f);
@@ -784,7 +784,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
 
     }
-    public partial class EStyr : ScarletBoss
+    public partial class E : ScarletBoss
     {
         //Finally time to make a secret boss, this is going to be fun :)
         //Alright

@@ -21,7 +21,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override bool IsActive(Player player)
         {
             return false;
-            return NPC.AnyNPCs(ModContent.NPCType<EStyr>());
+            return NPC.AnyNPCs(ModContent.NPCType<E>());
         }
     }
     public class AbyssPaletteEffect : PaletteEffect

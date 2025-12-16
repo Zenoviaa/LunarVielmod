@@ -15,7 +15,7 @@ namespace Stellamod.Skies
     {
         private Vector2 _parallax;
         private Vector2 _lastCameraPos;
-        public bool IsActive => Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia || NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>()) || NPC.AnyNPCs(ModContent.NPCType<EStyr>());
+        public bool IsActive => Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia || NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>()) || NPC.AnyNPCs(ModContent.NPCType<E>());
         public float Opacity;
         public bool inStarField;
         public override void PreUpdateEntities()

@@ -255,7 +255,7 @@ namespace Stellamod.Core.Palettes
 
             float b = 0.004f;
             effect.Parameters["ringColor"].SetValue(new Vector3(b, b, b));
-            ToggleScreenShader("LunarVeil:BlackSea", NPC.AnyNPCs(ModContent.NPCType<EStyr>()));
+            ToggleScreenShader("LunarVeil:BlackSea", NPC.AnyNPCs(ModContent.NPCType<E>()));
           //  Main.ColorOfTheSkies = Color.Black;
             bool evilAreaActive = Player.ZoneCrimson || Player.ZoneCorrupt;
             if (evilAreaActive && darknessCurve < 0.5f)
