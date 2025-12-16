@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
 using Stellamod.Content.Biomes;
 using Stellamod.Helpers;
@@ -254,7 +255,7 @@ namespace Stellamod.Core.Palettes
 
             float b = 0.004f;
             effect.Parameters["ringColor"].SetValue(new Vector3(b, b, b));
-            ToggleScreenShader("LunarVeil:BlackSea", true);
+            ToggleScreenShader("LunarVeil:BlackSea", NPC.AnyNPCs(ModContent.NPCType<EStyr>()));
           //  Main.ColorOfTheSkies = Color.Black;
             bool evilAreaActive = Player.ZoneCrimson || Player.ZoneCorrupt;
             if (evilAreaActive && darknessCurve < 0.5f)

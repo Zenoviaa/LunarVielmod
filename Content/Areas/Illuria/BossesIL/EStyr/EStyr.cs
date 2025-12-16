@@ -2,28 +2,18 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
-using ReLogic.Threading;
 using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
-using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
 using Stellamod.Core;
 using Stellamod.Core.MoonWaters;
 using Stellamod.Core.RenderTargetSystem;
 using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
-using Stellamod.Skies;
-using Stellamod.Systems.MiscellaneousMath;
-using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Effects;
-using Terraria.Graphics.Light;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -38,7 +28,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             _platformTextureAsset = platformTextureAsset;
             scale = 1f;
-            randScale = Main.rand.NextFloat(-0.2f, 0.2f);
+            randScale = Main.rand.NextFloat(-0.4f, 0);
         }
 
         public Vector3 initialPosition;
@@ -50,7 +40,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
         {
             Texture2D textureToDraw = _platformTextureAsset.Value;
-            Vector2 drawOrigin = new Vector2(textureToDraw.Width / 2f, 0f);
+            Vector2 drawOrigin = new Vector2(textureToDraw.Width / 2f, textureToDraw.Height / 2f);
             Vector2 drawPosition = new Vector2(rotatedPosition.X, rotatedPosition.Y);
             drawPosition += Main.Camera.Center;
             drawPosition -= screenPos;
@@ -117,7 +107,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //Calculate the initial position of the particle
 
             float off = index * 0.1f;
-            float xRadius = 200f + ExtraMath.Osc(-500, 500, 0, off);
+            float x = 200f;
+            if (index > ParticleCount / 2)
+            {
+                x *= 3;
+            }
+            float xRadius = x + ExtraMath.Osc(-500, 500, 0, off);
             float yRadius = ExtraMath.Osc(-150f, 0f, 1, off) + ExtraMath.Osc(-500f, 500f, 0f, offset: off);
             Vector3 initialPosition = new Vector3(xRadius, yRadius / 2f, yRadius);
 
@@ -136,14 +131,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void SimulateParticles()
         {
-     
+
             float numPoints = TrailLength;
             int numVerticesPerParticle = TrailLength * 6;
             _starRandom ??= new UnifiedRandom();
 
             _fastNoise ??= new FastNoiseLite();
             _fastNoise.SetFrequency(2);
-        
+
             Parallel.For(0, ParticleCount, i =>
             {
                 float noise = _fastNoise.GetNoise(i, i) * 0.5f + 0.5f;
@@ -167,7 +162,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     float uv2 = (float)(j + 1) / numPoints;
 
                     //Calculate the widths
-            
+
                     Vector2 width = GetTrailWidth(uv) * Vector2.One * widthMultiplier;
                     Vector2 width2 = GetTrailWidth(uv2) * Vector2.One * widthMultiplier;
 
@@ -180,6 +175,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                     col1 = Color.Lerp(col1, black, noise * 0.5f);
                     col2 = Color.Lerp(col2, black, noise * 0.5f);
+
+                    if (i >= ParticleCount / 2)
+                    {
+
+                        //   col1 = Color.Lerp(col1, black, 0.5f);
+                        //   col2 = Color.Lerp(col2, black, 0.5f);
+                    }
 
                     //Apply camera offset
                     currentPosition += Main.Camera.Center;
@@ -238,6 +240,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     {
         private float _timer;
         private float _oscTimer;
+        private UnifiedRandom _random;
         private readonly BlackSeaPlatform[] _platforms;
         private readonly BlackSeaPlatform[] _platformsByZLayer;
         private PlatformZLayerComparer _zLayerComparer;
@@ -247,7 +250,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             Asset<Texture2D>[] assets = GetAssets();
             //Initialize all of our platforms
-            for(int i = 0; i < _platforms.Length; i++)
+            for (int i = 0; i < _platforms.Length; i++)
             {
                 Asset<Texture2D> asset = assets[Main.rand.Next(0, assets.Length)];
                 _platforms[i] = new BlackSeaPlatform(asset);
@@ -281,10 +284,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public const string Platform_FileName = "SingularPlatform_";
         private Asset<Texture2D>[] GetAssets()
         {
-            int numUniqueAssets = 1;
+            int numUniqueAssets = 7;
             Asset<Texture2D>[] platformTextureAssets = new Asset<Texture2D>[numUniqueAssets];
             //ANaing scheme for the textures is just SingularPlatform_[num]
-            for(int i = 0; i < numUniqueAssets; i++)
+            for (int i = 0; i < numUniqueAssets; i++)
             {
                 string rootTexturePath = this.GetType().DirectoryHere() + $"/{Platform_FileName}";
                 string platformTexturePath = $"{rootTexturePath}{i}";
@@ -299,27 +302,46 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             _timer++;
             //_timer = Main.Camera.Center.X / 16f;
-            SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
-            fallSystem.noWings = true;
-            fallSystem.inSpace = true;
-            fallSystem.hoveringPlatform = true;
-            fallSystem.hoverPlatformY = 16000;
+            if ( NPC.AnyNPCs(ModContent.NPCType<EStyr>()))
+            {
+                SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+                fallSystem.noWings = true;
+                fallSystem.inSpace = true;
+                fallSystem.hoveringPlatform = true;
+                fallSystem.hoverPlatformY = 16000;
+            }
+ 
             const float revolutionTime = 400;
 
             //Calculate the radians offset
             float radiansToRotate = _timer / revolutionTime * MathHelper.TwoPi;
 
-    
-            yOvalRadius = 100;
 
-       
-            for(int i = 0; i < _platforms.Length; i++)
+            yOvalRadius = 400;
+            xOvalRadius = 600;
+            _random ??= new UnifiedRandom();
+            _random.SetSeed(1337);
+
+            for (int i = 0; i < _platforms.Length; i++)
             {
                 BlackSeaPlatform platform = _platforms[i];
                 //Calculate the initial position of the platform
                 //Every platform would have the same initial position
-                Vector3 initialPosition = new Vector3(xOvalRadius, yOvalRadius / 2f, yOvalRadius);
-                platform.initialPosition = initialPosition;
+
+                if (i > _platforms.Length / 2)
+                {
+                    float off = _random.NextFloat(0f, 10f);
+                    float xRadius = 200f + ExtraMath.Osc(-1000, 1000, 0, off);
+                    float yRadius = ExtraMath.Osc(-150f, 0f, 1, off) + ExtraMath.Osc(-1000, 1000, 0f, offset: off);
+                    Vector3 initialPosition = new Vector3(xRadius, yRadius, yRadius);
+                    platform.initialPosition = initialPosition;
+                }
+                else
+                {
+                    Vector3 initialPosition = new Vector3(xOvalRadius, -yOvalRadius / 2f, yOvalRadius);
+                    platform.initialPosition = initialPosition;
+                }
+
 
                 //Calculate the new rotation of this point
                 //We need to offset the radians
@@ -327,19 +349,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 float maxRadiansOffset = MathHelper.TwoPi;
                 float offset = completionRatio * maxRadiansOffset;
                 float rotationRadians = offset + radiansToRotate;
-                xOvalRadius = 800 + ExtraMath.Osc(-500, 100f, speed: i * 0.2f, offset: i);
-                Matrix rotationMatrix = Matrix.CreateFromAxisAngle(new Vector3(0f, 1, 0.5f + ExtraMath.Osc(-0.5f, 0.5f, speed: 0.3f, i)), rotationRadians);
+
+                Matrix rotationMatrix = Matrix.CreateFromAxisAngle(new Vector3(0.1F, 1, 0.5f + ExtraMath.Osc(-0.5f, 0.5f, speed: 0.3f, i)), rotationRadians);
 
                 //Calculate the rotated position of the platform
                 platform.rotatedPosition = Vector3.Transform(platform.initialPosition, rotationMatrix);
 
                 //Calculate the scale of this platform
                 float zPosition = platform.rotatedPosition.Z + xOvalRadius;
-                float zScale = 1f - (zPosition / (xOvalRadius*2f));      
+                float zScale = 1f - (zPosition / (xOvalRadius * 2f));
                 platform.scale = MathHelper.Lerp(0.2f, 1f, zScale);
-      
+
                 float range = MathHelper.ToRadians(5);
-                platform.rotation = MathHelper.Lerp(-range, range, zScale);
+                platform.rotation = (new Vector2(platform.rotatedPosition.X, platform.rotatedPosition.Y) - Vector2.Zero).ToRotation();
                 platform.color = Color.Lerp(Color.Black, Color.White, EasingFunction.OutExpo(zScale));
             }
             Main.windSpeedTarget = 2;
@@ -368,7 +390,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private ManagedRenderTarget _reflectionGradientRT;
         private ManagedRenderTarget _reflectionRT;
         private ManagedRenderTarget _magicGroundRT;
-     
+
         public override void Load()
         {
             base.Load();
@@ -394,7 +416,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _reflectionRT = ManagedRenderTarget.New(GetScreenSize);
             _magicGroundRT = ManagedRenderTarget.New(GetScreenSize);
             //Create a new platform manager
-            _platformManager = new BlackSeaPlatformManager(10);
+            _platformManager = new BlackSeaPlatformManager(24);
             _starParticleManager = new LittleStarParticleManager(250, 16);
         }
 
@@ -422,7 +444,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _starParticleManager.Draw();
             DrawHoveringPlatform(spriteBatch);
             spriteBatch.End();
-         
+
             graphicsDevice.SetRenderTarget(null);
         }
 
@@ -481,7 +503,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             graphicsDevice.SetRenderTarget(_magicGroundRT);
             graphicsDevice.Clear(Color.Transparent);
 
-      
+
             Effect reflectionCombineEffect = GameShaders.Misc["LunarVeil:SingularReflection"].Shader;
             float mipBias = 1;
             float reflectionDistance = 512;
@@ -533,7 +555,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void DrawBlackHurricaneRTToScreen(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            if (!Main.gameMenu)
+            if (!Main.gameMenu && NPC.AnyNPCs(ModContent.NPCType<EStyr>()))
             {
                 spriteBatch.GraphicsDevice.Clear(Color.Transparent);
                 spriteBatch.End();
@@ -543,7 +565,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 spriteBatch.Draw(_blackHurricaneRT, Vector2.Zero, drawColor);
                 spriteBatch.End();
 
-          
+
                 spriteBatch.Begin();
                 DrawHoveringPlatform(spriteBatch);
             }
@@ -554,9 +576,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ApplyReflection(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
         {
-            if(layer == RenderLayers.ForegroundWater && !Main.gameMenu)
+            if (layer == RenderLayers.ForegroundWater && !Main.gameMenu && NPC.AnyNPCs(ModContent.NPCType<EStyr>()))
             {
-              //  spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+                //  spriteBatch.GraphicsDevice.Clear(Color.Transparent);
                 spriteBatch.Draw(_magicGroundRT, Vector2.Zero, Color.White * 0.95f);
 
             }
@@ -571,7 +593,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void PostUpdateNPCs()
         {
             base.PostUpdateNPCs();
-
+            if (InputHelper.KeyDown(Keys.H))
+            {
+                _starParticleManager = new LittleStarParticleManager(500, 16);
+                _platformManager = new BlackSeaPlatformManager(50);
+            }
             DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
             DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
             _spinTimer++;
@@ -663,7 +689,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             Vector2 drawPos = drawCenter - screenPos;
             Vector2 drawOrigin = incresionDiskRect.Size() / 2;
-            float drawScale =  1.75f;
+            float drawScale = 1.75f;
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, _singularityRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
 
             incresionDiskDrawColor = Color.Cyan;
