@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
+using ReLogic.Threading;
 using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Core;
 using Stellamod.Core.MoonWaters;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Effects;
+using Terraria.Graphics.Light;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -64,12 +66,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     public class LittleStarParticleManager
     {
         private float _timer;
-        private UnifiedRandom _starRandom;
         private readonly VertexPositionColor[] _particleVertexBufferArr;
-
-        private FastNoiseLite _fastNoise;
+        private readonly Vector2[] _particleOldPos;
+        private readonly Vector2[] _trailWidths;
+        private readonly FastNoiseLite _fastNoise;
+        private readonly float[] _noiseValues;
         public LittleStarParticleManager(int particleCount, int trailLength)
         {
+            _fastNoise = new FastNoiseLite();
             ParticleCount = particleCount;
             TrailLength = trailLength;
 
@@ -78,6 +82,25 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             int verticesPerPosition = 6;
             int vertexCount = particleCount * trailLength * verticesPerPosition;
             _particleVertexBufferArr = new VertexPositionColor[vertexCount];
+            _particleOldPos = new Vector2[particleCount * trailLength];
+
+            //We can pre calculate the uv floats since it's always the same
+            //We increase the trail length by 1 here because in the trailing functionwe need to get the next point, this last position is basically just a duplicate
+            _trailWidths = new Vector2[trailLength + 1];
+            for(int i = 0; i < _trailWidths.Length; i++)
+            {
+                float ratio = (float)i / (float)trailLength;
+                _trailWidths[i] = GetTrailWidth(ratio) * Vector2.One;
+            }
+
+
+            //calculate noise values of each particle
+            _noiseValues = new float[particleCount];
+            for(int n = 0; n < _noiseValues.Length; n++)
+            {
+                _noiseValues[n] = _fastNoise.GetNoise(n, n) * 0.5f + 0.5f;
+                _noiseValues[n] *= 0.5f;
+            }
         }
 
         public readonly int ParticleCount;
@@ -85,6 +108,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public float xOvalRadius;
         public float yOvalRadius;
 
+  
         /// <summary>
         /// Calculate the position of the particle at specific a timestep
         /// </summary>
@@ -122,89 +146,127 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 flatPosition = new Vector2(rotatedPosition.X, rotatedPosition.Y);
             return flatPosition;
         }
-        public Vector2 GetRotation(float time, int index)
+
+
+        public Vector2 GetRotation(int particleIndex, int index)
         {
+            Vector2 prev;
+            Vector2 next;
+
+            /*
             Vector2 prev = CalculateParticlePosition(time - 1, index);
             Vector2 next = CalculateParticlePosition(time + 1, index);
-            return Vector2.Normalize(next - prev).RotatedBy(MathHelper.Pi / 2);
+            */
+
+
+
+            if (index > 0 && index < TrailLength - 1)
+            {
+                //Read from the old pos array
+                int oldPosIndex = particleIndex * TrailLength + index;
+                next = _particleOldPos[oldPosIndex];
+                prev = _particleOldPos[oldPosIndex + 1];
+                return Vector2.Normalize(next - prev).RotatedBy(MathHelper.Pi / 2);
+            }
+            else
+            {
+                return Vector2.One;
+            }
+
         }
 
         private void SimulateParticles()
         {
-
             float numPoints = TrailLength;
             int numVerticesPerParticle = TrailLength * 6;
-            _starRandom ??= new UnifiedRandom();
-
-            _fastNoise ??= new FastNoiseLite();
+  
             _fastNoise.SetFrequency(2);
-
-            Parallel.For(0, ParticleCount, i =>
+            //Shift our position array backward
+            FastParallel.For(0, ParticleCount, delegate (int start, int end, object context) 
             {
-                float noise = _fastNoise.GetNoise(i, i) * 0.5f + 0.5f;
-
-                float widthMultiplier = 1f;
-                if (noise > 0.8f)
-                    widthMultiplier *= 8;
-                Color black = Color.Black;
-
-                for (int j = 0; j < TrailLength; j++)
+                for (int i = start; i < end; i++)
                 {
-                    //Substract to get the previous frames of the particle
-                    float timeStep = _timer - j;
-
-                    //Now we have the position of the particle at this specific time step
-
-                    Vector2 currentPosition = CalculateParticlePosition(timeStep, i);
-                    Vector2 prevPosition = CalculateParticlePosition(timeStep - 1, i);
-
-                    float uv = (float)j / numPoints;
-                    float uv2 = (float)(j + 1) / numPoints;
-
-                    //Calculate the widths
-
-                    Vector2 width = GetTrailWidth(uv) * Vector2.One * widthMultiplier;
-                    Vector2 width2 = GetTrailWidth(uv2) * Vector2.One * widthMultiplier;
-
-                    //Calculate the rotation offsets
-                    Vector2 off1 = GetRotation(timeStep, i) * width;
-                    Vector2 off2 = GetRotation(timeStep - 1, i) * width2;
-
-                    Color col1 = GetTrailColor(uv);
-                    Color col2 = GetTrailColor(uv2);
-
-                    col1 = Color.Lerp(col1, black, noise * 0.5f);
-                    col2 = Color.Lerp(col2, black, noise * 0.5f);
-
-                    if (i >= ParticleCount / 2)
+                    for (int j = TrailLength - 1; j > 0; j--)
                     {
-
-                        //   col1 = Color.Lerp(col1, black, 0.5f);
-                        //   col2 = Color.Lerp(col2, black, 0.5f);
+                        int oldPosIndex = i * TrailLength + j;
+                        _particleOldPos[oldPosIndex] = _particleOldPos[oldPosIndex - 1];
                     }
+                }
+            });
 
-                    //Apply camera offset
-                    currentPosition += Main.Camera.Center;
-                    prevPosition += Main.Camera.Center;
+            //Simulate all of our particles
+            FastParallel.For(0, ParticleCount, delegate (int start, int end, object context) 
+            {
+                for (int i = start; i < end; i++)
+                {
+                    //Fast noise returns a value between -1 and 1, so we're normalizing it to 0-1 for the lerp function
+                    float noiseColorInterpolant = _noiseValues[i];
 
-                    //Calcualte the index of the vertices
-                    int primIndex = i * numVerticesPerParticle + j * 6;
-                    _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(currentPosition + off1, 0f), col1);
+                    //Width multiplier for the trail
+                    float widthMultiplier = 1f;
+                    if (noiseColorInterpolant > 0.4f)
+                        widthMultiplier *= 8;
+                    Color black = Color.Black;
+                    for (int j = 0; j < TrailLength; j++)
+                    {
+                        //Substract to get the previous frames of the particle
+                        float timeStep = _timer - j;
 
-                    primIndex++;
-                    _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(currentPosition - off1, 0f), col1);
+                        //Now we have the position of the particle at this specific time step
+                        Vector2 currentPosition;
+                        Vector2 prevPosition;
 
-                    primIndex++;
-                    _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(prevPosition + off2, 0f), col2);
+                        if (j > 0 && j < TrailLength - 1)
+                        {
+                            //Read from the old pos array
+                            int oldPosIndex = i * TrailLength + j;
+                            currentPosition = _particleOldPos[oldPosIndex];
+                            prevPosition = _particleOldPos[oldPosIndex + 1];
+                        }
+                        else
+                        {
+                            currentPosition = CalculateParticlePosition(timeStep, i);
+                            prevPosition = CalculateParticlePosition(timeStep - 1, i);
+                            _particleOldPos[i * TrailLength] = currentPosition;
+                        }
 
-                    primIndex++;
-                    _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(prevPosition + off2, 0f), col2);
+                        //Calculate the widths
+                        Vector2 width = _trailWidths[j] * widthMultiplier;
+                        Vector2 width2 = _trailWidths[j + 1] * widthMultiplier;
 
-                    primIndex++;
-                    _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(prevPosition - off2, 0f), col2);
+                        //Calculate the rotation offsets
+                        Vector2 off1 = GetRotation(i, j) * width;
+                        Vector2 off2 = GetRotation(i, j + 1) * width2;
 
-                    primIndex++;
-                    _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(currentPosition - off1, 0f), col1);
+                        Color col1 = Color.White;
+                        Color col2 = Color.White;
+
+                        col1 = Color.Lerp(col1, black, noiseColorInterpolant);
+                        col2 = Color.Lerp(col2, black, noiseColorInterpolant);
+
+                        //Apply camera offset
+                        currentPosition += Main.Camera.Center;
+                        prevPosition += Main.Camera.Center;
+
+                        //Calcualte the index of the vertices
+                        int primIndex = i * numVerticesPerParticle + j * 6;
+                        _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(currentPosition + off1, 0f), col1);
+
+                        primIndex++;
+                        _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(currentPosition - off1, 0f), col1);
+
+                        primIndex++;
+                        _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(prevPosition + off2, 0f), col2);
+
+                        primIndex++;
+                        _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(prevPosition + off2, 0f), col2);
+
+                        primIndex++;
+                        _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(prevPosition - off2, 0f), col2);
+
+                        primIndex++;
+                        _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(currentPosition - off1, 0f), col1);
+                    }
                 }
             });
         }
@@ -215,15 +277,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             SimulateParticles();
         }
 
-
-        private Color GetTrailColor(float completionRatio)
-        {
-            return Color.White;
-        }
-
         private float GetTrailWidth(float completionRatio)
         {
-            return MathHelper.SmoothStep(0.5f, 0, completionRatio);
+            return MathHelper.SmoothStep(0.66f, 0, completionRatio);
         }
 
         public void Draw()
@@ -234,6 +290,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             graphicsDevice.DrawUserPrimitives(
               PrimitiveType.TriangleList, _particleVertexBufferArr, 0, _particleVertexBufferArr.Length / 3);
+
         }
     }
     public class BlackSeaPlatformManager
@@ -595,7 +652,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             base.PostUpdateNPCs();
             if (InputHelper.KeyDown(Keys.H))
             {
-                _starParticleManager = new LittleStarParticleManager(500, 16);
+                _starParticleManager = new LittleStarParticleManager(250, 16);
                 _platformManager = new BlackSeaPlatformManager(50);
             }
             DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
