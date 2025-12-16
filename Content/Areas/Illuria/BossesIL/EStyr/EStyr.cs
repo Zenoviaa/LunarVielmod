@@ -1,0 +1,749 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using ReLogic.Content;
+using ReLogic.Threading;
+using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
+using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
+using Stellamod.Core;
+using Stellamod.Core.MoonWaters;
+using Stellamod.Core.RenderTargetSystem;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Helpers;
+using Stellamod.Skies;
+using Stellamod.Systems.MiscellaneousMath;
+using Stellamod.Trails;
+using Stellamod.UI.Systems;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.Audio;
+using Terraria.Graphics.Effects;
+using Terraria.Graphics.Light;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.Utilities;
+
+namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
+{
+    public class BlackSeaPlatform
+    {
+        private readonly Asset<Texture2D> _platformTextureAsset;
+        public BlackSeaPlatform(Asset<Texture2D> platformTextureAsset)
+        {
+            _platformTextureAsset = platformTextureAsset;
+            scale = 1f;
+            randScale = Main.rand.NextFloat(-0.2f, 0.2f);
+        }
+
+        public Vector3 initialPosition;
+        public Vector3 rotatedPosition;
+        public float rotation;
+        public float scale;
+        public float randScale;
+        public Color color;
+        public void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            Texture2D textureToDraw = _platformTextureAsset.Value;
+            Vector2 drawOrigin = new Vector2(textureToDraw.Width / 2f, 0f);
+            Vector2 drawPosition = new Vector2(rotatedPosition.X, rotatedPosition.Y);
+            drawPosition += Main.Camera.Center;
+            drawPosition -= screenPos;
+
+            float drawScale = scale + randScale;
+            spriteBatch.Draw(textureToDraw, drawPosition, null, color, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
+    }
+
+    public class PlatformZLayerComparer : IComparer<BlackSeaPlatform>
+    {
+        public int Compare(BlackSeaPlatform x, BlackSeaPlatform y)
+        {
+            return x.rotatedPosition.Y.CompareTo(y.rotatedPosition.Y);
+        }
+    }
+
+    /// <summary>
+    /// Manages the little particles that orbit around the singularity, lots of little particles
+    /// </summary>
+    public class LittleStarParticleManager
+    {
+        private float _timer;
+        private UnifiedRandom _starRandom;
+        private readonly VertexPositionColor[] _particleVertexBufferArr;
+
+        private FastNoiseLite _fastNoise;
+        public LittleStarParticleManager(int particleCount, int trailLength)
+        {
+            ParticleCount = particleCount;
+            TrailLength = trailLength;
+
+            //Calculate the number of vertices that we'll need to draw the tornado
+            //This should be equal to the particle count times the trail length times the nubmer of vertices per point
+            int verticesPerPosition = 6;
+            int vertexCount = particleCount * trailLength * verticesPerPosition;
+            _particleVertexBufferArr = new VertexPositionColor[vertexCount];
+        }
+
+        public readonly int ParticleCount;
+        public readonly int TrailLength;
+        public float xOvalRadius;
+        public float yOvalRadius;
+
+        /// <summary>
+        /// Calculate the position of the particle at specific a timestep
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public Vector2 CalculateParticlePosition(float time, int index)
+        {
+            const float revolutionTime = 100f;
+
+            //Calculate the rotation offset for this particle
+            const float maxRadiansOffset = MathHelper.TwoPi;
+
+            float particleRatio = (float)index / (float)TrailLength;
+            float particleRadiansOffset = particleRatio * maxRadiansOffset;
+            float timeRadians = time / revolutionTime * MathHelper.TwoPi;
+            float rotationRadians = particleRadiansOffset + timeRadians;
+
+
+            //Calculate the initial position of the particle
+
+            float off = index * 0.1f;
+            float xRadius = 200f + ExtraMath.Osc(-500, 500, 0, off);
+            float yRadius = ExtraMath.Osc(-150f, 0f, 1, off) + ExtraMath.Osc(-500f, 500f, 0f, offset: off);
+            Vector3 initialPosition = new Vector3(xRadius, yRadius / 2f, yRadius);
+
+            //Create the rotation matrix and Rotate the particle
+            Matrix rotationMatrix = Matrix.CreateFromAxisAngle(new Vector3(1, 1, 0.25f), rotationRadians);
+            Vector3 rotatedPosition = Vector3.Transform(initialPosition, rotationMatrix);
+            Vector2 flatPosition = new Vector2(rotatedPosition.X, rotatedPosition.Y);
+            return flatPosition;
+        }
+        public Vector2 GetRotation(float time, int index)
+        {
+            Vector2 prev = CalculateParticlePosition(time - 1, index);
+            Vector2 next = CalculateParticlePosition(time + 1, index);
+            return Vector2.Normalize(next - prev).RotatedBy(MathHelper.Pi / 2);
+        }
+
+        private void SimulateParticles()
+        {
+     
+            float numPoints = TrailLength;
+            int numVerticesPerParticle = TrailLength * 6;
+            _starRandom ??= new UnifiedRandom();
+
+            _fastNoise ??= new FastNoiseLite();
+            _fastNoise.SetFrequency(2);
+        
+            Parallel.For(0, ParticleCount, i =>
+            {
+                float noise = _fastNoise.GetNoise(i, i) * 0.5f + 0.5f;
+
+                float widthMultiplier = 1f;
+                if (noise > 0.8f)
+                    widthMultiplier *= 8;
+                Color black = Color.Black;
+
+                for (int j = 0; j < TrailLength; j++)
+                {
+                    //Substract to get the previous frames of the particle
+                    float timeStep = _timer - j;
+
+                    //Now we have the position of the particle at this specific time step
+
+                    Vector2 currentPosition = CalculateParticlePosition(timeStep, i);
+                    Vector2 prevPosition = CalculateParticlePosition(timeStep - 1, i);
+
+                    float uv = (float)j / numPoints;
+                    float uv2 = (float)(j + 1) / numPoints;
+
+                    //Calculate the widths
+            
+                    Vector2 width = GetTrailWidth(uv) * Vector2.One * widthMultiplier;
+                    Vector2 width2 = GetTrailWidth(uv2) * Vector2.One * widthMultiplier;
+
+                    //Calculate the rotation offsets
+                    Vector2 off1 = GetRotation(timeStep, i) * width;
+                    Vector2 off2 = GetRotation(timeStep - 1, i) * width2;
+
+                    Color col1 = GetTrailColor(uv);
+                    Color col2 = GetTrailColor(uv2);
+
+                    col1 = Color.Lerp(col1, black, noise * 0.5f);
+                    col2 = Color.Lerp(col2, black, noise * 0.5f);
+
+                    //Apply camera offset
+                    currentPosition += Main.Camera.Center;
+                    prevPosition += Main.Camera.Center;
+
+                    //Calcualte the index of the vertices
+                    int primIndex = i * numVerticesPerParticle + j * 6;
+                    _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(currentPosition + off1, 0f), col1);
+
+                    primIndex++;
+                    _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(currentPosition - off1, 0f), col1);
+
+                    primIndex++;
+                    _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(prevPosition + off2, 0f), col2);
+
+                    primIndex++;
+                    _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(prevPosition + off2, 0f), col2);
+
+                    primIndex++;
+                    _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(prevPosition - off2, 0f), col2);
+
+                    primIndex++;
+                    _particleVertexBufferArr[primIndex] = new VertexPositionColor(new Vector3(currentPosition - off1, 0f), col1);
+                }
+            });
+        }
+
+        public void Update()
+        {
+            _timer++;
+            SimulateParticles();
+        }
+
+
+        private Color GetTrailColor(float completionRatio)
+        {
+            return Color.White;
+        }
+
+        private float GetTrailWidth(float completionRatio)
+        {
+            return MathHelper.SmoothStep(0.5f, 0, completionRatio);
+        }
+
+        public void Draw()
+        {
+            var particleShader = TileShadowShader.Instance;
+            particleShader.ApplyPasses();
+
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            graphicsDevice.DrawUserPrimitives(
+              PrimitiveType.TriangleList, _particleVertexBufferArr, 0, _particleVertexBufferArr.Length / 3);
+        }
+    }
+    public class BlackSeaPlatformManager
+    {
+        private float _timer;
+        private float _oscTimer;
+        private readonly BlackSeaPlatform[] _platforms;
+        private readonly BlackSeaPlatform[] _platformsByZLayer;
+        private PlatformZLayerComparer _zLayerComparer;
+        public BlackSeaPlatformManager()
+        {
+            _platforms = new BlackSeaPlatform[Platform_Count];
+
+            Asset<Texture2D>[] assets = GetAssets();
+            //Initialize all of our platforms
+            for(int i = 0; i < _platforms.Length; i++)
+            {
+                Asset<Texture2D> asset = assets[Main.rand.Next(0, assets.Length)];
+                _platforms[i] = new BlackSeaPlatform(asset);
+            }
+
+            xOvalRadius = 196;
+            yOvalRadius = 64;
+        }
+        public BlackSeaPlatformManager(int platformCount)
+        {
+            _platforms = new BlackSeaPlatform[platformCount];
+            _platformsByZLayer = new BlackSeaPlatform[platformCount];
+            _zLayerComparer = new PlatformZLayerComparer();
+            Asset<Texture2D>[] assets = GetAssets();
+            //Initialize all of our platforms
+            for (int i = 0; i < _platforms.Length; i++)
+            {
+                Asset<Texture2D> asset = assets[Main.rand.Next(0, assets.Length)];
+                _platforms[i] = new BlackSeaPlatform(asset);
+                _platformsByZLayer[i] = _platforms[i];
+            }
+
+            xOvalRadius = 196;
+            yOvalRadius = 64;
+        }
+
+        public float xOvalRadius;
+        public float yOvalRadius;
+
+        public const int Platform_Count = 100;
+        public const string Platform_FileName = "SingularPlatform_";
+        private Asset<Texture2D>[] GetAssets()
+        {
+            int numUniqueAssets = 1;
+            Asset<Texture2D>[] platformTextureAssets = new Asset<Texture2D>[numUniqueAssets];
+            //ANaing scheme for the textures is just SingularPlatform_[num]
+            for(int i = 0; i < numUniqueAssets; i++)
+            {
+                string rootTexturePath = this.GetType().DirectoryHere() + $"/{Platform_FileName}";
+                string platformTexturePath = $"{rootTexturePath}{i}";
+                Asset<Texture2D> platformTextureAsset = ModContent.Request<Texture2D>(platformTexturePath);
+                platformTextureAssets[i] = platformTextureAsset;
+            }
+            return platformTextureAssets;
+
+        }
+
+        public void Update()
+        {
+            _timer++;
+            //_timer = Main.Camera.Center.X / 16f;
+            SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            fallSystem.noWings = true;
+            fallSystem.inSpace = true;
+            fallSystem.hoveringPlatform = true;
+            fallSystem.hoverPlatformY = 16000;
+            const float revolutionTime = 400;
+
+            //Calculate the radians offset
+            float radiansToRotate = _timer / revolutionTime * MathHelper.TwoPi;
+
+    
+            yOvalRadius = 100;
+
+       
+            for(int i = 0; i < _platforms.Length; i++)
+            {
+                BlackSeaPlatform platform = _platforms[i];
+                //Calculate the initial position of the platform
+                //Every platform would have the same initial position
+                Vector3 initialPosition = new Vector3(xOvalRadius, yOvalRadius / 2f, yOvalRadius);
+                platform.initialPosition = initialPosition;
+
+                //Calculate the new rotation of this point
+                //We need to offset the radians
+                float completionRatio = (float)i / (float)_platforms.Length;
+                float maxRadiansOffset = MathHelper.TwoPi;
+                float offset = completionRatio * maxRadiansOffset;
+                float rotationRadians = offset + radiansToRotate;
+                xOvalRadius = 800 + ExtraMath.Osc(-500, 100f, speed: i * 0.2f, offset: i);
+                Matrix rotationMatrix = Matrix.CreateFromAxisAngle(new Vector3(0f, 1, 0.5f + ExtraMath.Osc(-0.5f, 0.5f, speed: 0.3f, i)), rotationRadians);
+
+                //Calculate the rotated position of the platform
+                platform.rotatedPosition = Vector3.Transform(platform.initialPosition, rotationMatrix);
+
+                //Calculate the scale of this platform
+                float zPosition = platform.rotatedPosition.Z + xOvalRadius;
+                float zScale = 1f - (zPosition / (xOvalRadius*2f));      
+                platform.scale = MathHelper.Lerp(0.2f, 1f, zScale);
+      
+                float range = MathHelper.ToRadians(5);
+                platform.rotation = MathHelper.Lerp(-range, range, zScale);
+                platform.color = Color.Lerp(Color.Black, Color.White, EasingFunction.OutExpo(zScale));
+            }
+            Main.windSpeedTarget = 2;
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            if (_platformsByZLayer == null)
+                return;
+
+            Array.Sort(_platformsByZLayer, _zLayerComparer);
+            for (int i = 0; i < _platformsByZLayer.Length; i++)
+            {
+                BlackSeaPlatform platform = _platformsByZLayer[i];
+                platform.Draw(spriteBatch, screenPos);
+            }
+        }
+    }
+
+    [Autoload(Side = ModSide.Client)]
+    public class BlackSeaRenderingEdit : ModSystem
+    {
+        private BlackSeaPlatformManager _platformManager;
+        private LittleStarParticleManager _starParticleManager;
+        private ManagedRenderTarget _blackHurricaneRT;
+        private ManagedRenderTarget _reflectionGradientRT;
+        private ManagedRenderTarget _reflectionRT;
+        private ManagedRenderTarget _magicGroundRT;
+     
+        public override void Load()
+        {
+            base.Load();
+            On_Main.CheckMonoliths += RenderBlackHurricaneRT;
+            On_Main.DrawNPCs += DrawBlackHurricaneRTToScreen;
+            On_OverlayManager.Draw += ApplyReflection;
+
+        }
+
+
+        public override void Unload()
+        {
+            base.Unload();
+            On_Main.CheckMonoliths -= RenderBlackHurricaneRT;
+            On_Main.DrawNPCs -= DrawBlackHurricaneRTToScreen;
+            On_OverlayManager.Draw -= ApplyReflection;
+        }
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            _blackHurricaneRT = ManagedRenderTarget.New(GetScreenSize);
+            _reflectionGradientRT = ManagedRenderTarget.New(GetScreenSize);
+            _reflectionRT = ManagedRenderTarget.New(GetScreenSize);
+            _magicGroundRT = ManagedRenderTarget.New(GetScreenSize);
+            //Create a new platform manager
+            _platformManager = new BlackSeaPlatformManager(10);
+            _starParticleManager = new LittleStarParticleManager(250, 16);
+        }
+
+        public override void OnModUnload()
+        {
+            base.OnModUnload();
+        }
+
+        private void RenderToBlackHurricaneRT()
+        {
+            if (Main.gameMenu)
+                return;
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            graphicsDevice.SetRenderTarget(_blackHurricaneRT);
+            graphicsDevice.Clear(Color.Transparent);
+
+            spriteBatch.Begin();
+            Vector2 drawCenter = Main.Camera.Center;
+            drawCenter.Y += ExtraMath.Osc(-2, 2, speed: 8);
+            Vector2 screenPos = Main.screenPosition;
+            DrawSingularity(drawCenter, screenPos);
+            _platformManager.Draw(spriteBatch, screenPos);
+            _starParticleManager.Draw();
+            DrawHoveringPlatform(spriteBatch);
+            spriteBatch.End();
+         
+            graphicsDevice.SetRenderTarget(null);
+        }
+
+        private void RenderToReflectionGradientRT()
+        {
+            if (Main.gameMenu)
+                return;
+
+            SingularityFallSystem singularityFallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            //Calculate a gradient texture so we know where the reflection mapping goes
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            graphicsDevice.SetRenderTarget(_reflectionGradientRT);
+            graphicsDevice.Clear(Color.Black);
+
+            YGradientShader yGradientShader = YGradientShader.Instance;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, yGradientShader.Effect);
+
+            Vector2 drawPosition = new Vector2(Main.Camera.Center.X, singularityFallSystem.hoverPlatformY);
+            drawPosition -= Main.screenPosition;
+            drawPosition.Y += 48;
+            drawPosition.X -= _reflectionGradientRT.Width / 2;
+
+            spriteBatch.Draw(_reflectionGradientRT, drawPosition, null, Color.White, 0, Vector2.Zero, new Vector2(1f, 1), SpriteEffects.None, 0f);
+            spriteBatch.End();
+
+
+            graphicsDevice.SetRenderTarget(null);
+        }
+        private void RenderToReflectionRT()
+        {
+            if (Main.gameMenu)
+                return;
+
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            graphicsDevice.SetRenderTarget(_reflectionRT);
+            graphicsDevice.Clear(Color.Transparent);
+
+            ManagedRenderTarget reflectionRT = ModContent.GetInstance<MoonWaterSystem>().GetReflectionRenderTarget();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
+
+            spriteBatch.Draw(reflectionRT, Vector2.Zero - new Vector2(Main.offScreenRange), null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+
+            spriteBatch.End();
+            graphicsDevice.SetRenderTarget(null);
+        }
+
+        private void RenderToMagicGroundRT()
+        {
+            if (Main.gameMenu)
+                return;
+
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            graphicsDevice.SetRenderTarget(_magicGroundRT);
+            graphicsDevice.Clear(Color.Transparent);
+
+      
+            Effect reflectionCombineEffect = GameShaders.Misc["LunarVeil:SingularReflection"].Shader;
+            float mipBias = 1;
+            float reflectionDistance = 512;
+            Vector2 reflectionTexelSize = (Vector2.One * mipBias) / new Vector2((float)_reflectionRT.Width, (float)_reflectionRT.Height);
+
+            reflectionCombineEffect.Parameters["reflectionDistance"].SetValue(reflectionDistance);
+            reflectionCombineEffect.Parameters["reflectionTexelSize"].SetValue(reflectionTexelSize);
+            reflectionCombineEffect.Parameters["reflectionPower"].SetValue(4);
+            reflectionCombineEffect.Parameters["HeightMapTexture"].SetValue(_reflectionGradientRT);
+
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, reflectionCombineEffect);
+
+            spriteBatch.Draw(_reflectionRT, Vector2.Zero, Color.White);
+
+            spriteBatch.End();
+            graphicsDevice.SetRenderTarget(null);
+        }
+
+        private void DrawHoveringPlatform(SpriteBatch spriteBatch)
+        {
+            SingularityFallSystem singularityFallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            if (singularityFallSystem.hoveringPlatform)
+            {
+                Texture2D bloomLine = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+                Vector2 drawOrigin = new Vector2(bloomLine.Size().X / 2, 0);
+                float rotation = MathHelper.PiOver2;
+                Color drawColor = Color.White;
+                drawColor.A = 0;
+                drawColor *= 0.1375f;
+                drawColor *= ExtraMath.Osc(0.95f, 1f);
+                Vector2 drawPosition = new Vector2(Main.LocalPlayer.Center.X, singularityFallSystem.hoverPlatformY);
+                drawPosition -= Main.screenPosition;
+                drawPosition.Y += 48;
+                Vector2 drawScale = new Vector2(1, 2);
+                spriteBatch.Draw(bloomLine, drawPosition, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(bloomLine, drawPosition, null, drawColor, -rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            }
+        }
+        private void RenderBlackHurricaneRT(On_Main.orig_CheckMonoliths orig)
+        {
+            RenderToBlackHurricaneRT();
+            RenderToReflectionRT();
+            RenderToReflectionGradientRT();
+            RenderToMagicGroundRT();
+            orig();
+        }
+
+        private void DrawBlackHurricaneRTToScreen(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            if (!Main.gameMenu)
+            {
+                spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+                spriteBatch.End();
+                spriteBatch.Begin();
+
+                Color drawColor = Color.Lerp(Color.White, Color.Black, 0.35f);
+                spriteBatch.Draw(_blackHurricaneRT, Vector2.Zero, drawColor);
+                spriteBatch.End();
+
+          
+                spriteBatch.Begin();
+                DrawHoveringPlatform(spriteBatch);
+            }
+
+            orig(self, behindTiles);
+        }
+
+
+        private void ApplyReflection(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
+        {
+            if(layer == RenderLayers.ForegroundWater && !Main.gameMenu)
+            {
+              //  spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+                spriteBatch.Draw(_magicGroundRT, Vector2.Zero, Color.White * 0.95f);
+
+            }
+            orig(self, spriteBatch, layer, beginSpriteBatch);
+        }
+        public Point GetScreenSize()
+        {
+            return new Point(Main.screenTarget.Width, Main.screenTarget.Height);
+        }
+
+
+        public override void PostUpdateNPCs()
+        {
+            base.PostUpdateNPCs();
+
+            DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
+            DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
+            _spinTimer++;
+            _singularityRotation += 0.001f;
+            _platformManager?.Update();
+            _starParticleManager?.Update();
+        }
+
+        private float _incresionDiskFrameBottom;
+        private float _incresionDiskFrameTop;
+        private float _singularityRotation;
+        private float _spinTimer;
+        private string _rootTexturePath;
+        public void DrawSingularity(Vector2 drawCenter, Vector2 screenPos)
+        {
+            Vector2 drawPosition = drawCenter - screenPos;
+            _rootTexturePath = this.GetType().DirectoryHere() + "/BlackSingularity";
+            Texture2D celestialRing = ModContent.Request<Texture2D>(_rootTexturePath + "_CelestialRing").Value;
+            Vector2 ringDrawOrigin = celestialRing.Size() / 2f;
+            Color ringDrawColor = Color.White;
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            ringDrawColor *= 0.05f;
+            ringDrawColor.A = 0;
+            spriteBatch.Draw(celestialRing, drawPosition, null, ringDrawColor, _singularityRotation, ringDrawOrigin, 4, SpriteEffects.None, 0);
+
+            Texture2D texture = ModContent.Request<Texture2D>(_rootTexturePath).Value;
+
+            Vector2 drawOrigin = texture.Size() / 2f;
+            Vector2 drawScale = Vector2.One * 3;
+
+            float spinRotOffset = _spinTimer * -0.01f;
+            SparkyShader sparkyShader = SparkyShader.Instance;
+            sparkyShader.InnerColor = Color.White;
+            sparkyShader.OuterColor = Main.DiscoColor;
+            sparkyShader.Distortion = -0.15f;
+            sparkyShader.Time = -Main.GlobalTimeWrappedHourly * 40;
+            sparkyShader.Tiling = Vector2.One * 2;
+            spriteBatch.Restart(blendState: BlendState.Additive, effect: sparkyShader.Effect);
+
+
+            var lightTexture = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
+            Vector2 lightDrawOrigin = lightTexture.Size() / 2f;
+
+            float sparkyRot = _singularityRotation + spinRotOffset;
+            float scaleOsc2 = ExtraMath.Osc(0.4f, 0.5f, speed: 1);
+            spriteBatch.Draw(lightTexture, drawPosition, null, Color.White * 0.75f, sparkyRot, lightDrawOrigin, drawScale * 3 * scaleOsc2, SpriteEffects.None, 0);
+            spriteBatch.Draw(lightTexture, drawPosition, null, Color.White * 0.25f, sparkyRot + 0.2f, lightDrawOrigin, drawScale * 8 * scaleOsc2, SpriteEffects.None, 0);
+
+
+            var shader = SingularityShader.Instance;
+            spriteBatch.Restart(effect: shader.Effect);
+            spriteBatch.Draw(texture, drawPosition, null, Color.White, _singularityRotation, drawOrigin, drawScale * 1.5f * scaleOsc2, SpriteEffects.None, 0);
+            spriteBatch.RestartDefaults();
+
+            Texture2D diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SF").Value;
+            Vector2 diskDrawOrigin = diskTexture.Size() / 2f;
+            Color diskDrawColor = Color.Lerp(Color.White, Color.Lerp(Color.White, Color.Cyan, 0.15f), ExtraMath.Osc(0f, 1f, speed: 2));
+            diskDrawColor.A = 0;
+
+            float scaleOsc = ExtraMath.Osc(0.5f, 0.58f, speed: 1);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, _singularityRotation, diskDrawOrigin, drawScale * 0.8f * scaleOsc, SpriteEffects.None, 0);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, _singularityRotation, diskDrawOrigin, drawScale * 0.7f * scaleOsc, SpriteEffects.None, 0);
+
+            diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SF2").Value;
+
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor * 0.25f, _singularityRotation, diskDrawOrigin, drawScale * 0.7f * scaleOsc * new Vector2(3.5f, 0.2f), SpriteEffects.None, 0);
+            spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor * 0.5f, _singularityRotation, diskDrawOrigin, drawScale * 0.7f * scaleOsc * new Vector2(7.5f, 0.2f), SpriteEffects.None, 0);
+
+
+            Texture2D extra67 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_67").Value;
+            Vector2 extra67DrawOrigin = extra67.Size() / 2f;
+            Color extra67DrawColor = Color.Lerp(Color.White, Color.Cyan, ExtraMath.Osc(0f, 1f, speed: 2));
+            extra67DrawColor.A = 0;
+            spriteBatch.Draw(extra67, drawPosition, null, extra67DrawColor * 0.2f, _singularityRotation, extra67DrawOrigin, drawScale * 0.8f * scaleOsc, SpriteEffects.None, 0);
+            DrawIncresionDiskBottom(spriteBatch, drawCenter, screenPos, Color.White);
+            DrawIncresionDiskTop(spriteBatch, drawCenter, screenPos, Color.White);
+        }
+        private void DrawIncresionDiskBottom(SpriteBatch spriteBatch, Vector2 drawCenter, Vector2 screenPos, Color drawColor)
+        {
+            //Draw Incresion Disk
+            Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameBottom, columns: 5, frameWidth: 400, frameHeight: 200);
+            Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(_rootTexturePath + "_Disk").Value;
+
+            //Incresion Disk Draw Color
+            Color incresionDiskDrawColor = Color.White;
+            incresionDiskDrawColor *= 0.15f;
+            incresionDiskDrawColor.A = 0;
+
+            Vector2 drawPos = drawCenter - screenPos;
+            Vector2 drawOrigin = incresionDiskRect.Size() / 2;
+            float drawScale =  1.75f;
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, _singularityRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+
+            incresionDiskDrawColor = Color.Cyan;
+            incresionDiskDrawColor *= 0.25f;
+            incresionDiskDrawColor.A = 0;
+
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, _singularityRotation, drawOrigin, drawScale * 1.5f, SpriteEffects.None, 0);
+
+            incresionDiskDrawColor = Color.Purple;
+            incresionDiskDrawColor *= 0.25f;
+            incresionDiskDrawColor.A = 0;
+
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, _singularityRotation, drawOrigin, drawScale * 2, SpriteEffects.None, 0);
+        }
+
+
+        private void DrawIncresionDiskTop(SpriteBatch spriteBatch, Vector2 drawCenter, Vector2 screenPos, Color drawColor)
+        {
+            //Draw Incresion Disk
+            Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameTop, columns: 4, frameWidth: 480, frameHeight: 200);
+            Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(_rootTexturePath + "_Top").Value;
+
+            //Incresion Disk Draw Color
+            Color incresionDiskDrawColor = Color.White;
+            incresionDiskDrawColor *= 0.15f;
+            incresionDiskDrawColor.A = 0;
+
+            Vector2 drawPos = drawCenter - screenPos;
+            Vector2 drawOrigin = incresionDiskRect.Size() / 2;
+
+            float drawScale = 3f;
+            float drawRotation = _singularityRotation;
+
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
+
+    }
+    public partial class EStyr : ScarletBoss
+    {
+        //Finally time to make a secret boss, this is going to be fun :)
+        //Alright
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            Main.npcFrameCount[NPC.type] = 1;
+            NPCID.Sets.TrailCacheLength[NPC.type] = 16;
+            NPCID.Sets.TrailingMode[Type] = 3;
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+        }
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            NPC.width = 128;
+            NPC.height = 200;
+            NPC.damage = 100;
+            NPC.defense = 20;
+            NPC.lifeMax = 18000;
+            NPC.scale = 1f;
+            NPC.aiStyle = -1;
+
+            NPC.value = Item.buyPrice(gold: 5);
+            NPC.knockBackResist = 0f;
+            NPC.boss = true;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            NPC.npcSlots = 30f;
+
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EStyr");
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
+            NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
+        }
+        private void EnablePlatformArena()
+        {
+            SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            fallSystem.noWings = true;
+            fallSystem.inSpace = true;
+            fallSystem.hoveringPlatform = true;
+            fallSystem.hoverPlatformY = 16000;
+        }
+    }
+}

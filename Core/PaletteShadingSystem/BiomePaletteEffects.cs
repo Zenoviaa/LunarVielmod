@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Palettes;
@@ -13,6 +14,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.PaletteShadingSystem
 {
+    public class BlackHurricanePaletteEffect : PaletteEffect
+    {
+        public override PaletteType PaletteType => PaletteType.LunarShader;
+        public override PalettePriority Priority => PalettePriority.Medium;
+        public override bool IsActive(Player player)
+        {
+            return false;
+            return NPC.AnyNPCs(ModContent.NPCType<EStyr>());
+        }
+    }
     public class AbyssPaletteEffect : PaletteEffect
     {
         public override PaletteType PaletteType => PaletteType.LunarShader;

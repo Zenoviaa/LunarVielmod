@@ -238,6 +238,12 @@ namespace Stellamod.Core.MoonWaters
             _pixelWaterStyles = ModContent.GetContent<PixelWaterStyle>().ToArray();
         }
 
+
+        public ManagedRenderTarget GetReflectionRenderTarget()
+        {
+            return _reflectionRT;
+        }
+
         private Point GetWaterTargetSize()
         {
             return new Point(Main.waterTarget.Width, Main.waterTarget.Height);

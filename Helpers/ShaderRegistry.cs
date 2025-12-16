@@ -147,7 +147,7 @@ namespace Stellamod.Helpers
             RegisterScreenShader("LunarVeil:Blur", "Effects/Blur", EffectPriority.High);
             RegisterScreenShader("LunarVeil:BlackWhite", "Effects/BlackWhite");
             RegisterScreenShader("LunarVeil:Bloom", "Effects/Bloom");
-
+            RegisterScreenShader("LunarVeil:BlackSea", "Effects/BlackSea");
             Mod mod = Stellamod.Instance;
             foreach (var file in mod.GetFileNames())
             {
@@ -167,6 +167,7 @@ namespace Stellamod.Helpers
             RegisterMiscShader("LunarVeil:SunShadow", "Effects/SunShadow", "ScreenPass");
             RegisterMiscShader("LunarVeil:SunBlur", "Effects/SunBlur", "ScreenPass");
             RegisterMiscShader("LunarVeil:MoonWaters", "Effects/MoonWaters", "P0");
+            RegisterMiscShader("LunarVeil:SingularReflection", "Effects/SingularReflection", "P0");
 
             //White Flame Pixel Shader
             RegisterMiscShader(FireWhitePixelShaderName, "Effects/WhiteflamePixelShader", "TrailPass");
