@@ -921,6 +921,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 return;
             if (_intro)
             {
+                NPC.boss = true;
                 BlackSea blackSea = ScreenShader.GetInstance<BlackSea>();
                 blackSea.alpha = 1f;
 
@@ -929,6 +930,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
             else
             {
+                NPC.boss = false;
                 for (int i = 0; i < Main.musicFade.Length; i++)
                 {
                     Main.musicFade[i] = 0;

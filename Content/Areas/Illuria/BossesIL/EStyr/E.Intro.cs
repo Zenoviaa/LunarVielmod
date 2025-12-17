@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -70,6 +71,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 NPC.TargetClosest();
                 TargetVector = NPC.velocity;
+                SoundStyle starCharge = new SoundStyle("Stellamod/Assets/Sounds/StarCharge");
+                starCharge.Pitch = -0.6f;
+                SoundEngine.PlaySound(starCharge);
             }
 
             float handOutTime = 200f;
@@ -137,6 +141,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                 ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.TintScreen(Color.Black, 0.5f, 30);
+                SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/VoidBlasterExplosionBomb2");
+                explosionSound.Pitch = -0.3f;
+                SoundEngine.PlaySound(explosionSound);
             }
 
             //Domain expansion time
@@ -192,6 +199,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 ShowNamePlate();
                 _showNamePlate = true;
+                SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/VTeleportOut");
+                SoundEngine.PlaySound(explosionSound);
             }
             _intro = true;
             float domainShrinkTime = 60f;
