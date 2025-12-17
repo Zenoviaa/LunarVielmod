@@ -90,7 +90,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 rot += Main.GlobalTimeWrappedHourly * 4;
                 Vector2 offset = rot.ToRotationVector2() * ExtraMath.Osc(54, 64, speed: 1);
                 offset.Y *= 0.2f;
-                DrawSprite(spriteBatch, screenPos + offset, drawColor * 0.4f * _afterImageAlpha);
+                DrawSprite(spriteBatch, screenPos + offset, drawColor * 0.2f * _afterImageAlpha);
             }
             _drawScale = oldDrawScale;
         }
