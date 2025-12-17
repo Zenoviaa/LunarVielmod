@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
-using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
-using Stellamod.Core.PaletteShadingSystem;
 using Stellamod.Helpers;
 using System.Linq;
 using Terraria;
@@ -12,6 +10,27 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Utilities
 {
+    public class DarkSmear : ScreenShader
+    {
+        private EffectParameter _maskTextureParam;
+        private EffectParameter _texelSizeParam;
+        public Texture2D maskTexture;
+        public float strength = 32f;
+        public override void ApplyEffect(ScreenShaderData screenShaderData)
+        {
+            base.ApplyEffect(screenShaderData);
+            Effect effect = screenShaderData.Shader;
+            _maskTextureParam ??= effect.Parameters["maskTexture"];
+            _maskTextureParam.SetValue(maskTexture);
+
+            Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
+            _texelSizeParam ??= effect.Parameters["texelSize"];
+            _texelSizeParam.SetValue(texelSize);
+            //  effect.Parameters["uScreenResolution"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
+            screenShaderData.UseOpacity(strength);
+        }
+    }
+
     public class Invert : ScreenShader
     {
         public override void ApplyEffect(ScreenShaderData screenShaderData)
@@ -178,9 +197,10 @@ namespace Stellamod.Core.Utilities
                 if (screenShader.alpha > 0)
                 {
                     screenShader.UpdateEffect();
+                
                     screenShader.alpha -= 0.02f;
                 }
-                screenShader.ManageScreenShader(Main.LocalPlayer); 
+                screenShader.ManageScreenShader(Main.LocalPlayer);
             }
         }
     }

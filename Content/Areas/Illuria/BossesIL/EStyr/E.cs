@@ -816,6 +816,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             ForwardSlash_Start,
             ForwardSlash_QuickStart,
+            ForwardSlash_RePosition,
             ForwardSlash,
             ForwardSlash_End
         }
@@ -996,6 +997,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     break;
                 case AIState.ForwardSlash:
                     AI_ForwardSlash();
+                    break;
+                case AIState.ForwardSlash_RePosition:
+                    AI_ForwardSlashReposition();
                     break;
                 case AIState.ForwardSlash_End:
                     AI_ForwardSlashEnd();

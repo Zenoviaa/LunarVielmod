@@ -150,6 +150,8 @@ namespace Stellamod.Helpers
             RegisterScreenShader("LunarVeil:BlackSea", "Effects/BlackSea");
             RegisterScreenShader("LunarVeil:DomainExpansion", "Effects/DomainExpansion");
             RegisterScreenShader("LunarVeil:Invert", "Effects/Invert");
+            RegisterScreenShader("LunarVeil:DarkSmear", "Effects/DarkSmear");
+
 
 
 

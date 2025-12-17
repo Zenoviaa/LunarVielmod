@@ -5,6 +5,7 @@ using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
+using static Stellamod.Tiles.SpecialDecorativeWall;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
@@ -93,6 +94,21 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 DrawSprite(spriteBatch, screenPos + offset, drawColor * 0.2f * _afterImageAlpha);
             }
             _drawScale = oldDrawScale;
+            Texture2D eTexture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawOrigin = GetDrawOrigin();
+            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            for (int i = 0; i < NPC.oldPos.Length; i++)
+            {
+                Vector2 oldPos = NPC.oldPos[i];
+                Vector2 oldDrawPos = oldPos - Main.screenPosition;
+                float f = i;
+                float interpolant = f / (float)NPC.oldPos.Length;
+                Color fadeColor = Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.3f;
+                oldDrawPos += NPC.Size / 2f;
+                spriteBatch.Draw(eTexture, oldDrawPos, NPC.frame, fadeColor, NPC.oldRot[i], drawOrigin, _drawScale, spriteEffects, 0f);
+            }
+
+
         }
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

@@ -25,6 +25,8 @@ namespace Stellamod.Visual.Particles
         public float downwardPull;
         public bool shrink;
         public bool noStretch;
+        public float xMult;
+        public float rotOffset;
         public override void OnSpawn()
         {
             shrink = false;
@@ -37,7 +39,7 @@ namespace Stellamod.Visual.Particles
             Scale = Main.rand.NextFloat(0.8f, 1) * 2;
             customShader = GlowDonutShader.Instance;
             color = Color.White;
-
+            xMult = 1f;
             innerColor = Color.White;
             outerColor = Color.LightGray;
             fadeToColor = Color.DarkBlue;
@@ -50,6 +52,7 @@ namespace Stellamod.Visual.Particles
             {
                 _stretchScale = Vector2.One;
             }
+            _stretchScale.X = xMult;
             if (shrink)
             {
                 Scale *= 0.9f;
@@ -65,6 +68,7 @@ namespace Stellamod.Visual.Particles
 
             Velocity *= 0.99f;
             Rotation = Velocity.ToRotation() - MathHelper.PiOver2;
+            Rotation += rotOffset;
             fadeIn++;
             _interpolant = fadeIn / 30f;
             _interpolant = Math.Clamp(_interpolant, 0, 1);
