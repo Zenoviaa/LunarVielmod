@@ -818,7 +818,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             ForwardSlash_QuickStart,
             ForwardSlash_RePosition,
             ForwardSlash,
-            ForwardSlash_End
+            ForwardSlash_End,
+
+            RippingGeyser_Start,
+            RippingGeyser_Dash,
+            RippingGeyser_AuraFarm,
+            RippingGeyser_End
         }
 
         private bool _intro;
@@ -1004,6 +1009,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 case AIState.ForwardSlash_End:
                     AI_ForwardSlashEnd();
                     break;
+
+                case AIState.RippingGeyser_Start:
+                    AI_RippingGeysterStart();
+                    break;
+                case AIState.RippingGeyser_Dash:
+                    AI_RippingGeyserDash();
+                    break;
+                case AIState.RippingGeyser_AuraFarm:
+                    AI_RippingGeyserAuraFarm();
+                    break;
+                case AIState.RippingGeyser_End:
+                    AI_RippingGeyserEnd();
+                    break;
             }
             NPC.spriteDirection = NPC.direction;
         }
@@ -1026,7 +1044,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         private void ChooseAttack()
         {
-            SwitchState(AIState.ForwardSlash_Start);
+            SwitchState(AIState.RippingGeyser_Start);
         }
     }
 }

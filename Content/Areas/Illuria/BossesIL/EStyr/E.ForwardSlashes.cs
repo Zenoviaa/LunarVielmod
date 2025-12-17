@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
-using ReLogic.Threading;
 using Stellamod.Assets;
-using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.RenderTargetSystem;
 using Stellamod.Core.Shaders;
@@ -33,6 +31,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             public float time;
             public float travelTime;
             public float lingerTime;
+            public float strength;
         }
         private ManagedRenderTarget _smearMaskRT;
         private List<SmearParticle> _particles;
@@ -119,7 +118,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                     float lerp = smear.time / smear.travelTime;
                     float strength = MathHelper.SmoothStep(0f, 1f, lerp);
-                    Color smearColor = new Color(strength, normalAngle, velocity.Y);
+                    Color smearColor = new Color(strength * smear.strength, normalAngle, velocity.Y);
                     float rotation = velocity.ToRotation();
    
                     Vector2 scale = Vector2.One;
@@ -144,7 +143,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
 
 
-        public void NewParticle(Vector2 position, Vector2 direction, float length, float time)
+        public void NewParticle(Vector2 position, Vector2 direction, float length, float time, float strength = 1f)
         {
             SmearParticle particle = new SmearParticle
             {
@@ -152,294 +151,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 endPosition = position + direction * length,
                 time = 0,
                 travelTime = time,
-                lingerTime = time / 2f
+                lingerTime = time / 2f,
+                strength = strength
             };
             _particles.Add(particle);
         }
         private Point GetScreenSize()
         {
             return new Point(Main.screenTarget.Width, Main.screenTarget.Height);
-        }
-    }
-
-    public interface IDrawBlackStar
-    {
-        void DrawBlackStar(SpriteBatch spriteBatch);
-    }
-
-    /// <summary>
-    /// Manages particles for the black star texture
-    /// </summary>
-    public class BlackStarParticleManager
-    {
-        public struct BlackStarParticle
-        {
-            public Vector2 position;
-            public float time;
-        }
-
-
-        public BlackStarParticleManager(int particleCount, float duration)
-        {
-            MaxParticleCount = particleCount;
-            Particles = new BlackStarParticle[particleCount];
-            Duration = duration;
-        }
-
-        public readonly BlackStarParticle[] Particles;
-        public readonly int MaxParticleCount;
-        public readonly float Duration;
-        public float time;
-        public void Update(Vector2 spawnBounds)
-        {
-            time++;
-            FastParallel.For(0, MaxParticleCount, delegate (int start, int end, object context)
-            {
-                for (int i = start; i < end; i++)
-                {
-                    ref BlackStarParticle particle = ref Particles[i];
-                    particle.time = (time + i) % Duration;
-                    if (particle.time == 1)
-                    {
-                        //Reinitialize the particle
-                        Vector2 newPosition = new Vector2();
-                        newPosition.X = Main.rand.NextFloat(0f, spawnBounds.X);
-                        newPosition.Y = Main.rand.NextFloat(0f, spawnBounds.Y);
-                        particle.position = newPosition;
-                    }
-                }
-            });
-        }
-    }
-
-    [Autoload(Side = ModSide.Client)]
-    public class BlackStarRenderer : ModSystem
-    {
-        private List<IDrawBlackStar> _blackStarDraws;
-        private ManagedRenderTarget _maskTarget;
-        private ManagedRenderTarget _blackStarTarget;
-        private BlackStarParticleManager _particleManager;
-        //Manage particles
-
-        public override void OnModLoad()
-        {
-            base.OnModLoad();
-            _blackStarDraws = new List<IDrawBlackStar>();
-            _blackStarTarget = ManagedRenderTarget.New(GetScreenSize);
-            _maskTarget = ManagedRenderTarget.New(GetScreenSize);
-            _particleManager = new BlackStarParticleManager(200, 30);
-            On_Main.CheckMonoliths += Render;
-            On_Main.DoDraw_DrawNPCsOverTiles += DrawBlackStarToScreen;
-        }
-        public override void OnModUnload()
-        {
-            base.OnModUnload();
-            On_Main.CheckMonoliths -= Render;
-            On_Main.DoDraw_DrawNPCsOverTiles -= DrawBlackStarToScreen;
-        }
-
-        public override void PostUpdateDusts()
-        {
-            base.PostUpdateDusts();
-            _particleManager.Update(new Vector2(Main.screenWidth, Main.screenHeight));
-        }
-
-        private void Render(On_Main.orig_CheckMonoliths orig)
-        {
-            RenderBlackStarMask();
-            RenderBlackStar();
-            orig();
-        }
-
-        private void RenderBlackStarMask()
-        {
-            _blackStarDraws.Clear();
-            foreach (var projectile in Main.ActiveProjectiles)
-            {
-                if (projectile.ModProjectile is IDrawBlackStar draw)
-                {
-                    _blackStarDraws.Add(draw);
-                }
-            }
-
-            if (_blackStarDraws.Count > 0)
-            {
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-                graphicsDevice.SetRenderTarget(_maskTarget);
-                graphicsDevice.Clear(Color.Transparent);
-                spriteBatch.Begin();
-                foreach (IDrawBlackStar draw in _blackStarDraws)
-                {
-                    draw.DrawBlackStar(spriteBatch);
-                }
-                spriteBatch.End();
-                graphicsDevice.SetRenderTarget(null);
-            }
-        }
-
-        private void RenderBlackStar()
-        {
-            if (_blackStarDraws.Count <= 0)
-                return;
-            if (InputHelper.KeyDown(Microsoft.Xna.Framework.Input.Keys.L))
-            {
-                _particleManager = new BlackStarParticleManager(200, 30);
-            }
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_blackStarTarget);
-            graphicsDevice.Clear(Color.Transparent);
-
-            Texture2D starTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_62").Value;
-            Vector2 drawOrigin = starTexture.Size() / 2f;
-
-            spriteBatch.Begin();
-            for (int i = 0; i < _particleManager.MaxParticleCount; i++)
-            {
-                ref var particle = ref _particleManager.Particles[i];
-                Color drawColor = Color.White;
-                drawColor.A = 0;
-
-                float ratio = particle.time / _particleManager.Duration;
-                float ease = EasingFunction.QuadraticBump(ratio);
-                drawColor *= ease;
-
-                Vector2 scale = Vector2.One;
-                scale *= 0.5f;
-                scale *= ExtraMath.Osc(0f, 2f, offset: i);
-                spriteBatch.Draw(starTexture, particle.position, null, drawColor, 0, drawOrigin, scale, SpriteEffects.None, 0);
-            }
-            spriteBatch.End();
-            graphicsDevice.SetRenderTarget(null);
-        }
-
-        private void DrawBlackStarToScreen(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
-        {
-            orig(self);
-            if (_blackStarDraws.Count <= 0)
-                return;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-
-
-            Vector2 v = Vector2.UnitX * 2;
-            Vector2 h = Vector2.UnitY * 2;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-   null, Main.GameViewMatrix.TransformationMatrix);
-
-            spriteBatch.Draw(_maskTarget, v, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_maskTarget, -v, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_maskTarget, h, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_maskTarget, -h, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_maskTarget, Vector2.Zero, null, Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-
-            spriteBatch.End();
-
-            //Setup the shader
-            MaskCombineShader maskCombine = MaskCombineShader.Instance;
-            maskCombine.MixTexture = _blackStarTarget;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-               maskCombine.Effect, Main.GameViewMatrix.TransformationMatrix);
-
-
-
-            spriteBatch.Draw(_maskTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.End();
-
-            /*
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-   maskCombine.Effect, Main.GameViewMatrix.TransformationMatrix);
-            spriteBatch.Draw(_blackStarTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.End();*/
-        }
-
-        private Point GetScreenSize()
-        {
-            return new Point(Main.screenWidth, Main.screenHeight);
-        }
-    }
-    public class EBuster : ScarletProjectile,
-        IDrawBlackStar
-    {
-        private float _scale;
-        private ref float Timer => ref Projectile.ai[0];
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-
-            TrailCacheLength = 8;
-            Projectile.width = 32;
-            Projectile.height = 32;
-            Projectile.hostile = true;
-            Projectile.penetrate = -1;
-            Projectile.tileCollide = false;
-            Projectile.extraUpdates = 1;
-        }
-        public override void AI()
-        {
-            base.AI();
-            Timer++;
-            if (Projectile.velocity.Length() < 20)
-            {
-                Projectile.velocity *= 1.065f;
-            }
-            Projectile.rotation = Projectile.velocity.ToRotation();
-
-            if (Timer < 60)
-            {
-                Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
-                if (player != null)
-                {
-                    Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 0.5f);
-                }
-            }
-
-
-            float inTime = 15;
-            float completionRatio = Timer / inTime;
-            float ease = EasingFunction.InOutSine(completionRatio);
-            _scale = MathHelper.Lerp(0f, 1f, ease);
-        }
-
-        private void DrawSprite(SpriteBatch spriteBatch)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawOrigin = texture.Size() / 2f;
-            Vector2 drawCenter = Projectile.Center - Main.screenPosition;
-            float rotation = Projectile.rotation;
-            float scale = Projectile.scale;
-            Vector2 drawScale = new Vector2(1f, MathHelper.Lerp(0.8f, 1f, _scale)) * _scale * 0.85f;
-            spriteBatch.Draw(texture, drawCenter, null, Color.White, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-        }
-
-        private void DrawAfterImages(SpriteBatch spriteBatch)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawOrigin = texture.Size() / 2f;
-            for (int i = 0; i < TrailCacheLength; i++)
-            {
-                float completionRatio = (float)i / (float)TrailCacheLength;
-
-                Vector2 drawCenter = OldCenterPos[i] - Main.screenPosition;
-                float rotation = OldCenterRot[i];
-                float scale = Projectile.scale;
-                Color drawColor = Color.Lerp(Color.White, Color.Transparent, completionRatio);
-                drawColor *= 0.3f;
-                Vector2 drawScale = new Vector2(1f, MathHelper.Lerp(0.8f, 1f, _scale)) * _scale * 0.85f;
-                spriteBatch.Draw(texture, drawCenter, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-            }
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
-
-            return false;
-        }
-
-        public void DrawBlackStar(SpriteBatch spriteBatch)
-        {
-            DrawAfterImages(spriteBatch);
-            DrawSprite(spriteBatch);
         }
     }
     public partial class E
