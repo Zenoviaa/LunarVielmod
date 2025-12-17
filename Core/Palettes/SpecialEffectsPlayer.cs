@@ -236,26 +236,7 @@ namespace Stellamod.Core.Palettes
             ApplyBloom();
 
             ToggleScreenShader("LunarVeil:DarknessVignette", darkness != 0);
-            ScreenShaderData blackSeaData = FilterManager["LunarVeil:BlackSea"].GetShader();
-            Effect effect = blackSeaData.Shader;
-            float whiteBend = 0.2f;
-            float blackBend = 0.8f;
-            float lightThreshold = 0.6f;
-            Vector3 paramsColor = new Vector3(whiteBend, blackBend, lightThreshold);
-            blackSeaData.UseColor(paramsColor);
-            effect.Parameters["frequency"].SetValue(0.5f);
-            effect.Parameters["amplitude"].SetValue(0.0005f);
-            effect.Parameters["levels"].SetValue(64);
-            effect.Parameters["time"].SetValue(Main.GlobalTimeWrappedHourly * 8);
-            effect.Parameters["seaTiling"].SetValue(new Vector2(1, 8f));
-            effect.Parameters["seaNoiseTexture"].SetValue(AssetRegistry.Textures.Noise.IceWaterCaustics.Value);
-            effect.Parameters["seaThreshold"].SetValue(0.05f);
-            effect.Parameters["seaDarkness"].SetValue(0.96f);
-            effect.Parameters["ringPower"].SetValue(12);
 
-            float b = 0.004f;
-            effect.Parameters["ringColor"].SetValue(new Vector3(b, b, b));
-            ToggleScreenShader("LunarVeil:BlackSea", NPC.AnyNPCs(ModContent.NPCType<E>()));
           //  Main.ColorOfTheSkies = Color.Black;
             bool evilAreaActive = Player.ZoneCrimson || Player.ZoneCorrupt;
             if (evilAreaActive && darknessCurve < 0.5f)

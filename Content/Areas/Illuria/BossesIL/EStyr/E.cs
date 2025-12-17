@@ -8,14 +8,14 @@ using Stellamod.Core;
 using Stellamod.Core.MoonWaters;
 using Stellamod.Core.RenderTargetSystem;
 using Stellamod.Core.Shaders;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Effects;
-using Terraria.Graphics.Light;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -87,7 +87,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //We can pre calculate the uv floats since it's always the same
             //We increase the trail length by 1 here because in the trailing functionwe need to get the next point, this last position is basically just a duplicate
             _trailWidths = new Vector2[trailLength + 1];
-            for(int i = 0; i < _trailWidths.Length; i++)
+            for (int i = 0; i < _trailWidths.Length; i++)
             {
                 float ratio = (float)i / (float)trailLength;
                 _trailWidths[i] = GetTrailWidth(ratio) * Vector2.One;
@@ -96,7 +96,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             //calculate noise values of each particle
             _noiseValues = new float[particleCount];
-            for(int n = 0; n < _noiseValues.Length; n++)
+            for (int n = 0; n < _noiseValues.Length; n++)
             {
                 _noiseValues[n] = _fastNoise.GetNoise(n, n) * 0.5f + 0.5f;
                 _noiseValues[n] *= 0.5f;
@@ -108,7 +108,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public float xOvalRadius;
         public float yOvalRadius;
 
-  
+
         /// <summary>
         /// Calculate the position of the particle at specific a timestep
         /// </summary>
@@ -179,10 +179,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             float numPoints = TrailLength;
             int numVerticesPerParticle = TrailLength * 6;
-  
+
             _fastNoise.SetFrequency(2);
             //Shift our position array backward
-            FastParallel.For(0, ParticleCount, delegate (int start, int end, object context) 
+            FastParallel.For(0, ParticleCount, delegate (int start, int end, object context)
             {
                 for (int i = start; i < end; i++)
                 {
@@ -195,7 +195,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             });
 
             //Simulate all of our particles
-            FastParallel.For(0, ParticleCount, delegate (int start, int end, object context) 
+            FastParallel.For(0, ParticleCount, delegate (int start, int end, object context)
             {
                 for (int i = start; i < end; i++)
                 {
@@ -359,7 +359,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             _timer++;
             //_timer = Main.Camera.Center.X / 16f;
-            if ( NPC.AnyNPCs(ModContent.NPCType<E>()))
+            if (NPC.AnyNPCs(ModContent.NPCType<E>()))
             {
                 SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
                 fallSystem.noWings = true;
@@ -367,7 +367,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 fallSystem.hoveringPlatform = true;
                 fallSystem.hoverPlatformY = 16000;
             }
- 
+
             const float revolutionTime = 400;
 
             //Calculate the radians offset
@@ -421,7 +421,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 platform.rotation = (new Vector2(platform.rotatedPosition.X, platform.rotatedPosition.Y) - Vector2.Zero).ToRotation();
                 platform.color = Color.Lerp(Color.Black, Color.White, EasingFunction.OutExpo(zScale));
             }
-            Main.windSpeedTarget = 2;
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
@@ -447,7 +446,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private ManagedRenderTarget _reflectionGradientRT;
         private ManagedRenderTarget _reflectionRT;
         private ManagedRenderTarget _magicGroundRT;
-
+        public bool drawBlackSea;
+        public Vector2? miniOrbDrawPosition;
+        public float miniOrbDrawScale;
         public override void Load()
         {
             base.Load();
@@ -612,19 +613,42 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void DrawBlackHurricaneRTToScreen(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            if (!Main.gameMenu && NPC.AnyNPCs(ModContent.NPCType<E>()))
+            if (!Main.gameMenu)
             {
-                spriteBatch.GraphicsDevice.Clear(Color.Transparent);
-                spriteBatch.End();
-                spriteBatch.Begin();
+                if (drawBlackSea)
+                {
+                    spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+                    spriteBatch.End();
+                    spriteBatch.Begin();
 
-                Color drawColor = Color.Lerp(Color.White, Color.Black, 0.35f);
-                spriteBatch.Draw(_blackHurricaneRT, Vector2.Zero, drawColor);
-                spriteBatch.End();
+                    Color drawColor = Color.Lerp(Color.White, Color.Black, 0.35f);
+                    spriteBatch.Draw(_blackHurricaneRT, Vector2.Zero, drawColor);
+                    spriteBatch.End();
 
 
-                spriteBatch.Begin();
-                DrawHoveringPlatform(spriteBatch);
+                    spriteBatch.Begin();
+                    DrawHoveringPlatform(spriteBatch);
+                    drawBlackSea = false;
+                }
+
+                if (miniOrbDrawPosition.HasValue)
+                {
+                    Effect featherEffect = FeatherShader.Instance.Effect;
+                    spriteBatch.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer,
+                        featherEffect);
+
+                    Vector2 positionToDrawOrbAt = miniOrbDrawPosition.Value;
+                    Vector2 drawPosition = positionToDrawOrbAt - Main.screenPosition;
+                    Texture2D hurricaneTexture = _blackHurricaneRT;
+                    Vector2 drawOrigin = hurricaneTexture.Size() / 2f;
+                    spriteBatch.Draw(hurricaneTexture, drawPosition, null, Color.White, 0, drawOrigin, miniOrbDrawScale, SpriteEffects.None, 0f);
+
+                    spriteBatch.End();
+                    spriteBatch.Begin();
+                    miniOrbDrawPosition = null;
+                }
+
             }
 
             orig(self, behindTiles);
@@ -650,11 +674,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void PostUpdateNPCs()
         {
             base.PostUpdateNPCs();
-            if (InputHelper.KeyDown(Keys.H))
-            {
-                _starParticleManager = new LittleStarParticleManager(250, 16);
-                _platformManager = new BlackSeaPlatformManager(50);
-            }
+
             DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
             DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
             _spinTimer++;
@@ -786,6 +806,60 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     }
     public partial class E : ScarletBoss
     {
+        private enum AIState
+        {
+            Intro_HeadTurn,
+            Intro_HandOut,
+            Intro_DomainExpansion,
+            Intro_Finish,
+            Idle
+        }
+
+        private bool _intro;
+        private bool _showNamePlate;
+        private bool _contactDamage;
+        private float _hoverTimer;
+        private ref float Timer => ref NPC.ai[0];
+        private AIState State
+        {
+            get
+            {
+                return (AIState)NPC.ai[1];
+            }
+            set
+            {
+                NPC.ai[1] = (float)value;
+            }
+        }
+        private Vector2 TargetVector
+        {
+            get
+            {
+                return new Vector2(NPC.ai[2], NPC.ai[3]);
+            }
+            set
+            {
+                NPC.ai[2] = value.X;
+                NPC.ai[3] = value.Y;
+            }
+        }
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
+        }
+
+
+        private void SwitchState(AIState state)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Timer = 0;
+                State = state;
+                NPC.netUpdate = true;
+            }
+        }
+
+
         //Finally time to make a secret boss, this is going to be fun :)
         //Alright
         public override void SetStaticDefaults()
@@ -820,6 +894,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(_hoverTimer);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _hoverTimer = reader.ReadSingle();
+        }
+
         private void EnablePlatformArena()
         {
             SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
@@ -827,6 +913,59 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             fallSystem.inSpace = true;
             fallSystem.hoveringPlatform = true;
             fallSystem.hoverPlatformY = 16000;
+        }
+
+        private void UpdateClient()
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            if (_intro)
+            {
+                BlackSea blackSea = ScreenShader.GetInstance<BlackSea>();
+                blackSea.alpha = 1f;
+
+                BlackSeaRenderingEdit blackseaRenderer = ModContent.GetInstance<BlackSeaRenderingEdit>();
+                blackseaRenderer.drawBlackSea = true;
+            }
+            else
+            {
+                for (int i = 0; i < Main.musicFade.Length; i++)
+                {
+                    Main.musicFade[i] = 0;
+                }
+            }
+        }
+
+        public override void AI()
+        {
+            base.AI();
+
+            UpdateClient();
+            _hoverTimer++;
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            switch (State)
+            {
+                case AIState.Intro_HeadTurn:
+                    AI_IntroHeadTurn();
+                    break;
+                case AIState.Intro_HandOut:
+                    AI_IntroHandOut();
+                    break;
+                case AIState.Intro_DomainExpansion:
+                    AI_IntroDomainExpansion();
+                    break;
+                case AIState.Intro_Finish:
+                    AI_IntroFinish();
+                    break;
+            }
+            NPC.spriteDirection = NPC.direction;
+        }
+
+        private Vector2 CalculateHoverVelocity()
+        {
+            Vector2 hoverVelocity = Vector2.Zero;
+            hoverVelocity.Y = MathF.Sin(_hoverTimer * 0.05f);
+            return hoverVelocity;
         }
     }
 }

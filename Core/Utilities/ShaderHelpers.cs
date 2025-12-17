@@ -1,0 +1,212 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
+using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
+using Stellamod.Core.PaletteShadingSystem;
+using Stellamod.Helpers;
+using System.Linq;
+using Terraria;
+using Terraria.Graphics.Effects;
+using Terraria.Graphics.Shaders;
+using Terraria.ModLoader;
+
+namespace Stellamod.Core.Utilities
+{
+    public class Invert : ScreenShader
+    {
+        public override void ApplyEffect(ScreenShaderData screenShaderData)
+        {
+            base.ApplyEffect(screenShaderData);
+            screenShaderData.UseOpacity(alpha);
+        }
+    }
+
+    public class BlackSea : ScreenShader
+    {
+        private EffectParameter _frequencyParam;
+        private EffectParameter _amplitudeParam;
+        private EffectParameter _levelsParam;
+        private EffectParameter _timeParam;
+        private EffectParameter _seatilingParam;
+        private EffectParameter _seaNoiseTextureParam;
+        private EffectParameter _seaThresholdParam;
+        private EffectParameter _seaDarknessParam;
+        private EffectParameter _ringPowerParam;
+        private EffectParameter _ringColorParam;
+
+        public override void ApplyEffect(ScreenShaderData screenShaderData)
+        {
+            base.ApplyEffect(screenShaderData);
+            float whiteBend = 0.2f;
+            float blackBend = 0.8f;
+            float lightThreshold = 0.6f;
+            Vector3 paramsColor = new Vector3(whiteBend, blackBend, lightThreshold);
+            screenShaderData.UseColor(paramsColor);
+            Effect effect = screenShaderData.Shader;
+
+            _frequencyParam ??= effect.Parameters["frequency"];
+            _levelsParam ??= effect.Parameters["levels"];
+            _amplitudeParam ??= effect.Parameters["amplitude"];
+            _timeParam ??= effect.Parameters["time"];
+            _seatilingParam ??= effect.Parameters["seaTiling"];
+            _seaNoiseTextureParam ??= effect.Parameters["seaNoiseTexture"];
+            _seaThresholdParam ??= effect.Parameters["seaThreshold"];
+            _seaDarknessParam ??= effect.Parameters["seaDarkness"];
+            _ringPowerParam ??= effect.Parameters["ringPower"];
+            _ringColorParam ??= effect.Parameters["ringColor"];
+
+
+            _frequencyParam.SetValue(0.5f);
+            _levelsParam.SetValue(64);
+            _amplitudeParam.SetValue(0.0005f);
+            _timeParam.SetValue(Main.GlobalTimeWrappedHourly * 8);
+            _seatilingParam.SetValue(new Vector2(1, 8f));
+            _seaNoiseTextureParam.SetValue(AssetRegistry.Textures.Noise.IceWaterCaustics.Value);
+            _seaThresholdParam.SetValue(0.05f);
+            _seaDarknessParam.SetValue(0.96f);
+            _ringPowerParam.SetValue(12);
+
+            float b = 0.004f;
+            _ringColorParam.SetValue(new Vector3(b, b, b));
+        }
+    }
+
+    public class DomainExpansion : ScreenShader
+    {
+        private EffectParameter _radiusParam;
+        private EffectParameter _epicenterParam;
+
+        public float radius;
+        public Vector2 epicenter;
+
+        public override void ApplyEffect(ScreenShaderData screenShaderData)
+        {
+            base.ApplyEffect(screenShaderData);
+            var effect = screenShaderData.Shader;
+            //Cache these paramers just so it's a little more performance
+            _radiusParam ??= effect.Parameters["radius"];
+            _epicenterParam ??= effect.Parameters["epicenter"];
+
+            _radiusParam.SetValue(radius);
+            _epicenterParam.SetValue(epicenter);
+        }
+    }
+
+    public abstract class ScreenShader : ModType
+    {
+        //Alpha will be subtracted every frame to dictate if the shader should be active
+        //So if something uses it and sets the alpha to 1 yeah
+        public float alpha;
+        public string EffectFileName => this.GetType().Name;
+        public string ShaderName => $"LunarVeil:{EffectFileName}";
+        public sealed override void SetupContent()
+        {
+            base.SetupContent();
+            SetStaticDefaults();
+        }
+
+        protected override void Register()
+        {
+            ModTypeLookup<ScreenShader>.Register(this);
+        }
+
+        public ScreenShaderData GetScreenShaderData()
+        {
+            return ShaderHelpers.FilterManager[ShaderName].GetShader();
+        }
+
+        public void UpdateEffect()
+        {
+            ScreenShaderData screenShaderData = GetScreenShaderData();
+            ApplyEffect(screenShaderData);
+        }
+        public void ManageScreenShader(Player player)
+        {
+            string name = ShaderName;
+            bool isActive = IsActive(player);
+
+            if (isActive)
+            {
+                FilterManager filterManager = ShaderHelpers.FilterManager;
+                if (!filterManager[name].IsActive())
+                {
+                    filterManager.Activate(name);
+                }
+            }
+            else if (!isActive)
+            {
+                FilterManager filterManager = ShaderHelpers.FilterManager;
+                if (filterManager[name].IsActive())
+                {
+                    filterManager.Deactivate(name);
+                }
+            }
+        }
+
+        public virtual void ApplyEffect(ScreenShaderData screenShaderData)
+        {
+
+        }
+
+        public virtual bool IsActive(Player player)
+        {
+            return alpha > 0;
+        }
+
+
+        public static T GetInstance<T>() where T : ScreenShader
+        {
+            return ModContent.GetInstance<T>();
+        }
+    }
+
+    [Autoload(Side = ModSide.Client)]
+    public class ScreenShaderManager : ModSystem
+    {
+        private ScreenShader[] _screenShaders;
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            _screenShaders = ModContent.GetContent<ScreenShader>().ToArray();
+        }
+        public override void PreUpdateNPCs()
+        {
+            base.PreUpdateNPCs();
+            for (int i = 0; i < _screenShaders.Length; i++)
+            {
+                ScreenShader screenShader = _screenShaders[i];
+                if (screenShader.alpha > 0)
+                {
+                    screenShader.UpdateEffect();
+                    screenShader.alpha -= 0.02f;
+                }
+                screenShader.ManageScreenShader(Main.LocalPlayer); 
+            }
+        }
+    }
+
+    public static class ShaderHelpers
+    {
+        public static FilterManager FilterManager => Filters.Scene;
+        public static void ManageScreenShader(string name, bool isActive)
+        {
+            if (!ShaderRegistry.ScreenShaders.Contains(name))
+                return;
+
+            if (isActive)
+            {
+                if (!FilterManager[name].IsActive())
+                {
+                    FilterManager.Activate(name);
+                }
+            }
+            else if (!isActive)
+            {
+                if (FilterManager[name].IsActive())
+                {
+                    FilterManager.Deactivate(name);
+                }
+            }
+        }
+    }
+}
