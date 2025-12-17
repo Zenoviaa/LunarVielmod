@@ -18,6 +18,11 @@ namespace Stellamod.Core.LunarLightingSystem
             Patch();
             On_Main.DoDraw += PDraw;
         }
+        public override void OnModUnload()
+        {
+            base.OnModUnload();
+            On_Main.DoDraw-= PDraw;
+        }
 
         private void PDraw(On_Main.orig_DoDraw orig, Main self, GameTime gameTime)
         {
