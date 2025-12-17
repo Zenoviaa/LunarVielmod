@@ -107,7 +107,7 @@ namespace Stellamod.Core.LunarLightingSystem
             graphicsDevice.RasterizerState.CullMode = CullMode.None;
             graphicsDevice.BlendState = BlendState.AlphaBlend;
 
- 
+
             graphicsDevice.DrawUserPrimitives(
               PrimitiveType.TriangleList, ShadowVertices, 0, primitiveCount);
 
@@ -144,7 +144,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             //MoveVertex(ref tl1);
             MoveVertex(ref tr1);
-           // MoveVertex(ref br1);
+            // MoveVertex(ref br1);
             MoveVertex(ref tl2);
             //MoveVertex(ref tr2);
             MoveVertex(ref br2);
@@ -170,7 +170,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
 
             _primitiveIndex = 0;
-            Vector2 position = Main.LocalPlayer.position;
+            Vector2 position = Main.Camera.Center;
             float radius = 4000;
             Vector2 topLeftOfPointLight = position - new Vector2(radius);
             Vector2 bottomRightOfPointLight = position + new Vector2(radius);
