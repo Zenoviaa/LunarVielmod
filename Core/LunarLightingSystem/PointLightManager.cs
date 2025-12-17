@@ -198,6 +198,9 @@ namespace Stellamod.Core.LunarLightingSystem
         public static Vector3 GetPlayerLightColor()
         {
             Player player = Main.LocalPlayer;
+            if (player.dead)
+                return Vector3.Zero;
+
             Item heldItem = player.HeldItem;
             if (LightingSets.EmissiveHeldItems[heldItem.type].A > 0)
             {
@@ -224,6 +227,9 @@ namespace Stellamod.Core.LunarLightingSystem
         public static float GetPlayerLightRadius()
         {
             Player player = Main.LocalPlayer;
+            if (player.dead)
+                return 0;
+
             Item heldItem = player.HeldItem;
             if (LightingSets.EmissiveHeldItems[heldItem.type].A > 0)
             {
@@ -240,17 +246,23 @@ namespace Stellamod.Core.LunarLightingSystem
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.BeamingLights)
                 return;
- 
+
 
             //The last index in the array is reserved for the player light and needs to update every frame
             //So it'll update first, and will always be active, it should never bake, it's a special light
-            ref PointLightData playerLightData = ref PointLights[MAX_POINT_LIGHTS - 1];
-            playerLightData.position = Main.LocalPlayer.Center;
-            playerLightData.color = new Color(GetPlayerLightColor());
-            playerLightData.intensity = 1;
-            playerLightData.radius = GetPlayerLightRadius();
-            LightStates[MAX_POINT_LIGHTS - 1] = PointLightState.CUSTOM;
-            ProcessLight(MAX_POINT_LIGHTS - 1);
+
+            Player player = Main.LocalPlayer;
+            if (!player.dead)
+            {
+                ref PointLightData playerLightData = ref PointLights[MAX_POINT_LIGHTS - 1];
+                playerLightData.position = Main.LocalPlayer.Center;
+                playerLightData.color = new Color(GetPlayerLightColor());
+                playerLightData.intensity = 1;
+                playerLightData.radius = GetPlayerLightRadius();
+                LightStates[MAX_POINT_LIGHTS - 1] = PointLightState.CUSTOM;
+                ProcessLight(MAX_POINT_LIGHTS - 1);
+            }
+
             //We don't need to check for lights every single frame either
             //It won't be noticeable doing this every few frames instead
             if (Main.GameUpdateCount % 4 != 0)
