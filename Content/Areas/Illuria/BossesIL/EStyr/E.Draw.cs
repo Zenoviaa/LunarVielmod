@@ -14,6 +14,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private const string Anim_HeadTurn = "headturn";
         private const string Anim_HandOut = "handout";
 
+        private float _afterImageAlpha;
         private Vector2 _drawScale = Vector2.One;
         private Color _outlineColor;
         private Color TargetOutlineColor;
@@ -57,7 +58,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            screenPos.Y += ExtraMath.Osc(-2f, 2f, speed: 16);
+            DrawAfterImages(spriteBatch, screenPos, Color.White);
             DrawSprite(spriteBatch, screenPos, Color.White);
+          
             return false;
         }
 
@@ -72,6 +76,23 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (NPC.spriteDirection == -1)
                 drawOrigin.X = NPC.frame.Size().X - drawOrigin.X;
             spriteBatch.Draw(eTexture, drawCenter, frame, drawColor, rotation, drawOrigin, _drawScale, spriteEffects, 0f);
+        }
+        private void DrawAfterImages(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Vector2 oldDrawScale = _drawScale;
+            _drawScale.Y *= ExtraMath.Osc(3f, 4);
+            _drawScale.X *= 0.1f;
+            float numAfterImages = 16;
+            for(float f = 0; f < numAfterImages; f++)
+            {
+                float ratio = f / numAfterImages;
+                float rot = ratio * MathHelper.TwoPi;
+                rot += Main.GlobalTimeWrappedHourly * 4;
+                Vector2 offset = rot.ToRotationVector2() * ExtraMath.Osc(54, 64, speed: 1);
+                offset.Y *= 0.2f;
+                DrawSprite(spriteBatch, screenPos + offset, drawColor * 0.4f * _afterImageAlpha);
+            }
+            _drawScale = oldDrawScale;
         }
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

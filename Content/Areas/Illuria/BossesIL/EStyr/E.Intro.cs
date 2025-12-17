@@ -158,7 +158,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 blackseaRenderer.miniOrbDrawPosition = Vector2.Lerp(TargetVector, Main.Camera.Center, ease);
                 blackseaRenderer.miniOrbDrawScale = MathHelper.Lerp(0.4f, 1f, ease);
             }
-            ShakeModSystem.Shake = 4;
+            ShakeModSystem.Shake = 8;
 
             //Keep the camera on the boss
             RetargetCameraModifier.ReTargetPosition = NPC.Center;
@@ -175,7 +175,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //Invert the screen color during this effect
             Invert invert = ScreenShader.GetInstance<Invert>();
             invert.alpha = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(completionRatio));
-
+            _afterImageAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(completionRatio));
             //Calculate the epicenter of the effect
             Vector2 diff = NPC.Center - Main.screenPosition;
             float x = diff.X / (float)Main.screenWidth;
