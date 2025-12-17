@@ -2,19 +2,98 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Town;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
+    public class GeyserBlast : ModProjectile
+    {
+        private float _inScale;
+        private float _outScale;
+        private TexturedQuad _quadBackingField;
+        private TexturedQuad TexturedQuad
+        {
+            get
+            {
+                if (_quadBackingField == null)
+                    _quadBackingField = new TexturedQuad();
+                return _quadBackingField;
+            }
+        }
+        private ref float Timer => ref Projectile.ai[0];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 500;
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.hostile = true;
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 180;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle shootSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_LAZER");
+                shootSound.Pitch = -0.8f;
+                SoundEngine.PlaySound(shootSound, Projectile.position);
+            }
+            _inScale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(Timer / 60f));
+            _outScale = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo((float)Projectile.timeLeft / 100));
+            ShakeModSystem.Shake = MathHelper.Lerp(0, 9, _outScale);
+        }
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            FlamingTrailShader flamingTrailShader = FlamingTrailShader.Instance;
+            flamingTrailShader.OuterColor = Color.Black;
+            flamingTrailShader.InnerColor = Color.White;
+            flamingTrailShader.Power = 0.3f;
+            flamingTrailShader.Distortion = 6;
+            flamingTrailShader.Tiling = new Vector2(1, 3);
+            flamingTrailShader.BlendState = BlendState.Additive;
+
+            float smooth = _inScale * _outScale;
+            float width = MathHelper.SmoothStep(0f, 1250, smooth);
+            TexturedQuad.CalculateVertices(Projectile.Center, Projectile.velocity, 
+                8000, width);
+            TexturedQuad.DrawWithShader(flamingTrailShader);
+            TexturedQuad.DrawWithShader(flamingTrailShader);
+            return false;
+        }
+    }
+
     public class RippingGeyser : ModProjectile
     {
         private float _inFlash;
+        private enum AIState
+        {
+            Spawn,
+            Gravity,
+            LaserBlast
+        }
         private Vector2[] Points = new Vector2[64];
         private Vector2 InitialPosition;
         private ref float Timer => ref Projectile.ai[0];
@@ -23,6 +102,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             get => Main.npc[(int)Projectile.ai[1]];
         }
 
+        private AIState State
+        {
+            get => (AIState)Projectile.ai[2];
+            set => Projectile.ai[2] = (float)value;
+        }
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
@@ -51,16 +135,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             return false;
         }
 
-        public override void AI()
+        private void AI_Spawn()
         {
-            base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
+                SoundStyle primRay = new SoundStyle("Stellamod/Assets/Sounds/PrimRay");
+                primRay.Pitch = -0.7f;
+                SoundEngine.PlaySound(primRay, Projectile.position);
                 InitialPosition = Projectile.Center;
             }
 
-            if(Timer < 60)
+            if (Timer < 60)
             {
                 Projectile.Center = Parent.Center;
             }
@@ -78,14 +164,90 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 Points[i] = interpolatedPoint;
             }
 
-            if (Timer >= 100)
+            if (Timer >= 60)
             {
-                ShakeModSystem.Shake = MathHelper.Lerp(6, 0, (Timer - 100) / 300f);
-                for (int i = 0; i < 3; i++)
+                SwitchState(AIState.Gravity);
+            }
+        }
+
+        private void AI_Gravity()
+        {
+            Timer++;
+            float gravityTime = 120f;
+            ShakeModSystem.Shake = MathHelper.Lerp(10, 0, Timer / gravityTime);
+            for (int i = 0; i < 3; i++)
+            {
+                Smear();
+            }
+            if (Timer >= gravityTime)
+            {
+                SwitchState(AIState.LaserBlast);
+            }
+        }
+
+        private void AI_LaserBlast()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                if (this.OwnedByLocalClient())
                 {
-                    Smear();
+                    Vector2 midPosition = InitialPosition + Projectile.Center;
+                    midPosition /= 2f;
+                    Vector2 velocity = Vector2.UnitY;
+                    int projType = ModContent.ProjectileType<GeyserBlast>();
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), midPosition, velocity, projType,
+                        Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
+            for (int i = 0; i < 2; i++)
+            {
+                Smear2();
+            }
+            if (Timer >= 240)
+            {
+                Projectile.Kill();
+            }
+        }
+
+        private void SwitchState(AIState state)
+        {
+            if (this.OwnedByLocalClient())
+            {
+                Timer = 0;
+                State = state;
+                Projectile.netUpdate = true;
+            }
+        }
+        public override void AI()
+
+        {
+            base.AI();
+            switch (State)
+            {
+                case AIState.Spawn:
+                    AI_Spawn();
+                    break;
+                case AIState.Gravity:
+                    AI_Gravity();
+                    break;
+                case AIState.LaserBlast:
+                    AI_LaserBlast();
+                    break;
+            }
+
+        }
+        private void Smear2()
+        {
+            float x = Main.rand.NextFloat(InitialPosition.X, Projectile.Center.X);
+            Vector2 spawnPosition = new Vector2();
+            spawnPosition.X = x;
+            spawnPosition.Y = InitialPosition.Y;
+            SmearDrawManager smearManager = ModContent.GetInstance<SmearDrawManager>();
+
+            float length = 1000;
+            float strength = 0.1f;
+            smearManager.NewParticle(spawnPosition, Vector2.UnitY, length, 15, strength);
         }
 
         private void Smear()
@@ -96,7 +258,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             spawnPosition.Y = InitialPosition.Y;
             SmearDrawManager smearManager = ModContent.GetInstance<SmearDrawManager>();
 
-            float length = MathHelper.SmoothStep(1000, 0, (Timer - 100) / 300f);
+            float length = MathHelper.SmoothStep(1000, 0, Timer / 120f);
             float strength = 0.1f;
             smearManager.NewParticle(spawnPosition, Vector2.UnitY, length, 15, strength);
         }
@@ -170,14 +332,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void AI_RippingGeyserDash()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 TargetVector = NPC.velocity;
                 _forwardVector = Vector2.UnitX * (MyTarget.Center.X > NPC.Center.X ? 1 : -1);
                 NPC.direction = TargetDirection;
                 if (MultiplayerHelper.IsHost)
                 {
-                    Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero, 
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero,
                         ModContent.ProjectileType<RippingGeyser>(), RippingGeyserDaamge, 1, Main.myPlayer, ai1: NPC.whoAmI);
                 }
             }
@@ -195,7 +357,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             _contactDamage = true;
             TargetOutlineColor = Color.Red;
-            if(Timer >= dashTime)
+            if (Timer >= dashTime)
             {
                 SwitchState(AIState.RippingGeyser_AuraFarm);
             }
@@ -204,14 +366,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void AI_RippingGeyserAuraFarm()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
 
             }
 
             TargetOutlineColor = Color.Transparent;
             float auraTime = 300;
-            if(Timer >= auraTime)
+            if (Timer >= auraTime)
             {
                 SwitchState(AIState.RippingGeyser_End);
             }
@@ -224,7 +386,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             NPC.velocity *= 0.9f;
             TargetOutlineColor = Color.Transparent;
-            if(Timer >= 15)
+            if (Timer >= 15)
             {
                 SwitchState(AIState.Idle);
             }
