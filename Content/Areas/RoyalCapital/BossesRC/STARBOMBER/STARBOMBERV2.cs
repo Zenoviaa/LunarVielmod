@@ -564,10 +564,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             _gunSilhouetteColor = Color.Lerp(Color.White, Color.Black, 0.75f);
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             _gunOutlineColor = Color.Lerp(_gunOutlineColor, TargetGunOutlineColor, 0.1f);
-            if (!NPC.HasValidTarget)
+            if (_aggroed && !NPC.HasValidTarget && State != AIState.Despawn)
             {
                 NPC.TargetClosest();
-                if (!NPC.HasValidTarget && State != AIState.Despawn)
+                if (!NPC.HasValidTarget)
                 {
                     SwitchState(AIState.Despawn);
                 }
@@ -580,7 +580,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             float osc = _oscTimer * 0.05f;
             float i = (MathF.Sin(osc) + 0.5f) / 0.5f;
             StandHeight = MathHelper.Lerp(270, 300, i);
-            MyTarget.AddBuff(ModContent.BuffType<BurnedWings>(), 2);
+
+            if(_aggroed)
+                MyTarget.AddBuff(ModContent.BuffType<BurnedWings>(), 2);
 
             switch (State)
             {

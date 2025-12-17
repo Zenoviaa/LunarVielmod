@@ -18,6 +18,10 @@ namespace Stellamod.Core
         public override void UpdateDead()
         {
             base.UpdateDead();
+
+            if (Main.netMode == NetmodeID.SinglePlayer)
+                return;
+
             if (!Main.expertMode && !Main.masterMode)
                 return;
             if (NPC.AnyDanger() && Main.netMode != NetmodeID.SinglePlayer && AnyPlayersAlive())
