@@ -812,12 +812,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Intro_HandOut,
             Intro_DomainExpansion,
             Intro_Finish,
-            Idle
+            Idle,
+
+            ForwardSlash_Start,
+            ForwardSlash_QuickStart,
+            ForwardSlash,
+            ForwardSlash_End
         }
 
         private bool _intro;
         private bool _showNamePlate;
         private bool _contactDamage;
+
+        private float _attackNumber;
         private float _hoverTimer;
         private ref float Timer => ref NPC.ai[0];
         private AIState State
@@ -841,6 +848,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 NPC.ai[2] = value.X;
                 NPC.ai[3] = value.Y;
+            }
+        }
+
+        private PatternManager<AIState> _patternManagerBackingField;
+        private PatternManager<AIState> PatternManager
+        {
+            get
+            {
+                if(_patternManagerBackingField == null)
+                {
+                    _patternManagerBackingField = new PatternManager<AIState>(new Tuple<AIState, float>(AIState.ForwardSlash_Start, 1.0f));
+                }
+                return _patternManagerBackingField;
             }
         }
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -898,12 +918,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
+            writer.WriteVector2(_forwardVector);
             writer.Write(_hoverTimer);
+            writer.Write(_attackNumber);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
+            _forwardVector = reader.ReadVector2();  
             _hoverTimer = reader.ReadSingle();
+            _attackNumber = reader.ReadSingle();
         }
 
         private void EnablePlatformArena()
@@ -947,6 +971,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             switch (State)
             {
+                case AIState.Idle:
+                    AI_Idle();
+                    break;
+
                 case AIState.Intro_HeadTurn:
                     AI_IntroHeadTurn();
                     break;
@@ -959,6 +987,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 case AIState.Intro_Finish:
                     AI_IntroFinish();
                     break;
+
+                case AIState.ForwardSlash_Start:
+                    AI_ForwardSlashStart();
+                    break;
+                case AIState.ForwardSlash_QuickStart:
+                    AI_ForwardSlashQuickStart();
+                    break;
+                case AIState.ForwardSlash:
+                    AI_ForwardSlash();
+                    break;
+                case AIState.ForwardSlash_End:
+                    AI_ForwardSlashEnd();
+                    break;
             }
             NPC.spriteDirection = NPC.direction;
         }
@@ -968,6 +1009,20 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 hoverVelocity = Vector2.Zero;
             hoverVelocity.Y = MathF.Sin(_hoverTimer * 0.05f);
             return hoverVelocity;
+        }
+
+        private void AI_Idle()
+        {
+            _attackNumber = 0;
+            Timer++;
+            if(Timer >= 15)
+            {
+                ChooseAttack();
+            }
+        }
+        private void ChooseAttack()
+        {
+            SwitchState(AIState.ForwardSlash_Start);
         }
     }
 }

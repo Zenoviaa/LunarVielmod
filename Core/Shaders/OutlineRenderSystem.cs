@@ -126,7 +126,6 @@ namespace Stellamod.Core.Shaders
 
         private void DrawLocalPlayer(Player player)
         {
-
             float outlineOffset = 2;
             Vector2 drawPosition = player.position;
             drawPosition.Y += player.gfxOffY;

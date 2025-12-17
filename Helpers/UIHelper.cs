@@ -105,7 +105,7 @@ namespace Stellamod.Helpers
             Vector2 h = Vector2.UnitX * outlineOffset;
             Vector2 v = Vector2.UnitY * outlineOffset;
             RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
-            Rectangle scissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+      
             SamplerState anisotropicClamp = SamplerState.AnisotropicClamp;
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, anisotropicClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
@@ -126,7 +126,7 @@ namespace Stellamod.Helpers
             Vector2 h = Vector2.UnitX * outlineOffset;
             Vector2 v = Vector2.UnitY * outlineOffset;
             RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
-            Rectangle scissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+         
             SamplerState anisotropicClamp = SamplerState.AnisotropicClamp;
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, anisotropicClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);

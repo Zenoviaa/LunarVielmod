@@ -126,7 +126,7 @@ namespace Stellamod.Core.LunarLightingSystem
             DrawAccumulatedLightMapToScreen();
             DrawSoftGlows();
             //DrawAtlasToScreen();
-            DrawTileShadowMapToScreen();
+          //  DrawTileShadowMapToScreen();
         }
 
         private static void DrawAtlasToScreen()
@@ -257,7 +257,7 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
             LightingPreDrawEdit.DontRenderPreDraw = false;
 
-            graphicsDevice.SetRenderTarget(_tileBlurRT);
+            graphicsDevice.SetRenderTarget(_tileBlurRT);  
             graphicsDevice.Clear(Color.Transparent);
 
             Effect effect = GameShaders.Misc["LunarVeil:SunShadow"].Shader;
