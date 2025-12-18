@@ -88,7 +88,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Kick_Fail,
             Kick_Fly,
             Kick_SwordThrowDown,
-            Kick_End
+            Kick_End,
+            
+            Dismantle_Start,
+            Dismantle_Slash,
+            Dismantle_End
         }
 
         private bool _intro;
@@ -252,7 +256,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 }
             }
             _telegraphLineAlpha = 0;
-            _telegraphLineRot = 0;
+            _drawScale = Vector2.One;
             TargetOutlineColor = Color.White;
             switch (State)
             {
@@ -435,6 +439,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 case AIState.Kick_End:
                     AI_KickEnd();
                     break;
+
+                case AIState.Dismantle_Start:
+                    AI_DismantleStart();
+                    break;
+                case AIState.Dismantle_Slash:
+                    AI_DismantleSlash();
+                    break;
+                case AIState.Dismantle_End:
+                    AI_DismantleEnd();
+                    break;
             }
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             for (int i = OldFrame.Length - 1; i > 0; i--)
@@ -482,7 +496,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ChooseAttack()
         {
-            SwitchState(AIState.Grab_Start);
+            SwitchState(AIState.RippingGeyser_Start);
         }
     }
 }

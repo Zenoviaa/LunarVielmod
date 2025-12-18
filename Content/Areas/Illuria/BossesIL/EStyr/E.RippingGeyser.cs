@@ -102,6 +102,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     {
         private float _inScale;
         private float _outScale;
+        private Vector2[] LinePos = new Vector2[2];
         private TexturedQuad _quadBackingField;
         private TexturedQuad TexturedQuad
         {
@@ -130,6 +131,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.timeLeft = 180;
         }
 
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            return ProjectileHelper.OldPosColliding(LinePos, projHitbox, targetHitbox, 1000);
+        }
+        public override bool CanHitPlayer(Player target)
+        {
+            return base.CanHitPlayer(target) && Timer >= 30;
+        }
+
         public override void AI()
         {
             base.AI();
@@ -145,6 +155,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _outScale = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo((float)Projectile.timeLeft / 100));
             ShakeModSystem.Shake = MathHelper.Lerp(0, 9, _outScale);
 
+            LinePos[0] = Projectile.Center;
+            LinePos[1] = Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 8000;
             if (Timer > 60 && Timer < 120 && this.OwnedByLocalClient())
             {
                 if (Timer % 10 == 0)
