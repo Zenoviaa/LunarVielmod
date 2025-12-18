@@ -24,7 +24,6 @@ public class ForegroundParticle
     public float timer;
     public float rotation;
     public float parallax;
-    public float offscreenTimer;
 }
 
 /// <summary>
@@ -91,7 +90,6 @@ public class ForegroundParticleRenderer : ModSystem
         particle.velocity = Vector2.Zero;
         particle.rotation = 0;
         particle.timer = 0;
-        particle.offscreenTimer = 0;
         particle.parallax = Main.rand.Next(25, 150) * 0.01f;
         particle.scale = particle.parallax + 1f;
         particle.type = type;
