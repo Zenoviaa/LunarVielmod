@@ -43,15 +43,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 Projectile.velocity *= 1.065f;
             }
 
-            if (Timer < 60)
-            {
-                Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
-                if (player != null)
-                {
-                    Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 1);
-                }
-            }
-
         }
 
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -224,11 +215,29 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 if (MultiplayerHelper.IsHost)
                 {
-                    Vector2 fireVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-                    fireVelocity *= 2;
                     int darkStarType = ModContent.ProjectileType<DarkStar>();
-                    Projectile.NewProjectile(SourceFromThis, NPC.Center, fireVelocity, darkStarType, DarkStarDamage, 1, Main.myPlayer);
+                    float numProjectiles = _attackNumber % 2 == 0 ? 5 : 4;
+                    float radsOffset = _attackNumber % 2 == 0 ? 0 : 45;
+                    
+                    
+                    float radiansSpread = MathHelper.ToRadians(135 - radsOffset);
+                    float startRadians = -radiansSpread / 2f;
+                    float endRadians = radiansSpread / 2f;
+
+
+                    for(float n = 0; n < numProjectiles; n++)
+                    {
+                        float ratio = n / numProjectiles;
+                        Vector2 fireVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                        fireVelocity *= 2;
+
+                        float rads = MathHelper.Lerp(startRadians, endRadians, ratio);
+                        fireVelocity = fireVelocity.RotatedBy(rads);
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, fireVelocity, darkStarType, DarkStarDamage, 1, Main.myPlayer);
+                    }
+                    _attackNumber++;
                 }
+                 
             }
 
             float pointingTime = 180;
