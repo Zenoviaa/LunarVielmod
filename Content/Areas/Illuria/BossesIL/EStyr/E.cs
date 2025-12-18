@@ -860,7 +860,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             JevilScythes_Start,
             JevilScythes_Loop,
-            JevilScythes_End
+            JevilScythes_End,
+
+            SingularBaseball_Start,
+            SingularBaseball_SummonBall,
+            SingularBaseball_HitBall,
+            SingularBaseball_FindBall,
+            SingularBaseball_End
         }
 
         private bool _intro;
@@ -1168,6 +1174,22 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     break;
                 case AIState.JevilScythes_End:
                     AI_JevilScythesEnd();
+                    break;
+
+                case AIState.SingularBaseball_Start:
+                    AI_SingularBaseballStart();
+                    break;
+                case AIState.SingularBaseball_SummonBall:
+                    AI_SinuglarBaseballSummonBall();
+                    break;
+                case AIState.SingularBaseball_HitBall:
+                    AI_SingularBaseballHitBall();
+                    break;
+                case AIState.SingularBaseball_FindBall:
+                    AI_SingularBaseballFindBall();
+                    break;
+                case AIState.SingularBaseball_End:
+                    AI_SingularBaseballEnd();
                     break;
             }
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
