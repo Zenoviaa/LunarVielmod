@@ -6,7 +6,6 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
@@ -16,7 +15,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Accord.Math.FourierTransform;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
@@ -147,9 +145,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _outScale = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo((float)Projectile.timeLeft / 100));
             ShakeModSystem.Shake = MathHelper.Lerp(0, 9, _outScale);
 
-            if(Timer > 60 && Timer < 120 && this.OwnedByLocalClient())
+            if (Timer > 60 && Timer < 120 && this.OwnedByLocalClient())
             {
-                if(Timer % 10 == 0)
+                if (Timer % 10 == 0)
                 {
                     Vector2 spawnCenter = Projectile.Center;
                     spawnCenter.Y += Main.rand.NextFloat(0f, 1590);
@@ -157,7 +155,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     Vector2 spawnVelocity = Vector2.UnitY * 5;
 
                     Player player = PlayerHelper.FindClosestPlayer(Projectile.Center, 16000);
-                    if(player != null)
+                    if (player != null)
                     {
                         spawnVelocity = (player.Center - spawnCenter).SafeNormalize(Vector2.Zero) * 5;
                     }
@@ -290,7 +288,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 SwitchState(AIState.LaserBlast);
             }
 
-   
+
         }
 
         private void AI_LaserBlast()
@@ -310,7 +308,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                         Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
-  
+
 
             for (int i = 0; i < 2; i++)
             {
@@ -355,11 +353,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 spawnPosition = new Vector2();
             spawnPosition.X = x;
             spawnPosition.Y = InitialPosition.Y;
-            SmearDrawManager smearManager = ModContent.GetInstance<SmearDrawManager>();
 
             float length = 1000;
             float strength = 0.1f;
-            smearManager.NewParticle(spawnPosition, Vector2.UnitY, length, 15, strength);
+            ScreenSmearEffectManager.NewParticle(spawnPosition, Vector2.UnitY, length, 15, strength);
         }
 
         private void Smear()
@@ -368,11 +365,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 spawnPosition = new Vector2();
             spawnPosition.X = x;
             spawnPosition.Y = InitialPosition.Y;
-            SmearDrawManager smearManager = ModContent.GetInstance<SmearDrawManager>();
 
             float length = MathHelper.SmoothStep(1000, 0, Timer / 120f);
             float strength = 0.3f;
-            smearManager.NewParticle(spawnPosition, Vector2.UnitY, length, 15, strength);
+            ScreenSmearEffectManager.NewParticle(spawnPosition, Vector2.UnitY, length, 15, strength);
         }
 
         private float GetTrailWidth(float completionRatio)

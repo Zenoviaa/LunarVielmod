@@ -823,7 +823,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             RippingGeyser_Start,
             RippingGeyser_Dash,
             RippingGeyser_AuraFarm,
-            RippingGeyser_End
+            RippingGeyser_End,
+
+            Grab_Start,
+            Grab_Walk,
+            Grab_Dash,
+            Grab_Punish,
+            Grab_EatDirt,
+            Grab_ThrowSword,
+            Grab_End
         }
 
         private bool _intro;
@@ -974,6 +982,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             UpdateClient();
             _contactDamage = false;
+            _isGrabbing = false;
             _hoverTimer++;
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             switch (State)
@@ -1023,6 +1032,28 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 case AIState.RippingGeyser_End:
                     AI_RippingGeyserEnd();
                     break;
+
+                case AIState.Grab_Start:
+                    AI_GrabStart();
+                    break;
+                case AIState.Grab_Walk:
+                    AI_GrabWalk();
+                    break;
+                case AIState.Grab_Dash:
+                    AI_GrabDash();
+                    break;
+                case AIState.Grab_Punish:
+                    AI_GrabDunk();
+                    break;
+                case AIState.Grab_EatDirt:
+                    AI_GrabEatDirt();
+                    break;
+                case AIState.Grab_ThrowSword:
+                    AI_GrabThrowSword();
+                    break;
+                case AIState.Grab_End:
+                    AI_GrabEnd();
+                    break;
             }
             NPC.spriteDirection = NPC.direction;
         }
@@ -1045,7 +1076,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         private void ChooseAttack()
         {
-            SwitchState(AIState.RippingGeyser_Start);
+            SwitchState(AIState.Grab_Start);
         }
     }
 }
