@@ -201,7 +201,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.velocity = interpolatedVelocity;
             if (Timer >= startupTime)
             {
-                SwitchState(AIState.Tornado_Spin);
+                SwitchState(AIState.Tornado_PreSpin);
             }
         }
 
@@ -209,10 +209,21 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             //In this state, he'll slowly start speeding up and then creating the tornado, 
             //The earlier startup state is just to get him into the position
+            //This is mostly done with a sound and animation, so not much happens here
+            Timer++;
+
+            float prespinTime = 30f;
+            NPC.velocity *= 0.9f;
+            if(Timer >= prespinTime)
+            {
+                SwitchState(AIState.Tornado_Spin);
+            }
         }
 
         private void AI_TornadoSpin()
         {
+            //Here the tornado projectile will actually spawn and we'll begin sucking in all of the players
+            //At the same time we'll slowly move towards our target
             Timer++;
             if(Timer == 1)
             {
@@ -222,11 +233,36 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                         ModContent.ProjectileType<BlackTornado>(), TornadoDamage, 1, Main.myPlayer, ai1: NPC.whoAmI);
                 }
             }
+
+            float tornadoTime = 600;
+            Vector2 targetNormal = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+            float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
+            if(distanceToTarget >= 500)
+            {
+                Vector2 targetVelocity = targetNormal * 20;
+                NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
+            }
+            else
+            {
+                NPC.velocity = Vector2.Lerp(NPC.velocity, targetNormal * 3, 0.1f);
+            }
+
+            //Unsure how strong this should actually be so make sure to balance this number properly
+            float tornadoStrength = 3f;
+            SuckAllPlayers(tornadoStrength);
+            if(Timer >= tornadoTime)
+            {
+                SwitchState(AIState.Tornado_End);
+            }
         }
 
         private void AI_TornadoEnd()
         {
-
+            Timer++;
+            if(Timer >= 15)
+            {
+                SwitchState(AIState.Idle);
+            }
         }
     }
 }
