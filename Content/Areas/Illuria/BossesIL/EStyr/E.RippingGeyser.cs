@@ -102,7 +102,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     {
         private float _inScale;
         private float _outScale;
-        private Vector2[] LinePos = new Vector2[2];
+        private Vector2[] LinePos = new Vector2[4];
         private TexturedQuad _quadBackingField;
         private TexturedQuad TexturedQuad
         {
@@ -154,9 +154,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _inScale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(Timer / 60f));
             _outScale = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo((float)Projectile.timeLeft / 100));
             ShakeModSystem.Shake = MathHelper.Lerp(0, 9, _outScale);
-
             LinePos[0] = Projectile.Center;
-            LinePos[1] = Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 8000;
+            LinePos[1] = Projectile.Center;
+            LinePos[2] = Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 8000;
+            LinePos[3] = Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 8000;
             if (Timer > 60 && Timer < 120 && this.OwnedByLocalClient())
             {
                 if (Timer % 10 == 0)
@@ -418,7 +419,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     }
     public partial class E
     {
-        private int RippingGeyserDaamge => 30;
+        private int RippingGeyserDaamge => 100;
         private void AI_RippingGeysterStart()
         {
             Timer++;
