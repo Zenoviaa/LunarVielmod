@@ -248,7 +248,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
 
             //Unsure how strong this should actually be so make sure to balance this number properly
-            float tornadoStrength = 3f;
+            float tornadoStrength = 0.05f;
             SuckAllPlayers(tornadoStrength);
             if(Timer >= tornadoTime)
             {

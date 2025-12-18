@@ -496,7 +496,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ChooseAttack()
         {
-            SwitchState(AIState.ScreenSlash_Start);
+            SwitchState(AIState.Tornado_Start);
         }
     }
 }
