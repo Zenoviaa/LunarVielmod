@@ -816,6 +816,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Intro_Finish,
             Idle,
 
+            Despawn,
+
             ForwardSlash_Start,
             ForwardSlash_QuickStart,
             ForwardSlash_RePosition,
@@ -987,6 +989,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _isGrabbing = false;
             _hoverTimer++;
          
+
+            if(State != AIState.Despawn && !NPC.HasValidTarget)
+            {
+                NPC.TargetClosest();
+                if (!NPC.HasValidTarget)
+                {
+                    SwitchState(AIState.Despawn);
+                }
+            }
             TargetOutlineColor = Color.White;
             switch (State)
             {
@@ -1010,6 +1021,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     break;
                 case AIState.Intro_Finish:
                     AI_IntroFinish();
+                    break;
+
+                case AIState.Despawn:
+                    AI_Despawn();
                     break;
 
                 case AIState.ForwardSlash_Start:
@@ -1088,6 +1103,25 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 ChooseAttack();
             }
         }
+
+        private void AI_Despawn()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                screenShaderSystem.TintScreen(Color.Black, 1f, 200);
+            }
+            NPC.velocity.X *= 0.2f;
+            NPC.velocity.Y -= 0.2f;
+            Invert invert = ScreenShader.GetInstance<Invert>();
+            invert.alpha = 1f;
+            if(Timer >= 100)
+            {
+                NPC.active = false;
+            }
+        }
+
         private void ChooseAttack()
         {
             SwitchState(AIState.Grab_Start);
