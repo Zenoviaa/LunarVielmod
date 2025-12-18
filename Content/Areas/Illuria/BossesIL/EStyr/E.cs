@@ -973,6 +973,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             base.AI();
 
             UpdateClient();
+            _contactDamage = false;
             _hoverTimer++;
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             switch (State)
