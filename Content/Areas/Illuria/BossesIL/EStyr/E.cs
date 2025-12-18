@@ -866,7 +866,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             SingularBaseball_SummonBall,
             SingularBaseball_HitBall,
             SingularBaseball_FindBall,
-            SingularBaseball_End
+            SingularBaseball_End,
+
+            Kick_Start,
+            Kick_Run,
+            Kick_Kick,
+            Kick_Fail,
+            Kick_Fly,
+            Kick_SwordThrowDown,
+            Kick_End
         }
 
         private bool _intro;
@@ -1190,6 +1198,28 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     break;
                 case AIState.SingularBaseball_End:
                     AI_SingularBaseballEnd();
+                    break;
+
+                case AIState.Kick_Start:
+                    AI_KickStart();
+                    break;
+                case AIState.Kick_Run:
+                    AI_KickRun();
+                    break;
+                case AIState.Kick_Kick:
+                    AI_KickKick();
+                    break;
+                case AIState.Kick_Fail:
+                    AI_KickFail();
+                    break;
+                case AIState.Kick_Fly:
+                    AI_KickFly();
+                    break;
+                case AIState.Kick_SwordThrowDown:
+                    AI_KickSwordThrowDown();
+                    break;
+                case AIState.Kick_End:
+                    AI_KickEnd();
                     break;
             }
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
