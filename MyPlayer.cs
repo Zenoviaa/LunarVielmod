@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Input;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Minions;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
+using Stellamod.Content.Gores.Foreground;
 using Stellamod.Core.ToolsSystem;
 using Stellamod.Dusts;
-using Stellamod.Gores.Foreground;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.PicturePerfect;
 using Stellamod.Items.Accessories.Runes;
@@ -2259,17 +2259,6 @@ namespace Stellamod
             #endregion 
         }
         public const int CAMO_DELAY = 100;
-        public override void PreUpdate()
-        {
-
-
-
-
-
-            if (Main.hasFocus)
-                AddForegroundOrBackground();
-        }
-
         bool Sirestiastalk;
         bool Zuitalk;
         public override void SaveData(TagCompound tag)
@@ -2290,81 +2279,6 @@ namespace Stellamod
             Zuitalk = tag.GetBool("Zuitalk");
         }
 
-
-        private void AddForegroundOrBackground()
-        {
-            if (ZoneIlluria || ZoneIshtar || ZoneAbyss)
-            {
-                int leafFGChance = Starstrike.SpawnChance(Player);
-                if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))
-                {
-                    bool spawnForegroundItem = true;
-                    bool spawnOnPlayerLayer = true;
-                    Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
-                    ForegroundHelper.AddItem(new Starstrike(pos), spawnForegroundItem, spawnOnPlayerLayer);
-                }
-
-
-
-                int SnowFGChance = Snowstrike.SpawnChance(Player);
-                if (SnowFGChance != -1 && Main.rand.NextBool(SnowFGChance))
-                {
-                    bool spawnForegroundItem = true;
-                    bool spawnOnPlayerLayer = true;
-                    Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
-                    ForegroundHelper.AddItem(new Snowstrike(pos), spawnForegroundItem, spawnOnPlayerLayer);
-                }
-            }
-
-
-            if (Main._shouldUseWindyDayMusic)
-            {
-                int leafFGChance = Cherryblossom.SpawnChance(Player);
-                if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))
-                {
-                    bool spawnForegroundItem = true;
-                    bool spawnOnPlayerLayer = true;
-                    Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
-                    ForegroundHelper.AddItem(new Cherryblossom(pos), spawnForegroundItem, spawnOnPlayerLayer);
-                }
-
-
-
-
-            }
-
-            if (Main.raining && (Player.ZoneForest || ZoneVillage))
-            {
-                int leafFGChance = Cherryblossom.SpawnChance(Player);
-                if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))
-                {
-                    bool spawnForegroundItem = true;
-                    bool spawnOnPlayerLayer = true;
-                    Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
-                    ForegroundHelper.AddItem(new Cherryblossom(pos), spawnForegroundItem, spawnOnPlayerLayer);
-                }
-
-
-
-
-            }
-
-            if ((Player.ZoneDesert))
-            {
-                int leafFGChance = Sandstrike.SpawnChance(Player);
-                if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))
-                {
-                    bool spawnForegroundItem = true;
-                    bool spawnOnPlayerLayer = true;
-                    Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
-                    ForegroundHelper.AddItem(new Sandstrike(pos), spawnForegroundItem, spawnOnPlayerLayer);
-                }
-
-
-
-
-            }
-        }
 
 
 

@@ -450,6 +450,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     AI_DismantleEnd();
                     break;
             }
+
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             for (int i = OldFrame.Length - 1; i > 0; i--)
             {
@@ -496,7 +497,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ChooseAttack()
         {
-            SwitchState(AIState.Tornado_Start);
+            SwitchState(AIState.RippingGeyser_Start);
         }
     }
 }

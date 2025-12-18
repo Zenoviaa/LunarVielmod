@@ -1,6 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Gores.Foreground;
-using Stellamod.Helpers;
+﻿using Stellamod.Content.Gores.Foreground;
+using Stellamod.Core.Foreground;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -12,19 +11,54 @@ namespace Stellamod.Content.Biomes
         public bool ZoneSpringHills;
         public bool ZoneMistyDungeon;
         public bool ZoneDesertTown;
-        public override void ResetEffects()
+
+        public override void PostUpdateMiscEffects()
         {
-            base.ResetEffects();
-        }
-        public override void PreUpdate()
-        {
-            if (Main.hasFocus)
-                AddForegroundOrBackground();
+            base.PostUpdateMiscEffects();
+            AddForegroundOrBackground();
         }
 
         private void AddForegroundOrBackground()
         {
             SpringHillsForegroundBackground();
+            MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();
+            if (myPlayer.ZoneIlluria || myPlayer.ZoneIshtar || myPlayer.ZoneAbyss)
+            {
+                if (Main.rand.NextBool(5))
+                {
+                    ForegroundParticleRenderer.NewParticle<Starstrike>();
+                }
+
+                if (Main.rand.NextBool(5))
+                {
+                    ForegroundParticleRenderer.NewParticle<Snowstrike>();
+                }
+            }
+
+
+            if (Main._shouldUseWindyDayMusic)
+            {
+                if (Main.rand.NextBool(5))
+                {
+                    ForegroundParticleRenderer.NewParticle<Cherryblossom>();
+                }
+            }
+
+            if (Main.raining && (Player.ZoneForest || myPlayer.ZoneVillage))
+            {
+                if (Main.rand.NextBool(5))
+                {
+                    ForegroundParticleRenderer.NewParticle<Cherryblossom>();
+                }
+            }
+
+            if ((Player.ZoneDesert))
+            {
+                if (Main.rand.NextBool(5))
+                {
+                    ForegroundParticleRenderer.NewParticle<Sandstrike>();
+                }
+            }
         }
 
         private void SpringHillsForegroundBackground()
@@ -47,23 +81,15 @@ namespace Stellamod.Content.Biomes
                 _windCounter = 1200;
             }
             //CHERRY BLOSSOM
-            int spawnChance = -1;
-            spawnChance = Cherryblossom.SpawnChance(Player);
-            if (spawnChance != -1 && Main.rand.NextBool(spawnChance))
+            if (Main.rand.NextBool(10))
             {
-                bool spawnForegroundItem = true;
-                bool spawnOnPlayerLayer = true;
-                Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
-                ForegroundHelper.AddItem(new Cherryblossom(pos), spawnForegroundItem, spawnOnPlayerLayer);
+
+                ForegroundParticleRenderer.NewParticle<Cherryblossom>();
             }
 
-            spawnChance = SpringFallingFlower.SpawnChance(Player);
-            if (spawnChance != -1 && Main.rand.NextBool(spawnChance))
+            if (Main.rand.NextBool(10))
             {
-                bool spawnForegroundItem = true;
-                bool spawnOnPlayerLayer = true;
-                Vector2 pos = Player.Center - new Vector2(Main.rand.Next(-(int)(Main.screenWidth * 2f), (int)(Main.screenWidth * 2f)), Main.screenHeight * 0.52f);
-                ForegroundHelper.AddItem(new SpringFallingFlower(pos), spawnForegroundItem, spawnOnPlayerLayer);
+                ForegroundParticleRenderer.NewParticle<SpringFallingFlower>();
             }
         }
     }
