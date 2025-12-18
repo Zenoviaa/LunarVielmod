@@ -137,7 +137,7 @@ public class ForegroundParticleRenderer : ModSystem
     private void DrawForeground()
     {
         SpriteBatch spriteBatch = Main.spriteBatch;
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+        spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
         for (int i = 0; i < Max_Particle_Count; i++)
         {
             ForegroundParticle particle = _particles[i];
