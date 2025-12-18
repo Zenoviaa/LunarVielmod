@@ -4,7 +4,7 @@ using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Core.Foreground;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.RenderTargetSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Core.Waters;
 using Stellamod.Helpers;
 using Stellamod.Trails;

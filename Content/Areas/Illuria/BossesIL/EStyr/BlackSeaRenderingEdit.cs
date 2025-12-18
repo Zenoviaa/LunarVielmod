@@ -2,8 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Core.MoonWaters;
-using Stellamod.Core.RenderTargetSystem;
 using Stellamod.Core.Shaders;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Graphics.Effects;

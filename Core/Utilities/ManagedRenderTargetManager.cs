@@ -1,14 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Pixelation;
-using Stellamod.NPCs.Town;
-using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Core.RenderTargetSystem
+namespace Stellamod.Core.Utilities
 {
 
     /// <summary>
@@ -37,7 +34,7 @@ namespace Stellamod.Core.RenderTargetSystem
         }
 
         public delegate Point ResizeFunction();
-    
+
         public int Width { get; private set; }
         public int Height { get; private set; }
         private void Resize()
@@ -52,16 +49,16 @@ namespace Stellamod.Core.RenderTargetSystem
 
         public void QueueResize(Point screenSize)
         {
-            if(_oldScreenSize == screenSize) 
+            if (_oldScreenSize == screenSize)
                 return;
-            
+
             _oldScreenSize = screenSize;
             Main.QueueMainThreadAction(Resize);
 
         }
 
 
-        public static ManagedRenderTarget New( ResizeFunction resizeFunction, int downSamples = 1, bool mipMap = true, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
+        public static ManagedRenderTarget New(ResizeFunction resizeFunction, int downSamples = 1, bool mipMap = true, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
         {
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             ManagedRenderTarget managedRenderTarget = new ManagedRenderTarget(resizeFunction, downSamples, mipMap, surfaceFormat, depthFormat);
@@ -71,7 +68,7 @@ namespace Stellamod.Core.RenderTargetSystem
             return managedRenderTarget;
         }
 
- 
+
 
         public static implicit operator RenderTarget2D(ManagedRenderTarget managedRenderTarget)
         {
@@ -102,7 +99,7 @@ namespace Stellamod.Core.RenderTargetSystem
             _managedRenderTargets.Clear();
         }
 
-     
+
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
@@ -122,7 +119,7 @@ namespace Stellamod.Core.RenderTargetSystem
             if (_oldScreenSize == screenSize)
                 return;
 
-            for(int i = 0; i < _managedRenderTargets.Count; i++)
+            for (int i = 0; i < _managedRenderTargets.Count; i++)
             {
                 ManagedRenderTarget managedRenderTarget = _managedRenderTargets[i];
                 managedRenderTarget.QueueResize(screenSize);
