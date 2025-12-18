@@ -857,6 +857,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             BlackDashPreDash,
             BlackDashDash,
             BlackDashEnd,
+
+            JevilScythes_Start,
+            JevilScythes_Loop,
+            JevilScythes_End
         }
 
         private bool _intro;
@@ -1154,6 +1158,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     break;
                 case AIState.BlackDashEnd:
                     AI_BlackDashEnd();
+                    break;
+
+                case AIState.JevilScythes_Start:
+                    AI_JevilScythesStart();
+                    break;
+                case AIState.JevilScythes_Loop:
+                    AI_JevilScythesLoop();
+                    break;
+                case AIState.JevilScythes_End:
+                    AI_JevilScythesEnd();
                     break;
             }
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
