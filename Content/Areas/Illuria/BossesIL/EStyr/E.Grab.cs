@@ -124,7 +124,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         */
 
         private bool _isGrabbing;
-        private int GrabDamage => 90;
+        private int GrabDamage => 120;
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
             base.OnHitPlayer(target, hurtInfo);
@@ -143,7 +143,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             //First we want to position ourselves near the player, so we'll just move up to them
             float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
-            if (distanceToTarget > 160)
+            if (distanceToTarget > 252)
             {
                 Vector2 targetVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                 NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity * distanceToTarget / 16f, 0.1f);
@@ -273,6 +273,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             smashSound = AssetRegistry.Sounds.Bishinine.Comet2;
             SoundEngine.PlaySound(smashSound, NPC.position);
+
+            var part = Particle.NewParticle<GlowDonutParticle>(MyTarget.Bottom, Vector2.Zero, Color.White);
+            part.fadeToColor = Color.Black;
+            part.outerColor = Color.White;
+            part.noStretch = true;
+            part.shrink = true;
+
+            var part2 = Particle.NewParticle<GlowDonutParticle>(MyTarget.Bottom, Vector2.Zero, Color.White);
+            part2.fadeToColor = Color.Black;
+            part2.outerColor = Color.White;
+            part2.noStretch = true;
+            part2.color *= 0.5f;
         }
 
         private void AI_GrabDunk()
@@ -346,8 +358,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 NPC.velocity.X += _forwardVector.X;
                 NPC.velocity.X *= 1.01f;
             }
-           OffsetCameraModifier.FocusTargetOffset = new Vector2(NPC.velocity.X * 30, 0);
-        
+           OffsetCameraModifier.FocusTargetOffset = new Vector2(NPC.velocity.X * 40, 0);
+            _extraAfterImageAlpha = MathHelper.Lerp(0f, 0.6f, Timer / eatDirtTime);
             if(Timer >= eatDirtTime)
             {
                 SwitchState(AIState.Grab_ThrowSword);
@@ -362,6 +374,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 TargetVector = NPC.velocity;
                 _forwardVector = NPC.velocity.X > 0 ? -Vector2.UnitX : Vector2.UnitX;
             }
+            _extraAfterImageAlpha = 0.6f;
 
             float throwTime = 90;
             float completionRatio = Timer / throwTime;
@@ -373,13 +386,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             grabPlayer.ThrowRotation = MathHelper.Lerp(0f, MathHelper.TwoPi * 2 + MathHelper.PiOver4, completionRatio);
 
             float offset = 353;
-            Vector2 startCenter = MyTarget.Center - new Vector2(offset * _forwardVector.X, 0);
+            Vector2 startOffset = new Vector2(offset * _forwardVector.X, 0);
+            Vector2 startCenter = MyTarget.Center - startOffset;
             Vector2 endCenter = startCenter + new Vector2(offset * 2 * _forwardVector.X, 0);
 
             if (Timer < 30f)
             {
                 float prepEase = EasingFunction.InOutCubic(Timer / 30f);
-
                 Vector2 targetVelocity = startCenter - NPC.Center;
                 NPC.velocity = Vector2.Lerp(TargetVector, targetVelocity, prepEase);
                 NPC.direction = (int)(-1 * _forwardVector.X);
@@ -418,6 +431,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void AI_GrabEnd()
         {
             Timer++;
+            _extraAfterImageAlpha *= 0.2f;
             NPC.velocity *= 0.9f;
             if (Timer >= 15)
             {
@@ -427,7 +441,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 }
                 else
                 {
-                    SwitchState(AIState.Grab_Walk);
+                    SwitchState(AIState.Grab_Start);
                 }
             }
         }

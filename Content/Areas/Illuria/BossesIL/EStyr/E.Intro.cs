@@ -22,17 +22,57 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     public partial class E
     {
 
+        private void IntroHoverMovement()
+        {
+            //Floats
+            Vector2 hoverVelocity = CalculateHoverVelocity();
+            NPC.velocity = hoverVelocity;
+
+            //First we make the camera move to him
+            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+
+            //Face away the player
+            NPC.direction = -TargetDirection;
+        }
+
         /*
          * Starts out by Zui calling out to you and pointing at the mysterious aura farming Styr black figure,
          * As they turn around a little with their head, and holds their hand out and starts the uh domain expansion thing,
          * which turns the screen white and black mostly with some greys in between
          * */
-
-        private void AI_IntroHeadTurn()
+        private void AI_IntroIdle()
         {
             Timer++;
             //Make sure to target the player
-            if(Timer == 1)
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                TargetVector = NPC.velocity;
+            }
+
+            //Calculate easing for the hover effect
+            float headTurnTime = 120f;
+            float completionRatio = Timer / headTurnTime;
+            float easing = EasingFunction.OutExpo(completionRatio);
+
+         
+            //Play the head turn animation
+            Animator.PlayAnimation(Anim_Idle);
+
+            IntroHoverMovement();
+            Main.windSpeedCurrent = 0;
+
+            //After a decent amount of time, switch to the hand out state 
+            if (Timer >= headTurnTime)
+            {
+                SwitchState(AIState.Intro_SwordHold);
+            }
+        }
+        private void AI_IntroSwordHold()
+        {
+            Timer++;
+            //Make sure to target the player
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
                 TargetVector = NPC.velocity;
@@ -44,18 +84,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float easing = EasingFunction.OutExpo(completionRatio);
 
             //Floats
-            Vector2 hoverVelocity = CalculateHoverVelocity();
-            NPC.velocity = hoverVelocity;
+            IntroHoverMovement();
 
             //Play the head turn animation
-            Animator.PlayAnimation(Anim_HeadTurn);
-
-            //First we make the camera move to him
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
-            
-            //Face the player
-            NPC.direction = TargetDirection;
-            Main.windSpeedCurrent = 0;
+            Animator.PlayAnimation(Anim_SwordHold);
 
             //After a decent amount of time, switch to the hand out state 
             if (Timer >= headTurnTime)
@@ -64,6 +96,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
         }
 
+
+ 
         private void AI_IntroHandOut()
         {
             Timer++;
@@ -119,13 +153,53 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Animator.PlayAnimation(Anim_HandOut);
             RetargetCameraModifier.ReTargetPosition = NPC.Center;
 
-            //Face the player
-            NPC.direction = TargetDirection;
+            //Face away the player
+            NPC.direction = -TargetDirection;
             if (Timer >= handOutTime)
+            {
+                SwitchState(AIState.Intro_HeadTurn);
+            }
+        }
+        private void AI_IntroHeadTurn()
+        {
+            Timer++;
+            //Make sure to target the player
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                TargetVector = NPC.velocity;
+            }
+
+            //Calculate easing for the hover effect
+            float headTurnTime = 120f;
+            float completionRatio = Timer / headTurnTime;
+            float easing = EasingFunction.OutExpo(completionRatio);
+
+
+            //Play the head turn animation
+            Animator.PlayAnimation(Anim_LookOver);
+
+            //First we make the camera move to him
+            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+
+
+            IntroHoverMovement();
+            ShakeModSystem.Shake = 4;
+            Main.windSpeedCurrent = 6;
+            if (Main.netMode != NetmodeID.Server)
+            {
+                BlackSeaRenderingEdit blackseaRenderer = ModContent.GetInstance<BlackSeaRenderingEdit>();
+                blackseaRenderer.miniOrbDrawPosition = NPC.Center;
+                blackseaRenderer.miniOrbDrawScale = 0.4f;
+            }
+
+            //After a decent amount of time, switch to the hand out state 
+            if (Timer >= headTurnTime)
             {
                 SwitchState(AIState.Intro_DomainExpansion);
             }
         }
+
 
         private void AI_IntroDomainExpansion()
         {
@@ -184,8 +258,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             domainExpansion.epicenter = epicenter;
             domainExpansion.alpha = 1f;
 
-
-            if(Timer >= domainExpansionTime)
+            //Face away the player
+            NPC.direction = -TargetDirection;
+            if (Timer >= domainExpansionTime)
             {
                 SwitchState(AIState.Intro_Finish);
             }
@@ -209,7 +284,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             DomainExpansion domainExpansion = ScreenShader.GetInstance<DomainExpansion>();
             domainExpansion.radius = MathHelper.Lerp(2f, 0f, ease);
             RetargetCameraModifier.ReTargetPosition = NPC.Center;
-            if(Timer >= domainShrinkTime * 2f)
+
+            //Face away the player
+            NPC.direction = -TargetDirection;
+            if (Timer >= domainShrinkTime * 2f)
             {
                 SwitchState(AIState.Idle);
             }

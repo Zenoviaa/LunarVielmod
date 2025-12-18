@@ -808,6 +808,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     {
         private enum AIState
         {
+            Intro_Idle,
+            Intro_SwordHold,
             Intro_HeadTurn,
             Intro_HandOut,
             Intro_DomainExpansion,
@@ -899,7 +901,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            Main.npcFrameCount[NPC.type] = 1;
+            Main.npcFrameCount[NPC.type] = 34;
             NPCID.Sets.TrailCacheLength[NPC.type] = 16;
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
@@ -984,13 +986,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _contactDamage = false;
             _isGrabbing = false;
             _hoverTimer++;
-            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+         
+            TargetOutlineColor = Color.White;
             switch (State)
             {
                 case AIState.Idle:
                     AI_Idle();
                     break;
-
+                case AIState.Intro_Idle:
+                    AI_IntroIdle();
+                    break;
+                case AIState.Intro_SwordHold:
+                    AI_IntroSwordHold();
+                    break;
                 case AIState.Intro_HeadTurn:
                     AI_IntroHeadTurn();
                     break;
@@ -1055,13 +1063,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     AI_GrabEnd();
                     break;
             }
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            for (int i = OldFrame.Length - 1; i > 0; i--)
+            {
+                OldFrame[i] = OldFrame[i - 1];
+            }
+            OldFrame[0] = NPC.frame;
             NPC.spriteDirection = NPC.direction;
         }
 
         private Vector2 CalculateHoverVelocity()
         {
             Vector2 hoverVelocity = Vector2.Zero;
-            hoverVelocity.Y = MathF.Sin(_hoverTimer * 0.05f);
+            hoverVelocity.Y = MathF.Sin(_hoverTimer * 0.025f);
             return hoverVelocity;
         }
 
