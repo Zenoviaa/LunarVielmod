@@ -835,7 +835,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Grab_Punish,
             Grab_EatDirt,
             Grab_ThrowSword,
-            Grab_End
+            Grab_End,
+
+            Tornado_Start,
+            Tornado_PreSpin,
+            Tornado_Spin,
+            Tornado_End,
         }
 
         private bool _intro;
@@ -1076,6 +1081,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     break;
                 case AIState.Grab_End:
                     AI_GrabEnd();
+                    break;
+
+                case AIState.Tornado_Start:
+                    AI_TornadoStart();
+                    break;
+                case AIState.Tornado_PreSpin:
+                    AI_TornadoPreSpin();
+                    break;
+                case AIState.Tornado_Spin:
+                    AI_TornadoSpin();
+                    break;
+                case AIState.Tornado_End:
+                    AI_TornadoEnd();
                     break;
             }
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
