@@ -841,6 +841,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Tornado_PreSpin,
             Tornado_Spin,
             Tornado_End,
+
+            ScreenSlash_Start,
+            ScreenSlash_PreSlash,
+            ScreenSlash_Slash,
+            ScreenSlash_SwordPoint,
+            ScreenSlash_End
         }
 
         private bool _intro;
@@ -1094,6 +1100,22 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     break;
                 case AIState.Tornado_End:
                     AI_TornadoEnd();
+                    break;
+
+                case AIState.ScreenSlash_Start:
+                    AI_ScreenSlashStart();
+                    break;
+                case AIState.ScreenSlash_PreSlash:
+                    AI_ScreenSlashPreSlash();
+                    break;
+                case AIState.ScreenSlash_Slash:
+                    AI_ScreenSlashSlash();
+                    break;
+                case AIState.ScreenSlash_SwordPoint:
+                    AI_ScreenSlashSwordPoint();
+                    break;
+                case AIState.ScreenSlash_End:
+                    AI_ScreenSlashEnd();
                     break;
             }
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
