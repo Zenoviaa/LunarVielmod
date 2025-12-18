@@ -846,7 +846,17 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             ScreenSlash_PreSlash,
             ScreenSlash_Slash,
             ScreenSlash_SwordPoint,
-            ScreenSlash_End
+            ScreenSlash_End,
+
+            SwordStarPlosion_Start,
+            SwordStarPlosion_Charge,
+            SwordStarPlosion_Swing,
+            SwordStarPlosion_End,
+
+            BlackDashStart,
+            BlackDashPreDash,
+            BlackDashDash,
+            BlackDashEnd,
         }
 
         private bool _intro;
@@ -1009,6 +1019,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     SwitchState(AIState.Despawn);
                 }
             }
+            _telegraphLineAlpha = 0;
+            _telegraphLineRot = 0;
             TargetOutlineColor = Color.White;
             switch (State)
             {
@@ -1116,6 +1128,32 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     break;
                 case AIState.ScreenSlash_End:
                     AI_ScreenSlashEnd();
+                    break;
+
+                case AIState.SwordStarPlosion_Start:
+                    AI_SwordStarPlosionStart();
+                    break;
+                case AIState.SwordStarPlosion_Charge:
+                    AI_SwordStarPlosionCharge();
+                    break;
+                case AIState.SwordStarPlosion_Swing:
+                    AI_SwordStarPlosionSwing();
+                    break;
+                case AIState.SwordStarPlosion_End:
+                    AI_SwordStarPlosion_End();
+                    break;
+
+                case AIState.BlackDashStart:
+                    AI_BlackDashStart();
+                    break;
+                case AIState.BlackDashPreDash:
+                    AI_BlackDashPreDash();
+                    break;
+                case AIState.BlackDashDash:
+                    AI_BlackDashDash();
+                    break;
+                case AIState.BlackDashEnd:
+                    AI_BlackDashEnd();
                     break;
             }
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);

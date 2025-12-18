@@ -17,6 +17,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private const string Anim_HandOut = "handout";
         private const string Anim_LookOver = "lookover";
 
+        private float _telegraphLineAlpha;
+        private float _telegraphLineRot;
         private float _afterImageAlpha;
         private float _extraAfterImageAlpha;
         private Vector2 _drawScale = Vector2.One;
@@ -80,12 +82,25 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             screenPos.Y += ExtraMath.Osc(-2f, 2f, speed: 16);
+            DrawTelegraphLine(spriteBatch, screenPos);
             DrawAfterImages(spriteBatch, screenPos, Color.White);
             DrawSprite(spriteBatch, screenPos, Color.White);
 
             return false;
         }
 
+        private void DrawTelegraphLine(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            Texture2D bloomLinTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+            Vector2 drawOrigin = new Vector2(bloomLinTexture.Width / 2f, 0f);
+            float rotation = _telegraphLineRot - MathHelper.PiOver2;
+            Color drawColor = Color.White;
+            drawColor.A = 0;
+            drawColor *= _telegraphLineAlpha;
+            Vector2 scale = Vector2.One;
+            scale.Y *= 2;
+            spriteBatch.Draw(bloomLinTexture, NPC.Center - screenPos, null, drawColor, rotation, drawOrigin, scale, SpriteEffects.None, 0); ;
+        }
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D eTexture = ModContent.Request<Texture2D>(Texture).Value;
