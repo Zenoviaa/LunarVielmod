@@ -4,6 +4,7 @@ using Stellamod.Assets;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
@@ -40,19 +41,35 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void AI()
         {
             base.AI();
+            Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle starSound = new SoundStyle("Stellamod/Assets/Sounds/Starrer");
+                starSound.PitchVariance = 0.3f;
+                starSound.Volume = 0.5f;
+                SoundEngine.PlaySound(starSound, Projectile.position);
+            }
             float outScale = (float)Projectile.timeLeft / 30f;
             outScale = EasingFunction.InOutSine(outScale);
             Projectile.scale = 1f * outScale;
-            if (Projectile.velocity.Length() < 8)
+            if(Timer >= 30)
             {
-                Projectile.velocity *= 1.065f;
+                if (Projectile.velocity.Length() < 8)
+                {
+                    Projectile.velocity *= 1.065f;
+                }
             }
+
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 8000);
             if(player != null)
             {
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, degreesToRotate: 0.15f);
             }
             
+            if(Timer % 32 == 0)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>(), Scale: 0.4f);
+            }
         }
 
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -223,6 +240,23 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if (Timer % 20 == 0)
             {
+                ShakeModSystem.Shake = 4;
+                FXUtil.ShakeCamera(NPC.position, 1024, 4);
+
+                Vector2 direction = Vector2.UnitY.RotateRandom(1.5f);
+                Vector2 startPosition = NPC.Center - direction * 1200;
+                ScreenSmearEffectManager.NewParticle(startPosition, direction, 2400, 15);
+                var strike = Particle.NewParticle<GlowDonutParticle>(NPC.Center, direction);
+                strike.xMult = 6;
+                strike.rotOffset += MathHelper.PiOver2;
+                var strike2 = Particle.NewParticle<GlowDonutParticle>(NPC.Center, direction);
+                strike2.xMult = 32;
+                strike2.rotOffset += MathHelper.PiOver2;
+                SoundStyle hurriSlash = AssetRegistry.Sounds.E.Hurrislash;
+                hurriSlash.PitchVariance = 0.3f;
+                hurriSlash.Pitch = 0.8f;
+                SoundEngine.PlaySound(hurriSlash, NPC.position);
+
                 if (MultiplayerHelper.IsHost)
                 {
                     int darkStarType = ModContent.ProjectileType<DarkStar>();
@@ -260,12 +294,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                  
             }
 
-            float pointingTime = 180;
+            float pointingTime = 240;
             float inCompletionRatio = Timer / 30;
             float inEase = EasingFunction.InExpo(inCompletionRatio);
             Vector2 targetVelocity = CalculateHoverVelocity();
             Vector2 easeVelocity = Vector2.Lerp(TargetVector, targetVelocity, inEase);
             NPC.velocity = easeVelocity;
+            NPC.direction = TargetDirection;
             TargetOutlineColor = Color.Red;
             if (Timer >= pointingTime)
             {
