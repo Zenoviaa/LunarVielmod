@@ -17,6 +17,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         IDrawOutlines,
         IDrawBlackStar
     {
+
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
@@ -26,23 +27,32 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             base.SetDefaults();
             TrailCacheLength = 16;
-            Projectile.width = 16;
-            Projectile.height = 16;
+            Projectile.width = 9;
+            Projectile.height = 9;
             Projectile.hostile = true;
-            Projectile.timeLeft = 180;
+            Projectile.timeLeft = 360;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
+            Projectile.extraUpdates = 1;
         }
 
         public override void AI()
         {
             base.AI();
-            if (Projectile.velocity.Length() < 20)
+            float outScale = (float)Projectile.timeLeft / 30f;
+            outScale = EasingFunction.InOutSine(outScale);
+            Projectile.scale = 1f * outScale;
+            if (Projectile.velocity.Length() < 8)
             {
                 Projectile.velocity *= 1.065f;
             }
-
+            Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 8000);
+            if(player != null)
+            {
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, degreesToRotate: 0.15f);
+            }
+            
         }
 
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -51,8 +61,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 drawOrigin = texture.Size() / 2f;
             Vector2 drawCenter = Projectile.Center - screenPos;
             float rotation = Projectile.rotation;
-            float scale = Projectile.scale;
-            Vector2 drawScale = Vector2.One;
+
+            Vector2 drawScale = Vector2.One * Projectile.scale;
             spriteBatch.Draw(texture, drawCenter, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
 
@@ -66,10 +76,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                 Vector2 drawCenter = OldCenterPos[i] - Main.screenPosition;
                 float rotation = OldCenterRot[i];
-                float scale = Projectile.scale;
+
                 Color drawColor = Color.Lerp(Color.White, Color.Transparent, completionRatio);
-                drawColor *= 0.6f;
-                Vector2 drawScale = Vector2.One;
+                drawColor *= 0.3f;
+                Vector2 drawScale = Vector2.One * Projectile.scale;
                 spriteBatch.Draw(texture, drawCenter, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             }
         }
@@ -147,7 +157,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             TargetOutlineColor = Color.Yellow;
             if (Timer >= preSlashTime)
             {
-                SwitchState(AIState.ScreenSlash_PreSlash);
+                SwitchState(AIState.ScreenSlash_Slash);
             }
         }
 
@@ -225,16 +235,26 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     float endRadians = radiansSpread / 2f;
 
 
+                    float weaveoffset = _attackNumber % 2 == 0 ? 22 : 0;
+                    float weaveRadians = MathHelper.ToRadians(weaveoffset);
                     for(float n = 0; n < numProjectiles; n++)
                     {
                         float ratio = n / numProjectiles;
                         Vector2 fireVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                         fireVelocity *= 2;
+                        fireVelocity = fireVelocity.RotatedBy(weaveRadians);
 
                         float rads = MathHelper.Lerp(startRadians, endRadians, ratio);
                         fireVelocity = fireVelocity.RotatedBy(rads);
                         Projectile.NewProjectile(SourceFromThis, NPC.Center, fireVelocity, darkStarType, DarkStarDamage, 1, Main.myPlayer);
                     }
+                    if(_attackNumber % 2 == 0)
+                    {
+                        Vector2 mainVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                        mainVelocity *= 5;
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, mainVelocity, darkStarType, DarkStarDamage, 1, Main.myPlayer);
+                    }
+                  
                     _attackNumber++;
                 }
                  
