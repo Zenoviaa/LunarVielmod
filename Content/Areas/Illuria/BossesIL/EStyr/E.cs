@@ -239,7 +239,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void AI()
         {
             base.AI();
-
+            BlackSeaRenderer blackseaRenderer = ModContent.GetInstance<BlackSeaRenderer>();
+            blackseaRenderer.renderBlackSea = true;
+            EnablePlatformArena();
             UpdateClient();
             _contactDamage = false;
             _isGrabbing = false;

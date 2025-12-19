@@ -40,6 +40,7 @@ namespace Stellamod.Core.HealthbarSystem
             }
             else
             {
+                uiState.ui.ResetEaseTimer();
                 uiState.ui.TrackingNpc = null;
             }
             ActiveBosses.Clear();

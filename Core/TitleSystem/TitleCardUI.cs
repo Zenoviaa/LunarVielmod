@@ -1,10 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using ReLogic.Graphics;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
+using Terraria.UI;
+using Terraria.UI.Chat;
 
 namespace Stellamod.Core.TitleSystem
 {
@@ -12,7 +16,14 @@ namespace Stellamod.Core.TitleSystem
     {
         private UIPanel _panel;
         private UIText _text;
-        private UIImage _image;
+        public TitleCardUI()
+        {
+            _panel = new UIPanel();
+            _text = new UIText("Wave 1", large: true);
+        }
+
+
+        private float _flashInAlpha;
         private float _timer;
         private float _duration;
         public const int width = 480;
@@ -30,25 +41,24 @@ namespace Stellamod.Core.TitleSystem
             LineTexture = ModContent.Request<Texture2D>(TitleCardUISystem.RootTexturePath + "Underline");
             Width.Pixels = 48 * 5f;
             Height.Pixels = 48 * 16;
+
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
+
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
-            _panel = new UIPanel();
             _panel.Width.Pixels = Width.Pixels;
             _panel.Height.Pixels = Height.Pixels;
             _panel.BackgroundColor = Color.Transparent;
             _panel.BorderColor = Color.Transparent;
             Append(_panel);
 
-            _text = new UIText("Wave 1", large: true);
             _text.Width.Pixels = Width.Pixels;
             _text.Left.Pixels = -120;
             _text.Height.Pixels = Height.Pixels;
             _text.HAlign = 0.5f;
             _text.Top.Pixels = 0;
-
             Append(_text);
         }
 
@@ -62,6 +72,8 @@ namespace Stellamod.Core.TitleSystem
             _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             float progress = _timer / _duration;
+            _flashInAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.OutExpo(progress / 0.5f));
+            
             float easedProgress = EasingFunction.QuadraticBump(progress);
             float pixels = MathHelper.Lerp(32, 64, easedProgress);
             _text.Top.Pixels = pixels;
@@ -75,6 +87,11 @@ namespace Stellamod.Core.TitleSystem
             _duration = duration;
         }
 
+
+        private void DrawGlowText(SpriteBatch spriteBatch)
+        {
+
+        }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
@@ -96,11 +113,16 @@ namespace Stellamod.Core.TitleSystem
             drawPos.X -= texture.Width / 2f;
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, default, default, default, default, Main.UIScaleMatrix);
+            for(int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(texture, drawPos + texture.Size() / 2f, null, Color.White * _flashInAlpha, 0, texture.Size() / 2f, drawScale + Vector2.One * _flashInAlpha * new Vector2(2, 1), SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture, drawPos + texture.Size() / 2f, null, Color.White * _flashInAlpha, 0, texture.Size() / 2f, drawScale + Vector2.One * _flashInAlpha, SpriteEffects.None, 0f);
+            }
 
             spriteBatch.Draw(texture, drawPos, null, Color.White * easedProgress, 0, Vector2.Zero, drawScale, SpriteEffects.None, 0f);
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, default, default, default, default, Main.UIScaleMatrix);
-
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, default, Main.Rasterizer, default, Main.UIScaleMatrix);
+        
         }
     }
 }

@@ -5,6 +5,7 @@ using Stellamod.Assets;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
@@ -71,13 +72,19 @@ namespace Stellamod.Core.HealthbarSystem
             {
                 float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 _easeInTimer += deltaTime;
-                _easeInAlpha = EasingFunction.InOutSine(_easeInTimer / 120f);
-                Top.Pixels += MathHelper.Lerp(128, 0, _easeInAlpha);
+                float ratio = _easeInTimer / 2f;
+                _easeInAlpha = EasingFunction.InOutSine(ratio);
+                Top.Pixels += MathHelper.Lerp(32, 0, _easeInAlpha);
+            }
+            else
+            {
+                _easeInTimer = 0;
             }
 
-
-            _bossNameText.Left.Pixels = 48;
+   
+                _bossNameText.Left.Pixels = 48;
             _bossNameText.Top.Pixels = -10;
+            _bossNameText.TextColor = Color.Lerp(Color.Transparent, Color.White, _easeInAlpha);
         }
 
         private float GetFill()
@@ -167,18 +174,25 @@ namespace Stellamod.Core.HealthbarSystem
 
                 Vector2 offset = new Vector2(_barFillScale.X * 2, 0);
                 Vector2 edgeDrawPos = fillTopLeft + offset;
-                spriteBatch.Draw(EdgeTextureAsset.Value, edgeDrawPos, null, Color.White * _easeInAlpha, 0f, default, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(EdgeTextureAsset.Value, edgeDrawPos, null, Color.White * _easeInAlpha, 0f, default, _easeInAlpha, SpriteEffects.None, 0f);
                 for(float f = 0; f < 1f; f += 0.1f)
                 {
                     Vector2 o = Vector2.UnitY.RotatedBy(f * MathHelper.TwoPi);
                     o *= ExtraMath.Osc(1, 2);
                     Vector2 drawPos = edgeDrawPos + o;
-                    spriteBatch.Draw(EdgeTextureAsset.Value, drawPos, null, Color.White * 0.25f * _easeInAlpha, 0f, default, 1f, SpriteEffects.None, 0f);
+                    Vector2 edgeDraw = EdgeTextureAsset.Size() / 2f;
+                    spriteBatch.Draw(EdgeTextureAsset.Value, drawPos + edgeDraw, null, Color.White * 0.25f * _easeInAlpha, 0f, edgeDraw, _easeInAlpha, SpriteEffects.None, 0f);
                 }
             }
 
 
-            spriteBatch.Draw(BarMoonTextureAsset.Value, topLeft, null, Color.White * _easeInAlpha, 0f, default, 1f, SpriteEffects.None, 0f);
+            Vector2 moonDrawOrigin = BarMoonTextureAsset.Size() / 2f;
+            spriteBatch.Draw(BarMoonTextureAsset.Value, topLeft + moonDrawOrigin, null, Color.White * _easeInAlpha , 0f, moonDrawOrigin, _easeInAlpha, SpriteEffects.None, 0f);
+        }
+
+        public void ResetEaseTimer()
+        {
+            _easeInTimer = 0;
         }
     }
 }

@@ -22,6 +22,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private ManagedRenderTarget _reflectionRT;
         private ManagedRenderTarget _magicGroundRT;
         public bool drawBlackSea;
+        public bool renderBlackSea;
         public Vector2? miniOrbDrawPosition;
         public float miniOrbDrawScale;
         public float alpha;
@@ -183,7 +184,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         private void RenderBlackHurricaneRT(On_Main.orig_CheckMonoliths orig)
         {
-            if (drawBlackSea)
+            if (renderBlackSea)
             {
                 RenderToBlackHurricaneRT();
                 RenderToReflectionRT();
@@ -211,10 +212,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
 
                     spriteBatch.Begin();
-                    DrawHoveringPlatform(spriteBatch);
-                    drawBlackSea = false;
+            
+              
                 }
-
+                DrawHoveringPlatform(spriteBatch);
                 if (miniOrbDrawPosition.HasValue)
                 {
                     Effect featherEffect = FeatherShader.Instance.Effect;
@@ -254,20 +255,26 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             return new Point(Main.screenTarget.Width, Main.screenTarget.Height);
         }
 
+        public override void PreUpdateNPCs()
+        {
+            base.PreUpdateNPCs();
+            drawBlackSea = false;
+            renderBlackSea = false;
+        }
 
         public override void PostUpdateNPCs()
         {
             base.PostUpdateNPCs();
-            if (drawBlackSea)
+            if (renderBlackSea)
             {
                 DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
                 DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
-
                 _spinTimer++;
                 _singularityRotation += 0.001f;
 
                 _platformManager?.Update();
                 _starParticleManager?.Update();
+
                 alpha += 0.02f;
                 if (alpha >= 1f)
                     alpha = 1f;
@@ -278,6 +285,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 if (alpha < 0)
                     alpha = 0;
             }
+
+     
         }
 
         private float _incresionDiskFrameBottom;
