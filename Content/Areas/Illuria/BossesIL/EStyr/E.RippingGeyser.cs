@@ -24,6 +24,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private float _telegraphRotation;
         private float _telegraphAlpha;
         private ref float Timer => ref Projectile.ai[0];
+        private bool IsSmall => Projectile.ai[1] == 1;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -46,6 +47,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             base.AI();
             Timer++;
+            if(Timer == 60)
+            {
+                SoundStyle starSound = new SoundStyle("Stellamod/Assets/Sounds/Starrer");
+                starSound.PitchVariance = 0.5f;
+                SoundEngine.PlaySound(starSound, Projectile.position);
+            }
             if (Timer > 60)
             {
                 if (Projectile.velocity.Length() < 10)
@@ -62,13 +69,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             outScale = EasingFunction.InOutSine(outScale);
             Projectile.scale = MathHelper.Lerp(0.5f, 1f, Projectile.velocity.Length() / 10f) * outScale;
             Projectile.scale += ExtraMath.Osc(-0.1f, 0.1f, offset: Projectile.whoAmI);
-            if (Timer < 60)
+            if (IsSmall)
+                Projectile.scale *= 0.5f;
+            Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
+            if (player != null)
             {
-                Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
-                if (player != null)
-                {
-                    Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 1);
-                }
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 0.5f);
             }
         }
 
@@ -109,9 +115,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Color drawColor = Color.White;
             drawColor.A = 0;
             drawColor *= _telegraphAlpha;
+            drawColor *= 0.5f;
             Vector2 scale = Vector2.One;
             scale.X *= 0.3f;
-            scale.Y *= 2;
+            scale.Y *= 2 * EasingFunction.QuadraticBump(Timer / 120f);
             spriteBatch.Draw(bloomLine, drawCenter, null, drawColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
         }
         public override bool PreDraw(ref Color lightColor)
@@ -203,6 +210,26 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     }
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnCenter, spawnVelocity,
                         ModContent.ProjectileType<GeyserStar>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                }
+            }
+
+            if(Timer == 179 && this.OwnedByLocalClient())
+            {
+                ScreenSmearEffectManager.NewParticle(Projectile.Center, Vector2.UnitY, 1000, 25);
+                Vector2 spawnCenter = Projectile.Center;
+                float numStars = 10;
+                for(float n = 0; n < numStars; n++)
+                {
+                    float ratio = n / numStars;
+                    spawnCenter.Y += MathHelper.Lerp(0f, 500, ratio);
+                    Vector2 spawnVelocity = -Vector2.UnitY * 2;
+                    Player player = PlayerHelper.FindClosestPlayer(Projectile.Center, 16000);
+                    if (player != null)
+                    {
+                        spawnVelocity = (player.Center - spawnCenter).SafeNormalize(Vector2.Zero) * 2;
+                    }
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnCenter, spawnVelocity,
+                      ModContent.ProjectileType<GeyserStar>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner, ai1: 1);
                 }
             }
         }
@@ -543,7 +570,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //The geyser has been created so don't really do anything
             //We can have bro just lerp back to you maybe?
             TargetOutlineColor = Color.Transparent;
-            float auraTime = 300;
+            float auraTime = 500;
             if (Timer >= auraTime)
             {
                 SwitchState(AIState.RippingGeyser_End);
