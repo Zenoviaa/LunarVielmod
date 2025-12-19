@@ -14,6 +14,7 @@ namespace Stellamod.Core
     public abstract class ScarletBoss : ModNPC
     {
         private Vector2 _arenaCenter;
+        private float _bossHealthbarDelay;
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {
             DifficultyChanges.ApplyDifficultyAndScaling(NPC, numPlayers);
@@ -66,6 +67,11 @@ namespace Stellamod.Core
                 return;
 
             if (!NPC.boss)
+                return;
+
+            //Healthbar isn't going to appear instantly, so we can do funny things where the boss isn't a boss for a second
+            _bossHealthbarDelay++;
+            if (_bossHealthbarDelay < 15)
                 return;
 
             ModContent.GetInstance<BossHealthbarSystem>().Add(this);
