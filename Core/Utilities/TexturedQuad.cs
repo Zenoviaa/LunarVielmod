@@ -33,6 +33,7 @@ namespace Stellamod.Core.Utilities
         public void Draw()
         {
             GraphicsDevice graphicsDevice = Main.spriteBatch.GraphicsDevice;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
             graphicsDevice.DrawUserIndexedPrimitives(
                 PrimitiveType.TriangleList, vertices, 0, vertices.Length, indices, 0, 2);
         }

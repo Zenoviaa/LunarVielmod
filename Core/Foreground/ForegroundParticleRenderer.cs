@@ -162,6 +162,11 @@ public class ForegroundParticleRenderer : ModSystem
 
     public static void NewParticle<T>(Vector2 position) where T : ForegroundGore
     {
+        //Clutters the screen tbh
+        DomainExpansionManager domainExpansionManager = ModContent.GetInstance<DomainExpansionManager>();
+        if (domainExpansionManager.inSpace)
+            return;
+
         ForegroundParticleRenderer renderer = ModContent.GetInstance<ForegroundParticleRenderer>();
         int steps = 0;
 
