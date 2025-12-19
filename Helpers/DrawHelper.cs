@@ -14,6 +14,19 @@ namespace Stellamod.Helpers
 {
     public static class DrawHelper
     {
+        public static void DrawBloomLine(SpriteBatch spriteBatch, Vector2 drawCenter, Color color, float targetRotation, float alpha)
+        {
+            Texture2D bloomLinTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+            Vector2 drawOrigin = new Vector2(bloomLinTexture.Width / 2f, 0f);
+            float rotation = targetRotation - MathHelper.PiOver2;
+            Color drawColor = color;
+            drawColor.A = 0;
+            drawColor *= alpha;
+            Vector2 scale = Vector2.One;
+            scale.Y *= 2;
+            spriteBatch.Draw(bloomLinTexture, drawCenter - Main.screenPosition, null, drawColor, rotation, drawOrigin, scale, SpriteEffects.None, 0); ;
+        }
+
         public static void DrawHalo(Vector2 haloCenter, Color color, float numStars)
         {
             Texture2D texture = AssetRegistry.Textures.Noise.CartoonyStar.Value;

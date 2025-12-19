@@ -35,6 +35,17 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
         }
 
+
+        private BlackTornadoWind _windBackingField;
+        private BlackTornadoWind Wind
+        {
+            get
+            {
+                _windBackingField ??= new BlackTornadoWind();
+                return _windBackingField;
+            }
+        }
+
         private Rectangle[] _oldFrameBackingField;
         private Rectangle[] OldFrame
         {
@@ -45,6 +56,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 return _oldFrameBackingField;
             }
         }
+
         private void SetupAnimator()
         {
             _animatorBackingField = new Animator();
@@ -85,8 +97,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             DrawTelegraphLine(spriteBatch, screenPos);
             DrawAfterImages(spriteBatch, screenPos, Color.White);
             DrawSprite(spriteBatch, screenPos, Color.White);
-
+            DrawWind(spriteBatch, screenPos);
             return false;
+        }
+
+        private void DrawWind(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+           
+            Wind.Draw(NPC.Center, 2520, 100);
         }
 
         private void DrawTelegraphLine(SpriteBatch spriteBatch, Vector2 screenPos)

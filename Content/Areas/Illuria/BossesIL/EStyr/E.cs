@@ -259,6 +259,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _telegraphLineAlpha = 0;
             _drawScale = Vector2.One;
             TargetOutlineColor = Color.White;
+            Wind.alpha = 0f;
             switch (State)
             {
                 case AIState.Idle:
@@ -498,7 +499,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ChooseAttack()
         {
-            SwitchState(AIState.RippingGeyser_Start);
+            SwitchState(AIState.Tornado_Start);
         }
     }
 }
