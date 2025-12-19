@@ -18,6 +18,9 @@ namespace Stellamod.Core.HealthbarSystem
         private Vector2 _barFillScale;
         private Vector2 _redFillScale;
         private Vector2 _whiteFillScale;
+
+        private float _easeInAlpha;
+        private float _easeInTimer;
         private float _whiteTimer;
         private float _redTimer;
         private float _oldFill;
@@ -61,10 +64,17 @@ namespace Stellamod.Core.HealthbarSystem
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
+            if (IsTracking())
+            {
+                float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                _easeInTimer += deltaTime;
+                _easeInAlpha = EasingFunction.InOutSine(_easeInTimer / 120f);
+                Top.Pixels += MathHelper.Lerp(128, 0, _easeInAlpha);
+            }
+
 
             _bossNameText.Left.Pixels = 48;
             _bossNameText.Top.Pixels = -10;
@@ -97,7 +107,7 @@ namespace Stellamod.Core.HealthbarSystem
    
             Rectangle rectangle = GetDimensions().ToRectangle();
             Vector2 topLeft = rectangle.TopLeft();
-            spriteBatch.Draw(BarTextureAsset.Value, topLeft, null, Color.White, 0f, default, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(BarTextureAsset.Value, topLeft, null, Color.White * _easeInAlpha, 0f, default, 1f, SpriteEffects.None, 0f);
 
             Vector2 fillTopLeft = topLeft;
             fillTopLeft.Y += 20;
@@ -128,46 +138,47 @@ namespace Stellamod.Core.HealthbarSystem
             _barFillScale = Vector2.Lerp(_barFillScale, scale, 0.1f);
 
 
-            spriteBatch.Draw(FillTextureAsset.Value, fillTopLeft, null, Color.White * 0.25f, 0f, default, _whiteFillScale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(FillTextureAsset.Value, fillTopLeft, null, Color.Red, 0f, default, _redFillScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(FillTextureAsset.Value, fillTopLeft, null, Color.White * 0.25f * _easeInAlpha, 0f, default, _whiteFillScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(FillTextureAsset.Value, fillTopLeft, null, Color.Red * _easeInAlpha, 0f, default, _redFillScale, SpriteEffects.None, 0f);
             if (IsTracking())
             {
                 _bossNameText.SetText(GetBossTitle());
                 Asset<Texture2D> bossIconTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossIcon);
                 Asset<Texture2D> bossFillTexture = ModContent.Request<Texture2D>(TrackingNpc.Texture_BossBar);
-                spriteBatch.Draw(bossIconTexture.Value, topLeft + new Vector2(50, 58) / 2 + new Vector2(2), null, Color.White, 0f, bossIconTexture.Size() / 2, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(bossIconTexture.Value, topLeft + new Vector2(50, 58) / 2 + new Vector2(2), null, Color.White * _easeInAlpha, 0f, bossIconTexture.Size() / 2, 1f, SpriteEffects.None, 0f);
 
                 var shader = BossHealthbarShader.Instance;
                 shader.InnerColor = Color.Transparent;
                 shader.OuterColor = Color.White;
                 shader.NoiseTexture = AssetRegistry.Textures.Noise.Perlin;
 
-                spriteBatch.Draw(bossFillTexture.Value, fillTopLeft, null, Color.White, 0f, default, _barFillScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(bossFillTexture.Value, fillTopLeft, null, Color.White * _easeInAlpha, 0f, default, _barFillScale, SpriteEffects.None, 0f);
 
 
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, default, default, default, shader.Effect, Main.UIScaleMatrix);
 
         
-                spriteBatch.Draw(bossFillTexture.Value, fillTopLeft, null, Color.White, 0f, default, _barFillScale, SpriteEffects.None, 0f);
-                spriteBatch.Draw(bossFillTexture.Value, fillTopLeft, null, Color.White, 0f, default, _barFillScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(bossFillTexture.Value, fillTopLeft, null, Color.White * _easeInAlpha, 0f, default, _barFillScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(bossFillTexture.Value, fillTopLeft, null, Color.White * _easeInAlpha, 0f, default, _barFillScale, SpriteEffects.None, 0f);
+
                 spriteBatch.End();
-                spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
+                spriteBatch.Begin(default, default, Main.DefaultSamplerState, DepthStencilState.Default, Main.Rasterizer, default, Main.UIScaleMatrix);
 
                 Vector2 offset = new Vector2(_barFillScale.X * 2, 0);
                 Vector2 edgeDrawPos = fillTopLeft + offset;
-                spriteBatch.Draw(EdgeTextureAsset.Value, edgeDrawPos, null, Color.White, 0f, default, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(EdgeTextureAsset.Value, edgeDrawPos, null, Color.White * _easeInAlpha, 0f, default, 1f, SpriteEffects.None, 0f);
                 for(float f = 0; f < 1f; f += 0.1f)
                 {
                     Vector2 o = Vector2.UnitY.RotatedBy(f * MathHelper.TwoPi);
                     o *= ExtraMath.Osc(1, 2);
                     Vector2 drawPos = edgeDrawPos + o;
-                    spriteBatch.Draw(EdgeTextureAsset.Value, drawPos, null, Color.White * 0.25f, 0f, default, 1f, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(EdgeTextureAsset.Value, drawPos, null, Color.White * 0.25f * _easeInAlpha, 0f, default, 1f, SpriteEffects.None, 0f);
                 }
             }
 
 
-            spriteBatch.Draw(BarMoonTextureAsset.Value, topLeft, null, Color.White, 0f, default, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(BarMoonTextureAsset.Value, topLeft, null, Color.White * _easeInAlpha, 0f, default, 1f, SpriteEffects.None, 0f);
         }
     }
 }
