@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -86,8 +87,10 @@ namespace Stellamod.Core.TriggersSystem.Triggers
             int width = bottomRight.X - topLeft.X;
             int height = bottomRight.Y - topLeft.Y;
             Rectangle rectangle = new Rectangle((int)worldPos.X, (int)worldPos.Y, width * 16, height * 16);
+            int steps = 0;
             foreach (var player in Main.ActivePlayers)
             {
+                steps++;
                 if (rectangle.Contains((int)player.position.X, (int)player.position.Y))
                 {
 
@@ -95,7 +98,7 @@ namespace Stellamod.Core.TriggersSystem.Triggers
                     break;
                 }
             }
-
+            Console.WriteLine(steps);
             if (allPlayersFar)
                 return false;
             return true;

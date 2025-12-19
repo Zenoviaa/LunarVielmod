@@ -85,6 +85,7 @@ namespace Stellamod.Core.WindLineSystem
                 //We can get all the ribbons in a single draw call
                 graphicsDevice.BlendState = BlendState.AlphaBlend;
                 graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+                graphicsDevice.RasterizerState = RasterizerState.CullNone;
                 graphicsDevice.DrawUserPrimitives(
                       PrimitiveType.TriangleList, _vertexBuffer, 0, _vertexCount / 3);
 
