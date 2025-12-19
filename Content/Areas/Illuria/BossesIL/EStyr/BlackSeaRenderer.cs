@@ -183,10 +183,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         private void RenderBlackHurricaneRT(On_Main.orig_CheckMonoliths orig)
         {
-            RenderToBlackHurricaneRT();
-            RenderToReflectionRT();
-            RenderToReflectionGradientRT();
-            RenderToMagicGroundRT();
+            if (drawBlackSea)
+            {
+                RenderToBlackHurricaneRT();
+                RenderToReflectionRT();
+                RenderToReflectionGradientRT();
+                RenderToMagicGroundRT();
+            }
+
             orig();
         }
 
