@@ -170,11 +170,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void SetDefaults()
         {
             base.SetDefaults();
-            NPC.width = 128;
-            NPC.height = 200;
+            //We can still keep fair hitbox sizes though
+            NPC.width = 100;
+            NPC.height = 100;
+
+            //We have to upscale this boss cause he's really hard and you're not really supposed to be him lol
             NPC.damage = 100;
             NPC.defense = 20;
-            NPC.lifeMax = 18000;
+            NPC.lifeMax = 30000;
+
             NPC.scale = 1f;
             NPC.aiStyle = -1;
 
@@ -186,7 +190,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.npcSlots = 30f;
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EStyr");
-            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
+            NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/BasicMagicHit1") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         }
 
