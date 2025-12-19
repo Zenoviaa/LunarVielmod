@@ -379,7 +379,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             spawnPosition.X = x;
             spawnPosition.Y = InitialPosition.Y;
 
-            float length = MathHelper.SmoothStep(1000, 0, Timer / 120f);
+            float length = MathHelper.SmoothStep(800, 1000, Timer / 120f);
             float strength = 0.3f;
             ScreenSmearEffectManager.NewParticle(spawnPosition, Vector2.UnitY, length, 15, strength);
         }
