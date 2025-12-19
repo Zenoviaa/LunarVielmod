@@ -365,7 +365,7 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 19, new PassLegacy("Grassing Caves", WorldGenGrassPass));
                 tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
                 tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
-                tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Water", WorldGenWater));
+           //     tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Water", WorldGenWater));
             }
         }
 
