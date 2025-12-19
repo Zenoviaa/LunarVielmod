@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Threading;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
@@ -48,14 +49,34 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 _noiseValues[n] = _fastNoise.GetNoise(n, n) * 0.5f + 0.5f;
                 _noiseValues[n] *= 0.5f;
             }
+            xOvalRadius = 500;
+            yOvalRadius = 500;
+            minX = 200;
+            spinTime = 100f;
+            alpha = 1f;
+            rotationAxis = new Vector3(1f, 1f, 0.2f);
         }
+        public LittleStarParticleManager(int particleCount, int trailLength, Func<float, float> getTrailWidth) : this(particleCount, trailLength)
+        {
+            //We can pre calculate the uv floats since it's always the same
+            //We increase the trail length by 1 here because in the trailing functionwe need to get the next point, this last position is basically just a duplicate
+            _trailWidths = new Vector2[trailLength + 1];
+            for (int i = 0; i < _trailWidths.Length; i++)
+            {
+                float ratio = (float)i / (float)trailLength;
+                _trailWidths[i] = getTrailWidth(ratio) * Vector2.One;
+            }
+        }
+
 
         public readonly int ParticleCount;
         public readonly int TrailLength;
         public float xOvalRadius;
         public float yOvalRadius;
-
-
+        public Vector3 rotationAxis;
+        public float minX;
+        public float spinTime;
+        public float alpha;
         /// <summary>
         /// Calculate the position of the particle at specific a timestep
         /// </summary>
@@ -71,24 +92,24 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             float particleRatio = (float)index / (float)TrailLength;
             float particleRadiansOffset = particleRatio * maxRadiansOffset;
-            float timeRadians = time / revolutionTime * MathHelper.TwoPi;
+            float timeRadians = time / spinTime * MathHelper.TwoPi;
             float rotationRadians = particleRadiansOffset + timeRadians;
 
 
             //Calculate the initial position of the particle
 
             float off = index * 0.1f;
-            float x = 200f;
+            float x = minX;
             if (index > ParticleCount / 2)
             {
                 x *= 3;
             }
-            float xRadius = x + ExtraMath.Osc(-500, 500, 0, off);
-            float yRadius = ExtraMath.Osc(-150f, 0f, 1, off) + ExtraMath.Osc(-500f, 500f, 0f, offset: off);
+            float xRadius = x + ExtraMath.Osc(-xOvalRadius, xOvalRadius, 0, off);
+            float yRadius = ExtraMath.Osc(-150f, 0f, 1, off) + ExtraMath.Osc(-yOvalRadius, yOvalRadius, 0f, offset: off);
             Vector3 initialPosition = new Vector3(xRadius, yRadius / 2f, yRadius);
 
             //Create the rotation matrix and Rotate the particle
-            Matrix rotationMatrix = Matrix.CreateFromAxisAngle(new Vector3(1, 1, 0.25f), rotationRadians);
+            Matrix rotationMatrix = Matrix.CreateFromAxisAngle(rotationAxis, rotationRadians);
             Vector3 rotatedPosition = Vector3.Transform(initialPosition, rotationMatrix);
             Vector2 flatPosition = new Vector2(rotatedPosition.X, rotatedPosition.Y);
             return flatPosition;
@@ -122,7 +143,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         }
 
-        private void SimulateParticles()
+        private void SimulateParticles(Vector2 centerOffset)
         {
             float numPoints = TrailLength;
             int numVerticesPerParticle = TrailLength * 6;
@@ -191,9 +212,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                         col1 = Color.Lerp(col1, black, noiseColorInterpolant);
                         col2 = Color.Lerp(col2, black, noiseColorInterpolant);
 
+                        col1 *= alpha;
+                        col2 *= alpha;
                         //Apply camera offset
-                        currentPosition += Main.Camera.Center;
-                        prevPosition += Main.Camera.Center;
+                        currentPosition += centerOffset;
+                        prevPosition += centerOffset;
 
                         //Calcualte the index of the vertices
                         int primIndex = i * numVerticesPerParticle + j * 6;
@@ -218,15 +241,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             });
         }
 
-        public void Update()
+        public void Update(Vector2 centerOffset)
         {
             _timer++;
-            SimulateParticles();
+            SimulateParticles(centerOffset);
         }
 
         private float GetTrailWidth(float completionRatio)
         {
-            return MathHelper.SmoothStep(0.66f, 0, completionRatio);
+            return MathHelper.SmoothStep(0.7f, 0, completionRatio);
         }
 
         public void Draw()
@@ -235,6 +258,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             particleShader.ApplyPasses();
 
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
             graphicsDevice.DrawUserPrimitives(
               PrimitiveType.TriangleList, _particleVertexBufferArr, 0, _particleVertexBufferArr.Length / 3);
 

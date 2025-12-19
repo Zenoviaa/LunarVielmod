@@ -97,7 +97,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             DrawTelegraphLine(spriteBatch, screenPos);
             DrawAfterImages(spriteBatch, screenPos, Color.White);
             DrawSprite(spriteBatch, screenPos, Color.White);
-            DrawWind(spriteBatch, screenPos);
+           // DrawWind(spriteBatch, screenPos);
             return false;
         }
 

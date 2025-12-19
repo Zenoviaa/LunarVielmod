@@ -141,12 +141,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             spriteBatch.Draw(_maskTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             spriteBatch.End();
-
-            /*
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-   maskCombine.Effect, Main.GameViewMatrix.TransformationMatrix);
-            spriteBatch.Draw(_blackStarTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.End();*/
         }
 
         private Point GetScreenSize()

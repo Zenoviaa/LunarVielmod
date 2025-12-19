@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
+using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
@@ -13,7 +14,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
@@ -55,7 +55,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private float _telegraphLineRot;
         private float _telegraphLineAlpha;
         private ref float Timer => ref Projectile.ai[0];
-       private enum AIState
+        private enum AIState
         {
             Fly,
             ShootDown
@@ -79,7 +79,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.height = 16;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 300;
+            Projectile.timeLeft = 800;
             Projectile.hostile = true;
         }
         public override void AI()
@@ -108,28 +108,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void PlayPingSound()
         {
-            SoundStyle flashSound = new SoundStyle("Stellamod/Assets/Sounds/Chroma1");
-            switch(Main.rand.Next(0, 3))
-            {
-                default:
-                case 0:
-                    flashSound = new SoundStyle("Stellamod/Assets/Sounds/Chroma1");
-                    break;
-                case 1:
-                    flashSound = new SoundStyle("Stellamod/Assets/Sounds/Chroma2");
-                    break;
-                case 2:
-                    flashSound = new SoundStyle("Stellamod/Assets/Sounds/Chroma3");
-                    break;
-            }
-            flashSound.PitchVariance = 0.3f;
-            SoundEngine.PlaySound(flashSound, Projectile.position);
+            //eh
+
+
         }
 
         private void AI_ShootDown()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 Particle.NewParticle<StarParticle>(Projectile.Center, Vector2.Zero, Color.White);
                 PlayPingSound();
@@ -143,28 +130,39 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float prepTime = 60f;
             _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(Timer / prepTime));
             _telegraphLineRot = Vector2.UnitY.ToRotation();
-            if(Timer == 60)
+            if (Timer == 60)
             {
                 var donut = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Vector2.UnitY, Color.White);
                 donut.Scale *= 0.3f;
             }
 
-            if(Timer >= 60)
+            if (Timer >= 60)
             {
-                float speed = 15;
+                float speed = 35;
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.UnitY * speed, 0.1f);
             }
         }
+
         private void AI_Fly()
         {
             Timer++;
-            if(Timer == 1 && this.OwnedByLocalClient())
+            if (Timer == 1 && this.OwnedByLocalClient())
             {
-                ShouldFall = Main.rand.NextBool(3) ? 1 : 0;
+                /*
+                SoundStyle flashSound = AssetRegistry.Sounds.Bishinine.FallingBell;
+                flashSound.Pitch = 0.66f;
+                flashSound.Volume = 0.25f;
+                flashSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(flashSound, Projectile.position);*/
+                ShouldFall = Main.rand.NextBool(2) ? 1 : 0;
             }
+
+
 
             if (Timer % 10 == 0)
             {
+                var p = Particle.NewParticle<StarParticle>(Projectile.Center, Vector2.Zero, Color.White, Scale: 0.4f);
+                p.fast = true;
                 var d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(16, 16), DustID.Dirt, Vector2.Zero,
                     newColor: Color.White,
                     Scale: 1);
@@ -175,7 +173,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             outScale = EasingFunction.InOutSine(outScale);
             Projectile.scale = 1f * outScale;
             Projectile.rotation += 0.01f * MathF.Sign(Projectile.velocity.X);
-            Projectile.rotation += Projectile.velocity.Length() * 0.05f;
+            Projectile.rotation += Projectile.velocity.Length() * 0.025f;
 
             if (ShouldFall == 1)
             {
@@ -186,8 +184,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     Vector2 directionToPlayer = (closestPlayer.Center - Projectile.Center);
                     directionToPlayer = directionToPlayer.SafeNormalize(Vector2.Zero);
                     Vector2 normalVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
-                    float dp = Vector2.Dot(directionToPlayer, normalVelocity);
-                    if (dp > 0.95f)
+                    float dp = Vector2.Dot(directionToPlayer, Vector2.UnitY);
+                    if (dp > 0.75f)
                     {
                         SwitchState(AIState.ShootDown);
                     }
@@ -199,7 +197,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override bool PreDraw(ref Color lightColor)
         {
             DrawAfterImages(Main.spriteBatch);
-            DrawHelper.DrawBloomLine(Main.spriteBatch, Projectile.Center, Color.White, _telegraphLineRot, _telegraphLineAlpha);
+            DrawHelper.DrawBloomLine(Main.spriteBatch, Projectile.Center, Color.White, _telegraphLineRot, _telegraphLineAlpha * 0.2f);
             return false;
         }
 
@@ -215,7 +213,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 float rotation = Projectile.oldRot[i];
                 float scale = Projectile.scale;
                 Color drawColor = Color.Lerp(Color.White, Color.Transparent, completionRatio);
-                drawColor *= 0.3f;
+                drawColor *= 0.15f;
                 Vector2 drawScale = Vector2.One;
                 spriteBatch.Draw(texture, drawCenter, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             }
@@ -241,6 +239,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
+            int[] gores = AutoGoreLoader.FindGores("GrayRock");
+            foreach (int g in gores)
+            {
+                Gore.NewGore(Projectile.GetSource_FromThis(),
+                    Projectile.Center,
+                    -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
+            }
         }
 
         public void DrawBlackStar(SpriteBatch spriteBatch)
@@ -252,50 +257,21 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
     public class BlackTornado : ModProjectile
     {
-        private class BlackTornadoParticleManager
+        private LittleStarParticleManager _tornadoStreakParticlesBackingField;
+        private LittleStarParticleManager TornadoStreakParticles
         {
-            private float _timer;
-            private Vector2[] _particles;
-            public BlackTornadoParticleManager(int particleCount)
+            get
             {
-                _particles = new Vector2[particleCount];
-            }
-
-    
-            public void Update()
-            {
-                _timer++;
-                for(int i = 0; i < _particles.Length; i++)
-                {
-                    float initialX = -100;
-                    float initialY = 0;
-                    float initialZ = -100;
-                    Vector3 initialPosition = new Vector3(initialX, initialY, initialZ);
-
-                    float radians = _timer + i * 0.02f;
-                    Quaternion rotation = Quaternion.CreateFromAxisAngle(new Vector3(0, 0.75f, 0), radians);
-                    Matrix rotationMatrix = Matrix.CreateFromQuaternion(rotation);
-                    Vector3 rotatedPosition = Vector3.Transform(initialPosition, rotationMatrix);
-
-                    //Set the new position
-                    _particles[i] = new Vector2(rotatedPosition.X, rotatedPosition.Y);
-                }
+                _tornadoStreakParticlesBackingField ??= new LittleStarParticleManager(50, 16, GetTrailWidth);
+                return _tornadoStreakParticlesBackingField;
             }
         }
+
         private ref float Timer => ref Projectile.ai[0];
         private NPC Parent
         {
             get => Main.npc[(int)Projectile.ai[1]];
 
-        }
-        private BlackTornadoParticleManager _particleManagerBackingField;
-        private BlackTornadoParticleManager ParticleManager
-        {
-            get
-            {
-                _particleManagerBackingField ??= new BlackTornadoParticleManager(100);
-                return _particleManagerBackingField;
-            }
         }
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
@@ -306,6 +282,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.hostile = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
+            Projectile.timeLeft = 600;
+        }
+
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
         }
 
         public override void AI()
@@ -316,24 +298,51 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //Gintzia's winds look a bit better and should look fine when combined with swirling particles
             //So make a new particle manager for this
             Timer++;
-            if(Timer % 50 == 0)
+            if(Timer % 12 == 0)
             {
+                SoundStyle jiitasSit = AssetRegistry.Sounds.Jiitas.JiitasLightSpin;
+                jiitasSit.PitchVariance = 0.2f;
+                jiitasSit.Pitch = 0.6f;
+                SoundEngine.PlaySound(jiitasSit, Projectile.position);
+            }
+            if (Timer % 25 == 0)
+            {
+          
                 if (this.OwnedByLocalClient())
                 {
                     float direction = Main.rand.NextBool(2) ? -1 : 1;
                     float xOffset = direction * 2000;
-                    Vector2 spawnOffset = new Vector2(xOffset, Main.rand.NextFloat(-500f, 0f));
+                    Vector2 spawnOffset = new Vector2(xOffset, Main.rand.NextFloat(-450f, -159f));
                     Vector2 spawnPos = Projectile.Center + spawnOffset;
-                    Vector2 velocity = Vector2.UnitX * -direction * 10;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnPos, velocity, ModContent.ProjectileType<BlackTornadoDebris>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    Vector2 velocity = Vector2.UnitX * -direction * Main.rand.NextFloat(15f, 25);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnPos, velocity,
+                        ModContent.ProjectileType<BlackTornadoDebris>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
-            ParticleManager.Update();
-            Projectile.Center = Parent.Center;
+
+            float inTornado = Timer / 30f;
+            float outTornado = (float)Projectile.timeLeft / 30f;
+
+            inTornado = EasingFunction.InOutSine(inTornado);
+            outTornado = EasingFunction.InOutSine(outTornado);
+            float alpha = inTornado * outTornado;
+            TornadoStreakParticles.xOvalRadius = 5;
+            TornadoStreakParticles.yOvalRadius = 350;
+            TornadoStreakParticles.minX = ExtraMath.Osc(200f, 300f, speed: 3);
+            TornadoStreakParticles.spinTime = 50;
+            TornadoStreakParticles.rotationAxis = new Vector3(0, 1, 0.2f);
+            TornadoStreakParticles.alpha = 0.45f * alpha;
+            TornadoStreakParticles.Update(Projectile.Center);
+           
         }
 
+        private float GetTrailWidth(float completionRatio)
+        {
+            return MathHelper.Lerp(0.2f, 4, EasingFunction.QuadraticBump(completionRatio));
+        }
         public override bool PreDraw(ref Color lightColor)
         {
+            TornadoStreakParticles.Draw();
             return false;
         }
     }
@@ -368,9 +377,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             foreach (var player in Main.ActivePlayers)
             {
+                float distance = Vector2.Distance(NPC.Center, player.Center);
                 TornadoSuckPlayer tornadoSuckPlayer = player.GetModPlayer<TornadoSuckPlayer>();
                 tornadoSuckPlayer.TornadoCenter = NPC.Center;
-                tornadoSuckPlayer.TornadoPullStrength = strength;
+                tornadoSuckPlayer.TornadoPullStrength = distance / 2560f * strength;
             }
         }
 
@@ -386,7 +396,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float startupTime = 60;
             float completionRatio = Timer / startupTime;
             float ease = EasingFunction.InOutSine(completionRatio);
-            Vector2 positionToMoveTo = MyTarget.Center - new Vector2(0, 252);
+            Vector2 positionToMoveTo = MyTarget.Center - new Vector2(0, 32);
             Vector2 targetVelocity = positionToMoveTo - NPC.Center;
             Vector2 interpolatedVelocity = Vector2.Lerp(TargetVector, targetVelocity, ease);
             NPC.velocity = interpolatedVelocity;
@@ -402,15 +412,32 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //The earlier startup state is just to get him into the position
             //This is mostly done with a sound and animation, so not much happens here
             Timer++;
+            if(Timer == 1)
+            {
+                TargetVector = NPC.Center;
+            }
 
-            float prespinTime = 30f;
+
+            float prespinTime = 60f;
             float completionRatio = Timer / prespinTime;
             float ease = EasingFunction.InOutSine(completionRatio);
-            NPC.velocity *= 0.9f;
 
+
+
+            //Speed up
+            float xOffset = MathF.Sin(Timer * -0.05f) * 64;
+            float yOffset = MathF.Cos(Timer * 0.05f) * 32f;
+            Vector2 targetOffset = new Vector2(xOffset, yOffset);
+            Vector2 positionToMoveTo = TargetVector + targetOffset;
+            Vector2 tornadoVelocity = (positionToMoveTo - NPC.Center);
+            NPC.velocity = tornadoVelocity;
+            NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
+
+            _extraAfterImageAlpha = MathHelper.Lerp(0f, 0.5f, ease);
             ShakeModSystem.Shake = MathHelper.Lerp(0f, 2f, ease);
             Wind.alpha = MathHelper.Lerp(0f, 1f, ease);
-            if(Timer >= prespinTime)
+            TargetOutlineColor = Color.Yellow;
+            if (Timer >= prespinTime)
             {
                 SwitchState(AIState.Tornado_Spin);
             }
@@ -421,34 +448,33 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //Here the tornado projectile will actually spawn and we'll begin sucking in all of the players
             //At the same time we'll slowly move towards our target
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 if (MultiplayerHelper.IsHost)
                 {
-                    Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero, 
+                    Projectile.NewProjectile(SourceFromThis, TargetVector, Vector2.Zero,
                         ModContent.ProjectileType<BlackTornado>(), TornadoDamage, 1, Main.myPlayer, ai1: NPC.whoAmI);
                 }
             }
 
             float tornadoTime = 600;
-            Vector2 targetNormal = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-            float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
-            if(distanceToTarget >= 500)
-            {
-                Vector2 targetVelocity = targetNormal * 20;
-                NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
-            }
-            else
-            {
-                NPC.velocity = Vector2.Lerp(NPC.velocity, targetNormal * 3, 0.1f);
-            }
-
+            _extraAfterImageAlpha = 0.5f;
+            float xOffset = MathF.Sin(Timer * -0.5f) * 164;
+            float yOffset = MathF.Cos(Timer * 0.5f) * 32f;
+            Vector2 targetOffset = new Vector2(xOffset, yOffset);
+            Vector2 positionToMoveTo = TargetVector + targetOffset;
+            Vector2 tornadoVelocity = (positionToMoveTo - NPC.Center);
+            NPC.velocity = tornadoVelocity;
             NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
+
+
+            ShakeModSystem.Shake = 4;
             Wind.alpha = 1f;
             //Unsure how strong this should actually be so make sure to balance this number properly
-            float tornadoStrength = 0.05f;
+            float tornadoStrength = 1f;
             SuckAllPlayers(tornadoStrength);
-            if(Timer >= tornadoTime)
+            TargetOutlineColor = Color.Red;
+            if (Timer >= tornadoTime)
             {
                 SwitchState(AIState.Tornado_End);
             }
@@ -461,7 +487,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float completionRatio = Timer / endTime;
             float ease = EasingFunction.InOutSine(completionRatio);
             Wind.alpha = MathHelper.Lerp(1f, 0f, ease);
-            if(Timer >= endTime)
+            NPC.velocity *= 0.9f;
+            _extraAfterImageAlpha = MathHelper.Lerp(0.5f, 0f, ease);
+            if (Timer >= endTime)
             {
                 SwitchState(AIState.Idle);
             }

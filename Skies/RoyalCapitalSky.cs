@@ -103,7 +103,7 @@ namespace Stellamod.Skies
                 eff.Shader.Parameters["resolution"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
                 eff.UseImage2(noiseTexture);
                 eff.Shader.Parameters["uImageOffset"].SetValue(-_parallax * 0.0005f);
-                eff.Shader.Parameters["uOpacity"].SetValue(Opacity);
+                eff.UseOpacity(Opacity);
                 eff.Apply();
 
                 SpriteBatch spriteBatch = Main.spriteBatch;

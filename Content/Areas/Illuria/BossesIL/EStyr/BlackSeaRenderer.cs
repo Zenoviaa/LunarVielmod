@@ -206,7 +206,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     spriteBatch.End();
                     spriteBatch.Begin();
 
-                    Color drawColor = Color.Lerp(Color.White, Color.Black, 0.35f);
+                    Color drawColor = Color.Lerp(Color.White, Color.Black, 0.55f);
                     spriteBatch.Draw(_blackHurricaneRT, Vector2.Zero, drawColor);
                     spriteBatch.End();
 
@@ -273,7 +273,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 _singularityRotation += 0.001f;
 
                 _platformManager?.Update();
-                _starParticleManager?.Update();
+                _starParticleManager?.Update(Main.Camera.Center);
 
                 alpha += 0.02f;
                 if (alpha >= 1f)
