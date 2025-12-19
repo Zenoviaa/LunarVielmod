@@ -21,6 +21,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     public class GeyserStar : ScarletProjectile,
         IDrawBlackStar
     {
+        private float _telegraphRotation;
+        private float _telegraphAlpha;
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
@@ -33,20 +35,33 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.width = 16;
             Projectile.height = 16;
             Projectile.hostile = true;
-            Projectile.timeLeft = 180;
+            Projectile.timeLeft = 360;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
+            Projectile.extraUpdates = 1;
         }
 
         public override void AI()
         {
             base.AI();
-            if (Projectile.velocity.Length() < 20)
+            Timer++;
+            if (Timer > 60)
             {
-                Projectile.velocity *= 1.065f;
+                if (Projectile.velocity.Length() < 10)
+                {
+                    Projectile.velocity *= 1.065f;
+                }
             }
 
+            _telegraphRotation = Projectile.velocity.ToRotation();
+            _telegraphAlpha = EasingFunction.QuadraticBump(Timer / 120f);
+
+            //Only home towards the player slightly
+            float outScale = (float)Projectile.timeLeft / 30f;
+            outScale = EasingFunction.InOutSine(outScale);
+            Projectile.scale = MathHelper.Lerp(0.5f, 1f, Projectile.velocity.Length() / 10f) * outScale;
+            Projectile.scale += ExtraMath.Osc(-0.1f, 0.1f, offset: Projectile.whoAmI);
             if (Timer < 60)
             {
                 Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
@@ -55,7 +70,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 1);
                 }
             }
-
         }
 
         private void DrawSprite(SpriteBatch spriteBatch)
@@ -65,7 +79,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 drawCenter = Projectile.Center - Main.screenPosition;
             float rotation = Projectile.rotation;
             float scale = Projectile.scale;
-            Vector2 drawScale = Vector2.One;
+            Vector2 drawScale = Vector2.One * scale;
             spriteBatch.Draw(texture, drawCenter, null, Color.White, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
 
@@ -81,19 +95,34 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 float rotation = OldCenterRot[i];
                 float scale = Projectile.scale;
                 Color drawColor = Color.Lerp(Color.White, Color.Transparent, completionRatio);
-                drawColor *= 0.6f;
-                Vector2 drawScale = Vector2.One;
+                drawColor *= 0.15f;
+                Vector2 drawScale = Vector2.One * scale;
                 spriteBatch.Draw(texture, drawCenter, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             }
         }
+        private void DrawTelegraphLine(SpriteBatch spriteBatch)
+        {
+            Texture2D bloomLine = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+            Vector2 drawOrigin = new Vector2(bloomLine.Width / 2f, 0f);
+            float rotation = _telegraphRotation - MathHelper.PiOver2;
+            Vector2 drawCenter = Projectile.Center - Main.screenPosition;
+            Color drawColor = Color.White;
+            drawColor.A = 0;
+            drawColor *= _telegraphAlpha;
+            Vector2 scale = Vector2.One;
+            scale.X *= 0.3f;
+            scale.Y *= 2;
+            spriteBatch.Draw(bloomLine, drawCenter, null, drawColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
+        }
         public override bool PreDraw(ref Color lightColor)
         {
-
+            DrawTelegraphLine(Main.spriteBatch);
             return false;
         }
 
         public void DrawBlackStar(SpriteBatch spriteBatch)
         {
+
             DrawAfterImages(spriteBatch);
             DrawSprite(spriteBatch);
         }
