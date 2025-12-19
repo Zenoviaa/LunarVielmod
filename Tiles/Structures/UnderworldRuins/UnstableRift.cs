@@ -3,9 +3,7 @@
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable.Cathedral;
-using Stellamod.NPCs.Bosses.Sylia;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
@@ -82,36 +80,7 @@ namespace Stellamod.Tiles.Structures.UnderworldRuins
 
         public override bool RightClick(int i, int j)
         {
-            if (NPC.AnyNPCs(ModContent.NPCType<Sylia>())) //Do nothing if the boss is alive
-                return false;
 
-            if (!Main.hardMode)
-            {
-                Main.NewText(LangText.Misc("UnstableRift.1"), Color.Red);
-            }
-            else if (!NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
-            {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    Main.NewText(LangText.Misc("UnstableRift.2"), Color.Purple);
-                    int npcID = NPC.NewNPC(new EntitySource_TileBreak(i + 10, j), i * 16, j * 16, ModContent.NPCType<Sylia>());
-                    Main.npc[npcID].netUpdate2 = true;
-                }
-                else
-                {
-                    if (Main.netMode == NetmodeID.SinglePlayer)
-                        return false;
-
-                    MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI, ModContent.NPCType<Sylia>(), i * 16, (j * 16) - 5);
-                }
-
-                return true;
-            }
-
-            if (NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
-            {
-                Main.NewText("...", Color.Purple);
-            }
 
             return true;
         }

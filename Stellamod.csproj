@@ -480,14 +480,6 @@
     <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviFrostBlastProj.png" />
     <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviFrostFlowerProj.png" />
     <None Remove="NPCs\Bosses\Niivi\Projectiles\NiiviLaserBoom.png" />
-    <None Remove="NPCs\Bosses\Sylia\Minions\VoidWormBody.png" />
-    <None Remove="NPCs\Bosses\Sylia\Minions\VoidWormTail.png" />
-    <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidWallEater.png" />
-    <None Remove="NPCs\Bosses\Sylia\Projectiles\VoidWallEaterMini.png" />
-    <None Remove="NPCs\Bosses\Sylia\SyliaDeath.png" />
-    <None Remove="NPCs\Bosses\Sylia\SyliaMagicCircle.png" />
-    <None Remove="NPCs\Bosses\Sylia\Sylia_Head_Boss.png" />
-    <None Remove="NPCs\Bosses\Sylia\VoidWall.png" />
     <None Remove="NPCs\Bosses\Veiizal\Veiizallighting.png" />
     <None Remove="NPCs\Bosses\Verlia\Projectiles\DeathVerlia.png" />
     <None Remove="NPCs\Bosses\Verlia\VerliaDP.png" />

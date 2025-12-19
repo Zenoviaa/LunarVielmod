@@ -8,7 +8,6 @@ using Stellamod.NPCs.Bosses.IrradiaNHavoc;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Stellamod.NPCs.Bosses.Niivi;
-using Stellamod.NPCs.Bosses.Sylia;
 using Stellamod.NPCs.Bosses.Zui;
 using System.IO;
 using Terraria;
@@ -261,7 +260,6 @@ namespace Stellamod.NPCs.Town
         {
             return
                 NPC.AnyNPCs(ModContent.NPCType<ZuiTheTraveller>()) ||
-                NPC.AnyNPCs(ModContent.NPCType<Sylia>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<Fenix>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()) ||
                 NPC.AnyNPCs(ModContent.NPCType<RekSnake>()) ||
@@ -299,12 +297,6 @@ namespace Stellamod.NPCs.Town
                             (int)LittleWitchSpawnWorld.X, (int)LittleWitchSpawnWorld.Y,
                             ModContent.NPCType<Zui>());
                 }*/
-                else if (!NPC.AnyNPCs(ModContent.NPCType<UnderworldRift>()) && !NPC.AnyNPCs(ModContent.NPCType<Sylia>()))
-                {
-                    NPC.NewNPC(player.GetSource_FromThis(),
-                        (int)UnderworldRiftSpawnWorld.X, (int)UnderworldRiftSpawnWorld.Y,
-                        ModContent.NPCType<UnderworldRift>());
-                }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<Delgrim>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
