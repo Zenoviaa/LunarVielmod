@@ -65,15 +65,23 @@ namespace Stellamod.Core.LunarLightingSystem
             ResizeRenderTarget(true);
 
 
+            On_Main.CheckMonoliths += RenderToLightMaps;
             On_Main.DoDraw += LightRenderLoop;
             On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
         }
         public override void Unload()
         {
             base.Unload();
+            On_Main.CheckMonoliths -= RenderToLightMaps;
             On_Main.DoDraw -= LightRenderLoop;
             On_Main.DrawCachedNPCs -= DrawShadowsBehindTiles;
 
+        }
+
+        private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
+        {
+            RenderLightsV2();
+            orig();
         }
 
         private void DrawShadowsBehindTiles(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
@@ -125,8 +133,6 @@ namespace Stellamod.Core.LunarLightingSystem
             //PreviewLightMaps();
             DrawAccumulatedLightMapToScreen();
             DrawSoftGlows();
-            //DrawAtlasToScreen();
-          //  DrawTileShadowMapToScreen();
         }
 
         private static void DrawAtlasToScreen()
@@ -227,7 +233,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void LightRenderLoop(On_Main.orig_DoDraw orig, Main self, GameTime gameTime)
         {
-            RenderLightsV2();
+
             orig(self, gameTime);
             if (!DrawSunShadows2())
                 return;
@@ -291,9 +297,6 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void PostUpdateTime()
         {
             base.PostUpdateTime();
-
-
-
             BackLightColor = Color.Black;
             if (Main.LocalPlayer.ZoneUnderworldHeight)
             {
@@ -350,47 +353,12 @@ namespace Stellamod.Core.LunarLightingSystem
 
             return true;
         }
-        private static void FindAmbientLights()
-        {
-            Vector2 cameraCenterWorld = Main.Camera.Center;
-            Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
-            Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
 
-            const float range = 256;
-            cameraTopLeft -= new Vector2(range);
-            cameraBottomRight += new Vector2(range);
-
-            Point topLeftTile = cameraTopLeft.ToTileCoordinates();
-            Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
-
-            for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
-            {
-                for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
-                {
-                    if (!WorldGen.InWorld(x, y))
-                        continue;
-                    Tile tile = Main.tile[x, y];
-                    Point lightTilePoint = new Point(x, y);
-                    if (tile.LiquidType == LiquidID.Lava)
-                    {
-                        TileAmbientLight ambientLight = new TileAmbientLight();
-                        ambientLight.color = Color.Red;
-                        ambientLight.position = lightTilePoint.ToWorldCoordinates();
-                        ambientLight.radius = 64;
-                        AddAmbientLight(ambientLight);
-                    }
-
-                }
-            }
-        }
         private static void RenderLightsV2()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             TileDrawing tilesRenderer = Main.instance.TilesRenderer;
-
-
-
             if (!ShouldRender())
                 return;
 

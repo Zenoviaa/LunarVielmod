@@ -301,7 +301,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
             graphicsDevice.DepthStencilState = DepthStencilState.None;
-            graphicsDevice.RasterizerState.CullMode = CullMode.None;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
             graphicsDevice.BlendState = BlendState.Additive;
             graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
@@ -319,8 +319,6 @@ namespace Stellamod.Core.LunarLightingSystem
 
             }
 
-
-
             if (primitiveCount <= 0)
                 return;
 
@@ -337,8 +335,6 @@ namespace Stellamod.Core.LunarLightingSystem
                       PrimitiveType.TriangleList, shadowVertices, 0, primitiveCount);
 
             }
-
-     
         }
         
         private static void RenderLight(int index)
