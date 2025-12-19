@@ -17,6 +17,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private readonly VertexPositionColor[] _particleVertexBufferArr;
         private readonly Vector2[] _particleOldPos;
         private readonly Vector2[] _trailWidths;
+        private readonly Color[] _trailColors;
         private readonly FastNoiseLite _fastNoise;
         private readonly float[] _noiseValues;
         public LittleStarParticleManager(int particleCount, int trailLength)
@@ -35,10 +36,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //We can pre calculate the uv floats since it's always the same
             //We increase the trail length by 1 here because in the trailing functionwe need to get the next point, this last position is basically just a duplicate
             _trailWidths = new Vector2[trailLength + 1];
+            _trailColors = new Color[trailLength + 1];
             for (int i = 0; i < _trailWidths.Length; i++)
             {
                 float ratio = (float)i / (float)trailLength;
                 _trailWidths[i] = GetTrailWidth(ratio) * Vector2.One;
+                _trailColors[i] = GetTrailColor(ratio);
             }
 
 
@@ -206,8 +209,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                         Vector2 off1 = GetRotation(i, j) * width;
                         Vector2 off2 = GetRotation(i, j + 1) * width2;
 
-                        Color col1 = Color.White;
-                        Color col2 = Color.White;
+                        Color col1 = _trailColors[j];
+                        Color col2 = _trailColors[j + 1];
 
                         col1 = Color.Lerp(col1, black, noiseColorInterpolant);
                         col2 = Color.Lerp(col2, black, noiseColorInterpolant);
@@ -250,6 +253,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private float GetTrailWidth(float completionRatio)
         {
             return MathHelper.SmoothStep(0.7f, 0, completionRatio);
+        }
+        private Color GetTrailColor(float completionRatio)
+        {
+            return Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(completionRatio));
         }
 
         public void Draw()

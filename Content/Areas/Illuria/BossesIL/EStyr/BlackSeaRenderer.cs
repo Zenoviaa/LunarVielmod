@@ -17,6 +17,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     {
         private BlackSeaPlatformManager _platformManager;
         private LittleStarParticleManager _starParticleManager;
+        private ManagedRenderTarget _pixelRT;
         private ManagedRenderTarget _blackHurricaneRT;
         private ManagedRenderTarget _reflectionGradientRT;
         private ManagedRenderTarget _reflectionRT;
@@ -46,6 +47,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void OnModLoad()
         {
             base.OnModLoad();
+            _pixelRT = ManagedRenderTarget.New(GetScreenSize, 8);
             _blackHurricaneRT = ManagedRenderTarget.New(GetScreenSize);
             _reflectionGradientRT = ManagedRenderTarget.New(GetScreenSize);
             _reflectionRT = ManagedRenderTarget.New(GetScreenSize);
@@ -71,7 +73,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             graphicsDevice.SetRenderTarget(_blackHurricaneRT);
             graphicsDevice.Clear(Color.Transparent);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, Main.Rasterizer);
             Vector2 drawCenter = Main.Camera.Center;
             drawCenter.Y += ExtraMath.Osc(-2, 2, speed: 8);
             Vector2 screenPos = Main.screenPosition;
@@ -159,6 +161,20 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             graphicsDevice.SetRenderTarget(null);
         }
 
+        private void RenderToPixelRT()
+        {
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            graphicsDevice.SetRenderTarget(_pixelRT);
+            graphicsDevice.Clear(Color.Transparent);
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer);
+            spriteBatch.Draw(_blackHurricaneRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1/8f, SpriteEffects.None, 0);
+            spriteBatch.End();
+
+            graphicsDevice.SetRenderTarget(null);
+        }
         private void DrawHoveringPlatform(SpriteBatch spriteBatch)
         {
             DomainExpansionManager singularityFallSystem = ModContent.GetInstance<DomainExpansionManager>();
@@ -190,6 +206,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 RenderToReflectionRT();
                 RenderToReflectionGradientRT();
                 RenderToMagicGroundRT();
+                RenderToPixelRT();
             }
 
             orig();
@@ -207,7 +224,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     spriteBatch.Begin();
 
                     Color drawColor = Color.Lerp(Color.White, Color.Black, 0.55f);
-                    spriteBatch.Draw(_blackHurricaneRT, Vector2.Zero, drawColor);
+                    spriteBatch.Draw(_blackHurricaneRT, Vector2.Zero, null, drawColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                     spriteBatch.End();
 
 

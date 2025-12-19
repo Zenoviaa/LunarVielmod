@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Core.Utilities;
@@ -255,14 +256,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     }
 
 
-    public class BlackTornado : ModProjectile
+    public class BlackTornado : ModProjectile,
+        IDrawPixelated
     {
         private LittleStarParticleManager _tornadoStreakParticlesBackingField;
         private LittleStarParticleManager TornadoStreakParticles
         {
             get
             {
-                _tornadoStreakParticlesBackingField ??= new LittleStarParticleManager(50, 16, GetTrailWidth);
+                _tornadoStreakParticlesBackingField ??= new LittleStarParticleManager(150, 16, GetTrailWidth);
                 return _tornadoStreakParticlesBackingField;
             }
         }
@@ -328,10 +330,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float alpha = inTornado * outTornado;
             TornadoStreakParticles.xOvalRadius = 5;
             TornadoStreakParticles.yOvalRadius = 350;
-            TornadoStreakParticles.minX = ExtraMath.Osc(200f, 300f, speed: 3);
-            TornadoStreakParticles.spinTime = 50;
+            TornadoStreakParticles.minX = ExtraMath.Osc(50, 100, speed: 3) + MathHelper.Lerp(0f, 50f, EasingFunction.InOutSine(Timer / 150f));
+            TornadoStreakParticles.spinTime = 25;
             TornadoStreakParticles.rotationAxis = new Vector3(0, 1, 0.2f);
-            TornadoStreakParticles.alpha = 0.45f * alpha;
+            TornadoStreakParticles.alpha = 0.25f * alpha;
             TornadoStreakParticles.Update(Projectile.Center);
            
         }
@@ -343,7 +345,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override bool PreDraw(ref Color lightColor)
         {
             TornadoStreakParticles.Draw();
+            //    TornadoStreakParticles.Draw();
             return false;
+        }
+
+        public void DrawPixelated()
+        {
+          //  TornadoStreakParticles.Draw();
         }
     }
     public class TornadoSuckPlayer : ModPlayer
@@ -425,8 +433,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
 
             //Speed up
-            float xOffset = MathF.Sin(Timer * -0.05f) * 64;
-            float yOffset = MathF.Cos(Timer * 0.05f) * 32f;
+            float xOffset = MathF.Sin(Timer * -0.15f) * 64;
+            float yOffset = MathF.Cos(Timer * 0.15f) * 32f;
             Vector2 targetOffset = new Vector2(xOffset, yOffset);
             Vector2 positionToMoveTo = TargetVector + targetOffset;
             Vector2 tornadoVelocity = (positionToMoveTo - NPC.Center);
