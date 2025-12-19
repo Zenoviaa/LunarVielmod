@@ -443,7 +443,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.velocity = interpolatedVelocity;
             NPC.direction = TargetDirection;
 
-            OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -300);
+            OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -250);
             TargetOutlineColor = Color.Yellow;
             if (Timer >= startupTime)
             {
@@ -472,7 +472,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
 
             //Dash forward, we need to create a projectile here
-            float dashTime = 30;
+            float dashTime = 35;
             float completionRatio = Timer / dashTime;
             float ease = EasingFunction.InOutExpo(completionRatio);
             float ease2 = EasingFunction.QuadraticBump(completionRatio);
