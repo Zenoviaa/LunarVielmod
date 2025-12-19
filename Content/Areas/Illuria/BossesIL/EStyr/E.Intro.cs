@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
+using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
@@ -118,7 +118,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float orbEase = EasingFunction.InOutExpo(completionRatio);
             if(Main.netMode != NetmodeID.Server)
             {
-                BlackSeaRenderingEdit blackseaRenderer = ModContent.GetInstance<BlackSeaRenderingEdit>();
+                BlackSeaRenderer blackseaRenderer = ModContent.GetInstance<BlackSeaRenderer>();
                 blackseaRenderer.miniOrbDrawPosition = NPC.Center;
                 blackseaRenderer.miniOrbDrawScale = MathHelper.Lerp(0f, 0.4f, orbEase);
             }
@@ -145,7 +145,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
 
             //Floats and charges himself up, slowly turning white
-            SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
             Vector2 targetPlatform = new Vector2(NPC.Center.X, fallSystem.hoverPlatformY - 128);
             Vector2 targetVelocity = targetPlatform - NPC.Center;
             NPC.velocity = Vector2.Lerp(TargetVector, targetVelocity, orbEase);
@@ -188,7 +188,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Main.windSpeedCurrent = 6;
             if (Main.netMode != NetmodeID.Server)
             {
-                BlackSeaRenderingEdit blackseaRenderer = ModContent.GetInstance<BlackSeaRenderingEdit>();
+                BlackSeaRenderer blackseaRenderer = ModContent.GetInstance<BlackSeaRenderer>();
                 blackseaRenderer.miniOrbDrawPosition = NPC.Center;
                 blackseaRenderer.miniOrbDrawScale = 0.4f;
             }
@@ -228,7 +228,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if (Main.netMode != NetmodeID.Server)
             {
-                BlackSeaRenderingEdit blackseaRenderer = ModContent.GetInstance<BlackSeaRenderingEdit>();
+                BlackSeaRenderer blackseaRenderer = ModContent.GetInstance<BlackSeaRenderer>();
                 blackseaRenderer.miniOrbDrawPosition = Vector2.Lerp(TargetVector, Main.Camera.Center, ease);
                 blackseaRenderer.miniOrbDrawScale = MathHelper.Lerp(0.4f, 1f, ease);
             }

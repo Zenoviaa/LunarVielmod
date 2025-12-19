@@ -1,13 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using ReLogic.Content;
-using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Core;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -89,7 +84,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Kick_Fly,
             Kick_SwordThrowDown,
             Kick_End,
-            
+
             Dismantle_Start,
             Dismantle_Slash,
             Dismantle_End
@@ -131,7 +126,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             get
             {
-                if(_patternManagerBackingField == null)
+                if (_patternManagerBackingField == null)
                 {
                     _patternManagerBackingField = new PatternManager<AIState>(new Tuple<AIState, float>(AIState.ForwardSlash_Start, 1.0f));
                 }
@@ -204,14 +199,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
-            _forwardVector = reader.ReadVector2();  
+            _forwardVector = reader.ReadVector2();
             _hoverTimer = reader.ReadSingle();
             _attackNumber = reader.ReadSingle();
         }
 
         private void EnablePlatformArena()
         {
-            SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
             fallSystem.noWings = true;
             fallSystem.inSpace = true;
             fallSystem.hoveringPlatform = true;
@@ -228,7 +223,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 BlackSea blackSea = ScreenShader.GetInstance<BlackSea>();
                 blackSea.alpha = 1f;
 
-                BlackSeaRenderingEdit blackseaRenderer = ModContent.GetInstance<BlackSeaRenderingEdit>();
+                BlackSeaRenderer blackseaRenderer = ModContent.GetInstance<BlackSeaRenderer>();
                 blackseaRenderer.drawBlackSea = true;
             }
             else
@@ -249,9 +244,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _contactDamage = false;
             _isGrabbing = false;
             _hoverTimer++;
-         
 
-            if(State != AIState.Despawn && !NPC.HasValidTarget)
+
+            if (State != AIState.Despawn && !NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
                 if (!NPC.HasValidTarget)
@@ -475,7 +470,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             _attackNumber = 0;
             Timer++;
-            if(Timer >= 15)
+            if (Timer >= 15)
             {
                 ChooseAttack();
             }
@@ -484,7 +479,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void AI_Despawn()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.TintScreen(Color.Black, 1f, 160);
@@ -493,7 +488,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.velocity.Y -= 0.2f;
             Invert invert = ScreenShader.GetInstance<Invert>();
             invert.alpha = 1f;
-            if(Timer >= 150)
+            if (Timer >= 150)
             {
                 NPC.active = false;
             }

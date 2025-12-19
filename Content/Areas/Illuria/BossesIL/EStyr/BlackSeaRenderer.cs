@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
+using Stellamod.Core;
 using Stellamod.Core.MoonWaters;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
     [Autoload(Side = ModSide.Client)]
-    public class BlackSeaRenderingEdit : ModSystem
+    public class BlackSeaRenderer : ModSystem
     {
         private BlackSeaPlatformManager _platformManager;
         private LittleStarParticleManager _starParticleManager;
@@ -24,6 +24,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public bool drawBlackSea;
         public Vector2? miniOrbDrawPosition;
         public float miniOrbDrawScale;
+        public float alpha;
         public override void Load()
         {
             base.Load();
@@ -58,6 +59,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             base.OnModUnload();
         }
 
+
         private void RenderToBlackHurricaneRT()
         {
             if (Main.gameMenu)
@@ -86,7 +88,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (Main.gameMenu)
                 return;
 
-            SingularityFallSystem singularityFallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            DomainExpansionManager singularityFallSystem = ModContent.GetInstance<DomainExpansionManager>();
             //Calculate a gradient texture so we know where the reflection mapping goes
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
@@ -150,7 +152,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, reflectionCombineEffect);
 
-            spriteBatch.Draw(_reflectionRT, Vector2.Zero, Color.White);
+            spriteBatch.Draw(_reflectionRT, Vector2.Zero, Color.White * alpha);
 
             spriteBatch.End();
             graphicsDevice.SetRenderTarget(null);
@@ -158,16 +160,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void DrawHoveringPlatform(SpriteBatch spriteBatch)
         {
-            SingularityFallSystem singularityFallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            DomainExpansionManager singularityFallSystem = ModContent.GetInstance<DomainExpansionManager>();
             if (singularityFallSystem.hoveringPlatform)
             {
                 Texture2D bloomLine = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
                 Vector2 drawOrigin = new Vector2(bloomLine.Size().X / 2, 0);
                 float rotation = MathHelper.PiOver2;
+
                 Color drawColor = Color.White;
                 drawColor.A = 0;
                 drawColor *= 0.1375f;
                 drawColor *= ExtraMath.Osc(0.95f, 1f);
+                drawColor *= alpha;
+
                 Vector2 drawPosition = new Vector2(Main.LocalPlayer.Center.X, singularityFallSystem.hoverPlatformY);
                 drawPosition -= Main.screenPosition;
                 drawPosition.Y += 48;
@@ -249,13 +254,26 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void PostUpdateNPCs()
         {
             base.PostUpdateNPCs();
+            if (drawBlackSea)
+            {
+                DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
+                DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
 
-            DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
-            DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
-            _spinTimer++;
-            _singularityRotation += 0.001f;
-            _platformManager?.Update();
-            _starParticleManager?.Update();
+                _spinTimer++;
+                _singularityRotation += 0.001f;
+
+                _platformManager?.Update();
+                _starParticleManager?.Update();
+                alpha += 0.02f;
+                if (alpha >= 1f)
+                    alpha = 1f;
+            }
+            else if (alpha > 0)
+            {
+                alpha -= 0.02f;
+                if (alpha < 0)
+                    alpha = 0;
+            }
         }
 
         private float _incresionDiskFrameBottom;

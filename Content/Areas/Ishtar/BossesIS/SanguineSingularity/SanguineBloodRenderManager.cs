@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Stellamod.Assets;
-using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
+using Stellamod.Core;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
@@ -176,7 +176,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 graphicsDevice.Clear(Color.Transparent);
                 DrawBloodyBG2();
                 DrawBloodyBG1();
-                SingularityFallSystem singularityFallSystem = ModContent.GetInstance<SingularityFallSystem>();
+                DomainExpansionManager singularityFallSystem = ModContent.GetInstance<DomainExpansionManager>();
                 if (singularityFallSystem.hoveringPlatform)
                 {
                     Texture2D bloomLine = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
-using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Content.Gores;
+using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
@@ -315,7 +315,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
 
             //Ok so in this state we just do a simple dunk
-            SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
             float dunkTime = 22;
             float completionRatio = Timer / dunkTime;
             float ease = completionRatio;

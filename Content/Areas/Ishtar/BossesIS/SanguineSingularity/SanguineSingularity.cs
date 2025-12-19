@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using Stellamod.Assets;
-using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectiles;
 using Stellamod.Content.Gores;
 using Stellamod.Core;
@@ -292,7 +291,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
         private void EnablePlatformArena()
         {
-            SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+            DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
             fallSystem.noWings = true;
             fallSystem.inSpace = true;
             fallSystem.hoveringPlatform = true;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
+using Stellamod.Core;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -115,7 +115,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //_timer = Main.Camera.Center.X / 16f;
             if (NPC.AnyNPCs(ModContent.NPCType<E>()))
             {
-                SingularityFallSystem fallSystem = ModContent.GetInstance<SingularityFallSystem>();
+                DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
                 fallSystem.noWings = true;
                 fallSystem.inSpace = true;
                 fallSystem.hoveringPlatform = true;
