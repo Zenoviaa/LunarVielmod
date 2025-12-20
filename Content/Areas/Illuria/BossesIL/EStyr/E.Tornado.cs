@@ -232,10 +232,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float outlineOffset = 2;
             Vector2 v = Vector2.UnitY * outlineOffset;
             Vector2 h = Vector2.UnitX * outlineOffset;
-            DrawSprite(spriteBatch, Projectile.Center + v - screenPos, Color.Red);
-            DrawSprite(spriteBatch, Projectile.Center - v - screenPos, Color.Red);
-            DrawSprite(spriteBatch, Projectile.Center + h - screenPos, Color.Red);
-            DrawSprite(spriteBatch, Projectile.Center - h - screenPos, Color.Red);
+            DrawSprite(spriteBatch, Projectile.Center + v - screenPos, Color.White);
+            DrawSprite(spriteBatch, Projectile.Center - v - screenPos, Color.White);
+            DrawSprite(spriteBatch, Projectile.Center + h - screenPos, Color.White);
+            DrawSprite(spriteBatch, Projectile.Center - h - screenPos, Color.White);
         }
 
         public override void OnKill(int timeLeft)

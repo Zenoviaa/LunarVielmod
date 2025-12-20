@@ -119,7 +119,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 newSlashSound.Volume = 0.5f;
                 SoundEngine.PlaySound(newSlashSound, NPC.position);
                 Slash();
-                NPC.direction = _forwardVector.X > 0 ? 1 : -1;
+                NPC.direction = _forwardVector.X > 0 ? -1 : 1;
             }
 
             _extraAfterImageAlpha = 0.7f;

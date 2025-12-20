@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
@@ -219,6 +220,20 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             if (Main.netMode == NetmodeID.Server)
                 return;
+
+            //Create after images
+            Vector2 afterImageVelocity = -NPC.velocity.SafeNormalize(Vector2.Zero) * 4;
+            afterImageVelocity = afterImageVelocity.RotatedByRandom(MathHelper.TwoPi);
+            string texture = Texture + Animator.GetAnimation();
+
+            Vector2 drawOrigin = GetDrawOrigin();
+            float rotation = NPC.rotation;
+            Rectangle frame = NPC.frame;
+            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            if (NPC.spriteDirection == -1)
+                drawOrigin.X = NPC.frame.Size().X - drawOrigin.X;
+
+            AfterImageRenderer.New(texture, frame, NPC.Center, afterImageVelocity, NPC.rotation, _drawScale, drawOrigin, Color.White * 0.6f, spriteEffects);
             if (_intro)
             {
                 NPC.boss = true;
@@ -475,7 +490,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
             string texture = Texture + Animator.GetAnimation();
             OldTexture[0] = texture;
-            NPC.spriteDirection = NPC.direction;
+            NPC.spriteDirection = -NPC.direction;
         }
 
         private Vector2 CalculateHoverVelocity()
