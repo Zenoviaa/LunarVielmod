@@ -153,7 +153,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     {
         private ref float Timer => ref Projectile.ai[0];
         private Vector2[] SplashPoints = new Vector2[32];
-        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -204,10 +203,22 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public override bool PreDraw(ref Color lightColor)
         {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D blacksplashTexture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawOrigin = new Vector2(0, blacksplashTexture.Height / 2f);
+            Vector2 drawCenter = Projectile.Center - Main.screenPosition;
+            Color drawColor = Color.White;
+            drawColor.A = 0;
+            drawColor *= MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / 30f));
+            Vector2 drawScale = Vector2.One;
+            drawScale.X *= 6;
+            drawScale.Y = 0.5f;
+            spriteBatch.Draw(blacksplashTexture, drawCenter, null, drawColor, Projectile.velocity.ToRotation(), drawOrigin, drawScale, SpriteEffects.None, 0);
+            /*
             var laserShader = BasicLaserAlphaShader.Instance;
             laserShader.LaserTexture = TrailRegistry.SimpleTrail;
             TrailDrawer.Draw(Main.spriteBatch, SplashPoints, GetTrailColor, GetTrailWidth, laserShader);
-            TrailDrawer.Draw(Main.spriteBatch, SplashPoints, GetTrailColor, GetTrailWidth, laserShader);
+            TrailDrawer.Draw(Main.spriteBatch, SplashPoints, GetTrailColor, GetTrailWidth, laserShader);*/
             return false;
         }
 
@@ -664,14 +675,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     var donutParticle = Particle.NewParticle<GlowDonutParticle>(NPC.Center + cutVelocity * 0.5f, cutVelocity.SafeNormalize(Vector2.Zero));
                     donutParticle.Scale *= MathHelper.Lerp(1f, 3f, i / 3f);
                     donutParticle.rotOffset += MathHelper.PiOver2;
-                    donutParticle.xMult = 6;
+                    donutParticle.xMult = 12;
 
                 }
 
                 SoundStyle hurriSlash = AssetRegistry.Sounds.E.Hurrislash;
                 hurriSlash.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(hurriSlash, NPC.position);
-                ShakeModSystem.Shake = 4;
+                ShakeModSystem.Shake = 24;
             }
 
             Animator.PlayAnimation(Anim_BigSlash);
