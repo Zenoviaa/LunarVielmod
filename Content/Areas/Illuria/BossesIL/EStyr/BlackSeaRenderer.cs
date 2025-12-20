@@ -5,6 +5,8 @@ using Stellamod.Core.MoonWaters;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -33,7 +35,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             On_Main.CheckMonoliths += RenderBlackHurricaneRT;
             On_Main.DrawNPCs += DrawBlackHurricaneRTToScreen;
             On_OverlayManager.Draw += ApplyReflection;
-
+           On_Main.DrawCachedNPCs += DrawBlackHurricaneRTToScreen;
         }
 
 
@@ -43,7 +45,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             On_Main.CheckMonoliths -= RenderBlackHurricaneRT;
             On_Main.DrawNPCs -= DrawBlackHurricaneRTToScreen;
             On_OverlayManager.Draw -= ApplyReflection;
+            On_Main.DrawCachedNPCs -= DrawBlackHurricaneRTToScreen;
         }
+
+        private void DrawBlackHurricaneRTToScreen(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
+        {
+
+            orig(self, npcCache, behindTiles);
+        }
+
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -215,7 +225,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void DrawBlackHurricaneRTToScreen(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            if (!Main.gameMenu)
+            if (!Main.gameMenu && behindTiles)
             {
                 if (drawBlackSea)
                 {
@@ -229,8 +239,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
 
                     spriteBatch.Begin();
-            
-              
+
+
                 }
                 DrawHoveringPlatform(spriteBatch);
                 if (miniOrbDrawPosition.HasValue)

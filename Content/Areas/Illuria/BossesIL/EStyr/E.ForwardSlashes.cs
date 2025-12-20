@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -29,7 +31,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 targetVelocity = positionToMoveTo - NPC.Center;
             Vector2 smoothVelocity = Vector2.Lerp(TargetVector, targetVelocity, easeIn);
             NPC.velocity = smoothVelocity;
-            NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
         }
 
         private void AI_ForwardSlashStart()
@@ -59,7 +60,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 TargetVector = NPC.velocity;
             }
 
-
+            _extraAfterImageAlpha = 0.7f;
             float lerp = _attackNumber / 10f;
             float ease = EasingFunction.InOutSine(lerp);
             float startTime = MathHelper.Lerp(50, 5, ease);
@@ -118,8 +119,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 newSlashSound.Volume = 0.5f;
                 SoundEngine.PlaySound(newSlashSound, NPC.position);
                 Slash();
+                NPC.direction = _forwardVector.X > 0 ? 1 : -1;
             }
 
+            _extraAfterImageAlpha = 0.7f;
+            if (_attackNumber % 2 == 0)
+            {
+                Animator.PlayAnimation(Anim_ForwardSlash);
+            }
+            else
+            {
+                Animator.PlayAnimation(Anim_BackSlash);
+            }
 
             float forwardSlashTime = 5;
 
@@ -127,6 +138,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             float completionRatio = Timer / forwardSlashTime;
             float ease = EasingFunction.OutSine(completionRatio);
+
+            if(_attackNumber > 8)
+            {
+                float osc = ExtraMath.Osc(0f, 1f, speed: 17);
+                BlackSea blackSea = ScreenShader.GetInstance<BlackSea>();
+                blackSea.amplitude = MathHelper.SmoothStep(0.05f, 0f, ease);
+            }
 
             float maxRadians = MathHelper.PiOver4;
             float radiansOffset = completionRatio * maxRadians;
@@ -164,6 +182,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 targetPosition = MyTarget.Center + forwardVector;
             Vector2 targetVelocity = targetPosition - NPC.Center;
 
+            _extraAfterImageAlpha = 0.7f;
             float ease = EasingFunction.InOutSine(completionRatio);
             NPC.velocity = Vector2.Lerp(TargetVector, targetVelocity, ease);
             if (Timer >= rotateTime)
@@ -179,7 +198,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (Timer >= 1)
             {
                 _attackNumber++;
-                if (_attackNumber >= 30)
+                if (_attackNumber >= 32)
                 {
                     SwitchState(AIState.Idle);
                 }

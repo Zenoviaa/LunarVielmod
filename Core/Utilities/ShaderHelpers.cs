@@ -53,6 +53,7 @@ namespace Stellamod.Core.Utilities
         private EffectParameter _ringPowerParam;
         private EffectParameter _ringColorParam;
 
+        public float amplitude;
         public override void ApplyEffect(ScreenShaderData screenShaderData)
         {
             base.ApplyEffect(screenShaderData);
@@ -75,9 +76,9 @@ namespace Stellamod.Core.Utilities
             _ringColorParam ??= effect.Parameters["ringColor"];
 
 
-            _frequencyParam.SetValue(0.5f);
+            _frequencyParam.SetValue(0.25f);
             _levelsParam.SetValue(64);
-            _amplitudeParam.SetValue(0.0005f);
+            _amplitudeParam.SetValue(amplitude);
             _timeParam.SetValue(Main.GlobalTimeWrappedHourly * 8);
             _seatilingParam.SetValue(new Vector2(1, 8f));
             _seaNoiseTextureParam.SetValue(AssetRegistry.Textures.Noise.IceWaterCaustics.Value);

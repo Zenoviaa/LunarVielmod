@@ -2,14 +2,18 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Animations;
 using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
-    public partial class E : IDrawOutlines
+    public partial class E : IDrawOutlines,
+        IDrawBlackStar
     {
         private const string Anim_Idle = "_Idle";
         private const string Anim_SwordHold = "_SwordHold";
@@ -53,6 +57,34 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
         }
 
+        private string[] _oldTexture;
+        private string[] OldTexture
+        {
+            get
+            {
+                if (_oldTexture == null)
+                {
+                    _oldTexture = new string[NPC.oldPos.Length];
+                    for(int i = 0; i < _oldTexture.Length; i++)
+                    {
+                        _oldTexture[i] = Texture;
+                    }
+                }
+                    
+                return _oldTexture;
+            }
+        }
+        private float GetTrailWidth(float completionRatio)
+        {
+            return MathHelper.SmoothStep(16, 0, completionRatio);
+        }
+
+        private Color GetTrailColor(float completionRatio)
+        {
+            return Color.Lerp(Color.White, Color.Black, completionRatio);
+        }
+
+
         private void SetupAnimator()
         {
             _animatorBackingField = new Animator();
@@ -78,10 +110,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             var battle = new SpriteAnimation(0, 0, isLooping: true, drawOrigin);
             _animatorBackingField.AddAnimation(Anim_BattleIdle, battle);
 
-            var forwardSlash = new SpriteAnimation(0, 7, isLooping: false, drawOrigin);
+            var forwardSlash = new SpriteAnimation(0, 7, isLooping: false, drawOrigin, frameSpeed: 0.5f);
             _animatorBackingField.AddAnimation(Anim_ForwardSlash, forwardSlash);
 
-            var backSlash = new SpriteAnimation(0, 7, isLooping: false, drawOrigin);
+            var backSlash = new SpriteAnimation(0, 7, isLooping: false, drawOrigin, frameSpeed: 0.5f);
             _animatorBackingField.AddAnimation(Anim_BackSlash, backSlash);
 
             var foundYou = new SpriteAnimation(0, 1, isLooping: false, drawOrigin);
@@ -115,7 +147,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            screenPos.Y += ExtraMath.Osc(-2f, 2f, speed: 16);
+
             DrawTelegraphLine(spriteBatch, screenPos);
             DrawAfterImages(spriteBatch, screenPos, Color.White);
             DrawSprite(spriteBatch, screenPos, Color.White);
@@ -150,6 +182,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         private void DrawAfterImages(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            /*
             Vector2 oldDrawScale = _drawScale;
             _drawScale.Y *= ExtraMath.Osc(3f, 4);
             _drawScale.X *= 0.1f;
@@ -164,7 +197,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 DrawSprite(spriteBatch, screenPos + offset, drawColor * 0.2f * _afterImageAlpha);
             }
             _drawScale = oldDrawScale;
-            Texture2D eTexture = ModContent.Request<Texture2D>(Texture).Value;
+            
+           */
+ 
             Vector2 drawOrigin = GetDrawOrigin();
             if (NPC.spriteDirection == -1)
                 drawOrigin.X = NPC.frame.Size().X - drawOrigin.X;
@@ -172,6 +207,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             for (int i = 0; i < NPC.oldPos.Length; i++)
             {
+                Texture2D eTexture = ModContent.Request<Texture2D>(OldTexture[i]).Value;
                 Vector2 oldPos = NPC.oldPos[i];
                 Vector2 oldDrawPos = oldPos - Main.screenPosition;
                 float f = i;
@@ -187,13 +223,48 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            float outlineOffset = 2;
+            float outlineOffset = 6;
             Vector2 v = Vector2.UnitY * outlineOffset;
             Vector2 h = Vector2.UnitX * outlineOffset;
+
             DrawSprite(spriteBatch, screenPos + v, _outlineColor);
             DrawSprite(spriteBatch, screenPos - v, _outlineColor);
             DrawSprite(spriteBatch, screenPos + h, _outlineColor);
             DrawSprite(spriteBatch, screenPos - h, _outlineColor);
+
+            outlineOffset = 4;
+            v = Vector2.UnitY * outlineOffset;
+            h = Vector2.UnitX * outlineOffset;
+            DrawSprite(spriteBatch, screenPos + v , Color.Black);
+            DrawSprite(spriteBatch, screenPos - v , Color.Black);
+            DrawSprite(spriteBatch, screenPos + h , Color.Black);
+            DrawSprite(spriteBatch, screenPos - h , Color.Black);
+
+            outlineOffset = 2;
+            v = Vector2.UnitY * outlineOffset;
+            h = Vector2.UnitX * outlineOffset;
+            DrawSprite(spriteBatch, screenPos + v, _outlineColor);
+            DrawSprite(spriteBatch, screenPos - v, _outlineColor);
+            DrawSprite(spriteBatch, screenPos + h, _outlineColor);
+            DrawSprite(spriteBatch, screenPos - h, _outlineColor);
+
+
+        }
+
+        public void DrawBlackStar(SpriteBatch spriteBatch)
+        {
+            var shader = MagicNormalShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.BeamTrail;
+            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 2;
+            shader.Repeats = 1f;
+
+            TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, GetTrailColor, GetTrailWidth, shader, NPC.Size / 2f);
+
+            shader.BlendState = BlendState.AlphaBlend;
+            TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, GetTrailColor, GetTrailWidth, shader, NPC.Size / 2f);
         }
     }
 }

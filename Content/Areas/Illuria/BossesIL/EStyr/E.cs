@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using System;
 using System.IO;
 using Terraria;
@@ -256,6 +258,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     SwitchState(AIState.Despawn);
                 }
             }
+
+            if(Timer % 5 == 0)
+            {
+                var star = Particle.NewParticle<StarParticle>(NPC.Center, Vector2.Zero, Color.White);
+                star.fast = true;
+            }
             _telegraphLineAlpha = 0;
             _drawScale = Vector2.One;
             TargetOutlineColor = Color.White;
@@ -452,12 +460,21 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     break;
             }
 
-            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.3f);
+        
             for (int i = OldFrame.Length - 1; i > 0; i--)
             {
                 OldFrame[i] = OldFrame[i - 1];
             }
             OldFrame[0] = NPC.frame;
+
+
+            for (int i = OldTexture.Length - 1; i > 0; i--)
+            {
+                OldTexture[i] = OldTexture[i - 1];
+            }
+            string texture = Texture + Animator.GetAnimation();
+            OldTexture[0] = texture;
             NPC.spriteDirection = NPC.direction;
         }
 
@@ -498,7 +515,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ChooseAttack()
         {
-            SwitchState(AIState.RippingGeyser_Start);
+            SwitchState(AIState.ForwardSlash_Start);
         }
     }
 }

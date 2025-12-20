@@ -56,6 +56,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     _blackStarDraws.Add(draw);
                 }
             }
+            foreach (var npc in Main.ActiveNPCs)
+            {
+                if (npc.ModNPC is IDrawBlackStar draw)
+                {
+                    _blackStarDraws.Add(draw);
+                }
+            }
 
             if (_blackStarDraws.Count > 0)
             {
@@ -111,36 +118,40 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void DrawBlackStarToScreen(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
         {
+
+
+            if(_blackStarDraws.Count > 0)
+            {
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+
+
+                Vector2 v = Vector2.UnitX * 2;
+                Vector2 h = Vector2.UnitY * 2;
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+       null, Main.GameViewMatrix.TransformationMatrix);
+
+                spriteBatch.Draw(_maskTarget, v, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(_maskTarget, -v, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(_maskTarget, h, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(_maskTarget, -h, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(_maskTarget, Vector2.Zero, null, Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+
+                spriteBatch.End();
+
+                //Setup the shader
+                MaskCombineShader maskCombine = MaskCombineShader.Instance;
+                maskCombine.MixTexture = _blackStarTarget;
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                   maskCombine.Effect, Main.GameViewMatrix.TransformationMatrix);
+
+
+
+                spriteBatch.Draw(_maskTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                spriteBatch.End();
+            }
+
             orig(self);
-            if (_blackStarDraws.Count <= 0)
-                return;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-
-
-            Vector2 v = Vector2.UnitX * 2;
-            Vector2 h = Vector2.UnitY * 2;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-   null, Main.GameViewMatrix.TransformationMatrix);
-
-            spriteBatch.Draw(_maskTarget, v, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_maskTarget, -v, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_maskTarget, h, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_maskTarget, -h, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_maskTarget, Vector2.Zero, null, Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-
-            spriteBatch.End();
-
-            //Setup the shader
-            MaskCombineShader maskCombine = MaskCombineShader.Instance;
-            maskCombine.MixTexture = _blackStarTarget;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-               maskCombine.Effect, Main.GameViewMatrix.TransformationMatrix);
-
-
-
-            spriteBatch.Draw(_maskTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.End();
         }
 
         private Point GetScreenSize()
