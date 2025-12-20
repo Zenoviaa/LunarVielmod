@@ -60,6 +60,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 }
             }
 
+            Projectile.rotation += 0.005f;
+            Projectile.rotation += Projectile.velocity.Length() * 0.005f;
+
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 8000);
             if(player != null)
             {
@@ -102,14 +105,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         public override bool PreDraw(ref Color lightColor)
         {
-
+            DrawSprite(Main.spriteBatch, Main.screenPosition, Color.Black);
             return false;
         }
 
         public void DrawBlackStar(SpriteBatch spriteBatch)
         {
             DrawAfterImages(spriteBatch);
-            DrawSprite(spriteBatch, Main.screenPosition, Color.White);
+
         }
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
@@ -117,10 +120,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float outlineOffset = 2;
             Vector2 v = Vector2.UnitY * outlineOffset;
             Vector2 h = Vector2.UnitX * outlineOffset;
-            DrawSprite(spriteBatch, Main.screenPosition + v, Color.Red);
-            DrawSprite(spriteBatch, Main.screenPosition - v, Color.Red);
-            DrawSprite(spriteBatch, Main.screenPosition + h, Color.Red);
-            DrawSprite(spriteBatch, Main.screenPosition - h, Color.Red);
+            DrawSprite(spriteBatch, Main.screenPosition + v, Color.White);
+            DrawSprite(spriteBatch, Main.screenPosition - v, Color.White);
+            DrawSprite(spriteBatch, Main.screenPosition + h, Color.White);
+            DrawSprite(spriteBatch, Main.screenPosition - h, Color.White);
         }
     }
 
@@ -147,7 +150,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 targetVelocity = (positionToMoveTo - NPC.Center);
             Vector2 interpolatedVelocity = Vector2.Lerp(TargetVector, targetVelocity, ease);
             NPC.velocity = interpolatedVelocity;
-            TargetOutlineColor = Color.Yellow;
             if (Timer >= startupTime)
             {
                 SwitchState(AIState.ScreenSlash_PreSlash);
@@ -171,7 +173,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 interpolatedCenter = Vector2.Lerp(startCenter, endCenter, ease);
             Vector2 targetVelocity = (interpolatedCenter - NPC.Center);
             NPC.velocity = targetVelocity;
-            TargetOutlineColor = Color.Yellow;
             if (Timer >= preSlashTime)
             {
                 SwitchState(AIState.ScreenSlash_Slash);
@@ -214,6 +215,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                 TargetVector = NPC.Center;
             }
+
             float slashTime = 30;
             float completionRatio = Timer / slashTime;
             float ease = EasingFunction.OutExpo(completionRatio);
@@ -222,8 +224,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 interpolatedCenter = Vector2.Lerp(startCenter, endCenter, ease);
             Vector2 targetVelocity = interpolatedCenter - NPC.Center;
             NPC.velocity = targetVelocity;
-
-            TargetOutlineColor = Color.Red;
+            NPC.direction = TargetDirection;
             if (Timer >= slashTime)
             {
                 SwitchState(AIState.ScreenSlash_SwordPoint);
@@ -240,16 +241,28 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if (Timer % 20 == 0)
             {
+                if (_attackNumber % 2 == 0)
+                {
+                    Animator.PlayAnimation(Anim_ForwardSlash);
+                }
+                else
+                {
+                    Animator.PlayAnimation(Anim_BackSlash);
+                }
+
                 ShakeModSystem.Shake = 4;
                 FXUtil.ShakeCamera(NPC.position, 1024, 4);
 
                 Vector2 direction = Vector2.UnitY.RotateRandom(1.5f);
                 Vector2 startPosition = NPC.Center - direction * 1200;
-                ScreenSmearEffectManager.NewParticle(startPosition, direction, 2400, 15);
-                var strike = Particle.NewParticle<GlowDonutParticle>(NPC.Center, direction);
+
+                Vector2 pos = NPC.Center;
+                pos += Vector2.UnitX * NPC.direction * 100;
+                ScreenSmearEffectManager.NewParticle(pos, direction, 2400, 15);
+                var strike = Particle.NewParticle<GlowDonutParticle>(pos, direction);
                 strike.xMult = 6;
                 strike.rotOffset += MathHelper.PiOver2;
-                var strike2 = Particle.NewParticle<GlowDonutParticle>(NPC.Center, direction);
+                var strike2 = Particle.NewParticle<GlowDonutParticle>(pos, direction);
                 strike2.xMult = 32;
                 strike2.rotOffset += MathHelper.PiOver2;
                 SoundStyle hurriSlash = AssetRegistry.Sounds.E.Hurrislash;
@@ -301,7 +314,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 easeVelocity = Vector2.Lerp(TargetVector, targetVelocity, inEase);
             NPC.velocity = easeVelocity;
             NPC.direction = TargetDirection;
-            TargetOutlineColor = Color.Red;
             if (Timer >= pointingTime)
             {
                 SwitchState(AIState.ScreenSlash_End);
