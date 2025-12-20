@@ -223,7 +223,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     spriteBatch.End();
                     spriteBatch.Begin();
 
-                    Color drawColor = Color.Lerp(Color.White, Color.Black, 0.55f);
+                    Color drawColor = Color.Lerp(Color.White, Color.Black, 0.35f);
                     spriteBatch.Draw(_blackHurricaneRT, Vector2.Zero, null, drawColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                     spriteBatch.End();
 

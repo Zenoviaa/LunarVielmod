@@ -329,8 +329,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             outTornado = EasingFunction.InOutSine(outTornado);
             float alpha = inTornado * outTornado;
             TornadoStreakParticles.xOvalRadius = 5;
-            TornadoStreakParticles.yOvalRadius = 350;
-            TornadoStreakParticles.minX = ExtraMath.Osc(50, 100, speed: 3) + MathHelper.Lerp(0f, 50f, EasingFunction.InOutSine(Timer / 150f));
+            TornadoStreakParticles.yOvalRadius = MathHelper.Lerp(150, 250, EasingFunction.InOutSine(Timer / 150f));
+            TornadoStreakParticles.minX = ExtraMath.Osc(25, 100, speed: 3) + MathHelper.Lerp(0f, 50f, EasingFunction.InOutSine(Timer / 150f));
             TornadoStreakParticles.spinTime = 25;
             TornadoStreakParticles.rotationAxis = new Vector3(0, 1, 0.2f);
             TornadoStreakParticles.alpha = 0.25f * alpha;

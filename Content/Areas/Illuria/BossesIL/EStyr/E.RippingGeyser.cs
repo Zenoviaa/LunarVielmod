@@ -74,8 +74,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 1024);
             if (player != null)
             {
-                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 0.5f);
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, 0.125f);
             }
+            Projectile.rotation += 0.01f;
+            Projectile.rotation += Projectile.velocity.ToRotation() * 0.02f;
         }
 
         private void DrawSprite(SpriteBatch spriteBatch)
@@ -213,24 +215,21 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 }
             }
 
-            if(Timer == 179 && this.OwnedByLocalClient())
+            if(Timer > 120 && Timer % 10 == 0 && this.OwnedByLocalClient())
             {
                 ScreenSmearEffectManager.NewParticle(Projectile.Center, Vector2.UnitY, 1000, 25);
                 Vector2 spawnCenter = Projectile.Center;
-                float numStars = 10;
-                for(float n = 0; n < numStars; n++)
+                
+                float yOffset = Main.rand.NextFloat(0f, 400f);
+                spawnCenter.Y += yOffset;
+                Vector2 spawnVelocity = -Vector2.UnitY * 2;
+                Player player = PlayerHelper.FindClosestPlayer(Projectile.Center, 16000);
+                if (player != null)
                 {
-                    float ratio = n / numStars;
-                    spawnCenter.Y += MathHelper.Lerp(0f, 500, ratio);
-                    Vector2 spawnVelocity = -Vector2.UnitY * 2;
-                    Player player = PlayerHelper.FindClosestPlayer(Projectile.Center, 16000);
-                    if (player != null)
-                    {
-                        spawnVelocity = (player.Center - spawnCenter).SafeNormalize(Vector2.Zero) * 2;
-                    }
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnCenter, spawnVelocity,
-                      ModContent.ProjectileType<GeyserStar>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner, ai1: 1);
+                    spawnVelocity = (player.Center - spawnCenter).SafeNormalize(Vector2.Zero) * 2;
                 }
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnCenter, spawnVelocity,
+                  ModContent.ProjectileType<GeyserStar>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner, ai1: 1);
             }
         }
         public override bool ShouldUpdatePosition()

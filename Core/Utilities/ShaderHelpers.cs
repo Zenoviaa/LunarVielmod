@@ -56,7 +56,7 @@ namespace Stellamod.Core.Utilities
         public override void ApplyEffect(ScreenShaderData screenShaderData)
         {
             base.ApplyEffect(screenShaderData);
-            float whiteBend = 0.2f;
+            float whiteBend = 0f;
             float blackBend = 0.8f;
             float lightThreshold = 0.6f;
             Vector3 paramsColor = new Vector3(whiteBend, blackBend, lightThreshold);

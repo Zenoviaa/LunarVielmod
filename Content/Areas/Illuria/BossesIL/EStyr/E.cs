@@ -499,7 +499,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ChooseAttack()
         {
-            SwitchState(AIState.Tornado_Start);
+            SwitchState(AIState.RippingGeyser_Start);
         }
     }
 }

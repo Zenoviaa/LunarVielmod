@@ -35,15 +35,6 @@ namespace Stellamod.Content.Biomes
                 }
             }
 
-
-            if (Main._shouldUseWindyDayMusic)
-            {
-                if (Main.rand.NextBool(5))
-                {
-                    ForegroundParticleRenderer.NewParticle<Cherryblossom>();
-                }
-            }
-
             if (Main.raining && (Player.ZoneForest || myPlayer.ZoneVillage))
             {
                 if (Main.rand.NextBool(5))
@@ -81,13 +72,13 @@ namespace Stellamod.Content.Biomes
                 _windCounter = 1200;
             }
             //CHERRY BLOSSOM
-            if (Main.rand.NextBool(10))
+            if (Main.rand.NextBool(20))
             {
 
                 ForegroundParticleRenderer.NewParticle<Cherryblossom>();
             }
 
-            if (Main.rand.NextBool(10))
+            if (Main.rand.NextBool(20))
             {
                 ForegroundParticleRenderer.NewParticle<SpringFallingFlower>();
             }
