@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
@@ -51,7 +52,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 if (this.OwnedByLocalClient())
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero) * 2400, 
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero) * 1200, 
                         ModContent.ProjectileType<BlackSplash>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
               //  strike.rotOffset += MathHelper.PiOver2;
@@ -134,7 +135,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawTelegraphLine(Main.spriteBatch);
+         //   DrawTelegraphLine(Main.spriteBatch);
             return false;
         }
 
@@ -182,9 +183,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             float numPoints = SplashPoints.Length;
             Vector2 start = Projectile.Center;
-
-            float easeOut = EasingFunction.OutExpo(Timer / 30f);
-            Vector2 end = start + Projectile.velocity * easeOut;
+            Vector2 end = start + Projectile.velocity;
             for (int n = 0; n < SplashPoints.Length; n++)
             {
                 float ratio = (float)n / (float)SplashPoints.Length;
@@ -194,19 +193,27 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private float GetTrailWidth(float completionRatio)
         {
-            float width = MathHelper.SmoothStep(96, 32, completionRatio);
-            float ease = EasingFunction.QuadraticBump(Timer / 30f);
-            float finalWidth = width * ease;
-            return finalWidth;
+            return 1500;
         }
 
         private Color GetTrailColor(float completionRatio)
         {
-            return Color.Lerp(Color.White, Color.White * 0.5f, completionRatio);
+            float ease = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / 30f));
+            return Color.Lerp(Color.White, Color.Transparent, EasingFunction.InExpo(completionRatio)) * ease;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            var laserShader = BasicLaserAlphaShader.Instance;
+            laserShader.LaserTexture = TrailRegistry.SimpleTrail;
+            TrailDrawer.Draw(Main.spriteBatch, SplashPoints, GetTrailColor, GetTrailWidth, laserShader);
+            TrailDrawer.Draw(Main.spriteBatch, SplashPoints, GetTrailColor, GetTrailWidth, laserShader);
+            return false;
         }
 
         public void DrawBlackStar(SpriteBatch spriteBatch)
         {
+            /*
             FlamingTrailShader flamingTrailShader = FlamingTrailShader.Instance;
             flamingTrailShader.OuterColor = Color.Black;
             flamingTrailShader.InnerColor = Color.White;
@@ -216,7 +223,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             flamingTrailShader.BlendState = BlendState.Additive;
             flamingTrailShader.PrimaryTexture = TrailRegistry.LightningTrail2;
             flamingTrailShader.NoiseTexture = TrailRegistry.LightningTrail2;
-            TrailDrawer.Draw(Main.spriteBatch, SplashPoints, GetTrailColor, GetTrailWidth, flamingTrailShader);
+            TrailDrawer.Draw(Main.spriteBatch, SplashPoints, GetTrailColor, GetTrailWidth, flamingTrailShader);*/
         }
     }
 
@@ -609,13 +616,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 _forwardVector.Y = 0;
             }
 
+            Animator.PlayAnimation(Anim_Holding);
 
             //Position yourself on the right or left of the target player
             float startupTime = 100;
             float completionRatio = Timer / startupTime;
             float ease = EasingFunction.InOutExpo7(completionRatio);
             Vector2 targetStartPosition = MyTarget.Center + _forwardVector * 700;
-            targetStartPosition.Y -= 600;
+            targetStartPosition.Y -= 300;
             Vector2 targetVelocity = (targetStartPosition - NPC.Center);
             Vector2 interpolatedVelocity = Vector2.Lerp(TargetVector, targetVelocity, ease);
             NPC.velocity = interpolatedVelocity;
@@ -634,36 +642,52 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             if (Timer == 1)
             {
-                TargetVector = NPC.velocity;
+                TargetVector = NPC.Center;
                 _forwardVector = Vector2.UnitX * (MyTarget.Center.X > NPC.Center.X ? 1 : -1);
                 NPC.direction = TargetDirection;
+
+
+                float distance = 1000f;
+                Vector2 cutVelocity = new Vector2(NPC.direction * distance, -distance / 2f);
                 if (MultiplayerHelper.IsHost)
-                {
-                    float distance = 1000f;
-                    Vector2 cutVelocity = new Vector2(NPC.direction * distance, -distance / 2f);
+                { 
                     Projectile.NewProjectile(SourceFromThis, NPC.Center, cutVelocity,
                         ModContent.ProjectileType<RippingGeyser>(), RippingGeyserDaamge, 1, Main.myPlayer);
                 }
 
+                Vector2 direction = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                Vector2 startPosition = NPC.Center;
+                ScreenSmearEffectManager.NewParticle(startPosition, cutVelocity, 2400, 45);
 
-                var strike = Particle.NewParticle<GlowDonutParticle>(NPC.Center, _forwardVector);
-                strike.xMult = 6;
-                strike.rotOffset += MathHelper.PiOver2;
+                for (float i = 0; i < 3; i++)
+                {
+                    var donutParticle = Particle.NewParticle<GlowDonutParticle>(NPC.Center + cutVelocity * 0.5f, cutVelocity.SafeNormalize(Vector2.Zero));
+                    donutParticle.Scale *= MathHelper.Lerp(1f, 3f, i / 3f);
+                    donutParticle.rotOffset += MathHelper.PiOver2;
+                    donutParticle.xMult = 6;
+
+                }
+
+                SoundStyle hurriSlash = AssetRegistry.Sounds.E.Hurrislash;
+                hurriSlash.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(hurriSlash, NPC.position);
+                ShakeModSystem.Shake = 4;
             }
 
+            Animator.PlayAnimation(Anim_BigSlash);
+
             //Dash forward, we need to create a projectile here
-            float dashTime = 35;
+            float dashTime = 35f;
             float completionRatio = Timer / dashTime;
-            float ease = EasingFunction.InOutExpo(completionRatio);
-            float ease2 = EasingFunction.QuadraticBump(completionRatio);
+            float ease = EasingFunction.OutExpo(completionRatio);
+            Vector2 startCenter = TargetVector;
+            Vector2 endCenter = startCenter - _forwardVector * 512;
+            Vector2 positionToMoveTo = Vector2.Lerp(startCenter, endCenter, ease);
+            Vector2 targetVelocity = positionToMoveTo - NPC.Center;
+            NPC.velocity = targetVelocity;
 
-            Vector2 dashSpeed = _forwardVector * 140;
-            Vector2 interpolatedVelocity = Vector2.Lerp(TargetVector, dashSpeed, ease);
-            Vector2 lerp2 = Vector2.Lerp(TargetVector, interpolatedVelocity, ease2);
-            NPC.velocity = lerp2;
-            NPC.velocity.Y = 0;
 
-            OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -300);
+            OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -100);
             _contactDamage = true;
             TargetOutlineColor = Color.Red;
             if (Timer >= dashTime)
@@ -681,6 +705,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 TargetVector = NPC.velocity;
             }
 
+            Animator.PlayAnimation(Anim_BattleIdle);
+
             //Bounce back to the player
             float inTime = 120;
             float inCompletionRatio = Timer / inTime;
@@ -693,7 +719,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             //The geyser has been created so don't really do anything
             //We can have bro just lerp back to you maybe?
-            TargetOutlineColor = Color.Transparent;
             float auraTime = 500;
             if (Timer >= auraTime)
             {
@@ -707,7 +732,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             Timer++;
             NPC.velocity *= 0.9f;
-            TargetOutlineColor = Color.Transparent;
             if (Timer >= 15)
             {
                 SwitchState(AIState.Idle);

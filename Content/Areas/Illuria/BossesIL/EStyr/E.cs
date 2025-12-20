@@ -216,12 +216,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             fallSystem.hoverPlatformY = 16000;
         }
 
-        private void UpdateClient()
+        private void CreateNewAfterImage()
         {
-            if (Main.netMode == NetmodeID.Server)
-                return;
-
-            //Create after images
             Vector2 afterImageVelocity = -NPC.velocity.SafeNormalize(Vector2.Zero) * 4;
             afterImageVelocity = afterImageVelocity.RotatedByRandom(MathHelper.TwoPi);
             string texture = Texture + Animator.GetAnimation();
@@ -234,6 +230,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 drawOrigin.X = NPC.frame.Size().X - drawOrigin.X;
 
             AfterImageRenderer.New(texture, frame, NPC.Center, afterImageVelocity, NPC.rotation, _drawScale, drawOrigin, Color.White * 0.6f, spriteEffects);
+        }
+        private void UpdateClient()
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+            //Create after images
+            if(Timer % 3 == 0)
+            {
+                CreateNewAfterImage();
+            }
+
             if (_intro)
             {
                 NPC.boss = true;
@@ -530,7 +538,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ChooseAttack()
         {
-            SwitchState(AIState.ForwardSlash_Start);
+            SwitchState(AIState.RippingGeyser_Start);
         }
     }
 }

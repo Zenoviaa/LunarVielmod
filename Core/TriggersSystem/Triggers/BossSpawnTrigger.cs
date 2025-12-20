@@ -98,7 +98,7 @@ namespace Stellamod.Core.TriggersSystem.Triggers
                     break;
                 }
             }
-            Console.WriteLine(steps);
+
             if (allPlayersFar)
                 return false;
             return true;

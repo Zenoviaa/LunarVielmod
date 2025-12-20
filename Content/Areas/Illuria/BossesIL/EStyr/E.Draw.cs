@@ -122,7 +122,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             var holding = new SpriteAnimation(0, 1, isLooping: true, drawOrigin);
             _animatorBackingField.AddAnimation(Anim_Holding, holding);
 
-            var bigSlash = new SpriteAnimation(0, 6, isLooping: true, drawOrigin);
+            var bigSlash = new SpriteAnimation(0, 6, isLooping: false, drawOrigin, frameSpeed: 0.5f);
             _animatorBackingField.AddAnimation(Anim_BigSlash, bigSlash);
         }
 
