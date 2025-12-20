@@ -64,7 +64,7 @@ namespace Stellamod.Skies
             base.PostUpdateDusts();
             if (IsActive)
             {
-                Opacity = MathHelper.Lerp(Opacity, 0.5f, 0.1f);
+                Opacity = MathHelper.Lerp(Opacity, 1f, 0.1f);
             }
             else
             {

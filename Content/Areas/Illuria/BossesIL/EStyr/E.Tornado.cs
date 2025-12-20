@@ -49,6 +49,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
     }
 
+
     public class BlackTornadoDebris : ModProjectile,
         IDrawBlackStar,
         IDrawOutlines
