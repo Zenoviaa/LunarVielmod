@@ -1,16 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
 
 namespace Stellamod.Core.Animations
 {
     public class Animator
     {
+        private string _name;
         private Dictionary<string, SpriteAnimation> _animations;
         private SpriteAnimation _currentAnimation;
         public Animator()
@@ -31,6 +26,7 @@ namespace Stellamod.Core.Animations
         }
         public void PlayAnimation(string name)
         {
+            _name = name;
             SpriteAnimation animation = _animations[name];
             if (_currentAnimation == animation)
                 return;
@@ -57,6 +53,13 @@ namespace Stellamod.Core.Animations
             return _currentAnimation.GetFrameY(frameHeight);
         }
 
+        public string GetAnimation()
+        {
+            if (_currentAnimation == null)
+                return string.Empty;
+            return _name;
+        }
+
         public Vector2? GetDrawOrigin()
         {
             if (_currentAnimation == null)
@@ -69,12 +72,13 @@ namespace Stellamod.Core.Animations
     {
         public SpriteAnimation(int startFrame, int endFrame, bool isLooping, Vector2? drawOriginOverride = null, float frameSpeed = 0.15f)
         {
-            this.startFrame = startFrame;   
+            this.startFrame = startFrame;
             this.endFrame = endFrame;
             this.isLooping = isLooping;
             this.drawOriginOverride = drawOriginOverride;
             this.frameSpeed = frameSpeed;
         }
+
         private int _frame;
         private float _frameCounter;
         public int startFrame;
@@ -85,6 +89,11 @@ namespace Stellamod.Core.Animations
         public bool reverse;
         public Vector2? drawOriginOverride;
         public bool isFinished;
+
+        public int GetFrameCount()
+        {
+            return (endFrame - startFrame) + 1;
+        }
         public void Start()
         {
             if (!isPlaying)
@@ -96,7 +105,7 @@ namespace Stellamod.Core.Animations
                     _frame = endFrame;
                 _frameCounter = 0;
             }
-          
+
             isPlaying = true;
         }
 
@@ -108,7 +117,7 @@ namespace Stellamod.Core.Animations
         {
             if (isPlaying)
             {
-          
+
                 _frameCounter += frameSpeed;
 
                 if (_frameCounter >= 1f)
@@ -142,7 +151,7 @@ namespace Stellamod.Core.Animations
                             isFinished = true;
                         }
                     }
-                       
+
                 }
             }
 
@@ -150,7 +159,7 @@ namespace Stellamod.Core.Animations
 
         public int GetFrameY(int frameHeight)
         {
-           return frameHeight * _frame;
+            return frameHeight * _frame;
         }
     }
 }

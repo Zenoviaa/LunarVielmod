@@ -11,11 +11,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
     public partial class E : IDrawOutlines
     {
-        private const string Anim_Idle = "idle";
-        private const string Anim_SwordHold = "swordhold";
-        private const string Anim_HeadTurn = "headturn";
-        private const string Anim_HandOut = "handout";
-        private const string Anim_LookOver = "lookover";
+        private const string Anim_Idle = "_Idle";
+        private const string Anim_SwordHold = "_SwordHold";
+        private const string Anim_HandOut = "_HandOut";
+        private const string Anim_LookOver = "_LookOver";
+        private const string Anim_Morph = "_Morph";
+        private const string Anim_Swimming = "_Swimming";
+        private const string Anim_BattleIdle = "_BattleIdle";
+        private const string Anim_ForwardSlash = "_ForwardSlash";
+        private const string Anim_BackSlash = "_BackSlash";
+        private const string Anim_FoundYou = "_FoundYou";
+        private const string Anim_Holding = "_Holding";
+        private const string Anim_BigSlash = "_BigSlash";
 
         private float _telegraphLineAlpha;
         private float _telegraphLineRot;
@@ -35,17 +42,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
         }
 
-
-        private BlackTornadoWind _windBackingField;
-        private BlackTornadoWind Wind
-        {
-            get
-            {
-                _windBackingField ??= new BlackTornadoWind();
-                return _windBackingField;
-            }
-        }
-
         private Rectangle[] _oldFrameBackingField;
         private Rectangle[] OldFrame
         {
@@ -60,24 +56,50 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void SetupAnimator()
         {
             _animatorBackingField = new Animator();
-            Vector2 drawOrigin = new Vector2(60, 65);
+            Vector2 drawOrigin = new Vector2(187, 160);
             var idle = new SpriteAnimation(0, 0, isLooping: true, drawOrigin);
             _animatorBackingField.AddAnimation(Anim_Idle, idle);
 
-            var swordHold = new SpriteAnimation(1, 7, isLooping: false, drawOrigin);
+            var swordHold = new SpriteAnimation(0, 6, isLooping: false, drawOrigin);
             _animatorBackingField.AddAnimation(Anim_SwordHold, swordHold);
 
-            var handOut = new SpriteAnimation(8, 14, isLooping: false, drawOrigin);
+            var handOut = new SpriteAnimation(0, 6, isLooping: false, drawOrigin);
             _animatorBackingField.AddAnimation(Anim_HandOut, handOut);
 
-            var lookOver = new SpriteAnimation(15, 19, isLooping: false, drawOrigin, frameSpeed: 0.05f);
+            var lookOver = new SpriteAnimation(0, 4, isLooping: false, drawOrigin, frameSpeed: 0.05f);
             _animatorBackingField.AddAnimation(Anim_LookOver, lookOver);
+
+            var morph = new SpriteAnimation(0, 5, isLooping: false, drawOrigin);
+            _animatorBackingField.AddAnimation(Anim_Morph, morph);
+
+            var swimming = new SpriteAnimation(0, 8, isLooping: true, drawOrigin);
+            _animatorBackingField.AddAnimation(Anim_Swimming, swimming);
+
+            var battle = new SpriteAnimation(0, 0, isLooping: true, drawOrigin);
+            _animatorBackingField.AddAnimation(Anim_BattleIdle, battle);
+
+            var forwardSlash = new SpriteAnimation(0, 7, isLooping: false, drawOrigin);
+            _animatorBackingField.AddAnimation(Anim_ForwardSlash, forwardSlash);
+
+            var backSlash = new SpriteAnimation(0, 7, isLooping: false, drawOrigin);
+            _animatorBackingField.AddAnimation(Anim_BackSlash, backSlash);
+
+            var foundYou = new SpriteAnimation(0, 1, isLooping: false, drawOrigin);
+            _animatorBackingField.AddAnimation(Anim_FoundYou, foundYou);
+
+            var holding = new SpriteAnimation(0, 1, isLooping: true, drawOrigin);
+            _animatorBackingField.AddAnimation(Anim_Holding, holding);
+
+            var bigSlash = new SpriteAnimation(0, 6, isLooping: true, drawOrigin);
+            _animatorBackingField.AddAnimation(Anim_BigSlash, bigSlash);
         }
+
         public override void FindFrame(int frameHeight)
         {
             base.FindFrame(frameHeight);
             Animator.Update();
             NPC.frame.Y = Animator.GetFrameY(frameHeight);
+          
         }
 
         private Vector2 GetDrawOrigin()
@@ -97,14 +119,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             DrawTelegraphLine(spriteBatch, screenPos);
             DrawAfterImages(spriteBatch, screenPos, Color.White);
             DrawSprite(spriteBatch, screenPos, Color.White);
-           // DrawWind(spriteBatch, screenPos);
             return false;
-        }
-
-        private void DrawWind(SpriteBatch spriteBatch, Vector2 screenPos)
-        {
-           
-            Wind.Draw(NPC.Center, 2520, 100);
         }
 
         private void DrawTelegraphLine(SpriteBatch spriteBatch, Vector2 screenPos)
@@ -121,7 +136,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Texture2D eTexture = ModContent.Request<Texture2D>(Texture).Value;
+            string texture = Texture + Animator.GetAnimation();
+
+            Texture2D eTexture = ModContent.Request<Texture2D>(texture).Value;
             Vector2 drawCenter = NPC.Center - screenPos;
             Vector2 drawOrigin = GetDrawOrigin();
             float rotation = NPC.rotation;
@@ -129,7 +146,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             if (NPC.spriteDirection == -1)
                 drawOrigin.X = NPC.frame.Size().X - drawOrigin.X;
-            spriteBatch.Draw(eTexture, drawCenter, frame, drawColor, rotation, drawOrigin, _drawScale * 2f, spriteEffects, 0f);
+            spriteBatch.Draw(eTexture, drawCenter, frame, drawColor, rotation, drawOrigin, _drawScale , spriteEffects, 0f);
         }
         private void DrawAfterImages(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -162,7 +179,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 Color fadeColor = Color.Lerp(Color.White, Color.Transparent, interpolant) * (0.3f + _extraAfterImageAlpha);
                 oldDrawPos += NPC.Size / 2f;
           
-                spriteBatch.Draw(eTexture, oldDrawPos, OldFrame[i], fadeColor, NPC.oldRot[i], drawOrigin, _drawScale * 2f, spriteEffects, 0f);
+                spriteBatch.Draw(eTexture, oldDrawPos, OldFrame[i], fadeColor, NPC.oldRot[i], drawOrigin, _drawScale, spriteEffects, 0f);
             }
 
 

@@ -155,7 +155,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            Main.npcFrameCount[NPC.type] = 34;
+            Main.npcFrameCount[NPC.type] = 1;
             NPCID.Sets.TrailCacheLength[NPC.type] = 16;
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
@@ -259,7 +259,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _telegraphLineAlpha = 0;
             _drawScale = Vector2.One;
             TargetOutlineColor = Color.White;
-            Wind.alpha = 0f;
             switch (State)
             {
                 case AIState.Idle:

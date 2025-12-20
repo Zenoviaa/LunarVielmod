@@ -444,7 +444,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             _extraAfterImageAlpha = MathHelper.Lerp(0f, 0.5f, ease);
             ShakeModSystem.Shake = MathHelper.Lerp(0f, 2f, ease);
-            Wind.alpha = MathHelper.Lerp(0f, 1f, ease);
+  
             TargetOutlineColor = Color.Yellow;
             if (Timer >= prespinTime)
             {
@@ -478,7 +478,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
 
             ShakeModSystem.Shake = 4;
-            Wind.alpha = 1f;
+
             //Unsure how strong this should actually be so make sure to balance this number properly
             float tornadoStrength = 1f;
             SuckAllPlayers(tornadoStrength);
@@ -495,7 +495,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float endTime = 15f;
             float completionRatio = Timer / endTime;
             float ease = EasingFunction.InOutSine(completionRatio);
-            Wind.alpha = MathHelper.Lerp(1f, 0f, ease);
+  
             NPC.velocity *= 0.9f;
             _extraAfterImageAlpha = MathHelper.Lerp(0.5f, 0f, ease);
             if (Timer >= endTime)
