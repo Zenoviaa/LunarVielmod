@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Core;
@@ -91,7 +92,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
 
 
-            float length = 800;
+            float length = 1500;
             Vector2 start = Projectile.Center - rotatedVelocity * length;
             Vector2 end = Projectile.Center + rotatedVelocity * length;
             for (int i = 0; i < Points.Length; i++)
@@ -103,7 +104,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 Points[i] = interpolatedPoint;
             }
 
-            if(Timer % 10 == 0)
+            if(Timer % 5 == 0)
             {
                 if (this.OwnedByLocalClient())
                 {
@@ -112,6 +113,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     Vector2 velocity = Vector2.UnitY * 8;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), point, velocity, 
                         ModContent.ProjectileType<DarkStarMini>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), point, velocity,
+                        ModContent.ProjectileType<BlackSplash>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 0.15f);
                 }
             }
             if(Projectile.timeLeft < 30)
@@ -129,7 +133,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private float GetTrailWidth(float completionRatio)
         {
-            float w = MathHelper.Lerp(0f, 32, EasingFunction.QuadraticBump(completionRatio));
+            float w = MathHelper.Lerp(0f, 16, EasingFunction.QuadraticBump(completionRatio));
             w *= MathHelper.Lerp(2f, 1f, _inFlash);
 
             float inScale = EasingFunction.InOutSine(_easeInTimer / 30f);
@@ -444,6 +448,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             if (Timer == 1)
             {
+                TargetVector = NPC.Center;
                 if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.UnitY,
@@ -455,6 +460,17 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float completionRatio = Timer / swingTime;
             float ease = EasingFunction.InOutSine(completionRatio);
             _extraAfterImageAlpha = MathHelper.Lerp(0.7f, 0f, ease);
+
+            if(Timer == 1)
+            {
+                Vector2 slideVelocity = Vector2.UnitX * NPC.direction;
+                slideVelocity *= -1;
+                float initialSpeed = 52;
+                slideVelocity *= initialSpeed;
+                NPC.velocity = slideVelocity;
+            }
+
+            NPC.velocity *= 0.92f;
             if (Timer >= swingTime)
             {
                 SwitchState(AIState.SwordStarPlosion_End);

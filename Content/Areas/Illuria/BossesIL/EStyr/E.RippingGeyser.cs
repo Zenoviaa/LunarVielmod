@@ -152,6 +152,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     IDrawBlackStar
     {
         private ref float Timer => ref Projectile.ai[0];
+        private ref float Multiplier => ref Projectile.ai[1];
         private Vector2[] SplashPoints = new Vector2[32];
         public override void SetStaticDefaults()
         {
@@ -180,14 +181,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             base.AI();
             Timer++;
-            float numPoints = SplashPoints.Length;
-            Vector2 start = Projectile.Center;
-            Vector2 end = start + Projectile.velocity;
-            for (int n = 0; n < SplashPoints.Length; n++)
-            {
-                float ratio = (float)n / (float)SplashPoints.Length;
-                SplashPoints[n] = Vector2.Lerp(start, end, ratio);
-            }
         }
 
         private float GetTrailWidth(float completionRatio)
@@ -212,6 +205,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             drawColor *= MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / 30f));
             Vector2 drawScale = Vector2.One;
             drawScale.X *= 6;
+            if (Multiplier != 0)
+                drawScale.X *= Multiplier;
             drawScale.Y = 0.5f;
             spriteBatch.Draw(blacksplashTexture, drawCenter, null, drawColor, Projectile.velocity.ToRotation(), drawOrigin, drawScale, SpriteEffects.None, 0);
             /*

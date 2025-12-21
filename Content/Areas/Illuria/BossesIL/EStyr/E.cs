@@ -538,7 +538,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ChooseAttack()
         {
-            SwitchState(AIState.SingularBaseball_Start);
+            SwitchState(AIState.SwordStarPlosion_Start);
         }
     }
 }

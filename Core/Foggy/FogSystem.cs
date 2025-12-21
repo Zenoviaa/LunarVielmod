@@ -31,6 +31,10 @@ namespace Stellamod.Core.Foggy
         private void DrawFog(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
         {
             orig(self, spriteBatch, layer, beginSpriteBatch);
+            DomainExpansionManager domainExpansionManager = ModContent.GetInstance<DomainExpansionManager>();
+            if (domainExpansionManager.inSpace)
+                return;
+
             if(layer == RenderLayers.ForegroundWater)
             {
                 if (doDraws)
