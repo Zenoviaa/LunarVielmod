@@ -4,6 +4,7 @@ using Stellamod.Assets;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
@@ -19,6 +20,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         IDrawOutlines,
         IDrawBlackStar
     {
+        private float _vortexFrame;
         private ref float Timer => ref Projectile.ai[0];
         public enum AIState
         {
@@ -50,10 +52,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void AI()
         {
             base.AI();
+            DrawHelper.UpdateFrame(ref _vortexFrame, 0.8f, 1, 90);
             switch (State)
             {
                 case AIState.Grow:
-
                     AI_Grow();
                     break;
                 case AIState.Bounce:
@@ -68,6 +70,31 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void AI_Explode()
         {
             Timer++;
+            if(Timer == 1 && this.OwnedByLocalClient())
+            {
+                float numProjectiles = 8;
+                for(int n = 0; n < numProjectiles; n++)
+                {
+                    float ratio = (float)n / numProjectiles;
+                    Vector2 velocity = Vector2.UnitY.RotatedBy(ratio * MathHelper.TwoPi);
+                    velocity *= 15;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, 
+                        ModContent.ProjectileType<DarkStarMini>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+
+                ShakeModSystem.Shake = 4;
+                var boom = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGray, Color.Black);
+                boom.Scale *= 2f;
+
+                float numDust = 16;
+                for(float n = 0; n < numDust; n++)
+                {
+                    float ratio = n / numDust;
+                    Vector2 velocity = Vector2.UnitY.RotatedBy(ratio * MathHelper.TwoPi);
+                    velocity *= 15;
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), velocity, newColor: Color.White, Scale: 2);
+                }
+            }
             Projectile.scale *= 0.9f;
             if (Projectile.scale <= 0.03f)
                 Projectile.Kill();
@@ -177,13 +204,31 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override bool PreDraw(ref Color lightColor)
         {
             DrawSprite(Main.spriteBatch, Main.screenPosition, Color.Black);
+            DrawSingularity(Main.spriteBatch, Main.screenPosition);
             return false;
+        }
+        private void DrawSingularity(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            Rectangle incresionDiskRect = DrawHelper.FrameGrid(_vortexFrame, columns: 5, frameWidth: 50, frameHeight: 50);
+            Texture2D supernovaTopTexture = ModContent.Request<Texture2D>(Texture + "_Vortex").Value;
+
+            //Incresion Disk Draw Color
+            Color incresionDiskDrawColor = Color.White;
+     //       incresionDiskDrawColor *= 0.15f;
+            incresionDiskDrawColor.A = 0;
+
+            Vector2 drawPos = Projectile.Center - screenPos;
+            Vector2 drawOrigin = incresionDiskRect.Size() / 2;
+            float scaleMultiplier = MathHelper.Lerp(1f, 2f, Charge / 16f);
+            float drawScale = 1.8f * Projectile.scale * scaleMultiplier;
+            spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+
         }
 
         public void DrawBlackStar(SpriteBatch spriteBatch)
         {
             DrawAfterImages(spriteBatch);
-
+            DrawSingularity(spriteBatch, Main.screenPosition);
         }
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

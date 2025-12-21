@@ -682,11 +682,6 @@
     <Folder Include="Structures\Dungeon\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ParticleLibrary">
-      <HintPath>..\..\..\..\..\DLLs\Terraria 1.4\ParticleLibrary.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Remove="C:\Users\green\.nuget\packages\accord\3.8.0\build\Accord.dll.config" />
   </ItemGroup>
   <ItemGroup>
