@@ -71,7 +71,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             BlackDashEnd,
 
             JevilScythes_Start,
+            JevilScythes_Prepare,
             JevilScythes_Loop,
+            JevilScythes_Quick,
             JevilScythes_End,
 
             SingularBaseball_Start,
@@ -427,8 +429,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 case AIState.JevilScythes_Start:
                     AI_JevilScythesStart();
                     break;
+                case AIState.JevilScythes_Prepare:
+                    AI_JevilScythesPrepare();
+                    break;
                 case AIState.JevilScythes_Loop:
                     AI_JevilScythesLoop();
+                    break;
+                case AIState.JevilScythes_Quick:
+                    AI_JevilScythesQuick();
                     break;
                 case AIState.JevilScythes_End:
                     AI_JevilScythesEnd();
@@ -538,7 +546,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ChooseAttack()
         {
-            SwitchState(AIState.SwordStarPlosion_Start);
+            SwitchState(AIState.JevilScythes_Start);
         }
     }
 }

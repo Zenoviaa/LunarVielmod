@@ -8,6 +8,7 @@ using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -34,6 +35,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
         }
         private ref float Timer => ref Projectile.ai[0];
+        private ref float SpeedUp => ref Projectile.ai[1];
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
@@ -48,16 +50,17 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.height = 16;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 60;
+            Projectile.timeLeft = 20;
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            return ProjectileHelper.OldPosColliding(LinePos, projHitbox, targetHitbox, 64);
+            float hitboxWidth = MathHelper.Lerp(64, 32, SpeedUp);
+            return ProjectileHelper.OldPosColliding(LinePos, projHitbox, targetHitbox, hitboxWidth);
         }
         public override bool CanHitPlayer(Player target)
         {
-            return base.CanHitPlayer(target) && Timer >= 30;
+            return base.CanHitPlayer(target) && Timer < 5;
         }
 
         public override void AI()
@@ -67,12 +70,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             if (Timer == 1)
             {
-                SoundStyle shootSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_LAZER");
-                shootSound.Pitch = -0.8f;
-                SoundEngine.PlaySound(shootSound, Projectile.position);
+                SoundStyle hurriboom = AssetRegistry.Sounds.E.Hurriboom;
+                hurriboom.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(hurriboom);
             }
-            _inScale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(Timer / 60f));
-            _outScale = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo((float)Projectile.timeLeft / 100));
+
+            _inScale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 5f));
+            _outScale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine((float)Projectile.timeLeft / 15f));
         
             LinePos[0] = Projectile.Center;
             LinePos[1] = Projectile.Center;
@@ -84,27 +88,35 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             return false;
         }
 
+        private float GetWidth()
+        {
+            return MathHelper.Lerp(200, 100, SpeedUp);
+        }
         public override bool PreDraw(ref Color lightColor)
         {
             FlamingTrailShader flamingTrailShader = FlamingTrailShader.Instance;
-            flamingTrailShader.OuterColor = Color.Black;
+            flamingTrailShader.OuterColor = Color.White;
             flamingTrailShader.InnerColor = Color.White;
             flamingTrailShader.Power = 0.3f;
             flamingTrailShader.Distortion = 6;
             flamingTrailShader.Tiling = new Vector2(1, 3);
             flamingTrailShader.BlendState = BlendState.Additive;
+            flamingTrailShader.PrimaryTexture = TrailRegistry.BeamTrail;
 
             float smooth = _inScale * _outScale;
-            float width = MathHelper.SmoothStep(0f, 1250, smooth);
+
+            float width = MathHelper.SmoothStep(0f, GetWidth(), smooth);
             TexturedQuad.CalculateVertices(Projectile.Center, Projectile.velocity,
                 8000, width);
+            TexturedQuad.DrawWithShader(flamingTrailShader);
             return false;
         }
 
         public void DrawBlackStar(SpriteBatch spriteBatch)
         {
+            
             FlamingTrailShader flamingTrailShader = FlamingTrailShader.Instance;
-            flamingTrailShader.OuterColor = Color.Black;
+            flamingTrailShader.OuterColor = Color.White;
             flamingTrailShader.InnerColor = Color.White;
             flamingTrailShader.Power = 0.3f;
             flamingTrailShader.Distortion = 6;
@@ -112,7 +124,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             flamingTrailShader.BlendState = BlendState.Additive;
 
             float smooth = _inScale * _outScale;
-            float width = MathHelper.SmoothStep(0f, 250, smooth);
+            float width = MathHelper.SmoothStep(0f, GetWidth() + 50, smooth);
             TexturedQuad.CalculateVertices(Projectile.Center, Projectile.velocity,
                 8000, width);
             TexturedQuad.DrawWithShader(flamingTrailShader);
@@ -125,6 +137,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     {
         private float _traveledDistance;
         private ref float Timer => ref Projectile.ai[0];
+        private ref float SpeedUp => ref Projectile.ai[1];
+        private bool FirstOne => Projectile.ai[2] == 1;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -133,8 +147,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             base.SetDefaults();
             TrailCacheLength = 16;
-            Projectile.width = 9;
-            Projectile.height = 9;
+            Projectile.width = 8;
+            Projectile.height = 8;
             Projectile.hostile = true;
             Projectile.timeLeft = 360;
             Projectile.penetrate = -1;
@@ -152,10 +166,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 ShakeModSystem.Shake = 6;
                 FXUtil.ShakeCamera(Projectile.position, 1024, 4);
 
+
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 Vector2 startPosition = Projectile.Center - direction * 1200;
-                ScreenSmearEffectManager.NewParticle(startPosition, Projectile.velocity.SafeNormalize(Vector2.Zero), 2400, 45);
-
+                //ScreenSmearEffectManager.NewParticle(startPosition, Projectile.velocity.SafeNormalize(Vector2.Zero), 2400, 45);
+                
                 for (float i = 0; i < 3; i++)
                 {
                     var donutParticle = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -direction * MathHelper.Lerp(15, 1f, i / 3f));
@@ -180,8 +195,23 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.scale = 1f * outScale;
             if (Timer >= 30)
             {
-                if(Projectile.velocity.Length() < 30)
-                    Projectile.velocity *= 1.0365f;
+                float speed = MathHelper.Lerp(20, 30, SpeedUp);
+                if (FirstOne)
+                {
+                    if (Projectile.velocity.Length() < speed)
+                        Projectile.velocity *= 1.0365f;
+                }
+                else
+                {
+                    if (Projectile.velocity.Length() < speed)
+                        Projectile.velocity *= 1.0365f;
+                }
+               
+            }
+
+            if(Timer % 5 == 0)
+            {
+                Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity, Color.White);
             }
 
             if(Timer > 5)
@@ -204,8 +234,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 2000, 
-                ModContent.ProjectileType<BlackSwordGeyser>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 1000, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 2000, 
+                ModContent.ProjectileType<BlackSwordGeyser>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: SpeedUp);
         }
 
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -238,7 +268,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawSprite(Main.spriteBatch, Main.screenPosition, Color.Black);
+            DrawSprite(Main.spriteBatch, Main.screenPosition, Color.White);
             return false;
         }
 
@@ -263,6 +293,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     public partial class E
     {
         private int ScytheDamage => 30;
+        private float ScytheSpeedUpRatio => _attackNumber / ScytheAttackNumber;
+        private float ScytheAttackNumber => 32f;
         /*
          * 
          * Sideways jevil special, without the big scythe at the end y'know, 
@@ -295,6 +327,22 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Animator.PlayAnimation(Anim_BattleIdle);
             if (Timer >= startupTime)
             {
+                SwitchState(AIState.JevilScythes_Prepare);
+            }
+        }
+
+        private void AI_JevilScythesPrepare()
+        {
+            Timer++;
+            NPC.velocity *= 0.9f;
+            float preparationTime = MathHelper.Lerp(30, 15, ScytheSpeedUpRatio);
+            if(_attackNumber >= ScytheAttackNumber / 2f)
+            {
+                preparationTime *= 0.5f;
+            }
+
+            if(Timer >= preparationTime)
+            {
                 SwitchState(AIState.JevilScythes_Loop);
             }
         }
@@ -311,14 +359,31 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     spawnPosition.Y += Main.rand.NextFloat(-32f, 32f);
                     Vector2 fireVelocity = Vector2.UnitX * NPC.direction;
                     fireVelocity *= 4;
+                    bool isMegaSlow = _attackNumber == 0;
+                    if (isMegaSlow)
+                    {
+                        fireVelocity *= 0.1f;
+                    }
 
                     spawnPosition += -fireVelocity * 100;
+
+                
                     Projectile.NewProjectile(SourceFromThis, spawnPosition, fireVelocity, 
-                        ModContent.ProjectileType<BlackSword>(), ScytheDamage, 1, Main.myPlayer);
+                        ModContent.ProjectileType<BlackSword>(), ScytheDamage, 1, Main.myPlayer, ai1: ScytheSpeedUpRatio, ai2: isMegaSlow ? 1 : 0);
                 }
             }
 
-            if(_attackNumber % 2 == 0)
+            float swingTime = 30f;
+            swingTime = MathHelper.Lerp(30F, 15, ScytheSpeedUpRatio);
+            if(_attackNumber == 0)
+            {
+                swingTime *= 2.3f;
+            }
+            if (_attackNumber >= ScytheAttackNumber / 2f)
+            {
+                swingTime *= 0.5f;
+            }
+            if (_attackNumber % 2 == 0)
             {
                 Animator.PlayAnimation(Anim_ForwardSlash);
             }
@@ -332,7 +397,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.direction = TargetDirection;
             NPC.velocity = targetVelocity;
 
-            float swingTime = 30f;
+        
             if(Timer >= swingTime)
             {
                 SwitchState(AIState.JevilScythes_End);
@@ -343,16 +408,103 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             Timer++;
             NPC.velocity *= 0.9f;
-            if(Timer >= 45)
+            if(Timer >= 5)
             {
                 _attackNumber++;
-                if(_attackNumber >= 18)
+                if(_attackNumber >= ScytheAttackNumber)
+                {
+                    _attackNumber = 0;
+                    SwitchState(AIState.JevilScythes_Quick);
+                }
+                else
+                {
+                    SwitchState(AIState.JevilScythes_Prepare);
+                }
+            }
+        }
+        private void AI_JevilScythesQuick()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                if(_attackNumber == 0)
+                {
+                    TargetVector = NPC.velocity;
+                }
+                else
+                {
+                    if (MultiplayerHelper.IsHost)
+                    {
+                        Vector2 spawnPosition = MyTarget.Center;
+                        spawnPosition.X = NPC.Center.X;
+                        spawnPosition.Y += Main.rand.NextFloat(-32f, 32f);
+                        Vector2 fireVelocity = Vector2.UnitX * NPC.direction;
+                        fireVelocity *= 4;
+
+                        spawnPosition += -fireVelocity * 100;
+                        Projectile.NewProjectile(SourceFromThis, spawnPosition, fireVelocity,
+                            ModContent.ProjectileType<BlackSword>(), ScytheDamage, 1, Main.myPlayer, ai1: ScytheSpeedUpRatio);
+                    }
+                }
+            }
+
+            if(_attackNumber > 0)
+            {
+                if (_attackNumber % 2 == 0)
+                {
+                    Animator.PlayAnimation(Anim_ForwardSlash);
+                }
+                else
+                {
+                    Animator.PlayAnimation(Anim_BackSlash);
+                }
+            }
+            else
+            {
+                Animator.PlayAnimation(Anim_Holding);
+            }
+
+
+               
+            NPC.velocity *= 0.9f;
+            float swingTime = 6;
+            if(_attackNumber == 0)
+            {
+                swingTime *= 10;
+
+                if (Timer == 1)
+                {
+                    NPC.TargetClosest();
+                    float offsetDirection = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
+
+                    _forwardVector = NPC.velocity;
+                    TargetVector = -offsetDirection * Vector2.UnitX * 300 + new Vector2(0, -64);
+                }
+
+                //What we want to is he'll get on one of side of you
+                float startupTime = 60f;
+                float cRatio = Timer / startupTime;
+                float ease = EasingFunction.InOutExpo7(cRatio);
+                Vector2 start = MyTarget.Center;
+                Vector2 end = start + TargetVector;
+                Vector2 positionToMoveTo = Vector2.Lerp(start, end, ease);
+                Vector2 targetVelocity = positionToMoveTo - NPC.Center;
+                Vector2 easeVelocity = Vector2.Lerp(_forwardVector, targetVelocity, ease);
+                NPC.velocity = easeVelocity;
+            }
+
+            if (Timer >= swingTime)
+            {
+                _attackNumber++;
+
+                if (_attackNumber >= 4)
                 {
                     SwitchState(AIState.Idle);
                 }
                 else
                 {
-                    SwitchState(AIState.JevilScythes_Loop);
+                    SwitchState(AIState.JevilScythes_Quick);
+
                 }
             }
         }
