@@ -38,7 +38,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 500;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 1500;
         }
         public override void SetDefaults()
         {
@@ -53,7 +53,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            return ProjectileHelper.OldPosColliding(LinePos, projHitbox, targetHitbox, 100);
+            return ProjectileHelper.OldPosColliding(LinePos, projHitbox, targetHitbox, 64);
         }
         public override bool CanHitPlayer(Player target)
         {
@@ -63,7 +63,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void AI()
         {
             base.AI();
-            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 1500;
+
             Timer++;
             if (Timer == 1)
             {
@@ -73,7 +73,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
             _inScale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(Timer / 60f));
             _outScale = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo((float)Projectile.timeLeft / 100));
-            ShakeModSystem.Shake = MathHelper.Lerp(0, 9, _outScale);
+        
             LinePos[0] = Projectile.Center;
             LinePos[1] = Projectile.Center;
             LinePos[2] = Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 8000;
@@ -123,7 +123,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
          IDrawOutlines,
          IDrawBlackStar
     {
-
+        private float _traveledDistance;
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
@@ -140,7 +140,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
-            Projectile.extraUpdates = 1;
+            Projectile.extraUpdates = 2;
         }
 
         public override void AI()
@@ -149,7 +149,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             if (Timer == 1)
             {
-                ShakeModSystem.Shake = 16;
+                ShakeModSystem.Shake = 6;
                 FXUtil.ShakeCamera(Projectile.position, 1024, 4);
 
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
@@ -180,9 +180,17 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.scale = 1f * outScale;
             if (Timer >= 30)
             {
-                if (Projectile.velocity.Length() < 8)
+                if(Projectile.velocity.Length() < 30)
+                    Projectile.velocity *= 1.0365f;
+            }
+
+            if(Timer > 5)
+            {
+                float distance = Vector2.Distance(Projectile.position, Projectile.oldPosition);
+                _traveledDistance += distance;
+                if (_traveledDistance >= 2000)
                 {
-                    Projectile.velocity *= 1.065f;
+                    Projectile.Kill();
                 }
             }
 
@@ -267,7 +275,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 NPC.TargetClosest();
                 float offsetDirection = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
-              
+
+                _forwardVector = NPC.velocity;
                 TargetVector = offsetDirection * Vector2.UnitX * 300 + new Vector2(0, -64);
             }
 
@@ -279,7 +288,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 end = start + TargetVector;
             Vector2 positionToMoveTo = Vector2.Lerp(start, end, ease);
             Vector2 targetVelocity = positionToMoveTo - NPC.Center;
-            NPC.velocity = TargetVector;
+            Vector2 easeVelocity = Vector2.Lerp(_forwardVector, targetVelocity, ease);
+            NPC.velocity = easeVelocity;
             NPC.direction = TargetDirection;
 
             Animator.PlayAnimation(Anim_BattleIdle);
@@ -298,9 +308,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 {
                     Vector2 spawnPosition = MyTarget.Center;
                     spawnPosition.X = NPC.Center.X;
-                    spawnPosition.Y += Main.rand.NextFloat(-500f, 500f);
+                    spawnPosition.Y += Main.rand.NextFloat(-32f, 32f);
                     Vector2 fireVelocity = Vector2.UnitX * NPC.direction;
-                    fireVelocity *= 1;
+                    fireVelocity *= 4;
+
+                    spawnPosition += -fireVelocity * 100;
                     Projectile.NewProjectile(SourceFromThis, spawnPosition, fireVelocity, 
                         ModContent.ProjectileType<BlackSword>(), ScytheDamage, 1, Main.myPlayer);
                 }
@@ -331,7 +343,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             Timer++;
             NPC.velocity *= 0.9f;
-            if(Timer >= 15)
+            if(Timer >= 45)
             {
                 _attackNumber++;
                 if(_attackNumber >= 18)

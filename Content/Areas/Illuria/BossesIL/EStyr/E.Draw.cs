@@ -27,6 +27,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private const string Anim_FoundYou = "_FoundYou";
         private const string Anim_Holding = "_Holding";
         private const string Anim_BigSlash = "_BigSlash";
+        private const string Anim_Running = "_Running";
 
         private float _telegraphLineAlpha;
         private float _telegraphLineRot;
@@ -124,6 +125,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             var bigSlash = new SpriteAnimation(0, 6, isLooping: false, drawOrigin, frameSpeed: 0.5f);
             _animatorBackingField.AddAnimation(Anim_BigSlash, bigSlash);
+
+            var running = new SpriteAnimation(0, 8, isLooping: true, drawOrigin, frameSpeed: 0.35f);
+            _animatorBackingField.AddAnimation(Anim_Running, running);
+
         }
 
         public override void FindFrame(int frameHeight)

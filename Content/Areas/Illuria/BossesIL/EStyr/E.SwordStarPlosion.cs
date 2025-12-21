@@ -1,11 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -51,12 +55,40 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void AI_Spawn()
         {
             Timer++;
-            if (Points == null)
-                return;
-
 
             Vector2 rotatedVelocity = Projectile.velocity;
             rotatedVelocity = rotatedVelocity.RotatedBy(MathHelper.PiOver2);
+
+            if (Timer == 1)
+            {
+                ShakeModSystem.Shake = 32;
+                FXUtil.ShakeCamera(Projectile.position, 1024, 4);
+
+
+      
+                Vector2 startPosition = Projectile.Center - rotatedVelocity * 1200;
+                ScreenSmearEffectManager.NewParticle(startPosition, rotatedVelocity, 2400, 45);
+
+                for (float i = 0; i < 3; i++)
+                {
+                    var donutParticle = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, rotatedVelocity * MathHelper.Lerp(15, 1f, i / 3f));
+                    donutParticle.Scale *= MathHelper.Lerp(1f, 3f, i / 3f);
+
+                }
+                var strike = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, rotatedVelocity);
+                strike.xMult = 6;
+                strike.rotOffset += MathHelper.PiOver2;
+
+                var strike2 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, rotatedVelocity);
+                strike2.xMult = 32;
+                strike2.rotOffset += MathHelper.PiOver2;
+                SoundStyle hurriSlash = AssetRegistry.Sounds.E.Hurrislash;
+                hurriSlash.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(hurriSlash, Projectile.position);
+            }
+            if (Points == null)
+                return;
+
 
 
             float length = 800;
@@ -180,8 +212,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     Projectile.velocity *= 1.065f;
                 }
             }
+            else
+            {
+                if (Projectile.velocity.Length() > 1)
+                {
+                    Projectile.velocity *= 0.9f;
+                }
+            }
 
-            Projectile.rotation += 0.005f;
+                Projectile.rotation += 0.005f;
             Projectile.rotation += Projectile.velocity.Length() * 0.005f;
 
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 8000);
@@ -349,6 +388,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
          * slashing downwards at you with a big slash until it meets half way and a bunch of stars explode
          */
         private int StarRiftDamage => 30;
+        private float GetSlashOffset()
+        {
+            return -300;
+        }
         private void AI_SwordStarPlosionStart()
         {
             Timer++;
@@ -362,9 +405,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float completionRatio = Timer / startupTime;
             float ease = EasingFunction.InOutSine(completionRatio);
             Vector2 start = TargetVector;
-            Vector2 end = MyTarget.Center + new Vector2(0, 252);
+            Vector2 end = MyTarget.Center + new Vector2(0, GetSlashOffset());
             Vector2 positionToMoveTo = Vector2.Lerp(start, end, ease);
-
+            Vector2 targetVelocity = positionToMoveTo - NPC.Center;
+            NPC.velocity = targetVelocity;
             Animator.PlayAnimation(Anim_BattleIdle);
             if (Timer >= startupTime)
             {
@@ -377,7 +421,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
 
             //Move to the position that we're holding the sword, getting ready to slash
-            Vector2 positionToMoveTo = MyTarget.Center - new Vector2(0, 252);
+            Vector2 positionToMoveTo = MyTarget.Center + new Vector2(0, GetSlashOffset());
             Vector2 targetVelocity = positionToMoveTo - NPC.Center;
             NPC.velocity = targetVelocity;
 

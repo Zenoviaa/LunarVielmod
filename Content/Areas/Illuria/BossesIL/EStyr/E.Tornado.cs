@@ -431,7 +431,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float completionRatio = Timer / prespinTime;
             float ease = EasingFunction.InOutSine(completionRatio);
 
-
+            Animator.PlayAnimation(Anim_Running);
 
             //Speed up
             float xOffset = MathF.Sin(Timer * -0.15f) * 64;
@@ -475,8 +475,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 tornadoVelocity = (positionToMoveTo - NPC.Center);
             NPC.velocity = tornadoVelocity;
             NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
-
-
+            Animator.PlayAnimation(Anim_Running);
             ShakeModSystem.Shake = 4;
 
             //Unsure how strong this should actually be so make sure to balance this number properly
