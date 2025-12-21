@@ -63,16 +63,25 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 SwitchState(AIState.BlackDashPreDash);
             }
         }
+
+        private void SetSharkRotation(float targetAngle)
+        {
+            NPC.rotation = targetAngle;
+            if (NPC.direction == 1)
+                NPC.rotation -= MathHelper.Pi;
+        }
         private void AI_BlackDashPreDash()
         {
             Timer++;
             NPC.velocity *= 0.9f;
             TransformAndSwimAnimation();
 
-            float preDashTime = 30;
+            float preDashTime = 60f;
 
             _telegraphLineRot = (MyTarget.Center - NPC.Center).ToRotation();
             _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(Timer / preDashTime));
+            SetSharkRotation(_telegraphLineRot);
+            NPC.direction = -TargetDirection;
             if (Timer >= preDashTime)
             {
                 SwitchState(AIState.BlackDashDash);
@@ -84,21 +93,25 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             if(Timer == 1)
             {
-                TargetVector = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+       
                 _forwardVector = NPC.velocity;
             }
 
+            if(Timer < 12)
+            {
+                TargetVector = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+            }
 
-            float dashTime = 30;
+            float dashTime = 25;
             float completionRatio = Timer / dashTime;
             float ease = EasingFunction.InOutExpo7(completionRatio);
 
             _extraAfterImageAlpha = MathHelper.Lerp(0f, 0.7f, ease);
             _contactDamage = true;
 
-            Vector2 dashVelocity = TargetVector * 60f;
+            Vector2 dashVelocity = TargetVector * 100;
             NPC.velocity = Vector2.Lerp(_forwardVector, dashVelocity, ease);
-
+            SetSharkRotation(NPC.velocity.ToRotation());
             Animator.PlayAnimation(Anim_Swimming);
             if (Timer >= dashTime)
             {
@@ -110,6 +123,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             Timer++;
             NPC.velocity *= 0.9f;
+            NPC.rotation = 0;
             if(Timer >= 15)
             {
                 SwitchState(AIState.Idle);
