@@ -17,6 +17,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         IDrawBlackStar
     {
         private NPC Parent => Main.npc[(int)Projectile.ai[1]];
+        private bool Quick => Projectile.ai[2] == 1;
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
@@ -34,6 +35,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             base.AI();
             Projectile.Center = Parent.Center;
+            if (Quick)
+            {
+                Projectile.extraUpdates = 3;
+            }
         }
                 
         private float GetTrailWidth(float completionRatio)
