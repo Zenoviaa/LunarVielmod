@@ -11,6 +11,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
+
     [Autoload(Side = ModSide.Client)]
     public class ScreenSmearEffectManager : ModSystem
     {
@@ -25,6 +26,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             public float travelTime;
             public float lingerTime;
             public float strength;
+            public bool screenBound;
+            public Vector2 scale;
         }
         private ManagedRenderTarget _smearMaskRT;
         private List<SmearParticle> _particles;
@@ -100,18 +103,42 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                     Vector2 drawPosition = smear.startPosition - Main.screenPosition;
 
+                    //Yeah this has some weird side effects ok but we're not using it for anything else
+                    if (smear.screenBound)
+                    {
+                        drawPosition += Main.screenPosition;
+                        float lerp = smear.time / smear.travelTime;
+                        float strength = MathHelper.SmoothStep(1f, 0f, lerp);
 
-                    float lerp = smear.time / smear.travelTime;
-                    float strength = MathHelper.SmoothStep(0f, 1f, lerp);
-                    Color smearColor = new Color(strength * smear.strength, normalAngle, velocity.Y);
-                    float rotation = velocity.ToRotation();
-   
-                    Vector2 scale = Vector2.One;
+                        Color smearColor = new Color(strength * smear.strength, normalAngle, velocity.Y);
+                        float rotation = velocity.ToRotation();
 
-                    float distance = Vector2.Distance(smear.startPosition, smear.endPosition);
-                    scale.X = distance / (float)smearTexture.Width;
-                    scale.Y = MathHelper.SmoothStep(2f, 0f, lerp); ;
-                    spriteBatch.Draw(smearTexture, drawPosition, null, smearColor, velocity.ToRotation(), drawOrigin, scale, SpriteEffects.None, 0);
+                        Vector2 scale = Vector2.One;
+
+                        float distance = Vector2.Distance(smear.startPosition, smear.endPosition);
+                        scale.X = distance / (float)smearTexture.Width;
+                        scale.Y = 2;
+                        scale *= smear.scale;
+                        spriteBatch.Draw(smearTexture, drawPosition, null, smearColor, velocity.ToRotation(), drawOrigin, scale, SpriteEffects.None, 0);
+                    } 
+                    else
+                    {
+
+
+                        float lerp = smear.time / smear.travelTime;
+                        float strength = MathHelper.SmoothStep(0f, 1f, lerp);
+                        Color smearColor = new Color(strength * smear.strength, normalAngle, velocity.Y);
+                        float rotation = velocity.ToRotation();
+
+                        Vector2 scale = Vector2.One;
+
+                        float distance = Vector2.Distance(smear.startPosition, smear.endPosition);
+                        scale.X = distance / (float)smearTexture.Width;
+                        scale.Y = MathHelper.SmoothStep(2, 0f, lerp); ;
+                        scale *= smear.scale;
+                        spriteBatch.Draw(smearTexture, drawPosition, null, smearColor, velocity.ToRotation(), drawOrigin, scale, SpriteEffects.None, 0);
+                    }
+
                 }
                 spriteBatch.End();
                 //Apply to the screne shader
@@ -141,7 +168,29 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 time = 0,
                 travelTime = time,
                 lingerTime = time / 2f,
-                strength = strength
+                strength = strength,
+                scale = Vector2.One,
+            };
+            smearDrawManager._particles.Add(particle);
+        }
+        public static void DiagonalCut()
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+            ScreenSmearEffectManager smearDrawManager = ModContent.GetInstance<ScreenSmearEffectManager>();
+
+            Vector2 position = new Vector2(900, -450);
+            SmearParticle particle = new SmearParticle
+            {
+                startPosition = position,
+                endPosition = position + new Vector2(1280),
+                time = 0,
+                travelTime = 400,
+                lingerTime = 300 / 2f,
+                strength = 0.2f,
+                screenBound = true,
+                scale = new Vector2(2, 16)
             };
             smearDrawManager._particles.Add(particle);
         }

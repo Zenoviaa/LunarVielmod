@@ -154,7 +154,6 @@ namespace Stellamod.Helpers
 
 
 
-
             Mod mod = Stellamod.Instance;
             foreach (var file in mod.GetFileNames())
             {

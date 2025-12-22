@@ -546,7 +546,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ChooseAttack()
         {
-            SwitchState(AIState.JevilScythes_Start);
+            SwitchState(AIState.ScreenSlash_Start);
         }
     }
 }

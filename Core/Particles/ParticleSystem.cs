@@ -114,20 +114,18 @@ namespace Stellamod.Core.Particles
 
         private void DrawPixelatedParticles()
         {
-       
+       /*
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.ZoomMatrix);
             DrawParticles(spriteBatch);
-            spriteBatch.End();
+            spriteBatch.End();*/
 
         }
         private void DrawMainParticles(On_Main.orig_DrawDust orig, Main self)
         {
             orig(self);
-            return;
             if (Main.netMode == NetmodeID.Server)
                 return;
-            orig(self);
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
             DrawParticles(spriteBatch);
@@ -189,7 +187,7 @@ namespace Stellamod.Core.Particles
                     spriteBatch.End();
                     myCustomShader = particle.customShader;
                     if (myCustomShader == null)
-                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
+                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
                     else
                     {
                         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,

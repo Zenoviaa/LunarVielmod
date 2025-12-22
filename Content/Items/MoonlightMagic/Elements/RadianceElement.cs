@@ -90,8 +90,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         private void DrawHighDetailForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
         {
             Vector2 drawOrigin = formTexture.Size() / 2;
-            drawPos -= Projectile.velocity * 1.5f;
-            drawScale *= 0.6f;
+         //   drawPos -= Projectile.velocity * 1.5f;
+            drawScale *= 1f;
             SparkleShader ??= new MoonSparkleShader();
             SparkleShader.ApplyToEffect();
             spriteBatch.Restart(effect: SparkleShader.Effect, blendState: BlendState.Additive);
@@ -217,22 +217,15 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
         private float WidthFunction(float completionRatio)
         {
-            float w = 100;
-            float ew = w / 10;
-            float width = w * MagicProj.ScaleMultiplier;
-
-            float p = completionRatio / 0.5f;
-            float ep = EasingFunction.OutCirc(p);
-            float circleWidth = MathHelper.Lerp(0, w * MagicProj.ScaleMultiplier, ep);
-            float trailWidth = MathHelper.Lerp(width, 0, EasingFunction.OutCirc(completionRatio));
-            return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
+            float width = 64 * MagicProj.ScaleMultiplier;
+            return MathHelper.SmoothStep(width, 0, completionRatio);
         }
 
         private Color ColorFunction(float completionRatio)
         {
             Color tipColor = Color.Lerp(Color.Goldenrod, Color.DarkRed, completionRatio);
             Color finalColor = Color.Lerp(Color.Red, tipColor, EasingFunction.QuadraticBump(MathF.Pow(completionRatio, 0.5f)));
-            Color finalColor2 = Color.Lerp(Color.Transparent, finalColor, EasingFunction.QuadraticBump(completionRatio));
+            Color finalColor2 = Color.Lerp(Color.White, finalColor, EasingFunction.QuadraticBump(completionRatio));
             return finalColor2;
         }
         public float SmokeWidthFunction(float completionRatio)

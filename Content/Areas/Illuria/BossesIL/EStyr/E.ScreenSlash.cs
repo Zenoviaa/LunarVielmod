@@ -8,8 +8,10 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
@@ -167,12 +169,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
             float preSlashTime = 30f;
             float completionRatio = Timer / preSlashTime;
-            float ease = EasingFunction.InExpo(completionRatio);
-            Vector2 startCenter = TargetVector;
-            Vector2 endCenter = startCenter + new Vector2(0, -252);
-            Vector2 interpolatedCenter = Vector2.Lerp(startCenter, endCenter, ease);
-            Vector2 targetVelocity = (interpolatedCenter - NPC.Center);
-            NPC.velocity = targetVelocity;
+            NPC.velocity *= 0.9f;
+            Animator.PlayAnimation(Anim_Holding);
             if (Timer >= preSlashTime)
             {
                 SwitchState(AIState.ScreenSlash_Slash);
@@ -187,32 +185,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 //Here we do a crossing slash effect similar to the one in the grab attack
                 ShakeModSystem.Shake = 32;
                 FXUtil.ShakeCamera(NPC.position, 1024, 4);
-
-                Vector2 direction = new Vector2(1, 1);
-                Vector2 startPosition = NPC.Center - direction * 1200;
-                ScreenSmearEffectManager.NewParticle(startPosition, direction, 2400, 240);
-
-                for (float i = 0; i < 3; i++)
-                {
-                    var donutParticle = Particle.NewParticle<GlowDonutParticle>(NPC.Center, -direction * MathHelper.Lerp(15, 1f, i / 3f));
-                    donutParticle.Scale *= MathHelper.Lerp(1f, 3f, i / 3f);
-
-                }
-                var strike = Particle.NewParticle<GlowDonutParticle>(NPC.Center, direction);
-                strike.xMult = 6;
-                strike.rotOffset += MathHelper.PiOver2;
-                var strike2 = Particle.NewParticle<GlowDonutParticle>(NPC.Center, direction);
-                strike2.xMult = 32;
-                strike2.rotOffset += MathHelper.PiOver2;
-
-                var strike3 = Particle.NewParticle<GlowDonutParticle>(NPC.Center, direction);
-                strike3.xMult = 48;
-                strike3.rotOffset += MathHelper.Pi;
+                ScreenSmearEffectManager.DiagonalCut();
 
                 SoundStyle hurriSlash = AssetRegistry.Sounds.E.Hurrislash;
                 hurriSlash.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(hurriSlash, NPC.position);
-
                 TargetVector = NPC.Center;
             }
 
@@ -220,11 +197,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float completionRatio = Timer / slashTime;
             float ease = EasingFunction.OutExpo(completionRatio);
             Vector2 startCenter = TargetVector;
-            Vector2 endCenter = startCenter + new Vector2(0, 400);
+            Vector2 endCenter = startCenter - new Vector2(0, 32);
             Vector2 interpolatedCenter = Vector2.Lerp(startCenter, endCenter, ease);
             Vector2 targetVelocity = interpolatedCenter - NPC.Center;
             NPC.velocity = targetVelocity;
             NPC.direction = TargetDirection;
+            Animator.PlayAnimation(Anim_BigSlash);
             if (Timer >= slashTime)
             {
                 SwitchState(AIState.ScreenSlash_SwordPoint);
@@ -239,7 +217,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 TargetVector = NPC.velocity;
             }
 
-            if (Timer % 20 == 0)
+            if (Timer % 40 == 0)
             {
                 if (_attackNumber % 2 == 0)
                 {

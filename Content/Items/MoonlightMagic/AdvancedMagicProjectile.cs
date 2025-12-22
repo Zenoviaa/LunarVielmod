@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Helpers;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Items.MoonlightMagic
 {
     public class AdvancedMagicProjectile : ModProjectile,
+        IDrawPixelated,
         IProjectileNetID
     {
         private BaseElement _baseElement;
@@ -325,17 +327,16 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         public override bool PreDraw(ref Color lightColor)
         {
-            PrimaryElement?.DrawTrail(OldPos);
             if (Form != null)
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
+
                 Color drawColor = Color.White.MultiplyRGB(lightColor);
                 float scale = Projectile.scale * MathHelper.Lerp(0.5f, 1f, Charge);
 
                 PrimaryElement?.DrawForm(spriteBatch, Form, Projectile.Center - Main.screenPosition,
                     drawColor, lightColor, Projectile.velocity.ToRotation(), scale);
             }
-
             return false;
         }
 
@@ -344,5 +345,11 @@ namespace Stellamod.Content.Items.MoonlightMagic
             base.PostDraw(lightColor);
         }
 
+        public void DrawPixelated()
+        {
+            PrimaryElement?.DrawTrail(OldPos);
+
+
+        }
     }
 }
