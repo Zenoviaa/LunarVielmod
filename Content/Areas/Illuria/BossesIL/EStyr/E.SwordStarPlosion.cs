@@ -51,7 +51,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             base.OnHitPlayer(target, info);
-            BlackStars.AddBuff(target, 50);
+            BlackStars.AddBuff(target, 65);
         }
 
         public override bool ShouldUpdatePosition()

@@ -132,7 +132,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
             base.OnHitPlayer(target, hurtInfo);
-            BlackStars.AddBuff(target, 50);
+            BlackStars.AddBuff(target, 65);
             if (!_isGrabbing)
                 return;
             EGrabPlayer grabPlayer = target.GetModPlayer<EGrabPlayer>();
