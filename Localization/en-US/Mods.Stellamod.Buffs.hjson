@@ -942,3 +942,8 @@ TetheredBuff: {
 	DisplayName: Tethered Buff
 	Description: Mods.Stellamod.Buffs.TetheredBuff.Description
 }
+
+BlackStars: {
+	DisplayName: Black Stars
+	Description: Mods.Stellamod.Buffs.BlackStars.Description
+}

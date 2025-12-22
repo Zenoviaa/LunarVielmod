@@ -370,6 +370,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 8000, width);
             TexturedQuad.DrawWithShader(flamingTrailShader);
         }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            base.OnHitPlayer(target, info);
+            BlackStars.AddBuff(target, 500);
+        }
     }
 
     public class RippingGeyser : ModProjectile,

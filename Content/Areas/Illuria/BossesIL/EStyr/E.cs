@@ -194,6 +194,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         }
 
+        
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);

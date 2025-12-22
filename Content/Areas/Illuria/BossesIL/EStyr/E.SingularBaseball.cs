@@ -241,6 +241,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             DrawSprite(spriteBatch, Main.screenPosition + h, Color.White);
             DrawSprite(spriteBatch, Main.screenPosition - h, Color.White);
         }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            base.OnHitPlayer(target, info);
+            BlackStars.AddBuff(target, 50);
+        }
     }
 
     public partial class E

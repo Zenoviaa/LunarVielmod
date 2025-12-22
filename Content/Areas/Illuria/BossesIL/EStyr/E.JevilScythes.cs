@@ -129,6 +129,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 8000, width);
             TexturedQuad.DrawWithShader(flamingTrailShader);
         }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            base.OnHitPlayer(target, info);
+            BlackStars.AddBuff(target, 75);
+        }
     }
 
     public class BlackSword : ScarletProjectile,
@@ -155,6 +161,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.extraUpdates = 2;
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            base.OnHitPlayer(target, info);
+            BlackStars.AddBuff(target, 50);
         }
 
         public override void AI()

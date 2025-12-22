@@ -50,6 +50,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _scale = MathHelper.Lerp(0f, 1f, ease);
         }
 
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            base.OnHitPlayer(target, info);
+            BlackStars.AddBuff(target, 50);
+        }
+
         private void DrawSprite(SpriteBatch spriteBatch)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
