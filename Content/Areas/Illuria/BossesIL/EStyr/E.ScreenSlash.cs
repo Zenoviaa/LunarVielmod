@@ -49,12 +49,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D tearTexture = TrailRegistry.LightningTrail2.Value;
             Vector2 drawOrigin = new Vector2(0, tearTexture.Height / 2f);
-            Vector2 drawPosition = new Vector2(175, -450);
-            Vector2 drawScale = new Vector2(8, 0.15f);
+            Vector2 drawPosition = new Vector2(-900, -450);
+            Vector2 drawScale = new Vector2(16, 0.15f);
             float outScale = (float)Projectile.timeLeft / 30f;
             outScale = EasingFunction.InOutSine(outScale);
             drawScale.Y *= outScale;
-            spriteBatch.Draw(tearTexture, drawPosition, null, Color.White, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(tearTexture, drawPosition, null, Color.White * 0.5f, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
 
             drawScale.Y *= 0.5f;
             spriteBatch.Draw(tearTexture, drawPosition, null, Color.Black, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
@@ -237,10 +237,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 ShakeModSystem.Shake = 64;
                 FXUtil.ShakeCamera(NPC.position, 1024, 4);
                 ScreenSmearEffectManager.DiagonalCut();
+
+                Vector2 start = new Vector2(0, -550);
+                Vector2 end = start + new Vector2(Main.screenWidth, Main.screenHeight);
+                Vector2 velocity = end - start;
+                velocity = velocity.SafeNormalize(Vector2.Zero);
                 if (MultiplayerHelper.IsHost)
                 {
                //     Projectile.NewProjectile(SourceFromThis, NPC.Center, new Vector2(-1, 1), ModContent.ProjectileType<WhiteTear>(), 1, 1, Main.myPlayer);
-                    Projectile.NewProjectile(SourceFromThis, NPC.Center, new Vector2(1, 1), ModContent.ProjectileType<WhiteTear>(), 1, 1 ,Main.myPlayer);
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity, ModContent.ProjectileType<WhiteTear>(), 1, 1 ,Main.myPlayer);
                 }
  
                 SoundStyle hurriSlash = AssetRegistry.Sounds.E.Hurrislash;
@@ -273,7 +278,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 TargetVector = NPC.velocity;
             }
 
-            if (Timer % 40 == 0)
+            if (Timer % 30 == 0)
             {
                 if (_attackNumber % 2 == 0)
                 {
@@ -343,7 +348,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             }
 
-            float pointingTime = 240;
+            float pointingTime = 360;
             float inCompletionRatio = Timer / 30;
             float inEase = EasingFunction.InExpo(inCompletionRatio);
             Vector2 targetVelocity = CalculateHoverVelocity();

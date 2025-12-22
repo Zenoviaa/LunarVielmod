@@ -180,13 +180,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             ScreenSmearEffectManager smearDrawManager = ModContent.GetInstance<ScreenSmearEffectManager>();
 
-            Vector2 position = new Vector2(900, -450);
+            Vector2 position = new Vector2(0, -550);
             SmearParticle particle = new SmearParticle
             {
                 startPosition = position,
-                endPosition = position + new Vector2(1280),
+                endPosition = position + new Vector2(Main.screenWidth, Main.screenHeight),
                 time = 0,
-                travelTime = 400,
+                travelTime = 700,
                 lingerTime = 300 / 2f,
                 strength = 0.2f,
                 screenBound = true,
