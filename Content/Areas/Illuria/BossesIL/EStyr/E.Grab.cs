@@ -225,12 +225,20 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 TargetVector = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                 Vector2 slideVelocity = TargetVector;
          
-                float initialSpeed = 90;
+                float initialSpeed = MathHelper.Lerp(90, 150, Vector2.Distance(NPC.Center, MyTarget.Center) / 1500);
                 slideVelocity *= initialSpeed;
                 NPC.velocity = slideVelocity;
             }
 
             _extraAfterImageAlpha = 0.7f;
+
+            if(Timer < 10)
+            {
+                Vector2 targetDirection = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                Vector2 myDirection = NPC.velocity.SafeNormalize(Vector2.Zero);
+                Vector2 interpolatedDirection = Vector2.Lerp(myDirection, targetDirection, 0.2f);
+                NPC.velocity = interpolatedDirection * NPC.velocity.Length();
+            }
             NPC.velocity *= 0.94f;
             NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
             float dashTime = 30;
