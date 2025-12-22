@@ -90,9 +90,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Kick_SwordThrowDown,
             Kick_End,
 
-            Dismantle_Start,
-            Dismantle_Slash,
-            Dismantle_End
+            Special_Warn,
+            Special_Warn2,
+            Special_HandStab,
+            Special_DripDrop
         }
 
         private bool _intro;
@@ -235,6 +236,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void CreateNewAfterImage()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
             Vector2 afterImageVelocity = -NPC.velocity.SafeNormalize(Vector2.Zero) * 4;
             afterImageVelocity = afterImageVelocity.RotatedByRandom(MathHelper.TwoPi);
             string texture = Texture + Animator.GetAnimation();
@@ -491,14 +495,17 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     AI_KickEnd();
                     break;
 
-                case AIState.Dismantle_Start:
-                    AI_DismantleStart();
+                case AIState.Special_Warn:
+                    AI_SpecialWarn();
                     break;
-                case AIState.Dismantle_Slash:
-                    AI_DismantleSlash();
+                case AIState.Special_Warn2:
+                    AI_SpecialWarn2();
                     break;
-                case AIState.Dismantle_End:
-                    AI_DismantleEnd();
+                case AIState.Special_HandStab:
+                    AI_SpecialHandStab();
+                    break;
+                case AIState.Special_DripDrop:
+                    AI_SpecialDripDrop();
                     break;
             }
 
@@ -559,7 +566,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void ChooseAttack()
         {
             SwitchState(PatternManager.NextPattern());
-        //    SwitchState(AIState.SingularBaseball_Start);
+            SwitchState(AIState.Special_Warn);
         }
     }
 }
