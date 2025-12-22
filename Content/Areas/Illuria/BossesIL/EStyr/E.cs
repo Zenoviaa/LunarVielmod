@@ -188,8 +188,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             //We have to upscale this boss cause he's really hard and you're not really supposed to be him lol
             NPC.damage = 100;
-            NPC.defense = 20;
-            NPC.lifeMax = 30000;
+            NPC.defense = 42;
+            NPC.lifeMax = 60000;
 
             NPC.scale = 1f;
             NPC.aiStyle = -1;
@@ -559,7 +559,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void ChooseAttack()
         {
             SwitchState(PatternManager.NextPattern());
-            SwitchState(AIState.SingularBaseball_Start);
+        //    SwitchState(AIState.SingularBaseball_Start);
         }
     }
 }
