@@ -19,6 +19,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
+
     public class GrabSlice : ModProjectile,
         IDrawBlackStar
     {
@@ -231,7 +232,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 }
             }
 
-     
+
+            Animator.PlayAnimation(Anim_Running);
             _isGrabbing = true;
             _contactDamage = true;
             TargetOutlineColor = Color.Red;
@@ -348,6 +350,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             }
 
+            Animator.PlayAnimation(Anim_Running);
             ShakeModSystem.Shake = 6;
             int[] gores = AutoGoreLoader.FindGores("GrayRock");
             int goreToSpawn = gores[Main.rand.Next(0, gores.Length)];

@@ -80,6 +80,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public float minX;
         public float spinTime;
         public float alpha;
+        public bool topOnly;
         /// <summary>
         /// Calculate the position of the particle at specific a timestep
         /// </summary>
@@ -101,14 +102,23 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             //Calculate the initial position of the particle
 
-            float off = index * 0.1f;
+            float off = _noiseValues[index] * 10 * 2;
             float x = minX;
             if (index > ParticleCount / 2)
             {
                 x *= 3;
             }
+            if (index < ParticleCount / 32)
+            {
+                x *= 24;
+            }
             float xRadius = x + ExtraMath.Osc(-xOvalRadius, xOvalRadius, 0, off);
-            float yRadius = ExtraMath.Osc(-150f, 0f, 1, off) + ExtraMath.Osc(-yOvalRadius, yOvalRadius, 0f, offset: off);
+
+            float minY = -yOvalRadius;
+            float maxY = yOvalRadius;
+            if (topOnly)
+                maxY *=0.5f;
+            float yRadius = ExtraMath.Osc(-150f, 0f, 1, off) + ExtraMath.Osc(minY, maxY, 0f, offset: off);
             Vector3 initialPosition = new Vector3(xRadius, yRadius / 2f, yRadius);
 
             //Create the rotation matrix and Rotate the particle
@@ -266,6 +276,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
+            graphicsDevice.BlendState = BlendState.AlphaBlend;
             graphicsDevice.DrawUserPrimitives(
               PrimitiveType.TriangleList, _particleVertexBufferArr, 0, _particleVertexBufferArr.Length / 3);
 

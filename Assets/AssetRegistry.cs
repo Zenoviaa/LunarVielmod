@@ -44,6 +44,7 @@ namespace Stellamod.Assets
             private static string Path => "Stellamod/Assets/Sounds/";
             public static class E
             {
+                public static SoundStyle HurricaneBlack = new SoundStyle($"{Path}E/HurricaneBlack");
                 public static SoundStyle Hurridown = new SoundStyle($"{Path}E/Hurridown");
                 public static SoundStyle Hurriboom = new SoundStyle($"{Path}E/Hurriboom");
                 public static SoundStyle Hurrislash = new SoundStyle($"{Path}E/Hurrislash");
