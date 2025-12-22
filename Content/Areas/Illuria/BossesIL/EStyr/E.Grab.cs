@@ -8,6 +8,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
@@ -147,7 +148,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             //First we want to position ourselves near the player, so we'll just move up to them
             float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
-            if (distanceToTarget > 384)
+            if (distanceToTarget > 512)
             {
                 Vector2 targetVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                 NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity * distanceToTarget / 16f, 0.1f);
@@ -158,43 +159,49 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 SwitchState(AIState.Grab_Walk);
             }
             NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
-            TargetOutlineColor = Color.Yellow;
-
+            
         }
 
         private void AI_GrabWalk()
         {
             Timer++;
+            if(Timer == 1)
+            {
 
+            }
             //Here we're going to slowly walk towards the player for bit
             //AI move left lol
-            Vector2 targetNormal = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-            Vector2 walkVelocity = targetNormal * 4;
-            NPC.velocity = Vector2.Lerp(NPC.velocity, walkVelocity, 0.1f);
-            TargetOutlineColor = Color.Yellow;
-
-            float walkTime = 60f;
+            if(NPC.velocity.Length() > 1f)
+                NPC.velocity *= 0.8f;
+            float walkTime = 100f;
             int halfWalkTime = (int)walkTime / 2;
-            if (Timer == halfWalkTime)
+
+
+            if(Timer == halfWalkTime)
             {
-                var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity,
-                    newColor: Color.White,
-                    Scale: 1f);
-                donut.noStretch = false;
-                donut.Scale *= 2;
+                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSummon") {PitchVariance = 0.5f, Pitch = -0.5f }, NPC.Center);
 
+                SoundStyle hurrilock = AssetRegistry.Sounds.E.Hurrilock;
+                hurrilock.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(hurrilock, NPC.position);
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<GothCircleShrink>(), 1, 0f, Main.myPlayer);
+                }
+
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<BlinkingStar>(), 1, 0f, Main.myPlayer, ai1: NPC.whoAmI);
+
+                }
             }
-
-            if (Timer >= halfWalkTime)
-            {
-                NPC.velocity *= 0.2f;
- 
-            }
-
             _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(Timer / (float)walkTime));
-            _telegraphLineRot = NPC.velocity.ToRotation();
+            _telegraphLineRot = (MyTarget.Center - NPC.Center).ToRotation();
 
             NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
+            Animator.PlayAnimation(Anim_FoundYou);
             if (Timer >= walkTime)
             {
                 SwitchState(AIState.Grab_Dash);
@@ -206,18 +213,29 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             if (Timer == 1)
             {
+                SoundStyle hurrilock = AssetRegistry.Sounds.E.Hurridown;
+                hurrilock.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(hurrilock, NPC.position);
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<BlackStarTrail>(), 1, 0f, Main.myPlayer, ai1: NPC.whoAmI);
+                }
+
                 TargetVector = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                Vector2 slideVelocity = TargetVector;
+         
+                float initialSpeed = 90;
+                slideVelocity *= initialSpeed;
+                NPC.velocity = slideVelocity;
             }
 
-    
-   
+            _extraAfterImageAlpha = 0.7f;
+            NPC.velocity *= 0.94f;
             NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
             float dashTime = 30;
             float completionRatio = Timer / dashTime;
-
-    
-            Vector2 dashVelocity = TargetVector * 45f;
-            NPC.velocity = Vector2.Lerp(NPC.velocity, dashVelocity, 0.1f);
+            float ease = EasingFunction.InOutExpo7(completionRatio);
             _drawScale.X = MathHelper.Lerp(1f, 2f, EasingFunction.QuadraticBump(completionRatio));
             if (Timer >= dashTime)
             {
@@ -236,7 +254,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Animator.PlayAnimation(Anim_Running);
             _isGrabbing = true;
             _contactDamage = true;
-            TargetOutlineColor = Color.Red;
         }
 
         private void DunkImpact()
@@ -324,7 +341,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float ease = completionRatio;
             Vector2 startCenter = TargetVector;
             Vector2 endCenter = startCenter + _forwardVector * 512;
-            endCenter.Y = fallSystem.hoverPlatformY + 16;
+            endCenter.Y = fallSystem.hoverPlatformY - 32;
 
             Vector2 interpolatedPosition = Vector2.Lerp(startCenter, endCenter, ease);
             interpolatedPosition.Y -= MathHelper.Lerp(0, 256, EasingFunction.QuadraticBump(completionRatio)); ;
@@ -336,6 +353,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //We're going to move in an arc
             Vector2 targetVelocity = interpolatedPosition - NPC.Center;
             NPC.velocity = targetVelocity;
+            Animator.PlayAnimation(Anim_Running);
             if (Timer >= dunkTime)
             {
                 SwitchState(AIState.Grab_EatDirt);
@@ -408,7 +426,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float throwTime = 90;
             float completionRatio = Timer / throwTime;
             float ease = EasingFunction.OutExpo(completionRatio);
-            Vector2 throwVelocity = Vector2.Lerp(-Vector2.UnitY * 75, Vector2.UnitY * 10, ease);
+            Vector2 throwVelocity = Vector2.Lerp(-Vector2.UnitY * 45, Vector2.UnitY * 10, ease);
             EGrabPlayer grabPlayer = MyTarget.GetModPlayer<EGrabPlayer>();
             grabPlayer.HookNPC = -1;
             grabPlayer.ThrowVelocity = throwVelocity;
@@ -431,10 +449,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 Vector2 targetVelocity = startCenter - NPC.Center;
                 NPC.velocity = Vector2.Lerp(TargetVector, targetVelocity, prepEase);
                 NPC.direction = (int)(-1 * _forwardVector.X);
+                Animator.PlayAnimation(Anim_Holding);
             } else if (Timer < 90)
             {
                 float dashRatio = (Timer - 30f) / 60f;
-                float dashEase = EasingFunction.InOutSine(dashRatio);
+                float dashEase = EasingFunction.OutCirc(dashRatio);
        
                 Vector2 dashVelocity = endCenter - NPC.Center;
                 NPC.velocity = Vector2.Lerp(Vector2.Zero, dashVelocity, dashEase);
@@ -443,14 +462,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                 //Squash and stretch always looks cool
                 _drawScale.X = MathHelper.Lerp(1f, 1.5f, EasingFunction.QuadraticBump(dashRatio));
+                Animator.PlayAnimation(Anim_BigSlash);
             }
             else
             {
                 
             }
 
-          //  RetargetCameraModifier.ReTargetPosition = MyTarget.Center - new Vector2(0, 300);
-            if (Timer == 50)
+            if (Timer == 32)
             {
 
                 if (MultiplayerHelper.IsHost)
@@ -472,10 +491,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             Timer++;
             _extraAfterImageAlpha *= 0.2f;
-            NPC.velocity *= 0.9f;
+            NPC.velocity *= 0.98f;
             if (Timer >= 15)
             {
-                if (_attackNumber >= 3)
+                if (_attackNumber >= 2)
                 {
                     SwitchState(AIState.Idle);
                 }

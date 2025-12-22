@@ -240,7 +240,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 return;
 
             //Create after images
-            if(Timer % 3 == 0)
+            if(Timer % 4 == 0)
             {
                 CreateNewAfterImage();
             }
@@ -285,11 +285,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 }
             }
 
-            if(Timer % 5 == 0)
-            {
-                var star = Particle.NewParticle<StarParticle>(NPC.Center, Vector2.Zero, Color.White);
-                star.fast = true;
-            }
+
             _telegraphLineAlpha = 0;
             _drawScale = Vector2.One;
             TargetOutlineColor = Color.White;
@@ -547,7 +543,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ChooseAttack()
         {
-            SwitchState(AIState.Tornado_Start);
+            SwitchState(AIState.Grab_Start);
         }
     }
 }

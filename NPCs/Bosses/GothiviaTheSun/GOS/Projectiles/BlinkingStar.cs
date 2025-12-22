@@ -51,8 +51,17 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_63").Value;
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(85f * alphaCounter), (int)(85f * alphaCounter), 0), Projectile.rotation, new Vector2(512, 512), 0.4f * (alphaCounter + 0.2f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(55f * alphaCounter), (int)(55f * alphaCounter), (int)(55f * alphaCounter), 0), Projectile.rotation, new Vector2(512, 512), 0.3f * (alphaCounter + 0.2f), SpriteEffects.None, 0f);
+            Vector2 drawOrigin = texture2D4.Size() / 2f;
+            Color color = Color.White;
+          //  color *= alphaCounter;
+            color.A = 0;
+
+
+            float scale = 0.4f * (alphaCounter + 0.2f);
+            if (scale < 0)
+                scale = 0;
+            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, color, Projectile.rotation, drawOrigin, scale, SpriteEffects.None, 0f);
+         
             return true;
         }
     }

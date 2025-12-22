@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core;
 using Stellamod.Core.Animations;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
@@ -12,6 +13,70 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
+    public class BlackStarTrail : ScarletProjectile,
+        IDrawBlackStar
+    {
+        private NPC Parent => Main.npc[(int)Projectile.ai[1]];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            TrailCacheLength = 64;
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.hostile = false;
+            Projectile.friendly = false;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 240;
+        }
+        public override void AI()
+        {
+            base.AI();
+            Projectile.Center = Parent.Center;
+        }
+                
+        private float GetTrailWidth(float completionRatio)
+        {
+            float w = MathHelper.SmoothStep(32, 24, completionRatio);
+            float outScale = (float)Projectile.timeLeft / 30f;
+            outScale = EasingFunction.InOutSine(outScale);
+            w *= outScale;
+            return w;
+        }
+
+        private Color GetTrailColor(float completionRatio)
+        {
+            return Color.Lerp(Color.White, Color.Black, completionRatio);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+           //  DrawTrail();
+            return base.PreDraw(ref lightColor);
+        }
+
+
+        private void DrawTrail()
+        {
+            var shader = MagicNormalShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.BeamTrail;
+            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 2;
+            shader.Repeats = 1f;
+
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, GetTrailColor, GetTrailWidth, shader);
+
+            shader.BlendState = BlendState.AlphaBlend;
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, GetTrailColor, GetTrailWidth, shader);
+
+        }
+        public void DrawBlackStar(SpriteBatch spriteBatch)
+        {
+            DrawTrail();
+        }
+    }
     public partial class E : IDrawOutlines,
         IDrawBlackStar
     {
@@ -117,7 +182,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             var backSlash = new SpriteAnimation(0, 7, isLooping: false, drawOrigin, frameSpeed: 0.5f);
             _animatorBackingField.AddAnimation(Anim_BackSlash, backSlash);
 
-            var foundYou = new SpriteAnimation(0, 1, isLooping: false, drawOrigin);
+            var foundYou = new SpriteAnimation(0, 5, isLooping: false, drawOrigin);
             _animatorBackingField.AddAnimation(Anim_FoundYou, foundYou);
 
             var holding = new SpriteAnimation(0, 1, isLooping: true, drawOrigin);
