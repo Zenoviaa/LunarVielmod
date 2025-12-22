@@ -28,7 +28,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.friendly = false;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 240;
+            Projectile.timeLeft = 220;
         }
         public override void AI()
         {
