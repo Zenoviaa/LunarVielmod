@@ -187,9 +187,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.height = 100;
 
             //We have to upscale this boss cause he's really hard and you're not really supposed to be him lol
-            NPC.damage = 100;
+            NPC.damage = 1;
             NPC.defense = 42;
-            NPC.lifeMax = 60000;
+            NPC.lifeMax = 120000;
 
             NPC.scale = 1f;
             NPC.aiStyle = -1;
