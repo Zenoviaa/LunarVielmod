@@ -58,9 +58,9 @@ namespace Stellamod.Core.Pixelation
                 return;
 
             _draws.Clear();
-            foreach(var proj in Main.ActiveProjectiles)
+            foreach (var proj in Main.ActiveProjectiles)
             {
-                if(proj.ModProjectile is IDrawPixelated pixelated)
+                if (proj.ModProjectile is IDrawPixelated pixelated)
                 {
                     _draws.Add(pixelated);
                 }
@@ -87,7 +87,7 @@ namespace Stellamod.Core.Pixelation
             //Now we take that output and downscale it to the pixel RT
             graphicsDevice.SetRenderTarget(_pixelRenderRT);
             graphicsDevice.Clear(Color.Transparent);
-     
+
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             float denom = DownSamples;
             float scale = 1f / denom;

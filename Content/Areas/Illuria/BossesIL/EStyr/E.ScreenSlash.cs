@@ -3,19 +3,70 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
-using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
+
+
+    public class WhiteTear : ModProjectile,
+        IDrawPixelated
+    {
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 400;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Projectile.Center = Main.LocalPlayer.Center;
+            Projectile.rotation = Projectile.velocity.ToRotation();
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            return false;
+        }
+
+        private void DrawTearTexture()
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D tearTexture = TrailRegistry.LightningTrail2.Value;
+            Vector2 drawOrigin = new Vector2(0, tearTexture.Height / 2f);
+            Vector2 drawPosition = new Vector2(175, -450);
+            Vector2 drawScale = new Vector2(8, 0.15f);
+            float outScale = (float)Projectile.timeLeft / 30f;
+            outScale = EasingFunction.InOutSine(outScale);
+            drawScale.Y *= outScale;
+            spriteBatch.Draw(tearTexture, drawPosition, null, Color.White, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+
+            drawScale.Y *= 0.5f;
+            spriteBatch.Draw(tearTexture, drawPosition, null, Color.Black, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            //spriteBatch.Draw(tearTexture, drawPosition + new Vector2(1280), null, Color.White, Projectile.rotation + MathHelper.PiOver2, drawOrigin, drawScale, SpriteEffects.None, 0);
+
+
+        }
+        public void DrawPixelated()
+        {
+            DrawTearTexture();
+        }
+    }
     public class DarkStar : ScarletProjectile,
         IDrawOutlines,
         IDrawBlackStar
@@ -44,7 +95,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle starSound = new SoundStyle("Stellamod/Assets/Sounds/Starrer");
                 starSound.PitchVariance = 0.3f;
@@ -54,7 +105,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float outScale = (float)Projectile.timeLeft / 30f;
             outScale = EasingFunction.InOutSine(outScale);
             Projectile.scale = 1f * outScale;
-            if(Timer >= 30)
+            if (Timer >= 30)
             {
                 if (Projectile.velocity.Length() < 8)
                 {
@@ -66,12 +117,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.rotation += Projectile.velocity.Length() * 0.005f;
 
             Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 8000);
-            if(player != null)
+            if (player != null)
             {
                 Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, player.Center, degreesToRotate: 0.15f);
             }
-            
-            if(Timer % 32 == 0)
+
+            if (Timer % 32 == 0)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>(), Scale: 0.4f);
             }
@@ -183,10 +234,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (Timer == 1)
             {
                 //Here we do a crossing slash effect similar to the one in the grab attack
-                ShakeModSystem.Shake = 32;
+                ShakeModSystem.Shake = 64;
                 FXUtil.ShakeCamera(NPC.position, 1024, 4);
                 ScreenSmearEffectManager.DiagonalCut();
-
+                if (MultiplayerHelper.IsHost)
+                {
+               //     Projectile.NewProjectile(SourceFromThis, NPC.Center, new Vector2(-1, 1), ModContent.ProjectileType<WhiteTear>(), 1, 1, Main.myPlayer);
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center, new Vector2(1, 1), ModContent.ProjectileType<WhiteTear>(), 1, 1 ,Main.myPlayer);
+                }
+ 
                 SoundStyle hurriSlash = AssetRegistry.Sounds.E.Hurrislash;
                 hurriSlash.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(hurriSlash, NPC.position);
@@ -228,6 +284,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     Animator.PlayAnimation(Anim_BackSlash);
                 }
 
+   
                 ShakeModSystem.Shake = 4;
                 FXUtil.ShakeCamera(NPC.position, 1024, 4);
 
@@ -237,6 +294,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 Vector2 pos = NPC.Center;
                 pos += Vector2.UnitX * NPC.direction * 100;
                 ScreenSmearEffectManager.NewParticle(pos, direction, 2400, 15);
+
                 var strike = Particle.NewParticle<GlowDonutParticle>(pos, direction);
                 strike.xMult = 6;
                 strike.rotOffset += MathHelper.PiOver2;
@@ -253,8 +311,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     int darkStarType = ModContent.ProjectileType<DarkStar>();
                     float numProjectiles = _attackNumber % 2 == 0 ? 5 : 4;
                     float radsOffset = _attackNumber % 2 == 0 ? 0 : 45;
-                    
-                    
+
+
                     float radiansSpread = MathHelper.ToRadians(135 - radsOffset);
                     float startRadians = -radiansSpread / 2f;
                     float endRadians = radiansSpread / 2f;
@@ -262,7 +320,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                     float weaveoffset = _attackNumber % 2 == 0 ? 22 : 0;
                     float weaveRadians = MathHelper.ToRadians(weaveoffset);
-                    for(float n = 0; n < numProjectiles; n++)
+                    for (float n = 0; n < numProjectiles; n++)
                     {
                         float ratio = n / numProjectiles;
                         Vector2 fireVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
@@ -273,16 +331,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                         fireVelocity = fireVelocity.RotatedBy(rads);
                         Projectile.NewProjectile(SourceFromThis, NPC.Center, fireVelocity, darkStarType, DarkStarDamage, 1, Main.myPlayer);
                     }
-                    if(_attackNumber % 2 == 0)
+                    if (_attackNumber % 2 == 0)
                     {
                         Vector2 mainVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                         mainVelocity *= 5;
                         Projectile.NewProjectile(SourceFromThis, NPC.Center, mainVelocity, darkStarType, DarkStarDamage, 1, Main.myPlayer);
                     }
-                  
+
                     _attackNumber++;
                 }
-                 
+
             }
 
             float pointingTime = 240;

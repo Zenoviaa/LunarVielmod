@@ -193,6 +193,20 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 scale = new Vector2(2, 16)
             };
             smearDrawManager._particles.Add(particle);
+            /*
+            position = new Vector2(900, -450);
+            particle = new SmearParticle
+            {
+                startPosition = position,
+                endPosition = position + new Vector2(-1280, 1280),
+                time = 0,
+                travelTime = 400,
+                lingerTime = 300 / 2f,
+                strength = 0.2f,
+                screenBound = true,
+                scale = new Vector2(2, 16)
+            };
+            smearDrawManager._particles.Add(particle);*/
         }
         private Point GetScreenSize()
         {
