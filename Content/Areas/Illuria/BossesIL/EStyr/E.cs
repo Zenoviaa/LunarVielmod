@@ -110,11 +110,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private bool _contactDamage;
         private bool _inRiver;
         private bool _doneSpecial;
+        private bool _doneSpecial2;
         private float _bounceAttackNumber;
         private float _attackNumber;
         private float _hoverTimer;
 
-        private bool InPhase2 => NPC.life < NPC.lifeMax / 2f;
+        private bool InPhase2 => NPC.life < NPC.lifeMax * 0.5f;
+        private bool InPhase3 => NPC.life < NPC.lifeMax * 0.2f;
         private ref float Timer => ref NPC.ai[0];
         private AIState State
         {
@@ -229,6 +231,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             writer.Write(_attackNumber);
             writer.Write(_bounceAttackNumber);
             writer.Write(_doneSpecial);
+            writer.Write(_doneSpecial2);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
@@ -239,6 +242,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _attackNumber = reader.ReadSingle();
             _bounceAttackNumber = reader.ReadSingle();
             _doneSpecial = reader.ReadBoolean();
+            _doneSpecial2 = reader.ReadBoolean();
         }
 
         private void EnablePlatformArena()
@@ -325,6 +329,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 PatternManager.QueueSetPattern(AIState.Special_Warn);
                 _doneSpecial = true;
+            }
+            if (InPhase3 && !_doneSpecial2)
+            {
+                PatternManager.QueueSetPattern(AIState.Special_Warn);
+                _doneSpecial2 = true;
             }
 
             _inRiver = false;
