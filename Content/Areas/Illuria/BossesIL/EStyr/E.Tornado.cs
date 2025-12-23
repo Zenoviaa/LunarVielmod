@@ -629,11 +629,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             base.SetDefaults();
             Projectile.width = 180;
             Projectile.height = 600;
-            Projectile.hostile = true;
+            Projectile.hostile = false;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 600;
         }
+
 
         public override bool ShouldUpdatePosition()
         {
@@ -643,6 +644,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void AI()
         {
             base.AI();
+            if (Timer > 100)
+                Projectile.hostile = true;
             //For this projectile what we're going to need to do is create a tornado visual with projectiles coming outward and then coming in
             //Gustbeak has a tornado but it's meh
             //Gintzia's winds look a bit better and should look fine when combined with swirling particles

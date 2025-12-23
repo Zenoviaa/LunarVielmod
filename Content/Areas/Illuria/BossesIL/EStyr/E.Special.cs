@@ -409,6 +409,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void AI()
         {
             base.AI();
+            if (!NPC.AnyNPCs(ModContent.NPCType<E>()))
+                Projectile.ai[1] = 1;
             Timer++;
             float time = 400f;
             CompletionRatio = Timer / time;
