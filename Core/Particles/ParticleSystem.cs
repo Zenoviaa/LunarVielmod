@@ -26,7 +26,6 @@ namespace Stellamod.Core.Particles
             base.Load();
             _particleComparer = new ParticleComparer();
             On_Main.DrawDust += DrawMainParticles;
-            PixelationManager.OnDrawPixelation += DrawPixelatedParticles;
         }
 
         public override void PostAddRecipes()
@@ -47,7 +46,6 @@ namespace Stellamod.Core.Particles
         public override void Unload()
         {
             On_Main.DrawDust -= DrawMainParticles;
-            PixelationManager.OnDrawPixelation -= DrawPixelatedParticles;
             ParticleLoader.Unload();
 
             ParticleAssets = null;
