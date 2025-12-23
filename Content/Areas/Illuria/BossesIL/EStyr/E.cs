@@ -97,6 +97,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Special_FadeToBlack,
             Special_MakeBox,
             Special_FadeOutFromBlack,
+            Special_SlashQuickStart,
+            Special_Slash,
+            Special_SlashReposition
         }
 
         private bool _intro;
@@ -517,6 +520,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     break;
                 case AIState.Special_FadeOutFromBlack:
                     AI_SpecialFadeOutFromBlack();
+                    break;
+                case AIState.Special_SlashQuickStart:
+                    AI_SpecialSlashQuickStart();
+                    break;
+                case AIState.Special_Slash:
+                    AI_SpecialSlash();
+                    break;
+                case AIState.Special_SlashReposition:
+                    AI_SpecialSlashReposition();
                     break;
             }
 

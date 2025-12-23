@@ -1,15 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Core.BlackSystem;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -36,6 +40,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         public override bool ShouldUpdatePosition()
         {
+            if (!NPC.AnyNPCs(ModContent.NPCType<E>()))
+                Projectile.active = false;
             return false;
         }
         public override bool PreDraw(ref Color lightColor)
@@ -318,14 +324,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void RenderRiverRT(On_Main.orig_CheckMonoliths orig)
         {
-            if(_draws.Count > 0)
-            {
-                RenderRiverMaskRT();
-                RenderRiverTextureRT();
-                RenderToPixelRT();
-                _draws.Clear();
-            }
-
+            RenderRiverMaskRT();
+            RenderRiverTextureRT();
+            RenderToPixelRT();
+            _draws.Clear();
             orig();
         }
         private void DrawRiverToScreenBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)
@@ -353,6 +355,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
             spriteBatch.Draw(_pixelRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
             spriteBatch.End();
+            
         }
 
         public static void AddMask(IDrawBlackRiverMask mask)
@@ -549,7 +552,112 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             FullTint.SetColor(Color.Black, alpha);
             if(Timer >= fadeTime)
             {
-                SwitchState(AIState.Idle);
+                SwitchState(AIState.Special_SlashQuickStart);
+            }
+        }
+
+        private void AI_SpecialSlashQuickStart()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                TargetVector = NPC.velocity;
+            }
+            _inRiver = true;
+            _extraAfterImageAlpha = 0.7f;
+            float lerp = _attackNumber / 10f;
+            float ease = EasingFunction.InOutSine(lerp);
+            float startTime = MathHelper.Lerp(12, 2, ease);
+            ForwardSlashStartupMovement(startTime);
+            TargetOutlineColor = Color.Yellow;
+            if (Timer >= startTime)
+            {
+                SwitchState(AIState.Special_Slash);
+            }
+        }
+
+        private void AI_SpecialSlash()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                TargetVector = NPC.Center;
+                _forwardVector = (NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero);
+
+                SoundStyle newSlashSound = new SoundStyle("Stellamod/Assets/Sounds/SwordSlice");
+                newSlashSound.PitchVariance = 0.2f;
+                newSlashSound.Volume = 0.5f;
+                SoundEngine.PlaySound(newSlashSound, NPC.position);
+                Slash();
+                NPC.direction = _forwardVector.X > 0 ? -1 : 1;
+            }
+            _inRiver = true;
+            _extraAfterImageAlpha = 0.7f;
+            if (_attackNumber % 2 == 0)
+            {
+                Animator.PlayAnimation(Anim_ForwardSlash);
+            }
+            else
+            {
+                Animator.PlayAnimation(Anim_BackSlash);
+            }
+
+            float forwardSlashTime = 5;
+
+
+
+            float completionRatio = Timer / forwardSlashTime;
+            float ease = EasingFunction.OutSine(completionRatio);
+            float osc = ExtraMath.Osc(0f, 1f, speed: 17);
+            BlackSea blackSea = ScreenShader.GetInstance<BlackSea>();
+            blackSea.amplitude = MathHelper.SmoothStep(0.05f, 0f, ease);
+
+
+            float maxRadians = MathHelper.PiOver2;
+            float radiansOffset = completionRatio * maxRadians;
+            Vector2 forwardVector = _forwardVector.RotatedBy(radiansOffset);
+            Vector2 recoilStartVector = TargetVector;
+            Vector2 recoilEndVector = recoilStartVector + forwardVector * 100;
+
+            Vector2 recoilPosition = Vector2.Lerp(recoilStartVector, recoilEndVector, ease);
+            Vector2 targetVelocity = recoilPosition - NPC.Center;
+            NPC.velocity = targetVelocity;
+
+            TargetOutlineColor = Color.Red;
+            if (Timer >= forwardSlashTime)
+            {
+
+
+                SwitchState(AIState.Special_SlashReposition);
+            }
+        }
+
+        private void AI_SpecialSlashReposition()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                _forwardVector = (NPC.Center - MyTarget.Center);
+                TargetVector = NPC.velocity;
+            }
+
+            float rotateTime = 15;
+            float completionRatio = Timer / rotateTime;
+            float maxRadians = MathHelper.PiOver4;
+            float radiansOffset = completionRatio * maxRadians;
+            Vector2 forwardVector = _forwardVector.RotatedBy(radiansOffset);
+            Vector2 targetPosition = MyTarget.Center + forwardVector;
+            Vector2 targetVelocity = targetPosition - NPC.Center;
+
+            _inRiver = true;
+            _extraAfterImageAlpha = 0.7f;
+            float ease = EasingFunction.InOutSine(completionRatio);
+            NPC.velocity = Vector2.Lerp(TargetVector, targetVelocity, ease);
+            if (Timer >= rotateTime)
+            {
+                _attackNumber++;
+                SwitchState(AIState.Special_SlashQuickStart);
             }
         }
     }
