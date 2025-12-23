@@ -165,6 +165,26 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             
         }
 
+        private void GothFlare()
+        {
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSummon") { PitchVariance = 0.5f, Pitch = -0.5f }, NPC.Center);
+
+            SoundStyle hurrilock = AssetRegistry.Sounds.E.Hurrilock;
+            hurrilock.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(hurrilock, NPC.position);
+            if (MultiplayerHelper.IsHost)
+            {
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                    ModContent.ProjectileType<GothCircleShrink>(), 1, 0f, Main.myPlayer);
+            }
+
+            if (MultiplayerHelper.IsHost)
+            {
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                    ModContent.ProjectileType<BlinkingStar>(), 1, 0f, Main.myPlayer, ai1: NPC.whoAmI);
+
+            }
+        }
         private void AI_GrabWalk()
         {
             Timer++;
@@ -182,23 +202,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if(Timer == halfWalkTime)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSummon") {PitchVariance = 0.5f, Pitch = -0.5f }, NPC.Center);
-
-                SoundStyle hurrilock = AssetRegistry.Sounds.E.Hurrilock;
-                hurrilock.PitchVariance = 0.3f;
-                SoundEngine.PlaySound(hurrilock, NPC.position);
-                if (MultiplayerHelper.IsHost)
-                {
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
-                        ModContent.ProjectileType<GothCircleShrink>(), 1, 0f, Main.myPlayer);
-                }
-
-                if (MultiplayerHelper.IsHost)
-                {
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
-                        ModContent.ProjectileType<BlinkingStar>(), 1, 0f, Main.myPlayer, ai1: NPC.whoAmI);
-
-                }
+                GothFlare();
             }
             _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(Timer / (float)walkTime));
             _telegraphLineRot = (MyTarget.Center - NPC.Center).ToRotation();

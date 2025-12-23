@@ -2,14 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Core;
 using Stellamod.Core.BlackSystem;
-using Stellamod.Core.Particles;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
-using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -24,11 +24,189 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         void DrawRiverMask();
     }
 
+    public class BlackSlash : ModProjectile,
+        IDrawBlackStar
+    {
+        private Asset<Texture2D> _textureAsset;
+        private Vector2 _drawScale = Vector2.One;
+        private Vector2[] LinePos = new Vector2[2];
+        public override void Load()
+        {
+            base.Load();
+            _textureAsset = ModContent.Request<Texture2D>(Texture);
+        }
+        private ref float Timer => ref Projectile.ai[0];
+        private bool IsThick => Projectile.ai[1] == 1;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+            Projectile.ignoreWater = true;
+            Projectile.timeLeft = 30;
+        }
+
+        public override bool CanHitPlayer(Player target)
+        {
+            return base.CanHitPlayer(target) && Timer < 5;
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            float lineWidth = 12;
+            if (IsThick)
+                lineWidth *= 3;
+            return ProjectileHelper.OldPosColliding(LinePos, projHitbox, targetHitbox, lineWidth);
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if (Timer == 1)
+            {
+                _drawScale.Y = 0;
+                SoundStyle hurriSlash = AssetRegistry.Sounds.E.Hurrislash;
+                hurriSlash.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(hurriSlash, Projectile.position);
+            }
+
+
+            float outScale = EasingFunction.InOutSine((float)Projectile.timeLeft / 30f);
+            _drawScale.Y = MathHelper.Lerp(0f, 1f, outScale);
+
+            LinePos[0] = Projectile.Center - Projectile.velocity.SafeNormalize(Vector2.Zero) * 500;
+            LinePos[1] = Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 500;
+
+        }
+
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            base.OnHitPlayer(target, info);
+            BlackStars.AddBuff(target, 50);
+        }
+
+        public void DrawBlackStar(SpriteBatch spriteBatch)
+        {
+            Projectile.rotation = Projectile.velocity.ToRotation();
+            _textureAsset ??= ModContent.Request<Texture2D>(Texture);
+            Vector2 drawCenter = Projectile.Center - Main.screenPosition;
+            Vector2 drawOrigin = _textureAsset.Size() / 2f;
+            Color drawColor = Color.White;
+            Vector2 drawScale = _drawScale;
+            drawScale.X *= 12;
+            drawScale.Y *= 1.5f;
+            if (IsThick)
+                drawScale.Y *= 2.25f;
+
+            //Create a cool flickering effect
+            //   drawColor *= ExtraMath.Osc(0f, 1f, speed: 32);
+            float alpha = MathHelper.Lerp(1f, 0f, Timer / 30f);
+            drawColor *= alpha;
+            spriteBatch.Draw(_textureAsset.Value, drawCenter, null, drawColor, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            return false;
+        }
+    }
+
+    public class BlackSlashLine : ModProjectile
+    {
+        private Asset<Texture2D> _textureAsset;
+        public override void Load()
+        {
+            base.Load();
+            _textureAsset = ModContent.Request<Texture2D>(Texture);
+        }
+
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float ExtraLifetime => ref Projectile.ai[1];
+        private ref float IsThick => ref Projectile.ai[2];
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            Projectile.friendly = false;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.timeLeft = 60;
+        }
+
+
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if (ExtraLifetime > 0)
+            {
+                ExtraLifetime--;
+                Projectile.timeLeft++;
+                Timer--;
+            }
+
+            float easeInTime = 30f;
+            float completionRatio = Timer / easeInTime;
+            float ease = EasingFunction.OutCirc(completionRatio);
+
+
+            float targetRotation = Projectile.velocity.ToRotation();
+            float startRotation = targetRotation - MathHelper.ToRadians(5);
+            float interpolatedRotation = Utils.AngleLerp(startRotation, targetRotation, ease);
+            Projectile.rotation = interpolatedRotation;
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity,
+                ModContent.ProjectileType<BlackSlash>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: IsThick);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            _textureAsset ??= ModContent.Request<Texture2D>(Texture);
+            Vector2 drawCenter = Projectile.Center - Main.screenPosition;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Vector2 drawOrigin = _textureAsset.Size() / 2f;
+            Color drawColor = Color.White;
+            Vector2 drawScale = Vector2.One;
+            drawScale.X *= 3;
+
+            //Create a cool flickering effect
+            drawColor *= ExtraMath.Osc(0.25f, 0.5f, speed: 16);
+
+            float inAlpha = EasingFunction.InOutSine(Timer / 10f);
+            drawColor *= inAlpha;
+            spriteBatch.Draw(_textureAsset.Value, drawCenter, null, drawColor, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            return false;
+        }
+
+
+    }
     public class BlackBox : ModProjectile,
         IDrawBlackRiverMask
     {
         private ref float Timer => ref Projectile.ai[0];
-
+        private bool KillMe => Projectile.ai[1] == 1;
+        private ref float DeathTimer => ref Projectile.ai[2];
+        private float InScale;
+        private float OutScale;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -38,11 +216,44 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
         }
-        public override bool ShouldUpdatePosition()
+
+        public override void AI()
         {
+            base.AI();
             if (!NPC.AnyNPCs(ModContent.NPCType<E>()))
                 Projectile.active = false;
-            return false;
+            float size = 384;
+            float leftBound = Projectile.Center.X - size;
+            float rightBound = Projectile.Center.X + size;
+            float topBound = Projectile.Center.Y - size;
+            float bottomBound = Projectile.Center.Y + size;
+            foreach (var player in Main.ActivePlayers)
+            {
+                if (player.Left.X < leftBound)
+                    player.Left = new Vector2(leftBound, player.Left.Y);
+                if (player.Right.X > rightBound)
+                    player.Right = new Vector2(rightBound, player.Right.Y);
+                if (player.Top.Y < topBound)
+                    player.Top = new Vector2(player.Top.X, topBound);
+                if (player.Bottom.Y > bottomBound)
+                    player.Bottom = new Vector2(player.Bottom.X, bottomBound);
+            }
+
+            Timer++;
+            InScale = MathHelper.Lerp(0f, 1f, EasingFunction.OutCirc(Timer / 140f));
+            if (KillMe)
+            {
+                DeathTimer++;
+                float killTime = 30f;
+                float killRatio = DeathTimer / killTime;
+                OutScale = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(killRatio));
+                if (DeathTimer >= killTime)
+                    Projectile.Kill();
+            }
+            else
+            {
+                OutScale = 1f;
+            }
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -58,9 +269,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawOrigin = texture.Size() / 2f;
             Vector2 drawCenter = Projectile.Center - Main.screenPosition;
-            Vector2 scale = Vector2.One;
+            Vector2 scale = Vector2.One * InScale * OutScale;
+            float osc = ExtraMath.Osc(0.95f, 1f, 0.5f);
+                scale *= osc;
             float rotation = Projectile.rotation;
-            spriteBatch.Draw(texture, drawCenter, null, new Color(0,0,0,0), rotation, drawOrigin, 1f, SpriteEffects.None, 0);
+
+            spriteBatch.Draw(texture, drawCenter, null, new Color(0, 0, 0, 0), rotation, drawOrigin, scale, SpriteEffects.None, 0);
             spriteBatch.End();
             spriteBatch.Begin();
         }
@@ -97,7 +311,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             base.AI();
             Timer++;
-            if(RandScale == 0 && this.OwnedByLocalClient())
+            if (Timer == 1)
+            {
+                SoundStyle riverSound = AssetRegistry.Sounds.E.DarkTentacleStab;
+                riverSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(riverSound);
+            }
+            if (RandScale == 0 && this.OwnedByLocalClient())
             {
                 RandScale = Main.rand.NextFloat(0.05f, 2);
                 Projectile.netUpdate = true;
@@ -161,7 +381,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
+        private bool KillMe => Projectile.ai[1] == 1;
+        private ref float DeathTimer => ref Projectile.ai[2];
         private float CompletionRatio;
+        private float DeathRatio;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -173,7 +396,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.width = 1;
             Projectile.height = 1;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 340;
+            Projectile.timeLeft = 3500;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
         }
@@ -191,6 +414,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             CompletionRatio = Timer / time;
 
             Projectile.Center = Main.Camera.Center;
+            if (KillMe)
+            {
+                float deathTime = 360f;
+                DeathTimer++;
+                DeathRatio = DeathTimer / deathTime;
+                if(DeathTimer >= deathTime)
+                {
+                    Projectile.Kill();
+                }
+            }
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -209,12 +442,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             shader.LaserTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RiverMask");
             shader.Time = Main.GlobalTimeWrappedHourly * -16;
 
-            float width = Main.screenHeight * 2;
+            float width = Main.screenHeight * 3;
             Vector2 start = pos;
             start.Y += 1000;
 
             float ease = EasingFunction.InOutSine(CompletionRatio);
-            start.Y -= MathHelper.Lerp(0, 1500, ease);
+            start.Y -= MathHelper.Lerp(0, 2000, ease);
+            start.Y += MathHelper.Lerp(0, 3000, DeathRatio);
             TexturedQuad.CalculateVertices(start, Projectile.velocity,
                 Main.screenWidth, width);
             Main.spriteBatch.GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -346,7 +580,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 DrawRiverToScreen();
             }
-       
+
         }
 
         private void DrawRiverToScreen()
@@ -355,7 +589,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
             spriteBatch.Draw(_pixelRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
             spriteBatch.End();
-            
+
         }
 
         public static void AddMask(IDrawBlackRiverMask mask)
@@ -363,7 +597,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             BlackRiverRenderer renderer = ModContent.GetInstance<BlackRiverRenderer>();
             renderer._draws.Add(mask);
         }
-        
+
         private Point GetScreenSize()
         {
             return new Point(Main.screenTarget.Width, Main.screenTarget.Height);
@@ -381,7 +615,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
          * as a tunnel forms around that you also have to go through, then he does one final slash and lets you free
          */
 
-
+        private Vector2 _boxCenter;
+        private int BlackSlashLineDamage => 50;
         private void AI_SpecialWarn()
         {
             //Alright, for this attack we're going to have to get a little crazyyyyyy
@@ -396,7 +631,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 ShakeModSystem.Shake = 2;
             }
 
-            float warnTime = 120f;
+            float warnTime = 30f;
             float completionRatio = Timer / warnTime;
             float ease = EasingFunction.InOutSine(completionRatio);
             Vector2 positionToMoveTo = MyTarget.Center - new Vector2(0, 128);
@@ -468,6 +703,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     Projectile.NewProjectile(SourceFromThis, NPC.Center, -Vector2.UnitX,
                         ModContent.ProjectileType<BlackRiver>(), 1, 1, Main.myPlayer);
                 }
+                SoundStyle riverSound = AssetRegistry.Sounds.E.DescendingDark;
+                SoundEngine.PlaySound(riverSound);
             }
             if (MultiplayerHelper.IsHost && Timer % 6 == 0)
             {
@@ -477,11 +714,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                 Vector2 upVelocity = -Vector2.UnitY;
                 upVelocity = upVelocity.RotatedByRandom(0.15f);
-                Projectile.NewProjectile(SourceFromThis, tentacleSpawnPoint, upVelocity, 
+                Projectile.NewProjectile(SourceFromThis, tentacleSpawnPoint, upVelocity,
                     ModContent.ProjectileType<RiverWhip>(), 1, 1, Main.myPlayer);
             }
 
-            if(Timer % 6 == 0)
+            if (Timer % 6 == 0)
             {
                 Dust.NewDustPerfect(NPC.Center, DustID.GemDiamond);
             }
@@ -500,7 +737,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void SetRiverBoxParams()
         {
-            BlackRiverRenderer.invert = _inRiver;
+            //  BlackRiverRenderer.invert = _inRiver;
+            BlackRiverRenderer.invert = false;
             BlackRiverRenderer.renderBehindNPCs = _inRiver;
         }
 
@@ -513,26 +751,43 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             //Fade the screen to black
             ShakeModSystem.Shake = 8;
-            FullTint.SetColor(Color.Black, completionRatio);
-            if(Timer >= fadeTime)
+            Vector2 boxPosition = GetBoxPosition();
+            RetargetCameraModifier.ReTargetPosition = Vector2.Lerp(Main.LocalPlayer.Center, boxPosition, completionRatio);
+            //  FullTint.SetColor(Color.Black, completionRatio);
+            NPC.velocity *= 0.9f;
+            if (Timer >= fadeTime)
             {
                 SwitchState(AIState.Special_MakeBox);
             }
         }
+        private Vector2 GetBoxPosition()
+        {
+            DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
+            Vector2 boxCenter = NPC.Center;
+            boxCenter.Y = fallSystem.hoverPlatformY;
+            boxCenter.Y -= 340;
+            return boxCenter;
+        }
         private void AI_SpecialMakeBox()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 if (MultiplayerHelper.IsHost)
                 {
-                    Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero, 
+                    Vector2 boxCenter = GetBoxPosition();
+                    _boxCenter = boxCenter;
+                    Projectile.NewProjectile(SourceFromThis, boxCenter, Vector2.Zero,
                         ModContent.ProjectileType<BlackBox>(), 1, 1, Main.myPlayer);
+                    NPC.netUpdate = true;
                 }
             }
 
-            FullTint.SetColor(Color.Black, 1f);
-            if(Timer >= 30)
+            Vector2 boxPosition = GetBoxPosition();
+            RetargetCameraModifier.ReTargetPosition = boxPosition;
+
+            NPC.velocity *= 0.9f;
+            if (Timer >= 30)
             {
                 SwitchState(AIState.Special_FadeOutFromBlack);
             }
@@ -549,8 +804,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float fadeTime = 100;
             float completionRatio = Timer / fadeTime;
             float alpha = MathHelper.Lerp(1f, 0f, completionRatio);
-            FullTint.SetColor(Color.Black, alpha);
-            if(Timer >= fadeTime)
+            //   FullTint.SetColor(Color.Black, alpha);
+            if (Timer >= fadeTime)
             {
                 SwitchState(AIState.Special_SlashQuickStart);
             }
@@ -577,6 +832,94 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
         }
 
+        private void CrossSlash()
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Projectile.NewProjectile(SourceFromThis, _boxCenter, Vector2.UnitY, ModContent.ProjectileType<BlackSlashLine>(), BlackSlashLineDamage, 1,
+                    Main.myPlayer);
+                Projectile.NewProjectile(SourceFromThis, _boxCenter, Vector2.UnitX, ModContent.ProjectileType<BlackSlashLine>(), BlackSlashLineDamage, 1,
+                    Main.myPlayer);
+            }
+        }
+
+        private void XSlash()
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Projectile.NewProjectile(SourceFromThis, _boxCenter, new Vector2(1, 1), ModContent.ProjectileType<BlackSlashLine>(), BlackSlashLineDamage, 1,
+                    Main.myPlayer);
+                Projectile.NewProjectile(SourceFromThis, _boxCenter, new Vector2(1, -1), ModContent.ProjectileType<BlackSlashLine>(), BlackSlashLineDamage, 1,
+                    Main.myPlayer);
+            }
+        }
+
+        private void RainSlash1()
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                for (int i = 0; i < 16; i++)
+                {
+                    Projectile.NewProjectile(SourceFromThis, _boxCenter - new Vector2(i * 24, 0), new Vector2(0, 1), ModContent.ProjectileType<BlackSlashLine>(), BlackSlashLineDamage, 1,
+                        Main.myPlayer, ai1: i * 4);
+                }
+            }
+        }
+
+        private void RainSlash2()
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                for (int i = 0; i < 16; i++)
+                {
+                    Projectile.NewProjectile(SourceFromThis, _boxCenter + new Vector2(i * 24, 0), new Vector2(0, 1), ModContent.ProjectileType<BlackSlashLine>(), BlackSlashLineDamage, 1,
+                        Main.myPlayer, ai1: i * 4);
+                }
+            }
+        }
+        private void VerticalSlash()
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    Vector2 spawnPoint = _boxCenter;
+                    spawnPoint.X += Main.rand.NextFloat(-390, 390f);
+                    Projectile.NewProjectile(SourceFromThis, spawnPoint, Vector2.UnitY, ModContent.ProjectileType<BlackSlashLine>(), BlackSlashLineDamage, 1,
+                        Main.myPlayer, ai1: i * 4);
+                }
+
+            }
+        }
+        private void HorizontalSlash()
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    Vector2 spawnPoint = _boxCenter;
+                    spawnPoint.Y += Main.rand.NextFloat(-390, 390f);
+                    Projectile.NewProjectile(SourceFromThis, spawnPoint, Vector2.UnitX, ModContent.ProjectileType<BlackSlashLine>(), BlackSlashLineDamage, 1,
+                        Main.myPlayer, ai1: i * 4);
+                }
+
+            }
+        }
+        private float _blackSlashrotateCounter;
+        private void RotateSlash()
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Vector2 spawnPoint = _boxCenter;
+
+                Vector2 fireVelocity = Vector2.UnitY;
+                fireVelocity = fireVelocity.RotatedBy(_blackSlashrotateCounter);
+                Projectile.NewProjectile(SourceFromThis, spawnPoint, fireVelocity, ModContent.ProjectileType<BlackSlashLine>(), BlackSlashLineDamage, 1,
+                 Main.myPlayer, ai2: 1);
+                _blackSlashrotateCounter += MathHelper.TwoPi / 24f;
+                _blackSlashrotateCounter += Main.rand.NextFloat(0.2f);
+            }
+        }
         private void AI_SpecialSlash()
         {
             Timer++;
@@ -589,30 +932,130 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 newSlashSound.PitchVariance = 0.2f;
                 newSlashSound.Volume = 0.5f;
                 SoundEngine.PlaySound(newSlashSound, NPC.position);
-                Slash();
+
+                //Basically gonna be a really long attack pattern
+                switch (_attackNumber)
+                {
+                    default:
+                        RotateSlash();
+                        break;
+                    case 0:
+                        CrossSlash();
+                        break;
+                    case 1:
+                        XSlash();
+                        break;
+                    case 2:
+                        CrossSlash();
+                        break;
+                    case 3:
+                        XSlash();
+                        break;
+                    case 4:
+                        RainSlash1();
+                        break;
+                    case 5:
+                        CrossSlash();
+                        break;
+                    case 6:
+                        XSlash();
+                        break;
+                    case 7:
+                        CrossSlash();
+                        break;
+                    case 8:
+                        XSlash();
+                        break;
+                    case 9:
+                        RainSlash2();
+                        break;
+                    case 10:
+                        CrossSlash();
+                        break;
+                    case 11:
+                        XSlash();
+                        break;
+                    case 12:
+                        CrossSlash();
+                        break;
+                    case 13:
+                        XSlash();
+                        break;
+                    case 14:
+                        RainSlash1();
+                        RainSlash2();
+                        break;
+                    case 15:
+                        GothFlare();
+                        break;
+                    case 16:
+                        VerticalSlash();
+                        break;
+                    case 17:
+                        VerticalSlash();
+                        break;
+                    case 18:
+                        VerticalSlash();
+                        break;
+                    case 19:
+                        VerticalSlash();
+                        break;
+
+                    case 20:
+                        HorizontalSlash();
+                        break;
+                    case 21:
+                        HorizontalSlash();
+                        break;
+                    case 22:
+                        HorizontalSlash();
+                        break;
+                    case 23:
+                        HorizontalSlash();
+                        break;
+
+                    case 24:
+                        GothFlare();
+                        break;
+                }
+                if (_attackNumber == 25)
+                {
+                    ShakeModSystem.Shake = 64;
+                    FXUtil.ShakeCamera(NPC.position, 1024, 4);
+                    ScreenSmearEffectManager.DiagonalCut();
+                    SoundStyle hurriboom = AssetRegistry.Sounds.E.Hurriboom;
+                    hurriboom.PitchVariance = 0.3f;
+                    SoundEngine.PlaySound(hurriboom, NPC.position);
+                }
                 NPC.direction = _forwardVector.X > 0 ? -1 : 1;
             }
             _inRiver = true;
             _extraAfterImageAlpha = 0.7f;
-            if (_attackNumber % 2 == 0)
+
+
+
+            float forwardSlashTime = 5;
+            if (_attackNumber == 15 || _attackNumber == 24)
             {
-                Animator.PlayAnimation(Anim_ForwardSlash);
+                Animator.PlayAnimation(Anim_Holding);
+                forwardSlashTime = 120;
             }
             else
             {
-                Animator.PlayAnimation(Anim_BackSlash);
+                if (_attackNumber % 2 == 0)
+                {
+                    Animator.PlayAnimation(Anim_ForwardSlash);
+                }
+                else
+                {
+                    Animator.PlayAnimation(Anim_BackSlash);
+                }
+
             }
-
-            float forwardSlashTime = 5;
-
 
 
             float completionRatio = Timer / forwardSlashTime;
             float ease = EasingFunction.OutSine(completionRatio);
-            float osc = ExtraMath.Osc(0f, 1f, speed: 17);
-            BlackSea blackSea = ScreenShader.GetInstance<BlackSea>();
-            blackSea.amplitude = MathHelper.SmoothStep(0.05f, 0f, ease);
-
 
             float maxRadians = MathHelper.PiOver2;
             float radiansOffset = completionRatio * maxRadians;
@@ -642,7 +1085,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 TargetVector = NPC.velocity;
             }
 
-            float rotateTime = 15;
+            float speedUpRatio = _attackNumber / 4f;
+            speedUpRatio = MathHelper.Clamp(speedUpRatio, 0f, 1f);
+            float rotateTime = MathHelper.Lerp(45, 25, speedUpRatio);
+            if (_attackNumber >= 24)
+                rotateTime *= MathHelper.Lerp(0.5f, 0.05f, (_attackNumber - 24f) / 30f);
             float completionRatio = Timer / rotateTime;
             float maxRadians = MathHelper.PiOver4;
             float radiansOffset = completionRatio * maxRadians;
@@ -657,7 +1104,55 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (Timer >= rotateTime)
             {
                 _attackNumber++;
-                SwitchState(AIState.Special_SlashQuickStart);
+                if (_attackNumber < 124)
+                {
+                    SwitchState(AIState.Special_SlashQuickStart);
+                }
+                else
+                {
+                    SwitchState(AIState.Special_SlashEndInBlack);
+                }
+            }
+        }
+
+        private void AI_SpecialSlashEndP1()
+        {
+            Timer++;
+            NPC.velocity *= 0.9f;
+            _inRiver = true;
+
+            float fadeOuTime = 120;
+            float completionRatio = Timer / fadeOuTime;
+            ShakeModSystem.Shake = 8;
+            if (Timer >= fadeOuTime)
+            {
+                SwitchState(AIState.Special_SlashEndOutBlack);
+            }
+        }
+
+        private void KillBlackBox()
+        {
+            int type = ModContent.ProjectileType<BlackBox>();
+            int type2 = ModContent.ProjectileType<BlackRiver>();
+            foreach (var proj in Main.ActiveProjectiles)
+            {
+                if (proj.type == type || proj.type == type2)
+                    proj.ai[1] = 1;
+            }
+
+        }
+        private void AI_SpecialSlashEndP2()
+        {
+            Timer++;
+            NPC.velocity *= 0.9f;
+            float fadeOuTime = 120;
+            float completionRatio = Timer / fadeOuTime;
+
+            KillBlackBox();
+            Animator.PlayAnimation(Anim_BattleIdle);
+            if (Timer >= fadeOuTime)
+            {
+                SwitchState(AIState.Idle);
             }
         }
     }

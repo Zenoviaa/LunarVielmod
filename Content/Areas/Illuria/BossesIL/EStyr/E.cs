@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -99,7 +100,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Special_FadeOutFromBlack,
             Special_SlashQuickStart,
             Special_Slash,
-            Special_SlashReposition
+            Special_SlashReposition,
+            Special_SlashEndInBlack,
+            Special_SlashEndOutBlack
         }
 
         private bool _intro;
@@ -218,6 +221,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             base.SendExtraAI(writer);
             writer.WriteVector2(_forwardVector);
+            writer.WriteVector2(_boxCenter);
             writer.Write(_hoverTimer);
             writer.Write(_attackNumber);
             writer.Write(_bounceAttackNumber);
@@ -226,6 +230,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             base.ReceiveExtraAI(reader);
             _forwardVector = reader.ReadVector2();
+            _boxCenter = reader.ReadVector2();
             _hoverTimer = reader.ReadSingle();
             _attackNumber = reader.ReadSingle();
             _bounceAttackNumber = reader.ReadSingle();
@@ -307,8 +312,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     SwitchState(AIState.Despawn);
                 }
             }
-
+            if (_inRiver)
+            {
+                RetargetCameraModifier.ReTargetPosition = _boxCenter;
+            }
             _inRiver = false;
+       
             _telegraphLineAlpha = 0;
             _drawScale = Vector2.One;
             TargetOutlineColor = Color.White;
@@ -529,6 +538,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     break;
                 case AIState.Special_SlashReposition:
                     AI_SpecialSlashReposition();
+                    break;
+                case AIState.Special_SlashEndInBlack:
+                    AI_SpecialSlashEndP1();
+                    break;
+                case AIState.Special_SlashEndOutBlack:
+                    AI_SpecialSlashEndP2();
                     break;
             }
 
