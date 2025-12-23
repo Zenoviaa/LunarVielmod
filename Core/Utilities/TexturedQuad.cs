@@ -91,11 +91,11 @@ namespace Stellamod.Core.Utilities
             Vector2 topRight = position + topRightOffset;
             Vector2 bottomRight = position + bottomRightOffset;
 
-            vertices[0] = new VertexPositionColorTexture(new Vector3(topLeft, 0), Color.White, new Vector2(0, 0));
-            vertices[1] = new VertexPositionColorTexture(new Vector3(topRight, 0), Color.White, new Vector2(1, 0));
+            vertices[0] = new VertexPositionColorTexture(new Vector3(topLeft, 0), Color.White, new Vector2(1, 1));
+            vertices[1] = new VertexPositionColorTexture(new Vector3(topRight, 0), Color.White, new Vector2(0, 1));
 
-            vertices[2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), Color.White, new Vector2(0, 1));
-            vertices[3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), Color.White, new Vector2(1, 1));
+            vertices[2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), Color.White, new Vector2(1, 0));
+            vertices[3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), Color.White, new Vector2(0, 0));
         }
     }
 }

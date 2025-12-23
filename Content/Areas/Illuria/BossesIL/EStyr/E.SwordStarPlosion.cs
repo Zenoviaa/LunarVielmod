@@ -183,6 +183,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         IDrawOutlines
     {
         private ref float Timer => ref Projectile.ai[0];
+        private bool IsSlow => Projectile.ai[1] == 1;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -219,7 +220,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 if (Projectile.velocity.Length() < 8)
                 {
-                    Projectile.velocity *= 1.065f;
+                    if (IsSlow)
+                    {
+                        Projectile.velocity *= 1.01375f;
+                    }
+                    else
+                    {
+                        Projectile.velocity *= 1.065f;
+                    }
+                    
                 }
             }
             else

@@ -90,15 +90,17 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Kick_SwordThrowDown,
             Kick_End,
 
-            Dismantle_Start,
-            Dismantle_Slash,
-            Dismantle_End
+            Special_Warn,
+            Special_Warn2,
+            Special_HandStab,
+            Special_DripDrop
         }
 
         private bool _intro;
         private bool _showNamePlate;
         private bool _contactDamage;
 
+        private float _bounceAttackNumber;
         private float _attackNumber;
         private float _hoverTimer;
         private ref float Timer => ref NPC.ai[0];
@@ -133,7 +135,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 if (_patternManagerBackingField == null)
                 {
-                    _patternManagerBackingField = new PatternManager<AIState>(new Tuple<AIState, float>(AIState.ForwardSlash_Start, 1.0f));
+                    _patternManagerBackingField = new PatternManager<AIState>(
+                        new Tuple<AIState, float>(AIState.ForwardSlash_Start, 1.0f),
+                         new Tuple<AIState, float>(AIState.RippingGeyser_Start, 1.0f),
+                          new Tuple<AIState, float>(AIState.Grab_Start, 1.0f),
+                           new Tuple<AIState, float>(AIState.Tornado_Start, 1.0f),
+                            new Tuple<AIState, float>(AIState.ScreenSlash_Start, 1.0f),
+                             new Tuple<AIState, float>(AIState.SwordStarPlosion_Start, 1.0f),
+                             new Tuple<AIState, float>(AIState.JevilScythes_Start, 1.0f),
+                             new Tuple<AIState, float>(AIState.SingularBaseball_Start, 1.0f));
+
+                    //Always start with the forward slash attack
+                    _patternManagerBackingField.QueueSetPattern(AIState.ForwardSlash_Start);
                 }
                 return _patternManagerBackingField;
             }
@@ -175,9 +188,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.height = 100;
 
             //We have to upscale this boss cause he's really hard and you're not really supposed to be him lol
-            NPC.damage = 100;
-            NPC.defense = 20;
-            NPC.lifeMax = 30000;
+            NPC.damage = 1;
+            NPC.defense = 42;
+            NPC.lifeMax = 120000;
 
             NPC.scale = 1f;
             NPC.aiStyle = -1;
@@ -201,6 +214,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             writer.WriteVector2(_forwardVector);
             writer.Write(_hoverTimer);
             writer.Write(_attackNumber);
+            writer.Write(_bounceAttackNumber);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
@@ -208,6 +222,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _forwardVector = reader.ReadVector2();
             _hoverTimer = reader.ReadSingle();
             _attackNumber = reader.ReadSingle();
+            _bounceAttackNumber = reader.ReadSingle();
         }
 
         private void EnablePlatformArena()
@@ -221,6 +236,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void CreateNewAfterImage()
         {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
             Vector2 afterImageVelocity = -NPC.velocity.SafeNormalize(Vector2.Zero) * 4;
             afterImageVelocity = afterImageVelocity.RotatedByRandom(MathHelper.TwoPi);
             string texture = Texture + Animator.GetAnimation();
@@ -477,14 +495,17 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     AI_KickEnd();
                     break;
 
-                case AIState.Dismantle_Start:
-                    AI_DismantleStart();
+                case AIState.Special_Warn:
+                    AI_SpecialWarn();
                     break;
-                case AIState.Dismantle_Slash:
-                    AI_DismantleSlash();
+                case AIState.Special_Warn2:
+                    AI_SpecialWarn2();
                     break;
-                case AIState.Dismantle_End:
-                    AI_DismantleEnd();
+                case AIState.Special_HandStab:
+                    AI_SpecialHandStab();
+                    break;
+                case AIState.Special_DripDrop:
+                    AI_SpecialDripDrop();
                     break;
             }
 
@@ -516,6 +537,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void AI_Idle()
         {
             _attackNumber = 0;
+            _bounceAttackNumber = 0;
             Timer++;
             if (Timer >= 15)
             {
@@ -543,7 +565,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ChooseAttack()
         {
-            SwitchState(AIState.Grab_Start);
+            SwitchState(PatternManager.NextPattern());
+            SwitchState(AIState.Special_Warn);
         }
     }
 }

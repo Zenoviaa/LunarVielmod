@@ -45,6 +45,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float startTime = 150;
             ForwardSlashStartupMovement(startTime);
             TargetOutlineColor = Color.Yellow;
+            Animator.PlayAnimation(Anim_Holding);
             if (Timer >= startTime)
             {
                 SwitchState(AIState.ForwardSlash);

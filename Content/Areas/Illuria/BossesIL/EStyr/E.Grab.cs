@@ -95,6 +95,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void PreUpdateMovement()
         {
             base.PreUpdateMovement();
+        
             if (ThrowVelocity.HasValue)
             {
                 Player.velocity = ThrowVelocity.Value;
@@ -108,6 +109,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (HookNPC == -1)
                 return;
             NPC grabbedByNPC = Main.npc[HookNPC];
+            if (!grabbedByNPC.active)
+                HookNPC = -1;
             Vector2 targetVelocity = grabbedByNPC.Center - Player.Center;
             Player.velocity = targetVelocity;
         }
@@ -213,6 +216,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             if (Timer == 1)
             {
+                _attackNumber++;
                 SoundStyle hurrilock = AssetRegistry.Sounds.E.Hurridown;
                 hurrilock.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(hurrilock, NPC.position);
