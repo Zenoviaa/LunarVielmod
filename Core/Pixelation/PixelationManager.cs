@@ -63,6 +63,15 @@ namespace Stellamod.Core.Pixelation
             graphicsDevice.SetRenderTarget(_originalRenderTarget);
             graphicsDevice.Clear(Color.Transparent);
 
+            //Primitives cannot draw within the spritebatch cause they modify the graphics state
+            //Which would cause inconsistent results if they drew within the spritebatch
+            //To get around this we just have them draw before
+            while (_primitivesActionsQueue.Count > 0)
+            {
+                PrimitivesDrawAction drawAction = _primitivesActionsQueue.Dequeue();
+                drawAction(graphicsDevice);
+            }
+
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
             while(_spritebatchActionsQueue.Count > 0)
             {
@@ -71,11 +80,6 @@ namespace Stellamod.Core.Pixelation
             }
             spriteBatch.End();
 
-            while(_primitivesActionsQueue.Count > 0)
-            {
-                PrimitivesDrawAction drawAction = _primitivesActionsQueue.Dequeue();
-                drawAction(graphicsDevice);
-            }
         }
 
         private void RenderToDownscaledRenderTarget()
