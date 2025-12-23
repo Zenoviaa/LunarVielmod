@@ -18,8 +18,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 {
-    public class AssaultBullet : ScarletProjectile,
-        IDrawPixelated
+    public class AssaultBullet : ScarletProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
@@ -42,6 +41,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         public override bool PreDraw(ref Color lightColor)
         {
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
             return false;
         }
         private Color ColorFunction(float completionRatio)
@@ -62,7 +62,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
         }
 
-        public void DrawPixelated()
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
             var shader = MagicNormalShader.Instance;
             shader.PrimaryTexture = TrailRegistry.GlowTrail;

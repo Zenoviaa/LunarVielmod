@@ -28,8 +28,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
     */
 
 
-    public class IllurianSnipe : ScarletProjectile,
-        IDrawPixelated
+    public class IllurianSnipe : ScarletProjectile
     {
         private float _telegraphLineAlpha;
         private float _telegraphLineRot;
@@ -182,7 +181,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             return MathHelper.SmoothStep(8, 0, completionRatio);
         }
 
-        public void DrawPixelated()
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
+            return false;
+        }
+
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
             Texture2D bloomlineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
             SpriteBatch spriteBatch = Main.spriteBatch;

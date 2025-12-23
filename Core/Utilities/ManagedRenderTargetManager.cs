@@ -58,6 +58,11 @@ namespace Stellamod.Core.Utilities
         }
 
 
+        public static Point GetScreenTargetSize()
+        {
+            return new Point(Main.screenTarget.Width, Main.screenTarget.Height);
+        }
+
         public static ManagedRenderTarget New(ResizeFunction resizeFunction, int downSamples = 1, bool mipMap = true, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
         {
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;

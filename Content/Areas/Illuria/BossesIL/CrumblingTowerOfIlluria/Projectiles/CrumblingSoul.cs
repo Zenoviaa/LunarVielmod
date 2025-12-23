@@ -12,8 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Projectiles
 {
-    public class CrumblingSoul : ScarletProjectile,
-        IDrawPixelated
+    public class CrumblingSoul : ScarletProjectile
     {
         private float _completionRatio;
         private Vector2 _startCenter;
@@ -69,7 +68,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             return MathHelper.SmoothStep(16, 0, completionRatio) * EasingFunction.InExpo(_completionRatio);
         }
 
-        public void DrawPixelated()
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
+            return false;
+        }
+
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
             var shader = MagicNormalShader.Instance;
             shader.PrimaryTexture = TrailRegistry.GlowTrail;

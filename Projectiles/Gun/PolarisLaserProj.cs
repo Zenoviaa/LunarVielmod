@@ -15,8 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    public class PolarisLaserProj : ModProjectile,
-        IDrawPixelated
+    public class PolarisLaserProj : ModProjectile
     {
         //Don't change the sample points, 3 is good enough
         private const int NumSamplePoints = 3;
@@ -199,10 +198,18 @@ namespace Stellamod.Projectiles.Gun
             return Color.Lerp(Color.Cyan, Color.White, ExtraMath.Osc(0f, 1f, speed: 32));
         }
 
-        public override bool PreDraw(ref Color lightColor) => false;
-        public override bool ShouldUpdatePosition() => false;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
+            return false;
+        }
 
-        public void DrawPixelated()
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+      
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
             //Put in the points
             //This is just a straight beam that collides with tiles

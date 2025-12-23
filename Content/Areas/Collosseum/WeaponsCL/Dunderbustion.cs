@@ -53,8 +53,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                 material: ModContent.ItemType<GintzlMetal>());
         }
     }
-    public class DunderShot : ScarletProjectile,
-        IDrawPixelated
+    public class DunderShot : ScarletProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
@@ -158,7 +157,13 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             return MathHelper.SmoothStep(1, 0, completionRatio);
         }
 
-        public void DrawPixelated()
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
+            return false;
+        }
+
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
             Texture2D starTrailTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/CartoonyStar").Value;
 

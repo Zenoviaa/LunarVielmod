@@ -41,6 +41,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
     {
         private NPCSucker _npcSucker;
         private bool _hit;
+  
         public override void DefineCombo()
         {
             base.DefineCombo();

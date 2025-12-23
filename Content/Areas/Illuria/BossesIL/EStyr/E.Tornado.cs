@@ -604,8 +604,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     }
 
 
-    public class BlackTornado : ModProjectile,
-        IDrawPixelated
+    public class BlackTornado : ModProjectile
     {
         private LittleStarParticleManager _tornadoStreakParticlesBackingField;
         private LittleStarParticleManager TornadoStreakParticles
@@ -739,12 +738,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         public override bool PreDraw(ref Color lightColor)
         {
-           // TornadoStreakParticles.Draw();
-            //    TornadoStreakParticles.Draw();
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
             return false;
         }
 
-        public void DrawPixelated()
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
            TornadoStreakParticles.Draw();
         }

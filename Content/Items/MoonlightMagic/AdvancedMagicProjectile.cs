@@ -14,7 +14,6 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Items.MoonlightMagic
 {
     public class AdvancedMagicProjectile : ModProjectile,
-        IDrawPixelated,
         IProjectileNetID
     {
         private BaseElement _baseElement;
@@ -337,6 +336,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 PrimaryElement?.DrawForm(spriteBatch, Form, Projectile.Center - Main.screenPosition,
                     drawColor, lightColor, Projectile.velocity.ToRotation(), scale);
             }
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
             return false;
         }
 
@@ -345,7 +345,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             base.PostDraw(lightColor);
         }
 
-        public void DrawPixelated()
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
             PrimaryElement?.DrawTrail(OldPos);
 

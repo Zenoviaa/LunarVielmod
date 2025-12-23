@@ -12,8 +12,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles
 {
-    public class DescendingNodeBeam : ScarletProjectile,
-        IDrawPixelated
+    public class DescendingNodeBeam : ScarletProjectile
     {
 
         private ref float Timer => ref Projectile.ai[0];
@@ -71,7 +70,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
             donut.fadeToColor = Color.Lerp(twinColor, Color.DarkBlue, 0.5f);
         }
 
-        public void DrawPixelated()
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelated);
+            return false;
+        }
+        public void DrawPixelated(SpriteBatch spriteBatch, Vector2 screenPos)
         {
             float outScale = (float)Projectile.timeLeft / 10f;
             float outScaleEase = EasingFunction.InOutSine(outScale);
@@ -79,7 +83,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
             Texture2D drawTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Backglow").Value;
             Vector2 drawOrigin = drawTexture.Size() / 2f;
             float numAfterImages = TrailCacheLength;
-            SpriteBatch spriteBatch = Main.spriteBatch;
             for (int i = 0; i < TrailCacheLength; i++)
             {
                 Vector2 centerPos = OldCenterPos[i] - Main.screenPosition;

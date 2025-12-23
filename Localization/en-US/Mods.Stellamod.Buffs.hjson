@@ -947,3 +947,8 @@ BlackStars: {
 	DisplayName: Black Stars
 	Description: Mods.Stellamod.Buffs.BlackStars.Description
 }
+
+Frosting: {
+	DisplayName: Frosting
+	Description: Mods.Stellamod.Buffs.Frosting.Description
+}

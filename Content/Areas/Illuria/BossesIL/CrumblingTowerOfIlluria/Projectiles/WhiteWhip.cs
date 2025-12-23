@@ -16,8 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Projectiles
 {
-    public class WhiteWhip : ScarletProjectile,
-        IDrawPixelated
+    public class WhiteWhip : ScarletProjectile
     {
         private float _bloomLineAlpha;
         private enum AIState
@@ -162,11 +161,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             scale.Y *= 2f;
             scale.Y *= _bloomLineAlpha;
             spriteBatch.Draw(bloomlineTexture, drawCenter, null, drawColor, rot, drawOrigin, scale, SpriteEffects.None, 0);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
             return false;
         }
 
-        public void DrawPixelated()
-        {
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
+        { 
 
             if(State == AIState.Fire)
             {

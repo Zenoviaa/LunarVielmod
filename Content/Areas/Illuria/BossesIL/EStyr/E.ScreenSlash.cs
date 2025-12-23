@@ -18,8 +18,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
 
 
-    public class WhiteTear : ModProjectile,
-        IDrawPixelated
+    public class WhiteTear : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
@@ -41,12 +40,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public override bool PreDraw(ref Color lightColor)
         {
+            PixelationManager.QueueSpritebatchDrawAction(DrawTearTexture);
             return false;
         }
 
-        private void DrawTearTexture()
+        private void DrawTearTexture(SpriteBatch spriteBatch, Vector2 screenPos)
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D tearTexture = TrailRegistry.LightningTrail2.Value;
             Vector2 drawOrigin = new Vector2(0, tearTexture.Height / 2f);
             Vector2 drawPosition = new Vector2(-900, -450);
@@ -58,13 +57,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             drawScale.Y *= 0.5f;
             spriteBatch.Draw(tearTexture, drawPosition, null, Color.Black, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-            //spriteBatch.Draw(tearTexture, drawPosition + new Vector2(1280), null, Color.White, Projectile.rotation + MathHelper.PiOver2, drawOrigin, drawScale, SpriteEffects.None, 0);
-
-
-        }
-        public void DrawPixelated()
-        {
-            DrawTearTexture();
         }
     }
     public class DarkStar : ScarletProjectile,

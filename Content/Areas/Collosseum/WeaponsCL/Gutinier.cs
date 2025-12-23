@@ -82,8 +82,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
         }
     }
 
-    public class GutinierGustBlast : ModProjectile,
-        IDrawPixelated
+    public class GutinierGustBlast : ModProjectile
     {
         private Vector2[] _windPositions;
         private Vector2[] WindPositions
@@ -146,7 +145,13 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             return MathHelper.SmoothStep(baseWidth, baseWidth, progressOnStrip);
         }
 
-        public void DrawPixelated()
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
+            return false;
+        }
+
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
             var shader = MagicRadianceShader.Instance;
             shader.PrimaryTexture = TrailRegistry.GlowTrail;

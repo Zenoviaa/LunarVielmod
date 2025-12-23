@@ -16,8 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 {
-    public class PunkingLaser : ModProjectile,
-        IDrawPixelated
+    public class PunkingLaser : ModProjectile
     {
         private Vector2[] _laserPointsBackingField;
         private Vector2[] LaserPoints
@@ -102,7 +101,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             return 32 * inScale * outScale;
         }
 
-        public void DrawPixelated()
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
+            return false;
+        }
+
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
             var shader = BasicLaserShader.Instance;
             shader.LaserTexture = TrailRegistry.BeamTrail;

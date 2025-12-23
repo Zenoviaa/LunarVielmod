@@ -16,8 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 {
-    public class ElectroField : ModProjectile,
-        IDrawPixelated
+    public class ElectroField : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
@@ -39,6 +38,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         public override bool PreDraw(ref Color lightColor)
         {
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelated);
             return false;
         }
         public override void AI()
@@ -64,11 +64,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             DrawHelper.AnimateTopToBottom(Projectile, 2);
         }
         
-        public void DrawPixelated()
+        public void DrawPixelated(SpriteBatch spriteBatch, Vector2 screenPos)
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Vector2 drawPos = Projectile.Center - screenPos;
             float outlineOffset = 2;
             Vector2 left = Vector2.UnitX * -outlineOffset;
             Vector2 right = Vector2.UnitX * outlineOffset;

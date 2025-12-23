@@ -56,8 +56,7 @@ namespace Stellamod.Core.Bases
         }
     }
 
-    public abstract class GrappleLine : ModProjectile,
-        IDrawPixelated
+    public abstract class GrappleLine : ModProjectile
     {
         private enum AIState
         {
@@ -258,7 +257,7 @@ namespace Stellamod.Core.Bases
         {
             return 2;
         }
-        public void DrawPixelated()
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
             switch (State)
             {
@@ -274,6 +273,7 @@ namespace Stellamod.Core.Bases
         public override bool PreDraw(ref Color lightColor)
         {
             DrawHook(ref lightColor);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
             return false;
         }
         private void DrawHook(ref Color lightColor)

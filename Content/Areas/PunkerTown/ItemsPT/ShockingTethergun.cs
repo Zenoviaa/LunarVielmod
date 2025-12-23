@@ -55,8 +55,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         }
     }
 
-    public class ShockLine : ModProjectile,
-        IDrawPixelated
+    public class ShockLine : ModProjectile
     {
         private float _shockTimer;
         private float _traveledDistance;
@@ -253,7 +252,12 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             return false;
         }
 
-        public void DrawPixelated()
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
+            return false;
+        }
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
             switch (State)
             {

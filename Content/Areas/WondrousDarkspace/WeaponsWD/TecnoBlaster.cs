@@ -52,8 +52,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
                 material: ModContent.ItemType<MiracleThread>());
         }
     }
-    public class TechnoBeam : ModProjectile,
-        IDrawPixelated
+    public class TechnoBeam : ModProjectile
     {
         private List<Vector2> _beamPoints;
         private ref float Timer => ref Projectile.ai[0];
@@ -236,12 +235,14 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             }
 
             spriteBatch.RestartDefaults();
-
-
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
             return false;
         }
 
-        public override bool ShouldUpdatePosition() => false;
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -256,7 +257,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             }
         }
 
-        public void DrawPixelated()
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
 
             var shader = MagicNormalShader.Instance;
