@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.BlackSystem;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -19,6 +20,46 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         void DrawRiverMask();
     }
 
+    public class BlackBox : ModProjectile,
+        IDrawBlackRiverMask
+    {
+        private ref float Timer => ref Projectile.ai[0];
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.friendly = false;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+        }
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            BlackRiverRenderer.AddMask(this);
+            return false;
+        }
+
+        public void DrawRiverMask()
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            Vector2 drawCenter = Projectile.Center - Main.screenPosition;
+            Vector2 scale = Vector2.One;
+            float rotation = Projectile.rotation;
+            spriteBatch.Draw(texture, drawCenter, null, new Color(0,0,0,0), rotation, drawOrigin, 1f, SpriteEffects.None, 0);
+            spriteBatch.End();
+            spriteBatch.Begin();
+        }
+
+    }
     public class RiverWhip : ModProjectile,
         IDrawBlackRiverMask
     {
@@ -52,7 +93,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             if(RandScale == 0 && this.OwnedByLocalClient())
             {
-                RandScale = Main.rand.NextFloat(0.5f, 2f);
+                RandScale = Main.rand.NextFloat(0.05f, 2);
                 Projectile.netUpdate = true;
             }
 
@@ -90,6 +131,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+            float xDiff = Projectile.Center.X - Main.Camera.Center.X;
+            drawPosition.X += xDiff * RandScale * 0.4f;
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawOrigin = new Vector2(0, 25);
             float rotation = Projectile.rotation;
@@ -124,7 +167,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Projectile.width = 1;
             Projectile.height = 1;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 340;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
         }
@@ -179,6 +222,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private ManagedRenderTarget _riverMaskRT;
         private ManagedRenderTarget _pixelRT;
         private List<IDrawBlackRiverMask> _draws;
+        private Asset<Texture2D> _noiseTextureAsset;
+        private Asset<Texture2D> _waterTextureAsset;
+
+        public static bool renderBehindNPCs;
+        public static bool invert;
+
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -186,35 +235,41 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _riverRT = ManagedRenderTarget.New(GetScreenSize);
             _riverMaskRT = ManagedRenderTarget.New(GetScreenSize);
             _pixelRT = ManagedRenderTarget.New(GetScreenSize, 2);
+
             On_Main.CheckMonoliths += RenderRiverRT;
+            On_Main.DrawPlayers_BehindNPCs += DrawRiverToScreenBehindNPCs;
             On_Main.DrawPlayers_AfterProjectiles += DrawRiverToScreen;
         }
 
-
+        public override void Load()
+        {
+            base.Load();
+            _waterTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Refraction");
+            _noiseTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/PerlinNoise");
+        }
 
         public override void OnModUnload()
         {
             base.OnModUnload();
             On_Main.CheckMonoliths -= RenderRiverRT;
+            On_Main.DrawPlayers_BehindNPCs -= DrawRiverToScreenBehindNPCs;
             On_Main.DrawPlayers_AfterProjectiles -= DrawRiverToScreen;
         }
 
         private void RenderRiverMaskRT()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            if (_draws.Count > 0)
+            spriteBatch.GraphicsDevice.SetRenderTarget(_riverMaskRT);
+            spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+            if (invert)
+                spriteBatch.GraphicsDevice.Clear(Color.White);
+            spriteBatch.Begin();
+            for (int i = 0; i < _draws.Count; i++)
             {
-                spriteBatch.GraphicsDevice.SetRenderTarget(_riverMaskRT);
-                spriteBatch.GraphicsDevice.Clear(Color.Transparent);
-                spriteBatch.Begin();
-                for (int i = 0; i < _draws.Count; i++)
-                {
-                    IDrawBlackRiverMask mask = _draws[i];
-                    mask.DrawRiverMask();
-                }
-                spriteBatch.End();
+                IDrawBlackRiverMask mask = _draws[i];
+                mask.DrawRiverMask();
             }
-            _draws.Clear();
+            spriteBatch.End();
         }
 
         private void RenderRiverTextureRT()
@@ -224,8 +279,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             spriteBatch.GraphicsDevice.Clear(Color.Black);
 
             MixerShader mixerShader = MixerShader.Instance;
-            Asset<Texture2D> mixTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Refraction");
-            Asset<Texture2D> noiseTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/PerlinNoise");
+            Asset<Texture2D> mixTexture = _waterTextureAsset;
+            Asset<Texture2D> noiseTexture = _noiseTextureAsset;
             mixerShader.MixTexture = mixTexture;
             mixerShader.NoiseTexture = noiseTexture;
             mixerShader.Time = Main.GlobalTimeWrappedHourly * 3;
@@ -263,20 +318,37 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void RenderRiverRT(On_Main.orig_CheckMonoliths orig)
         {
-            RenderRiverMaskRT();
-            RenderRiverTextureRT();
-            RenderToPixelRT();
+            if(_draws.Count > 0)
+            {
+                RenderRiverMaskRT();
+                RenderRiverTextureRT();
+                RenderToPixelRT();
+                _draws.Clear();
+            }
+
             orig();
         }
+        private void DrawRiverToScreenBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)
+        {
+            if (renderBehindNPCs)
+            {
+                DrawRiverToScreen();
+            }
+            orig(self);
+        }
+
         private void DrawRiverToScreen(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
         {
             orig(self);
-            DrawRiverToScreen();
+            if (!renderBehindNPCs)
+            {
+                DrawRiverToScreen();
+            }
+       
         }
 
         private void DrawRiverToScreen()
         {
-
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
             spriteBatch.Draw(_pixelRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
@@ -288,6 +360,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             BlackRiverRenderer renderer = ModContent.GetInstance<BlackRiverRenderer>();
             renderer._draws.Add(mask);
         }
+        
         private Point GetScreenSize()
         {
             return new Point(Main.screenTarget.Width, Main.screenTarget.Height);
@@ -393,18 +466,22 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                         ModContent.ProjectileType<BlackRiver>(), 1, 1, Main.myPlayer);
                 }
             }
-            if (MultiplayerHelper.IsHost && Timer % 12 == 0)
+            if (MultiplayerHelper.IsHost && Timer % 6 == 0)
             {
                 Vector2 tentacleSpawnPoint = NPC.Center;
                 tentacleSpawnPoint.X += Main.rand.NextFloat(-750f, 750f);
                 tentacleSpawnPoint.Y += 777;
 
                 Vector2 upVelocity = -Vector2.UnitY;
-                upVelocity = upVelocity.RotatedByRandom(0.5f);
+                upVelocity = upVelocity.RotatedByRandom(0.15f);
                 Projectile.NewProjectile(SourceFromThis, tentacleSpawnPoint, upVelocity, 
                     ModContent.ProjectileType<RiverWhip>(), 1, 1, Main.myPlayer);
             }
 
+            if(Timer % 6 == 0)
+            {
+                Dust.NewDustPerfect(NPC.Center, DustID.GemDiamond);
+            }
             float dripDropTime = 240;
             float completionRatio = Timer / dripDropTime;
             float ease = EasingFunction.InOutSine(completionRatio);
@@ -413,6 +490,64 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.velocity = Vector2.Lerp(TargetVector, targetVelocity, ease);
             ShakeModSystem.Shake = MathHelper.Lerp(0f, 8, completionRatio);
             if (Timer >= dripDropTime)
+            {
+                SwitchState(AIState.Special_FadeToBlack);
+            }
+        }
+
+        private void SetRiverBoxParams()
+        {
+            BlackRiverRenderer.invert = _inRiver;
+            BlackRiverRenderer.renderBehindNPCs = _inRiver;
+        }
+
+
+        private void AI_SpecialFadeToBlack()
+        {
+            Timer++;
+            float fadeTime = 100;
+            float completionRatio = Timer / fadeTime;
+
+            //Fade the screen to black
+            ShakeModSystem.Shake = 8;
+            FullTint.SetColor(Color.Black, completionRatio);
+            if(Timer >= fadeTime)
+            {
+                SwitchState(AIState.Special_MakeBox);
+            }
+        }
+        private void AI_SpecialMakeBox()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero, 
+                        ModContent.ProjectileType<BlackBox>(), 1, 1, Main.myPlayer);
+                }
+            }
+
+            FullTint.SetColor(Color.Black, 1f);
+            if(Timer >= 30)
+            {
+                SwitchState(AIState.Special_FadeOutFromBlack);
+            }
+        }
+        private void AI_SpecialFadeOutFromBlack()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+
+            }
+
+            _inRiver = true;
+            float fadeTime = 100;
+            float completionRatio = Timer / fadeTime;
+            float alpha = MathHelper.Lerp(1f, 0f, completionRatio);
+            FullTint.SetColor(Color.Black, alpha);
+            if(Timer >= fadeTime)
             {
                 SwitchState(AIState.Idle);
             }

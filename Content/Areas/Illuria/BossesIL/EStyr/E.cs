@@ -93,13 +93,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Special_Warn,
             Special_Warn2,
             Special_HandStab,
-            Special_DripDrop
+            Special_DripDrop,
+            Special_FadeToBlack,
+            Special_MakeBox,
+            Special_FadeOutFromBlack,
         }
 
         private bool _intro;
         private bool _showNamePlate;
         private bool _contactDamage;
-
+        private bool _inRiver;
         private float _bounceAttackNumber;
         private float _attackNumber;
         private float _hoverTimer;
@@ -292,8 +295,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _contactDamage = false;
             _isGrabbing = false;
             _hoverTimer++;
-
-
+            SetRiverBoxParams();
             if (State != AIState.Despawn && !NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
@@ -303,7 +305,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 }
             }
 
-
+            _inRiver = false;
             _telegraphLineAlpha = 0;
             _drawScale = Vector2.One;
             TargetOutlineColor = Color.White;
@@ -506,6 +508,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     break;
                 case AIState.Special_DripDrop:
                     AI_SpecialDripDrop();
+                    break;
+                case AIState.Special_FadeToBlack:
+                    AI_SpecialFadeToBlack();
+                    break;
+                case AIState.Special_MakeBox:
+                    AI_SpecialMakeBox();
+                    break;
+                case AIState.Special_FadeOutFromBlack:
+                    AI_SpecialFadeOutFromBlack();
                     break;
             }
 
