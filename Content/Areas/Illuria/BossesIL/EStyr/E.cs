@@ -109,9 +109,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private bool _showNamePlate;
         private bool _contactDamage;
         private bool _inRiver;
+        private bool _doneSpecial;
         private float _bounceAttackNumber;
         private float _attackNumber;
         private float _hoverTimer;
+
+        private bool InPhase2 => NPC.life < NPC.lifeMax / 2f;
         private ref float Timer => ref NPC.ai[0];
         private AIState State
         {
@@ -225,6 +228,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             writer.Write(_hoverTimer);
             writer.Write(_attackNumber);
             writer.Write(_bounceAttackNumber);
+            writer.Write(_doneSpecial);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
@@ -234,6 +238,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _hoverTimer = reader.ReadSingle();
             _attackNumber = reader.ReadSingle();
             _bounceAttackNumber = reader.ReadSingle();
+            _doneSpecial = reader.ReadBoolean();
         }
 
         private void EnablePlatformArena()
@@ -316,6 +321,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 RetargetCameraModifier.ReTargetPosition = _boxCenter;
             }
+            if(InPhase2 && !_doneSpecial)
+            {
+                PatternManager.QueueSetPattern(AIState.Special_Warn);
+                _doneSpecial = true;
+            }
+
             _inRiver = false;
        
             _telegraphLineAlpha = 0;
@@ -604,7 +615,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void ChooseAttack()
         {
             SwitchState(PatternManager.NextPattern());
-            SwitchState(AIState.Special_Warn);
         }
     }
 }

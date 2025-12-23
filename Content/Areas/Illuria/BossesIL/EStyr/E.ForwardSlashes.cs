@@ -40,11 +40,28 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 NPC.TargetClosest();
                 TargetVector = NPC.velocity;
+                SoundStyle hurrilock = AssetRegistry.Sounds.E.Hurridown;
+                hurrilock.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(hurrilock, NPC.position);
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<BlackStarTrail>(), 1, 0f, Main.myPlayer, ai1: NPC.whoAmI);
+                }
+
             }
 
-            float startTime = 150;
-            ForwardSlashStartupMovement(startTime);
-            TargetOutlineColor = Color.Yellow;
+            float startTime = 180f;
+            float completionRatio = Timer / startTime;
+            float ease = EasingFunction.InOutExpo7(completionRatio);
+            Vector2 offset = new Vector2(0, -400);
+            offset = offset.RotatedBy(MathHelper.TwoPi * ease);
+            Vector2 positionToMoveTo = MyTarget.Center + offset;
+            Vector2 targetVelcoity = positionToMoveTo - NPC.Center;
+            NPC.velocity = Vector2.Lerp(TargetVector, targetVelcoity, completionRatio);
+
+            _extraAfterImageAlpha = MathHelper.Lerp(0f, 0.7f, completionRatio);
+            TargetOutlineColor = Color.Lerp(Color.Transparent, Color.White, ExtraMath.Osc(0f, 1f, speed: 40));
             Animator.PlayAnimation(Anim_Holding);
             if (Timer >= startTime)
             {
@@ -66,7 +83,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float ease = EasingFunction.InOutSine(lerp);
             float startTime = MathHelper.Lerp(50, 5, ease);
             ForwardSlashStartupMovement(startTime);
-            TargetOutlineColor = Color.Yellow;
             if (Timer >= startTime)
             {
                 SwitchState(AIState.ForwardSlash);
@@ -95,7 +111,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (MultiplayerHelper.IsHost)
             {
                 Vector2 shootVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-                shootVelocity *= 0.5f;
+                shootVelocity *= 0.45f;
                 int projType = ModContent.ProjectileType<EBuster>();
                 Projectile.NewProjectile(SourceFromThis, NPC.Center, shootVelocity, projType, ForwardSlashDamage, 1, Main.myPlayer);
             }
@@ -156,8 +172,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 recoilPosition = Vector2.Lerp(recoilStartVector, recoilEndVector, ease);
             Vector2 targetVelocity = recoilPosition - NPC.Center;
             NPC.velocity = targetVelocity;
-
-            TargetOutlineColor = Color.Red;
             if (Timer >= forwardSlashTime)
             {
 
@@ -195,7 +209,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             Timer++;
             NPC.velocity *= 0.9f;
-            TargetOutlineColor = Color.Transparent;
             if (Timer >= 1)
             {
                 _attackNumber++;
