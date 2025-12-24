@@ -200,7 +200,11 @@ public class ForegroundParticleRenderer : ModSystem
     public static void NewParticle<T>() where T : ForegroundGore
     {
         float xPosition = Main.rand.Next(-(int)(Main.screenWidth * 0.52f), (int)(Main.screenWidth * 0.52f));
-        float yPosition = Main.rand.NextFloat(-Main.screenHeight * 0.52f, 0);
+        if (xPosition < 0)
+            xPosition -= Main.screenWidth / 2f;
+        else
+            xPosition += Main.screenWidth / 2f;
+            float yPosition = Main.rand.NextFloat(-Main.screenHeight * 0.52f, 0);
         Vector2 pos = Main.LocalPlayer.Center + new Vector2(xPosition, yPosition);
         NewParticle<T>(pos);
     }
