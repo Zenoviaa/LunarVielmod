@@ -45,7 +45,7 @@ namespace Stellamod.Core.DialogueSystem
                 Main.mouseLeftRelease = false;
             }
         }
-        public void StartDialogueSequence(BaseDialogue dialogue)
+        public DialogueActor StartDialogueSequence(BaseDialogue dialogue)
         {
             _hasCompleted = false;
             dialogue.OnStart();
@@ -53,7 +53,12 @@ namespace Stellamod.Core.DialogueSystem
             _dialogueActor.ProgressLine();
             DialogueTowningUISystem uiSystem = ModContent.GetInstance<DialogueTowningUISystem>();
             uiSystem.ClearOptions();
+            return _dialogueActor;
 
+        }
+        public bool HasFinishedDialogue()
+        {
+            return _hasCompleted;
         }
     }
     public class DialogueActor

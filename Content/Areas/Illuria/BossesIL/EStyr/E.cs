@@ -21,6 +21,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     {
         private enum AIState
         {
+            Intro_PreFight,
             Intro_Idle,
             Intro_SwordHold,
             Intro_HeadTurn,
@@ -346,6 +347,9 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 case AIState.Idle:
                     AI_Idle();
                     break;
+                case AIState.Intro_PreFight:
+                    AI_IntroPreFight();
+                    break;
                 case AIState.Intro_Idle:
                     AI_IntroIdle();
                     break;
@@ -583,6 +587,12 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             string texture = Texture + Animator.GetAnimation();
             OldTexture[0] = texture;
             NPC.spriteDirection = -NPC.direction;
+        }
+
+        public void StartFight()
+        {
+            SwitchState(AIState.Intro_Idle);
+            NPC.netUpdate = true;
         }
 
         private Vector2 CalculateHoverVelocity()

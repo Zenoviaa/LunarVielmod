@@ -14,8 +14,8 @@ namespace Stellamod.Core.BlackSystem
         private UserInterface _userInterface;
         private GameTime _lastUpdateUiGameTime;
         private BlackUIState _black;
-        public Color ScreenTintColor;
-        public float Alpha;
+        public static Color ScreenTintColor;
+        public static float Alpha;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -30,9 +30,8 @@ namespace Stellamod.Core.BlackSystem
             if (Main.netMode == NetmodeID.Server)
                 return;
 
-            FullTint tint = ModContent.GetInstance<FullTint>();
-            tint.ScreenTintColor = tintColor;
-            tint.Alpha = alpha;
+            ScreenTintColor = tintColor;
+            Alpha = alpha;
         }
 
         public override void UpdateUI(GameTime gameTime)

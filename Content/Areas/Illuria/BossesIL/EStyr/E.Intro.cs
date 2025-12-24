@@ -32,7 +32,22 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             RetargetCameraModifier.ReTargetPosition = NPC.Center;
 
             //Face away the player
-            NPC.direction = -TargetDirection;
+            NPC.direction = TargetDirection;
+        }
+        private void AI_IntroPreFight()
+        {
+            Timer++;
+            //Make sure to target the player
+            if (Timer == 1)
+            {
+                NPC.TargetClosest();
+                TargetVector = NPC.velocity;
+            }
+
+            //Play the head turn animation
+            Animator.PlayAnimation(Anim_Idle);
+            IntroHoverMovement();
+            Main.windSpeedCurrent = 0;
         }
 
         /*

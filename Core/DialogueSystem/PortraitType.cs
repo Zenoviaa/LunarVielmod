@@ -71,6 +71,7 @@ namespace Stellamod.Core.DialogueSystem
         Gilatine,
         Jiitas,
         Minerva,
-        List
+        List,
+        E
     }
 }
