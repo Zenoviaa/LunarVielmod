@@ -217,7 +217,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
         private float WidthFunction(float completionRatio)
         {
-            float width = 64 * MagicProj.ScaleMultiplier;
+            float width = 128 * MagicProj.ScaleMultiplier;
             return MathHelper.SmoothStep(width, 0, completionRatio);
         }
 
@@ -251,6 +251,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
 
             BlackFireShader blackFireShader = BlackFireShader.Instance;
+   
             TrailDrawer.Draw(Main.spriteBatch, oldPos, null, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
 
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
@@ -122,6 +123,10 @@ namespace Stellamod.Core.Particles
         private void DrawMainParticles(On_Main.orig_DrawDust orig, Main self)
         {
             orig(self);
+
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelParticles, DrawLayer.OverNPCsAdditive);
+            return;
+
             if (Main.netMode == NetmodeID.Server)
                 return;
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -161,6 +166,10 @@ namespace Stellamod.Core.Particles
                 particle.Draw(spriteBatch);
             }
         }
+        public void DrawPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            DrawParticles(spriteBatch);
+        }
 
         public void DrawParticles(SpriteBatch spriteBatch)
         {
@@ -180,7 +189,7 @@ namespace Stellamod.Core.Particles
                 if (!ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     continue;
 
-                if (particle.customShader != myCustomShader)
+                if (particle.customShader != myCustomShader || spriteBatch.GraphicsDevice.BlendState != BlendState.Additive)
                 {
                     spriteBatch.End();
                     myCustomShader = particle.customShader;

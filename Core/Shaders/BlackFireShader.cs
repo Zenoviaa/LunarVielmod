@@ -169,7 +169,7 @@ namespace Stellamod.Core.Shaders
             PrimaryTexture2 = TrailRegistry.SmallWhispyTrail;
             NoiseTexture = TrailRegistry.WhispyTrail;
             DistortionTexture = AssetRegistry.Textures.Noise.Perlin;
-            Time = Main.GlobalTimeWrappedHourly * 4;
+            Time = Main.GlobalTimeWrappedHourly * 8;
             Tiling = Vector2.One * 3;
         }
     }

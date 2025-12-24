@@ -336,7 +336,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 PrimaryElement?.DrawForm(spriteBatch, Form, Projectile.Center - Main.screenPosition,
                     drawColor, lightColor, Projectile.velocity.ToRotation(), scale);
             }
-            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated, DrawLayer.OverNPCs);
             return false;
         }
 

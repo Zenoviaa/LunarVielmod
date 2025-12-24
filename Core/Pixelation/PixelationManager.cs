@@ -31,13 +31,15 @@ namespace Stellamod.Core.Pixelation
         private Queue<SpritebatchDrawAction> _spritebatchActionsQueue;
         private Queue<PrimitivesDrawAction> _primitivesActionsQueue;
         private float _downSamples;
-        public PixelTarget(int downSamples = 2)
+        private BlendState _blendState;
+        public PixelTarget(int downSamples = 2, BlendState blendState = null)
         {
             _downSamples = downSamples;
             _downScaleRenderTarget = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize, downSamples);
             _originalRenderTarget = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
             _spritebatchActionsQueue = new Queue<SpritebatchDrawAction>(100);
             _primitivesActionsQueue = new Queue<PrimitivesDrawAction>(100);
+            _blendState = blendState == null ? BlendState.AlphaBlend : blendState;
         }
 
         public void QueueSpritebatchDrawAction(SpritebatchDrawAction action)
@@ -98,7 +100,7 @@ namespace Stellamod.Core.Pixelation
         public void DrawToScreen()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+            spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
             spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
             spriteBatch.End();
         }
@@ -111,12 +113,14 @@ namespace Stellamod.Core.Pixelation
     public class PixelationManager : ModSystem
     {
         private PixelTarget _overNPCsPixelTarget;
+        private PixelTarget _overNPCsPixelTargetAdditive;
         public override void OnModLoad()
         {
             base.OnModLoad();
             On_Main.CheckMonoliths += RenderToPixelationRT;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawOverNPCs;
             _overNPCsPixelTarget = new PixelTarget(downSamples: 2);
+            _overNPCsPixelTargetAdditive = new PixelTarget(downSamples: 2, BlendState.Additive);
         }
 
         public override void OnModUnload()
@@ -132,6 +136,7 @@ namespace Stellamod.Core.Pixelation
             if (Main.gameMenu)
                 return;
             _overNPCsPixelTarget.Render();
+            _overNPCsPixelTargetAdditive.Render();
         }
 
        
@@ -142,14 +147,25 @@ namespace Stellamod.Core.Pixelation
                 return;
 
             _overNPCsPixelTarget.DrawToScreen();
+            _overNPCsPixelTargetAdditive.DrawToScreen();
         }
 
+        private PixelTarget GetPixelTarget(DrawLayer drawLayer)
+        {
+            switch (drawLayer)
+            {
+                default:
+                    return _overNPCsPixelTarget;
+                case DrawLayer.OverNPCsAdditive:
+                    return _overNPCsPixelTargetAdditive;
+            }
+        }
         public static void QueueSpritebatchDrawAction(PixelTarget.SpritebatchDrawAction drawAction, DrawLayer drawLayer = DrawLayer.OverNPCs)
         {
             //TODO: have multiple draw layers, for nowe don't need it
             if (Main.netMode == NetmodeID.Server)
                 return;
-            PixelTarget target = ModContent.GetInstance<PixelationManager>()._overNPCsPixelTarget;
+            PixelTarget target = ModContent.GetInstance<PixelationManager>().GetPixelTarget(drawLayer);
             target.QueueSpritebatchDrawAction(drawAction);
         }
 
@@ -157,13 +173,14 @@ namespace Stellamod.Core.Pixelation
         {
             if (Main.netMode == NetmodeID.Server)
                 return;
-            PixelTarget target = ModContent.GetInstance<PixelationManager>()._overNPCsPixelTarget;
+            PixelTarget target = ModContent.GetInstance<PixelationManager>().GetPixelTarget(drawLayer);
             target.QueuePrimitiveDrawAction(drawAction);
         }
     }
 
     public enum DrawLayer
     {
-        OverNPCs = 0
+        OverNPCs = 0,
+        OverNPCsAdditive=1
     }
 }

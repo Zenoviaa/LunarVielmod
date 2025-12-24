@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Core.Effects;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -360,7 +361,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
 
                 FXUtil.ShakeCamera(Projectile.position, 1024, 8);
-                FXUtil.GlowCircleBoom(Owner.Center + Projectile.velocity * 64,
+
+                Vector2 boomPosition = Owner.Center + Projectile.velocity * 64;
+                FXUtil.GlowCircleBoom(boomPosition,
                     innerColor: Color.White,
                     glowColor: Element.GetElementColor(),
                     outerGlowColor: Color.Lerp(Element.GetElementColor(), Color.Black, 0.5f), duration: 25, baseSize: 0.14f);
@@ -378,6 +381,15 @@ namespace Stellamod.Content.Items.MoonlightMagic
                         baseSize: Main.rand.NextFloat(0.05f, 0.1f),
                         duration: Main.rand.NextFloat(15, 25));
                     particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+
+                float numDust = 5;
+                for(float n = 0; n < numDust; n++)
+                {
+                    Vector2 velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 15;
+                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 * 0.7f);
+                    velocity *= Main.rand.NextFloat(0.3f, 0.7f);
+                    Dust.NewDustPerfect(boomPosition, ModContent.DustType<GlowDust>(), velocity, newColor: Element.GetElementColor(), Scale: 2f);
                 }
                 _hasFired = true;
             }
@@ -594,8 +606,14 @@ namespace Stellamod.Content.Items.MoonlightMagic
             DrawStaff(ref lightColor);
             DrawEnergyBall(ref lightColor);
             DrawCrosshair(ref lightColor);
-
             return false;
+        }
+
+        private void Draw(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            Color lightColor = Color.White;
+
+
         }
         private Core.Effects.GlowCircleShader _shader;
         public void DrawAimingLines(ref Color lightColor)
