@@ -72,6 +72,7 @@ namespace Stellamod.Core.DialogueSystem
         Jiitas,
         Minerva,
         List,
-        E
+        E,
+        EreshDark
     }
 }

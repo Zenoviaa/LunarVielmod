@@ -260,7 +260,117 @@ ZuiGetOuttaHereDialogue: {
 		'''
 	DisplayName: Who are you???
 }
-
+EEndingDialogue: {
+	Line0:
+		'''
+		[PORTRAIT=EreshDark]
+		Styr...
+		'''
+	Line1:
+		'''
+		[PORTRAIT=E]
+		.....
+		'''
+	Line2:
+		'''
+		[PORTRAIT=E]
+		Yes?
+		'''
+	Line3:
+		'''
+		[PORTRAIT=E]
+		I'm getting rid of them.
+		'''
+	Line4:
+		'''
+		[PORTRAIT=E]
+		We need this.
+		'''
+	Line5:
+		'''
+		[PORTRAIT=EreshDark]
+		You're out of time...
+		'''
+	Line6:
+		'''
+		[PORTRAIT=EreshDark]
+		And I would like my sword back too...
+		'''
+	Line7:
+		'''
+		[PORTRAIT=E]
+		But I'm not done here yet!
+		'''
+	Line8:
+		'''
+		[PORTRAIT=E]
+		These idiots shouldn't even be able to get near you my love.
+		'''
+	Line9:
+		'''
+		[PORTRAIT=EreshDark]
+		Sure, sure... I can handle that myself.
+		'''
+	Line10:
+		'''
+		[PORTRAIT=EreshDark]
+		Please do return my sword now though, otherwise it will soon eat you alive.
+		'''
+	Line11:
+		'''
+		[PORTRAIT=EreshDark]
+		I do not need to lose a member of my troupe
+		'''
+	Line12:
+		'''
+		[PORTRAIT=EreshDark]
+		Return now...
+		'''
+	Line13:
+		'''
+		[PORTRAIT=E]
+		Yes ma'am.
+		'''
+	DisplayName: Who are you???
+}
+EFearDialogue: {
+	Line0:
+		'''
+		[PORTRAIT=E]
+		Until we meet again, you.
+		'''
+	Line1:
+		'''
+		[PORTRAIT=E]
+		You now know my name.
+		'''
+	Line2:
+		'''
+		[PORTRAIT=E]
+		It will strike fear in you next we meet.
+		'''
+	Line3:
+		'''
+		[PORTRAIT=E]
+		You'll be gone.
+		'''
+	Line4:
+		'''
+		[PORTRAIT=E]
+		Styr.
+		'''
+	Line5:
+		'''
+		[PORTRAIT=E]
+		Remember me.
+		'''
+	Line6:
+		'''
+		[PORTRAIT=E]
+		Even if I don't have this sword, you will perish...
+		'''
+	DisplayName: Who are you???
+}
 BaseDialogue.Line0: ""
 
 ListAloneDialogue: {

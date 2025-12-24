@@ -35,6 +35,7 @@ namespace Stellamod.Core.Utilities
     {
         private bool _debug1;
         private bool _debug2;
+        private bool _debug3;
         private Sequencer _sequencer;
         private Vector2 _cameraStartPos;
         private float _cameraLerpTimer;
@@ -86,6 +87,15 @@ namespace Stellamod.Core.Utilities
             {
                 _debug2 = true;
             }
+            if (InputHelper.KeyUp(Keys.O) && _debug3)
+            {
+                DebugEndingCutscene();
+                _debug3 = false;
+            }
+            if (InputHelper.KeyDown(Keys.O))
+            {
+                _debug3 = true;
+            }
             if (_sequencer == null)
                 return;
 
@@ -105,6 +115,11 @@ namespace Stellamod.Core.Utilities
         private void DebugStartPreFightCutscene()
         {
             Cutscene preFightCutscene = ModContent.GetInstance<EPreFightCutscene>();
+            preFightCutscene.Play();
+        }
+        private void DebugEndingCutscene()
+        {
+            Cutscene preFightCutscene = ModContent.GetInstance<EPostFightCutscene>();
             preFightCutscene.Play();
         }
         private void ManageCameraPosition()
@@ -179,15 +194,6 @@ namespace Stellamod.Core.Utilities
     {
         private NPC Zui;
         private NPC E;
-        private NPC RequireNPC<T>() where T : ModNPC
-        {
-            Vector2 tempSpawnPoint = new Point(Main.spawnTileX, Main.spawnTileY).ToWorldCoordinates();
-            int npcIndex = NPC.FindFirstNPC(ModContent.NPCType<T>());
-            if (npcIndex == -1)
-                npcIndex = NPC.NewNPC(new EntitySource_Misc("cutscene"), (int)tempSpawnPoint.X, (int)tempSpawnPoint.Y, ModContent.NPCType<T>());
-            NPC zuiNPC = Main.npc[npcIndex];
-            return zuiNPC;
-        }
 
         public override void PrepareSequence()
         {
@@ -228,8 +234,39 @@ namespace Stellamod.Core.Utilities
         }
     }
 
+    public class EPostFightCutscene : Cutscene
+    {
+        private NPC E;
+        public override void PrepareSequence()
+        {
+            base.PrepareSequence();
+            E = RequireNPC<E>();
+        }
+        public override Sequencer BuildSequence()
+        {
+            Sequencer sequencer = new Sequencer();
+            sequencer
+                .AddCameraOverride(240, E.Center)
+                .AddDialogueAction<EEndingDialogue>()
+                .AddWait(120)
+                .AddDialogueAction<EFearDialogue>()
+                .RemoveCameraOverride();
+            return sequencer;
+        }
+    }
+
     public abstract class Cutscene : ModType
     {
+        protected NPC RequireNPC<T>() where T : ModNPC
+        {
+            Vector2 tempSpawnPoint = new Point(Main.spawnTileX, Main.spawnTileY).ToWorldCoordinates();
+            int npcIndex = NPC.FindFirstNPC(ModContent.NPCType<T>());
+            if (npcIndex == -1)
+                npcIndex = NPC.NewNPC(new EntitySource_Misc("cutscene"), (int)tempSpawnPoint.X, (int)tempSpawnPoint.Y, ModContent.NPCType<T>());
+            NPC zuiNPC = Main.npc[npcIndex];
+            return zuiNPC;
+        }
+
         protected sealed override void Register()
         {
             ModTypeLookup<Cutscene>.Register(this);
@@ -435,7 +472,7 @@ namespace Stellamod.Core.Utilities
             return this;
         }
 
-        public Sequencer Add(Action a)s
+        public Sequencer Add(Action a)
         {
             SequenceAction action = new SequenceAction
             {

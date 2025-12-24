@@ -71,4 +71,28 @@ namespace Stellamod.Content.Dialogue
             return 2;
         }
     }
+    public class EEndingDialogue : BaseDialogue
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            CloseOnComplete = true;
+        }
+        public override int GetLength()
+        {
+            return 14;
+        }
+    }
+    public class EFearDialogue : BaseDialogue
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            CloseOnComplete = true;
+        }
+        public override int GetLength()
+        {
+            return 7;
+        }
+    }
 }
