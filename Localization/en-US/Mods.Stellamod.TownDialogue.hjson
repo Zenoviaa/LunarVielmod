@@ -184,7 +184,88 @@ MinervaStartDialogue: {
 		'''
 	DisplayName: Trample Garden
 }
+ZuiComeQuickDialogue: {
+	Line0:
+		'''
+		[PORTRAIT=Zui]
+		Hey um, I don't know how to say this, but could you come over here?
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Zui]
+		We have a big problem.
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Zui]
+		Something looks like they are about to attack the witch town.
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Zui]
+		Please hurry.
+		'''
+	DisplayName: Zui!
+}
 
+ZuiWhoAreYouDialogue:
+{
+	Line0:
+		'''
+		[PORTRAIT=Zui]
+		I'm glad you made it...
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Zui]
+		More importantly, who are you??
+		'''
+	DisplayName: Who are you???
+}
+
+ZuiTalkingToYouDialogue:
+{
+	Line0:
+		'''
+		[PORTRAIT=Zui]
+		Hey I'm talking to you, y'know!! If you don't answer you better leave this place...
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Zui]
+		I don't like scouting, state your purpose.
+		'''
+	Line2:
+		'''
+		If you're with Ereshkigal, you better say something...
+		'''
+	DisplayName: Who are you???
+}
+
+EFoundYouDialogue:
+{
+	Line0:
+		'''
+		[PORTRAIT=E]
+		Found you...
+		'''
+	DisplayName: E Found Your Mom
+}
+
+ZuiGetOuttaHereDialogue:
+{
+	Line0:
+		'''
+		[PORTRAIT=Zui]
+		This isn't good...
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Zui]
+		Get out of here!!
+		'''
+	DisplayName: Who are you???
+}
 BaseDialogue.Line0: ""
 
 ListAloneDialogue: {
