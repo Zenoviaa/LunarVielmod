@@ -12,6 +12,7 @@ using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Trails;
+using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using Terraria;
@@ -38,6 +39,126 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         }
     }
 
+    public class IceExplosion : ModProjectile
+    {
+        private IcicleSystem _icicleSystemBackingField;
+        private IcicleSystem IcicleSystem
+        {
+            get
+            {
+                if (_icicleSystemBackingField == null)
+                {
+                    _icicleSystemBackingField = new IcicleSystem(16, 16);
+                }
+                return _icicleSystemBackingField;
+            }
+        }
+
+        private ref float Timer => ref Projectile.ai[0];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 64;
+            Projectile.height = 64;
+            Projectile.penetrate = -1;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 15;
+            Projectile.friendly = true;
+        }
+
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if(Timer == 1)
+            {
+                ShakeModSystem.Shake = 4;
+                int rand = Main.rand.Next(0, 2);
+                SoundStyle soundStyle;
+                switch (rand)
+                {
+                    default:
+                    case 0:
+                        soundStyle = AssetRegistry.Sounds.Illuria.IceImpact1;
+                        break;
+                    case 1:
+                        soundStyle = AssetRegistry.Sounds.Illuria.IceImpact2;
+                        break;
+                }
+                soundStyle.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(soundStyle, Projectile.position);
+
+                for (float f = 0; f < 2; f++)
+                {
+                    Vector2 initialVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                    initialVelocity *= 6;
+                    initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
+                    initialVelocity *= Main.rand.NextFloat(0.5f, 1f);
+
+                    DustParticle dustParticle = Particle.NewParticle<DustParticle>(Projectile.Center, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.2f, 0.5f));
+                    dustParticle.innerColor = Color.SkyBlue;
+                    dustParticle.outerColor = Color.Violet;
+                }
+
+
+                for (float f = 0; f < 2; f++)
+                {
+                    Vector2 initialVelocity = -Vector2.UnitY;
+                    initialVelocity *= 4;
+                    initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(360));
+                    initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
+
+                    SmokeParticle smokeParticle = Particle.NewBlackParticle<SmokeParticle>(Projectile.Center + initialVelocity,
+                        initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 3f));
+                    smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.14f);
+                    smokeParticle.extraUpdates = Main.rand.Next(0, 1);
+                    smokeParticle.fadeToColor = Color.Black;
+                }
+
+            }
+            float time = Timer / 15f;
+            time = EasingFunction.OutCirc(time);
+
+            float outInterp = (float)Projectile.timeLeft / 5f;
+            float outScale = EasingFunction.InOutSine(outInterp);
+            IcicleSystem.Update(Projectile.Center, Projectile.velocity, time, MathHelper.TwoPi / 16f);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            IceRenderer.QueueDrawAction(DrawPixelIcicles);
+            return false;
+        }
+
+        private void DrawPixelIcicles(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            IcicleSystem.Draw(spriteBatch, screenPos);
+        }
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+         //   FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGray, Color.Black, 25f);
+            for (float f = 0; f < 8; f++)
+            {
+                Vector2 initialVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                initialVelocity *= 6;
+                initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(360));
+                initialVelocity *= Main.rand.NextFloat(0.5f, 1f);
+
+                DustParticle dustParticle = Particle.NewParticle<DustParticle>(Projectile.Center, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.2f, 2f));
+                dustParticle.innerColor = Color.SkyBlue;
+                dustParticle.outerColor = Color.Violet;
+            }
+        }
+    }
     public class IceStatue : ModProjectile
     {
         private bool _spawnEffect;
@@ -70,8 +191,28 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGray, Color.Black, 25f);
                 _spawnEffect = true;
             }
+
+            foreach(var player in Main.ActivePlayers)
+            {
+                float distanceToPlayer = Vector2.Distance(Projectile.Center, player.Center);
+                if(distanceToPlayer <= 64)
+                {
+                    Smash();
+                    Projectile.Kill();
+                }
+            }
         }
 
+
+        private void Smash()
+        {
+            if (this.OwnedByLocalClient())
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.UnitY, ModContent.ProjectileType<IceExplosion>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
+        }
+
+     
         public override bool PreDraw(ref Color lightColor)
         {
 
@@ -160,7 +301,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             {
                 //Create Ice Statue here
                 Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero,
-                    ModContent.ProjectileType<IceStatue>(), 1, 1, Main.myPlayer, ai0: npc.type, ai1: -npc.spriteDirection);
+                    ModContent.ProjectileType<IceStatue>(), 100, 1, Main.myPlayer, ai0: npc.type, ai1: -npc.spriteDirection);
             }
         }
     }
@@ -384,13 +525,14 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             }
         }
 
-        public void Update(Vector2 initialPosition, Vector2 initialVelocity, float time)
+        public void Update(Vector2 initialPosition, Vector2 initialVelocity, float time, float offsetPerIcicle = 0f)
         {
             for (int i = 0; i < _icicles.Length; i++)
             {
                 Icicle icicle = _icicles[i];
                 icicle.initialPosition = initialPosition;
                 icicle.initialVelocity = initialVelocity;//.RotatedByRandom(0.5f);
+                icicle.initialVelocity = icicle.initialVelocity.RotatedBy(offsetPerIcicle * i);
                 icicle.time = time;
                 icicle.Update();
             }
@@ -544,7 +686,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             {
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 Vector2 explosionCenter = Projectile.Center + direction * BeamLength;
-                for (float f = 0; f < 4; f++)
+                for (float f = 0; f < 2; f++)
                 {
                     Vector2 initialVelocity = -Vector2.UnitY;
                     initialVelocity *= 12;
@@ -798,10 +940,6 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 var p = Particle.NewParticle<ImpactParticle>(position, velocity.RotatedByRandom(0.7f));
                 p.fast = true;
                 p.color = Color.SkyBlue;
-            }
-            for (float f = 0; f < 2; f++)
-            {
-                Particle.NewParticle<DustParticle>(position, velocity.RotatedByRandom(0.3f), Scale: Main.rand.NextFloat(0.5f, 1f));
             }
         }
     }
