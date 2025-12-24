@@ -246,7 +246,7 @@ namespace Stellamod.Core.Shaders
             graphicsDevice.RasterizerState.CullMode = CullMode.None;
 
             if (shader != null)
-            {
+            {   
                 graphicsDevice.BlendState = shader.BlendState;
                 graphicsDevice.SamplerStates[0] = shader.SamplerState;
             }

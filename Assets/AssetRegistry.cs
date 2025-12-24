@@ -55,6 +55,9 @@ namespace Stellamod.Assets
 
             public static class Illuria
             {
+                public static SoundStyle SlushShot3 = new SoundStyle($"{Path}Illuria/SlushShot3");
+                public static SoundStyle SlushShot2 = new SoundStyle($"{Path}Illuria/SlushShot2");
+                public static SoundStyle SlushShot1 = new SoundStyle($"{Path}Illuria/SlushShot1");
                 public static SoundStyle IceImpact1 = new SoundStyle($"{Path}Illuria/IceImpact1");
                 public static SoundStyle IceImpact2 = new SoundStyle($"{Path}Illuria/IceImpact2");
                 public static SoundStyle MagicalIce = new SoundStyle($"{Path}Illuria/MagicalIce");

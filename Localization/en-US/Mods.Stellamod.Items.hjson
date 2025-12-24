@@ -9891,3 +9891,8 @@ ZuisGiftedWand: {
 	DisplayName: Zuis Gifted Wand
 	Tooltip: ""
 }
+
+FreezeRay: {
+	DisplayName: Freeze Ray
+	Tooltip: ""
+}

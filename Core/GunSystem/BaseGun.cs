@@ -221,9 +221,10 @@ namespace Stellamod.Core.GunSystem
                 var p = Particle.NewParticle<ImpactParticle>(position, velocity.RotatedByRandom(0.7f));
                 p.fast = true;
             }
-            for (float f = 0; f < 3; f++)
+            for (float f = 0; f < 2; f++)
             {
                 Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), velocity.RotatedByRandom(0.3f), Scale: Main.rand.NextFloat(0.5f, 1f));
+              //  Particle.NewParticle<DustParticle>(position, velocity.RotatedByRandom(0.3f), Scale: Main.rand.NextFloat(0.5f, 1f));
             }
         }
     }

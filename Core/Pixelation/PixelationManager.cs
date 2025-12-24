@@ -107,6 +107,7 @@ namespace Stellamod.Core.Pixelation
                 Vector2 v = Vector2.UnitX * 2;
                 Vector2 h = Vector2.UnitY * 2;
                 Color oColor = outlineColor.Value;
+             
                 SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
                 spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, whiteShader.Effect);
      
