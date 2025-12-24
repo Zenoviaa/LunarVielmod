@@ -21,6 +21,7 @@ namespace Stellamod.UI.DialogueTowning
         private float _dialogueTimer;
         public enum Animation
         {
+            Idle,
             Open,
             Close
         }
@@ -60,6 +61,12 @@ namespace Stellamod.UI.DialogueTowning
         {
             base.CloseThis();
             CloseUI();
+        }
+
+        public override void ClearWorld()
+        {
+            base.ClearWorld();
+            _animation = Animation.Idle;
         }
 
         public void Interact(VeilTownNPC townNPC)
