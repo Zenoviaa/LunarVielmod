@@ -59,8 +59,8 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 64;
-            Projectile.height = 64;
+            Projectile.width = 164;
+            Projectile.height = 164;
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
