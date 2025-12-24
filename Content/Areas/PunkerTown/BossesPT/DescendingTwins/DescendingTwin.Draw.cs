@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -187,11 +188,23 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             TrailDrawer.Draw(Main.spriteBatch, TendrilPoints, GetTendrilColorFunction, GetTendrilWidthFunction, shader);
         }
 
+        private void DrawPixelatedTendril(GraphicsDevice graphicsDevice)
+        {
+            BlackFireShader shader = BlackFireShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.WhispyTrail;
+            shader.PrimaryTexture2 = TrailRegistry.StarTrail;
+            shader.InnerColor = Color.Gray;
+            shader.OuterColor = Color.Lerp(GetTwinColor(), Color.Lerp(GetTwinColor(), Color.Black, 0.5f), ExtraMath.Osc(0f, 1f, speed: 2, offset: NPC.whoAmI));
+            shader.Distortion = 0.2f;
+            shader.Time = Main.GlobalTimeWrappedHourly * 10;
+            TrailDrawer.Draw(Main.spriteBatch, TendrilPoints, GetTendrilColorFunction, GetTendrilWidthFunction, shader);
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             screenPos += _deathPositionOffset;
 
-            DrawTendril();
+            //DrawTendril();
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTendril);
             DrawAfterImages(spriteBatch, screenPos);
             DrawFlamingTrail(spriteBatch, screenPos, drawColor);
             DrawTelegraphLine(spriteBatch, screenPos);

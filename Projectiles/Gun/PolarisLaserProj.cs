@@ -74,11 +74,10 @@ namespace Stellamod.Projectiles.Gun
 
 
                 ShakeModSystem.Shake = 3;
-                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, explosionCenter);
-                for (float f = 0; f < 16; f++)
+                for (float f = 0; f < 12; f++)
                 {
                     Vector2 initialVelocity = -Vector2.UnitY;
-                    initialVelocity *= 16;
+                    initialVelocity *= 12;
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                     initialVelocity *= Main.rand.NextFloat(0.5f, 1f);
 
@@ -87,25 +86,30 @@ namespace Stellamod.Projectiles.Gun
                     dustParticle.outerColor = Color.Violet;
                 }
 
-                SoundStyle morrowExp = new SoundStyle($"Stellamod/Assets/Sounds/MorrowExp");
-                morrowExp.PitchVariance = 0.3f;
-                SoundEngine.PlaySound(morrowExp, explosionCenter);
-
-                switch (Main.rand.Next(3))
+                for(float f = 0; f < 12; f++)
                 {
-                    case 0:
-                        morrowExp = new SoundStyle($"Stellamod/Assets/Sounds/StarFlower1");
-                        break;
-                    case 1:
-                        morrowExp = new SoundStyle($"Stellamod/Assets/Sounds/StarFlower1");
-                        break;
-                    case 2:
-                        morrowExp = new SoundStyle($"Stellamod/Assets/Sounds/StarFlower3");
-                        break;
+                    Vector2 initialVelocity = -Vector2.UnitY;
+                    initialVelocity *= 4;
+                    initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
+                    initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
+
+                    SmokeParticle smokeParticle = Particle.NewBlackParticle<SmokeParticle>(explosionCenter + initialVelocity,
+                        initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 3f));
+                    smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.4f);
+                    smokeParticle.extraUpdates = Main.rand.Next(0, 1);
+                    smokeParticle.fadeToColor = Color.Black;
                 }
 
-                morrowExp.PitchVariance = 0.3f;
-                SoundEngine.PlaySound(morrowExp, explosionCenter);
+                float numZaps = 4;
+                for(float f = 0; f < numZaps; f++)
+                {
+                    Vector2 initialVelocity = -Vector2.UnitY;
+                    initialVelocity *= 4;
+                    initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
+                    initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
+                    ZapParticle zapParticle = Particle.NewParticle<ZapParticle>(explosionCenter + initialVelocity, Main.rand.NextVector2Circular(1, 1), Color.White);
+                }
+
 
                 FXUtil.GlowCircleBoom(explosionCenter,
                     innerColor: Color.White,

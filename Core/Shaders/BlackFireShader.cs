@@ -163,7 +163,7 @@ namespace Stellamod.Core.Shaders
            // OuterEmiteColor = Color.Red;
             BackColor = Color.DarkRed;
             BlendState = BlendState.Additive;
-            Distortion = 0.15f;
+            Distortion = 0.1f;
 
             PrimaryTexture = TrailRegistry.Beamlight;
             PrimaryTexture2 = TrailRegistry.SmallWhispyTrail;

@@ -104,6 +104,8 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float n1 = tex2D(noiseTex, (distortedCoords + float2(time * -0.05, 0.0)) * tiling);
     float n2 = tex2D(noiseTex, (distortedCoords + float2(time * -0.08, 0.0)) * tiling);
     float noise = saturate(n1 + n2);
+    noise = pow(noise, 0.5);
+    
     float fade = smoothstep(0.0, 1.0, coords.x);
 
     float3 fireColor = lerp(outerColor, innerColor, noise);

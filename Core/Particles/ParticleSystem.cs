@@ -111,32 +111,11 @@ namespace Stellamod.Core.Particles
             BlackParticles.RemoveAll(p => p == null || !p.active);
         }
 
-        private void DrawPixelatedParticles()
-        {
-       /*
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.ZoomMatrix);
-            DrawParticles(spriteBatch);
-            spriteBatch.End();*/
-
-        }
         private void DrawMainParticles(On_Main.orig_DrawDust orig, Main self)
         {
             orig(self);
-
+            PixelationManager.QueueSpritebatchDrawAction(DrawAlphaPixelParticles, DrawLayer.OverNPCsWithOutline);
             PixelationManager.QueueSpritebatchDrawAction(DrawPixelParticles, DrawLayer.OverNPCsAdditive);
-            return;
-
-            if (Main.netMode == NetmodeID.Server)
-                return;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
-            DrawParticles(spriteBatch);
-            spriteBatch.End();
-
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
-            DrawBlackParticles(spriteBatch);
-            spriteBatch.End();
         }
 
         public void DrawBlackParticles(SpriteBatch spriteBatch)
@@ -165,6 +144,10 @@ namespace Stellamod.Core.Particles
                 }
                 particle.Draw(spriteBatch);
             }
+        }
+        public void DrawAlphaPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            DrawBlackParticles(spriteBatch);
         }
         public void DrawPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)
         {

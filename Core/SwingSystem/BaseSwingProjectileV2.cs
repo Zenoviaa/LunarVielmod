@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Players;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
@@ -280,6 +281,12 @@ namespace Stellamod.Core.SwingSystem
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(135));// set arm position (90 degree offset since arm starts lowered)
         }
 
+        private void DrawPixelatedSwingTrails(GraphicsDevice graphicsDevice)
+        {
+            Color lightColor = Color.White;
+            DrawSwingTrail(ref lightColor, swingTrailCache);
+            DrawSwingTrail2(ref lightColor, bigSwingTrailCache);
+        }
         public override bool PreDraw(ref Color lightColor)
         {
             if (Timer <= 3)
@@ -287,8 +294,8 @@ namespace Stellamod.Core.SwingSystem
             //Draw the texture, by 
             if (useAfterImage)
                 DrawAfterImage(ref lightColor, OldCenterPos);
-            DrawSwingTrail(ref lightColor, swingTrailCache);
-            DrawSwingTrail2(ref lightColor, bigSwingTrailCache);
+
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedSwingTrails, DrawLayer.OverNPCsAdditive);
             DrawSwordBeam(ref lightColor);
             DrawSwordSprite(ref lightColor);
             return false;

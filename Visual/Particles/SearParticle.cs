@@ -36,8 +36,8 @@ namespace Stellamod.Visual.Particles
         {
             color *= 0.998f;
             fadeIn++;
-            _interpolant = fadeIn / 120f;
-            if (fadeIn > 180)
+            _interpolant = fadeIn / 300f;
+            if (fadeIn > 360f)
                 active = false;
         }
         public override void Draw(SpriteBatch spriteBatch)

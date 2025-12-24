@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,7 @@ namespace Stellamod.Core.Pixelation
             _blendState = blendState == null ? BlendState.AlphaBlend : blendState;
         }
 
+        public Color? outlineColor;
         public void QueueSpritebatchDrawAction(SpritebatchDrawAction action)
         {
             _spritebatchActionsQueue.Enqueue(action);
@@ -100,7 +102,23 @@ namespace Stellamod.Core.Pixelation
         public void DrawToScreen()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
+            if (outlineColor.HasValue)
+            {
+                Vector2 v = Vector2.UnitX * 2;
+                Vector2 h = Vector2.UnitY * 2;
+                Color oColor = outlineColor.Value;
+                SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+                spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, whiteShader.Effect);
+     
+                spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero + v, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+                spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero - v, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+                spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero + h, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+                spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero - h, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+
+                spriteBatch.End();
+            }
             spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+
             spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
             spriteBatch.End();
         }
@@ -114,12 +132,15 @@ namespace Stellamod.Core.Pixelation
     {
         private PixelTarget _overNPCsPixelTarget;
         private PixelTarget _overNPCsPixelTargetAdditive;
+        private PixelTarget _overNPCsPixelTargetWithOutline;
         public override void OnModLoad()
         {
             base.OnModLoad();
             On_Main.CheckMonoliths += RenderToPixelationRT;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawOverNPCs;
-            _overNPCsPixelTarget = new PixelTarget(downSamples: 2);
+            _overNPCsPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+            _overNPCsPixelTargetWithOutline = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+            _overNPCsPixelTargetWithOutline.outlineColor = Color.Black;
             _overNPCsPixelTargetAdditive = new PixelTarget(downSamples: 2, BlendState.Additive);
         }
 
@@ -136,6 +157,7 @@ namespace Stellamod.Core.Pixelation
             if (Main.gameMenu)
                 return;
             _overNPCsPixelTarget.Render();
+            _overNPCsPixelTargetWithOutline.Render();
             _overNPCsPixelTargetAdditive.Render();
         }
 
@@ -147,6 +169,7 @@ namespace Stellamod.Core.Pixelation
                 return;
 
             _overNPCsPixelTarget.DrawToScreen();
+            _overNPCsPixelTargetWithOutline.DrawToScreen();
             _overNPCsPixelTargetAdditive.DrawToScreen();
         }
 
@@ -156,6 +179,8 @@ namespace Stellamod.Core.Pixelation
             {
                 default:
                     return _overNPCsPixelTarget;
+                case DrawLayer.OverNPCsWithOutline:
+                    return _overNPCsPixelTargetWithOutline;
                 case DrawLayer.OverNPCsAdditive:
                     return _overNPCsPixelTargetAdditive;
             }
@@ -181,6 +206,7 @@ namespace Stellamod.Core.Pixelation
     public enum DrawLayer
     {
         OverNPCs = 0,
-        OverNPCsAdditive=1
+        OverNPCsWithOutline = 1,
+        OverNPCsAdditive =2
     }
 }

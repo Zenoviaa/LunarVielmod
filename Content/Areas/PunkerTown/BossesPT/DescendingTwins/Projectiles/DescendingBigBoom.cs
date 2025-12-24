@@ -8,6 +8,7 @@ using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
+using XPT.Core.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles
 {
@@ -112,7 +113,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
         }
         private void SpawnGlowDust(Vector2 position, Vector2 velocity)
         {
-            Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), velocity, newColor: GetTwinColor(), Scale: 2f);
+            var d = Particle.NewParticle<DustParticle>(position, velocity, newColor: GetTwinColor(), Scale: Main.rand.NextFloat(0.5f, 1.5f));
+            d.outerColor = GetTwinColor();
+            // Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), velocity, newColor: GetTwinColor(), Scale: 2f);
         }
     }
 }

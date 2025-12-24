@@ -126,7 +126,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return EasingFunction.QuadraticBump(interpolant) * 128 ;
+                    return EasingFunction.QuadraticBump(interpolant) * 80 ;
                 },
                 TrailColorFunction = (interpolant) =>
                 {
@@ -179,16 +179,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                         fadeToColor: Color.Red,
                         distortOut: true);
 
-                    if (Main.rand.NextBool(4))
-                    {
-                        Dust.NewDustPerfect(position, ModContent.DustType<TSmokeDust>(),
-                                         lvelocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 2);
-                    }
-                    if (Main.rand.NextBool(4))
-                    {
-                        Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(),
-                                         lvelocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 3 * Main.rand.NextFloat(0.4f, 1f), newColor: Color.White, Scale: 0.2f);
-                    }
+    
                 }
 
                 _hit = true;
@@ -263,7 +254,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return EasingFunction.QuadraticBump(interpolant) * 64 * MathHelper.Lerp(1f, 0.0f, EasingFunction.InOutSine(Interpolant));
+                    return EasingFunction.QuadraticBump(interpolant) * 254 * MathHelper.Lerp(1f, 0.0f, EasingFunction.InOutSine(Interpolant));
                 },
                 TrailColorFunction = (interpolant) =>
                 {

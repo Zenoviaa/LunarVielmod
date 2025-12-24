@@ -55,7 +55,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return EasingFunction.InOutSine(interpolant) * 186 * EasingFunction.InOutSine(1f - Interpolant);
+                    return EasingFunction.InOutSine(interpolant) * 200 * EasingFunction.InOutSine(1f - Interpolant);
                 },
                 TrailColorFunction = (interpolant) =>
                 {
