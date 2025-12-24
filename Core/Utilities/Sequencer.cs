@@ -22,6 +22,14 @@ namespace Stellamod.Core.Utilities
         public Action startFunction;
         public Func<bool> completeCondition;
     }
+    public class CutscenePlayer : ModPlayer
+    {
+        public override bool CanUseItem(Item item)
+        {
+            bool inCutscene = SequencerPlayer.IsActive();
+            return base.CanUseItem(item) && !inCutscene;
+        }
+    }
 
     public class SequencerPlayer : ModSystem
     {
@@ -40,6 +48,20 @@ namespace Stellamod.Core.Utilities
         public static Color? tintColorOverride;
         public static float tintColorAlpha;
         public static float tintLerpTime;
+        public override void Unload()
+        {
+            base.Unload();
+            SetDefaults();
+            _sequencer = null;
+        }
+
+        public override void ClearWorld()
+        {
+            base.ClearWorld();
+            SetDefaults();
+            _sequencer = null;
+        }
+
         public override void PostUpdateDusts()
         {
             base.PostUpdateDusts();
@@ -100,7 +122,7 @@ namespace Stellamod.Core.Utilities
             progress = MathHelper.Clamp(progress, 0f, 1f);
 
             Vector2 interpolatedValue = Vector2.Lerp(_cameraStartPos, overrideValue, progress);
-            RetargetCameraModifier.ReTargetPosition = overrideValue;
+            RetargetCameraModifier.ReTargetPosition = interpolatedValue;
         }
 
         private void ManageTintColor()
@@ -131,6 +153,11 @@ namespace Stellamod.Core.Utilities
         {
             _sequencer = sequence;
             _sequencer.Start();
+        }
+        public static bool IsActive()
+        {
+            SequencerPlayer player = ModContent.GetInstance<SequencerPlayer>();
+            return player._sequencer != null;
         }
     }
 
@@ -170,8 +197,8 @@ namespace Stellamod.Core.Utilities
 
             //Now we need to set their positions
             Point spawnTile = new Point(Main.spawnTileX, Main.spawnTileY);
-            Point zuiOffset = spawnTile + new Point(32, -100);
-            Point eOffset = zuiOffset + new Point(16, -8);
+            Point zuiOffset = spawnTile + new Point(64, -150);
+            Point eOffset = zuiOffset + new Point(32, -8);
 
             Zui.position = zuiOffset.ToWorldCoordinates();
             E.position = eOffset.ToWorldCoordinates();
@@ -183,7 +210,7 @@ namespace Stellamod.Core.Utilities
             sequencer
                 .AddDialogueAction<ZuiWhoAreYouDialogue>()
                 .AddFadeToBlack(120, 0.5f)
-                .AddCameraOverride(120, E.Center)
+                .AddCameraOverride(240, E.Center)
                 .AddDialogueAction<ZuiTalkingToYouDialogue>()
                 .AddWait(120)
                 .AddDialogueAction<EFoundYouDialogue>()
@@ -191,6 +218,7 @@ namespace Stellamod.Core.Utilities
                 .PoofNPC(Zui)
                 .AddWait(120)
                 .RemoveCameraOverride()
+                .RemoveFadeToBlack(120)
                 .Add(() =>
                 {
                     E e = E.ModNPC as E;
@@ -381,8 +409,7 @@ namespace Stellamod.Core.Utilities
             SequenceAction action = new SequenceAction
             {
                 startFunction = () =>
-                {
-                    npc.active = false;
+                {                    
                     //Spawn a bunch of dust particles or whatever
                     float numDust = 16;
                     for (int n = 0; n < numDust; n++)
@@ -390,8 +417,14 @@ namespace Stellamod.Core.Utilities
                         Vector2 position = npc.position;
                         position.X += Main.rand.Next(0, npc.width);
                         position.Y += Main.rand.Next(0, npc.height);
-                        LegacyParticle.NewBlackParticle<SmokeParticle>(position, -Vector2.UnitY, Color.White, Scale: Main.rand.NextFloat(0.66f, 1.75f));
+                        
+                        var smokeParticle = Particle<SmokeParticle>.SpawnInAlphaLayer(position, -Vector2.UnitY, Color.White, Scale: Main.rand.NextFloat(0.66f, 1.75f));
+                        smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.14f);
+                        smokeParticle.extraUpdates = Main.rand.Next(0, 1);
+                        smokeParticle.fadeToColor = Color.Black;
                     }
+                    npc.active = false;
+
                 },
                 completeCondition = () =>
                 {
@@ -402,7 +435,7 @@ namespace Stellamod.Core.Utilities
             return this;
         }
 
-        public Sequencer Add(Action a)
+        public Sequencer Add(Action a)s
         {
             SequenceAction action = new SequenceAction
             {
@@ -423,10 +456,11 @@ namespace Stellamod.Core.Utilities
         {
             _index = 0;
             _timer = 0;
-            PlayActionAndMoveNext();
-
             //Reset the defaults of the sequencer player
             SequencerPlayer.SetDefaults();
+            PlayActionAndMoveNext();
+
+  
         }
 
         public void Update()
@@ -447,6 +481,7 @@ namespace Stellamod.Core.Utilities
 
             _actionStartTime = _timer;
             _action = _actions[_index];
+            _action.startFunction();
             _index++;
         }
 

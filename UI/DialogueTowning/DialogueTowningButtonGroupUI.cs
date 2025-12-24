@@ -74,10 +74,14 @@ namespace Stellamod.UI.DialogueTowning
             Top.Pixels = RelativeTop;
             Left.Pixels += Offset.X;
             Top.Pixels += Offset.Y;
-            foreach (var btn in _buttons)
+            if(_buttons != null)
             {
-                btn.Alpha = Alpha;
+                foreach (var btn in _buttons)
+                {
+                    btn.Alpha = Alpha;
+                }
             }
+
         }
     }
 }

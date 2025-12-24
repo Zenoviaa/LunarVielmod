@@ -106,6 +106,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Special_SlashEndOutBlack
         }
 
+        private bool _startedFight;
         private bool _intro;
         private bool _showNamePlate;
         private bool _contactDamage;
@@ -233,6 +234,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             writer.Write(_bounceAttackNumber);
             writer.Write(_doneSpecial);
             writer.Write(_doneSpecial2);
+            writer.Write(_startedFight);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
@@ -244,6 +246,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _bounceAttackNumber = reader.ReadSingle();
             _doneSpecial = reader.ReadBoolean();
             _doneSpecial2 = reader.ReadBoolean();
+            _startedFight = reader.ReadBoolean();
         }
 
         private void EnablePlatformArena()
@@ -306,9 +309,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void AI()
         {
             base.AI();
-            BlackSeaRenderer blackseaRenderer = ModContent.GetInstance<BlackSeaRenderer>();
-            blackseaRenderer.renderBlackSea = true;
-            EnablePlatformArena();
+
+            if (_startedFight)
+            {
+                BlackSeaRenderer blackseaRenderer = ModContent.GetInstance<BlackSeaRenderer>();
+                blackseaRenderer.renderBlackSea = true;
+                EnablePlatformArena();
+            }
+        
             UpdateClient();
             _contactDamage = false;
             _isGrabbing = false;
@@ -591,6 +599,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public void StartFight()
         {
+            _startedFight = true;
             SwitchState(AIState.Intro_Idle);
             NPC.netUpdate = true;
         }

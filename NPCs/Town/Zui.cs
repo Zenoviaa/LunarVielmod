@@ -109,7 +109,7 @@ namespace Stellamod.NPCs.Town
         //This prevents the NPC from despawning
         public override bool CheckActive()
         {
-            return true;
+            return false;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)

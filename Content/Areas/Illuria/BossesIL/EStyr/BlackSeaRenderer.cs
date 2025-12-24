@@ -269,7 +269,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void ApplyReflection(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
         {
-            if (layer == RenderLayers.ForegroundWater && !Main.gameMenu && NPC.AnyNPCs(ModContent.NPCType<E>()))
+            if (layer == RenderLayers.ForegroundWater && !Main.gameMenu && NPC.AnyNPCs(ModContent.NPCType<E>()) && drawBlackSea)
             {
                 //  spriteBatch.GraphicsDevice.Clear(Color.Transparent);
                 spriteBatch.Draw(_magicGroundRT, Vector2.Zero, Color.White * 0.95f);

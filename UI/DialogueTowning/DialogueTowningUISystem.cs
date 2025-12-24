@@ -122,7 +122,7 @@ namespace Stellamod.UI.DialogueTowning
             DialogueTowningUI ui = dialogueTowningUIState.dialogueTownUI;
             ui.ClearText();
             ui.PrepareForTalking();
-            _talkWorld = Main.LocalPlayer.position;
+   
             OpenUI();
             SoundStyle? talkingSound = SoundID.Item1;
             dialogueTowningUIState.dialogueTownUI.ResetText();
@@ -187,11 +187,15 @@ namespace Stellamod.UI.DialogueTowning
             {
                 _userInterface.Update(gameTime);
             }
-            float dist = Vector2.Distance(Main.LocalPlayer.position, _talkWorld);
-            if (dist > 160)
+            if(_talkWorld != Vector2.Zero)
             {
-                CloseUI();
+                float dist = Vector2.Distance(Main.LocalPlayer.position, _talkWorld);
+                if (dist > 160)
+                {
+                    CloseUI();
+                }
             }
+
 
             switch (_animation)
             {
@@ -271,7 +275,7 @@ namespace Stellamod.UI.DialogueTowning
 
         public void CloseUI()
         {
-
+            _talkWorld = Vector2.Zero;
             if (_animation != Animation.Close)
             {
                 Main.CloseNPCChatOrSign();

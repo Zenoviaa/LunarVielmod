@@ -46,7 +46,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             //Play the head turn animation
             Animator.PlayAnimation(Anim_Idle);
-            IntroHoverMovement();
+
+            Vector2 hoverVelocity = CalculateHoverVelocity();
+            NPC.velocity = hoverVelocity;
+            //Face away the player
+            NPC.direction = TargetDirection;
             Main.windSpeedCurrent = 0;
         }
 
@@ -169,7 +173,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             RetargetCameraModifier.ReTargetPosition = NPC.Center;
 
             //Face away the player
-            NPC.direction = -TargetDirection;
+            NPC.direction = TargetDirection;
             if (Timer >= handOutTime)
             {
                 SwitchState(AIState.Intro_HeadTurn);
@@ -274,7 +278,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             domainExpansion.alpha = 1f;
 
             //Face away the player
-            NPC.direction = -TargetDirection;
+            NPC.direction = TargetDirection;
             if (Timer >= domainExpansionTime)
             {
                 SwitchState(AIState.Intro_Finish);
@@ -301,7 +305,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             RetargetCameraModifier.ReTargetPosition = NPC.Center;
 
             //Face away the player
-            NPC.direction = -TargetDirection;
+            NPC.direction = TargetDirection;
             if (Timer >= domainShrinkTime * 2f)
             {
                 SwitchState(AIState.Idle);

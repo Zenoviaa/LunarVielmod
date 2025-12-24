@@ -117,7 +117,8 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(360));
                     initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
 
-                    SmokeParticle smokeParticle = LegacyParticle.NewBlackParticle<SmokeParticle>(Projectile.Center + initialVelocity,
+                    
+                    SmokeParticle smokeParticle = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center + initialVelocity,
                         initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 3f));
                     smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.14f);
                     smokeParticle.extraUpdates = Main.rand.Next(0, 1);
@@ -717,7 +718,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                     initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
 
-                    SmokeParticle smokeParticle = LegacyParticle.NewBlackParticle<SmokeParticle>(explosionCenter + initialVelocity,
+                    SmokeParticle smokeParticle = Particle<SmokeParticle>.SpawnInAlphaLayer(explosionCenter + initialVelocity,
                         initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 3f));
                     smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.4f);
                     smokeParticle.extraUpdates = Main.rand.Next(0, 1);

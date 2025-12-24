@@ -1,18 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    public class SmokeParticle : LegacyParticle
+    public class SmokeParticle : Particle<SmokeParticle>
     {
         public int FrameWidth = 64;
         public int FrameHeight = 64;
@@ -46,7 +41,7 @@ namespace Stellamod.Visual.Particles
         public override void Update()
         {
             InnerUpdate();
-            for(int i = 0; i < extraUpdates; i++)
+            for (int i = 0; i < extraUpdates; i++)
             {
                 InnerUpdate();
             }

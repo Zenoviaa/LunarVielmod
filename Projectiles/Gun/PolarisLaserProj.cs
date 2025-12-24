@@ -93,7 +93,7 @@ namespace Stellamod.Projectiles.Gun
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                     initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
 
-                    SmokeParticle smokeParticle = LegacyParticle.NewBlackParticle<SmokeParticle>(explosionCenter + initialVelocity,
+                    SmokeParticle smokeParticle = Particle<SmokeParticle>.SpawnInAlphaLayer(explosionCenter + initialVelocity,
                         initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 3f));
                     smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.4f);
                     smokeParticle.extraUpdates = Main.rand.Next(0, 1);
