@@ -99,8 +99,7 @@ namespace Stellamod.Core.Utilities
             if (_sequencer == null)
                 return;
 
-
-            _sequencer.Update();
+              _sequencer.Update();
             if (_sequencer.HasFinishedSequence())
             {
                 _sequencer = null;
@@ -285,8 +284,10 @@ namespace Stellamod.Core.Utilities
         }
         public void Play()
         {
+            PrepareSequence();
             Sequencer sequencer = BuildSequence();
             SequencerPlayer player = ModContent.GetInstance<SequencerPlayer>();
+
             player.PlaySequence(sequencer);
         }
     }

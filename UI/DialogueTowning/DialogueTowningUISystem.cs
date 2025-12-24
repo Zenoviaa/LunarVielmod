@@ -130,23 +130,6 @@ namespace Stellamod.UI.DialogueTowning
             dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
         }
 
-        public void ChatWith(VeilTownNPC veilTownNPC)
-        {
-
-
-
-            /*
-            string text = string.Empty;
-            string portrait = "FenixPortrait";
-            float timeBetweenTexts = 0.05f;
-            SoundStyle? talkingSound = null;
-            veilTownNPC.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
-            dialogueTowningUIState.dialogueTownUI.ResetText();
-            dialogueTowningUIState.dialogueTownUI.LocalizedText = LangText.TownDialogue(text);
-            dialogueTowningUIState.dialogueTownUI.TalkingSound = talkingSound;
-            SetPortrait(portrait);*/
-        }
-
         public void OpenTalkOptions(BaseDialogue[] dialogues)
         {
             DialogueTowningUI ui = dialogueTowningUIState.dialogueTownUI;

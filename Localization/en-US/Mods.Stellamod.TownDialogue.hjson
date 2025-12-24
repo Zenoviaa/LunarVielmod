@@ -260,6 +260,7 @@ ZuiGetOuttaHereDialogue: {
 		'''
 	DisplayName: Who are you???
 }
+
 EEndingDialogue: {
 	Line0:
 		'''
@@ -333,6 +334,7 @@ EEndingDialogue: {
 		'''
 	DisplayName: Who are you???
 }
+
 EFearDialogue: {
 	Line0:
 		'''
@@ -371,6 +373,7 @@ EFearDialogue: {
 		'''
 	DisplayName: Who are you???
 }
+
 BaseDialogue.Line0: ""
 
 ListAloneDialogue: {

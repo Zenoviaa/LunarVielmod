@@ -52,6 +52,7 @@ namespace Stellamod.Core.DialogueSystem
             _dialogueActor = new DialogueActor(dialogue);
             _dialogueActor.ProgressLine();
             DialogueTowningUISystem uiSystem = ModContent.GetInstance<DialogueTowningUISystem>();
+            uiSystem.OpenUI();
             uiSystem.ClearOptions();
             return _dialogueActor;
 
