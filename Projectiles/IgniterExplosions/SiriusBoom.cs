@@ -57,22 +57,6 @@ namespace Stellamod.Projectiles.IgniterExplosions
                         duration: Main.rand.NextFloat(15, 25));
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
-
-                for (float f = 0; f < 24; f++)
-                {
-                    float progress = f / 24f;
-                    float rot = progress * MathHelper.ToRadians(360);
-                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
-                    Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(4f, 64);
-                    var particle = FXUtil.GlowStretch(Projectile.Center, velocity);
-                    particle.InnerColor = Color.White;
-                    particle.GlowColor = Color.LightCyan;
-                    particle.OuterGlowColor = Color.Black;
-                    particle.Duration = Main.rand.NextFloat(25, 50);
-                    particle.BaseSize = Main.rand.NextFloat(0.09f, 0.18f);
-                    particle.VectorScale *= 0.5f;
-
-                }
             }
             Vector3 RGB = new(0.89f, 2.53f, 2.55f);
             // The multiplication here wasn't doing anything

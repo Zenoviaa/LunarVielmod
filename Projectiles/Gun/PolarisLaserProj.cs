@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
@@ -7,6 +8,7 @@ using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -38,7 +40,7 @@ namespace Stellamod.Projectiles.Gun
             Projectile.hostile = false;
             Projectile.tileCollide = true;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 30;
+            Projectile.timeLeft = 45;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 25;
             BeamPoints = new List<Vector2>();
@@ -61,10 +63,6 @@ namespace Stellamod.Projectiles.Gun
                         break;
                 }
 
-                for (int i = 0; i < 14; i++)
-                {
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSkyBlue, 1f).noGravity = true;
-                }
 
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 Vector2 explosionCenter = Projectile.Center + direction * BeamLength;
@@ -79,8 +77,14 @@ namespace Stellamod.Projectiles.Gun
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, explosionCenter);
                 for (float f = 0; f < 16; f++)
                 {
-                    Dust.NewDustPerfect(explosionCenter, ModContent.DustType<GlowSparkleDust>(),
-                        (Vector2.One * Main.rand.NextFloat(0.2f, 15)).RotatedByRandom(19.0), 0, Color.Yellow, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                    Vector2 initialVelocity = -Vector2.UnitY;
+                    initialVelocity *= 16;
+                    initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
+                    initialVelocity *= Main.rand.NextFloat(0.5f, 1f);
+
+                    DustParticle dustParticle = Particle.NewParticle<DustParticle>(explosionCenter, initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 2f));
+                    dustParticle.innerColor = Color.SkyBlue;
+                    dustParticle.outerColor = Color.Violet;
                 }
 
                 SoundStyle morrowExp = new SoundStyle($"Stellamod/Assets/Sounds/MorrowExp");
@@ -123,9 +127,9 @@ namespace Stellamod.Projectiles.Gun
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
 
-                for (float f = 0; f < 24; f++)
+                for (float f = 0; f < 12f; f++)
                 {
-                    float progress = f / 24f;
+                    float progress = f / 12f;
                     float rot = progress * MathHelper.ToRadians(360);
                     rot += Main.rand.NextFloat(-0.5f, 0.5f);
                     Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(4f, 25f);
@@ -138,10 +142,9 @@ namespace Stellamod.Projectiles.Gun
                     particle.VectorScale *= 0.5f;
 
                 }
-                for (int i = 0; i < 8; i++)
-                {
-                    Dust.NewDustPerfect(explosionCenter, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
-                }
+                var sear = Particle.NewParticle<SearParticle>(explosionCenter, Vector2.Zero);
+                sear.innerColor = Color.Cyan;
+                sear.outerColor = Color.Blue;
             }
         }
 
@@ -189,14 +192,23 @@ namespace Stellamod.Projectiles.Gun
         {
             float osc = VectorHelper.Osc(0.75f, 1f);
 
-            float width = (float)Projectile.timeLeft / 30f;
-            return (Projectile.width * Projectile.scale) * osc * width * Size * 3;
+            float width = (float)Projectile.timeLeft / 45f;
+            return (Projectile.width * Projectile.scale) * osc * width * Size * 5;
+        }
+        public float WidthFunction2(float completionRatio)
+        {
+            return WidthFunction(completionRatio) * 0.5f;
         }
 
         public Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.Cyan, Color.White, ExtraMath.Osc(0f, 1f, speed: 32));
         }
+        public Color ColorFunction2(float completionRatio)
+        {
+            return Color.White;
+        }
+
 
         public override bool PreDraw(ref Color lightColor)
         {
@@ -228,6 +240,9 @@ namespace Stellamod.Projectiles.Gun
             shader.BlendState = BlendState.AlphaBlend;
             shader.LaserTexture = TrailRegistry.StarTrail;
             TrailDrawer.Draw(Main.spriteBatch, BeamPoints.ToArray(), ColorFunction, WidthFunction, shader);
+
+            shader.BlendState = BlendState.AlphaBlend;
+            TrailDrawer.Draw(Main.spriteBatch, BeamPoints.ToArray(), ColorFunction2, WidthFunction2, shader);
         }
     }
 }

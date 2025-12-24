@@ -34,7 +34,7 @@ namespace Stellamod.Visual.Particles
 
         public override void Update()
         {
-            color *= 0.995f;
+            color *= 0.998f;
             fadeIn++;
             _interpolant = fadeIn / 120f;
             if (fadeIn > 180)
