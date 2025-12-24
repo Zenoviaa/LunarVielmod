@@ -47,7 +47,7 @@ namespace Stellamod.Core.Particles
             }
       
             //TODO, do something better here
-            return _pool[0];
+            return _pool[_lastIndex];
         }
 
         private static void SetParticleDefaults(T t)
