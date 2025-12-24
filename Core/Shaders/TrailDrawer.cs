@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Helpers;
 using Stellamod.Systems.MiscellaneousMath;
 using System;
 using System.Collections.Generic;
@@ -128,7 +129,6 @@ namespace Stellamod.Core.Shaders
             }
         }
 
-
         private static List<VertexPositionColorTexture> CalculateVertices(Vector2[] oldPos,
             float[] oldRot,
             Func<float, Color> colorFunc,
@@ -138,7 +138,9 @@ namespace Stellamod.Core.Shaders
             Vector2 o = offset == null ? Vector2.Zero : (Vector2)offset;
             var vertices = new List<VertexPositionColorTexture>();
             oldPos = MathUtil.RemoveZeros(oldPos, o);
-            MathUtil.LerpTrailPoints(oldPos, out Vector2[] trailingPoints);
+
+            float numPoints = oldPos.Length * 2;
+            Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
             CalculateVerticesTris(trailingPoints, colorFunc, widthFunc, vertices);
             return vertices;
         }
@@ -152,14 +154,10 @@ namespace Stellamod.Core.Shaders
             MiscShaderData shader,
             Vector2? offset = null)
         {
-            spriteBatch.End();
-            spriteBatch.Begin();
             shader.Apply();
             var vertices = CalculateVertices(
                 oldPos, oldRot, colorFunc, widthFunc, offset);
             DrawPrimsTriangles(vertices, null);
-            spriteBatch.End();
-            spriteBatch.Begin();
         }
 
         public static void Draw(SpriteBatch spriteBatch,
@@ -199,11 +197,11 @@ namespace Stellamod.Core.Shaders
 
         }
         public static void Draw(SpriteBatch spriteBatch,
-     Vector2[] oldPos,
-     Func<float, Color> colorFunc,
-     Func<float, float> widthFunc,
-     BaseShader shader,
-     Vector2? offset = null)
+             Vector2[] oldPos,
+             Func<float, Color> colorFunc,
+             Func<float, float> widthFunc,
+             BaseShader shader,
+             Vector2? offset = null)
         {
             //Apply passes
             if (shader != null)
