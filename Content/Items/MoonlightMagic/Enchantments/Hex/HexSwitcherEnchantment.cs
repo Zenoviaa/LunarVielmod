@@ -32,7 +32,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
                 {
                     Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                     Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                    Particle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.HotPink);
+                    LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.HotPink);
                 }
 
                 MagicProj.PrimaryElement = new HexElement();

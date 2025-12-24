@@ -185,15 +185,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 
                 for (float i = 0; i < 3; i++)
                 {
-                    var donutParticle = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -direction * MathHelper.Lerp(15, 1f, i / 3f));
+                    var donutParticle = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -direction * MathHelper.Lerp(15, 1f, i / 3f));
                     donutParticle.Scale *= MathHelper.Lerp(1f, 3f, i / 3f);
                 }
 
-                var strike = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, direction);
+                var strike = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, direction);
                 strike.xMult = 6;
                 strike.rotOffset += MathHelper.PiOver2;
 
-                var strike2 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, direction);
+                var strike2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, direction);
                 strike2.xMult = 32;
                 strike2.rotOffset += MathHelper.PiOver2;
 
@@ -223,7 +223,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if(Timer % 5 == 0)
             {
-                Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity, Color.White);
+                LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity, Color.White);
             }
 
             if(Timer > 5)

@@ -31,7 +31,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Phantasmal
                 {
                     Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                     Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                    Particle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.Turquoise);
+                    LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.Turquoise);
                 }
 
                 MagicProj.PrimaryElement = new PhantasmalElement();

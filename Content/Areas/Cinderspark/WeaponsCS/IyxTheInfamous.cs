@@ -172,7 +172,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 {
                     Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                     pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                    var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                    var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                     FXUtil.GlowFragmentParticle(position, pVelocity,
                         innerColor: Color.Yellow,
                         outerColor: Color.Orange,
@@ -192,7 +192,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 for (float f = 0; f < 8; f++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(4, 4);
-                    Particle.NewParticle<EmberParticle>(Owner.Center, vel);
+                    LegacyParticle.NewParticle<EmberParticle>(Owner.Center, vel);
                 }
             
             }
@@ -285,7 +285,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             for (float f = 0; f < 4; f++)
             {
                 Vector2 vel = Main.rand.NextVector2Circular(4, 4);
-                Particle.NewParticle<EmberParticle>(Owner.Center, vel);
+                LegacyParticle.NewParticle<EmberParticle>(Owner.Center, vel);
             }
             target.AddBuff(BuffID.OnFire, 180);
         }

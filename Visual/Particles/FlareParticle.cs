@@ -7,7 +7,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    public class FlareParticle : Particle
+    public class FlareParticle : LegacyParticle
     {
         private float _offset;
         private float _interpolant;

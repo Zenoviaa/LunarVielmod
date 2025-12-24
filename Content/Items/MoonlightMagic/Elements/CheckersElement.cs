@@ -101,7 +101,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Color color = Color.White;
                 //  color.A = 0;
-                Particle.NewParticle<GlowParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor);
+                LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor);
             }
         }
 
@@ -124,7 +124,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 velocity = velocity.SafeNormalize(Vector2.Zero) * -2;
 
                 Color color = Color.White;
-                Particle.NewParticle<GlowParticle>(spawnPoint, velocity, color);
+                LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity, color);
             }
 
             for (float f = 0f; f < 1f; f += 0.2f)
@@ -134,7 +134,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(0f, 4f);
 
                 Color color = Color.White;
-                Particle.NewParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
+                LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
             }
             float boomSize = Main.rand.NextFloat(0.06f, 0.08f);
             FXUtil.GlowCircleBoom(Projectile.Center,

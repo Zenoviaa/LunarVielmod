@@ -41,7 +41,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Timer++;
             if(Timer % 16 == 0)
             {
-                var constellation = Particle.NewParticle<ConstellationParticle>(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.RotatedByRandom(0.5f) * 0.4f);
+                var constellation = LegacyParticle.NewParticle<ConstellationParticle>(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.RotatedByRandom(0.5f) * 0.4f);
                 int rand = Main.rand.Next(0, 3);
                 switch (rand)
                 {
@@ -67,7 +67,7 @@ namespace Stellamod.Items.Weapons.Ranged
             }
             if (Timer % 8 == 0)
             {
-                var starP = Particle.NewParticle<StarParticle>(Projectile.Center + Main.rand.NextVector2Circular(64, 64), Vector2.Zero);
+                var starP = LegacyParticle.NewParticle<StarParticle>(Projectile.Center + Main.rand.NextVector2Circular(64, 64), Vector2.Zero);
                 starP.fast = true;
             }
             if (Timer % 16 == 0)
@@ -213,7 +213,7 @@ namespace Stellamod.Items.Weapons.Ranged
             {
                 Vector2 pVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                 FXUtil.GlowFragmentParticle(position, pVelocity, 
                     innerColor: Color.Red, 
                     outerColor: Color.Orange, 
@@ -249,7 +249,7 @@ namespace Stellamod.Items.Weapons.Ranged
             {
                 Vector2 pVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                 FXUtil.GlowFragmentParticle(position, pVelocity,
                     innerColor: Color.Yellow,
                     outerColor: Color.Green,
@@ -285,7 +285,7 @@ namespace Stellamod.Items.Weapons.Ranged
             {
                 Vector2 pVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                 FXUtil.GlowFragmentParticle(position, pVelocity,
                     innerColor: Color.Cyan * 0.4f,
                     outerColor: Color.Blue * 0.4f,
@@ -302,7 +302,7 @@ namespace Stellamod.Items.Weapons.Ranged
             {
                 Vector2 pVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                 FXUtil.GlowFragmentParticle(position, pVelocity,
                     innerColor: Color.Green,
                     outerColor: Color.Blue,
@@ -320,7 +320,7 @@ namespace Stellamod.Items.Weapons.Ranged
 
         private void GlowDonut(Vector2 position, Vector2 velocity)
         {
-            var frag = Particle.NewParticle<GlowDonutParticle>(position, velocity);
+            var frag = LegacyParticle.NewParticle<GlowDonutParticle>(position, velocity);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

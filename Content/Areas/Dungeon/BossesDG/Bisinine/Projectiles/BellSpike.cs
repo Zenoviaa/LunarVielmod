@@ -92,7 +92,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             Timer++;
             if (Timer == 1)
             {
-                var p = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitY, Color.Gray, Scale: 0.5f);
+                var p = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitY, Color.Gray, Scale: 0.5f);
 
                 for (float f = 0; f < 16; f++)
                 {

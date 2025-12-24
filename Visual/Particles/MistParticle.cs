@@ -11,7 +11,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    public class MistParticle : Particle
+    public class MistParticle : LegacyParticle
     {
         public int FrameWidth = 128;
         public int FrameHeight = 128;

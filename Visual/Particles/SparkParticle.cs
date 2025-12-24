@@ -7,7 +7,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    public class SparkParticle : Particle
+    public class SparkParticle : LegacyParticle
     {
         private float _interpolant;
         public int FrameWidth = 128;

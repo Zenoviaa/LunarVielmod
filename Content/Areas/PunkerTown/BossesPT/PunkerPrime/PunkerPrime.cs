@@ -235,7 +235,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                     Vector2 gunHoldCenter = GetGunHoldCenter();
                     Vector2 spawnPos = gunHoldCenter;
                     spawnPos += Main.rand.NextVector2Circular(8, 8);
-                    var zapParticle = Particle.NewParticle<SparkParticle>(spawnPos, Main.rand.NextVector2Circular(4, 4), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                    var zapParticle = LegacyParticle.NewParticle<SparkParticle>(spawnPos, Main.rand.NextVector2Circular(4, 4), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
                     zapParticle.innerColor = Color.White;
                     zapParticle.outerColor = Color.Red;
                     zapParticle.fadeToColor = Color.Yellow;
@@ -620,7 +620,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                     
                     
                     float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-                    var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
+                    var steamParticle = LegacyParticle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
                     steamParticle.innerColor = Color.DarkGray;
                     steamParticle.outerColor = Color.Black;
                     steamParticle.fadeToColor = Color.Black;
@@ -794,7 +794,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             if(Timer % 6 == 0)
             {
-                Particle.NewParticle<SparkParticle>(NPC.Bottom + Main.rand.NextVector2Circular(16, 16), 
+                LegacyParticle.NewParticle<SparkParticle>(NPC.Bottom + Main.rand.NextVector2Circular(16, 16), 
                     Main.rand.NextVector2Circular(4, 4), Color.Red);
             }
             if(Timer % 3 == 0)
@@ -1135,7 +1135,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             spawnVelocity.Y = Main.rand.NextFloat(-10, -1f);
 
             float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-            var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
+            var steamParticle = LegacyParticle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
             steamParticle.innerColor = Color.DarkGray;
             steamParticle.outerColor = Color.Black;
             steamParticle.fadeToColor = Color.Black;

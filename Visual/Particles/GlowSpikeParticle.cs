@@ -7,7 +7,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    public class GlowSpikeParticle : Particle
+    public class GlowSpikeParticle : LegacyParticle
     {
         public float Timer;
         public float Duration;

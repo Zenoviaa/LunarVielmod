@@ -158,7 +158,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     Vector2 pos = Projectile.Center;
                     pos += Main.rand.NextVector2Circular(16, 16);
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 3);
-                    var p = Particle.NewBlackParticle<BlackSmokeParticle>(pos, velocity, Color.DarkGray);
+                    var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(pos, velocity, Color.DarkGray);
                     p.Scale *= 0.25f;
                     p.color *= 0.5f;
                     p.fadeToColor = Color.Black;
@@ -373,7 +373,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                         -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
                 }
 
-                var p = Particle.NewBlackParticle<BlackSmokeParticle>(Projectile.Top, Vector2.Zero, Color.DarkGray);
+                var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(Projectile.Top, Vector2.Zero, Color.DarkGray);
 
                 p.color *= 0.25f;
                 p.fadeToColor = Color.Black;
@@ -381,7 +381,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 p.outerColor = Color.Black;
 
 
-                var p2 = Particle.NewParticle<GlowDonutParticle>(Projectile.Top, -Vector2.UnitY);
+                var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Top, -Vector2.UnitY);
 
                 for(float f = 0; f < 8f; f++)
                 {

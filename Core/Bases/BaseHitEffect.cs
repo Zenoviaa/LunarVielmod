@@ -45,7 +45,7 @@ namespace Stellamod.Core.Bases
                 {
                     Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                     Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
-                    Particle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.White, Scale: Main.rand.NextFloat(0.15f, 0.35f));
+                    LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.White, Scale: Main.rand.NextFloat(0.15f, 0.35f));
 
 
 
@@ -57,8 +57,8 @@ namespace Stellamod.Core.Bases
                 {
                     Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                     Vector2 velocity = Main.rand.NextVector2Circular(0, 1);
-                    Particle.NewParticle<StrikeParticle>(spawnPoint, velocity, Color.White);
-                    Particle.NewParticle<Strike2Particle>(spawnPoint, velocity, Color.White);
+                    LegacyParticle.NewParticle<StrikeParticle>(spawnPoint, velocity, Color.White);
+                    LegacyParticle.NewParticle<Strike2Particle>(spawnPoint, velocity, Color.White);
                 }
 
                 Projectile.rotation = Main.rand.Next(0, 360);
@@ -107,7 +107,7 @@ namespace Stellamod.Core.Bases
             {
                 Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                 Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                Particle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.White);
+                LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity, Color.White);
             }
         }
 

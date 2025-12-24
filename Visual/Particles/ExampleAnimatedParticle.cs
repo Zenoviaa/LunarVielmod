@@ -4,7 +4,7 @@ using Stellamod.Core.Particles;
 
 namespace Stellamod.Visual.Particles
 {
-    public class ExampleAnimatedParticle : Particle
+    public class ExampleAnimatedParticle : LegacyParticle
     {
         public int FrameWidth = 270;
         public int FrameHeight = 249;

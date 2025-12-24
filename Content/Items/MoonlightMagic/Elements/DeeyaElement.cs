@@ -90,7 +90,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                     Color color = Color.White;
                     color.A = 0;
-                    Particle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
+                    LegacyParticle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
                 }
             }
         }
@@ -113,7 +113,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Color color = Color.White;
                 color.A = 0;
-                Particle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
+                LegacyParticle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
             }
 
             for (float f = 0f; f < 1f; f += 0.2f)
@@ -124,7 +124,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Color color = ColorFunctions.DeeyaPink;
                 color.A = 0;
-                Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity * 0.5f, color);
+                LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity * 0.5f, color);
             }
         }
 

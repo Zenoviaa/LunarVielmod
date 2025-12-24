@@ -58,7 +58,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
                 color.A = 0;
                 Vector2 velocity = Main.rand.NextVector2Circular(2, 2);
                 Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(4, 4);
-                Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color, Scale: 0.33f);
+                LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color, Scale: 0.33f);
             }
         }
         protected override void Shoot(Player player, IEntitySource source, Vector2 position, Vector2 velocity, int damage, float knockback)

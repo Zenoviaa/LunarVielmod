@@ -208,7 +208,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 NPC.TargetClosest();
                 TargetVector = NPC.Center;
-                var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
+                var donut = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
                 donut.innerColor = Color.White;
                 donut.Scale *= 4;
                 donut.noStretch = true;

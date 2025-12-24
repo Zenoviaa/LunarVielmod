@@ -38,7 +38,7 @@ namespace Stellamod.Assets.Biomes
             {
                 float xRand = Main.rand.NextFloat(-1000, 1000);
                 float yRand = Main.rand.NextFloat(-1000, 1000);
-                Particle.NewParticle<StarParticle>(Main.LocalPlayer.Center + new Vector2(xRand, yRand), Vector2.Zero);
+                LegacyParticle.NewParticle<StarParticle>(Main.LocalPlayer.Center + new Vector2(xRand, yRand), Vector2.Zero);
             }
         }
 

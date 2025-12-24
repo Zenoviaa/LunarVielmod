@@ -22,7 +22,7 @@ namespace Stellamod.Items.Insources
                 Vector2 position = player.Center + Main.rand.NextVector2CircularEdge(64, 64);
                 Vector2 velocity = player.Center - position;
                 velocity *= 0.05f;
-                Particle.NewParticle<StarParticle>(position, velocity, Color.LightBlue, 0.3f);
+                LegacyParticle.NewParticle<StarParticle>(position, velocity, Color.LightBlue, 0.3f);
             }
         }
     }

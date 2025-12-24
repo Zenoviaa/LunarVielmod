@@ -1,112 +1,94 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.Core.Shaders;
-using System;
-using System.Collections.Generic;
+﻿
+using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace Stellamod.Core.Particles
 {
-    public abstract class Particle : ModTexturedType
+    /// <summary>
+    /// Base class for a particle, the generic parameter should just be the type of the particle, since it will automatically pre-initialize a pool for you
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class Particle<T> : BaseParticle 
+        where T : BaseParticle, new()
     {
-        public int Type { get; internal set; }
-
-        public Vector2 Center;
-        public Vector2 Velocity;
-        public float fadeIn;
-        public float Scale;
-        public float Rotation;
-        public bool active;
-        public bool shouldKilledOutScreen = true;
-        public bool isBlack;
-        public Color color;
-        public Rectangle Frame;
-        public ArmorShaderData shader;
-        public BaseShader customShader;
-
-        protected sealed override void Register()
+        private static int _lastIndex;
+        private static T[] _pool;
+        public const int Max_Particle_Count = 64;
+        public override void SetStaticDefaults()
         {
-
-            ModTypeLookup<Particle>.Register(this);
-            ParticleLoader.Particles ??= new List<Particle>();
-            ParticleLoader.Particles.Add(this);
-            Type = ParticleLoader.ReserveParticleID();
+            base.SetStaticDefaults();
+            InitializePool();
         }
 
-        public virtual Particle NewInstance()
+        public override void Unload()
         {
-            var inst = (Particle)Activator.CreateInstance(GetType(), true);
-            inst.Type = Type;
-            return inst;
+            base.Unload();
+            _pool = null;
         }
-
-        public static T NewParticle<T>(Vector2 center, Vector2 velocity, Color newColor = default, float Scale = 1f) where T : Particle
+        private static void InitializePool()
         {
-            T p = ParticleLoader.GetParticle(ParticleUtils.ParticleType<T>()).NewInstance() as T;
-            if (Main.netMode != NetmodeID.Server)
+            _pool = new T[Max_Particle_Count];
+            for(int i = 0; i < Max_Particle_Count; i++)
             {
-                p.active = true;
-                p.color = newColor;
-                p.Center = center;
-                p.Velocity = velocity;
-                p.Scale = Scale;
-                p.OnSpawn();
-
-                ParticleSystem.AddParticle(p);
+                _pool[i] = new T();
             }
-  
-            return p;
         }
 
-        public static T NewBlackParticle<T>(Vector2 center, Vector2 velocity, Color newColor = default, float Scale = 1f) where T : Particle
+        private static T GetParticle()
         {
-            T p = ParticleLoader.GetParticle(ParticleUtils.ParticleType<T>()).NewInstance() as T;
-            if (Main.netMode != NetmodeID.Server)
+            for(int i = 0; i < Max_Particle_Count; i++)
             {
-                p.active = true;
-                p.color = newColor;
-                p.Center = center;
-                p.Velocity = velocity;
-                p.Scale = Scale;
-                p.OnSpawn();
-                ParticleSystem.AddBlackParticle(p);
+                _lastIndex++;
+                _lastIndex = _lastIndex % _pool.Length;
+                T particle = _pool[i];
+                if (!particle.active)
+                    return particle;
             }
-            return p;
+      
+            //TODO, do something better here
+            return _pool[0];
         }
 
-        public virtual void OnSpawn() { }
-
-        public virtual void Update() { }
-
-        public virtual bool ShouldUpdateCenter() => true;
-
-        public virtual void Draw(SpriteBatch spriteBatch)
+        private static void SetParticleDefaults(T t)
         {
-            Rectangle frame = Frame;
-            Vector2 origin = frame.Size() / 2;
-
-            spriteBatch.Draw(GetTexture().Value, Center - Main.screenPosition, frame, color, Rotation, origin, Scale, SpriteEffects.None, 0f);
+            t.fadeIn = 0;
         }
-
-        public virtual void DrawInUI(SpriteBatch spriteBatch)
+        public static T Spawn(Vector2 position, Vector2 velocity, Color? color = null, float Scale = 1f)
         {
-            Rectangle frame = Frame;
-            Vector2 origin = frame.Size() / 2;
+            T particle = GetParticle();
 
-            spriteBatch.Draw(GetTexture().Value, Center, frame, color, Rotation, origin, Scale, SpriteEffects.None, 0f);
+            //Don't do anyth of this other stuff cause the server doesn't need to simulate particles
+            if (Main.netMode == NetmodeID.Server)
+                return particle;
+
+            SetParticleDefaults(particle);
+            particle.active = true;
+            particle.color = color.HasValue ? color.Value : Color.White;
+            particle.Center = position;
+            particle.Velocity = velocity;
+            particle.Scale = Scale;
+            particle.OnSpawn();
+            ParticleSystemV2.AddParticle(particle);
+            return particle;
         }
-
-        public Asset<Texture2D> GetTexture() => ParticleSystem.ParticleAssets[Type];
-
-        public string GetShaderPath()
+        public static T SpawnInAlphaLayer(Vector2 position, Vector2 velocity, Color? color = null, float Scale = 1f)
         {
-            if (customShader != null)
-                return customShader.EffectPath;
-            return string.Empty;
+            T particle = GetParticle();
+
+            //Don't do anyth of this other stuff cause the server doesn't need to simulate particles
+            if (Main.netMode == NetmodeID.Server)
+                return particle;
+
+            SetParticleDefaults(particle);
+            particle.active = true;
+            particle.color = color.HasValue ? color.Value : Color.White;
+            particle.Center = position;
+            particle.Velocity = velocity;
+            particle.Scale = Scale;
+            particle.OnSpawn();
+            ParticleSystemV2.AddAlphaBlendedParticle(particle);
+            return particle;
         }
     }
 }

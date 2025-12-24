@@ -198,7 +198,7 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
 
                 Vector2 pos = Player.Center;
                 Vector2 velocity = Vector2.UnitY.RotatedBy(lerp * MathHelper.TwoPi) * 16;
-                var part = Particle.NewParticle<FlareParticle>(pos, velocity);
+                var part = LegacyParticle.NewParticle<FlareParticle>(pos, velocity);
             }
 
             int combatText = CombatText.NewText(Player.getRect(), Color.OrangeRed, LangText.Misc("FlamecrestPlayer"), true);

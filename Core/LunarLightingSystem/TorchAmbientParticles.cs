@@ -20,7 +20,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 Vector2 worldPosition = new Vector2(i * 16, j * 16);
                 Vector2 spawnPosition = worldPosition + Main.rand.NextVector2Circular(16, 16);
                 Vector2 velocity = Main.rand.NextVector2Circular(0.3f, 0.3f);
-                Particle.NewParticle<AmbientEmberParticle>(spawnPosition, velocity);
+                LegacyParticle.NewParticle<AmbientEmberParticle>(spawnPosition, velocity);
             }
         }
     }

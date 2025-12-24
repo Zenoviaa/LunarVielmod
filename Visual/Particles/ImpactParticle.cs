@@ -13,7 +13,7 @@ using Stellamod.Core.Particles;
 
 namespace Stellamod.Visual.Particles
 {
-    public class ImpactParticle : Particle
+    public class ImpactParticle : LegacyParticle
     {
         private Vector2 _stretchScale;
         private float _interpolant;

@@ -79,7 +79,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
             {
                 Vector2 pos = NPC.Center;
                 pos += Main.rand.NextVector2Circular(32, 32);
-                var zap = Particle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(1, 4));
+                var zap = LegacyParticle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(1, 4));
                 zap.Scale *= 0.2f;
             }
 

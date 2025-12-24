@@ -3,7 +3,7 @@ using Stellamod.Core.Particles;
 
 namespace Stellamod.Visual.Particles
 {
-    public class ShockParticle : Particle
+    public class ShockParticle : LegacyParticle
     {
         public int FrameWidth = 143;
         public int FrameHeight = 143;

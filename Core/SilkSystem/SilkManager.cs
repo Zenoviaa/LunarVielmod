@@ -48,7 +48,7 @@ namespace Stellamod.Core.SilkSystem
             if (Main.rand.NextBool(100))
             {
                 Vector2 spawnPoint = GetRandomPoint();
-                Particle.NewParticle<SilkParticle>(spawnPoint, Vector2.Zero, Color.Transparent);
+                LegacyParticle.NewParticle<SilkParticle>(spawnPoint, Vector2.Zero, Color.Transparent);
             }
         }
 
@@ -248,7 +248,7 @@ namespace Stellamod.Core.SilkSystem
                     for (int s = 0; s < 15; s++)
                     {
                         Vector2 spawnPoint = point + Main.rand.NextVector2Circular(32, 32);
-                        Particle.NewParticle<SilkParticle>(spawnPoint, Vector2.Zero, Color.Transparent);
+                        LegacyParticle.NewParticle<SilkParticle>(spawnPoint, Vector2.Zero, Color.Transparent);
                     }
                 }
                 NetMessage.SendData(MessageID.WorldData);

@@ -64,7 +64,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Color color = Color.White;
                 //  color.A = 0;
-                Particle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor * 2);
+                LegacyParticle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor * 2);
             }
         }
 
@@ -86,7 +86,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Color color = Color.White;
                 color.A = 0;
-                Particle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
+                LegacyParticle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
             }
 
             for (float f = 0f; f < 1f; f += 0.2f)
@@ -97,7 +97,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Color color = Color.White;
                 color.A = 0;
-                Particle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
+                LegacyParticle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
             }
             Vector2 vek = Projectile.oldVelocity;
             vek *= 0.1f;
@@ -106,7 +106,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             {
                 Vector2 pVelocity = vek.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                var frag = Particle.NewParticle<GlowFragmentParticle>(pos, pVelocity);
+                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(pos, pVelocity);
                 FXUtil.GlowFragmentParticle(pos, pVelocity,
                     innerColor: Color.Black,
                     outerColor: Color.Red,

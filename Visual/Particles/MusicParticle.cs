@@ -4,7 +4,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    public class MusicParticle : Particle
+    public class MusicParticle : LegacyParticle
     {
         public int FrameWidth = 216;
         public int FrameHeight = 222;

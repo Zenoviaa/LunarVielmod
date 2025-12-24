@@ -135,7 +135,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Color color = Color.RosyBrown;
                 //  color.A = 0;
-                Particle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor);
+                LegacyParticle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor);
             }
         }
 
@@ -170,14 +170,14 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 {
                     Color color = Color.RosyBrown;
                     color.A = 0;
-                    Particle.NewBlackParticle<FireSmokeParticle>(spawnPoint, velocity, color);
+                    LegacyParticle.NewBlackParticle<FireSmokeParticle>(spawnPoint, velocity, color);
                 }
                 else
                 {
                     Color color = ColorFunctions.RadianceYellow;
                     color.A = 0;
-                    Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
-                    Particle.NewBlackParticle<FireHeatParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
+                    LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
+                    LegacyParticle.NewBlackParticle<FireHeatParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
                 }
             }
 
@@ -191,7 +191,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 {
                     Color color = Color.RosyBrown;
                     color.A = 0;
-                    Particle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color);
+                    LegacyParticle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color);
                 }
                 else
                 {
@@ -200,8 +200,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                     if (Main.rand.NextBool(2))
                         color = Color.OrangeRed;
 
-                    Particle.NewParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
-                    Particle.NewParticle<FireHeatParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
+                    LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
+                    LegacyParticle.NewParticle<FireHeatParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
                 }
             }
             float boomSize = Main.rand.NextFloat(0.06f, 0.08f);

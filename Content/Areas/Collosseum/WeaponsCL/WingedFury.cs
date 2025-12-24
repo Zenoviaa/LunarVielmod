@@ -71,7 +71,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                         {
                             Vector2 vel = -Vector2.UnitY * 5;
                             vel = vel.RotatedByRandom(0.5f);
-                            Particle.NewParticle<EmberParticle>(Projectile.Center, vel);
+                            LegacyParticle.NewParticle<EmberParticle>(Projectile.Center, vel);
                         }
                     }
 
@@ -92,7 +92,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                 case AIState.Chasing:
                     if (Timer == 2)
                     {
-                        var d = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity);
+                        var d = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity);
                         d.shrink = true;
                         d.Scale *= 0.5f;
 
@@ -115,7 +115,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                         Projectile.velocity *= 1.05f;
                     if (Timer % 10 == 0)
                     {
-                        var p = Particle.NewParticle<EmberParticle>(Projectile.Center, -Projectile.velocity + Main.rand.NextVector2Circular(1, 1));
+                        var p = LegacyParticle.NewParticle<EmberParticle>(Projectile.Center, -Projectile.velocity + Main.rand.NextVector2Circular(1, 1));
                     }
                     Projectile.frame = 0;
                     break;

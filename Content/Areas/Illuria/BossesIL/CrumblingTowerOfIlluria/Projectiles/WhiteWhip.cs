@@ -108,14 +108,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), dustVelocity, newColor: Color.White, Scale: Main.rand.NextFloat(0.3f, 0.5f));
                 }
 
-                var donut = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity, newColor: Color.Cyan);
+                var donut = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity, newColor: Color.Cyan);
                 SoundStyle fireSound = AssetRegistry.Sounds.Magic.AutomationCast1;
                 fireSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(fireSound, Projectile.position);
             }
             if (Timer % 7 == 0)
             {
-                var zap = Particle.NewParticle<ZapParticle>(Projectile.Center, Main.rand.NextVector2Circular(2, 2), newColor: Color.White, Scale: 0.75f);
+                var zap = LegacyParticle.NewParticle<ZapParticle>(Projectile.Center, Main.rand.NextVector2Circular(2, 2), newColor: Color.White, Scale: 0.75f);
                 zap.Scale *= 0.2f;
                 zap.innerColor = Color.White;
                 zap.outerColor = Color.Cyan;
@@ -124,7 +124,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
 
             if(Timer % 15 == 0)
             {
-                var spark = Particle.NewParticle<SparkParticle>(Projectile.Center, Main.rand.NextVector2Circular(2, 2), newColor: Color.White, Scale: 0.75f);
+                var spark = LegacyParticle.NewParticle<SparkParticle>(Projectile.Center, Main.rand.NextVector2Circular(2, 2), newColor: Color.White, Scale: 0.75f);
                 spark.innerColor = Color.White;
                 spark.outerColor = Color.Cyan;
                 spark.fadeToColor = Color.Purple;

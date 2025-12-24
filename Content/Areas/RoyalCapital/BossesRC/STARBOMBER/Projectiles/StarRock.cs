@@ -87,7 +87,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             for(float f = 0; f < 8f; f++)
             {
                 Vector2 vel = Main.rand.NextVector2Circular(4, 4);
-                Particle.NewParticle<BlackSmokeParticle>(Projectile.Center, vel);
+                LegacyParticle.NewParticle<BlackSmokeParticle>(Projectile.Center, vel);
 
             }
             FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGray, Color.Black);

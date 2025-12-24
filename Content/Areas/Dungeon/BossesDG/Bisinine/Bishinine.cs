@@ -546,7 +546,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 NPC.TargetClosest();
                 NPC.velocity.Y = -2;
-                var p = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
                 SoundStyle laugh = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
                 SoundEngine.PlaySound(laugh, NPC.position);
             }
@@ -769,8 +769,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             }
             if (Timer % 5 == 0)
             {
-                var p = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.UnitY, newColor: Color.White);
-                var p2 = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.UnitY * 5, newColor: Color.White);
+                var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.UnitY, newColor: Color.White);
+                var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.UnitY * 5, newColor: Color.White);
                 p2.Scale *= 0.5f;
                 if (MultiplayerHelper.IsHost)
                 {
@@ -870,7 +870,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 SoundEngine.PlaySound(bellHit, NPC.position);
                 NPC.velocity.Y = -14;
                 float maxRads = MathHelper.ToRadians(45);
-                var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.UnitY);
+                var part = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.UnitY);
                 for (float f = 0; f < 8; f++)
                 {
                     Vector2 vel = -Vector2.UnitY * 4;
@@ -1053,7 +1053,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             }
             if (Timer % 1 == 0)
             {
-                var spark = Particle.NewParticle<SparkParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), Vector2.Zero);
+                var spark = LegacyParticle.NewParticle<SparkParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), Vector2.Zero);
                 spark.outerColor = Color.Blue;
                 spark.fadeToColor = Color.Black;
             }
@@ -1064,7 +1064,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             if (Main.rand.NextBool(4))
             {
-                var p = Particle.NewBlackParticle<BlackSmokeParticle>(NPC.Bottom, Vector2.Zero, Color.DarkGray);
+                var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(NPC.Bottom, Vector2.Zero, Color.DarkGray);
                 p.Scale *= 0.25f;
                 p.color *= 0.5f;
                 p.fadeToColor = Color.Black;
@@ -1208,8 +1208,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 bellHit.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(bellHit, NPC.position);
                 NPC.velocity.Y = -17;
-                var p = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
-                var p2 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY * 4);
+                var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY * 4);
                 p2.Scale *= 0.5f;
             }
 
@@ -1235,7 +1235,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                     NPC.noGravity = true;
                     if(Timer % 5 == 0)
                     {
-                        var p2 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, -NPC.velocity);
+                        var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, -NPC.velocity);
                         p2.Scale *= 0.5f;
                     }
                 }
@@ -1286,7 +1286,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
                     Vector2 velocity = Vector2.UnitX * Main.rand.Next(-1, 1);
                     velocity *= Main.rand.NextFloat(1f, 2f);
-                    var p = Particle.NewBlackParticle<BlackSmokeParticle>(NPC.Bottom + offset, velocity, Color.DarkGray);
+                    var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(NPC.Bottom + offset, velocity, Color.DarkGray);
                     p.Scale *= 0.25f;
                     p.color *= 0.5f;
                     p.fadeToColor = Color.Black;
@@ -1357,7 +1357,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 NPC.TargetClosest();
                 NPC.velocity.Y = -2;
-                var p = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
                 SoundStyle laugh = AssetRegistry.Sounds.Bishinine.BishinineLaugh;
                 SoundEngine.PlaySound(laugh, NPC.position);
             }
@@ -1833,7 +1833,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             if(Timer >= 150 && Timer % 5 == 0)
             {
                 Vector2 vel = Main.rand.NextVector2Circular(4, 4);
-                Particle.NewParticle<EmberParticle>(NPC.Center, vel);
+                LegacyParticle.NewParticle<EmberParticle>(NPC.Center, vel);
             }
             if(Timer >= 150 && Main.rand.NextBool(10))
             {

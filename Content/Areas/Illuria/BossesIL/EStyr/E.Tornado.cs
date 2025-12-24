@@ -122,7 +122,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             if (Timer % 8 == 0)
             {
-                var donut = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero), Color.White);
+                var donut = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero), Color.White);
                 donut.Scale *= 0.3f;
             }
 
@@ -146,7 +146,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if (Timer % 10 == 0)
             {
-                var p = Particle.NewParticle<StarParticle>(Projectile.Center, Vector2.Zero, Color.White, Scale: 0.4f);
+                var p = LegacyParticle.NewParticle<StarParticle>(Projectile.Center, Vector2.Zero, Color.White, Scale: 0.4f);
                 p.fast = true;
                 var d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(16, 16), DustID.Dirt, Vector2.Zero,
                     newColor: Color.White,
@@ -242,14 +242,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
             }
 
-            var p = Particle.NewBlackParticle<BlackSmokeParticle>(Projectile.Bottom, Vector2.Zero, Color.DarkGray);
+            var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(Projectile.Bottom, Vector2.Zero, Color.DarkGray);
 
             p.color *= 0.5f;
             p.fadeToColor = Color.Black;
             p.innerColor = Color.DarkGray;
             p.outerColor = Color.Black;
 
-            var sear = Particle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
+            var sear = LegacyParticle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
             sear.innerColor = Color.Gray;
             sear.outerColor = Color.Blue;
             sear.fadeToColor = Color.Black;
@@ -261,7 +261,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 Vector2 pos = Projectile.Center;
                 pos += Main.rand.NextVector2Circular(80, 80);
-                var zap = Particle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(10) * Main.rand.NextFloat(2, 15));
+                var zap = LegacyParticle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(10) * Main.rand.NextFloat(2, 15));
                 zap.innerColor = Color.Gray;
                 zap.outerColor = Color.Blue;
                 zap.fadeToColor = Color.Black;
@@ -302,13 +302,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             SoundEngine.PlaySound(smashSound, Projectile.position);
 
 
-            var part = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+            var part = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
             part.fadeToColor = Color.Black;
             part.outerColor = Color.Gray;
             part.noStretch = true;
             part.shrink = true;
 
-            var part2 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+            var part2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
             part2.fadeToColor = Color.Black;
             part2.outerColor = Color.Gray;
             part2.noStretch = true;
@@ -413,7 +413,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             if (Timer % 8 == 0)
             {
-                var donut = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero), Color.White);
+                var donut = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero), Color.White);
                 donut.Scale *= 0.3f;
             }
 
@@ -437,7 +437,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if (Timer % 10 == 0)
             {
-                var p = Particle.NewParticle<StarParticle>(Projectile.Center, Vector2.Zero, Color.White, Scale: 0.4f);
+                var p = LegacyParticle.NewParticle<StarParticle>(Projectile.Center, Vector2.Zero, Color.White, Scale: 0.4f);
                 p.fast = true;
                 var d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(16, 16), DustID.Dirt, Vector2.Zero,
                     newColor: Color.White,
@@ -508,14 +508,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
             }
 
-            var p = Particle.NewBlackParticle<BlackSmokeParticle>(Projectile.Bottom, Vector2.Zero, Color.DarkGray);
+            var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(Projectile.Bottom, Vector2.Zero, Color.DarkGray);
 
             p.color *= 0.5f;
             p.fadeToColor = Color.Black;
             p.innerColor = Color.DarkGray;
             p.outerColor = Color.Black;
 
-            var sear = Particle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
+            var sear = LegacyParticle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
             sear.innerColor = Color.Gray;
             sear.outerColor = Color.Blue;
             sear.fadeToColor = Color.Black;
@@ -527,7 +527,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 Vector2 pos = Projectile.Center;
                 pos += Main.rand.NextVector2Circular(80, 80);
-                var zap = Particle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(10) * Main.rand.NextFloat(2, 15));
+                var zap = LegacyParticle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(10) * Main.rand.NextFloat(2, 15));
                 zap.innerColor = Color.Gray;
                 zap.outerColor = Color.Blue;
                 zap.fadeToColor = Color.Black;
@@ -568,13 +568,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             SoundEngine.PlaySound(smashSound, Projectile.position);
 
 
-            var part = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+            var part = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
             part.fadeToColor = Color.Black;
             part.outerColor = Color.Gray;
             part.noStretch = true;
             part.shrink = true;
 
-            var part2 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+            var part2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
             part2.fadeToColor = Color.Black;
             part2.outerColor = Color.Gray;
             part2.noStretch = true;

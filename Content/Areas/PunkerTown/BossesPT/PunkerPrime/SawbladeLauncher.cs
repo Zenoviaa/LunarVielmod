@@ -97,7 +97,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             spawnVelocity.Y = Main.rand.NextFloat(-10, -1f);
 
             float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-            var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
+            var steamParticle = LegacyParticle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
             steamParticle.innerColor = Color.DarkGray;
             steamParticle.outerColor = Color.Black;
             steamParticle.fadeToColor = Color.Black;
@@ -163,7 +163,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 var spawnPos = NPC.Center;
                 spawnPos += Main.rand.NextVector2Circular(8, 8);
-                var p = Particle.NewParticle<ZapParticle>(spawnPos, Main.rand.NextVector2Circular(4, 4), Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
+                var p = LegacyParticle.NewParticle<ZapParticle>(spawnPos, Main.rand.NextVector2Circular(4, 4), Color.Red, Main.rand.NextFloat(0.2f, 0.5f));
             }
 
             NPC.velocity *= 0.1f;

@@ -293,7 +293,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             {
                 Vector2 pVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                 FXUtil.GlowFragmentParticle(position, pVelocity,
                     innerColor: Color.LightPink,
                     outerColor: Color.Pink,

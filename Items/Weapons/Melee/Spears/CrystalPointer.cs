@@ -212,7 +212,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
             if (!Hit)
             {
                 FXUtil.ShakeCamera(target.Center, 1024, 8f);
-                Particle.NewParticle<IceStrikeParticle>(target.Center, Vector2.Zero, Color.White);
+                LegacyParticle.NewParticle<IceStrikeParticle>(target.Center, Vector2.Zero, Color.White);
 
                 Hit = true;
                 hitstopTimer = 4 * ExtraUpdateMult;
@@ -380,7 +380,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
             if (!Hit)
             {
                 FXUtil.ShakeCamera(target.Center, 1024, 8f);
-                Particle.NewParticle<IceStrikeParticle>(target.Center, Vector2.Zero, Color.White);
+                LegacyParticle.NewParticle<IceStrikeParticle>(target.Center, Vector2.Zero, Color.White);
 
                 Hit = true;
                 hitstopTimer = 4 * ExtraUpdateMult;

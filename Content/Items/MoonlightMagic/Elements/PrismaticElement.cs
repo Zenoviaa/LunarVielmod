@@ -78,7 +78,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Color color = Color.White;
                 color.A = 0;
-                Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
+                LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
             }
 
             for (float f = 0f; f < 1f; f += 0.2f)
@@ -89,7 +89,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Color color = Color.White;
                 color.A = 0;
-                Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
+                LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
             }
         }
 

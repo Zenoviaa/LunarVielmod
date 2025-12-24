@@ -6,7 +6,7 @@ using Stellamod.Core.Shaders;
 using Terraria;
 namespace Stellamod.Visual.Particles
 {
-    public class GlowFragmentParticle : Particle
+    public class GlowFragmentParticle : LegacyParticle
     {
         private float _direction;
         private Vector2 _stretchScale;

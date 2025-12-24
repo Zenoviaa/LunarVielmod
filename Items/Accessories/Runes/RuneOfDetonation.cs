@@ -47,7 +47,7 @@ namespace Stellamod.Items.Accessories.Runes
                     rot += Main.rand.NextFloat(-0.5f, 0.5f);
                     Vector2 velocity = (rot*MathHelper.TwoPi).ToRotationVector2();
                     velocity *= Main.rand.NextFloat(4, 8);
-                    Particle.NewParticle<ImpactParticle>(Projectile.Center, velocity);
+                    LegacyParticle.NewParticle<ImpactParticle>(Projectile.Center, velocity);
                 }
                 FXUtil.GlowCircleBoom(Projectile.Center, Color.Yellow, Color.Orange, Color.Red);
 

@@ -78,7 +78,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
                 {
                     Color color = Color.White;
                     Vector2 velocity = Main.rand.NextVector2Circular(24, 24);
-                    Particle.NewBlackParticle<BloodSparkleParticle>(Projectile.Center, velocity, color, Scale: Main.rand.NextFloat(0.5f, 3f));
+                    LegacyParticle.NewBlackParticle<BloodSparkleParticle>(Projectile.Center, velocity, color, Scale: Main.rand.NextFloat(0.5f, 3f));
                 }
             }
         }

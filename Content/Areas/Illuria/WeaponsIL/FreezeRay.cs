@@ -39,6 +39,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         }
     }
 
+    
     public class IceExplosion : ModProjectile
     {
         private IcicleSystem _icicleSystemBackingField;
@@ -103,7 +104,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                     initialVelocity *= Main.rand.NextFloat(0.5f, 1f);
 
-                    DustParticle dustParticle = Particle.NewParticle<DustParticle>(Projectile.Center, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.2f, 0.5f));
+                    DustParticle dustParticle = Particle<DustParticle>.Spawn(Projectile.Center, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.2f, 0.5f));
                     dustParticle.innerColor = Color.SkyBlue;
                     dustParticle.outerColor = Color.Violet;
                 }
@@ -116,7 +117,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(360));
                     initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
 
-                    SmokeParticle smokeParticle = Particle.NewBlackParticle<SmokeParticle>(Projectile.Center + initialVelocity,
+                    SmokeParticle smokeParticle = LegacyParticle.NewBlackParticle<SmokeParticle>(Projectile.Center + initialVelocity,
                         initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 3f));
                     smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.14f);
                     smokeParticle.extraUpdates = Main.rand.Next(0, 1);
@@ -153,7 +154,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(360));
                 initialVelocity *= Main.rand.NextFloat(0.5f, 1f);
 
-                DustParticle dustParticle = Particle.NewParticle<DustParticle>(Projectile.Center, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.2f, 2f));
+                DustParticle dustParticle = Particle<DustParticle>.Spawn(Projectile.Center, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.2f, 2f));
                 dustParticle.innerColor = Color.SkyBlue;
                 dustParticle.outerColor = Color.Violet;
             }
@@ -641,7 +642,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                 initialVelocity *= Main.rand.NextFloat(0.5f, 1f);
 
-                DustParticle dustParticle = Particle.NewParticle<DustParticle>(Projectile.Center, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.2f, 0.5f));
+                DustParticle dustParticle = Particle<DustParticle>.Spawn(Projectile.Center, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.2f, 0.5f));
                 dustParticle.innerColor = Color.SkyBlue;
                 dustParticle.outerColor = Color.Violet;
             }
@@ -693,7 +694,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                     initialVelocity *= Main.rand.NextFloat(0.5f, 1f);
 
-                    DustParticle dustParticle = Particle.NewParticle<DustParticle>(explosionCenter, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.6f, 2f));
+                    DustParticle dustParticle = Particle<DustParticle>.Spawn(explosionCenter, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.6f, 2f));
                     dustParticle.innerColor = Color.SkyBlue;
                     dustParticle.outerColor = Color.Violet;
                 }
@@ -704,7 +705,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(360));
                     initialVelocity *= Main.rand.NextFloat(0.5f, 1f);
 
-                    SparkParticle dustParticle = Particle.NewParticle<SparkParticle>(explosionCenter, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.6f, 2f));
+                    SparkParticle dustParticle = LegacyParticle.NewParticle<SparkParticle>(explosionCenter, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.6f, 2f));
                     dustParticle.innerColor = Color.SkyBlue;
                     dustParticle.outerColor = Color.Violet;
                 }
@@ -716,7 +717,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                     initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
 
-                    SmokeParticle smokeParticle = Particle.NewBlackParticle<SmokeParticle>(explosionCenter + initialVelocity,
+                    SmokeParticle smokeParticle = LegacyParticle.NewBlackParticle<SmokeParticle>(explosionCenter + initialVelocity,
                         initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 3f));
                     smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.4f);
                     smokeParticle.extraUpdates = Main.rand.Next(0, 1);
@@ -743,7 +744,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                     particle.VectorScale *= 0.5f;
 
                 }
-                var sear = Particle.NewParticle<SearParticle>(explosionCenter, Vector2.Zero);
+                var sear = LegacyParticle.NewParticle<SearParticle>(explosionCenter, Vector2.Zero);
                 sear.innerColor = Color.Cyan;
                 sear.outerColor = Color.Blue;
 
@@ -937,7 +938,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             {
                 float rot = f / 8f;
                 rot += Main.rand.NextFloat(-0.5f, 0.5f);
-                var p = Particle.NewParticle<ImpactParticle>(position, velocity.RotatedByRandom(0.7f));
+                var p = LegacyParticle.NewParticle<ImpactParticle>(position, velocity.RotatedByRandom(0.7f));
                 p.fast = true;
                 p.color = Color.SkyBlue;
             }

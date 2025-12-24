@@ -808,7 +808,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 {
                     float f = d;
                     float completionRatio = f / num;
-                    var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Center, (-NPC.velocity.SafeNormalize(Vector2.Zero) + -NPC.velocity.SafeNormalize(Vector2.Zero) * completionRatio) *7, Color.Red);
+                    var donut = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, (-NPC.velocity.SafeNormalize(Vector2.Zero) + -NPC.velocity.SafeNormalize(Vector2.Zero) * completionRatio) *7, Color.Red);
                     donut.Scale *= 2 + completionRatio * 1;
                 }
                 SoundStyle dashSound = AssetRegistry.Sounds.SanguineSingularity.SanguineDash;
@@ -1055,7 +1055,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 ShakeModSystem.Shake = 8;
                 if (Timer % 9 == 0)
                 {
-                    Particle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+                    LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
                 }
             }
             else if (Timer < 200)
@@ -1236,7 +1236,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
             if(Timer >= 100 && Timer % 10 == 0)
             {
-                Particle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+                LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
                 ShakeModSystem.Shake = 8;
             }
             if (Timer == deathTime)
@@ -1640,7 +1640,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             {
                 Color color = Color.White;
                 Vector2 velocity = Main.rand.NextVector2Circular(24, 24);
-                Particle.NewBlackParticle<BloodSparkleParticle>(NPC.Center, velocity, color, Scale: Main.rand.NextFloat(0.5f, 3f));
+                LegacyParticle.NewBlackParticle<BloodSparkleParticle>(NPC.Center, velocity, color, Scale: Main.rand.NextFloat(0.5f, 3f));
             }
 
             float time = 15f;
@@ -2000,7 +2000,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
             if(Timer < 100 && Timer % 10 == 0)
             {
-                Particle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+                LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
             }
 
             Vector2 velocityToTarget = (MyTarget.Center - NPC.Center);
@@ -2109,7 +2109,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             {
                 if(Timer % 5 == 0)
                 {
-                    var p = Particle.NewParticle<GlowDonutParticle>(NPC.Center, -Vector2.UnitX * 2, newColor: Color.Red);
+                    var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -Vector2.UnitX * 2, newColor: Color.Red);
                     p.Scale *= 0.33f;
                 }
             }

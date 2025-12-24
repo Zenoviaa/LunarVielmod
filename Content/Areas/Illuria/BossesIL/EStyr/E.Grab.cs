@@ -58,18 +58,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                 for (float i = 0; i < 3; i++)
                 {
-                    var donutParticle = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -direction * MathHelper.Lerp(15, 1f, i / 3f));
+                    var donutParticle = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -direction * MathHelper.Lerp(15, 1f, i / 3f));
                     donutParticle.Scale *= MathHelper.Lerp(1f, 3f, i / 3f);
 
                 }
-                var strike = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, direction);
+                var strike = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, direction);
                 strike.xMult = 6;
                 strike.rotOffset += MathHelper.PiOver2;
-                var strike2 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, direction);
+                var strike2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, direction);
                 strike2.xMult = 32;
                 strike2.rotOffset += MathHelper.PiOver2;
 
-                var strike3 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, direction);
+                var strike3 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, direction);
                 strike3.xMult = 48;
                 strike3.rotOffset += MathHelper.Pi;
 
@@ -283,14 +283,14 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
             }
 
-            var p = Particle.NewBlackParticle<BlackSmokeParticle>(MyTarget.Bottom, Vector2.Zero, Color.DarkGray);
+            var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(MyTarget.Bottom, Vector2.Zero, Color.DarkGray);
 
             p.color *= 0.5f;
             p.fadeToColor = Color.Black;
             p.innerColor = Color.DarkGray;
             p.outerColor = Color.Black;
 
-            var sear = Particle.NewParticle<SearParticle>(MyTarget.Center, Vector2.Zero);
+            var sear = LegacyParticle.NewParticle<SearParticle>(MyTarget.Center, Vector2.Zero);
             sear.innerColor = Color.Gray;
             sear.outerColor = Color.Blue;
             sear.fadeToColor = Color.Black;
@@ -301,7 +301,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
                 Vector2 pos = MyTarget.Center;
                 pos += Main.rand.NextVector2Circular(80, 80);
-                var zap = Particle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(10) * Main.rand.NextFloat(2, 15));
+                var zap = LegacyParticle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(10) * Main.rand.NextFloat(2, 15));
                 zap.innerColor = Color.Gray;
                 zap.outerColor = Color.Blue;
                 zap.fadeToColor = Color.Black;
@@ -324,13 +324,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             smashSound = AssetRegistry.Sounds.Bishinine.Comet2;
             SoundEngine.PlaySound(smashSound, NPC.position);
 
-            var part = Particle.NewParticle<GlowDonutParticle>(MyTarget.Bottom, Vector2.Zero, Color.White);
+            var part = LegacyParticle.NewParticle<GlowDonutParticle>(MyTarget.Bottom, Vector2.Zero, Color.White);
             part.fadeToColor = Color.Black;
             part.outerColor = Color.White;
             part.noStretch = true;
             part.shrink = true;
 
-            var part2 = Particle.NewParticle<GlowDonutParticle>(MyTarget.Bottom, Vector2.Zero, Color.White);
+            var part2 = LegacyParticle.NewParticle<GlowDonutParticle>(MyTarget.Bottom, Vector2.Zero, Color.White);
             part2.fadeToColor = Color.Black;
             part2.outerColor = Color.White;
             part2.noStretch = true;
@@ -407,7 +407,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if(Timer % 10 == 0)
             {
-                var p = Particle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero), newColor: Color.White, Scale: 1);
+                var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero), newColor: Color.White, Scale: 1);
                 p.Scale *= 0.5f;
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
            

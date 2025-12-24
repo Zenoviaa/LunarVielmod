@@ -69,7 +69,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
         private Color GetSecondaryTwinColor() => DescendingTwins.GetSecondaryTwinColor(Variant);
         private void SpawnFlameDust(Vector2 position)
         {
-            var p = Particle.NewParticle<GlowFragmentParticle>(position, Projectile.velocity.SafeNormalize(Vector2.Zero) * 5f, Color.White);
+            var p = LegacyParticle.NewParticle<GlowFragmentParticle>(position, Projectile.velocity.SafeNormalize(Vector2.Zero) * 5f, Color.White);
             Color twinColor = GetTwinColor();
             p.innerColor = twinColor;
             p.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);

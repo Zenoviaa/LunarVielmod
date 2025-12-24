@@ -4,7 +4,7 @@ using Stellamod.Core.Particles;
 
 namespace Stellamod.Visual.Particles
 {
-    public class CircleStepParticle : Particle
+    public class CircleStepParticle : LegacyParticle
     {
         public int FrameWidth = 128;
         public int FrameHeight = 128;

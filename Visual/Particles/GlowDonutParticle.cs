@@ -8,7 +8,7 @@ using System;
 using Terraria;
 namespace Stellamod.Visual.Particles
 {
-    public class GlowDonutParticle : Particle
+    public class GlowDonutParticle : LegacyParticle
     {
         private float _direction;
         private Vector2 _stretchScale;

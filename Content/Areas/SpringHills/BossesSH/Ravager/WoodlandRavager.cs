@@ -377,7 +377,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
                 }
                 //Little bit of screenshake for dramatic effect
                 FXUtil.ShakeCamera(NPC.position, 1024, 80);
-                Particle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+                LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
 
                 if (MultiplayerHelper.IsHost)
                 {
@@ -432,7 +432,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
                     particleSpawnPoint.Y += Main.rand.NextFloat(-60, 60);
                     FXUtil.GlowStretch(particleSpawnPoint, Vector2.UnitX * NPC.direction * Main.rand.NextFloat(3, 10));
                 }
-                Particle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+                LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
                 for (int i = 0; i < 24; i++)
                 {
                     Vector2 dustSpawnPoint = NPC.Bottom;
@@ -681,7 +681,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             if (Timer % 10 == 0)
             {
                 FXUtil.ShakeCamera(NPC.position, 1024, 24);
-                Particle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+                LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
             }
             NPC.velocity.X *= 0.9f;
             if (Timer >= 80)
@@ -702,7 +702,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             if (Timer % 10 == 0)
             {
                 FXUtil.ShakeCamera(NPC.position, 1024, 24);
-                Particle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+                LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
             }
             NPC.velocity.X = 0.9f;
             if (Timer >= 20)

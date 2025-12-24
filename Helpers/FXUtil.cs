@@ -33,13 +33,13 @@ namespace Stellamod.Helpers
         }
         public static FogParticle Fog(Vector2 position, Vector2 velocity)
         {
-            FogParticle particle = Particle.NewParticle<FogParticle>(position, Vector2.Zero);
+            FogParticle particle = LegacyParticle.NewParticle<FogParticle>(position, Vector2.Zero);
             particle.Velocity = velocity;
             return particle;
         }
         public static GlowDonutParticle GlowDonutParticle(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor, Color fadeToColor, bool distortOut = false)
         {
-            GlowDonutParticle particle = Particle.NewParticle<GlowDonutParticle>(position, Vector2.Zero);
+            GlowDonutParticle particle = LegacyParticle.NewParticle<GlowDonutParticle>(position, Vector2.Zero);
             particle.Velocity = velocity;
             particle.innerColor = innerColor;
             particle.outerColor = outerColor;
@@ -49,7 +49,7 @@ namespace Stellamod.Helpers
         }
         public static GlowFragmentParticle GlowFragmentParticle(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor, Color fadeToColor, bool distortOut = false)
         {
-            GlowFragmentParticle particle = Particle.NewParticle<GlowFragmentParticle>(position, Vector2.Zero);
+            GlowFragmentParticle particle = LegacyParticle.NewParticle<GlowFragmentParticle>(position, Vector2.Zero);
             particle.Velocity = velocity;
             particle.innerColor = innerColor;
             particle.outerColor = outerColor;
@@ -60,7 +60,7 @@ namespace Stellamod.Helpers
             
         public static GlowStretchParticle GlowStretch(Vector2 position, Vector2 velocity)
         {
-            GlowStretchParticle particle = Particle.NewParticle<GlowStretchParticle>(position, Vector2.Zero);
+            GlowStretchParticle particle = LegacyParticle.NewParticle<GlowStretchParticle>(position, Vector2.Zero);
             particle.Velocity = velocity;
             //The inside color of the circle
             particle.InnerColor = Color.White;
@@ -82,7 +82,7 @@ namespace Stellamod.Helpers
 
         public static GlowSpikeParticle GlowSpikeBoom(Vector2 position, Color innerColor, Color glowColor, Color outerGlowColor, float duration = 15f, float baseSize = 0.12f)
         {
-            GlowSpikeParticle boomParticle = Particle.NewParticle<GlowSpikeParticle>(position, Vector2.Zero);
+            GlowSpikeParticle boomParticle = LegacyParticle.NewParticle<GlowSpikeParticle>(position, Vector2.Zero);
             //The inside color of the circle
             boomParticle.InnerColor = innerColor;
 
@@ -103,7 +103,7 @@ namespace Stellamod.Helpers
 
         public static GlowCircleLongBoomParticle GlowCircleLongBoom(Vector2 position, Color innerColor, Color glowColor, Color outerGlowColor, float duration = 15f, float baseSize = 0.12f)
         {
-            GlowCircleLongBoomParticle boomParticle = Particle.NewParticle<GlowCircleLongBoomParticle>(position, Vector2.Zero);
+            GlowCircleLongBoomParticle boomParticle = LegacyParticle.NewParticle<GlowCircleLongBoomParticle>(position, Vector2.Zero);
             //The inside color of the circle
             boomParticle.InnerColor = innerColor;
 
@@ -123,7 +123,7 @@ namespace Stellamod.Helpers
         }
         public static GlowCircleDetailedBoomParticle1 GlowCircleDetailedBoom1(Vector2 position, Color innerColor, Color glowColor, Color outerGlowColor, float duration = 15f, float baseSize = 0.12f)
         {
-            GlowCircleDetailedBoomParticle1 boomParticle = Particle.NewParticle<GlowCircleDetailedBoomParticle1>(position, Vector2.Zero);
+            GlowCircleDetailedBoomParticle1 boomParticle = LegacyParticle.NewParticle<GlowCircleDetailedBoomParticle1>(position, Vector2.Zero);
             //The inside color of the circle
             boomParticle.InnerColor = innerColor;
 
@@ -143,7 +143,7 @@ namespace Stellamod.Helpers
         }
         public static GlowCircleBoomParticle GlowCircleBoom(Vector2 position, Color innerColor, Color glowColor, Color outerGlowColor, float duration = 15f, float baseSize = 0.12f)
         {
-            GlowCircleBoomParticle boomParticle = Particle.NewParticle<GlowCircleBoomParticle>(position, Vector2.Zero);
+            GlowCircleBoomParticle boomParticle = LegacyParticle.NewParticle<GlowCircleBoomParticle>(position, Vector2.Zero);
             //The inside color of the circle
             boomParticle.InnerColor = innerColor;
 

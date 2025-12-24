@@ -218,7 +218,7 @@ namespace Stellamod.Core.GunSystem
             {
                 float rot = f / 8f;
                 rot += Main.rand.NextFloat(-0.5f, 0.5f);
-                var p = Particle.NewParticle<ImpactParticle>(position, velocity.RotatedByRandom(0.7f));
+                var p = LegacyParticle.NewParticle<ImpactParticle>(position, velocity.RotatedByRandom(0.7f));
                 p.fast = true;
             }
             for (float f = 0; f < 2; f++)

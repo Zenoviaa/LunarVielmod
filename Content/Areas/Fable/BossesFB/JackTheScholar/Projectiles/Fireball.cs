@@ -139,7 +139,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
             }
             if (Timer == 30)
             {
-                Particle.NewParticle<SkullParticle>(Projectile.Center, Vector2.Zero, Color.Red);
+                LegacyParticle.NewParticle<SkullParticle>(Projectile.Center, Vector2.Zero, Color.Red);
             }
             if (Timer == 70)
             {
@@ -195,14 +195,14 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
                 shot.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(shot, Projectile.position);
 
-                var part = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 0.15f);
+                var part = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 0.15f);
                 part.innerColor = Color.Yellow;
                 part.outerColor = Color.Orange;
                 part.fadeToColor = Color.Red;
                 part.Scale *= 0.125f;
                 part.Rotation = Projectile.velocity.ToRotation();
 
-                var part2 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 0.3f);
+                var part2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 0.3f);
                 part2.innerColor = Color.Yellow;
                 part2.outerColor = Color.Orange;
                 part2.fadeToColor = Color.Red;
@@ -221,7 +221,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
 
             if (Timer > 90 && Timer % 4 == 0)
             {
-                Particle.NewParticle<FlareParticle>(Projectile.Center + Main.rand.NextVector2Circular(16, 16), Vector2.Zero);
+                LegacyParticle.NewParticle<FlareParticle>(Projectile.Center + Main.rand.NextVector2Circular(16, 16), Vector2.Zero);
             }
             if (Timer > 90 && Timer < 100)
             {
@@ -257,7 +257,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
                 {
                     Vector2 pVelocity = -Projectile.velocity.RotatedByRandom(MathHelper.PiOver4);
                     pVelocity *= Main.rand.NextFloat(0.5f, 1f);
-                    var spark = Particle.NewParticle<SparkParticle>(Projectile.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                    var spark = LegacyParticle.NewParticle<SparkParticle>(Projectile.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
                     spark.innerColor = Color.Yellow;
                     spark.outerColor = Color.Red;
                 }
@@ -343,7 +343,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
                 if (Main.rand.NextBool(4))
                 {
                     Vector2 velocity = -Projectile.oldVelocity;
-                    Particle.NewBlackParticle<BlackSmokeParticle>(pos, velocity * 0.5f, Color.White);
+                    LegacyParticle.NewBlackParticle<BlackSmokeParticle>(pos, velocity * 0.5f, Color.White);
                 }
             }
 
@@ -372,7 +372,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
             {
                 Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                 FXUtil.GlowFragmentParticle(position, pVelocity,
                     innerColor: Color.Yellow,
                     outerColor: Color.Orange,
@@ -394,10 +394,10 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
             {
                 Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 1f);
-                var spark = Particle.NewParticle<SparkParticle>(position + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                var spark = LegacyParticle.NewParticle<SparkParticle>(position + Main.rand.NextVector2Circular(64, 64), pVelocity);
             }
 
-            var sear = Particle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
+            var sear = LegacyParticle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
 
             for (float f = 0; f < 4; f++)
             {

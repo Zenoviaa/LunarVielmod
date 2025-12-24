@@ -184,8 +184,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
 
                  
                 }
-                var p = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity);
-                var p2 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 2);
+                var p = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity);
+                var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 2);
                 p2.Scale *= 0.5f;
             }
 
@@ -225,7 +225,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     Vector2 pos = Projectile.Center;
                     pos += Main.rand.NextVector2Circular(16, 16);
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 3);
-                    var p = Particle.NewBlackParticle<BlackSmokeParticle>(pos, velocity, Color.DarkGray);
+                    var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(pos, velocity, Color.DarkGray);
                     p.Scale *= 0.25f;
                     p.color *= 0.5f;
                     p.fadeToColor = Color.Black;
@@ -243,7 +243,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     }
                 }
 
-                var p3 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitY);
+                var p3 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitY);
 
                 FXUtil.ShakeCamera(Projectile.position, 1024, 24);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);

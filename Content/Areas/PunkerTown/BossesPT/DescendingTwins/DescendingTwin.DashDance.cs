@@ -82,7 +82,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void SpawnFlameDust()
         {
             Dust.NewDust(NPC.position, NPC.width, NPC.height, GetDustType(), Scale: Main.rand.NextFloat(1f, 2f));
-            var p = Particle.NewParticle<GlowFragmentParticle>(NPC.Center, Vector2.Zero, Color.White);
+            var p = LegacyParticle.NewParticle<GlowFragmentParticle>(NPC.Center, Vector2.Zero, Color.White);
             Color twinColor = GetTwinColor();
             p.innerColor = twinColor;
             p.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);
@@ -92,7 +92,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void SpawnFlameDonut()
         {
             //movement donut particles
-            var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 2, newColor: Color.White);
+            var donut = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 2, newColor: Color.White);
             Color twinColor = GetTwinColor();
             donut.innerColor = twinColor;
             donut.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);

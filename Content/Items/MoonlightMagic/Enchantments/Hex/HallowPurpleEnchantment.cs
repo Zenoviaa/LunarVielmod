@@ -42,7 +42,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
                 {
                     Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                     Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                    Particle.NewParticle<SparkleWindParticle>(spawnPoint, velocity, Color.White);
+                    LegacyParticle.NewParticle<SparkleWindParticle>(spawnPoint, velocity, Color.White);
 
                 }
 
@@ -136,7 +136,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
             {
                 Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                 Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                Particle.NewParticle<SparkleWindParticle>(spawnPoint, speed, Color.White);
+                LegacyParticle.NewParticle<SparkleWindParticle>(spawnPoint, speed, Color.White);
             }
         }
 

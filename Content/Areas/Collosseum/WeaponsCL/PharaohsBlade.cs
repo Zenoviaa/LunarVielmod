@@ -162,7 +162,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
 
             if (Timer % 16 == 0)
             {
-                var ember = Particle.NewParticle<EmberParticle>(Projectile.Center + Main.rand.NextVector2Circular(32, 32), Main.rand.NextVector2Circular(2, 2) - Vector2.UnitY * 4);
+                var ember = LegacyParticle.NewParticle<EmberParticle>(Projectile.Center + Main.rand.NextVector2Circular(32, 32), Main.rand.NextVector2Circular(2, 2) - Vector2.UnitY * 4);
                 ember.innerColor = Color.White;
                 ember.outerColor = Color.Tan;
                 ember.fadeToColor = Color.DarkBlue;

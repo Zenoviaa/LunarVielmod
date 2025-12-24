@@ -90,7 +90,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                     if (Main.rand.NextBool(2))
                         color = Color.Purple;
                     color.A = 0;
-                    Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color, Scale: 0.5f);
+                    LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color, Scale: 0.5f);
                 }
             }
         }
@@ -115,7 +115,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 if (Main.rand.NextBool(2))
                     color = Color.Purple;
                 color.A = 0;
-                Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
+                LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
             }
 
             for (float f = 0f; f < 1f; f += 0.2f)
@@ -128,7 +128,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 if (Main.rand.NextBool(2))
                     color = Color.Purple;
                 color.A = 0;
-                Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
+                LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
             }
         }
 

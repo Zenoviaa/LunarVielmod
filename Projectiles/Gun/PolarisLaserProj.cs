@@ -81,7 +81,7 @@ namespace Stellamod.Projectiles.Gun
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                     initialVelocity *= Main.rand.NextFloat(0.5f, 1f);
 
-                    DustParticle dustParticle = Particle.NewParticle<DustParticle>(explosionCenter, initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 2f));
+                    DustParticle dustParticle = Particle<DustParticle>.Spawn(explosionCenter, initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 2f));
                     dustParticle.innerColor = Color.SkyBlue;
                     dustParticle.outerColor = Color.Violet;
                 }
@@ -93,7 +93,7 @@ namespace Stellamod.Projectiles.Gun
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                     initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
 
-                    SmokeParticle smokeParticle = Particle.NewBlackParticle<SmokeParticle>(explosionCenter + initialVelocity,
+                    SmokeParticle smokeParticle = LegacyParticle.NewBlackParticle<SmokeParticle>(explosionCenter + initialVelocity,
                         initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 3f));
                     smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.4f);
                     smokeParticle.extraUpdates = Main.rand.Next(0, 1);
@@ -107,7 +107,7 @@ namespace Stellamod.Projectiles.Gun
                     initialVelocity *= 4;
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                     initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
-                    ZapParticle zapParticle = Particle.NewParticle<ZapParticle>(explosionCenter + initialVelocity, Main.rand.NextVector2Circular(1, 1), Color.White);
+                    ZapParticle zapParticle = LegacyParticle.NewParticle<ZapParticle>(explosionCenter + initialVelocity, Main.rand.NextVector2Circular(1, 1), Color.White);
                 }
 
 
@@ -146,7 +146,7 @@ namespace Stellamod.Projectiles.Gun
                     particle.VectorScale *= 0.5f;
 
                 }
-                var sear = Particle.NewParticle<SearParticle>(explosionCenter, Vector2.Zero);
+                var sear = LegacyParticle.NewParticle<SearParticle>(explosionCenter, Vector2.Zero);
                 sear.innerColor = Color.Cyan;
                 sear.outerColor = Color.Blue;
             }

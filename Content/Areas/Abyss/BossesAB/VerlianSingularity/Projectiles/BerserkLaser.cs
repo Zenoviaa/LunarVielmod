@@ -69,14 +69,14 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
             {
                 Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 5);
-                var spark = Particle.NewParticle<SparkParticle>(zapPosition + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                var spark = LegacyParticle.NewParticle<SparkParticle>(zapPosition + Main.rand.NextVector2Circular(64, 64), pVelocity);
                 spark.Scale *= 5;
 
             }
             ShakeModSystem.Shake = 6;
             if (Timer % 5 == 0)
             {
-                var zap = Particle.NewParticle<ZapParticle>(zapPosition + Main.rand.NextVector2Circular(64, 64), Vector2.Zero);
+                var zap = LegacyParticle.NewParticle<ZapParticle>(zapPosition + Main.rand.NextVector2Circular(64, 64), Vector2.Zero);
             }
 
             NPC parentNpc = GetParentNPC();
@@ -111,7 +111,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
                 Vector2 laserPoint = Vector2.Lerp(Projectile.Center, Projectile.Center + velocity, interpolant);
                 if (Main.rand.NextBool(128))
                 {
-                    Particle.NewParticle<ZapParticle>(laserPoint + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(8, 8));
+                    LegacyParticle.NewParticle<ZapParticle>(laserPoint + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(8, 8));
                 }
             //    laserPoint = laserPoint.RotatedBy(MathHelper.Lerp(1f, 0f, interpolant), GetParentNPC().Center);
                 laserPoints.Add(laserPoint);

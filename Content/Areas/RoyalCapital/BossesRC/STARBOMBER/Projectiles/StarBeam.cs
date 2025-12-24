@@ -105,7 +105,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             for (float f = 0; f < 8; f++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                Particle.NewParticle<ZapParticle>(Projectile.Center, velocity, Color.Pink);
+                LegacyParticle.NewParticle<ZapParticle>(Projectile.Center, velocity, Color.Pink);
             }
 
             for (int i = 0; i < 1; i++)
@@ -136,7 +136,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
                 Gore.NewGore(source, Projectile.Center, rvelocity,
                     ModContent.GoreType<FableRock4>());
             }
-            var sear = Particle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
+            var sear = LegacyParticle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
 
 
             SoundStyle crush = AssetRegistry.Sounds.STARBOMBER.HeavyCrush;
@@ -144,7 +144,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             SoundEngine.PlaySound(crush, Projectile.position);
 
 
-            var p = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitY);
+            var p = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitY);
             p.Scale *= 5;
         }
 

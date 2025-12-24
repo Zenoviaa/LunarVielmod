@@ -127,7 +127,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                     Projectile.velocity.X = oldVelocity.X;
                 }
 
-                var part = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+                var part = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
                 part.innerColor = Color.Yellow;
                 part.outerColor = Color.DarkGoldenrod;
                 part.fadeToColor = Color.DarkBlue;

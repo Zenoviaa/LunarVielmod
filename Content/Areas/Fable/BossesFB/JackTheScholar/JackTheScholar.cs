@@ -901,7 +901,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                 }
 
                 for (int j = 0; j < 7; j++)
-                    Particle.NewParticle<EmberParticle>(NPC.Center, NPC.velocity.RotatedByRandom(0.5f));
+                    LegacyParticle.NewParticle<EmberParticle>(NPC.Center, NPC.velocity.RotatedByRandom(0.5f));
                 SoundEngine.PlaySound(SoundID.Item73, NPC.position);
             }
 

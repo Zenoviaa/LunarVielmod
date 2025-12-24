@@ -32,8 +32,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
                 {
                     Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                     Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                    Particle.NewParticle<WhiteFlowerParticle>(spawnPoint, velocity, Color.White);
-                    Particle.NewParticle<MusicParticle>(spawnPoint, velocity, Color.White);
+                    LegacyParticle.NewParticle<WhiteFlowerParticle>(spawnPoint, velocity, Color.White);
+                    LegacyParticle.NewParticle<MusicParticle>(spawnPoint, velocity, Color.White);
                 }
 
                 MagicProj.Movement = new LobberMovement();

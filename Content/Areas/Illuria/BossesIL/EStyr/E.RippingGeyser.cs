@@ -673,7 +673,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                 for (float i = 0; i < 3; i++)
                 {
-                    var donutParticle = Particle.NewParticle<GlowDonutParticle>(NPC.Center + cutVelocity * 0.5f, cutVelocity.SafeNormalize(Vector2.Zero));
+                    var donutParticle = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center + cutVelocity * 0.5f, cutVelocity.SafeNormalize(Vector2.Zero));
                     donutParticle.Scale *= MathHelper.Lerp(1f, 3f, i / 3f);
                     donutParticle.rotOffset += MathHelper.PiOver2;
                     donutParticle.xMult = 12;

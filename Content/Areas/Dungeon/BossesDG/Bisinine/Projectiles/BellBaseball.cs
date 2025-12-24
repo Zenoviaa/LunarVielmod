@@ -66,8 +66,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             SoundStyle sound = AssetRegistry.Sounds.Bishinine.BishinineBellSmash;
             SoundEngine.PlaySound(sound, Projectile.position);
 
-            Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero));
-            var p = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 5);
+            LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero));
+            var p = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 5);
             p.Scale *= 0.5f;
             for (float f = 0; f < 8; f++)
             {
@@ -188,7 +188,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     Vector2 pos = Projectile.Center;
                     pos += Main.rand.NextVector2Circular(16, 16);
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 3);
-                    var p = Particle.NewBlackParticle<BlackSmokeParticle>(pos, velocity, Color.DarkGray);
+                    var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(pos, velocity, Color.DarkGray);
                     p.Scale *= 0.25f;
                     p.color *= 0.5f;
                     p.fadeToColor = Color.Black;

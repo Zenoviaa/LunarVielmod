@@ -377,7 +377,7 @@ namespace Stellamod.Items.Weapons.Melee.Hammer
                 {
                     Vector2 spawnPoint = ImpactPos + Main.rand.NextVector2Circular(8, 8);
                     Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                    Particle.NewParticle<GlowParticle>(ImpactPos, velocity, Color.White,
+                    LegacyParticle.NewParticle<GlowParticle>(ImpactPos, velocity, Color.White,
                         Scale: Main.rand.NextFloat(2f, 3f));
                 }
             }

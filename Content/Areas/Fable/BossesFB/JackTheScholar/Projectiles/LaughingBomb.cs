@@ -116,7 +116,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
                 int laughingBlastType = ModContent.ProjectileType<LaughingBlast>();
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, laughingBlastType, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 for(int j = 0; j < 4; j++)
-                    Particle.NewParticle<EmberParticle>(Projectile.Center, velocity.RotatedByRandom(0.5f));
+                    LegacyParticle.NewParticle<EmberParticle>(Projectile.Center, velocity.RotatedByRandom(0.5f));
             }
 
 

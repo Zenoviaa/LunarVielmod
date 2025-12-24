@@ -29,7 +29,7 @@ namespace Stellamod.Content.Areas.Abyss.AccAB
             _wingTimer++;
             if (_wingTimer % 7 == 0)
             {
-                Dust.NewDustPerfect(Player.Center, ModContent.DustType<GlyphDust>(), Vector2.Zero, newColor: Color.White, Scale: 0.5f);
+              //  Dust.NewDustPerfect(Player.Center, ModContent.DustType<GlyphDust>(), Vector2.Zero, newColor: Color.White, Scale: 0.5f);
             }
 
             if (IsFlying())

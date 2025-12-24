@@ -62,7 +62,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Color color = Color.Lerp(Color.Black, Color.White, 0.5f);
 
-                Particle.NewParticle<GlowParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier);
+                LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier);
             }
 
             for (float f = 0f; f < 1f; f += 0.2f)
@@ -75,7 +75,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Color color = Color.Lerp(Color.Black, Color.White, 0.5f);
 
-                Particle.NewParticle<GlowParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier);
+                LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier);
             }
             float boomSize = Main.rand.NextFloat(0.05f, 0.07f);
             FXUtil.GlowCircleBoom(Projectile.Center,

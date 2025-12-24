@@ -3,7 +3,7 @@ using Stellamod.Core.Particles;
 
 namespace Stellamod.Visual.Particles
 {
-    public class SnowflakeParticle : Particle
+    public class SnowflakeParticle : LegacyParticle
     {
         public int FrameWidth = 195;
         public int FrameHeight = 231;

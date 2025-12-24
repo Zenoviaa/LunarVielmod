@@ -82,7 +82,7 @@ namespace Stellamod.Content.Areas.Ishtar.WeaponsIS
             {
                 Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                 FXUtil.GlowFragmentParticle(position, pVelocity,
                     innerColor: Color.White,
                     outerColor: Color.LightBlue,
@@ -199,7 +199,7 @@ namespace Stellamod.Content.Areas.Ishtar.WeaponsIS
             {
                 Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                 FXUtil.GlowFragmentParticle(position, pVelocity,
                     innerColor: Color.White,
                     outerColor: Color.Goldenrod,

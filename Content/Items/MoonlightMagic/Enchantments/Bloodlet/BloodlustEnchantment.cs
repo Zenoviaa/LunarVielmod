@@ -29,7 +29,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
 
                     Color color = Color.White;
                     color.A = 0;
-                    Particle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
+                    LegacyParticle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
                 }
 
                 float damage = Projectile.damage;
@@ -49,7 +49,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
 
                 Color color = Color.White;
                 color.A = 0;
-                Particle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
+                LegacyParticle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
             }
             CombatText.NewText(player.getRect(), Color.Red, "-25", true);
             return true;

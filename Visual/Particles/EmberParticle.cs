@@ -28,7 +28,7 @@ namespace Stellamod.Visual.Particles
                 active = false;
         }
     }
-    public class EmberParticle : Particle
+    public class EmberParticle : LegacyParticle
     {
         private Vector2 _stretchScale;
         protected float _interpolant;

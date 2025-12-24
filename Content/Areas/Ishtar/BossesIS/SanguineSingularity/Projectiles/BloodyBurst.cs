@@ -108,7 +108,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
 
             if (Timer % 7 == 0)
             {
-                Particle.NewBlackParticle<BloodSparkleParticle>(Projectile.Center, Vector2.Zero, Color.Red, Scale: Main.rand.NextFloat(0.5f, 1f));
+                LegacyParticle.NewBlackParticle<BloodSparkleParticle>(Projectile.Center, Vector2.Zero, Color.Red, Scale: Main.rand.NextFloat(0.5f, 1f));
             }
             Projectile.rotation = Projectile.velocity.ToRotation();
         }

@@ -181,7 +181,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            var part = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+            var part = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
             part.Scale *= 0.5f;
             part.fadeToColor = Color.Black;
             part.outerColor = Color.Gray;

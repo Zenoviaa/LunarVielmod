@@ -764,7 +764,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 for (float f = 0; f < 16; f++)
                 {
                     Vector2 vel = Main.rand.NextVector2CircularEdge(16, 16);
-                    Particle.NewParticle<SparkParticle>(spawnPoint, vel, Scale: Main.rand.NextFloat(0.5f, 1f));
+                    LegacyParticle.NewParticle<SparkParticle>(spawnPoint, vel, Scale: Main.rand.NextFloat(0.5f, 1f));
                 }
             }
 
@@ -773,7 +773,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 Vector2 spawnPointOffset = Main.rand.NextVector2Circular(64, 64);
                 Vector2 spawnPoint = GetPeenarBlastPoint();
                 spawnPoint += spawnPointOffset;
-                var zapParticle = Particle.NewParticle<ZapParticle>(spawnPoint, Main.rand.NextVector2Circular(32, 32), Scale: Main.rand.NextFloat(0.25f, 0.5f));
+                var zapParticle = LegacyParticle.NewParticle<ZapParticle>(spawnPoint, Main.rand.NextVector2Circular(32, 32), Scale: Main.rand.NextFloat(0.25f, 0.5f));
                 FXUtil.GlowCircleBoom(GetPeenarBlastPoint(), Color.White, Color.Pink, Color.Purple, baseSize: MathHelper.Lerp(0.04f, 0.12f, Timer / chargeTime));
 
                 FXUtil.GlowCircleBoom(spawnPoint, Color.White, Color.Pink, Color.Purple, baseSize: 0.03f);
@@ -836,7 +836,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             spawnVelocity.Y = Main.rand.NextFloat(-10, -1f);
 
             float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-            var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
+            var steamParticle = LegacyParticle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
             steamParticle.innerColor = Color.DarkGray;
             steamParticle.outerColor = Color.Black;
             steamParticle.fadeToColor = Color.Black;
@@ -850,7 +850,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             spawnVelocity.Y = Main.rand.NextFloat(-10, -1f);
 
             float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-            var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
+            var steamParticle = LegacyParticle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
             steamParticle.innerColor = Color.DarkGray;
             steamParticle.outerColor = Color.Black;
             steamParticle.fadeToColor = Color.Black;
@@ -1473,10 +1473,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
                 if (Timer % 16 == 0)
                 {
-                    Particle.NewParticle<EmberParticle>(GunPosition, Main.rand.NextVector2Circular(1, 4), newColor: Color.Red);
+                    LegacyParticle.NewParticle<EmberParticle>(GunPosition, Main.rand.NextVector2Circular(1, 4), newColor: Color.Red);
                     if (Main.rand.NextBool(2))
                     {
-                        Particle.NewParticle<ZapParticle>(GunPosition + Main.rand.NextVector2Circular(8, 8), Main.rand.NextVector2Circular(1, 1), newColor: Color.Pink, Scale: Main.rand.NextFloat(0.5f, 0.66f));
+                        LegacyParticle.NewParticle<ZapParticle>(GunPosition + Main.rand.NextVector2Circular(8, 8), Main.rand.NextVector2Circular(1, 1), newColor: Color.Pink, Scale: Main.rand.NextFloat(0.5f, 0.66f));
                     }
                 }
             }
@@ -1602,7 +1602,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 SoundStyle impact = AssetRegistry.Sounds.STARBOMBER.HeavyCrush;
                 SoundEngine.PlaySound(impact, NPC.position);
                 FXUtil.PunchCamera(NPC.position, Vector2.UnitY, 8, 8, 8);
-                var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                var donut = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
 
                 SwitchState(AIState.LegUpSpin_Loop);
             }
@@ -1681,7 +1681,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 SoundStyle impact = AssetRegistry.Sounds.STARBOMBER.HeavyCrush;
                 SoundEngine.PlaySound(impact, NPC.position);
                 FXUtil.PunchCamera(NPC.position, Vector2.UnitY, 8, 8, 8);
-                var donut = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                var donut = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
                 Timer = 0;
                 AttackCycle++;
                 if (AttackCycle >= 5)
@@ -1800,8 +1800,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
                 if (Timer % 5 == 0)
                 {
-                    var p = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
-                    var p2 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY * 4);
+                    var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                    var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY * 4);
                     p2.Scale *= 0.5f;
                 }
                 if (Timer % 2 == 0)
@@ -1836,9 +1836,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 SoundEngine.PlaySound(crashSoun, NPC.position);
 
 
-                var d1 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                var d1 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
                 d1.Scale *= 4;
-                var d2 = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+                var d2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
                 d2.Scale *= 8;
 
 
@@ -1861,7 +1861,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
                     Vector2 velocity = Vector2.UnitX * Main.rand.Next(-1, 1);
                     velocity *= Main.rand.NextFloat(1f, 2f);
-                    var p = Particle.NewBlackParticle<BlackSmokeParticle>(NPC.Bottom + offset, velocity, Color.DarkGray);
+                    var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(NPC.Bottom + offset, velocity, Color.DarkGray);
                     p.Scale *= 0.25f;
                     p.color *= 0.5f;
                     p.fadeToColor = Color.Black;
@@ -1954,7 +1954,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 for (float f = 0; f < 3; f++)
                 {
                     float completionRatio = f / 4f;
-                    var sear = Particle.NewParticle<SearParticle>(NPC.Bottom, Vector2.Zero);
+                    var sear = LegacyParticle.NewParticle<SearParticle>(NPC.Bottom, Vector2.Zero);
                     sear.Scale *= MathHelper.Lerp(2f, 4f, completionRatio);
                 }
 
@@ -1964,7 +1964,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>(), Scale: Main.rand.NextFloat(0.5f, 1f));
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<TSmokeDust>(), Scale: Main.rand.NextFloat(0.5f, 1f));
-                Particle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(4, 4), newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                LegacyParticle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(4, 4), newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
             }
 
             TargetOutlineColor = Color.Red;
@@ -2057,7 +2057,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
             if (Timer % 5 == 0)
             {
-                var p = Particle.NewParticle<ZapParticle>(Legs.rightLegData.footPosition, Main.rand.NextVector2Circular(1, 1));
+                var p = LegacyParticle.NewParticle<ZapParticle>(Legs.rightLegData.footPosition, Main.rand.NextVector2Circular(1, 1));
                 p.Scale *= Main.rand.NextFloat(0.5f, 1f);
             }
             if (Timer >= 90f)
@@ -2093,8 +2093,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             }
             if (Timer % 6 == 0)
             {
-                var p = Particle.NewParticle<GlowDonutParticle>(Legs.rightLegData.footPosition, Vector2.UnitY);
-                var p2 = Particle.NewParticle<GlowDonutParticle>(Legs.rightLegData.footPosition, Vector2.UnitY * 4);
+                var p = LegacyParticle.NewParticle<GlowDonutParticle>(Legs.rightLegData.footPosition, Vector2.UnitY);
+                var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(Legs.rightLegData.footPosition, Vector2.UnitY * 4);
                 p2.Scale *= 0.5f;
             }
             SpinSpeed = MathHelper.Lerp(1f, 3f, progress);
@@ -2153,7 +2153,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                     Gore.NewGore(SourceFromThis, _impactFootPosition, rvelocity,
                         ModContent.GoreType<FableRock4>());
                 }
-                var sear = Particle.NewParticle<SearParticle>(_impactFootPosition, Vector2.Zero);
+                var sear = LegacyParticle.NewParticle<SearParticle>(_impactFootPosition, Vector2.Zero);
 
                 for (int i = 0; i < 16; i++)
                 {
@@ -2176,7 +2176,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 {
                     Dust.NewDustPerfect(_impactFootPosition, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 1f).noGravity = true;
                 }
-                var circleFlare = Particle.NewParticle<GlowDonutParticle>(Legs.rightLegData.footPosition, Vector2.UnitY);
+                var circleFlare = LegacyParticle.NewParticle<GlowDonutParticle>(Legs.rightLegData.footPosition, Vector2.UnitY);
                 circleFlare.noStretch = true;
                 circleFlare.Scale *= 4;
                 circleFlare.shrink = true;
@@ -2191,7 +2191,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 SoundEngine.PlaySound(crush, NPC.position);
 
 
-                var p = Particle.NewParticle<GlowDonutParticle>(Legs.rightLegData.footPosition, Vector2.UnitY);
+                var p = LegacyParticle.NewParticle<GlowDonutParticle>(Legs.rightLegData.footPosition, Vector2.UnitY);
                 p.Scale *= 5;
             }
 
@@ -2275,7 +2275,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 Vector2 randOffset = Main.rand.NextVector2CircularEdge(64, 64);
                 Vector2 spawnPos = GunPosition + randOffset;
                 Vector2 velocity = (GunPosition - spawnPos).SafeNormalize(Vector2.Zero);
-                Particle.NewParticle<EmberParticle>(spawnPos, velocity, Scale: 0.5f);
+                LegacyParticle.NewParticle<EmberParticle>(spawnPos, velocity, Scale: 0.5f);
             }
 
             if (Timer % 16 == 0)
@@ -2283,7 +2283,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
                 Vector2 randOffset = Main.rand.NextVector2CircularEdge(64, 64);
                 Vector2 spawnPos = GunPosition + randOffset;
                 Vector2 velocity = (GunPosition - spawnPos).SafeNormalize(Vector2.Zero);
-                Particle.NewParticle<ZapParticle>(spawnPos, velocity, Scale: 0.5f);
+                LegacyParticle.NewParticle<ZapParticle>(spawnPos, velocity, Scale: 0.5f);
                 SoundStyle zapSound = SoundID.DD2_LightningBugZap;
                 SoundEngine.PlaySound(zapSound, GunPosition);
             }
@@ -2346,10 +2346,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
                 if (Timer % 16 == 0)
                 {
-                    Particle.NewParticle<EmberParticle>(GunPosition, Main.rand.NextVector2Circular(1, 4), newColor: Color.Red);
+                    LegacyParticle.NewParticle<EmberParticle>(GunPosition, Main.rand.NextVector2Circular(1, 4), newColor: Color.Red);
                     if (Main.rand.NextBool(2))
                     {
-                        Particle.NewParticle<ZapParticle>(GunPosition + Main.rand.NextVector2Circular(8, 8), Main.rand.NextVector2Circular(1, 1), newColor: Color.Pink, Scale: Main.rand.NextFloat(0.5f, 0.66f));
+                        LegacyParticle.NewParticle<ZapParticle>(GunPosition + Main.rand.NextVector2Circular(8, 8), Main.rand.NextVector2Circular(1, 1), newColor: Color.Pink, Scale: Main.rand.NextFloat(0.5f, 0.66f));
                     }
                 }
 
@@ -2531,10 +2531,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
                 if (Timer % 16 == 0)
                 {
-                    Particle.NewParticle<EmberParticle>(GunPosition, Main.rand.NextVector2Circular(1, 4), newColor: Color.Red);
+                    LegacyParticle.NewParticle<EmberParticle>(GunPosition, Main.rand.NextVector2Circular(1, 4), newColor: Color.Red);
                     if (Main.rand.NextBool(2))
                     {
-                        Particle.NewParticle<ZapParticle>(GunPosition + Main.rand.NextVector2Circular(8, 8), Main.rand.NextVector2Circular(1, 1), newColor: Color.Pink, Scale: Main.rand.NextFloat(0.5f, 0.66f));
+                        LegacyParticle.NewParticle<ZapParticle>(GunPosition + Main.rand.NextVector2Circular(8, 8), Main.rand.NextVector2Circular(1, 1), newColor: Color.Pink, Scale: Main.rand.NextFloat(0.5f, 0.66f));
                     }
                 }
             }

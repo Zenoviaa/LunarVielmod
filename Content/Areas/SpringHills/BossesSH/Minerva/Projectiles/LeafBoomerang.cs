@@ -58,7 +58,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva.Projectiles
             }
             if(Timer % 5 == 0 && Timer < 60)
             {
-                var p =Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity);
+                var p =LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity);
                 p.fadeToColor = Color.DarkGreen;
                 p.shrink = true;
                 p.color *= 0.8f;

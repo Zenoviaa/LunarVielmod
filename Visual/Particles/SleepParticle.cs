@@ -4,7 +4,7 @@ using System;
 
 namespace Stellamod.Visual.Particles
 {
-    public class SleepParticle : Particle
+    public class SleepParticle : LegacyParticle
     {
         public int FrameWidth = 14;
         public int FrameHeight = 18;

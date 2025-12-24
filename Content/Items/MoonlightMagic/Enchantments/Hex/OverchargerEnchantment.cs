@@ -29,7 +29,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
                     Vector2 dustPos = hold.Projectile.Center + Main.rand.NextVector2CircularEdge(32, 32);
                     Vector2 vel = (hold.Projectile.Center - dustPos) * 0.05f;
                     dustPos += hold.Projectile.velocity * 64;
-                    Particle.NewParticle<SparkleWindParticle>(dustPos, vel, Color.White, Scale: Main.rand.NextFloat(1f, 2f));
+                    LegacyParticle.NewParticle<SparkleWindParticle>(dustPos, vel, Color.White, Scale: Main.rand.NextFloat(1f, 2f));
                 }
             }
         }

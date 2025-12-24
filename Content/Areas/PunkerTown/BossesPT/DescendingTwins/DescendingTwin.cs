@@ -322,7 +322,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 //Idk cool ig
                 if (Main.rand.NextBool(12))
                 {
-                    var zap = Particle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(32, 32), Main.rand.NextVector2Circular(1, 1), Color.White, 1f);
+                    var zap = LegacyParticle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(32, 32), Main.rand.NextVector2Circular(1, 1), Color.White, 1f);
                     zap.innerColor = GetTwinColor();
                     zap.outerColor = Color.Lerp(zap.innerColor, Color.Black, 0.5f);
                     zap.fadeToColor = Color.Lerp(zap.outerColor, Color.Black, 0.5f);
@@ -620,7 +620,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     Vector2 spawnVelocity = Main.rand.NextVector2Circular(2, 2);
 
                     float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-                    var steamParticle = Particle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
+                    var steamParticle = LegacyParticle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
                     steamParticle.innerColor = Color.DarkGray;
                     steamParticle.outerColor = Color.Black;
                     steamParticle.fadeToColor = Color.Black;
@@ -734,7 +734,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             //However, we will create a few steam particles just for funsies
             if (Timer % 10 == 0)
             {
-                Particle.NewParticle<BlackSmokeParticle>(
+                LegacyParticle.NewParticle<BlackSmokeParticle>(
                     NPC.Center + Main.rand.NextVector2Circular(64, 64),
                     -Vector2.UnitY * Main.rand.NextFloat(0.2f, 0.5f), newColor: Color.White);
             }

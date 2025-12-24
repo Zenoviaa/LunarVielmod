@@ -190,7 +190,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.NPCsWD
             {
                 float xRand = Main.rand.NextFloat(-32, 32);
                 float yRand = Main.rand.NextFloat(-32, 32);
-                Particle.NewParticle<StarParticle>(NPC.Center + new Vector2(xRand, yRand), Vector2.Zero);
+                LegacyParticle.NewParticle<StarParticle>(NPC.Center + new Vector2(xRand, yRand), Vector2.Zero);
             }
 
             if (Timer % 10 == 0)

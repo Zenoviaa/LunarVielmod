@@ -4,10 +4,10 @@ namespace Stellamod.Core.Particles
 {
     public class ParticleLoader
     {
-        public static IList<Particle> Particles;
+        public static IList<LegacyParticle> Particles;
         public static int ParticleCount { get; private set; } = 0;
 
-        public static Particle GetParticle(int type)
+        public static LegacyParticle GetParticle(int type)
         {
             return type < ParticleCount ? Particles[type] : null;
         }

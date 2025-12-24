@@ -240,7 +240,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                     }
                     if (Timer % 6 == 0)
                     {
-                        Particle.NewParticle<EmberParticle>(Projectile.Center, Vector2.UnitY, newColor: Color.White);
+                        LegacyParticle.NewParticle<EmberParticle>(Projectile.Center, Vector2.UnitY, newColor: Color.White);
                     }
                     break;
             }

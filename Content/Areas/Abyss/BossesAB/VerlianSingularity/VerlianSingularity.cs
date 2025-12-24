@@ -331,7 +331,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 {
                     Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4 / 3f);
                     pVelocity *= Main.rand.NextFloat(0.5f, 1f);
-                    var spark = Particle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                    var spark = LegacyParticle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
                     spark.innerColor = Color.White;
                     spark.outerColor = Color.Cyan;
                     spark.fadeToColor = Color.Blue;
@@ -492,11 +492,11 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
                 {
                     Vector2 position = NPC.Center - Vector2.UnitY * Main.rand.NextFloat(0, 1000);
                     Vector2 velocity = -Vector2.UnitY;
-                    var part = Particle.NewParticle<ZapParticle>(position, velocity);
+                    var part = LegacyParticle.NewParticle<ZapParticle>(position, velocity);
                     part.Scale *= Main.rand.NextFloat(0.5f, 3f);
 
                     position = NPC.Center - Vector2.UnitY * Main.rand.NextFloat(0, 1000);
-                    var part2 = Particle.NewParticle<SparkParticle>(position, velocity);
+                    var part2 = LegacyParticle.NewParticle<SparkParticle>(position, velocity);
                     part2.Scale *= Main.rand.NextFloat(0.5f, 3f);
                 }
             }
@@ -797,7 +797,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
                 Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 1f);
-                var spark = Particle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                var spark = LegacyParticle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
                 spark.innerColor = Color.White;
                 spark.outerColor = Color.Cyan;
                 spark.fadeToColor = Color.Blue;
@@ -816,7 +816,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
                 Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 1f);
-                var spark = Particle.NewParticle<SparkParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                var spark = LegacyParticle.NewParticle<SparkParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
                 spark.innerColor = Color.White;
                 spark.outerColor = Color.Cyan;
                 spark.fadeToColor = Color.Blue;
@@ -982,7 +982,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             //Asgore attack basically
             if (Timer >= 60)
             {
-                var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
+                var part = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
                 part.Scale *= 4;
                 part.shrink = true;
                 part.noStretch = true;
@@ -1050,13 +1050,13 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
                 Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 1f);
-                var spark = Particle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                var spark = LegacyParticle.NewParticle<ZapParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
                 spark.innerColor = Color.White;
                 spark.outerColor = Color.Cyan;
                 spark.fadeToColor = Color.Blue;
             }
 
-            var part = Particle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
+            var part = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, Vector2.Zero, Color.White);
             part.Scale *= 4;
             part.shrink = true;
             part.noStretch = true;
@@ -1074,7 +1074,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             {
                 Vector2 pVelocity = Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi);
                 pVelocity *= Main.rand.NextFloat(0.5f, 8f);
-                var spark = Particle.NewParticle<EmberParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                var spark = LegacyParticle.NewParticle<EmberParticle>(NPC.Center + Main.rand.NextVector2Circular(64, 64), pVelocity);
             }
 
             SoundStyle crackSound = new SoundStyle("Stellamod/Assets/Sounds/SingularityFragment_Shot");

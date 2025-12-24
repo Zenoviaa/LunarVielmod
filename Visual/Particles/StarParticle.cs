@@ -5,7 +5,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    public class StarParticle : Particle
+    public class StarParticle : LegacyParticle
     {
         public int FrameWidth = 64;
         public int FrameHeight = 64;

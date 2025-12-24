@@ -59,7 +59,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             DrawHelper.UpdateFrame(ref _vortexFrame, 0.8f, 1, 90);
             if(Timer % 5  == 0)
             {
-                var p = Particle.NewParticle<StarParticle>(Projectile.Center, Vector2.Zero, Color.White, 0.5f);
+                var p = LegacyParticle.NewParticle<StarParticle>(Projectile.Center, Vector2.Zero, Color.White, 0.5f);
                 p.fast = true;
             }
 
@@ -238,15 +238,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                 for (float i = 0; i < 3; i++)
                 {
-                    var donutParticle = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, rotatedVelocity * MathHelper.Lerp(15, 1f, i / 3f));
+                    var donutParticle = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, rotatedVelocity * MathHelper.Lerp(15, 1f, i / 3f));
                     donutParticle.Scale *= MathHelper.Lerp(1f, 3f, i / 3f);
 
                 }
-                var strike = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, rotatedVelocity);
+                var strike = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, rotatedVelocity);
                 strike.xMult = 6;
                 strike.rotOffset += MathHelper.PiOver2;
 
-                var strike2 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, rotatedVelocity);
+                var strike2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, rotatedVelocity);
                 strike2.xMult = 32;
                 strike2.rotOffset += MathHelper.PiOver2;
 
@@ -283,7 +283,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 Vector2 rotatedVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 for (float i = 0; i < 3; i++)
                 {
-                    var donutParticle = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, rotatedVelocity * MathHelper.Lerp(15, 1f, i / 3f));
+                    var donutParticle = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, rotatedVelocity * MathHelper.Lerp(15, 1f, i / 3f));
                     donutParticle.Scale *= MathHelper.Lerp(1f, 3f, i / 3f);
                 }
             }

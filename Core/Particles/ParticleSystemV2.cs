@@ -1,9 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -11,46 +10,28 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Particles
 {
-    public partial class ParticleSystem : ModSystem
+    /// <summary>
+    /// Manages drawing all particles to the screen
+    /// </summary>
+    public class ParticleSystemV2 : ModSystem
     {
-        private static bool _sortParticleArray;
-        private ParticleComparer _particleComparer;
-
         public static int MaxParticleCount => 500;
-        public static List<LegacyParticle> Particles = new(MaxParticleCount);
-        public static List<LegacyParticle> BlackParticles = new(MaxParticleCount);
-
-        public static Asset<Texture2D>[] ParticleAssets;
-
+        public static List<BaseParticle> AdditiveParticles = new(MaxParticleCount);
+        public static List<BaseParticle> AlphaBlendedParticles = new(MaxParticleCount);
         public override void Load()
         {
             base.Load();
-            _particleComparer = new ParticleComparer();
             On_Main.DrawDust += DrawMainParticles;
-        }
-
-        public override void PostAddRecipes()
-        {
-            if (Main.dedServ)
-                return;
-
-            ParticleAssets = new Asset<Texture2D>[ParticleLoader.ParticleCount];
-
-            for (int i = 0; i < ParticleLoader.ParticleCount; i++)
-            {
-                LegacyParticle particle = ParticleLoader.GetParticle(i);
-                if (particle != null)
-                    ParticleAssets[i] = ModContent.Request<Texture2D>(particle.Texture);
-            }
         }
 
         public override void Unload()
         {
             On_Main.DrawDust -= DrawMainParticles;
-            ParticleLoader.Unload();
+            AdditiveParticles.Clear();
+            AdditiveParticles = null;
 
-            ParticleAssets = null;
-            Particles = null;
+            AlphaBlendedParticles.Clear();
+            AlphaBlendedParticles = null;
         }
 
 
@@ -64,16 +45,15 @@ namespace Stellamod.Core.Particles
             if (Main.netMode == NetmodeID.Server)
                 return;
 
-            for (int i = 0; i < Particles.Count; i++)
+            for (int i = 0; i < AdditiveParticles.Count; i++)
             {
-                LegacyParticle particle = Particles[i];
+                BaseParticle particle = AdditiveParticles[i];
 
                 if (particle == null)
                     continue;
 
                 particle.Update();
-                if (particle.ShouldUpdateCenter())
-                    particle.Center += particle.Velocity;
+                particle.Center += particle.Velocity;
 
                 if (particle.shouldKilledOutScreen && !ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     particle.active = false;
@@ -86,16 +66,15 @@ namespace Stellamod.Core.Particles
             }
 
 
-            for (int i = 0; i < BlackParticles.Count; i++)
+            for (int i = 0; i < AlphaBlendedParticles.Count; i++)
             {
-                LegacyParticle particle = BlackParticles[i];
+                BaseParticle particle = AlphaBlendedParticles[i];
 
                 if (particle == null)
                     continue;
 
                 particle.Update();
-                if (particle.ShouldUpdateCenter())
-                    particle.Center += particle.Velocity;
+                particle.Center += particle.Velocity;
 
                 if (particle.shouldKilledOutScreen && !ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     particle.active = false;
@@ -107,8 +86,8 @@ namespace Stellamod.Core.Particles
                     particle.active = false;
             }
 
-            Particles.RemoveAll(p => p == null || !p.active);
-            BlackParticles.RemoveAll(p => p == null || !p.active);
+            AdditiveParticles.RemoveAll(p => p == null || !p.active);
+            AlphaBlendedParticles.RemoveAll(p => p == null || !p.active);
         }
 
         private void DrawMainParticles(On_Main.orig_DrawDust orig, Main self)
@@ -118,12 +97,12 @@ namespace Stellamod.Core.Particles
             PixelationManager.QueueSpritebatchDrawAction(DrawPixelParticles, DrawLayer.OverNPCsAdditive);
         }
 
-        public void DrawBlackParticles(SpriteBatch spriteBatch)
+        public void DrawAlphaBlendedParticles(SpriteBatch spriteBatch)
         {
             BaseShader myCustomShader = null;
-            for (int i = 0; i < BlackParticles.Count; i++)
+            for (int i = 0; i < AlphaBlendedParticles.Count; i++)
             {
-                var particle = BlackParticles[i];
+                var particle = AlphaBlendedParticles[i];
                 if (particle == null || !particle.active)
                     continue;
 
@@ -145,10 +124,12 @@ namespace Stellamod.Core.Particles
                 particle.Draw(spriteBatch);
             }
         }
+
         public void DrawAlphaPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)
         {
-            DrawBlackParticles(spriteBatch);
+            DrawAlphaBlendedParticles(spriteBatch);
         }
+
         public void DrawPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)
         {
             DrawParticles(spriteBatch);
@@ -157,15 +138,9 @@ namespace Stellamod.Core.Particles
         public void DrawParticles(SpriteBatch spriteBatch)
         {
             BaseShader myCustomShader = null;
-            if (_sortParticleArray)
+            for (int i = 0; i < AdditiveParticles.Count; i++)
             {
-                Particles.Sort(_particleComparer);
-                _sortParticleArray = false;
-            }
-
-            for (int i = 0; i < Particles.Count; i++)
-            {
-                var particle = Particles[i];
+                var particle = AdditiveParticles[i];
                 if (particle == null || !particle.active)
                     continue;
 
@@ -188,16 +163,14 @@ namespace Stellamod.Core.Particles
             }
         }
 
-        public static void AddParticle<T>(T p) where T : LegacyParticle
+        public static void AddParticle<T>(T p) where T : BaseParticle
         {
-            Particles.Add(p);
-            _sortParticleArray = true;
+            AdditiveParticles.Add(p);
         }
 
-        public static void AddBlackParticle<T>(T p) where T : LegacyParticle
+        public static void AddAlphaBlendedParticle<T>(T p) where T : BaseParticle
         {
-            BlackParticles.Add(p);
-            _sortParticleArray = true;
+            AlphaBlendedParticles.Add(p);
         }
     }
 }

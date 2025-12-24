@@ -34,7 +34,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
                 {
                     Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(8, 8);
                     Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                    Particle.NewParticle<WaterSparkleParticle>(spawnPoint, velocity, Color.White);
+                    LegacyParticle.NewParticle<WaterSparkleParticle>(spawnPoint, velocity, Color.White);
                 }
 
                 if(Main.myPlayer == Projectile.owner)

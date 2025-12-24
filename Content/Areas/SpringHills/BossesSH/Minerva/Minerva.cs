@@ -640,7 +640,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Grass);
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.WoodFurniture);
-                Particle.NewParticle<EmberParticle>(NPC.Bottom, -Vector2.UnitY, newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                LegacyParticle.NewParticle<EmberParticle>(NPC.Bottom, -Vector2.UnitY, newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
             }
 
             if (Timer % 3 == 0)
@@ -943,7 +943,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
 
             if (Timer % 5 == 0)
             {
-                var p = Particle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity);
+                var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity);
                 p.fadeToColor = Color.DarkGreen;
                 p.shrink = true;
                 p.color *= 0.8f;
@@ -1187,7 +1187,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
         #region Draw Code
         private GlowDonutParticle CreateJumpParticle()
         {
-            var jumpParticle = Particle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
+            var jumpParticle = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, Vector2.UnitY);
             jumpParticle.Scale *= 1;
             jumpParticle.fadeToColor = Color.DarkGreen;
             jumpParticle.shrink = true;

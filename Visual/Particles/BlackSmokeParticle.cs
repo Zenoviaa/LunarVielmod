@@ -7,7 +7,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    public class BlackSmokeParticle : Particle
+    public class BlackSmokeParticle : LegacyParticle
     {
         private float _interpolant;
         public int FrameWidth = 128;

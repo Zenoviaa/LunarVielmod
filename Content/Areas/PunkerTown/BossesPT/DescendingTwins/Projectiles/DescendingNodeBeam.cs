@@ -47,7 +47,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
 
             if (Timer % 2 == 0)
             {
-                var p = Particle.NewParticle<GlowFragmentParticle>(Projectile.Center, Vector2.Zero, Color.White, Scale: 4f);
+                var p = LegacyParticle.NewParticle<GlowFragmentParticle>(Projectile.Center, Vector2.Zero, Color.White, Scale: 4f);
                 Color twinColor = Color.Yellow;
                 p.innerColor = twinColor;
                 p.outerColor = Color.Red;
@@ -63,7 +63,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
         private void SpawnFlameDonut()
         {
             //movement donut particles
-            var donut = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 2, newColor: Color.White);
+            var donut = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 2, newColor: Color.White);
             Color twinColor = Color.Red;
             donut.innerColor = twinColor;
             donut.outerColor = Color.Lerp(twinColor, Color.Black, 0.5f);

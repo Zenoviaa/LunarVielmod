@@ -87,7 +87,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     }
                 }
 
-                var p3 = Particle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitY);
+                var p3 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitY);
                 FXUtil.ShakeCamera(Projectile.position, 1024, 24);
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
 

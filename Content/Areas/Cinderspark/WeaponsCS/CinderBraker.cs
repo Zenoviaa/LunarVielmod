@@ -80,7 +80,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 {
                     Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                     pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                    var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                    var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                     FXUtil.GlowFragmentParticle(position, pVelocity,
                         innerColor: Color.Yellow,
                         outerColor: Color.Orange,
@@ -348,7 +348,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 {
                     Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                     pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                    var frag = Particle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                    var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                     FXUtil.GlowFragmentParticle(position, pVelocity,
                         innerColor: Color.Yellow,
                         outerColor: Color.Orange,
@@ -370,10 +370,10 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 {
                     Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
                     pVelocity *= Main.rand.NextFloat(0.5f, 1f);
-                    var spark = Particle.NewParticle<SparkParticle>(position + Main.rand.NextVector2Circular(64, 64), pVelocity);
+                    var spark = LegacyParticle.NewParticle<SparkParticle>(position + Main.rand.NextVector2Circular(64, 64), pVelocity);
                 }
 
-                var sear = Particle.NewParticle<SearParticle>(Projectile.Bottom, Vector2.Zero);
+                var sear = LegacyParticle.NewParticle<SearParticle>(Projectile.Bottom, Vector2.Zero);
 
                 for (float f = 0; f < 4; f++)
                 {

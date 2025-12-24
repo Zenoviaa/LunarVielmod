@@ -6,7 +6,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
-    public class DustParticle : Particle
+    public class DustParticle : Particle<DustParticle>
     {
         public int FrameWidth = 64;
         public int FrameHeight = 64;
@@ -44,8 +44,9 @@ namespace Stellamod.Visual.Particles
                 Velocity.X = -collisionVelocity.X;
             if (Velocity.Y != collisionVelocity.Y)
                 Velocity.Y = -collisionVelocity.Y;
-  
+ 
         }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 centerPos = Center - Main.screenPosition;
@@ -53,8 +54,9 @@ namespace Stellamod.Visual.Particles
             shader.InnerColor = innerColor;
             shader.OuterColor = outerColor;
             shader.Apply();
-            spriteBatch.Draw(GetTexture().Value, centerPos, Frame, Color.White, Rotation, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
-        }
 
+            var textureAsset = GetTexture();
+            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, Color.White, Rotation, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
+        }
     }
 }

@@ -94,14 +94,14 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 {
                     Color color = Color.White;
                     color.A = 0;
-                    Particle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, color);
+                    LegacyParticle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, color);
                 }
                 else
                 {
                     Color color = ColorFunctions.UvilisLightBlue;
                     color.A = 0;
-                    Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
-                    Particle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
+                    LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
+                    LegacyParticle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
                 }
             }
 
@@ -115,15 +115,15 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 {
                     Color color = ColorFunctions.UvilisLightBlue;
                     color.A = 0;
-                    Particle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, color);
+                    LegacyParticle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, color);
                 }
                 else
                 {
 
                     Color color = Color.White;
                     color.A = 0;
-                    Particle.NewBlackParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
-                    Particle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
+                    LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
+                    LegacyParticle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
                 }
             }
         }
@@ -145,12 +145,12 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                     color.A = 0;
                     if (Main.rand.NextBool(7))
                     {
-                        Particle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, color);
+                        LegacyParticle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, color);
                     }
 
                     if (Main.rand.NextBool(16))
                     {
-                        Particle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, color);
+                        LegacyParticle.NewBlackParticle<WaterSparkleParticle>(spawnPoint, velocity, color);
                     }
                 }
             }
