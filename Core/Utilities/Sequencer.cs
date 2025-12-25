@@ -11,6 +11,7 @@ using Stellamod.NPCs.Town;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
+
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -49,6 +50,9 @@ namespace Stellamod.Core.Utilities
         public static Color? tintColorOverride;
         public static float tintColorAlpha;
         public static float tintLerpTime;
+
+        public static Color? vignetteColorOverride;
+        public static float vignetteColorAlpha;
         public override void Unload()
         {
             base.Unload();
@@ -68,8 +72,9 @@ namespace Stellamod.Core.Utilities
             base.PostUpdateDusts();
             ManageCameraPosition();
             ManageTintColor();
+            ManageVignette();
 
-            if(InputHelper.KeyUp(Keys.U) && _debug1)
+            if (InputHelper.KeyUp(Keys.U) && _debug1)
             {
                 DebugStartZuiWarningCutscene();
                 _debug1 = false;
@@ -121,6 +126,16 @@ namespace Stellamod.Core.Utilities
             Cutscene preFightCutscene = ModContent.GetInstance<EPostFightCutscene>();
             preFightCutscene.Play();
         }
+
+        private void ManageVignette()
+        {
+            if (vignetteColorOverride == null)
+                return;
+            Color color = vignetteColorOverride.Value;
+            ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            screenShaderSystem.TintScreen(color, vignetteColorAlpha, 30);
+        }
+
         private void ManageCameraPosition()
         {
             if (cameraPositionOverride == null)
@@ -165,12 +180,25 @@ namespace Stellamod.Core.Utilities
             tintColorAlpha = alpha;
             tintLerpTime = fadeTime;
         }
+        public static void SetVignette(Color tintColor, float alpha)
+        {
+            vignetteColorOverride = tintColor;
+            vignetteColorAlpha = alpha;
+        }
+
+        public static void ResetVignette()
+        {
+            vignetteColorOverride = null;
+            vignetteColorAlpha = 0f;
+        }
 
         public static void SetDefaults()
         {
             cameraPositionOverride = null;
             tintColorOverride = null;
             tintColorAlpha = 0;
+            vignetteColorOverride = null;
+            vignetteColorAlpha = 0;
             FullTint.SetColor(Color.Black, 0);
         }
         public void PlaySequence(Sequencer sequence)
@@ -230,7 +258,7 @@ namespace Stellamod.Core.Utilities
             Sequencer sequencer = new Sequencer();
             sequencer
                 .AddDialogueAction<ZuiWhoAreYouDialogue>()
-                .AddFadeToBlack(120, 0.5f)
+                .AddVignette(Color.Black, 0.5f)
                 .AddCameraOverride(240, E.NPC.Center)
                 .AddDialogueAction<ZuiTalkingToYouDialogue>()
                 .AddWait(120)
@@ -244,7 +272,7 @@ namespace Stellamod.Core.Utilities
                 .PoofNPC(Zui)
                 .AddWait(120)
                 .RemoveCameraOverride()
-                .RemoveFadeToBlack(120)
+                .RemoveVignette()
                 .Add(E.StartFight);
             return sequencer;
         }
@@ -348,6 +376,40 @@ namespace Stellamod.Core.Utilities
                 {
                     DialogueSystemV2 dialogueSystem = ModContent.GetInstance<DialogueSystemV2>();
                     return dialogueSystem.HasFinishedDialogue();
+                }
+            };
+            _actions.Add(action);
+            return this;
+        }
+
+        public Sequencer AddVignette(Color color, float alpha)
+        {
+            SequenceAction action = new SequenceAction
+            {
+                startFunction = () =>
+                {
+                    SequencerPlayer.SetVignette(color, alpha);
+                },
+                completeCondition = () =>
+                {
+                    return true;
+                }
+            };
+            _actions.Add(action);
+            return this;
+        }
+
+        public Sequencer RemoveVignette()
+        {
+            SequenceAction action = new SequenceAction
+            {
+                startFunction = () =>
+                {
+                    SequencerPlayer.ResetVignette();
+                },
+                completeCondition = () =>
+                {
+                    return true;
                 }
             };
             _actions.Add(action);
