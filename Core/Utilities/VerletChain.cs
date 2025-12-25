@@ -49,6 +49,7 @@ namespace Stellamod.Core.Utilities
         public float gravity;
         public float segmentLength;
         public int subdivisionCount;
+        public bool noTileCollide;
         public Vector2 g;
         public void Update()
         {
@@ -79,9 +80,13 @@ namespace Stellamod.Core.Utilities
 
                 //Interact with tiles, the tile collision function returns an inverse velocity I think?
                 //If it doesn't we can just invert it lol
-                Vector2 collisionVelocity = Collision.TileCollision(point.position, velocity, pointRadius, pointRadius);
-                point.position += collisionVelocity;
-           
+                if (!noTileCollide)
+                {
+                    Vector2 collisionVelocity = Collision.TileCollision(point.position, velocity, pointRadius, pointRadius);
+                    point.position += collisionVelocity;
+
+                }
+
             }
 
         }

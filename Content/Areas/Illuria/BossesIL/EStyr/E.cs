@@ -309,6 +309,26 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
         }
 
+        private void UpdateHairSimulation()
+        {
+            /*
+            HairSimulation.points[0].pinned = true;
+            HairSimulation.points[0].position = Vector2.Zero;
+            HairSimulation.g = Vector2.Zero;
+            HairSimulation.gravity = 0.05f;
+            HairSimulation.Update();
+            HairSimulation.noTileCollide = true;
+            HairSimulation.subdivisionCount = 3;*/
+            /*
+            TailSimulation.rootPosition = NPC.Center;
+            TailSimulation.initialDirection = -Vector2.UnitY;
+            TailSimulation.baseFrequency = 1;
+            TailSimulation.baseAmplitude = 6;
+            TailSimulation.gravity = NPC.velocity * 2 + Vector2.UnitY * 32;
+            TailSimulation.Update();*/
+        }
+
+
         public override void AI()
         {
             base.AI();
@@ -321,6 +341,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
         
             UpdateClient();
+            UpdateHairSimulation();
+
             _contactDamage = false;
             _isGrabbing = false;
             _hoverTimer++;

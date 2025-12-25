@@ -2,14 +2,17 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core;
 using Stellamod.Core.Animations;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.ModLoader;
+using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
@@ -145,6 +148,45 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 return _oldTexture;
             }
         }
+
+        private TailSimulation _tailSimulation;
+        private TailSimulation TailSimulation
+        {
+            get
+            {
+                if (_tailSimulation == null)
+                {
+                    _tailSimulation = new TailSimulation(32, 190);
+                }
+                return _tailSimulation;
+            }
+        }
+
+        private VerletChain _hairVerlet;
+        private VerletChain HairSimulation
+        {
+            get
+            {
+                _hairVerlet ??= new VerletChain(NPC.Center, NPC.Center + Vector2.UnitY * 512, 4);
+                return _hairVerlet;
+            }
+        }
+        private Vector2[] _tendrilPoints;
+        private Vector2[] TendrilPoints
+        {
+            get
+            {
+                if (_tendrilPoints == null)
+                {
+                    _tendrilPoints = new Vector2[HairSimulation.points.Length];
+                }
+
+                HairSimulation.FillArr(_tendrilPoints);
+                return _tendrilPoints;
+            }
+        }
+
+
         private float GetTrailWidth(float completionRatio)
         {
             return MathHelper.SmoothStep(16, 0, completionRatio);
@@ -220,9 +262,30 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             return NPC.frame.Size() / 2f;
         }
 
+        #region Hair Drawing
+        private Color GetHairColor(float completionRatio)
+        {
+            return Color.Lerp(Color.LightGray, Color.Transparent, completionRatio);
+        }
+
+        private float GetHairWidth(float completionRatio)
+        {
+            float width = MathHelper.SmoothStep(64, 64, completionRatio);
+            return width;
+        }
+
+        private void DrawHair(GraphicsDevice graphicsDevice)
+        {
+            BasicLaserAlphaShader shader = BasicLaserAlphaShader.Instance;
+            shader.LaserTexture = TrailRegistry.GlowTrailNoBlack;
+            TrailDrawer.Draw(Main.spriteBatch, TendrilPoints, GetHairColor, GetHairWidth, shader, offset: NPC.Center);
+        }
+        #endregion
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
 
+           // PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.BehindNPCsWithOutline);
             DrawTelegraphLine(spriteBatch, screenPos);
             DrawAfterImages(spriteBatch, screenPos, Color.White);
             DrawSprite(spriteBatch, screenPos, Color.White);
@@ -257,24 +320,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         private void DrawAfterImages(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            /*
-            Vector2 oldDrawScale = _drawScale;
-            _drawScale.Y *= ExtraMath.Osc(3f, 4);
-            _drawScale.X *= 0.1f;
-            float numAfterImages = 16;
-            for (float f = 0; f < numAfterImages; f++)
-            {
-                float ratio = f / numAfterImages;
-                float rot = ratio * MathHelper.TwoPi;
-                rot += Main.GlobalTimeWrappedHourly * 4;
-                Vector2 offset = rot.ToRotationVector2() * ExtraMath.Osc(54, 64, speed: 1);
-                offset.Y *= 0.2f;
-                DrawSprite(spriteBatch, screenPos + offset, drawColor * 0.2f * _afterImageAlpha);
-            }
-            _drawScale = oldDrawScale;
-            
-           */
- 
             Vector2 drawOrigin = GetDrawOrigin();
             if (NPC.spriteDirection == -1)
                 drawOrigin.X = NPC.frame.Size().X - drawOrigin.X;
@@ -292,9 +337,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
           
                 spriteBatch.Draw(eTexture, oldDrawPos, OldFrame[i], fadeColor, NPC.oldRot[i], drawOrigin, _drawScale, spriteEffects, 0f);
             }
-
-
         }
+
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {

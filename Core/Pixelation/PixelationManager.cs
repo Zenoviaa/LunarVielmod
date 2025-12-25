@@ -133,6 +133,7 @@ namespace Stellamod.Core.Pixelation
         private PixelTarget _overNPCsPixelTarget;
         private PixelTarget _overNPCsPixelTargetAdditive;
         private PixelTarget _overNPCsPixelTargetWithOutline;
+        private PixelTarget _behindNPCsPixelTargetWithOutline;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -141,6 +142,8 @@ namespace Stellamod.Core.Pixelation
             _overNPCsPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
             _overNPCsPixelTargetWithOutline = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
             _overNPCsPixelTargetWithOutline.outlineColor = Color.Black;
+            _behindNPCsPixelTargetWithOutline = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+            _behindNPCsPixelTargetWithOutline.outlineColor = Color.Black;
             _overNPCsPixelTargetAdditive = new PixelTarget(downSamples: 2, BlendState.Additive);
         }
 
@@ -159,18 +162,26 @@ namespace Stellamod.Core.Pixelation
             _overNPCsPixelTarget.Render();
             _overNPCsPixelTargetWithOutline.Render();
             _overNPCsPixelTargetAdditive.Render();
+            _behindNPCsPixelTargetWithOutline.Render();
         }
 
 
         private void DrawOverNPCs(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
         {
-            orig(self);
-            if (Main.gameMenu)
-                return;
+            if (!Main.gameMenu)
+            {
+                _behindNPCsPixelTargetWithOutline.DrawToScreen();
+            }
+                orig(self);
+            if (!Main.gameMenu)
+            {
+                _overNPCsPixelTarget.DrawToScreen();
+                _overNPCsPixelTargetWithOutline.DrawToScreen();
+                _overNPCsPixelTargetAdditive.DrawToScreen();
+            }
+         
 
-            _overNPCsPixelTarget.DrawToScreen();
-            _overNPCsPixelTargetWithOutline.DrawToScreen();
-            _overNPCsPixelTargetAdditive.DrawToScreen();
+
         }
 
         private PixelTarget GetPixelTarget(DrawLayer drawLayer)
@@ -183,6 +194,8 @@ namespace Stellamod.Core.Pixelation
                     return _overNPCsPixelTargetWithOutline;
                 case DrawLayer.OverNPCsAdditive:
                     return _overNPCsPixelTargetAdditive;
+                case DrawLayer.BehindNPCsWithOutline:
+                    return _behindNPCsPixelTargetWithOutline;
             }
         }
         public static void QueueSpritebatchDrawAction(PixelTarget.SpritebatchDrawAction drawAction, DrawLayer drawLayer = DrawLayer.OverNPCs)
@@ -204,8 +217,10 @@ namespace Stellamod.Core.Pixelation
 
     public enum DrawLayer
     {
+       
         OverNPCs = 0,
         OverNPCsWithOutline = 1,
-        OverNPCsAdditive = 2
+        OverNPCsAdditive = 2,
+             BehindNPCsWithOutline = 3,
     }
 }
