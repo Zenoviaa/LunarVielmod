@@ -342,7 +342,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float spinRotOffset = _spinTimer * -0.01f;
             SparkyShader sparkyShader = SparkyShader.Instance;
             sparkyShader.InnerColor = Color.White;
-            sparkyShader.OuterColor = Main.DiscoColor;
+            sparkyShader.OuterColor = Color.Gray;
             sparkyShader.Distortion = -0.15f;
             sparkyShader.Time = -Main.GlobalTimeWrappedHourly * 40;
             sparkyShader.Tiling = Vector2.One * 2;
@@ -363,16 +363,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             spriteBatch.Draw(texture, drawPosition, null, Color.White, _singularityRotation, drawOrigin, drawScale * 1.5f * scaleOsc2, SpriteEffects.None, 0);
             spriteBatch.RestartDefaults();
 
-            Texture2D diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SF").Value;
+            Texture2D diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SFGrey").Value;
             Vector2 diskDrawOrigin = diskTexture.Size() / 2f;
-            Color diskDrawColor = Color.Lerp(Color.White, Color.Lerp(Color.White, Color.Cyan, 0.15f), ExtraMath.Osc(0f, 1f, speed: 2));
+            Color diskDrawColor = Color.Lerp(Color.White, Color.Gray, ExtraMath.Osc(0f, 1f, speed: 2));
             diskDrawColor.A = 0;
 
             float scaleOsc = ExtraMath.Osc(0.5f, 0.58f, speed: 1);
             spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, _singularityRotation, diskDrawOrigin, drawScale * 0.8f * scaleOsc, SpriteEffects.None, 0);
             spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor, _singularityRotation, diskDrawOrigin, drawScale * 0.7f * scaleOsc, SpriteEffects.None, 0);
 
-            diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SF2").Value;
+            diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SF2Grey").Value;
 
             spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor * 0.25f, _singularityRotation, diskDrawOrigin, drawScale * 0.7f * scaleOsc * new Vector2(3.5f, 0.2f), SpriteEffects.None, 0);
             spriteBatch.Draw(diskTexture, drawPosition, null, diskDrawColor * 0.5f, _singularityRotation, diskDrawOrigin, drawScale * 0.7f * scaleOsc * new Vector2(7.5f, 0.2f), SpriteEffects.None, 0);
@@ -380,7 +380,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             Texture2D extra67 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_67").Value;
             Vector2 extra67DrawOrigin = extra67.Size() / 2f;
-            Color extra67DrawColor = Color.Lerp(Color.White, Color.Cyan, ExtraMath.Osc(0f, 1f, speed: 2));
+            Color extra67DrawColor = Color.Lerp(Color.White, Color.Gray, ExtraMath.Osc(0f, 1f, speed: 2));
             extra67DrawColor.A = 0;
             spriteBatch.Draw(extra67, drawPosition, null, extra67DrawColor * 0.2f, _singularityRotation, extra67DrawOrigin, drawScale * 0.8f * scaleOsc, SpriteEffects.None, 0);
             DrawIncresionDiskBottom(spriteBatch, drawCenter, screenPos, Color.White);
@@ -402,13 +402,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float drawScale = 1.75f;
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, _singularityRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
 
-            incresionDiskDrawColor = Color.Cyan;
+            incresionDiskDrawColor = Color.Gray;
             incresionDiskDrawColor *= 0.25f;
             incresionDiskDrawColor.A = 0;
 
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, _singularityRotation, drawOrigin, drawScale * 1.5f, SpriteEffects.None, 0);
 
-            incresionDiskDrawColor = Color.Purple;
+            incresionDiskDrawColor = Color.DarkGray;
             incresionDiskDrawColor *= 0.25f;
             incresionDiskDrawColor.A = 0;
 
