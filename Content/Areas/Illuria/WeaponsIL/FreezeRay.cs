@@ -317,6 +317,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         private ManagedRenderTarget _icicleRT;
         private Queue<PixelTarget.SpritebatchDrawAction> _drawActionQueue;
         private bool _ices;
+        private bool _reRenderIce;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -324,6 +325,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             _iceRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
             _icicleMaskRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
             _icicleRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
+            _reRenderIce = true;
             On_Main.CheckMonoliths += RenderToIcicleMaskTarget;
         }
         public override void OnModUnload()
@@ -337,9 +339,14 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             if (!Main.gameMenu)
             {
                 RenderIcicleMask();
-                if (_ices)
+                if (_reRenderIce)
                 {
                     RenderIceTexture();
+                    _reRenderIce = false;
+                }
+
+                if (_ices)
+                {
                     RenderIcicles();
                     PixelationManager.QueueSpritebatchDrawAction(DrawMaskToPixelTarget, DrawLayer.OverNPCsWithOutline);
                 }
@@ -361,7 +368,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             iceShader.Tiling = Vector2.One * 132;
 
 
-            spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, iceShader.Effect);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, iceShader.Effect);
             spriteBatch.Draw(_iceRT, Vector2.Zero, Color.White);
 
             spriteBatch.End();
