@@ -4,7 +4,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Trails;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -43,9 +42,10 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         public void Render()
         {
             RenderIcicleMask();
-            RenderIceTexture();
+
             if (_ices)
             {
+                RenderIceTexture();
                 RenderIcicles();
                 PixelationManager.QueueSpritebatchDrawAction(DrawMaskToPixelTarget, DrawLayer.OverNPCsWithOutline);
             }
@@ -80,7 +80,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             _ices = _drawActionQueue.Count > 0;
             if (_ices)
             {
-   
+
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                 while (_drawActionQueue.Count > 0)
                 {
