@@ -118,24 +118,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 spriteBatch.Draw(texture, drawCenter, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             }
         }
-        private void DrawTelegraphLine(SpriteBatch spriteBatch)
-        {
-            Texture2D bloomLine = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
-            Vector2 drawOrigin = new Vector2(bloomLine.Width / 2f, 0f);
-            float rotation = _telegraphRotation - MathHelper.PiOver2;
-            Vector2 drawCenter = Projectile.Center - Main.screenPosition;
-            Color drawColor = Color.White;
-            drawColor.A = 0;
-            drawColor *= _telegraphAlpha;
-            drawColor *= 0.5f;
-            Vector2 scale = Vector2.One;
-            scale.X *= 0.3f;
-            scale.Y *= 2 * EasingFunction.QuadraticBump(Timer / 120f);
-            spriteBatch.Draw(bloomLine, drawCenter, null, drawColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
-        }
+
         public override bool PreDraw(ref Color lightColor)
         {
-         //   DrawTelegraphLine(Main.spriteBatch);
+            //   DrawTelegraphLine(Main.spriteBatch);
+            BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
 
@@ -350,7 +337,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float width = MathHelper.SmoothStep(0f, 1250, smooth);
             TexturedQuad.CalculateVertices(Projectile.Center, Projectile.velocity,
                 8000, width);
-           // TexturedQuad.DrawWithShader(flamingTrailShader);
+            // TexturedQuad.DrawWithShader(flamingTrailShader);
+            BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
 
@@ -591,6 +579,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public override bool PreDraw(ref Color lightColor)
         {
+            BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
 

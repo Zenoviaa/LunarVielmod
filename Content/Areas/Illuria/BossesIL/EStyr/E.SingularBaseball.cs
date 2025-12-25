@@ -370,6 +370,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             DrawSprite(Main.spriteBatch, Main.screenPosition, Color.Black);
             DrawSingularity(Main.spriteBatch, Main.screenPosition);
+            BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
 

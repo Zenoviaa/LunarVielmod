@@ -155,6 +155,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public override bool PreDraw(ref Color lightColor)
         {
+            BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
 
@@ -285,6 +286,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override bool PreDraw(ref Color lightColor)
         {
             DrawSprite(Main.spriteBatch, Main.screenPosition, Color.Black);
+            BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
 
@@ -321,7 +323,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private int StarRiftDamage => 30;
         private float GetSlashOffset()
         {
-            return -300;
+            return -350;
         }
         private void AI_SwordStarPlosionStart()
         {

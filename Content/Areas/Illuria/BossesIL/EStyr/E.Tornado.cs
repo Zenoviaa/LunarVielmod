@@ -159,6 +159,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             DrawAfterImages(Main.spriteBatch);
             DrawHelper.DrawBloomLine(Main.spriteBatch, Projectile.Center, Color.White, _telegraphLineRot, _telegraphLineAlpha * 0.2f);
+            BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
 
@@ -423,6 +424,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             DrawAfterImages(Main.spriteBatch);
             DrawHelper.DrawBloomLine(Main.spriteBatch, Projectile.Center, Color.White, _telegraphLineRot, _telegraphLineAlpha * 0.2f);
+            BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
 

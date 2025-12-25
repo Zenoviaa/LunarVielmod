@@ -5,6 +5,7 @@ using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
@@ -12,14 +13,15 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
     [Autoload(Side = ModSide.Client)]
     public class BlackStarRenderer : ModSystem
     {
-        private List<IDrawBlackStar> _blackStarDraws;
+        private Queue<IDrawBlackStar> _blackStarDraws;
         private ManagedRenderTarget _maskTarget;
         private ManagedRenderTarget _blackStarTarget;
         private BlackStarParticleManager _particleManager;
+        private bool _renderStars;
         public override void OnModLoad()
         {
             base.OnModLoad();
-            _blackStarDraws = new List<IDrawBlackStar>();
+            _blackStarDraws = new Queue<IDrawBlackStar>(100);
             _blackStarTarget = ManagedRenderTarget.New(GetScreenSize);
             _maskTarget = ManagedRenderTarget.New(GetScreenSize);
             _particleManager = new BlackStarParticleManager(200, 30);
@@ -33,6 +35,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             On_Main.DoDraw_DrawNPCsOverTiles -= DrawBlackStarToScreen;
         }
 
+        public static void QueueBlackStarDraw(IDrawBlackStar blackStar)
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            BlackStarRenderer renderer = ModContent.GetInstance<BlackStarRenderer>();   
+            renderer._blackStarDraws.Enqueue(blackStar);
+        }
         public override void PostUpdateDusts()
         {
             base.PostUpdateDusts();
@@ -48,41 +57,28 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void RenderBlackStarMask()
         {
-            _blackStarDraws.Clear();
-            foreach (var projectile in Main.ActiveProjectiles)
-            {
-                if (projectile.ModProjectile is IDrawBlackStar draw)
-                {
-                    _blackStarDraws.Add(draw);
-                }
-            }
-            foreach (var npc in Main.ActiveNPCs)
-            {
-                if (npc.ModNPC is IDrawBlackStar draw)
-                {
-                    _blackStarDraws.Add(draw);
-                }
-            }
-
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            graphicsDevice.SetRenderTarget(_maskTarget);
+            graphicsDevice.Clear(Color.Transparent);
+            _renderStars = false;
             if (_blackStarDraws.Count > 0)
             {
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-                graphicsDevice.SetRenderTarget(_maskTarget);
-                graphicsDevice.Clear(Color.Transparent);
+                _renderStars = true;
                 spriteBatch.Begin();
-                foreach (IDrawBlackStar draw in _blackStarDraws)
+                while (_blackStarDraws.Count > 0)
                 {
+                    IDrawBlackStar draw = _blackStarDraws.Dequeue();
                     draw.DrawBlackStar(spriteBatch);
                 }
                 spriteBatch.End();
-                graphicsDevice.SetRenderTarget(null);
             }
+            graphicsDevice.SetRenderTarget(null);
         }
 
         private void RenderBlackStar()
         {
-            if (_blackStarDraws.Count <= 0)
+            if (!_renderStars)
                 return;
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
@@ -114,9 +110,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void DrawBlackStarToScreen(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
         {
-
-
-            if(_blackStarDraws.Count > 0)
+            if(_renderStars)
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;

@@ -109,6 +109,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             TexturedQuad.CalculateVertices(Projectile.Center, Projectile.velocity,
                 8000, width);
             TexturedQuad.DrawWithShader(flamingTrailShader);
+            BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
 
@@ -281,6 +282,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override bool PreDraw(ref Color lightColor)
         {
             DrawSprite(Main.spriteBatch, Main.screenPosition, Color.White);
+            BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
 

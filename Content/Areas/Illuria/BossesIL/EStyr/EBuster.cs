@@ -86,7 +86,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         public override bool PreDraw(ref Color lightColor)
         {
-
+            BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
 

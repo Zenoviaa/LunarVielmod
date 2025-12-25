@@ -116,6 +116,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         public override bool PreDraw(ref Color lightColor)
         {
+            BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
     }
@@ -257,7 +258,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            BlackRiverRenderer.AddMask(this);
+            BlackRiverRenderer.QueuePostDraw(this);
             return false;
         }
 
@@ -350,7 +351,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public override bool PreDraw(ref Color lightColor)
         {
-            BlackRiverRenderer.AddMask(this);
+            BlackRiverRenderer.QueueDraw(this);
             return false;
         }
         public void DrawRiverMask()
@@ -430,7 +431,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public override bool PreDraw(ref Color lightColor)
         {
-            BlackRiverRenderer.AddMask(this);
+            BlackRiverRenderer.QueueDraw(this);
             //  DrawRiverMask();
             return false;
         }
@@ -463,7 +464,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private ManagedRenderTarget _riverRT;
         private ManagedRenderTarget _riverMaskRT;
         private ManagedRenderTarget _pixelRT;
-        private List<IDrawBlackRiverMask> _draws;
+        private Queue<IDrawBlackRiverMask> _draws;
+        private Queue<IDrawBlackRiverMask> _postDraws;
         private Asset<Texture2D> _noiseTextureAsset;
         private Asset<Texture2D> _waterTextureAsset;
 
@@ -473,7 +475,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void OnModLoad()
         {
             base.OnModLoad();
-            _draws = new List<IDrawBlackRiverMask>();
+            _draws = new Queue<IDrawBlackRiverMask>(100);
+            _postDraws = new Queue<IDrawBlackRiverMask>(100);
             _riverRT = ManagedRenderTarget.New(GetScreenSize);
             _riverMaskRT = ManagedRenderTarget.New(GetScreenSize);
             _pixelRT = ManagedRenderTarget.New(GetScreenSize, 2);
@@ -505,15 +508,43 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             spriteBatch.GraphicsDevice.Clear(Color.Transparent);
             if (invert)
                 spriteBatch.GraphicsDevice.Clear(Color.White);
-            spriteBatch.Begin();
-            for (int i = 0; i < _draws.Count; i++)
+            if(_draws.Count > 0)
             {
-                IDrawBlackRiverMask mask = _draws[i];
-                mask.DrawRiverMask();
+                spriteBatch.Begin();
+                while(_draws.Count > 0)
+                {
+                    IDrawBlackRiverMask mask = _draws.Dequeue();
+                    mask.DrawRiverMask();
+                }
+                spriteBatch.End();
             }
-            spriteBatch.End();
+            if (_postDraws.Count > 0)
+            {
+                spriteBatch.Begin();
+                while (_postDraws.Count > 0)
+                {
+                    IDrawBlackRiverMask mask = _postDraws.Dequeue();
+                    mask.DrawRiverMask();
+                }
+                spriteBatch.End();
+            }
+
         }
 
+        public static void QueueDraw(IDrawBlackRiverMask mask)
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            BlackRiverRenderer renderer = ModContent.GetInstance<BlackRiverRenderer>();
+            renderer._draws.Enqueue(mask);
+        }
+        public static void QueuePostDraw(IDrawBlackRiverMask mask)
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            BlackRiverRenderer renderer = ModContent.GetInstance<BlackRiverRenderer>();
+            renderer._postDraws.Enqueue(mask);
+        }
         private void RenderRiverTextureRT()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -563,7 +594,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             RenderRiverMaskRT();
             RenderRiverTextureRT();
             RenderToPixelRT();
-            _draws.Clear();
             orig();
         }
         private void DrawRiverToScreenBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)
@@ -592,12 +622,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             spriteBatch.Draw(_pixelRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
             spriteBatch.End();
 
-        }
-
-        public static void AddMask(IDrawBlackRiverMask mask)
-        {
-            BlackRiverRenderer renderer = ModContent.GetInstance<BlackRiverRenderer>();
-            renderer._draws.Add(mask);
         }
 
         private Point GetScreenSize()
