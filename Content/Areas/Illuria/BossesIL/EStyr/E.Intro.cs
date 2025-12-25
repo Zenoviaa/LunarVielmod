@@ -87,6 +87,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 SwitchState(AIState.Intro_SwordHold);
             }
         }
+
         private void AI_IntroSwordHold()
         {
             Timer++;
@@ -107,12 +108,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             //Play the head turn animation
             Animator.PlayAnimation(Anim_SwordHold);
-
-            //After a decent amount of time, switch to the hand out state 
-            if (Timer >= headTurnTime)
-            {
-                SwitchState(AIState.Intro_HandOut);
-            }
         }
 
 
@@ -170,15 +165,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.velocity = Vector2.Lerp(TargetVector, targetVelocity, orbEase);
 
             Animator.PlayAnimation(Anim_HandOut);
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
 
             //Face away the player
             NPC.direction = TargetDirection;
-            if (Timer >= handOutTime)
-            {
-                SwitchState(AIState.Intro_HeadTurn);
-            }
         }
+
         private void AI_IntroHeadTurn()
         {
             Timer++;

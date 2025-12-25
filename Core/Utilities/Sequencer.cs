@@ -234,17 +234,18 @@ namespace Stellamod.Core.Utilities
                 .AddCameraOverride(240, E.NPC.Center)
                 .AddDialogueAction<ZuiTalkingToYouDialogue>()
                 .AddWait(120)
+                .Add(E.GetSword)
+                .AddWait(60)
                 .AddDialogueAction<EFoundYouDialogue>()
+                .AddWait(60)
+                .Add(E.GetSingularity)
+                .AddWait(60)
                 .AddDialogueAction<ZuiGetOuttaHereDialogue>()
                 .PoofNPC(Zui)
                 .AddWait(120)
                 .RemoveCameraOverride()
                 .RemoveFadeToBlack(120)
-                .Add(() =>
-                {
-                    E e = E.ModNPC as E;
-                    e.StartFight();
-                });
+                .Add(E.StartFight);
             return sequencer;
         }
     }

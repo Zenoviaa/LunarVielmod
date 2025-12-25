@@ -607,11 +607,20 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             OldTexture[0] = texture;
             NPC.spriteDirection = -NPC.direction;
         }
-
+        public void GetSword()
+        {
+            SwitchState(AIState.Intro_SwordHold);
+            NPC.netUpdate = true;
+        }
+        public void GetSingularity()
+        {
+            SwitchState(AIState.Intro_HandOut);
+            NPC.netUpdate = true;
+        }
         public void StartFight()
         {
             _startedFight = true;
-            SwitchState(AIState.Intro_Idle);
+            SwitchState(AIState.Intro_HeadTurn);
             NPC.netUpdate = true;
         }
 
