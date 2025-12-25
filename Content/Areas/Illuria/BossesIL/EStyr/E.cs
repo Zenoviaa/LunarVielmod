@@ -103,7 +103,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Special_Slash,
             Special_SlashReposition,
             Special_SlashEndInBlack,
-            Special_SlashEndOutBlack
+            Special_SlashEndOutBlack,
+
+            Death_Start,
+            Death_FlyOff
         }
 
         private bool _startedFight;
@@ -577,6 +580,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 case AIState.Special_SlashEndOutBlack:
                     AI_SpecialSlashEndP2();
                     break;
+
+                case AIState.Death_Start:
+                    AI_DeathStart();
+                    break;
+                case AIState.Death_FlyOff:
+                    AI_DeathFlyOff();
+                    break;
             }
 
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.3f);
@@ -643,6 +653,54 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private void ChooseAttack()
         {
             SwitchState(PatternManager.NextPattern());
+        }
+
+        private void AI_DeathStart()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                TargetVector = NPC.velocity;
+                Cutscene.StartCutscene<EPostFightCutscene>();
+            }
+
+            if(Timer < 60)
+            {
+                Animator.PlayAnimation(Anim_Holding);
+            }
+            else
+            {
+                Animator.PlayAnimation(Anim_BattleIdle);
+            }
+
+            Vector2 hoverVelocity = CalculateHoverVelocity();
+            NPC.velocity = Vector2.Lerp(NPC.velocity, hoverVelocity, EasingFunction.InOutSine(Timer / 60f));
+            //Face away the player
+            NPC.direction = TargetDirection;
+            Main.windSpeedCurrent = 0;
+        }
+
+        private void AI_DeathFlyOff()
+        {
+            Timer++;
+            NPC.velocity.X *= 0.9f;
+            NPC.velocity.Y -= 0.5f;
+            if(Timer >= 100)
+            {
+                NPC.Kill();
+            }
+        }
+
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+            if(State != AIState.Death_Start && State != AIState.Death_FlyOff && NPC.life <= 0)
+            {
+                SwitchState(AIState.Death_Start);
+            }
+
+            if (NPC.life <= 0)
+                NPC.life = 1;
         }
     }
 }

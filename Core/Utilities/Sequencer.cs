@@ -154,6 +154,22 @@ namespace Stellamod.Core.Utilities
             progress = MathHelper.Clamp(progress, 0f, 1f);
             float alpha = MathHelper.Lerp(_tintStartAlpha, tintColorAlpha, progress);
             FullTint.SetColor(overrideColor, alpha);
+
+            //We have finished animating the tint so just set it back to null to update the startvalue
+            if(_tintLerpTimer >= tintLerpTime)
+            {
+                tintColorOverride = null;
+            }
+        }
+
+        public static void StartTint(Color tintColor, float alpha, float fadeTime)
+        {
+            SequencerPlayer player = ModContent.GetInstance<SequencerPlayer>();
+            player._tintLerpTimer = 0;
+            player._tintStartAlpha = FullTint.Alpha;
+            tintColorOverride = tintColor;
+            tintColorAlpha = alpha;
+            tintLerpTime = fadeTime;
         }
 
         public static void SetDefaults()
@@ -290,6 +306,14 @@ namespace Stellamod.Core.Utilities
 
             player.PlaySequence(sequencer);
         }
+
+        public static T StartCutscene<T>() where T : Cutscene
+        {
+            //We can do netcode stuff here
+            T cutscene = ModContent.GetInstance<T>();
+            cutscene.Play();
+            return cutscene;
+        }
     }
 
     /// <summary>
@@ -342,9 +366,7 @@ namespace Stellamod.Core.Utilities
             {
                 startFunction = () =>
                 {
-                    SequencerPlayer.tintColorOverride = Color.Black;
-                    SequencerPlayer.tintColorAlpha = alpha;
-                    SequencerPlayer.tintLerpTime = fadeTime;
+                    SequencerPlayer.StartTint(Color.Black, alpha, fadeTime);
                 },
                 completeCondition = () =>
                 {
@@ -361,9 +383,7 @@ namespace Stellamod.Core.Utilities
             {
                 startFunction = () =>
                 {
-                    SequencerPlayer.tintColorOverride = Color.Black;
-                    SequencerPlayer.tintColorAlpha = 0;
-                    SequencerPlayer.tintLerpTime = fadeTime;
+                    SequencerPlayer.StartTint(Color.Black, 0, fadeTime);
                 },
                 completeCondition = () =>
                 {
