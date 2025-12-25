@@ -614,12 +614,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         public void GetSingularity()
         {
+            _startedFight = true;
             SwitchState(AIState.Intro_HandOut);
             NPC.netUpdate = true;
         }
         public void StartFight()
         {
-            _startedFight = true;
+         
             SwitchState(AIState.Intro_HeadTurn);
             NPC.netUpdate = true;
         }

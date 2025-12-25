@@ -159,11 +159,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
 
             //Floats and charges himself up, slowly turning white
-            DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
-            Vector2 targetPlatform = new Vector2(NPC.Center.X, fallSystem.hoverPlatformY - 128);
-            Vector2 targetVelocity = targetPlatform - NPC.Center;
-            NPC.velocity = Vector2.Lerp(TargetVector, targetVelocity, orbEase);
 
+            IntroHoverMovement();
             Animator.PlayAnimation(Anim_HandOut);
 
             //Face away the player
@@ -181,17 +178,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
 
             //Calculate easing for the hover effect
-            float headTurnTime = 120f;
+            float headTurnTime = 270f;
             float completionRatio = Timer / headTurnTime;
             float easing = EasingFunction.OutExpo(completionRatio);
 
 
             //Play the head turn animation
             Animator.PlayAnimation(Anim_LookOver);
-
-            //First we make the camera move to him
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
-
 
             IntroHoverMovement();
             ShakeModSystem.Shake = 4;
@@ -202,6 +195,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 blackseaRenderer.miniOrbDrawPosition = NPC.Center;
                 blackseaRenderer.miniOrbDrawScale = 0.4f;
             }
+
+            DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
+            Vector2 targetPlatform = new Vector2(NPC.Center.X, fallSystem.hoverPlatformY - 128);
+            Vector2 targetVelocity = targetPlatform - NPC.Center;
+            NPC.velocity = Vector2.Lerp(TargetVector, targetVelocity, EasingFunction.InOutSine(completionRatio));
 
             //After a decent amount of time, switch to the hand out state 
             if (Timer >= headTurnTime)

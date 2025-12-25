@@ -133,7 +133,7 @@ namespace Stellamod.Core.Utilities
                 return;
             Color color = vignetteColorOverride.Value;
             ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-            screenShaderSystem.TintScreen(color, vignetteColorAlpha, 30);
+            screenShaderSystem.VignetteScreen(vignetteColorAlpha, 1f, 30);
         }
 
         private void ManageCameraPosition()
@@ -258,7 +258,7 @@ namespace Stellamod.Core.Utilities
             Sequencer sequencer = new Sequencer();
             sequencer
                 .AddDialogueAction<ZuiWhoAreYouDialogue>()
-                .AddVignette(Color.Black, 0.5f)
+                .AddVignette(Color.Black, 1f)
                 .AddCameraOverride(240, E.NPC.Center)
                 .AddDialogueAction<ZuiTalkingToYouDialogue>()
                 .AddWait(120)

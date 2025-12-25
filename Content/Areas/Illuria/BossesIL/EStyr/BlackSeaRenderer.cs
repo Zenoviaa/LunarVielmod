@@ -327,7 +327,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _rootTexturePath = this.GetType().DirectoryHere() + "/BlackSingularity";
             Texture2D celestialRing = ModContent.Request<Texture2D>(_rootTexturePath + "_CelestialRing").Value;
             Vector2 ringDrawOrigin = celestialRing.Size() / 2f;
-            Color ringDrawColor = Color.White;
+            Color ringDrawColor = Color.DarkGray;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             ringDrawColor *= 0.05f;
@@ -359,6 +359,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
 
             var shader = SingularityShader.Instance;
+            shader.InnerColor = Color.White;
+            shader.OuterColor = Color.White;
             spriteBatch.Restart(effect: shader.Effect);
             spriteBatch.Draw(texture, drawPosition, null, Color.White, _singularityRotation, drawOrigin, drawScale * 1.5f * scaleOsc2, SpriteEffects.None, 0);
             spriteBatch.RestartDefaults();
