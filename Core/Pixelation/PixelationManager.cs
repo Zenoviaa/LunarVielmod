@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -77,7 +76,7 @@ namespace Stellamod.Core.Pixelation
             }
 
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
-            while(_spritebatchActionsQueue.Count > 0)
+            while (_spritebatchActionsQueue.Count > 0)
             {
                 SpritebatchDrawAction drawAction = _spritebatchActionsQueue.Dequeue();
                 drawAction(spriteBatch, Main.screenPosition);
@@ -107,10 +106,10 @@ namespace Stellamod.Core.Pixelation
                 Vector2 v = Vector2.UnitX * 2;
                 Vector2 h = Vector2.UnitY * 2;
                 Color oColor = outlineColor.Value;
-             
+
                 SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
                 spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, whiteShader.Effect);
-     
+
                 spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero + v, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
                 spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero - v, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
                 spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero + h, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
@@ -162,7 +161,7 @@ namespace Stellamod.Core.Pixelation
             _overNPCsPixelTargetAdditive.Render();
         }
 
-       
+
         private void DrawOverNPCs(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
         {
             orig(self);
@@ -188,7 +187,6 @@ namespace Stellamod.Core.Pixelation
         }
         public static void QueueSpritebatchDrawAction(PixelTarget.SpritebatchDrawAction drawAction, DrawLayer drawLayer = DrawLayer.OverNPCs)
         {
-            //TODO: have multiple draw layers, for nowe don't need it
             if (Main.netMode == NetmodeID.Server)
                 return;
             PixelTarget target = ModContent.GetInstance<PixelationManager>().GetPixelTarget(drawLayer);
@@ -208,6 +206,6 @@ namespace Stellamod.Core.Pixelation
     {
         OverNPCs = 0,
         OverNPCsWithOutline = 1,
-        OverNPCsAdditive =2
+        OverNPCsAdditive = 2
     }
 }

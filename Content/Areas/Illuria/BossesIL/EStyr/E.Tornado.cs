@@ -20,36 +20,6 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 {
-    public class BlackTornadoWind
-    {
-        private readonly TexturedQuad _texturedQuad;
-        public BlackTornadoWind()
-        {
-            _texturedQuad = new TexturedQuad();
-        }
-
-        public float alpha;
-        public void Draw(Vector2 drawCenter, float length, float width)
-        {
-            if (alpha <= 0)
-                return;
-
-            FlamingTrailShader flamingTrailShader = FlamingTrailShader.Instance;
-            flamingTrailShader.OuterColor = Color.Black;
-            flamingTrailShader.InnerColor = Color.White * 0.1f;
-            flamingTrailShader.Power = 0.3f;
-            flamingTrailShader.Distortion = 6;
-            flamingTrailShader.Tiling = new Vector2(1, 3);
-            flamingTrailShader.BlendState = BlendState.AlphaBlend;
-            flamingTrailShader.Time = Main.GlobalTimeWrappedHourly * 64;
-
-
-            _texturedQuad.CalculateCenterVertices(drawCenter,
-                length, width);
-            _texturedQuad.SetColor(Color.White * alpha);
-            _texturedQuad.DrawWithShader(flamingTrailShader);
-        }
-    }
     public class BlackTornadoStar2 : BlackTornadoStar
     {
 
@@ -738,7 +708,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated, DrawLayer.OverNPCsWithOutline);
             return false;
         }
 

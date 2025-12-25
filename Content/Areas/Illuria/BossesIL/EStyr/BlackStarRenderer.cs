@@ -84,10 +84,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             if (_blackStarDraws.Count <= 0)
                 return;
-            if (InputHelper.KeyDown(Microsoft.Xna.Framework.Input.Keys.L))
-            {
-                _particleManager = new BlackStarParticleManager(200, 30);
-            }
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             graphicsDevice.SetRenderTarget(_blackStarTarget);

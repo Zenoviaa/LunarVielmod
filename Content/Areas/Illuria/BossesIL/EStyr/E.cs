@@ -678,6 +678,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //Face away the player
             NPC.direction = TargetDirection;
             Main.windSpeedCurrent = 0;
+            if(Timer >= 120 && !SequencerPlayer.IsActive())
+            {
+                SwitchState(AIState.Death_FlyOff);
+            }
         }
 
         private void AI_DeathFlyOff()

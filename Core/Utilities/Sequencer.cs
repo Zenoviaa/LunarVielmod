@@ -154,12 +154,6 @@ namespace Stellamod.Core.Utilities
             progress = MathHelper.Clamp(progress, 0f, 1f);
             float alpha = MathHelper.Lerp(_tintStartAlpha, tintColorAlpha, progress);
             FullTint.SetColor(overrideColor, alpha);
-
-            //We have finished animating the tint so just set it back to null to update the startvalue
-            if(_tintLerpTimer >= tintLerpTime)
-            {
-                tintColorOverride = null;
-            }
         }
 
         public static void StartTint(Color tintColor, float alpha, float fadeTime)

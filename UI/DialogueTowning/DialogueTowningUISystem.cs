@@ -79,7 +79,7 @@ namespace Stellamod.UI.DialogueTowning
             string portrait = "FenixPortrait";
             float timeBetweenTexts = 0.05f;
             SoundStyle? talkingSound = null;
-            dialogueTowningUIState.dialogueTownButtonsUI.ClearButtons();
+            ClearButtons();
 
             //Create buttons and open dialogue
             List<Tuple<string, Action>> buttons = new List<Tuple<string, Action>>();
@@ -158,6 +158,11 @@ namespace Stellamod.UI.DialogueTowning
         {
             OpenTalkOptions(_oldDialogues);
         }
+        public void ClearButtons()
+        {
+            dialogueTowningUIState.dialogueTownButtonsUI.ClearButtons();
+        }
+
         public void ClearOptions()
         {
             TalkingOptionsButtonGroupUI options = dialogueTowningUIState.talkingOptionsUI;

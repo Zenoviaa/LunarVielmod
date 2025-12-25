@@ -316,6 +316,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         private ManagedRenderTarget _iceRT;
         private ManagedRenderTarget _icicleRT;
         private Queue<PixelTarget.SpritebatchDrawAction> _drawActionQueue;
+        private bool _ices;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -324,33 +325,29 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             _icicleMaskRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
             _icicleRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
             On_Main.CheckMonoliths += RenderToIcicleMaskTarget;
-            On_Main.DoDraw_DrawNPCsOverTiles += DrawMask;
         }
         public override void OnModUnload()
         {
             base.OnModUnload();
             On_Main.CheckMonoliths -= RenderToIcicleMaskTarget;
-            On_Main.DoDraw_DrawNPCsOverTiles -= DrawMask;
         }
 
         private void RenderToIcicleMaskTarget(On_Main.orig_CheckMonoliths orig)
         {
             if (!Main.gameMenu)
             {
-                RenderIceTexture();
                 RenderIcicleMask();
-                RenderIcicles();
-                PixelationManager.QueueSpritebatchDrawAction(DrawMaskToPixelTarget, DrawLayer.OverNPCsWithOutline);
+                if (_ices)
+                {
+                    RenderIceTexture();
+                    RenderIcicles();
+                    PixelationManager.QueueSpritebatchDrawAction(DrawMaskToPixelTarget, DrawLayer.OverNPCsWithOutline);
+                }
             }
 
             orig();
         }
-
-        private void DrawMask(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
-        {
-            orig(self);
-
-        }
+    
 
         private void RenderIceTexture()
         {
@@ -378,8 +375,10 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
             graphicsDevice.SetRenderTarget(_icicleMaskRT);
             graphicsDevice.Clear(Color.Transparent);
-            if (_drawActionQueue.Count > 0)
+            _ices = _drawActionQueue.Count > 0;
+            if (_ices)
             {
+   
                 spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
                 while (_drawActionQueue.Count > 0)
                 {
@@ -400,7 +399,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             graphicsDevice.SetRenderTarget(_icicleRT);
             graphicsDevice.Clear(Color.Transparent);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, combineShader.Effect);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, combineShader.Effect);
             spriteBatch.Draw(_icicleMaskRT, Vector2.Zero, Color.White);
             spriteBatch.End();
             graphicsDevice.SetRenderTarget(null);

@@ -54,6 +54,7 @@ namespace Stellamod.Core.DialogueSystem
             DialogueTowningUISystem uiSystem = ModContent.GetInstance<DialogueTowningUISystem>();
             uiSystem.OpenUI();
             uiSystem.ClearOptions();
+            uiSystem.ClearButtons();
             return _dialogueActor;
 
         }
