@@ -284,6 +284,9 @@ namespace Stellamod.Core.MoonWaters
             orig(self);
             if (_reflectionRT == null)
                 return;
+            if (Main.gameMenu)
+                return;
+
             SpriteBatch spriteBatch = Main.spriteBatch;
 
             //Copy the current screen target for reflections
@@ -328,6 +331,9 @@ namespace Stellamod.Core.MoonWaters
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.LiquidsToggle)
                 return;
+            if (Main.gameMenu)
+                return;
+
             if (layer == RenderLayers.ForegroundWater)
             {
                 //This is called right before the front water gets drawn

@@ -109,6 +109,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Death_FlyOff
         }
 
+        private bool _drawDarkened;
         private bool _startedFight;
         private bool _intro;
         private bool _showNamePlate;
@@ -298,6 +299,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                 BlackSeaRenderer blackseaRenderer = ModContent.GetInstance<BlackSeaRenderer>();
                 blackseaRenderer.drawBlackSea = true;
+                blackseaRenderer.darkenedSingularity = _drawDarkened;
             }
             else
             {

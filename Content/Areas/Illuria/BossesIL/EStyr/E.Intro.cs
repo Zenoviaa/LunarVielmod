@@ -220,7 +220,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 donut.innerColor = Color.White;
                 donut.Scale *= 4;
                 donut.noStretch = true;
-
+                _drawDarkened = true;
                 ScreenShaderSystem screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.TintScreen(Color.Black, 0.5f, 30);
                 SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/VoidBlasterExplosionBomb2");

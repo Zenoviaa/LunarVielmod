@@ -227,8 +227,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             SpriteBatch spriteBatch = Main.spriteBatch;
             if (!Main.gameMenu && behindTiles)
             {
+
                 if (drawBlackSea)
                 {
+
                     spriteBatch.GraphicsDevice.Clear(Color.Transparent);
                     spriteBatch.End();
                     spriteBatch.Begin();
@@ -287,6 +289,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             base.PreUpdateNPCs();
             drawBlackSea = false;
             renderBlackSea = false;
+            darkenedSingularity = false;
         }
 
         public override void PostUpdateNPCs()
@@ -321,8 +324,11 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         private float _singularityRotation;
         private float _spinTimer;
         private string _rootTexturePath;
+
+        public bool darkenedSingularity;
         public void DrawSingularity(Vector2 drawCenter, Vector2 screenPos)
         {
+
             Vector2 drawPosition = drawCenter - screenPos;
             _rootTexturePath = this.GetType().DirectoryHere() + "/BlackSingularity";
             Texture2D celestialRing = ModContent.Request<Texture2D>(_rootTexturePath + "_CelestialRing").Value;
@@ -332,6 +338,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             SpriteBatch spriteBatch = Main.spriteBatch;
             ringDrawColor *= 0.05f;
             ringDrawColor.A = 0;
+            if (darkenedSingularity)
+                ringDrawColor *= 0.5f;
             spriteBatch.Draw(celestialRing, drawPosition, null, ringDrawColor, _singularityRotation, ringDrawOrigin, 4, SpriteEffects.None, 0);
 
             Texture2D texture = ModContent.Request<Texture2D>(_rootTexturePath).Value;
@@ -354,20 +362,30 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             float sparkyRot = _singularityRotation + spinRotOffset;
             float scaleOsc2 = ExtraMath.Osc(0.4f, 0.5f, speed: 1);
-            spriteBatch.Draw(lightTexture, drawPosition, null, Color.White * 0.75f, sparkyRot, lightDrawOrigin, drawScale * 3 * scaleOsc2, SpriteEffects.None, 0);
-            spriteBatch.Draw(lightTexture, drawPosition, null, Color.White * 0.25f, sparkyRot + 0.2f, lightDrawOrigin, drawScale * 8 * scaleOsc2, SpriteEffects.None, 0);
+
+            Color sparkyColor = Color.White * 0.75f;
+            if (darkenedSingularity)
+                sparkyColor *= 0.5f;
+            spriteBatch.Draw(lightTexture, drawPosition, null, sparkyColor, sparkyRot, lightDrawOrigin, drawScale * 3 * scaleOsc2, SpriteEffects.None, 0);
+            spriteBatch.Draw(lightTexture, drawPosition, null, sparkyColor * 0.25f, sparkyRot + 0.2f, lightDrawOrigin, drawScale * 8 * scaleOsc2, SpriteEffects.None, 0);
 
 
             var shader = SingularityShader.Instance;
             shader.InnerColor = Color.White;
             shader.OuterColor = Color.White;
             spriteBatch.Restart(effect: shader.Effect);
-            spriteBatch.Draw(texture, drawPosition, null, Color.White, _singularityRotation, drawOrigin, drawScale * 1.5f * scaleOsc2, SpriteEffects.None, 0);
+
+            Color singularityColor = Color.White;
+            if (darkenedSingularity)
+                singularityColor *= 0.5f;
+            spriteBatch.Draw(texture, drawPosition, null, singularityColor, _singularityRotation, drawOrigin, drawScale * 1.5f * scaleOsc2, SpriteEffects.None, 0);
             spriteBatch.RestartDefaults();
 
             Texture2D diskTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SFGrey").Value;
             Vector2 diskDrawOrigin = diskTexture.Size() / 2f;
             Color diskDrawColor = Color.Lerp(Color.White, Color.Gray, ExtraMath.Osc(0f, 1f, speed: 2));
+            if (darkenedSingularity)
+                diskDrawColor *= 0.5f;
             diskDrawColor.A = 0;
 
             float scaleOsc = ExtraMath.Osc(0.5f, 0.58f, speed: 1);
@@ -384,6 +402,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 extra67DrawOrigin = extra67.Size() / 2f;
             Color extra67DrawColor = Color.Lerp(Color.White, Color.Gray, ExtraMath.Osc(0f, 1f, speed: 2));
             extra67DrawColor.A = 0;
+            if (darkenedSingularity)
+                extra67DrawColor *= 0.5f;
             spriteBatch.Draw(extra67, drawPosition, null, extra67DrawColor * 0.2f, _singularityRotation, extra67DrawOrigin, drawScale * 0.8f * scaleOsc, SpriteEffects.None, 0);
             DrawIncresionDiskBottom(spriteBatch, drawCenter, screenPos, Color.White);
             DrawIncresionDiskTop(spriteBatch, drawCenter, screenPos, Color.White);
@@ -397,6 +417,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //Incresion Disk Draw Color
             Color incresionDiskDrawColor = Color.White;
             incresionDiskDrawColor *= 0.15f;
+            if (darkenedSingularity)
+                incresionDiskDrawColor *= 0.5f;
             incresionDiskDrawColor.A = 0;
 
             Vector2 drawPos = drawCenter - screenPos;
@@ -406,12 +428,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             incresionDiskDrawColor = Color.Gray;
             incresionDiskDrawColor *= 0.25f;
+            if (darkenedSingularity)
+                incresionDiskDrawColor *= 0.5f;
             incresionDiskDrawColor.A = 0;
 
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, _singularityRotation, drawOrigin, drawScale * 1.5f, SpriteEffects.None, 0);
 
             incresionDiskDrawColor = Color.DarkGray;
             incresionDiskDrawColor *= 0.25f;
+            if (darkenedSingularity)
+                incresionDiskDrawColor *= 0.5f;
             incresionDiskDrawColor.A = 0;
 
             spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, _singularityRotation, drawOrigin, drawScale * 2, SpriteEffects.None, 0);
@@ -428,7 +454,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Color incresionDiskDrawColor = Color.White;
             incresionDiskDrawColor *= 0.15f;
             incresionDiskDrawColor.A = 0;
-
+            if (darkenedSingularity)
+                incresionDiskDrawColor *= 0.5f;
             Vector2 drawPos = drawCenter - screenPos;
             Vector2 drawOrigin = incresionDiskRect.Size() / 2;
 

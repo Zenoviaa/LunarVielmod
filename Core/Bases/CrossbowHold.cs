@@ -121,6 +121,7 @@ namespace Stellamod.Core.Bases
             {
                 SoundStyle crossbowPull = AssetRegistry.Sounds.Bow.CrossbowPull;
                 crossbowPull.PitchVariance = 0.1f;
+                crossbowPull.Volume = 0.25f;
                 SoundEngine.PlaySound(crossbowPull, Projectile.position);
             }
 
@@ -186,6 +187,7 @@ namespace Stellamod.Core.Bases
             {
                 SoundStyle aimSound = AssetRegistry.Sounds.Bow.Aim;
                 aimSound.PitchVariance = 0.2f;
+                aimSound.Volume = 0.25f;
                 SoundEngine.PlaySound(aimSound, Projectile.position);
                 if(Owner.HeldItem.ModItem is BaseCrossbowItem cb && Main.myPlayer == Projectile.owner)
                 {

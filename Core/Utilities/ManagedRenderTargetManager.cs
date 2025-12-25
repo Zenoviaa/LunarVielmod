@@ -80,7 +80,7 @@ namespace Stellamod.Core.Utilities
             //This looks weird, it's just so something gets output while the render target is loading
             //Might cause flickers when you resize the screen depending on what you're using the render target for
             //But that's such a non issue
-            if (managedRenderTarget._renderTarget == null)
+            if (managedRenderTarget._renderTarget == null ||managedRenderTarget._renderTarget.IsDisposed)
             {
                 return Main.screenTargetSwap;
             }
