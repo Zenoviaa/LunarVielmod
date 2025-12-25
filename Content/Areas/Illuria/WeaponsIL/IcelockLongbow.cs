@@ -149,7 +149,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             Vector2 velocity = initialVelocity.RotatedByRandom(0.6f);
             Vector2 icicleCenter = target.Center;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), icicleCenter,
-                velocity, ModContent.ProjectileType<IcicleFormation>(), 1, 1, Projectile.owner, ai1: steps, ai2: target.whoAmI);
+                velocity, ModContent.ProjectileType<ShortIcicleFormation>(), 1, 1, Projectile.owner, ai1: steps, ai2: target.whoAmI);
             target.AddBuff(ModContent.BuffType<Frosting>(), 360);
 
         }
