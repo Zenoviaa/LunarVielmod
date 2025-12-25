@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Illuria.WeaponsIL;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -124,20 +126,79 @@ namespace Stellamod.Core.Pixelation
         }
     }
 
+    public interface IRenderer
+    {
+        int Priority { get; }
+        void Render();
+    }
+
+    public class RendererComparer : IComparer<IRenderer>
+    {
+        public int Compare(IRenderer x, IRenderer y)
+        {
+            return x.Priority.CompareTo(y.Priority);
+        }
+    }
+    [Autoload(Side = ModSide.Client)]
+    public class RTManager : ModSystem
+    {
+        private IRenderer[] _renderers;
+        private RendererComparer _comparer;
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            On_Main.CheckMonoliths += ManageCustomRenderTargets;
+            List<IRenderer> renderers = new List<IRenderer>();
+            foreach(var modSystem in ModContent.GetContent<ModSystem>())
+            {
+                if(modSystem is IRenderer renderer)
+                {
+                    renderers.Add(renderer);
+                }
+            }
+            _renderers = renderers.ToArray();
+            _comparer = new RendererComparer();
+        }
+        public override void OnModUnload()
+        {
+            base.OnModUnload();
+            On_Main.CheckMonoliths -= ManageCustomRenderTargets;
+        }
+        private void ManageCustomRenderTargets(On_Main.orig_CheckMonoliths orig)
+        {
+            if (!Main.gameMenu)
+            {
+                //I'm pretty sure order matters here, so we're going to just manually setup an order
+                Array.Sort(_renderers, _comparer);
+                for(int i = 0; i < _renderers.Length; i++)
+                {
+                    IRenderer renderer = _renderers[i];
+
+                    renderer.Render();
+                }
+            }
+            orig();
+        }
+    }
+
     /// <summary>
     /// Manages create a pixelation effect for our weapons
     /// </summary>
     [Autoload(Side = ModSide.Client)]
-    public class PixelationManager : ModSystem
+    public class PixelationManager : ModSystem,
+        IRenderer
     {
         private PixelTarget _overNPCsPixelTarget;
         private PixelTarget _overNPCsPixelTargetAdditive;
         private PixelTarget _overNPCsPixelTargetWithOutline;
         private PixelTarget _behindNPCsPixelTargetWithOutline;
+
+        //This one needs to go last
+        public int Priority => 10;
+
         public override void OnModLoad()
         {
             base.OnModLoad();
-            On_Main.CheckMonoliths += RenderToPixelationRT;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawOverNPCs;
             _overNPCsPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
             _overNPCsPixelTargetWithOutline = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
@@ -150,19 +211,7 @@ namespace Stellamod.Core.Pixelation
         public override void OnModUnload()
         {
             base.OnModUnload();
-            On_Main.CheckMonoliths -= RenderToPixelationRT;
             On_Main.DoDraw_DrawNPCsOverTiles -= DrawOverNPCs;
-        }
-
-        private void RenderToPixelationRT(On_Main.orig_CheckMonoliths orig)
-        {
-            orig();
-            if (Main.gameMenu)
-                return;
-            _overNPCsPixelTarget.Render();
-            _overNPCsPixelTargetWithOutline.Render();
-            _overNPCsPixelTargetAdditive.Render();
-            _behindNPCsPixelTargetWithOutline.Render();
         }
 
 
@@ -212,6 +261,14 @@ namespace Stellamod.Core.Pixelation
                 return;
             PixelTarget target = ModContent.GetInstance<PixelationManager>().GetPixelTarget(drawLayer);
             target.QueuePrimitiveDrawAction(drawAction);
+        }
+
+        public void Render()
+        {
+            _overNPCsPixelTarget.Render();
+            _overNPCsPixelTargetWithOutline.Render();
+            _overNPCsPixelTargetAdditive.Render();
+            _behindNPCsPixelTargetWithOutline.Render();
         }
     }
 

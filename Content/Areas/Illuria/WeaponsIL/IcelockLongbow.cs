@@ -133,7 +133,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 Vector2 velocity = initialVelocity.RotatedByRandom(0.6f);
                 Vector2 icicleCenter = Projectile.Center + oldVelocity;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), icicleCenter,
-                    velocity, ModContent.ProjectileType<IcicleFormation>(), 1, 1, Projectile.owner, ai1: steps);
+                    velocity, ModContent.ProjectileType<IcicleFormation>(), 1, 1, Projectile.owner, ai1: steps, ai2: -1);
             }
   
             return base.OnTileCollide(oldVelocity);

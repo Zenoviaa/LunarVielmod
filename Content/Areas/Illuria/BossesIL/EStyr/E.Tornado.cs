@@ -212,12 +212,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
             }
 
-            var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(Projectile.Bottom, Vector2.Zero, Color.DarkGray);
-
-            p.color *= 0.5f;
-            p.fadeToColor = Color.Black;
-            p.innerColor = Color.DarkGray;
-            p.outerColor = Color.Black;
 
             var sear = LegacyParticle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
             sear.innerColor = Color.Gray;
@@ -470,6 +464,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
+    
             int[] gores = AutoGoreLoader.FindGores("GrayRock");
             foreach (int g in gores)
             {
@@ -478,13 +473,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
             }
 
-            var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(Projectile.Bottom, Vector2.Zero, Color.DarkGray);
-
-            p.color *= 0.5f;
-            p.fadeToColor = Color.Black;
-            p.innerColor = Color.DarkGray;
-            p.outerColor = Color.Black;
-
+     
             var sear = LegacyParticle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
             sear.innerColor = Color.Gray;
             sear.outerColor = Color.Blue;
