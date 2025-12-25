@@ -202,21 +202,27 @@ namespace Stellamod.Core.Utilities
     public class EPreFightCutscene : Cutscene
     {
         private NPC Zui;
-        private NPC E;
+        private E E;
 
+        private void MoveNPCToPosition(NPC npc, Vector2 position, float maxDistance)
+        {
+            float distance = Vector2.Distance(npc.Center, position);
+            if (distance > maxDistance)
+                npc.Center = position;
+        }
         public override void PrepareSequence()
         {
             base.PrepareSequence();
             Zui = RequireNPC<Zui>();
-            E = RequireNPC<E>();
+            E = RequireNPC<E>().ModNPC as E;
 
             //Now we need to set their positions
             Point spawnTile = new Point(Main.spawnTileX, Main.spawnTileY);
             Point zuiOffset = spawnTile + new Point(64, -150);
             Point eOffset = zuiOffset + new Point(32, -8);
-
-            Zui.position = zuiOffset.ToWorldCoordinates();
-            E.position = eOffset.ToWorldCoordinates();
+ 
+            MoveNPCToPosition(Zui, zuiOffset.ToWorldCoordinates(), 128);
+            MoveNPCToPosition(E.NPC, eOffset.ToWorldCoordinates(), 128);
         }
 
         public override Sequencer BuildSequence()
@@ -225,7 +231,7 @@ namespace Stellamod.Core.Utilities
             sequencer
                 .AddDialogueAction<ZuiWhoAreYouDialogue>()
                 .AddFadeToBlack(120, 0.5f)
-                .AddCameraOverride(240, E.Center)
+                .AddCameraOverride(240, E.NPC.Center)
                 .AddDialogueAction<ZuiTalkingToYouDialogue>()
                 .AddWait(120)
                 .AddDialogueAction<EFoundYouDialogue>()
