@@ -1,18 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
+using Stellamod.Assets;
 using Stellamod.Core;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -155,6 +158,48 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         }
         public override void OnKill(int timeLeft)
         {
+            if (!Small)
+            {
+                for (float f = 0; f < 6; f++)
+                {
+                    Vector2 initialVelocity = -Projectile.oldVelocity.SafeNormalize(Vector2.Zero);
+                    initialVelocity *= 4;
+                    initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
+                    initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
+
+                    SmokeParticle smokeParticle = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center + initialVelocity,
+                        initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 5f));
+                    smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.4f);
+                    smokeParticle.extraUpdates = Main.rand.Next(0, 1);
+                    smokeParticle.fadeToColor = Color.Black;
+                }
+                SoundStyle parendineHitSound = AssetRegistry.Sounds.Melee.Parendine;
+                parendineHitSound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(parendineHitSound, Projectile.Center);
+
+                FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
+                float boomSize = Main.rand.NextFloat(0.025f, 0.08f);
+                FXUtil.GlowCircleBoom(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.LightBlue,
+                    outerGlowColor: Color.Blue, duration: 25, baseSize: boomSize);
+
+
+                for (float i = 0; i < 4; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleLongBoom(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.LightBlue,
+                        outerGlowColor: Color.DarkBlue,
+                        baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                        duration: Main.rand.NextFloat(15, 25));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
+            }
             for (float f = 0; f < 2; f++)
             {
                 Vector2 initialVelocity = -Projectile.oldVelocity.SafeNormalize(Vector2.Zero);
@@ -178,7 +223,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 dustParticle.outerColor = Color.Violet;
             }
 
-            for (float f = 0; f < 6; f++)
+            for (float f = 0; f < 3; f++)
             {
                 Vector2 initialVelocity = -Projectile.oldVelocity.SafeNormalize(Vector2.Zero);
                 initialVelocity *= 4;
