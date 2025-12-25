@@ -33,7 +33,8 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         {
             base.Update(npc, ref buffIndex);
             npc.lifeRegen -= 15;
-            npc.velocity.X *= 0.7f;
+            if(!npc.boss)
+                npc.velocity.X *= 0.7f;
         }
     }
 

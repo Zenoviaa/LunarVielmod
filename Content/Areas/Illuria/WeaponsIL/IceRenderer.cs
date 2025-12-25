@@ -42,12 +42,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             if (!Main.gameMenu)
             {
                 RenderIcicleMask();
-                if (_reRenderIce)
-                {
-                    RenderIceTexture();
-                    _reRenderIce = false;
-                }
-
+                RenderIceTexture();
                 if (_ices)
                 {
                     RenderIcicles();
