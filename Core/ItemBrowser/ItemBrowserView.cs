@@ -1,5 +1,4 @@
-﻿using Accord.Statistics.Filters;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
@@ -10,7 +9,6 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
-using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -61,11 +59,12 @@ namespace Stellamod.Core.ItemBrowser
         public int ElementsPerRow;
         private void SpawnItemMaxStack(UIMouseEvent evt, UIElement listeningElement)
         {
-      
+
             if (InputHelper.KeyDown(Keys.LeftShift))
             {
                 Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), HoveringItem.type, HoveringItem.maxStack);
-            } else
+            }
+            else
             {
                 Main.mouseItem = HoveringItem.Clone();
                 Main.mouseItem.stack = HoveringItem.maxStack;
@@ -89,7 +88,7 @@ namespace Stellamod.Core.ItemBrowser
 
         private bool NeedsUpdateCollection()
         {
-            return _oldSearchFilter != SearchFilter || _oldModFilter != ModFilter ;
+            return _oldSearchFilter != SearchFilter || _oldModFilter != ModFilter;
         }
         private void UpdateCollection()
         {
@@ -105,7 +104,7 @@ namespace Stellamod.Core.ItemBrowser
             {
                 collection = collection.Where(x => x.ModItem != null && x.ModItem.Mod == Stellamod.Instance);
             }
-            
+
             SearchFilterItems = collection.ToArray();
             _oldSearchFilter = SearchFilter;
             _oldModFilter = ModFilter;
@@ -170,7 +169,7 @@ namespace Stellamod.Core.ItemBrowser
             Color drawColor = Color.Lerp(Color.White, Color.Black, 0.75f);
             float drawScale = 1.2f;
             Vector2 drawOrigin = slotTexture.Size() / 2;
-        
+
             //The view position is the y offset of the scrollbar
             //So to figure out where to start from
             //We just divide the offset by 

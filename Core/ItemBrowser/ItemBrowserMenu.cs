@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.MagicSystem.UI;
-using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI.Elements;
@@ -83,7 +82,7 @@ namespace Stellamod.Core.ItemBrowser
             if (Main.gameMenu)
                 return;
 
-            if(_lastCategory == null)
+            if (_lastCategory == null)
             {
                 return;
             }
@@ -104,18 +103,22 @@ namespace Stellamod.Core.ItemBrowser
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-       
-   
+
+
             _panel.Height.Pixels = _view.Height.Pixels + 32;
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
-       
+
             _scrollbar.Height.Set(Height.Pixels * progress, 0);
             float scrollRatio = _scrollbar.ViewPosition;
 
-            _view?.ModFilter = modFilter;
-            _view?.ViewPosition = scrollRatio;
-  
+            if(_view != null)
+            {
+                _view.ModFilter = modFilter;
+                _view.ViewPosition = scrollRatio;
+            }
+
+
             //Hacky way to get invisible scrollbar when there's no need for it
             if (_panel.Height.Pixels < Height.Pixels)
             {
