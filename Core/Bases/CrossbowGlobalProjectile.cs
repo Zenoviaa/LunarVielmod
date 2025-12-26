@@ -1,11 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Effects;
+using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -14,6 +17,9 @@ using Terraria.ModLoader.IO;
 
 namespace Stellamod.Core.Bases
 {
+    /// <summary>
+    /// Gives crossbow arrows a bit more velocity and cool trailing
+    /// </summary>
     public class CrossbowGlobalProjectile : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
@@ -49,13 +55,15 @@ namespace Stellamod.Core.Bases
 
             if (!Initialized)
             {
-                CrossbowOldPos = new Vector2[32];
+                CrossbowOldPos = new Vector2[16];
 
-                projectile.extraUpdates += 3;
+                projectile.extraUpdates += 1;
                 projectile.ArmorPenetration += 10;
                 Initialized = true;
             }
 
+            if(projectile.velocity.Length() < 15)
+                projectile.velocity *= 1.5f;
             for (int i = CrossbowOldPos.Length - 1; i > 0; i--)
             {
                 CrossbowOldPos[i] = CrossbowOldPos[i - 1];
@@ -63,24 +71,17 @@ namespace Stellamod.Core.Bases
             if (CrossbowOldPos.Length > 0)
                 CrossbowOldPos[0] = projectile.position;
 
-            projectile.velocity.Y -= 0.075f;
+           // projectile.velocity.Y -= 0.075f;
        
         }
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White, Color.SpringGreen, completionRatio);
+            return Color.Lerp(Color.White, Color.LightBlue, completionRatio) * MathHelper.SmoothStep(1f, 0f, completionRatio) * EasingFunction.QuadraticBump(completionRatio);
         }
 
         private float WidthFunction(float completionRatio)
         {
-            float w = 12;
-            float ew = w / 10;
-            float width = w;
-            float p = completionRatio / 0.5f;
-            float ep = EasingFunction.OutCirc(p);
-            float circleWidth = MathHelper.Lerp(0, w, ep);
-            float trailWidth = MathHelper.Lerp(width, 0, EasingFunction.OutCirc(completionRatio));
-            return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
+            return MathHelper.SmoothStep(10, 0, completionRatio);
         }
         protected virtual void DrawSlashTrail(Projectile projectile, ref Color lightColor)
         {
@@ -88,18 +89,22 @@ namespace Stellamod.Core.Bases
             if (CrossbowOldPos == null)
                 return;
 
-            SpriteBatch spriteBatch = Main.spriteBatch;
-
-            var shader = MagicNormalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.GlowTrail;
-            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
-            shader.BlendState = BlendState.Additive;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 0.5f;
-            shader.Repeats = 1f;
-            //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, CrossbowOldPos, projectile.oldRot, ColorFunction, WidthFunction, shader, offset: projectile.Size / 2);
+            //This looks goofy but I needed a ref to the projectile
+            void DrawPixelation(GraphicsDevice graphicsDevice)
+            {
+                var shader = MagicNormalShader.Instance;
+                shader.PrimaryTexture = TrailRegistry.GlowTrail;
+                shader.NoiseTexture = TrailRegistry.SpikyTrail1;
+                shader.BlendState = BlendState.Additive;
+                shader.SamplerState = SamplerState.PointWrap;
+                shader.Speed = 0.5f;
+                shader.Repeats = 4f;
+                //This just applis the shader changes
+                TrailDrawer.Draw(Main.spriteBatch, CrossbowOldPos, projectile.oldRot, ColorFunction, WidthFunction, shader, offset: projectile.Size / 2);
+            }
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelation, DrawLayer.OverNPCsWithOutline);
         }
+
 
         public override bool PreDraw(Projectile projectile, ref Color lightColor)
         {
@@ -110,6 +115,28 @@ namespace Stellamod.Core.Bases
             }
 
             return base.PreDraw(projectile, ref lightColor);
+        }
+
+        public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
+        {
+            if(!CrossbowShot)
+                return base.OnTileCollide(projectile, oldVelocity);
+
+            bool shouldKill = base.OnTileCollide(projectile, oldVelocity);
+            if (shouldKill && Main.myPlayer == projectile.owner)
+            {
+                Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.position, oldVelocity,
+                 ModContent.ProjectileType<CrossbowLodgedArrow>(), projectile.damage, projectile.knockBack, projectile.owner,
+                 ai1: projectile.type, ai2: -1);
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                var particle = Particle<DustParticle>.Spawn(projectile.Center, oldVelocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                particle.gravity = 0;
+                particle.dampening = 0.05f;
+            }
+            return shouldKill;
         }
 
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
@@ -125,12 +152,12 @@ namespace Stellamod.Core.Bases
             if (hit.Crit)
                 size *= 2;
 
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(target.Center, 1024f, 12f);
-
+            FXUtil.ShakeCamera(target.Center, 256, 4);
             for (int i = 0; i < 2; i++)
             {
-                Dust.NewDustPerfect(projectile.Center, ModContent.DustType<GlowDust>(),
-                    projectile.oldVelocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f), 0, Color.White, 0.5f).noGravity = true;
+                var particle = Particle<DustParticle>.Spawn(projectile.Center, projectile.oldVelocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                particle.gravity = 0;
+                particle.dampening = 0.05f;
             }
 
             FXUtil.GlowCircleBoom(projectile.Center,

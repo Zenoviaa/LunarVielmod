@@ -57,19 +57,23 @@ namespace Stellamod.Core.Bases
         {
             base.AI();
             Timer++;
-            NPC target = Main.npc[NPCToTrack];
-            if (!target.active)
+            if(NPCToTrack != -1)
             {
-                Projectile.Kill();
-                return;
+                NPC target = Main.npc[NPCToTrack];
+                if (!target.active)
+                {
+                    Projectile.Kill();
+                    return;
+                }
+
+                if (LodgeOffset == Vector2.Zero)
+                {
+                    LodgeOffset = Projectile.position - target.position;
+                }
+
+                Projectile.position = target.position + LodgeOffset;
             }
 
-            if (LodgeOffset == Vector2.Zero)
-            {
-                LodgeOffset = Projectile.position - target.position;
-            }
-
-            Projectile.position = target.position + LodgeOffset;
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 

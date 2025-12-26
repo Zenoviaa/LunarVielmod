@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using System;
 using System.IO;
@@ -20,6 +21,10 @@ namespace Stellamod.Core.Bases
             Aim,
             Fire
         }
+
+        //Texture assets that we need
+        private Asset<Texture2D> _crosshairTextureAsset;
+        private Asset<Texture2D> _bloomlineTextureAsset;
 
 
         protected Vector2 AimedDrawScale;
@@ -47,6 +52,7 @@ namespace Stellamod.Core.Bases
         {
             return UsingStamina > 0;
         }
+
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
@@ -120,7 +126,7 @@ namespace Stellamod.Core.Bases
             if (Timer == 1)
             {
                 SoundStyle crossbowPull = AssetRegistry.Sounds.Bow.CrossbowPull;
-                crossbowPull.PitchVariance = 0.1f;
+                crossbowPull.PitchVariance = 0.4f;
                 crossbowPull.Volume = 0.25f;
                 SoundEngine.PlaySound(crossbowPull, Projectile.position);
             }
@@ -186,7 +192,7 @@ namespace Stellamod.Core.Bases
             if (Timer == 1)
             {
                 SoundStyle aimSound = AssetRegistry.Sounds.Bow.Aim;
-                aimSound.PitchVariance = 0.2f;
+                aimSound.PitchVariance = 0.4f;
                 aimSound.Volume = 0.25f;
                 SoundEngine.PlaySound(aimSound, Projectile.position);
                 if(Owner.HeldItem.ModItem is BaseCrossbowItem cb && Main.myPlayer == Projectile.owner)
@@ -242,82 +248,27 @@ namespace Stellamod.Core.Bases
             //This do be so goofy but it works so oh well
             if (Projectile.spriteDirection == -1)
             {
-                Projectile.rotation -= MathHelper.ToRadians(90);
+                Projectile.rotation -= MathHelper.PiOver2;
             }
-
 
             if (Main.myPlayer == Projectile.owner)
             {
                 Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
             }
 
-            float handOffset = 45;
-            if (Projectile.spriteDirection == 1)
-            {
-                handOffset = 135;
-            }
+            float handOffset = Projectile.spriteDirection == 1 ? 90 : 0;
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(handOffset)); // set arm position (90 degree offset since arm starts lowered)
             Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
 
             armPosition.Y += Owner.gfxOffY;
             Projectile.Center = Owner.MountedCenter;
             Projectile.Center += Projectile.velocity * 16;
-            /*
-            float or = Projectile.spriteDirection == -1 ? MathHelper.ToRadians(90) : MathHelper.ToRadians(-90);
-            Projectile.Center += HeldOffset.RotatedBy(Projectile.rotation + or);
-            */
             Owner.heldProj = Projectile.whoAmI;
         }
 
-        private Core.Effects.GlowCircleShader _shader;
         public void DrawAimingLines(ref Color lightColor)
         {
-            Item heldItem = Owner.HeldItem;
-            if (heldItem.ModItem == null)
-                return;
-            Asset<Texture2D> heldTexture = ModContent.Request<Texture2D>("Stellamod/Core/Bases/CrossbowCrosshairLineParticle");
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Vector2 centerPos = Owner.Center - Main.screenPosition;
-            _shader ??= new();
-            var shader = _shader;
-            shader.Speed = 5;
-
-            float bp = 0.5f;
-            shader.BasePower = bp;
-
-            float s = 0.3f;
-            shader.Size = s;
-
-            Color startInner = Color.White;
-            Color startGlow = Color.LightGoldenrodYellow;
-            Color startOuterGlow = Color.Black;
-
-            Color endColor = startOuterGlow;
-
-
-            shader.InnerColor = startInner;
-            shader.GlowColor = startGlow;
-            shader.OuterGlowColor = startOuterGlow;
-
-
-            shader.InnerColor = Color.Lerp(shader.InnerColor, Color.Black, AimProgress);
-            shader.GlowColor = Color.Lerp(shader.GlowColor, Color.Black, AimProgress);
-            shader.OuterGlowColor = Color.Lerp(shader.OuterGlowColor, Color.Black, AimProgress);
-            shader.Pixelation = 0.0005f;
-
-            shader.ApplyToEffect();
-
-            spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
-
-            Vector2 aimLineOrigin = new Vector2(0, heldTexture.Size().Y / 2);
-            Vector2 scale = Vector2.Lerp(new Vector2(0, 1), Vector2.One, AimProgress);
-            float rotation = Projectile.velocity.ToRotation();
-            spriteBatch.Draw(heldTexture.Value, Projectile.Center - Main.screenPosition, null, Color.White, rotation,
-               aimLineOrigin, scale, SpriteEffects.None, 0);
-
-
-            spriteBatch.RestartDefaults();
-
+            PixelationManager.QueueSpritebatchDrawAction(PixelatedAimingLineDraw, DrawLayer.OverNPCsWithOutline);
         }
 
         public void DrawCrosshair(ref Color lightColor)
@@ -326,20 +277,39 @@ namespace Stellamod.Core.Bases
                 return;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Asset<Texture2D> tex = ModContent.Request<Texture2D>("Stellamod/Core/Bases/CrossbowCrosshair");
+            PixelationManager.QueueSpritebatchDrawAction(PixelatedCrosshairDraw, DrawLayer.OverNPCsWithOutline);
+        }
+
+        private void PixelatedAimingLineDraw(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            _bloomlineTextureAsset ??= ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine");
+            Vector2 centerPos = Owner.Center - Main.screenPosition;
+            Vector2 aimLineOrigin = new Vector2(_bloomlineTextureAsset.Size().X / 2, 0);
+            Vector2 scale = Vector2.Lerp(new Vector2(1, 0), Vector2.One, AimProgress);
+            scale.X *= 0.2f;
+            scale.Y *= 0.2f;
+            float rotation = Projectile.velocity.ToRotation();
+            rotation -= MathHelper.PiOver2;
+
+            Color drawColor = Color.White;
+            drawColor.A = 0;
+            drawColor *= MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(AimProgress));
+            drawColor *= 0.15f;
+
+            spriteBatch.Draw(_bloomlineTextureAsset.Value, Projectile.Center - Main.screenPosition, null, drawColor, rotation,
+               aimLineOrigin, scale, SpriteEffects.None, 0);
+        }
+
+        private void PixelatedCrosshairDraw(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            _crosshairTextureAsset ??= ModContent.Request<Texture2D>("Stellamod/Core/Bases/CrossbowCrosshair");
             Vector2 drawPos = Main.MouseWorld - Main.screenPosition;
-            Vector2 drawOrigin = tex.Size() / 2f;
+            Vector2 drawOrigin = _crosshairTextureAsset.Size() / 2f;
             float drawScale = 1f * CrosshairProgress * ExtraMath.Osc(0.95f, 1f, speed: 12);
             float drawRotation = Main.GlobalTimeWrappedHourly;
             Color drawColor = Color.Red * CrosshairProgress;
 
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            for (int i = 0; i < 1; i++)
-            {
-                spriteBatch.Draw(tex.Value, drawPos, null, drawColor * 0.73f, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-            }
-            spriteBatch.RestartDefaults();
-
+            spriteBatch.Draw(_crosshairTextureAsset.Value, drawPos, null, drawColor * 0.3f, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
 
         public virtual void DrawSprite(ref Color lightColor)

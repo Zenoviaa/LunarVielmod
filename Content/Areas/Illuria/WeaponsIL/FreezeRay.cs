@@ -567,6 +567,9 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 mold: ModContent.ItemType<BlankGun>(),
                 material: ModContent.ItemType<IllurineScale>());
         }
+
+
+       
         public override void ShootEffects(Vector2 position, Vector2 velocity)
         {
             //base.ShootEffects(position, velocity);

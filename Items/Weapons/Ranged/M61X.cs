@@ -36,7 +36,7 @@ namespace Stellamod.Items.Weapons.Ranged
             Item.rare = ItemRarityID.Green;
             Item.autoReuse = true;
             Item.DamageType = DamageClass.Magic;
-            Item.shoot = ModContent.ProjectileType<ArchariliteHeatBlast>();
+      //      Item.shoot = ModContent.ProjectileType<ArchariliteHeatBlast>();
             Item.shootSpeed = 40f;
             Item.mana = 4;
             Item.UseSound = SoundID.Item72;
@@ -65,7 +65,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 Item.useAnimation = 5;
                 Item.mana = 7;
                 Item.shootSpeed = 30f;
-                type = ModContent.ProjectileType<ArchariliteHeatBlastSC>();
+             //   type = ModContent.ProjectileType<ArchariliteHeatBlastSC>();
             }
             else
             {
@@ -74,7 +74,7 @@ namespace Stellamod.Items.Weapons.Ranged
                 Item.useAnimation = 10;
                 Item.useTime = 10;
                 Item.shootSpeed = 40f;
-                type = ModContent.ProjectileType<ArchariliteHeatBlast>();
+            //    type = ModContent.ProjectileType<ArchariliteHeatBlast>();
             }
 
         }
