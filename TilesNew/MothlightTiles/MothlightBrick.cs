@@ -12,6 +12,7 @@ namespace Stellamod.TilesNew.MothlightTiles
 
         public override void SetStaticDefaults()
         {
+            Main.tileDungeon[Type] = true;
             Main.tileSolid[Type] = true;
             Main.tileMerge[Type][Type] = true;
             Main.tileBlockLight[Type] = true;

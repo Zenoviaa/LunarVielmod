@@ -12,7 +12,7 @@ namespace Stellamod.Content.Gores
             _goreLookup = new Dictionary<string, ModGore>();
             foreach (var modGore in ModContent.GetContent<ModGore>())
             {
-                _goreLookup.Add(modGore.Name, modGore);
+                _goreLookup.TryAdd(modGore.Name, modGore);
             }
         }
 

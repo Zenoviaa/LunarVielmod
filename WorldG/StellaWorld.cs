@@ -393,6 +393,7 @@ namespace Stellamod.WorldG
             var genRand = WorldGen.genRand;
             GenVars.PyrX = new int[3];
             GenVars.PyrY = new int[3];
+          
         }
 
         private void GenerateMistyDungeon(GenerationProgress progress, GameConfiguration configuration)
@@ -601,6 +602,12 @@ namespace Stellamod.WorldG
             int centerSnowBiome = Main.maxTilesX / 2;
             GenVars.snowOriginLeft = centerSnowBiome + 1600;
             GenVars.snowOriginRight = GenVars.snowOriginLeft + 1200;
+
+            GenVars.tLeft = GenVars.jungleOriginX;
+            GenVars.tRight = GenVars.jungleOriginX + 100;
+            GenVars.tTop = Main.maxTilesY / 2;
+            GenVars.tBottom = GenVars.tTop + 100;
+            GenVars.dungeonSide = 1;
         }
 
         private void WorldGenSkullrunner(GenerationProgress progress, GameConfiguration configuration)

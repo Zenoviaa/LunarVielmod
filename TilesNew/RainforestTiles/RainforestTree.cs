@@ -27,6 +27,7 @@ namespace Stellamod.TilesNew.RainforestTiles
             Main.tileNoAttach[Type] = true;
             Main.tileLavaDeath[Type] = true;
 
+         
             TileObjectData.newTile.Width = 1;
             TileObjectData.newTile.Height = 2;
             TileObjectData.newTile.Origin = new Point16(0, 1);
