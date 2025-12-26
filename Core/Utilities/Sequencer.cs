@@ -74,33 +74,37 @@ namespace Stellamod.Core.Utilities
             ManageTintColor();
             ManageVignette();
 
-            if (InputHelper.KeyUp(Keys.U) && _debug1)
+            if (InputHelper.KeyDown(Keys.LeftShift))
             {
-                DebugStartZuiWarningCutscene();
-                _debug1 = false;
+                if (InputHelper.KeyUp(Keys.U) && _debug1)
+                {
+                    DebugStartZuiWarningCutscene();
+                    _debug1 = false;
+                }
+                if (InputHelper.KeyDown(Keys.U))
+                {
+                    _debug1 = true;
+                }
+                if (InputHelper.KeyUp(Keys.I) && _debug2)
+                {
+                    DebugStartPreFightCutscene();
+                    _debug2 = false;
+                }
+                if (InputHelper.KeyDown(Keys.I))
+                {
+                    _debug2 = true;
+                }
+                if (InputHelper.KeyUp(Keys.O) && _debug3)
+                {
+                    DebugEndingCutscene();
+                    _debug3 = false;
+                }
+                if (InputHelper.KeyDown(Keys.O))
+                {
+                    _debug3 = true;
+                }
             }
-            if (InputHelper.KeyDown(Keys.U))
-            {
-                _debug1 = true;
-            }
-            if (InputHelper.KeyUp(Keys.I) && _debug2)
-            {
-                DebugStartPreFightCutscene();
-                _debug2 = false;
-            }
-            if (InputHelper.KeyDown(Keys.I))
-            {
-                _debug2 = true;
-            }
-            if (InputHelper.KeyUp(Keys.O) && _debug3)
-            {
-                DebugEndingCutscene();
-                _debug3 = false;
-            }
-            if (InputHelper.KeyDown(Keys.O))
-            {
-                _debug3 = true;
-            }
+
             if (_sequencer == null)
                 return;
 
