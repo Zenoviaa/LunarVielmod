@@ -299,7 +299,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
                 BlackSeaRenderer blackseaRenderer = ModContent.GetInstance<BlackSeaRenderer>();
                 blackseaRenderer.drawBlackSea = true;
-                blackseaRenderer.darkenedSingularity = _drawDarkened;
+                //blackseaRenderer.darkenedSingularity = _drawDarkened;
             }
             else
             {

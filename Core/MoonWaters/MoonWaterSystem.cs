@@ -316,13 +316,6 @@ namespace Stellamod.Core.MoonWaters
         private void CopyScreenTarget(On_Main.orig_DoDraw orig, Main self, GameTime gameTime)
         {
             orig(self, gameTime);
-
-            /*
-            if (Main.mouseMiddle)
-                DrawLightMapToScreen();
-            if (Main.mouseRight)
-                DrawWaterTargetToScreen();
-            */
         }
 
         private void ApplyWaterShader(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
@@ -408,14 +401,12 @@ namespace Stellamod.Core.MoonWaters
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.LiquidsToggle)
                 return;
+            if (Main.gameMenu)
+                return;
 
-            if (!Main.gameMenu)
-            {
-              
-                CalculateHeightsToDraw();
-                RenderIntoHeightMapTarget();
-                RenderIntoWaterTextureTarget();
-            }
+            CalculateHeightsToDraw();
+            RenderIntoHeightMapTarget();
+            RenderIntoWaterTextureTarget();
         }
 
 

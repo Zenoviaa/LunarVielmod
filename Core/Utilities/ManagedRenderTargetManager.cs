@@ -17,11 +17,13 @@ namespace Stellamod.Core.Utilities
         private readonly int _downSamples;
         private readonly ResizeFunction _resizeFunction;
         private RenderTarget2D _renderTarget;
+        private static RenderTarget2D _dummyRenderTarget;
         private bool _mipMap;
         private SurfaceFormat _surfaceFormat;
         private DepthFormat _depthFormat;
         private ManagedRenderTarget(ResizeFunction resizeFunction, int downSamples = 1, bool mipMap = true, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
         {
+ 
             _resizeFunction = resizeFunction;
             _mipMap = mipMap;
             _surfaceFormat = surfaceFormat;
@@ -33,6 +35,7 @@ namespace Stellamod.Core.Utilities
             Height = 1;
         }
 
+        public static RenderTarget2D DummyTarget;
         public delegate Point ResizeFunction();
 
         public int Width { get; private set; }
@@ -43,6 +46,7 @@ namespace Stellamod.Core.Utilities
             Point newSize = new Point(screenSize.X / _downSamples, screenSize.Y / _downSamples);
             _renderTarget.Release();
             _renderTarget = new RenderTarget2D(Main.graphics.GraphicsDevice, newSize.X, newSize.Y, mipMap: _mipMap, _surfaceFormat, _depthFormat);
+
             Width = newSize.X;
             Height = newSize.Y;
         }
@@ -63,6 +67,11 @@ namespace Stellamod.Core.Utilities
             return new Point(Main.screenTarget.Width, Main.screenTarget.Height);
         }
 
+        public static void InitializeDummyTarget()
+        {
+            DummyTarget = new RenderTarget2D(Main.instance.GraphicsDevice, 1, 1);
+        }
+
         public static ManagedRenderTarget New(ResizeFunction resizeFunction, int downSamples = 1, bool mipMap = true, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
         {
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
@@ -73,8 +82,6 @@ namespace Stellamod.Core.Utilities
             return managedRenderTarget;
         }
 
-
-
         public static implicit operator RenderTarget2D(ManagedRenderTarget managedRenderTarget)
         {
             //This looks weird, it's just so something gets output while the render target is loading
@@ -82,7 +89,7 @@ namespace Stellamod.Core.Utilities
             //But that's such a non issue
             if (managedRenderTarget._renderTarget == null ||managedRenderTarget._renderTarget.IsDisposed)
             {
-                return Main.screenTargetSwap;
+                return DummyTarget;
             }
 
             return managedRenderTarget._renderTarget;
@@ -96,6 +103,11 @@ namespace Stellamod.Core.Utilities
     {
         private Point _oldScreenSize;
         private List<ManagedRenderTarget> _managedRenderTargets;
+        public override void Load()
+        {
+            base.Load();
+            Main.QueueMainThreadAction(ManagedRenderTarget.InitializeDummyTarget);
+        }
         public override void Unload()
         {
             base.Unload();
@@ -104,6 +116,12 @@ namespace Stellamod.Core.Utilities
             _managedRenderTargets.Clear();
         }
 
+
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+      
+        }
 
         public override void PostUpdateEverything()
         {
