@@ -67,12 +67,13 @@ namespace Stellamod.Core.Pixelation
             GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
             graphicsDevice.SetRenderTarget(_originalRenderTarget);
             graphicsDevice.Clear(Color.Transparent);
-
+         
             //Primitives cannot draw within the spritebatch cause they modify the graphics state
             //Which would cause inconsistent results if they drew within the spritebatch
             //To get around this we just have them draw before
             while (_primitivesActionsQueue.Count > 0)
             {
+                graphicsDevice.RasterizerState = RasterizerState.CullNone;
                 PrimitivesDrawAction drawAction = _primitivesActionsQueue.Dequeue();
                 drawAction(graphicsDevice);
             }

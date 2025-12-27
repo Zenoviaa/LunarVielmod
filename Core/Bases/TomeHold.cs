@@ -151,6 +151,9 @@ namespace Stellamod.Core.Bases
 
         private void DrawTomeSprite(ref Color lightColor)
         {
+            if (HeldTome == null)
+                return;
+
             Texture2D closeYourTomeTyrant = ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture).Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
 

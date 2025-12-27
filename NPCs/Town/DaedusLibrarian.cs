@@ -265,8 +265,8 @@ namespace Stellamod.NPCs.Town
             .Add<CocoSpark>(Condition.DownedEowOrBoc)
             .Add<ShinobiTome>(Condition.DownedEowOrBoc)
             .Add<ShadeHandTome>(Condition.DownedEowOrBoc)
-            .Add<VoidsGrasp>(Condition.DownedSkeletron)
-            .Add<Astalaiya>(Condition.DownedSkeletron)
+            .Add<VoidsGrasp>(CustomConditions.PostGintzia)
+            .Add<Astalaiya>(CustomConditions.PostGintzia)
             .Add<TheDeafen>(CustomConditions.PostGintzia);
             npcShop.Register();
         }
