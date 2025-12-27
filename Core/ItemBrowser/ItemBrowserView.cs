@@ -74,6 +74,7 @@ namespace Stellamod.Core.ItemBrowser
 
         private void SpawnItem(UIMouseEvent evt, UIElement listeningElement)
         {
+
             if (InputHelper.KeyDown(Keys.LeftShift))
             {
                 Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), HoveringItem.type);

@@ -1,62 +1,32 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Areas.Shop.ItemsShop;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Palettes;
-using Stellamod.Dusts;
+using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Mage
+namespace Stellamod.Content.Areas.Shop.ItemsShop
 {
-    public class TheShrieker : ClassSwapItem
+    public class TheShrieker : BaseTome
     {
-        public int dir;
-        public override DamageClass AlternateClass => DamageClass.Summon;
-
-        public override void SetClassSwappedDefaults()
+        public override void SetDefaults2()
         {
-            Item.damage = 45;
-            Item.mana = 0;
-        }
-
-        public override void SetDefaults()
-        {
-            Item.damage = 90;
-            Item.DamageType = DamageClass.Magic;
-            Item.width = 40;
-            Item.height = 40;
-            Item.useTime = 100;
-            Item.useAnimation = 100;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.knockBack = 6;
-            Item.value = 10000;
-            Item.rare = ItemRarityID.Green;
-
-            Item.autoReuse = true;
+            base.SetDefaults2();
             Item.shoot = ModContent.ProjectileType<ShriekerBoom>();
             Item.shootSpeed = 6f;
             Item.mana = 50;
-            Item.noMelee = true;
+            Item.damage = 60;
+            Item.useAnimation = 90;
+            Item.useTime = 90;
+        }
 
-        }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<TheDeafen>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<ConvulgingMater>(), 26);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-        }
-        public override Vector2? HoldoutOffset()
-        {
-            return new Vector2(-2, 0);
-        }
     }
 
     public class ShriekerBoom : ModProjectile
@@ -87,9 +57,6 @@ namespace Stellamod.Items.Weapons.Mage
             base.AI();
             Projectile.Center = Owner.Center;
             Timer++;
-
-
-
             if (Timer % 15 == 0)
             {
 
@@ -101,6 +68,7 @@ namespace Stellamod.Items.Weapons.Mage
             }
         }
     }
+
 
     public class ShriekerWave : ModProjectile
     {
@@ -147,12 +115,15 @@ namespace Stellamod.Items.Weapons.Mage
                     mySound = new SoundStyle("Stellamod/Assets/Sounds/TheDeafen2");
                 }
                 mySound.PitchVariance = 0.3f;
-
+     
                 SoundEngine.PlaySound(mySound, Projectile.position);
-                for (float f = 0; f < 16; f++)
+                for (float f = 0; f < 4; f++)
                 {
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
-                        (Vector2.One * Main.rand.NextFloat(0.2f, 15f)).RotatedByRandom(19.0), 0, Color.LightBlue, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                    Vector2 position = Projectile.Center;
+                    Vector2 velocity = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver2);
+                    velocity *= Main.rand.NextFloat(5, 10);
+                    DustParticle dp = Particle<DustParticle>.Spawn(position, velocity, Color.White, Scale: Main.rand.NextFloat(0.3f, 1.3f));
+                    dp.outerColor = Color.Blue;
                 }
             }
 
@@ -161,7 +132,7 @@ namespace Stellamod.Items.Weapons.Mage
             DrawScale = MathHelper.Lerp(0f, 5f, progress);
         }
 
-        public override bool PreDraw(ref Color lightColor)
+        private void DrawPixelatedShriek(SpriteBatch spriteBatch, Vector2 screenPos)
         {
             Texture2D texture = TextureAssets.Projectile[Type].Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
@@ -169,10 +140,13 @@ namespace Stellamod.Items.Weapons.Mage
             float rotation = Projectile.rotation;
             float drawScale = DrawScale;
             Color drawColor = DrawColor;
-            drawColor = drawColor.MultiplyRGB(lightColor);
             drawColor.A = 0;
-            SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPos, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedShriek, DrawLayer.OverNPCsWithOutline);
             return false;
         }
     }
