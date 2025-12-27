@@ -184,9 +184,6 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
             }
             if (FrameCounter % 12 == 0)
             {
-                Vector2 vel = -Vector2.UnitY * 15;
-                vel = vel.RotatedByRandom(MathHelper.ToRadians(45));
-                Particle<DustParticle>.Spawn(Projectile.Center, vel, Color.White, Main.rand.NextFloat(0.3f, 1f));
 
                 SoundStyle jiitasSit = AssetRegistry.Sounds.Jiitas.JiitasLightSpin;
                 jiitasSit.PitchVariance = 0.2f;
@@ -199,7 +196,7 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
             {
                 GlobalNPCSucker npcSucker = npc.GetGlobalNPC<GlobalNPCSucker>();
                 float dist = Vector2.Distance(Projectile.Center, npc.Center);
-                if (!npc.friendly && dist <= 384)
+                if (!npc.friendly && !npc.boss && dist <= 384)
                 {
                     float timer = FrameCounter;
                     timer += npc.whoAmI * 3;

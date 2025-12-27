@@ -114,7 +114,7 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
 
         public override void OnKill(int timeLeft)
         {
-            SmokeParticle sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY, Color.Lerp(GetVariantColor(), Color.Black, 0.5f), Main.rand.NextFloat(1f, 2f));
+            SmokeParticle sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY, Color.Lerp(GetVariantColor(), Color.Black, 0.5f), Main.rand.NextFloat(0.5f, 1f));
             sp.initialColor = Color.White;
         }
 

@@ -3990,10 +3990,7 @@ LunarianVoidLegs: {
 
 SandStorm: {
 	DisplayName: Sand Storm
-	Tooltip:
-		'''
-		Calls forth a powerful sandstorm to suck in nearby enemies!
-		'''
+	Tooltip: Calls forth a powerful sandstorm to suck in nearby enemies!
 }
 
 ExploreMorrowedVillage: {
@@ -5685,7 +5682,7 @@ OnionOfHeight: {
 }
 
 TheAurora: {
-	DisplayName: Astral Blast
+	DisplayName: Astral Artifact
 	Tooltip: Rapidly launches bits of stars that home towards your cursor!
 }
 
