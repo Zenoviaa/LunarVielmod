@@ -162,7 +162,8 @@ namespace Stellamod.Core.Particles
                 Particles.Sort(_particleComparer);
                 _sortParticleArray = false;
             }
-
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, default, default, null, Main.GameViewMatrix.TransformationMatrix);
             for (int i = 0; i < Particles.Count; i++)
             {
                 var particle = Particles[i];
