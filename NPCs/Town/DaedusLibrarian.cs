@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
+using Stellamod.Content.Areas.Shop.ItemsShop;
 using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Mage.Tomes;

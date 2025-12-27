@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Shop.ItemsShop;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.Audio;

@@ -3163,7 +3163,11 @@ RestingGroundsI: {
 
 ShinobiTome: {
 	DisplayName: Shinobi Tome
-	Tooltip: Excellent choice for no hand ninjas!
+	Tooltip:
+		'''
+		Shoots a spread of kunai knives!
+		Excellent choice for no hand ninjas!
+		'''
 }
 
 GintzlSpear: {

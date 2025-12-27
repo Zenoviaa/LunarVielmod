@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets.Biomes;
 using Stellamod.Content.Areas.Collosseum.WeaponsCL;
+using Stellamod.Content.Areas.Shop.ItemsShop;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
