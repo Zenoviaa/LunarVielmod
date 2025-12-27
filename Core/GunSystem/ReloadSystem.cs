@@ -133,10 +133,10 @@ namespace Stellamod.Core.GunSystem
 
 
                 Vector2 o = new Vector2(0, i * 10);
-                spriteBatch.Draw(texture2D, drawPos - o + Vector2.UnitX * 2, null, Color.White, 0, vector * NormalizedOrigin, ImageScale, SpriteEffects.None, 0f);
-                spriteBatch.Draw(texture2D, drawPos - o + Vector2.UnitX * -2, null, Color.White, 0, vector * NormalizedOrigin, ImageScale, SpriteEffects.None, 0f);
-                spriteBatch.Draw(texture2D, drawPos - o + Vector2.UnitY * 2, null, Color.White, 0, vector * NormalizedOrigin, ImageScale, SpriteEffects.None, 0f);
-                spriteBatch.Draw(texture2D, drawPos - o + Vector2.UnitY * -2, null, Color.White, 0, vector * NormalizedOrigin, ImageScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture2D, drawPos + o + Vector2.UnitX * 2, null, Color.White, 0, vector * NormalizedOrigin, ImageScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture2D, drawPos + o + Vector2.UnitX * -2, null, Color.White, 0, vector * NormalizedOrigin, ImageScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture2D, drawPos + o + Vector2.UnitY * 2, null, Color.White, 0, vector * NormalizedOrigin, ImageScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture2D, drawPos + o + Vector2.UnitY * -2, null, Color.White, 0, vector * NormalizedOrigin, ImageScale, SpriteEffects.None, 0f);
             }
 
             spriteBatch.End();
@@ -156,7 +156,7 @@ namespace Stellamod.Core.GunSystem
 
 
                 Vector2 o = new Vector2(0, i * 10);
-                spriteBatch.Draw(texture2D, drawPos - o, null, Color.White, 0, vector * NormalizedOrigin, ImageScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture2D, drawPos + o, null, Color.White, 0, vector * NormalizedOrigin, ImageScale, SpriteEffects.None, 0f);
             }
         }
     }

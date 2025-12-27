@@ -123,6 +123,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
                 SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, Projectile.position);
             }
 
+         //   Lighting.AddLight(Projectile.Center + Projectile.velocity * 64, TorchID.Torch);
             Projectile.rotation += 0.05f;
         }
 
