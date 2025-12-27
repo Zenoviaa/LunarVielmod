@@ -2937,8 +2937,11 @@ TheRedSkull: {
 }
 
 Tociflare: {
-	DisplayName: Tociflare
-	Tooltip: Acidic flamethrower, uses gel for ammo
+	DisplayName: Toxiflare
+	Tooltip:
+		'''
+		GREEEEEN FLAMES!!! ACIDIC BURNS!!!!
+		'''
 }
 
 TychineGun: {
