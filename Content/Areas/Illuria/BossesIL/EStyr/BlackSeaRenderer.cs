@@ -83,15 +83,22 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             graphicsDevice.SetRenderTarget(_blackHurricaneRT);
             graphicsDevice.Clear(Color.Transparent);
 
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, Main.Rasterizer);
-            Vector2 drawCenter = Main.Camera.Center;
-            drawCenter.Y += ExtraMath.Osc(-2, 2, speed: 8);
-            Vector2 screenPos = Main.screenPosition;
-            DrawSingularity(drawCenter, screenPos);
-            _platformManager.Draw(spriteBatch, screenPos);
-            _starParticleManager.Draw();
+            if (!config.FocusMode)
+            {
+                Vector2 drawCenter = Main.Camera.Center;
+                drawCenter.Y += ExtraMath.Osc(-2, 2, speed: 8);
+                Vector2 screenPos = Main.screenPosition;
+                DrawSingularity(drawCenter, screenPos);
+                _platformManager.Draw(spriteBatch, screenPos);
+                _starParticleManager.Draw();
+            }
+
             DrawHoveringPlatform(spriteBatch);
             spriteBatch.End();
+     
+  
 
             graphicsDevice.SetRenderTarget(null);
         }
@@ -212,6 +219,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             if (renderBlackSea)
             {
+        
                 RenderToBlackHurricaneRT();
                 RenderToReflectionRT();
                 RenderToReflectionGradientRT();
@@ -227,23 +235,19 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             SpriteBatch spriteBatch = Main.spriteBatch;
             if (!Main.gameMenu && behindTiles)
             {
-
                 if (drawBlackSea)
                 {
-
                     spriteBatch.GraphicsDevice.Clear(Color.Transparent);
                     spriteBatch.End();
                     spriteBatch.Begin();
 
                     Color drawColor = Color.Lerp(Color.White, Color.Black, 0.35f);
                     spriteBatch.Draw(_blackHurricaneRT, Vector2.Zero, null, drawColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                    
                     spriteBatch.End();
-
-
                     spriteBatch.Begin();
-
-
                 }
+
                 DrawHoveringPlatform(spriteBatch);
                 if (miniOrbDrawPosition.HasValue)
                 {

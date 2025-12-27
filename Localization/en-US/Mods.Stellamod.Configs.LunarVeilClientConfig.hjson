@@ -8,6 +8,10 @@ Headers: {
 	Lighting: Lighting Header
 	Experimental: Experimental Header
 }
+FocusMode: {
+	Label: Focus Mode
+	Tooltip: Disables certain ambient visual effects and background effects during boss fights to make it a little easier to focus on the fight itself.
+}
 
 VanillaTexturesToggle: {
 	Label: Vanilla Textures Overhaul

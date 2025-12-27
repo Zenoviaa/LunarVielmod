@@ -25,6 +25,7 @@ namespace Stellamod.Core.Foggy
         public float rotation;
         public float scrollSpeed;
         public float pulseWidth;
+        public bool disableWithFocus;
         public Fog()
         {
             blendState = BlendState.AlphaBlend;

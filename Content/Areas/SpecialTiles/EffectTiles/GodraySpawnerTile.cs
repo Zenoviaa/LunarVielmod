@@ -73,6 +73,7 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
         }
         public override void FogCreateFunction(Fog fog)
         {
+            fog.disableWithFocus = true;
             fog.blendState = BlendState.AlphaBlend;
             fog.texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Godray");
             fog.startColor = Color.Transparent;

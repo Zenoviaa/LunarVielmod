@@ -35,6 +35,7 @@ namespace Stellamod.Core.Foggy
             if (domainExpansionManager.inSpace)
                 return;
 
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if(layer == RenderLayers.ForegroundWater)
             {
                 if (doDraws)
@@ -62,6 +63,9 @@ namespace Stellamod.Core.Foggy
                     foreach (var kvp in _fogIndex)
                     {
                         var fog = kvp.Value;
+                        if (config.FocusMode && fog.disableWithFocus)
+                            continue;
+
                         BaseShader newShader = null;
                         if (fog.shaderFunc != null)
                         {
