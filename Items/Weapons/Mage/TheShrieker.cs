@@ -1,10 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Shop.ItemsShop;
 using Stellamod.Core.Palettes;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Weapons.Mage.Tomes;
 using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;

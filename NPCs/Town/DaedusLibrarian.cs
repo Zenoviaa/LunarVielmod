@@ -267,7 +267,7 @@ namespace Stellamod.NPCs.Town
             .Add<ShadeHandTome>(Condition.DownedEowOrBoc)
             .Add<VoidsGrasp>(Condition.DownedSkeletron)
             .Add<Astalaiya>(Condition.DownedSkeletron)
-            .Add<TheDeafen>(Condition.DownedSkeletron);
+            .Add<TheDeafen>(CustomConditions.PostGintzia);
             npcShop.Register();
         }
     }

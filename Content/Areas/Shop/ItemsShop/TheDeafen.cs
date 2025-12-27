@@ -1,15 +1,38 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Bases;
+using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Magic
+namespace Stellamod.Content.Areas.Shop.ItemsShop
 {
+    public class TheDeafen : BaseTome
+    {
+        public override void SetDefaults2()
+        {
+            base.SetDefaults2();
+            Item.shoot = ModContent.ProjectileType<DeafenProj>();
+            Item.shootSpeed = 6f;
+            Item.damage = 14;
+            Item.mana = 16;
+        }
+
+        public override Color GetTomeHintColor()
+        {
+            return Color.Lavender;
+        }
+    }
+
     public class DeafenProj : ModProjectile
     {
         private Vector2[] _soundWavePos;
@@ -31,9 +54,9 @@ namespace Stellamod.Projectiles.Magic
 
         public override void SetDefaults()
         {
-            _soundWavePos = new Vector2[32];
-            _soundWavePos2 = new Vector2[32];
-            _soundWavePos3 = new Vector2[32];
+            _soundWavePos = new Vector2[48];
+            _soundWavePos2 = new Vector2[48];
+            _soundWavePos3 = new Vector2[48];
             TrailAlpha = 1f;
             Projectile.penetrate = 5;
             Projectile.width = 36;
@@ -68,16 +91,9 @@ namespace Stellamod.Projectiles.Magic
                 }
             }
 
-            if (Timer % 4 == 0)
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DemonTorch);
-            }
-
-
-
             float swingXRadius = 32 * Easing.OutCirc(Timer / 60f);
             float swingYRadius = 64 * Easing.OutCirc(Timer / 60f);
-            float swingRange = MathHelper.ToRadians(360);
+            float swingRange = MathHelper.ToRadians(380);
             for (int i = 0; i < _soundWavePos.Length; i++)
             {
                 float progress = (float)i / (float)_soundWavePos.Length;
@@ -127,34 +143,37 @@ namespace Stellamod.Projectiles.Magic
 
             }
 
-
             Lighting.AddLight(Projectile.Center, Color.MediumPurple.ToVector3() * 1.75f * Main.essScale);
         }
 
         public float WidthFunction(float completionRatio)
         {
             float multiplier = MathF.Sin((Main.GlobalTimeWrappedHourly + completionRatio) * 24);
-            return 186 * MathHelper.Lerp(1f, 0.5f, multiplier);
+            return 16 * MathHelper.Lerp(1f, 0.5f, multiplier) * ExtraMath.Osc(0.85f, 1f);// * EasingFunction.QuadraticBump(completionRatio);
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.MediumPurple * TrailAlpha;
+            Color color = Color.MediumPurple;
+            color = Color.Lerp(color, Color.Violet, ExtraMath.Osc(0f, 1f, speed: 16));
+            return color * TrailAlpha * 0.8f;
         }
 
-        protected virtual void DrawWindTrail(ref Color lightColor)
+        private void DrawPixelatedTrail(GraphicsDevice graphicsDevice)
         {
-            Main.spriteBatch.RestartDefaults();
-            Trail ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.SimpleTrail);
-            Trail.DrawPrims(_soundWavePos, -Main.screenPosition + Projectile.Size / 2, totalTrailPoints: 155);
-            Trail.DrawPrims(_soundWavePos2, -Main.screenPosition + Projectile.Size / 2, totalTrailPoints: 155);
-            Trail.DrawPrims(_soundWavePos3, -Main.screenPosition + Projectile.Size / 2, totalTrailPoints: 155);
+            var shader = MagicNormalShader.Instance;
+            shader.Speed = 1;
+            shader.PrimaryTexture = TrailRegistry.SmallWhispyTrail;
+          
+            //This just applis the shader changes
+            TrailDrawer.Draw(Main.spriteBatch, _soundWavePos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, _soundWavePos2, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, _soundWavePos3, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawWindTrail(ref lightColor);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrail);
             return false;
         }
 
@@ -183,5 +202,3 @@ namespace Stellamod.Projectiles.Magic
         }
     }
 }
-
-
