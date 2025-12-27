@@ -25,7 +25,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _fastNoise = new FastNoiseLite();
             ParticleCount = particleCount;
             TrailLength = trailLength;
-
+            scale = 1f;
             //Calculate the number of vertices that we'll need to draw the tornado
             //This should be equal to the particle count times the trail length times the nubmer of vertices per point
             int verticesPerPosition = 6;
@@ -70,7 +70,18 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 _trailWidths[i] = getTrailWidth(ratio) * Vector2.One;
             }
         }
-
+        public LittleStarParticleManager(int particleCount, int trailLength, Func<float, float> getTrailWidth, Func<float, Color> getTrailColor) : this(particleCount, trailLength)
+        {
+            //We can pre calculate the uv floats since it's always the same
+            //We increase the trail length by 1 here because in the trailing functionwe need to get the next point, this last position is basically just a duplicate
+            _trailWidths = new Vector2[trailLength + 1];
+            for (int i = 0; i < _trailWidths.Length; i++)
+            {
+                float ratio = (float)i / (float)trailLength;
+                _trailWidths[i] = getTrailWidth(ratio) * Vector2.One;
+                _trailColors[i] = getTrailColor(ratio);
+            }
+        }
 
         public readonly int ParticleCount;
         public readonly int TrailLength;
@@ -81,6 +92,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public float spinTime;
         public float alpha;
         public bool topOnly;
+        public float scale;
         /// <summary>
         /// Calculate the position of the particle at specific a timestep
         /// </summary>
@@ -113,12 +125,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 x *= 24;
             }
             float xRadius = x + ExtraMath.Osc(-xOvalRadius, xOvalRadius, 0, off);
-
+            xRadius *= scale;
             float minY = -yOvalRadius;
             float maxY = yOvalRadius;
             if (topOnly)
                 maxY *=0.5f;
             float yRadius = ExtraMath.Osc(-150f, 0f, 1, off) + ExtraMath.Osc(minY, maxY, 0f, offset: off);
+            yRadius *= scale;
             Vector3 initialPosition = new Vector3(xRadius, yRadius / 2f, yRadius);
 
             //Create the rotation matrix and Rotate the particle

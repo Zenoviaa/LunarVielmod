@@ -3990,7 +3990,10 @@ LunarianVoidLegs: {
 
 SandStorm: {
 	DisplayName: Sand Storm
-	Tooltip: Fires a mini sand tornado that explodes upon impact
+	Tooltip:
+		'''
+		Calls forth a powerful sandstorm to suck in nearby enemies!
+		'''
 }
 
 ExploreMorrowedVillage: {
