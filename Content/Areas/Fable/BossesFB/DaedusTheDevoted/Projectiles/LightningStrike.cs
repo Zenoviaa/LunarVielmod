@@ -120,12 +120,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
                         ModContent.GoreType<FableRock4>());
                 }
 
-                if (Main.myPlayer == Projectile.owner)
-                {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), _lightningHitPos + new Vector2(0, 24), Vector2.Zero,
-                        ModContent.ProjectileType<GroundCracking>(), 0, 0, Projectile.owner);
-                }
-
                 var part = FXUtil.GlowCircleBoom(_lightningHitPos,
                     innerColor: Color.White,
                     glowColor: Color.Yellow,
