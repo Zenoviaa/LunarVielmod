@@ -308,7 +308,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
                 if (Main.rand.NextBool(4))
                 {
                     Vector2 velocity = -Projectile.oldVelocity;
-                    LegacyParticle.NewBlackParticle<BlackSmokeParticle>(pos, velocity * 0.5f, Color.White);
+                    Particle<ThickSmokeParticle>.Spawn(pos, velocity * 0.5f, Color.White);
                 }
             }
 

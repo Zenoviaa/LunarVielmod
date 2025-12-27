@@ -836,10 +836,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             spawnVelocity.Y = Main.rand.NextFloat(-10, -1f);
 
             float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-            var steamParticle = LegacyParticle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
-            steamParticle.innerColor = Color.DarkGray;
-            steamParticle.outerColor = Color.Black;
-            steamParticle.fadeToColor = Color.Black;
+            var steamParticle = Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
         }
         private void SpawnSteamParticle()
         {
@@ -850,10 +847,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
             spawnVelocity.Y = Main.rand.NextFloat(-10, -1f);
 
             float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-            var steamParticle = LegacyParticle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
-            steamParticle.innerColor = Color.DarkGray;
-            steamParticle.outerColor = Color.Black;
-            steamParticle.fadeToColor = Color.Black;
+            var steamParticle = Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
         }
 
         #region Walking Code
@@ -1861,12 +1855,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER
 
                     Vector2 velocity = Vector2.UnitX * Main.rand.Next(-1, 1);
                     velocity *= Main.rand.NextFloat(1f, 2f);
-                    var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(NPC.Bottom + offset, velocity, Color.DarkGray);
+                    var p = Particle<ThickSmokeParticle>.Spawn(NPC.Bottom + offset, velocity, Color.DarkGray);
                     p.Scale *= 0.25f;
                     p.color *= 0.5f;
-                    p.fadeToColor = Color.Black;
-                    p.innerColor = Color.DarkGray;
-                    p.outerColor = Color.Black;
                 }
 
                 FXUtil.GlowCircleBoom(NPC.Bottom,

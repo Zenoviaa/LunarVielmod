@@ -138,6 +138,9 @@ namespace Stellamod.Core.Particles
         public void DrawParticles(SpriteBatch spriteBatch)
         {
             BaseShader myCustomShader = null;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, default, default, null, Main.GameViewMatrix.TransformationMatrix);
+
             for (int i = 0; i < AdditiveParticles.Count; i++)
             {
                 var particle = AdditiveParticles[i];
@@ -152,7 +155,7 @@ namespace Stellamod.Core.Particles
                     spriteBatch.End();
                     myCustomShader = particle.customShader;
                     if (myCustomShader == null)
-                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
+                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, default, default, null, Main.GameViewMatrix.TransformationMatrix);
                     else
                     {
                         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,

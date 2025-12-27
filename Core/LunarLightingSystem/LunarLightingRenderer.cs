@@ -21,6 +21,8 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             if (type == TileID.FogMachine && DontRenderPreDraw)
                 return false;
+            if (type == TileID.FogMachine && NPC.AnyDanger())
+                return false;
             return base.PreDraw(i, j, type, spriteBatch);
         }
     }

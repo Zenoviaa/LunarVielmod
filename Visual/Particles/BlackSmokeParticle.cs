@@ -7,6 +7,7 @@ using Terraria;
 
 namespace Stellamod.Visual.Particles
 {
+
     public class BlackSmokeParticle : LegacyParticle
     {
         private float _interpolant;

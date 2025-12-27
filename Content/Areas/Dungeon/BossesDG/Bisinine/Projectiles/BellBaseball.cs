@@ -188,12 +188,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     Vector2 pos = Projectile.Center;
                     pos += Main.rand.NextVector2Circular(16, 16);
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 3);
-                    var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(pos, velocity, Color.DarkGray);
+                    var p = Particle<ThickSmokeParticle>.Spawn(pos, velocity, Color.DarkGray);
                     p.Scale *= 0.25f;
-                    p.color *= 0.5f;
-                    p.fadeToColor = Color.Black;
-                    p.innerColor = Color.DarkGray;
-                    p.outerColor = Color.Black;
                 }
 
                 FXUtil.ShakeCamera(Projectile.position, 1024, 8);

@@ -1064,12 +1064,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             if (Main.rand.NextBool(4))
             {
-                var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(NPC.Bottom, Vector2.Zero, Color.DarkGray);
-                p.Scale *= 0.25f;
-                p.color *= 0.5f;
-                p.fadeToColor = Color.Black;
-                p.innerColor = Color.DarkGray;
-                p.outerColor = Color.Black;
+                var p = Particle<ThickSmokeParticle>.Spawn(NPC.Bottom, Vector2.Zero, Color.DarkGray);
             }
             if (Timer >= 10)
             {
@@ -1286,12 +1281,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
                     Vector2 velocity = Vector2.UnitX * Main.rand.Next(-1, 1);
                     velocity *= Main.rand.NextFloat(1f, 2f);
-                    var p = LegacyParticle.NewBlackParticle<BlackSmokeParticle>(NPC.Bottom + offset, velocity, Color.DarkGray);
-                    p.Scale *= 0.25f;
-                    p.color *= 0.5f;
-                    p.fadeToColor = Color.Black;
-                    p.innerColor = Color.DarkGray;
-                    p.outerColor = Color.Black;
+                    var p = Particle<ThickSmokeParticle>.Spawn(NPC.Bottom + offset, velocity, Color.DarkGray);
                 }
 
                 FXUtil.GlowCircleBoom(NPC.Bottom,

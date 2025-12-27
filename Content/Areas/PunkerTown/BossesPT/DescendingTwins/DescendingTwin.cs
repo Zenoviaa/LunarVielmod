@@ -620,11 +620,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                     Vector2 spawnVelocity = Main.rand.NextVector2Circular(2, 2);
 
                     float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-                    var steamParticle = LegacyParticle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
-                    steamParticle.innerColor = Color.DarkGray;
-                    steamParticle.outerColor = Color.Black;
-                    steamParticle.fadeToColor = Color.Black;
+                    Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
                 }
+
                 for (int i = 0; i < 4; i++)
                 {
                     int[] gores = AutoGoreLoader.FindGores("MechanicalEye");
@@ -734,9 +732,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             //However, we will create a few steam particles just for funsies
             if (Timer % 10 == 0)
             {
-                LegacyParticle.NewParticle<BlackSmokeParticle>(
+                Particle<ThickSmokeParticle>.Spawn(
                     NPC.Center + Main.rand.NextVector2Circular(64, 64),
-                    -Vector2.UnitY * Main.rand.NextFloat(0.2f, 0.5f), newColor: Color.White);
+                    -Vector2.UnitY * Main.rand.NextFloat(0.2f, 0.5f), color: Color.White);
             }
 
             TargetOutlineColor = Color.Transparent;

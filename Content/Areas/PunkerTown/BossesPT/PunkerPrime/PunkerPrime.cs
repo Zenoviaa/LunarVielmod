@@ -620,10 +620,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                     
                     
                     float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-                    var steamParticle = LegacyParticle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
-                    steamParticle.innerColor = Color.DarkGray;
-                    steamParticle.outerColor = Color.Black;
-                    steamParticle.fadeToColor = Color.Black;
+                    var steamParticle = Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
                 }
 
                 var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.Yellow, Color.Red, Color.DarkRed);
@@ -1135,10 +1132,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             spawnVelocity.Y = Main.rand.NextFloat(-10, -1f);
 
             float spawnScale = Main.rand.NextFloat(0.75f, 1f);
-            var steamParticle = LegacyParticle.NewParticle<BlackSmokeParticle>(spawnPosition, spawnVelocity, Scale: spawnScale);
-            steamParticle.innerColor = Color.DarkGray;
-            steamParticle.outerColor = Color.Black;
-            steamParticle.fadeToColor = Color.Black;
+            var steamParticle = Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

@@ -9927,8 +9927,5 @@ BloodySpew: {
 
 WindArtifact: {
 	DisplayName: Wind Artifact
-	Tooltip:
-		'''
-		Blows a strong gust of wind!
-		'''
+	Tooltip: Blows a strong gust of wind!
 }
