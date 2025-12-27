@@ -2667,7 +2667,10 @@ TheShrieker: {
 
 TomeOfTheSingularity: {
 	DisplayName: Tome Of The Singularity
-	Tooltip: A volley of fragments
+	Tooltip:
+		'''
+		Casts a volley of lunar fragments, after a while they split into two tiny fragments that rain down!
+		'''
 }
 
 TorrentialLance: {
