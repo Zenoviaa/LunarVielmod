@@ -261,7 +261,7 @@ namespace Stellamod.NPCs.Town
             .Add(new Item(ItemID.Book) { shopCustomPrice = Item.buyPrice(silver: 10) })
             .Add<WintersStom>()
             .Add<SandStorm>()
-            .Add<Aneuriliac>()
+            .Add<BloodySpew>()
             .Add<CocoSpark>(Condition.DownedEowOrBoc)
             .Add<ShinobiTome>(Condition.DownedEowOrBoc)
             .Add<ShadeHandTome>(Condition.DownedEowOrBoc)

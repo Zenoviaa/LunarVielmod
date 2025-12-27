@@ -2938,10 +2938,7 @@ TheRedSkull: {
 
 Tociflare: {
 	DisplayName: Toxiflare
-	Tooltip:
-		'''
-		GREEEEEN FLAMES!!! ACIDIC BURNS!!!!
-		'''
+	Tooltip: GREEEEEN FLAMES!!! ACIDIC BURNS!!!!
 }
 
 TychineGun: {
@@ -9917,4 +9914,13 @@ FreezeRay: {
 StarShower: {
 	DisplayName: Star Shower
 	Tooltip: Calls forth a pretty volley of multi-colored stars to home into nearby enemies!
+}
+
+BloodySpew: {
+	DisplayName: Bloody Spew
+	Tooltip:
+		'''
+		My guts are spillin' out!
+		Shoots a quick bloody stream
+		'''
 }
