@@ -191,18 +191,26 @@ namespace Stellamod.Core.GunSystem
             }
         }
 
-        public virtual bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public virtual bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            return base.Shoot(player, source, position, velocity, type, damage, knockback);
+        }
+        public virtual void GunCasingEffects(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             for (int i = 0; i < 1; i++)
             {
                 Gore.NewGore(player.GetSource_FromThis(), position, velocity * -1,
                     ModContent.GoreType<BulletCasing>());
             }
+        }
 
+        public virtual bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            GunCasingEffects(player, source, position, velocity, type, damage, knockback);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 muzzlePosition = player.MountedCenter + velocity.SafeNormalize(Vector2.Zero) * texture.Width / 2;
             ShootEffects(muzzlePosition, velocity);
-            return base.Shoot(player, source, position, velocity, type, damage, knockback);
+            return ShootProjectile(player, source, position, velocity, type, damage, knockback);
         }
 
         public virtual void ShootEffects(Vector2 position, Vector2 velocity)

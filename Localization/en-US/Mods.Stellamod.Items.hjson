@@ -7531,7 +7531,11 @@ SerpentStaff: {
 
 Incinerator: {
 	DisplayName: Incinerator
-	Tooltip: The most powerful flamethrower, it melts through anything and everything!
+	Tooltip:
+		'''
+		Wield the raw power of Rek's flames...
+		The most powerful flamethrower, it melts through anything and everything!
+		'''
 }
 
 VeiledScriptureMiner2: {
@@ -9909,8 +9913,5 @@ FreezeRay: {
 
 StarShower: {
 	DisplayName: Star Shower
-	Tooltip:
-		'''
-		Calls forth a pretty volley of multi-colored stars to home into nearby enemies!
-		'''
+	Tooltip: Calls forth a pretty volley of multi-colored stars to home into nearby enemies!
 }
