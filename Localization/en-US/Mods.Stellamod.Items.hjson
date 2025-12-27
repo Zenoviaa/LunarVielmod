@@ -2655,12 +2655,12 @@ SunBlastStaff: {
 }
 
 TheDeafen: {
-	DisplayName: The Deafen
+	DisplayName: The Deafened Tome
 	Tooltip: Shriek the howls of a bat!
 }
 
 TheShrieker: {
-	DisplayName: The Shrieker
+	DisplayName: Shrieking Tome
 	Tooltip:
 		'''
 		I'm so sorry...
@@ -2670,7 +2670,7 @@ TheShrieker: {
 }
 
 TomeOfTheSingularity: {
-	DisplayName: Tome Of The Singularity
+	DisplayName: Sparkling Tome
 	Tooltip: Casts a volley of lunar fragments, after a while they split into two tiny fragments that rain down!
 }
 
@@ -2685,7 +2685,7 @@ TorrentialLance: {
 }
 
 VoidsGrasp: {
-	DisplayName: Voids Grasp
+	DisplayName: Void's Grasp Tome
 	Tooltip: Summon a hand that will go out and tickle enemies :)
 }
 
@@ -3989,7 +3989,7 @@ LunarianVoidLegs: {
 }
 
 SandStorm: {
-	DisplayName: Sand Storm
+	DisplayName: Sand Storm Tome
 	Tooltip: Calls forth a powerful sandstorm to suck in nearby enemies!
 }
 
@@ -9912,15 +9912,23 @@ FreezeRay: {
 }
 
 StarShower: {
-	DisplayName: Star Shower
+	DisplayName: Star Shower Tome
 	Tooltip: Calls forth a pretty volley of multi-colored stars to home into nearby enemies!
 }
 
 BloodySpew: {
-	DisplayName: Bloody Spew
+	DisplayName: Bloody Spew Tome
 	Tooltip:
 		'''
 		My guts are spillin' out!
 		Shoots a quick bloody stream
+		'''
+}
+
+WindArtifact: {
+	DisplayName: Wind Artifact
+	Tooltip:
+		'''
+		Blows a strong gust of wind!
 		'''
 }
