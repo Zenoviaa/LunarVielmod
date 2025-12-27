@@ -1211,7 +1211,11 @@ Bongos: {
 
 CocoSpark: {
 	DisplayName: Coconut Tome
-	Tooltip: Look master, I can summon, coconuts!
+	Tooltip:
+		'''
+		Look master, I can summon, coconuts!
+		...the coconuts just roll along the ground
+		'''
 }
 
 EvasiveBalls: {
@@ -2667,10 +2671,7 @@ TheShrieker: {
 
 TomeOfTheSingularity: {
 	DisplayName: Tome Of The Singularity
-	Tooltip:
-		'''
-		Casts a volley of lunar fragments, after a while they split into two tiny fragments that rain down!
-		'''
+	Tooltip: Casts a volley of lunar fragments, after a while they split into two tiny fragments that rain down!
 }
 
 TorrentialLance: {
