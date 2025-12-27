@@ -9906,3 +9906,11 @@ FreezeRay: {
 	DisplayName: Freeze Ray
 	Tooltip: ""
 }
+
+StarShower: {
+	DisplayName: Star Shower
+	Tooltip:
+		'''
+		Calls forth a pretty volley of multi-colored stars to home into nearby enemies!
+		'''
+}

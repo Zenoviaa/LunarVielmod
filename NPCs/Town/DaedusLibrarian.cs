@@ -266,7 +266,7 @@ namespace Stellamod.NPCs.Town
             .Add<ShinobiTome>(Condition.DownedEowOrBoc)
             .Add<ShadeHandTome>(Condition.DownedEowOrBoc)
             .Add<VoidsGrasp>(CustomConditions.PostGintzia)
-            .Add<Astalaiya>(CustomConditions.PostGintzia)
+            .Add<StarShower>(CustomConditions.PostGintzia)
             .Add<TheDeafen>(CustomConditions.PostGintzia);
             npcShop.Register();
         }
