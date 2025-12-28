@@ -800,7 +800,7 @@ WillOWispMinionBuff: {
 
 RadiatingLantern: {
 	DisplayName: Radiating Lantern
-	Description: Mods.Stellamod.Buffs.RadiatingLantern.Description
+	Description: You have a magical lantern lighting the way!
 }
 
 CrystalLuck: {
@@ -955,5 +955,5 @@ Frosting: {
 
 HoldingMyLantern: {
 	DisplayName: Holding My Lantern
-	Description: Mods.Stellamod.Buffs.HoldingMyLantern.Description
+	Description: You have a magical lantern lighting the way!
 }

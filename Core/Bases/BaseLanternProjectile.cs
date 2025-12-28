@@ -55,6 +55,7 @@ namespace Stellamod.Core.Bases
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+            Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Projectile.type] = true;
         }
 

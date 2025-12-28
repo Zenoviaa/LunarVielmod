@@ -9985,7 +9985,7 @@ HangingStaff7Item: {
 
 HoldingLantern: {
 	DisplayName: Holding Lantern
-	Tooltip: "Grants a circular light! Great for miners..."
+	Tooltip: Grants a circular light! Great for miners...
 }
 
 OpenChestItem: {

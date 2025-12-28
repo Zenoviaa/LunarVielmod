@@ -35,5 +35,12 @@ namespace Stellamod.Core.Bases
             line.OverrideColor = Color.Lerp(Color.LightGoldenrodYellow, Color.Black, 0.15f);
             tooltips.Add(line);
         }
+        public override void UseStyle(Player player, Rectangle heldItemFrame)
+        {
+            if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
+            {
+                player.AddBuff(Item.buffType, 3600);
+            }
+        }
     }
 }
