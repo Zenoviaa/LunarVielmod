@@ -1217,24 +1217,6 @@ namespace Stellamod
                 }
             }
 
-            if (Player.HasBuff<Gintzingwinds>())
-            {
-                if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true)
-                {
-                    for (int j = 0; j < 1; j++)
-                    {
-                        RandomOrig3 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-900f, 900f), (Main.rand.NextFloat(-600f, 600f)));
-                        RandomOrig2 = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1600f, 1600f), (Main.rand.NextFloat(-900f, 900f)));
-                        RandomOrig = new Vector2(Player.width / 2, Player.height / 2) + new Vector2(Main.rand.NextFloat(-1800f, 1800f), (Main.rand.NextFloat(-1200f, 1200f)));
-
-                        Vector2 speed = new Vector2(4, 0);
-                    }
-                }
-
-
-                Main.GraveyardVisualIntensity = 0.8f;
-                Main.windPhysicsStrength = 90;
-            }
 
             if (ModContent.GetInstance<LunarVeilClientConfig>().ParticlesToggle == true && ZoneMechanics)
             {
