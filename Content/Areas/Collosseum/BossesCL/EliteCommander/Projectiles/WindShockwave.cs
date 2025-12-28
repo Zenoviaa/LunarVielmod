@@ -81,16 +81,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
                 Vector2[] shockPos = shockwavePos.ToArray();
                 Vector2 trailOffset = Projectile.Size / 2;
                 TrailDrawer.Draw(Main.spriteBatch, shockPos, GetTrailColor, GetTrailWidth, shader, trailOffset);
-                shockwavePos.Clear();
-
-                for (int s = 0; s < numPoints; s++)
-                {
-                    float p = (float)s / numPoints;
-                    shockwavePos.Add(Vector2.Lerp(oldPos, oldPos + Vector2.UnitY * 40 * totalP *
-                        VectorHelper.Osc(0.5f, 1f, speed: 12, offset: i * 4) * MathHelper.Clamp(Timer / 30f, 0f, 1f), p));
-                }
-                shockPos = shockwavePos.ToArray();
-                TrailDrawer.Draw(Main.spriteBatch, shockPos, GetTrailColor, GetTrailWidth, shader, trailOffset);
             }
 
 
