@@ -12,6 +12,7 @@ using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -70,7 +71,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ProjectileID.Sets.TrailCacheLength[Type] = 32;
+            ProjectileID.Sets.TrailCacheLength[Type] = 16;
             ProjectileID.Sets.TrailingMode[Type] = 2;
         }
         public override void SetDefaults()
@@ -81,7 +82,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
             Projectile.timeLeft = 180;
             Projectile.friendly = true;
             Projectile.ignoreWater = true;
-            Projectile.extraUpdates = 1;
+
             Projectile.penetrate = 2;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 20;
@@ -90,7 +91,14 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
         public override void AI()
         {
             base.AI();
+
             Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle softSummon = new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2");
+                softSummon.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(softSummon, Projectile.position);
+            }
             if (Timer % 15 == 0)
             {
                 DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(4, 4), Color.White, Scale: 0.5f);
@@ -100,7 +108,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
             }
             if (Bounce)
             {
-                Projectile.velocity.Y += 0.02f;
+                Projectile.velocity.Y += 0.2f;
             }
             else
             {
@@ -110,6 +118,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
 
             Projectile.rotation += 0.05f;
             Projectile.rotation += Projectile.velocity.Length() * 0.05f * MathF.Sign(Projectile.velocity.X);
+            Lighting.AddLight(Projectile.position, TorchID.White);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -119,7 +128,11 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
                 if (Projectile.velocity.X != oldVelocity.X)
                     Projectile.velocity.X = -oldVelocity.X;
                 if (Projectile.velocity.Y != oldVelocity.Y)
+                {
                     Projectile.velocity.Y = -oldVelocity.Y;
+                    Projectile.velocity.Y -= 5;
+                }
+            
                 for (float f = 0; f < 1; f++)
                 {
                     DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(0.3f), Color.White, Scale: 0.5f);
@@ -127,6 +140,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
                     dp.outerColor = Color.SkyBlue;
                 }
                 Bounce = true;
+                return false;
             }
             return base.OnTileCollide(oldVelocity);
         }
@@ -209,8 +223,8 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
         public override bool PreDraw(ref Color lightColor)
         {
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrail, DrawLayer.OverNPCsWithOutline);
-            DrawAfterImage(Main.spriteBatch, Main.screenPosition);
-            DrawSprite(Main.spriteBatch, Main.screenPosition);
+            PixelationManager.QueueSpritebatchDrawAction(DrawAfterImage, DrawLayer.OverNPCsWithOutline);
+            PixelationManager.QueueSpritebatchDrawAction(DrawSprite, DrawLayer.OverNPCsWithOutline);
             return false;
         }
     }
