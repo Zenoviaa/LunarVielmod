@@ -15,11 +15,11 @@ namespace Stellamod.Systems.MiscellaneousMath
                 return oldPos[0];
 
             if (index == 0)
-                return Vector2.Normalize(oldPos[1] - oldPos[0]).RotatedBy(MathHelper.Pi / 2);
+                return Vector2.Normalize(oldPos[1] - oldPos[0]).RotatedBy(MathHelper.PiOver2);
 
             return (index == oldPos.Length - 1
                 ? Vector2.Normalize(oldPos[index] - oldPos[index - 1])
-                : Vector2.Normalize(oldPos[index + 1] - oldPos[index - 1])).RotatedBy(MathHelper.Pi / 2);
+                : Vector2.Normalize(oldPos[index + 1] - oldPos[index - 1])).RotatedBy(MathHelper.PiOver2);
         }
 
         public static void LerpTrailPoints(Vector2[] oldPos, out Vector2[] trailingPoints, float smoothFactor = 2)
@@ -38,50 +38,6 @@ namespace Stellamod.Systems.MiscellaneousMath
             }
             trailingPoints = points.ToArray();
         }
-
-
-        public static void LerpRotationPoints(float[] oldRot, out float[] rotationPoints, float smoothFactor = 2)
-        {
-            List<float> points = new List<float>();
-            for (int i = 0; i < oldRot.Length - 1; i++)
-            {
-                float current = oldRot[i];
-                float next = oldRot[i + 1];
-                for (float j = 0; j < smoothFactor; j++)
-                {
-                    float p = j / smoothFactor;
-                    float smoothedPoint = float.Lerp(current, next, p);
-                    points.Add(smoothedPoint);
-                }
-            }
-            rotationPoints = points.ToArray();
-        }
-
-        public static Vector2[] RemoveZeros(Vector2[] arr, Vector2 offset)
-        {
-            var valid = new List<Vector2>();
-            if (arr == null || arr.Length == 0)
-                return valid.ToArray();
-            for (int i = 0; i < arr.Length; i++)
-            {
-                if (arr[i] == Vector2.Zero || arr[i].HasNaNs())
-                    break;
-                if (i != 0)
-                {
-                    if (arr[i - 1] == arr[i])
-                        continue;
-
-                    var d = arr[i - 1] - arr[i];
-                    if (d.X < -1000f || d.X > 1000f || d.Y < -1000f || d.Y > 1000f)
-                    {
-                        continue;
-                    }
-                }
-                valid.Add(arr[i] + offset);
-            }
-            return valid.ToArray();
-        }
-
 
         public static float Osc(float from, float to, float speed = 1f, float offset = 0f)
         {

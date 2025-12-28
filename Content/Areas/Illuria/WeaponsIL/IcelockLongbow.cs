@@ -168,7 +168,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                     initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
 
                     SmokeParticle smokeParticle = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center + initialVelocity,
-                        initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 5f));
+                        initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.6f, 1.2f));
                     smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.4f);
                     smokeParticle.extraUpdates = Main.rand.Next(0, 1);
                     smokeParticle.fadeToColor = Color.Black;
@@ -207,7 +207,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                 initialVelocity *= Main.rand.NextFloat(0.5f, 1f);
 
-                DustParticle dustParticle = Particle<DustParticle>.Spawn(Projectile.velocity, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.6f, 2f));
+                DustParticle dustParticle = Particle<DustParticle>.Spawn(Projectile.velocity, initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.6f, 1f));
                 dustParticle.innerColor = Color.SkyBlue;
                 dustParticle.outerColor = Color.Violet;
             }
@@ -231,7 +231,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
 
                 SmokeParticle smokeParticle = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center + initialVelocity,
-                    initialVelocity, Color.White, Scale: Main.rand.NextFloat(1.3f, 3f));
+                    initialVelocity, Color.White, Scale: Main.rand.NextFloat(0.6f, 1.3f));
                 smokeParticle.initialColor = Color.Lerp(Color.White, Color.Black, 0.4f);
                 smokeParticle.extraUpdates = Main.rand.Next(0, 1);
                 smokeParticle.fadeToColor = Color.Black;

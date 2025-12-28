@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Systems.MiscellaneousMath;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Shaders;
+using Terraria.ModLoader;
 
 namespace Stellamod.Core.Shaders
 {
@@ -98,54 +100,6 @@ namespace Stellamod.Core.Shaders
         }
 
 
-        public static void CalculateVerticesTris(Vector2[] trailingPoints, Func<float, Color> colorFunc,
-            Func<float, float> widthFunc, List<VertexPositionColorTexture> vertices)
-        {
-
-            for (int i = 0; i < trailingPoints.Length - 1; i++)
-            {
-                float uv = i / (float)trailingPoints.Length;
-                float uv2 = (i + 1) / (float)trailingPoints.Length;
-                Vector2 width = widthFunc(uv) * Vector2.One;
-                Vector2 width2 = widthFunc(uv2) * Vector2.One;
-                Vector2 pos1 = trailingPoints[i];
-                Vector2 pos2 = trailingPoints[i + 1];
-
-                Vector2 off1 = MathUtil.GetRotation(trailingPoints, i) * width;
-                Vector2 off2 = MathUtil.GetRotation(trailingPoints, i + 1) * width2;
-
-                Color col1 = colorFunc(uv);
-                Color col2 = colorFunc(uv2);
-                float uvAdd = 0;
-                float uvMultiplier = 1;
-                float coord1 = 0;
-                float coord2 = 1;
-                vertices.Add(new VertexPositionColorTexture(new Vector3(pos1 + off1, 0f), col1, new Vector2((uv + uvAdd) * uvMultiplier, coord1)));
-                vertices.Add(new VertexPositionColorTexture(new Vector3(pos1 - off1, 0f), col1, new Vector2((uv + uvAdd) * uvMultiplier, coord2)));
-                vertices.Add(new VertexPositionColorTexture(new Vector3(pos2 + off2, 0f), col2, new Vector2((uv2 + uvAdd) * uvMultiplier, coord1)));
-                vertices.Add(new VertexPositionColorTexture(new Vector3(pos2 + off2, 0f), col2, new Vector2((uv2 + uvAdd) * uvMultiplier, coord1)));
-                vertices.Add(new VertexPositionColorTexture(new Vector3(pos2 - off2, 0f), col2, new Vector2((uv2 + uvAdd) * uvMultiplier, coord2)));
-                vertices.Add(new VertexPositionColorTexture(new Vector3(pos1 - off1, 0f), col1, new Vector2((uv + uvAdd) * uvMultiplier, coord2)));
-            }
-        }
-
-        private static List<VertexPositionColorTexture> CalculateVertices(Vector2[] oldPos,
-            float[] oldRot,
-            Func<float, Color> colorFunc,
-            Func<float, float> widthFunc,
-            Vector2? offset = null)
-        {
-            Vector2 o = offset == null ? Vector2.Zero : (Vector2)offset;
-            var vertices = new List<VertexPositionColorTexture>();
-            oldPos = MathUtil.RemoveZeros(oldPos, o);
-
-            float numPoints = oldPos.Length * 2;
-            Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
-            CalculateVerticesTris(trailingPoints, colorFunc, widthFunc, vertices);
-            return vertices;
-        }
-
-
         public static void DrawWithMiscShader(SpriteBatch spriteBatch,
             Vector2[] oldPos,
             float[] oldRot,
@@ -155,9 +109,13 @@ namespace Stellamod.Core.Shaders
             Vector2? offset = null)
         {
             shader.Apply();
+
+            /*
             var vertices = CalculateVertices(
-                oldPos, oldRot, colorFunc, widthFunc, offset);
-            DrawPrimsTriangles(vertices, null);
+                oldPos, oldRot, colorFunc, widthFunc, offset);*/
+
+
+            //DrawPrimsTriangles(vertices, null);
         }
 
         public static void Draw(SpriteBatch spriteBatch,
@@ -167,7 +125,7 @@ namespace Stellamod.Core.Shaders
             Func<float, float> widthFunc,
             BaseShader shader,
             Vector2? offset = null)
-        {
+        {  
             //Apply passes
             if (shader != null)
             {
@@ -184,18 +142,21 @@ namespace Stellamod.Core.Shaders
                     oldPos = filledPos;
                 }
             }
+            Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
+            float numPoints = oldPos.Length * 2;
 
-            //
-            var vertices = CalculateVertices(oldPos, oldRot, colorFunc, widthFunc, offset);
-            DrawPrimsTriangles(vertices, shader);
+            Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
 
+            TrailVertexHelper trailVertexCache = ModContent.GetInstance<TrailVertexHelper>();
+            trailVertexCache.Clear();
+            VertexSection section = trailVertexCache.FillVertexArrayNonAlloc(trailingPoints, colorFunc, widthFunc, trailOffset);
+            trailVertexCache.DrawPrimitives(section, shader);
             if (shader != null)
             {
                 shader.FillShape = false;
-
             }
-
         }
+
         public static void Draw(SpriteBatch spriteBatch,
              Vector2[] oldPos,
              Func<float, Color> colorFunc,
@@ -203,33 +164,7 @@ namespace Stellamod.Core.Shaders
              BaseShader shader,
              Vector2? offset = null)
         {
-            //Apply passes
-            if (shader != null)
-            {
-                shader.Apply();
-                ApplyPasses(shader.Effect);
-                if (shader.FillShape)
-                {
-                    Vector2[] filledPos = new Vector2[oldPos.Length + 1];
-                    for (int i = 0; i < oldPos.Length; i++)
-                    {
-                        filledPos[i] = oldPos[i];
-                    }
-                    filledPos[filledPos.Length - 1] = oldPos[0];
-                    oldPos = filledPos;
-                }
-            }
-
-            //
-            var vertices = CalculateVertices(oldPos, null, colorFunc, widthFunc, offset);
-            DrawPrimsTriangles(vertices, shader);
-
-            if (shader != null)
-            {
-                shader.FillShape = false;
-
-            }
-
+            Draw(spriteBatch, oldPos, null, colorFunc, widthFunc, shader, offset);
         }
 
 

@@ -26,7 +26,7 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
             Item.shoot = ModContent.ProjectileType<SandStormTornado>();
             Item.shootSpeed = 10f;
             Item.damage = 12;
-       
+            Item.mana = 6;
         }
 
         public override bool CanUseItem(Player player)

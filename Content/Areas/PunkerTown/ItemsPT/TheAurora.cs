@@ -26,6 +26,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         {
             base.SetDefaults();
             Item.noMelee = true;
+            Item.mana = 6;
             Item.damage = 19;
             Item.DamageType = DamageClass.Magic;
             Item.width = 40;

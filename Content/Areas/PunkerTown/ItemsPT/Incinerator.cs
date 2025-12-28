@@ -50,6 +50,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             type = ModContent.ProjectileType<IncineratorProj>();
+         
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             return false;
         }
@@ -168,12 +169,12 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
 
         public Color SmokeColorFunction(float completionRatio)
         {
-            return ColorFunction(completionRatio);
+            return ColorFunction(completionRatio) * 0.5f;
         }
         private void DrawMainShader(Vector2[] oldPos)
         {
             BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
+        //    TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
 
             BlackFireShader blackFireShader = BlackFireShader.Instance;
             TrailDrawer.Draw(Main.spriteBatch, oldPos, null, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);

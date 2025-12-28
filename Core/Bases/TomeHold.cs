@@ -204,8 +204,12 @@ namespace Stellamod.Core.Bases
 
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
 
-            spriteBatch.Draw(auraTextureAsset.Value, drawPos, null, drawColor, Projectile.rotation, drawOrigin, scale, SpriteEffects.None, 0);
-            spriteBatch.Draw(auraTextureAsset.Value, drawPos, null, drawColor, Projectile.rotation, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
+            for(int i = 0; i < 2; i++)
+            {
+                spriteBatch.Draw(auraTextureAsset.Value, drawPos, null, drawColor, Projectile.rotation, drawOrigin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(auraTextureAsset.Value, drawPos, null, drawColor, Projectile.rotation, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
+            }
+
 
             Asset<Texture2D> magicCircleTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/PentagramP2");
 
