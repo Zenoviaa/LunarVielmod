@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Colosseum.Common;
 using System.IO;
 using Terraria;
 using Terraria.Audio;

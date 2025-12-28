@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.NPCs.Colosseum.Common;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Terraria;
 using Terraria.ModLoader;
 

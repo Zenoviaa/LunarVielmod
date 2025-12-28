@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.GameContent.Animations.IL_Actions.NPCs;
 
-namespace Stellamod.NPCs.Colosseum.Common
+namespace Stellamod.Content.Areas.Collosseum.Event.Common
 {
     public abstract class BaseColosseumNPC : ModNPC
     {

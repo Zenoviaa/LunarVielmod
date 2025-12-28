@@ -1,9 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
-using Stellamod.NPCs.Colosseum.Common;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
@@ -11,7 +11,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 
-namespace Stellamod.NPCs.Colosseum
+namespace Stellamod.Content.Areas.Collosseum.Event
 {
 
     public class GintzeWindRider : BaseColosseumNPC,

@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Colosseum.Common;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -15,7 +15,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Colosseum
+namespace Stellamod.Content.Areas.Collosseum.Event
 {
     public class Gintzling : BaseColosseumNPC,
         IDrawOutlines
@@ -130,6 +130,8 @@ namespace Stellamod.NPCs.Colosseum
                 NPC.velocity.X = NPC.direction * x;
 
                 int jumpHeight = (int)(MathF.Abs(Target.Center.Y - NPC.Center.Y) / 16f) + 4;
+                if (Target.Center.Y > NPC.Center.Y)
+                    jumpHeight = 3;
                 NPC.velocity.Y -= jumpHeight;
             }
 

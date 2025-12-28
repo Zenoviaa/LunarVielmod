@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
-using Stellamod.NPCs.Colosseum.Common;
 using System;
 using System.IO;
 using Terraria;

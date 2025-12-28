@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
+using Stellamod.Content.Areas.Collosseum.Event.Projectiles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Armors.Pieces.RareMetals;
-using Stellamod.NPCs.Colosseum.Common;
-using Stellamod.NPCs.Colosseum.Projectiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -13,7 +13,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Colosseum
+namespace Stellamod.Content.Areas.Collosseum.Event
 {
     public class GintzeCaptain : BaseColosseumNPC,
         IDrawOutlines

@@ -1,13 +1,13 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Colosseum.Common;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Colosseum
+namespace Stellamod.Content.Areas.Collosseum.Event
 {
     public class GoldChain : ModProjectile
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Colosseum.Common;
 using System;
 using System.Diagnostics;
 using Terraria;

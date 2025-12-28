@@ -6,7 +6,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Colosseum.Common
+namespace Stellamod.Content.Areas.Collosseum.Event.Common
 {
     public class SpawnerNPC : ModNPC
     {

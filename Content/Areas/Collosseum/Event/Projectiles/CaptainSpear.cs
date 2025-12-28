@@ -10,7 +10,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Colosseum.Projectiles
+namespace Stellamod.Content.Areas.Collosseum.Event.Projectiles
 {
     public class CaptainSpear : ModProjectile,
         IDrawOutlines

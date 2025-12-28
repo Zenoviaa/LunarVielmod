@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Colosseum.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -164,7 +162,7 @@ namespace Stellamod.Core.DungeonGeneration
                     Rectangle rectangle = default;
                     using (var stream = mod.GetFileStream(structureFile))
                     {
-                        rectangle = Structurizer.ReadRectangle(stream); 
+                        rectangle = Structurizer.ReadRectangle(stream);
                     }
                     PlacedDoor[] placedDoors;
                     using (var stream = mod.GetFileStream(file))
@@ -172,7 +170,7 @@ namespace Stellamod.Core.DungeonGeneration
                         placedDoors = DungeonGenerationHelper.DoorsFromStream(stream);
                     }
 
-                   
+
                     Room room = new Room(prefab, rectangle, placedDoors);
                     rooms.Add(room);
                 }

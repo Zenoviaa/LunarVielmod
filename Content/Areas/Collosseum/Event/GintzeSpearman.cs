@@ -1,15 +1,15 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
+using Stellamod.Content.Areas.Collosseum.Event.Projectiles;
 using Stellamod.Core.Shaders;
-using Stellamod.NPCs.Colosseum.Common;
-using Stellamod.NPCs.Colosseum.Projectiles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Colosseum
+namespace Stellamod.Content.Areas.Collosseum.Event
 {
     public class GintzeSpearman : BaseColosseumNPC,
         IDrawOutlines

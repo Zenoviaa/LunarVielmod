@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-namespace Stellamod.NPCs.Colosseum.Common
+namespace Stellamod.Content.Areas.Collosseum.Event.Common
 {
     public class ColosseumSystem : ModSystem
     {

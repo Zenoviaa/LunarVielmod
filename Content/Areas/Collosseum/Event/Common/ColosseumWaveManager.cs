@@ -3,16 +3,18 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander;
 using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak;
+using Stellamod.Content.Areas.Collosseum.Event;
 using Stellamod.Core.TitleSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Ores;
+using Stellamod.NPCs;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Colosseum.Common
+namespace Stellamod.Content.Areas.Collosseum.Event.Common
 {
     public class ColosseumWaveManager : ModNPC
     {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Core.DungeonGeneration;
 using Stellamod.Core.RibbonSystem;
@@ -9,7 +10,6 @@ using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
 using Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using Stellamod.NPCs.Colosseum.Common;
 using Stellamod.NPCs.Town;
 using Stellamod.UI.Dialogue;
 using System;

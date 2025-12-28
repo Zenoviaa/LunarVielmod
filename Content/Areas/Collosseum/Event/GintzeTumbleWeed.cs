@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Items.Accessories.Foods;
-using Stellamod.NPCs.Colosseum.Common;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -13,7 +13,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Colosseum
+namespace Stellamod.Content.Areas.Collosseum.Event
 {
     public class GintzeTumbleWeed : BaseColosseumNPC,
         IDrawOutlines
