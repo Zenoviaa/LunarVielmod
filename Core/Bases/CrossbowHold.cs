@@ -305,7 +305,7 @@ namespace Stellamod.Core.Bases
             _crosshairTextureAsset ??= ModContent.Request<Texture2D>("Stellamod/Core/Bases/CrossbowCrosshair");
             Vector2 drawPos = Main.MouseWorld - Main.screenPosition;
             Vector2 drawOrigin = _crosshairTextureAsset.Size() / 2f;
-            float drawScale = 1f * CrosshairProgress * ExtraMath.Osc(0.95f, 1f, speed: 12);
+            float drawScale = 1f * ExtraMath.Osc(0.95f, 1f, speed: 12);
             float drawRotation = Main.GlobalTimeWrappedHourly;
             Color drawColor = Color.Red * CrosshairProgress;
 
