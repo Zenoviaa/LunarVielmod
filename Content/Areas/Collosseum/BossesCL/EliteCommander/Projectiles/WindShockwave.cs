@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Pixelation;
+using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System.Collections.Generic;
@@ -45,59 +47,57 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
             Projectile.velocity *= 1.01f;
         }
 
-        public float WidthFunction(float completionRatio)
+        private Color GetTrailColor(float progressOnTrail)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 0.62f;
-            return MathHelper.SmoothStep(baseWidth * 2, baseWidth, completionRatio);
+            return Color.Lerp(Color.White, Color.Transparent, progressOnTrail);
         }
-
-        public Color ColorFunction(float completionRatio)
+        private float GetTrailWidth(float progressOnTrail)
         {
-            Color startColor = Color.White;
-            float easedCompletion = Easing.InCubic(completionRatio);
-            return Color.Lerp(startColor, Color.Transparent, easedCompletion);
+            return MathHelper.SmoothStep(64, 0f, progressOnTrail);
         }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public override bool PreDraw(ref Color lightColor)
-        {
-            //Draw Trail
+        private void DrawPixelatedShockwave(GraphicsDevice graphicsDevice)
+        {        //Draw Trail
             _shockwavePos ??= new Vector2[Projectile.oldPos.Length];
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.RestartDefaults();
+
+            var shader = BasicLaserShader.Instance;
+            shader.InnerColor = Color.White;
+            shader.OuterColor = Color.DarkGray;
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
                 Vector2 oldPos = Projectile.oldPos[i];
                 List<Vector2> shockwavePos = new List<Vector2>();
                 float totalP = (float)i / (float)Projectile.oldPos.Length;
                 totalP = 1f - totalP;
-                for (int s = 0; s < 8; s++)
+
+                float numPoints = 4f;
+                for (int s = 0; s < numPoints; s++)
                 {
-                    float p = (float)s / 8f;
+                    float p = (float)s / numPoints;
                     Vector2 pos = Vector2.Lerp(oldPos, oldPos - Vector2.UnitY * 80 * totalP *
-                        VectorHelper.Osc(0.5f, 1f, speed: 6, offset: i * 4) * MathHelper.Clamp(Timer / 30f, 0f, 1f), p);
+                        VectorHelper.Osc(0.5f, 1f, speed: 12, offset: i * 4) * MathHelper.Clamp(Timer / 30f, 0f, 1f), p);
                     //
                     shockwavePos.Add(pos);
                 }
                 Vector2[] shockPos = shockwavePos.ToArray();
-                Vector2 trailOffset = -Main.screenPosition + Projectile.Size / 2;
-                TrailDrawer.DrawPrims(shockPos, trailOffset, 155);
+                Vector2 trailOffset = Projectile.Size / 2;
+                TrailDrawer.Draw(Main.spriteBatch, shockPos, GetTrailColor, GetTrailWidth, shader, trailOffset);
                 shockwavePos.Clear();
 
-                for (int s = 0; s < 8; s++)
+                for (int s = 0; s < numPoints; s++)
                 {
-                    float p = (float)s / 8f;
+                    float p = (float)s / numPoints;
                     shockwavePos.Add(Vector2.Lerp(oldPos, oldPos + Vector2.UnitY * 40 * totalP *
-                        VectorHelper.Osc(0.5f, 1f, speed: 6, offset: i * 4) * MathHelper.Clamp(Timer / 30f, 0f, 1f), p));
+                        VectorHelper.Osc(0.5f, 1f, speed: 12, offset: i * 4) * MathHelper.Clamp(Timer / 30f, 0f, 1f), p));
                 }
                 shockPos = shockwavePos.ToArray();
-                TrailDrawer.DrawPrims(shockPos, trailOffset, 155);
+                TrailDrawer.Draw(Main.spriteBatch, shockPos, GetTrailColor, GetTrailWidth, shader, trailOffset);
             }
 
 
-
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedShockwave);
 
             return false;
         }
