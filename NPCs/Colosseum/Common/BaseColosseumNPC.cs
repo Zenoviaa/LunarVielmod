@@ -43,6 +43,16 @@ namespace Stellamod.NPCs.Colosseum.Common
                 dp.gravity = 0.01f;
                 dp.fast = true;
             }
+            if(NPC.life <= 0)
+            {
+                for (int k = 0; k < 2; k++)
+                {
+                    Vector2 pos = NPC.position;
+                    pos.X += Main.rand.Next(0, NPC.width);
+                    pos.Y += Main.rand.Next(0, NPC.height);
+                    Particle<SmokeParticle>.SpawnInAlphaLayer(pos, -Vector2.UnitY);
+                }
+            }
         }
         public override void OnKill()
         {
