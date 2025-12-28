@@ -225,7 +225,13 @@ namespace Stellamod.Core.MoonWaters
             On_Main.CheckMonoliths += RenderHook;
             On_Main.DrawDust += CopyScreenTarget;
             On_OverlayManager.Draw += ApplyWaterShader;
-            On_Main.DoDraw += CopyScreenTarget;
+        }
+        public override void Unload()
+        {
+            base.Unload();
+            On_Main.CheckMonoliths -= RenderHook;
+            On_Main.DrawDust -= CopyScreenTarget;
+            On_OverlayManager.Draw -= ApplyWaterShader;
         }
         public override void OnModLoad()
         {
@@ -270,14 +276,7 @@ namespace Stellamod.Core.MoonWaters
             return _pixelWaterStyles[0];
         }
 
-        public override void Unload()
-        {
-            base.Unload();
-            On_Main.CheckMonoliths -= RenderHook;
-            On_Main.DrawDust -= CopyScreenTarget;
-            On_OverlayManager.Draw -= ApplyWaterShader;
-            On_Main.DoDraw -= CopyScreenTarget;
-        }
+
 
         private void CopyScreenTarget(On_Main.orig_DrawDust orig, Main self)
         {
@@ -311,11 +310,6 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.Begin();
             spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
             spriteBatch.End();
-        }
-
-        private void CopyScreenTarget(On_Main.orig_DoDraw orig, Main self, GameTime gameTime)
-        {
-            orig(self, gameTime);
         }
 
         private void ApplyWaterShader(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)

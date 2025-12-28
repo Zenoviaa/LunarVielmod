@@ -37,7 +37,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             _particles = new();
             _smearMaskRT = ManagedRenderTarget.New(GetScreenSize);
             On_Main.CheckMonoliths += RenderSmearRT;
-            On_Main.DoDraw += DrawToScreen;
        
         }
 
@@ -45,14 +44,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             base.OnModUnload();
             On_Main.CheckMonoliths -= RenderSmearRT;
-            On_Main.DoDraw -= DrawToScreen;
-        }
-
-        private void DrawToScreen(On_Main.orig_DoDraw orig, Main self, GameTime gameTime)
-        {
-            orig(self, gameTime);
-            if (Main.gameMenu)
-                return;
         }
 
         public override void PostUpdateDusts()

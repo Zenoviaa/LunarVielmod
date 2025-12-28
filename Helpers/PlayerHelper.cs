@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 
 namespace Stellamod.Helpers
@@ -55,6 +56,7 @@ namespace Stellamod.Helpers
         {
             Player closestPlayer = null;
             float closestDistance = float.MaxValue;
+
             foreach (var player in Main.ActivePlayers)
             {
                 float distance = Vector2.Distance(position, player.Center);

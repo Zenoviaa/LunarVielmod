@@ -211,6 +211,7 @@ namespace Stellamod.Core.SummonerSystem
         public override void PreUpdateNPCs()
         {
             base.PreUpdateNPCs();
+        
             //Starting from index 20 just so it doesn't conflict with most multiplayer playthroughs by default
             //But in the case it does I think it's fine?
             _playerIndex = 20;
