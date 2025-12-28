@@ -1,14 +1,12 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Stellamod.Core.Shaders;
-using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Foods;
 using Stellamod.NPCs.Colosseum.Common;
 using Stellamod.NPCs.Colosseum.Projectiles;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.ID;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Colosseum
@@ -51,13 +49,7 @@ namespace Stellamod.NPCs.Colosseum
         }
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Storm Knight");
             Main.npcFrameCount[NPC.type] = 11;
-        }
-
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bread>(), 20, 1, 3));
         }
 
         //No contact damage, I'm sorry brah
@@ -68,6 +60,7 @@ namespace Stellamod.NPCs.Colosseum
 
         public override void SetDefaults()
         {
+            base.SetDefaults();
             NPC.lifeMax = 150;
             NPC.damage = 44;
             NPC.defense = 9;
@@ -81,14 +74,22 @@ namespace Stellamod.NPCs.Colosseum
             NPC.noTileCollide = false;
         }
 
-        public override void AI()
-        {
-            if (!IsColosseumActive())
-            {
-                DespawnExplosion();
-            }
 
-            if(!NPC.HasValidTarget)
+
+        private void SwitchState(AIState state)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Timer = 0;
+                State = state;
+                NPC.netUpdate = true;
+            }
+        }
+
+        public override void Colosseum_AI()
+        {
+            base.Colosseum_AI();
+            if (!NPC.HasValidTarget)
                 NPC.TargetClosest();
 
             NPC.direction = Main.player[NPC.target].Center.X > NPC.Center.X ? 1 : -1;
@@ -103,21 +104,10 @@ namespace Stellamod.NPCs.Colosseum
                     break;
             }
         }
-
-        private void SwitchState(AIState state)
-        {
-            if (MultiplayerHelper.IsHost)
-            {
-                Timer = 0;
-                State = state;
-                NPC.netUpdate = true;
-            }
-        }
-
         private void AI_Pace()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
             }
@@ -136,17 +126,17 @@ namespace Stellamod.NPCs.Colosseum
         private void AI_SpearThrow()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
             }
-           
+
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, 0, 0.1f);
             float targetSineLineProgress = Timer / 120f;
             SightLineProgress = MathHelper.Lerp(SightLineProgress, targetSineLineProgress, 0.1f);
             FireVelocity = Vector2.Lerp(FireVelocity, (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero), 0.1f);
 
-            if(Timer > 60)
+            if (Timer > 60)
             {
                 _outlineColor = Color.Lerp(Color.Transparent, Color.Yellow, (Timer - 60f) / 60f);
             }
@@ -176,9 +166,11 @@ namespace Stellamod.NPCs.Colosseum
             }
         }
 
+        private Asset<Texture2D> _sightLineTextureAsset;
         private void DrawSightLine(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture + "_SightLine").Value;
+            _sightLineTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_SightLine");
+            Texture2D texture = _sightLineTextureAsset.Value;
             Vector2 drawPos = NPC.Center - screenPos;
             Vector2 drawOrigin = new Vector2(0, texture.Height / 2);
             float drawRotation = FireVelocity.ToRotation();
@@ -191,7 +183,7 @@ namespace Stellamod.NPCs.Colosseum
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             DrawSightLine(spriteBatch, screenPos, drawColor);
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Texture2D texture = TextureAssets.Npc[Type].Value;
             Vector2 drawPos = NPC.Center - screenPos;
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
             float drawRotation = NPC.rotation;
@@ -204,26 +196,7 @@ namespace Stellamod.NPCs.Colosseum
 
         public override void HitEffect(NPC.HitInfo hit)
         {
-            for (int k = 0; k < 4; k++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
-            }
-            if (NPC.life <= 0)
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);
-                    Main.dust[num].noGravity = true;
-                    Dust expr_62_cp_0 = Main.dust[num];
-                    expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-50, 51) / 20 - 1.5f);
-                    Dust expr_92_cp_0 = Main.dust[num];
-                    expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-50, 51) / 20 - 1.5f);
-                    if (Main.dust[num].position != NPC.Center)
-                    {
-                        Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
-                    }
-                }
-            }
+            GintzeHitEffect(hit);
         }
 
         public override void FindFrame(int frameHeight)
@@ -256,7 +229,7 @@ namespace Stellamod.NPCs.Colosseum
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Texture2D texture = TextureAssets.Npc[Type].Value;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
             float drawRotation = NPC.rotation;

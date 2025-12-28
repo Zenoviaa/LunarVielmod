@@ -86,7 +86,7 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 64;
+            Projectile.width = 90;
             Projectile.height = 128;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;

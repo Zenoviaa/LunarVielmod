@@ -1,15 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Colosseum.Projectiles
 {
-    public class CaptainSpear : ModProjectile
+    public class CaptainSpear : ModProjectile,
+        IDrawOutlines
     {
         private Vector2 InitialVelocity;
         private ref float Timer => ref Projectile.ai[0];
@@ -28,7 +32,7 @@ namespace Stellamod.NPCs.Colosseum.Projectiles
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ProjectileID.Sets.TrailCacheLength[Type] = 7;
+            ProjectileID.Sets.TrailCacheLength[Type] = 10;
             ProjectileID.Sets.TrailingMode[Type] = 2;
         }
 
@@ -102,31 +106,42 @@ namespace Stellamod.NPCs.Colosseum.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Texture2D texture = TextureAssets.Projectile[Type].Value;
             Vector2 drawOrigin = texture.Size() / 2f;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             Color drawColor = Color.White.MultiplyRGB(lightColor);
             float rotation = Projectile.rotation;
             float drawScale = 1f;
 
-            spriteBatch.Restart(blendState: BlendState.Additive);
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
                 float trailProgress = (float)i / (float)Projectile.oldPos.Length;
                 Vector2 oldPos = Projectile.oldPos[i];
-                Vector2 glowDrawPos = oldPos + Projectile.Size / 2;
+                Vector2 glowDrawPos = oldPos + Projectile.Size / 2 - Main.screenPosition;
                 Color startColor = Color.White;
                 Color endColor = Color.Transparent;
                 Color glowDrawColor = Color.Lerp(startColor, endColor, trailProgress);
-                spriteBatch.Draw(texture, glowDrawPos, null, glowDrawColor, Projectile.oldRot[i], drawOrigin, drawScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture, glowDrawPos, null, glowDrawColor * 0.5f, Projectile.oldRot[i], drawOrigin, drawScale, SpriteEffects.None, 0f);
             }
-            spriteBatch.RestartDefaults();
-            float b = (Timer / 30f);
-            b = MathHelper.Clamp(b, 0f, 1f);
-            spriteBatch.Draw(texture, drawPos, null, drawColor * b, rotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+
+
+            DrawSprite(spriteBatch, Main.screenPosition, lightColor);
             return false;
         }
 
+        private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            Texture2D texture = TextureAssets.Projectile[Type].Value;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            Vector2 drawPos = Projectile.Center - screenPos;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            float rotation = Projectile.rotation;
+            float drawScale = 1f;
+
+            float b = (Timer / 30f);
+            b = MathHelper.Clamp(b, 0f, 1f);
+            spriteBatch.Draw(texture, drawPos, null, drawColor * b, rotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
+        }
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
@@ -135,6 +150,11 @@ namespace Stellamod.NPCs.Colosseum.Projectiles
                 Vector2 vel = -Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(15)).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 5f);
                 Dust.NewDustPerfect(Projectile.Center, DustID.GemDiamond, vel);
             }
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            DrawExtensions.DrawOutline(DrawSprite, spriteBatch, screenPos, Color.Red);
         }
     }
 }

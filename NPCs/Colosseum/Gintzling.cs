@@ -1,8 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.Particles;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Colosseum.Common;
+using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -13,13 +17,32 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Colosseum
 {
-    public class Gintzling : BaseColosseumNPC
+    public class Gintzling : BaseColosseumNPC,
+        IDrawOutlines
     {
+        private bool _warn;
+        private bool _contactDamage;
+        private bool _pauseAnimation;
+        private Color _outlineColor;
+
+        private Color TargetOutlineColor;
         private Player Target => Main.player[NPC.target];
+        private ref float Timer => ref NPC.ai[0];
+        private enum AIState
+        {
+            Idle,
+            Jump,
+            JumpWarn
+        }
+        private AIState State
+        {
+            get => (AIState)NPC.ai[1];
+            set => NPC.ai[1] = (float)value;
+        }
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 8;
-            NPCID.Sets.TrailCacheLength[NPC.type] = 3;
+            NPCID.Sets.TrailCacheLength[NPC.type] = 6;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
         }
 
@@ -27,7 +50,7 @@ namespace Stellamod.NPCs.Colosseum
         {
             NPC.width = 58; // The width of the npc's hitbox (in pixels)
             NPC.height = 58; // The height of the npc's hitbox (in pixels)
-            NPC.aiStyle = 41; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
+            NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
             NPC.damage = 30; // The amount of damage that this npc deals
             NPC.defense = 10; // The amount of defense that this npc has
             NPC.lifeMax = 70; // The amount of health that this npc has
@@ -37,25 +60,105 @@ namespace Stellamod.NPCs.Colosseum
             NPC.knockBackResist = 0.4f;
         }
 
-        public override void AI()
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            if (!IsColosseumActive())
+            return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
+        }
+
+        public override void Colosseum_AI()
+        {
+            base.Colosseum_AI();
+            if (!NPC.HasValidTarget)
+                NPC.TargetClosest();
+
+            if (_contactDamage)
+                TargetOutlineColor = Color.Red;
+            else if (_warn)
+                TargetOutlineColor = Color.Yellow;
+            else
+                TargetOutlineColor = Color.Transparent;
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            _warn = false;
+            _contactDamage = false;
+            _pauseAnimation = false;
+            switch (State)
             {
-                DespawnExplosion();
+                case AIState.Idle:
+                    AI_Idle();
+                    break;
+                case AIState.Jump:
+                    AI_Jump();
+                    break;
+                case AIState.JumpWarn:
+                    AI_JumpWarn();
+                    break;
+            }
+            NPC.spriteDirection = -NPC.direction;
+        }
+
+        private void SwitchState(AIState state)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Timer = 0;
+                State = state;
+                NPC.netUpdate = true;
+            }
+        }
+
+        private void AI_Idle()
+        {
+
+            Timer++;
+            NPC.velocity.X *= 0.9f;
+            NPC.direction = (Target.Center.X > NPC.Center.X) ? 1 : -1;
+            if(Timer >= 100)
+            {
+                SwitchState(AIState.JumpWarn);
+            }
+        }
+
+        private void AI_Jump()
+        {
+            Timer++; _pauseAnimation = true;
+            _contactDamage = true;
+            if (Timer == 1)
+            {
+                float jumpX = (MathF.Abs(Target.Center.X - NPC.Center.X) / 32f);
+                float maxX = 9;
+                float x = MathF.Min(jumpX, maxX);
+                NPC.velocity.X = NPC.direction * x;
+
+                int jumpHeight = (int)(MathF.Abs(Target.Center.Y - NPC.Center.Y) / 16f) + 4;
+                NPC.velocity.Y -= jumpHeight;
             }
 
-            NPC.velocity.X *= 0.99f;
-            NPC.velocity.Y *= 1.02f;
+            if (Timer > 10 && NPC.collideY)
+            {
+                SwitchState(AIState.Idle);
+            }
+
+            //Failsafe
+            if (Timer > 120)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+
+        private void AI_JumpWarn()
+        {
+            _warn = true;
+            Timer++;
+            if(Timer >= 60)
+            {
+                SwitchState(AIState.Jump);
+            }
         }
 
 
         public override bool? CanFallThroughPlatforms()
         {
             return Target.Bottom.Y - 16 > NPC.Bottom.Y;
-        }
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -71,6 +174,11 @@ namespace Stellamod.NPCs.Colosseum
         private int _frame = 0;
         public override void FindFrame(int frameHeight)
         {
+            if (_pauseAnimation)
+           {
+                _frame = 0;
+            }
+
             NPC.frameCounter += 0.5f;
             if (NPC.frameCounter >= 4)
             {
@@ -86,83 +194,42 @@ namespace Stellamod.NPCs.Colosseum
 
         public override void HitEffect(NPC.HitInfo hit)
         {
-            for (int k = 0; k < 5; k++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
-            }
-            if (NPC.life <= 0)
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);
-                    Main.dust[num].noGravity = true;
-                    Dust expr_62_cp_0 = Main.dust[num];
-                    expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-50, 51) / 20 - 1.5f);
-                    Dust expr_92_cp_0 = Main.dust[num];
-                    expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-50, 51) / 20 - 1.5f);
-                    if (Main.dust[num].position != NPC.Center)
-                    {
-                        Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
-                    }
-                }
-            }
-
+            GintzeHitEffect(hit);
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Morrowpes"), NPC.position);
         }
 
-
-
-        Vector2 Drawoffset => new Vector2(0, NPC.gfxOffY) + Vector2.UnitX * NPC.spriteDirection * 0;
-        public virtual string GlowTexturePath => Texture + "_Glow";
-        private Asset<Texture2D> _glowTexture;
-        public Texture2D GlowTexture => (_glowTexture ??= (ModContent.RequestIfExists<Texture2D>(GlowTexturePath, out var asset) ? asset : null))?.Value;
-        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            float num108 = 4;
-            float num107 = (float)Math.Cos((double)(Main.GlobalTimeWrappedHourly % 1.4f / 1.4f * 6.28318548f)) / 2f + 0.5f;
-            float num106 = 0f;
-            Color color1 = Color.LightBlue * num107 * .8f;
-            var effects = NPC.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            spriteBatch.Draw(
-                GlowTexture,
-                NPC.Center - Main.screenPosition + Drawoffset,
-                NPC.frame,
-                color1,
-                NPC.rotation,
-                NPC.frame.Size() / 2,
-                NPC.scale,
-                effects,
-                0
-            );
-            SpriteEffects spriteEffects3 = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            Vector2 vector33 = new Vector2(NPC.Center.X, NPC.Center.Y) - Main.screenPosition + Drawoffset - NPC.velocity;
-            Color color29 = new Color(127 - NPC.alpha, 127 - NPC.alpha, 127 - NPC.alpha, 0).MultiplyRGBA(Color.White);
-            for (int num103 = 0; num103 < 4; num103++)
+            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Texture2D texture = TextureAssets.Npc[Type].Value;
+            //Draw after images
+            for (int i = 0; i < NPC.oldPos.Length; i++)
             {
-                Color color28 = color29;
-                color28 = NPC.GetAlpha(color28);
-                color28 *= 1f - num107;
-                Vector2 vector29 = NPC.Center + (num103 / (float)num108 * 6.28318548f + NPC.rotation + num106).ToRotationVector2() * (4f * num107 + 2f) - Main.screenPosition + Drawoffset - NPC.velocity * num103;
-                Main.spriteBatch.Draw(GlowTexture, vector29, NPC.frame, color28, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects3, 0f);
+                float progressOnTrail = (float)i / (float)NPC.oldPos.Length;
+                Vector2 oldPos = NPC.oldPos[i];
+                Vector2 drawCenter = oldPos + NPC.Size / 2f - screenPos;
+                Vector2 drawOrigin = NPC.frame.Size() / 2f;
+                Color afterImageColor = Color.Lerp(Color.White, Color.Transparent, progressOnTrail);
+                afterImageColor *= 0.5f;
+                spriteBatch.Draw(texture, drawCenter, NPC.frame, afterImageColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
             }
+            DrawSprite(spriteBatch, screenPos, drawColor);
+            return false;
         }
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
-        {
-            Lighting.AddLight(NPC.Center, Color.Silver.ToVector3() * 0.25f * Main.essScale);
-            SpriteEffects Effects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            var drawOrigin = new Vector2(TextureAssets.Npc[NPC.type].Width() * 0.5f, NPC.height * 0.5f);
-            for (int k = 0; k < NPC.oldPos.Length; k++)
-            {
-                Vector2 drawPos = NPC.oldPos[k] - Main.screenPosition + NPC.Size / 2 + new Vector2(0f, NPC.gfxOffY);
-                Color color = NPC.GetAlpha(Color.Lerp(new Color(191, 165, 160), new Color(191, 59, 51), 1f / NPC.oldPos.Length * k) * (1f - 1f / NPC.oldPos.Length * k));
-                spriteBatch.Draw(TextureAssets.Npc[NPC.type].Value, drawPos, new Microsoft.Xna.Framework.Rectangle?(NPC.frame), color, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, Effects, 0f);
-            }
 
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            return true;
+        private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            Texture2D texture = TextureAssets.Npc[Type].Value;
+            Vector2 drawOrigin = NPC.frame.Size() / 2f;
+            Vector2 drawCenter = NPC.Center - screenPos;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            spriteBatch.Draw(texture, drawCenter, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            DrawExtensions.DrawOutline(DrawSprite, spriteBatch, screenPos, _outlineColor);
         }
     }
 }

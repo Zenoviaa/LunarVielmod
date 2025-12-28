@@ -1,21 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Foods;
 using Stellamod.Items.Armors.Pieces.RareMetals;
 using Stellamod.NPCs.Colosseum.Common;
 using Stellamod.NPCs.Colosseum.Projectiles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Colosseum
 {
-    public class GintzeCaptain : BaseColosseumNPC
+    public class GintzeCaptain : BaseColosseumNPC,
+        IDrawOutlines
     {
+        private bool _warn;
+        private bool _contactDamage;
+        private Color _outlineColor;
+        private Color TargetOutlineColor;
+
         private int _frame;
         private enum AIState
         {
@@ -64,15 +71,25 @@ namespace Stellamod.NPCs.Colosseum
             NPC.noTileCollide = false;
         }
 
-        public override void AI()
+        public override void Colosseum_AI()
         {
-            NPC.TargetClosest();
-            NPC.spriteDirection = NPC.direction;
-            if (!IsColosseumActive())
-            {
-                DespawnExplosion();
-            }
+            base.Colosseum_AI();
 
+
+            if (_contactDamage)
+                TargetOutlineColor = Color.Red;
+            else if (_warn)
+                TargetOutlineColor = Color.Yellow;
+            else
+                TargetOutlineColor = Color.Transparent;
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            _warn = false;
+            _contactDamage = false;
+
+
+            if (!NPC.HasValidTarget)
+                NPC.TargetClosest();
+            NPC.spriteDirection = -NPC.direction;
             switch (State)
             {
                 case AIState.Idle:
@@ -86,6 +103,7 @@ namespace Stellamod.NPCs.Colosseum
                     break;
             }
         }
+
 
         public override void FindFrame(int frameHeight)
         {
@@ -130,6 +148,7 @@ namespace Stellamod.NPCs.Colosseum
         {
             Timer++;
             NPC.velocity.X *= 0.92f;
+            NPC.direction = (Target.Center.X > NPC.Center.X) ? 1 : -1;
             if (Timer > 120 && NPC.HasValidTarget)
             {
                 SwitchState(AIState.Pace);
@@ -142,12 +161,13 @@ namespace Stellamod.NPCs.Colosseum
             float moveSpeed = 0.5f;
             Vector2 targetVelocity = new Vector2(DirectionToTarget * moveSpeed, 0);
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity.X, 0.3f);
-
+            NPC.direction = (Target.Center.X > NPC.Center.X) ? 1 : -1;
             float distanceToTarget = Vector2.Distance(NPC.Center, Target.Center);
-            if (distanceToTarget < Radius)
+            if (distanceToTarget < Radius && Timer >= 60)
             {
                 SwitchState(AIState.Summon);
             }
+            _warn = true;
         }
 
         private void AI_Summon()
@@ -174,8 +194,43 @@ namespace Stellamod.NPCs.Colosseum
             {
                 SwitchState(AIState.Idle);
             }
+            _contactDamage = true;
         }
 
+   
+        private void SwitchState(AIState state)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Timer = 0;
+                State = state;
+                NPC.netUpdate = true;
+            }
+        }
+
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            GintzeHitEffect(hit);
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzeMask>(), 80, 1, 1));
+        }
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return false;
+        }
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
+            {
+				// Sets the description of this NPC that is listed in the bestiary.
+				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A Captain of Gothivia's ranks, be careful"))
+            });
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D bannerTexture = ModContent.Request<Texture2D>(Texture + "_MiniBanner").Value;
@@ -196,58 +251,25 @@ namespace Stellamod.NPCs.Colosseum
                 spriteBatch.Draw(bannerTexture, drawPos, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             }
             spriteBatch.RestartDefaults();
-            return base.PreDraw(spriteBatch, screenPos, drawColor);
+            DrawSprite(spriteBatch, screenPos, drawColor);
+            return false;
         }
 
-        private void SwitchState(AIState state)
+
+        private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            if (MultiplayerHelper.IsHost)
-            {
-                Timer = 0;
-                State = state;
-                NPC.netUpdate = true;
-            }
+            Texture2D texture = TextureAssets.Npc[Type].Value;
+            Vector2 drawOrigin = NPC.frame.Size() / 2f;
+            Vector2 drawCenter = NPC.Center - screenPos;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            spriteBatch.Draw(texture, drawCenter, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
         }
 
-        public override void HitEffect(NPC.HitInfo hit)
-        {
-            for (int k = 0; k < 4; k++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
-            }
 
-            if (NPC.life <= 0)
-            {
-                for (int i = 0; i < 20; i++)
-                {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);
-                    Main.dust[num].noGravity = true;
-                    Dust expr_62_cp_0 = Main.dust[num];
-                    expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-50, 51) / 20 - 1.5f);
-                    Dust expr_92_cp_0 = Main.dust[num];
-                    expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-50, 51) / 20 - 1.5f);
-                    if (Main.dust[num].position != NPC.Center)
-                    {
-                        Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
-                    }
-                }
-            }
-        }
-
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GintzeMask>(), 80, 1, 1));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bread>(), 10, 1, 3));
-        }
-
-        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-        {
-            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
-            {
-				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "A Captain of Gothivia's ranks, be careful"))
-            });
+            DrawExtensions.DrawOutline(DrawSprite, spriteBatch, screenPos, _outlineColor);
         }
     }
 }

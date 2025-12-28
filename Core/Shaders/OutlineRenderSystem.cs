@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -15,16 +16,15 @@ namespace Stellamod.Core.Shaders
     {
         private List<IDrawOutlines> _outlinesToDraw;
         private List<Color> _lightColors;
-        private RenderTarget2D _playerOutlineRenderRT;
+        private ManagedRenderTarget _playerOutlineRenderRT;
         private Vector2 _previousScreenSize;
         public override void OnModLoad()
         {
             base.OnModLoad();
             On_Main.DrawNPCs += DrawOutlines;
-
             On_Main.CheckMonoliths += DrawToPlayerOutlineRT;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawPlayerOutlineRTToScreen;
-            ResizeRenderTarget(true);
+            _playerOutlineRenderRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
         }
 
 
@@ -32,7 +32,6 @@ namespace Stellamod.Core.Shaders
         {
             base.OnModUnload();
             On_Main.DrawNPCs -= DrawOutlines;
-
             On_Main.CheckMonoliths -= DrawToPlayerOutlineRT;
             On_Main.DoDraw_DrawNPCsOverTiles -= DrawPlayerOutlineRTToScreen;
 
@@ -74,40 +73,11 @@ namespace Stellamod.Core.Shaders
             orig();
         }
 
-
-        public override void PostUpdateEverything()
-        {
-            ResizeRenderTarget(false);
-        }
-
         private bool OutlineAnyPlayers()
         {
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
             return clientConfig.OutlinePlayer || clientConfig.OutlineOtherPlayers;
 
-        }
-        private void ResizeRenderTarget(bool load)
-        {
-            if (!OutlineAnyPlayers())
-                return;
-
-            if (!Main.gameMenu && !Main.dedServ || load && !Main.dedServ)
-            {
-                Vector2 currentScreenSize = new(Main.screenWidth, Main.screenHeight);
-                if (currentScreenSize != _previousScreenSize)
-                {
-                    Main.QueueMainThreadAction(() =>
-                    {
-
-                        if (_playerOutlineRenderRT != null && !_playerOutlineRenderRT.IsDisposed)
-                            _playerOutlineRenderRT.Dispose();
-
-                        _playerOutlineRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
-                    });
-                }
-
-                _previousScreenSize = currentScreenSize;
-            }
         }
 
         private void DrawPlayerOutlineRTToScreen(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)

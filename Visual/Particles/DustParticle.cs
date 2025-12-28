@@ -16,6 +16,7 @@ namespace Stellamod.Visual.Particles
         public Color outerColor;
         public Vector2 stretchScale;
         public float dampening;
+        public bool fast;
         public override void OnSpawn()
         {
             gravity = 0.2f;
@@ -31,6 +32,8 @@ namespace Stellamod.Visual.Particles
             Velocity *= 1.0f - dampening;
             Rotation = Velocity.ToRotation();
             Scale *= 0.98f;
+            if (fast)
+                Scale *= 0.98f;
             color *= 0.99f;
 
             float stretchInterp = Velocity.Length() / 5f;

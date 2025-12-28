@@ -1,9 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Foods;
 using Stellamod.NPCs.Colosseum.Common;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -11,8 +15,15 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Colosseum
 {
-    public class GintzeSolider : BaseColosseumNPC
+    public class GintzeSolider : BaseColosseumNPC,
+        IDrawOutlines
     {
+        private bool _warn;
+        private bool _contactDamage;
+        private Color _outlineColor;
+
+        private Color TargetOutlineColor;
+
         private int _frame;
         private enum AIState
         {
@@ -83,21 +94,32 @@ namespace Stellamod.NPCs.Colosseum
             NPC.frame.Y = frameHeight * _frame;
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
+        }
+
         public override bool? CanFallThroughPlatforms()
         {
             return Target.Bottom.Y - 16 > NPC.Bottom.Y;
         }
 
-        public override void AI()
+        public override void Colosseum_AI()
         {
-            base.AI();
-            if (!IsColosseumActive())
-            {
-                DespawnExplosion();
-            }
-
-            NPC.TargetClosest();
-            NPC.spriteDirection = NPC.direction;
+            base.Colosseum_AI();
+            if(!NPC.HasValidTarget)
+                NPC.TargetClosest();
+            NPC.direction = Target.Center.X > NPC.Center.X ? 1 : -1;
+            NPC.spriteDirection = -NPC.direction;
+            if (_contactDamage)
+                TargetOutlineColor = Color.Red;
+            else if (_warn)
+                TargetOutlineColor = Color.Yellow;
+            else
+                TargetOutlineColor = Color.Transparent;
+            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            _warn = false;
+            _contactDamage = false;
             switch (State)
             {
                 case AIState.Chase:
@@ -111,6 +133,7 @@ namespace Stellamod.NPCs.Colosseum
 
         private void AI_Chase()
         {
+            _contactDamage = true;
             Timer++;
             float moveSpeed = 2;
             Vector2 targetVelocity = new Vector2(DirectionToTarget * moveSpeed, 0);
@@ -150,33 +173,45 @@ namespace Stellamod.NPCs.Colosseum
                 NPC.netUpdate = true;
             }
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
-            for (int k = 0; k < 4; k++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
-            }
-            if (NPC.life <= 0)
-            {
-                for (int i = 0; i < 20; i++)
-                {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);
-                    Main.dust[num].noGravity = true;
-                    Dust expr_62_cp_0 = Main.dust[num];
-                    expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-50, 51) / 20 - 1.5f);
-                    Dust expr_92_cp_0 = Main.dust[num];
-                    expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-50, 51) / 20 - 1.5f);
-                    if (Main.dust[num].position != NPC.Center)
-                    {
-                        Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
-                    }
-                }
-            }
+            GintzeHitEffect(hit);
         }
 
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bread>(), 10, 1, 3));
+            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Texture2D texture = TextureAssets.Npc[Type].Value;
+            //Draw after images
+            for (int i = 0; i < NPC.oldPos.Length; i++)
+            {
+                float progressOnTrail = (float)i / (float)NPC.oldPos.Length;
+                Vector2 oldPos = NPC.oldPos[i];
+                Vector2 drawCenter = oldPos + NPC.Size / 2f - screenPos;
+                Vector2 drawOrigin = NPC.frame.Size() / 2f;
+                Color afterImageColor = Color.Lerp(Color.White, Color.Transparent, progressOnTrail);
+                afterImageColor *= 0.5f;
+                spriteBatch.Draw(texture, drawCenter, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+            }
+            DrawSprite(spriteBatch, screenPos, drawColor);
+            return false;
+        }
+
+        private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            Texture2D texture = TextureAssets.Npc[Type].Value;
+            Vector2 drawOrigin = NPC.frame.Size() / 2f;
+            Vector2 drawCenter = NPC.Center - screenPos;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            spriteBatch.Draw(texture, drawCenter, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            DrawExtensions.DrawOutline(DrawSprite, spriteBatch, screenPos, _outlineColor);
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)

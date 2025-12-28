@@ -1,15 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Particles;
+using Stellamod.Core.Shaders;
+using Stellamod.Core.Utilities;
 using Stellamod.Items.Accessories.Foods;
 using Stellamod.NPCs.Colosseum.Common;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Colosseum
 {
-    public class GintzeTumbleWeed : BaseColosseumNPC
+    public class GintzeTumbleWeed : BaseColosseumNPC,
+        IDrawOutlines
     {
         private int _frame;
         private enum AIState
@@ -17,6 +24,7 @@ namespace Stellamod.NPCs.Colosseum
             Chase,
             Jump
         }
+        private Color _outlineColor;
         private ref float Timer => ref NPC.ai[0];
 
         private AIState State
@@ -25,6 +33,7 @@ namespace Stellamod.NPCs.Colosseum
             set => NPC.ai[1] = (float)value;
         }
 
+        private ref float BuiltUpSpeed => ref NPC.ai[2];
         private Player Target => Main.player[NPC.target];
         private float DirectionToTarget
         {
@@ -64,14 +73,14 @@ namespace Stellamod.NPCs.Colosseum
             return Target.Bottom.Y - 16 > NPC.Bottom.Y;
         }
 
-        public override void AI()
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            base.AI();
-            if (!IsColosseumActive())
-            {
-                DespawnExplosion();
-            }
+            return base.CanHitPlayer(target, ref cooldownSlot) && State == AIState.Chase;
+        }
 
+        public override void Colosseum_AI()
+        {
+            base.Colosseum_AI();
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
             switch (State)
@@ -90,11 +99,17 @@ namespace Stellamod.NPCs.Colosseum
 
         private void AI_Chase()
         {
-            Timer++;
-            float moveSpeed = 3;
-            Vector2 targetVelocity = new Vector2(DirectionToTarget * moveSpeed, 0);
-            NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity.X, 0.24f);
+            _outlineColor = Color.Lerp(_outlineColor, Color.Red, 0.1f);
 
+            Timer++;
+            float moveSpeed = BuiltUpSpeed;
+            Vector2 targetVelocity = new Vector2(DirectionToTarget * moveSpeed, 0);
+            NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity.X, 0.02f);
+            if (NPC.collideY)
+            {
+                if(BuiltUpSpeed < 5)
+                    BuiltUpSpeed += 0.1f;
+            }
             bool jumpWhenBelowPlayer = Target.Bottom.Y < NPC.Top.Y && NPC.collideY;
             bool jumpWhenBouncing = NPC.collideY;
             if (jumpWhenBelowPlayer)
@@ -109,12 +124,14 @@ namespace Stellamod.NPCs.Colosseum
 
         private void AI_Jump()
         {
+            _outlineColor = Color.Lerp(_outlineColor, Color.Yellow, 0.1f);
             Timer++;
             if (Timer == 1)
             {
                 NPC.velocity.Y -= 12;
             }
-
+            if(BuiltUpSpeed > 0)
+                BuiltUpSpeed -= 0.1f;
             if (Timer > 10 && NPC.collideY)
             {
                 SwitchState(AIState.Chase);
@@ -136,33 +153,30 @@ namespace Stellamod.NPCs.Colosseum
                 NPC.netUpdate = true;
             }
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
-            for (int k = 0; k < 4; k++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.SilverCoin, 2.5f * hit.HitDirection, -2.5f, 180, default, .6f);
-            }
-            if (NPC.life <= 0)
-            {
-                for (int i = 0; i < 20; i++)
-                {
-                    int num = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Copper, 0f, -2f, 180, default, .6f);
-                    Main.dust[num].noGravity = true;
-                    Dust expr_62_cp_0 = Main.dust[num];
-                    expr_62_cp_0.position.X = expr_62_cp_0.position.X + (Main.rand.Next(-50, 51) / 20 - 1.5f);
-                    Dust expr_92_cp_0 = Main.dust[num];
-                    expr_92_cp_0.position.Y = expr_92_cp_0.position.Y + (Main.rand.Next(-50, 51) / 20 - 1.5f);
-                    if (Main.dust[num].position != NPC.Center)
-                    {
-                        Main.dust[num].velocity = NPC.DirectionTo(Main.dust[num].position) * 6f;
-                    }
-                }
-            }
+            GintzeHitEffect(hit);
         }
 
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Bread>(), 10, 1, 3));
+            DrawSprite(spriteBatch, screenPos, drawColor);
+            return false;
+        }
+
+        private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            Texture2D texture = TextureAssets.Npc[Type].Value;
+            Vector2 drawOrigin = NPC.frame.Size() / 2f;
+            Vector2 drawCenter = NPC.Center - screenPos;
+            Color drawColor = Color.White.MultiplyRGB(lightColor);
+            spriteBatch.Draw(texture, drawCenter, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0);
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            DrawExtensions.DrawOutline(DrawSprite, spriteBatch, screenPos, _outlineColor);
         }
     }
 }
