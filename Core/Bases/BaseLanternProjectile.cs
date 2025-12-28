@@ -4,12 +4,17 @@ using Stellamod.Buffs;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
+    /// <summary>
+    /// Base class for a lantern type projectile, which emits light and acts as a great pet!
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class BaseLanternProjectile<T> : ModProjectile, ILightEmitter,
         IDrawOutlines where T : ModBuff
     {
@@ -18,7 +23,7 @@ namespace Stellamod.Core.Bases
             Pet,
             Flashlight
         }
-
+        private Vector2 _lightVelocity;
         private ILight _light;
         private ref float Timer => ref Projectile.ai[0];
         private AIState State
@@ -35,12 +40,24 @@ namespace Stellamod.Core.Bases
         public float FlashlightLength { get; set; }
         public float FlashlightDegrees { get; set; }
         public float PetLightModifier { get; set; }
-        public Vector2 LightVelocity { get; set; }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(_lightVelocity);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _lightVelocity = reader.ReadVector2();
+        }
+        
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
             ProjectileID.Sets.LightPet[Projectile.type] = true;
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -61,6 +78,18 @@ namespace Stellamod.Core.Bases
         public override void AI()
         {
             base.AI();
+            if (!Owner.active)
+            {
+                Projectile.active = false;
+                return;
+            }
+
+            // Keep the projectile disappearing as long as the player isn't dead and has the pet buff.
+            if (!Owner.dead && Owner.HasBuff(ModContent.BuffType<T>()))
+            {
+                Projectile.timeLeft = 2;
+            }
+
             Timer++;
             switch (State)
             {
@@ -76,41 +105,34 @@ namespace Stellamod.Core.Bases
 
             if (Main.myPlayer == Projectile.owner)
             {
-                LightVelocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);
+                _lightVelocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);
+                Projectile.netUpdate = true;
             }
-
         }
 
         protected abstract ILight GetLight();
         private void AI_Pet()
         {
-            if (!Owner.active)
-            {
-                Projectile.active = false;
-                return;
-            }
 
-            // Keep the projectile disappearing as long as the player isn't dead and has the pet buff.
-            if (!Owner.dead && Owner.HasBuff(ModContent.BuffType<T>()))
+            if (Owner.HeldItem.shoot == Type)
             {
-                Projectile.timeLeft = 2;
+                State = AIState.Flashlight;
             }
 
             Vector2 targetPos = Owner.Center + new Vector2(Owner.direction * 12, -32);
             Vector2 velocity = targetPos - Projectile.Center;
-            //    velocity = velocity.SafeNormalize(Vector2.Zero);
             Projectile.velocity = velocity * 0.2f;
             Projectile.rotation = Projectile.velocity.X / 60f;
 
             _light = GetLight();
-            _light.RayCast(Projectile.Center, LightVelocity, 400, 400);
+            _light.RayCast(Projectile.Center, _lightVelocity, 400, 400);
         }
 
         private void AI_Flashlight()
         {
-            if (Owner.ownedProjectileCounts[Type] > 1 || Owner.HeldItem.shoot != Type)
+            if (Owner.HeldItem.shoot != Type)
             {
-                Projectile.Kill();
+                State = AIState.Pet;
             }
             if (Main.myPlayer == Projectile.owner)
             {
@@ -131,7 +153,7 @@ namespace Stellamod.Core.Bases
             }
 
             _light = GetLight();
-            _light.RayCast(Projectile.Center, LightVelocity, 760, 800);
+            _light.RayCast(Projectile.Center, _lightVelocity, 760, 800);
         }
 
         protected virtual void DrawLanternSprite(ref Color lightColor)
@@ -165,7 +187,6 @@ namespace Stellamod.Core.Bases
             glowTexture = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
             glowColor *= 0.5f;
             spriteBatch.Draw(glowTexture, Projectile.Center - Main.screenPosition, null, glowColor, 0, glowTexture.Size() / 2f, 0.75f, SpriteEffects.None, 0);
-
         }
 
         public override bool PreDraw(ref Color lightColor)

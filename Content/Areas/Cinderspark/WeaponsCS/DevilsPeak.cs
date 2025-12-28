@@ -60,21 +60,20 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                     HighlightColor = Color.Orange,
                     RimHighlightColor = Color.Red,
                     WindColor = Color.DarkRed,
-                    BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                    BlendState = BlendState.Additive,
                     TrailTexture = TrailRegistry.SpikyTrail1.Value,
                     HighlightTexture = TrailRegistry.SpikyTrail2.Value,
                     WindTexture = TrailRegistry.WhispyTrail.Value
                 },
                 TrailWidthFunction = (float interpolant) =>
                 {
-                    return EasingFunction.QuadraticBump(interpolant) * 16 * MathHelper.Lerp(1f, 0.0f, EasingFunction.InOutSine(Interpolant));
+                    return EasingFunction.QuadraticBump(interpolant) * 64 * MathHelper.Lerp(1f, 0.0f, EasingFunction.InOutSine(Interpolant));
                 },
                 TrailColorFunction = (float interpolant) =>
                 {
                     Color lerp1 = Color.Lerp(Color.OrangeRed, Color.RosyBrown, interpolant);
                     return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
                 }
-
             };
 
             Trailer = devilsPeak;

@@ -2,7 +2,6 @@
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -12,6 +11,7 @@ namespace Stellamod.Core.Bases
     {
         public override void SetDefaults()
         {
+            base.SetDefaults();
             Item.damage = 0;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.width = 16;
@@ -24,12 +24,6 @@ namespace Stellamod.Core.Bases
             Item.value = Item.sellPrice(0, 5, 50);
         }
 
-        public override bool AltFunctionUse(Player player)
-        {
-            return true;
-        }
-
-
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
@@ -40,19 +34,6 @@ namespace Stellamod.Core.Bases
             line = new TooltipLine(Mod, "LanternHelp", LangText.Common("LanternHelp"));
             line.OverrideColor = Color.Lerp(Color.LightGoldenrodYellow, Color.Black, 0.15f);
             tooltips.Add(line);
-        }
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai1: 1);
-                return false;
-            }
-            else
-            {
-                return base.Shoot(player, source, position, velocity, type, damage, knockback);
-            }
         }
     }
 }

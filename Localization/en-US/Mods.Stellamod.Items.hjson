@@ -26,7 +26,11 @@ Common: {
 	IgniterCardType: Igniter Weapon Type
 	GenericDamage: " generic damage"
 	Lantern: Lantern Light Pet
-	LanternHelp: Put it in your light pet slot or right click it to use it for more range!
+	LanternHelp:
+		'''
+		Summons a magical lantern to follow you and provide light
+		While holding the item, you gain even more range and can aim the light!
+		'''
 	Disc: Music Disc
 	DiscHelp: Works like a music box, but you can also throw it with right click!
 	ScorpionSummonHelp:
@@ -9981,7 +9985,7 @@ HangingStaff7Item: {
 
 HoldingLantern: {
 	DisplayName: Holding Lantern
-	Tooltip: ""
+	Tooltip: "Grants a circular light! Great for miners..."
 }
 
 OpenChestItem: {
