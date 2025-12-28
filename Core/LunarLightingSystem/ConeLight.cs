@@ -6,17 +6,46 @@ using Terraria;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
-    public class ConeLight
+    public interface ILight
+    {
+        void RayCast(Vector2 position, Vector2 direction, float edgeLightWidth, float distance);
+        void Draw();
+    }
+
+    public class PointLight : ILight
+    {
+        private LegacyPointLight _pointLight;
+        public PointLight()
+        {
+            _pointLight = new LegacyPointLight(Vector2.Zero, Color.White, 1, 100, 1800);
+        }
+        public void RayCast(Vector2 position, Vector2 direction, float edgeLightWidth, float distance)
+        {
+            _pointLight.position = position;
+            _pointLight.radius = distance;
+            _pointLight.lightNormal = Vector2.Zero;
+            _pointLight.threshold = 0f;
+            _pointLight.Update();
+        }
+
+        public void Draw()
+        {
+            _pointLight.DrawLight();
+            _pointLight.DrawShadow();
+        }
+    }
+
+    public class ConeLight : ILight
     {
         public Color lightColor;
         private VertexPositionColorTexture[] _vertices;
         private LegacyPointLight _pointLight;
         public ConeLight()
         {
+            lightColor = Color.White;
             _vertices = new VertexPositionColorTexture[12];
             _pointLight = new LegacyPointLight(Vector2.Zero, Color.White, 1, 100, 1800);
         }
-
 
 
         public void RayCast(Vector2 position, Vector2 direction, float edgeLightWidth, float distance)

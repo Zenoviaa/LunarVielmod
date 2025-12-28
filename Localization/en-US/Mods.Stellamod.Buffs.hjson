@@ -952,3 +952,8 @@ Frosting: {
 	DisplayName: Frosting
 	Description: Mods.Stellamod.Buffs.Frosting.Description
 }
+
+HoldingMyLantern: {
+	DisplayName: Holding My Lantern
+	Description: Mods.Stellamod.Buffs.HoldingMyLantern.Description
+}

@@ -671,6 +671,7 @@
     <Folder Include="Items\Weapons\Melee\Safunai\Kaevine\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
     <Folder Include="NPCs\Minibosses\" />
+    <Folder Include="Projectiles\Lanterns\" />
     <Folder Include="Projectiles\Slashers\Chillrend\" />
     <Folder Include="Projectiles\Slashers\NewFolder\" />
     <Folder Include="Projectiles\Slashers\ScarecrowSaber\" />

@@ -10,8 +10,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    public abstract class BaseLanternProjectile : ModProjectile, ILightEmitter,
-        IDrawOutlines
+    public abstract class BaseLanternProjectile<T> : ModProjectile, ILightEmitter,
+        IDrawOutlines where T : ModBuff
     {
         private enum AIState
         {
@@ -19,7 +19,7 @@ namespace Stellamod.Core.Bases
             Flashlight
         }
 
-        private ConeLight _coneLight;
+        private ILight _light;
         private ref float Timer => ref Projectile.ai[0];
         private AIState State
         {
@@ -81,6 +81,7 @@ namespace Stellamod.Core.Bases
 
         }
 
+        protected abstract ILight GetLight();
         private void AI_Pet()
         {
             if (!Owner.active)
@@ -90,7 +91,7 @@ namespace Stellamod.Core.Bases
             }
 
             // Keep the projectile disappearing as long as the player isn't dead and has the pet buff.
-            if (!Owner.dead && Owner.HasBuff(ModContent.BuffType<RadiatingLantern>()))
+            if (!Owner.dead && Owner.HasBuff(ModContent.BuffType<T>()))
             {
                 Projectile.timeLeft = 2;
             }
@@ -101,9 +102,8 @@ namespace Stellamod.Core.Bases
             Projectile.velocity = velocity * 0.2f;
             Projectile.rotation = Projectile.velocity.X / 60f;
 
-            _coneLight ??= new ConeLight();
-            _coneLight.lightColor = Color.White;
-            _coneLight.RayCast(Projectile.Center, LightVelocity, 400, 400);
+            _light = GetLight();
+            _light.RayCast(Projectile.Center, LightVelocity, 400, 400);
         }
 
         private void AI_Flashlight()
@@ -130,9 +130,8 @@ namespace Stellamod.Core.Bases
                 Projectile.netUpdate = true;
             }
 
-            _coneLight ??= new ConeLight();
-            _coneLight.lightColor = Color.White;
-            _coneLight.RayCast(Projectile.Center, LightVelocity, 760, 800);
+            _light = GetLight();
+            _light.RayCast(Projectile.Center, LightVelocity, 760, 800);
         }
 
         protected virtual void DrawLanternSprite(ref Color lightColor)
@@ -177,7 +176,7 @@ namespace Stellamod.Core.Bases
 
         public void RenderLight(SpriteBatch spriteBatch)
         {
-            _coneLight?.Draw();
+            _light?.Draw();
         }
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

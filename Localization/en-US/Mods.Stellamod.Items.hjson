@@ -9929,3 +9929,67 @@ WindArtifact: {
 	DisplayName: Wind Artifact
 	Tooltip: Blows a strong gust of wind!
 }
+
+CrescentMoonTome: {
+	DisplayName: Crescent Moon Tome
+	Tooltip:
+		'''
+		Behold the power of the moon!
+		Shoots spinning crescent moons!
+		'''
+}
+
+PunkerPillarVaseItem: {
+	DisplayName: Punker Pillar Vase Item
+	Tooltip: ""
+}
+
+HangingStaff1Item: {
+	DisplayName: Hanging Staff1 Item
+	Tooltip: ""
+}
+
+HangingStaff2Item: {
+	DisplayName: Hanging Staff2 Item
+	Tooltip: ""
+}
+
+HangingStaff3Item: {
+	DisplayName: Hanging Staff3 Item
+	Tooltip: ""
+}
+
+HangingStaff4Item: {
+	DisplayName: Hanging Staff4 Item
+	Tooltip: ""
+}
+
+HangingStaff5Item: {
+	DisplayName: Hanging Staff5 Item
+	Tooltip: ""
+}
+
+HangingStaff6Item: {
+	DisplayName: Hanging Staff6 Item
+	Tooltip: ""
+}
+
+HangingStaff7Item: {
+	DisplayName: Hanging Staff7 Item
+	Tooltip: ""
+}
+
+HoldingLantern: {
+	DisplayName: Holding Lantern
+	Tooltip: ""
+}
+
+OpenChestItem: {
+	DisplayName: Open Chest Item
+	Tooltip: ""
+}
+
+ShaftLadderItem: {
+	DisplayName: Shaft Ladder Item
+	Tooltip: ""
+}
