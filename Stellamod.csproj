@@ -671,7 +671,6 @@
     <Folder Include="Items\Weapons\Melee\Safunai\Kaevine\" />
     <Folder Include="Content\Areas\Collosseum\Event\Gores\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
-    <Folder Include="NPCs\Minibosses\" />
     <Folder Include="Projectiles\Lanterns\" />
     <Folder Include="Projectiles\Slashers\Chillrend\" />
     <Folder Include="Projectiles\Slashers\NewFolder\" />

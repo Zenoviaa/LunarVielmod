@@ -40,7 +40,7 @@ namespace Stellamod.Assets.Biomes
         public override bool IsBiomeActive(Player player)
         {
             // First, we will use the exampleBlockCount from our added ModSystem for our first custom condition
-            bool b1 = ModContent.GetInstance<BiomeTileCount>().BlockCount >= 40;
+            bool b1 = ModContent.GetInstance<BiomeTileCounts>().MorrowCount >= 40;
 
 
 

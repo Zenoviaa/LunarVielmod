@@ -11,7 +11,6 @@ namespace Stellamod
 {
     public class ExperimentalConfigs : ModSystem
     {
-        private static int _count;
         public override void OnModLoad()
         {
             base.OnModLoad();

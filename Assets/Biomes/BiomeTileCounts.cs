@@ -108,8 +108,13 @@ namespace Stellamod
 
         public int DesertTownCount;
         public static bool InDesertTown => ModContent.GetInstance<BiomeTileCounts>().DesertTownCount > 15;
+
+        public int CathedralCount;
+        public int MorrowCount;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
+            MorrowCount = tileCounts[ModContent.TileType<OvermorrowdirtTile>()];
+            CathedralCount = tileCounts[ModContent.TileType<CathediteTile>()];
             MistyDungeonCount = tileCounts[TileID.BlueDungeonBrick] + tileCounts[TileID.GreenDungeonBrick] + tileCounts[TileID.PinkDungeonBrick] + tileCounts[ModContent.TileType<MothlightBrick>()];
             SpringGrassCount = tileCounts[ModContent.TileType<SpringGrass>()];
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];

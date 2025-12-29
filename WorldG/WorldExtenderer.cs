@@ -2,7 +2,6 @@
 using MonoMod.Cil;
 using System;
 using System.Reflection;
-using System.Security.Policy;
 using Terraria;
 using Terraria.ID;
 using Terraria.IO;
@@ -34,10 +33,10 @@ namespace Stellamod.WorldG
         }
         private void WorldGen_EditWorldSize(ILContext il)
         {
-     
             var cursor = new ILCursor(il);
             cursor.EmitDelegate(EditWorldSize);
         }
+
         private void EditWorldSize()
         {
             Main.maxTilesX = NewMaxTilesX;
@@ -47,13 +46,13 @@ namespace Stellamod.WorldG
                 Main.maxTilesX = XSizeOverride.Value;
                 XSizeOverride = null;
             }
-              
+
             if (YSizeOverride.HasValue)
             {
                 Main.maxTilesY = YSizeOverride.Value;
                 YSizeOverride = null;
             }
-             
+
             SetWorldSize();
         }
 
