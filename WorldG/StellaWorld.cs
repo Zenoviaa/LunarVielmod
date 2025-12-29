@@ -534,6 +534,7 @@ namespace Stellamod.WorldG
         private void LockDesert(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Expanding the Desert";
+            GenVars.skipDesertTileCheck = true;
             DesertBiome desertBiome = GenVars.configuration.CreateBiome<DesertBiome>();
             var genRand = WorldGen.genRand;
             int x = (Main.maxTilesX / 2 - 700);

@@ -6,7 +6,6 @@ using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Skies;
-
 using System.IO;
 using System.Reflection;
 using Terraria;
@@ -28,27 +27,11 @@ namespace Stellamod
 
     public class Stellamod : Mod
     {
-        public const string EMPTY_TEXTURE = "Stellamod/Empty";
-        public static Texture2D EmptyTexture
-        {
-            get;
-            private set;
-        }
-        public int GlobalTimer { get; private set; }
-
         public Stellamod()
         {
             Instance = this;
 
         }
-
-        public ModPacket GetPacket(MessageType type, int capacity)
-        {
-            ModPacket packet = GetPacket(capacity + 1);
-            packet.Write((byte)type);
-            return packet;
-        }
-
         // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
         public static ModPacket WriteToPacket(ModPacket packet, byte msg, params object[] param)
         {
@@ -75,16 +58,10 @@ namespace Stellamod
 
         public override void HandlePacket(BinaryReader reader, int whoAmI) => MultiplayerHelper.HandlePacket(reader, whoAmI);
 
-
-
         public static Stellamod Instance;
         public static int MedalCurrencyID;
-
-
-
         public static int MOKCurrencyID;
         public static int MOPCurrencyID;
-
         public static int MOBCurrencyID;
         public static int MOACurrencyID;
         public static int MOCCurrencyID;
@@ -103,7 +80,7 @@ namespace Stellamod
                 MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));
 
                 //----------------------------------------------- Shaders
-               
+
                 Filters.Scene["Stellamod:Aurelus"] = new Filter(new AbyssScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:AuroreanStars"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(1.3f, 0.2f, 0.2f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Illuria"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
@@ -112,9 +89,6 @@ namespace Stellamod
                 Ref<Effect> screenRef = new Ref<Effect>(ModContent.Request<Effect>("Stellamod/Effects/Shockwave", AssetRequestMode.ImmediateLoad).Value); // The path to the compiled shader file.
                 Filters.Scene["Shockwave"] = new Filter(new ScreenShaderData(screenRef, "Shockwave"), EffectPriority.VeryHigh);
                 Filters.Scene["Shockwave"].Load();
-
-                Filters.Scene["Stellamod:GreenMoonSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0.1f, 0.2f, 0.5f).UseOpacity(0.53f), EffectPriority.High);
-                SkyManager.Instance["Stellamod:GreenMoonSky"] = new GreenMoonSky();
 
                 Filters.Scene["Stellamod:Starbloom"] = new Filter(new StellaScreenShader("FilterMiniTower").UseColor(0.1f, 0, 0.3f).UseOpacity(0.9f), EffectPriority.VeryHigh);
                 Filters.Scene["Stellamod:Starbloom"] = new Filter(new StellaScreenShader("FilterMiniTower").UseColor(0.5f, 0.2f, 0.7f).UseOpacity(0.65f), EffectPriority.VeryHigh);
@@ -249,16 +223,16 @@ namespace Stellamod
                 TextureAssets.ScrollLeftButton = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/BackButton");
                 TextureAssets.ScrollRightButton = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/ForwardButton");
             }
-
-
-            On_UIWorldListItem.DrawSelf += (orig, self, spriteBatch) =>
-            {
-                orig(self, spriteBatch);
-                DrawWorldSelectItemOverlay(self, spriteBatch);
-            };
-
+            On_UIWorldListItem.DrawSelf += DrawWorldIconHook;
 
             Instance = this;
+        }
+
+
+        private void DrawWorldIconHook(On_UIWorldListItem.orig_DrawSelf orig, UIWorldListItem self, SpriteBatch spriteBatch)
+        {
+            orig(self, spriteBatch);
+            DrawWorldSelectItemOverlay(self, spriteBatch);
         }
 
         private void UnloadTile(int tileID)
@@ -341,15 +315,15 @@ namespace Stellamod
                 UnloadTile(TileID.Pearlsand);
                 UnloadTile(TileID.SnowCloud);
             }
+            On_UIWorldListItem.DrawSelf -= DrawWorldIconHook;
         }
+
 
         private void DrawWorldSelectItemOverlay(UIWorldListItem uiItem, SpriteBatch spriteBatch)
         {
-            //    bool data = uiItem.Data.TryGetHeaderData(ModContent.GetInstance<WorldLoadGen>(), out var _data);
             UIElement WorldIcon = (UIElement)typeof(UIWorldListItem).GetField("_worldIcon", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
             WorldFileData Data = (WorldFileData)typeof(AWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
             WorldIcon.RemoveAllChildren();
-
 
             UIElement worldIcon = WorldIcon;
             UIImage element = new UIImage(ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Menu/LunarTree"))
@@ -359,28 +333,13 @@ namespace Stellamod
                 IgnoresMouseInteraction = true
             };
             worldIcon.Append(element);
-
-
         }
-
     }
-    #region UnopenedWorldIcon
-
-
-    #endregion;
 
     public class Stellamenu : ModMenu
     {
-
-
-        private const string menuAssetPath = "Stellamod/Assets/Textures/Menu"; // Creates a constant variable representing the texture path, so we don't have to write it out multiple times
-
+        private const string menuAssetPath = "Stellamod/Assets/Textures/Menu";
         public override Asset<Texture2D> Logo => ModContent.Request<Texture2D>($"{menuAssetPath}/Logo");
-
-        //  public override Asset<Texture2D> SunTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/TheSun");
-
-        //   public override Asset<Texture2D> MoonTexture => ModContent.Request<Texture2D>($"{menuAssetPath}/TheMoon");
-
 
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/BeforeTheFlames");
 
@@ -405,7 +364,6 @@ namespace Stellamod
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.Default, Main.Rasterizer, null, Main.UIScaleMatrix);
             return false;
         }
-
     }
 }
 

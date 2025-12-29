@@ -183,12 +183,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
 
         public override bool PreDraw(ref Color lightColor)
         {
-            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
-            return false;
-        }
-
-        public void DrawPixelated(GraphicsDevice graphicsDevice)
-        {
             Texture2D bloomlineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
             Vector2 drawCenter = Projectile.Center - Main.screenPosition;
@@ -202,15 +196,22 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Proje
             scale.X *= 0.15f;
             spriteBatch.Draw(bloomlineTexture, drawCenter, null, drawColor, _telegraphLineRot, drawOrigin, scale, SpriteEffects.None, 0);
 
-            if(State == AIState.Charge)
+            if (State == AIState.Charge)
             {
                 Texture2D glowballTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
                 scale = Vector2.One * _telegraphLineAlpha;
                 drawOrigin = glowballTexture.Size() / 2f;
-                for(float r = 0; r < 4; r++)
+                for (float r = 0; r < 4; r++)
                     spriteBatch.Draw(glowballTexture, drawCenter, null, drawColor, 0, drawOrigin, scale, SpriteEffects.None, 0);
 
             }
+
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
+            return false;
+        }
+
+        public void DrawPixelated(GraphicsDevice graphicsDevice)
+        {
 
     
             if(State == AIState.Fire)

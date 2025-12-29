@@ -7,6 +7,19 @@ using Terraria;
 
 namespace Stellamod.Core.Utilities
 {
+    /// <summary>
+    /// Represents a verlet point, with a position and old position
+    /// </summary>
+    public struct VerletPoint
+    {
+        public Vector2 position;
+        public Vector2 oldPosition;
+        public bool pinned;
+    }
+
+    /// <summary>
+    /// A connection of points simulated with verlet integration, great for rope physics
+    /// </summary>
     public class VerletChain
     {
         public VerletPoint[] points;
