@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -13,13 +14,19 @@ namespace Stellamod.Core.QuestSystem
     {
         public override TagCompound Serialize(Quest value) => new TagCompound
         {
-            ["type"] = value.Type,
+            ["quest"] = value.Name,
         };
 
         public override Quest Deserialize(TagCompound tag)
         {
-            Quest quest = QuestLoader.GetQuest(tag.GetInt("type"));
-            return quest;
+            string type = tag.GetString("quest");
+            if(ModContent.TryFind<Quest>(Stellamod.Instance.Name, type, out Quest quest))
+            {
+                return quest;
+            }
+            
+            //Failsafe
+            return ModContent.GetInstance<TalkToZui>();
         }
     }
 
@@ -77,7 +84,7 @@ namespace Stellamod.Core.QuestSystem
         protected sealed override void Register()
         {
             ModTypeLookup<Quest>.Register(this);
-            QuestLoader.RegisterQuest(this);
+           
         }
         public sealed override void SetupContent()
         {
@@ -158,7 +165,7 @@ namespace Stellamod.Core.QuestSystem
         public static bool HasCompletedQuest<T>(Player player) where T : Quest
         {
             QuestPlayer questPlayer = player.GetModPlayer<QuestPlayer>();
-            return questPlayer.HasFinishedQuest(QuestLoader.GetInstance<T>());
+            return questPlayer.HasFinishedQuest(ModContent.GetInstance<T>());
         }
     }
 }

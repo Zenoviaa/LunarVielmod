@@ -163,10 +163,10 @@ namespace Stellamod.NPCs.Town
             text = "ZuiIdleChat1";
         }
 
-        public override void SetQuestLine(List<int> quests)
+        public override void SetQuestLine(List<Quest> quests)
         {
             base.SetQuestLine(quests);
-            quests.Add(QuestLoader.QuestType<HuntI>());
+            quests.Add(ModContent.GetInstance<HuntI>());
         }
 
         public override void AddShops()

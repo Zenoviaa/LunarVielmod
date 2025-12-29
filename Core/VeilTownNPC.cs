@@ -153,13 +153,12 @@ namespace Stellamod.Core
 
         public virtual bool HasQuestAvailable()
         {
-            List<int> quests = new List<int>();
+            List<Quest> quests = new List<Quest>();
             SetQuestLine(quests);
 
             for (int i = 0; i < quests.Count; i++)
             {
-                int questType = quests[i];
-                Quest quest = QuestLoader.GetQuest(questType);
+                Quest quest = quests[i];
                 if (quest.IsQuestAvailable(Main.LocalPlayer))
                 {
                     return true;
@@ -168,12 +167,11 @@ namespace Stellamod.Core
             return false;
         }
 
-        public Quest GetNextQuest(List<int> quests)
+        public Quest GetNextQuest(List<Quest> quests)
         {
             for (int i = 0; i < quests.Count; i++)
-            {
-                int questType = quests[i];
-                Quest quest = QuestLoader.GetQuest(questType);
+            { 
+                Quest quest = quests[i];
                 if (quest.IsQuestAvailable(Main.LocalPlayer))
                 {
                     return quest;
@@ -185,7 +183,7 @@ namespace Stellamod.Core
         /// Lets you set the quests that this NPC can give you
         /// </summary>
         /// <param name="quests"></param>
-        public virtual void SetQuestLine(List<int> quests)
+        public virtual void SetQuestLine(List<Quest> quests)
         {
 
         }
@@ -199,7 +197,7 @@ namespace Stellamod.Core
 
         public void GiveQuest()
         {
-            List<int> quests = new List<int>();
+            List<Quest> quests = new List<Quest>();
             SetQuestLine(quests);
             Quest quest = GetNextQuest(quests);
             if (quest == null)

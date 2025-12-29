@@ -1,11 +1,23 @@
 ﻿using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.UI.PopupSystem;
 using System.Collections.Generic;
+using System.Linq;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace Stellamod.Core.QuestSystem
 {
+    public class QuestTracker : ModSystem
+    {
+        public Quest[] quests;
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            quests = ModContent.GetContent<Quest>().ToArray();
+        }
+    }
+
     public class QuestPlayer : ModPlayer
     {
         private List<Quest> _activeQuests;
@@ -66,6 +78,7 @@ namespace Stellamod.Core.QuestSystem
 
 
         }
+
 
         public bool HasActiveQuest(Quest quest)
         {
@@ -128,24 +141,54 @@ namespace Stellamod.Core.QuestSystem
             RecalculateUI = true;
         }
 
+        private bool ShouldGrantQuest(Quest quest)
+        {
+            if (!quest.IsAutoQuest)
+                return false;
+            if (HasFinishedQuest(quest))
+                return false;
+            if (!quest.CanGiveQuest(Player))
+                return false;
+            return true;
+        }
+
+        private bool ShouldCompleteQuest(Quest quest)
+        {
+            if (!ActiveQuests.Contains(quest))
+                return false;
+            return quest.CheckCompletion(Player);
+        }
         public override void PostUpdate()
         {
             base.PostUpdate();
+            if(Main.GameUpdateCount % 30 == 0)
+            {
+                CheckQuestProgression();
+            }
+      
+        }
+
+        private void CheckQuestProgression()
+        {
             //Very first quest that you start off with
             if (FreshQuests())
             {
-                GiveQuest(QuestLoader.GetInstance<TalkToZui>());
+                GiveQuest(ModContent.GetInstance<TalkToZui>());
             }
-            foreach (var questKvp in QuestLoader.quests)
+            QuestTracker tracker = ModContent.GetInstance<QuestTracker>();
+            Quest[] quests = tracker.quests;
+            for (int i = 0; i < quests.Length; i++)
             {
-                var quest = questKvp.Value;
-                if (quest.IsAutoQuest && !HasFinishedQuest(quest) && quest.CanGiveQuest(Player))
+                Quest quest = quests[i];
+                if (ShouldGrantQuest(quest))
+                {
                     GiveQuest(quest);
-            }
-            List<Quest> questsToComplete = ActiveQuests.FindAll(x => x.CheckCompletion(Player));
-            foreach (var quest in questsToComplete)
-            {
-                CompleteQuest(quest);
+                }
+                if (ShouldCompleteQuest(quest))
+                {
+                    CompleteQuest(quest);
+                    ActiveQuests.Remove(quest);
+                }
             }
         }
         public override void SaveData(TagCompound tag)

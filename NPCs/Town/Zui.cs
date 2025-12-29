@@ -415,10 +415,10 @@ namespace Stellamod.NPCs.Town
 
         }
 
-        public override void SetQuestLine(List<int> quests)
+        public override void SetQuestLine(List<Quest> quests)
         {
             base.SetQuestLine(quests);
-            quests.Add(QuestLoader.QuestType<CraftAtCauldron>());
+            quests.Add(ModContent.GetInstance<CraftAtCauldron>());
         }
 
         public override void AddShops()

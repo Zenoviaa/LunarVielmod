@@ -361,7 +361,7 @@ namespace Stellamod.Items
 
             //Crafting Quest
             QuestPlayer questPlayer = Main.LocalPlayer.GetModPlayer<QuestPlayer>();
-            var starterQuest = QuestLoader.GetInstance<CraftAtCauldron>();
+            var starterQuest = ModContent.GetInstance<CraftAtCauldron>();
             questPlayer.CompleteQuest(starterQuest);
 
             JustCrafted = result;

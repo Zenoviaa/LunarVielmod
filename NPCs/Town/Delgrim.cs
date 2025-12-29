@@ -183,10 +183,10 @@ namespace Stellamod.NPCs.Town
             uiSystem.OpenUI();
 
         }
-        public override void SetQuestLine(List<int> quests)
+        public override void SetQuestLine(List<Quest> quests)
         {
             base.SetQuestLine(quests);
-            quests.Add(QuestLoader.QuestType<MysteriousPlacesI>());
+            quests.Add(ModContent.GetInstance<MysteriousPlacesI>());
         }
     }
 }
