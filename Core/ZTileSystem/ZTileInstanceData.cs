@@ -1,10 +1,5 @@
-﻿using Microsoft.CodeAnalysis.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using ReLogic.Content;
-using Stellamod.Core.ItemBrowser;
-using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,10 +88,10 @@ public class TileScene
     {
         _tiles = new Dictionary<ZTilePosition, ZTileInstanceData>();
     }
-    
+
     public void AddorSet(ZTilePosition tilePosition, ZTileInstanceData tileData)
     {
-        if(_tiles.ContainsKey(tilePosition))
+        if (_tiles.ContainsKey(tilePosition))
             _tiles[tilePosition] = tileData;
         else
             _tiles.Add(tilePosition, tileData);
@@ -124,7 +119,7 @@ public class TileScene
         //At this point we can assume that everything in this scene is either on screen or very close to being on screen
         //So we should render everything within the scene
         var sortedDict = _tiles.OrderBy(x => x.Key.z);
-        foreach(var kvp in sortedDict)
+        foreach (var kvp in sortedDict)
         {
             ZTilePosition tilePosition = kvp.Key;
             ZTileInstanceData tileData = kvp.Value;
@@ -149,11 +144,11 @@ public class ZTileRenderLayer
         _tileScenes = new Dictionary<Point, TileScene>();
     }
 
-   /// <summary>
-   /// Adds a z tile to the render layer
-   /// </summary>
-   /// <param name="tilePosition"></param>
-   /// <param name="tileData"></param>
+    /// <summary>
+    /// Adds a z tile to the render layer
+    /// </summary>
+    /// <param name="tilePosition"></param>
+    /// <param name="tileData"></param>
     public void Add(ZTilePosition tilePosition, ZTileInstanceData tileData)
     {
         //Calculate the chunk
@@ -164,7 +159,7 @@ public class ZTileRenderLayer
         //Get the tile scene
         //If it doesn't exist we have to create a new one
         TileScene tileScene;
-        if(!_tileScenes.TryGetValue(chunk, out tileScene))
+        if (!_tileScenes.TryGetValue(chunk, out tileScene))
         {
             tileScene = new TileScene();
             _tileScenes.Add(chunk, tileScene);
@@ -206,7 +201,7 @@ public class ZTileRenderLayer
         _tileScenes.TryGetValue(chunk + down + left, out _sceneRenderBuffer[index++]);
         _tileScenes.TryGetValue(chunk + down + right, out _sceneRenderBuffer[index++]);
 
-        for(int i = 0; i < index; i++)
+        for (int i = 0; i < index; i++)
         {
             TileScene scene = _sceneRenderBuffer[i];
             if (scene == null)
@@ -224,33 +219,86 @@ public class ZTileMap : ModSystem
     {
         base.OnModLoad();
         int numLayers = Enum.GetValues<ZRenderLayer>().Length;
-        
+
         //Initialize our render layers
         _renderLayers = new ZTileRenderLayer[numLayers];
-        for(int i = 0; i < _renderLayers.Length; i++)
+        for (int i = 0; i < _renderLayers.Length; i++)
         {
             _renderLayers[i] = new ZTileRenderLayer();
         }
-        On_OverlayManager.Draw += RenderOverWalls;
+        On_Main.DoDraw_WallsAndBlacks += RenderOverWalls;
+        On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
+        On_Main.DrawDust += RenderForeground;
     }
+
 
     public override void Unload()
     {
         base.Unload();
-        On_OverlayManager.Draw -= RenderOverWalls;
+        On_Main.DoDraw_WallsAndBlacks -= RenderOverWalls;
+        On_Main.DrawPlayers_AfterProjectiles -= RenderOverPlayers;
+        On_Main.DrawDust -= RenderForeground;
     }
 
-    private void RenderOverWalls(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
+
+    private void RenderOverWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
     {
-        orig(self, spriteBatch, layer, beginSpriteBatch);
-        if(layer == RenderLayers.Walls)
-        {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-            Point chunk = GetCameraChunk();
-            ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.InFrontOfWalls);
-            renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
-        }
+        DrawBehindWalls();
+        orig(self);
+        DrawInFrontOfWalls();
+    }
+    
+    private void RenderOverPlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
+    {
+        orig(self);
+        DrawInFrontOfPlayer();
+    }
+
+    private void RenderForeground(On_Main.orig_DrawDust orig, Main self)
+    {
+        orig(self);
+        DrawForeground();
+    }
+
+    private void DrawBehindWalls()
+    {
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        spriteBatch.End();
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+        Point chunk = GetCameraChunk();
+        ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.BehindWalls);
+        renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
+    }
+
+    private void DrawInFrontOfWalls()
+    {
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        spriteBatch.End();
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+        Point chunk = GetCameraChunk();
+        ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.InFrontOfWalls);
+        renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
+    }
+
+    private void DrawInFrontOfPlayer()
+    {
+        SpriteBatch spriteBatch = Main.spriteBatch;
+
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+        Point chunk = GetCameraChunk();
+        ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.Midground);
+        renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
+        spriteBatch.End();
+    }
+    private void DrawForeground()
+    {
+        SpriteBatch spriteBatch = Main.spriteBatch;
+ 
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+        Point chunk = GetCameraChunk();
+        ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.Foreground);
+        renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
+        spriteBatch.End();
     }
 
     private ZTileRenderLayer GetRenderLayer(ZRenderLayer renderLayer)
@@ -274,7 +322,7 @@ public class ZTileMap : ModSystem
     {
         Add(renderLayer, worldPosition, z, tileData);
     }
-    
+
     public void Add(ZRenderLayer renderLayer, Vector2 worldPosition, int z, ZTileInstanceData tileData)
     {
         Point tileCoordinates = worldPosition.ToTileCoordinates();

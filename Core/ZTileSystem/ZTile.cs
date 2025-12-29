@@ -94,6 +94,7 @@ public abstract class ZTile : ModTexturedType
         Point point = new Point(tilePosition.x, tilePosition.y);
         Vector2 worldCoordinates = point.ToWorldCoordinates();
         Vector2 drawPosition = worldCoordinates - screenPos;
+        drawPosition += new Vector2(8);
 
         SpriteEffects spriteEffects = tileData.flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         spriteBatch.Draw(tileTextureAsset.Value, drawPosition + drawOffset, frame, drawColor, drawRotation, drawOrigin, tileData.scale, spriteEffects, 0);
