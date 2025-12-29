@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
 
-namespace Stellamod.Core.ZTileSystem;
+namespace Stellamod.Core.ZTileSystem.UI;
 
 /// <summary>
 /// Setups a view that lets you look over a massive grid of items
@@ -49,20 +49,22 @@ public class ZTileBrowserView : UIPanel
     public ZTile HoveringItem;
     public Asset<Texture2D> SlotTextureAsset;
     public string SearchFilter;
-    public bool ModFilter;
     public float ViewPosition;
     public int ElementsPerRow;
 
     private void SpawnItem(UIMouseEvent evt, UIElement listeningElement)
     {
-
-
+        if (HoveringItem == null)
+            return;
+        ZTileLoader tileLoader = ModContent.GetInstance<ZTileLoader>();
+        MagicPaintbrush.templateData = tileLoader.InstanceTileData(HoveringItem);
     }
 
     private bool NeedsUpdateCollection()
     {
-        return _oldSearchFilter != SearchFilter || _oldModFilter != ModFilter;
+        return _oldSearchFilter != SearchFilter;
     }
+
     private void UpdateCollection()
     {
         IEnumerable<ZTile> collection = Items;
@@ -75,7 +77,6 @@ public class ZTileBrowserView : UIPanel
 
         SearchFilterItems = collection.ToArray();
         _oldSearchFilter = SearchFilter;
-        _oldModFilter = ModFilter;
     }
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -135,7 +136,6 @@ public class ZTileBrowserView : UIPanel
 
         Texture2D slotTexture = SlotTextureAsset.Value;
         Color drawColor = Color.Lerp(Color.White, Color.Black, 0.75f);
-        float drawScale = 1.2f;
         Vector2 drawOrigin = slotTexture.Size() / 2;
 
         //The view position is the y offset of the scrollbar
@@ -163,16 +163,25 @@ public class ZTileBrowserView : UIPanel
             tl.Y += topOffset;
             Vector2 centerPos = tl + new Vector2(16);
 
-            Vector2 iconCenterPos = tl + slotTexture.Size() / 2;
-            spriteBatch.Draw(slotTexture, iconCenterPos, null, drawColor, 0f, drawOrigin, _scale, SpriteEffects.None, 0f);
-            item.DrawIcon(spriteBatch, iconCenterPos, 32);
 
             //Check if hovering for tooltip
+            bool isHovering = false;
             Rectangle hoverRectangle = new Rectangle((int)tl.X, (int)tl.Y, 32, 32);
             if (hoverRectangle.Contains(mousePoint))
             {
+                isHovering = true;
                 HoveringItem = item;
             }
+
+            Vector2 iconCenterPos = tl + slotTexture.Size() / 2;
+            spriteBatch.Draw(slotTexture, iconCenterPos, null, drawColor, 0f, drawOrigin, _scale, SpriteEffects.None, 0f);
+
+            float maxSize = 32;
+            if (isHovering)
+                maxSize *= 1.5f;
+            item.DrawIcon(spriteBatch, iconCenterPos, maxSize);
+
+
         }
 
         Main.inventoryScale = oldScale;

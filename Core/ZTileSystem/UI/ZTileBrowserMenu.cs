@@ -94,7 +94,8 @@ public class ZTileBrowserMenu : UIPanel
     {
         base.Update(gameTime);
 
-
+        if (_view == null)
+            Refresh();
         _panel.Height.Pixels = _view.Height.Pixels + 32;
         float progress = _panel.Height.Pixels / Height.Pixels;
         progress = MathHelper.Clamp(progress, 0f, 1f);

@@ -957,3 +957,8 @@ HoldingMyLantern: {
 	DisplayName: Holding My Lantern
 	Description: You have a magical lantern lighting the way!
 }
+
+HoldingMyFlashlight: {
+	DisplayName: Holding My Flashlight
+	Description: Mods.Stellamod.Buffs.HoldingMyFlashlight.Description
+}

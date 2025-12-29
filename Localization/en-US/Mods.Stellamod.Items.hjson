@@ -9997,3 +9997,13 @@ ShaftLadderItem: {
 	DisplayName: Shaft Ladder Item
 	Tooltip: ""
 }
+
+SecretFlashlight: {
+	DisplayName: Secret Flashlight
+	Tooltip: ""
+}
+
+MagicPaintbrush: {
+	DisplayName: Magic Paintbrush
+	Tooltip: ""
+}

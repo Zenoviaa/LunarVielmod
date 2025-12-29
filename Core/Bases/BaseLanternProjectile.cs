@@ -38,6 +38,7 @@ namespace Stellamod.Core.Bases
         public float GlowDistanceOffset { get; set; }
 
         public float FlashlightLength { get; set; }
+        public float FlashlightWidth { get; set; }
         public float FlashlightDegrees { get; set; }
         public float PetLightModifier { get; set; }
 
@@ -72,7 +73,8 @@ namespace Stellamod.Core.Bases
             GlowDistanceOffset = 4;
             GlowRotationSpeed = 0.05f;
             FlashlightDegrees = 25;
-            FlashlightLength = 512;
+            FlashlightLength = 700;
+            FlashlightWidth = 760;
             Projectile.ignoreWater = true;
         }
 
@@ -126,7 +128,7 @@ namespace Stellamod.Core.Bases
             Projectile.rotation = Projectile.velocity.X / 60f;
 
             _light = GetLight();
-            _light.RayCast(Projectile.Center, _lightVelocity, 400, 400);
+            _light.RayCast(Projectile.Center, _lightVelocity, FlashlightWidth * 0.66f, FlashlightLength * 0.5f);
         }
 
         private void AI_Flashlight()
@@ -154,7 +156,7 @@ namespace Stellamod.Core.Bases
             }
 
             _light = GetLight();
-            _light.RayCast(Projectile.Center, _lightVelocity, 760, 800);
+            _light.RayCast(Projectile.Center, _lightVelocity, FlashlightWidth, FlashlightLength);
         }
 
         protected virtual void DrawLanternSprite(ref Color lightColor)

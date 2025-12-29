@@ -39,6 +39,7 @@ public struct ZTileInstanceData
     public Rotation rotation;
     public bool flipX;
     public float scale;
+    public ushort frameNumber;
 }
 
 /// <summary>
@@ -128,66 +129,12 @@ public class TileScene
             ZTilePosition tilePosition = kvp.Key;
             ZTileInstanceData tileData = kvp.Value;
 
-            //Convert to world coordinates
-            Point point = new Point(tilePosition.x, tilePosition.y);
-            Vector2 worldCoordinates = point.ToWorldCoordinates();
-            Vector2 drawPosition = worldCoordinates - screenPos;
+
 
             //Get the z tile
             ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
             ZTile tile = zTileLoader.GetTile(tileData.type);
-
-            //TODO: index array instead of modcontent.request
-            Asset<Texture2D> tileTextureAsset = ModContent.Request<Texture2D>(tile.Texture);
-            
-            //Calculate hte draworigin
-            Vector2 drawOrigin;
-            switch (tile.drawOrigin)
-            {
-                default:
-                case TileDrawOrigin.BottomUp:
-                    drawOrigin = new Vector2(tileTextureAsset.Width() / 2, tileTextureAsset.Height());
-                    break;
-                case TileDrawOrigin.Center:
-                    drawOrigin = new Vector2(tileTextureAsset.Width() / 2, tileTextureAsset.Height() / 2);
-                    break;
-                case TileDrawOrigin.TopDown:
-                    drawOrigin = new Vector2(tileTextureAsset.Width() / 2,0);
-                    break;
-
-            }
-
-            //Divide by the frame count/number of variants
-            int frameCount = Math.Max(tile.frameCount, 1);
-            drawOrigin.Y /= frameCount;
-    
-
-            Color drawColor = Color.White;
-            Color lightingColor = Lighting.GetColor(tilePosition.x, tilePosition.y);
-            drawColor = drawColor.MultiplyRGB(lightingColor);
-
-            Rectangle? frame = null;
-
-            float drawRotation;
-            switch (tileData.rotation)
-            {
-                default:
-                case Rotation.Degrees_0:
-                    drawRotation = 0;
-                    break;
-                case Rotation.Degrees_90:
-                    drawRotation = MathHelper.PiOver2;
-                    break;
-                case Rotation.Degrees_180:
-                    drawRotation = MathHelper.Pi;
-                    break;
-                case Rotation.Degrees_270:
-                    drawRotation = MathHelper.PiOver2 + MathHelper.PiOver4;
-                    break;
-            }
-
-            SpriteEffects spriteEffects = tileData.flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Draw(tileTextureAsset.Value, drawPosition, frame, drawColor, drawRotation, drawOrigin, tileData.scale, spriteEffects, 0);
+            tile.Draw(spriteBatch, screenPos, tilePosition, tileData);
         }
     }
 }
@@ -292,15 +239,6 @@ public class ZTileMap : ModSystem
         base.Unload();
         On_OverlayManager.Draw -= RenderOverWalls;
     }
-    public override void PostUpdateEverything()
-    {
-        base.PostUpdateEverything();
-        if(Main.mouseRight && Main.mouseRightRelease)
-        {
-            Add(ZRenderLayer.InFrontOfWalls, Main.MouseWorld, 1, 
-                ModContent.GetInstance<ZTileLoader>().InstanceTileData<ZTileTest>());
-        }
-    }
 
     private void RenderOverWalls(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
     {
@@ -330,6 +268,11 @@ public class ZTileMap : ModSystem
         int chunkY = tilePosition.Y / ZTileMap.Chunk_Size;
         Point chunk = new Point(chunkX, chunkY);
         return chunk;
+    }
+
+    public void CreateTile(ZRenderLayer renderLayer, Vector2 worldPosition, int z, ZTileInstanceData tileData)
+    {
+        Add(renderLayer, worldPosition, z, tileData);
     }
     
     public void Add(ZRenderLayer renderLayer, Vector2 worldPosition, int z, ZTileInstanceData tileData)

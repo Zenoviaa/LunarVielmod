@@ -34,4 +34,13 @@ public class ZTileLoader : ModSystem
         tileData.scale = 1f;
         return tileData;
     }
+    public ZTileInstanceData InstanceTileData(ZTile instance)
+    {
+        ZTileInstanceData tileData = new ZTileInstanceData();
+        tileData.type = instance.type;
+        tileData.rotation = Rotation.Degrees_0;
+        tileData.flipX = false;
+        tileData.scale = 1f;
+        return tileData;
+    }
 }

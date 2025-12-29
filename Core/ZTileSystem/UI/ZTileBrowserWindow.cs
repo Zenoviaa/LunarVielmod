@@ -14,7 +14,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
-namespace Stellamod.Core.ZTileSystem;
+namespace Stellamod.Core.ZTileSystem.UI;
 
 /// <summary>
 /// The full window of the item browser
@@ -78,10 +78,6 @@ public class ZTileBrowserWindow : UIPanel
         _inventoryMenu.HAlign = 0.5f;
         _inventoryMenu.VAlign = 0.5f;
         Append(_inventoryMenu);
-
-        _tabMenu.HAlign = 0.5f;
-        _tabMenu.VAlign = 1f;
-        Append(_tabMenu);
         Append(_xButton);
 
         //Scrollbar
@@ -134,7 +130,6 @@ public class ZTileBrowserWindow : UIPanel
         _inventoryMenu.HAlign = 0.5f;
         _inventoryMenu.VAlign = 0.25f;
 
-        _tabMenu.VAlign = 0.8f;
     }
     public override void Update(GameTime gameTime)
     {
