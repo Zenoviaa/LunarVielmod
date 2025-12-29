@@ -71,6 +71,7 @@ namespace Stellamod.Core.Backgrounds
         {
             if(layer == RenderLayers.Background)
             {
+                
                 DrawLoop();
             }
             orig(self, spriteBatch, layer, beginSpriteBatch);

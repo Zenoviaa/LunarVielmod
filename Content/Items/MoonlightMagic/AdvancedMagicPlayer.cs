@@ -1,4 +1,5 @@
 ﻿using Stellamod.Core.MagicSystem.UI;
+using Stellamod.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,32 +85,14 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);
-            tag["magicbackpack_itemCount"] = Backpack.Count;
-            for (int i = 0; i < Backpack.Count; i++)
-            {
-                var enchantment = Backpack[i];
-                if (enchantment == null)
-                    continue;
-                tag[$"magicbackpack_enchantment_{i}"] = enchantment;
-            }
+            tag["backpack"] = SaveUtil.ItemListToString(Backpack);
         }
 
         public override void LoadData(TagCompound tag)
         {
             base.LoadData(tag);
-            if (tag.ContainsKey("magicbackpack_itemCount"))
-            {
-                int itemCount = tag.GetInt("magicbackpack_itemCount");
-                Backpack.Clear();
-                for (int i = 0; i < itemCount; i++)
-                {
-                    if (tag.ContainsKey($"magicbackpack_enchantment_{i}"))
-                    {
-                        var enchantment = tag.Get<Item>($"magicbackpack_enchantment_{i}");
-                        Backpack.Add(enchantment);
-                    }
-                }
-            }
+            Backpack.Clear();
+            Backpack = SaveUtil.StringToItemList(tag.GetString("backpack"));
             ManageMagicItems();
         }
     }

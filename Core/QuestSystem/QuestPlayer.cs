@@ -1,5 +1,6 @@
 ﻿using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.UI.PopupSystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -168,6 +169,7 @@ namespace Stellamod.Core.QuestSystem
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
+   
             if (Player.dead)
                 return;
             if (Main.GameUpdateCount % 30 == 0)

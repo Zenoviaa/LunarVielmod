@@ -28,6 +28,7 @@ namespace Stellamod.TilesNew
         {
             base.Unload();
             On_Main.DoDraw_WallsAndBlacks -= DrawWalls;
+
         }
 
         private void DrawWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
