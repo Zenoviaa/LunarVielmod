@@ -161,13 +161,20 @@ namespace Stellamod.Core.QuestSystem
         public override void PostUpdate()
         {
             base.PostUpdate();
-            if(Main.GameUpdateCount % 30 == 0)
-            {
-                CheckQuestProgression();
-            }
+ 
       
         }
 
+        public override void PostUpdateMiscEffects()
+        {
+            base.PostUpdateMiscEffects();
+            if (Player.dead)
+                return;
+            if (Main.GameUpdateCount % 30 == 0)
+            {
+                CheckQuestProgression();
+            }
+        }
         private void CheckQuestProgression()
         {
             //Very first quest that you start off with
