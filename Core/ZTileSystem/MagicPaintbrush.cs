@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -6,14 +8,15 @@ namespace Stellamod.Core.ZTileSystem;
 
 public class MagicPaintbrush : ModItem
 {
-    public static int z;
-    public static ZRenderLayer renderLayer;
+    public static int z = 5;
+    public static ZRenderLayer renderLayer = ZRenderLayer.InFrontOfWalls;
     public static ZTileInstanceData templateData;
+    public static float scale = 1;
+    public static Rotation rotation;
+    public static ushort frame;
     public override void SetDefaults()
     {
         base.SetDefaults();
-        z = 5;
-        renderLayer = ZRenderLayer.InFrontOfWalls;
         Item.width = 24;
         Item.height = 24;
         Item.useAnimation = 2;
@@ -39,7 +42,11 @@ public class MagicPaintbrush : ModItem
             else
             {
                 ZTileMap tileMap = ModContent.GetInstance<ZTileMap>();
-                tileMap.CreateTile(renderLayer, Main.MouseWorld, z, templateData);
+                ZTileInstanceData instanceData = templateData;
+                instanceData.scale = scale;
+                instanceData.rotation = rotation;
+                instanceData.frameNumber = frame;
+                tileMap.CreateTile(renderLayer, Main.MouseWorld, z, instanceData);
             }    
         }
         return base.UseItem(player);

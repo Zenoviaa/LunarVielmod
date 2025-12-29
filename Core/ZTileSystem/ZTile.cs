@@ -86,7 +86,7 @@ public abstract class ZTile : ModTexturedType
                 drawRotation = MathHelper.Pi;
                 break;
             case Rotation.Degrees_270:
-                drawRotation = MathHelper.PiOver2 + MathHelper.PiOver4;
+                drawRotation = MathHelper.Pi + MathHelper.PiOver2;
                 break;
         }
 

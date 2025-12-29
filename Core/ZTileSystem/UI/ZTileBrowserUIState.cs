@@ -8,6 +8,7 @@ namespace Stellamod.Core.ZTileSystem.UI;
 public class ZTileBrowserUIState : UIState
 {
     public ZTileBrowserWindow browser;
+    public ZTileToolbar toolbar;
     public ZTileBrowserUIState() : base()
     {
 
@@ -17,6 +18,9 @@ public class ZTileBrowserUIState : UIState
     {
         browser = new ZTileBrowserWindow();
         Append(browser);
+
+        toolbar = new ZTileToolbar();
+        Append(toolbar);
     }
 
     public override void Recalculate()
