@@ -1,11 +1,14 @@
 ﻿using Microsoft.CodeAnalysis.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.DungeonGeneration;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using static Stellamod.WorldG.StructureManager.Snapshot;
 
 namespace Stellamod.Core.ZTileSystem;
@@ -79,12 +82,64 @@ public enum TileDrawOrigin
     Center,
 }
 
+public struct ZTileSaveData
+{
+    public int x;
+    public int y;
+    public int z;
+    public ushort type;
+    public int rotation;
+    public bool flipX;
+    public float scale;
+    public int frameNumber;
+}
+
+public class ZTileSerializer : TagSerializer<ZTileSaveData, TagCompound>
+{
+    public override ZTileSaveData Deserialize(TagCompound tag)
+    {
+        ZTileLoader tileLoader = ModContent.GetInstance<ZTileLoader>();
+        ZTileSaveData deserializedData = new ZTileSaveData();
+        deserializedData.x = tag.Get<int>("x");
+        deserializedData.y = tag.Get<int>("y");
+        deserializedData.z = tag.Get<int>("z");
+        deserializedData.type = tileLoader.GetTile(tag.Get<string>("type")).type;
+        deserializedData.rotation = tag.Get<int>("rotation");
+        deserializedData.flipX = tag.Get<bool>("flipx");
+        deserializedData.scale = tag.Get<float>("scale");
+        deserializedData.frameNumber = tag.Get<int>("frameNumber");
+        return deserializedData;
+    }
+
+    public override TagCompound Serialize(ZTileSaveData value)
+    {
+        /*
+         *     public ushort type;
+                public Rotation rotation;
+                public bool flipX;
+                public float scale;
+                public ushort frameNumber;
+         */
+        return new TagCompound
+        {
+            ["x"] = value.x,
+            ["y"] = value.y,
+            ["z"] = value.z,
+            ["type"] = ModContent.GetInstance<ZTileLoader>().GetTile(value.type).GetType().Name,
+            ["rotation"] = (int)value.rotation,
+            ["flipx"] = value.flipX,
+            ["scale"] = value.scale,
+            ["frameNumber"] = (int)value.frameNumber,
+        };
+    }
+}
 /// <summary>
 /// Represents a collection of tiles to render
 /// </summary>
-public class TileScene
+public class TileScene : IEnumerable
 {
     private IDictionary<ZTilePosition, ZTileInstanceData> _tiles;
+
     public TileScene()
     {
         _tiles = new Dictionary<ZTilePosition, ZTileInstanceData>();
@@ -100,6 +155,7 @@ public class TileScene
 
     public void Remove(ZTilePosition tilePosition)
     {
+      
         _tiles.Remove(tilePosition);
     }
 
@@ -138,6 +194,11 @@ public class TileScene
             };
             tile.Draw(spriteBatch, screenPos, drawParams);
         }
+    }
+
+    public IEnumerator GetEnumerator()
+    {
+        return ((IEnumerable)_tiles).GetEnumerator();
     }
 }
 
@@ -236,6 +297,10 @@ public class ZTileRenderLayer
     }
 
 
+    public TileScene[] GetScenes()
+    {
+        return _tileScenes.Values.ToArray();
+    }
 }
 
 public class ZTileMap : ModSystem
@@ -268,6 +333,67 @@ public class ZTileMap : ModSystem
     }
 
 
+    public override void SaveWorldData(TagCompound tag)
+    {
+        base.SaveWorldData(tag);
+        List<List<ZTileSaveData>> tileDataList = new List<List<ZTileSaveData>>();
+        for(int i = 0; i < _renderLayers.Length; i++)
+        {
+            var layer = _renderLayers[i];
+            TileScene[] scenes = layer.GetScenes();
+            List<ZTileSaveData> saveData = new List<ZTileSaveData>();
+            for (int j = 0; j < scenes.Length; j++)
+            {
+                TileScene scene = scenes[j];
+
+                foreach(KeyValuePair<ZTilePosition, ZTileInstanceData> tilePair in scene)
+                {
+                    ZTileSaveData tileSaveData = new ZTileSaveData();
+                    tileSaveData.x = tilePair.Key.x;
+                    tileSaveData.y = tilePair.Key.y;
+                    tileSaveData.z = tilePair.Key.z;
+                    tileSaveData.scale = tilePair.Value.scale;
+                    tileSaveData.flipX = tilePair.Value.flipX;
+                    tileSaveData.frameNumber = tilePair.Value.frameNumber;
+                    tileSaveData.rotation = (int)tilePair.Value.rotation;
+                    tileSaveData.type = tilePair.Value.type;
+                    saveData.Add(tileSaveData);
+                }
+
+            }
+            tileDataList.Add(saveData);
+        }
+
+        tag["zTileData"] = tileDataList;
+    }
+
+    public override void LoadWorldData(TagCompound tag)
+    {
+        base.LoadWorldData(tag);
+        List<List<ZTileSaveData>> tileDataList = tag.Get<List<List<ZTileSaveData>>>("zTileData");
+        for(int i = 0; i < tileDataList.Count; i++)
+        {
+            ZTileRenderLayer layer = _renderLayers[i];
+            List<ZTileSaveData> tileSaveDataList = tileDataList[i];
+            for(int j = 0; j < tileSaveDataList.Count; j++)
+            {
+                ZTileSaveData saveData = tileSaveDataList[j];
+                ZTilePosition zTilePosition = new ZTilePosition();
+                zTilePosition.x = saveData.x;
+                zTilePosition.y = saveData.y;
+                zTilePosition.z = saveData.z;
+
+                ZTileInstanceData instanceData = new ZTileInstanceData();
+                instanceData.type = saveData.type;
+                instanceData.rotation = (Rotation)saveData.rotation;
+                instanceData.frameNumber = (ushort)saveData.frameNumber;
+                instanceData.scale = saveData.scale;
+                instanceData.flipX = saveData.flipX;
+                layer.Add(zTilePosition, instanceData);
+            }
+        }
+    }
+    
     private void RenderOverWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
     {
         DrawBehindWalls();
@@ -310,7 +436,7 @@ public class ZTileMap : ModSystem
         {
             tilePosition = zTilePosition,
             tileData = instanceData,
-            multiplyColor = Color.White * 0.5f
+            multiplyColor = Color.White * 0.75f
         };
 
         SpriteBatch spriteBatch = Main.spriteBatch;
@@ -413,6 +539,10 @@ public class ZTileMap : ModSystem
     public override void ClearWorld()
     {
         base.ClearWorld();
+        for(int i = 0; i < _renderLayers.Length; i++)
+        {
+            _renderLayers[i].Clear();
+        }
     }
 
 

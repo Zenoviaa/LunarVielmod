@@ -25,6 +25,14 @@ public class ZTileLoader : ModSystem
     {
         return Tiles[type];
     }
+    public ZTile GetTile(string name)
+    {
+        if (Mod.TryFind<ZTile>(name, out ZTile modTile))
+        {
+            return modTile;
+        }
+        return null;
+    }
 
     public ZTileInstanceData InstanceTileData<T>() where T : ZTile
     {
