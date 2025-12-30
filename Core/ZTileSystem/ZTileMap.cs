@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -129,7 +130,13 @@ public class TileScene
             //Get the z tile
             ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
             ZTile tile = zTileLoader.GetTile(tileData.type);
-            tile.Draw(spriteBatch, screenPos, tilePosition, tileData);
+            ZTileDrawParams drawParams = new ZTileDrawParams
+            {
+                tilePosition = tilePosition,
+                tileData = tileData,
+                multiplyColor = Color.White
+            };
+            tile.Draw(spriteBatch, screenPos, drawParams);
         }
     }
 }
@@ -280,6 +287,38 @@ public class ZTileMap : ModSystem
         DrawForeground();
     }
 
+    public override void PostDrawTiles()
+    {
+        base.PostDrawTiles();
+        //Draw the preview for what you're placing
+        if (Main.LocalPlayer.HeldItem.type != ModContent.ItemType<DecorationBuilder>())
+            return;
+        ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
+        ZTile tile = zTileLoader.GetTile(DecorationBuilder.templateData.type);
+
+        Point tileCoordinates = Main.MouseWorld.ToTileCoordinates();
+        ZTilePosition zTilePosition = new ZTilePosition();
+        zTilePosition.x = tileCoordinates.X;
+        zTilePosition.y = tileCoordinates.Y;
+        zTilePosition.z = DecorationBuilder.z;
+
+        ZTileInstanceData instanceData = zTileLoader.InstanceTileData(tile);
+        instanceData.rotation = DecorationBuilder.rotation;
+        instanceData.frameNumber = DecorationBuilder.frame;
+        instanceData.scale = DecorationBuilder.scale;
+        ZTileDrawParams drawParams = new ZTileDrawParams
+        {
+            tilePosition = zTilePosition,
+            tileData = instanceData,
+            multiplyColor = Color.White * 0.5f
+        };
+
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+        tile.Draw(spriteBatch, Main.screenPosition, drawParams);
+        spriteBatch.End();
+    }
+
     private void DrawBehindWalls()
     {
         SpriteBatch spriteBatch = Main.spriteBatch;
@@ -378,3 +417,4 @@ public class ZTileMap : ModSystem
 
 
 }
+

@@ -6,7 +6,12 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.ZTileSystem;
 
-
+public struct ZTileDrawParams
+{
+    public ZTilePosition tilePosition;
+    public ZTileInstanceData tileData;
+    public Color multiplyColor;
+}
 
 /// <summary>
 /// Base class for a purely decorative tile asset
@@ -50,7 +55,7 @@ public abstract class ZTile : ModTexturedType
         spriteBatch.Draw(tileTextureAsset.Value, iconCenterPos, frame, Color.White, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, 0);
     }
 
-    public void Draw(SpriteBatch spriteBatch, Vector2 screenPos, ZTilePosition tilePosition, ZTileInstanceData tileData)
+    public void Draw(SpriteBatch spriteBatch, Vector2 screenPos, ZTileDrawParams drawParams)
     {
         //TODO: index array instead of modcontent.request
         Asset<Texture2D> tileTextureAsset = ModContent.Request<Texture2D>(Texture);
@@ -58,7 +63,7 @@ public abstract class ZTile : ModTexturedType
         //Calculate frame;
         int frameHeight = tileTextureAsset.Height() / frameCount;
         int frameWidth = tileTextureAsset.Width();
-        int yOffset = frameHeight * tileData.frameNumber;
+        int yOffset = frameHeight * drawParams.tileData.frameNumber;
         Rectangle frame = new Rectangle(0, yOffset, frameWidth, frameHeight);
 
         //Calculate hte draworigin
@@ -80,11 +85,12 @@ public abstract class ZTile : ModTexturedType
         }
 
         Color drawColor = Color.White;
-        Color lightingColor = Lighting.GetColor(tilePosition.x, tilePosition.y);
+        Color lightingColor = Lighting.GetColor(drawParams.tilePosition.x, drawParams.tilePosition.y);
         drawColor = drawColor.MultiplyRGB(lightingColor);
+        drawColor = drawColor.MultiplyRGBA(drawParams.multiplyColor);
 
         float drawRotation;
-        switch (tileData.rotation)
+        switch (drawParams.tileData.rotation)
         {
             default:
             case Rotation.Degrees_0:
@@ -102,12 +108,12 @@ public abstract class ZTile : ModTexturedType
         }
 
         //Convert to world coordinates
-        Point point = new Point(tilePosition.x, tilePosition.y);
+        Point point = new Point(drawParams.tilePosition.x, drawParams.tilePosition.y);
         Vector2 worldCoordinates = point.ToWorldCoordinates();
         Vector2 drawPosition = worldCoordinates - screenPos;
         drawPosition += new Vector2(8);
 
-        SpriteEffects spriteEffects = tileData.flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        spriteBatch.Draw(tileTextureAsset.Value, drawPosition + drawOffset, frame, drawColor, drawRotation, drawOrigin, tileData.scale, spriteEffects, 0);
+        SpriteEffects spriteEffects = drawParams.tileData.flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        spriteBatch.Draw(tileTextureAsset.Value, drawPosition + drawOffset, frame, drawColor, drawRotation, drawOrigin, drawParams.tileData.scale, spriteEffects, 0);
     }
 }

@@ -165,6 +165,41 @@ namespace Stellamod.Core.ZTileSystem.UI
             base.Update(gameTime);
             SetPos();
             UpdateUI();
+            if (LunarVeilKeybinds.DecorNextFrame.JustReleased)
+            {
+                ChangeFrame(false);
+            }
+            if (LunarVeilKeybinds.DecorPrevFrame.JustReleased)
+            {
+                ChangeFrame(true);
+            }
+
+            if (LunarVeilKeybinds.DecorDownscale.JustReleased)
+            {
+                ChangeScale(false);
+            }
+            if (LunarVeilKeybinds.DecorUpscale.JustReleased)
+            {
+                ChangeScale(true);
+            }
+
+            if (LunarVeilKeybinds.DecorDownZ.JustReleased)
+            {
+                ChangeZ(false);
+            }
+            if (LunarVeilKeybinds.DecorUpZ.JustReleased)
+            {
+                ChangeZ(true);
+            }
+
+            if (LunarVeilKeybinds.DecorRotateLeft.JustReleased)
+            {
+                ChangeZ(false);
+            }
+            if (LunarVeilKeybinds.DecorRotateRight.JustReleased)
+            {
+                ChangeZ(true);
+            }
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
