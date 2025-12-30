@@ -10007,3 +10007,8 @@ MagicPaintbrush: {
 	DisplayName: Magic Paintbrush
 	Tooltip: ""
 }
+
+DecorationBuilder: {
+	DisplayName: Decoration Builder
+	Tooltip: ""
+}

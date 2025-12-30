@@ -1,12 +1,10 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.ZTileSystem;
 
-public class MagicPaintbrush : ModItem
+public class DecorationBuilder : ModItem
 {
     public static int z = 5;
     public static ZRenderLayer renderLayer = ZRenderLayer.InFrontOfWalls;
@@ -33,12 +31,12 @@ public class MagicPaintbrush : ModItem
 
     public override bool? UseItem(Player player)
     {
-        if(Main.myPlayer == player.whoAmI)
+        if (Main.myPlayer == player.whoAmI)
         {
-            if(player.altFunctionUse == 2)
+            if (player.altFunctionUse == 2)
             {
 
-            } 
+            }
             else
             {
                 ZTileMap tileMap = ModContent.GetInstance<ZTileMap>();
@@ -47,7 +45,7 @@ public class MagicPaintbrush : ModItem
                 instanceData.rotation = rotation;
                 instanceData.frameNumber = frame;
                 tileMap.CreateTile(renderLayer, Main.MouseWorld, z, instanceData);
-            }    
+            }
         }
         return base.UseItem(player);
     }

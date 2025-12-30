@@ -39,6 +39,16 @@ public abstract class ZTile : ModTexturedType
         spriteBatch.Draw(tileTextureAsset.Value, iconCenterPos, frame, Color.White, 0, frame.Value.Size() / 2f, scale, SpriteEffects.None, 0);
     }
 
+    public void DrawIcon2(SpriteBatch spriteBatch, Vector2 iconCenterPos, int frameNumber)
+    {
+        Asset<Texture2D> tileTextureAsset = ModContent.Request<Texture2D>(Texture);
+
+        int frameHeight = tileTextureAsset.Height() / frameCount;
+        Rectangle? frame = new Rectangle(0, frameHeight * frameNumber, tileTextureAsset.Width(), frameHeight);
+        Rectangle rect = frame.Value;
+        spriteBatch.Draw(tileTextureAsset.Value, iconCenterPos, frame, Color.White, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, 0);
+    }
+
     public void Draw(SpriteBatch spriteBatch, Vector2 screenPos, ZTilePosition tilePosition, ZTileInstanceData tileData)
     {
         //TODO: index array instead of modcontent.request

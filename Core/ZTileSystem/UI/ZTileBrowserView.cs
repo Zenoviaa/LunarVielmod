@@ -57,7 +57,7 @@ public class ZTileBrowserView : UIPanel
         if (HoveringItem == null)
             return;
         ZTileLoader tileLoader = ModContent.GetInstance<ZTileLoader>();
-        MagicPaintbrush.templateData = tileLoader.InstanceTileData(HoveringItem);
+        DecorationBuilder.templateData = tileLoader.InstanceTileData(HoveringItem);
     }
 
     private bool NeedsUpdateCollection()

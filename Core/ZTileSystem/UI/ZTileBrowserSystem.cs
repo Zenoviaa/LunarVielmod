@@ -41,9 +41,9 @@ public class ZTileBrowserSystem : BaseUISystem
 
     public override void UpdateUI(GameTime gameTime)
     {
-        if(Main.LocalPlayer.HeldItem.type == ModContent.ItemType<MagicPaintbrush>())
+        if(Main.LocalPlayer.HeldItem.type == ModContent.ItemType<DecorationBuilder>())
         {
-            MagicPaintbrush paintbrush = ModContent.GetInstance<MagicPaintbrush>();
+            DecorationBuilder paintbrush = ModContent.GetInstance<DecorationBuilder>();
             if(_userInterface.CurrentState == null)
             {
                 OpenUI();
