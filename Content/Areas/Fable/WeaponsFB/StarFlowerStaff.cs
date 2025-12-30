@@ -1,21 +1,16 @@
-﻿using Humanizer.Bytes;
-using Microsoft.CodeAnalysis;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.IgnitersNPowders;
+using Stellamod.Common.Shaders;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Projectiles.Magic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Helpers;
-using Terraria.Audio;
-using Stellamod.Dusts;
-using Stellamod.Common.Shaders;
 namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
     public class StarFlowerStaff : ModItem
@@ -64,7 +59,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
     public class StarFlowerSeed : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
-        private ref float AttackTimer => ref Projectile.ai[1];  
+        private ref float AttackTimer => ref Projectile.ai[1];
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -80,28 +75,28 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle riseSound = new SoundStyle("Stellamod/Assets/Sounds/StarFlower1");
                 riseSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(riseSound, Projectile.position);
             }
-            if(Timer % 10 == 0)
+            if (Timer % 10 == 0)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(), Vector2.Zero, Scale: Main.rand.NextFloat(0.5f, 2f), newColor: Color.Yellow);
             }
             Projectile.velocity *= 0.94f;
             Projectile.rotation += Projectile.velocity.Length() * 0.1f + 0.1f;
-            if(Projectile.velocity.Length() <= 1f)
+            if (Projectile.velocity.Length() <= 1f)
             {
                 AttackTimer++;
-                if(AttackTimer == 1)
+                if (AttackTimer == 1)
                 {
                     SoundStyle riseSound = new SoundStyle("Stellamod/Assets/Sounds/StarFlower2");
                     riseSound.PitchVariance = 0.2f;
                     SoundEngine.PlaySound(riseSound, Projectile.position);
                 }
-                if(AttackTimer >= 60)
+                if (AttackTimer >= 60)
                 {
                     Projectile.Kill();
                 }
@@ -118,18 +113,18 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             Color color = Color.Yellow;
             color.A = 0;
             color *= lerp;
-            for(float f = 0; f < 3; f++)
+            for (float f = 0; f < 3; f++)
                 Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, color, Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f), SpriteEffects.None, 0f);
         }
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<StarFlowerBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
     }
 
-    public class StarFlowerBoom: ModProjectile
+    public class StarFlowerBoom : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override void SetDefaults()
@@ -154,7 +149,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
                 var p = FXUtil.GlowCircleBoom(Projectile.Center, Color.Orange, Color.Red, Color.Black);
                 p.Scale *= 2;
                 FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.Orange);
-                for(float f = 0; f < 32; f++)
+                for (float f = 0; f < 32; f++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(16, 16);
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), vel, Scale: Main.rand.NextFloat(0.5f, 2f), newColor: Color.Yellow);
@@ -164,16 +159,16 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
                 SoundEngine.PlaySound(starFlowerBoomSound, Projectile.position);
             }
 
-            if(Timer % 10 == 0)
+            if (Timer % 10 == 0)
             {
                 Vector2 o = Main.rand.NextVector2Circular(64, 64);
                 for (float i = 0; i < 4; i++)
                 {
                     float progress = i / 4f;
                     float rot = progress * MathHelper.ToRadians(360);
-      
+
                     Vector2 offset = rot.ToRotationVector2() * 24;
-                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center +o,
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center + o,
                         innerColor: Color.White,
                         glowColor: Color.Yellow,
                         outerGlowColor: Color.Black,
@@ -206,7 +201,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             Vector2 drawOrigin = texture.Size() / 2f;
             Vector2 scale = new Vector2(2f, 1f);
             spriteBatch.Restart(effect: shader.Effect, blendState: BlendState.Additive);
-            for(float f = 0; f < 4f; f++)
+            for (float f = 0; f < 4f; f++)
             {
                 float interpolant = f / 4f;
                 float rot = interpolant * MathHelper.TwoPi;
@@ -214,7 +209,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
                 Vector2 drawPos = Projectile.Center - Main.screenPosition;
                 drawPos += rot.ToRotationVector2() * 32;
                 spriteBatch.Draw(texture, drawPos, null, Color.White, rot, drawOrigin, scale, SpriteEffects.None, 0);
-              //  spriteBatch.Draw(texture, drawPos, null, Color.White, rot, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
+                //  spriteBatch.Draw(texture, drawPos, null, Color.White, rot, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
             }
             spriteBatch.RestartDefaults();
             return false;

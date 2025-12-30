@@ -1,15 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.Bases;
-using Stellamod.Core.MagicSystem.UI;
-using Stellamod.Core.SwingSystem;
-using Stellamod.Core.XixianFlaskSystem;
-using Stellamod.Items;
-using System;
-using System.Collections.Generic;
+using Stellamod.Common.MagicSystem.UI;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.ModLoader.UI.Elements;
 
 namespace Stellamod.Common.ItemBrowser
@@ -75,12 +67,12 @@ namespace Stellamod.Common.ItemBrowser
                 return;
             Category = category;
             //Console.WriteLine($"Set Category to {category.displayName}");
-     
+
             _menu.AddElements(category);
-       
+
             if (category == null || category.subCategories.Length > 0)
             {
-           
+
                 _grid.Clear();
                 Recalculate();
             }
@@ -93,7 +85,7 @@ namespace Stellamod.Common.ItemBrowser
             base.Recalculate();
             if (Main.gameMenu)
                 return;
-            if(_grid.Count == 0)
+            if (_grid.Count == 0)
             {
                 if (Category == null)
                 {
@@ -101,7 +93,7 @@ namespace Stellamod.Common.ItemBrowser
                 }
                 else if (Category != null)
                 {
-           
+
                     foreach (Category category in Category.GetCategories())
                     {
                         ItemBrowserSortButton btn = new ItemBrowserSortButton(this, category);
@@ -115,7 +107,7 @@ namespace Stellamod.Common.ItemBrowser
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
- 
+
             _panel.Height.Pixels = _grid.GetTotalHeight() + 32;
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);

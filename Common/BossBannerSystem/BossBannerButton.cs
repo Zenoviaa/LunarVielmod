@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Core.QuestSystem;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -48,14 +47,14 @@ namespace Stellamod.Common.BossBannerSystem
                 Append(_bossButtons[b]);
             }
 
-       
+
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-  
+
             float leftPixels = 0;
-            for(int i = 0; i < _bossButtons.Length; i++)
+            for (int i = 0; i < _bossButtons.Length; i++)
             {
                 var btn = _bossButtons[i];
                 btn.Left.Pixels = leftPixels;
@@ -78,7 +77,7 @@ namespace Stellamod.Common.BossBannerSystem
             Rectangle frame = BossBanner.GetBannerFrame(_banner);
             Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
             spriteBatch.Draw(bossBannerTexture.Value, topLeft, frame, Color.White);
-        
+
         }
 
     }

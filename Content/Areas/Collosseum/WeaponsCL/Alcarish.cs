@@ -14,10 +14,11 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
 {
-    public class Alcarish : BaseSafunaiItem
+    public class Alcarish : ModItem
     {
         public override void SetDefaults()
         {
+            Item.DefaultToSafunai();
             Item.width = 16;
             Item.height = 16;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -31,7 +32,6 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             Item.noUseGraphic = true;
             Item.channel = true;
             Item.autoReuse = true;
-            Item.DamageType = DamageClass.Ranged;
             Item.damage = 12;
             Item.rare = ItemRarityID.Blue;
             Item.value = 10000;

@@ -1,22 +1,14 @@
-﻿using Humanizer;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
 using ReLogic.Content;
-using Stellamod.Core.XixianFlaskSystem.UI;
-using Stellamod.Core.XixianFlaskSystem;
-using System;
+using Stellamod.Common.ClassReworkSystem;
+using Stellamod.Helpers;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Terraria;
-using Stellamod.Helpers;
-using Stellamod.Common.ClassReworkSystem;
-using Stellamod.Common.SummonerSystem;
 
 namespace Stellamod.Common.SummonerSystem.UI
 {

@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
+using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -27,17 +30,37 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Halhurish
                 BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive
             };
 
-            Trailer.Shader = SlashEffect;
+
+            BlackFireShader blackFireShader = new BlackFireShader();
+            blackFireShader.SetDefaults();
+
+            SlashTrailer devilsPeak = new SlashTrailer
+            {
+                Shader = blackFireShader,
+                TrailWidthFunction = (interpolant) =>
+                {
+                    return EasingFunction.QuadraticBump(interpolant) * 80;
+                },
+                TrailColorFunction = (interpolant) =>
+                {
+                    Color lerp1 = Color.Lerp(Color.OrangeRed, Color.RosyBrown, interpolant);
+                    return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+                }
+
+            };
+
+            Trailer = devilsPeak;
             Trailer.TrailColorFunction = GetTrailColor;
             Trailer.TrailWidthFunction = GetTrailWidth;
         }
         private float GetTrailWidth(float interpolant)
         {
-            return EasingFunction.InOutCubic(interpolant) * 24;
+            return EasingFunction.InOutCubic(interpolant) * 32;
         }
         private Color GetTrailColor(float interpolant)
         {
-            return Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.3f;
+            Color lerp1 = Color.Lerp(Color.OrangeRed, Color.RosyBrown, interpolant);
+            return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -56,16 +79,6 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Halhurish
                 hitSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(hitSound, target.position);
 
-                for (int i = 0; i < 7; i++)
-                {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Yellow, 1f).noGravity = true;
-                }
-
-                for (int i = 0; i < 7; i++)
-                {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 1f).noGravity = true;
-                }
-
                 FXUtil.ShakeCamera(target.Center, 1024, 32);
                 FXUtil.GlowCircleBoom(target.Center,
                     innerColor: Color.White,
@@ -73,10 +86,15 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Halhurish
                     outerGlowColor: Color.Red, duration: 25, baseSize: 0.28f);
 
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
-                for (float f = 0; f < 32; f++)
+
+                for (float f = 0; f < 4; f++)
                 {
-                    Dust.NewDustPerfect(target.Center, DustID.Torch,
-                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.White, Main.rand.NextFloat(1f, 3f)).noGravity = true;
+                    Particle<DustParticle>.Spawn(target.Center, Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(6, 8f), Scale: Main.rand.NextFloat(0.5f, 1f));
+                }
+
+                for (float f = 0; f < 4; f++)
+                {
+                    Particle<SmokeParticle>.SpawnInAlphaLayer(target.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(0.3f, 1f), Scale: Main.rand.NextFloat(0.5f, 1f));
                 }
 
 
@@ -100,21 +118,16 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Halhurish
                 FXUtil.GlowCircleBoom(target.Center,
                     innerColor: Color.White,
                     glowColor: Color.Yellow,
-                    outerGlowColor: Color.Red, duration: 25, baseSize: 0.12f);
+                    outerGlowColor: Color.Red, duration: 25, baseSize: 0.07f);
 
+                for(float f = 0; f < 4; f++)
+                {
+                    Particle<DustParticle>.Spawn(target.Center, Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(3f, 8f), Scale: Main.rand.NextFloat(0.5f, 1f));
+                }
 
                 SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger;
                 hitSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(hitSound, target.position);
-                for (int i = 0; i < 3; i++)
-                {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 0.5f).noGravity = true;
-                }
-
-                for (int i = 0; i < 4; i++)
-                {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 0.5f).noGravity = true;
-                }
             }
         }
     }

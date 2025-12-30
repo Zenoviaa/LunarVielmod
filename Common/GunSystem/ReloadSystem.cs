@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.UI;
 
-namespace Stellamod.Core.GunSystem
+namespace Stellamod.Common.GunSystem
 {
     public class ReloadMeter : UIState
     {

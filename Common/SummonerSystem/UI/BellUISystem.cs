@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.XixianFlaskSystem.UI;
 using Stellamod.UI;
 using System.Collections.Generic;
 using Terraria;

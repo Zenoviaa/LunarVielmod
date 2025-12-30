@@ -168,7 +168,7 @@
     <None Remove="Content\Items\MoonlightMagic\Elements\MothlightElement_Ring.png" />
     <None Remove="Core\Bases\BaseHitEffect.png" />
     <None Remove="Core\Foggy\Fog.png" />
-    <None Remove="Core\QuestSystem\QuestResetter.png" />
+    <None Remove="Common\QuestSystem\QuestResetter.png" />
     <None Remove="Content\Quests\DelgrimQuest\MysteriousPlacesI.png" />
     <None Remove="Content\Quests\DelgrimQuest\MysteriousPlacesII.png" />
     <None Remove="Content\Quests\DelgrimQuest\MysteriousPlacesIII.png" />
@@ -201,10 +201,10 @@
     <None Remove="Content\Quests\ZuiQuest\KillWallofFlesh_Big.png" />
     <None Remove="Content\Quests\ZuiQuest\ReadyUp.png" />
     <None Remove="Content\Quests\ZuiQuest\ReadyUp_Big.png" />
-    <None Remove="Core\SummonerSystem\UI\BellInventoryPanel.png" />
-    <None Remove="Core\SummonerSystem\UI\BellPanel.png" />
-    <None Remove="Core\SummonerSystem\UI\BellSlot.png" />
-    <None Remove="Core\SummonerSystem\UI\FlaskSlot.png" />
+    <None Remove="Common\SummonerSystem\UI\BellInventoryPanel.png" />
+    <None Remove="Common\SummonerSystem\UI\BellPanel.png" />
+    <None Remove="Common\SummonerSystem\UI\BellSlot.png" />
+    <None Remove="Common\SummonerSystem\UI\FlaskSlot.png" />
     <None Remove="Dusts\BubbleDust.png" />
     <None Remove="Dusts\GunFlash.png" />
     <None Remove="Dusts\LumiDust.png" />

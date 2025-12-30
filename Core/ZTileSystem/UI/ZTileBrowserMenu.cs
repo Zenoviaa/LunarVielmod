@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.MagicSystem.UI;
+using Stellamod.Common.MagicSystem.UI;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;

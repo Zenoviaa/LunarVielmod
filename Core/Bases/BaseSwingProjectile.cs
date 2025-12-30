@@ -78,6 +78,7 @@ namespace Stellamod.Core.Bases
             Projectile.extraUpdates = ExtraUpdateMult - 1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 10000;
+            Projectile.ownerHitCheck = true;
         }
 
         public virtual void SetSwingStyle(ref BaseSwingStyle swingStyle, int comboIndex)
@@ -122,6 +123,7 @@ namespace Stellamod.Core.Bases
             return _smoothedLerpValue > 0.1f && _smoothedLerpValue < 0.9f;
         }
 
+        /*
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
@@ -132,7 +134,7 @@ namespace Stellamod.Core.Bases
             float collisionPoint = 0f;
 
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, Projectile.scale, ref collisionPoint);
-        }
+        }*/
         public virtual void SetComboDefaults(List<BaseSwingStyle> swings)
         {
 

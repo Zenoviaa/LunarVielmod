@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.QuestSystem;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.DialogueSystem;
-using Stellamod.Core.QuestSystem;
 using Stellamod.Helpers;
 using Stellamod.NPCs;
 using Stellamod.UI.DialogueTowning;

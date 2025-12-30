@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.WeaponUpgrade.UI;
+using Stellamod.Helpers;
 using Stellamod.UI;
 using System.Collections.Generic;
 using Terraria;
@@ -16,8 +18,8 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
         private UserInterface _hudUserInterface;
-        public static string RootTexturePath => "Stellamod/Core/XixianFlaskSystem/UI/";
-        public static string RootItemTexturePath => "Stellamod/Core/XixianFlaskSystem/";
+        public static string RootTexturePath => typeof(XixianFlaskUISystem).DirectoryHere() + "/";
+        public static string RootItemTexturePath => typeof(XixianFlask).DirectoryHere() + "/";
 
         public XixianFlaskUIState xixianFlaskUIState;
         public FlaskSlotUIState flaskSlotUIState;

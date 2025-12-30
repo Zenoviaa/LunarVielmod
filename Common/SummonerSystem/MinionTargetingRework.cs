@@ -10,7 +10,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Core.SummonerSystem
+namespace Stellamod.Common.SummonerSystem
 {
     /// <summary>
     /// Inherit from this to make a projectile able to be targeted by NPCs, it works by moving the position of players in the player array to basically fake a player being there

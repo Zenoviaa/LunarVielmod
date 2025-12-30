@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Common.SummonerSystem;
-using Stellamod.Core.SummonerSystem.UI;
 using Stellamod.Helpers;
 using Stellamod.UI;
 using System.Collections.Generic;

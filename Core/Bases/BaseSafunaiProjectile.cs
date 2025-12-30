@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Buffs;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Effects.Trails;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using System;
@@ -18,15 +20,9 @@ namespace Stellamod.Core.Bases
     {
         private bool _initialized;
         private bool _synced;
+        private Vector2[] _chainPositions;
         private OvalSwing _oval;
         protected ref float Timer => ref Projectile.ai[0];
-        protected BaseSafunaiItem Safunai
-        {
-            get
-            {
-                return Owner.HeldItem.ModItem as BaseSafunaiItem;
-            }
-        }
         public ITrailer Trailer { get; set; }
         private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
@@ -90,7 +86,7 @@ namespace Stellamod.Core.Bases
 
             Projectile.timeLeft = 2;
             Owner.itemTime = 2;
-            Owner.heldProj = Projectile.whoAmI;
+            //Owner.heldProj = Projectile.whoAmI;
             ThrowOutAI();
 
             if (!Slam)
@@ -176,8 +172,10 @@ namespace Stellamod.Core.Bases
 
             //End control point for the chain
             Vector2 projBottom = Projectile.Center + new Vector2(0, projTexture.Height / 2).RotatedBy(Projectile.rotation + MathHelper.PiOver2) * 0.75f;
-            DrawChainCurve(Main.spriteBatch, projBottom, out Vector2[] chainPositions);
+            CalculateChainCurve(projBottom);
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedChainCurve);
 
+            var chainPositions = _chainPositions;
             //Adjust rotation to face from the last point in the bezier curve
             float newRotation = (projBottom - chainPositions[chainPositions.Length - 2]).ToRotation() + MathHelper.PiOver2;
 
@@ -194,13 +192,15 @@ namespace Stellamod.Core.Bases
             scaleMult = scaleMult * 1.25f;
             spriteBatch.Draw(projTexture, projBottom - Main.screenPosition, null, lightColor, newRotation, origin, Projectile.scale * scaleMult, flip, 0);
 
-            spriteBatch.Restart(blendState: BlendState.Additive);
+       
             float glowProgress = EasingFunction.QuadraticBump(Timer / SwingTime);
+            Color glowColor2 = Color.White * glowProgress;
+            glowColor2.A = 0;
             for (int i = 0; i < 1; i++)
             {
-                spriteBatch.Draw(glowTexture, projBottom - Main.screenPosition, null, Color.White * glowProgress, newRotation, origin, Projectile.scale * scaleMult, flip, 0);
+                spriteBatch.Draw(glowTexture, projBottom - Main.screenPosition, null, glowColor2, newRotation, origin, Projectile.scale * scaleMult, flip, 0);
             }
-            spriteBatch.RestartDefaults();
+
 
             CurrentBase = projBottom + (newRotation - 1.57f).ToRotationVector2() * (projTexture.Height / 2);
             if (!Slam)
@@ -210,22 +210,62 @@ namespace Stellamod.Core.Bases
             float transparency = glowProgress * 0.5f;
             float scale = 1 + glowProgress * 0.5f;
 
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            spriteBatch.Draw(whiteTexture, projBottom - Main.screenPosition, null, Color.White * transparency, newRotation, origin, Projectile.scale * scale, flip, 0);
-            for (int i = 0; i < 2; i++)
-                spriteBatch.Draw(projTexture, projBottom - Main.screenPosition, null, lightColor, newRotation, origin, Projectile.scale * scaleMult, flip, 0);
+            Color whiteColor = Color.White * transparency;
+            whiteColor.A = 0;
+            spriteBatch.Draw(whiteTexture, projBottom - Main.screenPosition, null, whiteColor, newRotation, origin, Projectile.scale * scale, flip, 0);
 
-            spriteBatch.RestartDefaults();
+            Color glowColor = lightColor;
+            glowColor.A = 0;
+            for (int i = 0; i < 2; i++)
+                spriteBatch.Draw(projTexture, projBottom - Main.screenPosition, null, glowColor, newRotation, origin, Projectile.scale * scaleMult, flip, 0);
             return false;
         }
 
         //Control points for drawing chain bezier, update slowly when hooked in
         private Vector2 _chainMidA;
         private Vector2 _chainMidB;
-        protected void DrawChainCurve(SpriteBatch spriteBatch, Vector2 projBottom, out Vector2[] chainPositions)
+        private void DrawPixelatedChainCurve(SpriteBatch spriteBatch, Vector2 screenPos)
         {
+            int numPoints = 30;
             Texture2D chainTex = ModContent.Request<Texture2D>(Texture + "_Chain").Value;
 
+            //Draw each chain segment, skipping the very first one, as it draws partially behind the player
+            for (int i = 1; i < numPoints; i++)
+            {
+                Vector2 position = _chainPositions[i];
+
+                float rotation = (_chainPositions[i] - _chainPositions[i - 1]).ToRotation() - MathHelper.PiOver2; //Calculate rotation based on direction from last point
+                float yScale = Vector2.Distance(_chainPositions[i], _chainPositions[i - 1]) / chainTex.Height; //Calculate how much to squash/stretch for smooth chain based on distance between points
+
+                Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
+                Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
+                Vector2 origin = new Vector2(chainTex.Width / 2, chainTex.Height); //Draw from center bottom of texture
+                spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
+            }
+
+            if (Slam)
+            {
+                float glowProgress = EasingFunction.QuadraticBump(Timer / SwingTime);
+                int glowPoints = (int)MathHelper.Lerp(0, numPoints, glowProgress);
+                for (int i = 1; i < glowPoints; i++)
+                {
+                    Vector2 position = _chainPositions[i];
+
+                    float rotation = (_chainPositions[i] - _chainPositions[i - 1]).ToRotation() - MathHelper.PiOver2; //Calculate rotation based on direction from last point
+                    float yScale = Vector2.Distance(_chainPositions[i], _chainPositions[i - 1]) / chainTex.Height; //Calculate how much to squash/stretch for smooth chain based on distance between points
+
+                    Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
+                    Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
+                    chainLightColor.A = 0;
+                    Vector2 origin = new Vector2(chainTex.Width / 2, chainTex.Height); //Draw from center bottom of texture
+                    spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
+                    spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
+                }
+            }
+        }
+
+        protected void CalculateChainCurve(Vector2 projBottom)
+        {
             float progress = Timer / SwingTime;
 
             if (Slam)
@@ -242,42 +282,7 @@ namespace Stellamod.Core.Bases
             Curvature curve = new Curvature(new Vector2[] { Owner.MountedCenter, _chainMidA, _chainMidB, projBottom });
 
             int numPoints = 30;
-            chainPositions = curve.GetPoints(numPoints).ToArray();
-
-            //Draw each chain segment, skipping the very first one, as it draws partially behind the player
-            for (int i = 1; i < numPoints; i++)
-            {
-                Vector2 position = chainPositions[i];
-
-                float rotation = (chainPositions[i] - chainPositions[i - 1]).ToRotation() - MathHelper.PiOver2; //Calculate rotation based on direction from last point
-                float yScale = Vector2.Distance(chainPositions[i], chainPositions[i - 1]) / chainTex.Height; //Calculate how much to squash/stretch for smooth chain based on distance between points
-
-                Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
-                Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
-                Vector2 origin = new Vector2(chainTex.Width / 2, chainTex.Height); //Draw from center bottom of texture
-                spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
-            }
-
-            if (Slam)
-            {
-                spriteBatch.Restart(blendState: BlendState.Additive);
-                float glowProgress = EasingFunction.QuadraticBump(Timer / SwingTime);
-                int glowPoints = (int)MathHelper.Lerp(0, numPoints, glowProgress);
-                for (int i = 1; i < glowPoints; i++)
-                {
-                    Vector2 position = chainPositions[i];
-
-                    float rotation = (chainPositions[i] - chainPositions[i - 1]).ToRotation() - MathHelper.PiOver2; //Calculate rotation based on direction from last point
-                    float yScale = Vector2.Distance(chainPositions[i], chainPositions[i - 1]) / chainTex.Height; //Calculate how much to squash/stretch for smooth chain based on distance between points
-
-                    Vector2 scale = new Vector2(1, yScale); // Stretch/Squash chain segment
-                    Color chainLightColor = Lighting.GetColor((int)position.X / 16, (int)position.Y / 16); //Lighting of the position of the chain segment
-                    Vector2 origin = new Vector2(chainTex.Width / 2, chainTex.Height); //Draw from center bottom of texture
-                    spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
-                    spriteBatch.Draw(chainTex, position - Main.screenPosition, null, chainLightColor, rotation, origin, scale, SpriteEffects.None, 0);
-                }
-                spriteBatch.RestartDefaults();
-            }
+            _chainPositions = curve.GetPoints(numPoints).ToArray();
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)

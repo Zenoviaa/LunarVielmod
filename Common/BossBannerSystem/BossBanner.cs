@@ -1,10 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
-using Stellamod.Core.QuestSystem;
 using Stellamod.Helpers;
-using Stellamod.UI.CollectionSystem.Quests;
 using System;
 using System.Collections.Generic;
 using Terraria.ModLoader;
@@ -53,11 +50,11 @@ namespace Stellamod.Common.BossBannerSystem
         public static BossPage[] GetBossPages(BossBannerType banner)
         {
             List<BossPage> pages = new List<BossPage>();
-            foreach(var bossPage in BossPage.Pages)
+            foreach (var bossPage in BossPage.Pages)
             {
-                if(bossPage.banner == banner)
+                if (bossPage.banner == banner)
                 {
-                    pages.Add(bossPage);    
+                    pages.Add(bossPage);
                 }
             }
             return pages.ToArray();

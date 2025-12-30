@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Core.XixianFlaskSystem;
 using Stellamod.Items.Accessories.Players;
 using Terraria;
 using Terraria.ModLoader;

@@ -12,7 +12,6 @@ namespace Stellamod.Common.WeaponUpgrade.UI
 {
     public class WeaponUpgradeSlot : UIElement
     {
-        private Item _prevItem;
         private readonly int _context;
         private readonly float _scale;
 
@@ -50,7 +49,6 @@ namespace Stellamod.Common.WeaponUpgrade.UI
         {
             if (Valid(Main.mouseItem))
             {
-                _prevItem = Item;
                 ItemSlot.Handle(ref Item, _context);
             }
         }

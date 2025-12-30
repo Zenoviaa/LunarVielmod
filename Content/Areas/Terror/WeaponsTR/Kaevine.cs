@@ -7,7 +7,6 @@ using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -15,12 +14,13 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Terror.WeaponsTR
 {
-    public class Kaevine : BaseSafunaiItem
+    public class Kaevine : ModItem
     {
 
         public override void SetDefaults()
         {
             base.SetDefaults();
+            Item.DefaultToSafunai();
             Item.width = 16;
             Item.height = 16;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -34,7 +34,6 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
             Item.noUseGraphic = true;
             Item.channel = true;
             Item.autoReuse = true;
-            Item.DamageType = DamageClass.Ranged;
             Item.damage = 13;
         }
 

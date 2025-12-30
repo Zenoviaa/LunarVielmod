@@ -11,7 +11,7 @@ using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace Stellamod.Core.MagicSystem.UI
+namespace Stellamod.Common.MagicSystem.UI
 {
     public class EnchantmentSlot : UIElement
     {

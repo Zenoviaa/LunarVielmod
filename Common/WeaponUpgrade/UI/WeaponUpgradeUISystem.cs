@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Common.WeaponUpgrade;
 using Stellamod.Content.Items.Materials;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.UI;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Stellamod.Common.WeaponUpgrade.UI
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
         public WeaponUpgradeUIState reforgeUIState;
-        public static string RootTexturePath => "Stellamod/Core/WeaponUpgrade/UI/";
+        public static string RootTexturePath => typeof(WeaponUpgradeUISystem).DirectoryHere() + "/";
 
         public int RequiredAmount
         {

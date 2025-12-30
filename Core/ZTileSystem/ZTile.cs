@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
@@ -35,9 +34,9 @@ public abstract class ZTile : ModTexturedType
         Asset<Texture2D> tileTextureAsset = ModContent.Request<Texture2D>(Texture);
         Rectangle? frame = new Rectangle(0, 0, tileTextureAsset.Width(), tileTextureAsset.Height() / frameCount);
         Rectangle rect = frame.Value;
-        float xMultiplier = maxSize/  (float)rect.Width;
+        float xMultiplier = maxSize / (float)rect.Width;
         float yMultiplier = maxSize / (float)rect.Height;
-        Vector2 scale = new Vector2(xMultiplier, yMultiplier);  
+        Vector2 scale = new Vector2(xMultiplier, yMultiplier);
         spriteBatch.Draw(tileTextureAsset.Value, iconCenterPos, frame, Color.White, 0, frame.Value.Size() / 2f, scale, SpriteEffects.None, 0);
     }
 
