@@ -1,7 +1,7 @@
 using Stellamod.Common.ArmorReforge;
 using Stellamod.Common.BossBannerSystem;
+using Stellamod.Common.QuestSystem;
 using Stellamod.Core.DialogueSystem;
-using Stellamod.Core.QuestSystem;
 using Terraria.Localization;
 using Terraria.ModLoader;
 

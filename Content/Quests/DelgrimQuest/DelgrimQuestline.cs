@@ -1,4 +1,4 @@
-﻿using Stellamod.Core.QuestSystem;
+﻿using Stellamod.Common.QuestSystem;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Ores;

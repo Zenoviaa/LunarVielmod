@@ -7,7 +7,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace Stellamod.Core.QuestSystem
+namespace Stellamod.Common.QuestSystem
 {
     public class QuestTracker : ModSystem
     {

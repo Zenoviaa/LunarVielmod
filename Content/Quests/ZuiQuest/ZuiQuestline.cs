@@ -1,5 +1,5 @@
-﻿using Stellamod.Content.Items.Materials;
-using Stellamod.Core.QuestSystem;
+﻿using Stellamod.Common.QuestSystem;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Accessories;

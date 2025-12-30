@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.BossBannerSystem;
-using Stellamod.Core.QuestSystem;
+using Stellamod.Common.QuestSystem;
 using Stellamod.UI.CollectionSystem.Quests;
 using System;
 using System.Collections.Generic;

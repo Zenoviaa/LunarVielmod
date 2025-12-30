@@ -1,4 +1,4 @@
-﻿using Stellamod.Core.QuestSystem;
+﻿using Stellamod.Common.QuestSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.NPCs.Govheil;

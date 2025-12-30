@@ -4,7 +4,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Core.QuestSystem
+namespace Stellamod.Common.QuestSystem
 {
     public class QuestResetter : ModItem
     {

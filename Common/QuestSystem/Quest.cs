@@ -8,7 +8,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace Stellamod.Core.QuestSystem
+namespace Stellamod.Common.QuestSystem
 {
     public class QuestSerializer : TagSerializer<Quest, TagCompound>
     {

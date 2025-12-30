@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.QuestSystem;
+using Stellamod.Common.QuestSystem;
 using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
