@@ -19,8 +19,10 @@ namespace Stellamod.Common.MagicSystem.UI
             BackgroundAsset = ModContent.Request<Texture2D>(texturePath, ReLogic.Content.AssetRequestMode.ImmediateLoad);
             Width.Set(BackgroundAsset.Width() * scale, 0f);
             Height.Set(BackgroundAsset.Height() * scale, 0f);
+            drawColor = Color.White;
         }
         public Asset<Texture2D> BackgroundAsset { get; private set; }
+        public Color drawColor;
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             float oldScale = Main.inventoryScale;
@@ -32,7 +34,7 @@ namespace Stellamod.Common.MagicSystem.UI
 
             //Draw the background and then draw the item icon
             Texture2D value = BackgroundAsset.Value;
-            spriteBatch.Draw(value, rectangle.TopLeft(), null, Color.White, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(value, rectangle.TopLeft(), null, drawColor, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
             Main.inventoryScale = oldScale;
         }
     }

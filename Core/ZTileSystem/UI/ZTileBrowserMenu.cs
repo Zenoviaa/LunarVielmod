@@ -100,6 +100,7 @@ public class ZTileBrowserMenu : UIPanel
         float progress = _panel.Height.Pixels / Height.Pixels;
         progress = MathHelper.Clamp(progress, 0f, 1f);
 
+        _inventoryBackground.drawColor = Color.Lerp(Color.White, Color.Black, 0.8f);
         _scrollbar.Height.Set(Height.Pixels * progress, 0);
         float scrollRatio = _scrollbar.ViewPosition;
 

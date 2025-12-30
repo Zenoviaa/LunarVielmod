@@ -21,7 +21,6 @@ namespace Stellamod.Core.ZTileSystem.UI;
 /// </summary>
 public class ZTileBrowserWindow : UIPanel
 {
-    private UIImage _backgroundSquare;
     private UIScrollbar _scrollbar;
     private UIScrollbar _sortingScrollbar;
     private XButton _xButton;
@@ -41,14 +40,6 @@ public class ZTileBrowserWindow : UIPanel
 
     public ZTileBrowserWindow() : base()
     {
-        _backgroundSquare = new UIImage(BackgroundSquareTexture)
-        {
-            HAlign = 0f,
-            VAlign = 0f,
-            AllowResizingDimensions = true,
-            ScaleToFit = true,
-        };
-
         _scrollbar = new FancyScrollbar();
         _sortingScrollbar = new FancyScrollbar();
         _xButton = new XButton(Close);
@@ -72,13 +63,10 @@ public class ZTileBrowserWindow : UIPanel
         BorderColor = Color.Transparent;
 
 
-        Append(_backgroundSquare);
-
-
         _inventoryMenu.HAlign = 0.5f;
         _inventoryMenu.VAlign = 0.5f;
         Append(_inventoryMenu);
-        Append(_xButton);
+       // Append(_xButton);
 
         //Scrollbar
         _scrollbar.Width.Set(20, 0);
@@ -124,11 +112,10 @@ public class ZTileBrowserWindow : UIPanel
         Left.Pixels = _pos.X;
         Top.Pixels = _pos.Y;
 
-        _backgroundSquare.Width = Width;
-        _backgroundSquare.Height = Height;
-
         _inventoryMenu.HAlign = 0.5f;
         _inventoryMenu.VAlign = 0.25f;
+        _xButton.Top.Pixels = 64;
+        _xButton.Left.Pixels = 164;
 
     }
     public override void Update(GameTime gameTime)
