@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.GunSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Projectiles;
@@ -13,6 +12,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
+using Stellamod.Common.GunSystem;
 
 namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.GunSystem;
 using Stellamod.Content.Items.Materials;
-using Stellamod.Core.GunSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;

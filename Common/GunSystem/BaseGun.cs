@@ -16,7 +16,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Core.GunSystem
+namespace Stellamod.Common.GunSystem
 {
     public class ReloadBar : ModProjectile
     {
