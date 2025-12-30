@@ -554,6 +554,13 @@ public class ZTileMap : ModSystem
         Point chunk = new Point(chunkX, chunkY);
         return chunk;
     }
+
+    /// <summary>
+    /// Kills a tile a chosen position
+    /// </summary>
+    /// <param name="renderLayer"></param>
+    /// <param name="mouseWorld"></param>
+    /// <param name="z"></param>
     public void KillTile(ZRenderLayer renderLayer, Vector2 mouseWorld, int z)
     {
         Point tileCoordinates = mouseWorld.ToTileCoordinates();
@@ -561,10 +568,22 @@ public class ZTileMap : ModSystem
         zTilePosition.x = tileCoordinates.X;
         zTilePosition.y = tileCoordinates.Y;
         zTilePosition.z = z;
+
+        if (Main.netMode != NetmodeID.SinglePlayer)
+        {
+            int clientToIgnore = Main.LocalPlayer.whoAmI;
+            Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.BreakDecoration,
+                (byte)renderLayer,
+                (ushort)zTilePosition.x,
+                (ushort)zTilePosition.y,
+                (ushort)zTilePosition.z).Send(ignoreClient: clientToIgnore);
+        }
+
         Remove(renderLayer, zTilePosition);
     }
+
     /// <summary>
-    /// This function should not be called on the server, only on clients
+    /// Creates a tile at the chosen position
     /// </summary>
     /// <param name="renderLayer"></param>
     /// <param name="worldPosition"></param>
@@ -578,7 +597,7 @@ public class ZTileMap : ModSystem
         zTilePosition.y = tileCoordinates.Y;
         zTilePosition.z = z;
 
-        if (Main.netMode == NetmodeID.MultiplayerClient)
+        if (Main.netMode != NetmodeID.SinglePlayer)
         {
             int clientToIgnore = Main.LocalPlayer.whoAmI;
             Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.PlaceDecoration,
@@ -609,6 +628,16 @@ public class ZTileMap : ModSystem
             (byte)tileData.rotation,
             (ushort)tileData.type).Send(toWho, fromWho);
     }
+    public void SyncBreakTile(int toWho, int fromWho, ZRenderLayer renderLayer, ZTilePosition tilePosition)
+    {
+        int clientToIgnore = Main.LocalPlayer.whoAmI;
+        Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.BreakDecoration,
+            (byte)renderLayer,
+            (ushort)tilePosition.x,
+            (ushort)tilePosition.y,
+            (ushort)tilePosition.z).Send(toWho, fromWho);
+    }
+
 
 
     public void Add(ZRenderLayer renderLayer, ZTilePosition tilePosition, ZTileInstanceData tileData)
