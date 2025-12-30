@@ -22,7 +22,7 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
         {
             base.SetDefaults();
             FlashlightLength = 1200;
-            FlashlightWidth = 120;
+            FlashlightWidth = 240;
         }
         protected override ILight GetLight()
         {
