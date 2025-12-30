@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -13,6 +14,33 @@ using Terraria.ID;
 using Terraria.ModLoader;
 namespace Stellamod.Items.Weapons.Melee.Safunai.Parendine
 {
+    public class Parendine : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.DefaultToSafunai();
+            Item.width = 16;
+            Item.height = 16;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.useTime = Item.useAnimation = 20;
+            Item.shootSpeed = 1f;
+            Item.knockBack = 4f;
+
+            Item.shoot = ModContent.ProjectileType<ParendineProj>();
+            Item.value = Item.sellPrice(gold: 10);
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
+            Item.channel = true;
+            Item.autoReuse = true;
+            Item.damage = 16;
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<WinterbornShard, BlankSafunai>();
+        }
+    }
+
     public class ParendineProj : BaseSafunaiProjectile
     {
 
@@ -72,7 +100,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Parendine
                     glowColor: Color.LightBlue,
                     outerGlowColor: Color.Blue, duration: 25, baseSize: boomSize);
 
-                for(float n = 0; n < 4; n++)
+                for (float n = 0; n < 4; n++)
                 {
                     DustParticle dp = Particle<DustParticle>.Spawn(target.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(4f, 8f), Scale: Main.rand.NextFloat(0.5f, 1f));
                     dp.outerColor = Color.Blue;
