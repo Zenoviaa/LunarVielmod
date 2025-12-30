@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.IgnitersNPowders;
+using Stellamod.Common.IgnitersNPowders;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.ModLoader;

@@ -13,7 +13,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace Stellamod.Core.IgnitersNPowders
+namespace Stellamod.Common.IgnitersNPowders
 {
     public class IgniterPlayer : ModPlayer
     {

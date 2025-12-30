@@ -6,7 +6,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Core.IgnitersNPowders
+namespace Stellamod.Common.IgnitersNPowders
 {
     public abstract class BasePowder : ModItem
     {

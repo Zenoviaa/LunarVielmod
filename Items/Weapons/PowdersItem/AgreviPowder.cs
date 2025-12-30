@@ -1,4 +1,4 @@
-﻿using Stellamod.Core.IgnitersNPowders;
+﻿using Stellamod.Common.IgnitersNPowders;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.IgniterExplosions;

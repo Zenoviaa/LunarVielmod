@@ -1,4 +1,4 @@
-﻿using Stellamod.Core.IgnitersNPowders;
+﻿using Stellamod.Common.IgnitersNPowders;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.IgniterExplosions;
