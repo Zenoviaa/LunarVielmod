@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.Players;
+using Stellamod.Common.Players;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Accessories.Players;

@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Core.Players
+namespace Stellamod.Common.Players
 {
     public class ComboPlayer : ModPlayer
     {

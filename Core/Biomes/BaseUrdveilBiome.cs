@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Biomes
 {
+   
     public abstract class BaseUrdveilBiome : ModBiome
     {
         public override void OnEnter(Player player)
