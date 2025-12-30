@@ -12,7 +12,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Parendine
             Item.width = 16;
             Item.height = 16;
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.useTime = Item.useAnimation = 18;
+            Item.useTime = Item.useAnimation = 20;
             Item.shootSpeed = 1f;
             Item.knockBack = 4f;
 

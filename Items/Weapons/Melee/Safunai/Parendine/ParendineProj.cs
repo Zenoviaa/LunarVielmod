@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
+using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -17,27 +20,38 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Parendine
         public override void OnInitialize()
         {
             base.OnInitialize();
-            //Define shader, set the shader
-            SlashEffect = new()
+
+            BlackFireShader blackFireShader = new BlackFireShader();
+            blackFireShader.SetDefaults();
+            blackFireShader.InnerColor = Color.LightCyan;
+            blackFireShader.OuterColor = Color.Cyan;
+            blackFireShader.BackColor = Color.DarkBlue;
+            SlashTrailer devilsPeak = new SlashTrailer
             {
-                BaseColor = Color.Cyan,
-                WindColor = Color.DarkBlue,
-                LightColor = Color.Blue,
-                RimHighlightColor = Color.LightCyan,
-                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive
+                Shader = blackFireShader,
+                TrailWidthFunction = (interpolant) =>
+                {
+                    return EasingFunction.QuadraticBump(interpolant) * 80;
+                },
+                TrailColorFunction = (interpolant) =>
+                {
+                    Color lerp1 = Color.Lerp(Color.Cyan, Color.Violet, interpolant);
+                    return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+                }
+
             };
 
-            Trailer.Shader = SlashEffect;
+            Trailer = devilsPeak;
             Trailer.TrailColorFunction = GetTrailColor;
             Trailer.TrailWidthFunction = GetTrailWidth;
         }
         private float GetTrailWidth(float interpolant)
         {
-            return EasingFunction.InOutCubic(interpolant) * 24;
+            return EasingFunction.InOutCubic(interpolant) * 64;
         }
         private Color GetTrailColor(float interpolant)
         {
-            return Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.3f;
+            return Color.Lerp(Color.White, Color.Transparent, interpolant);
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -51,14 +65,6 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Parendine
                 parendineHitSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(parendineHitSound, target.Center);
 
-                for (int i = 0; i < 7; i++)
-                {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DeepSkyBlue, 1f).noGravity = true;
-                }
-                for (int i = 0; i < 7; i++)
-                {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSkyBlue, 1f).noGravity = true;
-                }
                 FXUtil.ShakeCamera(target.Center, 1024, 32);
                 float boomSize = Main.rand.NextFloat(0.025f, 0.08f);
                 FXUtil.GlowCircleBoom(target.Center,
@@ -66,7 +72,16 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Parendine
                     glowColor: Color.LightBlue,
                     outerGlowColor: Color.Blue, duration: 25, baseSize: boomSize);
 
-
+                for(float n = 0; n < 4; n++)
+                {
+                    DustParticle dp = Particle<DustParticle>.Spawn(target.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(4f, 8f), Scale: Main.rand.NextFloat(0.5f, 1f));
+                    dp.outerColor = Color.Blue;
+                }
+                for (float f = 0; f < 4; f++)
+                {
+                    var smoke = Particle<SmokeParticle>.SpawnInAlphaLayer(target.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(0.3f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                    smoke.initialColor = Color.DarkGray;
+                }
                 for (float i = 0; i < 4; i++)
                 {
                     float progress = i / 4f;
@@ -84,19 +99,19 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Parendine
             }
             else
             {
-                float boomSize = Main.rand.NextFloat(0.08f, 0.12f);
+                float boomSize = Main.rand.NextFloat(0.04f, 0.08f);
                 FXUtil.GlowCircleBoom(target.Center,
                     innerColor: Color.Cyan,
                     glowColor: Color.LightBlue,
                     outerGlowColor: Color.Blue, duration: 25, baseSize: boomSize);
-
+                for (float n = 0; n < 2; n++)
+                {
+                    DustParticle dp = Particle<DustParticle>.Spawn(target.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(4f, 8f), Scale: Main.rand.NextFloat(0.5f, 1f));
+                    dp.outerColor = Color.Blue;
+                }
                 SoundStyle parendineHitSound = AssetRegistry.Sounds.Melee.Parendine2;
                 parendineHitSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(parendineHitSound, target.Center);
-                for (int i = 0; i < 4; i++)
-                {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.DeepSkyBlue, 0.5f).noGravity = true;
-                }
             }
             if (Main.rand.NextBool(3))
             {

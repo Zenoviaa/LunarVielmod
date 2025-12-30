@@ -4,59 +4,68 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Items.Materials.Molds;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Melee.Safunai.Halhurish
+namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
+    public class Halhurish : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.DefaultToSafunai();
+            Item.width = 16;
+            Item.height = 16;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.useTime = Item.useAnimation = 30;
+            Item.shootSpeed = 1f;
+            Item.knockBack = 4f;
+            Item.UseSound = SoundID.Item116;
+            Item.shoot = ModContent.ProjectileType<HalhurishProj>();
+            Item.value = Item.sellPrice(gold: 10);
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
+            Item.channel = true;
+            Item.autoReuse = true;
+            Item.damage = 13;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<AlcadizScrap, BlankSafunai>();
+        }
+    }
+
     public class HalhurishProj : BaseSafunaiProjectile
     {
-        public SlashEffect SlashEffect { get; set; }
         public override void OnInitialize()
         {
             base.OnInitialize();
-            //Define shader, set the shader
-            SlashEffect = new()
-            {
-                BaseColor = Color.Red,
-                WindColor = Color.OrangeRed,
-                LightColor = Color.Orange,
-                RimHighlightColor = Color.Yellow,
-                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive
-            };
-
-
             BlackFireShader blackFireShader = new BlackFireShader();
             blackFireShader.SetDefaults();
-
             SlashTrailer devilsPeak = new SlashTrailer
             {
                 Shader = blackFireShader,
-                TrailWidthFunction = (interpolant) =>
-                {
-                    return EasingFunction.QuadraticBump(interpolant) * 80;
-                },
-                TrailColorFunction = (interpolant) =>
-                {
-                    Color lerp1 = Color.Lerp(Color.OrangeRed, Color.RosyBrown, interpolant);
-                    return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
-                }
-
             };
 
             Trailer = devilsPeak;
             Trailer.TrailColorFunction = GetTrailColor;
             Trailer.TrailWidthFunction = GetTrailWidth;
         }
+
         private float GetTrailWidth(float interpolant)
         {
             return EasingFunction.InOutCubic(interpolant) * 32;
         }
+
         private Color GetTrailColor(float interpolant)
         {
             Color lerp1 = Color.Lerp(Color.OrangeRed, Color.RosyBrown, interpolant);
@@ -121,7 +130,7 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Halhurish
                     glowColor: Color.Yellow,
                     outerGlowColor: Color.Red, duration: 25, baseSize: 0.07f);
 
-                for(float f = 0; f < 4; f++)
+                for (float f = 0; f < 4; f++)
                 {
                     Particle<DustParticle>.Spawn(target.Center, Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(3f, 8f), Scale: Main.rand.NextFloat(0.5f, 1f));
                 }
@@ -129,6 +138,10 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Halhurish
                 SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger;
                 hitSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(hitSound, target.position);
+            }
+            if (Main.rand.NextBool(3))
+            {
+                target.AddBuff(BuffID.OnFire, 120);
             }
         }
     }
