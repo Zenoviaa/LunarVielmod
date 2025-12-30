@@ -2,20 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Common.Shaders;
-using Stellamod.Core.Effects;
-using Stellamod.Core.MagicSystem.UI;
 using Stellamod.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Core.ZTileSystem.UI
 {
@@ -27,7 +21,7 @@ namespace Stellamod.Core.ZTileSystem.UI
             this.TextureAsset = textureAsset;
             this.ButtonAction = clickFunction;
             Width.Pixels = 64;
-            Height.Pixels = 64; 
+            Height.Pixels = 64;
             OnLeftClick += LeftClick;
             OnRightClick += RightClick;
         }
@@ -79,7 +73,8 @@ namespace Stellamod.Core.ZTileSystem.UI
 
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, default, Main.Rasterizer, null, Main.UIScaleMatrix);
-            } else
+            }
+            else
             {
 
                 spriteBatch.End();
@@ -97,7 +92,7 @@ namespace Stellamod.Core.ZTileSystem.UI
             }
 
 
-                spriteBatch.Draw(TextureAsset.Value, iconCenterPos, null, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(TextureAsset.Value, iconCenterPos, null, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
         }
     }
 
@@ -142,12 +137,12 @@ namespace Stellamod.Core.ZTileSystem.UI
             _panel.Height.Pixels = 512;
             _panel.BackgroundColor = Color.Lerp(Color.Blue, Color.Black, 0.8f) * 0.5f;
             _panel.BorderColor = Color.Lerp(Color.Purple, Color.Black, 0.8f) * 0.5f;
-        
+
             _grid.Width.Pixels = 64;
             _grid.Height.Pixels = Height.Pixels;
             _grid.ListPadding = 8;
 
-           
+
 
             _grid.Add(_frameButton);
             _grid.Add(_zLayerButton);
@@ -160,7 +155,7 @@ namespace Stellamod.Core.ZTileSystem.UI
         }
         private void SetPos()
         {
-            
+
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
 
@@ -214,7 +209,7 @@ namespace Stellamod.Core.ZTileSystem.UI
             else
             {
                 index++;
-                if(index >= length)
+                if (index >= length)
                 {
                     index = 0;
                 }

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.ZTileSystem;
@@ -247,7 +246,7 @@ public class ZTileMap : ModSystem
         orig(self);
         DrawInFrontOfWalls();
     }
-    
+
     private void RenderOverPlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
     {
         orig(self);
@@ -293,7 +292,7 @@ public class ZTileMap : ModSystem
     private void DrawForeground()
     {
         SpriteBatch spriteBatch = Main.spriteBatch;
- 
+
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
         Point chunk = GetCameraChunk();
         ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.Foreground);
