@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
-using Stellamod.Core.DungeonGeneration;
 using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Helpers;

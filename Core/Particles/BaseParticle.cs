@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Core.Shaders;
+using Stellamod.Common.Shaders;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 

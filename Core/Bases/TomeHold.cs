@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
-using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ID;

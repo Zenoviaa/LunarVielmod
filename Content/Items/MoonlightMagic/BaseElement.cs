@@ -1,10 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
-using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
@@ -13,6 +10,8 @@ using Terraria.Audio;
 using Terraria.Graphics.Shaders;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 namespace Stellamod.Content.Items.MoonlightMagic
 {
     public enum ElementMatch

@@ -2,10 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Core;
-using Stellamod.Core.BlackSystem;
 using Stellamod.Core.Camera;
-using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -272,7 +271,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 drawCenter = Projectile.Center - Main.screenPosition;
             Vector2 scale = Vector2.One * InScale * OutScale;
             float osc = ExtraMath.Osc(0.95f, 1f, 0.5f);
-                scale *= osc;
+            scale *= osc;
             float rotation = Projectile.rotation;
 
             spriteBatch.Draw(texture, drawCenter, null, new Color(0, 0, 0, 0), rotation, drawOrigin, scale, SpriteEffects.None, 0);
@@ -422,7 +421,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 float deathTime = 360f;
                 DeathTimer++;
                 DeathRatio = DeathTimer / deathTime;
-                if(DeathTimer >= deathTime)
+                if (DeathTimer >= deathTime)
                 {
                     Projectile.Kill();
                 }
@@ -508,10 +507,10 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             spriteBatch.GraphicsDevice.Clear(Color.Transparent);
             if (invert)
                 spriteBatch.GraphicsDevice.Clear(Color.White);
-            if(_draws.Count > 0)
+            if (_draws.Count > 0)
             {
                 spriteBatch.Begin();
-                while(_draws.Count > 0)
+                while (_draws.Count > 0)
                 {
                     IDrawBlackRiverMask mask = _draws.Dequeue();
                     mask.DrawRiverMask();

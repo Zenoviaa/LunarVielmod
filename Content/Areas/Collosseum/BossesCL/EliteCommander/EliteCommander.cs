@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System.IO;
 using Terraria;

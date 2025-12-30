@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak

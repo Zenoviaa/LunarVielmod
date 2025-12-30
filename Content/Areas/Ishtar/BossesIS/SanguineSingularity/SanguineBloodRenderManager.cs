@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;

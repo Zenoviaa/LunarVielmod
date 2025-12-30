@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.DrawEffects;
-using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {

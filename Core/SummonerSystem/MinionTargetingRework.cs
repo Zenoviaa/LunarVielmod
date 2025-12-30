@@ -1,18 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.SummonerSystem
@@ -54,7 +49,7 @@ namespace Stellamod.Core.SummonerSystem
                 KillMyselfTimer = 0;
             else
                 KillMyselfTimer++;
-            if(KillMyselfTimer >= 5)
+            if (KillMyselfTimer >= 5)
             {
                 NPC.active = false;
             }
@@ -78,13 +73,13 @@ namespace Stellamod.Core.SummonerSystem
         {
             return -500;
         }
-       
+
 
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
-            writer.Write(_spawnedMinionNPC);   
-            writer.Write(_npcWhoAmI);   
+            writer.Write(_spawnedMinionNPC);
+            writer.Write(_npcWhoAmI);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
@@ -166,7 +161,7 @@ namespace Stellamod.Core.SummonerSystem
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-      
+
         }
     }
 
@@ -174,13 +169,13 @@ namespace Stellamod.Core.SummonerSystem
     {
         //This should only run on the server btw?
         private int _playerIndex;
-        private Player[] _playerArrClone = new Player[256]; 
-        private Queue<Player> _fakePlayerQueue = new Queue<Player>();   
+        private Player[] _playerArrClone = new Player[256];
+        private Queue<Player> _fakePlayerQueue = new Queue<Player>();
         private bool[] _needsFixing = new bool[256];
         public override void OnModLoad()
         {
             base.OnModLoad();
-            for(int i =0; i < 256; i++)
+            for (int i = 0; i < 256; i++)
             {
                 _needsFixing[i] = false;
                 _playerArrClone[i] = null;
@@ -189,21 +184,21 @@ namespace Stellamod.Core.SummonerSystem
         }
         private Player GetFreePlayer()
         {
-            if(_playerIndex >= 255)
+            if (_playerIndex >= 255)
             {
                 //idk just a failsafe
                 return Main.player[Main.myPlayer];
             }
 
             _playerArrClone[_playerIndex] = Main.player[_playerIndex];
-            if(_fakePlayerQueue.Count <= 0)
+            if (_fakePlayerQueue.Count <= 0)
             {
                 _fakePlayerQueue.Enqueue((Player)Main.LocalPlayer.Clone());
             }
 
             Main.player[_playerIndex] = _fakePlayerQueue.Dequeue();
             Player playerToUse = Main.player[_playerIndex];
-            _needsFixing[_playerIndex] = true;          
+            _needsFixing[_playerIndex] = true;
             _playerIndex++;
             return playerToUse;
         }
@@ -211,13 +206,13 @@ namespace Stellamod.Core.SummonerSystem
         public override void PreUpdateNPCs()
         {
             base.PreUpdateNPCs();
-        
+
             //Starting from index 20 just so it doesn't conflict with most multiplayer playthroughs by default
             //But in the case it does I think it's fine?
             _playerIndex = 20;
-            foreach(var proj in Main.ActiveProjectiles)
+            foreach (var proj in Main.ActiveProjectiles)
             {
-                if(proj.ModProjectile is ITargetable targetable)
+                if (proj.ModProjectile is ITargetable targetable)
                 {
                     Player player = GetFreePlayer();
                     player.active = true;
@@ -231,7 +226,7 @@ namespace Stellamod.Core.SummonerSystem
         public override void PostUpdateNPCs()
         {
             base.PostUpdateNPCs();
-            for(int i = 0; i < _needsFixing.Length; i++)
+            for (int i = 0; i < _needsFixing.Length; i++)
             {
                 if (_needsFixing[i])
                 {

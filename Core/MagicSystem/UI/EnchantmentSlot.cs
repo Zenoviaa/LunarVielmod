@@ -2,8 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Items.MoonlightMagic;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Stellamod.Common.BlackSystem;
 using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
 using Stellamod.Content.Dialogue;
-using Stellamod.Core.BlackSystem;
 using Stellamod.Core.Camera;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.Particles;

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;

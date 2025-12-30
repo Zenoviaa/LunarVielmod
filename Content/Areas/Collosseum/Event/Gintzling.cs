@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;

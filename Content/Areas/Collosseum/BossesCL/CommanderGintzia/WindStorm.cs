@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -10,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 {

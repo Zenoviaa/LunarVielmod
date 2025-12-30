@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Players;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
@@ -297,7 +297,7 @@ namespace Stellamod.Items.Weapons.Melee.Hammer
 
     public class RuneHammerLightning : ModProjectile
     {
-        private Core.Shaders.MagicTrails.LightningTrail _lightningTrail;
+        private ZappingTrail _lightningTrail;
         private Vector2[] _lightningPos;
         private float _lightningTrailTimer;
         public override string Texture => TextureRegistry.EmptyTexture;

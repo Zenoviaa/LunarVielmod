@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core;
 using Stellamod.Core.DrawEffects;
 using Stellamod.Core.Palettes;
-using Stellamod.Core.Shaders;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable;

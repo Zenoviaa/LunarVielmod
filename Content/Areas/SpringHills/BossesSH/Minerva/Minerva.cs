@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva.Projectiles;
 using Stellamod.Content.Gores;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Gores;
 using Stellamod.Helpers;

@@ -1,0 +1,40 @@
+﻿namespace Stellamod.Common.ArmorReforge
+{
+    public enum ArmorReforgeType
+    {
+        None = 0,
+        Sharpening,
+        Sturdy,
+        Alcaric,
+        Radiant,
+        Dexterous,
+        Whispy,
+        Daedious,
+        Hunted,
+        Rocky,
+        Shaded,
+        Muted,
+        MageRan,
+        SwordSpiked,
+        Necromanced,
+        RangedHolsting,
+        Vampiric,
+        RogueThrown,
+        Gilded,
+        Speeditrous,
+        Scripted,
+        Brewing,
+        Harnessing,
+        Reloaded,
+        Illurias,
+        Sentricus,
+        Reducting,
+        Flying,
+        Berserker,
+        Acrobatic,
+        Feathered,
+        Shattered,
+        Clerical,
+        Summoned
+    }
+}

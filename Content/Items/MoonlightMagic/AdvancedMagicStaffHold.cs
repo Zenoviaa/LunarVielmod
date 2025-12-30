@@ -2,14 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
-using Stellamod.Core.Effects;
-using Stellamod.Core.Pixelation;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -154,7 +152,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     AI_Release();
                     break;
 
-         
+
             }
 
 
@@ -207,17 +205,17 @@ namespace Stellamod.Content.Items.MoonlightMagic
             return (int)(swingTime);
         }
 
-      
 
-       
+
+
         private void AI_Charge()
         {
             AdvancedMagicPlayer magicPlayer = Owner.GetModPlayer<AdvancedMagicPlayer>();
             Item heldItem = Owner.HeldItem;
             BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
-            foreach(var enchantmentItem in staff.equippedEnchantments)
+            foreach (var enchantmentItem in staff.equippedEnchantments)
             {
-                if(enchantmentItem.ModItem is BaseEnchantment e)
+                if (enchantmentItem.ModItem is BaseEnchantment e)
                 {
 
                     e.AI_Charge(magicPlayer, this);
@@ -286,7 +284,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             Timer++;
             float speed = 2;
-            _ringTimer1-= speed;
+            _ringTimer1 -= speed;
             _ringTimer2 -= speed;
             _ringTimer3 -= speed;
 
@@ -331,7 +329,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             float swingTime = GetSwingTime(duration);
             Interpolant = Timer / swingTime;
             Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
-            if(Interpolant >= 0.5f && !_hasFired && Main.myPlayer == Projectile.owner)
+            if (Interpolant >= 0.5f && !_hasFired && Main.myPlayer == Projectile.owner)
             {
                 Item heldItem = Owner.HeldItem;
                 float levelProgress = (_level / 3f);
@@ -373,7 +371,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     float progress = i / 4f;
                     float rot = progress * MathHelper.ToRadians(360);
                     rot += Main.rand.NextFloat(-0.5f, 0.5f);
-             
+
                     var particle = FXUtil.GlowCircleDetailedBoom1(Owner.Center + Projectile.velocity * 64,
                         innerColor: Color.White,
                         glowColor: Element.GetElementColor(),
@@ -384,7 +382,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
 
                 float numDust = 5;
-                for(float n = 0; n < numDust; n++)
+                for (float n = 0; n < numDust; n++)
                 {
                     Vector2 velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 15;
                     velocity = velocity.RotatedByRandom(MathHelper.PiOver4 * 0.7f);
@@ -446,22 +444,22 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Color chargingColor = overchargingVisual ? Color.LightPink : Color.White;
 
 
-            Vector2 ring1Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f, speed: chargingSpeed)); 
+            Vector2 ring1Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f, speed: chargingSpeed));
             Vector2 ring2Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f, speed: chargingSpeed, offset: 3));
             Vector2 ring3Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f, speed: chargingSpeed, offset: 6));
             if (_level >= 1)
             {
                 element.DrawRing(Owner.Center + Projectile.velocity * 64 * ring1Ease + ring1Offset, 2, drawRotation, ring1Scale, chargingColor * ring1Ease);
             }
-            if(_level >= 2)
+            if (_level >= 2)
             {
-                element.DrawRing(Owner.Center + Projectile.velocity * 100 * ring2Ease + ring2Offset, 1, drawRotation , ring2Scale, chargingColor * ring2Ease);
+                element.DrawRing(Owner.Center + Projectile.velocity * 100 * ring2Ease + ring2Offset, 1, drawRotation, ring2Scale, chargingColor * ring2Ease);
             }
-            if(_level >= 3)
+            if (_level >= 3)
             {
                 element.DrawRing(Owner.Center + Projectile.velocity * 140 * ring3Ease + ring3Offset, 0, drawRotation, ring3Scale, chargingColor * ring3Ease);
             }
-  
+
         }
 
         private void DrawRingTrail(float holdOffset, Vector2 scaleOffset, float rotateSpeed, Vector2 ringScale)
@@ -546,7 +544,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             //Draw Code for the orb
             Texture2D texture = ModContent.Request<Texture2D>(TextureRegistry.EmptyGlowParticle).Value;
             Vector2 centerPos = Owner.Center - Main.screenPosition;
-            var shader = Core.Shaders.GlowCircleShader.Instance;
+            var shader = GlowCircleShader.Instance;
 
             //How quickly it lerps between the colors
             shader.Speed = 10f;

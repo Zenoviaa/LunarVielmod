@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.DungeonGeneration;
+using Stellamod.Common.DungeonGeneration;
 using Stellamod.Core.StructureSelector;
 using Stellamod.WorldG.StructureManager;
 using System.IO;

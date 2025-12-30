@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
     public class AutomationElement : BaseElement
     {
         private int trailMode = 0;
-        private LightningTrail _lightningTrail;
+        private ZappingTrail _lightningTrail;
 
         public override void ModifySisters(List<int> sisters)
         {

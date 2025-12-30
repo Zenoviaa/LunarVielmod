@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Bases;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -10,14 +10,14 @@ namespace Stellamod.Visual.Explosions
 {
     public class VaelExplosion : BaseExplosionProjectile
     {
-        private LightningTrail _lightningTrail;
+        private ZappingTrail _lightningTrail;
         private float _timer;
         int rStart = 4;
         int rEnd = 128;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            _lightningTrail = new LightningTrail();
+            _lightningTrail = new ZappingTrail();
             Projectile.width = 48;
             Projectile.height = 48;
             Projectile.friendly = true;

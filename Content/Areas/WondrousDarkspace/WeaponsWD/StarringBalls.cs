@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Effects;
 using Stellamod.Dusts;
@@ -7,7 +8,6 @@ using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Trailing;
 using Terraria;
 using Terraria.Audio;

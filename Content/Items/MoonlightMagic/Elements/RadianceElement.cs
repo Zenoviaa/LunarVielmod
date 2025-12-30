@@ -1,13 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
-using Stellamod.Systems.MiscellaneousMath;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -90,7 +87,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         private void DrawHighDetailForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
         {
             Vector2 drawOrigin = formTexture.Size() / 2;
-         //   drawPos -= Projectile.velocity * 1.5f;
+            //   drawPos -= Projectile.velocity * 1.5f;
             drawScale *= 1f;
             SparkleShader ??= new MoonSparkleShader();
             SparkleShader.ApplyToEffect();
@@ -251,7 +248,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
 
             BlackFireShader blackFireShader = BlackFireShader.Instance;
-   
+
             TrailDrawer.Draw(Main.spriteBatch, oldPos, null, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
 
         }

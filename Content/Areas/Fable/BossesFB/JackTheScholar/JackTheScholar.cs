@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;

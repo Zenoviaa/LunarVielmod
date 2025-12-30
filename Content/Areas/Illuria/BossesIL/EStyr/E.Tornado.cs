@@ -1,15 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
-using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
@@ -457,16 +454,16 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float outlineOffset = 2;
             Vector2 v = Vector2.UnitY * outlineOffset;
             Vector2 h = Vector2.UnitX * outlineOffset;
-           // DrawSprite(spriteBatch, Projectile.Center + v - screenPos, Color.White);
-           // DrawSprite(spriteBatch, Projectile.Center - v - screenPos, Color.White);
-          //  DrawSprite(spriteBatch, Projectile.Center + h - screenPos, Color.White);
-           // DrawSprite(spriteBatch, Projectile.Center - h - screenPos, Color.White);
+            // DrawSprite(spriteBatch, Projectile.Center + v - screenPos, Color.White);
+            // DrawSprite(spriteBatch, Projectile.Center - v - screenPos, Color.White);
+            //  DrawSprite(spriteBatch, Projectile.Center + h - screenPos, Color.White);
+            // DrawSprite(spriteBatch, Projectile.Center - h - screenPos, Color.White);
         }
 
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-    
+
             int[] gores = AutoGoreLoader.FindGores("GrayRock");
             foreach (int g in gores)
             {
@@ -475,7 +472,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                     -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
             }
 
-     
+
             var sear = LegacyParticle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
             sear.innerColor = Color.Gray;
             sear.outerColor = Color.Blue;
@@ -611,7 +608,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //Gintzia's winds look a bit better and should look fine when combined with swirling particles
             //So make a new particle manager for this
             Timer++;
-            if(Timer % 12 == 0)
+            if (Timer % 12 == 0)
             {
                 SoundStyle jiitasSit = AssetRegistry.Sounds.Jiitas.JiitasLightSpin;
                 jiitasSit.PitchVariance = 0.2f;
@@ -621,7 +618,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
             if (Timer % 6 == 0)
             {
-          
+
                 if (this.OwnedByLocalClient())
                 {
                     int projType;
@@ -670,7 +667,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                             }
                             break;
                     }
-      
+
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), spawnPos, velocity,
                         projType, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
@@ -690,7 +687,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             TornadoStreakParticles.alpha = 0.65f * alpha;
             TornadoStreakParticles.topOnly = true;
             TornadoStreakParticles.Update(Projectile.Center);
-           
+
         }
 
         private float GetTrailWidth(float completionRatio)
@@ -705,7 +702,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
-           TornadoStreakParticles.Draw();
+            TornadoStreakParticles.Draw();
         }
     }
     public class TornadoSuckPlayer : ModPlayer
@@ -775,7 +772,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //The earlier startup state is just to get him into the position
             //This is mostly done with a sound and animation, so not much happens here
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 TargetVector = NPC.Center;
             }
@@ -848,7 +845,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float endTime = 15f;
             float completionRatio = Timer / endTime;
             float ease = EasingFunction.InOutSine(completionRatio);
-  
+
             NPC.velocity *= 0.9f;
             _extraAfterImageAlpha = MathHelper.Lerp(0.5f, 0f, ease);
             if (Timer >= endTime)

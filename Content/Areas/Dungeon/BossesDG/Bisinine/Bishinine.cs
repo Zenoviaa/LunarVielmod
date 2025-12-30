@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Animations;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles;
 using Stellamod.Content.Gores;
 using Stellamod.Core;
-using Stellamod.Core.Animations;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;

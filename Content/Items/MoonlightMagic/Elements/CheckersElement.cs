@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;

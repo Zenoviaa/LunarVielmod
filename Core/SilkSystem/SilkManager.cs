@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
-using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;

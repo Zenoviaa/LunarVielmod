@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
+﻿using Stellamod.Common.BossBannerSystem;
+using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner;
 using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander;
@@ -14,7 +15,6 @@ using Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
-using Stellamod.Core.BossBannerSystem;
 using Stellamod.Helpers;
 using Terraria.ModLoader;
 

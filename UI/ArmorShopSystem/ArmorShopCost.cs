@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.ArmorShop;
+using Stellamod.Common.ArmorShop;
 using System;
 using Terraria;
 using Terraria.GameContent;

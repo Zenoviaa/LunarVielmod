@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Visual.Particles;
 using System.IO;

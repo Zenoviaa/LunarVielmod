@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.ArmorShop;
+using Stellamod.Common.ArmorShop;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;

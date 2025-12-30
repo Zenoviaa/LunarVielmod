@@ -1,4 +1,4 @@
-﻿using Stellamod.Core.BackpackSystem;
+﻿using Stellamod.Common.BackpackSystem;
 using Stellamod.Items.Accessories.Players;
 using Terraria;
 using Terraria.ModLoader;

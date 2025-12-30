@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Bases;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Gores.NKR;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -64,7 +64,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
 
     public class NRSwordSlash : BaseSwingProjectile
     {
-        private Core.Shaders.MagicTrails.LightningTrail _lightningTrail;
+        private ZappingTrail _lightningTrail;
         private float _lightningTimer;
         private NPCSucker _npcSucker;
         public override string Texture => this.PathHere() + "/NoxianRider";
@@ -340,7 +340,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
     }
     public class NRStaminaSlash : BaseSwingProjectile
     {
-        private Core.Shaders.MagicTrails.LightningTrail _lightningTrail;
+        private ZappingTrail _lightningTrail;
         private float _lightningTimer;
         public override string Texture => this.PathHere() + "/NoxianRider";
 
@@ -558,7 +558,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
     public class NKRMoped : ModProjectile
     {
         private NPCSucker _npcSucker;
-        private Core.Shaders.MagicTrails.LightningTrail _lightningTrail;
+        private ZappingTrail _lightningTrail;
         public enum AIState
         {
             Spawn,

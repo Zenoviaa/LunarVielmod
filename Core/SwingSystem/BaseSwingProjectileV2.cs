@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Players;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;

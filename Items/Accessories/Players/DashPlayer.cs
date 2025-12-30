@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.ClassReworkSystem;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using System;
 using System.IO;
 using Terraria;
 using Terraria.Graphics.Shaders;

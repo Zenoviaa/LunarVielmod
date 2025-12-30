@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
@@ -14,6 +13,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
+using Stellamod.Common.Shaders;
 
 namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
 {

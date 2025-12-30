@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
 using Stellamod.Core.MagicSystem.UI;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -50,7 +50,7 @@ namespace Stellamod.Core.ZTileSystem.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            BackgroundColor = Color.Lerp(Color.Blue, Color.Black, 0.8f) * 0.5f;
+            BackgroundColor = Color.Lerp(Color.Blue, Color.Black, 1f) * 0.5f;
             BorderColor = Color.Lerp(Color.Purple, Color.Black, 0.8f) * 0.5f;
         }
 

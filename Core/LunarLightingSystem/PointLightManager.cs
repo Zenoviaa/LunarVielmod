@@ -3,7 +3,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Threading;
-using Stellamod.Core.Shaders;
+using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;

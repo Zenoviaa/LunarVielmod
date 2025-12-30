@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.LunarLightingSystem;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System.IO;
 using Terraria;

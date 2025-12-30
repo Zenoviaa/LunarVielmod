@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
@@ -83,7 +83,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
         }
 
         public Vector2[] LightningPos;
-        public Core.Shaders.MagicTrails.LightningTrail Trail;
+        public ZappingTrail Trail;
 
         public void Update(float timer)
         {
@@ -99,7 +99,7 @@ namespace Stellamod.Items.Weapons.Mage.Tomes
 
         private float _trailWidth;
         private List<StormWelderBeam> _beams;
-        private Core.Shaders.MagicTrails.LightningTrail[] _lightningTrail;
+        private ZappingTrail[] _lightningTrail;
         private ref float Timer => ref Projectile.ai[0];
         private ref float Parent => ref Projectile.ai[1];
         private const int NumSamplePoints = 3;

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Dock.BossesDK.Jiitas;
 using Stellamod.Core;
 using Stellamod.Core.Effects;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System.IO;
 using Terraria;

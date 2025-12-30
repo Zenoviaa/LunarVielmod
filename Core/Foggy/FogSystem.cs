@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,7 @@ namespace Stellamod.Core.Foggy
 
                     var texture = TextureRegistry.Clouds6;
                     //Apply Fog Shader
-                    var fogShader = Shaders.FogShader.Instance;
+                    var fogShader = Common.Shaders.FogShader.Instance;
                     fogShader.FogTexture = texture;
                     fogShader.ProgressPower = 0.75f;
                     fogShader.EdgePower = 1f;

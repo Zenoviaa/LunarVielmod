@@ -1,10 +1,10 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Players;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System.Collections.Generic;
@@ -340,7 +340,7 @@ namespace Stellamod.Items.Weapons.Melee.Knives
     }
     public class LightKnivesStaminaSlash : BaseSwingProjectile
     {
-        private Core.Shaders.MagicTrails.LightningTrail _lightningTrail;
+        private ZappingTrail _lightningTrail;
         private float _lightningTrailTimer;
         private bool _hasSpawnedSecondKnife;
         private bool _thrust;

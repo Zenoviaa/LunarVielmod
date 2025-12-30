@@ -12,10 +12,10 @@ using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Terraria.Audio;
 using Stellamod.Dusts;
+using Stellamod.Common.Shaders;
 namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
     public class StarFlowerStaff : ModItem

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using Microsoft.Xna.Framework;
 using ReLogic.Utilities;
+using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.Abyss.WeaponsAB;
 using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Content.Areas.Collosseum.TilesCL;
@@ -10,7 +11,6 @@ using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Content.Items.Materials;
-using Stellamod.Core.DungeonGeneration;
 using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Core.Utilities;

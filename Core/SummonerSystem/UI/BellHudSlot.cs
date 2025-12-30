@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria;
 using Stellamod.Helpers;
-using Stellamod.Core.ClassReworkSystem;
+using Stellamod.Common.ClassReworkSystem;
 
 namespace Stellamod.Core.SummonerSystem.UI
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects.Trails;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 
 namespace Stellamod.Content.Trailers

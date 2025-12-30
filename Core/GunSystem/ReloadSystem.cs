@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Stellamod.Core.Shaders;
+using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Players;
-using Stellamod.Systems.MiscellaneousMath;
-using Stellamod.UI.DashSystem;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -146,12 +143,12 @@ namespace Stellamod.Core.GunSystem
                 if (i < gun.remainingAmmo)
                 {
                     texture2D = _filled;
-                
+
                 }
                 else
                 {
                     texture2D = _empty;
-              
+
                 }
 
 

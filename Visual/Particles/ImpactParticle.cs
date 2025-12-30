@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using ReLogic.Content;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Stellamod.Core.Particles;
+using Stellamod.Common.Shaders;
 
 namespace Stellamod.Visual.Particles
 {

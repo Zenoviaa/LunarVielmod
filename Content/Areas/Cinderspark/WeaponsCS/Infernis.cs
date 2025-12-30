@@ -1,27 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Trailers;
 using Stellamod.Core.Bases;
-using Stellamod.Core.Effects.Trails;
-using Stellamod.Core.Shaders;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
-using Stellamod.Projectiles.Spears;
-using Stellamod.Trailing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -128,18 +115,18 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             {
                 case AIState.Spin:
                     _stretchScale = Vector2.One;
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         Projectile.velocity *= 2;
                     }
                     Projectile.tileCollide = false;
                     Projectile.velocity *= 0.97f;
                     Projectile.rotation += Projectile.velocity.Length() * 0.05f;
-                    if(Timer >= 60)
+                    if (Timer >= 60)
                     {
                         Projectile.velocity *= 0.96f;
                     }
-                    if(Timer >= 60)
+                    if (Timer >= 60)
                     {
                         Projectile.rotation = Vector2.UnitY.ToRotation() + MathHelper.PiOver4;
                         _spinAlpha = MathHelper.Lerp(_spinAlpha, 0f, 0.1f);
@@ -148,7 +135,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                     {
                         _spinAlpha = MathHelper.Lerp(_spinAlpha, 0.5f, 0.1f);
                     }
-                    if(Timer >= 90)
+                    if (Timer >= 90)
                     {
                         SwitchState(AIState.Fall);
                     }
@@ -170,7 +157,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             }
         }
 
-   
+
         public override void OnKill(int timeLeft)
         {
             SoundStyle infernisBoomSound = new SoundStyle("Stellamod/Assets/Sounds/Infernis1");
@@ -210,7 +197,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D spearTexture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 spearOrigin = spearTexture.Size() / 2f;
-            for(int i = 0; i < Projectile.oldPos.Length; i++)
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
                 float completionRatio = (float)i / (float)Projectile.oldPos.Length;
                 Color fadeColor = Color.Lerp(Color.Red, Color.Yellow, completionRatio);

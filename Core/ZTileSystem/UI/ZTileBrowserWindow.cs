@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
-using Stellamod.Core.ItemBrowser;
+using Stellamod.Common.ItemBrowser;
 using Stellamod.Helpers;
 using Stellamod.UI;
 using System;

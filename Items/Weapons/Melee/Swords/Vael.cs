@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Players;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Explosions;
@@ -283,7 +283,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
         private bool _spawnedExplosion;
         public float thrustSpeed = 5;
         public float stabRange;
-        private Core.Shaders.MagicTrails.LightningTrail _lightningTrail;
+        private ZappingTrail _lightningTrail;
         private float _lightningTrailTimer;
         private bool _hasSpawnedSecondKnife;
 
@@ -471,7 +471,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
 
     public class VaelProj : ModProjectile
     {
-        private Core.Shaders.MagicTrails.LightningTrail _lightningTrail;
+        private ZappingTrail _lightningTrail;
         private float _timer;
         public override void SetStaticDefaults()
         {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;

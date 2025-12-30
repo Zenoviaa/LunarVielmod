@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles;
 using Stellamod.Core;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;

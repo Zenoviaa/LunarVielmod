@@ -7,6 +7,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.ZTileSystem;
 
+
+
 /// <summary>
 /// Base class for a purely decorative tile asset
 /// </summary>

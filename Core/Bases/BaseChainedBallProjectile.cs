@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Helpers;
-using Stellamod.Systems.MiscellaneousMath;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;

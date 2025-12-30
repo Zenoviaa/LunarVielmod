@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -74,7 +74,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
 
     public class BlackLightning : VSProjectile
     {
-        private Core.Shaders.MagicTrails.LightningTrail _lightningTrail;
+        private ZappingTrail _lightningTrail;
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float BurstCounter => ref Projectile.ai[2];
         private Vector2 _targetCenter;

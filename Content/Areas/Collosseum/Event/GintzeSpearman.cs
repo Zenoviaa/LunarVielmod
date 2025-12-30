@@ -1,9 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Content.Areas.Collosseum.Event.Projectiles;
-using Stellamod.Core.Shaders;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;

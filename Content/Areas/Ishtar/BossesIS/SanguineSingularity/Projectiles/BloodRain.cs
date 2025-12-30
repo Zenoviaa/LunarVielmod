@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Core;
-using Stellamod.Core.Pixelation;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -95,7 +93,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
             shader.Tiling = Vector2.One * 1;
             shader.LaserTexture = TrailRegistry.LightningTrail2;
             shader.BlendState = BlendState.AlphaBlend;
-            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, ColorFunction, WidthFunction, shader);      
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, ColorFunction, WidthFunction, shader);
         }
     }
 }

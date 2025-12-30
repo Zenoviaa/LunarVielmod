@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.HealthbarSystem;
 using Stellamod.Content.Areas.SpecialTiles.EffectTiles;
-using Stellamod.Core.HealthbarSystem;
 using Stellamod.Core.TitleSystem;
 using System.IO;
 using Terraria;

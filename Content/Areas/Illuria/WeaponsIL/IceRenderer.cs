@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Shaders;
 using Stellamod.Core.Utilities;
 using Stellamod.Trails;
 using System.Collections.Generic;

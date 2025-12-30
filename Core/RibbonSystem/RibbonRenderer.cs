@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Threading;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Shaders;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;

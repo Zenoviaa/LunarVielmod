@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Palettes;
-using Stellamod.Core.Shaders;
 using Terraria;
 using Terraria.ModLoader;
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
-using Stellamod.Core.DungeonGeneration;
+using Stellamod.Common.DungeonGeneration;
 using Stellamod.NPCs;
 using System;
 using System.Collections.Generic;

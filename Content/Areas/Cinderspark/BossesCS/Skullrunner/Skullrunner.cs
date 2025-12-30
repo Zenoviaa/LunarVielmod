@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles;
 using Stellamod.Content.Areas.WondrousDarkspace.NPCsWD;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
-using Stellamod.Core.Shaders.MagicTrails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;

@@ -58,6 +58,7 @@ public class ZTileBrowserView : UIPanel
             return;
         ZTileLoader tileLoader = ModContent.GetInstance<ZTileLoader>();
         DecorationBuilder.templateData = tileLoader.InstanceTileData(HoveringItem);
+        DecorationBuilder.frame = 0;
     }
 
     private bool NeedsUpdateCollection()

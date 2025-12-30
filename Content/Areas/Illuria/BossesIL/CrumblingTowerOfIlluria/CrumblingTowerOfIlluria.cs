@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
 using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria.Projectiles;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
