@@ -6,13 +6,14 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
+using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-namespace Stellamod.Items.Weapons.Melee.Safunai.Parendine
+namespace Stellamod.Content.Areas.Snow.WeaponsSN
 {
     public class Parendine : ModItem
     {
