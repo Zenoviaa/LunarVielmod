@@ -1,6 +1,6 @@
 ﻿using Stellamod.Content.Items.MoonlightMagic;
 using Terraria;
-namespace Stellamod.Core.MagicSystem.UI
+namespace Stellamod.Common.MagicSystem.UI
 {
     public class StaffEditingContext
     {

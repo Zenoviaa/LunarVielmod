@@ -1,7 +1,7 @@
 ﻿using Stellamod.Content.Items.MoonlightMagic;
 using System.Collections.Generic;
 
-namespace Stellamod.Core.MagicSystem.UI
+namespace Stellamod.Common.MagicSystem.UI
 {
     public class EnchantmentComparer : IComparer<BaseEnchantment>
     {

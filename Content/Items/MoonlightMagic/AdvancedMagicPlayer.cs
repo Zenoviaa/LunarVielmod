@@ -1,4 +1,4 @@
-﻿using Stellamod.Core.MagicSystem.UI;
+﻿using Stellamod.Common.MagicSystem.UI;
 using Stellamod.Core.Utilities;
 using System;
 using System.Collections.Generic;

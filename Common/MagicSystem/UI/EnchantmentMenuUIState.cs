@@ -3,7 +3,7 @@ using System;
 using Terraria;
 using Terraria.UI;
 
-namespace Stellamod.Core.MagicSystem.UI
+namespace Stellamod.Common.MagicSystem.UI
 {
     public class EnchantmentMenuUIState : UIState
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.MagicSystem.UI;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
-using Stellamod.Core.MagicSystem.UI;
 using Stellamod.Items.Weapons.Mage;
 using System;
 using System.Collections.Generic;

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 
-namespace Stellamod.Core.MagicSystem.UI
+namespace Stellamod.Common.MagicSystem.UI
 {
     public class InventoryMenu : UIElement
     {
