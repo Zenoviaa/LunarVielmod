@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
+using static Stellamod.WorldG.StructureManager.Snapshot;
 
 namespace Stellamod.Core.ZTileSystem;
 
@@ -167,7 +168,25 @@ public class ZTileRenderLayer
         //Add it to the tile scene
         tileScene.AddorSet(tilePosition, tileData);
     }
+    public void Remove(ZTilePosition tilePosition)
+    {
+        //Calculate the chunk
+        int chunkX = tilePosition.x / ZTileMap.Chunk_Size;
+        int chunkY = tilePosition.y / ZTileMap.Chunk_Size;
+        Point chunk = new Point(chunkX, chunkY);
 
+        //Get the tile scene
+        //If it doesn't exist we have to create a new one
+        TileScene tileScene;
+        if (!_tileScenes.TryGetValue(chunk, out tileScene))
+        {
+            tileScene = new TileScene();
+            _tileScenes.Add(chunk, tileScene);
+        }
+
+        //Add it to the tile scene
+        tileScene.Remove(tilePosition);
+    }
     public void Clear()
     {
         _tileScenes.Clear();
@@ -208,6 +227,8 @@ public class ZTileRenderLayer
             scene.Render(spriteBatch, screenPos);
         }
     }
+
+
 }
 
 public class ZTileMap : ModSystem
@@ -316,7 +337,15 @@ public class ZTileMap : ModSystem
         Point chunk = new Point(chunkX, chunkY);
         return chunk;
     }
-
+    public void KillTile(ZRenderLayer renderLayer, Vector2 mouseWorld, int z)
+    {
+        Point tileCoordinates = mouseWorld.ToTileCoordinates();
+        ZTilePosition zTilePosition = new ZTilePosition();
+        zTilePosition.x = tileCoordinates.X;
+        zTilePosition.y = tileCoordinates.Y;
+        zTilePosition.z = z;
+        Remove(renderLayer, zTilePosition);
+    }
     public void CreateTile(ZRenderLayer renderLayer, Vector2 worldPosition, int z, ZTileInstanceData tileData)
     {
         Add(renderLayer, worldPosition, z, tileData);
@@ -337,8 +366,15 @@ public class ZTileMap : ModSystem
         ZTileRenderLayer tileRenderLayer = GetRenderLayer(renderLayer);
         tileRenderLayer.Add(tilePosition, tileData);
     }
+    public void Remove(ZRenderLayer renderLayer, ZTilePosition tilePosition)
+    {
+        ZTileRenderLayer tileRenderLayer = GetRenderLayer(renderLayer);
+        tileRenderLayer.Remove(tilePosition);
+    }
     public override void ClearWorld()
     {
         base.ClearWorld();
     }
+
+
 }

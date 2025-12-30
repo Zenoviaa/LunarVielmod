@@ -33,13 +33,14 @@ public class DecorationBuilder : ModItem
     {
         if (Main.myPlayer == player.whoAmI)
         {
+            ZTileMap tileMap = ModContent.GetInstance<ZTileMap>();
             if (player.altFunctionUse == 2)
             {
-
+                tileMap.KillTile(renderLayer, Main.MouseWorld, z);
             }
             else
             {
-                ZTileMap tileMap = ModContent.GetInstance<ZTileMap>();
+               
                 ZTileInstanceData instanceData = templateData;
                 instanceData.scale = scale;
                 instanceData.rotation = rotation;
