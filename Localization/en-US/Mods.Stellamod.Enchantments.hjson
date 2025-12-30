@@ -599,3 +599,7 @@ CoasterEnchantment: {
 	DisplayName: Coaster Enchantment
 	Tooltip: The player glides with the spell, reducing damage by 90% while on it 
 }
+GravitySidewaysEnchantment: {
+	DisplayName: Gravity Sideways Enchantment
+	Tooltip: Makes your spell have gravity either left or right depending on the way you face
+}
