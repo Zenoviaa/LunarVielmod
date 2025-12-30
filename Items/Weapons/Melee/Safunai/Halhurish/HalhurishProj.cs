@@ -94,7 +94,8 @@ namespace Stellamod.Items.Weapons.Melee.Safunai.Halhurish
 
                 for (float f = 0; f < 4; f++)
                 {
-                    Particle<SmokeParticle>.SpawnInAlphaLayer(target.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(0.3f, 1f), Scale: Main.rand.NextFloat(0.5f, 1f));
+                    var smoke = Particle<SmokeParticle>.SpawnInAlphaLayer(target.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(0.3f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                    smoke.initialColor = Color.DarkGray;
                 }
 
 

@@ -37,22 +37,28 @@ namespace Stellamod.Core.Bases
         }
     }
 
-    public abstract class BaseGrappleGun : ModItem
+    public class GrappleGlobalItem : GlobalItem
     {
-        public virtual float GetGrappleLineTiles()
-        {
-            return 16;
-        }
+        public override bool InstancePerEntity => true;
+        public float grappleLineTileDistance;
+        public bool isGrapple;
 
-        public override bool CanShoot(Player player)
+        public override bool CanShoot(Item item, Player player)
         {
-            return player.ownedProjectileCounts[Item.shoot] == 0;
+            if (isGrapple)
+            {
+                return player.ownedProjectileCounts[item.shoot] == 0;
+            }
+            return base.CanShoot(item, player);
         }
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai2: GetGrappleLineTiles() * 16 * 2);
-            return false;
+            if (isGrapple)
+            {
+                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai2: grappleLineTileDistance * 16 * 2);
+                return false;
+            }
+            return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
         }
     }
 

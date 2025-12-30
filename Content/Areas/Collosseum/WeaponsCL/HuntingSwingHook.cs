@@ -16,7 +16,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
 
     }
 
-    public class HuntingSwingHook : BaseGrappleGun
+    public class HuntingSwingHook : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -27,6 +27,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
         public override void SetDefaults()
         {
             base.SetDefaults();
+            Item.DefaultToGrapple(grappleTileDistance: 24);
             Item.damage = 16;
             Item.DamageType = DamageClass.Ranged;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -34,10 +35,6 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             Item.shoot = ModContent.ProjectileType<HuntingSwingHookLine>();
             Item.shootSpeed = 20;
             Item.autoReuse = false;
-        }
-        public override float GetGrappleLineTiles()
-        {
-            return 24;
         }
 
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)

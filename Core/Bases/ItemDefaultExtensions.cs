@@ -11,5 +11,11 @@ namespace Stellamod.Core.Bases
             globalItem.isSafunai = true;
             item.DamageType = DamageClass.Melee;
         }
+        public static void DefaultToGrapple(this Item item, float grappleTileDistance)
+        {
+            GrappleGlobalItem globalItem = item.GetGlobalItem<GrappleGlobalItem>();
+            globalItem.isGrapple = true;
+            globalItem.grappleLineTileDistance = grappleTileDistance;
+        }
     }
 }
