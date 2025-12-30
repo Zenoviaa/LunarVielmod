@@ -1,4 +1,4 @@
-﻿using Stellamod.Core.SummonerSystem;
+﻿using Stellamod.Common.SummonerSystem;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;

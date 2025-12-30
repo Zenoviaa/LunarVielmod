@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.ScorpionMountSystem;
+using Stellamod.Common.ScorpionMountSystem;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI.Elements;
 

@@ -1,4 +1,4 @@
-﻿using Stellamod.Core.XixianFlaskSystem;
+﻿using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Materials.Molds;
 using Terraria;

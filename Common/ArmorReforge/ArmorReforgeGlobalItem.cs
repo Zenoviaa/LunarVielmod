@@ -2,8 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.IgnitersNPowders;
+using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Content.Items.MoonlightMagic;
-using Stellamod.Core.XixianFlaskSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using System.Collections.Generic;

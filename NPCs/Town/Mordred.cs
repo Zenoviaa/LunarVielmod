@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Core;
-using Stellamod.Core.WeaponUpgrade.UI;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;

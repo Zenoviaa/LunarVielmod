@@ -1,6 +1,6 @@
-﻿using Stellamod.Core.Bases;
+﻿using Stellamod.Common.XixianFlaskSystem;
+using Stellamod.Core.Bases;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Core.XixianFlaskSystem;
 using Stellamod.Items;
 using System;
 using System.Collections.Generic;

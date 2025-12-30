@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.XixianFlaskSystem;
+using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Terraria;

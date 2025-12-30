@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Scorpion;
-using Stellamod.Core.ScorpionMountSystem;
+using Stellamod.Common.ScorpionMountSystem;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

@@ -1,4 +1,4 @@
-﻿using Stellamod.Core.XixianFlaskSystem;
+﻿using Stellamod.Common.XixianFlaskSystem;
 using Terraria;
 
 namespace Stellamod.Items.Insources

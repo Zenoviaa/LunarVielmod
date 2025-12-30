@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Scorpion;
-using Stellamod.Core.ScorpionMountSystem;
+using Stellamod.Common.ScorpionMountSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;

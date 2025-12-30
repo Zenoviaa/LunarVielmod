@@ -1,4 +1,4 @@
-﻿using Stellamod.Core.ScorpionMountSystem;
+﻿using Stellamod.Common.ScorpionMountSystem;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Core.XixianFlaskSystem;
+using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;

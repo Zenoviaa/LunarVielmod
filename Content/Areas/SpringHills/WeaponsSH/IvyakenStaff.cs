@@ -1,7 +1,7 @@
 
 using Microsoft.Xna.Framework;
+using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.Items.Materials;
-using Stellamod.Core.SummonerSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
