@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
@@ -143,56 +145,65 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         public override void DrawForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
         {
             Vector2 drawOrigin = formTexture.Size() / 2;
-            drawPos -= Projectile.velocity * 1.5f;
-            SparkleShader ??= new MoonSparkleShader();
-            SparkleShader.ApplyToEffect();
-            spriteBatch.Restart(effect: SparkleShader.Effect, blendState: BlendState.Additive);
-            spriteBatch.Draw(formTexture, drawPos, null, Color.White, drawRotation, drawOrigin, drawScale * 1.25f +
-                ExtraMath.Osc(-0.1f, 0.1f, speed: 16), SpriteEffects.None, 0);
-            spriteBatch.RestartDefaults();
+            drawPos -= Projectile.velocity * 2f;
 
+            Color glowColor = Color.White;
+            glowColor.A = 0;
+            spriteBatch.Draw(formTexture, drawPos, null, glowColor, drawRotation, drawOrigin, drawScale * 1.25f +
+                ExtraMath.Osc(-0.1f, 0.1f, speed: 16), SpriteEffects.None, 0);
 
             spriteBatch.Draw(formTexture, drawPos, null, Color.Black,
                drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            spriteBatch.Draw(formTexture, drawPos, null, Color.White * 0.3f, drawRotation, drawOrigin, drawScale +
+
+            glowColor *= 0.3f;
+            spriteBatch.Draw(formTexture, drawPos, null, glowColor, drawRotation, drawOrigin, drawScale +
                 ExtraMath.Osc(-0.1f, 0.1f, speed: 4), SpriteEffects.None, 0);
-            spriteBatch.RestartDefaults();
+
+            void DrawPixelatedZuiGlow(SpriteBatch spriteBatch, Vector2 screenPos)
+            {
+
+                Asset<Texture2D> impactTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/ZuiEffect");
+                Vector2 glowDrawOrigin = impactTexture.Size() / 2f;
+                Vector2 glowDrawCenter = drawPos;
+                drawColor = Color.Green;
+                drawColor.A = 0;
+
+                Vector2 glowScale = Vector2.One;
+                glowScale.Y *= 0.5f;
+                spriteBatch.Draw(impactTexture.Value, glowDrawCenter, null, drawColor, Projectile.velocity.ToRotation(), glowDrawOrigin, glowScale, SpriteEffects.None, 0);
+
+                drawColor = Color.White;
+                drawColor.A = 0;
+                spriteBatch.Draw(impactTexture.Value, glowDrawCenter, null, drawColor, Projectile.velocity.ToRotation(), glowDrawOrigin, glowScale * 0.7f, SpriteEffects.None, 0);
+
+
+            }
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedZuiGlow, DrawLayer.OverNPCsWithOutline);
         }
 
         public override void DrawTrail(Vector2[] oldPos)
         {
-            var shader = MagicNormalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.GlowTrail;
-            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
-            shader.BlendState = BlendState.Additive;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 0.5f;
-            shader.Repeats = 1f;
-            //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
+            var shader2 = RichLaserShader.Instance;
+            shader2.LaserColor = Color.White;
+            shader2.InnerColor = Color.Turquoise * 0.5f;
+            shader2.OuterColor = Color.Blue;
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, ColorFunction, WidthFunction, shader2);
         }
 
         private Color ColorFunction(float completionRatio)
         {
             if(MagicProj.laserLike)
                 return Color.Lerp( Color.SpringGreen, Color.White, EasingFunction.InExpo(completionRatio));
-            return Color.Lerp(Color.Lerp(Color.White, Color.SpringGreen, 0.5f), Color.SpringGreen, completionRatio);
+            return Color.Lerp(Color.White, Color.SpringGreen, completionRatio);
         }
 
         private float WidthFunction(float completionRatio)
         {
             if (MagicProj.laserLike)
                 return MagicProj.GetTrailLaserWidth(completionRatio) * 0.75f;
-            float w = 100;
-            float ew = w / 10;
-            float width = w * MagicProj.ScaleMultiplier;
 
-            float p = completionRatio / 0.5f;
-            float ep = EasingFunction.OutCirc(p);
-            float circleWidth = MathHelper.Lerp(0, w * MagicProj.ScaleMultiplier, ep);
-            float trailWidth = MathHelper.Lerp(width, 0, EasingFunction.OutCirc(completionRatio));
-            return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
+            float width = 52;
+            return MathHelper.SmoothStep(width, 0f, completionRatio) * EasingFunction.QuadraticBump(completionRatio);
         }
 
         #endregion

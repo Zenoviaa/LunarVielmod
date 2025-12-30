@@ -255,6 +255,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         }
         private void DrawMainShader(Vector2[] oldPos)
         {
+
             BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
             blackSmokeShader.Time = Main.GlobalTimeWrappedHourly * 8;
             TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);

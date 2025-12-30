@@ -575,7 +575,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             for (int i = 0; i <= numPoints; i++)
             {
                 Vector2 start = Projectile.Center;
-                BeamPoints.Add(Vector2.Lerp(start, start + direction * (BeamLength + 48), i / numPoints));
+                BeamPoints.Add(Vector2.Lerp(start, start + direction * (BeamLength ), i / numPoints));
             }
 
             var shader = RichLaserShader.Instance;

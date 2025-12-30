@@ -313,6 +313,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 OldPos[0] = Projectile.Center;
             if (OldRot.Length > 0)
                 OldRot[0] = Projectile.rotation;
+          
             _numUpdates++;
             if (TrailLength != OldPos.Length)
             {
@@ -376,9 +377,11 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     shouldKill = false;
                 }
             }
-            if (shouldKill)
+            if (shouldKill && laserLike)
                 isDying = true;
-            return false;
+            else if (shouldKill)
+                Projectile.Kill();
+                return false;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -391,9 +394,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 float scale = Projectile.scale * MathHelper.Lerp(0.5f, 1f, Charge);
 
                 Vector2 vel = Projectile.velocity;
-                if (_numUpdates > 2)
+                if (_numUpdates > 3 && OldPos.Length > 5)
                 {
-                    vel = OldPos[_numUpdates - 1] - OldPos[_numUpdates - 2];
+                    vel = OldPos[0] - OldPos[1];
 
                 }
                 float rot = vel.ToRotation();

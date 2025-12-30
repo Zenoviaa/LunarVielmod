@@ -70,7 +70,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     //If we want we can have a gradient on the bloom
     float3 bloomMultiplyCol = lerp(bloomOuterColor, bloomInnerColor, QuadraticBump(bloomSample));
-    float3 bloomCol = bloomMultiplyCol * bloomSample;
+    float3 bloomCol = bloomMultiplyCol * bloomSample * input.Color.rgb;
     
     //0.0 alpha for additive draw
     float3 combinedCol = innerCol + bloomCol;
