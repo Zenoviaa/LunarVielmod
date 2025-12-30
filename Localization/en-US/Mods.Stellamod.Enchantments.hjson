@@ -587,3 +587,7 @@ LaserEnchantment: {
 	DisplayName: Laser Enchantment
 	Tooltip: Turns your spell into a super fast, multi-hitting laser!
 }
+SirestiasTouchEnchantment: {
+	DisplayName: Sirestias's Touch Enchantment
+	Tooltip: Periodically resets your spell's immunity frames, allowing for extra hits!
+}
