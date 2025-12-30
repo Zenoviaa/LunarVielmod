@@ -40,7 +40,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Radiance
 
         public override float GetStaffManaModifier()
         {
-            return 0.4f;
+            return 2f;
         }
 
         public override int GetElementType()

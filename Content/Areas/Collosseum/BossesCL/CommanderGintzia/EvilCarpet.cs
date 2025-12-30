@@ -48,6 +48,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             NPC.dontTakeDamageFromHostiles = true;
         }
 
+
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             return false;
