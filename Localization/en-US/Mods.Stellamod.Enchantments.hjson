@@ -595,3 +595,7 @@ RotisserieChickenEnchantment: {
 	DisplayName: Rotisserie Chicken Enchantment
 	Tooltip: Rotates your form clockwise at a decent speed
 }
+CoasterEnchantment: {
+	DisplayName: Coaster Enchantment
+	Tooltip: The player glides with the spell, reducing damage by 90% while on it 
+}
