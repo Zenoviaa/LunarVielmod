@@ -152,8 +152,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public virtual void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) { }
         public virtual void OnKill()
         {
-            TrailKillSystem trailKillSystem = ModContent.GetInstance<TrailKillSystem>();
-            trailKillSystem.New(MagicProj.OldPos, this);
+            //TrailKillSystem trailKillSystem = ModContent.GetInstance<TrailKillSystem>();
+            //trailKillSystem.New(MagicProj.OldPos, this);
         }
 
         public virtual Color GetElementColor() { return Color.White; }

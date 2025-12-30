@@ -137,7 +137,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             flamingTrailShader.Distortion = 6;
             flamingTrailShader.Tiling = Vector2.One * 0.5f;
             //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, flamingTrailShader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, flamingTrailShader);
         }
 
         private Color ColorFunction(float completionRatio)
@@ -147,6 +147,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
         private float WidthFunction(float completionRatio)
         {
+            if (MagicProj.laserLike)
+                return MagicProj.GetTrailLaserWidth(completionRatio) * 0.6f;
             float width = 18 * 1.5f * MagicProj.ScaleMultiplier;
             return MathHelper.Lerp(width, 0, EasingFunction.InOutExpo(completionRatio));
         }

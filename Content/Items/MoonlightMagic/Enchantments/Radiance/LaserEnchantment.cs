@@ -10,21 +10,18 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Radiance
         public override void SetMagicDefaults()
         {
             base.SetMagicDefaults();
-            MagicProj.TrailLength += 16;
+            MagicProj.TrailLength += 384;
             MagicProj.Projectile.timeLeft *= 2;
             MagicProj.Projectile.penetrate = -1;
-            MagicProj.extraScale += 0.25f;
+            MagicProj.extraScale += 0.4f;
+            MagicProj.killTime = 460;
+            MagicProj.tileHitCount += 1;
         }
 
         public override void AI()
         {
             base.AI();
-
-            /*
-             *  Turns your spell into a superfast laser (using your element) 
-             *  and turning it through color and speed, making the trail do consistent damage as a largeish laser with a point,
-             *  more laser enchantments extend that the laser is there 
-             */
+             
             //Count up
 
             Projectile.usesLocalNPCImmunity = true;
@@ -52,11 +49,18 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Radiance
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
+            if(MagicProj.tileHitCount <= 0)
+            {
+                Projectile.velocity *= 0f;
+                return true;
+            }
+            /*
             if (Projectile.velocity.X != oldVelocity.X)
                 Projectile.velocity.X = -oldVelocity.X;
             if (Projectile.velocity.Y != oldVelocity.Y)
-                Projectile.velocity.Y = -oldVelocity.Y;
-            return false;
+                Projectile.velocity.Y = -oldVelocity.Y;*/
+         //   Projectile.velocity *= 0.01f;
+            return base.OnTileCollide(oldVelocity);
         }
     }
 }

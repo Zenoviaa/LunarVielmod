@@ -6,6 +6,7 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -71,12 +72,16 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private AdvancedMagicPlayer MagicPlayer => Owner.GetModPlayer<AdvancedMagicPlayer>();
         public bool damagingTrail;
         public bool laserLike;
+        public bool isDying;
         public float extraScale;
+        public float killTime = 60f;
+        public int tileHitCount;
+        public Vector2 originalVelocity;
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (damagingTrail)
             {
-                return ProjectileHelper.OldPosColliding(OldPos, projHitbox, targetHitbox);
+                return ProjectileHelper.OldPosColliding(OldPos, projHitbox, targetHitbox, 32);
             }
 
             return base.Colliding(projHitbox, targetHitbox);
@@ -85,7 +90,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             base.SetStaticDefaults();
             ProjectileSets.ResetBossMultihitDamageFalloff[Type] = true;
-            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 3500;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 10000;
         }
 
         public int GetNetID()
@@ -153,7 +158,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Movement = item.Movement;
             Form = item.Form;
             Enchantments.Clear();
-
+            tileHitCount = 1;
             var enchantments = item.Enchantments;
             for (int i = 0; i < enchantments.Count; i++)
             {
@@ -222,6 +227,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             GlobalTimer++;
             if (GlobalTimer == 1)
             {
+                originalVelocity = Projectile.velocity;
                 if (!Owner.HeldItem.IsAir && Owner.HeldItem.ModItem != null)
                 {
                     BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
@@ -230,7 +236,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     SetMoonlightDefaults(staff);
                 }
             }
-
+    
             Projectile.width = (int)Size;
             Projectile.height = (int)Size;
 
@@ -263,6 +269,10 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
             }
 
+            if (isDying) {
+                if (Projectile.timeLeft > killTime)
+                    Projectile.timeLeft = (int)killTime;
+            }
                 if (laserLike && _numUpdates > 2)
             {
                 if(GlobalTimer % (Projectile.extraUpdates+1) == 0)
@@ -356,6 +366,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             bool shouldKill = true;
+            tileHitCount--;
             for (int i = 0; i < Enchantments.Count; i++)
             {
                 var enchantment = Enchantments[i];
@@ -365,7 +376,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     shouldKill = false;
                 }
             }
-            return shouldKill;
+            if (shouldKill)
+                isDying = true;
+            return false;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -377,31 +390,65 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Color drawColor = Color.White.MultiplyRGB(lightColor);
                 float scale = Projectile.scale * MathHelper.Lerp(0.5f, 1f, Charge);
 
-                PrimaryElement?.DrawForm(spriteBatch, Form, Projectile.Center - Main.screenPosition,
-                    drawColor, lightColor, Projectile.velocity.ToRotation(), scale);
-            }
-            if (laserLike)
-            {
-                Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-                Color glowColor = PrimaryElement == null ? Color.White : PrimaryElement.GetElementColor();
-                glowColor.A = 0;
-                Vector2 centerpos = OldPos[OldPos.Length - 1] - Main.screenPosition;
-
-                float outScale = (float)(Projectile.timeLeft) / 60f;
-                outScale = EasingFunction.InOutSine(outScale);
-                for (int i = 0; i < 6; i++)
+                Vector2 vel = Projectile.velocity;
+                if (_numUpdates > 2)
                 {
-                    float ratio = (float)i / 6f;
-                    float scale = 0.17f * (7 + 0.6f) * VectorHelper.Osc(0.75f, 1f, speed: 3) * ratio;
-  
-                    Main.spriteBatch.Draw(texture2D4, centerpos, null, glowColor, Projectile.rotation,
-                        new Vector2(32, 32), scale * outScale , SpriteEffects.None, 0f);
+                    vel = OldPos[_numUpdates - 1] - OldPos[_numUpdates - 2];
+
                 }
+                float rot = vel.ToRotation();
+                PrimaryElement?.DrawForm(spriteBatch, Form, Projectile.Center - Main.screenPosition,
+                    drawColor, drawColor, rot, scale);
             }
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedFlashes, DrawLayer.OverNPCsWithOutline);
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelated, DrawLayer.OverNPCs);
             return false;
         }
 
+        private void DrawPixelatedFlashes(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+
+            if (laserLike && _numUpdates > 2)
+            {
+                Texture2D muzzleFlash = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/MuzzleFlash").Value;
+                Color glowColor = PrimaryElement == null ? Color.White : PrimaryElement.GetElementColor();
+                glowColor.A = 0;
+                Vector2 centerpos = OldPos[_numUpdates - 1] - Main.screenPosition;
+
+                float outScale = (float)(Projectile.timeLeft) / 60f;
+                outScale = EasingFunction.InOutSine(outScale);
+
+                Vector2 vel = OldPos[_numUpdates - 1] - OldPos[_numUpdates - 2];
+                float rot = vel.ToRotation();
+                for (int i = 0; i < 4; i++)
+                {
+                    float ratio = (float)i / 4f;
+                    float scale = 0.27f * (7 + 0.6f) * VectorHelper.Osc(0.75f, 1f, speed: 3) * ratio;
+                    Vector2 muzzleScale = Vector2.One;
+                    muzzleScale.Y *= 2.5f;
+
+
+                    Main.spriteBatch.Draw(muzzleFlash, centerpos, null, glowColor, rot,
+                        muzzleFlash.Size() / 2f, muzzleScale * scale * outScale * 0.5f, SpriteEffects.None, 0f);
+                }
+
+                Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
+                glowColor = PrimaryElement == null ? Color.White : PrimaryElement.GetElementColor();
+                glowColor.A = 0;
+                centerpos = OldPos[_numUpdates - 1] - Main.screenPosition;
+
+                outScale = (float)(Projectile.timeLeft) / 60f;
+                outScale = EasingFunction.InOutSine(outScale);
+                for (int i = 0; i < 6; i++)
+                {
+                    float ratio = (float)i / 6f;
+                    float scale = 0.27f * (7 + 0.6f) * VectorHelper.Osc(0.75f, 1f, speed: 3) * ratio;
+
+                    Main.spriteBatch.Draw(texture2D4, centerpos, null, glowColor, rot,
+                        new Vector2(32, 32), scale * outScale, SpriteEffects.None, 0f);
+                }
+            }
+        }
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
@@ -418,7 +465,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             float inScale = (float)_numUpdates / 60f;
             inScale = EasingFunction.InOutSine(inScale);
-            float outScale = (float)Projectile.timeLeft / 180f;
+            float outScale = (float)Projectile.timeLeft / killTime;
             outScale = EasingFunction.InOutSine(outScale);
             float baseWidth = 40;
 

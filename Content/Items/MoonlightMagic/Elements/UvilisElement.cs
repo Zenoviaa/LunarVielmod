@@ -67,12 +67,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.UvilisLightBlue);
         }
 
-        public override void AI()
-        {
-            base.AI();
-            AI_Particles();
-        }
-
+     
         public override void OnKill()
         {
             base.OnKill();
@@ -178,7 +173,10 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
         private float WidthFunction(float completionRatio)
         {
-            float width = 16 * 1.3f * MagicProj.ScaleMultiplier;
+            float baseWidth = 16f;
+            if (MagicProj.laserLike)
+                baseWidth = MagicProj.GetTrailLaserWidth(completionRatio) * 0.6f;
+            float width = baseWidth * 1.3f * MagicProj.ScaleMultiplier;
             completionRatio = EasingFunction.QuadraticBump(completionRatio);
             switch (trailingMode)
             {
@@ -230,7 +228,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
             shader.PrimaryColor = Color.Lerp(Color.White, new Color(255, 207, 79), 0.5f);
             shader.NoiseColor = new Color(92, 100, 255);
-            shader.OutlineColor = Color.Black;
+            shader.OutlineColor = Color.White;
             shader.BlendState = BlendState.Additive;
             shader.SamplerState = SamplerState.PointWrap;
             shader.Speed = 0.8f;
@@ -238,7 +236,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             shader.Power = 0.5f;
             shader.Threshold = 0.25f;
             //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
 
         }
 
@@ -258,7 +256,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             shader.Distortion = 0.25f;
             shader.Power = 2.5f;
 
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
         }
 
         private void DrawOutlineShader2(Vector2[] oldPos)
@@ -277,7 +275,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             shader.Distortion = 0.25f;
             shader.Power = 3.5f;
 
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
         }
 
         public override void DrawTrail(Vector2[] oldPos)

@@ -170,16 +170,20 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             shader.Speed = 0.5f;
             shader.Repeats = 1f;
             //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
         }
 
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(new Color(69, 196, 182), Color.SpringGreen, completionRatio);
+            if(MagicProj.laserLike)
+                return Color.Lerp( Color.SpringGreen, Color.White, EasingFunction.InExpo(completionRatio));
+            return Color.Lerp(Color.Lerp(Color.White, Color.SpringGreen, 0.5f), Color.SpringGreen, completionRatio);
         }
 
         private float WidthFunction(float completionRatio)
         {
+            if (MagicProj.laserLike)
+                return MagicProj.GetTrailLaserWidth(completionRatio) * 0.75f;
             float w = 100;
             float ew = w / 10;
             float width = w * MagicProj.ScaleMultiplier;

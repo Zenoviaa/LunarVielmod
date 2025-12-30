@@ -86,7 +86,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         private void DrawHighDetailForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
         {
             Vector2 drawOrigin = formTexture.Size() / 2;
-            //   drawPos -= Projectile.velocity * 1.5f;
+              drawPos -= Projectile.velocity * 2f;
             drawScale *= 1.3f;
             SparkleShader ??= new MoonSparkleShader();
             SparkleShader.ApplyToEffect();
@@ -221,7 +221,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             {
                 return MagicProj.GetTrailLaserWidth(completionRatio);
             }
-            float width = 128 * MagicProj.ScaleMultiplier;
+            float width = 64 * MagicProj.ScaleMultiplier;
             return MathHelper.SmoothStep(width, 0, completionRatio);
         }
 
@@ -238,7 +238,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             {
                 return MagicProj.GetTrailLaserWidth(completionRatio) * 1.5f;
             }
-            float w = 250;
+            float w = 150;
             float ew = w / 10;
             float width = w * MagicProj.ScaleMultiplier;
 
@@ -251,11 +251,12 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
         public Color SmokeColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Transparent, Color.White, EasingFunction.InOutSine(completionRatio));
+            return Color.Lerp(Color.Transparent, Color.White, EasingFunction.OutCirc(completionRatio));
         }
         private void DrawMainShader(Vector2[] oldPos)
         {
             BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
+            blackSmokeShader.Time = Main.GlobalTimeWrappedHourly * 8;
             TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
 
             BlackFireShader blackFireShader = BlackFireShader.Instance;

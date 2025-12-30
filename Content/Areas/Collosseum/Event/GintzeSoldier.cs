@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.Event
 {
-    public class GintzeSolider : BaseColosseumNPC,
+    public class GintzeSoldier : BaseColosseumNPC,
         IDrawOutlines
     {
         private bool _warn;

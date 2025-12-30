@@ -154,7 +154,10 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
         private float WidthFunction(float completionRatio)
         {
-            float width = 16 * 2f * MagicProj.ScaleMultiplier;
+            float baseWidth = 16f;
+            if (MagicProj.laserLike)
+                baseWidth = MagicProj.GetTrailLaserWidth(completionRatio);
+            float width = baseWidth * 2f * MagicProj.ScaleMultiplier;
             completionRatio = EasingFunction.QuadraticBump(completionRatio);
             switch (trailingMode)
             {
@@ -182,7 +185,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             shader.Distortion = 2.5f;
             shader.Alpha = 0.25f;
             //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
         }
 
         private void DrawOutlineShader(Vector2[] oldPos)
@@ -203,7 +206,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             shader.Distortion = 0.85f;
             shader.Power = 2.5f;
 
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
         }
         #endregion
     }

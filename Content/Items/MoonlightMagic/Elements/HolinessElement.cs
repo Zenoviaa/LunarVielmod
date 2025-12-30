@@ -71,14 +71,18 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             //Kill Trail
             for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
             {
-                Vector2 offset = Main.rand.NextVector2Circular(16, 16);
-                Vector2 spawnPoint = MagicProj.OldPos[i] + offset + Projectile.Size / 2;
-                Vector2 velocity = MagicProj.OldPos[i + 1] - MagicProj.OldPos[i];
-                velocity = velocity.SafeNormalize(Vector2.Zero) * -2;
+                if (Main.rand.NextBool(4))
+                {
+                    Vector2 offset = Main.rand.NextVector2Circular(16, 16);
+                    Vector2 spawnPoint = MagicProj.OldPos[i] + offset + Projectile.Size / 2;
+                    Vector2 velocity = MagicProj.OldPos[i + 1] - MagicProj.OldPos[i];
+                    velocity = velocity.SafeNormalize(Vector2.Zero) * -2;
 
-                Color color = Color.White;
-                color.A = 0;
-                LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
+                    Color color = Color.White;
+                    color.A = 0;
+                    LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
+                }
+   
             }
 
             for (float f = 0f; f < 1f; f += 0.2f)
@@ -117,18 +121,18 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             shader.Alpha = 0.25f;
 
             //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
 
             shader.PrimaryColor = Color.Goldenrod;
             shader.NoiseColor = Color.Goldenrod;
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
 
 
             trailMode = 1;
             shader.NoiseColor = Color.White;
             shader.NoiseColor = Color.LightGoldenrodYellow;
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
         }
 
         private Color ColorFunction(float completionRatio)
@@ -139,8 +143,10 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
         private float WidthFunction(float completionRatio)
         {
-
-            float width = (trailMode == 0 ? 40 : 32) * 1.5f * MagicProj.ScaleMultiplier;
+            float baseWidth = 40;
+            if (MagicProj.laserLike)
+                baseWidth = MagicProj.GetTrailLaserWidth(completionRatio);
+            float width = (trailMode == 0 ? baseWidth : baseWidth * 0.8f) * 1.5f * MagicProj.ScaleMultiplier;
             return MathHelper.Lerp(width, 0, completionRatio);
         }
         #endregion

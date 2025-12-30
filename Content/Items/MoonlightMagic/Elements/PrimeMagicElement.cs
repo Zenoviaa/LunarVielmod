@@ -63,6 +63,11 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         public override void DustEffects()
         {
             base.DustEffects();
+            if(_lightningTrail == null)
+            {
+                _lightningTrail ??= new();
+                _lightningTrail.RandomPositions(MagicProj.OldPos);
+            }
             if (Main.rand.NextBool(8))
             {
                 _lightningTrail ??= new();
@@ -73,7 +78,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             {
                 for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
                 {
-                    if (!Main.rand.NextBool(4))
+                    if (!Main.rand.NextBool(8))
                         continue;
                     Vector2 offset = Main.rand.NextVector2Circular(16, 16);
                     Vector2 spawnPoint = MagicProj.OldPos[i] + offset + Projectile.Size / 2;
@@ -177,16 +182,22 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
             //This number makes it more lightning like, lower this is the straighter it is
             _lightningTrail.LightningRandomExpand = 2;
-            _lightningTrail.Draw(spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2f);
+            _lightningTrail.Draw(spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
         }
 
         private float WidthFunction(float completionRatio)
         {
+            float baseWidth = 32;
+            if (MagicProj.laserLike)
+            {
+                baseWidth = MagicProj.GetTrailLaserWidth(completionRatio) * 0.7f;
+                return baseWidth;
+            }
             float progress = completionRatio / 0.3f;
             float rounded = EasingFunction.QuadraticBump(progress);
             float spikeProgress = EasingFunction.QuadraticBump(completionRatio);
             float fireball = MathHelper.Lerp(rounded, spikeProgress, EasingFunction.OutExpo(1.0f - completionRatio));
-            float midWidth = 32 * MagicProj.ScaleMultiplier;
+            float midWidth = baseWidth * MagicProj.ScaleMultiplier;
             return MathHelper.Lerp(0, midWidth, fireball);
         }
 

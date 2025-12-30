@@ -11,6 +11,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
     {
         bool HitOnce = false;
         int Attagain = 14;
+        int Hits;
         public override float GetStaffManaModifier()
         {
             return 0.5f;
@@ -24,25 +25,17 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
 
         public override void SetMagicDefaults()
         {
-            Projectile.penetrate += 1;
+            Projectile.penetrate += 2;
+            MagicProj.tileHitCount += 2;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
+            if (Projectile.velocity.X != oldVelocity.X)
+                Projectile.velocity.X = -oldVelocity.X;
 
-            Projectile.penetrate--;
-            if (Projectile.penetrate <= 0)
-            {
-                return true;
-            }
-            else
-            {
-                if (Projectile.velocity.X != oldVelocity.X)
-                    Projectile.velocity.X = -oldVelocity.X;
-
-                if (Projectile.velocity.Y != oldVelocity.Y)
-                    Projectile.velocity.Y = -oldVelocity.Y;
-            }
+            if (Projectile.velocity.Y != oldVelocity.Y)
+                Projectile.velocity.Y = -oldVelocity.Y;
             HitOnce = true;
             Attagain = 0;
             return false;

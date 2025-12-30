@@ -68,7 +68,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 _lightningTrail ??= new();
                 _lightningTrail.RandomPositions(MagicProj.OldPos);
             }
-            if (Main.rand.NextBool(8))
+            if (Main.rand.NextBool(16))
             {
                 for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
                 {
@@ -142,20 +142,23 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
             _lightningTrail ??= new();
             //Making this number big made like the field wide
-            _lightningTrail.LightningRandomOffsetRange = 5;
+            _lightningTrail.LightningRandomOffsetRange = 7;
 
             //This number makes it more lightning like, lower this is the straighter it is
-            _lightningTrail.LightningRandomExpand = 24;
-            _lightningTrail.Draw(spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, lightningShader, offset: Projectile.Size / 2f);
+            _lightningTrail.LightningRandomExpand = 12;
+            _lightningTrail.Draw(spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, lightningShader);
         }
 
         private float WidthFunction(float completionRatio)
         {
+            float baseWidth = 28f;
+            if (MagicProj.laserLike)
+                baseWidth = MagicProj.GetTrailLaserWidth(completionRatio);
             float progress = completionRatio / 0.3f;
             float rounded = EasingFunction.QuadraticBump(progress);
             float spikeProgress = EasingFunction.QuadraticBump(completionRatio);
             float fireball = MathHelper.Lerp(rounded, spikeProgress, EasingFunction.OutExpo(1.0f - completionRatio));
-            float midWidth = 28 * MagicProj.ScaleMultiplier;
+            float midWidth = baseWidth * MagicProj.ScaleMultiplier;
             return MathHelper.Lerp(0, midWidth, fireball);
         }
 

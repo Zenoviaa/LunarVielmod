@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
@@ -324,13 +325,13 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         float Timer;
         public override void SetDefaults()
         {
-            Projectile.width = 32;
+            Projectile.width = 24;
             Projectile.height = 16;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.tileCollide = true;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 25;
+            Projectile.timeLeft = 30;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 13;
             BeamPoints = new List<Vector2>();
@@ -341,6 +342,21 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             float targetBeamLength = PerformBeamHitscan();
             BeamLength = targetBeamLength;
             Timer++;
+
+            if(Timer == 10)
+            {
+                for(int i = 0; i < BeamPoints.Count; i++)
+                {
+                    if (Main.rand.NextBool(2))
+                    {
+                        Vector2 point = BeamPoints[i];
+                        var dp = Particle<DustParticle>.Spawn(point, Projectile.velocity.RotatedByRandom(0.7f) * Main.rand.NextFloat(0.25f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 2f));
+                        dp.gravity = 0.02f;
+                        dp.outerColor = Color.Cyan;
+                        dp.dampening = 0.1f;
+                    }
+                }
+            }
             if (Timer == 1)
             {
                 Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
@@ -370,7 +386,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 
                 for (float f = 0; f < 6; f++)
                 {
-                    Vector2 initialVelocity = -Vector2.UnitY;
+                    Vector2 initialVelocity = -Projectile.velocity.SafeNormalize(Vector2.Zero);
                     initialVelocity *= 4;
                     initialVelocity = initialVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                     initialVelocity *= Main.rand.NextFloat(0.15f, 1f);
@@ -405,6 +421,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 var sear = LegacyParticle.NewParticle<SearParticle>(explosionCenter, Vector2.Zero);
                 sear.innerColor = Color.Cyan;
                 sear.outerColor = Color.Blue;
+                sear.Rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 
                 if (this.OwnedByLocalClient())
                 {
@@ -483,9 +500,8 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         public float WidthFunction(float completionRatio)
         {
             float osc = VectorHelper.Osc(0.75f, 1f);
-
-            float width = (float)Projectile.timeLeft / 25f;
-            return (Projectile.width * Projectile.scale) * osc * width * 2;
+            float w = MathHelper.SmoothStep(0f, 1f, (float)Projectile.timeLeft / 30f);
+            return (Projectile.width * Projectile.scale) * osc * 2 * w;
         }
         public float WidthFunction2(float completionRatio)
         {
@@ -504,7 +520,8 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 
         public override bool PreDraw(ref Color lightColor)
         {
-            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedMuzzleFlash);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelated, DrawLayer.OverNPCsWithOutline);
             return false;
         }
 
@@ -513,27 +530,59 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             return false;
         }
 
+        public void DrawPixelatedMuzzleFlash(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            Asset<Texture2D> muzzleFlashTexture = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/MuzzleFlash");
+            Vector2 drawOrigin = muzzleFlashTexture.Size() / 2f;
+            Vector2 drawCenter = Projectile.Center - screenPos;
+            Color drawColor = Color.Cyan;
+            drawColor.A = 0;
+
+            float width = (float)Projectile.timeLeft / 30f;
+            float outWidth = EasingFunction.InOutSine(width);
+            float scale = outWidth;
+            Vector2 flashScale = Vector2.One;
+            flashScale.X *= 1.5f;
+            flashScale.Y *= 1.2f;
+            flashScale *= scale;
+            spriteBatch.Draw(muzzleFlashTexture.Value, drawCenter, null, drawColor, Projectile.velocity.ToRotation(), drawOrigin, flashScale, SpriteEffects.None, 0);
+           
+            drawColor = Color.White;
+            drawColor.A = 0;
+            spriteBatch.Draw(muzzleFlashTexture.Value, drawCenter, null, drawColor, Projectile.velocity.ToRotation(), drawOrigin, flashScale * 0.6f, SpriteEffects.None, 0);
+
+            Asset<Texture2D> impactTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/ZuiEffect");
+            drawOrigin = impactTexture.Size() / 2f;
+
+            Vector2 impactPoint = Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * BeamLength;
+            drawCenter = impactPoint - screenPos;
+            drawColor = Color.Cyan;
+            drawColor.A = 0;
+            spriteBatch.Draw(impactTexture.Value, drawCenter, null, drawColor, Projectile.velocity.ToRotation(), drawOrigin, scale * 1.2f, SpriteEffects.None, 0);
+
+            drawColor = Color.White;
+            drawColor.A = 0;
+            spriteBatch.Draw(impactTexture.Value, drawCenter, null, drawColor, Projectile.velocity.ToRotation(), drawOrigin, scale * 0.8f, SpriteEffects.None, 0);
+        }
         public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
             //Put in the points
             //This is just a straight beam that collides with tiles
             BeamPoints.Clear();
             Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-            for (int i = 0; i <= 8; i++)
+
+            float numPoints = 64;
+            for (int i = 0; i <= numPoints; i++)
             {
                 Vector2 start = Projectile.Center;
-                BeamPoints.Add(Vector2.Lerp(start, start + direction * (BeamLength + 48), i / 8f));
+                BeamPoints.Add(Vector2.Lerp(start, start + direction * (BeamLength + 48), i / numPoints));
             }
 
-            var shader = BasicLaserShader.Instance;
-            shader.InnerColor = Color.White;
-            shader.OuterColor = Color.SkyBlue;
-            shader.BlendState = BlendState.AlphaBlend;
-            shader.LaserTexture = TrailRegistry.StarTrail;
+            var shader = RichLaserShader.Instance;
+            shader.LaserColor = Color.White;
+            shader.InnerColor = Color.Lerp(Color.Cyan, Color.Blue, 0.75f); 
+            shader.OuterColor = Color.Cyan;
             TrailDrawer.Draw(Main.spriteBatch, BeamPoints.ToArray(), ColorFunction, WidthFunction, shader);
-
-            shader.BlendState = BlendState.AlphaBlend;
-            TrailDrawer.Draw(Main.spriteBatch, BeamPoints.ToArray(), ColorFunction2, WidthFunction2, shader);
         }
     }
     public class FreezeRay : BaseGun
@@ -602,6 +651,14 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 var p = LegacyParticle.NewParticle<ImpactParticle>(position, velocity.RotatedByRandom(0.7f));
                 p.fast = true;
                 p.color = Color.SkyBlue;
+            }
+
+            for(float f = 0; f < 5;f++)
+            {
+                var dp = Particle<DustParticle>.Spawn(position, velocity.RotatedByRandom(0.7f) * Main.rand.NextFloat(0.25f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 2f));
+                dp.gravity = 0.02f;
+                dp.outerColor = Color.Cyan;
+                dp.dampening = 0.1f;
             }
         }
     }

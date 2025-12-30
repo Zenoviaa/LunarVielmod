@@ -74,14 +74,18 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             //Kill Trail
             for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
             {
-                Vector2 offset = Main.rand.NextVector2Circular(16, 16);
-                Vector2 spawnPoint = MagicProj.OldPos[i] + offset + Projectile.Size / 2;
-                Vector2 velocity = MagicProj.OldPos[i + 1] - MagicProj.OldPos[i];
-                velocity = velocity.SafeNormalize(Vector2.Zero) * -2;
+                if (Main.rand.NextBool(3))
+                {
+                    Vector2 offset = Main.rand.NextVector2Circular(16, 16);
+                    Vector2 spawnPoint = MagicProj.OldPos[i] + offset + Projectile.Size / 2;
+                    Vector2 velocity = MagicProj.OldPos[i + 1] - MagicProj.OldPos[i];
+                    velocity = velocity.SafeNormalize(Vector2.Zero) * -2;
 
-                Color color = Color.White;
-                color.A = 0;
-                LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
+                    Color color = Color.White;
+                    color.A = 0;
+                    LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
+                }
+
             }
 
             for (float f = 0f; f < 1f; f += 0.2f)
@@ -118,7 +122,10 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
         private float WidthFunction(float completionRatio)
         {
-            float width = 16 * 1.5f * MagicProj.ScaleMultiplier;
+            float baseWidth = 16f;
+            if (MagicProj.laserLike)
+                baseWidth = MagicProj.GetTrailLaserWidth(completionRatio) * 0.6f;
+            float width = baseWidth * 1.5f * MagicProj.ScaleMultiplier;
             completionRatio = EasingFunction.QuadraticBump(completionRatio);
             return MathHelper.Lerp(0, width, completionRatio);
         }
@@ -142,7 +149,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             //This just applis the shader changes
 
             //Main Fill
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
         }
         #endregion
     }

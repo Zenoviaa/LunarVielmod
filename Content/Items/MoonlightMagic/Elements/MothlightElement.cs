@@ -107,7 +107,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             miscShaderData.UseSaturation(-2.8f);
             miscShaderData.UseOpacity(2f);
             TrailDrawer.DrawWithMiscShader(Main.spriteBatch,
-                oldPos, Projectile.oldRot, StripColors, StripWidth, miscShaderData, offset: -Main.screenPosition + Projectile.Size / 2);
+                oldPos, Projectile.oldRot, StripColors, StripWidth, miscShaderData, offset: -Main.screenPosition);
         }
 
         private Color StripColors(float progressOnStrip)

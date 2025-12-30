@@ -31,9 +31,9 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Radiance
                     float progress = i / count;
                     float angle = MathHelper.PiOver4;
                     float fireRot = progress * angle;
-                    Vector2 fireDirection = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                    Vector2 fireDirection = MagicProj.originalVelocity.SafeNormalize(Vector2.Zero);
                     Vector2 firePoint = Projectile.Center;
-                    Vector2 fireVelocity = fireDirection.RotatedBy(fireRot - angle / 2f) * Projectile.velocity.Length() * 0.5f;
+                    Vector2 fireVelocity = fireDirection.RotatedBy(fireRot - angle / 2f) * MagicProj.originalVelocity.Length() * 0.5f;
                     AdvancedMagicUtil.CloneMagicProjectile(MagicProj, firePoint, -fireVelocity, Projectile.damage / count, Projectile.knockBack / count,
                         MagicProj.TrailLength / count, MagicProj.Size / count);
                 }

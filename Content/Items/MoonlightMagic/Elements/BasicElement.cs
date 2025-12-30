@@ -121,7 +121,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             shader.Speed = 0.25f;
             shader.Repeats = 1f;
             //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader);
         }
 
         private Color ColorFunction(float completionRatio)
