@@ -4,6 +4,7 @@ using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.SilkSystem;
+using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Melee;
@@ -191,6 +192,31 @@ namespace Stellamod
                         Vector2 start = new Vector2(x1, y1);
                         Vector2 end = new Vector2(x2, y2);
                         ribbonRenderer.ReceivePlaceRibbonSync(start, end, wandType);
+                    }
+
+                    break;
+                case MessageType.PlaceDecoration:
+                    {
+                        ZRenderLayer layer = (ZRenderLayer)reader.ReadByte();
+                        ZTilePosition tilePosition = new ZTilePosition();
+                        tilePosition.x = reader.ReadUInt16();
+                        tilePosition.y = reader.ReadUInt16();
+                        tilePosition.z = reader.ReadUInt16();
+
+                        ZTileInstanceData instanceData = new ZTileInstanceData();
+                        instanceData.scale = reader.ReadSingle();
+                        instanceData.flipX = reader.ReadBoolean();
+                        instanceData.frameNumber= reader.ReadUInt16();
+                        instanceData.rotation = (Rotation)reader.ReadByte();
+                        instanceData.type = reader.ReadUInt16();
+
+                        ZTileMap tileMap = ModContent.GetInstance<ZTileMap>();
+                        tileMap.Add(layer, tilePosition, instanceData);
+                        if(Main.netMode == NetmodeID.Server)
+                        {
+                            //Forward all changes to other clients
+                            tileMap.SyncPlaceTile(-1, whoAmI, layer, tilePosition, instanceData);
+                        }
                     }
 
                     break;

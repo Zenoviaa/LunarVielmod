@@ -23,7 +23,10 @@
         ScarecrowPlayerSync,
 
         PlaceRibbon,
-        BreakRibbon
+        BreakRibbon,
+
+        PlaceDecoration,
+        BreakDecoration
     }
 
     public enum DialogueType : byte

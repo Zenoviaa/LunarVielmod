@@ -99,6 +99,7 @@ namespace Stellamod.Core.Utilities
     /// <summary>
     /// Automatically handles creating and resizing render targets so we don't have to duplicate the code everywhere
     /// </summary>
+    [Autoload(Side = ModSide.Client)]
     public class ManagedRenderTargetManager : ModSystem
     {
         private Point _oldScreenSize;
@@ -111,9 +112,6 @@ namespace Stellamod.Core.Utilities
         public override void Unload()
         {
             base.Unload();
-
-            //Release all render targets
-            _managedRenderTargets.Clear();
         }
 
 

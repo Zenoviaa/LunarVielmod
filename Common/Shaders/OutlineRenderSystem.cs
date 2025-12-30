@@ -12,6 +12,7 @@ using static Terraria.GameContent.TextureAssets;
 namespace Stellamod.Common.Shaders
 {
 
+    [Autoload(Side = ModSide.Client)]
     public class OutlineRenderSystem : ModSystem
     {
         private List<IDrawOutlines> _outlinesToDraw;

@@ -2,11 +2,15 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.DungeonGeneration;
+using Stellamod.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Terraria;
+using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using static Stellamod.WorldG.StructureManager.Snapshot;
@@ -393,6 +397,54 @@ public class ZTileMap : ModSystem
             }
         }
     }
+
+    public override void NetSend(BinaryWriter writer)
+    {
+        base.NetSend(writer);
+        for (int i = 0; i < _renderLayers.Length; i++)
+        {
+            var layer = _renderLayers[i];
+            TileScene[] scenes = layer.GetScenes();
+            for (int j = 0; j < scenes.Length; j++)
+            {
+                TileScene scene = scenes[j];
+                foreach (KeyValuePair<ZTilePosition, ZTileInstanceData> tilePair in scene)
+                {
+                    writer.Write((byte)i);
+                    writer.Write((ushort)tilePair.Key.x);
+                    writer.Write((ushort)tilePair.Key.y);
+                    writer.Write((ushort)tilePair.Key.z);
+                    writer.Write((float)tilePair.Value.scale);
+                    writer.Write((bool)tilePair.Value.flipX);
+                    writer.Write((ushort)tilePair.Value.frameNumber);
+                    writer.Write((byte)tilePair.Value.rotation);
+                    writer.Write((ushort)tilePair.Value.type);
+                }
+            }
+        }
+    }
+
+    public override void NetReceive(BinaryReader reader)
+    {
+        base.NetReceive(reader);
+        //As long as there is a character we have more thingies
+        while(reader.PeekChar() != -1)
+        {
+            ZRenderLayer renderLayer = (ZRenderLayer)reader.ReadByte();
+            ZTilePosition tilePosition = new ZTilePosition();
+            tilePosition.x = reader.ReadUInt16();
+            tilePosition.y = reader.ReadUInt16();
+            tilePosition.z = reader.ReadUInt16();
+
+            ZTileInstanceData instanceData = new ZTileInstanceData();
+            instanceData.scale = reader.ReadSingle();
+            instanceData.flipX = reader.ReadBoolean();
+            instanceData.frameNumber = reader.ReadUInt16();
+            instanceData.rotation = (Rotation)reader.ReadByte();
+            instanceData.type = reader.ReadUInt16();
+            Add(renderLayer, tilePosition, instanceData);
+        }
+    }
     
     private void RenderOverWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
     {
@@ -511,20 +563,53 @@ public class ZTileMap : ModSystem
         zTilePosition.z = z;
         Remove(renderLayer, zTilePosition);
     }
+    /// <summary>
+    /// This function should not be called on the server, only on clients
+    /// </summary>
+    /// <param name="renderLayer"></param>
+    /// <param name="worldPosition"></param>
+    /// <param name="z"></param>
+    /// <param name="tileData"></param>
     public void CreateTile(ZRenderLayer renderLayer, Vector2 worldPosition, int z, ZTileInstanceData tileData)
-    {
-        Add(renderLayer, worldPosition, z, tileData);
-    }
-
-    public void Add(ZRenderLayer renderLayer, Vector2 worldPosition, int z, ZTileInstanceData tileData)
     {
         Point tileCoordinates = worldPosition.ToTileCoordinates();
         ZTilePosition zTilePosition = new ZTilePosition();
         zTilePosition.x = tileCoordinates.X;
         zTilePosition.y = tileCoordinates.Y;
         zTilePosition.z = z;
+
+        if (Main.netMode == NetmodeID.MultiplayerClient)
+        {
+            int clientToIgnore = Main.LocalPlayer.whoAmI;
+            Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.PlaceDecoration,
+                (byte)renderLayer,
+                (ushort)zTilePosition.x,
+                (ushort)zTilePosition.y,
+                (ushort)zTilePosition.z,
+                (float)tileData.scale,
+                (bool)tileData.flipX,
+                (ushort)tileData.frameNumber,
+                (byte)tileData.rotation,
+                (ushort)tileData.type).Send(ignoreClient: clientToIgnore);
+        }
         Add(renderLayer, zTilePosition, tileData);
     }
+
+    public void SyncPlaceTile(int toWho, int fromWho, ZRenderLayer renderLayer, ZTilePosition tilePosition, ZTileInstanceData tileData)
+    {
+        int clientToIgnore = Main.LocalPlayer.whoAmI;
+        Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.PlaceDecoration,
+            (byte)renderLayer,
+            (ushort)tilePosition.x,
+            (ushort)tilePosition.y,
+            (ushort)tilePosition.z,
+            (float)tileData.scale,
+            (bool)tileData.flipX,
+            (ushort)tileData.frameNumber,
+            (byte)tileData.rotation,
+            (ushort)tileData.type).Send(toWho, fromWho);
+    }
+
 
     public void Add(ZRenderLayer renderLayer, ZTilePosition tilePosition, ZTileInstanceData tileData)
     {

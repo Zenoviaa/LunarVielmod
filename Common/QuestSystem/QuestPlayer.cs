@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -106,8 +107,12 @@ namespace Stellamod.Common.QuestSystem
 
             ActiveQuests.Add(quest);
             quest.StartQuest(Player);
-            PopupUISystem popupUISystem = ModContent.GetInstance<PopupUISystem>();
-            popupUISystem.OpenUI("NewQuest");
+            if(Main.netMode != NetmodeID.Server)
+            {
+                PopupUISystem popupUISystem = ModContent.GetInstance<PopupUISystem>();
+                popupUISystem.OpenUI("NewQuest");
+            }
+       
             RecalculateUI = true;
             return true;
         }
@@ -123,9 +128,11 @@ namespace Stellamod.Common.QuestSystem
 
             ActiveQuests.Remove(quest);
             RewardQuests.Add(quest);
-
-            PopupUISystem popupUISystem = ModContent.GetInstance<PopupUISystem>();
-            popupUISystem.OpenUI("CompleteQuest");
+            if (Main.netMode != NetmodeID.Server)
+            {
+                PopupUISystem popupUISystem = ModContent.GetInstance<PopupUISystem>();
+                popupUISystem.OpenUI("CompleteQuest");
+            }
             RecalculateUI = true;
         }
 
