@@ -22,10 +22,11 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
         {
             base.SetDefaults();
             FlashlightLength = 1200;
-            FlashlightWidth = 240;
+            FlashlightWidth = 1200;
         }
         protected override ILight GetLight()
         {
+
             _coneLight ??= new ConeLight();
             return _coneLight;
         }

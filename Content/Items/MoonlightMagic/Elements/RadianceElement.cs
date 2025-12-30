@@ -10,14 +10,13 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Items.MoonlightMagic.Elements
 {
     public class RadianceElement : BaseElement
     {
-        private int trailMode = 0;
-
         public override void ModifySisters(List<int> sisters)
         {
             base.ModifySisters(sisters);
@@ -88,7 +87,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         {
             Vector2 drawOrigin = formTexture.Size() / 2;
             //   drawPos -= Projectile.velocity * 1.5f;
-            drawScale *= 1f;
+            drawScale *= 1.3f;
             SparkleShader ??= new MoonSparkleShader();
             SparkleShader.ApplyToEffect();
             spriteBatch.Restart(effect: SparkleShader.Effect, blendState: BlendState.Additive);
@@ -104,19 +103,11 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 ExtraMath.Osc(-0.1f, 0.1f, speed: 4), SpriteEffects.None, 0);
             spriteBatch.RestartDefaults();
         }
-        public override void AI()
-        {
-            AI_Particles();
-        }
 
-        public override void DrawTrail(Vector2[] oldPos)
+        public override void DustEffects()
         {
-            DrawMainShader(oldPos);
-        }
-
-        private void AI_Particles()
-        {
-            if (MagicProj.GlobalTimer % 8 == 0)
+            base.DustEffects();
+            if (Main.rand.NextBool(8))
             {
                 int oldPosIndex = Main.rand.Next(0, MagicProj.OldPos.Length - 1);
                 float lerpValue = (float)oldPosIndex / (float)MagicProj.OldPos.Length;
@@ -124,28 +115,33 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Vector2 spawnPoint = MagicProj.OldPos[oldPosIndex] + Projectile.Size / 2;
                 Vector2 velocity = MagicProj.OldPos[oldPosIndex + 1] - MagicProj.OldPos[oldPosIndex];
-                velocity = velocity.SafeNormalize(Vector2.Zero) * -8;
+                velocity = velocity.SafeNormalize(Vector2.Zero) * -4;
 
                 Vector2 offset = Main.rand.NextVector2Circular(16, 16);
                 offset *= scaleFactor;
                 spawnPoint += offset;
 
+                scaleFactor *= Main.rand.NextFloat(0.5f, 0.8f);
+
                 Color color = Color.RosyBrown;
-                //  color.A = 0;
                 LegacyParticle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor);
             }
         }
 
+        public override void DrawTrail(Vector2[] oldPos)
+        {
+            base.DrawTrail(oldPos);
+            DrawMainShader(oldPos);
+        }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
             if (Main.rand.NextBool(3))
             {
-                //  target.AddBuff(ModContent.BuffType<RadianceFireDebuff>(), time: 360);
+                target.AddBuff(BuffID.OnFire, time: 360);
             }
         }
-
 
         public override void OnKill()
         {
@@ -161,20 +157,22 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 Vector2 offset = Main.rand.NextVector2Circular(16, 16);
                 Vector2 spawnPoint = MagicProj.OldPos[i] + offset + Projectile.Size / 2;
                 Vector2 velocity = MagicProj.OldPos[i + 1] - MagicProj.OldPos[i];
-                velocity = velocity.SafeNormalize(Vector2.Zero) * -2;
-
-                if (Main.rand.NextBool(2))
+                velocity = velocity.SafeNormalize(Vector2.Zero) * -1;
+                if (Main.rand.NextBool(4))
                 {
-                    Color color = Color.RosyBrown;
-                    color.A = 0;
-                    LegacyParticle.NewBlackParticle<FireSmokeParticle>(spawnPoint, velocity, color);
-                }
-                else
-                {
-                    Color color = ColorFunctions.RadianceYellow;
-                    color.A = 0;
-                    LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
-                    LegacyParticle.NewBlackParticle<FireHeatParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
+                    if (Main.rand.NextBool(2))
+                    {
+                        Color color = Color.RosyBrown;
+                        color.A = 0;
+                        LegacyParticle.NewBlackParticle<FireSmokeParticle>(spawnPoint, velocity, color);
+                    }
+                    else
+                    {
+                        Color color = ColorFunctions.RadianceYellow;
+                        color.A = 0;
+                        LegacyParticle.NewBlackParticle<GlowParticle>(spawnPoint, velocity, color);
+                        LegacyParticle.NewBlackParticle<FireHeatParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
+                    }
                 }
             }
 
@@ -182,38 +180,47 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             {
                 float rot = f * MathHelper.TwoPi;
                 Vector2 spawnPoint = Projectile.position;
-                Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(0f, 4f);
+                Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(0f, 2f);
 
-                if (Main.rand.NextBool(2))
+                if (Main.rand.NextBool(4))
                 {
-                    Color color = Color.RosyBrown;
-                    color.A = 0;
-                    LegacyParticle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color);
-                }
-                else
-                {
-
-                    Color color = ColorFunctions.RadianceYellow;
                     if (Main.rand.NextBool(2))
-                        color = Color.OrangeRed;
+                    {
+                        Color color = Color.RosyBrown;
+                        color.A = 0;
+                        LegacyParticle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color);
+                    }
+                    else
+                    {
 
-                    LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
-                    LegacyParticle.NewParticle<FireHeatParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
+                        Color color = ColorFunctions.RadianceYellow;
+                        if (Main.rand.NextBool(2))
+                            color = Color.OrangeRed;
+
+                        LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity * 0.2f, color);
+                        LegacyParticle.NewParticle<FireHeatParticle>(spawnPoint, velocity, new Color(255, 255, 255, 0));
+                    }
                 }
+     
             }
-            float boomSize = Main.rand.NextFloat(0.06f, 0.08f);
+
+            float boomSize = Main.rand.NextFloat(0.03f, 0.04f);
             FXUtil.GlowCircleBoom(Projectile.Center,
                 innerColor: Color.Yellow,
                 glowColor: Color.Red,
                 outerGlowColor: Color.DarkRed, duration: 25, baseSize: boomSize);
             FXUtil.GlowCircleBoom(Projectile.Center,
-           innerColor: Color.Yellow,
-           glowColor: Color.Red,
-           outerGlowColor: Color.DarkRed, duration: 15, baseSize: boomSize * 2);
+               innerColor: Color.Yellow,
+               glowColor: Color.Red,
+               outerGlowColor: Color.DarkRed, duration: 15, baseSize: boomSize * 2);
         }
 
         private float WidthFunction(float completionRatio)
         {
+            if (MagicProj.laserLike)
+            {
+                return MagicProj.GetTrailLaserWidth(completionRatio);
+            }
             float width = 128 * MagicProj.ScaleMultiplier;
             return MathHelper.SmoothStep(width, 0, completionRatio);
         }
@@ -227,6 +234,10 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         }
         public float SmokeWidthFunction(float completionRatio)
         {
+            if (MagicProj.laserLike)
+            {
+                return MagicProj.GetTrailLaserWidth(completionRatio) * 1.5f;
+            }
             float w = 250;
             float ew = w / 10;
             float width = w * MagicProj.ScaleMultiplier;

@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -19,6 +21,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private BaseElement _baseElement;
         private BaseMovement _movement;
         private int _netID;
+        private int _numUpdates;
         public override string Texture => TextureRegistry.EmptyTexture;
 
         private ref float Timer => ref Projectile.ai[0];
@@ -67,6 +70,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private Player Owner => Main.player[Projectile.owner];
         private AdvancedMagicPlayer MagicPlayer => Owner.GetModPlayer<AdvancedMagicPlayer>();
         public bool damagingTrail;
+        public bool laserLike;
         public float extraScale;
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -81,7 +85,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             base.SetStaticDefaults();
             ProjectileSets.ResetBossMultihitDamageFalloff[Type] = true;
-            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 3500;
         }
 
         public int GetNetID()
@@ -251,15 +255,55 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 enchantment?.AI();
             }
 
+            if (GlobalTimer % (Projectile.extraUpdates + 1) == 0)
+            {
+                if(PrimaryElement != null)
+                {
+                    PrimaryElement.DustEffects();
+                }
+            }
+
+                if (laserLike && _numUpdates > 2)
+            {
+                if(GlobalTimer % (Projectile.extraUpdates+1) == 0)
+                {
+                    if (Main.rand.NextBool(4))
+                    {
+                        Vector2 start = OldPos[_numUpdates - 1];
+                        for (float f = 0; f < 1; f++)
+                        {
+                            Vector2 vel = -(OldPos[_numUpdates - 1] - OldPos[_numUpdates - 2]);
+                            vel = vel.SafeNormalize(Vector2.Zero);
+                            DustParticle dp = Particle<DustParticle>.Spawn(start, vel.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(2, 8f),
+                                Scale: Main.rand.NextFloat(0.5f, 1f));
+                            Color color = PrimaryElement == null ? Color.White : PrimaryElement.GetElementColor();
+                            dp.innerColor = Color.Lerp(color, Color.White, 0.5f);
+                            dp.outerColor = color;
+                            dp.gravity = 0.06f;
+                        }
+
+                    }
+
+                }
+
+            }
+            if (laserLike && _numUpdates >= TrailLength)
+            {
+                //Projectile.velocity = Vector2.Zero;
+                Projectile.Center = OldPos[0];
+                return;
+            }
+
             for (int i = OldPos.Length - 1; i > 0; i--)
             {
                 OldPos[i] = OldPos[i - 1];
                 OldRot[i] = OldRot[i - 1];
             }
             if (OldPos.Length > 0)
-                OldPos[0] = Projectile.position;
+                OldPos[0] = Projectile.Center;
             if (OldRot.Length > 0)
                 OldRot[0] = Projectile.rotation;
+            _numUpdates++;
             if (TrailLength != OldPos.Length)
             {
                 float[] newRot = new float[TrailLength];
@@ -336,6 +380,24 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 PrimaryElement?.DrawForm(spriteBatch, Form, Projectile.Center - Main.screenPosition,
                     drawColor, lightColor, Projectile.velocity.ToRotation(), scale);
             }
+            if (laserLike)
+            {
+                Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
+                Color glowColor = PrimaryElement == null ? Color.White : PrimaryElement.GetElementColor();
+                glowColor.A = 0;
+                Vector2 centerpos = OldPos[OldPos.Length - 1] - Main.screenPosition;
+
+                float outScale = (float)(Projectile.timeLeft) / 60f;
+                outScale = EasingFunction.InOutSine(outScale);
+                for (int i = 0; i < 6; i++)
+                {
+                    float ratio = (float)i / 6f;
+                    float scale = 0.17f * (7 + 0.6f) * VectorHelper.Osc(0.75f, 1f, speed: 3) * ratio;
+  
+                    Main.spriteBatch.Draw(texture2D4, centerpos, null, glowColor, Projectile.rotation,
+                        new Vector2(32, 32), scale * outScale , SpriteEffects.None, 0f);
+                }
+            }
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelated, DrawLayer.OverNPCs);
             return false;
         }
@@ -350,6 +412,20 @@ namespace Stellamod.Content.Items.MoonlightMagic
             PrimaryElement?.DrawTrail(OldPos);
 
 
+        }
+
+        public float GetTrailLaserWidth(float completionRatio)
+        {
+            float inScale = (float)_numUpdates / 60f;
+            inScale = EasingFunction.InOutSine(inScale);
+            float outScale = (float)Projectile.timeLeft / 180f;
+            outScale = EasingFunction.InOutSine(outScale);
+            float baseWidth = 40;
+
+            float inLocal = MathHelper.Lerp(0f, 1f, MathHelper.Clamp(completionRatio / 0.2f, 0f, 1f));
+
+            float width = baseWidth * inScale * outScale * ScaleMultiplier * inLocal;
+            return width;
         }
     }
 }

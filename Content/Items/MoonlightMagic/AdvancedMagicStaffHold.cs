@@ -409,20 +409,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         private void AI_Release()
         {
-            Timer++;
-            if (Timer == 1)
-            {
-                if (Main.myPlayer == Projectile.owner)
-                {
-
-
-                }
-            }
-            if (Timer >= 4)
-            {
-                Projectile.Kill();
-            }
-            SetHoldPosition();
+            Projectile.Kill();
         }
 
         private void DrawRing(ref Color lightColor)

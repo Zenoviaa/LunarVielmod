@@ -14,7 +14,7 @@ namespace Stellamod.Core.Particles
     {
         private static int _lastIndex;
         private static T[] _pool;
-        public const int Max_Particle_Count = 64;
+        public const int Max_Particle_Count = 100;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -37,6 +37,7 @@ namespace Stellamod.Core.Particles
 
         private static T GetParticle()
         {
+            int oldest = _lastIndex;
             for(int i = 0; i < Max_Particle_Count; i++)
             {
                 _lastIndex++;
@@ -45,9 +46,8 @@ namespace Stellamod.Core.Particles
                 if (!particle.active)
                     return particle;
             }
-      
-            //TODO, do something better here
-            return _pool[_lastIndex];
+
+            return _pool[oldest];
         }
 
         private static void SetParticleDefaults(T t)

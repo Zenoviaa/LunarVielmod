@@ -108,7 +108,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
                 }
                 for (float f = 0; f < 4; f++)
                 {
-                    var smoke = Particle<SmokeParticle>.SpawnInAlphaLayer(target.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(0.3f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                    var smoke = Particle<SmokeParticle>.SpawnInAlphaLayer(target.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(1f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
                     smoke.initialColor = Color.DarkGray;
                 }
                 for (float i = 0; i < 4; i++)

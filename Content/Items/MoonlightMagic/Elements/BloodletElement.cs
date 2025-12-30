@@ -47,24 +47,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
         private void AI_Particles()
         {
-            if (MagicProj.GlobalTimer % 16 == 0)
-            {
-                int oldPosIndex = Main.rand.Next(0, MagicProj.OldPos.Length - 1);
-                float lerpValue = (float)oldPosIndex / (float)MagicProj.OldPos.Length;
-                float scaleFactor = MathHelper.Lerp(1.0f, 0f, lerpValue);
 
-                Vector2 spawnPoint = MagicProj.OldPos[oldPosIndex] + Projectile.Size / 2;
-                Vector2 velocity = MagicProj.OldPos[oldPosIndex + 1] - MagicProj.OldPos[oldPosIndex];
-                velocity = velocity.SafeNormalize(Vector2.Zero) * -8;
-
-                Vector2 offset = Main.rand.NextVector2Circular(16, 16);
-                offset *= scaleFactor;
-                spawnPoint += offset;
-
-                Color color = Color.White;
-                //  color.A = 0;
-                LegacyParticle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor * 2);
-            }
         }
 
         public override void OnKill()
@@ -76,28 +59,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         private void SpawnDeathParticles()
         {
             //Kill Trail
-            for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
-            {
-                Vector2 offset = Main.rand.NextVector2Circular(16, 16);
-                Vector2 spawnPoint = MagicProj.OldPos[i] + offset + Projectile.Size / 2;
-                Vector2 velocity = MagicProj.OldPos[i + 1] - MagicProj.OldPos[i];
-                velocity = velocity.SafeNormalize(Vector2.Zero) * -2;
-
-                Color color = Color.White;
-                color.A = 0;
-                LegacyParticle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
-            }
-
-            for (float f = 0f; f < 1f; f += 0.2f)
-            {
-                float rot = f * MathHelper.TwoPi;
-                Vector2 spawnPoint = Projectile.position;
-                Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(0f, 4f);
-
-                Color color = Color.White;
-                color.A = 0;
-                LegacyParticle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
-            }
             Vector2 vek = Projectile.oldVelocity;
             vek *= 0.1f;
             Vector2 pos = Projectile.Center;

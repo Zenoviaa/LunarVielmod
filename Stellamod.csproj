@@ -668,8 +668,10 @@
     <Folder Include="Assets\Textures\Menu\" />
     <Folder Include="Content\Areas\RoyalCapital\TilesRC\" />
     <Folder Include="Items\Armors\Daedia\" />
+    <Folder Include="Items\Weapons\Melee\Safunai\Halhurish\" />
     <Folder Include="Items\Weapons\Melee\Safunai\Kaevine\" />
     <Folder Include="Content\Areas\Collosseum\Event\Gores\" />
+    <Folder Include="Items\Weapons\Melee\Safunai\Parendine\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
     <Folder Include="Projectiles\Lanterns\" />
     <Folder Include="Projectiles\Slashers\Chillrend\" />

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -10,8 +12,7 @@ using Terraria.Audio;
 using Terraria.Graphics.Shaders;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Stellamod.Common.Shaders;
-using Stellamod.Common.Shaders.MagicTrails;
+using static tModPorter.ProgressUpdate;
 namespace Stellamod.Content.Items.MoonlightMagic
 {
     public enum ElementMatch
@@ -51,7 +52,14 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override string LocalizationCategory => "Elements";
 
         public virtual void AI() { }
-        public virtual void DrawTrail(Vector2[] oldPos) { }
+        public virtual void DustEffects()
+        {
+
+        }
+        public virtual void DrawTrail(Vector2[] oldPos)
+        {
+
+        }
 
         public virtual void DrawRing(Vector2 auraPos, int frame, float rotation, Vector2 scale, Color color)
         {
