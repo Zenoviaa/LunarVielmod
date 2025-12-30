@@ -127,9 +127,10 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             }
         }
 
-        private void AI_Particles()
+        public override void DustEffects()
         {
-            if (MagicProj.GlobalTimer % 8 == 0)
+            base.DustEffects();
+            if (Main.rand.NextBool(8))
             {
                 for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
                 {
@@ -154,6 +155,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 }
             }
         }
+
 
         private Color ColorFunction(float completionRatio)
         {

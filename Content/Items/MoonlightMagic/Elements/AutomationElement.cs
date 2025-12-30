@@ -14,9 +14,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 {
     public class AutomationElement : BaseElement
     {
-        private int trailMode = 0;
         private ZappingTrail _lightningTrail;
-
         public override void ModifySisters(List<int> sisters)
         {
             base.ModifySisters(sisters);
@@ -58,21 +56,16 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             DrawHelper.DrawGlowInInventory(item, spriteBatch, position, new Color(207, 150, 140));
         }
 
-
-        public override void AI()
+        public override void DustEffects()
         {
-            AI_Particles();
-        }
-
-        private void AI_Particles()
-        {
-            if (MagicProj.GlobalTimer % 3 == 0)
+            base.DustEffects();
+            if (Main.rand.NextBool(3))
             {
                 _lightningTrail ??= new();
                 _lightningTrail.RandomPositions(MagicProj.OldPos);
             }
 
-            if (MagicProj.GlobalTimer % 8 == 0)
+            if (Main.rand.NextBool(8))
             {
                 for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
                 {

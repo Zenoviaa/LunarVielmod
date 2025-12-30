@@ -39,17 +39,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             CastSound = chargeShotSoundStyle;
         }
 
-        public override void AI()
-        {
-            base.AI();
-            AI_Particles();
-        }
-
-        private void AI_Particles()
-        {
-
-        }
-
         public override void OnKill()
         {
             base.OnKill();

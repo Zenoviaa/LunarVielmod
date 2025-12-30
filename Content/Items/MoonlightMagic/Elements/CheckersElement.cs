@@ -69,11 +69,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             ExtraMath.Osc(-0.1f, 0.1f, speed: 16), SpriteEffects.None, 0);
         }
 
-        public override void AI()
-        {
-            AI_Particles();
-        }
-
+    
         public override void DrawTrail(Vector2[] oldPos)
         {
             var shader = MagicCheckersShader.Instance;
@@ -82,10 +78,10 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             shader.Distortion = 0;
             TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
         }
-
-        private void AI_Particles()
+        public override void DustEffects()
         {
-            if (MagicProj.GlobalTimer % 16 == 0)
+            base.DustEffects();
+            if (Main.rand.NextBool(16))
             {
                 int oldPosIndex = Main.rand.Next(0, MagicProj.OldPos.Length - 1);
                 float lerpValue = (float)oldPosIndex / (float)MagicProj.OldPos.Length;

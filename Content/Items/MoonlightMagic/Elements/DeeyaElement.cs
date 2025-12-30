@@ -68,15 +68,10 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.DeeyaPink);
         }
 
-        public override void AI()
+        public override void DustEffects()
         {
-            base.AI();
-            AI_Particles();
-        }
-
-        private void AI_Particles()
-        {
-            if (MagicProj.GlobalTimer % 8 == 0)
+            base.DustEffects();
+            if (Main.rand.NextBool(8))
             {
                 for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
                 {
@@ -92,6 +87,10 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                     LegacyParticle.NewBlackParticle<BloodSparkleParticle>(spawnPoint, velocity, color);
                 }
             }
+        }
+        private void AI_Particles()
+        {
+
         }
 
         public override void OnKill()

@@ -67,15 +67,10 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.PhantasmalGreen);
         }
 
-        public override void AI()
+        public override void DustEffects()
         {
-            base.AI();
-            AI_Particles();
-        }
-
-        private void AI_Particles()
-        {
-            if (MagicProj.GlobalTimer % 16 == 0)
+            base.DustEffects();
+            if (Main.rand.NextBool(8))
             {
                 int oldPosIndex = Main.rand.Next(0, MagicProj.OldPos.Length - 1);
                 float lerpValue = (float)oldPosIndex / (float)MagicProj.OldPos.Length;
@@ -94,6 +89,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor);
             }
         }
+  
 
         public override void OnKill()
         {

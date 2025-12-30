@@ -64,15 +64,10 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             DrawHelper.DrawGlowInInventory(item, spriteBatch, position, ColorFunctions.NaturalGreen);
         }
 
-        public override void AI()
+        public override void DustEffects()
         {
-            base.AI();
-            AI_Particles();
-        }
-
-        private void AI_Particles()
-        {
-            if (MagicProj.GlobalTimer % 8 == 0)
+            base.DustEffects();
+            if (Main.rand.NextBool(8))
             {
                 for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
                 {

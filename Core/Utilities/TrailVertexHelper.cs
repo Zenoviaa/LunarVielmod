@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using System;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 using static System.Collections.Specialized.BitVector32;
 
@@ -258,7 +259,25 @@ namespace Stellamod.Core.Utilities
             graphicsDevice.BlendState = originalBlendState;
             graphicsDevice.SamplerStates[0] = originalSamplerState;
         }
+        public void DrawPrimitives(VertexSection section, MiscShaderData shader)
+        {
+            if (section.primitiveCount <= 0)
+                return;
 
+
+            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+            BlendState originalBlendState = graphicsDevice.BlendState;
+            CullMode oldCullMode = graphicsDevice.RasterizerState.CullMode;
+            SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
+
+            graphicsDevice.RasterizerState.CullMode = CullMode.None;
+            graphicsDevice.DrawUserIndexedPrimitives<VertexPositionColorTexture>(
+              PrimitiveType.TriangleList, _trailVertexBuffer, 0, section.vertexCount, _trailIndexBuffer, 0, section.primitiveCount);
+
+            graphicsDevice.RasterizerState.CullMode = oldCullMode;
+            graphicsDevice.BlendState = originalBlendState;
+            graphicsDevice.SamplerStates[0] = originalSamplerState;
+        }
         public void DrawPrimitives(VertexPositionColorTexture[] vertices)
         {
             if (vertices.Length <= 0)

@@ -108,13 +108,13 @@ namespace Stellamod.Common.Shaders
             Vector2? offset = null)
         {
             shader.Apply();
-
-            /*
-            var vertices = CalculateVertices(
-                oldPos, oldRot, colorFunc, widthFunc, offset);*/
-
-
-            //DrawPrimsTriangles(vertices, null);
+            Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
+            float numPoints = oldPos.Length * 2;
+            Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
+            TrailVertexHelper trailVertexCache = ModContent.GetInstance<TrailVertexHelper>();
+            trailVertexCache.Clear();
+            VertexSection section = trailVertexCache.FillVertexArrayNonAlloc(trailingPoints, colorFunc, widthFunc, trailOffset);
+            trailVertexCache.DrawPrimitives(section, shader);
         }
 
         public static void Draw(SpriteBatch spriteBatch,
