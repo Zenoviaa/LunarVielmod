@@ -74,6 +74,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public bool laserLike;
         public bool isDying;
         public float extraScale;
+        public float extraRotation;
         public float killTime = 60f;
         public int tileHitCount;
         public Vector2 originalVelocity;
@@ -401,7 +402,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
                 float rot = vel.ToRotation();
                 PrimaryElement?.DrawForm(spriteBatch, Form, Projectile.Center - Main.screenPosition,
-                    drawColor, drawColor, rot, scale);
+                    drawColor, drawColor, rot + extraRotation, scale);
             }
             PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedFlashes, DrawLayer.OverNPCsWithOutline);
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelated, DrawLayer.OverNPCs);

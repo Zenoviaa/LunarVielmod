@@ -591,3 +591,7 @@ SirestiasTouchEnchantment: {
 	DisplayName: Sirestias's Touch Enchantment
 	Tooltip: Periodically resets your spell's immunity frames, allowing for extra hits!
 }
+RotisserieChickenEnchantment: {
+	DisplayName: Rotisserie Chicken Enchantment
+	Tooltip: Rotates your form clockwise at a decent speed
+}
