@@ -10012,7 +10012,13 @@ DecorationBuilder: {
 	DisplayName: Decoration Builder
 	Tooltip: ""
 }
+
 TheWorld: {
 	DisplayName: The World
 	Tooltip: Cuts damage and max charge time of wands by 75%
+}
+
+GoldenFishNecronomicon: {
+	DisplayName: Golden Fish Necronomicon
+	Tooltip: ""
 }

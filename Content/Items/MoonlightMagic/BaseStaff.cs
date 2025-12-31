@@ -135,6 +135,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
             return false;
         }
+
         public override void NetSend(BinaryWriter writer)
         {
             base.NetSend(writer);
@@ -180,6 +181,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
             }
 
+            AdvancedMagicPlayer magicPlayer = player.GetModPlayer<AdvancedMagicPlayer>();
+            damageModifier -= magicPlayer.chargeDamagePenalty;
             if (!IsMatchingPreference())
             {
                 damageModifier -= 0.3f;

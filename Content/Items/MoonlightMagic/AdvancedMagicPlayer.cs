@@ -18,6 +18,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public float chargeTimeBonus;
         public float chargeWidthBonus;
         public float chargeDamageBonus;
+        public float chargeDamagePenalty;
         public bool overchargingVisual;
 
         public static event Action<Item> OnPickupMagicItem;
@@ -26,6 +27,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             base.ResetEffects();
             chargeTimeBonus = 0f;
+            chargeDamagePenalty = 0f;
             overchargingVisual = false;
         }
 
@@ -34,6 +36,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             chargeTimeBonus = 0f;
             chargeWidthBonus = 0f;
             chargeDamageBonus = 0f;
+ 
             overchargingVisual = false;
         }
 

@@ -308,7 +308,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
             float baseDamage = MathHelper.Lerp(1, Projectile.damage, levelProgress);
             AdvancedMagicPlayer magicPlayer = Owner.GetModPlayer<AdvancedMagicPlayer>();
-            float finalDamage = baseDamage * (1f + magicPlayer.chargeDamageBonus);
+            float finalDamage = baseDamage * (1f + magicPlayer.chargeDamageBonus);// * (1f - magicPlayer.chargeDamagePenalty);
 
 
 
@@ -565,6 +565,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
             float drawScale = 1f + MagicPlayer.chargeDamageBonus;
             drawScale *= MathHelper.Lerp(0.5f, 1f, Easing.InOutSine(_overchargeScaleTimer / 60f));
+            drawScale = MathHelper.Clamp(drawScale, 0f, 2f);
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
             for (int i = 0; i < 2; i++)
