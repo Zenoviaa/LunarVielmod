@@ -36,8 +36,9 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
     {
         private enum AIState
         {
+            Spawn,
             ReturnToOwner,
-            Attack
+            Attack,
         }
         private ref float Timer => ref Projectile.ai[0];
         private float _speed;
@@ -69,10 +70,11 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
             Projectile.penetrate = -1;
             Projectile.friendly = true;
             Projectile.ignoreWater = true;
-            Projectile.usesIDStaticNPCImmunity = true;
-            Projectile.idStaticNPCHitCooldown = 24;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 24;
             Projectile.timeLeft = 600;
             Projectile.tileCollide = false;
+            Projectile.extraUpdates = 1;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -102,7 +104,7 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
             float inScale = EasingFunction.InOutSine(Timer / 60f);
             float outScale = (float)Projectile.timeLeft / 60f;
             outScale = EasingFunction.InOutSine(outScale);
-            Projectile.scale = inScale * outScale;
+            Projectile.scale = inScale * outScale * ExtraMath.Osc(0.86f, 1f, 4, offset: Projectile.whoAmI);
 
             if(Timer % 24 == 0)
             {
@@ -114,7 +116,28 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
                 Size = Main.rand.Next(0, 3);
                 Projectile.netUpdate = true;
             }
+
             NPC closest = NPCHelper.FindClosestNPC(Projectile.position, 1024);
+            switch (State)
+            {
+                case AIState.Spawn:
+                    if (this.OwnedByLocalClient())
+                    {
+                        //Summon two little helper fish
+                        for(int i = 0; i < 2; i++) 
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * Main.rand.NextFloat(0.5f, 1f), Type, Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
+                    }
+                    State = AIState.ReturnToOwner;
+                    break;
+                case AIState.ReturnToOwner:
+                    AI_ReturnToOwner();
+                    break;
+                case AIState.Attack:
+                    if(closest != null)
+                        AI_Attack(closest);
+                    break;
+            }
+     
             if (closest != null)
             {
                 //attack
@@ -125,28 +148,20 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
                 //Return to owner
                 State = AIState.ReturnToOwner;
             }
-
-            switch (State)
-            {
-                case AIState.ReturnToOwner:
-                    AI_ReturnToOwner();
-                    break;
-                case AIState.Attack:
-                    AI_Attack(closest);
-                    break;
-            }
-
             if (Sticky != -1)
             {
            
                 NPC target = Main.npc[Sticky];
                 if (!target.active)
+                {
                     Sticky = -1;
+                    _speed = 1;
+                }           
                 else
                 {
                     Vector2 velToTarget = (target.Center + StickyOffset) - Projectile.Center;
                     Projectile.velocity = velToTarget;
-
+                    Projectile.rotation = (target.Center - Projectile.Center).ToRotation();
                 }
 
 
@@ -164,15 +179,15 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
             Vector2 targetPosition = Owner.Center;
             targetPosition.Y -= 64;
             Vector2 velToTarget = (targetPosition - Projectile.Center).SafeNormalize(Vector2.Zero) * _speed;
-
+            velToTarget *= MathHelper.Lerp(0.8f, 1f, Size / 3f);
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, velToTarget, 0.01f);
             Projectile.rotation = Projectile.velocity.X * 0.05f;
         }
 
         private void AI_Attack(NPC target)
         {
-            if(_speed < 15f)
-                _speed += 0.1f;
+            if(_speed < 20)
+                _speed += 0.4f;
             Vector2 velToTarget = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * _speed;
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, velToTarget, 0.2f);
             Projectile.rotation = Projectile.velocity.X * 0.05f;

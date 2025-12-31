@@ -10020,5 +10020,5 @@ TheWorld: {
 
 GoldenFishNecronomicon: {
 	DisplayName: Golden Fish Necronomicon
-	Tooltip: ""
+	Tooltip: Summons a fast little golden fish to protect you!
 }

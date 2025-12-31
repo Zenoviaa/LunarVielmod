@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.WeaponTypes;
-using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -35,7 +34,7 @@ namespace Stellamod.Core.Bases
             item.useTime = 16;
             item.useAnimation = 16;
             item.useStyle = ItemUseStyleID.Shoot;
-            item.UseSound = SoundID.Item116;
+        //    item.UseSound = SoundID.Item116;
             item.shootSpeed = 1f;
             item.knockBack = 4f;
             item.channel = false;
