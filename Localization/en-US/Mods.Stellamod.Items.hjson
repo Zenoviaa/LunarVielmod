@@ -77,6 +77,11 @@ Common: {
 		Once you run out of ammo, you'll need to reload!
 		Succeed at a short timing minigame and stylishly prepare your firearm!
 		'''
+	Necronomicon:
+		'''
+		Necronomicon Weapon Type
+		'''
+	Stamina: "Uses {0} stamina"
 }
 
 SetBonus: {

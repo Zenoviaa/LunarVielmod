@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
@@ -11,6 +12,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -232,6 +234,21 @@ namespace Stellamod.Common.WeaponTypes
         public bool isNecronomicon;
         public int necronomiconStaminaCost;
         public Color hintColor;
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            base.ModifyTooltips(item, tooltips);
+            if (isNecronomicon)
+            {
+                TooltipLine line = new TooltipLine(Mod, "NecroWeaponType", LangText.Common("Necronomicon"));
+                line.OverrideColor = Color.DeepPink;
+                tooltips.Add(line);
+
+                line = new TooltipLine(Mod, "StaminaCost", LangText.Common("Stamina", necronomiconStaminaCost));
+                line.OverrideColor = Color.LightGoldenrodYellow;
+                tooltips.Add(line);
+            }
+        }
+
         public override bool CanShoot(Item item, Player player)
         {
             if (isNecronomicon)
