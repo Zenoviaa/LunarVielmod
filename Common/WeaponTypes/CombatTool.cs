@@ -829,7 +829,11 @@ namespace Stellamod.Common.WeaponTypes
             CombatToolPlayer combatToolPlayer = Main.LocalPlayer.GetModPlayer<CombatToolPlayer>();
             if (!combatToolPlayer.HasUnlocked(HoveringItem))
                 return;
+
+            CombatTool combatTool = combatToolPlayer.SelectedTool.GetGlobalItem<CombatTool>();
+            float ammoCapacity = (float)combatTool.ammoCount / (float)combatTool.maxAmmoCount;
             combatToolPlayer.SelectedTool = HoveringItem;
+            combatToolPlayer.SelectedTool.GetGlobalItem<CombatTool>().ammoCount = (int)(ammoCapacity * combatToolPlayer.SelectedTool.GetGlobalItem<CombatTool>().maxAmmoCount);
         }
 
         private bool NeedsUpdateCollection()
