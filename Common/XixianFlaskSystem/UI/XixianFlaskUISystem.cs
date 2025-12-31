@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Helpers;
 using Stellamod.UI;
 using System.Collections.Generic;

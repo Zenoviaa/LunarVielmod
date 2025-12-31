@@ -22,7 +22,6 @@ namespace Stellamod.Core.ZTileSystem.UI;
 public class ZTileBrowserWindow : UIPanel
 {
     private UIScrollbar _scrollbar;
-    private UIScrollbar _sortingScrollbar;
     private XButton _xButton;
     private ZTileBrowserMenu _inventoryMenu;
     private ItemBrowserTabMenu _tabMenu;
@@ -41,7 +40,6 @@ public class ZTileBrowserWindow : UIPanel
     public ZTileBrowserWindow() : base()
     {
         _scrollbar = new FancyScrollbar();
-        _sortingScrollbar = new FancyScrollbar();
         _xButton = new XButton(Close);
         _inventoryMenu = new ZTileBrowserMenu(_scrollbar);
         _textBox = new UIInputTextField("Search...");
@@ -78,14 +76,6 @@ public class ZTileBrowserWindow : UIPanel
         _scrollbar.SetView(0, maxViewSize);
         Append(_scrollbar);
 
-        //Sorting Scrollbar
-        _sortingScrollbar.Width.Set(20, 0);
-        _sortingScrollbar.Height.Set(340, 0);
-        _sortingScrollbar.Left.Set(0, 0.95f);
-        _sortingScrollbar.Top.Set(0, 0f);
-
-        _sortingScrollbar.SetView(0, maxViewSize);
-        Append(_sortingScrollbar);
         _textBox.HAlign = 0.5f;
         _textBox.VAlign = 0.1f;
         _textBox.Width.Pixels = 128;

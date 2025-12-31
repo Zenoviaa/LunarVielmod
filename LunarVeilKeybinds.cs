@@ -8,6 +8,7 @@ namespace Stellamod
         public static ModKeybind DashKeybind { get; private set; }
         public static ModKeybind QuestKeybind { get; private set; }
         public static ModKeybind BellKeybind { get; private set; }
+        public static ModKeybind ToolKeybind { get; private set; }
 
         public static ModKeybind DecorRotateLeft { get; private set; }
         public static ModKeybind DecorRotateRight { get; private set; }
@@ -24,6 +25,7 @@ namespace Stellamod
             QuestKeybind = KeybindLoader.RegisterKeybind(Mod, "Open Questbook", "Q");
             FlaskKeybind = KeybindLoader.RegisterKeybind(Mod, "Use Xixian Flask", "G");
             BellKeybind = KeybindLoader.RegisterKeybind(Mod, "Use Summoning Bell", "R");
+            ToolKeybind = KeybindLoader.RegisterKeybind(Mod, "Use Combat Tool", "T");
 
 
             DecorRotateLeft = KeybindLoader.RegisterKeybind(Mod, "Rotate Decoration Left", "T");

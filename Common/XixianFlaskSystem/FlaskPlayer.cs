@@ -76,7 +76,7 @@ namespace Stellamod.Common.XixianFlaskSystem
         public void ProcEffects()
         {
             var insources = GetInsources();
-            for (int i = 0; i < maxInsourceCount; i++)
+            for (int i = 0; i < maxInsourceCount && i < insources.Count; i++)
             {
                 var item = insources[i];
                 if (item.ModItem is InsourceItem myInsource)
@@ -86,7 +86,7 @@ namespace Stellamod.Common.XixianFlaskSystem
             }
 
 
-            for (int i = 0; i < maxInsourceCount; i++)
+            for (int i = 0; i < maxInsourceCount && i < insources.Count; i++)
             {
                 var item = insources[i];
                 if (item.ModItem is InsourceItem myInsource)

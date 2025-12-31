@@ -77,11 +77,11 @@ Common: {
 		Once you run out of ammo, you'll need to reload!
 		Succeed at a short timing minigame and stylishly prepare your firearm!
 		'''
-	Necronomicon:
-		'''
-		Necronomicon Weapon Type
-		'''
-	Stamina: "Uses {0} stamina"
+	Necronomicon: Necronomicon Weapon Type
+	Stamina: Uses {0} stamina
+	CombatTool: Combat Tool Weapon Type
+	BossDamagePercent: "{0} boss max life damage"
+	EnemyDamagePercent: "{0} enemy max life damage"
 }
 
 SetBonus: {
@@ -10026,4 +10026,9 @@ TheWorld: {
 GoldenFishNecronomicon: {
 	DisplayName: Golden Fish Necronomicon
 	Tooltip: Summons a fast little golden fish to protect you!
+}
+
+LittleJavelin: {
+	DisplayName: Little Javelin
+	Tooltip: Throws a tiny javelin that falls to the ground
 }
