@@ -119,7 +119,7 @@ public abstract class ZTile : ModTexturedType
 
         if(rotateSpeed > 0)
         {
-            drawRotation += Main.GlobalTimeWrappedHourly * rotateSpeed;
+            drawRotation += Main.GlobalTimeWrappedHourly * rotateSpeed * 24;
         }
 
         //Calculate wind if any

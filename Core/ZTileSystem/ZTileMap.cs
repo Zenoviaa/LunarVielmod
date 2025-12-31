@@ -484,6 +484,7 @@ public class ZTileMap : ModSystem
         instanceData.rotation = DecorationBuilder.rotation;
         instanceData.frameNumber = DecorationBuilder.frame;
         instanceData.scale = DecorationBuilder.scale;
+        instanceData.flipX = DecorationBuilder.flip;
         ZTileDrawParams drawParams = new ZTileDrawParams
         {
             tilePosition = zTilePosition,

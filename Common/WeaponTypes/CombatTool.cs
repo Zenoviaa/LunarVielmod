@@ -338,8 +338,10 @@ namespace Stellamod.Common.WeaponTypes
         private UIScrollbar _scrollbar;
         private UIList _uiList;
         private CombatToolBrowserView _view;
+        private XButton _xButton;
         public CombatToolBrowserMenu(UIScrollbar scrollbar)
         {
+            _xButton = new XButton(Close);
             _inventoryBackground = new InventoryBackground();
             _panel = new UIPanel();
             _grid = new UIGrid();
@@ -377,7 +379,7 @@ namespace Stellamod.Common.WeaponTypes
             _uiList.Add(_panel);
             _uiList.SetScrollbar(_scrollbar);
             Append(_uiList);
-
+          //  Append(_xButton);
 
         }
         private string _lastSearchFilter;
@@ -405,7 +407,7 @@ namespace Stellamod.Common.WeaponTypes
                 if (item.Item.GetGlobalItem<CombatTool>().isCombatTool)
                     itemList.Add(item.Item);
             }
-            Console.WriteLine(itemList.Count);
+           
             _view = new(itemList.ToArray());
             _view.SearchFilter = _lastSearchFilter;
             _view.Width.Pixels = Width.Pixels;
@@ -423,6 +425,8 @@ namespace Stellamod.Common.WeaponTypes
   
             if (_view == null)
                 Refresh();
+            _xButton.Left.Pixels = 0;
+            _xButton.Top.Pixels = 0;
             _panel.Height.Pixels = _view.Height.Pixels + 32;
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
@@ -451,7 +455,13 @@ namespace Stellamod.Common.WeaponTypes
             _grid.ListPadding = 16;
         }
 
+        private void Close()
+        {
+            CombatToolUISysten uiSystem = ModContent.GetInstance<CombatToolUISysten>();
+            uiSystem.CloseUI();
+        }
     }
+
     /// <summary>
     /// The full window of the item browser
     /// </summary>
@@ -489,7 +499,7 @@ namespace Stellamod.Common.WeaponTypes
             _inventoryMenu.HAlign = 0.5f;
             _inventoryMenu.VAlign = 0.5f;
             Append(_inventoryMenu);
-            // Append(_xButton);
+            Append(_xButton);
 
             //Scrollbar
             _scrollbar.Width.Set(20, 0);
