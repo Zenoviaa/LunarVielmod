@@ -587,27 +587,38 @@ LaserEnchantment: {
 	DisplayName: Laser Enchantment
 	Tooltip: Turns your spell into a super fast, multi-hitting laser!
 }
+
 SirestiasTouchEnchantment: {
 	DisplayName: Sirestias's Touch Enchantment
 	Tooltip: Periodically resets your spell's immunity frames, allowing for extra hits!
 }
+
 RotisserieChickenEnchantment: {
 	DisplayName: Rotisserie Chicken Enchantment
 	Tooltip: Rotates your form clockwise at a decent speed
 }
+
 CoasterEnchantment: {
 	DisplayName: Coaster Enchantment
-	Tooltip: The player glides with the spell, reducing damage by 90% while on it 
+	Tooltip: The player glides with the spell, reducing damage by 90% while on it
 }
+
 GravitySidewaysEnchantment: {
 	DisplayName: Gravity Sideways Enchantment
 	Tooltip: Makes your spell have gravity either left or right depending on the way you face
 }
+
 LifetimeEnchantment: {
 	DisplayName: Lifetime Enchantment
 	Tooltip: Doubles the lifetime of your spell!
 }
+
 FlamingCourseEnchantment: {
 	DisplayName: Flaming Course Enchantment
 	Tooltip: Allows your projectiles to interact with each other, bouncing off of each other!
+}
+
+StickyEnchantment: {
+	DisplayName: Sticky Enchantment
+	Tooltip: ""
 }

@@ -10012,3 +10012,7 @@ DecorationBuilder: {
 	DisplayName: Decoration Builder
 	Tooltip: ""
 }
+TheWorld: {
+	DisplayName: The World
+	Tooltip: Cuts damage and max charge time of wands by 75%
+}

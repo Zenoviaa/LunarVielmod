@@ -1,9 +1,4 @@
 ﻿using Stellamod.Content.Items.MoonlightMagic.Elements;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
@@ -24,20 +19,21 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
         {
             base.AI();
             float maxSpeed = 15;
-            if(Owner.direction == 1)
+            if (Owner.direction == 1)
             {
                 if (Projectile.velocity.X > -maxSpeed)
                 {
                     Projectile.velocity.X -= 0.4f;
                 }
-            } else if (Owner.direction == -1)
+            }
+            else if (Owner.direction == -1)
             {
                 if (Projectile.velocity.X < maxSpeed)
                 {
                     Projectile.velocity.X += 0.4f;
                 }
             }
-  
+
         }
     }
 }

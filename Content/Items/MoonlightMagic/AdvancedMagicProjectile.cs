@@ -197,7 +197,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Movement = item.Movement;
             Form = item.Form;
             Enchantments.Clear();
-
+            tileHitCount = 1;
+            stickToTarget = -1;
             var enchantments = item.equippedEnchantments;
             for (int i = 0; i < enchantments.Length; i++)
             {
@@ -221,19 +222,18 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         private void AI_HandleTargetSticking()
         {
+            if (stickToTarget == -1)
+                return;
             //target sticking functionality
-            if (stickToTarget != -1)
+            NPC targetToStickTo = Main.npc[stickToTarget];
+            if (targetToStickTo.active)
             {
-                NPC targetToStickTo = Main.npc[stickToTarget];
-                if (targetToStickTo.active)
-                {
-                    Vector2 velocityToTarget = targetToStickTo.Center - (Projectile.Center + stickyOffset);
-                    Projectile.velocity = velocityToTarget;
-                }
-                else
-                {
-                    stickToTarget = -1;
-                }
+                Vector2 velocityToTarget = targetToStickTo.Center - (Projectile.Center + stickyOffset);
+                Projectile.velocity = velocityToTarget;
+            }
+            else
+            {
+                stickToTarget = -1;
             }
         }
 

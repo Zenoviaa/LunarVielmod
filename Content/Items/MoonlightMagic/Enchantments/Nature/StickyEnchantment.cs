@@ -6,6 +6,12 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Nature
 {
     public class StickyEnchantment : BaseEnchantment
     {
+        public override void SetMagicDefaults()
+        {
+            base.SetMagicDefaults();
+            Projectile.penetrate = -1;
+        }
+
         public override int GetElementType()
         {
             return ModContent.ItemType<NaturalElement>();
