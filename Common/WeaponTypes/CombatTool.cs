@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Common.MagicSystem.UI;
 using Stellamod.Common.XixianFlaskSystem;
+using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Helpers;
 using Stellamod.UI;
 using System;
@@ -44,6 +45,32 @@ namespace Stellamod.Common.WeaponTypes
                 _selectedToolBackingField = value;
             }
         }
+        private List<Item> _unlockedToolsBackingField;
+        public List<Item> UnlockedTools
+        {
+            get
+            {
+                if (_unlockedToolsBackingField == null)
+                {
+                    _unlockedToolsBackingField = new List<Item>();
+                }
+
+                return _unlockedToolsBackingField;
+            }
+            set
+            {
+                _unlockedToolsBackingField = value;
+            }
+        }
+        public void Unlock(Item item)
+        {
+            UnlockedTools.Add(item);
+        }
+
+        public bool HasUnlocked(Item item)
+        {
+            return UnlockedTools.Find(x => x.type == item.type) != null;
+        }
 
         public override bool PreItemCheck()
         {
@@ -80,11 +107,13 @@ namespace Stellamod.Common.WeaponTypes
         {
             base.SaveData(tag);
             tag["tool"] = SelectedTool;
+            tag["unlocked"] = UnlockedTools;
         }
         public override void LoadData(TagCompound tag)
         {
             base.LoadData(tag);
             SelectedTool = tag.Get<Item>("tool");
+            UnlockedTools = tag.Get<List<Item>>("unlocked");
         }
     }
     public class CombatToolProjectile : GlobalProjectile
@@ -147,6 +176,10 @@ namespace Stellamod.Common.WeaponTypes
                 line.OverrideColor = Color.LightGoldenrodYellow;
                 tooltips.Add(line);
 
+                line = new TooltipLine(Mod, "CarryingCapacity", LangText.Common("CombatToolCount", maxAmmoCount));
+                line.OverrideColor = Color.White;
+
+                tooltips.Add(line);
                 string esp = string.Format("{0:P2}", enemyDamagePercent);
                 line = new TooltipLine(Mod, "EnemyDamagePercent", LangText.Common("EnemyDamagePercent", esp));
                 line.OverrideColor = Color.IndianRed;
@@ -156,6 +189,38 @@ namespace Stellamod.Common.WeaponTypes
                 line = new TooltipLine(Mod, "BossDamagePercent", LangText.Common("BossDamagePercent", bsp));
                 line.OverrideColor = Color.IndianRed;
                 tooltips.Add(line);
+            }
+        }
+        public override bool OnPickup(Item item, Player player)
+        {
+            if (isCombatTool)
+            {
+                CombatToolPlayer toolPlayer = player.GetModPlayer<CombatToolPlayer>();
+                toolPlayer.Unlock(item);
+                PopupText.NewText(PopupTextContext.SonarAlert, item, 1, longText: true);
+                return false;
+            }
+            else
+            {
+                return base.OnPickup(item, player);
+            }
+
+        }
+        public override void UpdateInventory(Item item, Player player)
+        {
+            base.UpdateInventory(item, player);
+            if (isCombatTool)
+            {
+                player.GetModPlayer<AdvancedMagicPlayer>().Pickup(item);
+                for (int i = 0; i < player.inventory.Length; i++)
+                {
+                    Item inv = player.inventory[i];
+                    if (item == inv)
+                    {
+                        player.inventory[i] = new Item();
+                        player.inventory[i].SetDefaults(0);
+                    }
+                }
             }
         }
 
@@ -747,6 +812,8 @@ namespace Stellamod.Common.WeaponTypes
         private void SpawnItem(UIMouseEvent evt, UIElement listeningElement)
         {
             CombatToolPlayer combatToolPlayer = Main.LocalPlayer.GetModPlayer<CombatToolPlayer>();
+            if (!combatToolPlayer.HasUnlocked(HoveringItem))
+                return;
             combatToolPlayer.SelectedTool = HoveringItem;
         }
 
@@ -764,6 +831,7 @@ namespace Stellamod.Common.WeaponTypes
                 filter = SearchFilter.TrimStart().ToLower();
                 collection = collection.Where(x => x.Name.ToLower().Contains(filter));
             }
+
 
             SearchFilterItems = collection.ToArray();
             _oldSearchFilter = SearchFilter;
@@ -855,8 +923,16 @@ namespace Stellamod.Common.WeaponTypes
                 Vector2 centerPos = tl + new Vector2(16);
 
                 Vector2 iconCenterPos = tl + slotTexture.Size() / 2;
+
+                bool isUnlocked = Main.LocalPlayer.GetModPlayer<CombatToolPlayer>().HasUnlocked(item);
+              
+
                 spriteBatch.Draw(slotTexture, iconCenterPos, null, drawColor, 0f, drawOrigin, _scale, SpriteEffects.None, 0f);
-                ItemSlot.DrawItemIcon(item, _context, spriteBatch, centerPos, drawScale, 32, Color.White);
+
+                Color iconColor = Color.White;
+                if (!isUnlocked)
+                    iconColor = Color.Lerp(iconColor, Color.Black, 0.8f);
+                ItemSlot.DrawItemIcon(item, _context, spriteBatch, centerPos, drawScale, 32, iconColor);
                 if (HoveringItem.stack > 1)
                 {
                     ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, item.stack.ToString(),

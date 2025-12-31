@@ -82,6 +82,7 @@ Common: {
 	CombatTool: Combat Tool Weapon Type
 	BossDamagePercent: "{0} boss max life damage"
 	EnemyDamagePercent: "{0} enemy max life damage"
+	CombatToolCount: "x{0} carrying capacity"
 }
 
 SetBonus: {
