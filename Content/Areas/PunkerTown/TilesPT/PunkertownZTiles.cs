@@ -131,4 +131,14 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             drawOrigin = TileDrawOrigin.BottomUp;
         }
     }
+
+    public class BigPunkerBoard : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 1;
+            drawOrigin = TileDrawOrigin.BottomUp;
+        }
+    }
 }
