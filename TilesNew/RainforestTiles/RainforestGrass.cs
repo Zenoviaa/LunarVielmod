@@ -45,10 +45,13 @@ namespace Stellamod.TilesNew.RainforestTiles
                     grassColor = grassColor.MultiplyRGB(lightColor);
                     float height = ExtraMath.Osc(0.5f, 1f, 0, i * 3);
                     float width = ExtraMath.Osc(0.5f, 1f, 0, i * 3);
-                    float h = height * 120;
+                    float h = height * 80;
                     float w = width * 4.5f;
                     worldPosition.Y += 8 * ExtraMath.Osc(0f, 1f, 0, i * 3);
-                    grassRenderer.AddGrassPatch(grassColor, worldPosition, -Vector2.UnitY, h, w, 4);
+
+
+                    int num = (int)(4 * ExtraMath.Osc(0f, 1f, 0, i * 0.3f)) + 2;
+                    grassRenderer.AddGrassPatch(grassColor, worldPosition, -Vector2.UnitY, h, w, num);
                 }
             }
 

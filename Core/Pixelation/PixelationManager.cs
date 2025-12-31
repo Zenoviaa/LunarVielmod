@@ -193,13 +193,15 @@ namespace Stellamod.Core.Pixelation
         private PixelTarget _overNPCsPixelTargetAdditive;
         private PixelTarget _overNPCsPixelTargetWithOutline;
         private PixelTarget _behindNPCsPixelTargetWithOutline;
-        private PixelTarget _overPlayersPixelTarget;
+        private PixelTarget _frontGrassPixelTarget;
+        private PixelTarget _backGrassPixelTarget;
         //This one needs to go last
         public int Priority => 10;
 
         public override void OnModLoad()
         {
             base.OnModLoad();
+            On_Main.DoDraw_DrawNPCsBehindTiles += RenderBehindTiles;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawOverNPCs;
             On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
             _overNPCsPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
@@ -211,12 +213,25 @@ namespace Stellamod.Core.Pixelation
             _behindNPCsPixelTargetWithOutline.outlineColor = Color.Black;
 
             _overNPCsPixelTargetAdditive = new PixelTarget(downSamples: 2, BlendState.Additive);
-            _overPlayersPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+
+            _frontGrassPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+            _frontGrassPixelTarget.outlineColor = Color.Lerp(Color.Goldenrod, Color.Black, 0.7f);
+
+            _backGrassPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+            _backGrassPixelTarget.outlineColor = Color.Lerp(Color.Goldenrod, Color.Black, 0.7f);
+        }
+
+        private void RenderBehindTiles(On_Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
+        {
+
+            _backGrassPixelTarget.DrawToScreen();
+            orig(self);
         }
 
         public override void OnModUnload()
         {
             base.OnModUnload();
+            On_Main.DoDraw_DrawNPCsBehindTiles -= RenderBehindTiles;
             On_Main.DoDraw_DrawNPCsOverTiles -= DrawOverNPCs;
             On_Main.DrawPlayers_AfterProjectiles -= RenderOverPlayers;
         }
@@ -224,12 +239,16 @@ namespace Stellamod.Core.Pixelation
         private void RenderOverPlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
         {
             orig(self);
-            _overPlayersPixelTarget.DrawToScreen();
+            if (!Main.gameMenu)
+            {
+                _frontGrassPixelTarget.DrawToScreen();
+            }
         }
 
         private void DrawOverNPCs(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
         {
-            _overPlayersPixelTarget.outlineColor = Color.Lerp(Color.Goldenrod, Color.Black, 0.7f);
+ 
+
             if (!Main.gameMenu)
             {
                 _behindNPCsPixelTargetWithOutline.DrawToScreen();
@@ -255,8 +274,10 @@ namespace Stellamod.Core.Pixelation
                     return _overNPCsPixelTargetAdditive;
                 case DrawLayer.BehindNPCsWithOutline:
                     return _behindNPCsPixelTargetWithOutline;
-                case DrawLayer.OverPlayers:
-                    return _overPlayersPixelTarget;
+                case DrawLayer.FrontGrassTarget:
+                    return _frontGrassPixelTarget;
+                case DrawLayer.BackGrassTarget:
+                    return _backGrassPixelTarget;
             }
         }
         public static void QueueSpritebatchDrawAction(PixelTarget.SpritebatchDrawAction drawAction, DrawLayer drawLayer = DrawLayer.OverNPCs)
@@ -277,11 +298,17 @@ namespace Stellamod.Core.Pixelation
 
         public void Render()
         {
+            Color skyColor = Main.ColorOfTheSkies;
+            Color grassColor = Color.Goldenrod.MultiplyRGB(skyColor);
+            _frontGrassPixelTarget.outlineColor = Color.Lerp(grassColor, Color.Black, 0.7f);
+            _backGrassPixelTarget.outlineColor = Color.Lerp(grassColor, Color.Black, 0.7f);
+
             _overNPCsPixelTarget.Render();
             _overNPCsPixelTargetWithOutline.Render();
             _overNPCsPixelTargetAdditive.Render();
             _behindNPCsPixelTargetWithOutline.Render();
-            _overPlayersPixelTarget.Render();
+            _frontGrassPixelTarget.Render();
+            _backGrassPixelTarget.Render();
         }
     }
 
@@ -292,6 +319,7 @@ namespace Stellamod.Core.Pixelation
         OverNPCsWithOutline = 1,
         OverNPCsAdditive = 2,
              BehindNPCsWithOutline = 3,
-             OverPlayers=4
+             FrontGrassTarget=4,
+             BackGrassTarget=5
     }
 }
