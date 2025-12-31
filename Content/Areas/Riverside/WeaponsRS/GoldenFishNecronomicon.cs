@@ -22,7 +22,7 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
         {
             base.SetDefaults();
             Item.DefaultToNecronomicon(hintColor: Color.Goldenrod);
-
+            Item.damage = 12;
             Item.shoot = ModContent.ProjectileType<GoldenFish>();
         }
 
@@ -40,6 +40,7 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
             ReturnToOwner,
             Attack,
         }
+        private float _dashTimer;
         private ref float Timer => ref Projectile.ai[0];
         private float _speed;
         private AIState State
@@ -83,6 +84,8 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
             writer.WriteVector2(StickyOffset);
             writer.Write(Size);
             writer.Write(_speed);
+            writer.WriteVector2(_startDashVelocity);
+            writer.WriteVector2(_targetDashVelocity);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
@@ -90,6 +93,8 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
             StickyOffset = reader.ReadVector2();
             Size = reader.ReadInt32();
             _speed = reader.ReadSingle();
+            _startDashVelocity = reader.ReadVector2();
+            _targetDashVelocity = reader.ReadVector2();
         }
         public override void AI()
         {
@@ -125,8 +130,9 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
                     {
                         //Summon two little helper fish
                         for(int i = 0; i < 2; i++) 
-                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * Main.rand.NextFloat(0.5f, 1f), Type, Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + Main.rand.NextVector2Circular(32, 32), Projectile.velocity * Main.rand.NextFloat(0.25f, 0.75f), Type, Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
                     }
+                    Projectile.velocity *= 0.5f;
                     State = AIState.ReturnToOwner;
                     break;
                 case AIState.ReturnToOwner:
@@ -147,6 +153,7 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
             {
                 //Return to owner
                 State = AIState.ReturnToOwner;
+                _dashTimer = 0;
             }
             if (Sticky != -1)
             {
@@ -156,17 +163,25 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
                 {
                     Sticky = -1;
                     _speed = 1;
+                    _dashTimer = 0;
                 }           
                 else
                 {
+                    float speed = MathHelper.Lerp(1f, 3f, Size / 3f);
+                    StickyOffset = StickyOffset.RotatedBy(0.0125f * speed);
                     Vector2 velToTarget = (target.Center + StickyOffset) - Projectile.Center;
                     Projectile.velocity = velToTarget;
                     Projectile.rotation = (target.Center - Projectile.Center).ToRotation();
+                    Projectile.spriteDirection = 1;
                 }
 
 
             }
-            Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
+            else
+            {
+                Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
+            }
+
         }
 
         private void AI_ReturnToOwner()
@@ -181,16 +196,36 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
             Vector2 velToTarget = (targetPosition - Projectile.Center).SafeNormalize(Vector2.Zero) * _speed;
             velToTarget *= MathHelper.Lerp(0.8f, 1f, Size / 3f);
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, velToTarget, 0.01f);
-            Projectile.rotation = Projectile.velocity.X * 0.05f;
+            Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
+        private Vector2 _startDashVelocity;
+        private Vector2 _targetDashVelocity;
         private void AI_Attack(NPC target)
         {
-            if(_speed < 20)
-                _speed += 0.4f;
-            Vector2 velToTarget = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * _speed;
-            Projectile.velocity = Vector2.Lerp(Projectile.velocity, velToTarget, 0.2f);
-            Projectile.rotation = Projectile.velocity.X * 0.05f;
+            _dashTimer++;
+            if(_dashTimer == 1)
+            {
+                _startDashVelocity = Projectile.velocity;
+
+            }
+
+            if(_dashTimer >= 120)
+            {
+                Projectile.friendly = true;
+            }
+            else
+            {
+                Projectile.friendly = false;
+            }
+                //      _startDashVelocity = _startDashVelocity.RotatedBy(0.04f);
+                _targetDashVelocity = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 35;
+            float completionRatio = _dashTimer / 240f;
+            float ease = EasingFunction.InExpo(completionRatio);
+            Vector2 dashVelocity = Vector2.Lerp(_startDashVelocity, _targetDashVelocity, ease);
+
+            Projectile.velocity = dashVelocity;
+            Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -247,7 +282,9 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
             Rectangle frame = new Rectangle(0, frameHeight * Size, texture.Width, frameHeight);
             SpriteBatch spriteBatch = Main.spriteBatch;
             SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
+            float rotation = Projectile.rotation;
+            if (Projectile.spriteDirection == -1)
+                rotation -= MathHelper.Pi;
             //Draw after image
             for(int i = 0; i < Projectile.oldPos.Length; i++)
             {
@@ -259,7 +296,7 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
                 spriteBatch.Draw(texture, drawCenter, frame, afterImageColor, Projectile.oldRot[i], frame.Size() / 2f, Projectile.scale, spriteEffects, 0);
             }
 
-            spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, frame, lightColor, Projectile.rotation, frame.Size() / 2f, Projectile.scale, spriteEffects, 0);
+            spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, frame, lightColor, rotation, frame.Size() / 2f, Projectile.scale, spriteEffects, 0);
             return false;
         }
     }

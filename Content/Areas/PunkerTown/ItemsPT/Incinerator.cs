@@ -5,6 +5,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -171,13 +172,41 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         {
             return ColorFunction(completionRatio) * 0.5f;
         }
+        private Color ColorFunction2(float completionRatio)
+        {
+            Color finalColor2 = Color.White;
+            finalColor2 *= EasingFunction.QuadraticBump(completionRatio);
+            float progress = Timer / LifeTime;
+            float o2 = MathHelper.Lerp(1f, 0f, progress);
+            finalColor2 *= o2;
+            finalColor2 *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(completionRatio));
+            finalColor2 *= EasingFunction.QuadraticBump(completionRatio);
+            return finalColor2;
+        }
+        private float WidthFunction2(float completionRatio)
+        {
+            float width = 96;
+            float w = MathHelper.SmoothStep(16, width, completionRatio);
+            float o = MathHelper.Lerp(1f, 0f, EasingFunction.InCirc(completionRatio));
+            float progress = Timer / LifeTime;
+            float o2 = MathHelper.Lerp(1f, 2f, progress);
+            float i = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(progress));
+            return w * o * o2 * i;
+        }
+
         private void DrawMainShader(Vector2[] oldPos)
         {
-            BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
-        //    TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
-
             BlackFireShader blackFireShader = BlackFireShader.Instance;
             TrailDrawer.Draw(Main.spriteBatch, oldPos, null, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
+
+            var shader = RichLaserShader.Instance;
+            shader.LaserColor = Color.Yellow * 0.2f;
+            shader.InnerColor = Color.Lerp(Color.Yellow, Color.Red, 0.75f) * 0.2f;
+            shader.OuterColor = Color.Yellow * 0.2f;
+            shader.LaserTexture = TrailRegistry.Beamlight;
+            shader.BloomTexture = TrailRegistry.SmallWhispyTrail;
+            TrailDrawer.Draw(Main.spriteBatch, oldPos, ColorFunction2, WidthFunction2, shader);
+
         }
 
         private void DrawPixelatedFlames(GraphicsDevice graphicsDevice)

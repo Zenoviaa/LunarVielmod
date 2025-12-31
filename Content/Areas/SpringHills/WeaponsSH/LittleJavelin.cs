@@ -7,6 +7,7 @@ using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -54,6 +55,12 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         {
             base.AI();
             Timer++;
+            if(Timer == 1)
+            {
+                SoundStyle useSound = SoundID.Item1;
+                useSound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(useSound, Projectile.position);
+            }
             if (Timer % 15 == 0)
             {
                 DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, Vector2.Zero, Color.White, 0.2f);
@@ -71,6 +78,18 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
+            for(int i = 0; i < 4; i++)
+            {
+                DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(0.5f, 1f), Scale: Main.rand.NextFloat(0.3f, 0.6f));
+                dp.gravity = 0.1f;
+                dp.dampening = 0.1f;
+                dp.outerColor = Color.DarkGray;
+            }
+
+            for(int i = 0; i < 8; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, DustID.Dirt, -Projectile.oldVelocity.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(0.5f, 1f));
+            }
         }
 
         public override bool PreDraw(ref Color lightColor)

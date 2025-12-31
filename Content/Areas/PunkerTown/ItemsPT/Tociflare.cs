@@ -99,7 +99,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            return ProjectileHelper.OldPosColliding(IncineratorPos, projHitbox, targetHitbox, 32);
+            return ProjectileHelper.OldPosColliding(IncineratorPos, projHitbox, targetHitbox, 72);
         }
         public override bool ShouldUpdatePosition()
         {
@@ -110,7 +110,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         {
             float numPoints = NumPoints;
             Vector2 start = Projectile.Center;
-            Vector2 end = start + Projectile.velocity * 40;
+            Vector2 end = start + Projectile.velocity * 80;
 
             float progress = Timer / LifeTime;
             float easeOut = EasingFunction.InOutSine(progress);
@@ -142,7 +142,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
 
         private float WidthFunction(float completionRatio)
         {
-            float width = 132;
+            float width = 384;
             float w = MathHelper.SmoothStep(16, width, completionRatio);
             float o = MathHelper.Lerp(1f, 0f, EasingFunction.InCirc(completionRatio));
             float progress = Timer / LifeTime;
@@ -154,7 +154,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         private Color ColorFunction(float completionRatio)
         {
             Color tipColor = Color.Lerp(Color.White, Color.Green, completionRatio);
-            Color finalColor = Color.Lerp(Color.GreenYellow, tipColor, EasingFunction.QuadraticBump(MathF.Pow(completionRatio, 0.5f)));
+            Color finalColor = Color.Lerp(Color.Yellow, tipColor, EasingFunction.QuadraticBump(MathF.Pow(completionRatio, 0.5f)));
             Color finalColor2 = Color.Lerp(Color.White, finalColor, EasingFunction.QuadraticBump(completionRatio));
             finalColor2 *= EasingFunction.QuadraticBump(completionRatio);
             float progress = Timer / LifeTime;
@@ -178,7 +178,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
            // TrailDrawer.Draw(Main.spriteBatch, oldPos, null, SmokeColorFunction, SmokeWidthFunction, blackSmokeShader, Vector2.Zero);
 
             BlackFireShader blackFireShader = BlackFireShader.Instance;
-            blackFireShader.InnerColor = Color.LightGreen;
+            blackFireShader.InnerColor = Color.Blue;
             blackFireShader.OuterColor = Color.DarkGreen;
             blackFireShader.PrimaryTexture2 = TrailRegistry.DNATrail;
             blackFireShader.BackColor = Color.DarkSeaGreen;
