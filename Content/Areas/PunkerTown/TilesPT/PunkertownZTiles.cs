@@ -150,4 +150,13 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             drawOrigin = TileDrawOrigin.BottomUp;
         }
     }
+    public class PunkerSmallBush : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 3;
+            drawOrigin = TileDrawOrigin.BottomUp;
+        }
+    }
 }
