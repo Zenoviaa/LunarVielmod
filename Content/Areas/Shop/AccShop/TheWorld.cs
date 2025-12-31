@@ -18,6 +18,7 @@ namespace Stellamod.Content.Areas.Shop.AccShop
             AdvancedMagicPlayer magicPlayer = player.GetModPlayer<AdvancedMagicPlayer>();
             magicPlayer.chargeTimeBonus += 0.75f;
             magicPlayer.chargeDamagePenalty += 0.75f;
+            player.manaCost -= 0.75f;
         }
     }
 }
