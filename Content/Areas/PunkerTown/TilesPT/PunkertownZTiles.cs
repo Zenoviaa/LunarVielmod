@@ -159,4 +159,13 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             drawOrigin = TileDrawOrigin.BottomUp;
         }
     }
+    public class PunkerWindows : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 3;
+            drawOrigin = TileDrawOrigin.Center;
+        }
+    }
 }
