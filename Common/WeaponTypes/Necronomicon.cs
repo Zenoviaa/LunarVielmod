@@ -79,6 +79,7 @@ namespace Stellamod.Common.WeaponTypes
             Vector2 rrp = player.RotatedRelativePoint(player.MountedCenter, true);
             UpdatePlayerVisuals(player, rrp);
             AI_MoveTowardsCursor();
+            
             //   Owner.heldProj = Projectile.whoAmI;
         }
         private void UpdatePlayerVisuals(Player player, Vector2 playerHandPos)

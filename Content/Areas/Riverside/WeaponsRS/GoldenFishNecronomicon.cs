@@ -104,7 +104,7 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
             outScale = EasingFunction.InOutSine(outScale);
             Projectile.scale = inScale * outScale;
 
-            if(Timer % 15 == 0)
+            if(Timer % 24 == 0)
             {
                 SmokeParticle sp = Particle<SmokeParticle>.Spawn(Projectile.Center, -Vector2.UnitY, Scale: Main.rand.NextFloat(0.5f, 1f));
                 sp.initialColor = Color.Lerp(Color.Goldenrod, Color.Black, 0.5f);
