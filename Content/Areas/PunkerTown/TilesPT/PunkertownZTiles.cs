@@ -168,4 +168,14 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             drawOrigin = TileDrawOrigin.Center;
         }
     }
+    public class PunkerCog : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 3;
+            drawOrigin = TileDrawOrigin.Center;
+            rotateSpeed = 0.02f;
+        }
+    }
 }

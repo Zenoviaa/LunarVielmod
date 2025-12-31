@@ -23,6 +23,7 @@ public abstract class ZTile : ModTexturedType
     public TileDrawOrigin drawOrigin;
     public Vector2 parallaxAmount;
     public int frameCount = 1;
+    public float rotateSpeed;
     protected override void Register()
     {
         ModTypeLookup<ZTile>.Register(this);
@@ -105,6 +106,11 @@ public abstract class ZTile : ModTexturedType
             case Rotation.Degrees_270:
                 drawRotation = MathHelper.Pi + MathHelper.PiOver2;
                 break;
+        }
+
+        if(rotateSpeed > 0)
+        {
+            drawRotation += Main.GlobalTimeWrappedHourly * rotateSpeed;
         }
 
         //Convert to world coordinates
