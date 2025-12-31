@@ -211,7 +211,9 @@ namespace Stellamod.Common.WeaponTypes
             base.UpdateInventory(item, player);
             if (isCombatTool)
             {
-                player.GetModPlayer<AdvancedMagicPlayer>().Pickup(item);
+                CombatToolPlayer toolPlayer = player.GetModPlayer<CombatToolPlayer>();
+                toolPlayer.Unlock(item);
+                PopupText.NewText(PopupTextContext.SonarAlert, item, 1, longText: true);
                 for (int i = 0; i < player.inventory.Length; i++)
                 {
                     Item inv = player.inventory[i];

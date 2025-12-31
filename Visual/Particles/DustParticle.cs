@@ -31,7 +31,7 @@ namespace Stellamod.Visual.Particles
             Velocity.Y += gravity;
             Velocity *= 1.0f - dampening;
             Rotation = Velocity.ToRotation();
-            Scale *= 0.98f;
+            Scale *= 0.97f;
             if (fast)
                 Scale *= 0.98f;
             color *= 0.99f;
@@ -40,7 +40,7 @@ namespace Stellamod.Visual.Particles
             stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);
             stretchScale.Y = 1f;
             fadeIn++;
-            if (fadeIn > 180)
+            if (fadeIn > 180 || Scale < 0.1f)
                 active = false;
 
             //Bouncing
