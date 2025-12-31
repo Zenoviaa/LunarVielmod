@@ -3,11 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Stellamod.Common.Shaders
 {
-    public class TileShadowShader : BaseShader
+    public class GrassShader : BaseShader
     {
         private EffectParameter _transformMatrixParam;
-        private static TileShadowShader _instance;
-        public static TileShadowShader Instance
+        private static GrassShader _instance;
+        public static GrassShader Instance
         {
             get
             {

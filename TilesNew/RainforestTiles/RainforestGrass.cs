@@ -1,5 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Grass;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -24,6 +27,32 @@ namespace Stellamod.TilesNew.RainforestTiles
 
             // TODO: implement
             // SetModTree(new Trees.ExampleTree());
+        }
+        public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+        {
+   
+            if(j != 0)
+            {
+                //Render grass above the tile
+                Tile tile = Main.tile[i, j - 1];
+                if (!tile.HasTile)
+                {
+                    //Render grass
+                    Vector2 worldPosition = new Point(i, j).ToWorldCoordinates();
+                    GrassRenderer grassRenderer = ModContent.GetInstance<GrassRenderer>();
+                    Color grassColor = new Color(80, 107, 26);
+                    Color lightColor = Lighting.GetColor(i, j);
+                    grassColor = grassColor.MultiplyRGB(lightColor);
+                    float height = ExtraMath.Osc(0.5f, 1f, 0, i * 3);
+                    float width = ExtraMath.Osc(0.5f, 1f, 0, i * 3);
+                    float h = height * 120;
+                    float w = width * 4.5f;
+                    worldPosition.Y += 8 * ExtraMath.Osc(0f, 1f, 0, i * 3);
+                    grassRenderer.AddGrassPatch(grassColor, worldPosition, -Vector2.UnitY, h, w, 4);
+                }
+            }
+
+            return base.PreDraw(i, j, spriteBatch);
         }
         public override void NumDust(int i, int j, bool fail, ref int num)
         {
