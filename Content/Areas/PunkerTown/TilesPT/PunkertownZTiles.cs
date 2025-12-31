@@ -141,4 +141,13 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             drawOrigin = TileDrawOrigin.BottomUp;
         }
     }
+    public class PunkerGrassyPillar : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 4;
+            drawOrigin = TileDrawOrigin.BottomUp;
+        }
+    }
 }
