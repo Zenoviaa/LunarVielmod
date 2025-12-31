@@ -603,3 +603,7 @@ GravitySidewaysEnchantment: {
 	DisplayName: Gravity Sideways Enchantment
 	Tooltip: Makes your spell have gravity either left or right depending on the way you face
 }
+LifetimeEnchantment: {
+	DisplayName: Lifetime Enchantment
+	Tooltip: Doubles the lifetime of your spell!
+}
