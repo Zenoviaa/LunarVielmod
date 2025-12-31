@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -24,6 +25,9 @@ public abstract class ZTile : ModTexturedType
     public Vector2 parallaxAmount;
     public int frameCount = 1;
     public float rotateSpeed;
+    public float windSwayOffset;
+    public float windSwayMagnitude;
+    public float windSwaySpeed;
     protected override void Register()
     {
         ModTypeLookup<ZTile>.Register(this);
@@ -54,6 +58,11 @@ public abstract class ZTile : ModTexturedType
         Rectangle? frame = new Rectangle(0, frameHeight * frameNumber, tileTextureAsset.Width(), frameHeight);
         Rectangle rect = frame.Value;
         spriteBatch.Draw(tileTextureAsset.Value, iconCenterPos, frame, Color.White, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, 0);
+    }
+
+    private float GetLeafSway(float offset, float magnitude, float speed)
+    {
+        return (float)Math.Sin(Main.GameUpdateCount * speed + offset) * magnitude;
     }
 
     public void Draw(SpriteBatch spriteBatch, Vector2 screenPos, ZTileDrawParams drawParams)
@@ -111,6 +120,12 @@ public abstract class ZTile : ModTexturedType
         if(rotateSpeed > 0)
         {
             drawRotation += Main.GlobalTimeWrappedHourly * rotateSpeed;
+        }
+
+        //Calculate wind if any
+        if(windSwayMagnitude > 0)
+        {
+            drawRotation += GetLeafSway(windSwayOffset, windSwayMagnitude, windSwaySpeed);
         }
 
         //Convert to world coordinates

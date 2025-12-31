@@ -187,4 +187,22 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             drawOrigin = TileDrawOrigin.BottomUp;
         }
     }
+    public class HangingHistoryVines : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 3;
+            drawOrigin = TileDrawOrigin.TopDown;
+
+            //idk
+            windSwayOffset = 0f;
+
+            //The max it can sway
+            windSwayMagnitude = 0.2f;
+
+            //How fast it sways
+            windSwaySpeed = 0.02f;
+        }
+    }
 }
