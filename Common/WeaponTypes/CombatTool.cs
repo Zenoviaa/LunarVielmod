@@ -62,6 +62,7 @@ namespace Stellamod.Common.WeaponTypes
                 _unlockedToolsBackingField = value;
             }
         }
+        public float carryingCapacity = 1;
         public void Unlock(Item item)
         {
             UnlockedTools.Add(item);
@@ -79,7 +80,6 @@ namespace Stellamod.Common.WeaponTypes
                 if (LunarVeilKeybinds.ToolKeybind.JustReleased)
                 {
                     CombatTool combatTool = SelectedTool.GetGlobalItem<CombatTool>();
-                    combatTool.ammoCount = 1;
                     if (combatTool.isCombatTool)
                     {
                         if (combatTool.ammoCount > 0)
@@ -89,6 +89,7 @@ namespace Stellamod.Common.WeaponTypes
                                 Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * SelectedTool.shootSpeed, SelectedTool.shoot, Player.GetWeaponDamage(SelectedTool), Player.GetWeaponKnockback(SelectedTool));
                         }
                     }
+                    carryingCapacity = (float)combatTool.ammoCount / (float)combatTool.maxAmmoCount;
                 }
             }
             return base.PreItemCheck();
@@ -98,6 +99,7 @@ namespace Stellamod.Common.WeaponTypes
             base.UpdateDead();
             CombatTool combatTool = SelectedTool.GetGlobalItem<CombatTool>();
             combatTool.ammoCount = combatTool.maxAmmoCount;
+            carryingCapacity = 1;
         }
         public override void PostItemCheck()
         {
@@ -831,9 +833,9 @@ namespace Stellamod.Common.WeaponTypes
                 return;
 
             CombatTool combatTool = combatToolPlayer.SelectedTool.GetGlobalItem<CombatTool>();
-            float ammoCapacity = (float)combatTool.ammoCount / (float)combatTool.maxAmmoCount;
+
             combatToolPlayer.SelectedTool = HoveringItem;
-            combatToolPlayer.SelectedTool.GetGlobalItem<CombatTool>().ammoCount = (int)(ammoCapacity * combatToolPlayer.SelectedTool.GetGlobalItem<CombatTool>().maxAmmoCount);
+            combatToolPlayer.SelectedTool.GetGlobalItem<CombatTool>().ammoCount = (int)((float)combatToolPlayer.carryingCapacity * (float)combatToolPlayer.SelectedTool.GetGlobalItem<CombatTool>().maxAmmoCount);
         }
 
         private bool NeedsUpdateCollection()
