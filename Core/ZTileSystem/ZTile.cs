@@ -90,6 +90,7 @@ public abstract class ZTile : ModTexturedType
                 break;
             case TileDrawOrigin.TopDown:
                 drawOffset = new Vector2(0, frameHeight / 2f);
+
                 break;
 
         }

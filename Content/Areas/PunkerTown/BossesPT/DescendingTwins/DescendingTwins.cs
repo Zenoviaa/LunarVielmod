@@ -34,6 +34,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         }
 
         private bool _showNamePlate;
+        public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref NPC.ai[0];
 
         private int _retinaIndex;
