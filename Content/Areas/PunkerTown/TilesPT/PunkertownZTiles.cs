@@ -178,4 +178,13 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             rotateSpeed = 0.02f;
         }
     }
+    public class PunkerBooks : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 7;
+            drawOrigin = TileDrawOrigin.BottomUp;
+        }
+    }
 }

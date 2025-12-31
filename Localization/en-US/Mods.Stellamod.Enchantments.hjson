@@ -615,10 +615,10 @@ LifetimeEnchantment: {
 
 FlamingCourseEnchantment: {
 	DisplayName: Flaming Course Enchantment
-	Tooltip: Allows your projectiles to interact with each other, bouncing off of each other!
+	Tooltip: Allows your spells to interact with each other, bouncing off of each other!
 }
 
 StickyEnchantment: {
 	DisplayName: Sticky Enchantment
-	Tooltip: ""
+	Tooltip: Your spell will stick to enemies!
 }
