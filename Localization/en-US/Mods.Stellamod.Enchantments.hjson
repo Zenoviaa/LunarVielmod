@@ -607,3 +607,7 @@ LifetimeEnchantment: {
 	DisplayName: Lifetime Enchantment
 	Tooltip: Doubles the lifetime of your spell!
 }
+FlamingCourseEnchantment: {
+	DisplayName: Flaming Course Enchantment
+	Tooltip: Allows your projectiles to interact with each other, bouncing off of each other!
+}

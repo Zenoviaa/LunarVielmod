@@ -23,27 +23,19 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private BaseMovement _movement;
         private int _netID;
         private int _numUpdates;
+        private float _bounceCooldownTimer;
         public override string Texture => TextureRegistry.EmptyTexture;
 
-        private ref float Timer => ref Projectile.ai[0];
+        public ref float GlobalTimer => ref Projectile.ai[0];
         private ref float Charge => ref Projectile.ai[1];
+
         public Vector2[] OldPos { get; private set; }
         public float[] OldRot { get; private set; }
         public float Size { get; set; } = 16;
         public float ChargeSizeMultiplier { get; set; } = 1f;
         public float ScaleMultiplier => ((Size / 16f) * MathHelper.Lerp(0.5f, 1f, Charge) * ChargeSizeMultiplier) + extraScale;
         public int TrailLength { get; set; }
-        public float GlobalTimer
-        {
-            get
-            {
-                return Projectile.ai[0];
-            }
-            private set
-            {
-                Projectile.ai[0] = value;
-            }
-        }
+
         public bool IsClone { get; set; }
         public Texture2D Form { get; set; }
         public BaseMovement Movement
@@ -78,6 +70,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public float killTime = 60f;
         public int tileHitCount;
         public int stickToTarget;
+        public bool spellInteract;
         public Vector2 stickyOffset;
         public Vector2 originalVelocity;
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -105,11 +98,13 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             base.SendExtraAI(writer);
             writer.Write(_netID);
+            writer.Write(_bounceCooldownTimer);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             _netID = reader.ReadInt32();
+            _bounceCooldownTimer = reader.ReadSingle();
         }
 
         public void ReplaceEnchantment(BaseEnchantment enchantmentPrefab, int index)
@@ -253,6 +248,42 @@ namespace Stellamod.Content.Items.MoonlightMagic
             }
         }
 
+        private void AI_BounceIfTouchSpell()
+        {
+            //Cooldown so it doesn't spam
+            if(_bounceCooldownTimer > 0)
+            {
+                _bounceCooldownTimer--;
+                return;
+            }
+         
+            if (!this.OwnedByLocalClient())
+                return;
+            if (!spellInteract)
+                return;
+
+            Rectangle myRect = Projectile.getRect();
+            foreach (var p in Main.ActiveProjectiles)
+            {
+                if (p.type != Projectile.type)
+                    continue;
+                if (p == Projectile)
+                    continue;
+
+                Rectangle otherRect = p.getRect();
+                if (Projectile.Colliding(myRect, otherRect))
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                    float scale = Main.rand.NextFloat(0.3f, 0.5f);
+
+                    Vector2 bounceVelocity = -Projectile.velocity * 1.5f;
+                    Projectile.velocity = bounceVelocity.RotatedByRandom(MathHelper.PiOver4 / 4);
+                    Projectile.netUpdate = true;
+                    _bounceCooldownTimer = 20;
+                }
+            }
+        }
+
         public override void AI()
         {
             base.AI();
@@ -295,6 +326,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             }
             AI_HandleTargetSticking();
             AI_DustEffects();
+            AI_BounceIfTouchSpell();
 
             if (isDying)
             {
