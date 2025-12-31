@@ -24,11 +24,6 @@ namespace Stellamod.Core.Bases
             Item.rare = ItemRarityID.Green;
         }
 
-        public override bool AltFunctionUse(Player player)
-        {
-            return true;
-        }
-
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] <= 0;
@@ -38,12 +33,6 @@ namespace Stellamod.Core.Bases
         {
             base.ModifyTooltips(tooltips);
             var line = new TooltipLine(Mod, "", "");
-            line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("Juggler"))
-            {
-                OverrideColor = ColorFunctions.JugglerWeaponType
-            };
-            tooltips.Add(line);
-
             line = new TooltipLine(Mod, "Alcarishasd", Helpers.LangText.Common("JugglerHelp"))
             {
                 OverrideColor = Color.LightGray

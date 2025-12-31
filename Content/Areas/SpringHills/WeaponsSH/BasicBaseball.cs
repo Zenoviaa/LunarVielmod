@@ -1,17 +1,19 @@
 ﻿using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
+using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Thrown.Jugglers
+namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
     public class BasicBaseball : BaseJugglerItem
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
+            Item.DefaultToCombatTool(0.01f, 0.04f, 1);
             Item.damage = 11;
             Item.DamageType = DamageClass.Throwing;
             Item.width = 24;

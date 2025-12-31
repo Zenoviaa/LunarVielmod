@@ -79,6 +79,7 @@ namespace Stellamod.Common.WeaponTypes
                 if (LunarVeilKeybinds.ToolKeybind.JustReleased)
                 {
                     CombatTool combatTool = SelectedTool.GetGlobalItem<CombatTool>();
+                    combatTool.ammoCount = 1;
                     if (combatTool.isCombatTool)
                     {
                         if (combatTool.ammoCount > 0)
@@ -213,7 +214,7 @@ namespace Stellamod.Common.WeaponTypes
             {
                 CombatToolPlayer toolPlayer = player.GetModPlayer<CombatToolPlayer>();
                 toolPlayer.Unlock(item);
-                PopupText.NewText(PopupTextContext.SonarAlert, item, 1, longText: true);
+             //   PopupText.NewText(PopupTextContext.SonarAlert, item, 1, longText: true);
                 for (int i = 0; i < player.inventory.Length; i++)
                 {
                     Item inv = player.inventory[i];
@@ -230,7 +231,9 @@ namespace Stellamod.Common.WeaponTypes
         {
             if (isCombatTool)
             {
+
                 Projectile p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
+                
                 CombatToolProjectile combatToolProjectile = p.GetGlobalProjectile<CombatToolProjectile>();
                 combatToolProjectile.bossDamagePercent = bossDamagePercent;
                 combatToolProjectile.enemyDamagePercent = enemyDamagePercent;

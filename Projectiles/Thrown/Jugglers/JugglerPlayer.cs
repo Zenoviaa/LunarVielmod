@@ -1,4 +1,4 @@
-﻿using Stellamod.Items.Weapons.Thrown.Jugglers;
+﻿using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Terraria;
 using Terraria.ModLoader;
 
