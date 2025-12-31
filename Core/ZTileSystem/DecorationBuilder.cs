@@ -12,6 +12,7 @@ public class DecorationBuilder : ModItem
     public static float scale = 1;
     public static Rotation rotation;
     public static ushort frame;
+    public static bool flip;
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -45,6 +46,7 @@ public class DecorationBuilder : ModItem
                 instanceData.scale = scale;
                 instanceData.rotation = rotation;
                 instanceData.frameNumber = frame;
+                instanceData.flipX = flip;
                 tileMap.CreateTile(renderLayer, Main.MouseWorld, z, instanceData);
             }
         }

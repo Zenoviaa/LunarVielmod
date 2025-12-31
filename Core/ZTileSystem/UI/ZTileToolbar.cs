@@ -103,7 +103,7 @@ namespace Stellamod.Core.ZTileSystem.UI
         private ZTileButton _renderLayerButton;
         private ZTileButton _scaleButton;
         private ZTileButton _rotateButton;
-
+        private ZTileButton _flipButton;
         private UIText _infoText;
 
 
@@ -120,6 +120,7 @@ namespace Stellamod.Core.ZTileSystem.UI
             _renderLayerButton = new ZTileButton(LoadTextureAsset("ToolRenderLayer"), ChangeRenderLayer);
             _scaleButton = new ZTileButton(LoadTextureAsset("ToolScale"), ChangeScale);
             _rotateButton = new ZTileButton(LoadTextureAsset("ToolRotate"), ChangeRotation);
+            _flipButton = new ZTileButton(LoadTextureAsset("ToolFlip"), ChangeFlip);
         }
         public int RelativeLeft => 16;
         public int RelativeTop => 64;
@@ -149,6 +150,7 @@ namespace Stellamod.Core.ZTileSystem.UI
             _grid.Add(_renderLayerButton);
             _grid.Add(_scaleButton);
             _grid.Add(_rotateButton);
+            _grid.Add(_flipButton);
             _panel.Append(_infoText);
             _panel.Append(_grid);
             Append(_panel);
@@ -230,7 +232,10 @@ namespace Stellamod.Core.ZTileSystem.UI
             sb.AppendLine($"Rotation {DecorationBuilder.rotation}");
             _infoText.SetText(sb.ToString());
         }
-
+        private void ChangeFlip(bool isRightClick)
+        {
+            DecorationBuilder.flip = !DecorationBuilder.flip;
+        }
         private void ChangeRenderLayer(bool isRightClick)
         {
             int length = Enum.GetNames<ZRenderLayer>().Length;
