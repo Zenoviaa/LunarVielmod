@@ -77,6 +77,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public float extraRotation;
         public float killTime = 60f;
         public int tileHitCount;
+        public int stickToTarget;
+        public Vector2 stickyOffset;
         public Vector2 originalVelocity;
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -160,6 +162,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Form = item.Form;
             Enchantments.Clear();
             tileHitCount = 1;
+            stickToTarget = -1;
             var enchantments = item.Enchantments;
             for (int i = 0; i < enchantments.Count; i++)
             {
@@ -221,6 +224,35 @@ namespace Stellamod.Content.Items.MoonlightMagic
             OldRot = new float[TrailLength];
         }
 
+        private void AI_HandleTargetSticking()
+        {
+            //target sticking functionality
+            if (stickToTarget != -1)
+            {
+                NPC targetToStickTo = Main.npc[stickToTarget];
+                if (targetToStickTo.active)
+                {
+                    Vector2 velocityToTarget = targetToStickTo.Center - (Projectile.Center + stickyOffset);
+                    Projectile.velocity = velocityToTarget;
+                }
+                else
+                {
+                    stickToTarget = -1;
+                }
+            }
+        }
+
+        private void AI_DustEffects()
+        {
+            if (GlobalTimer % (Projectile.extraUpdates + 1) == 0)
+            {
+                if (PrimaryElement != null)
+                {
+                    PrimaryElement.DustEffects();
+                }
+            }
+        }
+
         public override void AI()
         {
             base.AI();
@@ -261,20 +293,16 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 var enchantment = Enchantments[i];
                 enchantment?.AI();
             }
+            AI_HandleTargetSticking();
+            AI_DustEffects();
 
-            if (GlobalTimer % (Projectile.extraUpdates + 1) == 0)
+            if (isDying)
             {
-                if(PrimaryElement != null)
-                {
-                    PrimaryElement.DustEffects();
-                }
-            }
-
-            if (isDying) {
                 if (Projectile.timeLeft > killTime)
                     Projectile.timeLeft = (int)killTime;
             }
-                if (laserLike && _numUpdates > 2)
+                
+            if (laserLike && _numUpdates > 2)
             {
                 if(GlobalTimer % (Projectile.extraUpdates+1) == 0)
                 {
