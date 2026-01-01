@@ -23,7 +23,7 @@ namespace Stellamod.Helpers
         {
             int i = (int)Main.MouseWorld.X / 16;
             int j = (int)Main.MouseWorld.Y / 16;
-     
+            WorldGen.GrowTree(i, j);
             return true;
         }
     }
@@ -45,8 +45,8 @@ namespace Stellamod.Helpers
         {
             int i = (int)Main.MouseWorld.X / 16;
             int j = (int)Main.MouseWorld.Y / 16;
-            int height = Main.rand.Next(10, 75);
-            VeilGen.PlaceRaintrees(i, j, height);
+            int height = Main.rand.Next(10, 16);
+            VeilGen.PlaceAcaciaTrees(i, j, height);
             return true;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Utilities;
+using Stellamod.Content.Areas.PunkerTown.TilesPT;
 using Stellamod.Helpers;
 using Stellamod.Items.Ores;
 using Stellamod.Tiles;
@@ -31,8 +32,12 @@ namespace Stellamod.WorldG
 
         public override bool? UseItem(Player player)
         {
-            GenerateDungeon();
-            return base.UseItem(player);
+            Vector2 mouseWorld = Main.MouseWorld;
+            int tileX = (int)Main.MouseWorld.X / 16;
+            int tileY = (int)Main.MouseWorld.Y / 16;
+            Point startTile = mouseWorld.ToTileCoordinates();
+            GenerateMarsh(startTile, 1000);
+            return true;
         }
 
         public static void GenerateDungeon()
@@ -42,6 +47,44 @@ namespace Stellamod.WorldG
             WorldGen.KillTile(tileX, tileY, noItem: true);
         }
 
+        private float GetMarshHeight(float x)
+        {
+            float bump = x * (4 - x * 4);
+            float mountains = MathF.Sin(x * 8) * 0.5f + 0.5f;
+            float mountains2 = MathF.Sin(x * 2) * 0.5f + 0.7f;
+            float dips = MathF.Sin(x * 32) * 0.1f;
+            float roughness = MathF.Sin(x * 120) * 0.01f;
+            float roughness2 = MathF.Sin(x * 200) * 0.005f;
+            float y = bump * mountains * mountains2 - dips - roughness - roughness2;
+            return y + 0.1f;
+        }
+
+        private void GenerateMarsh(Point startTile, int length)
+        {
+            var genRand = WorldGen.genRand;
+         
+            Point endTile = startTile + new Point(length, 0);
+
+            int mountainHeight = 200;
+            for(int x = startTile.X; x < endTile.X; x++)
+            {
+                float localX = x - startTile.X;
+            
+                float ratio = localX / (float)length;
+               // Console.WriteLine(ratio);
+                int height = (int)(GetMarshHeight(ratio) * mountainHeight);
+                for(int y = 0; y < height; y++)
+                {
+                    WorldGen.PlaceTile(x, startTile.Y - y, TileID.Mud);
+                    if(y == height - 1)
+                    {
+                        WorldGen.PlaceTile(x, startTile.Y - y, TileID.JungleGrass);
+                    }
+              
+                }
+              
+            }
+        }
         private void GenerateSkullrunnerCircle()
         {
             var genRand = WorldGen.genRand;
@@ -875,6 +918,41 @@ namespace Stellamod.WorldG
                     tile.TileFrameY = (short)(y * (data.CoordinateHeights[y > 0 ? y - 1 : y] + data.CoordinatePadding) + yVariants * yHeight); //set the Y frame appropriately
                     tile.HasTile = true; //activate the tile
                 }
+            }
+        }
+        public static void PlaceAcaciaTrees(int treex, int treey, int height)
+        {
+            treey -= 1;
+
+            if (treey - height < 1)
+                return;
+
+            for (int x = -1; x < 3; x++)
+            {
+                for (int y = 0; y < (height + 2); y++)
+                {
+                    WorldGen.KillTile(treex + x, treey - y);
+                }
+            }
+
+            WorldGen.PlaceTile(treex, treey - 1, ModContent.TileType<AcaciaTree>(), true, true);
+            for (int y = 0; y < height; y++)
+            {
+                if(y == height -1 )
+                {
+                    WorldGen.PlaceTile(treex, treey - (y + 2), ModContent.TileType<AcaciaTreeTop>(), true, true);
+                }
+                else
+                {
+                    WorldGen.PlaceTile(treex, treey - (y + 2), ModContent.TileType<AcaciaTree>(), true, true);
+
+                }
+     
+            }
+
+            for (int y = 0; y < (height + 2); y++)
+            {
+                WorldGen.TileFrame(treex, treey + y);
             }
         }
         public static void PlaceRaintrees(int treex, int treey, int height)

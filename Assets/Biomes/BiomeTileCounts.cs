@@ -9,6 +9,7 @@ using Stellamod.Tiles.Ishtar;
 using Stellamod.Tiles.RoyalCapital;
 using Stellamod.Tiles.Veil;
 using Stellamod.TilesNew.MothlightTiles;
+using Stellamod.TilesNew.RainforestTiles;
 using System;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -109,10 +110,15 @@ namespace Stellamod
         public int DesertTownCount;
         public static bool InDesertTown => ModContent.GetInstance<BiomeTileCounts>().DesertTownCount > 15;
 
+
+        public int MarshCount;
+        public static bool InMarsh => ModContent.GetInstance<BiomeTileCounts>().MarshCount > 50;
+
         public int CathedralCount;
         public int MorrowCount;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
+            MarshCount = tileCounts[ModContent.TileType<RainforestGrass>()];
             MorrowCount = tileCounts[ModContent.TileType<OvermorrowdirtTile>()];
             CathedralCount = tileCounts[ModContent.TileType<CathediteTile>()];
             MistyDungeonCount = tileCounts[TileID.BlueDungeonBrick] + tileCounts[TileID.GreenDungeonBrick] + tileCounts[TileID.PinkDungeonBrick] + tileCounts[ModContent.TileType<MothlightBrick>()];
