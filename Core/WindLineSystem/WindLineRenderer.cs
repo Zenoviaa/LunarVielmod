@@ -6,7 +6,6 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.WindLineSystem
