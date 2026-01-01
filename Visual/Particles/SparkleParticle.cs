@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
+using Stellamod.Helpers;
 using Terraria;
 
 namespace Stellamod.Visual.Particles
@@ -16,6 +17,7 @@ namespace Stellamod.Visual.Particles
         public Color outerColor;
         public float dampening;
         public bool fast;
+        public bool flickering;
         public override void OnSpawn()
         {
             gravity = 0.2f;
@@ -57,7 +59,13 @@ namespace Stellamod.Visual.Particles
             shader.Apply();
 
             var textureAsset = GetTexture();
-            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, Color.White, Rotation, Frame.Size() / 2f, Scale, SpriteEffects.None, 0);
+
+            Color color = Color.White;
+            if (flickering)
+            {
+                color *= ExtraMath.Osc(0f, 1f, speed: 8, 0);
+            }
+            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, color, Rotation, Frame.Size() / 2f, Scale, SpriteEffects.None, 0);
         }
     }
 }

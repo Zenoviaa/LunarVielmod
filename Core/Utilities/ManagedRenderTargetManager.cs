@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Pixelation;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -63,7 +64,7 @@ namespace Stellamod.Core.Utilities
 
         public static Point GetScreenTargetSize()
         {
-            return new Point(Main.screenTarget.Width, Main.screenTarget.Height);
+            return new Point(Main.screenWidth, Main.screenHeight);
         }
 
         public static void InitializeDummyTarget()
@@ -135,10 +136,11 @@ namespace Stellamod.Core.Utilities
 
         private void ResizeRenderTargets()
         {
+  
             Point screenSize = Main.ScreenSize;
             if (_oldScreenSize == screenSize)
                 return;
-
+            Console.WriteLine($"Resize { screenSize}"  );
             for (int i = 0; i < _managedRenderTargets.Count; i++)
             {
                 ManagedRenderTarget managedRenderTarget = _managedRenderTargets[i];
