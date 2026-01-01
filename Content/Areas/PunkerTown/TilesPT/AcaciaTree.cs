@@ -283,7 +283,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 
         private Rectangle GetTopFrame(int rand)
         {
-            int frameWidth = _topsTextureAsset.Width() / 3;
+            int frameWidth = _topsTextureAsset.Width() / 4;
             int frameHeight = _topsTextureAsset.Height();
             Rectangle frame = new Rectangle(frameWidth * rand, 0, frameWidth, frameHeight);
             return frame;
@@ -295,7 +295,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             Vector2 pos = (new Vector2(i + 1, j) + VeilGen.TileAdj) * 16;
 
             Color color = Lighting.GetColor(i, j);
-            Rectangle frame = GetTopFrame(_random.Next(0, 3));
+            Rectangle frame = GetTopFrame(_random.Next(0, 4));
             spriteBatch.Draw(_topsTextureAsset.Value, pos - Main.screenPosition, frame, color, GetLeafSway(3, 0.05f, 0.008f),
                 new Vector2(frame.Width / 2, frame.Height), 1, 0, 1);
 
