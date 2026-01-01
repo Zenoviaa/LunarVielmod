@@ -50,6 +50,14 @@ namespace Stellamod.Content.Biomes
                     ForegroundParticleRenderer.NewParticle<Sandstrike>();
                 }
             }
+
+            if (ZoneMarsh)
+            {
+                if (Main.rand.NextBool(5))
+                {
+                    ForegroundParticleRenderer.NewParticle<MarshLeaf>();
+                }
+            }
         }
 
         private void SpringHillsForegroundBackground()
