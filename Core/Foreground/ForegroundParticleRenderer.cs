@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.Threading;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using System;
 using System.Linq;
@@ -57,7 +58,7 @@ public class ForegroundParticleRenderer : ModSystem
     private void DrawForegroundGores(On_Main.orig_DrawDust orig, Main self)
     {
         orig(self);
-        DrawForeground();
+       // DrawForeground();
     }
 
     public override void OnModUnload()
@@ -76,6 +77,7 @@ public class ForegroundParticleRenderer : ModSystem
                 UpdateParticle(i);
             }
         });
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedForeground, DrawLayer.OverPlayers);
     }
 
     /// <summary>
@@ -134,6 +136,28 @@ public class ForegroundParticleRenderer : ModSystem
         return drawOrigin;
     }
 
+    private void DrawPixelatedForeground(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        for (int i = 0; i < Max_Particle_Count; i++)
+        {
+            ForegroundParticle particle = _particles[i];
+            if (!particle.active)
+                continue;
+
+            Vector2 drawPosition = particle.position - Main.screenPosition;
+            Vector2 drawOrigin = GetDrawOrigin(particle);
+            Color lightColour = Lighting.GetColor((int)(drawPosition.X / 16f), (int)(drawPosition.Y / 16f));
+            Color frontColour = (particle.position.Y / 16f < Main.worldSurface) ? Main.ColorOfTheSkies : new Color(85, 85, 85);
+            Color drawColor = Color.Lerp(lightColour, frontColour, (particle.parallax - (0.25f)) / 1.25f);
+
+            float inAlpha = EasingFunction.InOutSine(particle.timer / 30f);
+            float outAlpha = 1f - ((particle.timer - 570f) / 30f);
+            float alpha = inAlpha * outAlpha;
+            drawColor *= alpha;
+            Texture2D textureAsset = _particleTextureAssets[particle.type];
+            spriteBatch.Draw(textureAsset, drawPosition, particle.frame, drawColor, particle.rotation, drawOrigin, particle.scale, SpriteEffects.None, 0);
+        }
+    }
     private void DrawForeground()
     {
         SpriteBatch spriteBatch = Main.spriteBatch;

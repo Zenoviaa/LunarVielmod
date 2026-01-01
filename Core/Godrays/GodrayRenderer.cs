@@ -205,7 +205,7 @@ namespace Stellamod.Core.Godrays
 
                 float width = ExtraMath.Osc(0, 1f, 0, i);
                 float lengthModifier = ExtraMath.Osc(0.5f, 1f, 0, i);
-                CalculateVertices(i, particle.position, 1500 * lengthModifier, 64 * width + 16, rotation);
+                CalculateVertices(i, particle.position, 2000 * lengthModifier, 64 * width + 16, rotation);
                 PushVertices(i);
                 _primitiveCount += 2;
               

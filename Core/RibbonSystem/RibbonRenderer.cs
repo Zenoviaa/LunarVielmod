@@ -333,7 +333,7 @@ namespace Stellamod.Core.RibbonSystem
                 GatherRibbonVertices();
             }
 
-            if(_vertexIndex >= 0)
+            if(_vertexIndex > 0)
             {
                 PixelationManager.QueueSpritebatchDrawAction(RenderPixelatedFlags, DrawLayer.BehindNPCsWithOutline);
                 PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedRibbons, DrawLayer.BehindNPCsWithOutline);
@@ -454,6 +454,9 @@ namespace Stellamod.Core.RibbonSystem
         
         private void RenderPixelatedRibbons(GraphicsDevice graphicsDevice)
         {
+            if (_vertexIndex <= 0)
+                return;
+
             //Apply the flag shader :p 
             var flagShader = FlagShader.Instance;
             flagShader.ApplyPasses();
