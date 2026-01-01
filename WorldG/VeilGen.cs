@@ -922,8 +922,6 @@ namespace Stellamod.WorldG
         }
         public static void PlaceAcaciaTrees(int treex, int treey, int height)
         {
-            treey -= 1;
-
             if (treey - height < 1)
                 return;
 
@@ -935,16 +933,16 @@ namespace Stellamod.WorldG
                 }
             }
 
-            WorldGen.PlaceTile(treex, treey - 1, ModContent.TileType<AcaciaTree>(), true, true);
+            WorldGen.PlaceTile(treex, treey, ModContent.TileType<AcaciaTree>(), true, true);
             for (int y = 0; y < height; y++)
             {
                 if(y == height -1 )
                 {
-                    WorldGen.PlaceTile(treex, treey - (y + 2), ModContent.TileType<AcaciaTreeTop>(), true, true);
+                    WorldGen.PlaceTile(treex, treey - (y + 1), ModContent.TileType<AcaciaTreeTop>(), true, true);
                 }
                 else
                 {
-                    WorldGen.PlaceTile(treex, treey - (y + 2), ModContent.TileType<AcaciaTree>(), true, true);
+                    WorldGen.PlaceTile(treex, treey - (y + 1), ModContent.TileType<AcaciaTree>(), true, true);
 
                 }
      

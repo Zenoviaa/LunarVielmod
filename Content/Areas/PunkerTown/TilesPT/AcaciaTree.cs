@@ -221,7 +221,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
                 flip = SpriteEffects.FlipHorizontally;
             }
 
-            bool drawBranch = _random.NextBool(6);
+            bool drawBranch = _random.NextBool(4);
             Vector2 branchoffset = new Vector2(-2, 0);
             if (drawBranch)
             {

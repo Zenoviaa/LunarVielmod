@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
@@ -14,6 +15,8 @@ namespace Stellamod.Core.Foreground
     {
         public float fade;
         public bool tilingInBothAxes;
+        public Vector2 totalParallax;
+        public Vector2 drawOffset;
         public sealed override void SetupContent()
         {
             base.SetupContent();
@@ -79,7 +82,16 @@ namespace Stellamod.Core.Foreground
                 }
                 else
                 {
-                    layer.fade -= 0.01f;
+                    if(layer.fade > 0)
+                    {
+                        layer.fade -= 0.01f;
+                        if(layer.fade <= 0)
+                        {
+                            layer.totalParallax = Vector2.Zero;
+                        }
+                    }
+      
+
                 }
                 layer.fade = MathHelper.Clamp(layer.fade, 0f, 1f);
                 if (layer.fade > 0)
@@ -188,28 +200,25 @@ namespace Stellamod.Core.Foreground
             float drawWidth = foregroundTexture.Width;
             float drawHeight = foregroundTexture.Height * scale;
 
-            int worldSurfaceY = (int)((Main.worldSurface - 50) * 16);
-            int cameraY = (int)Main.Camera.Center.Y;
-            int diff = cameraY - worldSurfaceY;
-            diff = -diff;
-
 
             Vector2 parallax = Vector2.Zero;
             float zLayer = 0f;
             layer.SetLayering(ref zLayer, ref parallax);
-
-            float yParallax = (diff * parallax.Y);
-
-            float cameraX = (Main.Camera.Center.X);
-            float xParallax = (cameraX * parallax.X);
-
             float y = (Main.screenHeight - drawHeight);
+
+            Vector2 oldScreenPosition = Main.screenLastPosition;
+            Vector2 screenPosition = Main.screenPosition;
+            Vector2 cameraMovement = screenPosition - oldScreenPosition;
+            Vector2 parallaxAdd = cameraMovement * parallax;
+            layer.totalParallax += parallaxAdd;
+
             Vector2 drawPosition = Vector2.Zero;
             drawPosition.Y += y;
-            drawPosition.Y += yParallax;
-            drawPosition.X -= xParallax;
-            drawPosition.X += 20000;
-            drawPosition.Y += 500;
+            drawPosition.Y -= layer.totalParallax.Y ;
+            drawPosition.X -= layer.totalParallax.X;
+            drawPosition.X -= 5000;
+            drawPosition += layer.drawOffset;
+
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;

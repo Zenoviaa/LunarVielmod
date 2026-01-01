@@ -130,7 +130,7 @@ namespace Stellamod.Core.WindLineSystem
 
 
             float windSpeed = MathHelper.Clamp(MathF.Abs(Main.windSpeedCurrent), 0f, 1f);
-            int denom = (int)MathHelper.Lerp(30, 15, windSpeed);
+            int denom = (int)MathHelper.Lerp(60, 30, windSpeed);
 
 
             int yPosition = Main.LocalPlayer.position.ToTileCoordinates().Y;

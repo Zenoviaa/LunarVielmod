@@ -7,6 +7,11 @@ namespace Stellamod.Backgrounds
 {
     public class MarshReeds : ForegroundLayer
     {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            drawOffset = new Vector2(0, -150);
+        }
         public override bool IsActive()
         {
             return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMarsh;
@@ -16,6 +21,7 @@ namespace Stellamod.Backgrounds
             base.SetLayering(ref zLayer, ref parallax);
             parallax.X = 1.2f;
             parallax.Y = 1;
+         
         }
     }
 }
