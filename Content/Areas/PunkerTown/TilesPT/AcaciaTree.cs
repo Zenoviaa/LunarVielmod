@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.Godrays;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
@@ -302,6 +303,13 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 
             AcaciaTreeVineRenderer vineRenderer = ModContent.GetInstance<AcaciaTreeVineRenderer>();
             vineRenderer.AddVine(new Point(i, j), 6);
+            if (Main.rand.NextBool(250))
+            {
+                GodrayRenderer godrayRenderer = ModContent.GetInstance<GodrayRenderer>();
+                Vector2 centerPos = new Point(i, j).ToWorldCoordinates();
+                centerPos.Y += 128;
+                godrayRenderer.AddGodrayParticle(centerPos + Main.rand.NextVector2Circular(64, 64));
+            }
         }
 
         public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)

@@ -28,6 +28,7 @@ namespace Stellamod.Core.Pixelation
         public delegate void PrimitivesDrawAction(GraphicsDevice graphicsDevice);
         public delegate void SpritebatchDrawAction(SpriteBatch spriteBatch, Vector2 screenPos);
 
+        private int _renderCount = 0;
         private ManagedRenderTarget _downScaleRenderTarget;
         private ManagedRenderTarget _originalRenderTarget;
         private Queue<SpritebatchDrawAction> _spritebatchActionsQueue;
@@ -63,6 +64,11 @@ namespace Stellamod.Core.Pixelation
 
         private void RenderToOriginalRenderTarget()
         {
+            _renderCount = 0;
+            if(_primitivesActionsQueue.Count <= 0 && _spritebatchActionsQueue.Count <= 0)
+            {
+                return;
+            }
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
             graphicsDevice.SetRenderTarget(_originalRenderTarget);
@@ -76,6 +82,7 @@ namespace Stellamod.Core.Pixelation
                 graphicsDevice.RasterizerState = RasterizerState.CullNone;
                 PrimitivesDrawAction drawAction = _primitivesActionsQueue.Dequeue();
                 drawAction(graphicsDevice);
+                _renderCount++;
             }
 
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
@@ -83,6 +90,7 @@ namespace Stellamod.Core.Pixelation
             {
                 SpritebatchDrawAction drawAction = _spritebatchActionsQueue.Dequeue();
                 drawAction(spriteBatch, Main.screenPosition);
+                _renderCount++;
             }
             spriteBatch.End();
 
@@ -90,6 +98,9 @@ namespace Stellamod.Core.Pixelation
 
         private void RenderToDownscaledRenderTarget()
         {
+            if (_renderCount <= 0)
+                return;
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
             graphicsDevice.SetRenderTarget(_downScaleRenderTarget);
@@ -103,6 +114,9 @@ namespace Stellamod.Core.Pixelation
 
         public void DrawToScreen()
         {
+            if (_renderCount <= 0)
+                return;
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             if (outlineColor.HasValue)
             {
@@ -195,6 +209,7 @@ namespace Stellamod.Core.Pixelation
         private PixelTarget _behindNPCsPixelTargetWithOutline;
         private PixelTarget _frontGrassPixelTarget;
         private PixelTarget _backGrassPixelTarget;
+        private PixelTarget _overPlayersPixelTarget;
         //This one needs to go last
         public int Priority => 10;
 
@@ -219,6 +234,8 @@ namespace Stellamod.Core.Pixelation
 
             _backGrassPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
             _backGrassPixelTarget.outlineColor = Color.Lerp(Color.Goldenrod, Color.Black, 0.7f);
+
+            _overPlayersPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
         }
 
         private void RenderBehindTiles(On_Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
@@ -242,6 +259,7 @@ namespace Stellamod.Core.Pixelation
             if (!Main.gameMenu)
             {
                 _frontGrassPixelTarget.DrawToScreen();
+                _overPlayersPixelTarget.DrawToScreen();
             }
         }
 
@@ -278,6 +296,8 @@ namespace Stellamod.Core.Pixelation
                     return _frontGrassPixelTarget;
                 case DrawLayer.BackGrassTarget:
                     return _backGrassPixelTarget;
+                case DrawLayer.OverPlayers:
+                    return _overPlayersPixelTarget;
             }
         }
         public static void QueueSpritebatchDrawAction(PixelTarget.SpritebatchDrawAction drawAction, DrawLayer drawLayer = DrawLayer.OverNPCs)
@@ -309,6 +329,7 @@ namespace Stellamod.Core.Pixelation
             _behindNPCsPixelTargetWithOutline.Render();
             _frontGrassPixelTarget.Render();
             _backGrassPixelTarget.Render();
+            _overPlayersPixelTarget.Render();
         }
     }
 
@@ -320,6 +341,7 @@ namespace Stellamod.Core.Pixelation
         OverNPCsAdditive = 2,
              BehindNPCsWithOutline = 3,
              FrontGrassTarget=4,
-             BackGrassTarget=5
+             BackGrassTarget=5,
+             OverPlayers=6
     }
 }

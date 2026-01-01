@@ -35,7 +35,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float interp = saturate(distanceFromCenter / maxDistance);
     float alphaFactor = smoothstep(1.0, 0.0, interp);
     
-    float3 glowingColor = lerp(input.Color2, input.Color, alphaFactor);
+    float3 glowingColor = lerp(input.Color2.rgb, input.Color.rgb, alphaFactor);
     float3 mixedColor = lerp(float3(0.0, 0.0, 0.0), glowingColor, alphaFactor);    
     return float4(mixedColor, 0.0);
 }
