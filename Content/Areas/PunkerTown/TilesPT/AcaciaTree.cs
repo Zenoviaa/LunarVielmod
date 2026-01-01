@@ -174,7 +174,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 
                 VerletChain chain = vine.Value;
                 chain.points[0].position = CalculateRootPosition(vine.Key);
-                chain.externalForces = Vector2.UnitX * Main.windSpeedCurrent * ExtraMath.Osc(0, 1f, offset: worldPoint.X) * 0.5f;
+                chain.externalForces = Vector2.UnitX * Main.windSpeedCurrent * ExtraMath.Osc(0, 1f, offset: worldPoint.X) * 0.1f;
 
                 for(int i = 0; i < chain.points.Length; i++)
                 {

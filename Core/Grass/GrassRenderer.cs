@@ -4,6 +4,7 @@ using ReLogic.Threading;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
 using Terraria;
@@ -126,12 +127,15 @@ namespace Stellamod.Core.Grass
 
             //Apply offset based on if something is interacting with this grass
             //For now we can just check the player
-            float dist = Vector2.Distance(Main.LocalPlayer.Center, blade.position);
-            float interactDistance = 64;
-            float interp = dist / interactDistance;
-            interp = 1f - MathHelper.Clamp(interp, 0, 1);
-            float x = MathF.Sign(Main.LocalPlayer.Center.X - blade.position.X);
-            topBladePosition += Vector2.UnitX * -x * interp * blade.length * 0.05f;
+            VelocityMap velocityMap = ModContent.GetInstance<VelocityMap>();
+            Vector2 externalForces = velocityMap.GetDecayingVelocity(topBladePosition - new Vector2(16, 0), 32, 80);
+            Vector2 normalForce = externalForces.SafeNormalize(Vector2.Zero);
+            float speed = externalForces.Length();
+            float maxSpeed = 32;
+            float newSpeed = MathF.Min(speed, maxSpeed);
+            Vector2 adjustedForces = normalForce * newSpeed;// * ExtraMath.Osc(0.5f, 1f, 6);
+            topBladePosition += adjustedForces * 0.63f;
+
 
             //Round the x position to prevent blades from fading out of existence
             topBladePosition.X = MathF.Floor(topBladePosition.X);
