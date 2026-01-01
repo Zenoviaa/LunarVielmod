@@ -53,9 +53,13 @@ namespace Stellamod.Content.Biomes
 
             if (ZoneMarsh)
             {
-                if (Main.rand.NextBool(5))
+                if (Main.rand.NextBool(7))
                 {
                     ForegroundParticleRenderer.NewParticle<MarshLeaf>();
+                }
+                if (Main.rand.NextBool(7))
+                {
+                    ForegroundParticleRenderer.NewParticle<MarshPetal>();
                 }
             }
         }
