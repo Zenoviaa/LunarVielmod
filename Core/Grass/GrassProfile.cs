@@ -53,6 +53,7 @@ namespace Stellamod.Core.Grass
             worldPosition.Y += 8 * ExtraMath.Osc(0f, 1f, 0, i * 3);
 
             int num = (int)(maxExtraBladesPerPatch * ExtraMath.Osc(0f, 1f, 0, i * 0.3f)) + minBladesPerPatch;
+          //  num *= (int)ExtraMath.Osc(0f, 2f, 0, i * 0.6f);
             grassRenderer.AddGrassPatch(finalColor, worldPosition, -Vector2.UnitY, h, w, num);
 
 

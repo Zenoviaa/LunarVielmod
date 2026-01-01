@@ -296,7 +296,8 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 
             Color color = Lighting.GetColor(i, j);
             Rectangle frame = GetTopFrame(_random.Next(0, 5));
-            spriteBatch.Draw(_topsTextureAsset.Value, pos - Main.screenPosition, frame, color, GetLeafSway(3, 0.05f, 0.008f),
+            Vector2 offset = new Vector2(-13, 0);
+            spriteBatch.Draw(_topsTextureAsset.Value, pos - Main.screenPosition + offset, frame, color, GetLeafSway(3, 0.05f, 0.008f),
                 new Vector2(frame.Width / 2, frame.Height), 1, 0, 1);
 
             AcaciaTreeVineRenderer vineRenderer = ModContent.GetInstance<AcaciaTreeVineRenderer>();
