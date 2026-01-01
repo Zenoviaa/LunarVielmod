@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
 using Stellamod.Core.LunarLightingSystem;
 using System;
@@ -112,6 +113,31 @@ namespace Stellamod.Core.Backgrounds
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
         }
+        private void DrawLoop2()
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+
+            //Sort the list by their priority, so the higest priority one is in front
+            drawingCustomBG = false;
+
+            foreach (var bg in Backgrounds)
+            {
+                bg.SetDrawDefaults();
+                bg.ParallaxYOffset = -100;
+                bg.Alpha += bg.IsActive() ? 0.01f : -0.01f;
+                bg.Alpha = MathHelper.Clamp(bg.Alpha, 0, 1);
+                if (bg.Alpha != 0)
+                {
+
+
+                    drawingCustomBG = true;
+                    DrawBG(bg);
+                }
+            }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+        }
         private void DrawBG(CustomBG bg)
         {
             _currentShader = null;
@@ -124,24 +150,10 @@ namespace Stellamod.Core.Backgrounds
         private void DrawBGLayer(CustomBG bg, CustomBGLayer bgLayer, float drawAlpha)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            if (bgLayer.BlendState != _currentBlendState || bgLayer.Shader != _currentShader)
-            {
-                Effect effect = bgLayer.Shader == null ? null : bgLayer.Shader.Effect;
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred,
-                    bgLayer.BlendState,
-                    SamplerState.PointWrap,
-                    DepthStencilState.None,
-                    RasterizerState.CullCounterClockwise,
-                    effect);
-                _currentBlendState = bgLayer.BlendState;
-                _currentShader = bgLayer.Shader;
-                _currentShader?.ApplyToEffect();
-            }
             Color drawColor = Main.ColorOfTheSkies * drawAlpha;
             if (bg.NoSurfaceLight)
                 drawColor = Color.White * drawAlpha;
-            int parallaxX = (int)(Main.screenPosition.X * bgLayer.Parallax * 0.75f);
+            float parallaxX = Main.screenPosition.X * bgLayer.Parallax * 0.25f;
             int width = (int)bgLayer.Texture.Size().X;
             int height = (int)bgLayer.Texture.Size().Y;
 
@@ -170,10 +182,18 @@ namespace Stellamod.Core.Backgrounds
             drawPosition.Y += bg.ParallaxYOffset;
             float drawScale = 2 * bg.DrawScale * bgLayer.DrawScale;
 
+            if (bgLayer.Shader != null)
+            {
+                BeginGradientLayer(spriteBatch, bgLayer);
+            } 
+            else
+            {
+                BeginParallaxLayer(spriteBatch, parallaxX, parallaxY);
+            }
             spriteBatch.Draw(
                 bgLayer.Texture.Value,
                 drawPosition,
-                new Rectangle(parallaxX, 0, width, height),
+                null,
                 drawColor.MultiplyRGB(bg.DrawColor) * bg.Alpha,
                 0f,
                 default,
@@ -181,6 +201,34 @@ namespace Stellamod.Core.Backgrounds
                 SpriteEffects.None,
                 0f
             );
+        }
+
+        private void BeginGradientLayer(SpriteBatch spriteBatch, CustomBGLayer bgLayer)
+        {
+            Effect effect = bgLayer.Shader == null ? null : bgLayer.Shader.Effect;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                bgLayer.BlendState,
+                SamplerState.PointWrap,
+                DepthStencilState.None,
+                RasterizerState.CullCounterClockwise,
+                effect);
+            _currentBlendState = bgLayer.BlendState;
+            _currentShader = bgLayer.Shader;
+            _currentShader?.ApplyToEffect();
+        }
+
+        private void BeginParallaxLayer(SpriteBatch spriteBatch, float parallaxX, float parallaxY)
+        {
+            BackgroundParallaxShader backgroundShader = BackgroundParallaxShader.Instance;
+            backgroundShader.Parallax = new Vector2(parallaxX * 0.001f, parallaxY);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullCounterClockwise,
+                effect: backgroundShader.Effect);
         }
     }
 }

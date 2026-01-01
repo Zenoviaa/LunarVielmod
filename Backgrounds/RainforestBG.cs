@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.Backgrounds;
 using Stellamod.Core.Effects;
+using Terraria;
 using Terraria.GameContent.Drawing;
 
 namespace Stellamod.Backgrounds
@@ -37,12 +39,13 @@ namespace Stellamod.Backgrounds
             midFogLayer.Parallax = 0.35f;
             midFogLayer.DrawOffset = Vector2.Zero;
 
+            
             MistShader midMistShader = new MistShader();
             midMistShader.StartColor = Color.DarkGray * 0.25f;
             midMistShader.EndColor = Color.Transparent;
             midFogLayer.Shader = midMistShader;
             AddLayer(midFogLayer);
-
+            
             CustomBGLayer frontLayer = new CustomBGLayer();
             frontLayer.SetTexture("Assets/Textures/Backgrounds/RainforestFront");
             frontLayer.Parallax = 0.5f;
@@ -54,6 +57,7 @@ namespace Stellamod.Backgrounds
             frontFogLayer.Parallax = 0.5f;
             frontFogLayer.DrawOffset = Vector2.Zero;
 
+            
             MistShader frontMistShader = new MistShader();
             frontMistShader.StartColor = Color.DarkGray * 0.5f;
             frontMistShader.EndColor = Color.Transparent;
@@ -64,10 +68,7 @@ namespace Stellamod.Backgrounds
 
         public override bool IsActive()
         {
-            //TODO:
-            //Come back later to make it check for rainforest biome
-
-            return false;
+            return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMarsh;
         }
     }
 }

@@ -17,7 +17,6 @@ namespace Stellamod.Core.Utilities
         private readonly int _downSamples;
         private readonly ResizeFunction _resizeFunction;
         private RenderTarget2D _renderTarget;
-        private static RenderTarget2D _dummyRenderTarget;
         private bool _mipMap;
         private SurfaceFormat _surfaceFormat;
         private DepthFormat _depthFormat;
