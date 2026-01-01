@@ -20,13 +20,13 @@ namespace Stellamod.Content.Areas.PunkerTown
 
 
                 //Normal music
-                if (Main.dayTime)
+                if (Main.dayTime && Main.raining)
                 {
                     return MusicLoader.GetMusicSlot(Mod, "Assets/Music/Acidic_Terors");
                 }
                 else
                 {
-                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/Acidic_Nightmares");
+                    return -1;
                 }
             }
         }

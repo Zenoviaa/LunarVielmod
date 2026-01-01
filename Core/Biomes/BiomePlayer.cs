@@ -16,11 +16,16 @@ namespace Stellamod.Content.Biomes
         {
             base.PostUpdateMiscEffects();
             AddForegroundOrBackground();
+            Player.ManageSpecialBiomeVisuals("Stellamod:Marsh", ZoneMarsh);
         }
 
         private void AddForegroundOrBackground()
         {
             SpringHillsForegroundBackground();
+            if (ZoneMarsh)
+            {
+                Player.ZoneJungle = true;
+            }
             MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneIlluria || myPlayer.ZoneIshtar || myPlayer.ZoneAbyss)
             {

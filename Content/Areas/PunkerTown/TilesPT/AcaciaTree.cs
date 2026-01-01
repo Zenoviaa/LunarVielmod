@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.TilesNew.RainforestTiles;
@@ -111,14 +113,155 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             }
         }
     }
+    public class AcaciaTreeVineRenderer : ModSystem
+    {
+        private Asset<Texture2D> _vineTextureAsset;
+        private List<Point> _invalidPoints;
+        private Dictionary<Point, VerletChain> _vines;
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            _invalidPoints = new List<Point>(10);
+            _vines = new Dictionary<Point, VerletChain>();
+            _vineTextureAsset = ModContent.Request<Texture2D>(typeof(AcaciaTreeTop).DirectoryHere() + "/AcaciaTreeTop_Vine");
+        }
+
+        public void AddVine(Point point, int segments)
+        {
+            if (_vines.ContainsKey(point))
+                return;
+
+            Vector2 rootPosition = CalculateRootPosition(point);
+            VerletChain chain = new VerletChain(segments, rootPosition, Vector2.UnitY * 24);
+            chain.points[0].pinned = true;
+            chain.points[0].position = rootPosition;
+            chain.segmentLength = 24;
+            chain.subdivisionCount = 1;
+            chain.gravity = 0.25f;
+            _vines.Add(point, chain);
+        }
+
+        public void KillVine(Point point)
+        {
+            _vines.Remove(point);
+        }
+
+
+        private Vector2 CalculateRootPosition(Point point)
+        {
+            Vector2 worldPosition = point.ToWorldCoordinates();
+            Vector2 rootPosition = worldPosition;
+            rootPosition.Y -= 32;
+            rootPosition.X += ExtraMath.Osc(-36, 36, 0, point.X);
+            return rootPosition;
+        }
+        public override void PostDrawTiles()
+        {
+            base.PostDrawTiles();
+            _invalidPoints.Clear();
+            int width = Main.screenWidth;
+            int height = Main.screenHeight; 
+            Rectangle screenRectangle = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, width, height);
+            VelocityMap velocityMap = ModContent.GetInstance<VelocityMap>();
+            foreach(var vine in _vines)
+            {
+                Vector2 worldPoint = vine.Key.ToWorldCoordinates();
+                if (!screenRectangle.Contains(worldPoint.ToPoint()))
+                {
+                    _invalidPoints.Add(vine.Key);
+                    continue;
+                }
+
+                VerletChain chain = vine.Value;
+                chain.points[0].position = CalculateRootPosition(vine.Key);
+                chain.externalForces = Vector2.UnitX * Main.windSpeedCurrent * ExtraMath.Osc(0, 1f, offset: worldPoint.X) * 0.5f;
+
+                for(int i = 0; i < chain.points.Length; i++)
+                {
+                    Vector2 effector = chain.points[i].position;
+                    chain.externalForces += velocityMap.GetVelocity(effector) * 0.2f;
+                }
+   
+                /*
+       
+                float distanceToEndEffector = Vector2.Distance(Main.LocalPlayer.Center, endEffector);
+                if(distanceToEndEffector <= 32)
+                {
+                    chain.g += Main.LocalPlayer.velocity * 0.02f;
+                }*/
+                chain.Update();
+            }
+
+            for(int i = 0; i < _invalidPoints.Count; i++)
+            {
+                _vines.Remove(_invalidPoints[i]);
+            }
+            PixelationManager.QueueSpritebatchDrawAction(RenderPixelatedVines, DrawLayer.OverNPCs);
+        }
+
+        private void RenderPixelatedVines(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            foreach(var vine in _vines)
+            {
+                VerletChain chain = vine.Value;
+                Color lightColor = Lighting.GetColor(vine.Key.X, vine.Key.Y);
+                int variantFrameIndex = (int)ExtraMath.Osc(0, 2, 0, offset: vine.Key.X);
+
+                int frameHeight = 32;
+                int frameWidth = 28;
+                int variantOffset = variantFrameIndex * frameHeight * 3;
+                Vector2 origin = new Vector2(frameWidth / 2f, 0);
+
+                for (int i = 0; i < chain.points.Length; i++)
+                {
+                    VerletPoint point = chain.points[i];
+                    Vector2 position = point.position;
+                    Vector2 drawPosition = position - screenPos;
+                    int localFrameIndex;
+                    if(i == 0)
+                    {
+                        //Leaf frame
+                        localFrameIndex = 0;
+                    } else if (i == chain.points.Length - 1)
+                    {
+                        //edge frame
+                        localFrameIndex = 2;
+                    }
+                    else
+                    {
+                        localFrameIndex = 1;
+                    }
+
+                    int localFrameY = localFrameIndex * frameHeight;
+                    int frameY = localFrameY + variantOffset;
+                    Rectangle frame = new Rectangle(0, frameY, frameWidth, frameHeight);
+           
+                    float rotation;
+                    if(i < chain.points.Length - 1)
+                    {
+                        rotation = (chain.points[i + 1].position - point.position).ToRotation() - MathHelper.PiOver2;
+                    }
+                    else
+                    {
+                        rotation = (point.position - chain.points[i - 1].position).ToRotation() - MathHelper.PiOver2;
+                    }
+                        
+                    spriteBatch.Draw(_vineTextureAsset.Value, drawPosition, frame, lightColor, rotation, origin, 1, SpriteEffects.None, 0);
+                }
+            }
+        }
+    }
+
     public class AcaciaTreeTop : ModTile
     {
         private UnifiedRandom _random;
         private Asset<Texture2D> _topsTextureAsset;
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
             _topsTextureAsset = ModContent.Request<Texture2D>(Texture + "_Tops");
+
             _random = new UnifiedRandom(0);
             LocalizedText name = CreateMapEntryName();
             TileID.Sets.IsATreeTrunk[Type] = true;
@@ -153,6 +296,9 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             Rectangle frame = GetTopFrame(_random.Next(0, 3));
             spriteBatch.Draw(_topsTextureAsset.Value, pos - Main.screenPosition, frame, color, GetLeafSway(3, 0.05f, 0.008f),
                 new Vector2(frame.Width / 2, frame.Height), 1, 0, 1);
+
+            AcaciaTreeVineRenderer vineRenderer = ModContent.GetInstance<AcaciaTreeVineRenderer>();
+            vineRenderer.AddVine(new Point(i, j), 6);
         }
 
         public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
@@ -161,6 +307,10 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
                 return;
 
             Framing.GetTileSafely(i, j).HasTile = false;
+
+
+            AcaciaTreeVineRenderer vineRenderer = ModContent.GetInstance<AcaciaTreeVineRenderer>();
+            vineRenderer.KillVine(new Point(i, j));
         }
 
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)

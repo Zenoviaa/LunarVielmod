@@ -50,7 +50,7 @@ namespace Stellamod.WorldG
         private float GetMarshHeight(float x)
         {
             float bump = x * (4 - x * 4);
-            float mountains = MathF.Sin(x * 8) * 0.5f + 0.5f;
+            float mountains = MathF.Sin(x * 2) * 0.5f + 0.5f;
             float mountains2 = MathF.Sin(x * 2) * 0.5f + 0.7f;
             float dips = MathF.Sin(x * 32) * 0.1f;
             float roughness = MathF.Sin(x * 120) * 0.01f;
