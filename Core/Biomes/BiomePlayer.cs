@@ -62,6 +62,7 @@ namespace Stellamod.Content.Biomes
                     ForegroundParticleRenderer.NewParticle<MarshPetal>();
                 }
             }
+            
         }
 
         private void SpringHillsForegroundBackground()
