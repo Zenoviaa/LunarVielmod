@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.PunkerTown.TilesPT;
 using Stellamod.Core.Grass;
 using Stellamod.Helpers;
 using Terraria;
@@ -38,20 +39,7 @@ namespace Stellamod.TilesNew.RainforestTiles
                 if (!tile.HasTile)
                 {
                     //Render grass
-                    Vector2 worldPosition = new Point(i, j).ToWorldCoordinates();
-                    GrassRenderer grassRenderer = ModContent.GetInstance<GrassRenderer>();
-                    Color grassColor = new Color(80, 107, 26);
-                    Color lightColor = Lighting.GetColor(i, j);
-                    grassColor = grassColor.MultiplyRGB(lightColor);
-                    float height = ExtraMath.Osc(0.5f, 1f, 0, i * 3);
-                    float width = ExtraMath.Osc(0.5f, 1f, 0, i * 3);
-                    float h = height * 80;
-                    float w = width * 4.5f;
-                    worldPosition.Y += 8 * ExtraMath.Osc(0f, 1f, 0, i * 3);
-
-
-                    int num = (int)(4 * ExtraMath.Osc(0f, 1f, 0, i * 0.3f)) + 2;
-                    grassRenderer.AddGrassPatch(grassColor, worldPosition, -Vector2.UnitY, h, w, num);
+                    ModContent.GetInstance<MarshGrass>().Grow(i, j);
                 }
             }
 

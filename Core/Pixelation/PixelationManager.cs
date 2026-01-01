@@ -78,7 +78,7 @@ namespace Stellamod.Core.Pixelation
                 drawAction(graphicsDevice);
             }
 
-            spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+            spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             while (_spritebatchActionsQueue.Count > 0)
             {
                 SpritebatchDrawAction drawAction = _spritebatchActionsQueue.Dequeue();

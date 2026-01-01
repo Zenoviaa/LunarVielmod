@@ -245,8 +245,10 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
                     {
                         rotation = (point.position - chain.points[i - 1].position).ToRotation() - MathHelper.PiOver2;
                     }
-                        
-                    spriteBatch.Draw(_vineTextureAsset.Value, drawPosition, frame, lightColor, rotation, origin, 1, SpriteEffects.None, 0);
+
+                    Vector2 scale = Vector2.One;
+                    scale.X *= ExtraMath.Osc(0.3f, 1f, 0, offset: vine.Key.X);
+                    spriteBatch.Draw(_vineTextureAsset.Value, drawPosition, frame, lightColor, rotation, origin, scale, SpriteEffects.None, 0);
                 }
             }
         }

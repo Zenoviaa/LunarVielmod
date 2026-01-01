@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using ReLogic.Threading;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Town;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -16,6 +18,12 @@ namespace Stellamod.Core.Grass
     [Autoload(Side = ModSide.Client)]
     public class GrassRenderer : ModSystem
     {
+        public class Reed
+        {
+            public Asset<Texture2D> textureAsset;
+            public Rectangle frame;
+            public int bladeIndex;
+        }
 
         public struct GrassBlade
         {
@@ -27,9 +35,15 @@ namespace Stellamod.Core.Grass
         }
 
         public const int Max_Blade_Count = 1000;
+        public const int Max_Reed_Count = 100;
         private FastNoiseLite _fastNoise;
+
+        private int _reedIndex;
+        private Reed[] _reeds;
         private GrassBlade[] _grassBlades;
         private VertexPositionColor[] _grassVertices;
+
+
         private int _grassIndex;
         private int _grassVertexIndex;
         private float _windTimer;
@@ -42,6 +56,11 @@ namespace Stellamod.Core.Grass
         {
             base.OnModLoad();
             _fastNoise = new FastNoiseLite();
+            _reeds = new Reed[Max_Reed_Count];
+            for(int i = 0; i < _reeds.Length; i++)
+            {
+                _reeds[i] = new Reed();
+            }
             _grassBlades = new GrassBlade[Max_Blade_Count];
             _grassVertices = new VertexPositionColor[Max_Blade_Count * 3];
             On_Main.CheckMonoliths += Monoliths_Hook;
@@ -63,14 +82,17 @@ namespace Stellamod.Core.Grass
 
         public void ClearGrass()
         {
+            _reedIndex = 0;
             _grassIndex = 0;
         }
 
         public override void PostDrawTiles()
         {
             base.PostDrawTiles();
+
             PixelationManager.QueuePrimitivesDrawAction(RenderGrassBack, DrawLayer.BackGrassTarget);
             PixelationManager.QueuePrimitivesDrawAction(RenderGrass, DrawLayer.FrontGrassTarget);
+            PixelationManager.QueueSpritebatchDrawAction(RenderReeds, DrawLayer.FrontGrassTarget);
         }
 
         public void AddGrassPatch(Color color, Vector2 position, Vector2 direction, float length, float width, int numGrasses)
@@ -101,8 +123,23 @@ namespace Stellamod.Core.Grass
             blade.width = width;
             _grassIndex++;
         }
+        public void AddReed<T>() where T : ReedProfile
+        {
+            T t = ModContent.GetInstance<T>();
 
-
+            //TODO: Variance in texture
+            AddReed(t.ReedTextureAsset, t.GetFrame(0));
+        }
+        public void AddReed(Asset<Texture2D> textureAsset, Rectangle frame)
+        {
+            if (_reedIndex >= _reeds.Length)
+                return;
+            ref Reed reed = ref _reeds[_reedIndex];
+            reed.textureAsset = textureAsset;
+            reed.frame = frame;
+            reed.bladeIndex = _grassIndex;
+            _reedIndex++;
+        }
         public void AddGrassVertices(int bladeIndex, Vector2 direction)
         {
             //HIt the maximum number of grasses
@@ -129,12 +166,8 @@ namespace Stellamod.Core.Grass
             //For now we can just check the player
             VelocityMap velocityMap = ModContent.GetInstance<VelocityMap>();
             Vector2 externalForces = velocityMap.GetDecayingVelocity(topBladePosition - new Vector2(16, 0), 32, 80);
-            Vector2 normalForce = externalForces.SafeNormalize(Vector2.Zero);
-            float speed = externalForces.Length();
-            float maxSpeed = 32;
-            float newSpeed = MathF.Min(speed, maxSpeed);
-            Vector2 adjustedForces = normalForce * newSpeed;// * ExtraMath.Osc(0.5f, 1f, 6);
-            topBladePosition += adjustedForces * 0.63f;
+            Vector2 newPosition = topBladePosition + externalForces * 0.63f;
+            topBladePosition = topBladePosition.MoveTowards(newPosition, 32);
 
 
             //Round the x position to prevent blades from fading out of existence
@@ -208,6 +241,35 @@ namespace Stellamod.Core.Grass
             _grassVertexIndex = _grassIndex * 3;
         }
 
+        private void RenderReeds(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+
+            for(int i = 0; i < _reedIndex; i++)
+            {
+                Reed reed = _reeds[i];
+
+                int vertexIndex = reed.bladeIndex * 3;
+                Vector3 midPosition = _grassVertices[vertexIndex ].Position + _grassVertices[vertexIndex + 1].Position;
+                midPosition *= 0.5f;
+
+                Vector3 topPosition = _grassVertices[vertexIndex + 2].Position;
+
+                Vector3 diff = topPosition - midPosition;
+                float rotation = new Vector2(diff.X, diff.Y).ToRotation() + MathHelper.PiOver2;
+
+                Vector2 reedPosition = new Vector2(topPosition.X, topPosition.Y);
+                Vector2 drawPosition = reedPosition - screenPos;
+                Texture2D texture = reed.textureAsset.Value;
+                Rectangle frame = reed.frame;
+                Vector2 origin = new Vector2(frame.Width / 2f, frame.Height);
+
+                Point reedTile = reedPosition.ToTileCoordinates();
+                Color lightColor = Lighting.GetColor(reedTile.X, reedTile.Y);
+                float scale = 1f;
+                scale *= ExtraMath.Osc(0.4f, 1f, 0, _grassBlades[reed.bladeIndex].position.X);
+                spriteBatch.Draw(texture, drawPosition, frame, lightColor, rotation, origin, scale, SpriteEffects.None, 0);
+            }
+        }
         private void RenderGrass(GraphicsDevice graphicsDevice)
         {
             //Yuh
