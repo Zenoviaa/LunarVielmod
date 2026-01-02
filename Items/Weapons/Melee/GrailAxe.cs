@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Slashers.GrailAxe;
 using System.Collections.Generic;

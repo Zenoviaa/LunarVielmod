@@ -1,7 +1,7 @@
-﻿using Stellamod.Core.Bases;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Thrown.Jugglers;
 using Terraria;
 using Terraria.ID;

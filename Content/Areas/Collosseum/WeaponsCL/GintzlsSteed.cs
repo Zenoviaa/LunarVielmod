@@ -1,7 +1,7 @@
-﻿using Stellamod.Core.Bases;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.DataStructures;

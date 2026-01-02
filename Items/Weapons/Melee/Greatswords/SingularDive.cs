@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Projectiles.Slashers.SingularDive;
 using System.Collections.Generic;

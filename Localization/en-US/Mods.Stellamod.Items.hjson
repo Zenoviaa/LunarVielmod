@@ -83,6 +83,12 @@ Common: {
 	BossDamagePercent: "{0} boss max life damage"
 	EnemyDamagePercent: "{0} enemy max life damage"
 	CombatToolCount: x{0} carrying capacity
+	CauldronMoldHelp:
+		'''
+		This item is a [c/FFA500:mold], which serves as a template for creating all sorts of useful items!
+		Take this back to the [c/FFA500:Magic Cauldron] at Witch Town to use it!
+		'''
+	ExpandableTooltipHelp: Hold {0} for more about this item type!
 }
 
 SetBonus: {

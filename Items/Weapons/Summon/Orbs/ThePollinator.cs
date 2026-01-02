@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Whipfx;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Summons.Orbs;
 using System.Collections.Generic;

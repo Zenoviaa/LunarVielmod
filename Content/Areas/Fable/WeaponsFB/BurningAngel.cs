@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
@@ -9,7 +10,6 @@ using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles;
 using Stellamod.Trailing;
 using Stellamod.UI.Systems;

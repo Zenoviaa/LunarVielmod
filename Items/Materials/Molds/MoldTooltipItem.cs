@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Stellamod.Items.Materials.Molds
 {
@@ -12,6 +13,7 @@ namespace Stellamod.Items.Materials.Molds
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         public Item MoldNeeded;
+        
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Slashers.FrostBringer;
 using Terraria;
 using Terraria.DataStructures;

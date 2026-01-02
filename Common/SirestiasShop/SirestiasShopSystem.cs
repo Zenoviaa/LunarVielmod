@@ -52,7 +52,8 @@ namespace Stellamod.Common.SirestiasShop
             CustomCurrencyManager.GetPrices(item, out long sell, out long buy);
             CustomCurrencyManager.GetPriceText(item.shopSpecialCurrency, lines, ref currentLine, buy);
             TooltipLine line = new TooltipLine(Mod, "BuyPrice", lines[0]);
-    
+
+
             tooltips.Add(line);
         }
     }
@@ -715,6 +716,11 @@ namespace Stellamod.Common.SirestiasShop
             uiState.Activate();
         }
 
+        public override void PreUpdateWorld()
+        {
+            base.PreUpdateWorld();
+
+        }
         public Asset<Texture2D> SelectedCurrencyTextureAsset;
 
         public void OpenUI()

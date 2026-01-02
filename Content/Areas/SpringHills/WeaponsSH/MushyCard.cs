@@ -1,7 +1,7 @@
 ﻿using Stellamod.Common.IgnitersNPowders;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Items;
-using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.ModLoader;
 

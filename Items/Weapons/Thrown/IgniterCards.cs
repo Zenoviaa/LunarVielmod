@@ -1,4 +1,5 @@
 using Stellamod.Projectiles.Thrown;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

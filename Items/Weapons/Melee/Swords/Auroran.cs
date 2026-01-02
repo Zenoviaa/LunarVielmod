@@ -1,11 +1,11 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles;
 using Stellamod.Trailing;
 using Terraria;

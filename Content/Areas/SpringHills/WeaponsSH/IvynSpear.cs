@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Gores;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
@@ -9,7 +10,6 @@ using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Trailing;
 using Stellamod.Trails;
 using Terraria;

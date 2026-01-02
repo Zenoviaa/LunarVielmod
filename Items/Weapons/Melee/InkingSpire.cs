@@ -1,7 +1,7 @@
-﻿using Stellamod.Core.Bases;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Trailing;

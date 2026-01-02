@@ -81,6 +81,7 @@ namespace Stellamod.Content.Areas.PunkerTown.EnemiesPT
         public override void SetDefaults()
         {
             base.SetDefaults();
+
             NPC.width = 64;
             NPC.height = 80;
             NPC.lifeMax = 150;
@@ -90,7 +91,7 @@ namespace Stellamod.Content.Areas.PunkerTown.EnemiesPT
             NPC.HitSound = SoundID.NPCHit15;
             NPC.DeathSound = SoundID.NPCDeath11;
             NPC.dontTakeDamageFromHostiles = true;
-        
+
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)

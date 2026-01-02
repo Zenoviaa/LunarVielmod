@@ -1,10 +1,10 @@
-﻿using Stellamod.Content.Items.MoonlightMagic;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Content.Items.MoonlightMagic.Forms;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Molds;
 using System.Collections.Generic;
 using Terraria.ModLoader;
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.GunSystem;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;

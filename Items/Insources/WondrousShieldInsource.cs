@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Common.XixianFlaskSystem;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;

@@ -3,11 +3,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.SummonerSystem;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Bow;
 using Stellamod.Trails;
 using System;

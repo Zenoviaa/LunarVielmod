@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Trailers;
 using Stellamod.Core;
 using Stellamod.Core.Bases;
@@ -9,7 +10,6 @@ using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;

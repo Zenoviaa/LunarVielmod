@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Visual.Particles;
 using Terraria;

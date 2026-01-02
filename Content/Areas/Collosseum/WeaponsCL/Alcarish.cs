@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.Audio;
