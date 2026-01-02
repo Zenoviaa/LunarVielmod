@@ -49,6 +49,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private float _level;
         private float _circleTimer;
 
+        private float _outTimer;
         private float _ringTimer1;
         private float _ringTimer2;
         private float _ringTimer3;
@@ -337,6 +338,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         }
         private void AI_Swing()
         {
+            _outTimer++;
             Timer++;
             _ovalSwing ??= new OvalSwing();
             _ovalSwing.XSwingRadius = 64;
@@ -401,13 +403,17 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
 
-                float numDust = 5;
+                float numDust = 4;
                 for (float n = 0; n < numDust; n++)
                 {
                     Vector2 velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 15;
-                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4 * 0.7f);
-                    velocity *= Main.rand.NextFloat(0.3f, 0.7f);
+                    velocity = velocity.RotatedByRandom(MathHelper.PiOver4);
+                    velocity *= Main.rand.NextFloat(0.3f, 2f);
                     Dust.NewDustPerfect(boomPosition, ModContent.DustType<GlowDust>(), velocity, newColor: Element.GetElementColor(), Scale: 2f);
+                    SparkleParticle sp = Particle<SparkleParticle>.Spawn(boomPosition, velocity, Scale: Main.rand.NextFloat(0.6f, 1f));
+                    sp.gravity = 0;
+                    sp.dampening = 0.1f;
+                    sp.outerColor = Element.GetElementColor();
                 }
                 _hasFired = true;
             }
@@ -649,6 +655,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Color drawColor = Element.GetElementColor();
             drawColor.A = 0;
             drawColor *= CrosshairProgress;
+            float outEase = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Interpolant));
+            drawColor *= outEase;
 
             float width = (float)Projectile.timeLeft / 30f;
             float outWidth = EasingFunction.InOutSine(width);

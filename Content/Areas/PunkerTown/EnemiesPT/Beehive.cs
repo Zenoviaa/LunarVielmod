@@ -109,8 +109,8 @@ namespace Stellamod.Content.Areas.PunkerTown.EnemiesPT
                 //If none then fall to the ground and die
                 Point tilePoint = NPC.position.ToTileCoordinates();
 
-                int searchWidth = 32;
-                int searchHeight = 32;
+                int searchWidth = 100;
+                int searchHeight = 100;
 
                 tilePoint.X -= searchWidth / 2;
                 tilePoint.Y -= searchHeight / 2;
