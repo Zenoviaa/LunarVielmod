@@ -478,11 +478,11 @@ namespace Stellamod.Content.Items.MoonlightMagic
       
                 string texturePath = Element.Texture + "_Ring";
                 string basicElementTexturePath = ModContent.GetInstance<BasicElement>().Texture + "_Ring";
-                _ringTextureAsset = ModContent.Request<Texture2D>(texturePath, AssetRequestMode.ImmediateLoad);
-                if(_ringTextureAsset == null)
+                if(!ModContent.RequestIfExists<Texture2D>(texturePath, out _ringTextureAsset, AssetRequestMode.ImmediateLoad))
                 {
-                    _ringTextureAsset = ModContent.Request<Texture2D>(basicElementTexturePath, AssetRequestMode.ImmediateLoad);
+                    ModContent.RequestIfExists<Texture2D>(basicElementTexturePath, out _ringTextureAsset, AssetRequestMode.ImmediateLoad);
                 }
+
 
                 return;
             }
