@@ -250,6 +250,7 @@ namespace Stellamod.Content.Areas.PunkerTown.EnemiesPT
         {
             base.ModifyNPCLoot(npcLoot);
             npcLoot.Add(ItemDropRule.Common(ItemID.HoneyBlock, minimumDropped: 5, maximumDropped: 10));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Hive, minimumDropped: 5, maximumDropped: 10));
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
