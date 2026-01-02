@@ -46,7 +46,7 @@ namespace Stellamod.Helpers
             int i = (int)Main.MouseWorld.X / 16;
             int j = (int)Main.MouseWorld.Y / 16;
             int height = Main.rand.Next(24, 32);
-            VeilGen.PlaceRaintrees(i, j, height);
+            VeilGen.PlaceMangroveTrees(i, j, height);
             return true;
         }
     }

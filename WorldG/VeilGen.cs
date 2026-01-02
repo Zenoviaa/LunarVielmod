@@ -920,6 +920,44 @@ namespace Stellamod.WorldG
                 }
             }
         }
+        public static void PlaceMangroveTrees(int treex, int treey, int height)
+        {
+  
+            if (treey - height < 1)
+                return;
+
+            for (int x = -1; x < 3; x++)
+            {
+                for (int y = 0; y < (height + 2); y++)
+                {
+                    WorldGen.KillTile(treex + x, treey - y);
+                }
+            }
+
+            WorldGen.PlaceTile(treex, treey, ModContent.TileType<MangroveTree>(), true, true);
+            for (int x = 0; x < 3; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    if (y == height - 1 && x == 1)
+                    {
+                        WorldGen.PlaceTile(treex + x, treey - (y), ModContent.TileType<MangroveTreeTop>(), true, true);
+                    }
+                    else
+                    {
+                        WorldGen.PlaceTile(treex + x, treey - (y), ModContent.TileType<MangroveTree>(), true, true);
+                    }
+                }
+            }
+
+            for (int x = -1; x < 3; x++)
+            {
+                for (int y = 0; y < (height + 2); y++)
+                {
+                    WorldGen.TileFrame(treex + x, treey + y);
+                }
+            }
+        }
         public static void PlaceAcaciaTrees(int treex, int treey, int height)
         {
             if (treey - height < 1)
