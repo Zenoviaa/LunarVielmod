@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ReLogic.Content;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -47,7 +48,7 @@ namespace Stellamod.Core.Tooltips
                     _yOffset += (int)(FontAssets.MouseText.Value.MeasureString(line.Text).Y);
                 }
             }
-            _yOffset += 48;
+            _yOffset += 64;
    
         }
 
@@ -105,6 +106,7 @@ namespace Stellamod.Core.Tooltips
         }
 
         public IExpandableTooltip[] ExpandableTooltips { get; private set; }
+        public float EaseTime => 0.9f;
 
         public void SetTooltipsToDraw(List<TooltipLine> lines, int startingXOffset, int startingYOffset)
         {
@@ -118,7 +120,7 @@ namespace Stellamod.Core.Tooltips
             _lastUpdateUiGameTime = gameTime;
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _timer += deltaTime * (_holdingTooltip ? 1 : -1);
-            _timer = MathHelper.Clamp(_timer, 0f, 1f);
+            _timer = MathHelper.Clamp(_timer, 0f, EaseTime);
             _holdingTooltip = false;
 
         }
@@ -138,7 +140,7 @@ namespace Stellamod.Core.Tooltips
                             int targetX = Main.mouseX + _startingXOffset;
                             int targetY = Main.mouseY + _startingYOffset;
 
-                            float ratio = _timer / 1f;
+                            float ratio = _timer / EaseTime;
                             float ease = EasingFunction.OutExpo(ratio);
                             int x = (int)MathHelper.Lerp(targetX - 128, targetX, ease);
                             int y = targetY;
@@ -157,8 +159,16 @@ namespace Stellamod.Core.Tooltips
     /// <summary>
     /// Handles drawing another tooltip window that isn't linked to a specific item
     /// </summary>
-    public static class ExpandableTooltip
+    [Autoload(Side = ModSide.Client)]
+    public class ExpandableTooltip : ModSystem
     {
+        private static Asset<Texture2D> _inspectTextureAsset;
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            _inspectTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/InspectButton");
+        }
+
 
         //modified from vanilla code so we can draw our own tooltip wherever we want
         public static void DrawExpandableTooltip(SpriteBatch spriteBatch, List<TooltipLine> lines, int X, int Y, float alpha)
@@ -194,19 +204,33 @@ namespace Stellamod.Core.Tooltips
             int yOffset = 0;
             int num17 = 14;
             int num18 = 9;
-            Utils.DrawInvBG(spriteBatch, new Rectangle(X - num17, Y - num18, (int)zero.X + num17 * 2, (int)zero.Y + num18 + num18 / 2), new Color(23, 25, 81, 255) * 0.925f * alpha);
+            if(alpha > 0)
+            {
+                int width = (int)zero.X + num17 * 2;
+                int height = (int)zero.Y + num18 + num18 / 2;
+                Utils.DrawInvBG(spriteBatch, new Rectangle(X - num17, Y - num18, (int)(width * alpha),(int)(height * alpha)), new Color(23, 25, 81, 255) * 0.925f * alpha);
+            }
+           
             for (int k = 0; k < lines.Count; k++)
             {
                 Color black = new Color(num4, num4, num4, num4);
-                Color realLineColor = black;
+                Color realLineColor = black * alpha;
                 if (drawableLines[k].OverrideColor.HasValue)
                 {
                     realLineColor = drawableLines[k].OverrideColor.Value * num4;
                 }
 
-                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[k].Font, drawableLines[k].Text, new Vector2(drawableLines[k].X, drawableLines[k].Y + yOffset), realLineColor * alpha, drawableLines[k].Rotation, drawableLines[k].Origin, drawableLines[k].BaseScale, drawableLines[k].MaxWidth, drawableLines[k].Spread);
+                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[k].Font, drawableLines[k].Text, 
+                    new Vector2(drawableLines[k].X, drawableLines[k].Y + yOffset), realLineColor * alpha, drawableLines[k].Rotation, drawableLines[k].Origin, drawableLines[k].BaseScale * alpha, drawableLines[k].MaxWidth, drawableLines[k].Spread);
                 yOffset += (int)(FontAssets.MouseText.Value.MeasureString(drawableLines[k].Text).Y);
             }
+
+            Vector2 drawOrigin = _inspectTextureAsset.Size() / 2f;
+            Vector2 drawCenter = new Vector2(X, Y);
+            drawCenter.Y += ExtraMath.Osc(0f, 2f);
+            drawCenter.X -= 16;
+            drawCenter.Y -= 16;
+            spriteBatch.Draw(_inspectTextureAsset.Value, drawCenter, null, Color.White * alpha, 0, drawOrigin, alpha, SpriteEffects.None, 0);
         }
     }
 }

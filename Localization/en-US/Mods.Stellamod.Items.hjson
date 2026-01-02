@@ -2472,7 +2472,7 @@ ArncharChunk: {
 
 BlankRune: {
 	DisplayName: Blank Rune
-	Tooltip: This doesn't look like it will do anything by itself
+	Tooltip: "An item template that will create all sorts of [c/FFA500:summoning scrolls] for your bell!"
 }
 
 ConvulgingMater: {
@@ -6169,23 +6169,23 @@ Voltenstein: {
 }
 
 BlankBrooch: {
-	DisplayName: Blank Brooch
-	Tooltip: A sprawling template from Delgrim which may help craft some items!
+	DisplayName: Blank Insource
+	Tooltip: A item template that will create insources that you can mix into your [c/FFA500:Xixian Flask!]
 }
 
 BlankCard: {
 	DisplayName: Blank Card
-	Tooltip: A sprawling template from Delgrim which may help craft some items!
+	Tooltip: A weapon template that will create [c/FFA500:magic card] like items!
 }
 
 BlankCrossbow: {
 	DisplayName: Blank Crossbow
-	Tooltip: A sprawling template from Delgrim which may help craft some items!
+	Tooltip: A weapon t
 }
 
 BlankSafunai: {
 	DisplayName: Blank Safunai
-	Tooltip: A sprawling template from Delgrim which may help craft some items!
+	Tooltip: A weapon template that will create [c/FFA500:whip-like melee] weapons!
 }
 
 Hultinstein: {
@@ -6214,7 +6214,7 @@ AuroreanStarball: {
 
 BlankOrb: {
 	DisplayName: Blank Orb
-	Tooltip: A sprawling template from Delgrim which may help craft some items!
+	Tooltip: "A weapon template that will create magic [c/FFA500:mana sphere] type weapons!"
 }
 
 Mardenstein: {
@@ -8181,7 +8181,7 @@ ExtraBlockRange: {
 
 BlankStaff: {
 	DisplayName: Blank Staff
-	Tooltip: ""
+	Tooltip: A weapon template that will create all sorts of interesting [c/FFA500:magical artifacts]!
 }
 
 BlankShield: {
@@ -8190,38 +8190,38 @@ BlankShield: {
 }
 
 BlankJuggler: {
-	Tooltip: ""
+	Tooltip: "A weapon template that will create all sorts of useful [c/FFA500:ranged tools]!"
 	DisplayName: Blank Juggler
 }
 
 BlankGun: {
-	Tooltip: ""
+	Tooltip: "A weapon template that will create a wide variety of [c/FFA500:guns]!"
 	DisplayName: Blank Gun
 }
 
 BlankBow: {
-	Tooltip: ""
+	Tooltip: "A weapon template that will create a wide variety of [c/FFA500:bows]!"
 	DisplayName: Blank Bow
 }
 
 BlankBag: {
-	Tooltip: ""
+	Tooltip: "An item template that will create a wide assortment of [c/FFA500:powders] for your [c/FFA500:igniter cards]!"
 	DisplayName: Blank Bag
 }
 
 BlankAccessory: {
-	Tooltip: ""
+	Tooltip: "An item template that will create a wide range of [c/FFA500:general accessories] to aid you in combat!"
 	DisplayName: Blank Accessory
 }
 
 BlankStein: {
 	DisplayName: Blank Stein
-	Tooltip: ""
+	Tooltip: A weapon template that will create [c/FFA500:magical fist] like weapons and [c/FFA500:swinging hooks]!
 }
 
 BlankSword: {
 	DisplayName: Blank Sword
-	Tooltip: ""
+	Tooltip: A weapon template that will create all sorts of interesting [c/FFA500:melee weapons]!
 }
 
 FableBookshelf1Item: {
