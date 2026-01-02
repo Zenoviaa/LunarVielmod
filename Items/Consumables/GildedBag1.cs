@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Currencies;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
@@ -78,19 +78,19 @@ namespace Stellamod.Items.Consumables
             }
             if (Main.rand.NextBool(1))
             {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(1, 3));
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<RuinMedal>(), Main.rand.Next(1, 3));
             }
             if (Main.rand.NextBool(9))
             {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(3, 7));
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<RuinMedal>(), Main.rand.Next(3, 7));
             }
             if (Main.rand.NextBool(25))
             {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(7, 13));
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<RuinMedal>(), Main.rand.Next(7, 13));
             }
             if (Main.rand.NextBool(100))
             {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), Main.rand.Next(50, 175));
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<RuinMedal>(), Main.rand.Next(50, 175));
             }
 
 

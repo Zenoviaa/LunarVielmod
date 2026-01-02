@@ -10033,3 +10033,18 @@ LittleJavelin: {
 	DisplayName: Little Javelin
 	Tooltip: Throws a tiny javelin that falls to the ground
 }
+
+Ereshstyl: {
+	DisplayName: Ereshstyl
+	Tooltip: ""
+}
+
+NoHitCrystal: {
+	DisplayName: No Hit Crystal
+	Tooltip: ""
+}
+
+RuinMedal: {
+	DisplayName: Ruin Medal
+	Tooltip: ""
+}

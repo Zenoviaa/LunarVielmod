@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Content.Areas.Snow.AccsSN;
+using Stellamod.Content.Currencies;
 using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Core;
 using Stellamod.Helpers;
@@ -11,7 +12,6 @@ using Stellamod.Items.Armors.Vanity.Nyxia;
 using Stellamod.Items.Armors.Vanity.Solarian;
 using Stellamod.Items.Armors.Witchen;
 using Stellamod.Items.Consumables;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Quest.Zui;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Ranged;
@@ -174,7 +174,7 @@ namespace Stellamod.NPCs.Town
 
             if (Main.rand.NextBool(1))
             {
-                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), 9);
+                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RuinMedal>(), 9);
             }
 
             ZuiQuestSystem.CompleteQuest();
@@ -214,7 +214,7 @@ namespace Stellamod.NPCs.Town
 
             if (Main.rand.NextBool(1))
             {
-                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<Medal>(), 18);
+                Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<RuinMedal>(), 18);
                 Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<LiliumArrow>(), 250);
             }
 
