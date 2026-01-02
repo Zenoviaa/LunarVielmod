@@ -4,11 +4,13 @@ using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -265,6 +267,11 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
                 Projectile.velocity = Owner.Center.DirectionTo(Main.MouseWorld);
                 Projectile.netUpdate = true;
+            }
+            if(Timer % 18 == 0)
+            {
+                DustParticle dp = Particle<DustParticle>.Spawn(Owner.Center + Projectile.velocity * 64, Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(60)), Scale: Main.rand.NextFloat(0.5f, 1f));
+                dp.outerColor = Element.GetElementColor();
             }
             if (Timer == GetLevelChargeTime())
             {
@@ -633,10 +640,30 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Main.spriteBatch.Draw(texture2D4, centerPos + Projectile.velocity * 64, null, glowColor, Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f) * progress * VectorHelper.Osc(0.75f, 1f, speed: 3), SpriteEffects.None, 0f);
             }
         }
+
+        private void DrawPixelatedMuzzleFlash(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            Asset<Texture2D> muzzleFlashTexture = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/MuzzleFlash");
+            Vector2 drawOrigin = muzzleFlashTexture.Size() / 2f;
+            Vector2 drawCenter = Owner.Center + Projectile.velocity * 64  - screenPos;
+            Color drawColor = Element.GetElementColor();
+            drawColor.A = 0;
+            drawColor *= CrosshairProgress;
+
+            float width = (float)Projectile.timeLeft / 30f;
+            float outWidth = EasingFunction.InOutSine(width);
+            float scale = outWidth;
+            Vector2 flashScale = Vector2.One;
+            flashScale.X *= 0.5f;
+            flashScale.Y *= 2f * ExtraMath.Osc(0.5f, 1f, speed: 3f);
+            flashScale *= scale;
+            spriteBatch.Draw(muzzleFlashTexture.Value, drawCenter, null, drawColor, Projectile.velocity.ToRotation(), drawOrigin, flashScale, SpriteEffects.None, 0);
+        }
         public override bool PreDraw(ref Color lightColor)
         {
             DrawAimingLines(ref lightColor);
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedRings, DrawLayer.OverNPCs);
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedMuzzleFlash, DrawLayer.OverNPCs);
             //     DrawPixelatedRings(Main.graphics.GraphicsDevice);
             DrawRingV2(ref lightColor);
 
