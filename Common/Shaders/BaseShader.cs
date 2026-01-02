@@ -5,6 +5,20 @@ using Terraria.Graphics.Shaders;
 
 namespace Stellamod.Common.Shaders
 {
+    public abstract class CrystalShader<T> : BaseShader where T : BaseShader, new()
+    {
+        private static T _instance;
+        public static T Instance
+        {
+            get
+            {
+                _instance ??= new();
+                _instance.SetDefaults();
+                return _instance;
+            }
+        }
+    }
+
     public abstract class BaseShader : IShader
     {
         public virtual string EffectPath
@@ -14,6 +28,7 @@ namespace Stellamod.Common.Shaders
                 return GetType().Name.Replace("Shader", "");
             }
         }
+
 
         public int Type { get; set; }
         public MiscShaderData Data => GameShaders.Misc[$"LunarVeil:{EffectPath}"];

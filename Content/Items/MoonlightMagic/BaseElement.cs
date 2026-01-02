@@ -33,6 +33,12 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public AdvancedMagicProjectile MagicProj { get; set; }
         public Projectile Projectile => MagicProj.Projectile;
 
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+
+        }
+
         public virtual void ModifySisters(List<int> sisters)
         {
 
@@ -59,60 +65,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public virtual void DrawTrail(Vector2[] oldPos)
         {
 
-        }
-
-        public virtual void DrawRing(Vector2 auraPos, int frame, float rotation, Vector2 scale, Color color)
-        {
-            string texturePath = Texture + "_Ring";
-            Asset<Texture2D> asset= null;
-            if(!ModContent.RequestIfExists<Texture2D>(texturePath, out asset))
-            {
-                texturePath = "Stellamod/Content/Items/MoonlightMagic/Elements/BasicElement_Ring";
-                ModContent.RequestIfExists<Texture2D>(texturePath, out asset);
-            }
-
-            Texture2D ringTexture = asset.Value;
-
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            MiscShaderData shaderData = GameShaders.Misc["LunarVeil:DaedusRobe"];
-            shaderData.Shader.Parameters["windNoiseTexture"].SetValue(TextureRegistry.CloudNoise.Value);
-
-            float speed = 1;
-            shaderData.Shader.Parameters["uImageSize0"].SetValue(ringTexture.Size());
-            shaderData.Shader.Parameters["startPixel"].SetValue(60);
-            shaderData.Shader.Parameters["endPixel"].SetValue(115);
-            shaderData.Shader.Parameters["time"].SetValue(Main.GlobalTimeWrappedHourly * speed);
-            shaderData.Shader.Parameters["distortionStrength"].SetValue(0.0375f);
-
-
-            Vector2 vel = Vector2.Lerp(-Vector2.UnitX, Vector2.UnitX, ExtraMath.Osc(0f, 1f)) * 0.1f;
-            vel.Y *= 0.25f;
-            shaderData.Shader.Parameters["movementVelocity"].SetValue(vel);
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, default, default, default, shaderData.Shader, Main.GameViewMatrix.TransformationMatrix);
-
-
-
-            Color auraColor = GetElementColor();
-            auraColor = auraColor.MultiplyRGB(color);
-            auraColor *= 0.5f;
-            auraColor.A = 0;
-        
-            Vector2 drawPos = auraPos - Main.screenPosition;
-            Rectangle frameRect = ringTexture.GetFrame(frame, 3);
-
-
-            Vector2 drawScale = scale * Vector2.One;
-            drawScale *= MathHelper.Lerp(0.8f, 1f, ExtraMath.Osc(0f, 1f));
-
-            float drawRotation = rotation + MathHelper.Lerp(-0.05f, 0.05f, ExtraMath.Osc(0f, 1f));
-            Vector2 drawOrigin = frameRect.Size() / 2f;
-            spriteBatch.Draw(ringTexture, drawPos, frameRect, auraColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
         public virtual void DrawRingTrail(Vector2[] oldPos, float[] oldRot)
