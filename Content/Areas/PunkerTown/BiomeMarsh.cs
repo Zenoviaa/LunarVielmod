@@ -52,9 +52,13 @@ namespace Stellamod.Content.Areas.PunkerTown
                 //Put your if statement here
 
                 //Normal music
-                if (Main.dayTime && Main.raining)
+                if (Main.raining)
                 {
                     return MusicLoader.GetMusicSlot(Mod, "Assets/Music/Acidic_Terors");
+                }
+                else if (!Main.dayTime)
+                {
+                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/Sporulent");
                 }
                 else
                 {
