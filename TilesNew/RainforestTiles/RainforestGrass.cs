@@ -1,5 +1,9 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.PunkerTown.TilesPT;
+using Stellamod.Core.Grass;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -24,6 +28,22 @@ namespace Stellamod.TilesNew.RainforestTiles
 
             // TODO: implement
             // SetModTree(new Trees.ExampleTree());
+        }
+        public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+        {
+   
+            if(j != 0)
+            {
+                //Render grass above the tile
+                Tile tile = Main.tile[i, j - 1];
+                if (!tile.HasTile)
+                {
+                    //Render grass
+                    ModContent.GetInstance<MarshGrass>().Grow(i, j);
+                }
+            }
+
+            return base.PreDraw(i, j, spriteBatch);
         }
         public override void NumDust(int i, int j, bool fail, ref int num)
         {

@@ -2,11 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Common.QuestSystem;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Quests.DelgrimQuest;
 using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Weapons.Melee.Greatswords;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;

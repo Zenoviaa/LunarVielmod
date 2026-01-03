@@ -172,3 +172,8 @@ BeachBiome: {
 	DisplayName: Beach Biome
 	TownNPCDialogueName: the Beach Biome
 }
+
+BiomeMarsh: {
+	DisplayName: Biome Marsh
+	TownNPCDialogueName: the Biome Marsh
+}

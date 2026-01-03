@@ -13,11 +13,28 @@ namespace Stellamod.Core.LunarLightingSystem
         private static int _primitiveIndex;
         private static float _overSunTimer;
         private static float _daylightFadeTimer;
-        public const int SUN_LIGHT_MAX_SHADOW_VERTEX_COUNT = 240000;
-        public static VertexPositionColor[] ShadowVertices = new VertexPositionColor[SUN_LIGHT_MAX_SHADOW_VERTEX_COUNT];
+        public const int Max_Primitive_Count = 9000;
+
+        public static int[] ShadowIndexBuffer;
+        public static VertexPositionColor[] ShadowVertices = new VertexPositionColor[Max_Primitive_Count * 3];
         public static Vector2 ShadowDirection;
         public static Color ShadowColor;
         public static Color SunColor;
+        public override void OnModLoad()
+        {
+            ShadowIndexBuffer = new int[Max_Primitive_Count * 6];
+            int connectIndex = 0;
+            for (int i = 0; i < ShadowIndexBuffer.Length; i += 6)
+            {
+                ShadowIndexBuffer[i] = connectIndex + 0;
+                ShadowIndexBuffer[i + 1] = connectIndex + 1;
+                ShadowIndexBuffer[i + 2] = connectIndex + 2;
+                ShadowIndexBuffer[i + 3] = connectIndex + 0;
+                ShadowIndexBuffer[i + 4] = connectIndex + 1;
+                ShadowIndexBuffer[i + 5] = connectIndex + 3;
+                connectIndex += 4;
+            }
+        }
         public override void PostUpdateDusts()
         {
             base.PostUpdateDusts();
@@ -70,11 +87,13 @@ namespace Stellamod.Core.LunarLightingSystem
             if (!config.SunShadows)
                 return;
 
-            CastShadow();
+            if(Main.GameUpdateCount % 4 == 0)
+                ScanShadows();
         }
 
         public static void RenderSunLight()
         {
+            
             Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Circle").Value;
             Vector2 drawOrigin = texture.Size() / 2f;
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -82,7 +101,7 @@ namespace Stellamod.Core.LunarLightingSystem
             for (int i = 0; i < 3; i++)
                 spriteBatch.Draw(texture, Vector2.Zero + new Vector2(Main.screenWidth, Main.screenHeight) / 2f, null, SunColor, 0, drawOrigin, 40, SpriteEffects.None, 0);
             spriteBatch.End();
-
+            
 
             //shadows
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
@@ -93,87 +112,60 @@ namespace Stellamod.Core.LunarLightingSystem
                 return;
 
             var shader = TileShadowShader.Instance;
-            shader.Apply();
-            foreach (var pass in shader.Effect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-            }
+            shader.ApplyPasses();
 
             GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
-            BlendState originalBlendState = graphicsDevice.BlendState;
-            CullMode oldCullMode = graphicsDevice.RasterizerState.CullMode;
-            SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
-
             graphicsDevice.RasterizerState.CullMode = CullMode.None;
             graphicsDevice.BlendState = BlendState.AlphaBlend;
-
-
-            graphicsDevice.DrawUserPrimitives(
-              PrimitiveType.TriangleList, ShadowVertices, 0, primitiveCount);
-
-            graphicsDevice.RasterizerState.CullMode = oldCullMode;
-            graphicsDevice.BlendState = originalBlendState;
-            graphicsDevice.SamplerStates[0] = originalSamplerState;
+            graphicsDevice.DrawUserIndexedPrimitives(
+              PrimitiveType.TriangleList, ShadowVertices, 0, _primitiveIndex, ShadowIndexBuffer, 0, _primitiveIndex / 3);
         }
+
         private static bool IsFull()
         {
-            return _primitiveIndex >= SUN_LIGHT_MAX_SHADOW_VERTEX_COUNT;
+            return _primitiveIndex >= ShadowVertices.Length;
         }
 
-        private static void MoveVertex(ref VertexPositionColor point)
-        {
-            point.Position += new Vector3(ShadowDirection, 0);
-        }
 
         private static void AddQuad(Vector2 xy1, Vector2 xy2)
         {
-            if (IsFull())
-            {
-                return;
 
-            }
+            int vertexIndex = _primitiveIndex;
+            _primitiveIndex += 4;
 
-            //For the shadow color I want to take the inverse of the pointlight color and then lerp it towards black a bit       
-            VertexPositionColor tl1 = new VertexPositionColor(new Vector3(xy1, 0), ShadowColor);
-            VertexPositionColor tr1 = new VertexPositionColor(new Vector3(xy1, 1), ShadowColor);
-            VertexPositionColor br1 = new VertexPositionColor(new Vector3(xy2, 0), ShadowColor);
+            //For the shadow color I want to take the inverse of the pointlight color and then lerp it towards black a bit
+            ref VertexPositionColor tl1 = ref ShadowVertices[vertexIndex];
+            tl1.Position = new Vector3(xy1, 0);
+            tl1.Color = ShadowColor;
 
-            VertexPositionColor tl2 = new VertexPositionColor(new Vector3(xy1, 1), ShadowColor);
-            VertexPositionColor tr2 = new VertexPositionColor(new Vector3(xy2, 0), ShadowColor);
-            VertexPositionColor br2 = new VertexPositionColor(new Vector3(xy2, 1), ShadowColor);
+            ref VertexPositionColor tr1 = ref ShadowVertices[vertexIndex + 1];
+            tr1.Position = new Vector3(xy1, 1);
+            tr1.Color = ShadowColor;
 
-            //MoveVertex(ref tl1);
-            MoveVertex(ref tr1);
-            // MoveVertex(ref br1);
-            MoveVertex(ref tl2);
-            //MoveVertex(ref tr2);
-            MoveVertex(ref br2);
+            ref VertexPositionColor br1 = ref ShadowVertices[vertexIndex + 2];
+            br1.Position = new Vector3(xy2, 0);
+            br1.Color = ShadowColor;
+
+            ref VertexPositionColor br2 = ref ShadowVertices[vertexIndex + 3];
+            br2.Position = new Vector3(xy2, 1);
+            br2.Color = ShadowColor;
+
+            tr1.Position += new Vector3(ShadowDirection, 0);
+            br2.Position += new Vector3(ShadowDirection, 0);
 
 
-            int tri1Index = _primitiveIndex;
-            _primitiveIndex += 3;
             //0, 1, 2
-            ShadowVertices[tri1Index] = tl1;
-            ShadowVertices[tri1Index + 1] = tr1;
-            ShadowVertices[tri1Index + 2] = br1;
-
-            //0, 1, 3
-            int tri2Index = _primitiveIndex;
-
-            ShadowVertices[tri2Index] = tl2;
-            ShadowVertices[tri2Index + 1] = tr2;
-            ShadowVertices[tri2Index + 2] = br2;
-            _primitiveIndex += 3;
+            ShadowVertices[vertexIndex] = tl1;
+            ShadowVertices[vertexIndex + 1] = tr1;
+            ShadowVertices[vertexIndex + 2] = br1;
+            ShadowVertices[vertexIndex + 3] = br2;
         }
 
-        private static void CastShadow()
+        private static void ScanShadows()
         {
-
             _primitiveIndex = 0;
-            Vector2 position = Main.Camera.Center;
-            float radius = 4000;
-            Vector2 topLeftOfPointLight = position - new Vector2(radius);
-            Vector2 bottomRightOfPointLight = position + new Vector2(radius);
+            Vector2 topLeftOfPointLight = Main.screenPosition;
+            Vector2 bottomRightOfPointLight = topLeftOfPointLight + new Vector2(Main.screenWidth, Main.screenHeight);
 
             Point topLeftTile = topLeftOfPointLight.ToTileCoordinates();
             Point bottomRightTIle = bottomRightOfPointLight.ToTileCoordinates();
@@ -188,13 +180,17 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 for (int y = startTileY; y < endTileY; y++)
                 {
+                    if (IsFull())
+                    {
+                        break;
+                    }
                     //If a tile is outside of the world just ignore it, otherwise we'll get an error
                     if (!WorldGen.InWorld(x, y))
                         continue;
+
                     Tile tile = Main.tile[x, y];
                     if (!tile.HasTile)
                         continue;
-
 
                     //Only cast a shadow if a tile is touching air, so we aren't drawing unnecessary shadows
                     if (!WorldGen.TileIsExposedToAir(x, y))
@@ -205,6 +201,8 @@ namespace Stellamod.Core.LunarLightingSystem
 
                     if (LightingSets.NoShadows[tile.TileType])
                         continue;
+
+
                     Point tilePoint = new Point(x, y);
                     Vector2 worldPoint = tilePoint.ToWorldCoordinates(0, 0);
 

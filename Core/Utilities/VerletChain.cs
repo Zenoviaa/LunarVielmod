@@ -30,7 +30,7 @@ namespace Stellamod.Core.Utilities
             {
                 ref VerletPoint point = ref points[i];
                 point.position = initialPosition + initialDirection * i;
-                point.oldPosition = point.position - initialDirection;
+                point.oldPosition = point.position;
             }
             gravity = 0.5f;
             segmentLength = 2;
@@ -63,7 +63,7 @@ namespace Stellamod.Core.Utilities
         public float segmentLength;
         public int subdivisionCount;
         public bool noTileCollide;
-        public Vector2 g;
+        public Vector2 externalForces;
         public void Update()
         {
             UpdateVelocities();
@@ -88,7 +88,7 @@ namespace Stellamod.Core.Utilities
 
                 Vector2 velocity = point.position - point.oldPosition;
                 velocity.Y += gravity;
-                velocity += g;
+                velocity += externalForces;
                 point.oldPosition = point.position;
 
                 //Interact with tiles, the tile collision function returns an inverse velocity I think?

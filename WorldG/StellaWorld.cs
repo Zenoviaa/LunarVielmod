@@ -594,6 +594,11 @@ namespace Stellamod.WorldG
 
 
         }
+        private void WorldGenMarsh(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Creating the Marsh";
+            
+        }
 
         private void WorldGenVarLocations(GenerationProgress progress, GameConfiguration configuration)
         {

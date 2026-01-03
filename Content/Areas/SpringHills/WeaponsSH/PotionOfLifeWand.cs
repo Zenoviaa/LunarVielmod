@@ -2,10 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
 using Stellamod.Common.SummonerSystem;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Trails;
 using Terraria;

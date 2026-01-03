@@ -1,6 +1,6 @@
 ﻿using Stellamod.Buffs.Charms;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.ID;

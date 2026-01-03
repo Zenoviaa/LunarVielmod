@@ -4,10 +4,10 @@ using ReLogic.Content;
 using Stellamod.Buffs;
 using Stellamod.Content.Areas.Shop.AccShop;
 using Stellamod.Content.Areas.Snow.WeaponsSN;
+using Stellamod.Content.Currencies;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.PowdersItem;
 using System.Collections.Generic;
 using System.Linq;
@@ -186,7 +186,7 @@ namespace Stellamod.NPCs.Town
                 }
 
                 // Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
-                if (player.inventory.Any(item => item.type == ModContent.ItemType<Medal>()))
+                if (player.inventory.Any(item => item.type == ModContent.ItemType<RuinMedal>()))
                 {
                     return true;
                 }
@@ -405,7 +405,7 @@ namespace Stellamod.NPCs.Town
 
 
 
-                    .Add(new Item(ModContent.ItemType<Medal>()) { shopCustomPrice = Item.buyPrice(gold: 15) })
+                    .Add(new Item(ModContent.ItemType<RuinMedal>()) { shopCustomPrice = Item.buyPrice(gold: 15) })
 
 
 

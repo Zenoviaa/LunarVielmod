@@ -1,6 +1,5 @@
 ﻿using Stellamod.Core.Bases;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Items.Materials.Molds;
 using Stellamod.Items.Materials;
 using Stellamod.Items;
 using System;
@@ -17,6 +16,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Terraria.ID;
+using Stellamod.Content.CommonMaterials;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 {

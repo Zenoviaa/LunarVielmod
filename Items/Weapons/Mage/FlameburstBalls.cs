@@ -1,5 +1,5 @@
-﻿using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials.Molds;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Items.Harvesting;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

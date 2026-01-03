@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Pixelation;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -17,7 +19,6 @@ namespace Stellamod.Core.Utilities
         private readonly int _downSamples;
         private readonly ResizeFunction _resizeFunction;
         private RenderTarget2D _renderTarget;
-        private static RenderTarget2D _dummyRenderTarget;
         private bool _mipMap;
         private SurfaceFormat _surfaceFormat;
         private DepthFormat _depthFormat;
@@ -40,8 +41,12 @@ namespace Stellamod.Core.Utilities
 
         public int Width { get; private set; }
         public int Height { get; private set; }
+
+        public static Semaphore Semaphore = new(1, 1);
         private void Resize()
         {
+            Semaphore.WaitOne();
+
             Point screenSize = _resizeFunction();
             Point newSize = new Point(screenSize.X / _downSamples, screenSize.Y / _downSamples);
             _renderTarget.Release();
@@ -49,6 +54,8 @@ namespace Stellamod.Core.Utilities
 
             Width = newSize.X;
             Height = newSize.Y;
+
+            Semaphore.Release();
         }
 
         public void QueueResize(Point screenSize)
@@ -102,6 +109,7 @@ namespace Stellamod.Core.Utilities
     [Autoload(Side = ModSide.Client)]
     public class ManagedRenderTargetManager : ModSystem
     {
+        private int _resizeTimer;
         private Point _oldScreenSize;
         private List<ManagedRenderTarget> _managedRenderTargets;
         public override void Load()
@@ -136,10 +144,21 @@ namespace Stellamod.Core.Utilities
 
         private void ResizeRenderTargets()
         {
+            //Wait a little bit before resizing render targets after getting in game
+            //This is just to avoid a few issues
+            if (Main.gameMenu)
+                _resizeTimer = 0;
+            else
+            {
+                _resizeTimer++;
+                if (_resizeTimer < 30)
+                    return;
+            }
+                
             Point screenSize = Main.ScreenSize;
             if (_oldScreenSize == screenSize)
                 return;
-
+   
             for (int i = 0; i < _managedRenderTargets.Count; i++)
             {
                 ManagedRenderTarget managedRenderTarget = _managedRenderTargets[i];

@@ -73,6 +73,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public bool spellInteract;
         public Vector2 stickyOffset;
         public Vector2 originalVelocity;
+        public float coasterTime;
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (damagingTrail)
@@ -158,6 +159,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Enchantments.Clear();
             tileHitCount = 1;
             stickToTarget = -1;
+            coasterTime = 0;
             var enchantments = item.Enchantments;
             for (int i = 0; i < enchantments.Count; i++)
             {
@@ -199,6 +201,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Enchantments.Clear();
             tileHitCount = 1;
             stickToTarget = -1;
+            coasterTime = 0;
             var enchantments = item.equippedEnchantments;
             for (int i = 0; i < enchantments.Length; i++)
             {

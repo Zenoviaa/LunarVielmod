@@ -109,6 +109,8 @@ namespace Stellamod.Core.ScreenSystems
             {
                 orig();
 
+                //TODO: Look at this system again
+                return;
                 if (Main.gameMenu || Main.dedServ)
                     return;
 

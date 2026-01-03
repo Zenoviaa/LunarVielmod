@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.CommonMaterials;
 using System;
 using System.Collections.Generic;
 using Terraria.Graphics.Effects;
@@ -20,6 +21,7 @@ namespace Stellamod.Core
         public override void Load()
         {
             base.Load();
+      
             _processingComparer = new ProcessingComparer();
             _passes = new List<IPostProcessingPass>();
             On_OverlayManager.Draw += DrawPostProcessingPasses;

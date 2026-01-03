@@ -224,9 +224,6 @@ namespace Stellamod.Core.RibbonSystem
     /// </summary>
     public class RibbonRenderer : ModSystem
     {
-        private Point _oldScreenSize;
-        private RenderTarget2D _pixelatedRibbonRT;
-        private RenderTarget2D _pixelScreenRenderRT;
         private List<Ribbon> _ribbons;
         private VertexPositionColor[] _vertexBufferArr;
         private int _vertexIndex;
@@ -237,11 +234,6 @@ namespace Stellamod.Core.RibbonSystem
         public int DownSamples => 2;
         public const int Max_Ribbon_Vertex_Count = 3 * 500;
         public const int Max_Line_Count = 500;
-        public override void Load()
-        {
-            base.Load();
-            ResizeRenderTargets();
-        }
 
         public override void ClearWorld()
         {
@@ -252,7 +244,6 @@ namespace Stellamod.Core.RibbonSystem
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
-            ResizeRenderTargets();
             SimulateRibbons();
         }
 
@@ -332,19 +323,22 @@ namespace Stellamod.Core.RibbonSystem
             _ribbons = new List<Ribbon>(100);
             _vertexBufferArr = new VertexPositionColor[Max_Ribbon_Vertex_Count];
             _linesBufferArr = new Vector2[Max_Line_Count];
-            On_Main.CheckMonoliths += RenderToPixelationRT;
-            On_Main.DoDraw_DrawNPCsBehindTiles += DrawPixelRTToScreen;
         }
 
-        public override void OnModUnload()
-        {
-            base.OnModUnload();
-            On_Main.CheckMonoliths -= RenderToPixelationRT;
-            On_Main.DoDraw_DrawNPCsBehindTiles -= DrawPixelRTToScreen;
-        }
         public override void PostDrawTiles()
         {
             base.PostDrawTiles();
+            if(Main.GameUpdateCount % 4 == 0)
+            {
+                GatherRibbonVertices();
+            }
+
+            if(_vertexIndex > 0)
+            {
+                PixelationManager.QueueSpritebatchDrawAction(RenderPixelatedFlags, DrawLayer.BehindNPCsWithOutline);
+                PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedRibbons, DrawLayer.BehindNPCsWithOutline);
+            }
+
             Player localPlayer = Main.LocalPlayer;
             if (localPlayer.HeldItem.type == ModContent.ItemType<RibbonWand>() || localPlayer.HeldItem.type == ModContent.ItemType<RibbonScissors>())
             {
@@ -439,34 +433,39 @@ namespace Stellamod.Core.RibbonSystem
             return false;
         }
 
-        private void DrawPixelRTToScreen(On_Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
+        private void RenderPixelatedFlags(SpriteBatch spriteBatch, Vector2 screenPos)
         {
-            GatherRibbonVertices();
-            if (ShouldRender() && !Main.gameMenu)
+            Texture2D ribbonLineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Line").Value;
+            Vector2 drawOrigin = new Vector2(0, ribbonLineTexture.Height / 2);
+            for (int i = 0; i < _lineIndex - 1; i++)
             {
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+                Vector2 position = _linesBufferArr[i];
+                Vector2 nextPosition = _linesBufferArr[i + 1];
+                float rotation = (nextPosition - position).ToRotation();
 
-                float scale = DownSamples;
+                position -= Main.screenPosition;
 
-                //Draw the outline for the ribbonbs
-                float outlineOffset = 2;
-                Vector2 v = Vector2.UnitY * outlineOffset;
-                Vector2 h = Vector2.UnitX * outlineOffset;
-                spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero + v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-                spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero - v, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-                spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero + h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-                spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero - h, null, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                Vector2 drawScale = new Vector2(0.1f, 1f);
 
-
-                spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-                spriteBatch.End();
+                spriteBatch.Draw(ribbonLineTexture, position, null, Color.White * 0.5f, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             }
+        }
 
-            orig(self);
+        
+        private void RenderPixelatedRibbons(GraphicsDevice graphicsDevice)
+        {
+            if (_vertexIndex <= 0)
+                return;
 
+            //Apply the flag shader :p 
+            var flagShader = FlagShader.Instance;
+            flagShader.ApplyPasses();
 
-
+            //We can get all the ribbons in a single draw call
+            graphicsDevice.BlendState = BlendState.AlphaBlend;
+            graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+            graphicsDevice.DrawUserPrimitives(
+                  PrimitiveType.TriangleList, _vertexBufferArr, 0, _vertexIndex / 3);
         }
 
         private bool ShouldRender()
@@ -503,88 +502,6 @@ namespace Stellamod.Core.RibbonSystem
                         _lineIndex++;
                     }
                 }
-            }
-        }
-
-        private void RenderToPixelationRT(On_Main.orig_CheckMonoliths orig)
-        {
-            orig();
-            if (ShouldRender() && !Main.gameMenu)
-            {
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-                graphicsDevice.SetRenderTarget(_pixelScreenRenderRT);
-                graphicsDevice.Clear(Color.Transparent);
-
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-
-
-                Texture2D ribbonLineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Line").Value;
-                Vector2 drawOrigin = new Vector2(0, ribbonLineTexture.Height / 2);
-                for (int i = 0; i < _lineIndex - 1; i++)
-                {
-                    Vector2 position = _linesBufferArr[i];
-                    Vector2 nextPosition = _linesBufferArr[i + 1];
-                    float rotation = (nextPosition - position).ToRotation();
-
-                    position -= Main.screenPosition;
-
-                    Vector2 drawScale = new Vector2(0.1f, 1f);
-
-                    spriteBatch.Draw(ribbonLineTexture, position, null, Color.White * 0.5f, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-                }
-
-                spriteBatch.End();
-
-
-                //Apply the flag shader :p 
-                var flagShader = FlagShader.Instance;
-                flagShader.ApplyPasses();
-
-                //We can get all the ribbons in a single draw call
-                graphicsDevice.BlendState = BlendState.AlphaBlend;
-                graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-                graphicsDevice.DrawUserPrimitives(
-                      PrimitiveType.TriangleList, _vertexBufferArr, 0, _vertexIndex / 3);
-
-
-                //Now we take that output and downscale it to the pixel RT
-                graphicsDevice.SetRenderTarget(_pixelatedRibbonRT);
-                graphicsDevice.Clear(Color.Transparent);
-
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-                float denom = DownSamples;
-                float scale = 1f / denom;
-
-
-                spriteBatch.Draw(_pixelScreenRenderRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-                spriteBatch.End();
-            }
-        }
-
-        private void ResizeRenderTargets()
-        {
-            if (Main.netMode == NetmodeID.Server)
-                return;
-
-            if (Main.dedServ)
-                return;
-
-            Point screenSize = Main.ScreenSize;
-            if (_oldScreenSize != screenSize && Main.netMode != NetmodeID.Server)
-            {
-                Main.QueueMainThreadAction(() =>
-                {
-                    _pixelatedRibbonRT.Release();
-                    _pixelatedRibbonRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X / DownSamples, screenSize.Y / DownSamples);
-
-
-                    _pixelScreenRenderRT.Release();
-                    _pixelScreenRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y);
-
-
-                });
-                _oldScreenSize = screenSize;
             }
         }
     }

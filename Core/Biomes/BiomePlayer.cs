@@ -11,16 +11,21 @@ namespace Stellamod.Content.Biomes
         public bool ZoneSpringHills;
         public bool ZoneMistyDungeon;
         public bool ZoneDesertTown;
-
+        public bool ZoneMarsh;
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
             AddForegroundOrBackground();
+            Player.ManageSpecialBiomeVisuals("Stellamod:Marsh", ZoneMarsh);
         }
 
         private void AddForegroundOrBackground()
         {
             SpringHillsForegroundBackground();
+            if (ZoneMarsh)
+            {
+                Player.ZoneJungle = true;
+            }
             MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneIlluria || myPlayer.ZoneIshtar || myPlayer.ZoneAbyss)
             {
@@ -50,6 +55,19 @@ namespace Stellamod.Content.Biomes
                     ForegroundParticleRenderer.NewParticle<Sandstrike>();
                 }
             }
+
+            if (ZoneMarsh)
+            {
+                if (Main.rand.NextBool(16))
+                {
+                    ForegroundParticleRenderer.NewParticle<MarshLeaf>();
+                }
+                if (Main.rand.NextBool(16))
+                {
+                    ForegroundParticleRenderer.NewParticle<MarshPetal>();
+                }
+            }
+            
         }
 
         private void SpringHillsForegroundBackground()

@@ -90,6 +90,14 @@ namespace Stellamod.Common.WeaponTypes
                 }
                 for (float n = 0; n < 7f; n++)
                 {
+                    SparkleParticle dp = Particle<SparkleParticle>.Spawn(SpawnPos, -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(60)) * Main.rand.NextFloat(4f, 25f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                    dp.outerColor = Necronomicon.hintColor;
+                    dp.flickering = true;
+                    dp.dampening = 0.1f;
+                    dp.gravity = 0.02f;
+                }
+                for (float n = 0; n < 7f; n++)
+                {
                     SmokeParticle dp = Particle<SmokeParticle>.SpawnInAlphaLayer(SpawnPos, -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(60)) * Main.rand.NextFloat(1f, 4f), Color.White, Scale: Main.rand.NextFloat(0.5f, 2f));
                     dp.initialColor = Color.Lerp(Necronomicon.hintColor, Color.Black, 0.5f);
                 }

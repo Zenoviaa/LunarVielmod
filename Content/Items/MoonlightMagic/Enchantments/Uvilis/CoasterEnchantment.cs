@@ -25,13 +25,23 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
 
     public class CoasterEnchantment : BaseEnchantment
     {
+        public override void SetMagicDefaults()
+        {
+            base.SetMagicDefaults();
+            MagicProj.coasterTime += 30;
+        }
+
         public override void AI()
         {
             base.AI();
-            CoasterPlayer coasterPlayer = Owner.GetModPlayer<CoasterPlayer>();
-            if(coasterPlayer.coastingTarget == null)
+            Countertimer++;
+            if(Countertimer < MagicProj.coasterTime)
             {
-                coasterPlayer.coastingTarget = Projectile.Center;
+                CoasterPlayer coasterPlayer = Owner.GetModPlayer<CoasterPlayer>();
+                if (coasterPlayer.coastingTarget == null)
+                {
+                    coasterPlayer.coastingTarget = Projectile.Center;
+                }
             }
         }
 

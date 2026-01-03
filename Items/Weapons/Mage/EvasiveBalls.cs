@@ -1,5 +1,5 @@
-﻿using Stellamod.Content.Items.Materials;
-using Stellamod.Items.Materials.Molds;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Items.Materials;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

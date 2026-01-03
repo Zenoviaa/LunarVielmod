@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.Utilities;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -129,9 +130,16 @@ public abstract class ZTile : ModTexturedType
             drawRotation += GetLeafSway(windSwayOffset, windSwayMagnitude, windSwaySpeed);
         }
 
+
+        VelocityMap velocityMap = ModContent.GetInstance<VelocityMap>();
+
         //Convert to world coordinates
         Point point = new Point(drawParams.tilePosition.x, drawParams.tilePosition.y);
         Vector2 worldCoordinates = point.ToWorldCoordinates();
+
+        /*
+        Vector2 accumVelocity = velocityMap.GetDecayingVelocity(worldCoordinates - new Vector2(32), 64, 64);
+        drawRotation += accumVelocity.ToRotation() * 0.2f;*/
         Vector2 drawPosition = worldCoordinates - screenPos;
         drawPosition += new Vector2(8);
 

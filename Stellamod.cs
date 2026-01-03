@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Backgrounds;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Currencies;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Stellamod.Skies;
 using System.IO;
 using System.Reflection;
@@ -60,6 +60,10 @@ namespace Stellamod
 
         public static Stellamod Instance;
         public static int MedalCurrencyID;
+        public static int EreshstylCurrencyID;
+        public static int NoHitCrystalCurrencyID;
+
+
         public static int MOKCurrencyID;
         public static int MOPCurrencyID;
         public static int MOBCurrencyID;
@@ -77,13 +81,16 @@ namespace Stellamod
                 ShaderLoader.LoadShaders(this);
                 ShaderRegistry.LoadShaders();
                 CrystalShaderRegistry.LoadShaders();
-                MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Medal>(), 999L, "Ruin medals"));
+                MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<RuinMedal>(), 999L, "Ruin Medals"));
+                EreshstylCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Ereshstyl>(), 999L, "Ereshstyl"));
+                NoHitCrystalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<NoHitCrystal>(), 999L, "No Hit Crystal"));
 
                 //----------------------------------------------- Shaders
 
                 Filters.Scene["Stellamod:Aurelus"] = new Filter(new AbyssScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:AuroreanStars"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(1.3f, 0.2f, 0.2f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Illuria"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Marsh"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, 0f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
 
 
                 Ref<Effect> screenRef = new Ref<Effect>(ModContent.Request<Effect>("Stellamod/Effects/Shockwave", AssetRequestMode.ImmediateLoad).Value); // The path to the compiled shader file.

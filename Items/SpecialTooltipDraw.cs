@@ -24,6 +24,7 @@ namespace Stellamod.Items
                 tooltips.Add(tooltipLine);
             }
 
+            /*
             if (cauldron.IsMaterialOrMold(item.type))
             {
                 TooltipLine tooltipLine;
@@ -48,7 +49,7 @@ namespace Stellamod.Items
                             LangText.Misc("CauldronElement"));
                 tooltipLine.OverrideColor = Color.Gray;
                 tooltips.Add(tooltipLine);
-            }
+            }*/
         }
 
         public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)

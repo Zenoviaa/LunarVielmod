@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;

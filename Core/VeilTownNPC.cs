@@ -26,7 +26,7 @@ namespace Stellamod.Core
         public bool OnlyInteract { get; set; }
         public bool NoSpecialInteract { get; set; }
         public Vector2 DrawOffset { get; set; }
-        public virtual string QuestMarkTexture => "Stellamod/Core/QuestSystem/QuestMark";
+        public virtual string QuestMarkTexture => "Stellamod/Common/QuestSystem/QuestMark";
 
         public virtual void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {

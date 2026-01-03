@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Materials.Molds;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Bow;
 using Terraria;

@@ -6,7 +6,6 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.WindLineSystem
@@ -27,12 +26,12 @@ namespace Stellamod.Core.WindLineSystem
 
     public class WindLineRenderer : ModSystem
     {
-        private Point _oldScreenSize;
-        private RenderTarget2D _pixelatedRibbonRT;
-        private RenderTarget2D _pixelScreenRenderRT;
         private WindLine[] _windLines;
         private VertexPositionColorTexture[] _vertexBuffer;
         private int _vertexCount;
+
+        public const int Max_WindLine_Count = 50;
+        public const int Max_Vertice_Count = 6 * Max_WindLine_Count * 20;
         public override void Load()
         {
             base.Load();
@@ -42,21 +41,6 @@ namespace Stellamod.Core.WindLineSystem
                 _windLines[i] = new WindLine(trailCacheLength: 24);
             }
             _vertexBuffer = new VertexPositionColorTexture[Max_Vertice_Count];
-            ResizeRenderTargets();
-        }
-
-        public override void OnModLoad()
-        {
-            base.OnModLoad();
-            On_Main.CheckMonoliths += RenderToPixelationRT;
-            On_Main.DoDraw_DrawNPCsBehindTiles += DrawPixelRTToScreen;
-        }
-
-        public override void OnModUnload()
-        {
-            base.OnModUnload();
-            On_Main.CheckMonoliths -= RenderToPixelationRT;
-            On_Main.DoDraw_DrawNPCsBehindTiles -= DrawPixelRTToScreen;
         }
 
 
@@ -65,72 +49,32 @@ namespace Stellamod.Core.WindLineSystem
             return _vertexCount >= 3;
         }
 
-        private void RenderToPixelationRT(On_Main.orig_CheckMonoliths orig)
+
+        private void RenderPixelatedWindlines(GraphicsDevice graphicsDevice)
         {
-            orig();
-            if (ShouldRender() && !Main.gameMenu)
-            {
+            if (!ShouldRender())
+                return;
 
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-                graphicsDevice.SetRenderTarget(_pixelScreenRenderRT);
-                graphicsDevice.Clear(Color.Transparent);
+            var windLineShader = BasicLaserAlphaShader.Instance;
+            windLineShader.LaserTexture = TrailRegistry.LightningTrail2;
+            windLineShader.ApplyPasses();
 
-                //Apply the flag shader :p 
-                var windLineShader = BasicLaserAlphaShader.Instance;
-                windLineShader.LaserTexture = TrailRegistry.LightningTrail2;
-                windLineShader.ApplyPasses();
+            graphicsDevice.BlendState = BlendState.AlphaBlend;
+            graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
 
-                //We can get all the ribbons in a single draw call
-                graphicsDevice.BlendState = BlendState.AlphaBlend;
-                graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-                graphicsDevice.RasterizerState = RasterizerState.CullNone;
-                graphicsDevice.DrawUserPrimitives(
-                      PrimitiveType.TriangleList, _vertexBuffer, 0, _vertexCount / 3);
-
-
-                //Now we take that output and downscale it to the pixel RT
-                graphicsDevice.SetRenderTarget(_pixelatedRibbonRT);
-                graphicsDevice.Clear(Color.Transparent);
-
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-                float denom = DownSamples;
-                float scale = 1f / denom;
-
-                spriteBatch.Draw(_pixelScreenRenderRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-                spriteBatch.End();
-            }
+            graphicsDevice.DrawUserPrimitives(
+                PrimitiveType.TriangleList, _vertexBuffer, 0, _vertexCount / 3);
         }
 
-        private void DrawPixelRTToScreen(On_Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
-        {
 
-            if (ShouldRender() && !Main.gameMenu)
-            {
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-
-                float scale = DownSamples;
-
-                spriteBatch.Draw(_pixelatedRibbonRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-                spriteBatch.End();
-            }
-
-            orig(self);
-        }
-
-        public int DownSamples => 2;
-        public const int Max_WindLine_Count = 50;
-        public const int Max_Vertice_Count = 6 * Max_WindLine_Count * 20;
         public override void PostUpdateDusts()
         {
             base.PostUpdateDusts();
             UpdateWindLines();
-            ResizeRenderTargets();
-
 
             float windSpeed = MathHelper.Clamp(MathF.Abs(Main.windSpeedCurrent), 0f, 1f);
-            int denom = (int)MathHelper.Lerp(30, 15, windSpeed);
+            int denom = (int)MathHelper.Lerp(60, 30, windSpeed);
 
 
             int yPosition = Main.LocalPlayer.position.ToTileCoordinates().Y;
@@ -152,9 +96,12 @@ namespace Stellamod.Core.WindLineSystem
 
                 NewWindLine(pos, initialWindVelocity);
             }
+
+            if (!ShouldRender())
+                return;
+
+            PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedWindlines, DrawLayer.OverPlayers);
         }
-
-
 
         private void UpdateWindLines()
         {
@@ -250,29 +197,6 @@ namespace Stellamod.Core.WindLineSystem
             }
         }
 
-
-        private void ResizeRenderTargets()
-        {
-            if (Main.netMode == NetmodeID.Server)
-                return;
-
-            if (Main.dedServ)
-                return;
-
-            Point screenSize = Main.ScreenSize;
-            if (_oldScreenSize != screenSize && Main.netMode != NetmodeID.Server)
-            {
-                Main.QueueMainThreadAction(() =>
-                {
-                    _pixelatedRibbonRT.Release();
-                    _pixelatedRibbonRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X / DownSamples, screenSize.Y / DownSamples);
-
-                    _pixelScreenRenderRT.Release();
-                    _pixelScreenRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y);
-                });
-                _oldScreenSize = screenSize;
-            }
-        }
         private WindLine GetInactiveWindLine()
         {
             for (int i = 0; i < _windLines.Length; i++)

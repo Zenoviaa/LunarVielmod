@@ -83,6 +83,12 @@ namespace Stellamod.Core.LunarLightingSystem
         private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
         {
             RenderLightsV2();
+            if (DrawSunShadows2())
+            {
+                RenderShadows();
+            }
+        
+     
             orig();
         }
 
@@ -237,9 +243,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
 
             orig(self, gameTime);
-            if (!DrawSunShadows2())
-                return;
-            RenderShadows();
+
         }
 
         private void RenderShadows()

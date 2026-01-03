@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.IgnitersNPowders;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Items;
-using Stellamod.Items.Materials.Molds;
 using System.Collections.Generic;
 
 using Terraria;

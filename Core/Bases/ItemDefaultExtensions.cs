@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.MagicCauldron;
 using Stellamod.Common.WeaponTypes;
 using Terraria;
 using Terraria.ID;
@@ -62,6 +63,13 @@ namespace Stellamod.Core.Bases
             item.DamageType = DamageClass.Ranged;
             item.damage = 18;
             item.rare = ItemRarityID.Green;
+        }
+        public static void DefaultToMold(this Item item)
+        {
+            MoldGlobalItem globalItem = item.GetGlobalItem<MoldGlobalItem>();
+            globalItem.isMold = true;
+            item.shopSpecialCurrency = Stellamod.MedalCurrencyID;
+            item.shopCustomPrice = 5;
         }
     }
 }

@@ -42,4 +42,20 @@ namespace Stellamod.Content.Gores.Foreground
             frameCount = 4;
         }
     }
+    public class MarshLeaf : ForegroundGore
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 4;
+        }
+    }
+    public class MarshPetal : ForegroundGore
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 4;
+        }
+    }
 }

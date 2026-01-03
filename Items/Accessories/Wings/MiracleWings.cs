@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Materials.Molds;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
