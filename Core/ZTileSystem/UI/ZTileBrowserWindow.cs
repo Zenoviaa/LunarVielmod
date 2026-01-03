@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using Stellamod.Common.ItemBrowser;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.UI;
 using System;
@@ -128,6 +129,7 @@ public class ZTileBrowserWindow : UIPanel
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
         base.DrawSelf(spriteBatch);
+        this.QuickMouseInteraction();
         var config = ModContent.GetInstance<LunarVeilClientConfig>();
         Vector2 ratioPos = new Vector2(config.EnchantmentMenuX, config.EnchantmentMenuY);
         if (ratioPos.X < 0f || ratioPos.X > 100f)

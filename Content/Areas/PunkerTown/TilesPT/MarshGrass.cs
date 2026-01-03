@@ -12,7 +12,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             base.SetStaticDefaults();
             maxHeight = 90;
             maxWidth = 4.4f;
-            maxExtraBladesPerPatch = 4;
+            maxExtraBladesPerPatch = 3;
             minBladesPerPatch = 2;
             grassColor = new Color(80, 107, 26);
         }

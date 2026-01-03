@@ -51,7 +51,6 @@ namespace Stellamod.Content.Areas.PunkerTown
             {
                 //Put your if statement here
 
-
                 //Normal music
                 if (Main.dayTime && Main.raining)
                 {

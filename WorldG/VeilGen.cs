@@ -63,9 +63,10 @@ namespace Stellamod.WorldG
         {
             var genRand = WorldGen.genRand;
          
+            //Generate the terrain
             Point endTile = startTile + new Point(length, 0);
-
             int mountainHeight = 200;
+            int[] heights = new int[length];
             for(int x = startTile.X; x < endTile.X; x++)
             {
                 float localX = x - startTile.X;
@@ -73,17 +74,25 @@ namespace Stellamod.WorldG
                 float ratio = localX / (float)length;
                // Console.WriteLine(ratio);
                 int height = (int)(GetMarshHeight(ratio) * mountainHeight);
-                for(int y = 0; y < height; y++)
+                heights[startTile.X - x] = height;
+                for (int y = 0; y < height; y++)
                 {
-                    WorldGen.PlaceTile(x, startTile.Y - y, TileID.Mud);
-                    if(y == height - 1)
-                    {
-                        WorldGen.PlaceTile(x, startTile.Y - y, TileID.JungleGrass);
-                    }
-              
+                    WorldGen.PlaceTile(x, startTile.Y - y, ModContent.TileType<RainforestGrass>());
                 }
-              
             }
+
+            //Generate big trees
+            for (int x = startTile.X; x < endTile.X; x++)
+            {
+                float localX = x - startTile.X;
+
+                float ratio = localX / (float)length;
+                int heightIndex = startTile.X - x;
+                int height = heights[heightIndex];
+                Tile tile = Main.tile[x, height];
+
+            }
+
         }
         private void GenerateSkullrunnerCircle()
         {

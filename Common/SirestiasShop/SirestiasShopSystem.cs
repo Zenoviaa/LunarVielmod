@@ -182,7 +182,7 @@ namespace Stellamod.Common.SirestiasShop
             int endIndex = startIndex + elementsPerRow * 6;
 
             Vector2 miniPriceDrawOrigin = MiniPriceTextureAsset.Size() / 2f;
-            CurrencyTextureAsset = ModContent.GetInstance<SirestiasShopSystem>().SelectedCurrencyTextureAsset;
+            CurrencyTextureAsset = ModContent.GetInstance<SirestiasShopSystem>().SelectedCurrencyMiniTextureAsset;
             //Now we're only loading the items that are in view! Yippee! Optimization!
             HoveringItem = null;
 
@@ -313,28 +313,37 @@ namespace Stellamod.Common.SirestiasShop
     {
         private float _scaleMult;
         private Asset<Texture2D> _currencyTextureAsset;
+        private Asset<Texture2D> _currencyMiniTextureAsset;
         private UIText _currencyText;
-        public SirestiasCurrencyButton(Asset<Texture2D> currencyTextureAsset) : base()
+        public SirestiasCurrencyButton(Asset<Texture2D> currencyTextureAsset, Asset<Texture2D> currencyMiniTextureAsset) : base()
         {
             _currencyText = new UIText("0");
+            _currencyMiniTextureAsset = currencyMiniTextureAsset;
             _currencyTextureAsset = currencyTextureAsset;
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
             Width.Pixels = 32;
             Height.Pixels = 32;
+
         }
         public int CurrencyID = -1;
         public int TextureWidth => _currencyTextureAsset.Width();
         public int TextureHeight => _currencyTextureAsset.Height();
         public bool drawCurrencyText;
 
-    public override void LeftClick(UIMouseEvent evt)
-    {
-        base.LeftClick(evt);
-        SirestiasShopSystem uiSystem = ModContent.GetInstance<SirestiasShopSystem>();
-        uiSystem.SetCurrency(CurrencyID);
-        uiSystem.SelectedCurrencyTextureAsset = _currencyTextureAsset;
-    }
+        public override void LeftClick(UIMouseEvent evt)
+        {
+            base.LeftClick(evt);
+            OpenShop();
+        }
+
+        public void OpenShop()
+        {
+            SirestiasShopSystem uiSystem = ModContent.GetInstance<SirestiasShopSystem>();
+            uiSystem.SetCurrency(CurrencyID);
+            uiSystem.SelectedCurrencyTextureAsset = _currencyTextureAsset;
+            uiSystem.SelectedCurrencyMiniTextureAsset = _currencyMiniTextureAsset;
+        }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
@@ -348,7 +357,7 @@ namespace Stellamod.Common.SirestiasShop
             float s = 1.25f;
             Width.Pixels = TextureWidth * s * _scaleMult;
             Height.Pixels = TextureHeight * s * _scaleMult;
-            bool isSelected = ModContent.GetInstance<SirestiasShopSystem>().SelectedCurrencyTextureAsset == _currencyTextureAsset;
+            bool isSelected = ModContent.GetInstance<SirestiasShopSystem>().SelectedCurrencyID == CurrencyID;
 
 
             if (isHovering)
@@ -542,10 +551,14 @@ namespace Stellamod.Common.SirestiasShop
         private SirestiasCurrencyButton _coinsButton;
         public SirestiasShopRightCurrencyBar() : base()
         {
-            _ruinMedalsButton = new SirestiasCurrencyButton(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/RuinMedal", AssetRequestMode.ImmediateLoad));
-            _noHitCrystalButton = new SirestiasCurrencyButton(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/NoHitCrystal", AssetRequestMode.ImmediateLoad));
-            _ereshstylButton = new SirestiasCurrencyButton(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/Ereshstyl", AssetRequestMode.ImmediateLoad));
-            _coinsButton = new SirestiasCurrencyButton(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/Coin", AssetRequestMode.ImmediateLoad));
+            _ruinMedalsButton = new SirestiasCurrencyButton(LoadTexture("RuinMedal"), LoadTexture("RuinMedal_Mini"));
+            _noHitCrystalButton = new SirestiasCurrencyButton(LoadTexture("NoHitCrystal"), LoadTexture("NoHitCrystal_Mini"));
+            _ereshstylButton = new SirestiasCurrencyButton(LoadTexture("Ereshstyl"), LoadTexture("Ereshstyl_Mini"));
+            _coinsButton = new SirestiasCurrencyButton(LoadTexture("Coin"), LoadTexture("Coin_Mini"));
+        }
+        private Asset<Texture2D> LoadTexture(string fileName)
+        {
+            return ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/" + fileName, AssetRequestMode.ImmediateLoad);
         }
         public override void OnInitialize()
         {
@@ -613,13 +626,21 @@ namespace Stellamod.Common.SirestiasShop
         public SirestiasShopCurrencyBar() : base()
         {
             _backgroundTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/CurrencyBar");
-            _ruinMedalsButton = new SirestiasCurrencyButton(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/RuinMedal", AssetRequestMode.ImmediateLoad));
-            _noHitCrystalButton = new SirestiasCurrencyButton(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/NoHitCrystal", AssetRequestMode.ImmediateLoad));
-            _ereshstylButton = new SirestiasCurrencyButton(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/Ereshstyl", AssetRequestMode.ImmediateLoad));
-            _coinsButton = new SirestiasCurrencyButton(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/Coin", AssetRequestMode.ImmediateLoad));
+            _ruinMedalsButton = new SirestiasCurrencyButton(LoadTexture("RuinMedal"), LoadTexture("RuinMedal_Mini"));
+            _noHitCrystalButton = new SirestiasCurrencyButton(LoadTexture("NoHitCrystal"), LoadTexture("NoHitCrystal_Mini"));
+            _ereshstylButton = new SirestiasCurrencyButton(LoadTexture("Ereshstyl"), LoadTexture("Ereshstyl_Mini"));
+            _coinsButton = new SirestiasCurrencyButton(LoadTexture("Coin"), LoadTexture("Coin_Mini"));
+        }
+        private Asset<Texture2D> LoadTexture(string fileName)
+        {
+            return ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/" + fileName, AssetRequestMode.ImmediateLoad);
         }
 
         public Asset<Texture2D> SelectedCurrencyTextureAsset;
+        public void OpenRuinMedalsShop()
+        {
+            _ruinMedalsButton.OpenShop();
+        }
         public override void OnInitialize()
         {
             base.OnInitialize();
@@ -799,6 +820,11 @@ namespace Stellamod.Common.SirestiasShop
 
         private int RelativeLeft => Main.screenWidth / 2 - (int)Width.Pixels / 2;
         private int RelativeTop => Main.screenHeight / 2 - (int)Height.Pixels / 2;
+
+        public void OpenRuinMedalsShop()
+        {
+            _currencyBar.OpenRuinMedalsShop();
+        }
         public override void OnInitialize()
         {
             base.OnInitialize();
@@ -967,12 +993,13 @@ namespace Stellamod.Common.SirestiasShop
 
         }
         public Asset<Texture2D> SelectedCurrencyTextureAsset;
-
+        public Asset<Texture2D> SelectedCurrencyMiniTextureAsset;
+        public int SelectedCurrencyID;
         public void OpenUI()
         {
             //Create a new editing context
             //Set the state of the interface.
-            SetCurrency(Stellamod.MedalCurrencyID);
+            uiState.shopWindow.OpenRuinMedalsShop();
             _userInterface.SetState(uiState);
         }
 
@@ -1006,6 +1033,7 @@ namespace Stellamod.Common.SirestiasShop
 
         public void SetCurrency(int currencyID)
         {
+            SelectedCurrencyID = currencyID;
             List<Item> catalogue = new List<Item>(35);
        
             for (int i =0; i < ItemSets.IsSoldBySirestias.Length; i++)

@@ -270,7 +270,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             TileID.Sets.IsATreeTrunk[Type] = true;
             Main.tileAxe[Type] = true;
             AddMapEntry(new Color(169, 200, 93), name);
-            RegisterItemDrop(ItemID.Wood);
+            RegisterItemDrop(ItemID.RichMahogany);
         }
 
         private float GetLeafSway(float offset, float magnitude, float speed)
