@@ -2476,7 +2476,7 @@ ArncharChunk: {
 
 BlankRune: {
 	DisplayName: Blank Rune
-	Tooltip: An item template that will create all sorts of [c/FFA500:summoning scrolls] for your bell!
+	Tooltip: An item template that will create all sorts of [c/FFA500:summoning scrolls] for your bell and [c/FFA500:summoning runes]!
 }
 
 ConvulgingMater: {
@@ -6189,7 +6189,7 @@ BlankCrossbow: {
 
 BlankSafunai: {
 	DisplayName: Blank Safunai
-	Tooltip: A weapon template that will create [c/FFA500:whip-like melee] weapons!
+	Tooltip: A weapon template that will create [c/FFA500:whip-like melee] weapons and [c/FFA500:chakrams]!
 }
 
 Hultinstein: {
@@ -8195,11 +8195,11 @@ BlankShield: {
 
 BlankJuggler: {
 	Tooltip: A weapon template that will create all sorts of useful [c/FFA500:ranged tools]!
-	DisplayName: Blank Juggler
+	DisplayName: Blank Tool
 }
 
 BlankGun: {
-	Tooltip: A weapon template that will create a wide variety of [c/FFA500:guns]!
+	Tooltip: A weapon template that will create a wide variety of [c/FFA500:ranged guns]!
 	DisplayName: Blank Gun
 }
 
