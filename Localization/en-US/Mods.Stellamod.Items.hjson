@@ -89,6 +89,10 @@ Common: {
 		Take this back to the [c/FFA500:Magic Cauldron] at Witch Town to use it!
 		'''
 	ExpandableTooltipHelp: Hold {0} for more about this item type!
+	RuinMedal: Ruin Medals
+	NoHitCrystal: No Hit Crystals
+	Ereshstyl: Ereshstyl
+	Coins: Coins
 }
 
 SetBonus: {
@@ -2472,7 +2476,7 @@ ArncharChunk: {
 
 BlankRune: {
 	DisplayName: Blank Rune
-	Tooltip: "An item template that will create all sorts of [c/FFA500:summoning scrolls] for your bell!"
+	Tooltip: An item template that will create all sorts of [c/FFA500:summoning scrolls] for your bell!
 }
 
 ConvulgingMater: {
@@ -6174,8 +6178,8 @@ BlankBrooch: {
 }
 
 BlankCard: {
-	DisplayName: Blank Card
-	Tooltip: A weapon template that will create [c/FFA500:magic card] like items!
+	DisplayName: Blank Box
+	Tooltip: A weapon template that will create [c/FFA500:magic card] like and [c/FFA500:shields] items!
 }
 
 BlankCrossbow: {
@@ -6214,7 +6218,7 @@ AuroreanStarball: {
 
 BlankOrb: {
 	DisplayName: Blank Orb
-	Tooltip: "A weapon template that will create magic [c/FFA500:mana sphere] type weapons!"
+	Tooltip: A weapon template that will create magic [c/FFA500:mana sphere] type weapons!
 }
 
 Mardenstein: {
@@ -8190,27 +8194,27 @@ BlankShield: {
 }
 
 BlankJuggler: {
-	Tooltip: "A weapon template that will create all sorts of useful [c/FFA500:ranged tools]!"
+	Tooltip: A weapon template that will create all sorts of useful [c/FFA500:ranged tools]!
 	DisplayName: Blank Juggler
 }
 
 BlankGun: {
-	Tooltip: "A weapon template that will create a wide variety of [c/FFA500:guns]!"
+	Tooltip: A weapon template that will create a wide variety of [c/FFA500:guns]!
 	DisplayName: Blank Gun
 }
 
 BlankBow: {
-	Tooltip: "A weapon template that will create a wide variety of [c/FFA500:bows]!"
+	Tooltip: A weapon template that will create a wide variety of [c/FFA500:bows]!
 	DisplayName: Blank Bow
 }
 
 BlankBag: {
-	Tooltip: "An item template that will create a wide assortment of [c/FFA500:powders] for your [c/FFA500:igniter cards]!"
+	Tooltip: An item template that will create a wide assortment of [c/FFA500:powders] for your [c/FFA500:igniter cards]!
 	DisplayName: Blank Bag
 }
 
 BlankAccessory: {
-	Tooltip: "An item template that will create a wide range of [c/FFA500:general accessories] to aid you in combat!"
+	Tooltip: An item template that will create a wide range of [c/FFA500:general accessories] to aid you in combat!
 	DisplayName: Blank Accessory
 }
 

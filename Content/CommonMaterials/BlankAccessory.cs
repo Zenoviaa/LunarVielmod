@@ -41,10 +41,6 @@ namespace Stellamod.Content.CommonMaterials
     {
 
     }
-    public class BlankCrossbow : SirestiasMold
-    {
-
-    }
     public class BlankGun : SirestiasMold
     {
 

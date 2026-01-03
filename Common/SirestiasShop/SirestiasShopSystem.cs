@@ -1,12 +1,15 @@
 ﻿using log4net.Filter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
+using MonoMod.Core.Platforms;
 using ReLogic.Content;
 using Stellamod.Common.ItemBrowser;
 using Stellamod.Common.MagicSystem.UI;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
+using Stellamod.Core.Tooltips;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.UI;
@@ -93,7 +96,6 @@ namespace Stellamod.Common.SirestiasShop
         public Asset<Texture2D> MiniPriceTextureAsset;
         public Asset<Texture2D> CurrencyTextureAsset;
         public string SearchFilter;
-        public bool ModFilter;
         public float ViewPosition;
         public int ElementsPerRow;
 
@@ -311,8 +313,10 @@ namespace Stellamod.Common.SirestiasShop
     {
         private float _scaleMult;
         private Asset<Texture2D> _currencyTextureAsset;
+        private UIText _currencyText;
         public SirestiasCurrencyButton(Asset<Texture2D> currencyTextureAsset) : base()
         {
+            _currencyText = new UIText("0");
             _currencyTextureAsset = currencyTextureAsset;
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
@@ -320,26 +324,84 @@ namespace Stellamod.Common.SirestiasShop
             Height.Pixels = 32;
         }
         public int CurrencyID = -1;
-        public override void LeftClick(UIMouseEvent evt)
-        {
-            base.LeftClick(evt);
-            SirestiasShopSystem uiSystem = ModContent.GetInstance<SirestiasShopSystem>();
-            uiSystem.SetCurrency(CurrencyID);
-            uiSystem.SelectedCurrencyTextureAsset = _currencyTextureAsset;
-        }
+        public int TextureWidth => _currencyTextureAsset.Width();
+        public int TextureHeight => _currencyTextureAsset.Height();
+        public bool drawCurrencyText;
+        /*
+    public override void OnInitialize()
+    {
+        base.OnInitialize();
+        Append(_currencyText);
+    }*/
 
+    public override void LeftClick(UIMouseEvent evt)
+    {
+        base.LeftClick(evt);
+        SirestiasShopSystem uiSystem = ModContent.GetInstance<SirestiasShopSystem>();
+        uiSystem.SetCurrency(CurrencyID);
+        uiSystem.SelectedCurrencyTextureAsset = _currencyTextureAsset;
+    }
+    /*
+public override void Update(GameTime gameTime)
+{
+base.Update(gameTime);
+
+
+if (CurrencyID == Stellamod.EreshstylCurrencyID)
+{
+
+}
+else if (CurrencyID == Stellamod.NoHitCrystalCurrencyID)
+{
+
+}
+else if (CurrencyID == -1)
+{
+
+} 
+else
+{
+   int ruinMedals = CustomCurrencyManager.CanAfford
+}
+
+}
+  */
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
             bool isHovering = this.QuickMouseInteraction();
             Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
-            topLeft.Y += ExtraMath.Osc(0f, 1f, offset: CurrencyID);
+            topLeft.Y += ExtraMath.Osc(0f, 3f, offset: CurrencyID);
             Vector2 drawOrigin = _currencyTextureAsset.Size() / 2f;
 
-
+        
             float s = 1.25f;
+            Width.Pixels = TextureWidth * s * _scaleMult;
+            Height.Pixels = TextureHeight * s * _scaleMult;
+            bool isSelected = ModContent.GetInstance<SirestiasShopSystem>().SelectedCurrencyTextureAsset == _currencyTextureAsset;
+
+
             if (isHovering)
             {
+                List<TooltipLine> tooltipLines = new List<TooltipLine>();
+
+                string key = "RuinMedal";
+                if (CurrencyID == Stellamod.EreshstylCurrencyID)
+                    key = "Ereshstyl";
+                else if (CurrencyID == Stellamod.NoHitCrystalCurrencyID)
+                    key = "NoHitCrystal";
+                else if (CurrencyID == -1)
+                    key = "Coins";
+
+
+                TooltipLine helpLine = new TooltipLine(Stellamod.Instance, "CurrencyName", LangText.Common(key));
+                helpLine.OverrideColor = Color.Goldenrod;
+                tooltipLines.Add(helpLine);
+
+
+                ExpandableTooltipRenderer renderer = ModContent.GetInstance<ExpandableTooltipRenderer>();
+                renderer.SetTooltipsToDraw(tooltipLines, 64, 16);
+
                 _scaleMult = MathHelper.Lerp(_scaleMult, 1.2f, 0.1f);
 
                 RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
@@ -355,6 +417,21 @@ namespace Stellamod.Common.SirestiasShop
 
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
+            } else if (isSelected)
+            {
+                RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+
+                SamplerState anisotropicClamp = SamplerState.AnisotropicClamp;
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, anisotropicClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
+
+                spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin + Vector2.UnitX * 2, null, Color.Yellow, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
+                spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin - Vector2.UnitX * 2, null, Color.Yellow, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
+                spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin + Vector2.UnitY * 2, null, Color.Yellow, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
+                spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin - Vector2.UnitY * 2, null, Color.Yellow, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
+
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
             }
             else
             {
@@ -362,13 +439,65 @@ namespace Stellamod.Common.SirestiasShop
             }
             spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin, null, Color.White, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
 
+            if (!drawCurrencyText)
+                return;
 
+            if(CurrencyID != -1)
+            {
+                Player player = Main.LocalPlayer;
+
+                CustomCurrencyManager.TryGetCurrencySystem(CurrencyID, out CustomCurrencySystem system);
+                bool overflowing = false;
+                long num = system.CountCurrency(out overflowing, player.inventory);
+                long num2 = system.CountCurrency(out overflowing, player.bank.item);
+                long num3 = system.CountCurrency(out overflowing, player.bank2.item);
+                long num4 = system.CountCurrency(out overflowing, player.bank3.item);
+                long num5 = system.CountCurrency(out overflowing, player.bank4.item);
+                long num6 = num + num2 + num3 + num4 + num5;
+
+                string text = num6.ToString();
+                Vector2 position = new Vector2(topLeft.X, topLeft.Y);
+                position.X -= (int)(FontAssets.MouseText.Value.MeasureString(text).X);
+                position.X -= 16;
+                position.Y += 8;
+                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text,
+                    position, Color.White, 0, Vector2.Zero, Vector2.One);
+            }
+            else
+            {
+                Player player = Main.LocalPlayer;
+                CurrencyHelper.CountCoins(player, out Wallet wallet);
+
+                topLeft.X -= 42;
+                topLeft.Y += 8;
+                DrawCoinText(spriteBatch, TextureAssets.Coin[0].Value, topLeft, $"{wallet.copperCoins}");
+
+                topLeft.X -= 42;
+                DrawCoinText(spriteBatch, TextureAssets.Coin[1].Value, topLeft, $"{wallet.silverCoins}");
+
+                topLeft.X -= 42;
+                DrawCoinText(spriteBatch, TextureAssets.Coin[2].Value, topLeft, $"{wallet.goldCoins}");
+
+                topLeft.X -= 42;
+                DrawCoinText(spriteBatch, TextureAssets.Coin[3].Value, topLeft, $"{wallet.platinumCoins}");
+            }
         }
 
+        private void DrawCoinText(SpriteBatch spriteBatch, Texture2D coinTexture, Vector2 topLeft, string text)
+        {
+            Vector2 position = topLeft;
+            int frameCount = 8;
+            int frameHeight = coinTexture.Height / frameCount;
+            Rectangle frame = new Rectangle(0, 0, coinTexture.Width, frameHeight);
+            spriteBatch.Draw(coinTexture, topLeft - new Vector2(8), frame, Color.White);
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text,
+                    position, Color.White, 0, Vector2.Zero, Vector2.One);
+        }
     }
 
     public class SirestiasGIF : UIPanel
     {
+        private float _scale;
         private int _frameCount = 60;
         private int _frameIndex;
         private float _frameCounter;
@@ -394,7 +523,11 @@ namespace Stellamod.Common.SirestiasShop
             base.Update(gameTime);
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _frameCounter += deltaTime;
-            if(_frameCounter >= 0.1f)
+
+            _scale = 1.1f;
+            Width.Pixels = 159 * 2 * _scale;
+            Height.Pixels = 127 * 2 * _scale;
+            if (_frameCounter >= 0.05f)
             {
                 _frameIndex++;
                 _frameIndex = _frameIndex % _frameCount;
@@ -411,10 +544,79 @@ namespace Stellamod.Common.SirestiasShop
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, default, Main.UIScaleMatrix);
 
-            spriteBatch.Draw(_sirestiasAsset.Value, topLeft, _frame, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+            spriteBatch.Draw(_sirestiasAsset.Value, topLeft, _frame, Color.White, 0, Vector2.Zero, 2 * _scale, SpriteEffects.None, 0);
 
         }
     }
+
+    public class SirestiasShopRightCurrencyBar : UIPanel
+    {
+        private float _scale;
+        private SirestiasCurrencyButton _ruinMedalsButton;
+        private SirestiasCurrencyButton _ereshstylButton;
+        private SirestiasCurrencyButton _noHitCrystalButton;
+        private SirestiasCurrencyButton _coinsButton;
+        public SirestiasShopRightCurrencyBar() : base()
+        {
+            _ruinMedalsButton = new SirestiasCurrencyButton(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/RuinMedal", AssetRequestMode.ImmediateLoad));
+            _noHitCrystalButton = new SirestiasCurrencyButton(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/NoHitCrystal", AssetRequestMode.ImmediateLoad));
+            _ereshstylButton = new SirestiasCurrencyButton(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/Ereshstyl", AssetRequestMode.ImmediateLoad));
+            _coinsButton = new SirestiasCurrencyButton(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/Coin", AssetRequestMode.ImmediateLoad));
+        }
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            Width.Pixels = 26 * 2;
+            Height.Pixels = 190 * 2;
+            BackgroundColor = Color.Transparent;
+            BorderColor = Color.Transparent;
+
+
+            Append(_coinsButton);
+            Append(_ruinMedalsButton);
+            Append(_ereshstylButton);
+            Append(_noHitCrystalButton);
+
+
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            Left.Set(-Width.Pixels, 1);
+          //  _gif.Top.Set(-_gif.Height.Pixels, 1);
+
+            float listPadding = 64;
+            _coinsButton.Left.Pixels = 4;
+            _coinsButton.Top.Pixels = 8;
+
+            _ruinMedalsButton.Left.Pixels = _coinsButton.Left.Pixels - (_ruinMedalsButton.TextureWidth * 0.5f - _coinsButton.TextureWidth * 0.5f);
+            _ruinMedalsButton.Top.Pixels = _coinsButton.Top.Pixels + _coinsButton.TextureHeight * 2;
+
+            _ereshstylButton.Left.Pixels = _ruinMedalsButton.Left.Pixels - (_ereshstylButton.TextureWidth * 0.5f - _ruinMedalsButton.TextureWidth * 0.5f);
+            _ereshstylButton.Top.Pixels = _ruinMedalsButton.Top.Pixels + _ruinMedalsButton.TextureHeight + _ereshstylButton.TextureHeight;
+
+            _noHitCrystalButton.Left.Pixels = _ereshstylButton.Left.Pixels - (_noHitCrystalButton.TextureWidth * 0.5f - _ereshstylButton.TextureWidth * 0.5f);
+            _noHitCrystalButton.Top.Pixels = _ereshstylButton.Top.Pixels + _ereshstylButton.TextureHeight + _noHitCrystalButton.TextureHeight;
+
+
+            _coinsButton.drawCurrencyText = true;
+            _ruinMedalsButton.drawCurrencyText = true;
+            _ereshstylButton.drawCurrencyText = true;
+            _noHitCrystalButton.drawCurrencyText = true;
+
+            _ruinMedalsButton.CurrencyID = Stellamod.MedalCurrencyID;
+            _noHitCrystalButton.CurrencyID = Stellamod.NoHitCrystalCurrencyID;
+            _ereshstylButton.CurrencyID = Stellamod.EreshstylCurrencyID;
+            _coinsButton.CurrencyID = -1;
+        }
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+           
+        }
+    }
+
     public class SirestiasShopCurrencyBar : UIPanel
     {
         private float _scale;
@@ -460,17 +662,16 @@ namespace Stellamod.Common.SirestiasShop
             Height.Pixels = 26 * 2 * _scale;
 
 
-            float listPadding = 64;
             _ruinMedalsButton.Left.Pixels = 8;
-            _ruinMedalsButton.Top.Pixels = 4;
+            _ruinMedalsButton.Top.Pixels = 0;
 
-            _ereshstylButton.Left.Pixels = _ruinMedalsButton.Left.Pixels + listPadding;
+            _ereshstylButton.Left.Pixels = _ruinMedalsButton.Left.Pixels + _ruinMedalsButton.TextureWidth * 2;
             _ereshstylButton.Top.Pixels = _ruinMedalsButton.Top.Pixels;
 
-            _noHitCrystalButton.Left.Pixels = _ereshstylButton.Left.Pixels + listPadding;
+            _noHitCrystalButton.Left.Pixels = _ereshstylButton.Left.Pixels + _ereshstylButton.TextureWidth + _noHitCrystalButton.TextureWidth;
             _noHitCrystalButton.Top.Pixels = _ereshstylButton.Top.Pixels;
 
-            _coinsButton.Left.Pixels = _noHitCrystalButton.Left.Pixels + listPadding;
+            _coinsButton.Left.Pixels = _noHitCrystalButton.Left.Pixels + _noHitCrystalButton.TextureWidth + _coinsButton.TextureWidth + 4;
             _coinsButton.Top.Pixels = _noHitCrystalButton.Top.Pixels;
 
 
@@ -482,7 +683,6 @@ namespace Stellamod.Common.SirestiasShop
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            base.DrawSelf(spriteBatch);
             base.DrawSelf(spriteBatch);
             Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
             spriteBatch.Draw(_backgroundTextureAsset.Value, topLeft, null, Color.White, 0, Vector2.Zero, _scale, SpriteEffects.None, 0);
@@ -601,12 +801,14 @@ namespace Stellamod.Common.SirestiasShop
         private UIImage _shopWindow;
         private UIScrollbar _scrollbar;
         private XButton _xButton;
+        private SirestiasShopRightCurrencyBar _rightCurrencyBar;
         private SirestiasShopCurrencyBar _currencyBar;
         private SirestiasShopCatalogueWindow _catalogueWindow;
         private SirestiasGIF _gif;
         public SirestiasShopMainWindow() : base()
         {
             _gif = new SirestiasGIF();
+            _rightCurrencyBar = new SirestiasShopRightCurrencyBar();
             _currencyBar = new SirestiasShopCurrencyBar();
             _scrollbar = new FancyScrollbar();
             _xButton = new XButton(Close);
@@ -629,6 +831,7 @@ namespace Stellamod.Common.SirestiasShop
 
             Append(_catalogueWindow);
             Append(_currencyBar);
+            Append(_rightCurrencyBar);
 
             _gif.Left.Set(0, 1);
             _gif.Top.Set(0, 1);
@@ -670,6 +873,7 @@ namespace Stellamod.Common.SirestiasShop
 
             _gif.Left.Set(-_gif.Width.Pixels, 1);
             _gif.Top.Set(-_gif.Height.Pixels, 1);
+            
         }
 
         public void SetCatalogue(Item[] items)
@@ -680,6 +884,11 @@ namespace Stellamod.Common.SirestiasShop
         {
             SirestiasShopSystem uiSystem = ModContent.GetInstance<SirestiasShopSystem>();
             uiSystem.CloseUI();
+        }
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            this.QuickMouseInteraction();
         }
     }
 

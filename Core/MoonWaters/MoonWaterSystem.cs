@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.Foreground;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
@@ -60,7 +61,7 @@ namespace Stellamod.Core.MoonWaters
     {
         public override bool IsActive(Player player)
         {
-            return player.ZoneJungle;
+            return player.ZoneJungle || player.GetModPlayer<BiomePlayer>().ZoneMarsh;
         }
 
         public override void ModifyPixelWater(ref PixelWater pixelWater)

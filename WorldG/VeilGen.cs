@@ -36,7 +36,7 @@ namespace Stellamod.WorldG
             int tileX = (int)Main.MouseWorld.X / 16;
             int tileY = (int)Main.MouseWorld.Y / 16;
             Point startTile = mouseWorld.ToTileCoordinates();
-            GenerateMarsh(startTile, 1000);
+            GenerateMarsh(startTile, 1400);
             return true;
         }
 

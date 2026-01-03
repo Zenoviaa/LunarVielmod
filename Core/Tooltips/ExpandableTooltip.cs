@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -91,6 +92,7 @@ namespace Stellamod.Core.Tooltips
         private List<TooltipLine> _lines;
         private int _startingXOffset;
         private int _startingYOffset;
+        private bool _drawGlass;
         private GameTime _lastUpdateUiGameTime;
         private float _timer;
         private bool _holdingTooltip;
@@ -108,12 +110,13 @@ namespace Stellamod.Core.Tooltips
         public IExpandableTooltip[] ExpandableTooltips { get; private set; }
         public float EaseTime => 0.9f;
 
-        public void SetTooltipsToDraw(List<TooltipLine> lines, int startingXOffset, int startingYOffset)
+        public void SetTooltipsToDraw(List<TooltipLine> lines, int startingXOffset, int startingYOffset, bool drawGlass = true)
         {
             _lines = lines;
             _startingXOffset = startingXOffset;
             _startingYOffset = startingYOffset;
             _holdingTooltip = true;
+            _drawGlass = drawGlass;
         }
         public override void UpdateUI(GameTime gameTime)
         {
@@ -144,7 +147,7 @@ namespace Stellamod.Core.Tooltips
                             float ease = EasingFunction.OutExpo(ratio);
                             int x = (int)MathHelper.Lerp(targetX - 128, targetX, ease);
                             int y = targetY;
-                            ExpandableTooltip.DrawExpandableTooltip(Main.spriteBatch, _lines, x, y, ease);
+                            ExpandableTooltip.DrawExpandableTooltip(Main.spriteBatch, _lines, x, y, ease, _drawGlass);
                             if(_timer <= 0)
                                 _lines = null;
                         }
@@ -168,10 +171,27 @@ namespace Stellamod.Core.Tooltips
             base.OnModLoad();
             _inspectTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/InspectButton");
         }
+        public static long CountCurrency(Item[] inv)
+        {
+            long num = 0L;
+            for (int i = 0; i < inv.Length; i++)
+            {
+                if (inv[i].type == ItemID.CopperCoin)
+                    num += inv[i].stack;
+                else if (inv[i].type == ItemID.SilverCoin)
+                    num += inv[i].stack * 100;
+                else if (inv[i].type == ItemID.GoldCoin)
+                    num += inv[i].stack * 100 * 100;
+                else if (inv[i].type == ItemID.PlatinumCoin)
+                    num += inv[i].stack * 100 * 100 * 100;
+
+            }
+            return num;
+        }
 
 
         //modified from vanilla code so we can draw our own tooltip wherever we want
-        public static void DrawExpandableTooltip(SpriteBatch spriteBatch, List<TooltipLine> lines, int X, int Y, float alpha)
+        public static void DrawExpandableTooltip(SpriteBatch spriteBatch, List<TooltipLine> lines, int X, int Y, float alpha, bool drawGlass = true)
         {
             Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
             Vector2 zero = Vector2.Zero;
@@ -225,12 +245,16 @@ namespace Stellamod.Core.Tooltips
                 yOffset += (int)(FontAssets.MouseText.Value.MeasureString(drawableLines[k].Text).Y);
             }
 
-            Vector2 drawOrigin = _inspectTextureAsset.Size() / 2f;
-            Vector2 drawCenter = new Vector2(X, Y);
-            drawCenter.Y += ExtraMath.Osc(0f, 2f);
-            drawCenter.X -= 16;
-            drawCenter.Y -= 16;
-            spriteBatch.Draw(_inspectTextureAsset.Value, drawCenter, null, Color.White * alpha, 0, drawOrigin, alpha, SpriteEffects.None, 0);
+            if (drawGlass)
+            {
+               
+                Vector2 drawOrigin = _inspectTextureAsset.Size() / 2f;
+                Vector2 drawCenter = new Vector2(X, Y);
+                drawCenter.Y += ExtraMath.Osc(0f, 2f);
+                drawCenter.X -= 16;
+                drawCenter.Y -= 16;
+                spriteBatch.Draw(_inspectTextureAsset.Value, drawCenter, null, Color.White * alpha, 0, drawOrigin, alpha, SpriteEffects.None, 0);
+            }
         }
     }
 }

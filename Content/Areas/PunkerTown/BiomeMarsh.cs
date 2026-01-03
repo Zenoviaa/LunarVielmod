@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Backgrounds;
 using Stellamod.Content.Biomes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -36,7 +31,6 @@ namespace Stellamod.Content.Areas.PunkerTown
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => MapBackground;
         public override Color? BackgroundColor => base.BackgroundColor;
-        public override ModWaterStyle WaterStyle => ModContent.Find<ModWaterStyle>("Stellamod/AcidWaterStyle");
 
         public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<RainForestBackgroundStyle>();
 
