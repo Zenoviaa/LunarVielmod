@@ -159,10 +159,12 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
         public override void PostDrawTiles()
         {
             base.PostDrawTiles();
+
+        
             _invalidPoints.Clear();
-            int width = Main.screenWidth;
-            int height = Main.screenHeight; 
-            Rectangle screenRectangle = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, width, height);
+            int width = Main.screenWidth * 2;
+            int height = Main.screenHeight * 2; 
+            Rectangle screenRectangle = new Rectangle((int)Main.Camera.Center.X - width / 2, (int)Main.Camera.Center.Y - height / 2, width, height);
             VelocityMap velocityMap = ModContent.GetInstance<VelocityMap>();
             foreach(var vine in _vines)
             {
@@ -180,7 +182,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
                 for(int i = 0; i < chain.points.Length; i++)
                 {
                     Vector2 effector = chain.points[i].position;
-                    chain.externalForces += velocityMap.GetVelocity(effector) * 0.2f;
+                    chain.externalForces += velocityMap.GetVelocity(effector) * 0.1f;
                 }
    
                 /*
@@ -197,9 +199,45 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             {
                 _vines.Remove(_invalidPoints[i]);
             }
-            PixelationManager.QueueSpritebatchDrawAction(RenderPixelatedVines, DrawLayer.OverNPCs);
+            PixelationManager.QueueSpritebatchDrawAction(RenderPixelatedVines, DrawLayer.BehindTiles);
+            RenderMangroveTreeTops();
         }
 
+        private void RenderMangroveTreeTops()
+        {
+            int width = (int)(Main.screenWidth * 1.5f);
+            int height = (int)(Main.screenHeight * 1.5f);
+
+            //Get an extended range so they just don't randomly disappear off screen
+            //We're drawing these manually cause the tiles don't have enough draw fluff to avoid this issue
+
+            int tileWidth = width / 16;
+            int tileHeight = height / 16;
+            Point tileStart = Main.Camera.Center.ToTileCoordinates();
+            tileStart.X -= tileWidth / 2;
+            tileStart.Y -= tileHeight / 2;
+
+            Point tileEnd = tileStart + new Point(tileWidth, tileHeight);
+            int treeType = ModContent.TileType<MangroveTreeTop>();
+            MangroveTreeTop treeTopTile = ModContent.GetInstance<MangroveTreeTop>();
+
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            for (int x = tileStart.X; x < tileEnd.X; x++)
+            {
+                for (int y = tileStart.Y; y < tileEnd.Y; y++)
+                {
+                    if (!WorldGen.InWorld(x, y))
+                        continue;
+                    Tile tile = Main.tile[x, y];
+                    if (tile.TileType != treeType)
+                        continue;
+                    treeTopTile.DrawTreeTops(x, y, spriteBatch);
+                }
+            }
+            spriteBatch.End();
+        }
         private void RenderPixelatedVines(SpriteBatch spriteBatch, Vector2 screenPos)
         {
             foreach(var vine in _vines)

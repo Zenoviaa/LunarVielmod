@@ -27,7 +27,7 @@ namespace Stellamod.Content.Areas.PunkerTown
                     vanillaNpcs.Add(NPCID.JungleSlime);
                 vanillaNpcs.Add(NPCID.JungleBat);
                 vanillaNpcs.Add(NPCID.Piranha);
-                vanillaNpcs.Add(NPCID.Snatcher);
+             //   vanillaNpcs.Add(NPCID.Snatcher);
 
                 foreach(var npc in vanillaNpcs)
                 {

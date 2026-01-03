@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Foreground;
+using Stellamod.WorldG;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace Stellamod.Backgrounds
 {
@@ -21,7 +23,12 @@ namespace Stellamod.Backgrounds
             base.SetLayering(ref zLayer, ref parallax);
             parallax.X = 1.2f;
             parallax.Y = 1;
-            drawOffset = new Vector2(0, 0);
+            drawOffset = new Vector2(0, -1700);
+        }
+        public override float GetFloorY()
+        {
+            Point marshFloor = ModContent.GetInstance<StellaWorld>().MarshLocation;
+            return marshFloor.ToWorldCoordinates().Y;
         }
     }
 }

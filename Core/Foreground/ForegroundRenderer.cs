@@ -45,6 +45,8 @@ namespace Stellamod.Core.Foreground
         {
 
         }
+
+        public virtual float GetFloorY() { return 0f; }
     }
 
     [Autoload(Side = ModSide.Client)]
@@ -211,8 +213,9 @@ namespace Stellamod.Core.Foreground
             Vector2 parallax = Vector2.Zero;
             float zLayer = 0f;
             layer.SetLayering(ref zLayer, ref parallax);
-            float y = (Main.screenHeight - drawHeight);
-
+            float y = layer.GetFloorY() - Main.screenPosition.Y;
+        //    Console.WriteLine(new Vector2(0, layer.GetFloorY()).ToTileCoordinates());
+            //y = (Main.screenHeight - drawHeight);
             Vector2 oldScreenPosition = Main.screenLastPosition;
             Vector2 screenPosition = Main.screenPosition;
             Vector2 cameraMovement = screenPosition - oldScreenPosition;
@@ -221,7 +224,7 @@ namespace Stellamod.Core.Foreground
 
             Vector2 drawPosition = Vector2.Zero;
             drawPosition.Y += y;
-            drawPosition.Y -= layer.totalParallax.Y ;
+        //    drawPosition.Y -= layer.totalParallax.Y ;
             drawPosition.X -= layer.totalParallax.X;
             drawPosition.X -= 5000;
             drawPosition += layer.drawOffset;

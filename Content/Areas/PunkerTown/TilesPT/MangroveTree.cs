@@ -26,7 +26,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             _random = new UnifiedRandom(0);
             LocalizedText name = CreateMapEntryName();
             TileID.Sets.IsATreeTrunk[Type] = true;
-          
+         
             Main.tileAxe[Type] = true;
             AddMapEntry(new Color(169, 200, 93), name);
             RegisterItemDrop(ItemID.RichMahogany);
@@ -38,7 +38,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
         }
         public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
         {
-            Main.instance.TilesRenderer.AddSpecialLegacyPoint(new Point(i, j));
+           // Main.instance.TilesRenderer.AddSpecialLegacyPoint(new Point(i, j));
         }
 
         private Rectangle GetTopFrame(int rand)
@@ -51,8 +51,13 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 
         public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
         {
+
+        }
+
+        public void DrawTreeTops(int i, int j, SpriteBatch spriteBatch)
+        {
             _random.SetSeed(i + j);
-            Vector2 pos = (new Vector2(i + 1, j) + VeilGen.TileAdj) * 16;
+            Vector2 pos = (new Vector2(i + 1, j)) * 16;
 
             Color color = Lighting.GetColor(i, j);
             Rectangle frame = GetTopFrame(_random.Next(0, 1));
@@ -78,7 +83,6 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
                 godrayRenderer.AddGodrayParticle(centerPos + Main.rand.NextVector2Circular(64, 64));
             }
         }
-
         public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
             if (fail || effectOnly)

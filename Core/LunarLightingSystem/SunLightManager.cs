@@ -165,7 +165,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             _primitiveIndex = 0;
             Vector2 topLeftOfPointLight = Main.screenPosition;
-            Vector2 bottomRightOfPointLight = topLeftOfPointLight + new Vector2(Main.screenWidth, Main.screenHeight);
+            Vector2 bottomRightOfPointLight = topLeftOfPointLight + new Vector2(Main.screenWidth * 2, Main.screenHeight);
 
             Point topLeftTile = topLeftOfPointLight.ToTileCoordinates();
             Point bottomRightTIle = bottomRightOfPointLight.ToTileCoordinates();
