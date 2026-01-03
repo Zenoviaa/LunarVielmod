@@ -936,7 +936,7 @@ else
         {
             //Create a new editing context
             //Set the state of the interface.
-            SetCurrency(-1);
+            SetCurrency(Stellamod.MedalCurrencyID);
             _userInterface.SetState(uiState);
         }
 
