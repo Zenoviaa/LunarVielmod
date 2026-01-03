@@ -311,24 +311,25 @@ namespace Stellamod.WorldG
             {
 
                 //  tasks.Insert(caveGen + 2, new PassLegacy("Granite Caves", WorldGenMarbleCaves));
-
+ 
                 tasks.Insert(caveGen + 1, new PassLegacy("Caves 1", WorldGenCaves));
                 tasks.Insert(caveGen + 2, new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
 
             }
 
-
+       
             if (MorrowGen != -1)
             {
-                tasks.Insert(MorrowGen + 1, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
-                tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
-                tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
-                tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Illuria", WorldGenIlluria));
-                tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
-                tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
-                tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-                tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
-                tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Misty Dungeon", GenerateMistyDungeon));
+                tasks.Insert(MorrowGen + 1, new PassLegacy("Marsh Jungle", WorldGenMarsh));
+                tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
+                tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
+                tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
+                tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Illuria", WorldGenIlluria));
+                tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
+                tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
+                tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+                tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
+                tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Misty Dungeon", GenerateMistyDungeon));
             }
 
             int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -597,7 +598,18 @@ namespace Stellamod.WorldG
         private void WorldGenMarsh(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Creating the Marsh";
-            
+            int marshX = GenVars.jungleOriginX - 1000;
+            int marshY = (int)Main.worldSurface;
+            for(int i = 0; i < 1000; i++)
+            {
+                marshY++;
+                if (WorldGen.SolidTile(new Point(marshX, marshY)))
+                    break;
+            }
+
+            Point marshTile = new Point(marshX, marshY);
+            int marshTileLength = 1400;
+            VeilGen.GenerateMarsh(marshTile, marshTileLength);
         }
 
         private void WorldGenVarLocations(GenerationProgress progress, GameConfiguration configuration)
@@ -2113,6 +2125,8 @@ namespace Stellamod.WorldG
                 //Chance to open up
                 VeilGen.GenerateLongCurveCave(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps);
             }
+
+            /*
             int maxAttempts = 100000;
             for (int n = 0; n < maxAttempts; n++)
             {
@@ -2149,7 +2163,7 @@ namespace Stellamod.WorldG
                     splitCaveSteps,
                     splitDenominator);
                 break;
-            }
+            }*/
 
             int numJungleTreeCaves = genRand.Next(126, 150);
             for (int n = 0; n < numJungleTreeCaves; n++)

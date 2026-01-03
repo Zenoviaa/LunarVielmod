@@ -76,6 +76,13 @@ namespace Stellamod.Core.Foreground
             {
                 ForegroundLayer layer = _layers[i];
                 bool isActive = layer.IsActive();
+                if(layer.fade <= 0)
+                {
+                    bool isPlayerTouchingGround = Main.LocalPlayer.velocity.Y == 0;
+                    if (!isPlayerTouchingGround)
+                        isActive = false;
+                }
+     
                 if (isActive)
                 {
                     layer.fade += 0.01f;
@@ -218,6 +225,8 @@ namespace Stellamod.Core.Foreground
             drawPosition.X -= layer.totalParallax.X;
             drawPosition.X -= 5000;
             drawPosition += layer.drawOffset;
+
+
 
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;

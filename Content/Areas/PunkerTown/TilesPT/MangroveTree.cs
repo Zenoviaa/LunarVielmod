@@ -133,7 +133,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             bool right = Framing.GetTileSafely(i + 1, j).TileType == ModContent.TileType<MangroveTree>();
             if(left && right && !down)
             {
-                Vector2 pos = (new Vector2(i + 1, j) + VeilGen.TileAdj) * 16;
+                Vector2 pos = (new Vector2(i + 1, j + 2) + VeilGen.TileAdj) * 16;
                 Color color = Lighting.GetColor(i, j);
                 pos -= new Vector2(0, 64);
                 spriteBatch.Draw(_rootsTextureAsset.Value, pos - Main.screenPosition, null, color.MultiplyRGB(Color.Gray),

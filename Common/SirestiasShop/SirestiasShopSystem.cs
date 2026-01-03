@@ -819,7 +819,7 @@ namespace Stellamod.Common.SirestiasShop
         }
 
         private int RelativeLeft => Main.screenWidth / 2 - (int)Width.Pixels / 2;
-        private int RelativeTop => Main.screenHeight / 2 - (int)Height.Pixels / 2;
+        private int RelativeTop => Main.screenHeight / 2 - (int)Height.Pixels / 2 - 64;
 
         public void OpenRuinMedalsShop()
         {
@@ -903,7 +903,7 @@ namespace Stellamod.Common.SirestiasShop
             _backText = new UIText("Back", large: true);
         }
         private int RelativeLeft => Main.screenWidth / 2 - (int)Width.Pixels / 2;
-        private int RelativeTop => Main.screenHeight / 2 - (int)Height.Pixels / 2;
+        private int RelativeTop => Main.screenHeight / 2 - (int)Height.Pixels / 2 - 64;
         public override void OnInitialize()
         {
             base.OnInitialize();

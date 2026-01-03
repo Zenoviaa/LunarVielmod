@@ -3,6 +3,7 @@ using ReLogic.Utilities;
 using Stellamod.Content.Areas.PunkerTown.TilesPT;
 using Stellamod.Helpers;
 using Stellamod.Items.Ores;
+using Stellamod.Projectiles.Swords.Altride;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Veil;
@@ -36,7 +37,7 @@ namespace Stellamod.WorldG
             int tileX = (int)Main.MouseWorld.X / 16;
             int tileY = (int)Main.MouseWorld.Y / 16;
             Point startTile = mouseWorld.ToTileCoordinates();
-            GenerateMarsh(startTile, 1400);
+            VeilGen.GenerateMarsh(startTile, 1400);
             return true;
         }
 
@@ -67,32 +68,119 @@ namespace Stellamod.WorldG
             Point endTile = startTile + new Point(length, 0);
             int mountainHeight = 200;
             int[] heights = new int[length];
-            for(int x = startTile.X; x < endTile.X; x++)
+            int grassTileType = ModContent.TileType<RainforestGrass>();
+            for (int x = startTile.X; x < endTile.X; x++)
             {
                 float localX = x - startTile.X;
             
                 float ratio = localX / (float)length;
                // Console.WriteLine(ratio);
                 int height = (int)(GetMarshHeight(ratio) * mountainHeight);
-                heights[startTile.X - x] = height;
+                heights[x - startTile.X] = height;
                 for (int y = 0; y < height; y++)
                 {
-                    WorldGen.PlaceTile(x, startTile.Y - y, ModContent.TileType<RainforestGrass>());
+                    WorldGen.PlaceTile(x, startTile.Y - y, grassTileType);
                 }
             }
 
-            //Generate big trees
+            ushort uGrassTileType = (ushort)grassTileType;
+            //Generate big trees, mangrove trees
             for (int x = startTile.X; x < endTile.X; x++)
             {
                 float localX = x - startTile.X;
-
                 float ratio = localX / (float)length;
-                int heightIndex = startTile.X - x;
+                int heightIndex = x - startTile.X;
                 int height = heights[heightIndex];
-                Tile tile = Main.tile[x, height];
 
+                int y = startTile.Y - height;
+                Tile tile = Main.tile[x, startTile.Y - height];
+
+                Rectangle scanArea = new Rectangle(x, y, 5, 2);
+                Point point = new Point(x - scanArea.Width / 2, y);
+                Dictionary<ushort, int> dictionary = new Dictionary<ushort, int>();
+                WorldUtils.Gen(point, new Shapes.Rectangle(scanArea.Width, scanArea.Height), new Actions.TileScanner(uGrassTileType).Output(dictionary));
+                int tileCount = dictionary[uGrassTileType];
+
+                if(tileCount >= 5)
+                {
+                    if (genRand.NextBool(16))
+                    {
+                        int treeHeight = genRand.Next(20, 48);
+                        VeilGen.PlaceMangroveTrees(x, y, treeHeight);
+                    }
+                }
             }
 
+            //Now we're going to place acacia trees
+            ushort bigTreeTileType = (ushort)ModContent.TileType<MangroveTree>();
+            for (int x = startTile.X; x < endTile.X; x++)
+            {
+                float localX = x - startTile.X;
+                float ratio = localX / (float)length;
+                int heightIndex = x - startTile.X;
+                int height = heights[heightIndex];
+
+                int y = startTile.Y - height;
+                Tile tile = Main.tile[x, startTile.Y - height];
+
+                Rectangle scanArea = new Rectangle(x, y, 5, 2);
+                Point point = new Point(x - scanArea.Width / 2, y);
+                Dictionary<ushort, int> dictionary = new Dictionary<ushort, int>();
+                WorldUtils.Gen(point, new Shapes.Rectangle(scanArea.Width, scanArea.Height), new Actions.TileScanner(uGrassTileType, bigTreeTileType).Output(dictionary));
+                int tileCount = dictionary[uGrassTileType];
+                int mangroveTreeCount = dictionary[bigTreeTileType];
+
+                if (tileCount >= 5 && mangroveTreeCount <= 0)
+                {
+                    if (genRand.NextBool(8))
+                    {
+                        int treeHeight = genRand.Next(12, 20);
+                        VeilGen.PlaceAcaciaTrees(x, y, treeHeight);
+                    }
+                }
+            }
+
+            //Spawn surface waters
+            int numWaterBlotches = Main.rand.Next(5, 10);
+            for(int n = 0; n < numWaterBlotches; n++)
+            {
+                int randX = genRand.Next(startTile.X, endTile.X);
+
+                int heightIndex = randX - startTile.X;
+                int height = heights[heightIndex];
+
+                int randY = startTile.Y - height - 20;
+
+                int radius = 12;
+                Point point = new Point(randX, randY);
+                WorldUtils.Gen(point,
+                    new Shapes.Circle(radius / 2, radius / 2),
+                    new Actions.SetLiquid(type: LiquidID.Water));
+            }
+
+            //Spawn underground waters
+            numWaterBlotches = genRand.Next(60, 80);
+            for (int n = 0; n < numWaterBlotches; n++)
+            {
+                int randX = genRand.Next(startTile.X, endTile.X);
+
+                int heightIndex = randX - startTile.X;
+                int height = heights[heightIndex];
+
+                int randY = startTile.Y - height + 10 + genRand.Next(0, 100);
+                randY = (int)MathHelper.Clamp(randY, startTile.Y - height, startTile.Y);
+
+                int radius = genRand.Next(8, 20);
+                Point point = new Point(randX, randY);
+
+                WorldUtils.Gen(point,
+                    new Shapes.Circle(radius / 2, radius / 2),
+                    new Actions.ClearTile(true));
+
+                WorldUtils.Gen(point,
+                    new Shapes.Circle(radius / 3, radius / 3),
+                    new Actions.SetLiquid(type: LiquidID.Water));
+            }
         }
         private void GenerateSkullrunnerCircle()
         {
@@ -865,6 +953,174 @@ namespace Stellamod.WorldG
     public static class VeilGen
     {
         public static Vector2 TileAdj => (Lighting.Mode == Terraria.Graphics.Light.LightMode.Retro || Lighting.Mode == Terraria.Graphics.Light.LightMode.Trippy) ? Vector2.Zero : Vector2.One * 12;
+
+        public static float GetMarshHeight(float x)
+        {
+            float bump = x * (4 - x * 4);
+            float mountains = MathF.Sin(x * 2) * 0.5f + 0.5f;
+            float mountains2 = MathF.Sin(x * 2) * 0.5f + 0.7f;
+            float dips = MathF.Sin(x * 32) * 0.1f;
+            float roughness = MathF.Sin(x * 120) * 0.01f;
+            float roughness2 = MathF.Sin(x * 200) * 0.005f;
+            float y = bump * mountains * mountains2 - dips - roughness - roughness2;
+            return y + 0.1f;
+        }
+
+        public static void GenerateMarsh(Point startTile, int length)
+        {
+            var genRand = WorldGen.genRand;
+
+            //Generate the terrain
+            Point endTile = startTile + new Point(length, 0);
+            int mountainHeight = 200;
+            int[] heights = new int[length];
+            int grassTileType = ModContent.TileType<RainforestGrass>();
+            for (int x = startTile.X; x < endTile.X; x++)
+            {
+                float localX = x - startTile.X;
+
+                float ratio = localX / (float)length;
+                // Console.WriteLine(ratio);
+                int height = (int)(GetMarshHeight(ratio) * mountainHeight);
+                heights[x - startTile.X] = height;
+                for (int y = 0; y < height; y++)
+                {
+                    WorldGen.PlaceTile(x, startTile.Y - y, grassTileType);
+                }
+            }
+
+            ushort uGrassTileType = (ushort)grassTileType;
+            //Generate big trees, mangrove trees
+            for (int x = startTile.X; x < endTile.X; x++)
+            {
+                float localX = x - startTile.X;
+                float ratio = localX / (float)length;
+                int heightIndex = x - startTile.X;
+                int height = heights[heightIndex];
+
+                int y = startTile.Y - height;
+                Tile tile = Main.tile[x, startTile.Y - height];
+
+                Rectangle scanArea = new Rectangle(x, y, 5, 2);
+                Point point = new Point(x - scanArea.Width / 2, y);
+                Dictionary<ushort, int> dictionary = new Dictionary<ushort, int>();
+                WorldUtils.Gen(point, new Shapes.Rectangle(scanArea.Width, scanArea.Height), new Actions.TileScanner(uGrassTileType).Output(dictionary));
+                int tileCount = dictionary[uGrassTileType];
+
+                if (tileCount >= 5)
+                {
+                    if (genRand.NextBool(16))
+                    {
+                        int treeHeight = genRand.Next(20, 48);
+                        VeilGen.PlaceMangroveTrees(x, y, treeHeight);
+                    }
+                }
+            }
+
+            //Now we're going to place acacia trees
+            ushort bigTreeTileType = (ushort)ModContent.TileType<MangroveTree>();
+            for (int x = startTile.X; x < endTile.X; x++)
+            {
+                float localX = x - startTile.X;
+                float ratio = localX / (float)length;
+                int heightIndex = x - startTile.X;
+                int height = heights[heightIndex];
+
+                int y = startTile.Y - height;
+                Tile tile = Main.tile[x, startTile.Y - height];
+
+                Rectangle scanArea = new Rectangle(x, y, 5, 2);
+                Point point = new Point(x - scanArea.Width / 2, y);
+                Dictionary<ushort, int> dictionary = new Dictionary<ushort, int>();
+                WorldUtils.Gen(point, new Shapes.Rectangle(scanArea.Width, scanArea.Height), new Actions.TileScanner(uGrassTileType, bigTreeTileType).Output(dictionary));
+                int tileCount = dictionary[uGrassTileType];
+                int mangroveTreeCount = dictionary[bigTreeTileType];
+
+                if (tileCount >= 5 && mangroveTreeCount <= 0)
+                {
+                    if (genRand.NextBool(8))
+                    {
+                        int treeHeight = genRand.Next(12, 20);
+                        VeilGen.PlaceAcaciaTrees(x, y, treeHeight);
+                    }
+                }
+            }
+
+            //Spawn surface waters
+            int numWaterBlotches = Main.rand.Next(10, 15);
+            for (int n = 0; n < numWaterBlotches; n++)
+            {
+                int randX = genRand.Next(startTile.X, endTile.X);
+
+                int heightIndex = randX - startTile.X;
+                int height = heights[heightIndex];
+
+                int randY = startTile.Y - height - 20;
+
+                int radius = 12;
+                Point point = new Point(randX, randY);
+                WorldUtils.Gen(point,
+                    new Shapes.Circle(radius / 2, radius / 2),
+                    new Actions.SetLiquid(type: LiquidID.Water));
+            }
+
+            //Spawn underground waters
+            numWaterBlotches = genRand.Next(60, 80);
+            for (int n = 0; n < numWaterBlotches; n++)
+            {
+                int randX = genRand.Next(startTile.X, endTile.X);
+
+                int heightIndex = randX - startTile.X;
+                int height = heights[heightIndex];
+
+                int randY = startTile.Y - height + 10 + genRand.Next(0, 100);
+                randY = (int)MathHelper.Clamp(randY, startTile.Y - height, startTile.Y);
+
+                int radius = genRand.Next(8, 20);
+                Point point = new Point(randX, randY);
+
+                WorldUtils.Gen(point,
+                    new Shapes.Circle(radius / 2, radius / 2),
+                    new Actions.ClearTile(true));
+
+                WorldUtils.Gen(point,
+                    new Shapes.Circle(radius / 3, radius / 3),
+                    new Actions.SetLiquid(type: LiquidID.Water));
+            }
+
+            //Grass up the holes we just made
+            for (int x = startTile.X; x < endTile.X; x++)
+            {
+                int heightIndex = x - startTile.X;
+                int height = heights[heightIndex];
+                for (int y = startTile.Y - height + 7; y < Main.maxTilesY / 2; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    if (!tile.HasTile)
+                        continue;
+
+                    bool touchingAir = WorldGen.TileIsExposedToAir(x, y);
+                    if (touchingAir && (tile.TileType == ModContent.TileType<RainforestGrass>()) && genRand.NextBool(2))
+                    {
+                        Point point = new Point(x, y);
+                        int steps = genRand.Next(1, 4);
+                        Vector2 baseDirection = -Vector2.UnitY;
+                        int caveWidth = 3;
+
+                        for (int s = 0; s < steps; s++)
+                        {
+                            if (point.X - caveWidth > 0 && point.X + caveWidth < Main.maxTilesX && point.Y + caveWidth < Main.maxTilesY && point.Y - caveWidth > 0)
+                            {
+                                WorldUtils.Gen(point, new Shapes.Circle(caveWidth, caveWidth),
+                                    new Actions.PlaceWall(WallID.JungleUnsafe));
+                            }
+
+                            point += (baseDirection * caveWidth).RotatedByRandom(MathHelper.ToRadians(30)).ToPoint();
+                        }
+                    }
+                }
+            }
+        }
         public static bool IsAir(int x, int y, int w)
         {
             for (int k = 0; k < w; k++)

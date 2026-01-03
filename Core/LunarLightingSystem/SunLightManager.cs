@@ -13,7 +13,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private static int _primitiveIndex;
         private static float _overSunTimer;
         private static float _daylightFadeTimer;
-        public const int Max_Primitive_Count = 9000;
+        public const int Max_Primitive_Count = 15000;
 
         public static int[] ShadowIndexBuffer;
         public static VertexPositionColor[] ShadowVertices = new VertexPositionColor[Max_Primitive_Count * 3];
@@ -223,7 +223,7 @@ namespace Stellamod.Core.LunarLightingSystem
                     //Vertex 3
                     Vector2 bottomRight = worldPoint + new Vector2(16, 16);
 
-                    AddQuad(topLeft, bottomRight);
+                   // AddQuad(topLeft, bottomRight);
                     AddQuad(topRight, bottomLeft);
                 }
             }

@@ -205,4 +205,31 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             windSwaySpeed = 0.02f;
         }
     }
+    public class SitrisPiano : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 1;
+            drawOrigin = TileDrawOrigin.BottomUp;
+        }
+    }
+    public class SitrisPiano2 : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 3;
+            drawOrigin = TileDrawOrigin.BottomUp;
+        }
+    }
+    public class SitrisPianoPlaying : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 1;
+            drawOrigin = TileDrawOrigin.BottomUp;
+        }
+    }
 }
