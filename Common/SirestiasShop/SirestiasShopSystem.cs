@@ -226,14 +226,14 @@ namespace Stellamod.Common.SirestiasShop
                 Vector2 centerPos = tl + new Vector2(16);
 
                 Vector2 iconCenterPos = tl + slotTexture.Size() / 2;
-                iconCenterPos.Y += ExtraMath.Osc(0f, 2f, offset: i);
+                iconCenterPos.Y += (int)ExtraMath.Osc(0f, 2f, offset: i);
 
                 spriteBatch.Draw(slotTexture, iconCenterPos + Vector2.UnitY * 8, null, Color.Black * 0.35f, 0f, drawOrigin, _scale * 0.75f, SpriteEffects.None, 0f);
                 spriteBatch.Draw(slotTexture, iconCenterPos, null, drawColor, 0f, drawOrigin, _scale * 0.75f, SpriteEffects.None, 0f);
 
                 Vector2 priceCenterPos = iconCenterPos;
                 priceCenterPos.Y += 48;
-                priceCenterPos.Y += ExtraMath.Osc(0f, 2f, offset: i + 1);
+                priceCenterPos.Y += (int)ExtraMath.Osc(0f, 2f, offset: i + 1);
                 spriteBatch.Draw(MiniPriceTextureAsset.Value, priceCenterPos, null, drawColor, 0f, miniPriceDrawOrigin, _scale * 0.75f, SpriteEffects.None, 0f);
 
                 if(CurrencyTextureAsset != null)
@@ -258,24 +258,24 @@ namespace Stellamod.Common.SirestiasShop
 
                     float glowScale = ExtraMath.Osc(0.9f, 1f, 3, i);
                     Vector2 origin = glow2TextureAsset.Value.Size() / 2f;
-                    spriteBatch.Draw(glow2TextureAsset.Value, iconCenterPos, null, color, 0, origin, glowScale * scaleM, SpriteEffects.None, 0);
+                    spriteBatch.Draw(glow2TextureAsset.Value, iconCenterPos, null, color, 0, origin, glowScale * scaleM * 0.8f, SpriteEffects.None, 0);
                     color = Color.White;
                     color *= 0.5f;
                     color.A = 0;
-                    spriteBatch.Draw(glow2TextureAsset.Value, iconCenterPos, null, color, 0, origin, glowScale * scaleM * 0.4f, SpriteEffects.None, 0);
+                    spriteBatch.Draw(glow2TextureAsset.Value, iconCenterPos, null, color, 0, origin, glowScale * scaleM * 0.4f * 0.8f, SpriteEffects.None, 0);
 
                     RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
 
                     SamplerState anisotropicClamp = SamplerState.AnisotropicClamp;
                     spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, Main.Rasterizer, SpriteWhiteShader.Instance.Effect, Main.UIScaleMatrix);
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, SpriteWhiteShader.Instance.Effect, Main.UIScaleMatrix);
                     ItemSlot.DrawItemIcon(item, _context, spriteBatch, iconCenterPos + -Vector2.UnitX * 2, drawScale * scaleM, 32, Color.White);
                     ItemSlot.DrawItemIcon(item, _context, spriteBatch, iconCenterPos + Vector2.UnitX * 2, drawScale * scaleM, 32, Color.White);
                     ItemSlot.DrawItemIcon(item, _context, spriteBatch, iconCenterPos + Vector2.UnitY * 2, drawScale * scaleM, 32, Color.White);
                     ItemSlot.DrawItemIcon(item, _context, spriteBatch, iconCenterPos + -Vector2.UnitY * 2, drawScale * scaleM, 32, Color.White);
 
                     spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
                 } else
                 {
                     Color color = Color.White;
@@ -327,12 +327,6 @@ namespace Stellamod.Common.SirestiasShop
         public int TextureWidth => _currencyTextureAsset.Width();
         public int TextureHeight => _currencyTextureAsset.Height();
         public bool drawCurrencyText;
-        /*
-    public override void OnInitialize()
-    {
-        base.OnInitialize();
-        Append(_currencyText);
-    }*/
 
     public override void LeftClick(UIMouseEvent evt)
     {
@@ -341,37 +335,13 @@ namespace Stellamod.Common.SirestiasShop
         uiSystem.SetCurrency(CurrencyID);
         uiSystem.SelectedCurrencyTextureAsset = _currencyTextureAsset;
     }
-    /*
-public override void Update(GameTime gameTime)
-{
-base.Update(gameTime);
 
-
-if (CurrencyID == Stellamod.EreshstylCurrencyID)
-{
-
-}
-else if (CurrencyID == Stellamod.NoHitCrystalCurrencyID)
-{
-
-}
-else if (CurrencyID == -1)
-{
-
-} 
-else
-{
-   int ruinMedals = CustomCurrencyManager.CanAfford
-}
-
-}
-  */
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
             bool isHovering = this.QuickMouseInteraction();
             Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
-            topLeft.Y += ExtraMath.Osc(0f, 3f, offset: CurrencyID);
+            topLeft.Y += (int)ExtraMath.Osc(0f, 3f, offset: CurrencyID);
             Vector2 drawOrigin = _currencyTextureAsset.Size() / 2f;
 
         
@@ -408,7 +378,7 @@ else
 
                 SamplerState anisotropicClamp = SamplerState.AnisotropicClamp;
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, anisotropicClamp, DepthStencilState.None, Main.Rasterizer,null, Main.UIScaleMatrix);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,null, Main.UIScaleMatrix);
             
                 spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin + Vector2.UnitX * 2 , null, Color.White, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
                 spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin - Vector2.UnitX * 2 , null, Color.White, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
@@ -416,14 +386,15 @@ else
                 spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin - Vector2.UnitY * 2 , null, Color.White, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
 
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
             } else if (isSelected)
             {
+                /*
                 RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
 
                 SamplerState anisotropicClamp = SamplerState.AnisotropicClamp;
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, anisotropicClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
 
                 spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin + Vector2.UnitX * 2, null, Color.Yellow, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
                 spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin - Vector2.UnitX * 2, null, Color.Yellow, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
@@ -431,13 +402,26 @@ else
                 spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin - Vector2.UnitY * 2, null, Color.Yellow, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
 
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
+           */
+           
+
             }
             else
             {
                 _scaleMult = MathHelper.Lerp(_scaleMult, 1f, 0.1f);
             }
             spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin, null, Color.White, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
+
+            if (!isSelected)
+            {
+                Color glowColor = Color.Lerp(Color.White, Color.Black, 0.5f); ;
+                spriteBatch.Draw(_currencyTextureAsset.Value, topLeft + drawOrigin, null, glowColor, 0, drawOrigin, s * _scaleMult, SpriteEffects.None, 0);
+            }
+            else
+            {
+         
+            }
 
             if (!drawCurrencyText)
                 return;
@@ -693,7 +677,6 @@ else
     {
         private float _scale;
         private UIList _uiList;
-        private UIImage _backgroundImage;
         private UIPanel _panel;
         private UIGrid _grid;
         private UIScrollbar _scrollbar;
@@ -706,7 +689,6 @@ else
             _panel = new UIPanel();
             _scrollbar = scrollbar;
             _catalogueWindowAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/CatalogueWindow");
-            //  _backgroundImage = new UIImage(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/CatalogueWindow"));
             _browserView = new SirestiasShopBrowserView();
         }
 
@@ -800,7 +782,6 @@ else
         private float _inTimer;
         private UIImage _shopWindow;
         private UIScrollbar _scrollbar;
-        private XButton _xButton;
         private SirestiasShopRightCurrencyBar _rightCurrencyBar;
         private SirestiasShopCurrencyBar _currencyBar;
         private SirestiasShopCatalogueWindow _catalogueWindow;
@@ -811,7 +792,7 @@ else
             _rightCurrencyBar = new SirestiasShopRightCurrencyBar();
             _currencyBar = new SirestiasShopCurrencyBar();
             _scrollbar = new FancyScrollbar();
-            _xButton = new XButton(Close);
+            //_xButton = new XButton(Close);
             _catalogueWindow = new SirestiasShopCatalogueWindow(_scrollbar);
             _shopWindow = new UIImage(ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/ShopWindow"));
         }
@@ -827,7 +808,7 @@ else
             BorderColor = Color.Transparent;
             Append(_shopWindow);
 
-            Append(_xButton);
+          //  Append(_xButton);
 
             Append(_catalogueWindow);
             Append(_currencyBar);
@@ -868,9 +849,6 @@ else
             float ease = EasingFunction.OutExpo(ratio);
             Top.Pixels += MathHelper.Lerp(400, 0, ease);
 
-            _xButton.Left.Pixels = 6;
-            _xButton.Top.Pixels = 6;
-
             _gif.Left.Set(-_gif.Width.Pixels, 1);
             _gif.Top.Set(-_gif.Height.Pixels, 1);
             
@@ -880,11 +858,7 @@ else
         {
             _catalogueWindow.SetCatalogue(items);
         }
-        private void Close()
-        {
-            SirestiasShopSystem uiSystem = ModContent.GetInstance<SirestiasShopSystem>();
-            uiSystem.CloseUI();
-        }
+
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
@@ -892,9 +866,68 @@ else
         }
     }
 
+    public class BackButton : UIPanel
+    {
+        private float _scale;
+        private Action _closeFunction;
+        private UIText _backText;
+        public BackButton(Action closeFunction) : base()
+        {
+            _closeFunction = closeFunction; 
+            _backText = new UIText("Back", large: true);
+        }
+        private int RelativeLeft => Main.screenWidth / 2 - (int)Width.Pixels / 2;
+        private int RelativeTop => Main.screenHeight / 2 - (int)Height.Pixels / 2;
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            Width.Pixels = 128;
+            Height.Pixels = 32;
+            Append(_backText);
+        }
+
+
+        public override void LeftClick(UIMouseEvent evt)
+        {
+            base.LeftClick(evt);
+            _closeFunction();
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            Left.Pixels = RelativeLeft;
+            Top.Pixels = RelativeTop + 340;
+
+            Width.Pixels = 160;
+            Height.Pixels = 54;
+
+            _backText.Width.Pixels = Width.Pixels;
+            _backText.Height.Pixels = Height.Pixels;
+            _backText.HAlign = 0.5f;
+            _backText.SetText(LangText.Common("Back"));
+            BackgroundColor = Color.Lerp(Color.Blue, Color.Black, 1f) * 0.5f;
+            BorderColor = Color.Lerp(Color.Purple, Color.Black, 0.8f) * 0.5f;
+        }
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            this.QuickMouseInteraction();
+            if (IsMouseHovering)
+            {
+                _scale = MathHelper.Lerp(_scale, 1.25f, 0.3f);
+            }
+            else
+            {
+                _scale = MathHelper.Lerp(_scale, 1f, 0.3f);
+            }
+            _backText.SetText(LangText.Common("Back"), _scale, true);
+        }
+    }
+
     public class SirestiasShopUIState : UIState
     {
         public SirestiasShopMainWindow shopWindow;
+        public BackButton backButton;
         public SirestiasShopUIState() : base()
         {
 
@@ -904,6 +937,9 @@ else
         {
             shopWindow = new SirestiasShopMainWindow();
             Append(shopWindow);
+
+            backButton = new BackButton(ModContent.GetInstance<SirestiasShopSystem>().CloseUI);
+            Append(backButton);
         }
     }
 
@@ -1010,6 +1046,9 @@ else
                     {
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                         {
+                            SpriteBatch spriteBatch = Main.spriteBatch;
+                            spriteBatch.End();
+                            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
                             _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
                         }
                         return true;

@@ -93,6 +93,7 @@ Common: {
 	NoHitCrystal: No Hit Crystals
 	Ereshstyl: Ereshstyl
 	Coins: Coins
+	Back: Back
 }
 
 SetBonus: {
