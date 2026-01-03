@@ -21,11 +21,7 @@ namespace Stellamod.Content.Biomes
 
         private void AddForegroundOrBackground()
         {
-            SpringHillsForegroundBackground();
-            if (ZoneMarsh)
-            {
-                Player.ZoneJungle = true;
-            }
+
             MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneIlluria || myPlayer.ZoneIshtar || myPlayer.ZoneAbyss)
             {

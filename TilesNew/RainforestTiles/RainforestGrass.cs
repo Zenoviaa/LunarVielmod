@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.PunkerTown.TilesPT;
-using Stellamod.Core.Grass;
-using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -11,10 +9,13 @@ using Terraria.ModLoader;
 
 namespace Stellamod.TilesNew.RainforestTiles
 {
+   
     public class RainforestGrass : ModTile
     {
         public override void SetStaticDefaults()
         {
+            TileID.Sets.JungleBiome[Type] = 1;
+
             Main.tileSolid[Type] = true;
             Main.tileMergeDirt[Type] = true;
             Main.tileBlockLight[Type] = true;
@@ -31,8 +32,8 @@ namespace Stellamod.TilesNew.RainforestTiles
         }
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
-   
-            if(j != 0)
+
+            if (j != 0)
             {
                 //Render grass above the tile
                 Tile tile = Main.tile[i, j - 1];
