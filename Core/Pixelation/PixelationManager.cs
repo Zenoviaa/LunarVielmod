@@ -264,7 +264,7 @@ namespace Stellamod.Core.Pixelation
                 _behindTilesPixelTarget.DrawToScreen();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
             }
-         
+
             orig(self);
         }
 
