@@ -192,7 +192,7 @@ namespace Stellamod.Content.Areas.PunkerTown.EnemiesPT
             }
             if (canHitLine)
             {
-                Vector2 targetVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                Vector2 targetVelocity = ((Target.Top + new Vector2(0, -32)) - NPC.Center).SafeNormalize(Vector2.Zero);
                 targetVelocity *= 5f;
                 NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
                 NPC.rotation = NPC.velocity.X * 0.05f;
@@ -224,7 +224,7 @@ namespace Stellamod.Content.Areas.PunkerTown.EnemiesPT
             }
             else if (CurrentNode == Vector2.Zero)
             {
-                Vector2 targetVelocity = (Target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                Vector2 targetVelocity = ((Target.Top+new Vector2(0, -32)) - NPC.Center).SafeNormalize(Vector2.Zero);
                 targetVelocity *= 5f;
                 NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
                 NPC.rotation = NPC.velocity.X * 0.05f;
@@ -281,7 +281,7 @@ namespace Stellamod.Content.Areas.PunkerTown.EnemiesPT
             float numDust = 3;
             for (float n = 0; n < numDust; n++)
             {
-                Vector2 velocity = NPC.velocity.SafeNormalize(Vector2.Zero) * 15;
+                Vector2 velocity = NPC.velocity.SafeNormalize(Vector2.Zero) * 6;
                 velocity = velocity.RotatedByRandom(MathHelper.PiOver4);
                 velocity *= Main.rand.NextFloat(0.3f, 2f);
                 Dust.NewDustPerfect(NPC.Center + NPC.velocity, ModContent.DustType<GlowDust>(), velocity, newColor: Color.White, Scale: 0.4f);
@@ -437,7 +437,10 @@ namespace Stellamod.Content.Areas.PunkerTown.EnemiesPT
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
             SpriteEffects spriteEffects = NPC.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             Vector2 drawCenter = NPC.Center - screenPos;
-            spriteBatch.Draw(texture, drawCenter, NPC.frame, drawColor, NPC.rotation, drawOrigin, NPC.scale, spriteEffects, 0);
+            float rotation = NPC.rotation;
+            if (NPC.direction == -1 && State == AIState.Dash && Timer > 21)
+                rotation -= MathHelper.Pi;
+            spriteBatch.Draw(texture, drawCenter, NPC.frame, drawColor, rotation, drawOrigin, NPC.scale, spriteEffects, 0);
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

@@ -200,6 +200,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             {
                 _vines.Remove(_invalidPoints[i]);
             }
+
             PixelationManager.QueueSpritebatchDrawAction(RenderPixelatedVines, DrawLayer.BehindTiles);
             RenderMangroveTreeTops();
         }
