@@ -14,10 +14,25 @@ namespace Stellamod.TilesNew.RainforestTiles
     {
         public override void SetStaticDefaults()
         {
+            
             TileID.Sets.JungleBiome[Type] = 1;
-
+            TileID.Sets.Grass[Type] = true;
+            TileID.Sets.NeedsGrassFraming[Type] = false;
+       
             Main.tileSolid[Type] = true;
             Main.tileMergeDirt[Type] = true;
+
+            //idk if i actually need to do both of these but better safe than sorry
+            Main.tileMerge[Type][TileID.Mud] = true;
+            Main.tileMerge[TileID.Mud][Type] = true;
+
+            Main.tileMerge[Type][TileID.JungleGrass] = true;
+            Main.tileMerge[TileID.JungleGrass][Type] = true;
+
+            Main.tileMerge[Type][TileID.Grass] = true;
+            Main.tileMerge[TileID.Grass][Type] = true;
+
+
             Main.tileBlockLight[Type] = true;
             RegisterItemDrop(ModContent.ItemType<RainforestGrassBlock>());
             // DustType = Main.rand.Next(110, 113);

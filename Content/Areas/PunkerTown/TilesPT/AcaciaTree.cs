@@ -171,6 +171,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
                 Vector2 worldPoint = vine.Key.ToWorldCoordinates();
                 if (!screenRectangle.Contains(worldPoint.ToPoint()))
                 {
+
                     _invalidPoints.Add(vine.Key);
                     continue;
                 }

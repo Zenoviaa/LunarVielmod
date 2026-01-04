@@ -51,13 +51,16 @@ namespace Stellamod.Core.Utilities
         private void ClearGrid()
         {
             //We're only going to update the velocities for what's on screen, for optimization concerns
-            Point startTile = (Main.Camera.Center - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2f)).ToTileCoordinates();
+
+            int width = (int)(Main.screenWidth * 1.5f);
+            int height = (int)(Main.screenHeight * 1.5f);
+            Point startTile = (Main.Camera.Center - new Vector2(width / 2, width / 2f)).ToTileCoordinates();
             if (startTile.X < 0)
                 startTile.X = 0;
             if (startTile.Y < 0)
                 startTile.Y = 0;
 
-            Point endTile = startTile + new Point(Main.screenWidth/16, Main.screenHeight/16);
+            Point endTile = startTile + new Point(width / 16, width / 16);
             if (endTile.X >= Main.maxTilesX)
                 endTile.X = Main.maxTilesX - 1;
             if(endTile.Y  >= Main.maxTilesY)

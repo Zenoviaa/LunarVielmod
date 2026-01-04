@@ -43,6 +43,7 @@ using Stellamod.Tiles.Veil;
 using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;
 using Stellamod.UI.CauldronSystem;
+using Stellamod.WorldG.MarshJungle;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -60,7 +61,6 @@ using Terraria.WorldBuilding;
 
 namespace Stellamod.WorldG
 {
-
     public class StellaWorld : ModSystem
     {
         public Point WitchTownLocation { get; private set; }
@@ -110,9 +110,9 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Dunes");
             DisableGenTask(tasks, "Marble");
             DisableGenTask(tasks, "Granite");
-
-
-
+            DisableGenTask(tasks, "Jungle");
+            DisableGenTask(tasks, "Wall Variety");
+    
             int fullDesert = tasks.FindIndex(genpass => genpass.Name.Equals("Full Desert"));
             tasks[fullDesert] = new PassLegacy("Lock Full Desert", LockDesert);
 
@@ -148,10 +148,9 @@ namespace Stellamod.WorldG
             {
 
                 //  tasks.Insert(caveGen + 2, new PassLegacy("Granite Caves", WorldGenMarbleCaves));
- 
-                tasks.Insert(caveGen + 1, new PassLegacy("Caves 1", WorldGenCaves));
-                tasks.Insert(caveGen + 2, new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
-
+                tasks.Insert(caveGen + 1, new MarshJungleMudPass());
+                tasks.Insert(caveGen + 2, new PassLegacy("Caves 1", WorldGenCaves));
+                tasks.Insert(caveGen + 3, new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
             }
 
        
@@ -195,14 +194,14 @@ namespace Stellamod.WorldG
                 tasks.Insert(CathedralGen2 + 12, new PassLegacy("World Gen Gia's House", WorldGenGiaHouse));
                // tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Worshiping Towers", WorldGenWorshipingTowers));
                 tasks.Insert(CathedralGen2 + 13, new PassLegacy("World Gen Bridget", WorldGenFabledTrees));
-                tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
-                tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
-                tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Dock", WorldGenDock));
-                tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Evil", WorldGenEvil));
-                tasks.Insert(CathedralGen2 + 18, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
-                tasks.Insert(CathedralGen2 + 19, new PassLegacy("Grassing Caves", WorldGenGrassPass));
-                tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
-                tasks.Insert(CathedralGen2 + 21, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
+          //      tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Blood Catherdal", WorldGenBloodCathedral));
+                tasks.Insert(CathedralGen2 + 14, new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
+                tasks.Insert(CathedralGen2 + 15, new PassLegacy("World Gen Dock", WorldGenDock));
+                tasks.Insert(CathedralGen2 + 16, new PassLegacy("World Gen Evil", WorldGenEvil));
+                tasks.Insert(CathedralGen2 + 17, new PassLegacy("World Gen Colosseum", WorldGenColosseum));
+                tasks.Insert(CathedralGen2 + 18, new PassLegacy("Grassing Caves", WorldGenGrassPass));
+                tasks.Insert(CathedralGen2 + 19, new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
+                tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
            //     tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Water", WorldGenWater));
             }
         }
@@ -435,7 +434,7 @@ namespace Stellamod.WorldG
         private void WorldGenMarsh(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Creating the Marsh";
-            int marshX = GenVars.jungleOriginX - 900;
+            int marshX = GenVars.jungleOriginX - 700;
             int marshY = (int)Main.worldSurface - 500;
             for(int i = 0; i < 1000; i++)
             {
@@ -444,7 +443,7 @@ namespace Stellamod.WorldG
                     break;
             }
 
-            marshY += 10;
+            marshY += 25;
             MarshLocation = new Point(marshX, marshY);
             int marshTileLength = 1400;
             VeilGen.GenerateMarsh(MarshLocation, marshTileLength);
@@ -500,6 +499,7 @@ namespace Stellamod.WorldG
         private void WorldGenDarkspace(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Creating a Dark Place.";
+
             var genRand = WorldGen.genRand;
             int yMax = (Main.UnderworldLayer - (Main.maxTilesY / 6));
 
@@ -1766,7 +1766,6 @@ namespace Stellamod.WorldG
         {
             progress.Message = "The caves she told you not to worry about";
             var genRand = WorldGen.genRand;
-
 
             for (int x = 0; x < Main.maxTilesX; x++)
             {
