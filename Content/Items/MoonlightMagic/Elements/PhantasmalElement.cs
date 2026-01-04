@@ -106,7 +106,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             //Create particles all along the trail so it smooths out better
             for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
             {
-                if (!Main.rand.NextBool(16))
+                if (!Main.rand.NextBool(2))
                     continue;
                 Vector2 offset = Main.rand.NextVector2Circular(16, 16);
                 Vector2 spawnPoint = MagicProj.OldPos[i] + offset + Projectile.Size / 2;
@@ -114,8 +114,9 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 velocity = velocity.SafeNormalize(Vector2.Zero) * -2;
 
                 Color color = Color.Lerp(Color.White, Color.Turquoise, 0.5f);
-                DustParticle dp = Particle<DustParticle>.Spawn(spawnPoint, velocity, Color.White, Scale: Main.rand.NextFloat(0.3f, 0.8f));
+                DustParticle dp = Particle<DustParticle>.Spawn(spawnPoint, velocity, Color.White, Scale: Main.rand.NextFloat(0.3f, 2f));
                 dp.outerColor = Color.Green;
+                dp.gravity = 0.05f;
             }
 
           
@@ -124,7 +125,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             {
                 Vector2 inverseVelocity = -Projectile.oldVelocity;
                 inverseVelocity = inverseVelocity.RotatedByRandom(MathHelper.ToRadians(45));
-                inverseVelocity *= Main.rand.NextFloat(0.5f, 1f);
+                inverseVelocity *= Main.rand.NextFloat(0.5f, 1f) * 0.2f;
                 SparkleParticle dp = Particle<SparkleParticle>.Spawn(Projectile.Center, inverseVelocity, Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
                 dp.outerColor = Color.Green;
             }
