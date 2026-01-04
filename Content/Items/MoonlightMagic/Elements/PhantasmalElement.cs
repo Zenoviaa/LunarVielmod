@@ -103,6 +103,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         private void SpawnDeathParticles()
         {
             //Kill Trail
+            //Create particles all along the trail so it smooths out better
             for (int i = 0; i < MagicProj.OldPos.Length - 1; i++)
             {
                 if (!Main.rand.NextBool(16))
@@ -113,31 +114,30 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 velocity = velocity.SafeNormalize(Vector2.Zero) * -2;
 
                 Color color = Color.Lerp(Color.White, Color.Turquoise, 0.5f);
-
-                LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier);
+                DustParticle dp = Particle<DustParticle>.Spawn(spawnPoint, velocity, Color.White, Scale: Main.rand.NextFloat(0.3f, 0.8f));
+                dp.outerColor = Color.Green;
             }
 
-            for (float f = 0f; f < 1f; f += 0.2f)
+          
+            //Create a backwards flash of particles from its death point
+            for(int i = 0; i < 3; i++)
             {
-                if (!Main.rand.NextBool(4))
-                    continue;
-                float rot = f * MathHelper.TwoPi;
-                Vector2 spawnPoint = Projectile.position;
-                Vector2 velocity = rot.ToRotationVector2() * Main.rand.NextFloat(0f, 4f);
-
-                Color color = Color.Lerp(Color.White, Color.Turquoise, 0.5f);
-
-                LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier);
+                Vector2 inverseVelocity = -Projectile.oldVelocity;
+                inverseVelocity = inverseVelocity.RotatedByRandom(MathHelper.ToRadians(45));
+                inverseVelocity *= Main.rand.NextFloat(0.5f, 1f);
+                SparkleParticle dp = Particle<SparkleParticle>.Spawn(Projectile.Center, inverseVelocity, Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                dp.outerColor = Color.Green;
             }
+
             float boomSize = Main.rand.NextFloat(0.06f, 0.08f);
             FXUtil.GlowCircleBoom(Projectile.Center,
                 innerColor: Color.LightGreen,
                 glowColor: Color.Turquoise,
                 outerGlowColor: Color.DarkBlue, duration: 25, baseSize: boomSize);
             FXUtil.GlowCircleBoom(Projectile.Center,
-           innerColor: Color.LightGreen,
-           glowColor: Color.Turquoise,
-           outerGlowColor: Color.DarkBlue, duration: 15, baseSize: boomSize * 2);
+               innerColor: Color.LightGreen,
+               glowColor: Color.Turquoise,
+               outerGlowColor: Color.DarkBlue, duration: 15, baseSize: boomSize * 2);
         }
 
         #region Visuals
