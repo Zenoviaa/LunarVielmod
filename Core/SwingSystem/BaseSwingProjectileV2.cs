@@ -281,11 +281,22 @@ namespace Stellamod.Core.SwingSystem
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(135));// set arm position (90 degree offset since arm starts lowered)
         }
 
+        public virtual void PrepareTrailShader()
+        {
+
+        }
         private void DrawPixelatedSwingTrails(GraphicsDevice graphicsDevice)
         {
+
+            PrepareTrailShader();
             Color lightColor = Color.White;
+            RenderSwingTrail(ref lightColor, swingTrailCache);
             DrawSwingTrail(ref lightColor, swingTrailCache);
             DrawSwingTrail2(ref lightColor, bigSwingTrailCache);
+        }
+        public virtual void RenderSwingTrail(ref Color lightColor, Vector2[] points)
+        {
+
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -295,7 +306,7 @@ namespace Stellamod.Core.SwingSystem
             if (useAfterImage)
                 DrawAfterImage(ref lightColor, OldCenterPos);
 
-            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedSwingTrails, DrawLayer.OverNPCsAdditive);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedSwingTrails, DrawLayer.OverNPCs);
             DrawSwordBeam(ref lightColor);
             DrawSwordSprite(ref lightColor);
             return false;
@@ -386,6 +397,9 @@ namespace Stellamod.Core.SwingSystem
 
         public virtual void DrawSwingTrail(ref Color lightColor, Vector2[] swingTrailCache)
         {
+            if (Trailer == null)
+                return;
+
             //I think it makes the most sense to abstract our trails out to a trailer and shader cache,
             //so we can just replace the trailer for different trails!
             //So much simpler, and we can just make new trailers
@@ -400,6 +414,9 @@ namespace Stellamod.Core.SwingSystem
         }
         public virtual void DrawSwingTrail2(ref Color lightColor, Vector2[] swingTrailCache)
         {
+            if (Trailer == null)
+                return;
+
 
             if (swordBeamLength <= 0)
                 return;

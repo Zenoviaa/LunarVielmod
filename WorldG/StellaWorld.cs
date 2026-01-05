@@ -42,6 +42,7 @@ using Stellamod.Tiles.Illuria;
 using Stellamod.Tiles.Veil;
 using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;
+using Stellamod.TilesNew.Virulent;
 using Stellamod.UI.CauldronSystem;
 using Stellamod.WorldG.MarshJungle;
 using System;
@@ -68,6 +69,7 @@ namespace Stellamod.WorldG
 
         public Point MarshLocation { get; private set; }
 
+        public Point GothiviaSpawnOffset => new Point(546, -199);
         private void DisableGenTask(List<GenPass> tasks, string passName)
         {
             tasks.Find(x => x.Name.Equals(passName)).Disable();
@@ -447,6 +449,14 @@ namespace Stellamod.WorldG
             MarshLocation = new Point(marshX, marshY);
             int marshTileLength = 1400;
             VeilGen.GenerateMarsh(MarshLocation, marshTileLength);
+
+            //Place Gothivia Spot
+            Point treeTile = MarshLocation + GothiviaSpawnOffset;
+            while (!WorldGen.SolidTile(treeTile))
+            {
+                treeTile.Y++;
+            }
+            WorldGen.PlaceWall(treeTile.X, treeTile.Y, ModContent.WallType<TheSeededTree>());
         }
 
         private void WorldGenVarLocations(GenerationProgress progress, GameConfiguration configuration)

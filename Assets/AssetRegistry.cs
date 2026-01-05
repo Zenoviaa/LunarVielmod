@@ -303,6 +303,7 @@ namespace Stellamod.Assets
                 public static SoundStyle SwordSpin1 = new SoundStyle($"{Path}Melee/SwordSpin1");
                 public static SoundStyle HammerHit1 = new SoundStyle($"{Path}Melee/HammerHit1");
                 public static SoundStyle HammerHit2 = new SoundStyle($"{Path}Melee/HammerHit2");
+                public static SoundStyle LightSwordSpin1 = new SoundStyle($"{Path}Melee/LightSwordSpin1");
 
                 public static SoundStyle HammerSmash1 = new SoundStyle($"{Path}Melee/HammerSmash1");
                 public static SoundStyle HammerSmash2 = new SoundStyle($"{Path}Melee/HammerSmash2");

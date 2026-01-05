@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;

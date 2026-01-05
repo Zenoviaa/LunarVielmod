@@ -63,7 +63,7 @@ Common: {
 	InsourceTime: "{0} seconds added to your flask cooldown"
 	XixianFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
-	StaminaCost: Costs {0} stamina to use
+	StaminaCost: Special attack costs {0} stamina to use
 	ExpandTooltipHelp: Press [{0}] for more information
 	BellLock: Real
 	BellUse: Put your minions into the bell, then hold [{0}] to summon them!
@@ -10058,4 +10058,11 @@ NoHitCrystal: {
 RuinMedal: {
 	DisplayName: Ruin Medal
 	Tooltip: ""
+}
+
+IcySwirl: {
+	BasicSlash: Spins around a lot more than your usual sword!
+	StaminaSlash: Fans forward a damaging [c/5FCDE4:icy mist], hitting enemies multiple times!
+	DisplayName: Icy Swirl
+	Tooltip: Swirly Bwirly
 }

@@ -2,6 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
+using System.Collections.Generic;
 using Terraria.Audio;
 
 namespace Stellamod.Core.Bases
@@ -11,6 +12,106 @@ namespace Stellamod.Core.Bases
         void Add(ISwing swing);
     }
 
+
+    public class ComboBuilder
+    {
+        private List<ISwing> _swings;
+        public ComboBuilder()
+        {
+            SwordSlash1 = AssetRegistry.Sounds.Melee.NormalSwordSlash1;
+            SwordSlash1.PitchVariance = 0.25f;
+
+            SwordSlash2 = AssetRegistry.Sounds.Melee.NormalSwordSlash2;
+            SwordSlash2.PitchVariance = 0.25f;
+
+            SwordSlash3 = AssetRegistry.Sounds.Melee.SwordSpin1;
+            SwordSlash3.PitchVariance = 0.5f;
+                
+                
+            HeavySwordSlash = SoundRegistry.HeavySwordSlash1;
+            HeavySwordSlash.PitchVariance = 0.5f;
+
+            LightSpin = AssetRegistry.Sounds.Melee.LightSwordSpin1;
+            LightSpin.PitchVariance = 0.5f;
+
+
+            _swings = new();
+        }
+
+        public SoundStyle SwordSlash1;
+        public SoundStyle SwordSlash2;
+        public SoundStyle SwordSlash3;
+        public SoundStyle HeavySwordSlash;
+        public SoundStyle LightSpin;
+        public void AddToProjectile(ISwingProjectile swingProjectile)
+        {
+           foreach(var swing in _swings)
+            {
+                swingProjectile.Add(swing);
+            }
+        }
+        public ComboBuilder AddSpinningSwordSlash(float duration = 45, float xSwingRadius = 1, float ySwingRadius = 1, float swingDegrees = 720, int hitCount = 1)
+        {
+            _swings.Add(new OvalSwing
+            {
+                Duration = duration,
+                XSwingRadius = xSwingRadius,
+                YSwingRadius = ySwingRadius,
+                SwingDegrees = swingDegrees,
+                SpinThrowDistance = 0,
+                SpinDegrees = 1,
+                AlwaysShowTrail = true,
+                Easing = (float lerpValue) => lerpValue,
+                Sound = LightSpin,
+                HitCount = 2
+            });
+            return this;
+        }
+        public ComboBuilder AddSwordSlash1(float duration = 18, float xSwingRadius = 80, float ySwingRadius = 48, float swingDegrees = 270, int hitCount = 1)
+        {
+            _swings.Add(new OvalSwing
+            {
+                Duration = duration,
+                XSwingRadius = xSwingRadius,
+                YSwingRadius = ySwingRadius,
+                SwingDegrees = swingDegrees,
+                HitCount = hitCount,
+                Easing = EasingFunction.InOutExpo7,
+                Sound = SwordSlash1,
+            });
+            return this;
+        }
+
+        public ComboBuilder AddSwordSlash2(float duration = 18, float xSwingRadius = 80, float ySwingRadius = 48, float swingDegrees = 270, int hitCount = 1)
+        {
+            _swings.Add(new OvalSwing
+            {
+                Duration = duration,
+                XSwingRadius = xSwingRadius,
+                YSwingRadius = ySwingRadius,
+                SwingDegrees = swingDegrees,
+                HitCount = hitCount,
+                Easing = EasingFunction.InOutExpo7,
+                Sound = SwordSlash2,
+            });
+            return this;
+        }
+
+        public ComboBuilder AddSwordSlash3(float duration = 40, float xSwingRadius = 100, float ySwingRadius = 40, float swingDegress=540, int hitCount = 1)
+        {
+            _swings.Add(new OvalSwing
+            {
+                Duration = duration,
+                XSwingRadius = xSwingRadius,
+                YSwingRadius = ySwingRadius,
+                SwingDegrees = swingDegress,
+                HitCount = hitCount,
+                Easing = EasingFunction.InOutExpo7,
+                Sound = SwordSlash3
+            });
+            return this;
+        }
+    }
     public static class SwingV2Helper
     {
         public static void AddHammerSwingStyle(ISwingProjectile swings)

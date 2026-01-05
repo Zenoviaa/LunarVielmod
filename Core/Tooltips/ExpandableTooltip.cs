@@ -134,7 +134,7 @@ namespace Stellamod.Core.Tooltips
             int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
             if (mouseTextIndex != -1)
             {
-                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                layers.Insert(mouseTextIndex + 1, new LegacyGameInterfaceLayer(
                     "Scarlet Sun: Expandable Tooltip",
                     delegate
                     {

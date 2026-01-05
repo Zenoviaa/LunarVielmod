@@ -243,9 +243,23 @@ namespace Stellamod.Tiles
         public virtual void Update(int i, int j) { }
         public void DrawDecor(int i, int j, SpriteBatch spriteBatch)
         {
-
-
-            Color color2 = Lighting.GetColor(i, j);
+            int lightI = i;
+            int lightJ = j;
+            while (WorldGen.SolidTile(lightI, lightJ))
+            {
+                switch (Origin)
+                {
+                    case DrawOrigin.Center:
+                    case DrawOrigin.BottomUp:
+                        lightJ--;
+                        break;
+                    case DrawOrigin.TopDown:
+                        lightJ++;
+                        break;
+                }
+            }
+            Color color2 = Lighting.GetColor(lightI, lightJ);
+            
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             int textureWidth = texture.Width;
             int textureHeight = texture.Height;

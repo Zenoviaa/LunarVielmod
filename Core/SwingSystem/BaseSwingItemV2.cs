@@ -1,15 +1,42 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.Bases;
+using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.SwingSystem
 {
+    public class SwingExpandableTooltip : AbstractExpandingTooltip
+    {
+        public override void ModifyExpandableTooltips(Item item, List<TooltipLine> lines)
+        {
+            if (item.ModItem == null)
+                return;
+
+            if (item.ModItem is BaseSwingItemV2 swingItem)
+            {
+                TooltipLine line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType" + swingItem.meleeWeaponType.ToString()));
+                line.OverrideColor = Color.GreenYellow;
+                lines.Add(line);
+
+                line = new TooltipLine(Mod, "BasicSlash", swingItem.BasicSlash);
+                lines.Add(line);
+
+                line = new TooltipLine(Mod, "StaminaSlash", swingItem.StaminaSlash);
+                lines.Add(line);
+
+                line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost", swingItem.staminaCost.ToString()));
+                line.OverrideColor = Color.Goldenrod;
+                lines.Add(line);
+            }
+        }
+    }
     public abstract class BaseSwingItemV2 : ModItem
     {
         public int comboResetTime = 120;
@@ -40,28 +67,6 @@ namespace Stellamod.Core.SwingSystem
             base.SetStaticDefaults();
             this.GetLocalization(nameof(BasicSlash), () => "No Effect");
             this.GetLocalization(nameof(StaminaSlash), () => "No Effect");
-        }
-
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            base.ModifyTooltips(tooltips);
-
-            TooltipLine line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType" + meleeWeaponType.ToString()));
-            line.OverrideColor = ColorFunctions.GreatswordWeaponType;
-            tooltips.Add(line);
-
-
-            line = new TooltipLine(Mod, "BasicSlash", BasicSlash);
-            line.OverrideColor = new Color(124, 187, 80);
-            tooltips.Add(line);
-
-            line = new TooltipLine(Mod, "StaminaSlash", StaminaSlash);
-            line.OverrideColor = Color.Goldenrod;
-            tooltips.Add(line);
-
-            line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost", staminaCost.ToString()));
-            line.OverrideColor = Color.Goldenrod;
-            tooltips.Add(line);
         }
 
         //Sealing the set defaults that are common across all things so we don't accidentally override
@@ -103,7 +108,7 @@ namespace Stellamod.Core.SwingSystem
         {
             //Only do the swinging initialization if it is a swing projectile lol
             var proj = ModContent.GetModProjectile(type);
-            if(proj is BaseSwingProjectileV2)
+            if (proj is BaseSwingProjectileV2)
             {
                 DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
                 SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();

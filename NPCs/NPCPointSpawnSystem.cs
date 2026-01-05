@@ -42,6 +42,7 @@ namespace Stellamod.NPCs
         public string structureToSpawnIn;
         public Point spawnTileOffset;
         public bool always;
+        public bool isGlobal;
     }
 
     public class NPCPointSpawnSystem : ModSystem
@@ -117,20 +118,30 @@ namespace Stellamod.NPCs
                     return;
                 }
 
-
+              
                 spawnTimer++;
                 if (spawnTimer < 30)
                     return;
-
+        
                 for (int i = 0; i < _npcPointSpawners.Count; i++)
                 {
                     NPCPointSpawner pointSpawner = _npcPointSpawners[i];
                     if (NPC.AnyNPCs(pointSpawner.npcType))
                         continue;
 
-                    Structure structuresToSpawnIn = Structures.Find(x => x.name == pointSpawner.structureToSpawnIn);
-                    Point spawnTile = structuresToSpawnIn.tile + pointSpawner.spawnTileOffset;
-                    Vector2 spawnWorld = spawnTile.ToWorldCoordinates();
+                 
+                    Vector2 spawnWorld;
+                    if (pointSpawner.isGlobal)
+                    {
+                        spawnWorld = pointSpawner.spawnTileOffset.ToWorldCoordinates();
+                    }
+                    else
+                    {
+                        Structure structuresToSpawnIn = Structures.Find(x => x.name == pointSpawner.structureToSpawnIn);
+                        Point spawnTile = structuresToSpawnIn.tile + pointSpawner.spawnTileOffset;
+                        spawnWorld = spawnTile.ToWorldCoordinates();
+                    }
+        
                     Player activePlayer = GetClosestActivePlayer(spawnWorld);
                     if (activePlayer == null)
                         return;
