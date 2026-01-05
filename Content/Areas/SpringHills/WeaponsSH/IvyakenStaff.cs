@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
+using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Terraria;
@@ -11,22 +12,14 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
-    public class IvyakenStaff : BaseBellMinionItem
+    public class IvyakenStaff : ModItem
     {
-        public override void SetStaticDefaults()
+        public override void SetDefaults()
         {
-            // DisplayName.SetDefault("Ivyaken Staff");
-            // Tooltip.SetDefault("Summons an Ivyaken to fight for you");
-            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
-            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-        }
-
-        public override void SetDefaults2()
-        {
-            base.SetDefaults2();
+            base.SetDefaults();
+            Item.DefaultToBellMinion(ModContent.ProjectileType<IvyakenMinionProj>());
             Item.damage = 9;
-            Item.knockBack = 3f;
-            Item.shoot = ModContent.ProjectileType<IvyakenMinionProj>();
+            Item.knockBack = 3;
         }
 
         public override void AddRecipes()

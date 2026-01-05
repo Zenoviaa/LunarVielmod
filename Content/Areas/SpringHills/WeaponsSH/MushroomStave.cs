@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
+using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using System;
@@ -13,15 +14,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
-    public class MushroomStave : BaseBellMinionItem
+    public class MushroomStave : ModItem
     {
-        public override void SetDefaults2()
+        public override void SetDefaults()
         {
-            base.SetDefaults2();
+            base.SetDefaults();
+            Item.DefaultToBellMinion(ModContent.ProjectileType<MushroomStaveMinionProj>());
             Item.damage = 6;
-            Item.knockBack = 3f;
-            Item.shoot = ModContent.ProjectileType<MushroomStaveMinionProj>();
+            Item.knockBack = 3;
         }
+
 
 
         public override void AddRecipes()

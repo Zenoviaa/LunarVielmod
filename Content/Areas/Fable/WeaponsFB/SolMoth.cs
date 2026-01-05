@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -13,22 +14,15 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
-    public class SolMoth : BaseBellMinionItem
+    public class SolMoth : ModItem
     {
-        public override void SetStaticDefaults()
+        public override void SetDefaults()
         {
-            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
-            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-        }
-
-        public override void SetDefaults2()
-        {
-            base.SetDefaults2();
+            base.SetDefaults();
+            Item.DefaultToBellMinion(ModContent.ProjectileType<SolMothMinionProj>());
             Item.damage = 9;
             Item.knockBack = 3f;
-            Item.shoot = ModContent.ProjectileType<SolMothMinionProj>();
         }
-
 
         public override void AddRecipes()
         {

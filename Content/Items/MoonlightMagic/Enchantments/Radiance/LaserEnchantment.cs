@@ -12,7 +12,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Radiance
             base.SetMagicDefaults();
             MagicProj.TrailLength += 384;
             MagicProj.Projectile.timeLeft *= 2;
-            MagicProj.Projectile.penetrate = -1;
+            MagicProj.Projectile.penetrate += 1000;
             MagicProj.extraScale += 0.4f;
             MagicProj.killTime = 460;
             MagicProj.tileHitCount += 1;

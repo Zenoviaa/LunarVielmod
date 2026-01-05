@@ -323,6 +323,8 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.Begin();
             spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
             spriteBatch.End();
+
+       //     DrawWaterBaseToScreen();
         }
 
         private void ApplyWaterShader(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
@@ -357,6 +359,8 @@ namespace Stellamod.Core.MoonWaters
 
                 spriteBatch.Draw(Main.waterTarget, pos, Color.White);
                 spriteBatch.End();
+
+  
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
             }
         }
@@ -414,6 +418,7 @@ namespace Stellamod.Core.MoonWaters
             CalculateHeightsToDraw();
             RenderIntoHeightMapTarget();
             RenderIntoWaterTextureTarget();
+
         }
 
 
@@ -541,12 +546,23 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.End();
         }
 
+        private Vector2 _movement;
         private void ApplyScreenOffset()
         {
-            Vector2 screenOffset = Main.Camera.Center;
-            float mipBias = 1f;
-            Vector2 texelSize = (Vector2.One * mipBias) / new Vector2(_waterTextureRT.Width, _waterTextureRT.Height);
-            _waterEffect.Parameters["screenOffset"].SetValue(screenOffset * texelSize * 1);
+            Vector2 screenOffset = Main.screenPosition;
+            Vector2 diff = Main.screenPosition - Main.screenLastPosition;
+            _movement += diff;
+            //Ok so the screen position is indeed in pixels that's good
+            //One pixel movement on the world needs to translate to one pixel movement on this water texture
+
+            Vector2 texelSize = (Vector2.One) / new Vector2(_waterTextureRT.Width, _waterTextureRT.Height );
+
+            //I have no clue what this number is or how to calculate it 
+            //All I know is that there is a number somewhere around here that converts the world pixel space to local pixel space correctly
+            //And makes the thing move, 0.28 is just an approximation so it still moves VERY slightly
+            //Once I figure out how to calculate this and what it is I'll change it :P
+            float pixelSpaceFixer = 0.28f;
+            _waterEffect.Parameters["screenOffset"].SetValue(_movement * texelSize * 0.29f);
         }
 
         private void DrawReflection(SpriteBatch spriteBatch)
@@ -731,6 +747,17 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.End();
             graphicsDevice.SetRenderTarget(null);*/
         }
+        private void DrawWaterBaseToScreen()
+        {
+            //This is just for testing purposes to make sure the texture looks the way we want it to
+
+            Main.graphics.GraphicsDevice.Clear(Color.Transparent);
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            spriteBatch.Draw(_waterTextureRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 2, SpriteEffects.None, 0f);
+            spriteBatch.End();
+        }
+
 
         private void DrawWaterTargetToScreen()
         {

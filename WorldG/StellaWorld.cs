@@ -69,7 +69,7 @@ namespace Stellamod.WorldG
 
         public Point MarshLocation { get; private set; }
 
-        public Point GothiviaSpawnOffset => new Point(546, -199);
+        public Point GothiviaSpawnOffset => new Point(246, -99);
         private void DisableGenTask(List<GenPass> tasks, string passName)
         {
             tasks.Find(x => x.Name.Equals(passName)).Disable();

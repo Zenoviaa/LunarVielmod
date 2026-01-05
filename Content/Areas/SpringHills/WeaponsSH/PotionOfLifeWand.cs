@@ -4,6 +4,7 @@ using Stellamod.Buffs.Minions;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
+using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Projectiles.Summons.Minions;
@@ -15,14 +16,14 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
-    public class PotionOfLifeWand : BaseBellMinionItem
+    public class PotionOfLifeWand : ModItem
     {
-        public override void SetDefaults2()
+        public override void SetDefaults()
         {
-            base.SetDefaults2();
+            base.SetDefaults();
+            Item.DefaultToBellMinion(ModContent.ProjectileType<LifeWandMinionProj>());
             Item.damage = 2;
             Item.knockBack = 3f;
-            Item.shoot = ModContent.ProjectileType<LifeWandMinionProj>();
         }
 
         public override void AddRecipes()

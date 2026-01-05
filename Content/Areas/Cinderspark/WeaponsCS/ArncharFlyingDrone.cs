@@ -4,11 +4,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
-using Stellamod.Projectiles.Bow;
 using Stellamod.Trails;
 using System;
 using Terraria;
@@ -18,14 +18,14 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 {
-    public class ArncharFlyingDrone : BaseBellMinionItem
+    public class ArncharFlyingDrone : ModItem
     {
-        public override void SetDefaults2()
+        public override void SetDefaults()
         {
-            base.SetDefaults2();
+            base.SetDefaults();
+            Item.DefaultToBellMinion(ModContent.ProjectileType<ArncharMinionProj>());
             Item.damage = 38;
             Item.knockBack = 3f;
-            Item.shoot = ModContent.ProjectileType<ArncharMinionProj>();
         }
 
         public override void AddRecipes()

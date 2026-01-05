@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
@@ -13,21 +14,15 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
-    public class WillOWisp : BaseBellMinionItem
+    public class WillOWisp : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
-            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-            ItemID.Sets.StaffMinionSlotsRequired[Type] = 0.5f; // The default value is 1, but other values are supported. See the docs for more guidance. 
-        }
 
-        public override void SetDefaults2()
+        public override void SetDefaults()
         {
-            base.SetDefaults2();
+            base.SetDefaults();
+            Item.DefaultToBellMinion(ModContent.ProjectileType<WillOWispMinionProj>());
             Item.damage = 12;
-            Item.knockBack = 3f;
-            Item.shoot = ModContent.ProjectileType<WillOWispMinionProj>();
+            Item.knockBack = 3;
         }
 
         public override void AddRecipes()

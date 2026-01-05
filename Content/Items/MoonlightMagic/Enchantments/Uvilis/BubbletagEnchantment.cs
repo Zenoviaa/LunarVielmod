@@ -45,7 +45,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Uvilis
                         float rot = interpolant * MathHelper.TwoPi;
                         Vector2 vel = rot.ToRotationVector2() * Projectile.velocity.Length() * 0.3f;
                         Vector2 pos = Projectile.Center + vel;
-                        float damage = Projectile.damage * 0.5f;
+                        float damage = Projectile.damage * 0.25f;
                         int bubbleDamage = (int)damage;
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), pos, vel, 
                             ModContent.ProjectileType<BubbletagBubble>(), bubbleDamage, 0, Projectile.owner);

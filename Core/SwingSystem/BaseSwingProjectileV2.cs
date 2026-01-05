@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.SwingSystem
@@ -359,9 +360,9 @@ namespace Stellamod.Core.SwingSystem
             float worldDistance = distance / 2f;
             return worldDistance;
         }
-        public virtual Texture2D GetTexture()
+        private Texture2D GetTexture()
         {
-            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture);
+            Texture2D texture = TextureAssets.Item[Owner.HeldItem.type].Value;
             return texture;
         }
 
@@ -371,7 +372,7 @@ namespace Stellamod.Core.SwingSystem
                 return;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Restart(blendState: BlendState.Additive);
+           // spriteBatch.Restart(blendState: BlendState.Additive);
             for (int a = 0; a < afterImageCache.Length; a++)
             {
                 float interpolant = a;
@@ -384,6 +385,7 @@ namespace Stellamod.Core.SwingSystem
                 Vector2 origin = sourceRectangle.Size() / 2f;
                 Color drawColor = GetAfterImageColor(interpolant);
                 drawColor *= EasingFunction.QuadraticBump(interpolant);
+                drawColor.A = 0;
                 float drawScale = 1.15f + growScale;
                 Vector2 position = afterImageCache[a];
                 float drawRotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
@@ -392,7 +394,7 @@ namespace Stellamod.Core.SwingSystem
                   position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
                     sourceRectangle, drawColor, drawRotation, origin, drawScale, SpriteEffects.None, 0); // drawing the sword itself
             }
-            spriteBatch.RestartDefaults();
+       //     spriteBatch.RestartDefaults();
         }
 
         public virtual void DrawSwingTrail(ref Color lightColor, Vector2[] swingTrailCache)

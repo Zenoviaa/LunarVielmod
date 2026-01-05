@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
+using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trails;
@@ -12,14 +13,14 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
-    public class PotionOfManaWand : BaseBellMinionItem
+    public class PotionOfManaWand : ModItem
     {
-        public override void SetDefaults2()
+        public override void SetDefaults()
         {
-            base.SetDefaults2();
+            base.SetDefaults();
+            Item.DefaultToBellMinion(ModContent.ProjectileType<ManaWandMinionProj>());
             Item.damage = 2;
-            Item.knockBack = 3f;
-            Item.shoot = ModContent.ProjectileType<ManaWandMinionProj>();
+            Item.knockBack = 3;
         }
 
         public override void AddRecipes()

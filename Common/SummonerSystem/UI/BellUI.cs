@@ -12,8 +12,6 @@ namespace Stellamod.Common.SummonerSystem.UI
 {
     public class BellUI : UIPanel
     {
-        private UIGrid _grid;
-
         private UIPanel _panel;
         private UIImage _circleImage;
         private UIImage _flaskImage;
@@ -30,7 +28,6 @@ namespace Stellamod.Common.SummonerSystem.UI
         public BellUI()
         {
             _xButton = new XButton(Close);
-            _grid = new UIGrid();
             _panel = new UIPanel();
             _slots = new List<BellSlot>();
             _inventoryMenu = new BellInventoryMenu();
@@ -72,7 +69,6 @@ namespace Stellamod.Common.SummonerSystem.UI
 
         public void CalculateSlots()
         {
-            _inventoryMenu.SetInsources();
             foreach (var slot in _slots)
             {
                 RemoveChild(slot);
@@ -95,7 +91,6 @@ namespace Stellamod.Common.SummonerSystem.UI
                 CalculateSlots();
             }
             Orient();
-
         }
 
         private void Orient()

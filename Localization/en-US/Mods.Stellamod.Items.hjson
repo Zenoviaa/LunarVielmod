@@ -93,7 +93,12 @@ Common: {
 	NoHitCrystal: No-Hit Jewel
 	Ereshstyl: Ereshstyl
 	Coins: Coins
-	Back: Back
+	Back: Back,
+	BellMinionHelp:
+		'''
+		Put these into your summoning bell, when the bell is used, they'll all come out to help you!
+		Minions have health and will distract enemies!
+		'''
 }
 
 SetBonus: {

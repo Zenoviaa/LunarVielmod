@@ -1,6 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using log4net.Filter;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
 using ReLogic.Content;
+using Stellamod.Common.ItemBrowser;
 using Stellamod.Helpers;
 using Stellamod.UI;
 using System.Collections.Generic;
@@ -14,20 +17,21 @@ namespace Stellamod.Common.SummonerSystem.UI
 {
     public class BellInventoryMenu : UIElement
     {
-        private UIGrid _grid;
         private UIPanel _panel;
         private UIScrollbar _scrollbar;
         private UIImage _background;
         private UIList _uiList;
+        private BellBrowserView _view;
         public BellInventoryMenu()
         {
             Asset<Texture2D> backgroundTexture =
                 ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/BellInventoryPanel");
             _background = new UIImage(backgroundTexture);
             _panel = new UIPanel();
-            _grid = new UIGrid();
             _scrollbar = new FancyScrollbar();
             _uiList = new UIList();
+
+            _view = new BellBrowserView();
         }
 
 
@@ -44,16 +48,10 @@ namespace Stellamod.Common.SummonerSystem.UI
             _panel.BorderColor = Color.Transparent;
             Append(_panel);
 
-            _grid.Width = Width;
-            _grid.Height = Height;
-            _grid.HAlign = 0;
-            _grid.VAlign = 0;
-            _grid.ListPadding = 24;
-            _grid.PaddingLeft = 1;
-            _grid.PaddingTop = 0;
-            _grid.PaddingRight = 0;
-            _grid.PaddingBottom = 0;
-            _panel.Append(_grid);
+            _view.ElementsPerRow = 2;
+            _view.Width.Pixels = 80;
+            _view.Height.Pixels = Height.Pixels;
+            _panel.Append(_view);
 
             _scrollbar.Width.Set(20, 0);
             _scrollbar.Height.Set(340, 0);
@@ -70,32 +68,33 @@ namespace Stellamod.Common.SummonerSystem.UI
             _uiList.SetScrollbar(_scrollbar);
             Append(_uiList);
         }
-        public void SetInsources()
+
+        public override void OnActivate()
         {
-            _grid.Clear();
-
-            IEnumerable<ModItem> insources = ModContent.GetContent<BaseBellMinionItem>();
-            foreach (var insource in insources)
+            base.OnActivate();
+            Item[] items = ItemHelper.BellMinions.ToArray();
+            Item[] cloneArr = new Item[items.Length];
+            for(int i = 0; i < cloneArr.Length; i++)
             {
-                Item template = insource.Item;
-                Item newItem = new Item(insource.Type);
-                var slot = new BellInventorySlot(newItem);
-                _grid.Add(slot);
+                cloneArr[i] = new Item(items[i].type);
             }
-
-            _grid.Recalculate();
-            base.Recalculate();
+            _view.SetCollection(cloneArr);
         }
+
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Width.Pixels = 118;
-            Height.Pixels = 216;
-            _panel.Height.Pixels = _grid.GetTotalHeight() + 64;
+            _panel.Height.Pixels = _view.Height.Pixels + 32;
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
+
             _scrollbar.Height.Set(Height.Pixels * progress, 0);
+            float scrollRatio = _scrollbar.ViewPosition;
+
+            _view.Left.Pixels = 6;
+            _view.Top.Pixels = 8;
+            _view.ViewPosition = scrollRatio;
 
             //Hacky way to get invisible scrollbar when there's no need for it
             if (_panel.Height.Pixels < Height.Pixels)

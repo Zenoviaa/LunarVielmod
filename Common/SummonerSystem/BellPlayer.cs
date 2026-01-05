@@ -35,10 +35,9 @@ namespace Stellamod.Common.SummonerSystem
                 var item = _minions[i];
                 if (item.IsAir)
                     continue;
-                if (item.ModItem is BaseBellMinionItem bellMinion)
-                {
-                    baseTime += bellMinion.GetAddedCastingTime();
-                }
+                var bellMinion = item.GetGlobalItem<BellMinionGlobalItem>();
+                if (bellMinion.isBellMinion)
+                    baseTime += bellMinion.addedCastingTime;
             }
             return baseTime;
         }
@@ -217,10 +216,9 @@ namespace Stellamod.Common.SummonerSystem
         public void GrantAllProgress()
         {
             _unlockedminions.Clear();
-            IEnumerable<ModItem> insources = ModContent.GetContent<BaseBellMinionItem>();
-            foreach (var insource in insources)
+            foreach (var item in ItemHelper.BellMinions)
             {
-                _unlockedminions.Add(insource.Item);
+                _unlockedminions.Add(item);
             }
 
             ManageUnlockedMinions();

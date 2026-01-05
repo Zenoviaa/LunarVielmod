@@ -39,12 +39,12 @@ namespace Stellamod.Common.SummonerSystem.UI
         /// </summary>
         public bool Valid(Item item)
         {
-            if (item.ModItem is BaseBellMinionItem bellItem)
-            {
-                return true;
-            }
             if (item.IsAir)
                 return true;
+            BellMinionGlobalItem bellGlobalItem = item.GetGlobalItem<BellMinionGlobalItem>();
+            if (bellGlobalItem.isBellMinion)
+                return true;
+         
             return false;
         }
 

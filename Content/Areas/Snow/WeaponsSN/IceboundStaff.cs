@@ -7,6 +7,7 @@ using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
+using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Projectiles.Bow;
@@ -18,24 +19,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Snow.WeaponsSN
 {
-    public class IceboundStaff : BaseBellMinionItem
+    public class IceboundStaff : ModItem
     {
-        public override void SetStaticDefaults()
+        public override void SetDefaults()
         {
-            // DisplayName.SetDefault("Gelatal Slaff");
-            // Tooltip.SetDefault("Summons an Jelly boi to fight for you");
-            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
-            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-        }
-
-        public override void SetDefaults2()
-        {
-            base.SetDefaults2();
+            base.SetDefaults();
+            Item.DefaultToBellMinion(ModContent.ProjectileType<IceboundMinionProj>());
             Item.damage = 16;
             Item.knockBack = 3f;
-            // No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-            Item.shoot = ModContent.ProjectileType<IceboundMinionProj>();
         }
+
 
         public override void AddRecipes()
         {

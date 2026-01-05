@@ -27,9 +27,9 @@ namespace Stellamod.Common.SummonerSystem.UI
 
             _hudUserInterface = new UserInterface();
             bellUIState = new BellUIState();
-            bellUIState.Activate();
-            bellHudSlotUIState = new();
-            bellHudSlotUIState.Activate();
+            bellHudSlotUIState = new BellHudSlotUIState();
+
+
 
             _hudUserInterface.SetState(null);
         }
@@ -76,6 +76,9 @@ namespace Stellamod.Common.SummonerSystem.UI
         }
         public void OpenHudUI()
         {
+
+            bellHudSlotUIState.Activate();
+
             _hudUserInterface.SetState(bellHudSlotUIState);
         }
 
@@ -87,6 +90,7 @@ namespace Stellamod.Common.SummonerSystem.UI
         {
             //Set State
             TakeSlot();
+            bellUIState.Activate();
             _userInterface.SetState(bellUIState);
         }
 

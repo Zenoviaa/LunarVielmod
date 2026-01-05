@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.MagicCauldron;
+using Stellamod.Common.SummonerSystem;
 using Stellamod.Common.WeaponTypes;
 using Terraria;
 using Terraria.ID;
@@ -70,6 +71,24 @@ namespace Stellamod.Core.Bases
             globalItem.isMold = true;
             item.shopSpecialCurrency = Stellamod.MedalCurrencyID;
             item.shopCustomPrice = 5;
+        }
+        public static void DefaultToBellMinion(this Item item, int projType, float castingTicks = 300)
+        {
+            BellMinionGlobalItem globalItem = item.GetGlobalItem<BellMinionGlobalItem>();
+            globalItem.isBellMinion = true;
+            globalItem.addedCastingTime = castingTicks;
+            item.shoot = projType;
+            item.noMelee = true;
+            item.noUseGraphic = true;
+            item.knockBack = 4;
+            item.damage = 15;
+            item.DamageType = DamageClass.Summon;
+            item.rare = ItemRarityID.Green;
+            item.width = 32;
+            item.height = 32;
+            item.useTime = 36;
+            item.useAnimation = 36;
+            item.useStyle = ItemUseStyleID.Swing;
         }
     }
 }
