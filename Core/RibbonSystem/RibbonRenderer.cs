@@ -335,8 +335,8 @@ namespace Stellamod.Core.RibbonSystem
 
             if(_vertexIndex > 0)
             {
-                PixelationManager.QueueSpritebatchDrawAction(RenderPixelatedFlags, DrawLayer.BehindNPCsWithOutline);
-                PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedRibbons, DrawLayer.BehindNPCsWithOutline);
+                PixelationManager.QueueSpritebatchDrawAction(RenderPixelatedFlags, DrawLayer.BehindTilesOutline);
+                PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedRibbons, DrawLayer.BehindTilesOutline);
             }
 
             Player localPlayer = Main.LocalPlayer;

@@ -46,7 +46,6 @@ namespace Stellamod.Core.Pixelation
         }
 
         public Color? outlineColor;
-        public bool noGameViewMatrix;
         public bool HasRenders => (_spritebatchActionsQueue.Count + _primitivesActionsQueue.Count + _renderCount) > 0;
         public void QueueSpritebatchDrawAction(SpritebatchDrawAction action)
         {
@@ -86,17 +85,9 @@ namespace Stellamod.Core.Pixelation
                 drawAction(graphicsDevice);
                 _renderCount++;
             }
+            spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
-            if (noGameViewMatrix)
-            {
-                spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
-            }
-            else
-            {
-                spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-            }
-
-                while (_spritebatchActionsQueue.Count > 0)
+            while (_spritebatchActionsQueue.Count > 0)
                 {
                     SpritebatchDrawAction drawAction = _spritebatchActionsQueue.Dequeue();
                     drawAction(spriteBatch, Main.screenPosition);
@@ -221,6 +212,7 @@ namespace Stellamod.Core.Pixelation
         private PixelTarget _backGrassPixelTarget;
         private PixelTarget _overPlayersPixelTarget;
         private PixelTarget _behindTilesPixelTarget;
+        private PixelTarget _behindTilesOutlinePixelTarget;
         //This one needs to go last
         public int Priority => 10;
 
@@ -260,8 +252,8 @@ namespace Stellamod.Core.Pixelation
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.End();
-                _behindTilesPixelTarget.noGameViewMatrix = false;
                 _behindTilesPixelTarget.DrawToScreen();
+                _behindTilesOutlinePixelTarget.DrawToScreen();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
             }
 
@@ -331,6 +323,8 @@ namespace Stellamod.Core.Pixelation
                     return _overPlayersPixelTarget;
                 case DrawLayer.BehindTiles:
                     return _behindTilesPixelTarget;
+                case DrawLayer.BehindTilesOutline:
+                    return _behindTilesOutlinePixelTarget;
             }
         }
         public static void QueueSpritebatchDrawAction(PixelTarget.SpritebatchDrawAction drawAction, DrawLayer drawLayer = DrawLayer.OverNPCs)
@@ -364,6 +358,9 @@ namespace Stellamod.Core.Pixelation
             _backGrassPixelTarget.Render();
             _overPlayersPixelTarget.Render();
             _behindTilesPixelTarget.Render();
+
+            _behindTilesOutlinePixelTarget.outlineColor = Color.Black;
+            _behindTilesOutlinePixelTarget.Render(); 
         }
     }
 
@@ -378,5 +375,6 @@ namespace Stellamod.Core.Pixelation
              BackGrassTarget=5,
              OverPlayers=6,
              BehindTiles,
+             BehindTilesOutline
     }
 }
