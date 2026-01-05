@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Palettes;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -34,6 +35,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
             Main.npcFrameCount[Type] = 1;
             NPCID.Sets.TrailCacheLength[Type] = 16;
             NPCID.Sets.TrailingMode[Type] = 3;
+            NPCSets.Heavy[Type] = true;
         }
 
         public override void SetDefaults()

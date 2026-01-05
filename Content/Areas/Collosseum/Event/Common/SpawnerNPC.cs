@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
@@ -23,6 +24,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
         {
             base.SetStaticDefaults();
             Main.npcFrameCount[Type] = 10;
+            NPCSets.Heavy[Type] = true;
         }
 
         public override void SetDefaults()

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
@@ -55,6 +56,8 @@ namespace Stellamod.Common.ClassReworkSystem
             Point p2 = top.ToPoint();
             foreach (var npc in Main.ActiveNPCs)
             {
+                if (NPCSets.Heavy[npc.type])
+                    continue;
                 if (npc.friendly)
                     continue;
                 if (npc.CountsAsACritter)
