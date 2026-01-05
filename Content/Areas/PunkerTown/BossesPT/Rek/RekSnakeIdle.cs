@@ -1,7 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
+using Stellamod.Core;
+using Stellamod.NPCs;
+using Stellamod.NPCs.Bosses.GothiviaTheSun.REK;
 using Stellamod.Trails;
+using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,9 +14,9 @@ using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
+namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Rek
 {
-    public class RekSnakeIdle : ModNPC
+    public class RekSnakeIdle : VeilTownNPC
     {
         //Draw Code
         private string BaseTexturePath => "Stellamod/NPCs/Bosses/GothiviaTheSun/REK/";
@@ -58,8 +62,18 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             NPC.noTileCollide = true;
             NPC.aiStyle = -1;
             NPC.knockBackResist = 0f;
+            SpawnAtPoint = true;
         }
 
+        public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
+        {
+            base.SetPointSpawnerDefaults(ref spawner);
+            spawner.isGlobal = true;
+            StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
+            Point spawnPoint = stellaWorld.MarshLocation + stellaWorld.GothiviaSpawnOffset;
+            spawnPoint.X -= 35;
+            spawner.spawnTileOffset = spawnPoint;
+        }
 
         public override bool CheckActive()
         {
@@ -242,9 +256,18 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
             switch (State)
             {
                 case ActionState.Dormant:
-                    AI_OrbitGoth();
+                    AI_Sleep();
                     break;
             }
+        }
+        private void AI_Sleep()
+        {
+            NPC.noGravity = false;
+            NPC.noTileCollide = false;
+            SegmentStretch = MathHelper.Lerp(SegmentStretch, 0.66f, 0.1f);
+            ResetSegmentGlow();
+            NPC.rotation = NPC.velocity.ToRotation();
+            MakeLikeWorm();
         }
 
         private void AI_MoveToward(Vector2 targetCenter, float speed = 8, float accel = 16)

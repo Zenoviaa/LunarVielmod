@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.Rek;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Ereshkigal;
 using Stellamod.NPCs.Bosses.Fenix;
