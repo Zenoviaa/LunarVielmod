@@ -60,7 +60,8 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
             Vector2 drawPosition = NPC.Center - screenPos;
             Vector2 drawOrigin = NPC.frame.Size() / 2;
 
-            spriteBatch.Restart(blendState: BlendState.Additive);
+            if (NPC.dontTakeDamage)
+                drawColor = drawColor.MultiplyRGB(Color.Black);
             for (int i = 0; i < NPC.oldPos.Length; i++)
             {
                 Vector2 oldPos = NPC.oldPos[i];
@@ -70,7 +71,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
                 Color startColor = Color.White;
                 Color endColor = Color.Transparent;
                 Color color = Color.Lerp(startColor, endColor, progress);
-
+                color.A = 0;
                 Vector2 drawPos = (oldPos + NPC.Size / 2) - Main.screenPosition;
                 spriteBatch.Draw(texture, drawPos, null, drawColor * Alpha, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0f);
             }
@@ -80,10 +81,12 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
                 float rot = f * MathHelper.TwoPi;
                 rot += Main.GlobalTimeWrappedHourly * 0.2f;
                 Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(2f, 4f, speed: 0.5f);
-                spriteBatch.Draw(texture, drawPosition + offset, null, drawColor * Alpha, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0f);
+                Color glowColor = drawColor * Alpha;
+                glowColor.A = 0;
+                spriteBatch.Draw(texture, drawPosition + offset, null, glowColor, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0f);
             }
 
-            spriteBatch.RestartDefaults();
+      
             spriteBatch.Draw(texture, drawPosition, null, drawColor * Alpha, NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0f);
             return false;
         }
@@ -131,9 +134,15 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
         {
             Alpha = MathHelper.Lerp(Alpha, 1f, 0.1f);
             Timer++;
-            NPC.dontTakeDamage = Timer < 120;
+
+            NPC.TargetClosest();
+            Player target = Main.player[NPC.target];
+            float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
+            NPC.dontTakeDamage = Timer < 120 || distanceToTarget > 500;
             Vector2 targetVelocity = new Vector2(0f, MathF.Sin(Timer * 0.002f) * 0.1f);
             NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
+            NPC.scale = EasingFunction.InOutSine(Timer / 120f);
+
             if (Timer % 16 == 0)
             {
                 Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>(), Scale: 0.2f);

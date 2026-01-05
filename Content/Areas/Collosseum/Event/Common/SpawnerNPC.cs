@@ -10,6 +10,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
 {
     public class SpawnerNPC : ModNPC
     {
+        private Vector2 _spawnPoint;
         private int _frame;
         private int NPCType
         {
@@ -68,6 +69,11 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
         {
             base.AI();
             Timer++;
+            if(Timer == 1)
+            {
+                _spawnPoint = NPC.Center;
+            }
+            NPC.Center = _spawnPoint;
             if (Timer == 100)
             {
                 if (MultiplayerHelper.IsHost)

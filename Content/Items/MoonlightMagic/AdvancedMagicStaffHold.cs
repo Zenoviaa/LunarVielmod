@@ -361,13 +361,13 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Vector2 fireVelocity = Projectile.velocity * 15;
                 BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
 
-
+                Vector2 ballPosition = Owner.Center + Projectile.velocity * 64;
                 Vector2 oldVelocity = Projectile.velocity;
                 Projectile.velocity = fireVelocity;
                 Projectile.damage = damage;
                 Projectile.knockBack = knockback;
 
-                Vector2 ballPosition = Owner.Center + Projectile.velocity * 64;
+  
                 AdvancedMagicUtil.NewMagicProjectile(ballPosition, staff, Projectile, levelProgress);
                 Projectile.velocity = oldVelocity;
 
