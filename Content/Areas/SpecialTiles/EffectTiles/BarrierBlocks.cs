@@ -91,8 +91,8 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
         {
             base.PostUpdatePlayers();
             Main.tileSolid[ModContent.TileType<BossBarrierBlock>()] = NPC.AnyDanger();
-            Main.tileSolid[ModContent.TileType<StarrVeriplantBarrierBlock>()] = !DownedBossSystem.downedStoneGolemBoss;
-            Main.tileSolid[ModContent.TileType<STARBOMBERBarrierBlock>()] = !DownedBossSystem.downedSTARBoss;
+            Main.tileSolid[ModContent.TileType<StarrVeriplantBarrierBlock>()] = !DownedBossTracker.IsDowned(DownedBossFlag.StoneGolem);
+            Main.tileSolid[ModContent.TileType<STARBOMBERBarrierBlock>()] = !DownedBossTracker.IsDowned(DownedBossFlag.StarBomber);
         }
     }
 

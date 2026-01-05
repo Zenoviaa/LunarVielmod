@@ -813,7 +813,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
 
         public override bool CanFight()
         {
-            return !DownedBossSystem.downedStoneGolemBoss;
+            return !DownedBossTracker.IsDowned(DownedBossFlag.StoneGolem);
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)

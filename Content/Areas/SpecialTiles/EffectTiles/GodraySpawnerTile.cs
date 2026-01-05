@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Foggy;
+using Stellamod.Core.Godrays;
 using Stellamod.Helpers;
 using Stellamod.Tiles;
 using System;
@@ -23,9 +24,24 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
 
 
 
-    public class GodraySpawnerWall : FogSpawnerWall
+    public class GodraySpawnerWall : ModWall
     {
         public override string Texture => this.PathHere() + "/FogSpawnerWall";
+
+
+        public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+        {
+            if (Main.rand.NextBool(100))
+            {
+                GodrayRenderer godrayRenderer = ModContent.GetInstance<GodrayRenderer>();
+                Vector2 centerPos = new Point(i, j).ToWorldCoordinates();
+                centerPos.Y += 128;
+                godrayRenderer.AddGodrayParticle(centerPos + Main.rand.NextVector2Circular(64, 64));
+            }
+            return base.PreDraw(i, j, spriteBatch);
+        }
+
+        /*
         private float DayProgress
         {
             get
@@ -113,6 +129,6 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
             shader.GlowColor = LightColor;
             shader.Apply();
             return shader;
-        }
+        }*/
     }
 }
