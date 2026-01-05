@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Core.Utilities;
 using Terraria;
+using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ModLoader;
@@ -69,8 +70,15 @@ namespace Stellamod.Common.WeaponUpgrade.UI
         {
             WeaponUpgradeUISystem weaponUpgradeSystem = ModContent.GetInstance<WeaponUpgradeUISystem>();
             Player player = Main.LocalPlayer;
-            int count = player.CountItem(weaponUpgradeSystem.RequiredMaterialType);
-            _text.SetText(count.ToString());
+            CustomCurrencyManager.TryGetCurrencySystem(Stellamod.DragonShardCurrencyID, out CustomCurrencySystem system);
+            bool overflowing = false;
+            long num = system.CountCurrency(out overflowing, player.inventory);
+            long num2 = system.CountCurrency(out overflowing, player.bank.item);
+            long num3 = system.CountCurrency(out overflowing, player.bank2.item);
+            long num4 = system.CountCurrency(out overflowing, player.bank3.item);
+            long num5 = system.CountCurrency(out overflowing, player.bank4.item);
+            long num6 = num + num2 + num3 + num4 + num5;
+            _text.SetText(num6.ToString());
 
             int requiredAmount = weaponUpgradeSystem.RequiredAmount;
             _requiredText.SetText(requiredAmount.ToString());

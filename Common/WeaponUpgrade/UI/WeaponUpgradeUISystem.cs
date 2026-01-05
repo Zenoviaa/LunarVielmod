@@ -9,6 +9,7 @@ using Stellamod.UI;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.UI;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -41,14 +42,7 @@ namespace Stellamod.Common.WeaponUpgrade.UI
         {
             get
             {
-                if (ItemToUpgrade == null || ItemToUpgrade.IsAir)
-                {
-                    return ModContent.ItemType<DragonShard>();
-                }
-                else
-                {
-                    return ItemToUpgrade.GetGlobalItem<WeaponUpgradeGlobalItem>().GetMaterialType();
-                }
+                return ModContent.ItemType<DragonShard>();
             }
         }
         public Asset<Texture2D> RequiredMaterialTexture
@@ -110,6 +104,7 @@ namespace Stellamod.Common.WeaponUpgrade.UI
 
         public bool CanReforge()
         {
+       
             if (ItemToUpgrade == null || ItemToUpgrade.IsAir)
                 return false;
 

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.GameContent.UI;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -34,10 +35,6 @@ namespace Stellamod.Common.WeaponUpgrade
             weaponLevel = reader.ReadSingle();
         }
 
-        public int GetMaterialType()
-        {
-            return ModContent.ItemType<DragonShard>();
-        }
         public int GetUpgradeAmt()
         {
 
@@ -60,16 +57,15 @@ namespace Stellamod.Common.WeaponUpgrade
 
         public bool CanUpgrade(Item item, Player player)
         {
-            int mat = GetMaterialType();
             int amt = GetUpgradeAmt();
-            return player.CountItem(mat) >= amt && item.damage > 0 && weaponLevel < 100;
+            bool canAfford = CustomCurrencyManager.CanAfford(player, amt, Stellamod.DragonShardCurrencyID);
+            return canAfford && item.damage > 0 && weaponLevel < 100;
         }
 
         public void Upgrade(Item item, Player player)
         {
-            int mat = GetMaterialType();
             int amt = GetUpgradeAmt();
-            player.RemoveItem(mat, amt);
+            CustomCurrencyManager.PayCurrency(player, amt, Stellamod.DragonShardCurrencyID);
             weaponLevel += 1;
             item.NetStateChanged();
         }

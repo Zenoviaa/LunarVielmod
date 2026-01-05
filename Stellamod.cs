@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Stellamod.Backgrounds;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Currencies;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Helpers;
 using Stellamod.Skies;
 using System.IO;
@@ -62,7 +63,7 @@ namespace Stellamod
         public static int MedalCurrencyID;
         public static int EreshstylCurrencyID;
         public static int NoHitCrystalCurrencyID;
-
+        public static int DragonShardCurrencyID;
 
         public static int MOKCurrencyID;
         public static int MOPCurrencyID;
@@ -84,6 +85,7 @@ namespace Stellamod
                 MedalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<RuinMedal>(), 999L, "Ruin Medals"));
                 EreshstylCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<Ereshstyl>(), 999L, "Ereshstyl"));
                 NoHitCrystalCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<NoHitCrystal>(), 999L, "No Hit Crystal"));
+                DragonShardCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<DragonShard>(), 999L, "Dragon Shard"));
 
                 //----------------------------------------------- Shaders
 
