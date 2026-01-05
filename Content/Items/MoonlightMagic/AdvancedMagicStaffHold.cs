@@ -608,7 +608,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             //Radius of the circle
             float progress = _circleTimer / 360f;
             progress = MathHelper.Clamp(progress, 0f, 1f);
-            shader.Size = MathHelper.Lerp(0f, 0.06f, Easing.OutCubic(progress));
+            shader.Size = MathHelper.Lerp(0f, 0.08f, Easing.OutCubic(progress));
 
 
             //Colors
@@ -636,7 +636,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
             for (int i = 0; i < 2; i++)
             {
-                spriteBatch.Draw(texture, centerPos + Projectile.velocity * 64, null, startGlow, Projectile.rotation, texture.Size() / 2f, drawScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, centerPos + Projectile.velocity * 64, null, startGlow, Projectile.rotation, texture.Size() / 2f, drawScale * 2f, SpriteEffects.None, 0);
             }
 
             spriteBatch.RestartDefaults();
@@ -660,7 +660,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             drawColor *= CrosshairProgress;
             float outEase = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Interpolant));
             drawColor *= outEase;
-
+            drawColor *= 0.74f;
             float width = (float)Projectile.timeLeft / 30f;
             float outWidth = EasingFunction.InOutSine(width);
             float scale = outWidth;
