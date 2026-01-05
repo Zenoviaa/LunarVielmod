@@ -10,13 +10,13 @@ namespace Stellamod.Content.Items.MoonlightMagic
     public static class AdvancedMagicUtil
     {
 
-        public static void NewMagicProjectile(BaseStaff item, Projectile sourceProjectile, float charge)
+        public static void NewMagicProjectile(Vector2 firePosition, BaseStaff item, Projectile sourceProjectile, float charge)
         {
             Player player = Main.player[sourceProjectile.owner];
             float speed = sourceProjectile.velocity.Length();
             Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * speed;
             Projectile p = Projectile.NewProjectileDirect(
-                                sourceProjectile.GetSource_FromThis(), player.Center, velocity,
+                                sourceProjectile.GetSource_FromThis(), firePosition, velocity,
                                 ModContent.ProjectileType<AdvancedMagicProjectile>(), sourceProjectile.damage, sourceProjectile.knockBack, sourceProjectile.owner, 
                                 ai1: charge);
             p.netUpdate = true;

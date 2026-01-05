@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace Stellamod.Content.Items.MoonlightMagic
 {
@@ -365,7 +366,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Projectile.velocity = fireVelocity;
                 Projectile.damage = damage;
                 Projectile.knockBack = knockback;
-                AdvancedMagicUtil.NewMagicProjectile(staff, Projectile, levelProgress);
+
+                Vector2 ballPosition = Owner.Center + Projectile.velocity * 64;
+                AdvancedMagicUtil.NewMagicProjectile(ballPosition, staff, Projectile, levelProgress);
                 Projectile.velocity = oldVelocity;
 
                 for (int i = 0; i < 7 * levelProgress; i++)
@@ -382,12 +385,12 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
                 FXUtil.ShakeCamera(Projectile.position, 1024, 8);
 
-                Vector2 boomPosition = Owner.Center + Projectile.velocity * 64;
-                FXUtil.GlowCircleBoom(boomPosition,
+                FXUtil.GlowCircleBoom(ballPosition,
                     innerColor: Color.White,
                     glowColor: Element.GetElementColor(),
                     outerGlowColor: Color.Lerp(Element.GetElementColor(), Color.Black, 0.5f), duration: 25, baseSize: 0.14f);
 
+             
                 for (float i = 0; i < 8; i++)
                 {
                     float progress = i / 4f;
@@ -409,8 +412,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     Vector2 velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 15;
                     velocity = velocity.RotatedByRandom(MathHelper.PiOver4);
                     velocity *= Main.rand.NextFloat(0.3f, 2f);
-                    Dust.NewDustPerfect(boomPosition, ModContent.DustType<GlowDust>(), velocity, newColor: Element.GetElementColor(), Scale: 2f);
-                    SparkleParticle sp = Particle<SparkleParticle>.Spawn(boomPosition, velocity, Scale: Main.rand.NextFloat(0.6f, 1f));
+                    Dust.NewDustPerfect(ballPosition, ModContent.DustType<GlowDust>(), velocity, newColor: Element.GetElementColor(), Scale: 2f);
+                    SparkleParticle sp = Particle<SparkleParticle>.Spawn(ballPosition, velocity, Scale: Main.rand.NextFloat(0.6f, 1f));
                     sp.gravity = 0;
                     sp.dampening = 0.1f;
                     sp.outerColor = Element.GetElementColor();
