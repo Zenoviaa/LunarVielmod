@@ -1,21 +1,53 @@
-﻿using Terraria.ID;
+﻿using Stellamod.NPCs.Town;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.NPCHelpers
 {
     public class NPCSets : ModSystem
     {
-        public override void SetupContent()
+        public override void SetStaticDefaults()
         {
-            Heavy = ItemID.Sets.Factory.CreateBoolSet();
-            CannotBeBubbled = ItemID.Sets.Factory.CreateBoolSet();
-            ResistedByFlamecrestShield = ItemID.Sets.Factory.CreateBoolSet();
-            base.SetupContent();
+            base.SetStaticDefaults();
+
+            int[] resistedNPCs = new int[]
+{
+                    NPCID.BurningSphere,
+                    NPCID.LavaSlime,
+                    NPCID.Hellbat,
+                    NPCID.Demon,
+                    NPCID.VoodooDemon,
+                    NPCID.BlazingWheel,
+                    NPCID.Lavabat,
+                    NPCID.RedDevil,
+                    NPCID.HellArmoredBones,
+                    NPCID.HellArmoredBonesMace,
+                    NPCID.HellArmoredBonesSpikeShield,
+                    NPCID.HellArmoredBonesSword,
+                    NPCID.SolarCrawltipedeBody,
+                    NPCID.SolarCrawltipedeHead,
+                    NPCID.SolarCrawltipedeTail,
+                    NPCID.SolarDrakomire,
+                    NPCID.SolarDrakomireRider,
+                    NPCID.SolarSroller,
+                    NPCID.SolarCorite,
+                    NPCID.SolarSolenian,
+                    NPCID.SolarFlare,
+                    NPCID.SolarSpearman,
+                    NPCID.SolarGoop,
+                    NPCID.LunarTowerSolar,
+                    NPCID.TorchGod
+};
+            for (int n = 0; n < resistedNPCs.Length; n++)
+            {
+                NPCSets.ResistedByFlamecrestShield[resistedNPCs[n]] = true;
+            }
+
 
         }
-        public static bool[] Heavy;
-        public static bool[] ResistedByFlamecrestShield;
-        public static bool[] CannotBeBubbled;
+        public static bool[] Heavy= NPCID.Sets.Factory.CreateBoolSet();
+        public static bool[] ResistedByFlamecrestShield = NPCID.Sets.Factory.CreateBoolSet();
+        public static bool[] CannotBeBubbled = NPCID.Sets.Factory.CreateBoolSet();
     }
 
 }

@@ -50,39 +50,7 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            int[] resistedNPCs = new int[]
-            {
-                    NPCID.BurningSphere,
-                    NPCID.LavaSlime,
-                    NPCID.Hellbat,
-                    NPCID.Demon,
-                    NPCID.VoodooDemon,
-                    NPCID.BlazingWheel,
-                    NPCID.Lavabat,
-                    NPCID.RedDevil,
-                    NPCID.HellArmoredBones,
-                    NPCID.HellArmoredBonesMace,
-                    NPCID.HellArmoredBonesSpikeShield,
-                    NPCID.HellArmoredBonesSword,
-                    NPCID.SolarCrawltipedeBody,
-                    NPCID.SolarCrawltipedeHead,
-                    NPCID.SolarCrawltipedeTail,
-                    NPCID.SolarDrakomire,
-                    NPCID.SolarDrakomireRider,
-                    NPCID.SolarSroller,
-                    NPCID.SolarCorite,
-                    NPCID.SolarSolenian,
-                    NPCID.SolarFlare,
-                    NPCID.SolarSpearman,
-                    NPCID.SolarGoop,
-                    NPCID.LunarTowerSolar,
-                    NPCID.TorchGod
-            };
-            for(int n = 0; n < resistedNPCs.Length; n++)
-            {
-                NPCSets.ResistedByFlamecrestShield[resistedNPCs[n]] = true;
-            }      
-    
+
         }
     }
 

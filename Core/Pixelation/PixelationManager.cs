@@ -244,6 +244,8 @@ namespace Stellamod.Core.Pixelation
 
 
             _behindTilesPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+
+            _behindTilesOutlinePixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
         }
 
         private void RenderBehindTiles2(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)

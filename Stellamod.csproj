@@ -668,6 +668,7 @@
     <Folder Include="Assets\Textures\Menu\" />
     <Folder Include="Content\Areas\RoyalCapital\TilesRC\" />
     <Folder Include="Core\Ambience\" />
+    <Folder Include="Core\NPCHelpers\" />
     <Folder Include="Items\Armors\Daedia\" />
     <Folder Include="Items\Weapons\Melee\Safunai\Halhurish\" />
     <Folder Include="Items\Weapons\Melee\Safunai\Kaevine\" />
