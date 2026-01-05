@@ -3,11 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace Stellamod.Core.Grass
 {
     public abstract class ReedProfile : ModTexturedType
     {
+
         public Asset<Texture2D> ReedTextureAsset;
         protected sealed override void Register()
         {

@@ -67,7 +67,7 @@ namespace Stellamod.Content.Areas.PunkerTown.EnemiesPT
             base.SetDefaults();
             NPC.width = 20;
             NPC.height = 20;
-            NPC.lifeMax = 50;
+            NPC.lifeMax = 120;
             NPC.damage = 40;
             NPC.defense = 4;
             NPC.noGravity = true;

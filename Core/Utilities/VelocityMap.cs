@@ -60,7 +60,7 @@ namespace Stellamod.Core.Utilities
             if (startTile.Y < 0)
                 startTile.Y = 0;
 
-            Point endTile = startTile + new Point(width / 16, width / 16);
+            Point endTile = (Main.Camera.Center + new Vector2(width / 2, width / 2f)).ToTileCoordinates();
             if (endTile.X >= Main.maxTilesX)
                 endTile.X = Main.maxTilesX - 1;
             if(endTile.Y  >= Main.maxTilesY)
@@ -70,7 +70,7 @@ namespace Stellamod.Core.Utilities
                 for (int y = startTile.Y; y < endTile.Y; y++)
                 {
                     _velocityGrid[x, y] = Vector2.Zero;
-                    _decayingVelocityGrid[x, y] *= 0.94f;
+                    _decayingVelocityGrid[x, y] *= 0.9f;
                 }
             }
         }

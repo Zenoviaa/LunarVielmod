@@ -29,7 +29,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 12;
+            Item.damage = 11;
             Item.shoot = ModContent.ProjectileType<PharaohsBladeSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<PharaohsBladeStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Sword;
@@ -107,7 +107,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 15;
+            Projectile.localNPCHitCooldown = 30;
             Projectile.timeLeft = 120;
         }
 
