@@ -121,18 +121,21 @@ namespace Stellamod.Core.Godrays
         public override void PostUpdateDusts()
         {
             base.PostUpdateDusts();
+            LunarVeilClientConfig config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (!config.Godrays)
+                return;
             UpdateParticles();
         }
         public override void PostDrawTiles()
         {
             base.PostDrawTiles();
-
             if (_godrayIndex <= 0)
                 return;
-
+            LunarVeilClientConfig config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (!config.Godrays)
+                return;
             PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedGodrays, DrawLayer.OverPlayers);
         }
-
 
         private int FindFreeGodrayParticle()
         {

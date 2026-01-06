@@ -164,7 +164,6 @@ namespace Stellamod.Core.Grass
             {
                 PixelationManager.QueuePrimitivesDrawAction(RenderGrassBack, DrawLayer.BackGrassTarget);
                 PixelationManager.QueuePrimitivesDrawAction(RenderGrass, DrawLayer.FrontGrassTarget);
-
             }
  
             orig();

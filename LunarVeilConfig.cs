@@ -140,6 +140,9 @@ namespace Stellamod
         public bool BeamingLights;
 
         [DefaultValue(true)]
+        public bool Godrays;
+
+        [DefaultValue(true)]
         public bool SunShadows;
 
         [DefaultValue(true)]
