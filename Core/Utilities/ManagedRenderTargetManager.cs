@@ -22,7 +22,7 @@ namespace Stellamod.Core.Utilities
         private bool _mipMap;
         private SurfaceFormat _surfaceFormat;
         private DepthFormat _depthFormat;
-        private ManagedRenderTarget(ResizeFunction resizeFunction, int downSamples = 1, bool mipMap = true, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
+        private ManagedRenderTarget(ResizeFunction resizeFunction, int downSamples = 1, bool mipMap = false, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
         {
  
             _resizeFunction = resizeFunction;
@@ -50,7 +50,7 @@ namespace Stellamod.Core.Utilities
             Point screenSize = _resizeFunction();
             Point newSize = new Point(screenSize.X / _downSamples, screenSize.Y / _downSamples);
             _renderTarget.Release();
-            _renderTarget = new RenderTarget2D(Main.graphics.GraphicsDevice, newSize.X, newSize.Y, mipMap: _mipMap, _surfaceFormat, _depthFormat);
+            _renderTarget = new RenderTarget2D(Main.graphics.GraphicsDevice, newSize.X, newSize.Y, mipMap: _mipMap, _surfaceFormat, _depthFormat,0, RenderTargetUsage.DiscardContents );
 
             Width = newSize.X;
             Height = newSize.Y;
@@ -72,6 +72,10 @@ namespace Stellamod.Core.Utilities
         public static Point GetScreenTargetSize()
         {
             return new Point(Main.screenTarget.Width, Main.screenTarget.Height);
+        }
+        public static Point GetScreenSize()
+        {
+            return new Point(Main.screenWidth, Main.screenHeight);
         }
 
         public static void InitializeDummyTarget()

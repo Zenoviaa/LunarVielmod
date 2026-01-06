@@ -90,13 +90,13 @@ namespace Stellamod.Core.Grass
                 position.Y += ExtraMath.Osc(0f, 4f, 0, i + n);
 
                 Point tilePoint = position.ToTileCoordinates();
-                /*
+                
                 Tile tile = Main.tile[i, j];
                while(!WorldGen.SolidTile(i, j))
                 {
                     j++;
                     position.Y += 16;
-                }*/
+                }
                 int frame = _random.Next(0, frameCount);
                 grassRenderer.AddGrass(this, GrassTextureAsset, GetFrame(frame), Color.White, position, -Vector2.UnitY);
       

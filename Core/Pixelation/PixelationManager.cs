@@ -215,7 +215,8 @@ namespace Stellamod.Core.Pixelation
         private PixelTarget _behindTilesOutlinePixelTarget;
         //This one needs to go last
         public int Priority => 10;
-
+        public static event Action OnBehindGrass;
+        public static event Action OnInFrontGrass;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -256,6 +257,7 @@ namespace Stellamod.Core.Pixelation
                 spriteBatch.End();
                 _behindTilesPixelTarget.DrawToScreen();
                 _behindTilesOutlinePixelTarget.DrawToScreen();
+                OnBehindGrass?.Invoke();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
             }
 
@@ -284,6 +286,7 @@ namespace Stellamod.Core.Pixelation
             if (!Main.gameMenu)
             {
                 _frontGrassPixelTarget.DrawToScreen();
+                OnInFrontGrass?.Invoke();
                 _overPlayersPixelTarget.DrawToScreen();
             }
         }

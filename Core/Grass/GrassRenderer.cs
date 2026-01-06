@@ -86,14 +86,36 @@ namespace Stellamod.Core.Grass
             _grassVertices = new VertexPositionColor[Max_Blade_Count * 3];
             _windRotations = new float[Max_Blade_Count];
             On_Main.CheckMonoliths += Monoliths_Hook;
+            PixelationManager.OnBehindGrass += RenderGrassesBehindHook;
+            PixelationManager.OnInFrontGrass += RenderGrassesFrontHook;
+
         }
-
-
         public override void OnModUnload()
         {
             base.OnModUnload();
             On_Main.CheckMonoliths -= Monoliths_Hook;
+            PixelationManager.OnBehindGrass -= RenderGrassesBehindHook;
+            PixelationManager.OnInFrontGrass -= RenderGrassesFrontHook;
         }
+        private void RenderGrassesBehindHook()
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            RenderGrassesBack(spriteBatch, Main.screenPosition);
+            spriteBatch.End();
+        }
+
+
+        private void RenderGrassesFrontHook()
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            RenderGrassesFront(spriteBatch, Main.screenPosition);
+            spriteBatch.End();
+        }
+
+
+
 
 
         private void Monoliths_Hook(On_Main.orig_CheckMonoliths orig)
@@ -103,9 +125,9 @@ namespace Stellamod.Core.Grass
             _noise.SetSeed(1337);
             _noise.SetFrequency(0.2f);
             //Look for grasses
-            float fluff = 100;
+            float fluff = 32;
 
-            Vector2 halfScreenSize = new Vector2(Main.screenWidth + fluff, Main.screenHeight + fluff) / 2f;
+            Vector2 halfScreenSize = new Vector2(Main.screenWidth + fluff, Main.screenHeight + fluff) * 0.5f;
             Point startTile = (Main.Camera.Center-halfScreenSize).ToTileCoordinates();
             Point endTile = (Main.Camera.Center + halfScreenSize).ToTileCoordinates();
             for (int y = startTile.Y; y < endTile.Y; y++)
@@ -142,8 +164,7 @@ namespace Stellamod.Core.Grass
             {
                 PixelationManager.QueuePrimitivesDrawAction(RenderGrassBack, DrawLayer.BackGrassTarget);
                 PixelationManager.QueuePrimitivesDrawAction(RenderGrass, DrawLayer.FrontGrassTarget);
-                PixelationManager.QueueSpritebatchDrawAction(RenderGrassesBack, DrawLayer.BackGrassTarget);
-                PixelationManager.QueueSpritebatchDrawAction(RenderGrassesFront, DrawLayer.FrontGrassTarget);
+
             }
  
             orig();
@@ -326,6 +347,8 @@ namespace Stellamod.Core.Grass
         {
             _noise.SetSeed(1337);
             _noise.SetFrequency(0.2f);
+            screenPos.X = MathF.Floor(screenPos.X);
+            screenPos.Y = MathF.Floor(screenPos.Y);
             for (int i = 0; i < _grassIndex; i++)
             {
                 Grass grass = _grasses[i];
@@ -340,10 +363,12 @@ namespace Stellamod.Core.Grass
                 float scale = 1f;
                 scale *= ExtraMath.Osc(0.7f, 1f, 0, grass.position.X);
 
-                Vector2 drawPosition = grass.position - screenPos + _backOffset;
+                Vector2 grassPosition = grass.position;
+                grassPosition.X = MathF.Floor(grassPosition.X / 16) * 16;
+                grassPosition.Y = MathF.Floor(grassPosition.Y / 16) * 16;
+                Vector2 drawPosition = grassPosition - screenPos + _backOffset;
                 drawPosition.Y += 2;
-                drawPosition.X = MathF.Floor(drawPosition.X);
-                drawPosition.Y = MathF.Floor(drawPosition.Y);
+    
                 float rotation = grass.offsetDirection.ToRotation() + MathHelper.PiOver2;
 
                 rotation += _windRotations[i];
