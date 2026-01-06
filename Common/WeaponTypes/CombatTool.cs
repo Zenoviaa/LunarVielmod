@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.ClassReworkSystem;
 using Stellamod.Common.MagicSystem.UI;
 using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Content.Items.MoonlightMagic;
@@ -674,6 +675,11 @@ namespace Stellamod.Common.WeaponTypes
                     "Stellamod: Combat Tool UI",
                     delegate
                     {
+                        Player localPlayer = Main.LocalPlayer;
+                        ClassReworkPlayer reworkPlayer = localPlayer.GetModPlayer<ClassReworkPlayer>();
+                        if (reworkPlayer.playerClass != PlayerClass.Ranger && reworkPlayer.playerClass != PlayerClass.God && reworkPlayer.playerClass != PlayerClass.Omni)
+                            return true;
+
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                         {
                             _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
@@ -760,6 +766,15 @@ namespace Stellamod.Common.WeaponTypes
         }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
+            Color color2 = Main.inventoryBack;
+            Rectangle rectangle = GetDimensions().ToRectangle();
+            Vector2 pos = rectangle.TopLeft();
+            Texture2D backingTexture = _slotTextureAsset.Value;
+            int offset = (int)(backingTexture.Size().Y / 2);
+            Vector2 centerPos = pos + rectangle.Size() / 2f;
+            spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
+
+
             Item item = Main.LocalPlayer.GetModPlayer<CombatToolPlayer>().SelectedTool;
             if (item == null)
                 return;
@@ -773,7 +788,7 @@ namespace Stellamod.Common.WeaponTypes
             _countText.SetText($"x{ammoCount}");
             float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
-            Rectangle rectangle = GetDimensions().ToRectangle();
+    
             bool contains = ContainsPoint(Main.MouseScreen);
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
@@ -783,19 +798,13 @@ namespace Stellamod.Common.WeaponTypes
             }
 
             //Draw Backing
-            Color color2 = Main.inventoryBack;
+   
             Color itemColor = Color.White;
             if(ammoCount <= 0)
             {
                 color2 = Color.Lerp(color2, Color.Black, 0.75f);
                 itemColor = Color.Lerp(itemColor, Color.Black, 0.75f);
             }
-            Vector2 pos = rectangle.TopLeft();
-
-            Texture2D backingTexture = _slotTextureAsset.Value;
-            int offset = (int)(backingTexture.Size().Y / 2);
-            Vector2 centerPos = pos + rectangle.Size() / 2f;
-            spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
 
             ItemSlot.DrawItemIcon(item, _context, spriteBatch, centerPos, _scale, 32, itemColor);
             Main.inventoryScale = oldScale;
