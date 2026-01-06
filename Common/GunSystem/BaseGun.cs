@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Stellamod.Assets;
+using Stellamod.Buffs;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;
@@ -251,6 +252,8 @@ namespace Stellamod.Common.GunSystem
 
         public bool doCoolReloadAnimation;
         public bool doFailAnimation;
+        public int numberOfReloadsNeeded;
+        public int successfulReloads;
         public float reloadRatio => reloadTimer / reloadTime;
         public BaseGun HeldGun => Player.HeldItem.ModItem as BaseGun;
         public override void ResetEffects()
@@ -258,8 +261,8 @@ namespace Stellamod.Common.GunSystem
             base.ResetEffects();
             maxAmmoBonus = 0;
             isReloading = false;
-          
-            marginOfError = 10;
+            numberOfReloadsNeeded = 1;
+              marginOfError = 10;
             var heldGun = HeldGun;
             if (heldGun == null)
                 reloadTime = 60;
@@ -283,6 +286,9 @@ namespace Stellamod.Common.GunSystem
                 jamSound.PitchVariance = 0.1f;
                 SoundEngine.PlaySound(jamSound, Player.position);
                 doFailAnimation = true;
+                successfulReloads--;
+                if (successfulReloads <= 0)
+                    successfulReloads = 0;
                 return false;
             }
             return true;
@@ -322,10 +328,29 @@ namespace Stellamod.Common.GunSystem
                 {
                     if (TimedReload())
                     {
-                        heldGun.Reload();
-                        reloadFireDelay = 60;
+                        successfulReloads++;
+                        if(successfulReloads >= numberOfReloadsNeeded)
+                        {
+                            successfulReloads=0;
+                            heldGun.Reload();
+                            reloadFireDelay = 60;
+
+                        }
+                        else
+                        {
+                            SoundStyle gunReloadSound = AssetRegistry.Sounds.Gun.GunReload;
+                            gunReloadSound.PitchVariance = 0.2f;
+                            gunReloadSound.Pitch = MathHelper.Lerp(0f, 1f, successfulReloads / numberOfReloadsNeeded);
+                            SoundEngine.PlaySound(gunReloadSound);
+
+                            int combatText = CombatText.NewText(Player.getRect(), Color.White, $"{successfulReloads} / {numberOfReloadsNeeded}", true);
+                            CombatText numText = Main.combatText[combatText];
+                            numText.lifeTime = 60;
+                        }
+             
                         doCoolReloadAnimation = true;
                     }
+
                     if (Player.ownedProjectileCounts[ModContent.ProjectileType<ReloadBar>()] == 0)
                     {
                         Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
