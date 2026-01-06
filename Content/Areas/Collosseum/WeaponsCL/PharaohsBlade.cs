@@ -66,6 +66,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             get => Projectile.ai[1] == 1;
         }
 
+        private bool _hasDied;
         private ref float ExtraLifeTime => ref Projectile.ai[2];
         private DustStormPointComparer _dustStormComparer;
         private DustStormPoint[] _dustPointsBackingField;
@@ -134,7 +135,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                 SoundEngine.PlaySound(SoundID.DD2_BookStaffCast, Projectile.position);
             }
 
-            if (IsBig)
+            if (IsBig && !_hasDied)
             {
 
                 if (Main.myPlayer == Projectile.owner)
@@ -149,6 +150,11 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                     {
                         Owner.CheckMana(4, true, false);
                         ExtraLifeTime = 4;
+                        Projectile.netUpdate = true;
+                    }
+                    else if(!manaIsAvailable)
+                    {
+                        _hasDied = true;
                         Projectile.netUpdate = true;
                     }
                 }

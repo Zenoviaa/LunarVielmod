@@ -99,10 +99,7 @@ Common: {
 		Put these into your summoning bell, when the bell is used, they'll all come out to help you!
 		Minions have health and will distract enemies!
 		'''
-	CauldronMaterialLabel:
-		'''
-		Brewing Material
-		'''
+	CauldronMaterialLabel: Brewing Material
 	CauldronMaterialHelp:
 		'''
 		This item is a [c/FFA500:brewing material], which is a key crafting ingredient for all cauldron items!
