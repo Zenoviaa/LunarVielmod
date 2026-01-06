@@ -33,11 +33,12 @@ namespace Stellamod.Common.WeaponTypes
         {
             get
             {
-                if (_selectedToolBackingField == null)
+                if(_selectedToolBackingField == null)
                 {
                     _selectedToolBackingField = new Item();
                     _selectedToolBackingField.SetDefaults(0);
                 }
+
                 return _selectedToolBackingField;
             }
             set
@@ -761,6 +762,8 @@ namespace Stellamod.Common.WeaponTypes
         {
             Item item = Main.LocalPlayer.GetModPlayer<CombatToolPlayer>().SelectedTool;
             if (item == null)
+                return;
+            if(item.IsAir)
                 return;
             CombatTool combatTool = item.GetGlobalItem<CombatTool>();
             if (combatTool == null)
