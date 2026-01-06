@@ -33,4 +33,24 @@ namespace Stellamod.Content.CommonMaterials
             return true;
         }
     }
+
+    public class RadiantNectar : ModItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.maxStack = Item.CommonMaxStack;
+            Item.rare = ModContent.RarityType<RadiantNectarRarity>();
+        }
+    }
+
+    public class MarshScrap : ModItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.maxStack = Item.CommonMaxStack;
+            Item.rare = ModContent.RarityType<MarshScrapRarity>();
+        }
+    }
 }

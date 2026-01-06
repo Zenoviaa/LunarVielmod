@@ -10082,3 +10082,8 @@ RadiantNectar: {
 	DisplayName: Radiant Nectar
 	Tooltip: Charged with high amounts of solar energy!
 }
+
+MarshScrap: {
+	DisplayName: Marsh Scrap
+	Tooltip: A fragment of dense plant matter
+}
