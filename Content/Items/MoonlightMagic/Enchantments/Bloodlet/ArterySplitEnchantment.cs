@@ -22,6 +22,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Bloodlet
             float rotToProj = directionToProj.ToRotation();
             float progress = rotToProj / MathHelper.TwoPi;
             _shootWaitTime = MathHelper.Lerp(minWaitTime, maxWaitTime, progress);
+            MagicProj.extraScale += -0.25f;
         }
 
         public override int GetElementType()

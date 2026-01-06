@@ -23,6 +23,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Radiance
             float rotToProj = directionToProj.ToRotation();
             float progress = rotToProj / MathHelper.TwoPi;
             _shootWaitTime = MathHelper.Lerp(minWaitTime, maxWaitTime, progress);
+            MagicProj.extraScale += -0.25f;
         }
 
         public override int GetElementType()

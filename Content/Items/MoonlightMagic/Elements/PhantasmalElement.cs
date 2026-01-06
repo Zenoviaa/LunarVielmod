@@ -100,7 +100,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 smokeParticle.parent = Projectile;*/
 
 
-                LightningSparkParticle dp = Particle<LightningSparkParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8), color: Color.Turquoise, Scale: Main.rand.NextFloat(0.2f, 0.35f));
+                LightningSparkParticle dp = Particle<LightningSparkParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8), color: Color.Turquoise, Scale: Main.rand.NextFloat(0.2f, 0.35f) * MagicProj.ScaleMultiplier);
   
                 dp.parent = Projectile;
                 dp.gravity = 0f;
@@ -111,7 +111,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 if (Main.rand.NextBool(8))
                 {
                     FlameSparksParticle sp = Particle<FlameSparksParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.6f, 8f),
-                        color: Color.Turquoise, Scale: Main.rand.NextFloat(0.35f, 0.75f));
+                        color: Color.Turquoise, Scale: Main.rand.NextFloat(0.35f, 0.75f) * MagicProj.ScaleMultiplier);
                     sp.gravity = 0f;
                     sp.fast = true;
                     sp.dampening = 0.1f;
@@ -199,6 +199,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 drawColor.A = 0;
 
                 Vector2 glowScale = Vector2.One;
+                glowScale *= MagicProj.ScaleMultiplier;
                 glowScale.Y *= 0.5f;
                 spriteBatch.Draw(impactTexture.Value, glowDrawCenter, null, drawColor, Projectile.velocity.ToRotation(), glowDrawOrigin, glowScale, SpriteEffects.None, 0);
 
@@ -215,7 +216,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 Vector2 glowDrawOrigin = glowMask.Size() / 2f;
                 glowColor = Color.Lerp(Color.Turquoise, Color.Blue, ExtraMath.Osc(0f, 1f, speed: 8));
                 glowColor.A = 0;
-                spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.3f, SpriteEffects.None, 0);
+                spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.3f * MagicProj.ScaleMultiplier, SpriteEffects.None, 0);
                 // spriteBatch.RestartDefaults();
 
 
@@ -223,7 +224,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 glowDrawOrigin = glowMask.Size() / 2f;
                 glowColor = Color.Turquoise;
                 glowColor.A = 0;
-                spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
+                spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, Projectile.scale * MagicProj.ScaleMultiplier * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
             }
             PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedZuiGlow, DrawLayer.OverNPCsWithOutline);
         }

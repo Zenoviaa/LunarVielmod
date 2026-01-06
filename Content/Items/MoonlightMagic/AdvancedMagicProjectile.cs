@@ -310,8 +310,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
             }
     
-            Projectile.width = (int)Size;
-            Projectile.height = (int)Size;
+            Projectile.width = (int)Size + hitboxSize;
+            Projectile.height = (int)Size + hitboxSize;
 
             PrimaryElement?.AI();
             Movement?.AI();
@@ -461,7 +461,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 SpriteBatch spriteBatch = Main.spriteBatch;
 
                 Color drawColor = Color.White.MultiplyRGB(lightColor);
-                float scale = Projectile.scale * MathHelper.Lerp(0.5f, 1f, Charge);
+                float scale = Projectile.scale * MathHelper.Lerp(0.5f, 1f, Charge) * ScaleMultiplier;
 
                 Vector2 vel = Projectile.velocity;
                 if (_numUpdates > 3 && OldPos.Length > 5)

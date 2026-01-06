@@ -48,8 +48,13 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
             npc.lifeRegen -= 6;
             if (Main.rand.NextBool(3))
             {
-                SmokeParticle sp = Particle<SmokeParticle>.Spawn(npc.position + new Vector2(Main.rand.Next(0, npc.width), Main.rand.Next(0, npc.height)), Vector2.UnitY, Color.OrangeRed, 0.3f);
-                sp.initialColor = Color.OrangeRed;
+                SmokeParticle sp = Particle<SmokeParticle>.Spawn(npc.position + new Vector2(Main.rand.Next(0, npc.width), Main.rand.Next(0, npc.height)), -Vector2.UnitY, Color.OrangeRed, Main.rand.NextFloat(0.9f, 1.5f));
+                sp.initialColor = Color.Lerp(Color.OrangeRed, Color.RosyBrown, Main.rand.NextFloat(0f, 1f)) * 0.4f;
+                sp.expand = true;
+            }
+            if (Main.rand.NextBool(3))
+            {
+                LegacyParticle.NewParticle<EmberParticle>(npc.position + new Vector2(Main.rand.Next(0, npc.width), Main.rand.Next(0, npc.height)), -Vector2.UnitY.RotatedByRandom(1.5f), Color.OrangeRed, Main.rand.NextFloat(0.9f, 1.5f));
             }
         }
     }
@@ -110,33 +115,22 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
             }
 
             Projectile.velocity.Y += 0.3f;
-            Projectile.rotation += Projectile.velocity.X * 0.05f;
+            Projectile.rotation += Projectile.velocity.X * 0.015f;
         }
 
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<BarbequeSauced>(), 30 * 60);
-
-
-            for (int i = 0; i < 6; i++)
-            {
-                Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 0.5f).noGravity = true;
-            }
-
-            for (int i = 0; i < 3; i++)
-            {
-                Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 150, Color.DarkGray, 0.5f).noGravity = true;
-            }
-
-            ShakeModSystem.Shake = 2;
-            float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
-            float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.position.X + speedXa + 30, target.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<HornetKaboom>(), (int)(Projectile.damage * 1.2), 0f, Projectile.owner, 0f, 0f);
-            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/flameup"), Projectile.position);
+            CreateImpactEffects();
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            CreateImpactEffects();
+            return true;
+        }
+        private void CreateImpactEffects()
         {
             for (int i = 0; i < 6; i++)
             {
@@ -147,12 +141,24 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 150, Color.DarkGray, 0.5f).noGravity = true;
             }
 
-            ShakeModSystem.Shake = 2;
+            int numDust = 8;
+            for(int n = 0; n < numDust; n++)
+            {
+                var sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(64, 64), -Vector2.UnitY, Scale: Main.rand.NextFloat(1f, 2f));
+                sp.initialColor = Color.Brown;
+            }
+
+            for (int n = 0; n < numDust; n++)
+            {
+                var dp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(64, 64), -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(0.5f, 25), Scale: Main.rand.NextFloat(1f, 2f));
+            }
+
+
+            ShakeModSystem.Shake = 3;
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX + 30, Projectile.position.Y + speedY, speedX * 0, speedY * 0, ModContent.ProjectileType<HornetKaboom>(), (int)(Projectile.damage * 1.2), 0f, Projectile.owner, 0f, 0f);
+
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/flameup"), Projectile.position);
-            return true;
         }
 
         public override bool PreDraw(ref Color lightColor)

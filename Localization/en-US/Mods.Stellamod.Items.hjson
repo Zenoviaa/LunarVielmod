@@ -10109,3 +10109,8 @@ BlunderofBlunders: {
 	DisplayName: Blunder of Blunders
 	Tooltip: Makes your guns shoot 50% faster, but you now have to reload 5x in a row...
 }
+
+ArtifactoftheFlies: {
+	DisplayName: Artifact of the Flies
+	Tooltip: Command an army of flies to hover around your mouse and attack and rip apart whatever is around it!
+}

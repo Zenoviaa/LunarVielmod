@@ -16,8 +16,10 @@ namespace Stellamod.Visual.Particles
         public Color initialColor;
         public Color fadeToColor;
         public int extraUpdates;
+        public bool expand;
         public override void OnSpawn()
         {
+            expand = false;
             Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
             customShader = null;
             Rotation = Main.rand.NextFloat(0f, MathHelper.TwoPi);
@@ -27,7 +29,15 @@ namespace Stellamod.Visual.Particles
         {
             Velocity *= Main.rand.NextFloat(0.97f, 0.999f);
             Rotation += MathF.Sign(Velocity.X) * 0.01f;
-            Scale *= Main.rand.NextFloat(0.97f, 0.99f);
+            if (expand)
+            {
+                Scale *= Main.rand.NextFloat(1.0001f, 1.002f);
+            }
+            else
+            {
+                Scale *= Main.rand.NextFloat(0.97f, 0.99f);
+            }
+        
             color = Color.Lerp(initialColor, fadeToColor, fadeIn / 90f);
 
             float ratio = fadeIn / 180f;
