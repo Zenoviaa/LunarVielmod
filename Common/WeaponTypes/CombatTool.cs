@@ -760,7 +760,13 @@ namespace Stellamod.Common.WeaponTypes
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             Item item = Main.LocalPlayer.GetModPlayer<CombatToolPlayer>().SelectedTool;
-            int ammoCount = item.GetGlobalItem<CombatTool>().ammoCount;
+            if (item == null)
+                return;
+            CombatTool combatTool = item.GetGlobalItem<CombatTool>();
+            if (combatTool == null)
+                return;
+
+            int ammoCount = combatTool.ammoCount;
             _countText.SetText($"x{ammoCount}");
             float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
