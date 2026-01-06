@@ -3,12 +3,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Helpers;
+using Stellamod.Tiles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -199,6 +201,20 @@ public class TileScene : IEnumerable
             tile.Draw(spriteBatch, screenPos, drawParams);
         }
     }
+    public void RenderRedBoxes(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        //At this point we can assume that everything in this scene is either on screen or very close to being on screen
+        //So we should render everything within the scene
+        var sortedDict = _tiles.OrderBy(x => x.Key.z);
+        Rectangle frame = new Rectangle(0, 0, 16, 16);
+        foreach (var kvp in sortedDict)
+        {
+            ZTilePosition tilePosition = kvp.Key;
+            Vector2 position = new Vector2(tilePosition.x, tilePosition.y).ToWorldCoordinates();
+            Vector2 drawPosition = position - screenPos;
+            spriteBatch.Draw(TextureAssets.Tile[0].Value, drawPosition, frame, Color.Red, 0, frame.Size() / 2f, 1f, SpriteEffects.None, 0);
+        }
+    }
 
     public IEnumerator GetEnumerator()
     {
@@ -269,7 +285,7 @@ public class ZTileRenderLayer
     /// </summary>
     /// <param name="spriteBatch"></param>
     /// <param name="chunk"></param>
-    public void Render(SpriteBatch spriteBatch, Vector2 screenPos, Point chunk)
+    public void Render(SpriteBatch spriteBatch, Vector2 screenPos, Point chunk, bool redBoxes = false)
     {
         //We have to get all of our chunks
         int index = 0;
@@ -296,7 +312,15 @@ public class ZTileRenderLayer
             TileScene scene = _sceneRenderBuffer[i];
             if (scene == null)
                 continue;
-            scene.Render(spriteBatch, screenPos);
+            if (redBoxes)
+            {
+                scene.RenderRedBoxes(spriteBatch, screenPos);
+            } else
+            {
+                scene.Render(spriteBatch, screenPos);
+            }
+    
+
         }
     }
 
@@ -465,11 +489,12 @@ public class ZTileMap : ModSystem
         DrawForeground();
     }
 
+    public bool IsHoldingDecorationBuilder => Main.LocalPlayer.HeldItem.type == ModContent.ItemType<DecorationBuilder>();
     public override void PostDrawTiles()
     {
         base.PostDrawTiles();
         //Draw the preview for what you're placing
-        if (Main.LocalPlayer.HeldItem.type != ModContent.ItemType<DecorationBuilder>())
+        if (!IsHoldingDecorationBuilder)
             return;
         ZTileLoader zTileLoader = ModContent.GetInstance<ZTileLoader>();
         ZTile tile = zTileLoader.GetTile(DecorationBuilder.templateData.type);
@@ -495,7 +520,11 @@ public class ZTileMap : ModSystem
         SpriteBatch spriteBatch = Main.spriteBatch;
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
         tile.Draw(spriteBatch, Main.screenPosition, drawParams);
+        Rectangle frame = new Rectangle(0, 0, 16, 16);
+        spriteBatch.Draw(TextureAssets.Tile[0].Value, Main.MouseWorld.ToTileCoordinates().ToWorldCoordinates() - Main.screenPosition, frame, Color.Green, 0, frame.Size() / 2f, 1f, SpriteEffects.None, 0);
         spriteBatch.End();
+
+
     }
 
     private void DrawBehindWalls()
@@ -506,6 +535,8 @@ public class ZTileMap : ModSystem
         Point chunk = GetCameraChunk();
         ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.BehindWalls);
         renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
+        if (IsHoldingDecorationBuilder)
+            renderLayer.Render(spriteBatch, Main.screenPosition, chunk, true);
     }
 
     private void DrawInFrontOfWalls()
@@ -516,6 +547,8 @@ public class ZTileMap : ModSystem
         Point chunk = GetCameraChunk();
         ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.InFrontOfWalls);
         renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
+        if(IsHoldingDecorationBuilder)
+            renderLayer.Render(spriteBatch, Main.screenPosition, chunk, true);
     }
 
     private void DrawInFrontOfPlayer()
@@ -526,7 +559,10 @@ public class ZTileMap : ModSystem
         Point chunk = GetCameraChunk();
         ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.Midground);
         renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
+        if (IsHoldingDecorationBuilder)
+            renderLayer.Render(spriteBatch, Main.screenPosition, chunk, true);
         spriteBatch.End();
+
     }
     private void DrawForeground()
     {
@@ -536,6 +572,8 @@ public class ZTileMap : ModSystem
         Point chunk = GetCameraChunk();
         ZTileRenderLayer renderLayer = GetRenderLayer(ZRenderLayer.Foreground);
         renderLayer.Render(spriteBatch, Main.screenPosition, chunk);
+        if (IsHoldingDecorationBuilder)
+            renderLayer.Render(spriteBatch, Main.screenPosition, chunk, true);
         spriteBatch.End();
     }
 
