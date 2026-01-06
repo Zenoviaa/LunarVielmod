@@ -2,10 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Materials
+namespace Stellamod.Content.CommonMaterials
 {
     public class IllurineScale : ModItem
     {
@@ -13,7 +12,7 @@ namespace Stellamod.Items.Materials
         {
             Item.width = 26;
             Item.height = 34;
-            Item.rare = ItemRarityID.Lime;
+            Item.rare = ModContent.RarityType<IllurineScaleRarity>();
             Item.maxStack = Item.CommonMaxStack;
         }
 

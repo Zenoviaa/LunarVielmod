@@ -2,7 +2,6 @@
 using Stellamod.Buffs;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
 using Terraria;
 using Terraria.ID;

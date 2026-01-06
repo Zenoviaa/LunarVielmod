@@ -1,4 +1,5 @@
 ﻿using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Items.Armors;
 using Stellamod.Items.Armors.AcidArmour;
