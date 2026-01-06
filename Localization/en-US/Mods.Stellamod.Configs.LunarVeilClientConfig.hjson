@@ -193,3 +193,8 @@ SunShadows2: {
 	Tooltip: ""
 	Label: Sun Shadows2
 }
+
+Godrays: {
+	Label: Godrays
+	Tooltip: ""
+}
