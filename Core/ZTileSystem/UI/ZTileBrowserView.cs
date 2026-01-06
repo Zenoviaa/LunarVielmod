@@ -174,7 +174,7 @@ public class ZTileBrowserView : UIPanel
                 isHovering = true;
                 HoveringItem = item;
                 List<TooltipLine> tooltipLines = new List<TooltipLine>();
-                TooltipLine helpLine = new TooltipLine(Stellamod.Instance, "ZTileName", item.Name);
+                TooltipLine helpLine = new TooltipLine(Stellamod.Instance, "ZTileName", item.DisplayName);
                 helpLine.OverrideColor = Color.Goldenrod;
                 tooltipLines.Add(helpLine);
 

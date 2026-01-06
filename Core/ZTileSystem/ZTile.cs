@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Core.Utilities;
+using Stellamod.Helpers;
 using System;
+using System.Text;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -18,7 +20,7 @@ public struct ZTileDrawParams
 /// <summary>
 /// Base class for a purely decorative tile asset
 /// </summary>
-public abstract class ZTile : ModTexturedType
+public abstract class ZTile : ModTexturedType, ILocalizedModType
 {
     public ushort type;
     public TilePlacementRules placementRules;
@@ -29,6 +31,15 @@ public abstract class ZTile : ModTexturedType
     public float windSwayOffset;
     public float windSwayMagnitude;
     public float windSwaySpeed;
+    public string LocalizationCategory => "ZTiles";
+    public string DisplayName
+    {
+        get
+        {
+            return LangText.ZTile(this, "DisplayName");
+        }
+    }
+
     protected override void Register()
     {
         ModTypeLookup<ZTile>.Register(this);
@@ -38,6 +49,12 @@ public abstract class ZTile : ModTexturedType
     {
         base.SetupContent();
         SetStaticDefaults();
+    }
+
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        this.GetLocalization(nameof(DisplayName), () => RegexHelper.SplitByCapital(Name));
     }
 
     public void DrawIcon(SpriteBatch spriteBatch, Vector2 iconCenterPos, float maxSize)

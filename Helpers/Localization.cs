@@ -1,7 +1,10 @@
+using Microsoft.Xna.Framework.Input;
 using Stellamod.Common.ArmorReforge;
 using Stellamod.Common.BossBannerSystem;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Core.DialogueSystem;
+using Stellamod.Core.ZTileSystem;
+using System;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -102,6 +105,10 @@ namespace Stellamod.Helpers
         public static string Misc(string key)
         {
             return Language.GetTextValue("Mods.Stellamod.Misc." + key);
+        }
+        public static string ZTile(ZTile item, string Path)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.ZTiles.{item.Name}." + Path);
         }
     }
 }

@@ -59,6 +59,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public Player Owner => Main.player[Projectile.owner];
         public override string LocalizationCategory => "Enchantments";
 
+
+
         public int time;
 
         public int Countertimer;
