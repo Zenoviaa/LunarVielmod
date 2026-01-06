@@ -63,6 +63,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         public int Countertimer;
         public bool isTimedEnchantment => time > 0;
+        public bool isSuper;
         public virtual float GetStaffManaModifier() { return 0.2f; }
 
         public object Clone()

@@ -3,8 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
+using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -60,12 +62,28 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public virtual void AI() { }
         public virtual void DustEffects()
         {
-
+            if (MagicProj.orb)
+            {
+                if (Main.rand.NextBool(8))
+                {
+                    var f = Particle<DustParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8), Color.White);
+                    f.innerColor = GetElementColor();
+                    f.outerColor = Color.Lerp(f.innerColor, Color.Black, 0.5f);
+                    f.gravity = 0f;
+                    f.fast = true;
+                    f.dampening = 0.1f;
+                }
+            }
         }
         public virtual void DrawTrail(Vector2[] oldPos)
         {
 
         }
+        public virtual void DrawOrbCircle(VertexPositionColorTexture[] vertices, int[] indices)
+        {
+
+        }
+
 
         public virtual void DrawRingTrail(Vector2[] oldPos, float[] oldRot)
         {
@@ -88,17 +106,20 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             return Color.Lerp(Color.Lerp(Color.White, GetElementColor(), 0.85f), GetElementColor(), completionRatio);
         }
+        public virtual void DrawOrb(SpriteBatch spriteBatch, Vector2 drawPosition)
+        {
+
+        }
+
         public virtual void DrawForm(SpriteBatch spriteBatch,
             Texture2D formTexture,
             Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
         {
             Vector2 drawOrigin = formTexture.Size() / 2;
-
-            spriteBatch.Restart(blendState: BlendState.Additive);
-            spriteBatch.Draw(formTexture, drawPos, null, drawColor,
+            Color myColor = drawColor;
+            myColor.A = 0;
+            spriteBatch.Draw(formTexture, drawPos, null, myColor,
                drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-
-            spriteBatch.RestartDefaults();
         }
 
         public virtual void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) { }

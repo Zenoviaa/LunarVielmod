@@ -7,6 +7,7 @@ using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
@@ -90,6 +91,33 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 //  color.A = 0;
                 LegacyParticle.NewParticle<GlowParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor);
             }
+            if (MagicProj.orb)
+            {
+
+                /*
+                SmokeParticle smokeParticle = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, Main.rand.NextVector2Circular(3, 3), Scale: Main.rand.NextFloat(0.5f, 1f));
+                smokeParticle.initialColor = Color.Red;
+                smokeParticle.parent = Projectile;*/
+
+
+                LightningSparkParticle dp = Particle<LightningSparkParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8), color: Color.Turquoise, Scale: Main.rand.NextFloat(0.2f, 0.35f));
+  
+                dp.parent = Projectile;
+                dp.gravity = 0f;
+                dp.dampening = 0.05f;
+                dp.fast = true;
+
+
+                if (Main.rand.NextBool(8))
+                {
+                    FlameSparksParticle sp = Particle<FlameSparksParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.6f, 8f),
+                        color: Color.Turquoise, Scale: Main.rand.NextFloat(0.35f, 0.75f));
+                    sp.gravity = 0f;
+                    sp.fast = true;
+                    sp.dampening = 0.1f;
+                }
+
+            }
         }
   
 
@@ -111,7 +139,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 Vector2 offset = Main.rand.NextVector2Circular(16, 16);
                 Vector2 spawnPoint = MagicProj.OldPos[i] + offset + Projectile.Size / 2;
                 Vector2 velocity = MagicProj.OldPos[i + 1] - MagicProj.OldPos[i];
-                velocity = velocity.SafeNormalize(Vector2.Zero) * -2;
+                velocity = velocity.SafeNormalize(Vector2.Zero) * 2;
 
                 Color color = Color.Lerp(Color.White, Color.Turquoise, 0.5f);
                 DustParticle dp = Particle<DustParticle>.Spawn(spawnPoint, velocity, Color.White, Scale: Main.rand.NextFloat(0.3f, 2f));
@@ -146,7 +174,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         public override void DrawForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
         {
             Vector2 drawOrigin = formTexture.Size() / 2;
-            drawPos -= Projectile.velocity * 2f;
+            if(!MagicProj.orb)
+                drawPos -= Projectile.velocity * 2f;
 
             Color glowColor = Color.White;
             glowColor.A = 0;
@@ -179,6 +208,23 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
 
             }
+            if (MagicProj.orb)
+            {
+
+                Texture2D glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
+                Vector2 glowDrawOrigin = glowMask.Size() / 2f;
+                glowColor = Color.Lerp(Color.Turquoise, Color.Blue, ExtraMath.Osc(0f, 1f, speed: 8));
+                glowColor.A = 0;
+                spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.3f, SpriteEffects.None, 0);
+                // spriteBatch.RestartDefaults();
+
+
+                glowMask = AssetManager.GlowMask.SpiralVortex.Value;
+                glowDrawOrigin = glowMask.Size() / 2f;
+                glowColor = Color.Turquoise;
+                glowColor.A = 0;
+                spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
+            }
             PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedZuiGlow, DrawLayer.OverNPCsWithOutline);
         }
 
@@ -191,6 +237,19 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             TrailDrawer.Draw(Main.spriteBatch, oldPos, ColorFunction, WidthFunction, shader2);
         }
 
+        /*
+        public override void DrawOrbCircle(VertexPositionColorTexture[] vertices, int[] indices)
+        {
+            base.DrawOrbCircle(vertices, indices);
+
+            var shader2 = RichLaserShader.Instance;
+            shader2.LaserColor = Color.White;
+            shader2.InnerColor = Color.Turquoise * 0.5f;
+            shader2.OuterColor = Color.Blue;
+
+            TrailVertexHelper trailVertexHelper = ModContent.GetInstance<TrailVertexHelper>();
+            trailVertexHelper.DrawPrimitives(vertices, indices, shader2);
+        }*/
         private Color ColorFunction(float completionRatio)
         {
             if(MagicProj.laserLike)

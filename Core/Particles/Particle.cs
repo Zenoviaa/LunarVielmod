@@ -65,9 +65,12 @@ namespace Stellamod.Core.Particles
             SetParticleDefaults(particle);
             particle.active = true;
             particle.color = color.HasValue ? color.Value : Color.White;
+            particle.parent = null;
+
             particle.Center = position;
             particle.Velocity = velocity;
             particle.Scale = Scale;
+         
             particle.OnSpawn();
             ParticleSystemV2.AddParticle(particle);
             return particle;
@@ -83,9 +86,11 @@ namespace Stellamod.Core.Particles
             SetParticleDefaults(particle);
             particle.active = true;
             particle.color = color.HasValue ? color.Value : Color.White;
+            particle.parent = null;
             particle.Center = position;
             particle.Velocity = velocity;
             particle.Scale = Scale;
+
             particle.OnSpawn();
             ParticleSystemV2.AddAlphaBlendedParticle(particle);
             return particle;

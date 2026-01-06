@@ -4,6 +4,7 @@ using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.ProjectileHelpers;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
@@ -74,6 +75,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public Vector2 stickyOffset;
         public Vector2 originalVelocity;
         public float coasterTime;
+        public bool orb;
+        public int hitboxSize;
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (damagingTrail)
@@ -160,6 +163,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             tileHitCount = 1;
             stickToTarget = -1;
             coasterTime = 0;
+            hitboxSize = 0;
             var enchantments = item.Enchantments;
             for (int i = 0; i < enchantments.Count; i++)
             {
@@ -202,6 +206,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             tileHitCount = 1;
             stickToTarget = -1;
             coasterTime = 0;
+            hitboxSize = 0;
             var enchantments = item.equippedEnchantments;
             for (int i = 0; i < enchantments.Length; i++)
             {
@@ -218,6 +223,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     Enchantments.Add(instance);
                 }
             }
+
 
             OldPos = new Vector2[TrailLength];
             OldRot = new float[TrailLength];
@@ -464,13 +470,25 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
                 }
                 float rot = vel.ToRotation();
+                if (orb)
+                    scale *= 1.05f;
                 PrimaryElement?.DrawForm(spriteBatch, Form, Projectile.Center - Main.screenPosition,
                     drawColor, drawColor, rot + extraRotation, scale);
             }
+
             PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedFlashes, DrawLayer.OverNPCsWithOutline);
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelated, DrawLayer.OverNPCs);
+
             return false;
         }
+        /*
+        private void DrawPixelatedOrb(GraphicsDevice graphicsDevice)
+        {
+            TrailVertexHelper trailVertexHelper = ModContent.GetInstance<TrailVertexHelper>();
+            trailVertexHelper.CreateCircleVertices(Projectile.Center, 80, 16,
+                out VertexPositionColorTexture[] vertices, out int[] indices);
+            PrimaryElement?.DrawOrbCircle(vertices, indices);
+        }*/
 
         private void DrawPixelatedFlashes(SpriteBatch spriteBatch, Vector2 screenPos)
         {

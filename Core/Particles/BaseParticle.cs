@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Common.Shaders;
+using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
@@ -15,7 +16,19 @@ namespace Stellamod.Core.Particles
     {
         private Asset<Texture2D> _textureAsset;
 
-        public Vector2 Center;
+      
+        private Vector2 _center;
+        public Vector2 Center
+        {
+            get
+            {
+                return _center;
+            }
+            set
+            {
+                _center = value;
+            }
+        }
         public Vector2 Velocity;
         public float fadeIn;
         public float Scale;
@@ -27,6 +40,7 @@ namespace Stellamod.Core.Particles
         public Rectangle Frame;
         public ArmorShaderData shader;
         public BaseShader customShader;
+        public Entity parent;
 
         protected sealed override void Register()
         {

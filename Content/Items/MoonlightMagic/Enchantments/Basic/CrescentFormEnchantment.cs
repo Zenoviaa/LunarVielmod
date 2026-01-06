@@ -10,8 +10,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
 {
     public class CrescentFormEnchantment : BaseEnchantment
     {
-        bool HitOnce = false;
-        int Attagain = 14;
         public override float GetStaffManaModifier()
         {
             return 0.1f;
@@ -23,12 +21,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
         }
 
 
-        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-
-            return true;
-        }
-
         public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
@@ -39,14 +31,6 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Basic
         {
             Projectile.penetrate += 1;
             MagicProj.Form = FormRegistry.Crescent.Value;
-
-
         }
-
-
-
-
     }
-
-
 }

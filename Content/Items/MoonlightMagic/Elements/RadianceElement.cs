@@ -4,7 +4,9 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -76,6 +78,28 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             {
                 DrawLowDetailForm(spriteBatch, formTexture, drawPos, drawColor, lightColor, drawRotation, drawScale);
             }
+            if (MagicProj.orb)
+            {
+                /*
+                DustShader shader = DustShader.Instance;
+                shader.InnerColor = Color.Yellow;
+                shader.OuterColor = Color.Red;
+                shader.Apply();
+                spriteBatch.Restart(effect: shader.Effect, blendState: BlendState.Additive);*/
+                Texture2D glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
+                Vector2 glowDrawOrigin = glowMask.Size() / 2f;
+                Color glowColor = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 8));
+                glowColor.A = 0;
+                spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.3f, SpriteEffects.None, 0);
+                // spriteBatch.RestartDefaults();
+
+            
+                glowMask = AssetManager.GlowMask.SpiralVortex.Value;
+                glowDrawOrigin = glowMask.Size() / 2f;
+                glowColor = Color.Red;
+                glowColor.A = 0;
+                spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
+            }
         }
 
         private void DrawLowDetailForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
@@ -86,6 +110,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
         private void DrawHighDetailForm(SpriteBatch spriteBatch, Texture2D formTexture, Vector2 drawPos, Color drawColor, Color lightColor, float drawRotation, float drawScale)
         {
             Vector2 drawOrigin = formTexture.Size() / 2;
+            if(!MagicProj.orb)
               drawPos -= Projectile.velocity * 2f;
             drawScale *= 1.3f;
             SparkleShader ??= new MoonSparkleShader();
@@ -115,7 +140,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
 
                 Vector2 spawnPoint = MagicProj.OldPos[oldPosIndex] + Projectile.Size / 2;
                 Vector2 velocity = MagicProj.OldPos[oldPosIndex + 1] - MagicProj.OldPos[oldPosIndex];
-                velocity = velocity.SafeNormalize(Vector2.Zero) * -4;
+                velocity = velocity.SafeNormalize(Vector2.Zero) * 4;
 
                 Vector2 offset = Main.rand.NextVector2Circular(16, 16);
                 offset *= scaleFactor;
@@ -124,7 +149,55 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
                 scaleFactor *= Main.rand.NextFloat(0.5f, 0.8f);
 
                 Color color = Color.RosyBrown;
-                LegacyParticle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor);
+              //  LegacyParticle.NewParticle<FireSmokeParticle>(spawnPoint, velocity, color, Scale: MagicProj.ScaleMultiplier * scaleFactor);
+                Particle<TexturedCloudParticle>.Spawn(spawnPoint, velocity, color, Scale: scaleFactor);
+            }
+            if (MagicProj.orb)
+            {
+
+                /*
+                SmokeParticle smokeParticle = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, Main.rand.NextVector2Circular(3, 3), Scale: Main.rand.NextFloat(0.5f, 1f));
+                smokeParticle.initialColor = Color.Red;
+                smokeParticle.parent = Projectile;*/
+
+
+                FlameParticle dp = Particle<FlameParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8), Scale: Main.rand.NextFloat(0.2f, 0.35f));
+                dp.innerColor = Color.Goldenrod;
+                dp.outerColor = Color.Red;
+                dp.parent = Projectile;
+                dp.gravity = 0f;
+                dp.dampening = 0.05f;
+                dp.fast = true;
+
+                if (Main.rand.NextBool(5))
+                {
+                    switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            DustParticle sp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.3f, 16), Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                            sp.gravity = 0f;
+                            sp.fast = true;
+                            sp.dampening = 0.1f;
+                            break;
+                        case 1:
+                            FlameParticle sp2 = Particle<FlameParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 16), Scale: Main.rand.NextFloat(0.1f, 0.2f));
+                            sp2.gravity = 0f;
+                            sp2.fast = true;
+                            sp2.dampening = 0.1f;
+                            break;
+                    }
+       
+                }
+
+                if (Main.rand.NextBool(8))
+                {
+                    FlameSparksParticle sp = Particle<FlameSparksParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.6f, 8f), 
+                        color: Color.OrangeRed,Scale: Main.rand.NextFloat(0.35f, 0.75f));
+                    sp.gravity = 0f;
+                    sp.fast = true;
+                    sp.dampening = 0.1f;
+                }
+              
             }
         }
 
@@ -134,6 +207,34 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             DrawMainShader(oldPos);
         }
 
+        /*
+        public override void DrawOrbCircle(VertexPositionColorTexture[] vertices, int[] indices)
+        {
+            base.DrawOrbCircle(vertices, indices);
+            TrailVertexHelper trailVertexHelper = ModContent.GetInstance<TrailVertexHelper>();
+            BlackFireSmokeShader blackSmokeShader = BlackFireSmokeShader.Instance;
+            blackSmokeShader.Time = Main.GlobalTimeWrappedHourly * 8;
+            blackSmokeShader.Tiling = new Vector2(5f);
+            blackSmokeShader.NoiseTexture = TextureRegistry.Clouds6;
+            trailVertexHelper.DrawPrimitives(vertices, indices, blackSmokeShader);
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            //  blackFireShader.PrimaryTexture = TextureRegistry.Clouds6;
+
+            blackFireShader.InnerColor = Color.Goldenrod;
+            blackFireShader.OuterColor = Color.Red;
+
+            //   InnerEmitColor = Color.Yellow;
+            // OuterEmiteColor = Color.Red;
+            blackFireShader.BackColor = Color.DarkRed;
+            //      blackFireShader.PrimaryTexture = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser");
+            //blackFireShader.PrimaryTexture2 = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser");
+
+            blackFireShader.Tiling = new Vector2(12);
+            blackFireShader.Distortion = 0.2f;
+            blackFireShader.Time = Main.GlobalTimeWrappedHourly * 16;
+            trailVertexHelper.DrawPrimitives(vertices, indices, blackFireShader);
+        }*/
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
@@ -141,6 +242,23 @@ namespace Stellamod.Content.Items.MoonlightMagic.Elements
             {
                 target.AddBuff(BuffID.OnFire, time: 360);
             }
+        }
+
+        public override void DrawOrb(SpriteBatch spriteBatch, Vector2 drawPosition)
+        {
+            base.DrawOrb(spriteBatch, drawPosition);
+            /*
+            OrbFireShader orbFireShader = OrbFireShader.Instance;
+            orbFireShader.CenterColor = Color.Red;
+            orbFireShader.OuterColor = Color.Yellow;
+            orbFireShader.VortexLightColor = Color.Red;
+            orbFireShader.VortexDarkColor = Color.DarkRed;
+            orbFireShader.Time = Main.GlobalTimeWrappedHourly * 12;
+            spriteBatch.Restart(effect: orbFireShader.Effect);
+            Texture2D orbFireNoise = TextureRegistry.Clouds6.Value;
+            Vector2 drawOrigin = orbFireNoise.Size() / 2f;
+            spriteBatch.Draw(orbFireNoise, drawPosition, null, Color.White, Projectile.rotation, drawOrigin, Projectile.scale * 0.12f, SpriteEffects.None, 0);
+            spriteBatch.RestartDefaults();*/
         }
 
         public override void OnKill()

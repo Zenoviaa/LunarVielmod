@@ -622,3 +622,8 @@ StickyEnchantment: {
 	DisplayName: Sticky Enchantment
 	Tooltip: Your spell will stick to enemies!
 }
+
+BallofDoomSuperformEnchantment: {
+	DisplayName: Ballof Doom Superform Enchantment
+	Tooltip: ""
+}
