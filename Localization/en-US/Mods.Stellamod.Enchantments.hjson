@@ -624,6 +624,6 @@ StickyEnchantment: {
 }
 
 BallofDoomSuperformEnchantment: {
-	DisplayName: Ballof Doom Superform Enchantment
-	Tooltip: ""
+	DisplayName: Ball of Doom Superform Enchantment
+	Tooltip: Turns your spell into a giant pulsating orb, +5 penetration!
 }
