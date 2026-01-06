@@ -10087,3 +10087,8 @@ MarshScrap: {
 	DisplayName: Marsh Scrap
 	Tooltip: A fragment of dense plant matter
 }
+
+MechanizedSoul: {
+	DisplayName: Mechanized Soul
+	Tooltip: It's... alive?
+}

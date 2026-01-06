@@ -53,4 +53,13 @@ namespace Stellamod.Content.CommonMaterials
             Item.rare = ModContent.RarityType<MarshScrapRarity>();
         }
     }
+    public class MechanizedSoul : ModItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.maxStack = Item.CommonMaxStack;
+            Item.rare = ModContent.RarityType<MechanizedSoulRarity>();
+        }
+    }
 }
