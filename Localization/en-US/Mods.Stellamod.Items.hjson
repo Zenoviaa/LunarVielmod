@@ -99,6 +99,15 @@ Common: {
 		Put these into your summoning bell, when the bell is used, they'll all come out to help you!
 		Minions have health and will distract enemies!
 		'''
+	CauldronMaterialLabel:
+		'''
+		Brewing Material
+		'''
+	CauldronMaterialHelp:
+		'''
+		This item is a [c/FFA500:brewing material], which is a key crafting ingredient for all cauldron items!
+		Take this back to the [c/FFA500:Magic Cauldron] at Witch Town to use it!
+		'''
 }
 
 SetBonus: {
@@ -10070,4 +10079,9 @@ IcySwirl: {
 	StaminaSlash: Fans forward a damaging [c/5FCDE4:icy mist], hitting enemies multiple times!
 	DisplayName: Icy Swirl
 	Tooltip: Swirly Bwirly
+}
+
+RadiantNectar: {
+	DisplayName: Radiant Nectar
+	Tooltip: Charged with high amounts of solar energy!
 }

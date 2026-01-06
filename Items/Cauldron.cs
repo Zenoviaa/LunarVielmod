@@ -1,4 +1,5 @@
 ﻿
+using MonoMod.Cil;
 using Stellamod.Buffs;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Content.Quests.ZuiQuest;
@@ -79,6 +80,7 @@ namespace Stellamod.Items
         public float weight = 1.0f;
         public int yield = 1;
     }
+
     public static class BrewExtension
     {
         public static CauldronBrew RegisterBrew<Material, Mold>(this ModItem result, float weight = 1.0f, int yield = 1)
@@ -86,19 +88,30 @@ namespace Stellamod.Items
             where Mold : ModItem
         {
             Cauldron cauldron = ModContent.GetInstance<Cauldron>();
-            Cauldron.MaterialRarity[result.Type] = ItemLoader.GetItem(ModContent.ItemType<Material>()).Item.rare;
-            return cauldron.AddBrew(result.Item.type, ModContent.ItemType<Mold>(), ModContent.ItemType<Material>(), 10, weight, yield);
+            int materialType = ModContent.ItemType<Material>();
+            int moldType = ModContent.ItemType<Mold>();
+
+            Cauldron.IsBrewingMaterial[materialType] = true;
+            Cauldron.IsBrewingMold[moldType] = true;
+            Cauldron.MaterialRarity[result.Type] = ItemLoader.GetItem(materialType).Item.rare;
+            return cauldron.AddBrew(result.Item.type, moldType, materialType, 10, weight, yield);
         }
         public static CauldronBrew RegisterBrew(this ModItem result, int mold, int material, float weight = 1.0f, int yield = 1)
         {
             Cauldron cauldron = ModContent.GetInstance<Cauldron>();
+
+            Cauldron.IsBrewingMaterial[material] = true;
+            Cauldron.IsBrewingMold[mold] = true;
             Cauldron.MaterialRarity[result.Type] = ItemLoader.GetItem(material).Item.rare;
             return cauldron.AddBrew(result.Item.type, mold, material, 10, weight, yield);
         }
     }
+
     public class Cauldron : ModSystem
     {
         public static int[] MaterialRarity = ItemID.Sets.Factory.CreateIntSet(0);
+        public static bool[] IsBrewingMaterial = ItemID.Sets.Factory.CreateBoolSet();
+        public static bool[] IsBrewingMold = ItemID.Sets.Factory.CreateBoolSet();
         private List<CauldronBrew> _brews = new List<CauldronBrew>()
         {
 
@@ -123,7 +136,6 @@ namespace Stellamod.Items
                 return brew;
             }
         }
-
   
         public static event Action<CauldronBrew> OnBrew;
         public CauldronBrew JustCrafted { get; set; }
@@ -131,11 +143,6 @@ namespace Stellamod.Items
         {
             base.OnModUnload();
             _brews.Clear();
-        }
-
-        public override void PostAddRecipes()
-        {
-            base.PostAddRecipes();
         }
 
         public CauldronBrew AddBrew(int result, int mold, int material, int materialCount, float weight = 1.0f, int yield = 1)
@@ -159,12 +166,7 @@ namespace Stellamod.Items
                 (x => molds.Contains(x.mold) && x.material == material && materialCount >= x.materialAmount).ToList();
             return possibleBrews;
         }
-        private List<CauldronBrew> GetPossibleBrews(int mold, int material, int materialCount)
-        {
-            List<CauldronBrew> possibleBrews = _brews.Where
-                (x => x.mold == mold && x.material == material && materialCount >= x.materialAmount).ToList();
-            return possibleBrews;
-        }
+
         private List<CauldronBrew> GetPossibleBrews(int material, int materialCount)
         {
             List<CauldronBrew> possibleBrews = _brews.Where
@@ -242,24 +244,13 @@ namespace Stellamod.Items
 
         public bool IsMaterial(int material)
         {
-            return _brews.Find(x => x.material == material) != null;
+            return IsBrewingMaterial[material];
         }
 
         public bool IsMold(int itemType)
         {
-            return _brews.Find(x => x.mold == itemType) != null;
+            return IsBrewingMold[itemType];
         }
-
-        public bool IsMaterialOrMold(int itemType)
-        {
-            return _brews.Find(x => x.material == itemType || x.mold == itemType) != null;
-        }
-
-        public bool CanBrewSomething(int mold, int material, int materialCount)
-        {
-            return GetPossibleBrews(mold, material, materialCount).Any();
-        }
-
 
         public bool IsAir(Item[] molds)
         {
@@ -270,6 +261,7 @@ namespace Stellamod.Items
             }
             return true;
         }
+
         public CauldronBrew Craft(Item[] molds, Item material)
         {
             //Get all possible crafts
