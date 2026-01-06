@@ -144,6 +144,18 @@ public abstract class ZTile : ModTexturedType
         drawPosition += new Vector2(8);
 
         SpriteEffects spriteEffects = drawParams.tileData.flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        PreDraw(spriteBatch, drawPosition + drawOffset, screenPos, drawParams);
         spriteBatch.Draw(tileTextureAsset.Value, drawPosition + drawOffset, frame, drawColor, drawRotation, drawOrigin, drawParams.tileData.scale, spriteEffects, 0);
+        PostDraw(spriteBatch, drawPosition + drawOffset, screenPos, drawParams);
+    }
+
+    public virtual void PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+    {
+
+    }
+
+    public virtual void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+    {
+
     }
 }

@@ -114,7 +114,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            return base.CanHitPlayer(target, ref cooldownSlot) && !_contactDamage;
+            return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
         }
         public override void SetDefaults()
         {

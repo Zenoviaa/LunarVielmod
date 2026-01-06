@@ -36,7 +36,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew<MarshScrap, BaseStaff>();
+            this.RegisterBrew<MarshScrap, BlankStaff>();
         }
     }
 
@@ -45,6 +45,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         private ref float Timer => ref Projectile.ai[0];
         private ref float Rotation => ref Projectile.ai[1];
         private ref float RandSize => ref Projectile.ai[2];
+        private Vector2 CurrentOrigin;
         private Vector2 Origin;
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -83,11 +84,14 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             Timer++;
             if(Timer == 1)
             {
+                CurrentOrigin = Projectile.Center;
                 SoundStyle sound = AssetRegistry.Sounds.Jiitas.JiitasLightSpin;
                 sound.PitchVariance = 0.4f;
                 sound.Volume = 0.5f;
                 SoundEngine.PlaySound(sound, Projectile.position);
             }
+
+
             if (Timer == 1 && this.OwnedByLocalClient())
             {
                 Rotation = Main.rand.NextFloat(-3f, 3f);
@@ -105,12 +109,12 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             }
 
 
-  
+            CurrentOrigin = Vector2.Lerp(CurrentOrigin, Origin, 0.1f);
             float xRadius = MathF.Sin(Timer * 0.05f) * 64 * RandSize ;
             float yRadius = MathF.Cos(Timer * 0.05f) * 32 * RandSize;
             Vector2 ovalOffset = new Vector2(xRadius, yRadius);
             ovalOffset = ovalOffset.RotatedBy(Rotation);
-            Vector2 targetPoint = Origin + ovalOffset;
+            Vector2 targetPoint = CurrentOrigin + ovalOffset;
             Vector2 targetVelocity = targetPoint - Projectile.Center;
             Projectile.velocity = targetVelocity;
             Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;

@@ -1,4 +1,7 @@
-﻿using Stellamod.Core.ZTileSystem;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.SpringHills.TilesSH;
+using Stellamod.Core.ZTileSystem;
+using static Stellamod.Tiles.SpecialDecorativeWall;
 
 namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 {
@@ -224,6 +227,15 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
         }
     }
     public class SitrisPianoPlaying : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 1;
+            drawOrigin = TileDrawOrigin.BottomUp;
+        }
+    }
+    public class GhetsisFlagPost : AbstractFlagPostZTile
     {
         public override void SetStaticDefaults()
         {

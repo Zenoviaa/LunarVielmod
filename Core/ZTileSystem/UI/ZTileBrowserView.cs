@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
+using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using System.Linq;
@@ -172,6 +173,15 @@ public class ZTileBrowserView : UIPanel
             {
                 isHovering = true;
                 HoveringItem = item;
+                List<TooltipLine> tooltipLines = new List<TooltipLine>();
+                TooltipLine helpLine = new TooltipLine(Stellamod.Instance, "ZTileName", item.Name);
+                helpLine.OverrideColor = Color.Goldenrod;
+                tooltipLines.Add(helpLine);
+
+
+                ExpandableTooltipRenderer renderer = ModContent.GetInstance<ExpandableTooltipRenderer>();
+                renderer.SetTooltipsToDraw(tooltipLines, 64, 16);
+
             }
 
             Vector2 iconCenterPos = tl + slotTexture.Size() / 2;

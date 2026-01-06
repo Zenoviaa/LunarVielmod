@@ -113,6 +113,7 @@ namespace Stellamod.Content.Areas.Abyss.WeaponsAB
             if (IsLong)
             {
                 Interpolant = EasingFunction.InExpo(Timer / 260f);
+                Projectile.velocity = Projectile.velocity.RotatedBy(0.005f);
             }
         }
 
@@ -151,11 +152,14 @@ namespace Stellamod.Content.Areas.Abyss.WeaponsAB
         {
             float numPoints = 32;
 
+            float length = 16;
+            if (IsLong)
+                length *= 0.5f;
             Vector2 startCenter = Projectile.Center - Projectile.velocity * 64;
             Vector2 endCenter = Projectile.Center;
             Vector2 center = Vector2.Lerp(startCenter, endCenter, EasingFunction.OutExpo(Timer / 30f));
-            Vector2 start = center - Projectile.velocity * 16 * RandScale;
-            Vector2 end = center + Projectile.velocity * 16 * RandScale;
+            Vector2 start = center - Projectile.velocity * length * RandScale;
+            Vector2 end = center + Projectile.velocity * length * RandScale;
             for (int n = 0; n < numPoints; n++)
             {
                 ref Vector2 point = ref RiftPoints[n];
@@ -440,9 +444,21 @@ ModContent.ProjectileType<EventHorizonRift>(), Projectile.damage / 2, Projectile
                 dp.gravity = 0;
                 dp.dampening = 0.1f;
             }
+            if (Timer % 2 == 0)
+            {
+                range *= 2f;
+                Vector2 point = Projectile.Center + Main.rand.NextVector2Circular(range, range);
+                Vector2 velocity = Projectile.Center - point;
+                velocity *= 0.1f;
+                DustParticle dp = Particle<DustParticle>.Spawn(point, velocity);
+                dp.innerColor = Color.Blue;
+                dp.outerColor = Color.Blue;
+                dp.gravity = 0;
+                dp.dampening = 0.1f;
+            }
             CombatMechanicsHelper.CreateEnemySuckingEffect(Projectile.Center, strength: 4, radius: range);
-            Projectile.rotation = MathHelper.ToRadians(24 - (Timer / 180f) * 4);
-            Projectile.scale = MathHelper.Lerp(0.2f, 0.45f, EasingFunction.InOutSine(Timer / 360f)) * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 30f));
+            Projectile.rotation = MathHelper.ToRadians(24 - (Timer / 180f) * 32);
+            Projectile.scale = MathHelper.Lerp(0.2f, 1f, EasingFunction.InOutSine(Timer / 360f)) * MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 30f));
             DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
             DrawHelper.UpdateFrame(ref _incresionDiskFrameTop, 0.8f, 1, 76);
         }
