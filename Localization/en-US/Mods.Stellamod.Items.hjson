@@ -2753,7 +2753,9 @@ CinderBraker: {
 
 EventHorizon: {
 	DisplayName: Event Horizon
-	Tooltip: Goodness gracious.
+	Tooltip: A very small fragment of a singularity's power lies within this blade...
+	BasicSlash: Slashing creates rifts in the air doing continuous damage
+	StaminaSlash: Holds the sword above you creating a small singularity that does huge amounts of damage if something is inside of it before it explodes
 }
 
 FrostBringer: {

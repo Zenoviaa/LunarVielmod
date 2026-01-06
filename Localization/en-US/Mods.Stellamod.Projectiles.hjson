@@ -1702,3 +1702,8 @@ MessageFireworkRocket.DisplayName: Message Firework Rocket
 IcySwirlMist.DisplayName: Icy Swirl Mist
 IcySwirlSlash.DisplayName: Icy Swirl Slash
 IcySwirlStaminaSlash.DisplayName: Icy Swirl Stamina Slash
+EventHorizonBoom.DisplayName: Event Horizon Boom
+EventHorizonRift.DisplayName: Event Horizon Rift
+EventHorizonSingularity.DisplayName: Event Horizon Singularity
+EventHorizonSlash.DisplayName: Event Horizon Slash
+EventHorizonStaminaSlash.DisplayName: Event Horizon Stamina Slash

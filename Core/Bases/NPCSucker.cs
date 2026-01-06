@@ -10,12 +10,19 @@ namespace Stellamod.Core.Bases
     {
         public override bool InstancePerEntity => true;
         public Vector2 SuckVelocity;
+        public Vector2 AdditiveSuckVelocity;
         public override bool PreAI(NPC npc)
         {
             if (SuckVelocity.Length() > 2)
             {
                 SuckVelocity = Vector2.Lerp(SuckVelocity, Vector2.Zero, 0.2f);
                 npc.velocity = SuckVelocity;
+            }
+            if (AdditiveSuckVelocity != Vector2.Zero) 
+            {
+                npc.velocity += AdditiveSuckVelocity;
+                AdditiveSuckVelocity = Vector2.Zero;
+              
             }
 
             return base.PreAI(npc);
