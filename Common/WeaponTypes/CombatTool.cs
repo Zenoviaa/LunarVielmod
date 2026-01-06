@@ -183,15 +183,23 @@ namespace Stellamod.Common.WeaponTypes
                 line.OverrideColor = Color.White;
 
                 tooltips.Add(line);
-                string esp = string.Format("{0:P2}", enemyDamagePercent);
-                line = new TooltipLine(Mod, "EnemyDamagePercent", LangText.Common("EnemyDamagePercent", esp));
-                line.OverrideColor = Color.IndianRed;
-                tooltips.Add(line);
 
-                string bsp = string.Format("{0:P2}", bossDamagePercent);
-                line = new TooltipLine(Mod, "BossDamagePercent", LangText.Common("BossDamagePercent", bsp));
-                line.OverrideColor = Color.IndianRed;
-                tooltips.Add(line);
+                if(enemyDamagePercent > 0)
+                {
+                    string esp = string.Format("{0:P2}", enemyDamagePercent);
+                    line = new TooltipLine(Mod, "EnemyDamagePercent", LangText.Common("EnemyDamagePercent", esp));
+                    line.OverrideColor = Color.IndianRed;
+                    tooltips.Add(line);
+                }
+         
+                if(bossDamagePercent > 0)
+                {
+                    string bsp = string.Format("{0:P2}", bossDamagePercent);
+                    line = new TooltipLine(Mod, "BossDamagePercent", LangText.Common("BossDamagePercent", bsp));
+                    line.OverrideColor = Color.IndianRed;
+                    tooltips.Add(line);
+                }
+
             }
         }
         public override bool OnPickup(Item item, Player player)

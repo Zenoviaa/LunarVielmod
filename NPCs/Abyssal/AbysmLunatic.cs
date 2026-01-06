@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Materials;

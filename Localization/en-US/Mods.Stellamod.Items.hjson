@@ -10094,3 +10094,13 @@ MechanizedSoul: {
 	DisplayName: Mechanized Soul
 	Tooltip: It's... alive?
 }
+
+BarbequeSauce: {
+	DisplayName: Barbeque Sauce
+	Tooltip: Lobs it onto something, the enemy or boss takes 20% more damage for 30 seconds
+}
+
+InfiniteTools: {
+	DisplayName: Infinite Tools
+	Tooltip: ""
+}

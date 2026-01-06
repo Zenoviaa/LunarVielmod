@@ -962,3 +962,8 @@ HoldingMyFlashlight: {
 	DisplayName: Holding My Flashlight
 	Description: Mods.Stellamod.Buffs.HoldingMyFlashlight.Description
 }
+
+BarbequeSauced: {
+	DisplayName: Barbeque Sauced
+	Description: Mods.Stellamod.Buffs.BarbequeSauced.Description
+}
