@@ -9,11 +9,8 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
-using Stellamod.Core.ZTileSystem;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
@@ -22,7 +19,6 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.Core.Effects.ITrailer;
 
 namespace Stellamod.Content.Areas.Abyss.WeaponsAB
 {
@@ -163,7 +159,7 @@ namespace Stellamod.Content.Areas.Abyss.WeaponsAB
             Color innerColor = Color.Lerp(Color.Violet, Color.DarkBlue, 0.75f);
             shader.InnerColor = innerColor;
             shader.OuterColor = Color.Blue;
-            if(Timer < 15)
+            if (Timer < 15)
             {
                 shader.OuterColor = Color.Lerp(Color.White, Color.Blue, EasingFunction.InOutSine(Timer / 15f));
                 shader.InnerColor = Color.Lerp(Color.White, innerColor, EasingFunction.InOutSine(Timer / 15f));
@@ -273,7 +269,7 @@ namespace Stellamod.Content.Areas.Abyss.WeaponsAB
         public override void AI()
         {
             base.AI();
-            if(this.OwnedByLocalClient() && !_createdSingularity && Interpolant >= 0.4f)
+            if (this.OwnedByLocalClient() && !_createdSingularity && Interpolant >= 0.4f)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center - Vector2.UnitY * 100, Vector2.Zero,
                     ModContent.ProjectileType<EventHorizonSingularity>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
@@ -409,7 +405,7 @@ namespace Stellamod.Content.Areas.Abyss.WeaponsAB
             ShakeModSystem.Shake += 1;
 
             float range = 400f;
-            if(Timer % 2 == 0)
+            if (Timer % 2 == 0)
             {
                 Vector2 point = Projectile.Center + Main.rand.NextVector2Circular(range, range);
                 Vector2 velocity = Projectile.Center - point;
@@ -420,7 +416,7 @@ namespace Stellamod.Content.Areas.Abyss.WeaponsAB
                 dp.dampening = 0.1f;
             }
             CombatMechanicsHelper.CreateEnemySuckingEffect(Projectile.Center, strength: 4, radius: range);
-            Projectile.rotation = MathHelper.ToRadians(24 - (Timer / 180f) * 4) ;
+            Projectile.rotation = MathHelper.ToRadians(24 - (Timer / 180f) * 4);
             Projectile.scale = MathHelper.Lerp(0f, 2f, EasingFunction.InOutSine(Timer / 24f));
             DrawHelper.UpdateFrame(ref _incresionDiskFrameBottom, 0.8f, 1, 40);
         }
@@ -436,7 +432,7 @@ namespace Stellamod.Content.Areas.Abyss.WeaponsAB
                 sp.initialColor = Color.DarkGray;
                 sp.fadeToColor = Color.Black;
             }
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<EventHorizonBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
 
@@ -461,7 +457,7 @@ namespace Stellamod.Content.Areas.Abyss.WeaponsAB
             Vector2 drawCenter = Projectile.Center - screenPos;
             Color drawColor = Color.Violet;
             drawColor.A = 0;
-  
+
             float outEase = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / 180f));
             drawColor *= outEase;
             drawColor *= 0.74f;
@@ -478,7 +474,7 @@ namespace Stellamod.Content.Areas.Abyss.WeaponsAB
         private void DrawIncresionDiskBottom(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             //Draw Incresion Disk
-         
+
             Texture2D supernovaTopTexture = TextureAssets.Projectile[Type].Value;
             Rectangle incresionDiskRect = DrawHelper.FrameGrid(_incresionDiskFrameBottom, columns: 5, frameWidth: supernovaTopTexture.Width / 5, frameHeight: supernovaTopTexture.Height / 8);
             //Incresion Disk Draw Color
@@ -489,7 +485,7 @@ namespace Stellamod.Content.Areas.Abyss.WeaponsAB
             Vector2 drawPos = Projectile.Center - screenPos;
             Vector2 drawOrigin = incresionDiskRect.Size() / 2;
             float drawScale = Projectile.scale * 1.75f;
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
                 spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             //spriteBatch.Draw(supernovaTopTexture, drawPos, incresionDiskRect, incresionDiskDrawColor, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             incresionDiskDrawColor = Color.Cyan;
