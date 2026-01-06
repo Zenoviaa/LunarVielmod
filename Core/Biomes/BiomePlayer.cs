@@ -15,8 +15,12 @@ namespace Stellamod.Content.Biomes
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
-            AddForegroundOrBackground();
-            Player.ManageSpecialBiomeVisuals("Stellamod:Marsh", ZoneMarsh);
+            if(Player.whoAmI == Main.myPlayer)
+            {
+                AddForegroundOrBackground();
+                Player.ManageSpecialBiomeVisuals("Stellamod:Marsh", ZoneMarsh);
+            }
+
         }
 
         private void AddForegroundOrBackground()
