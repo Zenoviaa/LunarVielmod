@@ -12,6 +12,7 @@ namespace Stellamod.Content.Biomes
         public bool ZoneMistyDungeon;
         public bool ZoneDesertTown;
         public bool ZoneMarsh;
+        public bool ZonePunkerTown;
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();

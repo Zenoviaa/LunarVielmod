@@ -186,7 +186,7 @@ namespace Stellamod.NPCs.Govheil
         {
 
 
-            if (spawnInfo.Player.InModBiome<GovheilCastle>())
+            if (spawnInfo.Player.InModBiome<PunkerTown>())
             {
                 return 0.5f;
             }

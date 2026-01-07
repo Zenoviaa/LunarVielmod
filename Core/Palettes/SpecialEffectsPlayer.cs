@@ -178,7 +178,7 @@ namespace Stellamod.Core.Palettes
             LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
             ScreenShaderData screenShaderData;
             bool abyssPaletteActive = (MyPlayer.ZoneAbyss || MyPlayer.ZoneAurelus || MyPlayer.ZoneMechanics || MyPlayer.ZoneIshtar) && clientConfig.PaletteShadersToggle;
-            bool rustyPaletteActive = (MyPlayer.ZoneGovheil || MyPlayer.ZoneAcid) && clientConfig.PaletteShadersToggle;
+    //        bool rustyPaletteActive = (MyPlayer.ZoneGovheil || MyPlayer.ZoneAcid) && clientConfig.PaletteShadersToggle;
             bool hellPaletteActive = ((clientConfig.VanillaBiomesPaletteShadersToggle && Player.ZoneUnderworldHeight) || (MyPlayer.ZoneCinder || MyPlayer.ZoneDrakonic) && clientConfig.PaletteShadersToggle);
 
             if (Player.GetModPlayer<MyPlayer>().ZoneWonder)
