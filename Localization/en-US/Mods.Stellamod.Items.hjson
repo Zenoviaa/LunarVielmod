@@ -10144,3 +10144,13 @@ FallenEyes: {
 	DisplayName: Fallen Eyes
 	Tooltip: ""
 }
+
+PunkerElevatorLeverItem: {
+	Tooltip: ""
+	DisplayName: Punker Elevator Lever Item
+}
+
+PunkerElevatorCall: {
+	Tooltip: ""
+	DisplayName: Punker Elevator Call
+}
