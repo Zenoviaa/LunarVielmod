@@ -915,12 +915,12 @@ OvermorrowdirtwallBlock: {
 }
 
 OvermorrowWall: {
-	DisplayName: Fabled Wall
+	DisplayName: Marsh Wood Wall
 	Tooltip: ""
 }
 
 OvermorrowWood: {
-	DisplayName: Fabled Wood
+	DisplayName: Marsh Wood
 	Tooltip: Yummy wood am I right?
 }
 
@@ -1097,13 +1097,13 @@ MediumPot: {
 }
 
 MorrowChesti: {
-	DisplayName: Fable Chest
+	DisplayName: Marsh Chest
 	Tooltip: ""
 }
 
 MorrowChestKey: {
-	DisplayName: Fabled Chest Key
-	Tooltip: Use at fabled chests all around the world at night!
+	DisplayName: Marsh Chest Key
+	Tooltip: Use at marsh chests all around the world at night!
 }
 
 MorrowDeath: {
