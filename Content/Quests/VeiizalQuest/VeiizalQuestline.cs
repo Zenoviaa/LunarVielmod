@@ -1,7 +1,6 @@
 ﻿using Stellamod.Common.QuestSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
-using Stellamod.NPCs.Govheil;
 using Stellamod.NPCs.Underground;
 using Terraria;
 using Terraria.ID;
@@ -167,9 +166,11 @@ namespace Stellamod.Content.Quests.VeiizalQuest
 
         public override bool CheckCompletion(Player player)
         {
+            return true;
+            /*
             int npcType = ModContent.NPCType<GovheilProtector>();
             int killCount = Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[npcType]);
-            return killCount >= 3;
+            return killCount >= 3;*/
         }
     }
     public class HuntVIII : Quest

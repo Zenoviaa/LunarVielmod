@@ -38,7 +38,7 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
                 centerPos.Y += 128;
                 godrayRenderer.AddGodrayParticle(centerPos + Main.rand.NextVector2Circular(64, 64));
             }
-            return base.PreDraw(i, j, spriteBatch);
+            return false;
         }
 
         /*

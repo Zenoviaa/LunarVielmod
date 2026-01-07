@@ -177,3 +177,8 @@ BiomeMarsh: {
 	DisplayName: Biome Marsh
 	TownNPCDialogueName: the Biome Marsh
 }
+
+PunkerTown: {
+	DisplayName: Punker Town
+	TownNPCDialogueName: the Punker Town
+}

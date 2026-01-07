@@ -64,6 +64,14 @@ namespace Stellamod.Core.Utilities
         public int subdivisionCount;
         public bool noTileCollide;
         public Vector2 externalForces;
+
+        public void ShrinkByOne()
+        {
+            VerletPoint[] pointsCopy = new VerletPoint[points.Length - 1];
+            Array.Copy(points, pointsCopy, points.Length - 1);
+            points = pointsCopy;
+        }
+
         public void Update()
         {
             UpdateVelocities();

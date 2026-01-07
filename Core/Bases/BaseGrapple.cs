@@ -2,12 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.PunkerTown.TilesPT;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -43,23 +45,95 @@ namespace Stellamod.Core.Bases
         public float grappleLineTileDistance;
         public bool isGrapple;
 
-        public override bool CanShoot(Item item, Player player)
+        public override bool AltFunctionUse(Item item, Player player)
         {
             if (isGrapple)
             {
-                return player.ownedProjectileCounts[item.shoot] == 0;
+                return true;
             }
+            return base.AltFunctionUse(item, player);
+        }
+        public override bool CanShoot(Item item, Player player)
+        {
             return base.CanShoot(item, player);
         }
         public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (isGrapple)
+            if (isGrapple && player.ownedProjectileCounts[item.shoot] == 0)
             {
                 Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai2: grappleLineTileDistance * 16 * 2);
                 return false;
             }
+
             return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
         }
+    }
+
+    public interface IGrapplable
+    {
+        Rectangle GetHookRectangle(int tileX, int tileY);
+    }
+
+    public class GrappleLineHookSystem : ModSystem
+    {
+        private static List<Rectangle> _hookPoints;
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            _hookPoints = new List<Rectangle>();
+        }
+        public override void Unload()
+        {
+            base.Unload();
+            _hookPoints = null;
+        }
+
+        public static bool IsCollidingWithHookTile(Vector2 hookPoint)
+        {
+            _hookPoints.Clear();
+            Vector2 centerSearchPoint = hookPoint;
+            Vector2 topLeftWorld = centerSearchPoint - new Vector2(128);
+            Vector2 bottomRightWorld = centerSearchPoint + new Vector2(128);
+
+            Point topLeftTile = topLeftWorld.ToTileCoordinates();
+            Point bottomRightTile = bottomRightWorld.ToTileCoordinates();
+            for(int x = topLeftTile.X; x < bottomRightTile.X; x++)
+            {
+                for(int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
+                {
+                    Point tilePoint = new Point(x, y);
+                    Tile tile = Main.tile[tilePoint];
+                    if (!tile.HasTile)
+                        continue;
+                    if(tile.TileType == ModContent.TileType<AcaciaTreeTop>())
+                    {
+                        Rectangle acaciaTreeHookRectangle = new Rectangle(0, 0, 170, 54);
+                        Vector2 worldCoordinates = tilePoint.ToWorldCoordinates();
+                        acaciaTreeHookRectangle.X = (int)(worldCoordinates.X - acaciaTreeHookRectangle.Width / 2);
+                        acaciaTreeHookRectangle.Y = (int)(worldCoordinates.Y - acaciaTreeHookRectangle.Height / 2);
+                        acaciaTreeHookRectangle.Y -= 64;
+                        _hookPoints.Add(acaciaTreeHookRectangle);
+                    } 
+                    else if (tile.TileType == ModContent.TileType<MangroveTreeTop>())
+                    {
+                        Rectangle mangroveTreeHookRectangle = new Rectangle(0, 0, 584, 92);
+                        Vector2 worldCoordinates = tilePoint.ToWorldCoordinates();
+                        mangroveTreeHookRectangle.X = (int)(worldCoordinates.X - mangroveTreeHookRectangle.Width / 2);
+                        mangroveTreeHookRectangle.Y = (int)(worldCoordinates.Y - mangroveTreeHookRectangle.Height / 2);
+                        mangroveTreeHookRectangle.Y -= 64;
+                        _hookPoints.Add(mangroveTreeHookRectangle);
+                    }
+                }
+            }
+            for (int i = 0; i < _hookPoints.Count; i++)
+            {
+                Rectangle hookRectangle = _hookPoints[i];
+                if (hookRectangle.Contains(hookPoint.ToPoint()))
+                    return true;
+            }
+            return false;
+        }
+            
     }
 
     public abstract class GrappleLine : ModProjectile
@@ -78,7 +152,7 @@ namespace Stellamod.Core.Bases
         {
             get
             {
-                if (_grappleLinePoints == null)
+                if (_grappleLinePoints == null || _grappleLinePoints.Length != VerletChain.points.Length)
                 {
                     _grappleLinePoints = new Vector2[VerletChain.points.Length];
                 }
@@ -88,7 +162,8 @@ namespace Stellamod.Core.Bases
             }
         }
 
-
+        private Vector2 TargetHookPoint;
+        private Vector2 ResizeShrinkPosition;
         private VerletChain VerletChain;
         private ref float Timer => ref Projectile.ai[0];
         private AIState State
@@ -99,6 +174,18 @@ namespace Stellamod.Core.Bases
 
         private ref float Distance => ref Projectile.ai[2];
         private Player Owner => Main.player[Projectile.owner];
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(ResizeShrinkPosition);
+            writer.WriteVector2(TargetHookPoint);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            ResizeShrinkPosition = reader.ReadVector2();
+            TargetHookPoint = reader.ReadVector2();
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -127,9 +214,9 @@ namespace Stellamod.Core.Bases
                     break;
             }
 
-            Owner.itemAnimation = 2;
-            Owner.itemTime = 2;
-            Owner.heldProj = Projectile.whoAmI;
+           // Owner.itemAnimation = 2;
+           // Owner.itemTime = 2;
+//Owner.heldProj = Projectile.whoAmI;
             VerletChain?.Update();
         }
 
@@ -142,6 +229,7 @@ namespace Stellamod.Core.Bases
                 Projectile.netUpdate = true;
             }
         }
+
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
@@ -162,6 +250,12 @@ namespace Stellamod.Core.Bases
             Timer++;
             if (Timer == 1)
             {
+                if (this.OwnedByLocalClient())
+                {
+                    TargetHookPoint = Main.MouseWorld;
+                    Projectile.netUpdate = true;
+                }
+              
                 SoundStyle hookSound = AssetRegistry.Sounds.Gun.GrappleShoot;
                 hookSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(hookSound, Projectile.Center);
@@ -176,6 +270,10 @@ namespace Stellamod.Core.Bases
                     SwitchState(AIState.Retract);
                 }
             }
+
+            if (GrappleLineHookSystem.IsCollidingWithHookTile(Projectile.Center) &&
+                Vector2.Distance(Projectile.Center, TargetHookPoint) < 256)
+                SwitchState(AIState.Hook);
 
             GrapplePlayer grapplePlayer = Owner.GetModPlayer<GrapplePlayer>();
             grapplePlayer.slowFall = true;
@@ -234,9 +332,61 @@ namespace Stellamod.Core.Bases
             if (VerletChain == null)
                 return;
 
-          
+            if (VerletChain.points.Length <= 1)
+            {
+                Projectile.Kill();
+                return;
+            }
+        
+
+            //Shrink if you hold the use down
+            if (this.OwnedByLocalClient() && Owner.controlUseItem && Owner.HeldItem.shoot == Type && VerletChain.points.Length > 3)
+            {
+                ref VerletPoint currentPoint = ref VerletChain.points[0];
+                ref VerletPoint nextPoint = ref VerletChain.points[1];
+                currentPoint.position = Vector2.Lerp(currentPoint.position, nextPoint.position, 0.5f);
+                currentPoint.oldPosition = currentPoint.position;
+                currentPoint.pinned = true;
+                float distance = Vector2.Distance(currentPoint.position, nextPoint.oldPosition);
+                if(distance <= 1)
+                {
+                    VerletChain.ShrinkByOne();
+                    ResizeShrinkPosition = VerletChain.points[1].position;
+                    Projectile.netUpdate = true;
+                }
+
+
+            }
+            else
+            {
+                VerletChain.points[0].pinned=false;
+
+            }
+
+            //Kill the projectile if you right click
+            if (this.OwnedByLocalClient() && Owner.controlUseItem && Owner.HeldItem.shoot == Type && Owner.altFunctionUse == 2)
+            {
+                Projectile.Kill();
+                return;
+            }
+
+            if(ResizeShrinkPosition != Vector2.Zero)
+            {
+                float segmentLength = 16;
+
+
+                VerletChain = new VerletChain(ResizeShrinkPosition, Projectile.Center, segmentLength);
+                ResizeShrinkPosition = Vector2.Zero;
+            }
+
+
+
+            if (VerletChain.points.Length <= 1)
+                return;
+
             ref VerletPoint point = ref VerletChain.points[VerletChain.points.Length - 1];
             point.position = Projectile.Center;
+            VerletChain.externalForces = Owner.direction * Vector2.UnitX * 0.1f;
             point.pinned = true;
 
             Vector2 ropePosition = VerletChain.points[0].position;
@@ -292,6 +442,7 @@ namespace Stellamod.Core.Bases
         }
         private void DrawHookingTrail()
         {
+
             var shader = BasicLaserAlphaShader.Instance;
             shader.LaserTexture = TrailRegistry.GlowTrailNoBlack;
             shader.BlendState = BlendState.AlphaBlend;
@@ -316,6 +467,8 @@ namespace Stellamod.Core.Bases
         private void DrawGrappleLinePoints()
         {
             if (VerletChain == null)
+                return;
+            if (GrappleLinePoints.Length <= 2)
                 return;
 
             var shader = BasicLaserAlphaShader.Instance;

@@ -20,7 +20,7 @@ namespace Stellamod.Content.Areas.PunkerTown
         {
             base.EditSpawnPool(pool, spawnInfo);
       
-            if (spawnInfo.Player.GetModPlayer<BiomePlayer>().ZoneMarsh)
+            if (spawnInfo.Player.InModBiome<BiomeMarsh>())
             {
                 List<int> vanillaNpcs = new List<int>();
                 if(Main.dayTime)

@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Biomes;
+﻿using Stellamod.Content.Areas.PunkerTown;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.NPCHelpers;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace Stellamod.Common
         public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {
             base.EditSpawnPool(pool, spawnInfo);
-            if (spawnInfo.Player.GetModPlayer<BiomePlayer>().ZoneMarsh)
+            if (spawnInfo.Player.InModBiome<BiomeMarsh>())
             {
                 for (int i = 0; i < SpawnSets.MarshEnemy.Count; i++)
                 {

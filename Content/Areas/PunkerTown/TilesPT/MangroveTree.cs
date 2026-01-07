@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Godrays;
 using Stellamod.WorldG;
 using System;
@@ -61,6 +62,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 
             Color color = Lighting.GetColor(i, j);
             Rectangle frame = GetTopFrame(_random.Next(0, 1));
+
             Vector2 offset = new Vector2(-13, 32);
             Vector2 topLeftOffset = new Vector2(-128, -32);
 
