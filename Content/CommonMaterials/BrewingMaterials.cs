@@ -112,4 +112,13 @@ namespace Stellamod.Content.CommonMaterials
             Item.rare = ModContent.RarityType<MechanizedSoulRarity>();
         }
     }
+    public class FallenEyes : ModItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.maxStack = Item.CommonMaxStack;
+            Item.rare = ModContent.RarityType<FallenEyesRarity>();
+        }
+    }
 }

@@ -1,10 +1,45 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Areas.SpringHills.TilesSH;
+﻿using Stellamod.Content.Areas.SpringHills.TilesSH;
 using Stellamod.Core.ZTileSystem;
-using static Stellamod.Tiles.SpecialDecorativeWall;
 
 namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 {
+    public class ComfyDresser : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 1;
+            drawOrigin = TileDrawOrigin.BottomUp;
+        }
+    }
+    public class ComfyTable : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 1;
+            drawOrigin = TileDrawOrigin.BottomUp;
+        }
+    }
+    public class ComfyCouch : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 1;
+            drawOrigin = TileDrawOrigin.BottomUp;
+        }
+    }
+    public class SmallStand : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            frameCount = 1;
+            drawOrigin = TileDrawOrigin.BottomUp;
+        }
+    }
+
     public class PunkingBoard : ZTile
     {
         public override void SetStaticDefaults()

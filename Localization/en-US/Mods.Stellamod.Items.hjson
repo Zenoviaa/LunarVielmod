@@ -10114,3 +10114,33 @@ ArtifactoftheFlies: {
 	DisplayName: Artifact of the Flies
 	Tooltip: Command an army of flies to hover around your mouse and attack and rip apart whatever is around it!
 }
+
+PaintingBeachItem: {
+	DisplayName: Painting Beach Item
+	Tooltip: ""
+}
+
+PaintingCityWallItem: {
+	DisplayName: Painting City Wall Item
+	Tooltip: ""
+}
+
+PaintingComputerItem: {
+	DisplayName: Painting Computer Item
+	Tooltip: ""
+}
+
+PaintingSnowForestItem: {
+	DisplayName: Painting Snow Forest Item
+	Tooltip: ""
+}
+
+PaintingSunsetItem: {
+	DisplayName: Painting Sunset Item
+	Tooltip: ""
+}
+
+FallenEyes: {
+	DisplayName: Fallen Eyes
+	Tooltip: ""
+}
