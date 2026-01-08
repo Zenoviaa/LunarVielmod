@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Core.Tooltips;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Stellamod.Common.ArmorRework
 {
@@ -89,6 +91,38 @@ namespace Stellamod.Common.ArmorRework
         }
     }
 
+    public class ExtraAccessorySlot1 : ModAccessorySlot
+    {
+        public override bool IsEnabled()
+        {
+            return Player.GetModPlayer<ArmorStatsPlayer>().accessorySlots >= 6;
+        }
+    }
+
+    public class ExtraAccessorySlot2 : ModAccessorySlot
+    {
+        public override bool IsEnabled()
+        {
+            return Player.GetModPlayer<ArmorStatsPlayer>().accessorySlots >= 7;
+        }
+    }
+
+    public class ExtraAccessorySlot3 : ModAccessorySlot
+    {
+        public override bool IsEnabled()
+        {
+            return Player.GetModPlayer<ArmorStatsPlayer>().accessorySlots >= 8;
+        }
+    }
+
+    public class ExtraAccessorySlot4 : ModAccessorySlot
+    {
+        public override bool IsEnabled()
+        {
+            return Player.GetModPlayer<ArmorStatsPlayer>().accessorySlots >= 9;
+        }
+    }
+
     public class ArmorAccessoryRework : ModSystem
     {
         public override void OnModLoad()
@@ -119,8 +153,9 @@ namespace Stellamod.Common.ArmorRework
 
             return orig(self, slot);
         }
-
     }
+
+ 
     public class ArmorStatsPlayer : ModPlayer
     {        
         //Textures

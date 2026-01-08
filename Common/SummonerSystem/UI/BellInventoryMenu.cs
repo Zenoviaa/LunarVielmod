@@ -22,24 +22,31 @@ namespace Stellamod.Common.SummonerSystem.UI
         private UIImage _background;
         private UIList _uiList;
         private BellBrowserView _view;
-        public BellInventoryMenu()
+        public BellInventoryMenu(UIScrollbar scrollbar)
         {
             Asset<Texture2D> backgroundTexture =
                 ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/BellInventoryPanel");
             _background = new UIImage(backgroundTexture);
             _panel = new UIPanel();
-            _scrollbar = new FancyScrollbar();
+            _scrollbar = scrollbar;
             _uiList = new UIList();
-
             _view = new BellBrowserView();
         }
-
 
         public override void OnInitialize()
         {
             base.OnInitialize();
             Width.Pixels = 118;
             Height.Pixels = 216;
+
+            //The scrollbar is on a separate panel from this menu
+            _scrollbar.Width.Set(20, 0);
+            _scrollbar.Height.Set(340, 0);
+            _scrollbar.Left.Set(0, 1);
+            _scrollbar.Top.Set(0, 0f);
+
+            float maxViewSize = 48 * 8f;
+            _scrollbar.SetView(0, maxViewSize);
             Append(_background);
 
             _panel.Width.Pixels = Width.Pixels;
@@ -53,15 +60,6 @@ namespace Stellamod.Common.SummonerSystem.UI
             _view.Height.Pixels = Height.Pixels;
             _panel.Append(_view);
 
-            _scrollbar.Width.Set(20, 0);
-            _scrollbar.Height.Set(340, 0);
-            _scrollbar.Left.Set(0, 1);
-            _scrollbar.Top.Set(0, 0f);
-
-            float maxViewSize = 48 * 8f;
-            _scrollbar.SetView(0, maxViewSize);
-            Append(_scrollbar);
-
             _uiList.Width.Pixels = Width.Pixels;
             _uiList.Height.Pixels = Height.Pixels;
             _uiList.Add(_panel);
@@ -72,13 +70,7 @@ namespace Stellamod.Common.SummonerSystem.UI
         public override void OnActivate()
         {
             base.OnActivate();
-            Item[] items = ItemHelper.BellMinions.ToArray();
-            Item[] cloneArr = new Item[items.Length];
-            for(int i = 0; i < cloneArr.Length; i++)
-            {
-                cloneArr[i] = new Item(items[i].type);
-            }
-            _view.SetCollection(cloneArr);
+            _view.SetCollection(ItemHelper.BellMinions);
         }
 
 

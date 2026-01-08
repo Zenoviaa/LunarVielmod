@@ -38,6 +38,7 @@ namespace Stellamod.Content.Areas.Snow.ArmorsSN
             ArmorStatsPlayer stats = player.GetModPlayer<ArmorStatsPlayer>();
             stats.criticalStrikeChance += 0.5f;
             stats.criticalStrikeDamage += 5;
+            stats.accessorySlots += 8;
             /*
             stats.meleeAttackSpeed += 0.5f;
             stats.accessorySlots++;

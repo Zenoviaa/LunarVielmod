@@ -232,7 +232,7 @@ namespace Stellamod.Core
                 Vector2 shadowDrawOrigin = texture.Size() / 2f;
                 Color blackColor = Color.Black.MultiplyRGB(drawColor);
                 float shadowDrawScale = 0.66f * drawScale;
-                spriteBatch.Draw(texture, drawPos - Main.screenPosition, null, blackColor, 0, shadowDrawOrigin, shadowDrawScale, SpriteEffects.None, layerDepth: 0);
+                spriteBatch.Draw(texture, drawPos - Main.screenPosition, null, blackColor * 0.5f, 0, shadowDrawOrigin, shadowDrawScale, SpriteEffects.None, layerDepth: 0);
 
 
                 spriteBatch.Draw(questMark, drawPos - Main.screenPosition, null, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);

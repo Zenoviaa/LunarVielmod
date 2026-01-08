@@ -34,6 +34,11 @@ namespace Stellamod.Common.SummonerSystem.UI
             Height.Set(_slotTextureAsset.Height() * scale, 0f);
         }
 
+        public bool IsHidden()
+        {
+            return Main.LocalPlayer.maxMinions <= _slot;
+        }
+
         /// <summary>
         /// Returns true if this item can be placed into the slot (either empty or a pet item)
         /// </summary>
@@ -57,8 +62,8 @@ namespace Stellamod.Common.SummonerSystem.UI
                 ItemSlot.Handle(ref Item, _context);
                 if (Main.mouseLeft && Main.mouseLeftRelease)
                 {
-                    var flaskPlayer = Main.LocalPlayer.GetModPlayer<BellPlayer>();
-                    flaskPlayer.SetMinionAtIndex(Item.Clone(), _slot);
+                    var bellPlayer = Main.LocalPlayer.GetModPlayer<BellPlayer>();
+                    bellPlayer.SetMinionAtIndex(Item.Clone(), _slot);
                 }
             }
         }
@@ -66,6 +71,9 @@ namespace Stellamod.Common.SummonerSystem.UI
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
+            if (IsHidden())
+                return;
+
             float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
