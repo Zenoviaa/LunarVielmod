@@ -10154,3 +10154,18 @@ PunkerElevatorCall: {
 	Tooltip: ""
 	DisplayName: Punker Elevator Call
 }
+
+JacklerPants: {
+	Tooltip: ""
+	DisplayName: Jackler Pants
+}
+
+JacklerHat: {
+	Tooltip: ""
+	DisplayName: Jackler Hat
+}
+
+JacklerCoat: {
+	Tooltip: ""
+	DisplayName: Jackler Coat
+}
