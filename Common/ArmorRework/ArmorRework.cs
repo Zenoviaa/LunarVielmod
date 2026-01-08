@@ -1,4 +1,7 @@
-﻿using Stellamod.Common.XixianFlaskSystem;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
@@ -119,7 +122,9 @@ namespace Stellamod.Common.ArmorRework
 
     }
     public class ArmorStatsPlayer : ModPlayer
-    {
+    {        
+        //Textures
+        private Dictionary<string, Asset<Texture2D>> _iconAssets;
         private Player _dummyPlayer;
         public float generalEndurance;
         public float bossEndurance;
@@ -139,14 +144,14 @@ namespace Stellamod.Common.ArmorRework
 
         public float meleeAttackSpeed;
         public float meleeDamage;
-        public float meleeArmorPenetration;
+        public int meleeArmorPenetration;
         public int meleeAggressiveness;
 
         public float rangedBowChargeTime;
         public float rangedDamage;
         public int rangedPiercing;
         public int rangedGunAmmoAmount;
-        public float rangedStealthtiness;
+        public int rangedStealthtiness;
 
         public float summonCastTime;
         public float summonDamage;
@@ -164,6 +169,35 @@ namespace Stellamod.Common.ArmorRework
         public int wandTimerEnchantmentSlots;
 
         public bool isComparison;
+
+
+        public override void Unload()
+        {
+            base.Unload();
+            _iconAssets = null;
+        }
+
+       
+        public Asset<Texture2D> RequestIconTexture(string name)
+        {
+            _iconAssets ??= new Dictionary<string, Asset<Texture2D>>();
+            if (_iconAssets.ContainsKey(name))
+                return _iconAssets[name];
+    
+            string path = this.GetType().DirectoryHere() + $"/{name}";
+            bool exists = ModContent.RequestIfExists<Texture2D>(path, out Asset<Texture2D> asset);
+            if (exists)
+            {
+                _iconAssets.Add(name, asset);
+            }
+            else
+            {
+                asset = ModContent.Request<Texture2D>(TextureRegistry.EmptyTexture);
+            }
+
+            return asset;
+        }
+
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -184,6 +218,7 @@ namespace Stellamod.Common.ArmorRework
             insourceSlots = 0;
             insourceTimeBonus = 0;
             movementSpeedBonus = 0;
+            inventorySlots = 0;
 
             //Melee Damage
             meleeAttackSpeed = 0;
@@ -226,6 +261,15 @@ namespace Stellamod.Common.ArmorRework
             return comparisonText;
         }
 
+        private string GetComparison(string name, int currentValue)
+        {
+            if (currentValue == 0)
+                return string.Empty;
+            string percentString = MathF.Abs(currentValue).ToString();
+            string increaseDecreaseKey = currentValue < 0 ? "StatSubtractionAlt" : "StatAdditionAlt";
+            string comparisonText = LangText.Common(increaseDecreaseKey, LangText.Common($"Stat{name}"), percentString);
+            return comparisonText;
+        }
         public void GetStatTooltipsLocalToItem(Item item, List<TooltipLine> tooltips)
         {
             _dummyPlayer ??= new Player();
@@ -249,6 +293,16 @@ namespace Stellamod.Common.ArmorRework
                 if (string.IsNullOrEmpty(comparison))
                     return;
                 TooltipLine line = new TooltipLine(Mod, name, comparison);
+                if (currentValue < 0)
+                    line.OverrideColor = Color.IndianRed;
+                tooltips.Add(line);
+            }
+            void AddLineIfDifferentInt(string name, int currentValue)
+            {
+                string comparison = GetComparison(name, currentValue);
+                if (string.IsNullOrEmpty(comparison))
+                    return;
+                TooltipLine line = new TooltipLine(Mod, name, comparison);
                 tooltips.Add(line);
             }
 
@@ -257,6 +311,37 @@ namespace Stellamod.Common.ArmorRework
             AddLineIfDifferent("RangedDamage", rangedDamage);
             AddLineIfDifferent("MagicDamage", magicDamage);
             AddLineIfDifferent("MinionDamage", summonDamage);
+            AddLineIfDifferentInt("MaxHealth", healthBonus);
+            AddLineIfDifferent("CriticalStrikeChance", criticalStrikeChance);
+            AddLineIfDifferent("CriticalStrikeDamage", criticalStrikeDamage);
+            AddLineIfDifferentInt("Stamina", stamina);
+            AddLineIfDifferentInt("ArmorPenetration", meleeArmorPenetration);
+            AddLineIfDifferentInt("AccessorySlots", accessorySlots);
+            AddLineIfDifferentInt("InventorySlots", inventorySlots);
+            AddLineIfDifferent("MovementSpeed", movementSpeedBonus);
+            AddLineIfDifferent("Endurance", generalEndurance);
+            AddLineIfDifferent("BossEndurance", bossEndurance);
+            AddLineIfDifferent("EnemyEndurance", enemyEndurance);
+            AddLineIfDifferentInt("InsourceSlots", insourceSlots);
+            AddLineIfDifferent("MeleeAttackSpeed", meleeAttackSpeed);
+            AddLineIfDifferentInt("Defense", defenseBonus);
+            AddLineIfDifferent("InsourceTime", insourceTimeBonus);
+            AddLineIfDifferent("Aggressiveness", meleeAggressiveness);
+            AddLineIfDifferent("BowChargeTime", rangedBowChargeTime);
+            AddLineIfDifferentInt("Piercing", rangedPiercing);
+            AddLineIfDifferentInt("GunAmmoAmmount", rangedGunAmmoAmount);
+            AddLineIfDifferentInt("Stealthiness", rangedStealthtiness);
+            AddLineIfDifferent("SummonCastTime", summonCastTime);
+            AddLineIfDifferent("MinionSlots", minionSlots);
+            AddLineIfDifferent("MainMinionDamage", mainSummonDamage);
+            AddLineIfDifferent("MainMinionHealth", mainSummonHealth);
+            AddLineIfDifferent("MinionHealth", minionSummonHealth);
+            AddLineIfDifferent("MinionAggressiveness", minionAggressiveness);
+            AddLineIfDifferent("ArtifactManaReduction", artifactManaReduction);
+            AddLineIfDifferent("WandCastTime", wandCastTime);
+            AddLineIfDifferentInt("MaxMana", totalMana);
+            AddLineIfDifferentInt("WandNormalEnchantmentSlots", wandNormalEnchantmentSlots);
+            AddLineIfDifferentInt("WandTimerEnchantmentSlots", wandTimerEnchantmentSlots);
         }
 
 

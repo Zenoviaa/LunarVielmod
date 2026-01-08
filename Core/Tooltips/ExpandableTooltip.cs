@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using Stellamod.Common.ArmorRework;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Snow.ArmorsSN;
 using Stellamod.Helpers;
 using System;
@@ -301,7 +302,8 @@ namespace Stellamod.Core.Tooltips
             }
 
             //Step. 2 Draw the item stat tooltips
-            DrawExpandableTooltip(spriteBatch, lines, bgDrawRect.X + 8, bgDrawRect.Y + 4, alpha, true);
+            ArmorStatsPlayer armorStatsPlayer = Main.LocalPlayer.GetModPlayer<ArmorStatsPlayer>();
+            DrawExpandableTooltip(spriteBatch, lines, bgDrawRect.X + 8, bgDrawRect.Y + 4, alpha, false, armorStatsPlayer.RequestIconTexture);
 
             ArmorSetSystem.GetArmorSet(set, out Item helm, out Item armor, out Item leggings);
             spriteBatch.End();
@@ -312,12 +314,34 @@ namespace Stellamod.Core.Tooltips
             _player.opacityForAnimation = alpha;
             DrawArmorPreview(playerDrawPosition, helm, armor, leggings);
             spriteBatch.End();
-            spriteBatch.Begin(default, default, Main.graphics.GraphicsDevice.SamplerStates[0], default, Main.Rasterizer, null, Main.UIScaleMatrix);
+            spriteBatch.Begin(default, default, Main.graphics.GraphicsDevice.SamplerStates[0], default, Main.Rasterizer, SpriteWhiteShader.Instance.Effect, Main.UIScaleMatrix);
 
             //Step 3. Draw item icon of the current item
             Vector2 topRight = bgDrawRect.TopLeft();
             topRight.X += width * 0.9f; ;
             topRight.Y += height * 0.1f;
+
+            /*
+            Main.inventoryScale = 1;
+          
+            Item air = new Item();
+            air.SetDefaults(0);
+
+            ItemSlot.Draw(spriteBatch, ref air, ItemSlot.Context.EquipMiscDye, new Vector2(540, 600), Color.White);
+            ItemSlot.Draw(spriteBatch, ref air, ItemSlot.Context.EquipAccessoryVanity, new Vector2(570, 600), Color.White);
+            ItemSlot.Draw(spriteBatch, ref air, ItemSlot.Context.EquipAccessory, new Vector2(600, 600), Color.White);
+            */
+            for(float f = 0; f < 4f; f++)
+            {
+                Color outlineColor = Color.White * alpha;
+                outlineColor *= (int)ExtraMath.Osc(0f, 2f, speed: 3);
+                ItemSlot.DrawItemIcon(item, 0, spriteBatch, topRight + (Vector2.UnitY * 2).RotatedBy(f / 4f * MathHelper.TwoPi), 1, 32, outlineColor);
+            }
+     
+
+            spriteBatch.End();
+            spriteBatch.Begin(default, default, Main.graphics.GraphicsDevice.SamplerStates[0], default, Main.Rasterizer, null, Main.UIScaleMatrix);
+
             ItemSlot.DrawItemIcon(item, 0, spriteBatch, topRight, 1, 32, Color.White * alpha);
         }
 
@@ -358,7 +382,8 @@ namespace Stellamod.Core.Tooltips
         }
 
         //modified from vanilla code so we can draw our own tooltip wherever we want
-        public static void DrawExpandableTooltip(SpriteBatch spriteBatch, List<TooltipLine> lines, int X, int Y, float alpha, bool drawGlass = true)
+        public delegate Asset<Texture2D> LookupFunction(string path);
+        public static void DrawExpandableTooltip(SpriteBatch spriteBatch, List<TooltipLine> lines, int X, int Y, float alpha, bool drawGlass = true, LookupFunction iconTextureLookup = null)
         {
             Color color = new Color(Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor);
             Vector2 zero = Vector2.Zero;
@@ -402,14 +427,28 @@ namespace Stellamod.Core.Tooltips
             {
                 Color black = new Color(num4, num4, num4, num4);
                 Color realLineColor = black * alpha;
-                if (drawableLines[k].OverrideColor.HasValue)
+                var line = lines[k];
+                DrawableTooltipLine drawableLine = drawableLines[k];
+                if (drawableLine.OverrideColor.HasValue)
                 {
-                    realLineColor = drawableLines[k].OverrideColor.Value * num4;
+                    realLineColor = drawableLine.OverrideColor.Value * num4;
                 }
 
-                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[k].Font, drawableLines[k].Text, 
-                    new Vector2(X, drawableLines[k].Y + yOffset), realLineColor * alpha, drawableLines[k].Rotation, drawableLines[k].Origin, drawableLines[k].BaseScale * alpha, drawableLines[k].MaxWidth, drawableLines[k].Spread);
-                yOffset += (int)(FontAssets.MouseText.Value.MeasureString(drawableLines[k].Text).Y);
+                //Draw the icon if it has one
+                if(iconTextureLookup != null) 
+                {
+                    string name = line.Name;
+                    Asset<Texture2D> iconTextureAsset = iconTextureLookup(name);
+                    Vector2 drawOrigin = iconTextureAsset.Size() / 2f;
+                    Vector2 drawPosition = new Vector2(X, drawableLine.Y + yOffset);
+                    drawPosition.X -= 16;
+                    drawPosition.Y += 8;
+                    spriteBatch.Draw(iconTextureAsset.Value, drawPosition, null, Color.White, 0, drawOrigin, 1, SpriteEffects.None, 0);
+                }
+
+                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLine.Font, drawableLine.Text, 
+                    new Vector2(X, drawableLine.Y + yOffset), realLineColor * alpha, drawableLine.Rotation, drawableLine.Origin, drawableLine.BaseScale * alpha, drawableLine.MaxWidth, drawableLine.Spread);
+                yOffset += (int)(FontAssets.MouseText.Value.MeasureString(drawableLine.Text).Y);
             }
 
             if (drawGlass)

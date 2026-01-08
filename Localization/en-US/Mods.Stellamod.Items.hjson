@@ -126,21 +126,21 @@ Common: {
 	StatMeleeDamage: melee damage
 	StatArmorPenetration: armor penetration
 	StatAggressiveness: aggressiveness
-	StatRangedBowChargeTime: bow charge time
+	StatBowChargeTime: bow charge time
 	StatRangedDamage: ranged damage
-	StatRangedPiercing: ranged piercing
-	StatRangedGunAmmoAmount: gun magazine capacity
-	StatRangedStealthiness: stealthiness
+	StatPiercing: ranged piercing
+	StatGunAmmoAmount: gun magazine capacity
+	StatStealthiness: stealthiness
 	StatSummonCastTime: bell summoning time
 	StatMinionDamage: minion damage
 	StatMinionSlots: minion slots
-	StatMainMinionDamage: main minion damage
-	StatMainMinionHealth: main minion health
+	StatMainMinionDamage: guardian damage
+	StatMainMinionHealth: guardian health
 	StatMinionHealth: minion health
 	StatMinionAggressiveness: minion aggressiveness
-	StatArtifactMana: artifact max mana
+	StatArtifactManaReduction: artifact mana reduction
 	StatWandCastTime: wand cast time
-	StatMana: max mana
+	StatMaxMana: max mana
 	StatMagicDamage: magic damage
 	StatWandNormalEnchantmentSlots: wand enchantment slots
 	StatWandTimerEnchantmentSlots: wand timer slots

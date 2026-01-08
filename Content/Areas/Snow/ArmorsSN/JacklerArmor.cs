@@ -43,6 +43,22 @@ namespace Stellamod.Content.Areas.Snow.ArmorsSN
             stats.rangedDamage += 0.2f;
             stats.magicDamage -= 0.2f;
             stats.summonDamage -= 0.1f;
+            stats.healthBonus += 40;
+            stats.criticalStrikeDamage += 0.5f;
+            stats.criticalStrikeChance += 0.5f;
+            stats.wandCastTime += 0.5f;
+            stats.wandNormalEnchantmentSlots += 3;
+            stats.wandTimerEnchantmentSlots += 3;
+            stats.totalMana += 50;
+            stats.artifactManaReduction += 0.5f;
+            stats.bossEndurance += 0.04f;
+            stats.enemyEndurance += 0.08f;
+            stats.generalEndurance += 0.02f;
+            stats.healthBonus += 50;
+            stats.mainSummonHealth += 0.5f;
+            stats.mainSummonDamage += 0.5f;
+            stats.minionSlots += 4;
+            stats.inventorySlots += 15;
         }
     }
 
