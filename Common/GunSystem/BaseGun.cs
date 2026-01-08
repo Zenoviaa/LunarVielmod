@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Stellamod.Assets;
 using Stellamod.Buffs;
+using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;
@@ -124,7 +125,7 @@ namespace Stellamod.Common.GunSystem
         {
             //We can use local player here can reloading is never checked over clients, I think
             //ehh
-            return maxAmmo + player.GetModPlayer<GunHoldPlayer>().maxAmmoBonus;
+            return maxAmmo + player.GetModPlayer<ArmorStatsPlayer>().rangedGunAmmoAmount;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -243,7 +244,6 @@ namespace Stellamod.Common.GunSystem
     }
     public class GunHoldPlayer : ModPlayer
     {
-        public int maxAmmoBonus;
         public bool isReloading;
         public float reloadTimer;
         public float reloadTime;
@@ -259,7 +259,6 @@ namespace Stellamod.Common.GunSystem
         public override void ResetEffects()
         {
             base.ResetEffects();
-            maxAmmoBonus = 0;
             isReloading = false;
             numberOfReloadsNeeded = 1;
               marginOfError = 10;
@@ -294,10 +293,17 @@ namespace Stellamod.Common.GunSystem
             return true;
   
         }
-        public override void PostUpdateEquips()
+
+        public override void PostUpdateMiscEffects()
         {
-            base.PostUpdateEquips();
-            if(reloadFireDelay > 0)
+            base.PostUpdateMiscEffects();
+            HandleReloading();
+        }
+        
+
+        private void HandleReloading()
+        {
+            if (reloadFireDelay > 0)
                 reloadFireDelay--;
 
             var heldGun = HeldGun;
@@ -323,15 +329,15 @@ namespace Stellamod.Common.GunSystem
                     reloadTimer = 0;
                 }
 
-             
+
                 if (Main.myPlayer == Player.whoAmI)
                 {
                     if (TimedReload())
                     {
                         successfulReloads++;
-                        if(successfulReloads >= numberOfReloadsNeeded)
+                        if (successfulReloads >= numberOfReloadsNeeded)
                         {
-                            successfulReloads=0;
+                            successfulReloads = 0;
                             heldGun.Reload();
                             reloadFireDelay = 60;
 
@@ -347,7 +353,7 @@ namespace Stellamod.Common.GunSystem
                             CombatText numText = Main.combatText[combatText];
                             numText.lifeTime = 60;
                         }
-             
+
                         doCoolReloadAnimation = true;
                     }
 
@@ -365,6 +371,7 @@ namespace Stellamod.Common.GunSystem
             }
 
         }
+
     }
 
     public class GunHold : ModProjectile

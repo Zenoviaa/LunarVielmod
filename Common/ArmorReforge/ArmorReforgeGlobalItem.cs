@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.ArmorRework;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.IgnitersNPowders;
 using Stellamod.Common.XixianFlaskSystem;
@@ -116,6 +117,7 @@ namespace Stellamod.Common.ArmorReforge
         public override bool InstancePerEntity => true;
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
+         
             base.UpdateAccessory(item, player, hideVisual);
             switch (accessoryReforgeType)
             {
@@ -146,7 +148,7 @@ namespace Stellamod.Common.ArmorReforge
                     player.GetModPlayer<IgniterPlayer>().igniterDamageBonus += 0.05f;
                     break;
                 case AccessoryReforgeType.Demolighting:
-                    player.GetModPlayer<GunHoldPlayer>().maxAmmoBonus += 2;
+                    player.GetModPlayer<ArmorStatsPlayer>().rangedGunAmmoAmount += 2;
                     break;
                 case AccessoryReforgeType.Slashing:
                     player.GetModPlayer<ContactDamageReductionPlayer>().contactEndurance += 0.06f;
@@ -309,7 +311,7 @@ namespace Stellamod.Common.ArmorReforge
                     break;
                 case ArmorReforgeType.Reloaded:
                     player.GetDamage(DamageClass.Ranged) -= 0.03f;
-                    player.GetModPlayer<GunHoldPlayer>().maxAmmoBonus += 3;
+                    player.GetModPlayer<ArmorStatsPlayer>().rangedGunAmmoAmount += 3;
                     break;
                 case ArmorReforgeType.Illurias:
                     player.GetDamage(DamageClass.Generic) -= 0.07f;

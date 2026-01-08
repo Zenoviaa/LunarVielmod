@@ -105,6 +105,45 @@ Common: {
 		This item is a [c/FFA500:brewing material], which is a key crafting ingredient for all cauldron items!
 		Take this back to the [c/FFA500:Magic Cauldron] at Witch Town to use it!
 		'''
+	StatAddition: "{1} increased {0}"
+	StatSubtraction: "{1} decreased {0}"
+	StatAdditionAlt: Increases {0} by {1}
+	StatSubtractionAlt: Decreases {0} by {1}
+	StatEndurance: endurance
+	StatBossEndurance: boss endurance
+	StatEnemyEndurance: enemy endurance
+	StatDefense: defense
+	StatMaxHealth: max life
+	StatCriticalStrikeChance: critical strike chance
+	StatCriticalStrikeDamage: critical strike damage
+	StatStamina: stamina
+	StatAccessorySlots: accessory slots
+	StatInsourceSlots: insource slots
+	StatInventorySlots: inventory slots
+	StatInsourceTime: insource cooldown time
+	StatMovementSpeed: movement speed
+	StatMeleeAttackSpeed: melee attack speed
+	StatMeleeDamage: melee damage
+	StatArmorPenetration: armor penetration
+	StatAggressiveness: aggressiveness
+	StatRangedBowChargeTime: bow charge time
+	StatRangedDamage: ranged damage
+	StatRangedPiercing: ranged piercing
+	StatRangedGunAmmoAmount: gun magazine capacity
+	StatRangedStealthiness: stealthiness
+	StatSummonCastTime: bell summoning time
+	StatMinionDamage: minion damage
+	StatMinionSlots: minion slots
+	StatMainMinionDamage: main minion damage
+	StatMainMinionHealth: main minion health
+	StatMinionHealth: minion health
+	StatMinionAggressiveness: minion aggressiveness
+	StatArtifactMana: artifact max mana
+	StatWandCastTime: wand cast time
+	StatMana: max mana
+	StatMagicDamage: magic damage
+	StatWandNormalEnchantmentSlots: wand enchantment slots
+	StatWandTimerEnchantmentSlots: wand timer slots
 }
 
 SetBonus: {

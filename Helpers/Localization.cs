@@ -89,9 +89,9 @@ namespace Stellamod.Helpers
             return Language.GetTextValue($"Mods.Stellamod.ArmorReforge.{type.ToString()}." + Path, arg0);
         }
 
-        public static string Common(string Path, object arg0 = null)
+        public static string Common(string Path, object arg0 = null, object arg1 = null)
         {
-            return Language.GetTextValue("Mods.Stellamod.Items.Common." + Path, arg0);
+            return Language.GetTextValue("Mods.Stellamod.Items.Common." + Path, arg0, arg1);
         }
         public static string Special(ModItem item, string key = null, object arg0 = null)
         {

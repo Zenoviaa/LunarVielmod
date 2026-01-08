@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Stellamod.Common.ArmorRework;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
@@ -24,9 +25,9 @@ namespace Stellamod.Common.XixianFlaskSystem
             insourceTime = 0;
         }
 
-        public override void PostUpdateEquips()
+        public override void PostUpdateMiscEffects()
         {
-            base.PostUpdateEquips();
+            base.PostUpdateMiscEffects();
             if (Main.myPlayer == Player.whoAmI && LunarVeilKeybinds.FlaskKeybind.JustPressed)
             {
                 if (CanUseFlask())
@@ -35,6 +36,7 @@ namespace Stellamod.Common.XixianFlaskSystem
                 }
             }
         }
+
         public void ResetProgress()
         {
             unlockedFlask = false;
@@ -94,6 +96,10 @@ namespace Stellamod.Common.XixianFlaskSystem
                     myInsource.UseInsource(this);
                 }
             }
+
+            float time = insourceTime;
+            ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
+            time *= (1f - statsPlayer.insourceTimeBonus);
 
             SoundStyle xixianFlaskUseSound = SoundID.Item3;
             SoundEngine.PlaySound(xixianFlaskUseSound);

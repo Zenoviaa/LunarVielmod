@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.ArmorRework;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -157,6 +158,11 @@ namespace Stellamod.Common.SummonerSystem
             Color lightColor = Lighting.GetColor(p.X, p.Y);
             Color finalColor = Color.White.MultiplyRGB(lightColor);
             spriteBatch.Draw(texture, drawPos, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+        }
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            modifiers.FinalDamage.Base += Owner.GetModPlayer<ArmorStatsPlayer>().summonDamage;
         }
         public override void OnKill(int timeLeft)
         {

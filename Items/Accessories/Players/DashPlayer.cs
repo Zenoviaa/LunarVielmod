@@ -278,6 +278,11 @@ namespace Stellamod.Items.Accessories.Players
             return !_isImmune;
         }
 
+        public override void PostUpdateMiscEffects()
+        {
+            base.PostUpdateMiscEffects();
+           
+        }
         public override void PostUpdate()
         {
             base.PostUpdate();
