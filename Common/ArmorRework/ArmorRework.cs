@@ -396,7 +396,7 @@ namespace Stellamod.Common.ArmorRework
         public override void ModifyWeaponCrit(Item item, ref float crit)
         {
             base.ModifyWeaponCrit(item, ref crit);
-            crit += criticalStrikeChance;
+            crit += criticalStrikeChance * 100;
         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)

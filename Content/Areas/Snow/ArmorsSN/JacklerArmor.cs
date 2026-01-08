@@ -36,6 +36,9 @@ namespace Stellamod.Content.Areas.Snow.ArmorsSN
         public override void UpdateEquip(Player player)
         {
             ArmorStatsPlayer stats = player.GetModPlayer<ArmorStatsPlayer>();
+            stats.criticalStrikeChance += 0.5f;
+            stats.criticalStrikeDamage += 5;
+            /*
             stats.meleeAttackSpeed += 0.5f;
             stats.accessorySlots++;
             stats.stamina += 15;
@@ -58,7 +61,7 @@ namespace Stellamod.Content.Areas.Snow.ArmorsSN
             stats.mainSummonHealth += 0.5f;
             stats.mainSummonDamage += 0.5f;
             stats.minionSlots += 4;
-            stats.inventorySlots += 15;
+            stats.inventorySlots += 15;*/
         }
     }
 
