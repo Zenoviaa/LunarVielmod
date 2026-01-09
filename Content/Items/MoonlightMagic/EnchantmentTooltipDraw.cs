@@ -12,7 +12,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
     {
         public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
         {
+      
             SpriteBatch spriteBatch = Main.spriteBatch;
+            /*
             if (line.Mod == "Stellamod" && line.Name.Contains("MoonMagicEnchant_"))
             {
                 line.BaseScale *= 0.75f;
@@ -23,7 +25,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     EnchantmentDrawHelper.GlowTextureOverride = ModContent.Request<Texture2D>(TextureRegistry.EmptyTexture);
                     int endIndex = line.Name.LastIndexOf("_") + 1;
                     int enchantIndex = int.Parse(line.Name.Substring(endIndex, line.Name.Length - endIndex));
-                    var enchantment = ele.equippedEnchantments[enchantIndex].ModItem as BaseEnchantment;
+                    var enchantment = ele.normalEnchantments[enchantIndex].ModItem as BaseEnchantment;
                     int elementType = enchantment.GetElementType();
                     BaseElement element = ModContent.GetModItem(elementType) as BaseElement;
                     if (element.DrawTextShader(spriteBatch, item, line, ref yOffset))
@@ -44,7 +46,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     }
                 }
             }
-
+            */
 
 
             bool isItemName = line.Mod == "Terraria" && line.Name == "ItemName";

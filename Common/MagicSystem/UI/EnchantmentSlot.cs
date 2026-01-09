@@ -44,7 +44,7 @@ namespace Stellamod.Common.MagicSystem.UI
         public void SetContext(StaffEditingContext ctx)
         {
             _ctx = ctx;
-            Item = _ctx.GetEnchantment(_index);
+            Item = _ctx.GetEnchantment(_index, _isTimedSlot);
         }
 
         public string GetEnchantmentCardTexturePath()
@@ -96,7 +96,7 @@ namespace Stellamod.Common.MagicSystem.UI
                 //Save Item 
                 if (Main.mouseLeftRelease && Main.mouseLeft)
                 {
-                    _ctx.SetEnchantment(Item, _index);
+                    _ctx.SetEnchantment(Item, _index, _isTimedSlot);
                     SoundStyle place = AssetRegistry.Sounds.MagicWand.EnchantmentPlace;
                     place.PitchVariance = 0.15f;
                     SoundEngine.PlaySound(place);

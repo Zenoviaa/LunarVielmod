@@ -60,34 +60,27 @@ namespace Stellamod.Common.MagicSystem.UI
             _staffSlot = new StaffSlot();
         }
 
-        public int RelativeLeft => ScreenHelper.TrueScreenWidth / 2 - (int)Width.Pixels / 2;
-        public int RelativeTop => ScreenHelper.TrueScreenHeight / 2 - (int)Height.Pixels / 2;
         public void UseContext(StaffEditingContext ctx)
         {
             _ctx = ctx;
             _grid.Clear();
             _timedGrid.Clear();
-            int slotIndex = 0;
             for (int i = 0; i < ctx.staffToEdit.GetCombinedNormalSlotCount(Main.LocalPlayer); i++)
             {
-                var slot = new EnchantmentSlot(slotIndex, isTimedSlot: false);
+                var slot = new EnchantmentSlot(i, isTimedSlot: false);
                 slot.SetContext(ctx);
                 _grid.Add(slot);
-                slotIndex++;
             }
-
 
             for (int i = 0; i < ctx.staffToEdit.GetCombinedTimedSlotCount(Main.LocalPlayer); i++)
             {
-                var slot = new EnchantmentSlot(slotIndex, isTimedSlot: true);
+                var slot = new EnchantmentSlot(i, isTimedSlot: true);
                 slot.SetContext(ctx);
                 _timedGrid.Add(slot);
-                slotIndex++;
             }
+
             _grid.Recalculate();
             _timedGrid.Recalculate();
-
-
             _staffSlot.SetContext(ctx);
             _elementSlot.SetContext(ctx);
         }
@@ -108,8 +101,6 @@ namespace Stellamod.Common.MagicSystem.UI
             base.OnInitialize();
             Width.Pixels = 704;
             Height.Pixels = 704;
-            Left.Pixels = RelativeLeft;
-            Top.Pixels = RelativeTop;
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 

@@ -207,8 +207,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
             stickToTarget = -1;
             coasterTime = 0;
             hitboxSize = 0;
-            var enchantments = item.equippedEnchantments;
-            for (int i = 0; i < enchantments.Count; i++)
+            var enchantments = item.GetEquippedEnchantments(Owner);
+            for (int i = 0; i < enchantments.Length; i++)
             {
                 var enchantmentTemplate = enchantments[i];
                 if (enchantmentTemplate == null)

@@ -230,7 +230,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             AdvancedMagicPlayer magicPlayer = Owner.GetModPlayer<AdvancedMagicPlayer>();
             Item heldItem = Owner.HeldItem;
             AbstractMagicWand staff = Owner.HeldItem.ModItem as AbstractMagicWand;
-            foreach (var enchantmentItem in staff.equippedEnchantments)
+            foreach (var enchantmentItem in staff.normalEnchantments)
             {
                 if (enchantmentItem.ModItem is BaseEnchantment e)
                 {
