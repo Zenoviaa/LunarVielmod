@@ -112,7 +112,7 @@ Common: {
 		This item is a [c/FFA500:brewing material], which is a key crafting ingredient for all cauldron items!
 		Take this back to the [c/FFA500:Magic Cauldron] at Witch Town to use it!
 		'''
-	ShieldHelp: 
+	ShieldHelp:
 		'''
 		This is a [c/:FFA500:shield], which stops enemies from reaching you. Hold it out in front of you!
 		Shields can only be used by [c/:FFA500:melee] players.
@@ -2785,10 +2785,7 @@ VoidsGrasp: {
 
 WintersStom: {
 	DisplayName: Winters Stom
-	Tooltip:
-		'''
-		Casts a large snowball that explodes into a cluster of many tiny snowballs!
-		'''
+	Tooltip: Casts a large snowball that explodes into a cluster of many tiny snowballs!
 }
 
 ArchariliteRaysword: {
@@ -10262,10 +10259,7 @@ IvynShield: {
 
 LifesShield: {
 	DisplayName: Life's Shield
-	Tooltip:
-		'''
-		While enemies are touching this shield, you'll heal 2 hp for every hit you deal to them!
-		'''
+	Tooltip: While enemies are touching this shield, you'll heal 2 hp for every hit you deal to them!
 }
 
 GintzeShield: {
@@ -10279,11 +10273,9 @@ GintzeShield: {
 
 ReflectionShield: {
 	DisplayName: Reflection Shield
-	Tooltip:
-		'''
-		Enemies that touch this shield will bounce backwards off of it!
-		'''
+	Tooltip: Enemies that touch this shield will bounce backwards off of it!
 }
+
 HeatedShield: {
 	DisplayName: Heated Shield
 	Tooltip:
@@ -10293,13 +10285,12 @@ HeatedShield: {
 		Enemies that are burning also take 20% more damage from melee attacks!
 		'''
 }
+
 SummonersBrew: {
 	DisplayName: Summoner's Brew
-	Tooltip:
-		'''
-		Increases minion health by 25%
-		'''
+	Tooltip: Increases minion health by 25%
 }
+
 SparklingPotion: {
 	DisplayName: Sparkling Potion
 	Tooltip:
@@ -10308,31 +10299,48 @@ SparklingPotion: {
 		+1 insource slots
 		'''
 }
+
 InsourceCoolerPotion: {
 	DisplayName: Insource Cooler Potion
-	Tooltip:
-		'''
-		Reduces all cooldown times by 2 seconds on each insource
-		'''
+	Tooltip: Reduces all cooldown times by 2 seconds on each insource
 }
+
 EchoInsource: {
 	DisplayName: Echo Insource
-	Tooltip:
-		'''
-		When you use the insource, the area around you explodes for 300 damage!
-		'''
+	Tooltip: When you use the insource, the area around you explodes for 300 damage!
 }
+
 MoltenManaSphere: {
 	DisplayName: Molten Mana Sphere
-	Tooltip:
-		'''
-		Casts a homing fireball!
-		'''
+	Tooltip: Casts a homing fireball!
 }
+
 SearingSawRemote: {
 	DisplayName: Searing Saw Remote
-	Tooltip:
-		'''
-		Whenever you use a stamina attack, throw out a homing flaming saw!
-		'''
+	Tooltip: Whenever you use a stamina attack, throw out a homing flaming saw!
+}
+
+PunkerSteamBlock: {
+	DisplayName: Punker Steam Block
+	Tooltip: ""
+}
+
+PunkerwallBlock: {
+	DisplayName: Punkerwall Block
+	Tooltip: ""
+}
+
+GnomeCoat: {
+	DisplayName: Gnome Coat
+	Tooltip: ""
+}
+
+GnomeHat: {
+	DisplayName: Gnome Hat
+	Tooltip: ""
+}
+
+GnomeLegs: {
+	DisplayName: Gnome Legs
+	Tooltip: ""
 }

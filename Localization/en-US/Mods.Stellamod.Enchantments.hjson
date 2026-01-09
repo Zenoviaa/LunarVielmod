@@ -628,24 +628,22 @@ BallofDoomSuperformEnchantment: {
 	Tooltip: Turns your spell into a giant pulsating orb, +5 penetration!
 }
 
-TargetEnchantment:
-{
+TargetEnchantment: {
 	DisplayName: Target Enchantment
 	Tooltip: Your spell will make your minions focus the hit enemy!
 }
 
-TrailingVileEnchantment:
-{
+TrailingVileEnchantment: {
 	DisplayName: Trailing Vile Enchantment
 	Tooltip: Your spell's trail will deal damage!
 }
-KillerEnchantment:
-{
+
+KillerEnchantment: {
 	DisplayName: Killer Enchantment
 	Tooltip: Kills your spell
 }
-SpeedsterEnchantment:
-{
+
+SpeedsterEnchantment: {
 	DisplayName: Speedster Enchantment
 	Tooltip: Your spell starts with 3x more velocity, and then slows down to its original velocity over time
 }

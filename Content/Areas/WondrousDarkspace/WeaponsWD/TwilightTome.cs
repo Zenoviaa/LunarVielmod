@@ -28,6 +28,9 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             Item.mana = 10;
             Item.shootSpeed = 2;
             Item.shoot = ModContent.ProjectileType<TwilightDisc>();
+            Item.UseSound = SoundID.Item84;
+
+            Item.channel = true;
         }
         public override Color GetTomeHintColor()
         {
@@ -38,8 +41,13 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
 
         }
+        public override bool CanShoot(Player player)
+        {
+            return base.CanShoot(player) && player.ownedProjectileCounts[Item.shoot] == 0;
+        }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+
             Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TwilightDisc>(), damage, knockback, player.whoAmI, ai0: 0, ai1: 1, ai2: 15);
             Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TwilightDisc>(), damage, knockback, player.whoAmI);
             return false;
