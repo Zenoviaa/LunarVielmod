@@ -72,14 +72,4 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
 
         }
     }
-
-    public class SmallStand : ZTile
-    {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            frameCount = 1;
-            drawOrigin = TileDrawOrigin.BottomUp;
-        }
-    }
 }
