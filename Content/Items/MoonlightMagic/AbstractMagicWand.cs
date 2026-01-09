@@ -7,6 +7,7 @@ using Stellamod.Items.Weapons.Mage;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -119,6 +120,12 @@ namespace Stellamod.Content.Items.MoonlightMagic
             base.NetReceive(reader);
             primaryElement = ItemIO.Receive(reader);
             int length = reader.ReadInt32();
+            while (equippedEnchantments.Count <= length)
+            {
+                Item air = new Item();
+                air.SetDefaults(0);
+                equippedEnchantments.Add(air);
+            }
             for (int i = 0; i < length; i++)
             {
                 equippedEnchantments[i] = ItemIO.Receive(reader);
