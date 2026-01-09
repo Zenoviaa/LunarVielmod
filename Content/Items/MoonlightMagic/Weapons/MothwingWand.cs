@@ -2,11 +2,11 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class MothwingWand : BaseStaff
+    public class MothwingWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Item.damage = 9;
             Item.shootSpeed = 13;
             Item.useTime = 26;
@@ -14,17 +14,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
             Size = 8;
             TrailLength = 38;
             Form = FormRegistry.Fairy.Value;
-        }
-
-
-        public override int GetNormalSlotCount()
-        {
-            return 2;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 1;
+            normalSlotCount = 2;
+            timedSlotCount = 1;
         }
     }
 }

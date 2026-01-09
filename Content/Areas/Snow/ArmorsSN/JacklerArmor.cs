@@ -45,6 +45,8 @@ namespace Stellamod.Content.Areas.Snow.ArmorsSN
             stats.rangedGunAmmoAmount += 500;
             stats.summonCastTime += 0.95f;
             stats.wandCastTime += 0.5f;
+            stats.wandNormalEnchantmentSlots += 4;
+            stats.wandTimerEnchantmentSlots += 4;
             /*
             stats.meleeAttackSpeed += 0.5f;
             stats.accessorySlots++;

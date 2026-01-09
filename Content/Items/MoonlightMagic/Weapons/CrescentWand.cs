@@ -2,11 +2,11 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class CrescentWand : BaseStaff
+    public class CrescentWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Form = FormRegistry.FourPointedStar.Value;
         }
     }

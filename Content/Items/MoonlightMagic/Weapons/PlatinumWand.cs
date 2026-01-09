@@ -2,27 +2,19 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class PlatinumWand : BaseStaff
+    public class PlatinumWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Item.damage = 14;
             Item.shootSpeed = 10;
             Item.useTime = 18;
             Item.useAnimation = 36;
             Size = 8;
             TrailLength = 16;
-        }
-
-        public override int GetNormalSlotCount()
-        {
-            return 3;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 1;
+            normalSlotCount = 3;
+            timedSlotCount = 1;
         }
     }
 }

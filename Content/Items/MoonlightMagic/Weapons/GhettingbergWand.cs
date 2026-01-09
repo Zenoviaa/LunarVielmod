@@ -2,11 +2,11 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class GhettingbergWand : BaseStaff
+    public class GhettingbergWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Item.damage = 14;
             Item.shootSpeed = 10;
             Item.useTime = 21;
@@ -14,17 +14,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
             Size = 10;
             TrailLength = 32;
             Form = FormRegistry.Vase.Value;
-        }
-
-
-        public override int GetNormalSlotCount()
-        {
-            return 1;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 3;
+            normalSlotCount = 1;
+            timedSlotCount = 3;
         }
     }
 }

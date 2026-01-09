@@ -2,17 +2,15 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic
 {
-    public class NoStaff : BaseStaff
+    public class NoStaff : AbstractMagicWand
     {
         //No element
         public override string Texture => TextureRegistry.EmptyTexture;
-        public override int GetNormalSlotCount()
+        public override void SetDefaults2()
         {
-            return 0;
-        }
-        public override int GetTimedSlotCount()
-        {
-            return 0;
+            base.SetDefaults2();
+            normalSlotCount = 0;
+            timedSlotCount = 0;
         }
     }
 }

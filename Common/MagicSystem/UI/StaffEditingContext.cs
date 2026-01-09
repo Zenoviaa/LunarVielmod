@@ -4,8 +4,8 @@ namespace Stellamod.Common.MagicSystem.UI
 {
     public class StaffEditingContext
     {
-        public readonly BaseStaff staffToEdit;
-        public StaffEditingContext(BaseStaff staff)
+        public readonly AbstractMagicWand staffToEdit;
+        public StaffEditingContext(AbstractMagicWand staff)
         {
             this.staffToEdit = staff;
         }
@@ -19,7 +19,7 @@ namespace Stellamod.Common.MagicSystem.UI
 
         public void SetEnchantment(Item item, int index)
         {
-            staffToEdit.SetEnchantmentAtIndex(item, index);
+            staffToEdit.SetEnchantment(item, index);
             staffToEdit.Item.NetStateChanged();
         }
 
@@ -31,7 +31,7 @@ namespace Stellamod.Common.MagicSystem.UI
         public Item GetEnchantment(int index)
         {
             //Return the item
-            return staffToEdit.GetEnchantmentAtIndex(index);
+            return staffToEdit.GetEnchantment(index);
         }
     }
 }

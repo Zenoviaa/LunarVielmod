@@ -10,24 +10,16 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 {
 
-    public class WandOfHypnolight : BaseStaff
+    public class WandOfHypnolight : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Form = FormRegistry.Fairy.Value;
             Item.damage = 100;
             Item.mana = 45;
-        }
-
-        public override int GetNormalSlotCount()
-        {
-            return 2;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 2;
+            normalSlotCount = 2;
+            timedSlotCount = 2;
         }
 
         public override void ModifyElementPreferences(List<int> elements)

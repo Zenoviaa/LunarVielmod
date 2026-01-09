@@ -2,11 +2,11 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class ChalicemanWand : BaseStaff
+    public class ChalicemanWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Item.damage = 28;
             Item.shootSpeed = 14;
             Item.useTime = 20;
@@ -14,17 +14,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
             Size = 10;
             TrailLength = 22;
             Form = FormRegistry.Triangle.Value;
-        }
-
-
-        public override int GetNormalSlotCount()
-        {
-            return 2;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 4;
+            normalSlotCount = 2;
+            timedSlotCount = 4;
         }
     }
 }

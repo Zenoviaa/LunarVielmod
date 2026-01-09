@@ -2,27 +2,18 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class WillowOfTheSoulsWand : BaseStaff
+    public class WillowOfTheSoulsWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Item.damage = 16;
             Item.shootSpeed = 7;
             Size = 24;
             TrailLength = 55;
             Form = FormRegistry.Crescent.Value;
-        }
-
-
-        public override int GetNormalSlotCount()
-        {
-            return 3;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 1;
+            normalSlotCount = 3;
+            timedSlotCount = 2;
         }
     }
 }

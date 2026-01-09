@@ -104,7 +104,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         private BaseElement GetElement()
         {
-            BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
+            AbstractMagicWand staff = Owner.HeldItem.ModItem as AbstractMagicWand;
             Item elementItem = staff.GetElement();
             BaseElement element = elementItem.ModItem as BaseElement;
             return element;
@@ -229,7 +229,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             AdvancedMagicPlayer magicPlayer = Owner.GetModPlayer<AdvancedMagicPlayer>();
             Item heldItem = Owner.HeldItem;
-            BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
+            AbstractMagicWand staff = Owner.HeldItem.ModItem as AbstractMagicWand;
             foreach (var enchantmentItem in staff.equippedEnchantments)
             {
                 if (enchantmentItem.ModItem is BaseEnchantment e)
@@ -355,7 +355,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 int damage = CalculateFinalDamage();
                 float knockback = Projectile.knockBack;
                 Vector2 fireVelocity = Projectile.velocity * 15;
-                BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
+                AbstractMagicWand staff = Owner.HeldItem.ModItem as AbstractMagicWand;
 
                 Vector2 ballPosition = Owner.Center + Projectile.velocity * 64;
                 Vector2 oldVelocity = Projectile.velocity;

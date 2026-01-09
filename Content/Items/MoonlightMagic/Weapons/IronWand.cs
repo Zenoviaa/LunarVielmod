@@ -3,28 +3,19 @@ using Terraria;
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class IronWand : BaseStaff
+    public class IronWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Item.damage = 9;
             Item.shootSpeed = 10;
             Item.useTime = 18;
             Item.useAnimation = 36;
             Size = 8;
             TrailLength = 16;
-        }
-
-
-        public override int GetNormalSlotCount()
-        {
-            return 2;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 0;
+            normalSlotCount = 2;
+            timedSlotCount = 0;
         }
     }
 }

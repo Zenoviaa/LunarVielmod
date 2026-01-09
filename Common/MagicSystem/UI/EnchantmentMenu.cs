@@ -68,7 +68,7 @@ namespace Stellamod.Common.MagicSystem.UI
             _grid.Clear();
             _timedGrid.Clear();
             int slotIndex = 0;
-            for (int i = 0; i < ctx.staffToEdit.GetNormalSlotCount(); i++)
+            for (int i = 0; i < ctx.staffToEdit.GetCombinedNormalSlotCount(Main.LocalPlayer); i++)
             {
                 var slot = new EnchantmentSlot(slotIndex, isTimedSlot: false);
                 slot.SetContext(ctx);
@@ -77,7 +77,7 @@ namespace Stellamod.Common.MagicSystem.UI
             }
 
 
-            for (int i = 0; i < ctx.staffToEdit.GetTimedSlotCount(); i++)
+            for (int i = 0; i < ctx.staffToEdit.GetCombinedTimedSlotCount(Main.LocalPlayer); i++)
             {
                 var slot = new EnchantmentSlot(slotIndex, isTimedSlot: true);
                 slot.SetContext(ctx);

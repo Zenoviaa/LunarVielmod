@@ -12,11 +12,11 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
-    public class ZuisGiftedWand : BaseStaff
+    public class ZuisGiftedWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Item.damage = 5;
             Item.shootSpeed = 13;
             Item.useTime = 30;
@@ -24,19 +24,9 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             Size = 12;
             TrailLength = 20;
             Form = FormRegistry.Sword.Value;
+            normalSlotCount = 2;
+            timedSlotCount = 1;
         }
-
-
-        public override int GetNormalSlotCount()
-        {
-            return 2;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 1;
-        }
-
         public override void ModifyElementPreferences(List<int> elements)
         {
             base.ModifyElementPreferences(elements);

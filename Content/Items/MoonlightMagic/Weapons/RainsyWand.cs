@@ -2,11 +2,11 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class RainsyWand : BaseStaff
+    public class RainsyWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Item.damage = 12;
             Item.shootSpeed = 14;
             Item.useTime = 14;
@@ -14,17 +14,8 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
             Size = 10;
             TrailLength = 16;
             Form = FormRegistry.Pickaxe.Value;
+            normalSlotCount = 3;
+            timedSlotCount = 0;
         }
-
-
-        public override int GetNormalSlotCount()
-        {
-            return 3;
-        }
-        public override int GetTimedSlotCount()
-        {
-            return 0;
-        }
-
     }
 }

@@ -18,7 +18,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 line.BaseScale *= 0.75f;
                 line.X += 15;
                 line.Y += 6;
-                if (item.ModItem is BaseStaff ele)
+                if (item.ModItem is AbstractMagicWand ele)
                 {
                     EnchantmentDrawHelper.GlowTextureOverride = ModContent.Request<Texture2D>(TextureRegistry.EmptyTexture);
                     int endIndex = line.Name.LastIndexOf("_") + 1;
@@ -34,7 +34,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             }
             if (line.Mod == "Stellamod" && line.Name.Contains("WeaponType"))
             {
-                if (item.ModItem is BaseStaff ele)
+                if (item.ModItem is AbstractMagicWand ele)
                 {
                     //EnchantmentDrawHelper.GlowTextureOverride = ModContent.Request<Texture2D>(TextureRegistry.EmptyTexturePath);
                     BaseElement element = ModContent.GetInstance<BasicElement>();
@@ -97,7 +97,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
             if (line.Mod == "Terraria" && line.Name == "ItemName")
             {
-                if (item.ModItem is BaseStaff baseStaff && baseStaff.primaryElement.ModItem is BaseElement ele)
+                if (item.ModItem is AbstractMagicWand baseStaff && baseStaff.primaryElement.ModItem is BaseElement ele)
                 {
                     Texture2D texture = ModContent.Request<Texture2D>(ele.Texture).Value;
                     SpriteBatch spriteBatch = Main.spriteBatch;

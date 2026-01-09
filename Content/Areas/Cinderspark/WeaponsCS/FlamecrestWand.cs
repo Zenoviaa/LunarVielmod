@@ -11,24 +11,16 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 {
 
-    public class FlamecrestWand : BaseStaff
+    public class FlamecrestWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Form = FormRegistry.Crescent.Value;
             Item.damage = 125;
             Item.mana = 50;
-        }
-
-        public override int GetNormalSlotCount()
-        {
-            return 1;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 4;
+            normalSlotCount = 1;
+            timedSlotCount = 4;
         }
 
         public override void ModifyElementPreferences(List<int> elements)

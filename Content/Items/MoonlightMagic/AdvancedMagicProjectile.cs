@@ -192,7 +192,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         }
 
-        public void SetMoonlightDefaults(BaseStaff item)
+        public void SetMoonlightDefaults(AbstractMagicWand item)
         {
             ChargeSizeMultiplier = 1 + MagicPlayer.chargeWidthBonus;
             Projectile.width = Projectile.height = item.Size;
@@ -303,7 +303,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 originalVelocity = Projectile.velocity;
                 if (!Owner.HeldItem.IsAir && Owner.HeldItem.ModItem != null)
                 {
-                    BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
+                    AbstractMagicWand staff = Owner.HeldItem.ModItem as AbstractMagicWand;
                     TrailLength = staff.TrailLength;
                     Size = staff.Size;
                     SetMoonlightDefaults(staff);
