@@ -243,6 +243,12 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
         }
         private void DrawPixelatedNado(GraphicsDevice graphicsDevice)
         {
+            float sizer = 0.5f;
+
+            if (IsBig)
+            {
+                sizer = 1f;
+            }
             List<Vector2> dustPoints = new List<Vector2>();
             float numPoints = 32;
             for (float n = 0; n < numPoints; n++)
