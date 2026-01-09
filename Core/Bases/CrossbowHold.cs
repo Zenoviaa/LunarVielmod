@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.ArmorRework;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using System;
@@ -32,7 +33,18 @@ namespace Stellamod.Core.Bases
         protected Vector2 HeldOffset;
         protected Vector2 DrawOriginOffset;
         protected Vector2 ArrowOffset;
-        protected float AimTime;
+
+        private float AimTime
+        {
+            get
+            {
+                float baseTime = 60f;
+                float timeBonus = Owner.GetModPlayer<ArmorStatsPlayer>().rangedBowChargeTime;
+                float adjustedSpeed = baseTime * (1.0f - timeBonus);
+                return adjustedSpeed;
+            }
+        }
+
         protected float FireTime;
         protected float GlowProgress;
         protected float AimProgress;
@@ -77,7 +89,6 @@ namespace Stellamod.Core.Bases
             HeldOffset = new Vector2(12, 0);
             DrawScale = Vector2.One;
             AimedDrawScale = new Vector2(1.2f, 1.2f);
-            AimTime = 60;
             FireTime = 15;
         }
 

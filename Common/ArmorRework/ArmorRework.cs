@@ -286,12 +286,16 @@ namespace Stellamod.Common.ArmorRework
             wandTimerEnchantmentSlots = 0;
         }
 
-        private string GetComparison(string name, float currentValue)
+        private string GetComparison(string name, float currentValue, bool invert = false)
         {
             if (currentValue == 0)
                 return string.Empty;
             string percentString = MathF.Abs(currentValue).ToString("P0");
             string increaseDecreaseKey = currentValue < 0 ? "StatSubtraction" : "StatAddition";
+            if (invert)
+            {
+                increaseDecreaseKey = currentValue > 0 ? "StatSubtraction" : "StatAddition";
+            }
             string comparisonText = LangText.Common(increaseDecreaseKey, LangText.Common($"Stat{name}"), percentString);
             return comparisonText;
         }
@@ -322,9 +326,9 @@ namespace Stellamod.Common.ArmorRework
 
         public void GetStatTooltips(List<TooltipLine> tooltips)
         {
-            void AddLineIfDifferent(string name, float currentValue)
+            void AddLineIfDifferent(string name, float currentValue, bool invert = false)
             {
-                string comparison = GetComparison(name, currentValue);
+                string comparison = GetComparison(name, currentValue, invert);
                 if (string.IsNullOrEmpty(comparison))
                     return;
                 TooltipLine line = new TooltipLine(Mod, name, comparison);
@@ -362,7 +366,7 @@ namespace Stellamod.Common.ArmorRework
             AddLineIfDifferentInt("Defense", defenseBonus);
             AddLineIfDifferent("InsourceTime", insourceTimeBonus);
             AddLineIfDifferent("Aggressiveness", meleeAggressiveness);
-            AddLineIfDifferent("BowChargeTime", rangedBowChargeTime);
+            AddLineIfDifferent("BowChargeTime", rangedBowChargeTime, invert: true);
             AddLineIfDifferentInt("Piercing", rangedPiercing);
             AddLineIfDifferentInt("GunAmmoAmount", rangedGunAmmoAmount);
             AddLineIfDifferentInt("Stealthiness", rangedStealthtiness);
@@ -468,6 +472,7 @@ namespace Stellamod.Common.ArmorRework
             Player.GetModPlayer<FlaskPlayer>().maxInsourceCount += insourceSlots;
             Player.maxMinions += minionSlots;
             Player.aggro += meleeAggressiveness;
+            Player.aggro -= rangedStealthtiness;
         }
     }
 }
