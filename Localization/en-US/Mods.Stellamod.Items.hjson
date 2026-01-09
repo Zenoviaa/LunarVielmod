@@ -2780,7 +2780,10 @@ VoidsGrasp: {
 
 WintersStom: {
 	DisplayName: Winters Stom
-	Tooltip: Every third shot will be a powerful winter shot today explodes into snowflakes that deal damage
+	Tooltip:
+		'''
+		Casts a large snowball that explodes into a cluster of many tiny snowballs!
+		'''
 }
 
 ArchariliteRaysword: {

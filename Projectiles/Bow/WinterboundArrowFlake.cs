@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Particles;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -29,6 +31,12 @@ namespace Stellamod.Projectiles.Bow
             if (Timer == 1)
             {
                 Projectile.rotation = Main.rand.NextFloat(0f, 1f);
+                FlakeParticle.Spawn(Projectile.Center, Vector2.Zero);
+                for(float n =0; n < 4; n++)
+                {
+                    SmokeParticle sp = Particle<SmokeParticle>.Spawn(Projectile.Center, -Vector2.UnitY.RotatedByRandom(4f) * Main.rand.NextFloat(0.5f, 3f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                    sp.initialColor = Color.White * 0.4f;
+                }
             }
 
             if (Timer < 60)
@@ -46,6 +54,7 @@ namespace Stellamod.Projectiles.Bow
 
         public override bool PreDraw(ref Color lightColor)
         {
+            /*
             Texture2D snowflakeTexture = ModContent.Request<Texture2D>("Stellamod/Particles/SnowFlakeParticleSmall").Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             Vector2 drawOrigin = snowflakeTexture.Size() / 2;
@@ -64,7 +73,7 @@ namespace Stellamod.Projectiles.Bow
                 spriteBatch.Draw(snowflakeTexture, glowDrawPos, null, drawColor * 0.3f, drawRotation, drawOrigin, _drawScale, SpriteEffects.None, 0);
             }
 
-            spriteBatch.Draw(snowflakeTexture, drawPos, null, drawColor, drawRotation, drawOrigin, _drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(snowflakeTexture, drawPos, null, drawColor, drawRotation, drawOrigin, _drawScale, SpriteEffects.None, 0);*/
             return false;
         }
         public override void PostDraw(Color lightColor)
