@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.BackpackSystem;
+﻿using Stellamod.Common.ArmorRework;
+using Stellamod.Common.BackpackSystem;
 using Stellamod.Items.Accessories.Players;
 using Terraria;
 using Terraria.ModLoader;
@@ -17,14 +18,14 @@ namespace Stellamod.Content.Areas.Shop.AccShop
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             base.UpdateAccessory(player, hideVisual);
-            BackpackPlayer backpackPlayer = player.GetModPlayer<BackpackPlayer>();
-            backpackPlayer.hasBackpack = true;
+            ArmorStatsPlayer statsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
+            statsPlayer.inventorySlots += 20;
         }
         public override void UpdateVanity(Player player)
         {
             base.UpdateVanity(player);
-            BackpackPlayer backpackPlayer = player.GetModPlayer<BackpackPlayer>();
-            backpackPlayer.hasBackpack = true;
+            ArmorStatsPlayer statsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
+            statsPlayer.inventorySlots += 20;
         }
     }
 }

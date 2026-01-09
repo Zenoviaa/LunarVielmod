@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.ArmorRework;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -214,6 +215,21 @@ namespace Stellamod.Common.BackpackSystem
         }
 
 
+        public bool IsHidden()
+        {
+            var player = Main.LocalPlayer.GetModPlayer<ArmorStatsPlayer>();
+            if (player.inventorySlots <= _index)
+                return true;
+            return false;
+        }
+        public override int CompareTo(object obj)
+        {
+            if(obj is BackpackSlot slot)
+            {
+                return _index.CompareTo(slot._index);
+            }
+            return base.CompareTo(obj);
+        }
         public void HandleMouseItem()
         {
             ItemSlot.Handle(ref Item, _context);
@@ -228,6 +244,9 @@ namespace Stellamod.Common.BackpackSystem
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
+            if (IsHidden())
+                return;
+
             float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
@@ -270,6 +289,7 @@ namespace Stellamod.Common.BackpackSystem
                     item.SetDefaults(0);
                     _backpackItems.Add(item);
                 }
+              
                 return _backpackItems;
             }
             set
@@ -280,15 +300,26 @@ namespace Stellamod.Common.BackpackSystem
         public override void Load()
         {
             base.Load();
-            MaxCapacity = 20;
+            MaxCapacity = 0;
         }
 
         public bool hasBackpack;
         public override void ResetEffects()
         {
             base.ResetEffects();
-            MaxCapacity = 20;
+            MaxCapacity = 0;// + Player.GetModPlayer<ArmorStatsPlayer>().inventorySlots;
             hasBackpack = false;
+
+        }
+        public override void PostUpdateMiscEffects()
+        {
+            base.PostUpdateMiscEffects();
+            ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
+            MaxCapacity += statsPlayer.inventorySlots;
+            if (statsPlayer.inventorySlots > 0)
+            {
+                hasBackpack = true;
+            }
         }
 
 
