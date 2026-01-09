@@ -89,6 +89,12 @@ Common: {
 		Take this back to the [c/FFA500:Magic Cauldron] at Witch Town to use it!
 		'''
 	ExpandableTooltipHelp: Hold {0} for more about this item type!
+	MagicArtifact: Magic Artifact
+	MagicArtifactHelp:
+		'''
+		This is a magical artifact, which have all sorts of cool effects! 
+		Who knows what they might do?
+		'''
 	RuinMedal: Ruin Medals
 	NoHitCrystal: No-Hit Jewel
 	Ereshstyl: Ereshstyl
