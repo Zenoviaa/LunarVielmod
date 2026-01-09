@@ -10,7 +10,7 @@ namespace Stellamod.Common.WeaponTypes
 {
     public class ManaSphereGlobalItem : GlobalItem
     {
-        public override bool InstancePerEntity => base.InstancePerEntity;
+        public override bool InstancePerEntity => true;
         public bool isManaSphere;
         public int heldProj;
     }
