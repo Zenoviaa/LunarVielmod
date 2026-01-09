@@ -116,6 +116,7 @@ Common: {
 		'''
 		This is a [c/:FFA500:shield], which stops enemies from reaching you. Hold it out in front of you!
 		Shields can only be used by [c/:FFA500:melee] players.
+		You can only have 1 shield active at a time.
 		'''
 	StatAddition: "{1} increased {0}"
 	StatSubtraction: "{1} decreased {0}"
@@ -10268,5 +10269,14 @@ ReflectionShield: {
 	Tooltip:
 		'''
 		Enemies that touch this shield will bounce backwards off of it!
+		'''
+}
+HeatedShield: {
+	DisplayName: Heated Shield
+	Tooltip:
+		'''
+		Reduces fire damage by 50%
+		Whenever an enemy touches the shield, they burn an endless flame until death
+		Enemies that are burning also take 20% more damage from melee attacks!
 		'''
 }

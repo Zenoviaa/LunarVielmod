@@ -16,6 +16,18 @@ namespace Stellamod.Common.WeaponTypes
     {
         public override bool InstancePerEntity => true;
         public bool isShield;
+        public override bool CanEquipAccessory(Item item, Player player, int slot, bool modded)
+        {
+            if(isShield)
+            {
+                if(player.GetModPlayer<ClassReworkPlayer>().heldShield == -1)
+                {
+                    return base.CanEquipAccessory(item, player, slot, modded);
+                }
+                return false;
+            }
+            return base.CanEquipAccessory(item, player, slot, modded);
+        }
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
             base.UpdateAccessory(item, player, hideVisual);
