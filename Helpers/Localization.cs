@@ -110,5 +110,9 @@ namespace Stellamod.Helpers
         {
             return Language.GetTextValue($"Mods.Stellamod.ZTiles.{item.Name}." + Path);
         }
+        public static string Armor(string key)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.Armor." + key);
+        }
     }
 }

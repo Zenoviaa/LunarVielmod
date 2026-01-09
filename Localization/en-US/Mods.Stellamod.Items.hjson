@@ -10215,3 +10215,18 @@ JacklerCoat: {
 	Tooltip: ""
 	DisplayName: Jackler Coat
 }
+
+CauldrMothCoat: {
+	DisplayName: Cauldr Moth Coat
+	Tooltip: ""
+}
+
+CauldrMothHood: {
+	DisplayName: Cauldr Moth Hood
+	Tooltip: ""
+}
+
+CauldrMothLegs: {
+	DisplayName: Cauldr Moth Legs
+	Tooltip: ""
+}
