@@ -10245,3 +10245,11 @@ IvynShield: {
 		Enemies that touch the shield are vined, sapping away some of their life and slowing them down
 		'''
 }
+
+LifesShield: {
+	DisplayName: Life's Shield
+	Tooltip:
+		'''
+		While enemies are touching this shield, you'll heal 2 hp for every hit you deal to them!
+		'''
+}
