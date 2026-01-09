@@ -627,3 +627,9 @@ BallofDoomSuperformEnchantment: {
 	DisplayName: Ball of Doom Superform Enchantment
 	Tooltip: Turns your spell into a giant pulsating orb, +5 penetration!
 }
+
+TargetEnchantment:
+{
+	DisplayName: Target Enchantment
+	Tooltip: Your spell will make your minions focus the hit enemy!
+}
