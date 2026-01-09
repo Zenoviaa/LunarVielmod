@@ -15,7 +15,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             MinPick = 200;
             
             DustType = Main.rand.Next(110, 113);
-            RegisterItemDrop(ModContent.ItemType<PunkersteamBlock>());
+            RegisterItemDrop(ModContent.ItemType<PunkerSteamBlock>());
           
             AddMapEntry(new Color(200, 200, 200));
         }
