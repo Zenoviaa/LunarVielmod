@@ -467,7 +467,7 @@ namespace Stellamod.Common.ArmorRework
             Player.GetModPlayer<DashPlayer>().MaxDashCount += stamina;
             Player.GetModPlayer<FlaskPlayer>().maxInsourceCount += insourceSlots;
             Player.maxMinions += minionSlots;
-
+            Player.aggro += meleeAggressiveness;
         }
     }
 }
