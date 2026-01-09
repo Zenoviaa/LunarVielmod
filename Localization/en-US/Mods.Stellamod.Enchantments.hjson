@@ -644,3 +644,8 @@ KillerEnchantment:
 	DisplayName: Killer Enchantment
 	Tooltip: Kills your spell
 }
+SpeedsterEnchantment:
+{
+	DisplayName: Speedster Enchantment
+	Tooltip: Your spell starts with 3x more velocity, and then slows down to its original velocity over time
+}
