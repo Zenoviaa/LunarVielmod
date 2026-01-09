@@ -112,6 +112,22 @@ Common: {
 		This item is a [c/FFA500:brewing material], which is a key crafting ingredient for all cauldron items!
 		Take this back to the [c/FFA500:Magic Cauldron] at Witch Town to use it!
 		'''
+	ShieldHelp:
+		'''
+		This is a [c/FFA500:shield], which stops enemies from reaching you. Hold it out in front of you!
+		Shields can only be used by [c/FFA500:melee] players.
+		You can only have 1 shield active at a time.
+		'''
+	TomeHelp:
+		'''
+		[c/FFA500:Magic Tomes] consume a decent amount of mana but deal pretty good damage
+		Used for median spells that desire more consistency
+		'''
+	ManaSphereHelp:
+		'''
+		[c/FFA500:Mana Spheres] use a condensed ball of magic to cast out weaker but homing spells! 
+		Perfect for an easy to use playstyle
+		'''
 	StatAddition: "{1} increased {0}"
 	StatSubtraction: "{1} decreased {0}"
 	StatAdditionAlt: Increases {0} by {1}
@@ -2769,7 +2785,7 @@ VoidsGrasp: {
 
 WintersStom: {
 	DisplayName: Winters Stom
-	Tooltip: Every third shot will be a powerful winter shot today explodes into snowflakes that deal damage
+	Tooltip: Casts a large snowball that explodes into a cluster of many tiny snowballs!
 }
 
 ArchariliteRaysword: {
@@ -10228,5 +10244,103 @@ CauldrMothHood: {
 
 CauldrMothLegs: {
 	DisplayName: Cauldr Moth Legs
+	Tooltip: ""
+}
+
+IvynShield: {
+	DisplayName: Ivyn Shield
+	Tooltip:
+		'''
+		30% decreased roll regeneration speed
+		+2 stamina
+		Enemies that touch the shield are vined, sapping away some of their life and slowing them down
+		'''
+}
+
+LifesShield: {
+	DisplayName: Life's Shield
+	Tooltip: While enemies are touching this shield, you'll heal 2 hp for every hit you deal to them!
+}
+
+GintzeShield: {
+	DisplayName: Gintze Shield
+	Tooltip:
+		'''
+		When enemies touch the shield, they lose 10% maximum health!
+		This does not work on bosses
+		'''
+}
+
+ReflectionShield: {
+	DisplayName: Reflection Shield
+	Tooltip: Enemies that touch this shield will bounce backwards off of it!
+}
+
+HeatedShield: {
+	DisplayName: Heated Shield
+	Tooltip:
+		'''
+		Reduces fire damage by 50%
+		Whenever an enemy touches the shield, they burn an endless flame until death
+		Enemies that are burning also take 20% more damage from melee attacks!
+		'''
+}
+
+SummonersBrew: {
+	DisplayName: Summoner's Brew
+	Tooltip: Increases minion health by 25%
+}
+
+SparklingPotion: {
+	DisplayName: Sparkling Potion
+	Tooltip:
+		'''
+		A few powerful stars orbit around the you!
+		+1 insource slots
+		'''
+}
+
+InsourceCoolerPotion: {
+	DisplayName: Insource Cooler Potion
+	Tooltip: Reduces all cooldown times by 2 seconds on each insource
+}
+
+EchoInsource: {
+	DisplayName: Echo Insource
+	Tooltip: When you use the insource, the area around you explodes for 300 damage!
+}
+
+MoltenManaSphere: {
+	DisplayName: Molten Mana Sphere
+	Tooltip: Casts a homing fireball!
+}
+
+SearingSawRemote: {
+	DisplayName: Searing Saw Remote
+	Tooltip: Whenever you use a stamina attack, throw out a homing flaming saw!
+}
+
+PunkerSteamBlock: {
+	DisplayName: Punker Steam Block
+	Tooltip: ""
+}
+
+PunkerwallBlock: {
+	DisplayName: Punkerwall Block
+	Tooltip: ""
+}
+
+GnomeCoat: {
+	DisplayName: Gnome Coat
+	Tooltip: ""
+}
+
+GnomeHat: {
+	DisplayName: Gnome Hat
+	Tooltip: ""
+}
+
+GnomeLegs: {
+	DisplayName: Gnome Legs
 	Tooltip: ""
 }

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Shop.ItemsShop
 {
-    public class CocoSpark : BaseTome
+    public class CocoSpark : AbstractMagicTome
     {
         public override void SetDefaults2()
         {

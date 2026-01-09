@@ -9,23 +9,25 @@ namespace Stellamod.Common.ClassReworkSystem
 {
     public class MeleeShield : ModProjectile
     {
-        private Player Owner => Main.player[Projectile.owner];
-        private ref float Timer => ref Projectile.ai[0];
-        private ref float HoldRotation => ref Projectile.ai[1]; 
+        protected Player Owner => Main.player[Projectile.owner];
+        protected ref float Timer => ref Projectile.ai[0];
+        protected ref float HoldRotation => ref Projectile.ai[1];
         public override void SetDefaults()
         {
             base.SetDefaults();
             Projectile.width = 16;
-            Projectile.height=16;
+            Projectile.height = 16;
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
+
         public override bool ShouldUpdatePosition()
         {
             return false;
         }
+
         public override void AI()
         {
             base.AI();
@@ -41,6 +43,8 @@ namespace Stellamod.Common.ClassReworkSystem
                 HoldRotation = holdVelocity.ToRotation();
                 Projectile.netUpdate = true;
             }
+            if (classReworkPlayer.heldShield == Type)
+                Projectile.timeLeft = 2;
             Projectile.rotation = HoldRotation;
             Projectile.Center = Owner.Center + Projectile.rotation.ToRotationVector2() * holdDistance;
 
@@ -48,7 +52,7 @@ namespace Stellamod.Common.ClassReworkSystem
 
             Vector2 center = Projectile.Center;
             Vector2 direction = HoldRotation.ToRotationVector2();
-     
+
             Vector2 bottom = center + direction.RotatedBy(-MathHelper.PiOver2) * radius;
             Vector2 top = center + direction.RotatedBy(MathHelper.PiOver2) * radius;
 
@@ -68,14 +72,19 @@ namespace Stellamod.Common.ClassReworkSystem
                     continue;
 
                 Rectangle targetRect = npc.getRect();
-                
+
                 if (CollisionHelper.LineIntersectsRect(p1, p2, targetRect))
                 {
-                    Vector2 pushVelocity = (npc.Center - Owner.Center).SafeNormalize(Vector2.Zero);
-                    pushVelocity += (Owner.position - Owner.oldPosition);
-                    npc.velocity = pushVelocity;
+                    OnBlockMovement(npc);
                 }
             }
+        }
+
+        public virtual void OnBlockMovement(NPC npc)
+        {
+            Vector2 pushVelocity = (npc.Center - Owner.Center).SafeNormalize(Vector2.Zero);
+            pushVelocity += (Owner.position - Owner.oldPosition);
+            npc.velocity = pushVelocity;
         }
 
         public override bool PreDraw(ref Color lightColor)

@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Shop.ItemsShop
 {
-    public class TheDeafen : BaseTome
+    public class TheDeafen : AbstractMagicTome
     {
         public override void SetDefaults2()
         {

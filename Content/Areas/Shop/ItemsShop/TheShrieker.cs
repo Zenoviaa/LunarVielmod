@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Shop.ItemsShop
 {
-    public class TheShrieker : BaseTome
+    public class TheShrieker : AbstractMagicTome
     {
         public override void SetDefaults2()
         {

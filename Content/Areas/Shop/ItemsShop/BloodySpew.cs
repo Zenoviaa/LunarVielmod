@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Shop.ItemsShop
 {
-    public class BloodySpew : BaseTome
+    public class BloodySpew : AbstractMagicTome
     {
         public override void SetDefaults2()
         {

@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Shop.ItemsShop
 {
-    public class ShinobiTome : BaseTome
+    public class ShinobiTome : AbstractMagicTome
     {
         public override void SetDefaults2()
         {

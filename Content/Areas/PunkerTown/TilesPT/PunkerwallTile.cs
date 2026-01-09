@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Dusts;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -13,7 +14,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             Main.wallHouse[Type] = true;
 
             DustType = ModContent.DustType<Solution>();
-            RegisterItemDrop(ModContent.ItemType<Items.Materials.OvermorrowWall>());
+            RegisterItemDrop(ModContent.ItemType<PunkerwallBlock>());
 
             AddMapEntry(new Color(200, 200, 200));
         }

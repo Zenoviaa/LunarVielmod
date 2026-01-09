@@ -675,6 +675,7 @@
     <Folder Include="Content\Areas\Collosseum\Event\Gores\" />
     <Folder Include="Items\Weapons\Melee\Safunai\Parendine\" />
     <Folder Include="NPCs\Event\Gintzearmy\BossGintze\" />
+    <Folder Include="Projectiles\Crossbows\Lasers\" />
     <Folder Include="Projectiles\Lanterns\" />
     <Folder Include="Projectiles\Slashers\Chillrend\" />
     <Folder Include="Projectiles\Slashers\NewFolder\" />

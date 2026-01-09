@@ -18,7 +18,7 @@ namespace Stellamod.Core.Bases
             //Check if the player is holding a tome, if they are then summon a hold projectile for the animation
             var heldItem = Player.HeldItem.ModItem;
             int tomeHoldType = ModContent.ProjectileType<TomeHold>();
-            if(heldItem is BaseTome tome)
+            if(heldItem is AbstractMagicTome tome)
             {
                 if (Player.ownedProjectileCounts[tomeHoldType] == 0 && Player.controlUseItem)
                 {

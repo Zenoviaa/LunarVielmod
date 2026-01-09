@@ -17,7 +17,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Shop.ItemsShop
 {
-    public class SandStorm : BaseTome
+    public class SandStorm : AbstractMagicTome
     {
         public override void SetDefaults2()
         {

@@ -22,12 +22,12 @@ namespace Stellamod.Core.Bases
         private ref float Timer => ref Projectile.ai[0];
         private ref float DeathTimer => ref Projectile.ai[1];
         private Player Owner => Main.player[Projectile.owner];
-        private BaseTome _heldTome;
-        private BaseTome HeldTome
+        private AbstractMagicTome _heldTome;
+        private AbstractMagicTome HeldTome
         {
             get
             {
-                if(Owner.HeldItem.ModItem is BaseTome tome)
+                if(Owner.HeldItem.ModItem is AbstractMagicTome tome)
                 {
                     _heldTome = tome;
                 }

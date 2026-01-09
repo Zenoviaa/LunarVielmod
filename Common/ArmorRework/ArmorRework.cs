@@ -1126,7 +1126,8 @@ namespace Stellamod.Common.ArmorRework
     {
         //Textures
         private Dictionary<string, Asset<Texture2D>> _iconAssets;
-        private Player _dummyPlayer;
+        private Player _localDummyPlayer;
+        private Player _currentDummyPlayer;
         public float generalEndurance;
         public float bossEndurance;
         public float enemyEndurance;
@@ -1275,19 +1276,58 @@ namespace Stellamod.Common.ArmorRework
             string comparisonText = LangText.Common(increaseDecreaseKey, LangText.Common($"Stat{name}"), percentString);
             return comparisonText;
         }
-        public void GetStatTooltipsLocalToItem(Item item, List<TooltipLine> tooltips)
+
+        private void ApplyArmor(Item item, Player player)
         {
-            _dummyPlayer ??= new Player();
-            _dummyPlayer.ResetEffects();
+            /*
             if (item.accessory)
             {
-                ItemLoader.UpdateAccessory(item, _dummyPlayer, false);
-            }
+                ItemLoader.UpdateAccessory(item, player, false);
+            }*/
             if (item.headSlot != -1 || item.bodySlot != -1 || item.legSlot != -1)
             {
-                ItemLoader.UpdateEquip(item, _dummyPlayer);
+                ItemLoader.UpdateEquip(item, player);
             }
-            _dummyPlayer.GetModPlayer<ArmorStatsPlayer>().GetStatTooltips(tooltips);
+        }
+
+
+        public void GetStatTooltipsLocalToItem(Item item, List<TooltipLine> tooltips)
+        {
+            if (item.IsAir || item == null)
+                return;
+
+            _localDummyPlayer ??= new Player();
+            _localDummyPlayer.ResetEffects();
+
+            _currentDummyPlayer ??= new Player();
+            _currentDummyPlayer.ResetEffects();
+
+            Player player = Main.LocalPlayer;
+            Item helmer = player.armor[0];
+            Item armor = player.armor[1];
+            Item legs = player.armor[2];
+
+ 
+            //Apply all of our stat bonuses here
+            if(!helmer.IsAir && item.headSlot != -1 && item.type != helmer.type)
+            {
+                ApplyArmor(helmer, _currentDummyPlayer);
+            } else if (!armor.IsAir && item.bodySlot != -1 && item.type != armor.type)
+            {
+                ApplyArmor(armor, _currentDummyPlayer);
+            } else if (!legs.IsAir && item.legSlot != -1 && item.type != legs.type)
+            {
+                ApplyArmor(legs, _currentDummyPlayer);
+            }
+
+            ApplyArmor(item, _localDummyPlayer);
+
+            //Compare the differences here
+            ArmorStatsPlayer currentStatsPlayer = _currentDummyPlayer.GetModPlayer<ArmorStatsPlayer>();
+            ArmorStatsPlayer localItemStatsPlayer = _localDummyPlayer.GetModPlayer<ArmorStatsPlayer>();
+
+            ArmorStatsPlayer comparisonPlayer = currentStatsPlayer.CompareArmorStatsPlayer(localItemStatsPlayer);
+            comparisonPlayer.GetStatTooltips(tooltips);
         }
 
         public void GetStatTooltips(List<TooltipLine> tooltips)
@@ -1297,7 +1337,7 @@ namespace Stellamod.Common.ArmorRework
                 string comparison = GetComparison(name, currentValue, invert);
                 if (string.IsNullOrEmpty(comparison))
                     return;
-                TooltipLine line = new TooltipLine(Mod, name, comparison);
+                TooltipLine line = new TooltipLine(Stellamod.Instance, name, comparison);
                 if (currentValue < 0)
                     line.OverrideColor = Color.IndianRed;
                 tooltips.Add(line);
@@ -1307,7 +1347,7 @@ namespace Stellamod.Common.ArmorRework
                 string comparison = GetComparison(name, currentValue);
                 if (string.IsNullOrEmpty(comparison))
                     return;
-                TooltipLine line = new TooltipLine(Mod, name, comparison);
+                TooltipLine line = new TooltipLine(Stellamod.Instance, name, comparison);
                 tooltips.Add(line);
             }
 

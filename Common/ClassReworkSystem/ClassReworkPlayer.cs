@@ -12,7 +12,13 @@ namespace Stellamod.Common.ClassReworkSystem
     {
         public PlayerClass playerClass;
         public DamageClass damageClass;
+        public int heldShield;
 
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            heldShield = -1;
+        }
         public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
         {
             base.ModifyHitByNPC(npc, ref modifiers);
@@ -43,7 +49,11 @@ namespace Stellamod.Common.ClassReworkSystem
             dashPlayer.DashDuration += 1;
             dashPlayer.MaxDashCount += 1;
             int shieldType = ModContent.ProjectileType<MeleeShield>();
-            if (Player.ownedProjectileCounts[shieldType] == 0)
+            if(heldShield != -1)
+            {
+                shieldType = heldShield;
+            }
+            if (Player.ownedProjectileCounts[shieldType] == 0 && Main.myPlayer == Player.whoAmI)
             {
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, 
                     shieldType, 1, 1, Player.whoAmI);

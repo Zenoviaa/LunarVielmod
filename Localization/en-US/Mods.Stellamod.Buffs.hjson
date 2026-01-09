@@ -967,3 +967,18 @@ BarbequeSauced: {
 	DisplayName: Barbeque Sauced
 	Description: Mods.Stellamod.Buffs.BarbequeSauced.Description
 }
+
+CinderFlame: {
+	DisplayName: Cinder Flame
+	Description: Mods.Stellamod.Buffs.CinderFlame.Description
+}
+
+GintzeStanceBreak: {
+	DisplayName: Gintze Stance Break
+	Description: Mods.Stellamod.Buffs.GintzeStanceBreak.Description
+}
+
+IvynVines: {
+	DisplayName: Ivyn Vines
+	Description: Mods.Stellamod.Buffs.IvynVines.Description
+}

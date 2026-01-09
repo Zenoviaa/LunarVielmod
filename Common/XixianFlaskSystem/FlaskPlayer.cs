@@ -18,11 +18,13 @@ namespace Stellamod.Common.XixianFlaskSystem
         public int maxInsourceCount;
         public int insourceTime;
         public bool unlockedFlask;
+        public float insourceSecondsBonusPerInsource;
         public override void ResetEffects()
         {
             base.ResetEffects();
             maxInsourceCount = 1;
             insourceTime = 0;
+            insourceSecondsBonusPerInsource = 0;
         }
 
         public override void PostUpdateMiscEffects()
@@ -78,8 +80,10 @@ namespace Stellamod.Common.XixianFlaskSystem
         public void ProcEffects()
         {
             var insources = GetInsources();
+            int insoureCount = 0;
             for (int i = 0; i < maxInsourceCount && i < insources.Count; i++)
             {
+                insoureCount++;
                 var item = insources[i];
                 if (item.ModItem is InsourceItem myInsource)
                 {
@@ -98,11 +102,14 @@ namespace Stellamod.Common.XixianFlaskSystem
             }
 
             float time = insourceTime;
+
             ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
             time *= (1f - statsPlayer.insourceTimeBonus);
+            time += insourceSecondsBonusPerInsource * insoureCount;
 
             SoundStyle xixianFlaskUseSound = SoundID.Item3;
             SoundEngine.PlaySound(xixianFlaskUseSound);
+            
             Player.AddBuff(ModContent.BuffType<CannotUseFlask>(), insourceTime);
             Player.AddBuff(BuffID.PotionSickness, insourceTime);
         }
