@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -28,6 +29,10 @@ namespace Stellamod.Common.SummonerSystem
     public class DummyNPC : ModNPC
     {
         private ref float KillMyselfTimer => ref NPC.ai[0];
+
+        private ref float Lifetime => ref NPC.ai[1];
+
+        private ref float IFrameTimer => ref NPC.ai[2];
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -38,14 +43,32 @@ namespace Stellamod.Common.SummonerSystem
             NPC.defense = 0;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.friendly = true;
-            NPC.aiStyle = 7;
+            NPC.aiStyle = -1;
             NPC.ShowNameOnHover = false;
             NPC.takenDamageMultiplier = 0.8f;
+         
+        }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            base.OnSpawn(source);
+            Lifetime *= 60;
+            NPC.lifeMax = (int)(Lifetime);
+            NPC.netUpdate = true;
         }
 
         public override void AI()
         {
             base.AI();
+
+            Lifetime--;
+            NPC.life = (int)Lifetime;
+            if(NPC.life <= 0)
+            {
+                NPC.active = false;
+            }
+
+            IFrameTimer--;
             if (NPC.HasBuff<SpectralMinion>())
                 KillMyselfTimer = 0;
             else
@@ -56,13 +79,26 @@ namespace Stellamod.Common.SummonerSystem
             }
         }
 
+        public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyIncomingHit(ref modifiers);
+         //   modifiers.FinalDamage *= 0;
+        }
+
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+            Lifetime -= hit.SourceDamage;
+            
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             return false;
         }
     }
 
-    public abstract class KillableMinion : ModProjectile,
+    public abstract class AbstractBellSummon : ModProjectile,
         IDrawSpectral,
         ITargetable
     {
@@ -70,6 +106,7 @@ namespace Stellamod.Common.SummonerSystem
         private int _npcWhoAmI = -1;
         private Player Owner => Main.player[Projectile.owner];
         public static event Action<Projectile> OnKillMinion;
+        public float lifetime;
         public virtual int GetAggro()
         {
             return -500;
@@ -94,7 +131,7 @@ namespace Stellamod.Common.SummonerSystem
             if (!_spawnedMinionNPC && MultiplayerHelper.IsHost)
             {
                 _npcWhoAmI = NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y,
-                    ModContent.NPCType<DummyNPC>());
+                    ModContent.NPCType<DummyNPC>(), ai1: lifetime);
                 _spawnedMinionNPC = true;
                 Projectile.netUpdate = true;
             }
@@ -224,7 +261,10 @@ namespace Stellamod.Common.SummonerSystem
                     player.active = true;
                     player.dead = false;
                     player.position = proj.position;
-                    player.aggro = targetable.GetAggro();
+
+                    ArmorStatsPlayer statsPlayer = Main.player[proj.owner].GetModPlayer<ArmorStatsPlayer>();
+                    int baseAggro = targetable.GetAggro();
+                    player.aggro += baseAggro + statsPlayer.minionAggressiveness;
                 }
             }
         }

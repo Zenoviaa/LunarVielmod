@@ -40,7 +40,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
 
 
 
-    public class IceboundMinionProj : KillableMinion
+    public class IceboundMinionProj : AbstractBellSummon
     {
         private ref float Timer => ref Projectile.ai[0];
         private ref float IsLeader => ref Projectile.ai[1];

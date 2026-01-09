@@ -27,6 +27,7 @@ namespace Stellamod.Common.SummonerSystem
         public override bool InstancePerEntity => true;
         public bool isBellMinion;
         public float addedCastingTime;
+        public int health;
         public override bool CanUseItem(Item item, Player player)
         {
             if (isBellMinion)
@@ -42,6 +43,11 @@ namespace Stellamod.Common.SummonerSystem
                 string secondsString = seconds.ToString("#.#");
                 TooltipLine line = new TooltipLine(Mod, "AmountOfCastingTime",
                     LangText.Common("CastingTime", secondsString));
+                line.OverrideColor = Color.Lerp(new Color(80, 187, 180), Color.Black, 0.25f);
+                tooltips.Add(line);
+
+                line = new TooltipLine(Mod, "Lifetime",
+                    LangText.Common("MinionLifetime", health));
                 line.OverrideColor = Color.Lerp(new Color(80, 187, 180), Color.Black, 0.25f);
                 tooltips.Add(line);
             }

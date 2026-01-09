@@ -35,7 +35,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         }
     }
 
-    public class ArncharMinionProj : KillableMinion
+    public class ArncharMinionProj : AbstractBellSummon
     {
         private ref float Timer => ref Projectile.ai[0];
         private enum AIState

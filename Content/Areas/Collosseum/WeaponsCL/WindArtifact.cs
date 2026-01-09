@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -21,6 +22,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
         public override void SetDefaults()
         {
             base.SetDefaults();
+            Item.DefaultToArtifact();
             Item.width = 24;
             Item.height = 24;
             Item.rare = ItemRarityID.Blue;

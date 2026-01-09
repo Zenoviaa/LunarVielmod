@@ -48,6 +48,8 @@ namespace Stellamod.Content.Areas.Snow.ArmorsSN
             stats.wandNormalEnchantmentSlots += 4;
             stats.wandTimerEnchantmentSlots += 4;
             stats.totalMana += 400;
+            stats.minionSummonHealth += 2f;
+            stats.minionAggressiveness += 1000;
             /*
             stats.meleeAttackSpeed += 0.5f;
             stats.accessorySlots++;

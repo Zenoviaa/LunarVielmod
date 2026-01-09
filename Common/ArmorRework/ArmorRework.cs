@@ -213,7 +213,7 @@ namespace Stellamod.Common.ArmorRework
         public float mainSummonDamage;
         public float mainSummonHealth;
         public float minionSummonHealth;
-        public float minionAggressiveness;
+        public int minionAggressiveness;
 
         public float artifactManaReduction;
         public float wandCastTime;
@@ -394,7 +394,7 @@ namespace Stellamod.Common.ArmorRework
             AddLineIfDifferent("MainMinionDamage", mainSummonDamage);
             AddLineIfDifferent("MainMinionHealth", mainSummonHealth);
             AddLineIfDifferent("MinionHealth", minionSummonHealth);
-            AddLineIfDifferent("MinionAggressiveness", minionAggressiveness);
+            AddLineIfDifferentInt("MinionAggressiveness", minionAggressiveness);
             AddLineIfDifferent("ArtifactManaReduction", artifactManaReduction);
             AddLineIfDifferent("WandCastTime", wandCastTime, invert: true);
             AddLineIfDifferentInt("MaxMana", totalMana);

@@ -89,7 +89,7 @@ namespace Stellamod.Common.SummonerSystem
             {
                 if (proj.owner != Player.whoAmI)
                     continue;
-                if (proj.ModProjectile is KillableMinion)
+                if (proj.ModProjectile is AbstractBellSummon)
                     hasBellMinions = true;
             }
             isSummoning = Player.HasBuff<BellSummoning>() && !Player.HasBuff<BellExhaust>();
@@ -145,9 +145,13 @@ namespace Stellamod.Common.SummonerSystem
                 int newDamage = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(minionItem.damage);
                 Vector2 startpos = Player.Bottom - new Vector2(0, 50);
                 startpos.X += Main.rand.NextFloat(-100, 100);
+
+                float health = minionItem.GetGlobalItem<BellMinionGlobalItem>().health;
+                ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
+                health *= 1.0f + statsPlayer.minionSummonHealth;
                 Projectile.NewProjectile(Player.GetSource_FromThis(), startpos, Vector2.Zero,
                     ModContent.ProjectileType<SummoningBeam>(), newDamage, minionItem.knockBack, Player.whoAmI,
-                    ai1: minionItem.shoot);
+                    ai1: minionItem.shoot, ai2: health);
             }
 
             Player.AddBuff(ModContent.BuffType<BellExhaust>(), 600);

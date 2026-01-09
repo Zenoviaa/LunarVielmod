@@ -95,6 +95,7 @@ Common: {
 		This is a magical artifact, which have all sorts of cool effects! 
 		Who knows what they might do?
 		'''
+	MinionLifetime: "{0} seconds of life"
 	RuinMedal: Ruin Medals
 	NoHitCrystal: No-Hit Jewel
 	Ereshstyl: Ereshstyl
