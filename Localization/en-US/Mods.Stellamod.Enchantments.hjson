@@ -639,3 +639,8 @@ TrailingVileEnchantment:
 	DisplayName: Trailing Vile Enchantment
 	Tooltip: Your spell's trail will deal damage!
 }
+KillerEnchantment:
+{
+	DisplayName: Killer Enchantment
+	Tooltip: Kills your spell
+}
