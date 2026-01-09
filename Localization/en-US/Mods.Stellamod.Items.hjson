@@ -10303,3 +10303,10 @@ SparklingPotion: {
 		+1 insource slots
 		'''
 }
+InsourceCoolerPotion: {
+	DisplayName: Insource Cooler Potion
+	Tooltip:
+		'''
+		Reduces all cooldown times by 2 seconds on each insource
+		'''
+}
