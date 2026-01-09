@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Shop.ItemsShop
 {
-    public class VoidsGrasp : BaseTome
+    public class VoidsGrasp : AbstractMagicTome
     {
         public override void SetDefaults2()
         {

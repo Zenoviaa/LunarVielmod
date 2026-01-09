@@ -148,7 +148,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
         }
     }
 
-    public class TomeOfTheSingularity : BaseTome
+    public class TomeOfTheSingularity : AbstractMagicTome
     {
         public override void SetStaticDefaults()
         {

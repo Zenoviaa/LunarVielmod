@@ -19,7 +19,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 {
-    public class TwilightTome : BaseTome
+    public class TwilightTome : AbstractMagicTome
     {
         public override void SetDefaults2()
         {

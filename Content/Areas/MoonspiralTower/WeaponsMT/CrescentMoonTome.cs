@@ -20,7 +20,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
 {
-    public class CrescentMoonTome : BaseTome
+    public class CrescentMoonTome : AbstractMagicTome
     {
         public override void SetDefaults2()
         {

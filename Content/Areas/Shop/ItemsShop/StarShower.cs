@@ -17,7 +17,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Shop.ItemsShop
 {
-    public class StarShower : BaseTome
+    public class StarShower : AbstractMagicTome
     {
         private int Star;
         public override void SetDefaults2()

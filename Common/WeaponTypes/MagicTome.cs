@@ -13,7 +13,7 @@ namespace Stellamod.Core.Bases
         public override void ModifyExpandableTooltips(Item item, List<TooltipLine> lines)
         {
             base.ModifyExpandableTooltips(item, lines);
-            if(item.ModItem is BaseTome tome)
+            if(item.ModItem is AbstractMagicTome tome)
             {
                 TooltipLine helpLine = new TooltipLine(Mod, "TomeHelp", LangText.Common("TomeHelp"));
                 lines.Add(helpLine);
@@ -24,7 +24,7 @@ namespace Stellamod.Core.Bases
     /// <summary>
     /// Base class for the magic tome attack style, it'll automatically set some defaults for you
     /// </summary>
-    public abstract class BaseTome : ModItem
+    public abstract class AbstractMagicTome : ModItem
     {
         public sealed override void SetDefaults()
         {
