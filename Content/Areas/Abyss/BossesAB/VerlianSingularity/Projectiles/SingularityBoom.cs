@@ -1,19 +1,13 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using Stellamod.Common.Shaders;
 
 namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
 {
@@ -43,7 +37,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
         {
             base.AI();
             Timer++;
-            
+
             if (Timer == 1)
             {
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 32);

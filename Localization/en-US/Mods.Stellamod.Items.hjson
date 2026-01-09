@@ -10310,3 +10310,10 @@ InsourceCoolerPotion: {
 		Reduces all cooldown times by 2 seconds on each insource
 		'''
 }
+EchoInsource: {
+	DisplayName: Echo Insource
+	Tooltip:
+		'''
+		When you use the insource, the area around you explodes for 300 damage!
+		'''
+}
