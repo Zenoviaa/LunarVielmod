@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using ReLogic.Content;
 using Stellamod.Common.UI;
+using Stellamod.Core.Tooltips;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.UI;
@@ -89,7 +91,7 @@ namespace Stellamod.Common.SummonerSystem.UI
 
         private void Orient()
         {
-
+            _backButton.Left.Pixels = Width.Pixels / 2 - _backButton.Width.Pixels / 2;
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft + 100;
             Top.Pixels = RelativeTop;
@@ -128,6 +130,9 @@ namespace Stellamod.Common.SummonerSystem.UI
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
+            Vector2 position = GetDimensions().ToRectangle().TopLeft();
+            Rectangle rectangle = ExpandableTooltip.GetBGRectangle((int)position.X, (int)position.Y, (int)Width.Pixels, (int)Height.Pixels);
+            Utils.DrawInvBG(spriteBatch, rectangle, new Color(23, 25, 81, 255) * 0.925f);
             this.QuickMouseInteraction();
         }
 

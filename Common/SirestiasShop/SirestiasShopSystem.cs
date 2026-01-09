@@ -79,10 +79,10 @@ namespace Stellamod.Common.SirestiasShop
             HoveringItem = new Item();
             HoveringItem.SetDefaults(0);
             string texturePath = this.GetType().DirectoryHere() + "/ShopItemSlot";
-            SlotTextureAsset = ModContent.Request<Texture2D>(texturePath, AssetRequestMode.AsyncLoad);
+            SlotTextureAsset = ModContent.Request<Texture2D>(texturePath, AssetRequestMode.ImmediateLoad);
 
             texturePath = this.GetType().DirectoryHere() + "/MiniPriceSlot";
-            MiniPriceTextureAsset = ModContent.Request<Texture2D>(texturePath, AssetRequestMode.AsyncLoad);
+            MiniPriceTextureAsset = ModContent.Request<Texture2D>(texturePath, AssetRequestMode.ImmediateLoad);
             Width.Set(32, 0f);
             Height.Set(32, 0f);
 
@@ -314,10 +314,9 @@ namespace Stellamod.Common.SirestiasShop
         private float _scaleMult;
         private Asset<Texture2D> _currencyTextureAsset;
         private Asset<Texture2D> _currencyMiniTextureAsset;
-        private UIText _currencyText;
         public SirestiasCurrencyButton(Asset<Texture2D> currencyTextureAsset, Asset<Texture2D> currencyMiniTextureAsset) : base()
         {
-            _currencyText = new UIText("0");
+            _scaleMult = 1f;
             _currencyMiniTextureAsset = currencyMiniTextureAsset;
             _currencyTextureAsset = currencyTextureAsset;
             BackgroundColor = Color.Transparent;
@@ -544,7 +543,6 @@ namespace Stellamod.Common.SirestiasShop
 
     public class SirestiasShopRightCurrencyBar : UIPanel
     {
-        private float _scale;
         private SirestiasCurrencyButton _ruinMedalsButton;
         private SirestiasCurrencyButton _ereshstylButton;
         private SirestiasCurrencyButton _noHitCrystalButton;
@@ -568,6 +566,10 @@ namespace Stellamod.Common.SirestiasShop
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
+            _ruinMedalsButton.CurrencyID = Stellamod.MedalCurrencyID;
+            _noHitCrystalButton.CurrencyID = Stellamod.NoHitCrystalCurrencyID;
+            _ereshstylButton.CurrencyID = Stellamod.EreshstylCurrencyID;
+            _coinsButton.CurrencyID = -1;
 
             Append(_coinsButton);
             Append(_ruinMedalsButton);
@@ -576,14 +578,14 @@ namespace Stellamod.Common.SirestiasShop
 
 
         }
+
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
             Left.Set(-Width.Pixels, 1);
-          //  _gif.Top.Set(-_gif.Height.Pixels, 1);
 
-            float listPadding = 64;
             _coinsButton.Left.Pixels = 4;
             _coinsButton.Top.Pixels = 8;
 
@@ -602,10 +604,7 @@ namespace Stellamod.Common.SirestiasShop
             _ereshstylButton.drawCurrencyText = true;
             _noHitCrystalButton.drawCurrencyText = true;
 
-            _ruinMedalsButton.CurrencyID = Stellamod.MedalCurrencyID;
-            _noHitCrystalButton.CurrencyID = Stellamod.NoHitCrystalCurrencyID;
-            _ereshstylButton.CurrencyID = Stellamod.EreshstylCurrencyID;
-            _coinsButton.CurrencyID = -1;
+
         }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
@@ -648,7 +647,12 @@ namespace Stellamod.Common.SirestiasShop
             Height.Pixels = 26 * 2;
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
-         
+
+            _ruinMedalsButton.CurrencyID = Stellamod.MedalCurrencyID;
+            _noHitCrystalButton.CurrencyID = Stellamod.NoHitCrystalCurrencyID;
+            _ereshstylButton.CurrencyID = Stellamod.EreshstylCurrencyID;
+            _coinsButton.CurrencyID = -1;
+
             Append(_ruinMedalsButton);
             Append(_ereshstylButton);
             Append(_noHitCrystalButton);
@@ -680,10 +684,7 @@ namespace Stellamod.Common.SirestiasShop
             _coinsButton.Top.Pixels = _noHitCrystalButton.Top.Pixels;
 
 
-            _ruinMedalsButton.CurrencyID = Stellamod.MedalCurrencyID;
-            _noHitCrystalButton.CurrencyID = Stellamod.NoHitCrystalCurrencyID;
-            _ereshstylButton.CurrencyID = Stellamod.EreshstylCurrencyID;
-            _coinsButton.CurrencyID = -1;
+
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -985,7 +986,6 @@ namespace Stellamod.Common.SirestiasShop
 
             _userInterface = new UserInterface();
             uiState = new();
-            uiState.Activate();
         }
 
         public override void PreUpdateWorld()
@@ -1000,8 +1000,9 @@ namespace Stellamod.Common.SirestiasShop
         {
             //Create a new editing context
             //Set the state of the interface.
-            uiState.shopWindow.OpenRuinMedalsShop();
+    
             _userInterface.SetState(uiState);
+            uiState.shopWindow.OpenRuinMedalsShop();
         }
 
         public void CloseUI()

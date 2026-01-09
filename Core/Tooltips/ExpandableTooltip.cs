@@ -32,12 +32,64 @@ namespace Stellamod.Core.Tooltips
         public abstract void ModifyExpandableTooltips(Item item, List<TooltipLine> lines);
     }
 
+
+    [Autoload(Side = ModSide.Client)]
+    public class ExpandableLineSystem : ModSystem
+    {
+        private List<TooltipLine> _expandableLines;
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            _expandableLines = new List<TooltipLine>();
+        }
+        public override void UpdateUI(GameTime gameTime)
+        {
+            base.UpdateUI(gameTime);
+            Player player = Main.LocalPlayer;
+            _expandableLines.Clear();
+            Item item = Main.HoverItem;
+            if (item == null)
+                return;
+
+            if (item.IsAir)
+                return;
+
+            if (item.ModItem == null)
+            {
+                return;
+            }
+
+            ExpandableTooltipRenderer renderer = ModContent.GetInstance<ExpandableTooltipRenderer>();
+            for (int i = 0; i < renderer.ExpandableTooltips.Length; i++)
+            {
+                IExpandableTooltip expandableTooltip = renderer.ExpandableTooltips[i];
+                expandableTooltip.ModifyExpandableTooltips(item, _expandableLines);
+            }
+
+            Keys keys = Keys.LeftShift;
+            bool isExpanded = Main.keyState.IsKeyDown(keys);
+            if (isExpanded && _expandableLines.Count > 0)
+            {
+                ArmorSet set = ArmorSetSystem.FindArmorSet(item.type);
+                ArmorSetSystem.GetArmorSet(set, out Item helm, out Item armor, out Item leggings);
+
+                string lore = LangText.Armor(helm.ModItem, "Lore");
+                ArmorTooltipSystem tooltipsSystem = ModContent.GetInstance<ArmorTooltipSystem>();
+                tooltipsSystem.InspectArmor(item, lore, LangText.Armor("SetBonus", LangText.Armor(helm.ModItem, "SetBonus")), _expandableLines);
+            }
+        }
+
+        public List<TooltipLine> GetExpandableLines()
+        {
+            return _expandableLines;
+        }
+    }
     /// <summary>
     /// Sets an expandable tooltip
     /// </summary>
     public class ExpandableTooltipGlobalItem : GlobalItem
     {
-        private static List<TooltipLine> _expandableLines;
+       
         private static int _yOffset;
         private static int _xOffset;
         public override void PostDrawTooltip(Item item, ReadOnlyCollection<DrawableTooltipLine> lines)
@@ -63,16 +115,10 @@ namespace Stellamod.Core.Tooltips
             //This is called when it is in the hover item
             //So we can just do the code here lol
 
-            _expandableLines ??= new List<TooltipLine>();
-            _expandableLines.Clear();
             ExpandableTooltipRenderer renderer = ModContent.GetInstance<ExpandableTooltipRenderer>();
-            for (int i = 0; i < renderer.ExpandableTooltips.Length; i++)
-            {
-                IExpandableTooltip expandableTooltip = renderer.ExpandableTooltips[i];
-                expandableTooltip.ModifyExpandableTooltips(item, _expandableLines);
-            }
-
-            if (_expandableLines.Count > 0)
+            ExpandableLineSystem lineSystem = ModContent.GetInstance<ExpandableLineSystem>();
+            var lines = lineSystem.GetExpandableLines();
+            if (lines.Count > 0)
             {
                 Keys keys = Keys.LeftShift;
                 bool isExpanded = Main.keyState.IsKeyDown(keys);
@@ -84,40 +130,23 @@ namespace Stellamod.Core.Tooltips
 
                     if (item.headSlot != -1 || item.bodySlot != -1 || item.legSlot != -1)
                     {
-                        Player player = Main.LocalPlayer;
-                        ArmorSet set = ArmorSetSystem.FindArmorSet(item.type);
-                        ArmorSetSystem.GetArmorSet(set, out Item helm, out Item armor, out Item leggings);
 
-                        TooltipLine setBonusLine = new TooltipLine(Stellamod.Instance, "SetBonus", LangText.Armor("SetBonus", LangText.Armor(helm.ModItem, "SetBonus")));
-                        if (player.head == helm.headSlot && player.body == armor.bodySlot && player.legs == leggings.legSlot)
-                        {
-                            setBonusLine.OverrideColor = Color.Lerp(Color.White, Color.Green, 0.5f);
-                        }
-                        else
-                        {
-                            setBonusLine.OverrideColor = Color.Lerp(Color.White, Color.Black, 0.8f);
-                        }
-                        _expandableLines.Add(setBonusLine);
-
-                        renderer.SetArmorTooltipsToDraw(item, _expandableLines, _xOffset, _yOffset);
+                        //renderer.SetArmorTooltipsToDraw(item, _expandableLines, _xOffset, _yOffset);
 
                     }
                     else
                     {
-                        renderer.SetTooltipsToDraw(_expandableLines, _xOffset, _yOffset);
+                        renderer.SetTooltipsToDraw(lines, _xOffset, _yOffset);
                     }
                 }
 
             }
-
-
         }
     }
 
     [Autoload(Side = ModSide.Client)]
     public class ExpandableTooltipRenderer : ModSystem
     {
-        private Item _armor;
         private List<TooltipLine> _lines;
         private int _startingXOffset;
         private int _startingYOffset;
@@ -140,14 +169,7 @@ namespace Stellamod.Core.Tooltips
 
         public IExpandableTooltip[] ExpandableTooltips { get; private set; }
         public float EaseTime => 0.9f;
-        public void SetArmorTooltipsToDraw(Item armor, List<TooltipLine> lines, int startingXOffset, int startingYOffset)
-        {
-            _lines = lines;
-            _startingXOffset = startingXOffset;
-            _startingYOffset = startingYOffset;
-            _holdingTooltip = true;
-            _armor = armor;
-        }
+     
         public void SetTooltipsToDraw(List<TooltipLine> lines, int startingXOffset, int startingYOffset, bool drawGlass = true)
         {
             _lines = lines;
@@ -187,18 +209,8 @@ namespace Stellamod.Core.Tooltips
                             float ease = EasingFunction.OutExpo(ratio);
                             int x = (int)MathHelper.Lerp(targetX - 128, targetX, ease);
                             int y = targetY;
-
-                            if (_armor != null && !_armor.IsAir)
-                            {
-
-                                ExpandableTooltip.DrawArmorTooltip(_armor, Main.spriteBatch, _lines, x, y, ease);
-                            }
-                            else
-                            {
-
-                                ExpandableTooltip.DrawExpandableTooltip(Main.spriteBatch, _lines, x, y, ease, _drawGlass);
-                            }
-
+                             ExpandableTooltip.DrawExpandableTooltip(Main.spriteBatch, _lines, x, y, ease, _drawGlass);
+                        
                             if (_timer <= 0)
                                 _lines = null;
                         }
@@ -216,6 +228,7 @@ namespace Stellamod.Core.Tooltips
     [Autoload(Side = ModSide.Client)]
     public class ExpandableTooltip : ModSystem
     {
+        private static ArmorReworkPlayerRenderer _playerRenderer;
         private static Player _player;
         private static Asset<Texture2D> _inspectTextureAsset;
         public override void OnModLoad()
@@ -253,8 +266,11 @@ namespace Stellamod.Core.Tooltips
 
             Vector2 left = drawPosition;
             float rotation = player.fullRotation;
-            IPlayerRenderer playerRenderer = Main.PlayerRenderer;
+            _playerRenderer ??= new();
+            IPlayerRenderer playerRenderer = _playerRenderer;
+            var camera = new Terraria.Graphics.Camera();
 
+      
             playerRenderer.DrawPlayer(Main.Camera, player, left, rotation, player.fullRotationOrigin);
         }
 
@@ -361,6 +377,68 @@ namespace Stellamod.Core.Tooltips
 
             ItemSlot.DrawItemIcon(item, 0, spriteBatch, topRight, 1, 32, Color.White * alpha);
         }
+        public static Rectangle GetBGRectangle(int X, int Y, int Width, int Height)
+        {
+            Vector2 zero = Vector2.Zero;
+
+            zero.X = Width;
+            zero.Y = Height;
+            int toolTipDistance = 6;
+            X += toolTipDistance;
+            Y += toolTipDistance;
+            int num13 = 4;
+            float num3 = (float)(int)Main.mouseTextColor / 255f;
+            float num4 = num3;
+
+            int num14 = Main.screenWidth;
+            int num15 = Main.screenHeight;
+            if ((float)X + zero.X + (float)num13 > (float)num14)
+                X = (int)((float)num14 - zero.X - (float)num13);
+
+            if ((float)Y + zero.Y + (float)num13 > (float)num15)
+                Y = (int)((float)num15 - zero.Y - (float)num13);
+
+            int num17 = 14;
+            int num18 = 9;
+            int width = (int)zero.X + num17 * 2;
+            int height = (int)zero.Y + num18 + num18 / 2;
+            return new Rectangle(X - num17, Y - num18, width, height);
+        }
+        public static Rectangle GetBGRectangle(List<TooltipLine> lines, int X, int Y, float alpha)
+        {
+            Vector2 zero = Vector2.Zero;
+            List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, X, Y, Color.White * alpha)).ToList();
+
+            for (int j = 0; j < lines.Count; j++)
+            {
+                Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, lines[j].Text, Vector2.One);
+                if (stringSize.X > zero.X)
+                    zero.X = stringSize.X;
+
+                zero.Y += stringSize.Y;
+            }
+
+            int toolTipDistance = 6;
+            X += toolTipDistance;
+            Y += toolTipDistance;
+            int num13 = 4;
+            float num3 = (float)(int)Main.mouseTextColor / 255f;
+            float num4 = num3;
+
+            int num14 = Main.screenWidth;
+            int num15 = Main.screenHeight;
+            if ((float)X + zero.X + (float)num13 > (float)num14)
+                X = (int)((float)num14 - zero.X - (float)num13);
+
+            if ((float)Y + zero.Y + (float)num13 > (float)num15)
+                Y = (int)((float)num15 - zero.Y - (float)num13);
+
+            int num17 = 14;
+            int num18 = 9;
+            int width = (int)zero.X + num17 * 2;
+            int height = (int)zero.Y + num18 + num18 / 2;
+            return new Rectangle(X - num17, Y - num18, width, height);
+        }
 
         private static Rectangle CalculateBGDrawRect(List<TooltipLine> lines, int X, int Y, float alpha)
         {
@@ -437,7 +515,7 @@ namespace Stellamod.Core.Tooltips
             {
                 int width = (int)zero.X + num17 * 2;
                 int height = (int)zero.Y + num18 + num18 / 2;
-                Utils.DrawInvBG(spriteBatch, new Rectangle(X - num17, Y - num18, (int)(width * alpha), (int)(height * alpha)), new Color(23, 25, 81, 255) * 0.925f * alpha);
+               // Utils.DrawInvBG(spriteBatch, new Rectangle(X - num17, Y - num18, (int)(width * alpha), (int)(height * alpha)), new Color(23, 25, 81, 255) * 0.925f * alpha);
             }
 
             for (int k = 0; k < lines.Count; k++)
@@ -460,7 +538,7 @@ namespace Stellamod.Core.Tooltips
                     Vector2 drawPosition = new Vector2(X, drawableLine.Y + yOffset);
                     drawPosition.X -= 16;
                     drawPosition.Y += 8;
-                    spriteBatch.Draw(iconTextureAsset.Value, drawPosition, null, Color.White, 0, drawOrigin, 1, SpriteEffects.None, 0);
+                    spriteBatch.Draw(iconTextureAsset.Value, drawPosition, null, Color.White * alpha, 0, drawOrigin, 1, SpriteEffects.None, 0);
                 }
 
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLine.Font, drawableLine.Text,

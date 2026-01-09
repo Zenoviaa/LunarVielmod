@@ -5,10 +5,7 @@ CauldrMothHood: {
 		You also have a cool pot floating behind you!
 		'''
 	Type: Defensive
-	Lore: 
-		'''
-		An armor for Ereshkigal's follows as she was rising to Siegfried's side. Crafted to be a sort of fashion, or appreciation and to keep protection, it would be worn by those who would be protecting her during wars. Unfortuantely, it was never used, the war came too fast...
-		'''
+	Lore: An armor for Ereshkigal's follows as she was rising to Siegfried's side. Crafted to be a sort of fashion, or appreciation and to keep protection, it would be worn by those who would be protecting her during wars. Unfortuantely, it was never used, the war came too fast...
 }
 
 SetBonus: Set Bonus: {0}
