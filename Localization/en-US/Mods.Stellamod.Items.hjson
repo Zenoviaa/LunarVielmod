@@ -120,8 +120,13 @@ Common: {
 		'''
 	TomeHelp:
 		'''
-		This is a [c/:FFA500:magic tome], the consume a decent amount of mana but deal pretty good damage
+		[c/:FFA500:Magic Tomes] consume a decent amount of mana but deal pretty good damage
 		Used for median spells that desire more consistency
+		'''
+	ManaSphereHelp:
+		'''
+		[c/:FFA500:Mana Spheres] use a condensed ball of magic to cast out weaker but homing spells! 
+		Perfect for an easy to use playstyle
 		'''
 	StatAddition: "{1} increased {0}"
 	StatSubtraction: "{1} decreased {0}"
@@ -10315,5 +10320,12 @@ EchoInsource: {
 	Tooltip:
 		'''
 		When you use the insource, the area around you explodes for 300 damage!
+		'''
+}
+MoltenManaSphere: {
+	DisplayName: Molten Mana Sphere
+	Tooltip:
+		'''
+		Casts a homing fireball!
 		'''
 }
