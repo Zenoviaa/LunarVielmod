@@ -53,7 +53,6 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             }
         }
  
-        private float _inScale;
         public struct DustStormPoint
         {
             public Color color;
@@ -239,10 +238,14 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             }
 
 
-
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedNado);
+            return false;
+        }
+        private void DrawPixelatedNado(GraphicsDevice graphicsDevice)
+        {
             List<Vector2> dustPoints = new List<Vector2>();
             float numPoints = 32;
-            for(float n = 0; n < numPoints; n++)
+            for (float n = 0; n < numPoints; n++)
             {
                 dustPoints.Add(Vector2.Lerp(Projectile.Center, Projectile.Center - Vector2.UnitY * 252 * sizer, n / numPoints));
             }
@@ -259,7 +262,6 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             shader.Distortion = 0.15f;
             shader.Power = 0.25f;
             TrailDrawer.Draw(Main.spriteBatch, dustPoints.ToArray(), ColorFunction, WidthFunction, shader);
-            return false;
         }
         public float WidthFunction(float completionRatio)
         {

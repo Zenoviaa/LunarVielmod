@@ -50,7 +50,7 @@ namespace Stellamod.Content.Trailers
 
         public override float WidthFunction(float completionRatio)
         {
-            return MathHelper.SmoothStep(0, 12, completionRatio);
+            return MathHelper.SmoothStep(0, 24, completionRatio);
         }
 
         public override Color ColorFunction(float completionRatio)
