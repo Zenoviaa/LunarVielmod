@@ -174,7 +174,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             ModItem clone = base.Clone(newEntity);
             AbstractMagicWand staff = clone as AbstractMagicWand;
             staff.equippedEnchantments = new List<Item>();
-            for(int i = 0; i < staff.equippedEnchantments.Count; i++)
+            for(int i = 0; i < equippedEnchantments.Count; i++)
             {
                 staff.equippedEnchantments.Add(equippedEnchantments[i].Clone());
             }
@@ -272,7 +272,14 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         public void SetEnchantment(Item item, int index)
         {
-            equippedEnchantments.Insert(index, item);
+            while(equippedEnchantments.Count < index)
+            {
+                Item air = new Item();
+                air.SetDefaults(0);
+                equippedEnchantments.Add(air);
+            }
+            equippedEnchantments[index] = item;
+
         }
 
         public Item GetEnchantment(int index)
