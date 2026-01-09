@@ -272,7 +272,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         public void SetEnchantment(Item item, int index)
         {
-            while(equippedEnchantments.Count < index)
+            while(equippedEnchantments.Count <= index)
             {
                 Item air = new Item();
                 air.SetDefaults(0);
