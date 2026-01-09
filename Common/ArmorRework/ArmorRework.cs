@@ -9,6 +9,7 @@ using Stellamod.Items.Accessories.Players;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -155,6 +156,24 @@ namespace Stellamod.Common.ArmorRework
         }
     }
 
+    public class ExtraPierceGlobalProjectile : GlobalProjectile
+    {
+
+        //I believe net update is called after on spawn automatically
+        //and penetrate will be synced
+        //so this should work
+        public override void OnSpawn(Projectile projectile, IEntitySource source)
+        {
+            base.OnSpawn(projectile, source);
+            Player player = Main.player[projectile.owner];
+            ArmorStatsPlayer armorStatsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
+            if (projectile.penetrate != -1)
+            {
+                projectile.penetrate += armorStatsPlayer.rangedPiercing;
+                projectile.maxPenetrate += armorStatsPlayer.rangedPiercing;
+            }
+        }
+    }
  
     public class ArmorStatsPlayer : ModPlayer
     {        

@@ -9,6 +9,7 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -143,27 +144,35 @@ namespace Stellamod.Core.Bases
         {
             base.OnHitNPC(projectile, target, hit, damageDone);
             if (!CrossbowShot)
-                return;
-            Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.position, projectile.velocity,
-                ModContent.ProjectileType<CrossbowLodgedArrow>(), projectile.damage, projectile.knockBack, projectile.owner,
-                ai1: projectile.type, ai2: target.whoAmI);
-
-            float size = 0.12f + Main.rand.NextFloat(-0.04f, 0.04f);
-            if (hit.Crit)
-                size *= 2;
-
-            FXUtil.ShakeCamera(target.Center, 256, 4);
-            for (int i = 0; i < 2; i++)
             {
-                var particle = Particle<DustParticle>.Spawn(projectile.Center, projectile.oldVelocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
-                particle.gravity = 0;
-                particle.dampening = 0.05f;
+                return;
             }
 
-            FXUtil.GlowCircleBoom(projectile.Center,
-                innerColor: Color.White,
-                glowColor: Color.Black,
-                outerGlowColor: Color.Black, duration: 25, baseSize: Main.rand.NextFloat(0.07f, 0.12f));
+            if(projectile.penetrate <= 0)
+            {
+                Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.position, projectile.velocity,
+    ModContent.ProjectileType<CrossbowLodgedArrow>(), projectile.damage, projectile.knockBack, projectile.owner,
+    ai1: projectile.type, ai2: target.whoAmI);
+
+                float size = 0.12f + Main.rand.NextFloat(-0.04f, 0.04f);
+                if (hit.Crit)
+                    size *= 2;
+
+                FXUtil.ShakeCamera(target.Center, 256, 4);
+                for (int i = 0; i < 2; i++)
+                {
+                    var particle = Particle<DustParticle>.Spawn(projectile.Center, projectile.oldVelocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                    particle.gravity = 0;
+                    particle.dampening = 0.05f;
+                }
+
+                FXUtil.GlowCircleBoom(projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Black,
+                    outerGlowColor: Color.Black, duration: 25, baseSize: Main.rand.NextFloat(0.07f, 0.12f));
+            }
+
+
         }
     }
 }
