@@ -389,7 +389,7 @@ namespace Stellamod.Common.ArmorRework
             AddLineIfDifferentInt("Piercing", rangedPiercing);
             AddLineIfDifferentInt("GunAmmoAmount", rangedGunAmmoAmount);
             AddLineIfDifferentInt("Stealthiness", rangedStealthtiness);
-            AddLineIfDifferent("SummonCastTime", summonCastTime);
+            AddLineIfDifferent("SummonCastTime", summonCastTime, invert: true);
             AddLineIfDifferent("MinionSlots", minionSlots);
             AddLineIfDifferent("MainMinionDamage", mainSummonDamage);
             AddLineIfDifferent("MainMinionHealth", mainSummonHealth);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.ArmorRework;
 using System;
 using System.Collections.Generic;
 
@@ -39,6 +40,7 @@ namespace Stellamod.Common.SummonerSystem
                 if (bellMinion.isBellMinion)
                     baseTime += bellMinion.addedCastingTime;
             }
+            baseTime *= 1.0f - Player.GetModPlayer<ArmorStatsPlayer>().summonCastTime;
             return baseTime;
         }
         private Item _guardian;

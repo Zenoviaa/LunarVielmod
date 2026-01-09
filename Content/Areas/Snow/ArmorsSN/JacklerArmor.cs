@@ -42,6 +42,8 @@ namespace Stellamod.Content.Areas.Snow.ArmorsSN
             stats.minionSlots += 0;
             stats.rangedBowChargeTime += 0.85f;
             stats.rangedPiercing += 10;
+            stats.rangedGunAmmoAmount += 500;
+            stats.summonCastTime += 0.95f;
             /*
             stats.meleeAttackSpeed += 0.5f;
             stats.accessorySlots++;
