@@ -31,6 +31,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             Item.UseSound = SoundID.Item84;
 
             Item.channel = true;
+            Item.autoReuse = false;
         }
         public override Color GetTomeHintColor()
         {

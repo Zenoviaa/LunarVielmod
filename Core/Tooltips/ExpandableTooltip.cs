@@ -65,6 +65,9 @@ namespace Stellamod.Core.Tooltips
                 IExpandableTooltip expandableTooltip = renderer.ExpandableTooltips[i];
                 expandableTooltip.ModifyExpandableTooltips(item, _expandableLines);
             }
+            if (item.headSlot == -1 && item.bodySlot == -1 && item.legSlot == -1)
+                return;
+
 
             Keys keys = Keys.LeftShift;
             bool isExpanded = Main.keyState.IsKeyDown(keys);
@@ -515,7 +518,7 @@ namespace Stellamod.Core.Tooltips
             {
                 int width = (int)zero.X + num17 * 2;
                 int height = (int)zero.Y + num18 + num18 / 2;
-               // Utils.DrawInvBG(spriteBatch, new Rectangle(X - num17, Y - num18, (int)(width * alpha), (int)(height * alpha)), new Color(23, 25, 81, 255) * 0.925f * alpha);
+                Utils.DrawInvBG(spriteBatch, new Rectangle(X - num17, Y - num18, (int)(width * alpha), (int)(height * alpha)), new Color(23, 25, 81, 255) * 0.925f * alpha);
             }
 
             for (int k = 0; k < lines.Count; k++)

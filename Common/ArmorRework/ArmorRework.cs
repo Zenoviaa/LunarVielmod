@@ -1293,6 +1293,9 @@ namespace Stellamod.Common.ArmorRework
 
         public void GetStatTooltipsLocalToItem(Item item, List<TooltipLine> tooltips)
         {
+            if (item.IsAir || item == null)
+                return;
+
             _localDummyPlayer ??= new Player();
             _localDummyPlayer.ResetEffects();
 
@@ -1334,7 +1337,7 @@ namespace Stellamod.Common.ArmorRework
                 string comparison = GetComparison(name, currentValue, invert);
                 if (string.IsNullOrEmpty(comparison))
                     return;
-                TooltipLine line = new TooltipLine(Mod, name, comparison);
+                TooltipLine line = new TooltipLine(Stellamod.Instance, name, comparison);
                 if (currentValue < 0)
                     line.OverrideColor = Color.IndianRed;
                 tooltips.Add(line);
@@ -1344,7 +1347,7 @@ namespace Stellamod.Common.ArmorRework
                 string comparison = GetComparison(name, currentValue);
                 if (string.IsNullOrEmpty(comparison))
                     return;
-                TooltipLine line = new TooltipLine(Mod, name, comparison);
+                TooltipLine line = new TooltipLine(Stellamod.Instance, name, comparison);
                 tooltips.Add(line);
             }
 
