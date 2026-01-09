@@ -1,10 +1,26 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.WeaponTypes;
+using Stellamod.Helpers;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
+    public class TomeExpandingTooltip : ExpandingArtifactTooltip
+    {
+        public override void ModifyExpandableTooltips(Item item, List<TooltipLine> lines)
+        {
+            base.ModifyExpandableTooltips(item, lines);
+            if(item.ModItem is BaseTome tome)
+            {
+                TooltipLine helpLine = new TooltipLine(Mod, "TomeHelp", LangText.Common("TomeHelp"));
+                lines.Add(helpLine);
+            }
+        }
+    }
+
     /// <summary>
     /// Base class for the magic tome attack style, it'll automatically set some defaults for you
     /// </summary>

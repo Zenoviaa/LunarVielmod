@@ -118,6 +118,11 @@ Common: {
 		Shields can only be used by [c/:FFA500:melee] players.
 		You can only have 1 shield active at a time.
 		'''
+	TomeHelp:
+		'''
+		This is a [c/:FFA500:magic tome], the consume a decent amount of mana but deal pretty good damage
+		Used for median spells that desire more consistency
+		'''
 	StatAddition: "{1} increased {0}"
 	StatSubtraction: "{1} decreased {0}"
 	StatAdditionAlt: Increases {0} by {1}
