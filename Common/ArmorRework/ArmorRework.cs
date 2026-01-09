@@ -1279,10 +1279,11 @@ namespace Stellamod.Common.ArmorRework
 
         private void ApplyArmor(Item item, Player player)
         {
+            /*
             if (item.accessory)
             {
                 ItemLoader.UpdateAccessory(item, player, false);
-            }
+            }*/
             if (item.headSlot != -1 || item.bodySlot != -1 || item.legSlot != -1)
             {
                 ItemLoader.UpdateEquip(item, player);
@@ -1304,6 +1305,7 @@ namespace Stellamod.Common.ArmorRework
             Item legs = player.armor[2];
 
  
+            //Apply all of our stat bonuses here
             if(!helmer.IsAir && item.headSlot != -1 && item.type != helmer.type)
             {
                 ApplyArmor(helmer, _currentDummyPlayer);
@@ -1317,6 +1319,7 @@ namespace Stellamod.Common.ArmorRework
 
             ApplyArmor(item, _localDummyPlayer);
 
+            //Compare the differences here
             ArmorStatsPlayer currentStatsPlayer = _currentDummyPlayer.GetModPlayer<ArmorStatsPlayer>();
             ArmorStatsPlayer localItemStatsPlayer = _localDummyPlayer.GetModPlayer<ArmorStatsPlayer>();
 

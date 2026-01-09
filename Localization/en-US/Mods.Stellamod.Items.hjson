@@ -10288,3 +10288,18 @@ HeatedShield: {
 		Enemies that are burning also take 20% more damage from melee attacks!
 		'''
 }
+SummonersBrew: {
+	DisplayName: Summoner's Brew
+	Tooltip:
+		'''
+		Increases minion health by 25%
+		'''
+}
+SparklingPotion: {
+	DisplayName: Sparkling Potion
+	Tooltip:
+		'''
+		A few powerful stars orbit around the you!
+		+1 insource slots
+		'''
+}

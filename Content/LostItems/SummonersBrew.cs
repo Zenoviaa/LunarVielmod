@@ -1,5 +1,8 @@
-﻿using Stellamod.Common.ArmorRework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.ArmorRework;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.LostItems
@@ -17,5 +20,8 @@ namespace Stellamod.Content.LostItems
             player.GetModPlayer<ArmorStatsPlayer>().minionSummonHealth += 0.25f;
         }
     }
+
+
+  
 
 }
