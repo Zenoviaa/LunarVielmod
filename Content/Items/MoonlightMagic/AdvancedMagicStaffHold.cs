@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Core.Particles;
@@ -16,7 +17,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 
 namespace Stellamod.Content.Items.MoonlightMagic
 {
@@ -50,7 +50,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private float _level;
         private float _circleTimer;
 
-        private float _outTimer;
         private float _ringTimer1;
         private float _ringTimer2;
         private float _ringTimer3;
@@ -75,8 +74,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             const float Base_Charge_Time = 360;
             AdvancedMagicPlayer magicPlayer = Owner.GetModPlayer<AdvancedMagicPlayer>();
+            ArmorStatsPlayer statsPlayer = Owner.GetModPlayer<ArmorStatsPlayer>();
             float chargeTime = Base_Charge_Time;
-            float decrease = chargeTime * magicPlayer.chargeTimeBonus;
+            float decrease = chargeTime * (magicPlayer.chargeTimeBonus + statsPlayer.wandCastTime);
             chargeTime -= decrease;
             return chargeTime;
         }
@@ -104,7 +104,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         private BaseElement GetElement()
         {
-            BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
+            AbstractMagicWand staff = Owner.HeldItem.ModItem as AbstractMagicWand;
             Item elementItem = staff.GetElement();
             BaseElement element = elementItem.ModItem as BaseElement;
             return element;
@@ -172,7 +172,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
             }
 
-    
+
             //        Owner.heldProj = Projectile.whoAmI;
             Owner.itemTime = 2;
             Owner.itemAnimation = 2;
@@ -229,8 +229,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             AdvancedMagicPlayer magicPlayer = Owner.GetModPlayer<AdvancedMagicPlayer>();
             Item heldItem = Owner.HeldItem;
-            BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
-            foreach (var enchantmentItem in staff.equippedEnchantments)
+            AbstractMagicWand staff = Owner.HeldItem.ModItem as AbstractMagicWand;
+            foreach (var enchantmentItem in staff.normalEnchantments)
             {
                 if (enchantmentItem.ModItem is BaseEnchantment e)
                 {
@@ -270,7 +270,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Projectile.velocity = Owner.Center.DirectionTo(Main.MouseWorld);
                 Projectile.netUpdate = true;
             }
-            if(Timer % 18 == 0)
+            if (Timer % 18 == 0)
             {
                 DustParticle dp = Particle<DustParticle>.Spawn(Owner.Center + Projectile.velocity * 64, Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(60)), Scale: Main.rand.NextFloat(0.5f, 1f));
                 dp.outerColor = Element.GetElementColor();
@@ -327,19 +327,15 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private int CalculateFinalDamage()
         {
             float levelProgress = (_level / 3f);
-
             float baseDamage = MathHelper.Lerp(1, Projectile.damage, levelProgress);
             AdvancedMagicPlayer magicPlayer = Owner.GetModPlayer<AdvancedMagicPlayer>();
             float finalDamage = baseDamage * (1f + magicPlayer.chargeDamageBonus);// * (1f - magicPlayer.chargeDamagePenalty);
-
-
-
             int damage = (int)finalDamage;
             return damage;
         }
+
         private void AI_Swing()
         {
-            _outTimer++;
             Timer++;
             _ovalSwing ??= new OvalSwing();
             _ovalSwing.XSwingRadius = 64;
@@ -359,7 +355,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 int damage = CalculateFinalDamage();
                 float knockback = Projectile.knockBack;
                 Vector2 fireVelocity = Projectile.velocity * 15;
-                BaseStaff staff = Owner.HeldItem.ModItem as BaseStaff;
+                AbstractMagicWand staff = Owner.HeldItem.ModItem as AbstractMagicWand;
 
                 Vector2 ballPosition = Owner.Center + Projectile.velocity * 64;
                 Vector2 oldVelocity = Projectile.velocity;
@@ -367,7 +363,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Projectile.damage = damage;
                 Projectile.knockBack = knockback;
 
-  
+
                 AdvancedMagicUtil.NewMagicProjectile(ballPosition, staff, Projectile, levelProgress);
                 Projectile.velocity = oldVelocity;
 
@@ -390,7 +386,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                     glowColor: Element.GetElementColor(),
                     outerGlowColor: Color.Lerp(Element.GetElementColor(), Color.Black, 0.5f), duration: 25, baseSize: 0.14f);
 
-             
+
                 for (float i = 0; i < 8; i++)
                 {
                     float progress = i / 4f;
@@ -461,7 +457,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Vector2 ring1Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f, speed: chargingSpeed));
             Vector2 ring2Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f, speed: chargingSpeed, offset: 3));
             Vector2 ring3Offset = Projectile.velocity * MathHelper.Lerp(8, 32, ExtraMath.Osc(0f, 1f, speed: chargingSpeed, offset: 6));
-     
+
             if (_level >= 1)
             {
                 float perspectiveRotation = Main.GlobalTimeWrappedHourly * 3;
@@ -484,10 +480,10 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
             if (_ringTextureAsset == null)
             {
-      
+
                 string texturePath = Element.Texture + "_Ring";
                 string basicElementTexturePath = ModContent.GetInstance<BasicElement>().Texture + "_Ring";
-                if(!ModContent.RequestIfExists<Texture2D>(texturePath, out _ringTextureAsset, AssetRequestMode.ImmediateLoad))
+                if (!ModContent.RequestIfExists<Texture2D>(texturePath, out _ringTextureAsset, AssetRequestMode.ImmediateLoad))
                 {
                     ModContent.RequestIfExists<Texture2D>(basicElementTexturePath, out _ringTextureAsset, AssetRequestMode.ImmediateLoad);
                 }
@@ -510,7 +506,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Color auraColor = Element.GetElementColor();
             auraColor = auraColor.MultiplyRGB(color);
 
-            TexturedQuad.CalculatePerspectiveCenterVertices(center, 180 , 180 , Projectile.velocity.ToRotation(), perpsectiveRotation);
+            TexturedQuad.CalculatePerspectiveCenterVertices(center, 180, 180, Projectile.velocity.ToRotation(), perpsectiveRotation);
             TexturedQuad.SetColor(auraColor);
             TexturedQuad.DrawWithShader(magicCircleShader);
         }
@@ -654,7 +650,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             Asset<Texture2D> muzzleFlashTexture = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/MuzzleFlash");
             Vector2 drawOrigin = muzzleFlashTexture.Size() / 2f;
-            Vector2 drawCenter = Owner.Center + Projectile.velocity * 64  - screenPos;
+            Vector2 drawCenter = Owner.Center + Projectile.velocity * 64 - screenPos;
             Color drawColor = Element.GetElementColor();
             drawColor.A = 0;
             drawColor *= CrosshairProgress;
@@ -757,7 +753,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Color drawColor = Color.Red * CrosshairProgress;
             drawColor *= 0.73f;
             drawColor.A = 0;
-            spriteBatch.Draw(tex.Value, drawPos, null, drawColor , drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(tex.Value, drawPos, null, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
 
     }

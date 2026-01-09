@@ -60,6 +60,22 @@ namespace Stellamod.Visual.Particles
         }
     }
 
+    public struct DustParticleSpawnParams
+    {
+        public DustParticleSpawnParams()
+        {
+            innerColor = Color.White;
+            outerColor = Color.Yellow;
+            scaleRange = new Vector2(0.5f, 2f);
+            gravity = 0.2f;
+        }
+        public Color innerColor;
+        public Color outerColor;
+        public Vector2 scaleRange;
+        public float gravity;
+        public static DustParticleSpawnParams Default = new DustParticleSpawnParams();
+    }
+
     public class DustParticle : Particle<DustParticle>
     {
         public int FrameWidth = 64;
@@ -71,6 +87,20 @@ namespace Stellamod.Visual.Particles
         public Vector2 stretchScale;
         public float dampening;
         public bool fast;
+
+        public static DustParticle Spawn(Vector2 position, Vector2 velocity, DustParticleSpawnParams? spawnParams = null)
+        {
+            if (!spawnParams.HasValue)
+                spawnParams = new DustParticleSpawnParams();
+            DustParticleSpawnParams settings = spawnParams.Value;
+            float scale = Main.rand.NextFloat(settings.scaleRange.X, settings.scaleRange.Y);
+            DustParticle dp = Spawn(position, velocity, Color.White, scale);
+            dp.innerColor = settings.innerColor;
+            dp.outerColor = settings.outerColor;
+            dp.gravity = settings.gravity;
+            return dp;
+        }
+
         public override void OnSpawn()
         {
             gravity = 0.2f;

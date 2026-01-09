@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.ArmorRework;
 using Stellamod.Common.MagicSystem.UI;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Items.Weapons.Mage;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -16,64 +18,21 @@ using Terraria.Utilities;
 
 namespace Stellamod.Content.Items.MoonlightMagic
 {
-    public abstract class BaseStaff : ModItem
+    public abstract class AbstractMagicWand : ModItem
     {
-        private Item _primaryElement;
-        private Item[] _equippedEnchantments;
-        private static Item _preReforgeElement;
-        private static Item[] _preReforgeEnchants;
         public Texture2D Form { get; set; }
         public BaseMovement Movement { get; set; }
-
         public int Size { get; set; }
         public int TrailLength { get; set; }
-        public UnifiedRandom Random { get; private set; }
 
-        //Enchantment Slots
-        public Item primaryElement
-        {
-            get
-            {
-                if (_primaryElement == null)
-                {
-                    _primaryElement = new Item();
-                    _primaryElement.SetDefaults(0);
-                }
-                if (_primaryElement.IsAir)
-                {
-                    _primaryElement = ModContent.GetModItem(ModContent.ItemType<BasicElement>()).Item.Clone();
-                }
-                return _primaryElement;
-            }
-            set
-            {
-                _primaryElement = value;
-            }
-        }
-
-        public Item[] equippedEnchantments
-        {
-            get
-            {
-                if (_equippedEnchantments == null)
-                {
-                    _equippedEnchantments = new Item[GetNormalSlotCount() + GetTimedSlotCount()];
-                    for (int i = 0; i < _equippedEnchantments.Length; i++)
-                    {
-                        _equippedEnchantments[i] = new Item();
-                        _equippedEnchantments[i].SetDefaults(0);
-                    }
-                }
-
-                return _equippedEnchantments;
-            }
-            set
-            {
-                _equippedEnchantments = value;
-            }
-        }
-
-        public override void SetDefaults()
+        //Enchantment Attributes
+        public Item primaryElement;
+        public List<Item> normalEnchantments;
+        public List<Item> timedEnchantments;
+        public int normalSlotCount;
+        public int timedSlotCount;
+        //Seal this so we don't accidentally override the base functionality
+        public sealed override void SetDefaults()
         {
             base.SetDefaults();
             Item.damage = 18;
@@ -94,17 +53,28 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Item.autoReuse = true;
             TrailLength = 16;
             Size = 16;
-
-            //Randomize trail values
-            int seed = WorldGen._genRandSeed;
-            Random = new UnifiedRandom(seed);
-            TrailLength = Random.Next(16, 32);
-
-
+      
             Item.shoot = ModContent.ProjectileType<AdvancedMagicStaffHold>();
             Item.shootSpeed = 15;
             Item.channel = true;
             Item.autoReuse = false;
+            SetWandDefaults();
+            SetDefaults2();
+        }
+
+        private void SetWandDefaults()
+        {
+            primaryElement = new Item();
+            primaryElement.SetDefaults(0);
+            normalEnchantments = new List<Item>();
+            timedEnchantments = new List<Item>();
+            normalSlotCount = 3;
+            timedSlotCount = 4;
+        }
+
+        public virtual void SetDefaults2()
+        {
+
         }
         public override bool CanUseItem(Player player)
         {
@@ -113,6 +83,22 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public virtual void ModifyElementPreferences(List<int> elements)
         {
 
+        }
+
+        public Item[] GetEquippedEnchantments(Player player)
+        {
+            List<Item> equippedEnchantments = new List<Item>();
+            int normalEnchantmentCount = GetCombinedNormalSlotCount(player);
+            int timedEnchantmentCount = GetCombinedTimedSlotCount(player);
+            for(int n = 0; n < normalEnchantmentCount && n < normalEnchantments.Count; n++)
+            {
+                equippedEnchantments.Add(normalEnchantments[n]);
+            }
+            for (int n = 0; n < timedEnchantmentCount && n < timedEnchantments.Count; n++)
+            {
+                equippedEnchantments.Add(timedEnchantments[n]);
+            }
+            return equippedEnchantments.ToArray();
         }
 
         public bool IsMatchingPreference()
@@ -139,24 +125,46 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void NetSend(BinaryWriter writer)
         {
             base.NetSend(writer);
-            writer.Write(primaryElement.type);
-            writer.Write(equippedEnchantments.Length);
-            for (int i = 0; i < equippedEnchantments.Length; i++)
+            ItemIO.Send(primaryElement, writer);
+            writer.Write(normalEnchantments.Count);
+            for (int i = 0; i < normalEnchantments.Count; i++)
             {
-                writer.Write(equippedEnchantments[i].type);
+                ItemIO.Send(normalEnchantments[i], writer);
             }
+            writer.Write(timedEnchantments.Count);
+            for (int i = 0; i < timedEnchantments.Count; i++)
+            {
+                ItemIO.Send(timedEnchantments[i], writer);
+            }
+
         }
 
         public override void NetReceive(BinaryReader reader)
         {
             base.NetReceive(reader);
-            int primaryElementType = reader.ReadInt32();
-            primaryElement = new Item(primaryElementType);
+            primaryElement = ItemIO.Receive(reader);
             int length = reader.ReadInt32();
+            while (normalEnchantments.Count <= length)
+            {
+                Item air = new Item();
+                air.SetDefaults(0);
+                normalEnchantments.Add(air);
+            }
             for (int i = 0; i < length; i++)
             {
-                int enchantmentType = reader.ReadInt32();
-                equippedEnchantments[i] = new Item(enchantmentType);
+                normalEnchantments[i] = ItemIO.Receive(reader);
+            }
+
+            length = reader.ReadInt32();
+            while (timedEnchantments.Count <= length)
+            {
+                Item air = new Item();
+                air.SetDefaults(0);
+                timedEnchantments.Add(air);
+            }
+            for (int i = 0; i < length; i++)
+            {
+                timedEnchantments[i] = ItemIO.Receive(reader);
             }
         }
 
@@ -164,9 +172,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             base.ModifyWeaponDamage(player, ref damage);
             float damageModifier = 1f;
-            for (int i = 0; i < equippedEnchantments.Length; i++)
+            for (int i = 0; i < normalEnchantments.Count; i++)
             {
-                Item item = equippedEnchantments[i];
+                Item item = normalEnchantments[i];
                 if (item.ModItem is BaseEnchantment enchantment)
                 {
                     //base 5% damage buff per element
@@ -176,6 +184,22 @@ namespace Stellamod.Content.Items.MoonlightMagic
                         if (element.IsSynergizingWith(element.Type))
                         {
                              damageModifier += 0.05f;
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < timedEnchantments.Count; i++)
+            {
+                Item item = timedEnchantments[i];
+                if (item.ModItem is BaseEnchantment enchantment)
+                {
+                    //base 5% damage buff per element
+                    damageModifier += 0.05f;
+                    if (primaryElement.ModItem is BaseElement element)
+                    {
+                        if (element.IsSynergizingWith(element.Type))
+                        {
+                            damageModifier += 0.05f;
                         }
                     }
                 }
@@ -194,9 +218,17 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void ModifyManaCost(Player player, ref float reduce, ref float mult)
         {
             base.ModifyManaCost(player, ref reduce, ref mult);
-            for (int i = 0; i < equippedEnchantments.Length; i++)
+            for (int i = 0; i < normalEnchantments.Count; i++)
             {
-                Item item = equippedEnchantments[i];
+                Item item = normalEnchantments[i];
+                if (item.ModItem is BaseEnchantment enchantment)
+                {
+                    mult += enchantment.GetStaffManaModifier();
+                }
+            }
+            for (int i = 0; i < timedEnchantments.Count; i++)
+            {
+                Item item = timedEnchantments[i];
                 if (item.ModItem is BaseEnchantment enchantment)
                 {
                     mult += enchantment.GetStaffManaModifier();
@@ -204,25 +236,22 @@ namespace Stellamod.Content.Items.MoonlightMagic
             }
         }
 
-        public override void PreReforge()
+        public override ModItem Clone(Item newEntity)
         {
-            base.PreReforge();
-
-            _preReforgeElement = primaryElement.Clone();
-            _preReforgeEnchants = new Item[equippedEnchantments.Length];
-            for (int i = 0; i < _preReforgeEnchants.Length; i++)
+            ModItem clone = base.Clone(newEntity);
+            AbstractMagicWand staff = clone as AbstractMagicWand;
+            staff.normalEnchantments = new List<Item>();
+            for(int i = 0; i < normalEnchantments.Count; i++)
             {
-                _preReforgeEnchants[i] = equippedEnchantments[i].Clone();
+                staff.normalEnchantments.Add(normalEnchantments[i].Clone());
             }
-        }
-
-        public override void PostReforge()
-        {
-            base.PostReforge();
-
-            primaryElement = _preReforgeElement;
-            equippedEnchantments = _preReforgeEnchants;
-
+            staff.timedEnchantments = new List<Item>();
+            for (int i = 0; i < timedEnchantments.Count; i++)
+            {
+                staff.timedEnchantments.Add(timedEnchantments[i].Clone());
+            }
+            staff.primaryElement = primaryElement.Clone();
+            return staff;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -266,25 +295,36 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 tooltips.Add(tooltipLine);
             }
 
-            for (int i = 0; i < equippedEnchantments.Length; i++)
+            for (int i = 0; i < normalEnchantments.Count; i++)
             {
-                var item = equippedEnchantments[i];
+                var item = normalEnchantments[i];
                 if (item.ModItem is BaseEnchantment enchantment)
                 {
                     tooltipLine = new TooltipLine(Mod, $"MoonMagicEnchant_{enchantment.Texture}_{i}", enchantment.DisplayName.Value);
                     tooltips.Add(tooltipLine);
                 }
             }
+            for (int i = 0; i < timedEnchantments.Count; i++)
+            {
+                var item = timedEnchantments[i];
+                if (item.ModItem is BaseEnchantment enchantment)
+                {
+                    tooltipLine = new TooltipLine(Mod, $"MoonMagicEnchant_{enchantment.Texture}_{i+normalEnchantments.Count}", enchantment.DisplayName.Value);
+                    tooltips.Add(tooltipLine);
+                }
+            }
         }
 
-        public virtual int GetNormalSlotCount()
+        public int GetCombinedNormalSlotCount(Player player)
         {
-            return 5;
+            ArmorStatsPlayer armorStats = player.GetModPlayer<ArmorStatsPlayer>();
+            return normalSlotCount + armorStats.wandNormalEnchantmentSlots;
         }
 
-        public virtual int GetTimedSlotCount()
+        public int GetCombinedTimedSlotCount(Player player)
         {
-            return 2;
+            ArmorStatsPlayer armorStats = player.GetModPlayer<ArmorStatsPlayer>();
+            return timedSlotCount + armorStats.wandTimerEnchantmentSlots;
         }
 
         public override bool CanRightClick()
@@ -297,8 +337,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void RightClick(Player player)
         {
             base.RightClick(player);
-            ModContent.GetInstance<MagicUISystem>().OpenUI(Item.Clone().ModItem as BaseStaff);
-
+            ModContent.GetInstance<MagicUISystem>().OpenUI(Item.Clone().ModItem as AbstractMagicWand);
             Item.SetDefaults(0); 
         }
 
@@ -306,39 +345,39 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             primaryElement = item;
         }
+
         public Item GetElement()
         {
+            if (primaryElement.IsAir)
+                return ModContent.GetInstance<BasicElement>().Item;
             return primaryElement;
         }
-        public void SetEnchantmentAtIndex(Item item, int index)
+
+        public void SetEnchantment(Item item, int index, bool isTimedSlot)
         {
-            if (equippedEnchantments.Length > index)
+            List<Item> itemList = isTimedSlot ? ref timedEnchantments : ref normalEnchantments;
+            while(itemList.Count <= index)
             {
-                equippedEnchantments[index] = item;
+                Item air = new Item();
+                air.SetDefaults(0);
+                itemList.Add(air);
             }
+            itemList[index] = item;
         }
 
-        public Item GetEnchantmentAtIndex(int index)
+        public Item GetEnchantment(int index, bool isTimedSlot)
         {
-            if (equippedEnchantments.Length > index)
+            List<Item> itemList = isTimedSlot ? ref timedEnchantments : ref normalEnchantments;
+            if (itemList.Count > index)
             {
-                Item item = equippedEnchantments[index];
-                if (item == null)
-                {
-                    Item airItem = new Item();
-                    airItem.SetDefaults(0);
-                    equippedEnchantments[index] = airItem;
-                    return airItem;
-                }
-                else
-                {
-                    return item;
-                }
+                Item item = itemList[index];
+                return item;
             }
             Item airItem2 = new Item();
             airItem2.SetDefaults(0);
             return airItem2;
         }
+
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             if (primaryElement.ModItem is BaseElement element)
@@ -346,9 +385,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 element.SpecialInventoryDraw(Item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
             }
 
-            for (int i = 0; i < equippedEnchantments.Length; i++)
+            for (int i = 0; i < normalEnchantments.Count; i++)
             {
-                var enchant = equippedEnchantments[i];
+                var enchant = normalEnchantments[i];
                 if (enchant.ModItem is BaseEnchantment enchantment)
                 {
                     enchantment.SpecialInventoryDraw(Item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
@@ -360,49 +399,26 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);
-            tag["itemCount"] = equippedEnchantments.Length;
-            if (primaryElement != null)
-                tag["element"] = primaryElement;
-            for (int i = 0; i < equippedEnchantments.Length; i++)
-            {
-                var enchantment = equippedEnchantments[i];
-                if (enchantment == null)
-                    continue;
-                tag[$"enchantment_{i}"] = enchantment;
-            }
+            tag["element"] = primaryElement;
+            tag["enchantments"] = normalEnchantments;
+            tag["timedenchantments"] = timedEnchantments;
         }
 
         public override void LoadData(TagCompound tag)
         {
             base.LoadData(tag);
-            if (tag.ContainsKey("element"))
-            {
-                var element = tag.Get<Item>("element");
-                primaryElement = element;
-            }
-
-            if (tag.ContainsKey("itemCount"))
-            {
-                int itemCount = tag.GetInt("itemCount");
-                equippedEnchantments = new Item[itemCount];
-                for (int i = 0; i < itemCount; i++)
-                {
-                    if (tag.ContainsKey($"enchantment_{i}"))
-                    {
-                        var enchantment = tag.Get<Item>($"enchantment_{i}");
-                        equippedEnchantments[i] = enchantment;
-                    }
-                }
-            }
+            primaryElement = tag.Get<Item>("element");
+            normalEnchantments = tag.Get<List<Item>>("enchantments");
+            timedEnchantments = tag.Get<List<Item>>("timedEnchantments");
         }
 
         public void RandomizeEnchantments()
         {
-            for(int i = 0; i < equippedEnchantments.Length; i++)
+            for(int i = 0; i < normalEnchantments.Count; i++)
             {
                 var enchantmentsToSpawn = BaseEnchantment.AllEnchantments;
                 BaseEnchantment enchantmentToSwapTo = enchantmentsToSpawn[Main.rand.Next(0, enchantmentsToSpawn.Length)];
-                equippedEnchantments[i] = enchantmentToSwapTo.Item;
+                normalEnchantments[i] = enchantmentToSwapTo.Item;
             }
         }
     }

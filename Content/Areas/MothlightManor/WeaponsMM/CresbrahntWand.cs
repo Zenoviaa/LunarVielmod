@@ -10,24 +10,16 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.MothlightManor.WeaponsMM
 {
 
-    public class CresbrahntWand : BaseStaff
+    public class CresbrahntWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Form = FormRegistry.Sword.Value;
             Item.damage = 1000;
             Item.mana = 45;
-        }
-
-        public override int GetNormalSlotCount()
-        {
-            return 7;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 6;
+            normalSlotCount = 7;
+            timedSlotCount = 6;
         }
 
         public override void ModifyElementPreferences(List<int> elements)

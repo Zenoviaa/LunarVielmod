@@ -34,7 +34,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
 
 
-    public class SolMothMinionProj : KillableMinion
+    public class SolMothMinionProj : AbstractBellSummon
     {
         private Player Owner => Main.player[Projectile.owner];
         private ref float Timer => ref Projectile.ai[0];

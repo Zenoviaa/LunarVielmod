@@ -177,9 +177,6 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             if (Timer > 35)
             {
                 _lightningPower = MathHelper.Lerp(_lightningPower, 10, 0.1f);
-
-
-
             }
 
             if (Timer == 42)
@@ -248,7 +245,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
 
         public override bool? CanDamage()
         {
-            return Timer > 30;
+            return Timer < 30;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

@@ -34,7 +34,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
     }
 
 
-    public class WillOWispMinionProj : KillableMinion
+    public class WillOWispMinionProj : AbstractBellSummon
     {
         private static int _index;
         private float _scale;

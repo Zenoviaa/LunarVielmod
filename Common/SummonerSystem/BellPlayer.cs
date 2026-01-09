@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.ArmorRework;
 using System;
 using System.Collections.Generic;
 
@@ -39,12 +40,33 @@ namespace Stellamod.Common.SummonerSystem
                 if (bellMinion.isBellMinion)
                     baseTime += bellMinion.addedCastingTime;
             }
+            baseTime *= 1.0f - Player.GetModPlayer<ArmorStatsPlayer>().summonCastTime;
             return baseTime;
         }
+        private Item _guardian;
+        public Item Guardian
+        {
+            get
+            {
+                if (_guardian == null)
+                {
+                    _guardian = new Item();
+                    _guardian.SetDefaults(0);
+                }
+                return _guardian;
+   
+            }
+            set
+            {
+                _guardian = value;
+            }
+        }
+
         public bool isSummoning;
         public bool hasBellMinions;
         public float summonRatio => castTimer / GetCastingTime();
         public float standDamageBonus;
+       
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -67,7 +89,7 @@ namespace Stellamod.Common.SummonerSystem
             {
                 if (proj.owner != Player.whoAmI)
                     continue;
-                if (proj.ModProjectile is KillableMinion)
+                if (proj.ModProjectile is AbstractBellSummon)
                     hasBellMinions = true;
             }
             isSummoning = Player.HasBuff<BellSummoning>() && !Player.HasBuff<BellExhaust>();
@@ -123,9 +145,13 @@ namespace Stellamod.Common.SummonerSystem
                 int newDamage = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(minionItem.damage);
                 Vector2 startpos = Player.Bottom - new Vector2(0, 50);
                 startpos.X += Main.rand.NextFloat(-100, 100);
+
+                float health = minionItem.GetGlobalItem<BellMinionGlobalItem>().health;
+                ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
+                health *= 1.0f + statsPlayer.minionSummonHealth;
                 Projectile.NewProjectile(Player.GetSource_FromThis(), startpos, Vector2.Zero,
                     ModContent.ProjectileType<SummoningBeam>(), newDamage, minionItem.knockBack, Player.whoAmI,
-                    ai1: minionItem.shoot);
+                    ai1: minionItem.shoot, ai2: health);
             }
 
             Player.AddBuff(ModContent.BuffType<BellExhaust>(), 600);
@@ -133,6 +159,7 @@ namespace Stellamod.Common.SummonerSystem
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);
+            tag["guardian"] = ItemIO.Save(Guardian);
             tag["minions"] = _minions;
             tag["unlockedminions"] = _unlockedminions;
         }
@@ -145,6 +172,7 @@ namespace Stellamod.Common.SummonerSystem
 
             var u = tag.Get<List<Item>>("unlockedminions");
             _unlockedminions = u;
+            Guardian = ItemIO.Load(tag.Get<TagCompound>("guardian"));
             ManageUnlockedMinions();
         }
 

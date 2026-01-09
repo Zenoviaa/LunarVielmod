@@ -89,11 +89,18 @@ Common: {
 		Take this back to the [c/FFA500:Magic Cauldron] at Witch Town to use it!
 		'''
 	ExpandableTooltipHelp: Hold {0} for more about this item type!
+	MagicArtifact: Magic Artifact
+	MagicArtifactHelp:
+		'''
+		This is a magical artifact, which have all sorts of cool effects! 
+		Who knows what they might do?
+		'''
+	MinionLifetime: "{0} seconds of life"
 	RuinMedal: Ruin Medals
 	NoHitCrystal: No-Hit Jewel
 	Ereshstyl: Ereshstyl
 	Coins: Coins
-	Back: Back,
+	Back: Back
 	BellMinionHelp:
 		'''
 		Put these into your summoning bell, when the bell is used, they'll all come out to help you!
@@ -105,6 +112,45 @@ Common: {
 		This item is a [c/FFA500:brewing material], which is a key crafting ingredient for all cauldron items!
 		Take this back to the [c/FFA500:Magic Cauldron] at Witch Town to use it!
 		'''
+	StatAddition: "{1} increased {0}"
+	StatSubtraction: "{1} decreased {0}"
+	StatAdditionAlt: Increases {0} by {1}
+	StatSubtractionAlt: Decreases {0} by {1}
+	StatEndurance: endurance
+	StatBossEndurance: boss endurance
+	StatEnemyEndurance: enemy endurance
+	StatDefense: defense
+	StatMaxHealth: max life
+	StatCriticalStrikeChance: critical strike chance
+	StatCriticalStrikeDamage: critical strike damage
+	StatStamina: stamina
+	StatAccessorySlots: accessory slots
+	StatInsourceSlots: insource slots
+	StatInventorySlots: inventory slots
+	StatInsourceTime: insource cooldown time
+	StatMovementSpeed: movement speed
+	StatMeleeAttackSpeed: melee attack speed
+	StatMeleeDamage: melee damage
+	StatArmorPenetration: armor penetration
+	StatAggressiveness: aggressiveness
+	StatBowChargeTime: bow charge time
+	StatRangedDamage: ranged damage
+	StatPiercing: ranged piercing
+	StatGunAmmoAmount: gun magazine capacity
+	StatStealthiness: stealthiness
+	StatSummonCastTime: bell summoning time
+	StatMinionDamage: minion damage
+	StatMinionSlots: minion slots
+	StatMainMinionDamage: guardian damage
+	StatMainMinionHealth: guardian health
+	StatMinionHealth: minion health
+	StatMinionAggressiveness: minion aggressiveness
+	StatArtifactManaReduction: artifact mana reduction
+	StatWandCastTime: wand cast time
+	StatMaxMana: max mana
+	StatMagicDamage: magic damage
+	StatWandNormalEnchantmentSlots: wand enchantment slots
+	StatWandTimerEnchantmentSlots: wand timer slots
 }
 
 SetBonus: {
@@ -10113,4 +10159,74 @@ BlunderofBlunders: {
 ArtifactoftheFlies: {
 	DisplayName: Artifact of the Flies
 	Tooltip: Command an army of flies to hover around your mouse and attack and rip apart whatever is around it!
+}
+
+PaintingBeachItem: {
+	DisplayName: Painting Beach Item
+	Tooltip: ""
+}
+
+PaintingCityWallItem: {
+	DisplayName: Painting City Wall Item
+	Tooltip: ""
+}
+
+PaintingComputerItem: {
+	DisplayName: Painting Computer Item
+	Tooltip: ""
+}
+
+PaintingSnowForestItem: {
+	DisplayName: Painting Snow Forest Item
+	Tooltip: ""
+}
+
+PaintingSunsetItem: {
+	DisplayName: Painting Sunset Item
+	Tooltip: ""
+}
+
+FallenEyes: {
+	DisplayName: Fallen Eyes
+	Tooltip: ""
+}
+
+PunkerElevatorLeverItem: {
+	Tooltip: ""
+	DisplayName: Punker Elevator Lever Item
+}
+
+PunkerElevatorCall: {
+	Tooltip: ""
+	DisplayName: Punker Elevator Call
+}
+
+JacklerPants: {
+	Tooltip: ""
+	DisplayName: Jackler Pants
+}
+
+JacklerHat: {
+	Tooltip: ""
+	DisplayName: Jackler Hat
+}
+
+JacklerCoat: {
+	Tooltip: ""
+	DisplayName: Jackler Coat
+}
+
+CauldrMothCoat: {
+	DisplayName: Cauldr Moth Coat
+	Tooltip: ""
+}
+
+CauldrMothHood: {
+	DisplayName: Cauldr Moth Hood
+	Tooltip: ""
+}
+
+CauldrMothLegs: {
+	DisplayName: Cauldr Moth Legs
+	Tooltip: ""
 }

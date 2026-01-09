@@ -34,7 +34,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         }
     }
 
-    public class MushroomStaveMinionProj : KillableMinion
+    public class MushroomStaveMinionProj : AbstractBellSummon
     {
         public override void SetStaticDefaults()
         {

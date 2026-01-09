@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Items.MoonlightMagic;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -23,6 +23,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         public override void SetDefaults()
         {
             base.SetDefaults();
+            Item.DefaultToArtifact();
             Item.DamageType = DamageClass.Magic;
             Item.damage = 20;
             Item.mana = 8;
@@ -82,7 +83,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 CurrentOrigin = Projectile.Center;
                 SoundStyle sound = AssetRegistry.Sounds.Jiitas.JiitasLightSpin;
@@ -110,7 +111,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
 
 
             CurrentOrigin = Vector2.Lerp(CurrentOrigin, Origin, 0.1f);
-            float xRadius = MathF.Sin(Timer * 0.05f) * 64 * RandSize ;
+            float xRadius = MathF.Sin(Timer * 0.05f) * 64 * RandSize;
             float yRadius = MathF.Cos(Timer * 0.05f) * 32 * RandSize;
             Vector2 ovalOffset = new Vector2(xRadius, yRadius);
             ovalOffset = ovalOffset.RotatedBy(Rotation);

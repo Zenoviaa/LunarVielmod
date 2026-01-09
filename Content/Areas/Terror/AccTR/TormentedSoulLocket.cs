@@ -34,7 +34,7 @@ namespace Stellamod.Content.Areas.Terror.AccTR
             Player owner = Main.player[projectile.owner];
             if (owner.GetModPlayer<TormentedSoulLocketPlayer>().soulTimer <= 0)
                 return;
-            if (projectile.ModProjectile is not KillableMinion)
+            if (projectile.ModProjectile is not AbstractBellSummon)
                 return;
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Suckler"));
             Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, Vector2.Zero, ModContent.ProjectileType<KaBoomKaev>(),

@@ -15,6 +15,7 @@ namespace Stellamod.Common.SummonerSystem
         private Vector2 _scale;
         private ref float Timer => ref Projectile.ai[0];
         private int MinionToSummon => (int)Projectile.ai[1];
+        private ref float Lifetime => ref Projectile.ai[2];
         private Player Owner => Main.player[Projectile.owner];
         public override void SetDefaults()
         {
@@ -43,9 +44,11 @@ namespace Stellamod.Common.SummonerSystem
             {
                 if (Main.myPlayer == Projectile.owner)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                    Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         MinionToSummon, Projectile.damage, Projectile.knockBack, Projectile.owner);
-                    Console.WriteLine(MinionToSummon);
+                    AbstractBellSummon bellSummon = p.ModProjectile as AbstractBellSummon;
+                    bellSummon.lifetime = Lifetime;
+                    p.netUpdate = true;
                     Owner.AddBuff(ModContent.BuffType<BellBlessing>(), 25);
                 }
                 SoundStyle cast = new SoundStyle("Stellamod/Assets/Sounds/Aurora");

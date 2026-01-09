@@ -46,7 +46,7 @@ namespace Stellamod.Common.MagicSystem.UI
         public bool Valid(Item item)
         {
 
-            if (item.ModItem is BaseStaff staff)
+            if (item.ModItem is AbstractMagicWand staff)
                 return true;
 
             //If we want to replace with air, yeah.
@@ -93,7 +93,7 @@ namespace Stellamod.Common.MagicSystem.UI
                     {
                         magicUISystem.EmptyUI();
                     }
-                    else if (Item.ModItem is BaseStaff staff)
+                    else if (Item.ModItem is AbstractMagicWand staff)
                     {
                         magicUISystem.OpenUI(staff);
                     }

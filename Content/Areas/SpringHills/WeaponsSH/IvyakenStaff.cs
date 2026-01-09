@@ -30,7 +30,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         }
     }
 
-    public class IvyakenMinionProj : KillableMinion
+    public class IvyakenMinionProj : AbstractBellSummon
     {
         Player Owner => Main.player[Projectile.owner];
         ref float Timer => ref Projectile.ai[0];

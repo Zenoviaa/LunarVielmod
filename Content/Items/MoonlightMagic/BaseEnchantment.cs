@@ -144,18 +144,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             return true;
         }
-        public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-            base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            BaseElement element = ModContent.GetModItem(GetElementType()) as BaseElement;
-            if (element == null)
-                return;
 
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, element.GetElementColor());
-        }
-
-
-        public virtual void DrawTextShader(SpriteBatch spriteBatch, Item item, DrawableTooltipLine line, ref int yOffset) { }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
             DrawHelper.DrawGlow2InWorld(Item, spriteBatch, ref rotation, ref scale, whoAmI);

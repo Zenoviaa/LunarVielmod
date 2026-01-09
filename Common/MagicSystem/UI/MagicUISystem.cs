@@ -27,7 +27,7 @@ namespace Stellamod.Common.MagicSystem.UI
         }
 
 
-        public void OpenUI(BaseStaff staff)
+        public void OpenUI(AbstractMagicWand staff)
         {
             //Create a new editing context
             StaffEditingContext ctx = new StaffEditingContext(staff);
@@ -42,7 +42,7 @@ namespace Stellamod.Common.MagicSystem.UI
         {
             //throw new NotImplementedException();
             Item item = new Item(ModContent.ItemType<NoStaff>());
-            var noStaff = item.ModItem as BaseStaff;
+            var noStaff = item.ModItem as AbstractMagicWand;
             StaffEditingContext ctx = new StaffEditingContext(noStaff);
             EnchantmentMenu menu = enchantmentMenuUI.enchantmentMenu;
             menu.UseContext(ctx);

@@ -7,24 +7,16 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Quests.Rewards
 {
 
-    public class JourneysBeginningWand : BaseStaff
+    public class JourneysBeginningWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Form = FormRegistry.SmallKnife.Value;
             Item.damage = 160;
             Item.mana = 34;
-        }
-
-        public override int GetNormalSlotCount()
-        {
-            return 3;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 2;
+            normalSlotCount = 3;
+            timedSlotCount = 2;
         }
 
         public override void ModifyElementPreferences(List<int> elements)

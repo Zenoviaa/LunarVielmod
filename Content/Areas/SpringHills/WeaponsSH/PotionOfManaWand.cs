@@ -31,7 +31,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         }
     }
 
-    public class ManaWandMinionProj : KillableMinion
+    public class ManaWandMinionProj : AbstractBellSummon
     {
         private ref float Heart => ref Projectile.ai[0];
         private Player Owner => Main.player[Projectile.owner];

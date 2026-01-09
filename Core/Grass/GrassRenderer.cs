@@ -125,7 +125,7 @@ namespace Stellamod.Core.Grass
             _noise.SetSeed(1337);
             _noise.SetFrequency(0.2f);
             //Look for grasses
-            float fluff = 32;
+            float fluff = 200;
 
             Vector2 halfScreenSize = new Vector2(Main.screenWidth + fluff, Main.screenHeight + fluff) * 0.5f;
             Point startTile = (Main.Camera.Center-halfScreenSize).ToTileCoordinates();

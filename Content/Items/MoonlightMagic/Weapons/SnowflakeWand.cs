@@ -2,27 +2,18 @@
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class SnowflakeWand : BaseStaff
+    public class SnowflakeWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Item.damage = 12;
             Item.shootSpeed = 5;
             Size = 32;
             TrailLength = 64;
             Form = FormRegistry.FourPointedStar.Value;
-        }
-
-
-        public override int GetNormalSlotCount()
-        {
-            return 2;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 1;
+            normalSlotCount = 2;
+            timedSlotCount = 1;
         }
     }
 }

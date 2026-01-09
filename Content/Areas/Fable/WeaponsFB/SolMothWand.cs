@@ -6,28 +6,21 @@ using Terraria;
 
 namespace Stellamod.Content.Areas.Fable.WeaponsFB
 {
-    public class SolMothWand : BaseStaff
+    public class SolMothWand : AbstractMagicWand
     {
-        public override void SetDefaults()
+        public override void SetDefaults2()
         {
-            base.SetDefaults();
+            base.SetDefaults2();
             Item.damage = 14;
             Item.shootSpeed = 10;
             Item.useTime = 18;
             Item.useAnimation = 36;
             Size = 8;
             TrailLength = 16;
+            normalSlotCount = 1;
+            timedSlotCount = 2;
         }
 
-        public override int GetNormalSlotCount()
-        {
-            return 1;
-        }
-
-        public override int GetTimedSlotCount()
-        {
-            return 2;
-        }
         public override void AddRecipes()
         {
             base.AddRecipes();
