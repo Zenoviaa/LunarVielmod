@@ -31,11 +31,13 @@ namespace Stellamod.Projectiles.Bow
             if (Timer == 1)
             {
                 Projectile.rotation = Main.rand.NextFloat(0f, 1f);
-                FlakeParticle.Spawn(Projectile.Center, Vector2.Zero);
+                FlakeParticle fp = FlakeParticle.Spawn(Projectile.Center, Vector2.Zero);
+                fp.gravity = 0f;
                 for(float n =0; n < 4; n++)
                 {
                     SmokeParticle sp = Particle<SmokeParticle>.Spawn(Projectile.Center, -Vector2.UnitY.RotatedByRandom(4f) * Main.rand.NextFloat(0.5f, 3f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1.5f));
                     sp.initialColor = Color.White * 0.4f;
+
                 }
             }
 
