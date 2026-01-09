@@ -5,6 +5,7 @@ using Stellamod.Common.QuestSystem;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.ZTileSystem;
 using System;
+using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -110,9 +111,17 @@ namespace Stellamod.Helpers
         {
             return Language.GetTextValue($"Mods.Stellamod.ZTiles.{item.Name}." + Path);
         }
-        public static string Armor(string key)
+        public static string Armor(Item item, string key)
         {
-            return Language.GetTextValue($"Mods.Stellamod.Armor." + key);
+            return Language.GetTextValue($"Mods.Stellamod.Armor.{item.Name}." + key);
+        }
+        public static string Armor(ModItem item, string key)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.Armor.{item.Name}." + key);
+        }
+        public static string Armor(string key, params object[] args)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.Armor." + key, args);
         }
     }
 }

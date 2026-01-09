@@ -1,1 +1,308 @@
-CauldrMothHood.SetBonus: For every 5 new cauldron items unlocked, you gain 1 defense and 1 health. You also have a cool pot floating behind you!
+None.DisplayName: ""
+
+Sharpening: {
+	DisplayName: Sharpening
+	Upside: +5 armor penetration
+	Downside: -10 defense
+}
+
+Sturdy: {
+	DisplayName: Sturdy
+	Upside: +5 defense
+	Downside: -7% defense
+}
+
+Alcaric: {
+	DisplayName: Alcaric
+	Upside: +50 max mana
+	Downside: -25 life
+}
+
+Dexterous: {
+	DisplayName: Dexterous
+	Upside: +10% movement speed acceleration
+	Downside: -10% max movement speed
+}
+
+Whispy: {
+	DisplayName: Whispy
+	Upside: +20% max movement speed
+	Downside: -30% run acceleration
+}
+
+Daedious: {
+	DisplayName: Daedious
+	Upside: +2 life regeneration
+	Downside: -20% damage
+}
+
+Hunted: {
+	DisplayName: Hunted
+	Upside: +10% damage
+	Downside:
+		'''
+		-10 defense
+		-20% movement speed
+		-5% critical strike chance
+		'''
+}
+
+Radiant: {
+	DisplayName: Radiant
+	Upside: +10 max life
+	Downside: -5% movement speed
+}
+
+Rocky: {
+	DisplayName: Rocky
+	Upside:
+		'''
+		+10% increased mana regeneration
+		-5% incoming damage
+		'''
+	Downside: -5% damage
+}
+
+Shaded: {
+	DisplayName: Shaded
+	Upside: +20% increased dash distance
+	Downside:
+		'''
+		-5% damage
+		-5% critical strike chance
+		'''
+}
+
+Muted: {
+	DisplayName: Muted
+	Upside:
+		'''
+		+20% critical strike chance
+		+3 defense
+		'''
+	Downside: -20% damage
+}
+
+MageRan: {
+	DisplayName: Mage Ran
+	Upside: +5% magic damage
+	Downside: -10 defense
+}
+
+SwordSpiked: {
+	DisplayName: Sword Spiked
+	Upside:
+		'''
+		+10% melee speed
+		+4% melee damage
+		'''
+	Downside:
+		'''
+		-20% movement speed
+		-20% critical strike chance
+		'''
+}
+
+Necromanced: {
+	DisplayName: Necromanced
+	Upside: +1 max minion
+	Downside:
+		'''
+		-10% summon damage
+		-30% sentry damage
+		-1 sentry
+		'''
+}
+
+RangedHolsting: {
+	DisplayName: Ranged Holsting
+	Upside: +10% ranged damage
+	Downside: -30% attack speed
+}
+
+Vampiric: {
+	DisplayName: Vampiric
+	Upside: +1 lifesteal
+	Downside: +10% incoming damage
+}
+
+RogueThrown: {
+	DisplayName: RogueThrown
+	Upside: +12% throwing damage
+	Downside:
+		'''
+		+18% incoming damage
+		-40 max life
+		-2 life regeneration
+		'''
+}
+
+Gilded: {
+	DisplayName: Gilded
+	Upside: +25% dash distance
+	Downside: +18% damage
+}
+
+Speeditrous: {
+	DisplayName: Speeditrous
+	Upside: +1 dash
+	Downside: -10 life
+}
+
+Scripted: {
+	DisplayName: Scripted
+	Upside: +10% faster wand charge speed
+	Downside: -30 max mana
+}
+
+Brewing: {
+	DisplayName: Brewing
+	Upside: +1 insource slot
+	Downside: +10 seconds insource cooldown
+}
+
+Harnessing: {
+	DisplayName: Harnessing
+	Upside: +5% damage
+	Downside: -1 insource slot
+}
+
+Reloaded: {
+	DisplayName: Reloaded
+	Upside: +3 ammo in guns
+	Downside: -3% Ranged Damage
+}
+
+Illurias: {
+	DisplayName: Illurias
+	Upside:
+		'''
+		+6 defense
+		+5 max life
+		'''
+	Downside: -7% damage
+}
+
+Sentricus: {
+	DisplayName: Sentricus
+	Upside: +2 max sentries
+	Downside: -1 max minion
+}
+
+Reducting: {
+	DisplayName: Reducting
+	Upside: -10% incoming damage
+	Downside: -15 max life
+}
+
+Flying: {
+	DisplayName: Flying
+	Upside: +15% increased flight time
+	Downside: ""
+}
+
+Berserker: {
+	DisplayName: Berserker
+	Upside: +5% increased attack speed
+	Downside:
+		'''
+		-15 max life
+		-3 defense
+		'''
+}
+
+Acrobatic: {
+	DisplayName: Acrobatic
+	Upside:
+		'''
+		+10% increased jump speed
+		+10% grounded acceleration
+		'''
+	Downside: -10% damage
+}
+
+Feathered: {
+	DisplayName: Feathered
+	Upside:
+		'''
+		-5% gravity
+		+5% run acceleration
+		'''
+	Downside: -5 defense
+}
+
+Shattered: {
+	DisplayName: Shattered
+	Upside: ""
+	Downside:
+		'''
+		-15 defense
+		-10 max life
+		'''
+}
+
+Clerical: {
+	DisplayName: Clerical
+	Upside:
+		'''
+		+10% more from healing sources
+		-2 seconds insource time
+		'''
+	Downside: -5 defense
+}
+
+Summoned: {
+	DisplayName: Summoned
+	Upside: +1 max minion
+	Downside: +15% incoming damage
+}
+
+Hearty: {
+	DisplayName: Hearty
+	Upside: +5 max life
+}
+
+Stalled: {
+	DisplayName: Stalled
+	Upside: -4% incoming damage
+}
+
+Grimming: {
+	DisplayName: Stalled
+	Upside: +1 life regeneration
+}
+
+Mortified: {
+	DisplayName: Mortified
+	Upside: -5% wand charge time
+}
+
+Hidden: {
+	DisplayName: Hidden
+	Upside: 5% reduced enemy aggro
+}
+
+Flashing: {
+	DisplayName: Flashing
+	Upside: +1 max stamina
+}
+
+Powding: {
+	DisplayName: Powding
+	Upside: 10% increased igniter card velocity
+}
+
+Exploding: {
+	DisplayName: Powding
+	Upside: 5% increased igniter card damage
+}
+
+Demolighting: {
+	DisplayName: Demolighting
+	Upside: +2 ammo in gun clips
+}
+
+Slashing: {
+	DisplayName: Slashing
+	Upside: -6% incoming contact damage
+}

@@ -4,9 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Snow.ArmorsSN;
 using Stellamod.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,6 +15,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
+using TerrariaHooks;
 
 namespace Stellamod.Core.Tooltips
 {
@@ -55,7 +54,7 @@ namespace Stellamod.Core.Tooltips
                 }
             }
             _yOffset += 64;
-   
+
         }
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
@@ -72,7 +71,7 @@ namespace Stellamod.Core.Tooltips
                 IExpandableTooltip expandableTooltip = renderer.ExpandableTooltips[i];
                 expandableTooltip.ModifyExpandableTooltips(item, _expandableLines);
             }
-        
+
             if (_expandableLines.Count > 0)
             {
                 Keys keys = Keys.LeftShift;
@@ -83,8 +82,23 @@ namespace Stellamod.Core.Tooltips
                 if (isExpanded)
                 {
 
-                    if(item.headSlot != -1 || item.bodySlot != -1 || item.legSlot != -1)
+                    if (item.headSlot != -1 || item.bodySlot != -1 || item.legSlot != -1)
                     {
+                        Player player = Main.LocalPlayer;
+                        ArmorSet set = ArmorSetSystem.FindArmorSet(item.type);
+                        ArmorSetSystem.GetArmorSet(set, out Item helm, out Item armor, out Item leggings);
+
+                        TooltipLine setBonusLine = new TooltipLine(Stellamod.Instance, "SetBonus", LangText.Armor("SetBonus", LangText.Armor(helm.ModItem, "SetBonus")));
+                        if (player.head == helm.headSlot && player.body == armor.bodySlot && player.legs == leggings.legSlot)
+                        {
+                            setBonusLine.OverrideColor = Color.Lerp(Color.White, Color.Green, 0.5f);
+                        }
+                        else
+                        {
+                            setBonusLine.OverrideColor = Color.Lerp(Color.White, Color.Black, 0.8f);
+                        }
+                        _expandableLines.Add(setBonusLine);
+
                         renderer.SetArmorTooltipsToDraw(item, _expandableLines, _xOffset, _yOffset);
 
                     }
@@ -93,10 +107,10 @@ namespace Stellamod.Core.Tooltips
                         renderer.SetTooltipsToDraw(_expandableLines, _xOffset, _yOffset);
                     }
                 }
-           
+
             }
 
-      
+
         }
     }
 
@@ -123,7 +137,7 @@ namespace Stellamod.Core.Tooltips
         }
 
         public bool armorDraw;
-      
+
         public IExpandableTooltip[] ExpandableTooltips { get; private set; }
         public float EaseTime => 0.9f;
         public void SetArmorTooltipsToDraw(Item armor, List<TooltipLine> lines, int startingXOffset, int startingYOffset)
@@ -163,7 +177,7 @@ namespace Stellamod.Core.Tooltips
                     delegate
                     {
 
-                       // ExpandableTooltip.DrawArmorPreview(new Vector2(Main.screenWidth, Main.screenHeight) * 0.45f, ModContent.GetInstance<JacklerHat>().Item, ModContent.GetInstance<JacklerCoat>().Item, ModContent.GetInstance<JacklerPants>().Item);
+                        // ExpandableTooltip.DrawArmorPreview(new Vector2(Main.screenWidth, Main.screenHeight) * 0.45f, ModContent.GetInstance<JacklerHat>().Item, ModContent.GetInstance<JacklerCoat>().Item, ModContent.GetInstance<JacklerPants>().Item);
                         if (_lastUpdateUiGameTime != null && _lines != null)
                         {
                             int targetX = Main.mouseX + _startingXOffset;
@@ -185,7 +199,7 @@ namespace Stellamod.Core.Tooltips
                                 ExpandableTooltip.DrawExpandableTooltip(Main.spriteBatch, _lines, x, y, ease, _drawGlass);
                             }
 
-                            if(_timer <= 0)
+                            if (_timer <= 0)
                                 _lines = null;
                         }
                         return true;
@@ -248,7 +262,7 @@ namespace Stellamod.Core.Tooltips
         public static void DrawArmorPreview(Vector2 position, Item helmet, Item armor, Item leggings)
         {
             _player ??= new Player();
- 
+
             _player.armor[0] = helmet;
             _player.armor[1] = armor;
             _player.armor[2] = leggings;
@@ -257,14 +271,8 @@ namespace Stellamod.Core.Tooltips
             _player.body = armor.bodySlot;
             _player.legs = leggings.legSlot;
 
-          
+
             DrawLocalPlayer(_player, position);
-        }
-
-
-        private static void VanillaTooltip(Item item)
-        {
-
         }
 
         public static void DrawArmorTooltip(Item item, SpriteBatch spriteBatch, List<TooltipLine> lines, int X, int Y, float alpha)
@@ -292,7 +300,7 @@ namespace Stellamod.Core.Tooltips
             int height = (int)bgDimensions.Y + num18 + num18 / 2;
             Vector2 topLeftBackground = new Vector2(X - num17, Y - num18);
 
-  
+
             Rectangle bgDrawRect = CalculateBGDrawRect(lines, Main.mouseX, Y, alpha);
             bgDrawRect.X -= bgDrawRect.Width + 4;
 
@@ -303,9 +311,18 @@ namespace Stellamod.Core.Tooltips
 
             //Step. 2 Draw the item stat tooltips
             ArmorStatsPlayer armorStatsPlayer = Main.LocalPlayer.GetModPlayer<ArmorStatsPlayer>();
-            DrawExpandableTooltip(spriteBatch, lines, bgDrawRect.X + 8, bgDrawRect.Y + 4, alpha, false, armorStatsPlayer.RequestIconTexture);
 
             ArmorSetSystem.GetArmorSet(set, out Item helm, out Item armor, out Item leggings);
+
+
+            /*
+            //Lore!!!
+            TooltipLine loreLine = new TooltipLine(Stellamod.Instance, "Lore", LangText.Armor(helm.ModItem, "Lore"));
+          
+            lines.Add(loreLine);*/
+
+            DrawExpandableTooltip(spriteBatch, lines, bgDrawRect.X + 8, bgDrawRect.Y + 4, alpha, false, armorStatsPlayer.RequestIconTexture);
+
             spriteBatch.End();
             spriteBatch.Begin(default, default, Main.graphics.GraphicsDevice.SamplerStates[0], default, Main.Rasterizer, null, Main.UIScaleMatrix);
 
@@ -331,13 +348,13 @@ namespace Stellamod.Core.Tooltips
             ItemSlot.Draw(spriteBatch, ref air, ItemSlot.Context.EquipAccessoryVanity, new Vector2(570, 600), Color.White);
             ItemSlot.Draw(spriteBatch, ref air, ItemSlot.Context.EquipAccessory, new Vector2(600, 600), Color.White);
             */
-            for(float f = 0; f < 4f; f++)
+            for (float f = 0; f < 4f; f++)
             {
                 Color outlineColor = Color.White * alpha;
                 outlineColor *= (int)ExtraMath.Osc(0f, 2f, speed: 3);
                 ItemSlot.DrawItemIcon(item, 0, spriteBatch, topRight + (Vector2.UnitY * 2).RotatedBy(f / 4f * MathHelper.TwoPi), 1, 32, outlineColor);
             }
-     
+
 
             spriteBatch.End();
             spriteBatch.Begin(default, default, Main.graphics.GraphicsDevice.SamplerStates[0], default, Main.Rasterizer, null, Main.UIScaleMatrix);
@@ -416,13 +433,13 @@ namespace Stellamod.Core.Tooltips
             int yOffset = 0;
             int num17 = 14;
             int num18 = 9;
-            if(alpha > 0)
+            if (alpha > 0)
             {
                 int width = (int)zero.X + num17 * 2;
                 int height = (int)zero.Y + num18 + num18 / 2;
-                Utils.DrawInvBG(spriteBatch, new Rectangle(X - num17, Y - num18, (int)(width * alpha),(int)(height * alpha)), new Color(23, 25, 81, 255) * 0.925f * alpha);
+                Utils.DrawInvBG(spriteBatch, new Rectangle(X - num17, Y - num18, (int)(width * alpha), (int)(height * alpha)), new Color(23, 25, 81, 255) * 0.925f * alpha);
             }
-           
+
             for (int k = 0; k < lines.Count; k++)
             {
                 Color black = new Color(num4, num4, num4, num4);
@@ -435,7 +452,7 @@ namespace Stellamod.Core.Tooltips
                 }
 
                 //Draw the icon if it has one
-                if(iconTextureLookup != null) 
+                if (iconTextureLookup != null)
                 {
                     string name = line.Name;
                     Asset<Texture2D> iconTextureAsset = iconTextureLookup(name);
@@ -446,14 +463,14 @@ namespace Stellamod.Core.Tooltips
                     spriteBatch.Draw(iconTextureAsset.Value, drawPosition, null, Color.White, 0, drawOrigin, 1, SpriteEffects.None, 0);
                 }
 
-                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLine.Font, drawableLine.Text, 
+                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLine.Font, drawableLine.Text,
                     new Vector2(X, drawableLine.Y + yOffset), realLineColor * alpha, drawableLine.Rotation, drawableLine.Origin, drawableLine.BaseScale * alpha, drawableLine.MaxWidth, drawableLine.Spread);
                 yOffset += (int)(FontAssets.MouseText.Value.MeasureString(drawableLine.Text).Y);
             }
 
             if (drawGlass)
             {
-               
+
                 Vector2 drawOrigin = _inspectTextureAsset.Size() / 2f;
                 Vector2 drawCenter = new Vector2(X, Y);
                 drawCenter.Y += ExtraMath.Osc(0f, 2f);
