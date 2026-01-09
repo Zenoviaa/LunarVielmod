@@ -108,6 +108,7 @@ namespace Stellamod.Core.Bases
             item.useAnimation = 36;
             item.useStyle = ItemUseStyleID.Swing;
         }
+
         public static void DefaultToArtifact(this Item item)
         {
             ArtifactGlobalItem globalItem = item.GetGlobalItem<ArtifactGlobalItem>();
@@ -115,6 +116,14 @@ namespace Stellamod.Core.Bases
             item.damage = 15;
             item.DamageType = DamageClass.Magic;
             item.mana = 8;
+        }
+
+        public static void DefaultToShield(this Item item, int shieldHoldProjectile)
+        {
+            ShieldGlobalItem globalItem = item.GetGlobalItem<ShieldGlobalItem>();
+            globalItem.isShield = true;
+            item.accessory = true;
+            item.shoot = shieldHoldProjectile;
         }
     }
 }

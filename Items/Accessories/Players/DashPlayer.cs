@@ -119,12 +119,14 @@ namespace Stellamod.Items.Accessories.Players
         public bool ShouldFlicker => DashCountTimer > MaxDashCountTimer / 2f;
 
         public float DashRegenerationBonus;
+        public float DashRegenerationPenalty;
         public float DashVelocityBonus;
         public int ExtraImmunityFramesBonus;
         public override void ResetEffects()
         {
             ExtraImmunityFramesBonus = 0;
             DashRegenerationBonus = 0f;
+            DashRegenerationPenalty = 0f;
             MaxDashCountTimer = 140;
             MaxDashCount = 3;
             DashItem = null;
@@ -295,6 +297,9 @@ namespace Stellamod.Items.Accessories.Players
 
 
                 maxDashCountTimer *= MathHelper.Lerp(1f, 0f, ExtraMath.Saturate(DashRegenerationBonus));
+
+                float add = MaxDashCountTimer * (1.0f + DashRegenerationPenalty);
+                maxDashCountTimer += add;
                 if (DashCountTimer >= maxDashCountTimer)
                 {
                     DashCount++;

@@ -112,6 +112,11 @@ Common: {
 		This item is a [c/FFA500:brewing material], which is a key crafting ingredient for all cauldron items!
 		Take this back to the [c/FFA500:Magic Cauldron] at Witch Town to use it!
 		'''
+	ShieldHelp: 
+		'''
+		This is a [c/:FFA500:shield], which stops enemies from reaching you. Hold it out in front of you!
+		Shields can only be used by [c/:FFA500:melee] players.
+		'''
 	StatAddition: "{1} increased {0}"
 	StatSubtraction: "{1} decreased {0}"
 	StatAdditionAlt: Increases {0} by {1}
@@ -10229,4 +10234,14 @@ CauldrMothHood: {
 CauldrMothLegs: {
 	DisplayName: Cauldr Moth Legs
 	Tooltip: ""
+}
+
+IvynShield: {
+	DisplayName: Ivyn Shield
+	Tooltip:
+		'''
+		30% decreased roll regeneration speed
+		+2 stamina
+		Enemies that touch the shield are vined, sapping away some of their life and slowing them down
+		'''
 }
