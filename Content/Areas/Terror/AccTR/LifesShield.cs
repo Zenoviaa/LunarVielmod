@@ -30,7 +30,7 @@ namespace Stellamod.Content.Areas.Terror.AccTR
    
     public class LifeShieldGlobalNPC : GlobalNPC
     {
-        public override bool InstancePerEntity => base.InstancePerEntity;
+        public override bool InstancePerEntity => true;
         public bool isTouchingShield;
         public override void ResetEffects(NPC npc)
         {
