@@ -891,6 +891,7 @@ namespace Stellamod.Common.SirestiasShop
             this.QuickMouseInteraction();
         }
     }
+ 
 
     public class BackButton : UIPanel
     {

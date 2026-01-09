@@ -31,16 +31,25 @@ namespace Stellamod.Common
             IEnumerable<ModItem> modItemCollection = ModContent.GetContent<ModItem>();
             foreach (var modItem in modItemCollection)
             {
-                if (modItem.Item.TryGetGlobalItem<BellMinionGlobalItem>(out BellMinionGlobalItem item))
+                if (modItem.Item.TryGetGlobalItem(out BellMinionGlobalItem bellMinion))
                 {
-                    if (item.isBellMinion)
+                    if (bellMinion.isBellMinion)
                     {
                         Item itemClone = new Item(modItem.Item.type);
                         //The template instance does not have all the global items and whatnot applied to them
                         minionCollection.Add(itemClone);
                     }
                 }
-                if(modItem is InsourceItem)
+                if (modItem.Item.TryGetGlobalItem(out GuardianGlobalItem guardian))
+                {
+                    if (guardian.isGuardian)
+                    {
+                        Item itemClone = new Item(modItem.Item.type);
+                        //The template instance does not have all the global items and whatnot applied to them
+                        minionCollection.Add(itemClone);
+                    }
+                }
+                if (modItem is InsourceItem)
                 {
                     insourceCollection.Add(modItem.Item);
                 }

@@ -364,7 +364,7 @@ namespace Stellamod.Common.ArmorRework
             AddLineIfDifferent("Aggressiveness", meleeAggressiveness);
             AddLineIfDifferent("BowChargeTime", rangedBowChargeTime);
             AddLineIfDifferentInt("Piercing", rangedPiercing);
-            AddLineIfDifferentInt("GunAmmoAmmount", rangedGunAmmoAmount);
+            AddLineIfDifferentInt("GunAmmoAmount", rangedGunAmmoAmount);
             AddLineIfDifferentInt("Stealthiness", rangedStealthtiness);
             AddLineIfDifferent("SummonCastTime", summonCastTime);
             AddLineIfDifferent("MinionSlots", minionSlots);
@@ -466,7 +466,7 @@ namespace Stellamod.Common.ArmorRework
             Player.statManaMax2 += totalMana;
             Player.GetModPlayer<DashPlayer>().MaxDashCount += stamina;
             Player.GetModPlayer<FlaskPlayer>().maxInsourceCount += insourceSlots;
-
+            Player.maxMinions += minionSlots;
 
         }
     }

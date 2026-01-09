@@ -41,6 +41,25 @@ namespace Stellamod.Common.SummonerSystem
             }
             return baseTime;
         }
+        private Item _guardian;
+        public Item Guardian
+        {
+            get
+            {
+                if (_guardian == null)
+                {
+                    _guardian = new Item();
+                    _guardian.SetDefaults(0);
+                }
+                return _guardian;
+   
+            }
+            set
+            {
+                _guardian = value;
+            }
+        }
+
         public bool isSummoning;
         public bool hasBellMinions;
         public float summonRatio => castTimer / GetCastingTime();
@@ -134,6 +153,7 @@ namespace Stellamod.Common.SummonerSystem
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);
+            tag["guardian"] = ItemIO.Save(Guardian);
             tag["minions"] = _minions;
             tag["unlockedminions"] = _unlockedminions;
         }
@@ -146,6 +166,7 @@ namespace Stellamod.Common.SummonerSystem
 
             var u = tag.Get<List<Item>>("unlockedminions");
             _unlockedminions = u;
+            Guardian = ItemIO.Load(tag.Get<TagCompound>("guardian"));
             ManageUnlockedMinions();
         }
 

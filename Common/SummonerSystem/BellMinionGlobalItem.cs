@@ -47,4 +47,15 @@ namespace Stellamod.Common.SummonerSystem
             }
         }
     }
+    public class GuardianGlobalItem : GlobalItem
+    {
+        public override bool InstancePerEntity => true;
+        public bool isGuardian;
+        public override bool CanUseItem(Item item, Player player)
+        {
+            if (isGuardian)
+                return false;
+            return base.CanUseItem(item, player);
+        }
+    }
 }

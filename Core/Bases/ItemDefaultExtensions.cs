@@ -90,5 +90,22 @@ namespace Stellamod.Core.Bases
             item.useAnimation = 36;
             item.useStyle = ItemUseStyleID.Swing;
         }
+        public static void DefaultToGuardian(this Item item, int projType, float castingTicks = 300)
+        {
+            GuardianGlobalItem globalItem = item.GetGlobalItem<GuardianGlobalItem>();
+            globalItem.isGuardian = true;
+            item.shoot = projType;
+            item.noMelee = true;
+            item.noUseGraphic = true;
+            item.knockBack = 4;
+            item.damage = 15;
+            item.DamageType = DamageClass.Summon;
+            item.rare = ItemRarityID.Green;
+            item.width = 32;
+            item.height = 32;
+            item.useTime = 36;
+            item.useAnimation = 36;
+            item.useStyle = ItemUseStyleID.Swing;
+        }
     }
 }

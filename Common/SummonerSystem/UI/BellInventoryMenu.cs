@@ -81,10 +81,10 @@ namespace Stellamod.Common.SummonerSystem.UI
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
 
-            _scrollbar.Height.Set(Height.Pixels * progress, 0);
+            _scrollbar.Height.Set(Height.Pixels * progress * 0.9f, 0);
             float scrollRatio = _scrollbar.ViewPosition;
 
-            _view.Left.Pixels = 6;
+            _view.Left.Pixels = 20;
             _view.Top.Pixels = 8;
             _view.ViewPosition = scrollRatio;
 
