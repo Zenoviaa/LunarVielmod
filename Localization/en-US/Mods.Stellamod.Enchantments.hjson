@@ -633,3 +633,9 @@ TargetEnchantment:
 	DisplayName: Target Enchantment
 	Tooltip: Your spell will make your minions focus the hit enemy!
 }
+
+TrailingVileEnchantment:
+{
+	DisplayName: Trailing Vile Enchantment
+	Tooltip: Your spell's trail will deal damage!
+}

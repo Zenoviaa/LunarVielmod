@@ -1,29 +1,73 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Trails;
+using Stellamod.Items;
+using Stellamod.Items.Harvesting;
 using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Crossbows.Lasers
+namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 {
-    public class TraumatizingRay : ModProjectile, IPixelPrimitiveDrawer
+    public class TheTraumatizer : BaseGun
+    {
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.damage = 28;
+            Item.DamageType = DamageClass.Ranged;
+            Item.width = 80;
+            Item.height = 38;
+            Item.useTime = 45;
+            Item.useAnimation = 45;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.knockBack = 2;
+            Item.rare = ItemRarityID.LightRed;
+            Item.autoReuse = false;
+            Item.shootSpeed = 30f;
+            Item.shoot = ModContent.ProjectileType<TraumatizingRay>();
+            Item.scale = 1f;
+            Item.noMelee = true; // The projectile will do the damage and not the item
+            Item.value = Item.sellPrice(0, 5, 0, 0);
+            Item.noUseGraphic = true;
+        }
+
+        public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TraumatizingRay>(), damage, knockback, player.whoAmI, 1);
+            return false;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<Cinderscrap>());
+        }
+    }
+    public class TraumatizingRay : ModProjectile
     {
         private bool _setRotation;
         private float _radians;
         private float _targetRadians;
         private float BeamLength;
-        public PrimitiveTrail BeamDrawer;
-        public ref float Time => ref Projectile.ai[0];
+
+        public ref float Timer => ref Projectile.ai[0];
         private ref float Dir => ref Projectile.ai[1];
-        public NPC Owner => Main.npc[(int)Projectile.ai[1]];
+
+        private Player Owner => Main.player[Projectile.owner];
+
         public const float LaserLength = 2400f;
         private Vector2 EndPoint => Projectile.Center + Projectile.velocity * BeamLength;
 
@@ -43,29 +87,7 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
 
         public override void AI()
         {
-            Time++;
-            Player player = Main.player[Projectile.owner];
-            if (player.noItems || player.CCed || player.dead || !player.active)
-                Projectile.Kill();
-
-            Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-            float swordRotation = 0f;
-            if (Main.myPlayer == Projectile.owner)
-            {
-                player.ChangeDir(Projectile.direction);
-                swordRotation = (Main.MouseWorld - player.Center).ToRotation();
-                if (!player.channel)
-                    Projectile.Kill();
-
-
-                Projectile.velocity = swordRotation.ToRotationVector2();
-
-                Projectile.netUpdate = true;
-            }
-
-
-            Projectile.spriteDirection = player.direction;
-
+            Timer++;
             if (!_setRotation)
             {
                 _radians = MathHelper.ToRadians(32);
@@ -74,8 +96,17 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
                 _targetRadians = -_radians;
                 _setRotation = true;
             }
+            if (Timer % 5 == 0)
+            {
+                DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+                {
+                    innerColor = Color.Lerp(Color.White, Color.Red, Main.rand.NextFloat(0.5f, 1f)),
+                    outerColor = Color.DarkRed
+                };
+                DustParticle.Spawn(EndPoint, -Projectile.velocity.RotatedByRandom(1f) * Main.rand.NextFloat(4f, 15f), spawnParams);
+            }
 
-            float progress = Time / 60f;
+            float progress = Timer / 60f;
             float easedProgress = Easing.InOutCubic(progress);
             float rads = MathHelper.Lerp(_radians, _targetRadians, easedProgress);
             if (Projectile.spriteDirection == 1)
@@ -89,13 +120,13 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
             }
 
-            Projectile.Center = playerCenter + Projectile.velocity * 1f;
+            Projectile.Center = Owner.MountedCenter + Projectile.velocity * 1f;
             float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile, 800);
             BeamLength = targetBeamLength;
             // Fade in.
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
 
-            Projectile.scale = MathF.Sin(Time / 100 * MathHelper.Pi) * 3f;
+            Projectile.scale = MathF.Sin(Timer / 100 * MathHelper.Pi) * 3f;
             if (Projectile.scale > 1f)
                 Projectile.scale = 1f;
 
@@ -105,7 +136,7 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
             }
             else
             {
-                Projectile.scale = MathF.Sin(Time / 100 * MathHelper.Pi) * 3f;
+                Projectile.scale = MathF.Sin(Timer / 100 * MathHelper.Pi) * 3f;
                 if (Projectile.scale > 1f)
                     Projectile.scale = 1f;
             }
@@ -123,7 +154,6 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
                glowColor: Color.Red,
                outerGlowColor: Color.DarkRed, duration: 25, baseSize: 0.06f);
 
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), target.position);
             ShakeModSystem.Shake = 1;
             for (int i = 0; i < 2; i++)
             {
@@ -153,57 +183,33 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
             return color * Projectile.Opacity * MathF.Pow(Utils.GetLerpValue(0f, 0.1f, completionRatio, true), 3f);
         }
 
+
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Vector2 centerPos = EndPoint - Main.screenPosition;
-            Texture2D texture = ModContent.Request<Texture2D>(TextureRegistry.EmptyLongGlowParticle).Value;
-            GlowCircleShader shader = GlowCircleShader.Instance;
-            shader.Speed = 5;
-
-            shader.BasePower = 2.5f;
-            shader.Size = VectorHelper.Osc(0.09f, 0.15f, speed: 34);
-
-            Color startInner = Color.Lerp(Color.Red, Color.OrangeRed, VectorHelper.Osc(0, 1));
-            Color startGlow = Color.Lerp(Color.DarkRed, Color.DarkRed, VectorHelper.Osc(0, 1));
-            Color startOuterGlow = Color.Lerp(Color.Black, Color.Black, VectorHelper.Osc(0, 1));
-
-            shader.InnerColor = startInner;
-            shader.GlowColor = startGlow;
-            shader.OuterGlowColor = startOuterGlow;
-            Color endColor = startOuterGlow;
-
-            float rotation = Main.GlobalTimeWrappedHourly * 4;
-            shader.Pixelation = 0.005f;
-
-            shader.Apply();
-
-            spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
-            Texture2D secondTexture = ModContent.Request<Texture2D>(TextureRegistry.EmptyGlowParticle).Value;
-            float scale = Projectile.scale;
-            spriteBatch.Draw(secondTexture, centerPos, null, Color.White, rotation, secondTexture.Size() / 2f, scale, SpriteEffects.None, 0);
-            spriteBatch.Draw(secondTexture, centerPos, null, Color.White, rotation, secondTexture.Size() / 2f, scale, SpriteEffects.None, 0);
-            for (int i = 0; i < 3; i++)
-            {
-                spriteBatch.Draw(texture, centerPos, null, Color.White, rotation, texture.Size() / 2f, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, centerPos, null, Color.White, rotation + MathHelper.ToRadians(90), texture.Size() / 2f, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, centerPos, null, Color.White, rotation + MathHelper.ToRadians(180), texture.Size() / 2f, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, centerPos, null, Color.White, rotation + MathHelper.ToRadians(270), texture.Size() / 2f, scale, SpriteEffects.None, 0);
-            }
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedImpact);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedRedLaser);
             return false;
         }
 
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+
+        private void DrawPixelatedImpact(SpriteBatch spriteBatch, Vector2 screenPos)
         {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
+            Asset<Texture2D> impactTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/ZuiEffect");
+            Vector2 drawCenter = EndPoint - screenPos;
+            Vector2 scale = Vector2.One * ExtraMath.Osc(0.2f, 0.4f, speed: 16);
+            Vector2 drawOrigin = impactTexture.Size() / 2f;
 
-            Color middleColor = Color.Lerp(Color.White, Color.Red, 0.6f);
-            Color middleColor2 = Color.Lerp(Color.DarkRed, Color.OrangeRed, 0.5f);
-            Color finalColor = Color.Lerp(middleColor, middleColor2, Time / 600);
+            Color drawColor = Color.Red;
+            drawColor.A = 0;
+            spriteBatch.Draw(impactTexture.Value, drawCenter, null, drawColor, Projectile.velocity.ToRotation(), drawOrigin, scale * 1.2f, SpriteEffects.None, 0);
 
-            TrailRegistry.LaserShader.UseColor(Color.LightYellow);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.TwistingTrail);
-
+            drawColor = Color.White;
+            drawColor.A = 0;
+            spriteBatch.Draw(impactTexture.Value, drawCenter, null, drawColor, Projectile.velocity.ToRotation(), drawOrigin, scale * 0.8f, SpriteEffects.None, 0);
+        }
+        private void DrawPixelatedRedLaser(GraphicsDevice graphicsDevice)
+        {
             List<Vector2> points = new();
             for (int i = 0; i <= 8; i++)
             {
@@ -211,8 +217,12 @@ namespace Stellamod.Projectiles.Crossbows.Lasers
             }
             points.Add(Projectile.Center + Projectile.velocity * BeamLength);
             points.Add(Projectile.Center + Projectile.velocity * BeamLength);
-            BeamDrawer.DrawPixelated(points, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
+
+            var shader = RichLaserShader.Instance;
+            shader.LaserColor = Color.White;
+            shader.InnerColor = Color.Red;
+            shader.OuterColor = Color.DarkRed;
+            TrailDrawer.Draw(Main.spriteBatch, points.ToArray(), ColorFunction, WidthFunction, shader);
         }
 
         public override bool? CanDamage() => true;
