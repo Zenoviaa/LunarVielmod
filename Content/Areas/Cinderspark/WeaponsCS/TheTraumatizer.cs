@@ -70,6 +70,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         public const float LaserLength = 2400f;
         private Vector2 EndPoint => Projectile.Center + Projectile.velocity * BeamLength;
+        public override string Texture => TextureRegistry.EmptyTexture;
 
         public override void SetDefaults()
         {
