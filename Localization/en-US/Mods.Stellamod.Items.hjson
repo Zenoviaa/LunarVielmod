@@ -10253,3 +10253,12 @@ LifesShield: {
 		While enemies are touching this shield, you'll heal 2 hp for every hit you deal to them!
 		'''
 }
+
+GintzeShield: {
+	DisplayName: Gintze Shield
+	Tooltip:
+		'''
+		When enemies touch the shield, they lose 10% maximum health!
+		This does not work on bosses
+		'''
+}
