@@ -4,19 +4,18 @@ using Stellamod.Dusts;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Tiles
+namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 {
-    public class OvermorrowdirtWall : ModWall
+    public class PunkerwallTile : ModWall
     {
         public override void SetStaticDefaults()
         {
-
-           // Main.wallDungeon[Type] = true;
+            Main.wallHouse[Type] = true;
 
             DustType = ModContent.DustType<Solution>();
-            RegisterItemDrop(ModContent.ItemType<Items.Materials.OvermorrowdirtwallBlock>());
+            RegisterItemDrop(ModContent.ItemType<Items.Materials.OvermorrowWall>());
 
-            AddMapEntry(new Color(11, 13, 17));
+            AddMapEntry(new Color(200, 200, 200));
         }
         public override void NumDust(int i, int j, bool fail, ref int num)
         {
