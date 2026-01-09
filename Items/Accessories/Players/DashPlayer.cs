@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -299,7 +300,7 @@ namespace Stellamod.Items.Accessories.Players
 
                 maxDashCountTimer *= MathHelper.Lerp(1f, 0f, ExtraMath.Saturate(DashRegenerationBonus));
 
-                float add = MaxDashCountTimer * (1.0f + DashRegenerationPenalty);
+                float add = MaxDashCountTimer * DashRegenerationPenalty;
                 maxDashCountTimer += add;
                 if (DashCountTimer >= maxDashCountTimer)
                 {
@@ -307,10 +308,10 @@ namespace Stellamod.Items.Accessories.Players
                     DashCountTimer = 0;
                 }
 
-                if (DashCount >= MaxDashCount)
-                {
-                    DashCount = MaxDashCount;
-                }
+            }
+            if (DashCount >= MaxDashCount)
+            {
+                DashCount = MaxDashCount;
             }
         }
     }

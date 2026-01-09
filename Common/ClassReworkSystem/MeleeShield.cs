@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -35,17 +36,20 @@ namespace Stellamod.Common.ClassReworkSystem
             const float radius = 32;
 
             ClassReworkPlayer classReworkPlayer = Owner.GetModPlayer<ClassReworkPlayer>();
-            if (classReworkPlayer.playerClass == PlayerClass.Melee)
-                Projectile.timeLeft = 2;
             if (Main.myPlayer == Projectile.owner)
             {
                 Vector2 holdVelocity = (Main.MouseWorld - Owner.Center);
                 HoldRotation = holdVelocity.ToRotation();
                 Projectile.netUpdate = true;
             }
-            if (classReworkPlayer.heldShield == Type)
+            if (classReworkPlayer.heldShield == Type && classReworkPlayer.playerClass == PlayerClass.Melee)
+            {
                 Projectile.timeLeft = 2;
-            Projectile.rotation = HoldRotation;
+
+            }
+
+
+                Projectile.rotation = HoldRotation;
             Projectile.Center = Owner.Center + Projectile.rotation.ToRotationVector2() * holdDistance;
 
             Rectangle myRect = Projectile.getRect();

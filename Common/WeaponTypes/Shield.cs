@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.ClassReworkSystem;
 using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -20,7 +21,7 @@ namespace Stellamod.Common.WeaponTypes
         {
             if(isShield)
             {
-                if(player.GetModPlayer<ClassReworkPlayer>().heldShield == -1)
+                if(player.GetModPlayer<ClassReworkPlayer>().defaultShield)
                 {
                     return base.CanEquipAccessory(item, player, slot, modded);
                 }
@@ -33,6 +34,7 @@ namespace Stellamod.Common.WeaponTypes
             base.UpdateAccessory(item, player, hideVisual);
             if (isShield)
             {
+              
                 player.GetModPlayer<ClassReworkPlayer>().heldShield = item.shoot;
             }
         }

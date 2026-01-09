@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.XixianFlaskSystem;
+using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Items.Accessories.Players;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -13,11 +15,12 @@ namespace Stellamod.Common.ClassReworkSystem
         public PlayerClass playerClass;
         public DamageClass damageClass;
         public int heldShield;
+        public bool defaultShield => heldShield == ModContent.ProjectileType<MeleeShield>();
 
         public override void ResetEffects()
         {
             base.ResetEffects();
-            heldShield = -1;
+            heldShield = ModContent.ProjectileType<MeleeShield>();
         }
         public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
         {
@@ -48,15 +51,12 @@ namespace Stellamod.Common.ClassReworkSystem
             dashPlayer.DashVelocity += 3;
             dashPlayer.DashDuration += 1;
             dashPlayer.MaxDashCount += 1;
-            int shieldType = ModContent.ProjectileType<MeleeShield>();
-            if(heldShield != -1)
+
+
+            if (Player.ownedProjectileCounts[heldShield] == 0 && Main.myPlayer == Player.whoAmI)
             {
-                shieldType = heldShield;
-            }
-            if (Player.ownedProjectileCounts[shieldType] == 0 && Main.myPlayer == Player.whoAmI)
-            {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, 
-                    shieldType, 1, 1, Player.whoAmI);
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+                    heldShield, 1, 1, Player.whoAmI);
             }
             damageClass = DamageClass.Melee;
         }
@@ -122,6 +122,7 @@ namespace Stellamod.Common.ClassReworkSystem
         public override void PostUpdateEquips()
         {
             base.PostUpdateEquips();
+  
             switch (playerClass)
             {
                 case PlayerClass.Melee:

@@ -37,7 +37,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
         {
             base.UpdateAccessory(player, hideVisual);
             DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
-            dashPlayer.DashCount += 2;
+            dashPlayer.MaxDashCount += 2;
             dashPlayer.DashRegenerationPenalty += 0.3f;
         }
     }
@@ -49,15 +49,11 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
             base.OnBlockMovement(npc);
             if (!npc.HasBuff<IvynVines>())
             {
-                SoundStyle soundStyle = AssetRegistry.Sounds.Magic.VineWrap;
-                soundStyle.PitchVariance = 0.3f;
-                SoundEngine.PlaySound(soundStyle, npc.position);
-
                 npc.AddBuff(ModContent.BuffType<IvynVines>(), 60);
                 Owner.Heal(2);
                 if(Main.myPlayer == Projectile.owner)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), npc.Center, -Vector2.UnitY, ModContent.ProjectileType<IvynVinesWrap>(), 0, 1, Projectile.owner, ai1: npc.whoAmI);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), npc.Center, -Vector2.UnitY, ModContent.ProjectileType<IvynVinesWrap>(), 0, 1, Projectile.owner, ai0: npc.whoAmI);
                 }
             }
         }
@@ -65,6 +61,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
 
     public class IvynVinesWrap : ModProjectile
     {
+        private int Lifetime => 25;
         public override string Texture => ModContent.GetInstance<IvynthornChokerVine>().Texture;
         private NPC Parent => Main.npc[(int)Projectile.ai[0]];
         private ref float Timer => ref Projectile.ai[1];
@@ -81,7 +78,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
             Projectile.height = 32;
             Projectile.hostile = false;
             Projectile.friendly = true;
-            Projectile.timeLeft = 45;
+            Projectile.timeLeft = Lifetime;
             Projectile.penetrate = -1;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 15;
@@ -114,8 +111,8 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
 
             Projectile.rotation = Projectile.velocity.ToRotation();
 
-            float inFrameSpeed = 3;
-            float outFrameSpeed = 7;
+            float inFrameSpeed = 2;
+            float outFrameSpeed = 4;
             switch (State)
             {
                 case 0:
@@ -172,7 +169,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
         public override void Update(NPC npc, ref int buffIndex)
         {
             npc.lifeRegen -= 10;
-            npc.velocity *= 0.8f;
+            npc.velocity.X *= 0.8f;
         }
     }
 }

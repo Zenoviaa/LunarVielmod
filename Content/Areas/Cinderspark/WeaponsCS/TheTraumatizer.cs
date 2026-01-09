@@ -9,11 +9,13 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
+using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -22,16 +24,17 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 {
     public class TheTraumatizer : BaseGun
     {
-
+        private int _dir = 1;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 28;
+            Item.useTime = 16;
+            Item.useAnimation = 16;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 80;
             Item.height = 38;
-            Item.useTime = 45;
-            Item.useAnimation = 45;
+            Item.useTime = 16;
+            Item.useAnimation = 16;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 2;
             Item.rare = ItemRarityID.LightRed;
@@ -42,11 +45,23 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.noMelee = true; // The projectile will do the damage and not the item
             Item.value = Item.sellPrice(0, 5, 0, 0);
             Item.noUseGraphic = true;
+            Item.damage = 16;
+            remainingAmmo = 12;
+            maxAmmo = 12;
         }
 
+        public override void ShootEffects(Vector2 position, Vector2 velocity)
+        {
+            //   base.ShootEffects(position, velocity);
+
+
+        }
         public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TraumatizingRay>(), damage, knockback, player.whoAmI, 1);
+
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TraumatizingRay>(), damage, knockback, player.whoAmI, 1, ai1: _dir);
+            _dir++;
+            _dir = _dir % 2;
             return false;
         }
 
@@ -69,7 +84,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         private Player Owner => Main.player[Projectile.owner];
 
         public const float LaserLength = 2400f;
-        private Vector2 EndPoint => Projectile.Center + Projectile.velocity * BeamLength;
+        private Vector2 EndPoint => Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * BeamLength;
         public override string Texture => TextureRegistry.EmptyTexture;
 
         public override void SetDefaults()
@@ -80,9 +95,10 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 9;
+            Projectile.localNPCHitCooldown = 80;
             Projectile.timeLeft = 60;
             Projectile.alpha = 255;
+            Projectile.extraUpdates = 1;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
@@ -97,6 +113,16 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 _targetRadians = -_radians;
                 _setRotation = true;
             }
+            if(Timer == 2)
+            {
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/TraumatizerLaserFire") with { PitchVariance = 0.1f }, Projectile.position);
+            }
+            if (Timer < 3)
+            {
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/TraumatizerLaserStart"));
+            }
+
+
             if (Timer % 5 == 0)
             {
                 DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
@@ -104,24 +130,25 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                     innerColor = Color.Lerp(Color.White, Color.Red, Main.rand.NextFloat(0.5f, 1f)),
                     outerColor = Color.DarkRed
                 };
-                DustParticle.Spawn(EndPoint, -Projectile.velocity.RotatedByRandom(1f) * Main.rand.NextFloat(4f, 15f), spawnParams);
+                DustParticle.Spawn(EndPoint, -Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(1f) * Main.rand.NextFloat(4f, 15f), spawnParams);
             }
 
-            float progress = Timer / 60f;
-            float easedProgress = Easing.InOutCubic(progress);
+            float progress = Timer / 45f;
+            float easedProgress = Easing.InExpo(progress);
             float rads = MathHelper.Lerp(_radians, _targetRadians, easedProgress);
-            if (Projectile.spriteDirection == 1)
+            float speed = MathHelper.Lerp(0f, 0.05f, easedProgress);
+            if (Dir == 1)
             {
-                Projectile.velocity = Projectile.velocity.RotatedBy(rads);
+                Projectile.velocity = Projectile.velocity.RotatedBy(speed);
                 Projectile.rotation = Projectile.velocity.ToRotation();
             }
             else
             {
-                Projectile.velocity = Projectile.velocity.RotatedBy(rads);
+                Projectile.velocity = Projectile.velocity.RotatedBy(-speed);
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.Pi;
             }
 
-            Projectile.Center = Owner.MountedCenter + Projectile.velocity * 1f;
+            Projectile.Center = Owner.MountedCenter; 
             float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile, 800);
             BeamLength = targetBeamLength;
             // Fade in.
@@ -173,7 +200,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         public float WidthFunction(float completionRatio)
         {
-            return Projectile.width * Projectile.scale * 0.5f;
+            return Projectile.width * Projectile.scale * 1f;
         }
 
         public override bool ShouldUpdatePosition() => false;
@@ -212,17 +239,19 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         private void DrawPixelatedRedLaser(GraphicsDevice graphicsDevice)
         {
             List<Vector2> points = new();
+            Vector2 normalVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
             for (int i = 0; i <= 8; i++)
             {
-                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * BeamLength, i / 8f));
+                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + normalVelocity * BeamLength, i / 8f));
             }
-            points.Add(Projectile.Center + Projectile.velocity * BeamLength);
-            points.Add(Projectile.Center + Projectile.velocity * BeamLength);
+            points.Add(Projectile.Center + normalVelocity * BeamLength);
+            points.Add(Projectile.Center + normalVelocity * BeamLength);
 
             var shader = RichLaserShader.Instance;
             shader.LaserColor = Color.White;
             shader.InnerColor = Color.Red;
             shader.OuterColor = Color.DarkRed;
+            shader.LaserTexture = TrailRegistry.Beamlight;
             TrailDrawer.Draw(Main.spriteBatch, points.ToArray(), ColorFunction, WidthFunction, shader);
         }
 
