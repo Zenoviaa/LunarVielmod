@@ -11,7 +11,7 @@ namespace Stellamod.Tiles
         public override void SetStaticDefaults()
         {
 
-            Main.wallDungeon[Type] = true;
+            //Main.wallDungeon[Type] = true;
 
             DustType = ModContent.DustType<Solution>();
             RegisterItemDrop(ModContent.ItemType<Items.Materials.VeriplantGrassWall>());
