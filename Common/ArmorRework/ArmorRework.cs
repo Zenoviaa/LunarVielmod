@@ -396,7 +396,7 @@ namespace Stellamod.Common.ArmorRework
             AddLineIfDifferent("MinionHealth", minionSummonHealth);
             AddLineIfDifferent("MinionAggressiveness", minionAggressiveness);
             AddLineIfDifferent("ArtifactManaReduction", artifactManaReduction);
-            AddLineIfDifferent("WandCastTime", wandCastTime);
+            AddLineIfDifferent("WandCastTime", wandCastTime, invert: true);
             AddLineIfDifferentInt("MaxMana", totalMana);
             AddLineIfDifferentInt("WandNormalEnchantmentSlots", wandNormalEnchantmentSlots);
             AddLineIfDifferentInt("WandTimerEnchantmentSlots", wandTimerEnchantmentSlots);
