@@ -5,10 +5,15 @@ using Stellamod.Common.UI;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.UI;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
+using Terraria.UI;
+
 
 namespace Stellamod.Common.SummonerSystem.UI
 {
@@ -41,22 +46,31 @@ namespace Stellamod.Common.SummonerSystem.UI
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Width.Pixels = 700;
-            Height.Pixels = 250;
+            Width.Pixels = 550;
+            Height.Pixels = 500;
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
-          
+            _backgroundImage.Width.Pixels = 480;
+            _backgroundImage.Height.Pixels = 154;
+            _backgroundImage.Left.Set(-500, 1f);
+            _backgroundImage.Top.Set(-_backgroundImage.Height.Pixels - 80, 1f);
             Append(_backgroundImage);
 
-            _inventoryMenu.Left.Set(0, 0.5f);
+            _inventoryMenu.Left.Set(-154, 1f);
             Append(_inventoryMenu);
+
+            _guardianSlot.Left.Set(-500, 1f);
+            _guardianSlot.Top.Set(-_guardianSlot.Height.Pixels - 96, 1f);
             Append(_guardianSlot);
+
+            _scrollbar.Left.Set(-32, 1f);
+            _scrollbar.Top.Set(12, 0f);
             Append(_scrollbar);
 
-            _backButton.Top.Set(0f, 1f);
+            _backButton.Top.Set(-64, 1f);
             _backButton.Left.Pixels = Width.Pixels / 2 - _backButton.Width.Pixels / 2;
             Append(_backButton);
             Orient();
@@ -72,29 +86,13 @@ namespace Stellamod.Common.SummonerSystem.UI
                 Append(slot);
             }
         }
+
         private void Orient()
         {
+
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft + 100;
             Top.Pixels = RelativeTop;
-            _guardianSlot.Top.Set(0, 1);
-            _scrollbar.Left.Set(-32, 1f);
-            _scrollbar.Top.Set(12, 0f);
-            _inventoryMenu.Left.Set(-_inventoryMenu.Width.Pixels - 64, 1f);
-
-            Width.Pixels = 550;
-            _backgroundImage.Width.Pixels = 480;
-            _backgroundImage.Height.Pixels = 154;
-            _backgroundImage.Left.Set(-500, 1f);
-            _backgroundImage.Top.Set(-_backgroundImage.Height.Pixels - 80, 1f);
-
-            _backButton.Top.Set(-64, 1f);
-            _backButton.Left.Pixels = Width.Pixels / 2 - _backButton.Width.Pixels / 2;
-
-            _guardianSlot.Left.Set(-500, 1f);
-            _guardianSlot.Top.Set(-_guardianSlot.Height.Pixels - 96, 1f);
-
-            Height.Pixels = 500;
 
             //Orient slots
             float x = _guardianSlot.Width.Pixels + 18;

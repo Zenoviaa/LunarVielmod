@@ -36,7 +36,7 @@ namespace Stellamod.Common.SummonerSystem.UI
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Width.Pixels = 118;
+            Width.Pixels = 154;
             Height.Pixels = 216;
 
             //The scrollbar is on a separate panel from this menu
