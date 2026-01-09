@@ -10329,3 +10329,10 @@ MoltenManaSphere: {
 		Casts a homing fireball!
 		'''
 }
+SearingSawRemote: {
+	DisplayName: Searing Saw Remote
+	Tooltip:
+		'''
+		Whenever you use a stamina attack, throw out a homing flaming saw!
+		'''
+}

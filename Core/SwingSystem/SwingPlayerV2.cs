@@ -14,10 +14,12 @@ namespace Stellamod.Core.SwingSystem
         public int MaxStamina = 3;
         public bool InfiniteStamina;
         public bool unlockedFlask;
+        public bool useStaminaThisFrame;
         public override void ResetEffects()
         {
             base.ResetEffects();
             MaxStamina = 3;
+            useStaminaThisFrame = false;
         }
 
         public override void UpdateDead()
@@ -52,6 +54,7 @@ namespace Stellamod.Core.SwingSystem
         {
             if (InfiniteStamina)
                 return;
+            useStaminaThisFrame = true;
             Stamina -= amountToUse;
         }
 

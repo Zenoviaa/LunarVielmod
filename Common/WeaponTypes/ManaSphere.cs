@@ -67,6 +67,11 @@ namespace Stellamod.Common.WeaponTypes
             Vector2 targetVelocity = positionToMoveTo - Projectile.Center;
             Projectile.velocity = targetVelocity;
         }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            return base.PreDraw(ref lightColor);
+        }
     }
 
     public class ManaSpherePlayer : ModPlayer

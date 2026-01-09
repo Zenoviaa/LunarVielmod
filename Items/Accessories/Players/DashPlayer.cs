@@ -122,6 +122,7 @@ namespace Stellamod.Items.Accessories.Players
         public float DashRegenerationPenalty;
         public float DashVelocityBonus;
         public int ExtraImmunityFramesBonus;
+
         public override void ResetEffects()
         {
             ExtraImmunityFramesBonus = 0;
