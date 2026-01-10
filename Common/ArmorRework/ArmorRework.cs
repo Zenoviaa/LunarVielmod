@@ -447,7 +447,11 @@ namespace Stellamod.Common.ArmorRework
             spriteBatch.End();
             spriteBatch.Begin(default, default, Main.graphics.GraphicsDevice.SamplerStates[0], default, Main.Rasterizer, SpriteWhiteShader.Instance.Effect, Main.UIScaleMatrix);
 
-            Vector2 armorIconPosition = position + new Vector2(-16, 0);
+
+            Vector2 size = FontAssets.MouseText.Value.MeasureString(_item.Name);
+            float xOffset = (rectangle.Width / 2f) - size.X / 2f;
+
+            Vector2 armorIconPosition = position + new Vector2(-24, 0);// + new Vector2(-size.X / 2f, 0);
             //Step 3. Draw item icon of the current item
             Vector2 topRight = position;
             topRight.X += Width.Pixels * 1f; 
@@ -465,11 +469,9 @@ namespace Stellamod.Common.ArmorRework
 
 
 
-            Vector2 size = FontAssets.MouseText.Value.MeasureString(_item.Name);
-
-            float xOffset = (Width.Pixels / 2f) - size.X / 2f;
+         
             ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, _item.Name,
-               position + new Vector2(xOffset, 0), Color.White * alpha, 0, Vector2.Zero, Vector2.One);
+               rectangle.TopLeft() + new Vector2(xOffset, 0), Color.White * alpha, 0, Vector2.Zero, Vector2.One);
             ItemSlot.DrawItemIcon(_item, 0, spriteBatch, armorIconPosition, 1, 32, Color.White * alpha);
 
 
@@ -1082,7 +1084,7 @@ namespace Stellamod.Common.ArmorRework
             wandTimerEnchantmentSlots = 0;
         }
 
-        private string GetComparison(string name, float currentValue, bool invert = false)
+        private string GetComparison(string name, float currentValue, bool invert = false, float localStatValue = 0f, bool isShowingComparison = false)
         {
             if (currentValue == 0)
                 return string.Empty;
@@ -1093,16 +1095,24 @@ namespace Stellamod.Common.ArmorRework
                 increaseDecreaseKey = currentValue > 0 ? "StatSubtraction" : "StatAddition";
             }
             string comparisonText = LangText.Common(increaseDecreaseKey, LangText.Common($"Stat{name}"), percentString);
+            if(isShowingComparison)
+            {
+                comparisonText += $" ({localStatValue})";
+            }
             return comparisonText;
         }
 
-        private string GetComparison(string name, int currentValue)
+        private string GetComparison(string name, int currentValue, int localStatValue = 0, bool isShowingComparison = false)
         {
             if (currentValue == 0)
                 return string.Empty;
             string percentString = MathF.Abs(currentValue).ToString();
             string increaseDecreaseKey = currentValue < 0 ? "StatSubtractionAlt" : "StatAdditionAlt";
             string comparisonText = LangText.Common(increaseDecreaseKey, LangText.Common($"Stat{name}"), percentString);
+            if (isShowingComparison)
+            {
+                comparisonText += $" ({localStatValue})";
+            }
             return comparisonText;
         }
 
@@ -1160,72 +1170,72 @@ namespace Stellamod.Common.ArmorRework
 
 
             ArmorStatsPlayer comparisonPlayer = currentStatsPlayer.CompareArmorStatsPlayer(localItemStatsPlayer);
-            comparisonPlayer.GetStatTooltips(tooltips, isShowingComparison);
+            comparisonPlayer.GetStatTooltips(localItemStatsPlayer, tooltips, isShowingComparison);
         }
 
-        public void GetStatTooltips(List<TooltipLine> tooltips, bool isShowingComparison = false)
+        public void GetStatTooltips(ArmorStatsPlayer originalStatsPlayer, List<TooltipLine> tooltips, bool isShowingComparison = false)
         {
-            void AddLineIfDifferent(string name, float currentValue, bool invert = false)
+            void AddLineIfDifferent(string name, float comparisonValue, float currentValue, bool invert = false)
             {
-                string comparison = GetComparison(name, currentValue, invert);
+                string comparison = GetComparison(name, comparisonValue, invert, currentValue, isShowingComparison);
                 if (string.IsNullOrEmpty(comparison))
                     return;
                 TooltipLine line = new TooltipLine(Stellamod.Instance, name, comparison);
-                if (currentValue < 0)
+                if (comparisonValue < 0)
                     line.OverrideColor = Color.IndianRed;
-                if (isShowingComparison && currentValue > 0)
+                if (isShowingComparison && comparisonValue > 0)
                     line.OverrideColor = Color.LightGreen;
                 tooltips.Add(line);
             }
-            void AddLineIfDifferentInt(string name, int currentValue)
+            void AddLineIfDifferentInt(string name, int comparisonValue, int currentValue)
             {
-                string comparison = GetComparison(name, currentValue);
+                string comparison = GetComparison(name, comparisonValue, currentValue, isShowingComparison);
                 if (string.IsNullOrEmpty(comparison))
                     return;
                 TooltipLine line = new TooltipLine(Stellamod.Instance, name, comparison);
-                if (currentValue < 0)
+                if (comparisonValue < 0)
                     line.OverrideColor = Color.IndianRed;
-                if (isShowingComparison && currentValue > 0)
+                if (isShowingComparison && comparisonValue > 0)
                     line.OverrideColor = Color.LightGreen;
                 tooltips.Add(line);
             }
 
             //damage goes here
-            AddLineIfDifferent("MeleeDamage", meleeDamage);
-            AddLineIfDifferent("RangedDamage", rangedDamage);
-            AddLineIfDifferent("MagicDamage", magicDamage);
-            AddLineIfDifferent("MinionDamage", summonDamage);
-            AddLineIfDifferentInt("MaxHealth", healthBonus);
-            AddLineIfDifferent("CriticalStrikeChance", criticalStrikeChance);
-            AddLineIfDifferent("CriticalStrikeDamage", criticalStrikeDamage);
-            AddLineIfDifferentInt("Stamina", stamina);
-            AddLineIfDifferentInt("ArmorPenetration", meleeArmorPenetration);
-            AddLineIfDifferentInt("AccessorySlots", accessorySlots);
-            AddLineIfDifferentInt("InventorySlots", inventorySlots);
-            AddLineIfDifferent("MovementSpeed", movementSpeedBonus);
-            AddLineIfDifferent("Endurance", generalEndurance);
-            AddLineIfDifferent("BossEndurance", bossEndurance);
-            AddLineIfDifferent("EnemyEndurance", enemyEndurance);
-            AddLineIfDifferentInt("InsourceSlots", insourceSlots);
-            AddLineIfDifferent("MeleeAttackSpeed", meleeAttackSpeed);
-            AddLineIfDifferentInt("Defense", defenseBonus);
-            AddLineIfDifferent("InsourceTime", insourceTimeBonus);
-            AddLineIfDifferent("Aggressiveness", meleeAggressiveness);
-            AddLineIfDifferent("BowChargeTime", rangedBowChargeTime, invert: true);
-            AddLineIfDifferentInt("Piercing", rangedPiercing);
-            AddLineIfDifferentInt("GunAmmoAmount", rangedGunAmmoAmount);
-            AddLineIfDifferentInt("Stealthiness", rangedStealthtiness);
-            AddLineIfDifferent("SummonCastTime", summonCastTime, invert: true);
-            AddLineIfDifferent("MinionSlots", minionSlots);
-            AddLineIfDifferent("MainMinionDamage", mainSummonDamage);
-            AddLineIfDifferent("MainMinionHealth", mainSummonHealth);
-            AddLineIfDifferent("MinionHealth", minionSummonHealth);
-            AddLineIfDifferentInt("MinionAggressiveness", minionAggressiveness);
-            AddLineIfDifferent("ArtifactManaReduction", artifactManaReduction);
-            AddLineIfDifferent("WandCastTime", wandCastTime, invert: true);
-            AddLineIfDifferentInt("MaxMana", totalMana);
-            AddLineIfDifferentInt("WandNormalEnchantmentSlots", wandNormalEnchantmentSlots);
-            AddLineIfDifferentInt("WandTimerEnchantmentSlots", wandTimerEnchantmentSlots);
+            AddLineIfDifferent("MeleeDamage", meleeDamage, originalStatsPlayer.meleeDamage);
+            AddLineIfDifferent("RangedDamage", rangedDamage, originalStatsPlayer.rangedDamage);
+            AddLineIfDifferent("MagicDamage", magicDamage, originalStatsPlayer.magicDamage);
+            AddLineIfDifferent("MinionDamage", summonDamage, originalStatsPlayer.summonDamage);
+            AddLineIfDifferentInt("MaxHealth", healthBonus, originalStatsPlayer.healthBonus);
+            AddLineIfDifferent("CriticalStrikeChance", criticalStrikeChance, originalStatsPlayer.criticalStrikeChance);
+            AddLineIfDifferent("CriticalStrikeDamage", criticalStrikeDamage, originalStatsPlayer.criticalStrikeDamage);
+            AddLineIfDifferentInt("Stamina", stamina, originalStatsPlayer.stamina);
+            AddLineIfDifferentInt("ArmorPenetration", meleeArmorPenetration, originalStatsPlayer.meleeArmorPenetration);
+            AddLineIfDifferentInt("AccessorySlots", accessorySlots, originalStatsPlayer.accessorySlots);
+            AddLineIfDifferentInt("InventorySlots", inventorySlots, originalStatsPlayer.inventorySlots);
+            AddLineIfDifferent("MovementSpeed", movementSpeedBonus, originalStatsPlayer.movementSpeedBonus);
+            AddLineIfDifferent("Endurance", generalEndurance, originalStatsPlayer.generalEndurance);
+            AddLineIfDifferent("BossEndurance", bossEndurance, originalStatsPlayer.bossEndurance);
+            AddLineIfDifferent("EnemyEndurance", enemyEndurance, originalStatsPlayer.enemyEndurance);
+            AddLineIfDifferentInt("InsourceSlots", insourceSlots, originalStatsPlayer.insourceSlots);
+            AddLineIfDifferent("MeleeAttackSpeed", meleeAttackSpeed, originalStatsPlayer.meleeAttackSpeed);
+            AddLineIfDifferentInt("Defense", defenseBonus, originalStatsPlayer.defenseBonus);
+            AddLineIfDifferent("InsourceTime", insourceTimeBonus, originalStatsPlayer.insourceTimeBonus);
+            AddLineIfDifferent("Aggressiveness", meleeAggressiveness, originalStatsPlayer.meleeAggressiveness);
+            AddLineIfDifferent("BowChargeTime", rangedBowChargeTime, originalStatsPlayer.rangedBowChargeTime, invert: true);
+            AddLineIfDifferentInt("Piercing", rangedPiercing, originalStatsPlayer.rangedPiercing);
+            AddLineIfDifferentInt("GunAmmoAmount", rangedGunAmmoAmount, originalStatsPlayer.rangedGunAmmoAmount);
+            AddLineIfDifferentInt("Stealthiness", rangedStealthtiness, originalStatsPlayer.rangedStealthtiness);
+            AddLineIfDifferent("SummonCastTime", summonCastTime, originalStatsPlayer.summonCastTime, invert: true);
+            AddLineIfDifferent("MinionSlots", minionSlots, originalStatsPlayer.minionSlots);
+            AddLineIfDifferent("MainMinionDamage", mainSummonDamage, originalStatsPlayer.mainSummonDamage);
+            AddLineIfDifferent("MainMinionHealth", mainSummonHealth, originalStatsPlayer.mainSummonHealth);
+            AddLineIfDifferent("MinionHealth", minionSummonHealth, originalStatsPlayer.minionSummonHealth);
+            AddLineIfDifferentInt("MinionAggressiveness", minionAggressiveness, originalStatsPlayer.minionAggressiveness);
+            AddLineIfDifferent("ArtifactManaReduction", artifactManaReduction, originalStatsPlayer.artifactManaReduction);
+            AddLineIfDifferent("WandCastTime", wandCastTime, originalStatsPlayer.wandCastTime, invert: true);
+            AddLineIfDifferentInt("MaxMana", totalMana, originalStatsPlayer.totalMana);
+            AddLineIfDifferentInt("WandNormalEnchantmentSlots", wandNormalEnchantmentSlots, originalStatsPlayer.wandNormalEnchantmentSlots);
+            AddLineIfDifferentInt("WandTimerEnchantmentSlots", wandTimerEnchantmentSlots, originalStatsPlayer.wandTimerEnchantmentSlots);
         }
 
 

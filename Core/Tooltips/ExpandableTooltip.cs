@@ -73,6 +73,8 @@ namespace Stellamod.Core.Tooltips
             {
                 ArmorSet set = ArmorSetSystem.FindArmorSet(item.type);
                 ArmorSetSystem.GetArmorSet(set, out Item helm, out Item armor, out Item leggings);
+                if (helm.ModItem == null)
+                    return;
 
                 string lore = LangText.Armor(helm.ModItem, "Lore");
                 ArmorTooltipSystem tooltipsSystem = ModContent.GetInstance<ArmorTooltipSystem>();

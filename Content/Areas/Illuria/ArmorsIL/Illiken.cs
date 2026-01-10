@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.ArmorRework;
+using Stellamod.Content.Areas.Illuria.WeaponsIL;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
@@ -65,7 +66,7 @@ namespace Stellamod.Content.Areas.Illuria.ArmorsIL
                     velocity *= Main.rand.NextFloat(2, 25f);
                     FlakeParticle fp = FlakeParticle.Spawn(Projectile.Center, velocity);
                     fp.gravity = 0f;
-                    fp.Scale *= 0.6f;
+                    fp.Scale *= 0.3f;
                     fp.dampening = 0.1f;
                 }
 
@@ -84,6 +85,7 @@ namespace Stellamod.Content.Areas.Illuria.ArmorsIL
     }
     public class IllikenPlayer : ModPlayer
     {
+        private bool _tryEffect;
         public bool hasIllikenSetBonus;
         public override void ResetEffects()
         {
@@ -103,20 +105,35 @@ namespace Stellamod.Content.Areas.Illuria.ArmorsIL
 
         private void On_Dash(Player player)
         {
-            if (Main.myPlayer != player.whoAmI)
-                return;
-            if (!hasIllikenSetBonus)
-                return;
-            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
-            if (dashPlayer.DashedThisFrame)
-            {
-                player.AddBuff(ModContent.BuffType<IllikenIceFury>(), 60);
-                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<IllikenIceBlast>(), 50, 1, player.whoAmI);
-            }
+            player.GetModPlayer<IllikenPlayer>()._tryEffect = true;
         }
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
+
+            if (!_tryEffect)
+                return;
+            _tryEffect = false;
+            if (Main.myPlayer != Player.whoAmI)
+                return;
+            if (!hasIllikenSetBonus)
+                return;
+            DashPlayer dashPlayer = Player.GetModPlayer<DashPlayer>();
+            Player.AddBuff(ModContent.BuffType<IllikenIceFury>(), 60);
+            Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, ModContent.ProjectileType<IllikenIceBlast>(), 50, 1, Player.whoAmI);
+
+            for(int n = 0; n < 2; n++)
+            {
+                Vector2 initialVelocity = -Vector2.UnitY.SafeNormalize(Vector2.Zero);
+                initialVelocity *= 2;
+
+
+                int steps = Main.rand.Next(2, 12);
+                Vector2 velocity = initialVelocity.RotatedByRandom(0.6f);
+                Vector2 icicleCenter = Player.Bottom;
+                Projectile.NewProjectile(Player.GetSource_FromThis(), icicleCenter,
+                    velocity, ModContent.ProjectileType<ShortIcicleFormation>(), 1, 1, Player.whoAmI, ai1: steps, ai2: -1);
+            }
 
         }
 

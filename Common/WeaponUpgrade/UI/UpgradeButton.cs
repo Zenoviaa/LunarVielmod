@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
-using System;
+﻿using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -14,8 +11,6 @@ namespace Stellamod.Common.WeaponUpgrade.UI
 {
     public class UpgradeButton : UIPanel
     {
-        public event Action<int> OnEmptyMouseover;
-        private readonly float _scale = 1f;
         public UpgradeButton()
         {
             float scale = 1f;

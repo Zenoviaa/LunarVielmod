@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.Paint;
+using Stellamod.Trails;
 using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -93,7 +96,22 @@ namespace Stellamod.Common.ClassReworkSystem
 
         public override bool PreDraw(ref Color lightColor)
         {
-            this.DrawCentered(ref lightColor);
+            Texture2D texture = TextureAssets.Projectile[Type].Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            float outlineOffset = 2;
+            Vector2 left = Vector2.UnitX * -outlineOffset;
+            Vector2 right = Vector2.UnitX * outlineOffset;
+            Vector2 up = Vector2.UnitY * -outlineOffset;
+            Vector2 down = Vector2.UnitY * outlineOffset;
+            SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            if (Projectile.Center.X < Owner.Center.X)
+                spriteEffects |= SpriteEffects.FlipVertically;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Rectangle drawFrame = Projectile.Frame();
+            Vector2 drawOrigin = drawFrame.Size() / 2;
+            float scale = Projectile.scale;
+            float rotation = Projectile.rotation;
+            spriteBatch.Draw(texture, drawPos, drawFrame, Color.White.MultiplyRGB(lightColor), rotation, drawOrigin, scale, spriteEffects, 0);
             return false;
         }
     }
