@@ -34,7 +34,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         }
 
         private bool _showNamePlate;
-        public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref NPC.ai[0];
 
         private int _retinaIndex;
@@ -119,6 +118,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             base.SendExtraAI(writer);
             writer.Write(_retinaIndex);
             writer.Write(_spazzIndex);
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            return false;
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)

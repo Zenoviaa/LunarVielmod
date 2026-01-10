@@ -1,9 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.SwingSystem;
-using Stellamod.Core.Tooltips;
+﻿using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -53,7 +50,7 @@ namespace Stellamod.Common.WeaponTypes
                     dashPlayer.Consume(staminaCost);
                     type = staminaProj;
                 }
-                
+
                 Projectile.NewProjectile(player.GetSource_FromThis(), point.Center, velocity, type, damage, knockback, player.whoAmI);
                 return false;
             }
@@ -122,7 +119,7 @@ namespace Stellamod.Common.WeaponTypes
         public sealed override void AI()
         {
             base.AI();
-         
+
             Item item = Owner.HeldItem;
             if (item.IsAir || item == null)
                 return;
@@ -131,13 +128,13 @@ namespace Stellamod.Common.WeaponTypes
                 return;
             Projectile.timeLeft = 2;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
-                if(Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer == Projectile.owner)
                 {
-             
+
                     Projectile.ai[2] = Main.rand.Next(0, int.MaxValue);
-                    
+
                     Projectile.netUpdate = true;
                 }
             }
@@ -151,7 +148,7 @@ namespace Stellamod.Common.WeaponTypes
             {
                 AI_OrbitPlayer();
             }
-              
+
         }
 
 
@@ -199,7 +196,7 @@ namespace Stellamod.Common.WeaponTypes
             Vector2 idlePosition = Owner.Center;
             idlePosition.X += _random.NextFloat(-32, 32);
             idlePosition.Y += _random.NextFloat(-32, 32);
-  
+
             // All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
 
             // Teleport to player if distance is too big
@@ -238,7 +235,7 @@ namespace Stellamod.Common.WeaponTypes
                 return;
             if (Player.whoAmI == Main.myPlayer && Player.ownedProjectileCounts[manaSphere.heldProj] == 0)
             {
-                for (int i = 0; i <  6; i++)
+                for (int i = 0; i < 6; i++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(12, 12);
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, vel, manaSphere.heldProj, 1, 1, Player.whoAmI);

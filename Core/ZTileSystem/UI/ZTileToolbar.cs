@@ -275,8 +275,8 @@ namespace Stellamod.Core.ZTileSystem.UI
         {
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
-            _valueSlider.Left.Pixels = 64;
-            _valueSlider.Top.Pixels = 384;
+            _valueSlider.Left.Pixels = 80;
+            _valueSlider.Top.Pixels = 262;
         }
         public override void Update(GameTime gameTime)
         {
