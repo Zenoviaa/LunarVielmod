@@ -123,9 +123,10 @@ namespace Stellamod.Items.Accessories.Players
         public float DashRegenerationPenalty;
         public float DashVelocityBonus;
         public int ExtraImmunityFramesBonus;
-
+        public bool DashedThisFrame;
         public override void ResetEffects()
         {
+            DashedThisFrame = false;
             ExtraImmunityFramesBonus = 0;
             DashRegenerationBonus = 0f;
             DashRegenerationPenalty = 0f;
@@ -207,6 +208,7 @@ namespace Stellamod.Items.Accessories.Players
                 dashVelocity *= (1.0f + DashRegenerationBonus);
                 DashCount--;
                 DashCountTimer = 0;
+                DashedThisFrame=true;
 
                 Vector2 newVelocity = Player.velocity;
                 switch (DashDir)

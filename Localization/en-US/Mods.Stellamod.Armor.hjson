@@ -7,5 +7,13 @@ CauldrMothHood: {
 	Type: Defensive
 	Lore: An armor for Ereshkigal's follows as she was rising to Siegfried's side. Crafted to be a sort of fashion, or appreciation and to keep protection, it would be worn by those who would be protecting her during wars. Unfortuantely, it was never used, the war came too fast...
 }
+IllikenHelmet: {
+	SetBonus:
+		'''
+		After rolling, release a damaging icy burst and gain a burst of damage of 10% for a second!
+		'''
+	Type: Resource
+	Lore: Armor crafted by the heaviest of hands, but fragile souls, a touch from a hammer and it could break. Blacksmiths, Mages, and Glassblowers united crafted an armor that could provide extra space within its hull. As during the building times of the Royal Capital Sector, this armor was supposed to carry more supplies to Verlia.
+}
 
 SetBonus: Set Bonus: {0}
