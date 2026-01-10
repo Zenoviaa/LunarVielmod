@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
+using Stellamod.Content.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Foods;
 using Stellamod.Items.Armors.Pieces.RareMetals;
