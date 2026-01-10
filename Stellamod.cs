@@ -21,6 +21,8 @@ using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
+global using Microsoft.Xna.Framework;
+global using Microsoft.Xna.Framework.Graphics;
 
 namespace Stellamod
 {
@@ -64,14 +66,6 @@ namespace Stellamod
         public static int EreshstylCurrencyID;
         public static int NoHitCrystalCurrencyID;
         public static int DragonShardCurrencyID;
-
-        public static int MOKCurrencyID;
-        public static int MOPCurrencyID;
-        public static int MOBCurrencyID;
-        public static int MOACurrencyID;
-        public static int MOCCurrencyID;
-        public static int MOHCurrencyID;
-        public static int MOLCurrencyID;
         public override void Load()
         {
 
@@ -349,11 +343,8 @@ namespace Stellamod
     {
         private const string menuAssetPath = "Stellamod/Assets/Textures/Menu";
         public override Asset<Texture2D> Logo => ModContent.Request<Texture2D>($"{menuAssetPath}/Logo");
-
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/BeforeTheFlames");
-
         public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<StarbloomBackgroundStyle>();
-
         public override string DisplayName => "Lunar Veil";
         public override void OnSelected()
         {
@@ -362,15 +353,13 @@ namespace Stellamod
 
         public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor)
         {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.UIScaleMatrix);
             Texture2D logo = MenuLoader.CurrentMenu.Logo.Value;
             Vector2 logoDrawPos = new Vector2(Main.screenWidth / 2, 100f);
             float scale = logoScale;
             scale *= 0.3f;
+            drawColor.A = 0;
             spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), drawColor, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), scale, SpriteEffects.None, 0f);
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.Default, Main.Rasterizer, null, Main.UIScaleMatrix);
+       
             return false;
         }
     }

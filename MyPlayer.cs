@@ -1,9 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Input;
 using Stellamod.Buffs;
 using Stellamod.Buffs.Minions;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
-using Stellamod.Content.Gores.Foreground;
 using Stellamod.Core.ToolsSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -25,11 +23,9 @@ using Stellamod.Projectiles;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Projectiles.Swords;
-using Stellamod.Skies;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -616,7 +612,7 @@ namespace Stellamod
         public static float AuroreanB = 0.5f;
         public override void PostUpdateMiscEffects()
         {
-      
+
             Player.ManageSpecialBiomeVisuals("Stellamod:VeilSky", ZoneVeil);
             Player.ManageSpecialBiomeVisuals("Stellamod:Illuria", ZoneIlluria);
             //   Player.ManageSpecialBiomeVisuals("Stellamod:AuroreanStars", ZoneAlcadzia);
