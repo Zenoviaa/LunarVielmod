@@ -125,8 +125,8 @@ Common: {
 		'''
 	ManaSphereHelp:
 		'''
-		[c/FFA500:Mana Spheres] use a condensed ball of magic to cast out weaker but homing spells! 
-		Perfect for an easy to use playstyle
+		[c/FFA500:Mana Spheres] are ball of magic that consumes no mana but are quite weak
+		A safe option for mages to use while they're recovering their mana!
 		'''
 	StatAddition: "{1} increased {0}"
 	StatSubtraction: "{1} decreased {0}"
@@ -10312,7 +10312,9 @@ EchoInsource: {
 
 MoltenManaSphere: {
 	DisplayName: Molten Mana Sphere
-	Tooltip: Casts a homing fireball!
+	Tooltip: Hot and-
+	BasicSlash: Casts a swarm of mini fireballs that slightly home towards your cursor
+	StaminaSlash: Summons a large piercing fire ball that homes onto nearby enemies!
 }
 
 SearingSawRemote: {
@@ -10347,7 +10349,9 @@ GnomeLegs: {
 
 IceManaSphere: {
 	DisplayName: Ice Mana Sphere
-	Tooltip: ""
+	Tooltip: Stay frosty~
+	BasicSlash: Casts a swarm of mini icy snowballs that home slightly towards your cursor
+	StaminaSlash: Summons a very short, but powerful icicle rain!
 }
 
 IllikenCoat: {

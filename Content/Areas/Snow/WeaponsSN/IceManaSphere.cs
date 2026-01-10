@@ -27,7 +27,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             Item.DefaultToManaSphere(ModContent.ProjectileType<IceManaSphereHold>(), ModContent.ProjectileType<IcicleManaBlastSpawner>());
             Item.shoot = ModContent.ProjectileType<IceManaBlast>();
             Item.shootSpeed = 15;
-            Item.damage = 13;
+            Item.damage = 9;
             Item.UseSound = SoundID.DD2_BetsyFireballShot;
         }
 
@@ -294,7 +294,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             Projectile.width = 24;
             Projectile.height = 24;
             Projectile.friendly = true;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             Projectile.timeLeft = 200;
         }
         public override void AI()
@@ -385,7 +385,8 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
                 Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, HomingTarget);
                 Projectile.velocity = Vector2.Lerp(_initialVelocity, homingVelocity, EasingFunction.InOutSine(Timer / 30f));
             }
-
+            if (Timer > 30f)
+                Projectile.tileCollide = true;
         }
 
         public override bool PreDraw(ref Color lightColor)

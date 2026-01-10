@@ -7,13 +7,17 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.Trails;
+using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -24,7 +28,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.DefaultToManaSphere(ModContent.ProjectileType<MoltenManaSphereHold>());
+            Item.DefaultToManaSphere(ModContent.ProjectileType<MoltenManaSphereHold>(), ModContent.ProjectileType<MoltenFireball>());
             Item.shoot = ModContent.ProjectileType<MoltenManaBlast>();
             Item.shootSpeed = 15;
             Item.damage = 13;
@@ -37,6 +41,195 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<Cinderscrap>());
         }
     }
+    public class MoltenFireball : ModProjectile
+    {
+        private ref float Timer => ref Projectile.ai[0];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.TrailCacheLength[Type] = 16;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 24;
+            Projectile.height = 24;
+            Projectile.penetrate = -1;
+            Projectile.friendly = true;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 5;
+            Projectile.timeLeft = 120;
+            Projectile.tileCollide = false;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if (Main.rand.NextBool(5))
+            {
+                switch (Main.rand.Next(2))
+                {
+                    case 0:
+                        DustParticle sp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.3f, 16), Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                        sp.gravity = 0f;
+                        sp.fast = true;
+                        sp.dampening = 0.1f;
+                        break;
+                    case 1:
+                        FlameParticle sp2 = Particle<FlameParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 16), Scale: Main.rand.NextFloat(0.1f, 0.2f));
+                        sp2.gravity = 0f;
+                        sp2.fast = true;
+                        sp2.dampening = 0.1f;
+                        break;
+                }
+
+            }
+
+            if (Projectile.velocity.Length() > 2f)
+                Projectile.velocity *= 0.99f;
+
+            Projectile.scale = MathHelper.SmoothStep(0f, 1f, Timer / 15f);
+
+            if (Main.rand.NextBool(8))
+            {
+                FlameSparksParticle sp = Particle<FlameSparksParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.6f, 8f),
+                    color: Color.OrangeRed, Scale: Main.rand.NextFloat(0.35f, 0.75f));
+                sp.gravity = 0f;
+                sp.fast = true;
+                sp.dampening = 0.1f;
+            }
+
+            Projectile.rotation += Projectile.velocity.Length() * 0.05f;
+            Projectile.rotation += 0.25f;
+
+            NPC nearest = NPCHelper.FindClosestNPC(Projectile.position, 800);
+            if (nearest == null)
+                return;
+            if (Timer > 15)
+            {
+                Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, 12);
+                Projectile.velocity = homingVelocity;
+            }
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D sawTexture = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            Vector2 drawOrigin = sawTexture.Size() / 2f;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Color drawColor = Color.Yellow;
+            drawColor.A = 0;
+            spriteBatch.Draw(sawTexture, drawPos, null, drawColor, Projectile.rotation, drawOrigin, Projectile.scale * 0.3f, SpriteEffects.None, 0);
+
+
+            Texture2D glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            Vector2 glowDrawOrigin = glowMask.Size() / 2f;
+            Color glowColor = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 8));
+            glowColor.A = 0;
+            spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.3f, SpriteEffects.None, 0);
+            // spriteBatch.RestartDefaults();
+
+
+            glowMask = AssetManager.GlowMask.SpiralVortex.Value;
+            glowDrawOrigin = glowMask.Size() / 2f;
+            glowColor = Color.Red;
+            glowColor.A = 0;
+            spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
+            {
+                float ratio = (float)i / (float)Projectile.oldPos.Length;
+                Vector2 oldCenter = Projectile.oldPos[i] + Projectile.Size / 2f - Main.screenPosition;
+                Color afo = glowColor;
+                afo = Color.Lerp(afo, Color.Black, MathHelper.SmoothStep(0f, 1f, EasingFunction.InOutExpo7(ratio)));
+                afo.A = 0;
+                afo *= 0.15f;
+                spriteBatch.Draw(glowMask, oldCenter, null, afo, Projectile.oldRot[i], glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
+            }
+            return false;
+        }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            if (Projectile.velocity.X != oldVelocity.X)
+                Projectile.velocity.X = -oldVelocity.X;
+            if (Projectile.velocity.Y != oldVelocity.Y)
+                Projectile.velocity.Y = -oldVelocity.Y;
+
+            float boomSize = Main.rand.NextFloat(0.03f, 0.04f);
+            for (float n = 0; n < 2f; n++)
+            {
+                var spawnParams = new DustParticleSpawnParams();
+                spawnParams.innerColor = Color.OrangeRed;
+                spawnParams.outerColor = Color.Red;
+                spawnParams.scaleRange = new Vector2(0.1f, 3f);
+                DustParticle.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+            }
+
+            SmokeParticle sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY, Color.White, Scale: 1f);
+            sp.initialColor = Color.White * 0.14f;
+            return false;
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(target, hit, damageDone);
+            target.AddBuff(BuffID.OnFire3, 120);
+        }
+        private void CreateImpactEffects()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 0.5f).noGravity = true;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 150, Color.DarkGray, 0.5f).noGravity = true;
+            }
+
+            int numDust = 8;
+            for (int n = 0; n < numDust; n++)
+            {
+                var sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(64, 64), -Vector2.UnitY, Scale: Main.rand.NextFloat(1f, 2f));
+                sp.initialColor = Color.Brown;
+            }
+
+            for (int n = 0; n < numDust; n++)
+            {
+                var dp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(64, 64), -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(0.5f, 45), Scale: Main.rand.NextFloat(1f, 2f));
+            }
+
+
+            ShakeModSystem.Shake = 3;
+        }
+
+
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            float boomSize = Main.rand.NextFloat(0.03f, 0.04f);
+            for (float n = 0; n < 2f; n++)
+            {
+                var spawnParams = new DustParticleSpawnParams();
+                spawnParams.innerColor = Color.OrangeRed;
+                spawnParams.outerColor = Color.Red;
+                spawnParams.scaleRange = new Vector2(0.1f, 3f);
+                DustParticle.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+            }
+
+            for (int n = 0; n < 3; n++)
+            {
+                SmokeParticle sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Vector2.UnitY, Color.White, Scale: 1.5f);
+                sp.initialColor = Color.White * 0.24f;
+            }
+            CreateImpactEffects();
+
+        }
+    }
+
     public class MoltenManaBlast : ModProjectile
     {
         private Vector2 _initialVelocity;

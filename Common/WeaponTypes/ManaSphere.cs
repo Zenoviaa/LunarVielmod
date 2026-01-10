@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.SwingSystem;
 using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
@@ -13,12 +14,14 @@ using Terraria.Utilities;
 
 namespace Stellamod.Common.WeaponTypes
 {
+
     public class ManaSphereGlobalItem : GlobalItem
     {
         public override bool InstancePerEntity => true;
         public bool isManaSphere;
         public int heldProj;
         public int staminaProj;
+        public int staminaCost;
         public override bool AltFunctionUse(Item item, Player player)
         {
             if (isManaSphere)
@@ -44,9 +47,9 @@ namespace Stellamod.Common.WeaponTypes
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(4, 4), heldProj, 1, 1, player.whoAmI);
                 point.Kill();
                 DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
-                if (player.altFunctionUse == 2 && dashPlayer.CanConsume(2))
+                if (player.altFunctionUse == staminaCost && dashPlayer.CanConsume(2))
                 {
-                    dashPlayer.Consume(2);
+                    dashPlayer.Consume(staminaCost);
                     type = staminaProj;
                 }
                 
@@ -64,6 +67,19 @@ namespace Stellamod.Common.WeaponTypes
             ManaSphereGlobalItem manaSphere = item.GetGlobalItem<ManaSphereGlobalItem>();
             if (manaSphere.isManaSphere)
             {
+                TooltipLine line;
+
+                line = new TooltipLine(Mod, "BasicSlash", LangText.Common("BasicSlash", LangText.Item(item.ModItem, "BasicSlash")));
+                lines.Add(line);
+
+                line = new TooltipLine(Mod, "StaminaSlash", LangText.Common("StaminaSlash", LangText.Item(item.ModItem, "StaminaSlash")));
+                lines.Add(line);
+
+                line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost", manaSphere.staminaCost.ToString()));
+                line.OverrideColor = Color.Goldenrod;
+                lines.Add(line);
+
+
                 TooltipLine manaSphereHelp = new TooltipLine(Mod, "ManaSphere", LangText.Common("ManaSphereHelp"));
                 lines.Add(manaSphereHelp);
             }

@@ -133,6 +133,7 @@ namespace Stellamod.Core.Bases
             globalItem.isManaSphere = true;
             globalItem.heldProj = manaSphereHoldProjectile;
             globalItem.staminaProj = staminaProj;
+            globalItem.staminaCost = 2;
             item.damage = 18;
             item.DamageType = DamageClass.Magic;
             item.noUseGraphic = true;
