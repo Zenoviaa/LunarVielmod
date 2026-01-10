@@ -118,6 +118,7 @@ namespace Stellamod.Items.Accessories.Players
         public int ExtraImmunityFramesBonus;
         public bool DashedThisFrame;
         public static event Action<Player> OnDash;
+        public static event Action<Player, int> OnUseStamina;
         public override void ResetEffects()
         {
             DashedThisFrame = false;
@@ -272,6 +273,7 @@ namespace Stellamod.Items.Accessories.Players
         public void Consume(int amount)
         {
             DashCount -= amount;
+            OnUseStamina?.Invoke(Player, amount);
         }
 
         public override bool CanUseItem(Item item)

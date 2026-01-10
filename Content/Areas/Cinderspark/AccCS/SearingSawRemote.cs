@@ -45,22 +45,39 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
 
     public class SearingSawPlayer : ModPlayer
     {
+        private bool _trySummonSaw;
         public bool hasSearingSawRemote = false;
         public override void ResetEffects()
         {
             base.ResetEffects();
             hasSearingSawRemote = true;
         }
+        public override void Load()
+        {
+            base.Load();
+            DashPlayer.OnUseStamina += TriggerSaw;
+        }
+        public override void Unload()
+        {
+            base.Unload();
+            DashPlayer.OnUseStamina -= TriggerSaw;
+        }
+        private void TriggerSaw(Player player, int staminaUsed)
+        {
+            player.GetModPlayer<SearingSawPlayer>()._trySummonSaw = true;
+        }
+
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
-            SwingPlayerV2 swingPlayer = Player.GetModPlayer<SwingPlayerV2>();
-            if (swingPlayer.useStaminaThisFrame)
+            if (!hasSearingSawRemote)
+                return;
+            if (!_trySummonSaw)
+                return;
+            _trySummonSaw = false;
+            if (Player.whoAmI == Main.myPlayer)
             {
-                if(Player.whoAmI == Main.myPlayer)
-                {
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, -Vector2.UnitY * 15, ModContent.ProjectileType<SearingSaw>(), 20, 1, Player.whoAmI);
-                }
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, -Vector2.UnitY * 15, ModContent.ProjectileType<SearingSaw>(), 20, 1, Player.whoAmI);
             }
         }
     }
@@ -117,6 +134,9 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
 
             }
 
+            Projectile.velocity *= 1.001f;
+            Projectile.scale = MathHelper.SmoothStep(0f, 1f, Timer / 15f);
+
             if (Main.rand.NextBool(8))
             {
                 FlameSparksParticle sp = Particle<FlameSparksParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.6f, 8f),
@@ -127,12 +147,16 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
             }
 
             Projectile.rotation += Projectile.velocity.Length() * 0.05f;
-            Projectile.rotation += 0.05f;
-            NPC nearest = NPCHelper.FindClosestNPC(Projectile.position, 512);
+            Projectile.rotation += 0.25f;
+            NPC nearest = NPCHelper.FindClosestNPC(Projectile.position, 800);
             if (nearest == null)
                 return;
-            Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center);
-            Projectile.velocity = homingVelocity;
+            if(Timer > 15)
+            {
+                Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center, 12);
+                Projectile.velocity = homingVelocity;
+            }
+
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -159,6 +183,16 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
             glowColor = Color.Red;
             glowColor.A = 0;
             spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
+            for(int i =0; i< Projectile.oldPos.Length; i++)
+            {
+                float ratio = (float)i / (float)Projectile.oldPos.Length;
+                Vector2 oldCenter = Projectile.oldPos[i] + Projectile.Size / 2f - Main.screenPosition;
+                Color afo = glowColor;
+                afo = Color.Lerp(afo, Color.Black, MathHelper.SmoothStep(0f, 1f, EasingFunction.InOutExpo7(ratio)));
+                afo.A = 0;
+                afo *= 0.15f;
+                spriteBatch.Draw(glowMask, oldCenter, null, afo, Projectile.oldRot[i], glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
+            }
             return false;
         }
 
@@ -168,7 +202,41 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
                 Projectile.velocity.X = -oldVelocity.X;
             if(Projectile.velocity.Y != oldVelocity.Y)
                 Projectile.velocity.Y = -oldVelocity.Y;
+
+            float boomSize = Main.rand.NextFloat(0.03f, 0.04f);
+            for (float n = 0; n < 2f; n++)
+            {
+                var spawnParams = new DustParticleSpawnParams();
+                spawnParams.innerColor = Color.OrangeRed;
+                spawnParams.outerColor = Color.Red;
+                spawnParams.scaleRange = new Vector2(0.1f, 3f);
+                DustParticle.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+            }
+
+            SmokeParticle sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY, Color.White, Scale: 1f);
+            sp.initialColor = Color.White * 0.14f;
             return false;
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            float boomSize = Main.rand.NextFloat(0.03f, 0.04f);
+            for (float n = 0; n < 2f; n++)
+            {
+                var spawnParams = new DustParticleSpawnParams();
+                spawnParams.innerColor = Color.OrangeRed;
+                spawnParams.outerColor = Color.Red;
+                spawnParams.scaleRange = new Vector2(0.1f, 3f);
+                DustParticle.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+            }
+
+            for(int n = 0; n < 3; n++)
+            {
+                SmokeParticle sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center  + Main.rand.NextVector2Circular(32, 32), -Vector2.UnitY, Color.White, Scale: 1.5f);
+                sp.initialColor = Color.White * 0.24f;
+            }
+      
         }
     }
 }

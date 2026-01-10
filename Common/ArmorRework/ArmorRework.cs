@@ -1085,34 +1085,38 @@ namespace Stellamod.Common.ArmorRework
             wandTimerEnchantmentSlots = 0;
         }
 
-        private string GetComparison(string name, float currentValue, bool invert = false, float localStatValue = 0f, bool isShowingComparison = false)
+        private string GetComparison(string name, float comparedValue, bool invert = false, float localStatValue = 0f, bool isShowingComparison = false)
         {
-            if (currentValue == 0)
+            if (comparedValue == 0)
                 return string.Empty;
-            string percentString = MathF.Abs(currentValue).ToString("P0");
-            string increaseDecreaseKey = currentValue < 0 ? "StatSubtraction" : "StatAddition";
+            string percentString = MathF.Abs(localStatValue).ToString("P0");
+            string increaseDecreaseKey = localStatValue < 0 ? "StatSubtraction" : "StatAddition";
             if (invert)
             {
-                increaseDecreaseKey = currentValue > 0 ? "StatSubtraction" : "StatAddition";
+                increaseDecreaseKey = localStatValue > 0 ? "StatSubtraction" : "StatAddition";
             }
             string comparisonText = LangText.Common(increaseDecreaseKey, LangText.Common($"Stat{name}"), percentString);
             if(isShowingComparison)
             {
-                comparisonText += $" ({localStatValue})";
+                string symbol = MathF.Sign(comparedValue) >= 0f ? "+" : "-";
+             
+                comparisonText += $" ({symbol}{MathF.Abs(comparedValue)})";
             }
             return comparisonText;
         }
 
-        private string GetComparison(string name, int currentValue, int localStatValue = 0, bool isShowingComparison = false)
+        private string GetComparison(string name, int comparedValue, int localStatValue = 0, bool isShowingComparison = false)
         {
-            if (currentValue == 0)
+            if (comparedValue == 0)
                 return string.Empty;
-            string percentString = MathF.Abs(currentValue).ToString();
-            string increaseDecreaseKey = currentValue < 0 ? "StatSubtractionAlt" : "StatAdditionAlt";
+            string percentString = MathF.Abs(localStatValue).ToString();
+            string increaseDecreaseKey = localStatValue < 0 ? "StatSubtractionAlt" : "StatAdditionAlt";
             string comparisonText = LangText.Common(increaseDecreaseKey, LangText.Common($"Stat{name}"), percentString);
             if (isShowingComparison)
             {
-                comparisonText += $" ({localStatValue})";
+                string symbol = MathF.Sign(comparedValue) >= 0f ? "+" : "-";
+
+                comparisonText += $" ({symbol}{MathF.Abs(comparedValue)})";
             }
             return comparisonText;
         }
