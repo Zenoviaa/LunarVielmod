@@ -18,8 +18,8 @@ namespace Stellamod.Visual.Particles
         {
             innerColor = Color.White;
             outerColor = Color.Yellow;
-            scaleRange = new Vector2(0.5f, 2f);
-            gravity = 0.2f;
+            scaleRange = new Vector2(0.5f, 1);
+            gravity = 0;
         }
         public Color innerColor;
         public Color outerColor;
@@ -30,8 +30,8 @@ namespace Stellamod.Visual.Particles
 
     public class ShockOvalParticle : Particle<ShockOvalParticle>
     {
-        public int FrameWidth = 128;
-        public int FrameHeight = 128;
+        public int FrameWidth = 90;
+        public int FrameHeight = 108;
         public int MaxFrameCount = 5;
         public float gravity;
         public Color innerColor;
@@ -56,6 +56,7 @@ namespace Stellamod.Visual.Particles
 
         public override void OnSpawn()
         {
+            stretchScale = Vector2.One;
             frame = 0;
             animTimer = 0;
             gravity = 0;
@@ -68,33 +69,24 @@ namespace Stellamod.Visual.Particles
         public override void Update()
         {
             animTimer++;
-            if(animTimer >= 12 && frame < MaxFrameCount)
+            if(animTimer >= 4 && frame < MaxFrameCount)
             {
+                animTimer = 0;
                 frame++;
                 Rectangle spriteFrame = new Rectangle(0, frame * FrameHeight, FrameWidth, FrameHeight);
                 Frame = spriteFrame;    
             }
-            Velocity.Y += gravity;
+           // Velocity.Y += gravity;
             Velocity *= 1.0f - dampening;
-            Rotation = Velocity.ToRotation();
+            Rotation = Velocity.ToRotation() - MathHelper.Pi;
             Scale *= 0.97f;
             if (fast)
                 Scale *= 0.98f;
             color *= 0.99f;
 
-            float stretchInterp = Velocity.Length() / 5f;
-            stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);
-            stretchScale.Y = 1f;
             fadeIn++;
             if (fadeIn > 180 || Scale < 0.1f)
                 active = false;
-
-            //Bouncing
-            Vector2 collisionVelocity = Collision.TileCollision(Center, Velocity, 2, 2);
-            if (Velocity.X != collisionVelocity.X)
-                Velocity.X = -collisionVelocity.X;
-            if (Velocity.Y != collisionVelocity.Y)
-                Velocity.Y = -collisionVelocity.Y;
 
         }
 
@@ -107,7 +99,7 @@ namespace Stellamod.Visual.Particles
             shader.Apply();
 
             var textureAsset = GetTexture();
-            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, Color.White, Rotation, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, color, Rotation, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
         }
     }
 }

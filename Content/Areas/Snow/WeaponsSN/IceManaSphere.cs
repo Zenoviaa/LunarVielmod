@@ -4,28 +4,29 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.WeaponTypes;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
+namespace Stellamod.Content.Areas.Snow.WeaponsSN
 {
-    public class MoltenManaSphere : ModItem
+    public class IceManaSphere : ModItem
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.DefaultToManaSphere(ModContent.ProjectileType<MoltenManaSphereHold>());
-            Item.shoot = ModContent.ProjectileType<MoltenManaBlast>();
+            Item.DefaultToManaSphere(ModContent.ProjectileType<IceManaSphereHold>());
+            Item.shoot = ModContent.ProjectileType<IceManaBlast>();
             Item.shootSpeed = 15;
             Item.damage = 13;
             Item.UseSound = SoundID.DD2_BetsyFireballShot;
@@ -34,10 +35,10 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<Cinderscrap>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<WinterbornShard>());
         }
     }
-    public class MoltenManaBlast : ModProjectile
+    public class IceManaBlast : ModProjectile
     {
         private Vector2 _initialVelocity;
         private Vector2 HomingTarget;
@@ -80,12 +81,12 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
             }
 
-            if(Timer == 5)
+            if (Timer == 5)
             {
                 ShockOvalSpawnParams spawnParams = new ShockOvalSpawnParams
                 {
-                    innerColor = Color.OrangeRed,
-                    outerColor = Color.Red
+                    innerColor = Color.LightSkyBlue,
+                    outerColor = Color.DarkBlue
                 };
                 ShockOvalParticle sp = ShockOvalParticle.Spawn(Projectile.Center, -Projectile.velocity * 0.4f, spawnParams);
                 sp.color *= 0.85f;
@@ -100,14 +101,18 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 Projectile.velocity *= 1.01f;
             }
 
-            FlameParticle dp = Particle<FlameParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(2.5f, 2.5f), Scale: Main.rand.NextFloat(0.2f, 0.35f));
-            dp.innerColor = Color.Goldenrod;
-            dp.outerColor = Color.Red;
-            dp.parent = Projectile;
-            dp.gravity = 0f;
-            dp.dampening = 0.05f;
-            dp.fast = true;
-            dp.Scale *= 0.1f;
+            if (Main.rand.NextBool(3))
+            {
+                FlakeParticle dp = Particle<FlakeParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(2.5f, 2.5f), Scale: Main.rand.NextFloat(0.2f, 0.35f));
+                //   dp.innerColor = Color.Goldenrod;
+                // dp.outerColor = Color.Red;
+                dp.parent = Projectile;
+                dp.gravity = 0f;
+                dp.dampening = 0.05f;
+                // dp.fast = true;
+                dp.Scale *= 0.8f;
+
+            }
 
             if (Main.rand.NextBool(5))
             {
@@ -121,11 +126,11 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                         sp.Scale *= 0.25f;
                         break;
                     case 1:
-                        FlameParticle sp2 = Particle<FlameParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 8), Scale: Main.rand.NextFloat(0.1f, 0.2f));
+                        FlakeParticle sp2 = Particle<FlakeParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 8), Scale: Main.rand.NextFloat(0.1f, 0.2f));
                         sp2.gravity = 0f;
-                        sp2.fast = true;
+                        //sp2.fast = true;
                         sp2.dampening = 0.1f;
-                        sp2.Scale *= 0.25f;
+                       
                         break;
                 }
 
@@ -134,7 +139,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             if (Main.rand.NextBool(8))
             {
                 FlameSparksParticle sp = Particle<FlameSparksParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.6f, 8f),
-                    color: Color.OrangeRed, Scale: Main.rand.NextFloat(0.35f, 0.75f));
+                    color: Color.White, Scale: Main.rand.NextFloat(0.35f, 0.75f));
                 sp.gravity = 0f;
                 sp.fast = true;
                 sp.dampening = 0.1f;
@@ -142,19 +147,19 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             }
 
 
-            if(Main.myPlayer == Projectile.owner)
+            if (Main.myPlayer == Projectile.owner)
             {
                 HomingTarget = Main.MouseWorld;
 
-    
+
                 Projectile.netUpdate = true;
             }
-            if(Timer < 30f)
+            if (Timer < 30f)
             {
                 Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, HomingTarget);
                 Projectile.velocity = Vector2.Lerp(_initialVelocity, homingVelocity, EasingFunction.InOutSine(Timer / 30f));
             }
-     
+
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -164,18 +169,18 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
             Vector2 glowDrawOrigin = glowMask.Size() / 2f;
-            Color glowColor = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 8));
+            Color glowColor = Color.Lerp(Color.LightCyan, Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 8));
             glowColor.A = 0;
             spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, drawScale * Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.3f, SpriteEffects.None, 0);
 
             glowMask = AssetManager.GlowMask.SpiralVortex.Value;
             glowDrawOrigin = glowMask.Size() / 2f;
-            glowColor = Color.Red;
+            glowColor = Color.SkyBlue;
             glowColor.A = 0;
             spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, drawScale * Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
             glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
             glowDrawOrigin = glowMask.Size() / 2f;
-            glowColor = Color.Red;
+            glowColor = Color.SkyBlue;
             glowColor.A = 0;
             glowColor *= 0.5f;
             Vector2 stretch = new Vector2(3f, 1.3f) * 0.75f;
@@ -190,16 +195,16 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Goldenrod, Color.DarkRed, completionRatio);
+            return Color.Lerp(Color.LightCyan, Color.DarkBlue, completionRatio);
         }
         private void DrawPixelatedFlames(GraphicsDevice graphicsDevice)
         {
             var shader = RichLaserShader.Instance;
-            shader.LaserColor = Color.Yellow;
-            shader.InnerColor = Color.Orange;
-            shader.OuterColor = Color.Red;
+            shader.LaserColor = Color.LightCyan;
+            shader.InnerColor = Color.Cyan;
+            shader.OuterColor = Color.Blue;
             shader.LaserTexture = TrailRegistry.SpikyTrail1;
-     
+            shader.BloomTexture = AssetManager.LaserTextures.SnowflakeLaser;
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -211,11 +216,11 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             base.OnKill(timeLeft);
 
             float boomSize = Main.rand.NextFloat(0.03f, 0.04f);
-            for(float n =0; n < 2f; n++)
+            for (float n = 0; n < 2f; n++)
             {
                 var spawnParams = new DustParticleSpawnParams();
-                spawnParams.innerColor = Color.OrangeRed;
-                spawnParams.outerColor = Color.Red;
+                spawnParams.innerColor = Color.LightSkyBlue;
+                spawnParams.outerColor = Color.DarkBlue;
                 spawnParams.scaleRange = new Vector2(0.1f, 1f);
                 DustParticle.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
             }
@@ -225,9 +230,9 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         }
     }
 
-    public class MoltenManaSphereHold : AbstractManaSphereHold
+    public class IceManaSphereHold : AbstractManaSphereHold
     {
-        public override string Texture => ModContent.GetInstance<MoltenManaSphere>().Texture;
+        public override string Texture => ModContent.GetInstance<IceManaSphere>().Texture;
         public override void AI_OrbitPlayer()
         {
             base.AI_OrbitPlayer();
@@ -239,14 +244,14 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             base.DustEffects();
             if (Timer % 5 == 0)
             {
-                FlameParticle dp = Particle<FlameParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(2.5f, 2.5f), Scale: Main.rand.NextFloat(0.2f, 0.35f));
-                dp.innerColor = Color.Goldenrod;
-                dp.outerColor = Color.Red;
+                FlakeParticle dp = Particle<FlakeParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(2.5f, 2.5f), Scale: Main.rand.NextFloat(0.2f, 0.35f));
+                //   dp.innerColor = Color.Goldenrod;
+                // dp.outerColor = Color.Red;
                 dp.parent = Projectile;
                 dp.gravity = 0f;
                 dp.dampening = 0.05f;
-                dp.fast = true;
-                dp.Scale *= 0.25f;
+                // dp.fast = true;
+                dp.Scale *= 0.8f;
             }
 
         }
@@ -268,32 +273,33 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         private void DrawPixelatedFlames(GraphicsDevice graphicsDevice)
         {
             var shader = RichLaserShader.Instance;
-            shader.LaserColor = Color.Yellow;
-            shader.InnerColor = Color.Orange;
-            shader.OuterColor = Color.Red;
+            shader.LaserColor = Color.LightCyan;
+            shader.InnerColor = Color.Cyan;
+            shader.OuterColor = Color.Blue;
             shader.LaserTexture = TrailRegistry.SpikyTrail1;
-
+            shader.BloomTexture = AssetManager.LaserTextures.SnowflakeLaser;
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
         }
         private void DrawHead(SpriteBatch spriteBatch, Vector2 screenPos)
         {
+
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             Vector2 drawScale = Vector2.One * 0.1f;
 
             Texture2D glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
             Vector2 glowDrawOrigin = glowMask.Size() / 2f;
-            Color glowColor = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 8));
+            Color glowColor = Color.Lerp(Color.LightCyan, Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 8));
             glowColor.A = 0;
             spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, drawScale * Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.3f, SpriteEffects.None, 0);
 
             glowMask = AssetManager.GlowMask.SpiralVortex.Value;
             glowDrawOrigin = glowMask.Size() / 2f;
-            glowColor = Color.Red;
+            glowColor = Color.SkyBlue;
             glowColor.A = 0;
             spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, drawScale * Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
             glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
             glowDrawOrigin = glowMask.Size() / 2f;
-            glowColor = Color.Red;
+            glowColor = Color.SkyBlue;
             glowColor.A = 0;
             glowColor *= 0.5f;
             Vector2 stretch = new Vector2(1.5f, 1.3f);

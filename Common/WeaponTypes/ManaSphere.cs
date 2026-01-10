@@ -130,7 +130,7 @@ namespace Stellamod.Common.WeaponTypes
         {
             if (Main.myPlayer == Projectile.owner)
             {
-                TargetHoldPosition = Owner.Center + (Main.MouseWorld - Owner.Center).SafeNormalize(Vector2.Zero) * 128;
+                TargetHoldPosition = Owner.Center + (Main.MouseWorld - Owner.Center).SafeNormalize(Vector2.Zero) * 32;
                 Projectile.netUpdate = true;
             }
             Vector2 idlePosition = TargetHoldPosition;

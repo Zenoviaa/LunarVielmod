@@ -10344,3 +10344,8 @@ GnomeLegs: {
 	DisplayName: Gnome Legs
 	Tooltip: ""
 }
+
+IceManaSphere: {
+	DisplayName: Ice Mana Sphere
+	Tooltip: ""
+}
