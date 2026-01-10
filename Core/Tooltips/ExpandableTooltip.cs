@@ -50,14 +50,10 @@ namespace Stellamod.Core.Tooltips
             Item item = Main.HoverItem;
             if (item == null)
                 return;
-
             if (item.IsAir)
                 return;
-
             if (item.ModItem == null)
-            {
                 return;
-            }
 
             ExpandableTooltipRenderer renderer = ModContent.GetInstance<ExpandableTooltipRenderer>();
             for (int i = 0; i < renderer.ExpandableTooltips.Length; i++)
@@ -67,11 +63,13 @@ namespace Stellamod.Core.Tooltips
             }
             if (item.headSlot == -1 && item.bodySlot == -1 && item.legSlot == -1)
                 return;
+            if (_expandableLines.Count <= 0)
+                return;
 
 
             Keys keys = Keys.LeftShift;
             bool isExpanded = Main.keyState.IsKeyDown(keys);
-            if (isExpanded && _expandableLines.Count > 0)
+            if (isExpanded)
             {
                 ArmorSet set = ArmorSetSystem.FindArmorSet(item.type);
                 ArmorSetSystem.GetArmorSet(set, out Item helm, out Item armor, out Item leggings);

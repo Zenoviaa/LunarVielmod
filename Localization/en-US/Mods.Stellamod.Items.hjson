@@ -10349,3 +10349,18 @@ IceManaSphere: {
 	DisplayName: Ice Mana Sphere
 	Tooltip: ""
 }
+
+IllikenCoat: {
+	DisplayName: Illiken Coat
+	Tooltip: ""
+}
+
+IllikenHelmet: {
+	DisplayName: Illiken Helmet
+	Tooltip: ""
+}
+
+IllikenLegs: {
+	DisplayName: Illiken Legs
+	Tooltip: ""
+}

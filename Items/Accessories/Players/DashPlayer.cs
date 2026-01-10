@@ -124,6 +124,7 @@ namespace Stellamod.Items.Accessories.Players
         public float DashVelocityBonus;
         public int ExtraImmunityFramesBonus;
         public bool DashedThisFrame;
+        public static event Action<Player> OnDash;
         public override void ResetEffects()
         {
             DashedThisFrame = false;
@@ -229,6 +230,7 @@ namespace Stellamod.Items.Accessories.Players
 
                 Player.SetImmuneTimeForAllTypes(DashDuration + ExtraImmunityFramesBonus);
                 DashItem?.BeginDash(Player);
+                OnDash?.Invoke(Player);
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                     ModContent.ProjectileType<DashProjectile>(), 0, 0, Player.whoAmI);
 

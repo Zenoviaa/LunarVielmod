@@ -4,6 +4,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -89,19 +90,34 @@ namespace Stellamod.Content.Areas.Illuria.ArmorsIL
             base.ResetEffects();
             hasIllikenSetBonus = false;
         }
+        public override void Load()
+        {
+            base.Load();
+            DashPlayer.OnDash += On_Dash;
+        }
+        public override void Unload()
+        {
+            base.Unload();
+            DashPlayer.OnDash -= On_Dash;
+        }
+
+        private void On_Dash(Player player)
+        {
+            if (Main.myPlayer != player.whoAmI)
+                return;
+            if (!hasIllikenSetBonus)
+                return;
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            if (dashPlayer.DashedThisFrame)
+            {
+                player.AddBuff(ModContent.BuffType<IllikenIceFury>(), 60);
+                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<IllikenIceBlast>(), 50, 1, player.whoAmI);
+            }
+        }
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
-            if (!hasIllikenSetBonus)
-                return;
-            DashPlayer dashPlayer = Player.GetModPlayer<DashPlayer>();
-            if (Main.myPlayer != Player.whoAmI)
-                return;
-            if (dashPlayer.DashedThisFrame)
-            {
-                Player.AddBuff(ModContent.BuffType<IllikenIceFury>(), 60);
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, ModContent.ProjectileType<IllikenIceBlast>(), 50, 1, Player.whoAmI);
-            }
+
         }
 
     }

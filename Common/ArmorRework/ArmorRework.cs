@@ -83,77 +83,7 @@ namespace Stellamod.Common.ArmorRework
             DrawPlayerInternal(camera, drawPlayer, position + Main.screenPosition, 0f, Vector2.Zero, alpha: alpha, scale: scale, headOnly: true);
         }
 
-        private void CreateOutlines(float alpha, float scale, Color borderColor)
-        {
-            if (!(borderColor != Color.Transparent))
-                return;
-
-            List<DrawData> collection = new List<DrawData>(_drawData);
-            List<DrawData> list = new List<DrawData>(_drawData);
-            float num = 2f * scale;
-            Color color = borderColor;
-            color *= alpha * alpha;
-            Color black = Color.Black;
-            black *= alpha * alpha;
-            int colorOnlyShaderIndex = ContentSamples.CommonlyUsedContentSamples.ColorOnlyShaderIndex;
-            for (int i = 0; i < list.Count; i++)
-            {
-                DrawData value = list[i];
-                value.shader = colorOnlyShaderIndex;
-                value.color = black;
-                list[i] = value;
-            }
-
-            int num2 = 2;
-            Vector2 vector;
-            for (int j = -num2; j <= num2; j++)
-            {
-                for (int k = -num2; k <= num2; k++)
-                {
-                    if (Math.Abs(j) + Math.Abs(k) == num2)
-                    {
-                        vector = new Vector2((float)j * num, (float)k * num);
-                        for (int l = 0; l < list.Count; l++)
-                        {
-                            DrawData item = list[l];
-                            item.position += vector;
-                            _drawData.Add(item);
-                        }
-                    }
-                }
-            }
-
-            for (int m = 0; m < list.Count; m++)
-            {
-                DrawData value2 = list[m];
-                value2.shader = colorOnlyShaderIndex;
-                value2.color = color;
-                list[m] = value2;
-            }
-
-            vector = Vector2.Zero;
-            num2 = 1;
-            for (int n = -num2; n <= num2; n++)
-            {
-                for (int num3 = -num2; num3 <= num2; num3++)
-                {
-                    if (Math.Abs(n) + Math.Abs(num3) == num2)
-                    {
-                        vector = new Vector2((float)n * num, (float)num3 * num);
-                        for (int num4 = 0; num4 < list.Count; num4++)
-                        {
-                            DrawData item2 = list[num4];
-                            item2.position += vector;
-                            _drawData.Add(item2);
-                        }
-                    }
-                }
-            }
-
-            _drawData.AddRange(collection);
-        }
-
-        public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f)
+        public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1.2f)
         {
             DrawPlayerInternal(camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale: scale);
         }
@@ -207,114 +137,7 @@ namespace Stellamod.Common.ArmorRework
             PlayerLoader.TransformDrawData(ref drawInfo);
    
             PlayerDrawLayers.DrawPlayer_RenderAllLayers(ref drawInfo);
-            if (!drawInfo.drawPlayer.mount.Active || !drawInfo.drawPlayer.UsingSuperCart)
-                return;
-
-            for (int i = 0; i < 1000; i++)
-            {
-                if (Main.projectile[i].active && Main.projectile[i].owner == drawInfo.drawPlayer.whoAmI && Main.projectile[i].type == 591)
-                    Main.instance.DrawProj(i);
-            }
         }
-
-        private static void DrawPlayer_MountTransformation(ref PlayerDrawSet drawInfo)
-        {
-            PlayerDrawLayers.DrawPlayer_02_MountBehindPlayer(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_23_MountFront(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_extra_MountPlus(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_26_SolarShield(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_extra_MountMinus(ref drawInfo);
-        }
-
-        private static void DrawPlayer_UseNormalLayers(ref PlayerDrawSet drawInfo)
-        {
-            PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_01_2_JimsCloak(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_02_MountBehindPlayer(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_03_Carpet(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_03_PortableStool(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_04_ElectrifiedDebuffBack(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_05_ForbiddenSetRing(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_05_2_SafemanSun(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_06_WebbedDebuffBack(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_07_LeinforsHairShampoo(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_08_Backpacks(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_08_1_Tails(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_09_Wings(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_01_BackHair(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_10_BackAcc(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_01_3_BackHead(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_11_Balloons(ref drawInfo);
-            if (drawInfo.weaponDrawOrder == WeaponDrawOrder.BehindBackArm)
-                PlayerDrawLayers.DrawPlayer_27_HeldItem(ref drawInfo);
-
-            PlayerDrawLayers.DrawPlayer_12_Skin(ref drawInfo);
-            if (drawInfo.drawPlayer.wearsRobe && drawInfo.drawPlayer.body != 166)
-            {
-                PlayerDrawLayers.DrawPlayer_14_Shoes(ref drawInfo);
-                PlayerDrawLayers.DrawPlayer_13_Leggings(ref drawInfo);
-            }
-            else
-            {
-                PlayerDrawLayers.DrawPlayer_13_Leggings(ref drawInfo);
-                PlayerDrawLayers.DrawPlayer_14_Shoes(ref drawInfo);
-            }
-
-            PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_15_SkinLongCoat(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_16_ArmorLongCoat(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_17_Torso(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_18_OffhandAcc(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_19_WaistAcc(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_20_NeckAcc(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_21_Head(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_21_1_Magiluminescence(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_22_FaceAcc(ref drawInfo);
-            if (drawInfo.drawFrontAccInNeckAccLayer)
-            {
-                PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawInfo);
-                PlayerDrawLayers.DrawPlayer_32_FrontAcc_FrontPart(ref drawInfo);
-                PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawInfo);
-            }
-
-            PlayerDrawLayers.DrawPlayer_23_MountFront(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_24_Pulley(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_JimsDroneRadio(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_32_FrontAcc_BackPart(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_25_Shield(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_extra_MountPlus(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_26_SolarShield(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_extra_MountMinus(ref drawInfo);
-            if (drawInfo.weaponDrawOrder == WeaponDrawOrder.BehindFrontArm)
-                PlayerDrawLayers.DrawPlayer_27_HeldItem(ref drawInfo);
-
-            PlayerDrawLayers.DrawPlayer_28_ArmOverItem(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_29_OnhandAcc(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_30_BladedGlove(ref drawInfo);
-            if (!drawInfo.drawFrontAccInNeckAccLayer)
-                PlayerDrawLayers.DrawPlayer_32_FrontAcc_FrontPart(ref drawInfo);
-
-            PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawInfo);
-            if (drawInfo.weaponDrawOrder == WeaponDrawOrder.OverFrontArm)
-                PlayerDrawLayers.DrawPlayer_27_HeldItem(ref drawInfo);
-
-            PlayerDrawLayers.DrawPlayer_31_ProjectileOverArm(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_33_FrozenOrWebbedDebuff(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_34_ElectrifiedDebuffFront(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_35_IceBarrier(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_36_CTG(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_37_BeetleBuff(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_38_EyebrellaCloud(ref drawInfo);
-            PlayerDrawLayers.DrawPlayer_MakeIntoFirstFractalAfterImage(ref drawInfo);
-        }
-
         private void DrawPlayerFull(Camera camera, Player drawPlayer)
         {
             SpriteBatch spriteBatch = camera.SpriteBatch;
@@ -569,7 +392,7 @@ namespace Stellamod.Common.ArmorRework
             {
                 SpriteEffects spriteEffects = SpriteEffects.None;
                 spriteEffects = ((drawPlayer.direction != 1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-                camera.SpriteBatch.Draw(TextureAssets.Extra[37].Value, new Vector2((int)(position.X - camera.UnscaledPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2)), (int)(position.Y - camera.UnscaledPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 8f)) + drawPlayer.bodyPosition + new Vector2(drawPlayer.bodyFrame.Width / 2, drawPlayer.bodyFrame.Height / 2), null, Lighting.GetColor((int)((double)position.X + (double)drawPlayer.width * 0.5) / 16, (int)((double)position.Y + (double)drawPlayer.height * 0.5) / 16, Color.White), 0f, new Vector2(TextureAssets.Extra[37].Width() / 2, TextureAssets.Extra[37].Height() / 2), 1f, spriteEffects, 0f);
+                camera.SpriteBatch.Draw(TextureAssets.Extra[ExtrasID.PlayerStoned].Value, new Vector2((int)(position.X - camera.UnscaledPosition.X - (float)(drawPlayer.bodyFrame.Width / 2) + (float)(drawPlayer.width / 2)), (int)(position.Y - camera.UnscaledPosition.Y + (float)drawPlayer.height - (float)drawPlayer.bodyFrame.Height + 8f)) + drawPlayer.bodyPosition + new Vector2(drawPlayer.bodyFrame.Width / 2, drawPlayer.bodyFrame.Height / 2), null, Lighting.GetColor((int)((double)position.X + (double)drawPlayer.width * 0.5) / 16, (int)((double)position.Y + (double)drawPlayer.height * 0.5) / 16, Color.White), 0f, new Vector2(TextureAssets.Extra[ExtrasID.PlayerStoned].Width() / 2, TextureAssets.Extra[ExtrasID.PlayerStoned].Height() / 2), 1f, spriteEffects, 0f);
             }
         }
 
@@ -624,6 +447,7 @@ namespace Stellamod.Common.ArmorRework
             spriteBatch.End();
             spriteBatch.Begin(default, default, Main.graphics.GraphicsDevice.SamplerStates[0], default, Main.Rasterizer, SpriteWhiteShader.Instance.Effect, Main.UIScaleMatrix);
 
+            Vector2 armorIconPosition = position + new Vector2(-16, 0);
             //Step 3. Draw item icon of the current item
             Vector2 topRight = position;
             topRight.X += Width.Pixels * 1f; 
@@ -632,7 +456,7 @@ namespace Stellamod.Common.ArmorRework
             {
                 Color outlineColor = Color.White;
                 outlineColor *= (int)ExtraMath.Osc(0f, 2f, speed: 3);
-                ItemSlot.DrawItemIcon(_item, 0, spriteBatch, topRight + (Vector2.UnitY * 2).RotatedBy(f / 4f * MathHelper.TwoPi), 1, 32, outlineColor * alpha);
+                ItemSlot.DrawItemIcon(_item, 0, spriteBatch, armorIconPosition + (Vector2.UnitY * 2).RotatedBy(f / 4f * MathHelper.TwoPi), 1, 32, outlineColor * alpha);
             }
    
                 
@@ -642,9 +466,11 @@ namespace Stellamod.Common.ArmorRework
 
 
             Vector2 size = FontAssets.MouseText.Value.MeasureString(_item.Name);
+
+            float xOffset = (Width.Pixels / 2f) - size.X / 2f;
             ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, _item.Name,
-               topRight - new Vector2(size.X + 32, 0), Color.White * alpha, 0, Vector2.Zero, Vector2.One);
-            ItemSlot.DrawItemIcon(_item, 0, spriteBatch, topRight, 1, 32, Color.White * alpha);
+               position + new Vector2(xOffset, 0), Color.White * alpha, 0, Vector2.Zero, Vector2.One);
+            ItemSlot.DrawItemIcon(_item, 0, spriteBatch, armorIconPosition, 1, 32, Color.White * alpha);
 
 
             spriteBatch.End();
@@ -1026,6 +852,9 @@ namespace Stellamod.Common.ArmorRework
         {
             //            throw new NotImplementedException();
             //Here we want to get the stats for the entire armor set
+            if (item.vanity)
+                return;
+
             ArmorStatsPlayer armorStatsPlayer = Main.LocalPlayer.GetModPlayer<ArmorStatsPlayer>();
             armorStatsPlayer.GetStatTooltipsLocalToItem(item, lines);
         }
@@ -1307,16 +1136,19 @@ namespace Stellamod.Common.ArmorRework
             Item armor = player.armor[1];
             Item legs = player.armor[2];
 
- 
+            bool isShowingComparison = false;
             //Apply all of our stat bonuses here
-            if(!helmer.IsAir && item.headSlot != -1 && item.type != helmer.type)
+            if (!helmer.IsAir && item.headSlot != -1 && item.type != helmer.type)
             {
+                isShowingComparison = true;
                 ApplyArmor(helmer, _currentDummyPlayer);
             } else if (!armor.IsAir && item.bodySlot != -1 && item.type != armor.type)
             {
+                isShowingComparison = true;
                 ApplyArmor(armor, _currentDummyPlayer);
             } else if (!legs.IsAir && item.legSlot != -1 && item.type != legs.type)
             {
+                isShowingComparison = true;
                 ApplyArmor(legs, _currentDummyPlayer);
             }
 
@@ -1326,11 +1158,12 @@ namespace Stellamod.Common.ArmorRework
             ArmorStatsPlayer currentStatsPlayer = _currentDummyPlayer.GetModPlayer<ArmorStatsPlayer>();
             ArmorStatsPlayer localItemStatsPlayer = _localDummyPlayer.GetModPlayer<ArmorStatsPlayer>();
 
+
             ArmorStatsPlayer comparisonPlayer = currentStatsPlayer.CompareArmorStatsPlayer(localItemStatsPlayer);
-            comparisonPlayer.GetStatTooltips(tooltips);
+            comparisonPlayer.GetStatTooltips(tooltips, isShowingComparison);
         }
 
-        public void GetStatTooltips(List<TooltipLine> tooltips)
+        public void GetStatTooltips(List<TooltipLine> tooltips, bool isShowingComparison = false)
         {
             void AddLineIfDifferent(string name, float currentValue, bool invert = false)
             {
@@ -1340,6 +1173,8 @@ namespace Stellamod.Common.ArmorRework
                 TooltipLine line = new TooltipLine(Stellamod.Instance, name, comparison);
                 if (currentValue < 0)
                     line.OverrideColor = Color.IndianRed;
+                if (isShowingComparison && currentValue > 0)
+                    line.OverrideColor = Color.LightGreen;
                 tooltips.Add(line);
             }
             void AddLineIfDifferentInt(string name, int currentValue)
@@ -1348,6 +1183,10 @@ namespace Stellamod.Common.ArmorRework
                 if (string.IsNullOrEmpty(comparison))
                     return;
                 TooltipLine line = new TooltipLine(Stellamod.Instance, name, comparison);
+                if (currentValue < 0)
+                    line.OverrideColor = Color.IndianRed;
+                if (isShowingComparison && currentValue > 0)
+                    line.OverrideColor = Color.LightGreen;
                 tooltips.Add(line);
             }
 

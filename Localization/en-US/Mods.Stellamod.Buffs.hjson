@@ -982,3 +982,8 @@ IvynVines: {
 	DisplayName: Ivyn Vines
 	Description: Mods.Stellamod.Buffs.IvynVines.Description
 }
+
+IllikenIceFury: {
+	DisplayName: Illiken Ice Fury
+	Description: Mods.Stellamod.Buffs.IllikenIceFury.Description
+}
