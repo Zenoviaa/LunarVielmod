@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
+﻿using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Rek;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Ereshkigal;
@@ -305,12 +304,6 @@ namespace Stellamod.NPCs.Town
                         (int)DelgrimSpawnWorld.X, (int)DelgrimSpawnWorld.Y,
                         ModContent.NPCType<Delgrim>());
                 }
-                else if (!NPC.AnyNPCs(ModContent.NPCType<Gia>()))
-                {
-                    NPC.NewNPC(player.GetSource_FromThis(),
-                        (int)GiaSpawnWorld.X, (int)GiaSpawnWorld.Y,
-                        ModContent.NPCType<Gia>());
-                }
                 else if (!NPC.AnyNPCs(ModContent.NPCType<EreshkigalIdle>()))
                 {
                     NPC.NewNPC(player.GetSource_FromThis(),
@@ -398,11 +391,6 @@ namespace Stellamod.NPCs.Town
 
         public override void PostUpdateNPCs()
         {
-            if (NPC.AnyNPCs(ModContent.NPCType<Gia>()))
-            {
-                TownedGia = true;
-            }
-
             if (NPC.AnyNPCs(ModContent.NPCType<Mardenth>()))
             {
                 TownedMardenth = true;

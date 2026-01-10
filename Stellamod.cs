@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿global using Microsoft.Xna.Framework;
+global using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Backgrounds;
@@ -21,8 +23,7 @@ using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
-global using Microsoft.Xna.Framework;
-global using Microsoft.Xna.Framework.Graphics;
+
 
 namespace Stellamod
 {

@@ -1,6 +1,4 @@
-﻿using Stellamod.Assets.Biomes;
-using Stellamod.Content.Areas.SpringHills;
-using Terraria;
+﻿using Terraria;
 using Terraria.DataStructures;
 
 namespace Stellamod.Utilis
@@ -22,12 +20,5 @@ namespace Stellamod.Utilis
 
             return index;
         }
-    }
-
-    public static class ExtensionMethods
-    {
-        public static bool ZoneFable(this Player player) => player.InModBiome<FableBiome>();
-        public static bool ZoneAbyss(this Player player) => player.InModBiome<AbyssBiome>();
-        public static bool ZoneXixianVillage(this Player player) => player.InModBiome<XixVillageBiome>();
     }
 }

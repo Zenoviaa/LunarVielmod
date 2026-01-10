@@ -1,11 +1,19 @@
-﻿using Stellamod.Content.Gores.Foreground;
+﻿using Stellamod.Assets.Biomes;
+using Stellamod.Content.Areas.SpringHills;
+using Stellamod.Content.Gores.Foreground;
 using Stellamod.Core.Foreground;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Biomes
 {
-    internal class BiomePlayer : ModPlayer
+    public static class BiomeExtensions
+    {
+        public static bool ZoneFable(this Player player) => player.InModBiome<FableBiome>();
+        public static bool ZoneAbyss(this Player player) => player.InModBiome<AbyssBiome>();
+        public static bool ZoneXixianVillage(this Player player) => player.InModBiome<XixVillageBiome>();
+    }
+    public class BiomePlayer : ModPlayer
     {
         private float _windCounter;
         public bool ZoneSpringHills;

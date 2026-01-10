@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Stellamod.Content.Biomes;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using Stellamod.Utilis;
