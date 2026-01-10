@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.Shaders;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -59,34 +61,25 @@ namespace Stellamod.Items.Accessories.Players
 
         public Color ColorFunction(float completionRatio)
         {
-            Color startColor = Color.White;
-
-            float progress = 1f;
-            if (Timer > 30)
-            {
-                progress = (Timer - 30f) / 30f;
-                progress = MathHelper.Clamp(progress, 0f, 1f);
-                progress = 1f - progress;
-                startColor *= progress;
-            }
-
-            return Color.Lerp(startColor, Color.Transparent, completionRatio);
+            return Color.Lerp(Color.White, Color.Transparent, MathHelper.SmoothStep(0f, 1f, completionRatio));
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         public override bool PreDraw(ref Color lightColor)
         {
             //Draw Trail
-            Projectile.oldPos = _oldSwingPos;
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            }
-
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
-            Vector2 trailOffset = -Main.screenPosition;
-            TrailDrawer.DrawPrims(_oldSwingPos, trailOffset, 155);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelTrail);
             return false;
+        }
+
+        private void DrawPixelTrail(GraphicsDevice graphicsDevice)
+        {
+            var shader = RichLaserShader.Instance;
+            float alpha = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine((float)Projectile.timeLeft / 60f));
+            shader.LaserColor = Color.Lerp(Color.White, Color.Black, alpha);
+            shader.InnerColor = Color.Lerp(Color.LightGray, Color.Black, alpha);
+            shader.OuterColor = Color.Lerp(Color.DarkGray, Color.Black, alpha);
+            shader.LaserTexture = TrailRegistry.Dashtrail;
+            TrailDrawer.Draw(Main.spriteBatch, _oldSwingPos, ColorFunction, WidthFunction, shader);
         }
     }
 

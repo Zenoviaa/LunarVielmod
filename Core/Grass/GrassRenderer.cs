@@ -204,8 +204,8 @@ namespace Stellamod.Core.Grass
         }
         private void SimulateWind()
         {
-            _windTimer += Main.windSpeedCurrent * 0.15f;
-            float windRange = MathHelper.ToRadians(Main.windSpeedCurrent * 9);
+            _windTimer += Main.windSpeedCurrent * 0.1f;
+            float windRange = MathHelper.ToRadians(Main.windSpeedCurrent * 6);
             VelocityMap velocityMap = ModContent.GetInstance<VelocityMap>();
 
             for (int i = 0; i < _grassIndex; i++)
@@ -272,7 +272,7 @@ namespace Stellamod.Core.Grass
         private void PrepareGrassVertices()
         {
             float windRange = MathHelper.ToRadians(Main.windSpeedCurrent * 5);
-            _windTimer += Main.windSpeedCurrent * 0.15f;
+            _windTimer += Main.windSpeedCurrent * 0.05f;
             _noiseTimer = _windTimer * 2;
 
             _grassVertexIndex = 0;
