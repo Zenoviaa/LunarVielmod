@@ -1,31 +1,19 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Trails;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 
 namespace Stellamod.Common.Shaders
 {
     public class BlackLingeringSmokeShader : BaseShader
     {
-        private EffectParameter _innerEmitColorParam;
-        private EffectParameter _outerEmitColorParam;
         private EffectParameter _tilingParam;
-        private EffectParameter _matrixParam;
-        private EffectParameter _primaryTextureParam;
         private EffectParameter _noiseTextureParam;
         private EffectParameter _distortionTextureParam;
         private EffectParameter _timeParam;
         private EffectParameter _distortionParam;
         private EffectParameter _innerColorParam;
         private EffectParameter _outerColorParam;
-        private EffectParameter _backColorParam;
         private static BlackLingeringSmokeShader _instance;
         public static BlackLingeringSmokeShader Instance
         {

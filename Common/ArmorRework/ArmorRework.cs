@@ -954,6 +954,22 @@ namespace Stellamod.Common.ArmorRework
         }
     }
 
+    public static class ArmorStatsExtensions
+    {
+        public static void AddEndurance(this Player player, float value)
+        {
+            player.GetModPlayer<ArmorStatsPlayer>().generalEndurance += value;
+        }
+
+        public static void AddBossEndurance(this Player player, float value)
+        {
+            player.GetModPlayer<ArmorStatsPlayer>().bossEndurance += value;
+        }
+
+        public static ArmorStatsPlayer GetStats(this Player player) => player.GetModPlayer<ArmorStatsPlayer>();
+
+    }
+
     public class ArmorStatsPlayer : ModPlayer
     {
         //Textures
@@ -1009,6 +1025,7 @@ namespace Stellamod.Common.ArmorRework
         {
             base.Unload();
             _iconAssets = null;
+          
         }
 
 

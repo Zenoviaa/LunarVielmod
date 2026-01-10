@@ -1,18 +1,13 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Terraria.UI.Chat;
 
 namespace Stellamod.Core.ZTileSystem.UI;
 
@@ -22,8 +17,6 @@ namespace Stellamod.Core.ZTileSystem.UI;
 public class ZTileBrowserView : UIPanel
 {
     private float _scale;
-    private int _context;
-    private bool _oldModFilter;
     private string _oldSearchFilter;
     //Basically, instead of ceratgin 6800 slots or whatever
     //We have a single view that takes an array of items
@@ -31,7 +24,6 @@ public class ZTileBrowserView : UIPanel
     public ZTileBrowserView(ZTile[] items)
     {
         _scale = 1f;
-        _context = ItemSlot.Context.BankItem;
         ElementsPerRow = 9;
 
         //Set up the items we're going to iterate over
@@ -93,8 +85,8 @@ public class ZTileBrowserView : UIPanel
 
         if (IsMouseHovering)
         {
-          //  Main.HoverItem = HoveringItem;
-           // Main.hoverItemName = HoveringItem.HoverName;
+            //  Main.HoverItem = HoveringItem;
+            // Main.hoverItemName = HoveringItem.HoverName;
         }
 
         Vector2 topLeft = rectangle.TopLeft();
@@ -124,6 +116,7 @@ public class ZTileBrowserView : UIPanel
         {
             UpdateCollection();
         }
+
         ZTile[] itemArr = SearchFilterItems;
         int elementsPerRow = ElementsPerRow;
         float elementWidth = outerDimensions.Width;

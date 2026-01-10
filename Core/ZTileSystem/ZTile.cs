@@ -14,7 +14,7 @@ public struct ZTileDrawParams
 {
     public ZTilePosition tilePosition;
     public ZTileInstanceData tileData;
-    public Color multiplyColor;
+    public Color lightColor;
 }
 
 /// <summary>
@@ -113,10 +113,11 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
 
         }
 
-        Color drawColor = Color.White;
-        Color lightingColor = Lighting.GetColor(drawParams.tilePosition.x, drawParams.tilePosition.y);
-        drawColor = drawColor.MultiplyRGB(lightingColor);
-        drawColor = drawColor.MultiplyRGBA(drawParams.multiplyColor);
+
+        //Since it's gonne default to 0 on old worlds
+        //We'll make 255 be black
+        Color valueColor = Color.Lerp(Color.White, Color.Black, (float)drawParams.tileData.value / 255f);
+        Color drawColor = drawParams.lightColor.MultiplyRGB(valueColor);
 
         float drawRotation;
         switch (drawParams.tileData.rotation)

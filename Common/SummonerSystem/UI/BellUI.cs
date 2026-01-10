@@ -1,20 +1,13 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Common.UI;
 using Stellamod.Core.Tooltips;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.UI;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
-using Terraria.UI;
 
 
 namespace Stellamod.Common.SummonerSystem.UI
@@ -107,7 +100,7 @@ namespace Stellamod.Common.SummonerSystem.UI
                     continue;
 
                 //Padding 
-            
+
                 if (x >= Width.Pixels - 80)
                 {
                     x = _guardianSlot.Width.Pixels + 18;

@@ -1,7 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Common.Shaders;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
 using System.Text;
@@ -13,6 +12,119 @@ using Terraria.UI;
 
 namespace Stellamod.Core.ZTileSystem.UI
 {
+    public class ZTileSlider : UIPanel
+    {
+        private bool _drag;
+        private Texture2D _gradientTexture;
+        private Texture2D _sliderTexture;
+        public delegate void UpdateValue(float ratio);
+        public ZTileSlider(UpdateValue updateFunction) : base()
+        {
+            UpdateFunction = updateFunction;
+        }
+
+        public UpdateValue UpdateFunction;
+        public float SliderX;
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            Width.Pixels = 128;
+            Height.Pixels = 16;
+            BorderColor = Color.Black;
+
+            Main.QueueMainThreadAction(CreateGradientTexture);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+
+        }
+
+        private void CreateGradientTexture()
+        {
+            _gradientTexture = new Texture2D(Main.graphics.GraphicsDevice, (int)Width.Pixels, (int)Height.Pixels);
+            Color[] pixels = new Color[_gradientTexture.Width * _gradientTexture.Height];
+            for(int y = 0; y < _gradientTexture.Width; y++)
+            {
+                float ratio = (float)y / (float)_gradientTexture.Width;
+                for (int x = 0; x < _gradientTexture.Height; x++)
+                {
+                    int pixelIndex = x * _gradientTexture.Width + y; 
+                    pixels[pixelIndex] = Color.Lerp(Color.White, Color.Black, ratio);
+                }
+            }
+            _gradientTexture.SetData(pixels);
+
+            _sliderTexture = new Texture2D(Main.graphics.GraphicsDevice, 16, (int)Height.Pixels);
+            Color[] sliderPixels = new Color[_sliderTexture.Width * _sliderTexture.Height];
+            for(int i = 0; i < sliderPixels.Length; i++)
+            {
+                sliderPixels[i] = Color.White;
+            }
+            _sliderTexture.SetData(sliderPixels);
+
+        }
+
+        private void UpdateSliderPositionByMouse()
+        {
+            Vector2 mouseScreen = Main.MouseScreen;
+            Rectangle sliderRectangle = GetDimensions().ToRectangle();
+            Vector2 topLeft = sliderRectangle.TopLeft();
+
+            SliderX = (mouseScreen.X - topLeft.X) / (float)sliderRectangle.Width;
+            SliderX = MathHelper.Clamp(SliderX, 0f, 1f);
+            UpdateFunction?.Invoke(SliderX);
+        }
+
+        private void DrawGradientAndHandle(SpriteBatch spriteBatch)
+        {
+            if (_gradientTexture == null)
+                return;
+            if (_sliderTexture == null)
+                return;
+
+    
+            //Gonna do something stupid and draw magic pixel 128 times lol.
+            //I don't feel like making a 
+            //actually nvm just make a shader
+            Vector2 topLeft = GetDimensions().ToRectangle().TopLeft();
+            Rectangle targetRectangle = GetDimensions().ToRectangle();
+            spriteBatch.Draw(_gradientTexture, targetRectangle, Color.White);
+
+            Vector2 sliderTopLeft = topLeft + new Vector2(SliderX * Width.Pixels, 0);
+
+            Vector2 v = Vector2.UnitY * 2;
+            Vector2 h = Vector2.UnitX * 2;
+
+            spriteBatch.Draw(_sliderTexture, sliderTopLeft + v, Color.Black);
+            spriteBatch.Draw(_sliderTexture, sliderTopLeft - v, Color.Black);
+            spriteBatch.Draw(_sliderTexture, sliderTopLeft + h, Color.Black);
+            spriteBatch.Draw(_sliderTexture, sliderTopLeft - h, Color.Black);
+
+            spriteBatch.Draw(_sliderTexture, sliderTopLeft, Color.White);
+
+
+
+        }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            if (this.QuickMouseInteraction() && Main.mouseLeft || _drag)
+            {
+                _drag = true;
+                UpdateSliderPositionByMouse();
+            }
+
+            if (Main.mouseLeftRelease)
+            {
+                _drag = false;
+            }
+            DrawGradientAndHandle(spriteBatch);
+        }
+    }
     public class ZTileButton : UIPanel
     {
         public delegate void ClickFunction(bool isRightClick);
@@ -104,6 +216,7 @@ namespace Stellamod.Core.ZTileSystem.UI
         private ZTileButton _scaleButton;
         private ZTileButton _rotateButton;
         private ZTileButton _flipButton;
+        private ZTileSlider _valueSlider;
         private UIText _infoText;
 
 
@@ -121,7 +234,9 @@ namespace Stellamod.Core.ZTileSystem.UI
             _scaleButton = new ZTileButton(LoadTextureAsset("ToolScale"), ChangeScale);
             _rotateButton = new ZTileButton(LoadTextureAsset("ToolRotate"), ChangeRotation);
             _flipButton = new ZTileButton(LoadTextureAsset("ToolFlip"), ChangeFlip);
+            _valueSlider = new ZTileSlider(ChangeValue);
         }
+
         public int RelativeLeft => 16;
         public int RelativeTop => 64;
 
@@ -132,7 +247,7 @@ namespace Stellamod.Core.ZTileSystem.UI
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Width.Pixels = 256;
+            Width.Pixels = 384;
             Height.Pixels = 512;
             _panel.Width.Pixels = 64;
             _panel.Height.Pixels = 512;
@@ -153,14 +268,15 @@ namespace Stellamod.Core.ZTileSystem.UI
             _grid.Add(_flipButton);
             _panel.Append(_infoText);
             _panel.Append(_grid);
+            Append(_valueSlider);
             Append(_panel);
         }
         private void SetPos()
         {
-
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
-
+            _valueSlider.Left.Pixels = 64;
+            _valueSlider.Top.Pixels = 384;
         }
         public override void Update(GameTime gameTime)
         {
@@ -230,8 +346,16 @@ namespace Stellamod.Core.ZTileSystem.UI
             sb.AppendLine($"Z {DecorationBuilder.z}");
             sb.AppendLine($"Scale {DecorationBuilder.scale}");
             sb.AppendLine($"Rotation {DecorationBuilder.rotation}");
+            sb.AppendLine($"Value {DecorationBuilder.value}");
             _infoText.SetText(sb.ToString());
         }
+
+        private void ChangeValue(float xRatio)
+        {
+            float value = xRatio * 255f;
+            DecorationBuilder.value = (byte)value;
+        }
+
         private void ChangeFlip(bool isRightClick)
         {
             DecorationBuilder.flip = !DecorationBuilder.flip;

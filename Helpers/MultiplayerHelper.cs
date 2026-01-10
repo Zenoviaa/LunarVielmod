@@ -209,6 +209,7 @@ namespace Stellamod
                         instanceData.frameNumber= reader.ReadUInt16();
                         instanceData.rotation = (Rotation)reader.ReadByte();
                         instanceData.type = reader.ReadUInt16();
+                        instanceData.value = reader.ReadByte();
 
                         ZTileMap tileMap = ModContent.GetInstance<ZTileMap>();
                         tileMap.Add(layer, tilePosition, instanceData);

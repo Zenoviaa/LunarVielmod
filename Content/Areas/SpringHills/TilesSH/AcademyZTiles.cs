@@ -29,11 +29,6 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
                 int segmentCount = 12;
                 int segmentWidth = flagTexture.Width() / segmentCount;
 
-                Color drawColor = Color.White;
-                Color lightingColor = Lighting.GetColor(drawParams.tilePosition.x, drawParams.tilePosition.y);
-                drawColor = drawColor.MultiplyRGB(lightingColor);
-                drawColor = drawColor.MultiplyRGBA(drawParams.multiplyColor);
-
                 Vector2 flagPosition = drawPosition;
                 flagPosition.Y += ExtraMath.Osc(0f, 4, speed: 3);
                 Vector2 drawOrigin = new Vector2(0, flagTexture.Height() / 2f);
@@ -48,7 +43,7 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
                 flagPosition.Y += flagTexture.Height() / 4f;
                 flagPosition.Y += 8;
                 spriteBatch.Restart(effect: wavingShader.Effect);
-                spriteBatch.Draw(flagTexture.Value, flagPosition, null, drawColor, 0, drawOrigin, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(flagTexture.Value, flagPosition, null, drawParams.lightColor, 0, drawOrigin, 1, SpriteEffects.None, 0);
                 spriteBatch.RestartDefaults();
             }
 

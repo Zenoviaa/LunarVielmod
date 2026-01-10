@@ -139,10 +139,10 @@ namespace Stellamod.Content.Areas.Illuria.ArmorsIL
         public override void UpdateEquip(Player player)
         {
             base.UpdateEquip(player);
-            ArmorStatsPlayer armorStatsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
-            armorStatsPlayer.healthBonus += 50;
-            armorStatsPlayer.accessorySlots += 1;
-            armorStatsPlayer.defenseBonus += 33;
+            var stats = player.GetStats();
+            stats.healthBonus += 50;
+            stats.accessorySlots += 1;
+            stats.defenseBonus += 33;
         }
 
         public override void UpdateArmorSet(Player player)
@@ -155,9 +155,9 @@ namespace Stellamod.Content.Areas.Illuria.ArmorsIL
             int craftCount = cauldronPlayer.Crafts.Count;
             int amountToAdd = craftCount / 5;
 
-            ArmorStatsPlayer statsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
-            statsPlayer.defenseBonus += amountToAdd;
-            statsPlayer.healthBonus += amountToAdd;
+            var stats = player.GetStats();
+            stats.defenseBonus += amountToAdd;
+            stats.healthBonus += amountToAdd;
         }
     }
 
@@ -168,11 +168,11 @@ namespace Stellamod.Content.Areas.Illuria.ArmorsIL
         public override void UpdateEquip(Player player)
         {
             base.UpdateEquip(player);
-            ArmorStatsPlayer armorStatsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
-            armorStatsPlayer.bossEndurance += 0.12f;
-            armorStatsPlayer.enemyEndurance += 0.3f;
-            armorStatsPlayer.accessorySlots += 1;
-            armorStatsPlayer.defenseBonus += 35;
+            var stats = player.GetStats();
+            stats.bossEndurance += 0.12f;
+            stats.enemyEndurance += 0.3f;
+            stats.accessorySlots += 1;
+            stats.defenseBonus += 35;
         }
     }
 
@@ -183,9 +183,9 @@ namespace Stellamod.Content.Areas.Illuria.ArmorsIL
         public override void UpdateEquip(Player player)
         {
             base.UpdateEquip(player);
-            ArmorStatsPlayer armorStatsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
-            armorStatsPlayer.accessorySlots += 1;
-            armorStatsPlayer.defenseBonus += 10;
+            var stats = player.GetStats();
+            stats.accessorySlots += 1;
+            stats.defenseBonus += 10;
         }
     }
 }

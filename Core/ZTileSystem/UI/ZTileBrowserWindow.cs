@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using Stellamod.Common.ItemBrowser;
+using Stellamod.Core.Tooltips;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.UI;
@@ -23,39 +24,31 @@ namespace Stellamod.Core.ZTileSystem.UI;
 public class ZTileBrowserWindow : UIPanel
 {
     private UIScrollbar _scrollbar;
-    private XButton _xButton;
     private ZTileBrowserMenu _inventoryMenu;
     private ItemBrowserTabMenu _tabMenu;
     private UIInputTextField _textBox;
-    private static readonly Asset<Texture2D> BackgroundSquareTexture;
     static ZTileBrowserWindow()
     {
         // Don't run this on the server
-        if (Main.dedServ)
-            return;
-        string texturePath = typeof(ZTileBrowserMenu).DirectoryHere() + "/TileBrowserMenu";
-        BackgroundSquareTexture = ModContent.Request<Texture2D>(texturePath);
     }
 
 
     public ZTileBrowserWindow() : base()
     {
         _scrollbar = new FancyScrollbar();
-        _xButton = new XButton(Close);
         _inventoryMenu = new ZTileBrowserMenu(_scrollbar);
         _textBox = new UIInputTextField("Search...");
     }
 
     public string SearchFilter => _textBox.Text;
-
     public int RelativeLeft => ScreenHelper.TrueScreenWidth / 2 - (int)Width.Pixels / 2;
     public int RelativeTop => ScreenHelper.TrueScreenHeight / 2 - (int)Height.Pixels / 2;
 
     public override void OnInitialize()
     {
         base.OnInitialize();
-        Width.Pixels = 704;
-        Height.Pixels = 704;
+        Width.Pixels = 512;
+        Height.Pixels = 384;
         Left.Pixels = RelativeLeft;
         Top.Pixels = RelativeTop;
         BackgroundColor = Color.Transparent;
@@ -100,13 +93,13 @@ public class ZTileBrowserWindow : UIPanel
 
     private void SetPos()
     {
+        Width.Pixels = 512;
+        Height.Pixels = 384;
         Left.Pixels = _pos.X;
         Top.Pixels = _pos.Y;
-
+        _textBox.VAlign = 0f;
         _inventoryMenu.HAlign = 0.5f;
         _inventoryMenu.VAlign = 0.25f;
-        _xButton.Top.Pixels = 64;
-        _xButton.Left.Pixels = 164;
 
     }
     public override void Update(GameTime gameTime)
@@ -117,18 +110,19 @@ public class ZTileBrowserWindow : UIPanel
         SetPos();
     }
 
-    private void Close()
-    {
-        ZTileBrowserSystem tileBrowserSystem = ModContent.GetInstance<ZTileBrowserSystem>();
-        tileBrowserSystem.CloseUI();
-    }
 
-    private static bool _isDragging;
-    private static Vector2? _drag = null;
-    private static Vector2 _pos;
+    private bool _isDragging;
+    private Vector2? _drag = null;
+    private Vector2 _pos;
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
         base.DrawSelf(spriteBatch);
+
+        //Draw the back panel thing zemmie said to add
+        Rectangle rectangle = GetDimensions().ToRectangle();
+        Utils.DrawInvBG(spriteBatch, rectangle, new Color(23, 25, 81, 255) * 0.925f);
+
+
         this.QuickMouseInteraction();
         var config = ModContent.GetInstance<LunarVeilClientConfig>();
         Vector2 ratioPos = new Vector2(config.EnchantmentMenuX, config.EnchantmentMenuY);
@@ -166,7 +160,6 @@ public class ZTileBrowserWindow : UIPanel
                 _drag = mousePos - drawPos;
 
             Vector2 newCorner = mousePos - _drag.GetValueOrDefault(Vector2.Zero);
-
             // Convert the new corner position into a screen ratio position.
             newScreenRatioPosition.X = (100f * newCorner.X) / Main.screenWidth;
             newScreenRatioPosition.Y = (100f * newCorner.Y) / Main.screenHeight;

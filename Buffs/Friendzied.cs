@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,16 +14,10 @@ namespace Stellamod.Buffs
             Main.pvpBuff[Type] = true;
             Main.buffNoTimeDisplay[Type] = false;
         }
-        private int _miracleSoulCooldown;
+
         public int miracleLevel;
         public int miracleTimeLeft;
         public bool hasMiracleSet;
-
-        private const int Particle_Count = 2;
-        private const int Miracle_Soul_Cooldown = 60;
-
-
-
         public override void Update(Player player, ref int buffIndex)
         {
             player.GetAttackSpeed(DamageClass.Generic) += 0.50f;

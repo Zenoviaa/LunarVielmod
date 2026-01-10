@@ -40,6 +40,7 @@ namespace Stellamod.Common.WeaponTypes
                         continue;
                     if (proj.type != heldProj)
                         continue;
+
                     possibleSpawnPoints.Add(proj);
                 }
 

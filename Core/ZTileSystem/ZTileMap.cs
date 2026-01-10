@@ -45,6 +45,7 @@ public struct ZTileInstanceData
     public bool flipX;
     public float scale;
     public ushort frameNumber;
+    public byte value;
 }
 
 /// <summary>
@@ -98,6 +99,7 @@ public struct ZTileSaveData
     public bool flipX;
     public float scale;
     public int frameNumber;
+    public byte value;
 }
 
 public class ZTileSerializer : TagSerializer<ZTileSaveData, TagCompound>
@@ -114,6 +116,7 @@ public class ZTileSerializer : TagSerializer<ZTileSaveData, TagCompound>
         deserializedData.flipX = tag.Get<bool>("flipx");
         deserializedData.scale = tag.Get<float>("scale");
         deserializedData.frameNumber = tag.Get<int>("frameNumber");
+        deserializedData.value = tag.Get<byte>("value");
         return deserializedData;
     }
 
@@ -136,6 +139,7 @@ public class ZTileSerializer : TagSerializer<ZTileSaveData, TagCompound>
             ["flipx"] = value.flipX,
             ["scale"] = value.scale,
             ["frameNumber"] = (int)value.frameNumber,
+            ["value"] = (byte)value.value,
         };
     }
 }
@@ -196,7 +200,7 @@ public class TileScene : IEnumerable
             {
                 tilePosition = tilePosition,
                 tileData = tileData,
-                multiplyColor = Color.White
+                lightColor = Lighting.GetColor(tilePosition.x, tilePosition.y)
             };
             tile.Draw(spriteBatch, screenPos, drawParams);
         }
@@ -385,6 +389,7 @@ public class ZTileMap : ModSystem
                     tileSaveData.frameNumber = tilePair.Value.frameNumber;
                     tileSaveData.rotation = (int)tilePair.Value.rotation;
                     tileSaveData.type = tilePair.Value.type;
+                    tileSaveData.value = tilePair.Value.value;
                     saveData.Add(tileSaveData);
                 }
 
@@ -417,6 +422,7 @@ public class ZTileMap : ModSystem
                 instanceData.frameNumber = (ushort)saveData.frameNumber;
                 instanceData.scale = saveData.scale;
                 instanceData.flipX = saveData.flipX;
+                instanceData.value = saveData.value;
                 layer.Add(zTilePosition, instanceData);
             }
         }
@@ -443,6 +449,7 @@ public class ZTileMap : ModSystem
                     writer.Write((ushort)tilePair.Value.frameNumber);
                     writer.Write((byte)tilePair.Value.rotation);
                     writer.Write((ushort)tilePair.Value.type);
+                    writer.Write((byte)tilePair.Value.value);
                 }
             }
         }
@@ -466,6 +473,7 @@ public class ZTileMap : ModSystem
             instanceData.frameNumber = reader.ReadUInt16();
             instanceData.rotation = (Rotation)reader.ReadByte();
             instanceData.type = reader.ReadUInt16();
+            instanceData.value = reader.ReadByte();
             Add(renderLayer, tilePosition, instanceData);
         }
     }
@@ -510,11 +518,12 @@ public class ZTileMap : ModSystem
         instanceData.frameNumber = DecorationBuilder.frame;
         instanceData.scale = DecorationBuilder.scale;
         instanceData.flipX = DecorationBuilder.flip;
+        instanceData.value = DecorationBuilder.value;
         ZTileDrawParams drawParams = new ZTileDrawParams
         {
             tilePosition = zTilePosition,
             tileData = instanceData,
-            multiplyColor = Color.White * 0.75f
+            lightColor = Color.White * 0.75f
         };
 
         SpriteBatch spriteBatch = Main.spriteBatch;
@@ -648,7 +657,8 @@ public class ZTileMap : ModSystem
                 (bool)tileData.flipX,
                 (ushort)tileData.frameNumber,
                 (byte)tileData.rotation,
-                (ushort)tileData.type).Send(ignoreClient: clientToIgnore);
+                (ushort)tileData.type,
+                (byte)tileData.value).Send(ignoreClient: clientToIgnore);
         }
         Add(renderLayer, zTilePosition, tileData);
     }
@@ -665,7 +675,8 @@ public class ZTileMap : ModSystem
             (bool)tileData.flipX,
             (ushort)tileData.frameNumber,
             (byte)tileData.rotation,
-            (ushort)tileData.type).Send(toWho, fromWho);
+            (ushort)tileData.type,
+            (byte)tileData.value).Send(toWho, fromWho);
     }
     public void SyncBreakTile(int toWho, int fromWho, ZRenderLayer renderLayer, ZTilePosition tilePosition)
     {
