@@ -1,9 +1,6 @@
-﻿
-using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.ComponentModel;
 using Terraria;
-using Terraria.Graphics.Light;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
@@ -19,7 +16,7 @@ namespace Stellamod
             On_Main.DrawBG += NewDrawBG;
             On_Main.DrawSurfaceBG += NoSurfaceBG;
             On_Main.DrawBackground += NoBackground;
-         
+
             On_Main.DrawWaters += NoWaterDraw;
             On_Main.DrawTileInWater += NoTileWaterDraw;
             On_Main.DoDraw_Waterfalls += NoWaterfallDraw;
@@ -34,7 +31,7 @@ namespace Stellamod
             On_Main.DrawBG -= NewDrawBG;
             On_Main.DrawSurfaceBG -= NoSurfaceBG;
             On_Main.DrawBackground -= NoBackground;
-      
+
             On_Main.DrawWaters -= NoWaterDraw;
             On_Main.DrawTileInWater -= NoTileWaterDraw;
             On_Main.DoDraw_Waterfalls -= NoWaterfallDraw;
@@ -118,7 +115,7 @@ namespace Stellamod
         {
             base.AI(npc);
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
-            if(npc.boss && config.DisableBossNameHover)
+            if (npc.boss && config.DisableBossNameHover)
             {
                 npc.ShowNameOnHover = false;
             }
@@ -181,7 +178,7 @@ namespace Stellamod
 
         [DefaultValue(true)] // This sets the configs default value.// Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
         public bool ParticlesToggle;
-        
+
         [DefaultValue(true)] // This sets the configs default value.// Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading
         public bool OutlinePlayer;
 

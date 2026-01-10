@@ -1,5 +1,4 @@
 ﻿using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
 using Terraria;
 
 namespace Stellamod
@@ -10,6 +9,5 @@ namespace Stellamod
         public static readonly Condition PostSingularity = new Condition("Killed Singularity Fragment", () => DownedBossSystem.downedSOMBoss);
         public static readonly Condition PostDaedus = new Condition("Defeated Daedus", () => DownedBossSystem.downedDaedusBoss);
         public static readonly Condition PostGintzia = new Condition("Defeated Commander Gintzia", () => DownedBossSystem.downedCommanderGintziaBoss);
-        public static readonly Condition SewingKitEquipped = new Condition("Sewing Kit must be Equipped", () => Main.LocalPlayer.GetModPlayer<SewingKitPlayer>().hasSewingKit);
     }
 }
