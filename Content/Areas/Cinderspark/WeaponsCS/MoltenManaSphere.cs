@@ -10,6 +10,7 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
+using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
@@ -25,6 +26,8 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             base.SetDefaults();
             Item.DefaultToManaSphere(ModContent.ProjectileType<MoltenManaSphereHold>());
             Item.shoot = ModContent.ProjectileType<MoltenManaBlast>();
+            Item.shootSpeed = 15;
+            Item.damage = 10;
             Item.UseSound = SoundID.DD2_BetsyFireballShot;
         }
 
@@ -37,22 +40,25 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
     public class MoltenManaBlast : ModProjectile
     {
         private Vector2 _initialVelocity;
+        private Vector2 HomingTarget;
         private ref float Timer => ref Projectile.ai[0];
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
             writer.WriteVector2(_initialVelocity);
+            writer.WriteVector2(HomingTarget);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             _initialVelocity = reader.ReadVector2();
+            HomingTarget = reader.ReadVector2();
         }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ProjectileID.Sets.TrailCacheLength[Type] = 16;
+            ProjectileID.Sets.TrailCacheLength[Type] = 4;
             ProjectileID.Sets.TrailingMode[Type] = 2;
         }
         public override void SetDefaults()
@@ -71,32 +77,45 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             if (Timer == 1)
             {
                 _initialVelocity = Projectile.velocity;
+                ShockOvalSpawnParams spawnParams = new ShockOvalSpawnParams
+                {
+                    innerColor = Color.Yellow,
+                    outerColor = Color.Red
+                };
+                ShockOvalParticle.Spawn(Projectile.Center, -Projectile.velocity, spawnParams);
             }
 
+            if (Projectile.velocity.Length() < 25)
+            {
+                Projectile.velocity *= 1.01f;
+            }
 
-            FlameParticle dp = Particle<FlameParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8), Scale: Main.rand.NextFloat(0.2f, 0.35f));
+            FlameParticle dp = Particle<FlameParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(2.5f, 2.5f), Scale: Main.rand.NextFloat(0.2f, 0.35f));
             dp.innerColor = Color.Goldenrod;
             dp.outerColor = Color.Red;
             dp.parent = Projectile;
             dp.gravity = 0f;
             dp.dampening = 0.05f;
             dp.fast = true;
+            dp.Scale *= 0.1f;
 
             if (Main.rand.NextBool(5))
             {
                 switch (Main.rand.Next(2))
                 {
                     case 0:
-                        DustParticle sp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.3f, 16), Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                        DustParticle sp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.3f, 8), Scale: Main.rand.NextFloat(0.5f, 1.5f));
                         sp.gravity = 0f;
                         sp.fast = true;
                         sp.dampening = 0.1f;
+                        sp.Scale *= 0.25f;
                         break;
                     case 1:
-                        FlameParticle sp2 = Particle<FlameParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 16), Scale: Main.rand.NextFloat(0.1f, 0.2f));
+                        FlameParticle sp2 = Particle<FlameParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 8), Scale: Main.rand.NextFloat(0.1f, 0.2f));
                         sp2.gravity = 0f;
                         sp2.fast = true;
                         sp2.dampening = 0.1f;
+                        sp2.Scale *= 0.25f;
                         break;
                 }
 
@@ -109,51 +128,68 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 sp.gravity = 0f;
                 sp.fast = true;
                 sp.dampening = 0.1f;
+                sp.Scale *= 0.25f;
             }
 
-            NPC nearest = NPCHelper.FindClosestNPC(Projectile.Center, 384);
-            if (nearest == null)
-                return;
 
-            Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center);
-            Projectile.velocity = Vector2.Lerp(_initialVelocity, homingVelocity, EasingFunction.InOutSine(Timer / 30f));
+            if(Main.myPlayer == Projectile.owner)
+            {
+                HomingTarget = Main.MouseWorld;
+
+    
+                Projectile.netUpdate = true;
+            }
+            if(Timer < 30f)
+            {
+                Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, HomingTarget);
+                Projectile.velocity = Vector2.Lerp(_initialVelocity, homingVelocity, EasingFunction.InOutSine(Timer / 30f));
+            }
+     
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Vector2 drawScale = Vector2.One * 0.1f;
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
             Vector2 glowDrawOrigin = glowMask.Size() / 2f;
             Color glowColor = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 8));
             glowColor.A = 0;
-            spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.3f, SpriteEffects.None, 0);
+            spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, drawScale * Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.3f, SpriteEffects.None, 0);
 
             glowMask = AssetManager.GlowMask.SpiralVortex.Value;
             glowDrawOrigin = glowMask.Size() / 2f;
             glowColor = Color.Red;
             glowColor.A = 0;
-            spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
+            spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, drawScale * Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
+            glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            glowDrawOrigin = glowMask.Size() / 2f;
+            glowColor = Color.Red;
+            glowColor.A = 0;
+            glowColor *= 0.5f;
+            Vector2 stretch = new Vector2(3f, 1.3f) * 0.75f;
+            spriteBatch.Draw(glowMask, drawPos - Projectile.velocity * 1.5f, null, glowColor, Projectile.velocity.ToRotation(), glowDrawOrigin, drawScale * Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * stretch, SpriteEffects.None, 0);
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedFlames);
             return false;
         }
         public float WidthFunction(float completionRatio)
         {
-            float osc = VectorHelper.Osc(0.75f, 1f);
-            float w = MathHelper.SmoothStep(0f, 1f, (float)Projectile.timeLeft / 30f);
-            return (Projectile.width * Projectile.scale) * osc * 2 * w;
+            return MathHelper.SmoothStep(16, 0f, completionRatio);
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Yellow, Color.Red, ExtraMath.Osc(0f, 1f, speed: 32));
+            return Color.Lerp(Color.Goldenrod, Color.DarkRed, completionRatio);
         }
         private void DrawPixelatedFlames(GraphicsDevice graphicsDevice)
         {
             var shader = RichLaserShader.Instance;
-            shader.LaserColor = Color.White;
-            shader.InnerColor = Color.Lerp(Color.Yellow, Color.OrangeRed, ExtraMath.Osc(0f, 1f, speed: 3));
+            shader.LaserColor = Color.Yellow;
+            shader.InnerColor = Color.Orange;
             shader.OuterColor = Color.Red;
+            shader.LaserTexture = TrailRegistry.SpikyTrail1;
+     
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -165,14 +201,17 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             base.OnKill(timeLeft);
 
             float boomSize = Main.rand.NextFloat(0.03f, 0.04f);
-            FXUtil.GlowCircleBoom(Projectile.Center,
-                innerColor: Color.Yellow,
-                glowColor: Color.Red,
-                outerGlowColor: Color.DarkRed, duration: 25, baseSize: boomSize);
-            FXUtil.GlowCircleBoom(Projectile.Center,
-               innerColor: Color.Yellow,
-               glowColor: Color.Red,
-               outerGlowColor: Color.DarkRed, duration: 15, baseSize: boomSize * 2);
+            for(float n =0; n < 2f; n++)
+            {
+                var spawnParams = new DustParticleSpawnParams();
+                spawnParams.innerColor = Color.OrangeRed;
+                spawnParams.outerColor = Color.Red;
+                spawnParams.scaleRange = new Vector2(0.1f, 1f);
+                DustParticle.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+            }
+
+            SmokeParticle sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY, Color.White, Scale: 1f);
+            sp.initialColor = Color.White * 0.14f;
         }
     }
 
@@ -182,11 +221,73 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void AI_OrbitPlayer()
         {
             base.AI_OrbitPlayer();
-            if (Timer % 8 == 0)
+
+        }
+
+        public override void DustEffects()
+        {
+            base.DustEffects();
+            if (Timer % 5 == 0)
             {
-                var dp = DustParticle.Spawn(Projectile.Center, Vector2.Zero);
-                dp.gravity = 0;
+                FlameParticle dp = Particle<FlameParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(2.5f, 2.5f), Scale: Main.rand.NextFloat(0.2f, 0.35f));
+                dp.innerColor = Color.Goldenrod;
+                dp.outerColor = Color.Red;
+                dp.parent = Projectile;
+                dp.gravity = 0f;
+                dp.dampening = 0.05f;
+                dp.fast = true;
+                dp.Scale *= 0.25f;
             }
+
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            DrawHead(Main.spriteBatch, Main.screenPosition);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedFlames);
+            return false;
+        }
+        public float WidthFunction(float completionRatio)
+        {
+            return MathHelper.SmoothStep(16, 0f, completionRatio);
+        }
+
+        public Color ColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Goldenrod, Color.DarkRed, completionRatio);
+        }
+        private void DrawPixelatedFlames(GraphicsDevice graphicsDevice)
+        {
+            var shader = RichLaserShader.Instance;
+            shader.LaserColor = Color.Yellow;
+            shader.InnerColor = Color.Orange;
+            shader.OuterColor = Color.Red;
+            shader.LaserTexture = TrailRegistry.SpikyTrail1;
+
+            TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
+        }
+        private void DrawHead(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Vector2 drawScale = Vector2.One * 0.1f;
+
+            Texture2D glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            Vector2 glowDrawOrigin = glowMask.Size() / 2f;
+            Color glowColor = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 8));
+            glowColor.A = 0;
+            spriteBatch.Draw(glowMask, drawPos, null, glowColor, 0, glowDrawOrigin, drawScale * Projectile.scale * ExtraMath.Osc(0.9f, 1.2f, speed: 8) * 0.3f, SpriteEffects.None, 0);
+
+            glowMask = AssetManager.GlowMask.SpiralVortex.Value;
+            glowDrawOrigin = glowMask.Size() / 2f;
+            glowColor = Color.Red;
+            glowColor.A = 0;
+            spriteBatch.Draw(glowMask, drawPos, null, glowColor, Main.GlobalTimeWrappedHourly * 8, glowDrawOrigin, drawScale * Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * 0.6f, SpriteEffects.None, 0);
+            glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            glowDrawOrigin = glowMask.Size() / 2f;
+            glowColor = Color.Red;
+            glowColor.A = 0;
+            glowColor *= 0.5f;
+            Vector2 stretch = new Vector2(1.5f, 1.3f);
+            spriteBatch.Draw(glowMask, drawPos - Projectile.velocity * 1.5f, null, glowColor, Projectile.velocity.ToRotation(), glowDrawOrigin, drawScale * Projectile.scale * ExtraMath.Osc(0.99f, 1.01f, speed: 8) * stretch, SpriteEffects.None, 0);
         }
     }
 }

@@ -153,6 +153,9 @@ namespace Stellamod.Core.Bases
             if (HeldTome == null)
                 return;
 
+            if (Owner.HeldItem.ModItem == null)
+                return;
+
             Texture2D closeYourTomeTyrant = ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture).Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
 

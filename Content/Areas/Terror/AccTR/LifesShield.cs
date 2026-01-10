@@ -32,10 +32,15 @@ namespace Stellamod.Content.Areas.Terror.AccTR
     {
         public override bool InstancePerEntity => true;
         public bool isTouchingShield;
+        public float lifeShieldTimer;
         public override void ResetEffects(NPC npc)
         {
             base.ResetEffects(npc);
             isTouchingShield = false;
+            if(lifeShieldTimer > 0)
+            {
+                lifeShieldTimer--;
+            }
         }
     }
 
@@ -45,7 +50,7 @@ namespace Stellamod.Content.Areas.Terror.AccTR
         {
             base.OnHitNPC(target, hit, damageDone);
             LifeShieldGlobalNPC lifeShieldGlobalNPC = target.GetGlobalNPC<LifeShieldGlobalNPC>();
-            if (lifeShieldGlobalNPC.isTouchingShield)
+            if (lifeShieldGlobalNPC.lifeShieldTimer > 0)
             {
                 Player.Heal(2);
             }
@@ -57,7 +62,7 @@ namespace Stellamod.Content.Areas.Terror.AccTR
         public override void OnBlockMovement(NPC npc)
         {
             base.OnBlockMovement(npc);
-            npc.GetGlobalNPC<LifeShieldGlobalNPC>().isTouchingShield = true;
+            npc.GetGlobalNPC<LifeShieldGlobalNPC>().lifeShieldTimer = 8;
         }
     }
 }

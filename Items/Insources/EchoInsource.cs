@@ -80,7 +80,7 @@ namespace Stellamod.Items.Insources
                 for (float n = 0; n < numDust; n++)
                 {
                     Vector2 vel = Vector2.UnitY.RotatedByRandom(4f);
-                    vel *= Main.rand.NextFloat(0.5f, 2.5f);
+                    vel *= Main.rand.NextFloat(0.5f, 2.5f) * 24;
                     vel *= 2f;
                     FXUtil.GlowStretch(Projectile.Center, vel);
                 }

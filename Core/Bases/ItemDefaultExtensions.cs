@@ -72,7 +72,7 @@ namespace Stellamod.Core.Bases
             item.shopSpecialCurrency = Stellamod.MedalCurrencyID;
             item.shopCustomPrice = 5;
         }
-        public static void DefaultToBellMinion(this Item item, int projType, float castingTicks = 300, int health = 60)
+        public static void DefaultToBellMinion(this Item item, int projType, float castingTicks = 120, int health = 60)
         {
             BellMinionGlobalItem globalItem = item.GetGlobalItem<BellMinionGlobalItem>();
             globalItem.isBellMinion = true;
@@ -136,9 +136,9 @@ namespace Stellamod.Core.Bases
             item.DamageType = DamageClass.Magic;
             item.noUseGraphic = true;
             item.noMelee = true;
-            item.mana = 7;
-            item.useTime = 18;
-            item.useAnimation = 18;
+            item.mana = 0;
+            item.useTime = 9;
+            item.useAnimation = 9;
             item.useStyle = ItemUseStyleID.Swing;
         }
     }

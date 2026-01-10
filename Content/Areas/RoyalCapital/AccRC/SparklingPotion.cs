@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.ArmorRework;
+using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -56,9 +57,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.AccRC
 
     public class SparklingStar : ModProjectile
     {
+        private float Interp;
+        private Vector2 OldVelocity;
+        private Vector2 HomingVelocity;
         private Player Owner => Main.player[Projectile.owner];
         private ref float Timer => ref Projectile.ai[0];
         private ref float RotationOffset => ref Projectile.ai[1];
+        private ref float HomingTimer => ref Projectile.ai[2];
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -69,18 +74,24 @@ namespace Stellamod.Content.Areas.RoyalCapital.AccRC
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 30;
+            Projectile.extraUpdates = 1;
         }
 
         public override void AI()
         {
             base.AI();
+            var player = Owner.GetModPlayer<SparklingStarPlayer>();
+            if (player.hasSparklingPotion)
+                Projectile.timeLeft = 2;
             Timer++;
-            if(Timer % 24 == 0)
+            if(Timer % 48 == 0)
             {
                 DustParticleSpawnParams spawnParams = new DustParticleSpawnParams();
                 spawnParams.outerColor = Color.Goldenrod;
                 spawnParams.gravity = 0f;
-                DustParticle.Spawn(Projectile.Center, Vector2.Zero, spawnParams);
+                DustParticle dp = DustParticle.Spawn(Projectile.Center, Vector2.Zero, spawnParams);
+                dp.fast = true;
+                dp.Scale *= .7f;
             }
 
             float radians = Timer * 0.05f;
@@ -88,8 +99,27 @@ namespace Stellamod.Content.Areas.RoyalCapital.AccRC
             Vector2 vel = Vector2.UnitY.RotatedBy(radians) * 64;
             Vector2 targetPosition = Owner.Center + vel;
             Vector2 velocityTo = targetPosition - Projectile.Center;
-            Projectile.velocity = velocityTo;
-            Projectile.rotation += Timer * 0.05f;
+
+            NPC nearest = NPCHelper.FindClosestNPC(targetPosition, 384);
+
+            float interp = 0;
+            float time = 90f;
+            if(nearest != null)
+            {
+                HomingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, nearest.Center);
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, HomingVelocity, HomingTimer / time);
+                OldVelocity = Projectile.velocity;
+                HomingTimer++;
+            }
+            else
+            {
+                Projectile.velocity = Vector2.Lerp(velocityTo, OldVelocity, HomingTimer / time);
+                Interp = MathHelper.Lerp(Interp, 0, 0.01f);
+                HomingTimer--;
+            }
+            HomingTimer = MathHelper.Clamp(HomingTimer, 0, time);
+    
+            Projectile.rotation += 0.05f;
         }
         public override bool PreDraw(ref Color lightColor)
         {

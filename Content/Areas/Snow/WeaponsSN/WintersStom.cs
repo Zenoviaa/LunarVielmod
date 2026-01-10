@@ -2,9 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Bow;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -21,7 +23,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             Item.shoot = ModContent.ProjectileType<WinterStormProg>();
             Item.shootSpeed = 11;
             Item.mana = 12;
-            Item.damage = 9;
+            Item.damage = 8;
         }
 
         public override Color GetTomeHintColor()
@@ -75,29 +77,25 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             var source = Projectile.GetSource_Death();
             if (Main.myPlayer == Projectile.owner)
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 2; i++)
                 {
-                    Vector2 vel = new Vector2();
-                    vel.X = Main.rand.Next(-4, 5);
-                    vel.Y = Main.rand.Next(-4, 5);
+                    Vector2 vel = -Projectile.oldVelocity;
+                    vel = vel.RotatedByRandom(0.8f) * 0.6f;
+
                     Projectile.NewProjectile(source, Projectile.Center, vel,
-                        ModContent.ProjectileType<WinterStormFragProg>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                        ModContent.ProjectileType<WinterStormFragProg>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
                 }
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     Vector2 vel = new Vector2();
                     vel.X = Main.rand.Next(-2, 2);
                     vel.Y = Main.rand.Next(-2, 2);
                     Projectile.NewProjectile(source, Projectile.Center, vel,
-                        ModContent.ProjectileType<WinterboundArrowFlake>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                        ModContent.ProjectileType<WinterboundArrowFlake>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
                 }
             }
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);
-            for (int i = 0; i < 20; i++)
-            {
-                Dust.NewDustPerfect(Projectile.Center, DustID.Snow, (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(25.0), 0, default(Color), 1f).noGravity = false;
-            }
         }
 
         public override Color? GetAlpha(Color lightColor)
@@ -141,18 +139,13 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Winter Storm");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 1;
         }
 
         public override void PostDraw(Color lightColor)
         {
             Lighting.AddLight(Projectile.Center, Color.LightPink.ToVector3() * 1.75f * Main.essScale);
-            if (Main.rand.NextBool(5))
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Snow, 0f, 0f, 150, Color.White, 1f);
-                Main.dust[dustnumber].velocity *= 0.3f;
-            }
         }
 
         public override void SetDefaults()
@@ -184,20 +177,29 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm2"), Projectile.position);
-            for (int i = 0; i < 20; i++)
+
+            for (float n = 0; n < 2; n++)
             {
-                int num1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Snow, 0f, -2f, 0, default(Color), .8f);
-                Main.dust[num1].noGravity = true;
-                Main.dust[num1].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num1].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                if (Main.dust[num1].position != Projectile.Center)
-                    Main.dust[num1].velocity = Projectile.DirectionTo(Main.dust[num1].position) * 6f;
-                int num = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Snow, 0f, -2f, 0, default(Color), .8f);
-                Main.dust[num].noGravity = true;
-                Main.dust[num].position.X += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                Main.dust[num].position.Y += Main.rand.Next(-50, 51) * .05f - 1.5f;
-                if (Main.dust[num].position != Projectile.Center)
-                    Main.dust[num].velocity = Projectile.DirectionTo(Main.dust[num].position) * 6f;
+                Vector2 velocity = -Vector2.UnitY.RotatedByRandom(4f);
+                velocity *= Main.rand.NextFloat(2, 5);
+                FlakeParticle fp = FlakeParticle.Spawn(Projectile.Center, velocity);
+                fp.gravity = 0f;
+                fp.Scale *= 0.4f;
+            }
+            for (float n = 0; n < 2; n++)
+            {
+                Vector2 vel = -Projectile.oldVelocity;
+                vel = vel.RotatedByRandom(0.8f);
+                vel *= Main.rand.NextFloat(0.5f, 1f);
+                DustParticle dp = DustParticle.Spawn(Projectile.Center, vel);
+                dp.outerColor = Color.Cyan;
+            }
+
+            for (float n = 0; n < 2; n++)
+            {
+                SmokeParticle sp = Particle<SmokeParticle>.Spawn(Projectile.Center, -Vector2.UnitY.RotatedByRandom(4f) * Main.rand.NextFloat(0.5f, 3f), Color.White, Scale: Main.rand.NextFloat(0.15f, 1.5f));
+                sp.initialColor = Color.White * 0.4f;
+
             }
         }
 
@@ -211,7 +213,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Cyan, Color.White, ExtraMath.Osc(0f, 1f, speed: 32));
+            return Color.Lerp(Color.Cyan, Color.White, ExtraMath.Osc(0f, 1f, speed: 32)) * completionRatio;
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -225,9 +227,9 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
         {
 
             var shader = RichLaserShader.Instance;
-            shader.LaserColor = Color.White;
-            shader.InnerColor = Color.Lerp(Color.Gray, Color.Blue, 0.75f);
-            shader.OuterColor = Color.Cyan;
+            shader.LaserColor = Color.White * 0.4f;
+            shader.InnerColor = Color.Lerp(Color.Gray, Color.Blue, 0.75f) * 0.4f;
+            shader.OuterColor = Color.Cyan * 0.4f;
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
         }
     }

@@ -53,6 +53,7 @@ namespace Stellamod.Core.Particles
         private static void SetParticleDefaults(T t)
         {
             t.fadeIn = 0;
+            t.hasParent = false;
         }
         public static T Spawn(Vector2 position, Vector2 velocity, Color? color = null, float Scale = 1f)
         {

@@ -110,8 +110,9 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
                 // The Prism immediately stops functioning if the player is Cursed (player.noItems) or "Crowd Controlled", e.g. the Frozen debuff.
                 // player.channel indicates whether the player is still holding down the mouse button to use the item.
                 bool stillInUse = Owner.channel && manaIsAvailable && !Owner.noItems && !Owner.CCed;
-                if (stillInUse && Timer % 4 == 0)
+                if (stillInUse && Timer % 16 == 0)
                 {
+                    Owner.CheckMana(Owner.HeldItem.mana, true, false);
 
                 }
                 else if (!stillInUse)

@@ -16,7 +16,7 @@ namespace Stellamod.NPCs.Special
             if (npc.damage <= 0)
                 return;
 
-            if (Main.rand.NextBool(40))
+            if (Main.rand.NextBool(50))
             {
                 //From that
                 //1/5 for rare - 20%

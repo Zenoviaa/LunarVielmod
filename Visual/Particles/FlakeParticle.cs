@@ -28,6 +28,7 @@ namespace Stellamod.Visual.Particles
         public bool fast;
         public override void OnSpawn()
         {
+            stretchScale = Vector2.One;
             gravity = 0.2f;
             Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
             //    customShader = DustShader.Instance;
@@ -54,8 +55,7 @@ namespace Stellamod.Visual.Particles
             color *= 0.99f;
 
             float stretchInterp = Velocity.Length() / 5f;
-            stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);
-            stretchScale.Y = 1f;
+ 
             fadeIn++;
             if (fadeIn > 180 || Scale < 0.1f)
                 active = false;
@@ -75,7 +75,7 @@ namespace Stellamod.Visual.Particles
             var textureAsset = GetTexture();
 
             Color drawColor = color;
-            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, drawColor, Rotation + MathHelper.PiOver2, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, drawColor * 0.8f, Rotation + MathHelper.PiOver2, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
         }
     }
 

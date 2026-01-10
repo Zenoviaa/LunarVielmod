@@ -1,10 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace Stellamod.Common.WeaponTypes
 {
@@ -13,6 +17,28 @@ namespace Stellamod.Common.WeaponTypes
         public override bool InstancePerEntity => true;
         public bool isManaSphere;
         public int heldProj;
+        public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (isManaSphere)
+            {
+                List<Projectile> possibleSpawnPoints = new List<Projectile>();
+                foreach (var proj in Main.ActiveProjectiles)
+                {
+                    if (proj.owner != player.whoAmI)
+                        continue;
+                    if (proj.type != heldProj)
+                        continue;
+                    possibleSpawnPoints.Add(proj);
+                }
+
+                Projectile point = possibleSpawnPoints[Main.rand.Next(0, possibleSpawnPoints.Count)];
+                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(4, 4), heldProj, 1, 1, player.whoAmI);
+                point.Kill();
+                Projectile.NewProjectile(player.GetSource_FromThis(), point.Center, velocity, type, damage, knockback, player.whoAmI);
+                return false;
+            }
+            return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+        }
     }
 
     public class ManaSphereExpandingTooltip : AbstractExpandingTooltip
@@ -29,12 +55,25 @@ namespace Stellamod.Common.WeaponTypes
     }
     public abstract class AbstractManaSphereHold : ModProjectile
     {
+        private UnifiedRandom _random;
+        private Vector2 TargetHoldPosition;
         protected ref float Timer => ref Projectile.ai[0];
+        protected int Seed => (int)Projectile.ai[2];
         protected Player Owner => Main.player[Projectile.owner];
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(TargetHoldPosition);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            TargetHoldPosition = reader.ReadVector2();
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ProjectileID.Sets.TrailCacheLength[Type] = 16;
+            ProjectileID.Sets.TrailCacheLength[Type] = 8;
             ProjectileID.Sets.TrailingMode[Type] = 2;
         }
         public override void SetDefaults()
@@ -45,10 +84,12 @@ namespace Stellamod.Common.WeaponTypes
             Projectile.friendly = false;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
+            Projectile.extraUpdates = 1;
         }
         public sealed override void AI()
         {
             base.AI();
+         
             Item item = Owner.HeldItem;
             if (item.IsAir || item == null)
                 return;
@@ -57,15 +98,92 @@ namespace Stellamod.Common.WeaponTypes
                 return;
             Projectile.timeLeft = 2;
             Timer++;
-            AI_OrbitPlayer();
+            if(Timer == 1)
+            {
+                if(Main.myPlayer == Projectile.owner)
+                {
+             
+                    Projectile.ai[2] = Main.rand.Next(0, int.MaxValue);
+                    
+                    Projectile.netUpdate = true;
+                }
+            }
+            DustEffects();
+            if (Owner.controlUseItem)
+            {
+                AI_FireOut();
+
+            }
+            else
+            {
+                AI_OrbitPlayer();
+            }
+              
+        }
+
+
+        public virtual void DustEffects()
+        {
+
+        }
+        public virtual void AI_FireOut()
+        {
+            if (Main.myPlayer == Projectile.owner)
+            {
+                TargetHoldPosition = Owner.Center + (Main.MouseWorld - Owner.Center).SafeNormalize(Vector2.Zero) * 128;
+                Projectile.netUpdate = true;
+            }
+            Vector2 idlePosition = TargetHoldPosition;
+
+            _random ??= new UnifiedRandom();
+            _random.SetSeed(Seed);
+            idlePosition.X += _random.NextFloat(-32, 32);
+            idlePosition.Y += _random.NextFloat(-32, 32);
+            // All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
+
+            // Teleport to player if distance is too big
+            Vector2 vectorToIdlePosition = idlePosition - Projectile.Center;
+            float distanceToIdlePosition = vectorToIdlePosition.Length();
+
+
+            if (Main.myPlayer == Owner.whoAmI && distanceToIdlePosition > 2000f)
+            {
+                // Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
+                // and then set netUpdate to true
+                Projectile.position = idlePosition;
+                Projectile.velocity *= 0.1f;
+                Projectile.netUpdate = true;
+            }
+            SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
+
+
         }
 
         public virtual void AI_OrbitPlayer()
         {
-            Vector2 offset = Vector2.UnitY.RotatedBy(Timer * 0.05f) * 64 * ExtraMath.Osc(0.9f, 1f);
-            Vector2 positionToMoveTo = Owner.Center + offset;
-            Vector2 targetVelocity = positionToMoveTo - Projectile.Center;
-            Projectile.velocity = targetVelocity;
+            _random ??= new UnifiedRandom();
+            _random.SetSeed(Seed);
+            Vector2 idlePosition = Owner.Center;
+            idlePosition.X += _random.NextFloat(-32, 32);
+            idlePosition.Y += _random.NextFloat(-32, 32);
+  
+            // All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
+
+            // Teleport to player if distance is too big
+            Vector2 vectorToIdlePosition = idlePosition - Projectile.Center;
+            float distanceToIdlePosition = vectorToIdlePosition.Length();
+
+
+            if (Main.myPlayer == Owner.whoAmI && distanceToIdlePosition > 2000f)
+            {
+                // Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
+                // and then set netUpdate to true
+                Projectile.position = idlePosition;
+                Projectile.velocity *= 0.1f;
+                Projectile.netUpdate = true;
+            }
+            SummonHelper.Idle(Projectile, distanceToIdlePosition, vectorToIdlePosition);
+
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -87,7 +205,12 @@ namespace Stellamod.Common.WeaponTypes
                 return;
             if (Player.whoAmI == Main.myPlayer && Player.ownedProjectileCounts[manaSphere.heldProj] == 0)
             {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, manaSphere.heldProj, 1, 1, Player.whoAmI);
+                for (int i = 0; i <  6; i++)
+                {
+                    Vector2 vel = Main.rand.NextVector2Circular(12, 12);
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, vel, manaSphere.heldProj, 1, 1, Player.whoAmI);
+                }
+
             }
         }
     }

@@ -41,6 +41,7 @@ namespace Stellamod.Core.Particles
         public ArmorShaderData shader;
         public BaseShader customShader;
         public Entity parent;
+        public bool hasParent;
 
         protected sealed override void Register()
         {

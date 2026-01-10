@@ -6,15 +6,10 @@ using Stellamod.Core.Particles;
 using Stellamod.Items;
 using Stellamod.Items.Ores;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
-using static Accord.Math.FourierTransform;
 
 namespace Stellamod.Content.Areas.Collosseum.AccCL
 {
@@ -41,7 +36,7 @@ namespace Stellamod.Content.Areas.Collosseum.AccCL
                 return;
             if (!npc.HasBuff<GintzeStanceBreak>())
             {
-                for(float f = 0; f < 3; f++)
+                for (float f = 0; f < 3; f++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(8, 8);
                     DustParticle.Spawn(npc.Center, vel);
@@ -52,9 +47,10 @@ namespace Stellamod.Content.Areas.Collosseum.AccCL
                 strike.Scale *= 0.2f;
                 strike.rotOffset += MathHelper.PiOver2;
 
-                SoundStyle slashSound = new SoundStyle("Stellamod/Assets/Sounds/AssassinsSlash");
-                slashSound.PitchVariance = 0.3f;
-                SoundEngine.PlaySound(slashSound, npc.position);
+                var hit = SoundID.NPCHit53;
+                hit.PitchVariance = 0.3f;
+                hit.Volume = 0.5f;
+                SoundEngine.PlaySound(hit, npc.position);
                 npc.AddBuff(ModContent.BuffType<GintzeStanceBreak>(), 60000);
             }
         }

@@ -58,7 +58,10 @@ namespace Stellamod.Core.Particles
                 {
                     Vector2 parentMovement = particle.parent.position - particle.parent.oldPosition;
                     particle.Center += parentMovement;
+                    particle.hasParent = true;
                 }
+                if (particle.hasParent && !particle.parent.active)
+                    particle.active = false;
 
                 if (particle.shouldKilledOutScreen && !ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     particle.active = false;
@@ -84,7 +87,10 @@ namespace Stellamod.Core.Particles
                 {
                     Vector2 parentMovement = particle.parent.position - particle.parent.oldPosition;
                     particle.Center += parentMovement;
+                    particle.hasParent = true;
                 }
+                if (particle.hasParent && !particle.parent.active)
+                    particle.active = false;
                 if (particle.shouldKilledOutScreen && !ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     particle.active = false;
 
