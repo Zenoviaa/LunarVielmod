@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Players;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,14 @@ namespace Stellamod.Common.WeaponTypes
         public override bool InstancePerEntity => true;
         public bool isManaSphere;
         public int heldProj;
+        public int staminaProj;
+        public override bool AltFunctionUse(Item item, Player player)
+        {
+            if (isManaSphere)
+                return true;
+            return base.AltFunctionUse(item, player);
+        }
+
         public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (isManaSphere)
@@ -34,6 +43,13 @@ namespace Stellamod.Common.WeaponTypes
                 Projectile point = possibleSpawnPoints[Main.rand.Next(0, possibleSpawnPoints.Count)];
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(4, 4), heldProj, 1, 1, player.whoAmI);
                 point.Kill();
+                DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+                if (player.altFunctionUse == 2 && dashPlayer.CanConsume(2))
+                {
+                    dashPlayer.Consume(2);
+                    type = staminaProj;
+                }
+                
                 Projectile.NewProjectile(player.GetSource_FromThis(), point.Center, velocity, type, damage, knockback, player.whoAmI);
                 return false;
             }

@@ -127,11 +127,12 @@ namespace Stellamod.Core.Bases
 
         }
 
-        public static void DefaultToManaSphere(this Item item, int manaSphereHoldProjectile)
+        public static void DefaultToManaSphere(this Item item, int manaSphereHoldProjectile, int staminaProj = -1)
         {
             ManaSphereGlobalItem globalItem = item.GetGlobalItem<ManaSphereGlobalItem>();
             globalItem.isManaSphere = true;
             globalItem.heldProj = manaSphereHoldProjectile;
+            globalItem.staminaProj = staminaProj;
             item.damage = 18;
             item.DamageType = DamageClass.Magic;
             item.noUseGraphic = true;
@@ -140,6 +141,7 @@ namespace Stellamod.Core.Bases
             item.useTime = 9;
             item.useAnimation = 9;
             item.useStyle = ItemUseStyleID.Swing;
+
         }
     }
 }
