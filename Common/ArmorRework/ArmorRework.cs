@@ -7,6 +7,7 @@ using Stellamod.Buffs;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Core.Tooltips;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using System;
