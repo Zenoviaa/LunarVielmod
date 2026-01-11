@@ -19,6 +19,8 @@ namespace Stellamod.Assets
             public static Asset<Texture2D> TexturedLaser;
             public static Asset<Texture2D> TexturedLaser2;
             public static Asset<Texture2D> SnowflakeLaser;
+            public static Asset<Texture2D> Lightning;
+            public static Asset<Texture2D> Lightning2;
 
         }
         public override void OnModLoad()
@@ -33,6 +35,8 @@ namespace Stellamod.Assets
             LaserTextures.TexturedLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser");
             LaserTextures.TexturedLaser2 = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser2");
             LaserTextures.SnowflakeLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/SnowflakeLaser");
+            LaserTextures.Lightning = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Lightning");
+            LaserTextures.Lightning2 = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Lightning2");
         }
         public override void OnModUnload()
         {
@@ -46,6 +50,8 @@ namespace Stellamod.Assets
             LaserTextures.TexturedLaser = null;
             LaserTextures.TexturedLaser2 = null;
             LaserTextures.SnowflakeLaser = null;
+            LaserTextures.Lightning = null;
+            LaserTextures.Lightning2 = null;
         }
     }
 }

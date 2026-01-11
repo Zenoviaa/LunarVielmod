@@ -22,7 +22,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Super
             MagicProj.orb = true;
             Projectile.penetrate += 5;
             Projectile.velocity *= 0.8f;
-            MagicProj.hitboxSize += 64;
+            MagicProj.hitboxSize += 100;
         }
         public override float GetStaffManaModifier()
         {

@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.Particles;
+﻿using Stellamod.Core.Particles;
 using Terraria;
 
 namespace Stellamod.Visual.Particles
@@ -28,10 +26,7 @@ namespace Stellamod.Visual.Particles
             Velocity.Y += gravity;
             Velocity *= 1.0f - dampening;
             Rotation = Velocity.ToRotation() + rotationOffset;
-            Scale *= 0.92f;
-            if (fast)
-                Scale *= 0.98f;
-            color *= 0.99f;
+            color *= 0.95f;
 
             float stretchInterp = Velocity.Length() / 5f;
             stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);
@@ -39,13 +34,6 @@ namespace Stellamod.Visual.Particles
             fadeIn++;
             if (fadeIn > 180 || Scale < 0.01f)
                 active = false;
-
-            //Bouncing
-            Vector2 collisionVelocity = Collision.TileCollision(Center, Velocity, 2, 2);
-            if (Velocity.X != collisionVelocity.X)
-                Velocity.X = -collisionVelocity.X;
-            if (Velocity.Y != collisionVelocity.Y)
-                Velocity.Y = -collisionVelocity.Y;
 
         }
 

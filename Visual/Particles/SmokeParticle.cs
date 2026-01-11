@@ -17,8 +17,10 @@ namespace Stellamod.Visual.Particles
         public Color fadeToColor;
         public int extraUpdates;
         public bool expand;
+        public bool fast;
         public override void OnSpawn()
         {
+            fast = false;
             expand = false;
             Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
             customShader = null;
@@ -38,6 +40,10 @@ namespace Stellamod.Visual.Particles
                 Scale *= Main.rand.NextFloat(0.97f, 0.99f);
             }
         
+            if (fast)
+            {
+                Scale *= 0.95f;
+            }
             color = Color.Lerp(initialColor, fadeToColor, fadeIn / 90f);
 
             float ratio = fadeIn / 180f;

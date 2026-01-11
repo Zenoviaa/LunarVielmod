@@ -647,3 +647,7 @@ SpeedsterEnchantment: {
 	DisplayName: Speedster Enchantment
 	Tooltip: Your spell starts with 3x more velocity, and then slows down to its original velocity over time
 }
+DoubleHitEnchantment: {
+	DisplayName: Double Hit Enchantment
+	Tooltip: Your spell will move at half speed after hitting an enemy! +1 penetration
+}

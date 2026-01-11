@@ -79,12 +79,19 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public int hitboxSize;
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
+            int size = (int)(Size + hitboxSize);
+            int halfSize = size / 2;
+            int x = (int)Projectile.Center.X - halfSize;
+            int y = (int)Projectile.Center.Y - halfSize;
+            Rectangle myHitbox = new Rectangle(x, y, size, size);
             if (damagingTrail)
             {
+
                 return ProjectileHelper.OldPosColliding(OldPos, projHitbox, targetHitbox, 32);
             }
 
-            return base.Colliding(projHitbox, targetHitbox);
+
+            return base.Colliding(myHitbox, targetHitbox);
         }
         public override void SetStaticDefaults()
         {
@@ -310,9 +317,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 }
             }
     
-            Projectile.width = (int)Size + hitboxSize;
-            Projectile.height = (int)Size + hitboxSize;
-
             PrimaryElement?.AI();
             Movement?.AI();
 

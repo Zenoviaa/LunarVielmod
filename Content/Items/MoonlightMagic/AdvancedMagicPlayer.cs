@@ -88,14 +88,14 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);
-            tag["backpack"] = SaveUtil.ItemListToString(Backpack);
+            tag["backpack"] = Backpack;
         }
 
         public override void LoadData(TagCompound tag)
         {
             base.LoadData(tag);
             Backpack.Clear();
-            Backpack = SaveUtil.StringToItemList(tag.GetString("backpack"));
+            Backpack = tag.Get<List<Item>>("backpack");
             ManageMagicItems();
         }
     }
