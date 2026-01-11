@@ -194,7 +194,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             NPC.npcSlots = 10f;
             NPC.takenDamageMultiplier = 0.9f;
             NPC.aiStyle = -1;
-            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Bishinine");
+            Music = MusicMod.GetMusicSlot( "Assets/Music/Bishinine");
         }
 
         public override bool? CanFallThroughPlatforms()

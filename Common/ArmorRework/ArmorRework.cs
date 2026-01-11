@@ -86,7 +86,7 @@ namespace Stellamod.Common.ArmorRework
 
         public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1.2f)
         {
-            DrawPlayerInternal(camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale: scale);
+            DrawPlayerInternal(camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale: 1.3f);
         }
 
         // A split to add some not publicly exposed parameters.
@@ -481,7 +481,7 @@ namespace Stellamod.Common.ArmorRework
 
             Vector2 playerPosition = position + new Vector2(Width.Pixels, Height.Pixels) * 0.5f;
             playerPosition.Y -= Main.LocalPlayer.height / 2;
-            playerPosition.Y += 4;
+            playerPosition.Y += 20;
             ExpandableTooltip.DrawArmorPreview(playerPosition, helm, armor, leggings);
 
             spriteBatch.End();

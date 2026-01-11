@@ -50,7 +50,7 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
         public override void ResetEffects()
         {
             base.ResetEffects();
-            hasSearingSawRemote = true;
+            hasSearingSawRemote = false;
         }
         public override void Load()
         {

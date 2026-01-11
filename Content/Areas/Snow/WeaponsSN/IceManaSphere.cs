@@ -49,8 +49,8 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 60;
-
         }
+
         public override void AI()
         {
             base.AI();
@@ -108,7 +108,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
                 _initialVelocity = Projectile.velocity;
 
             }
-
+            ProjectileID.Sets.TrailCacheLength[Type] = 16;
             if (Timer == 5)
             {
                 ShockOvalSpawnParams spawnParams = new ShockOvalSpawnParams
