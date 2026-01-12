@@ -132,6 +132,7 @@ Common: {
 		'''
 		[c/FFA500:Runes] are magical shapes that will support your summons when drawn
 		Match the shape as best you can to use them!
+		[c/FFA500:HOLD and release to draw the shape!!]
 		'''
 	StatAddition: "{1} increased {0}"
 	StatSubtraction: "{1} decreased {0}"
@@ -10381,7 +10382,7 @@ ReturnRune: {
 
 HealthRune: {
 	DisplayName: Health Rune
-	Tooltip: Draw a triangle to heal up your summons a little bit!
+	Tooltip: Draw a triangle to heal up your summons up by 20%!
 }
 
 DamageRune: {

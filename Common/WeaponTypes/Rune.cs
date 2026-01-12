@@ -71,8 +71,12 @@ namespace Stellamod.Common.WeaponTypes
 
         public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (player.ownedProjectileCounts[type] > 0)
-                return false;
+            if (isRune)
+            {
+                if (player.ownedProjectileCounts[type] > 0)
+                    return false;
+            }
+
             return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
         }
     }
@@ -88,6 +92,7 @@ namespace Stellamod.Common.WeaponTypes
         public Vector2 DrawingPosition { get; private set; }
         public Vector2[] OldDrawingCache { get; private set; }
         public float EaseInRatio { get; private set; }
+        public bool MatchedShape { get; private set; }
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -97,6 +102,7 @@ namespace Stellamod.Common.WeaponTypes
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
         }
+       
 
         public sealed override void AI()
         {
@@ -154,8 +160,8 @@ namespace Stellamod.Common.WeaponTypes
             if (shouldRelease)
             {
                 Vector2[] shapePointsArr = _shapePointsList.ToArray();
-                bool shapeCheck = MatchShapeCheck(shapePointsArr);
-                if (shapeCheck)
+                MatchedShape = MatchShapeCheck(shapePointsArr);
+                if (MatchedShape)
                 {
                     //Main.NewText("Success");
                     foreach (var projectile in Main.ActiveProjectiles)
@@ -177,6 +183,14 @@ namespace Stellamod.Common.WeaponTypes
                 }
             }
             DustEffects();
+        }
+
+        public override bool PreKill(int timeLeft)
+        {
+            RuneLineParticle runeLineParticle = RuneLineParticle.Spawn(Owner.Center, Vector2.Zero, Color.White);
+            runeLineParticle.trailCache = OldDrawingCache;
+            runeLineParticle.bloomColor = MatchedShape ? Color.Green : Color.Red;
+            return base.PreKill(timeLeft);
         }
 
         public override void OnKill(int timeLeft)

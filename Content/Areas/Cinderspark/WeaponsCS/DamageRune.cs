@@ -132,6 +132,8 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         private void DrawDottedLine(GraphicsDevice graphicsDevice)
         {
+            Vector2 startPosition = new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f;
+            startPosition.Y -= 200;
             List<Vector2> points = new List<Vector2>();
             float numPoints = 36;
             for (float n = 0; n < numPoints; n++)
@@ -139,7 +141,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 float ratio = n / numPoints;
                 float radians = ratio * MathHelper.TwoPi;
                 Vector2 offset = new Vector2(MathF.Cos(radians), MathF.Sin(radians)) * 100;
-                points.Add(StartDrawingPosition + offset);
+                points.Add(startPosition + offset);
             }
 
             var shader = BasicLaserShader.Instance;

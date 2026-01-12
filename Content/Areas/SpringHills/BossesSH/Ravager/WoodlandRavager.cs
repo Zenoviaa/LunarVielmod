@@ -81,7 +81,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             NPC.height = 48;
             NPC.damage = 80;
             NPC.defense = 0;
-            NPC.lifeMax = 400;
+            NPC.lifeMax = 2800;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = Item.buyPrice(silver: 50);
             NPC.knockBackResist = 0f;
@@ -95,6 +95,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             //Setup the music and boss bar
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MysticalFoe");
             //     NPC.aiStyle = 0;
+        }
+
+        public override bool CanHitNPC(NPC target)
+        {
+            return base.CanHitNPC(target) && _isDangerous;
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)

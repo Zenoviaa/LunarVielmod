@@ -111,6 +111,8 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             minion.Heal();
         }
 
+
+
         public override bool PreDraw(ref Color lightColor)
         {
             PixelationManager.QueueSpritebatchDrawAction(DrawPointer);
@@ -147,7 +149,8 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         private void DrawDottedLine(GraphicsDevice graphicsDevice)
         {
             List<Vector2> points = new List<Vector2>();
-            Vector2 a = StartDrawingPosition;
+            Vector2 a = new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f;
+            a.Y -= 400;
             Vector2 b = a + new Vector2(-100, 200);
             Vector2 c = a + new Vector2(100, 200);
 

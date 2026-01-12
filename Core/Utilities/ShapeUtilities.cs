@@ -33,11 +33,12 @@ namespace Stellamod.Core.Utilities
                 Vector2 movement = shapePoints[s] - shapePoints[s - 1];
                 movement = movement.SafeNormalize(Vector2.Zero);
                 float dp = Vector2.Dot(lastMovement, movement);
-                float threshold = detectLineChangeThreshold;
-                if (dp < threshold || s == shapePoints.Length - 1)
+                
+                if (dp < detectLineChangeThreshold || s == shapePoints.Length - 1)
                 {
                     Line line = new Line(lineStart, shapePoints[s]);
                     lines.Add(line);
+                
                     lineStart = shapePoints[s];
                     lastMovement = movement;
                 }
@@ -57,6 +58,7 @@ namespace Stellamod.Core.Utilities
                 Line prevLine;
                 if (i == 0)
                 {
+                    //preventing an index out of bounds exception
                     prevLine = lines[lines.Count - 1];
                 }
                 else
@@ -72,12 +74,15 @@ namespace Stellamod.Core.Utilities
                 float angle2 = (prevLine.b - prevLine.a).ToRotation();
                 float diff = MathF.Abs(angle2 - angle1);
 
-                //If the angle difference is too big, just invert the angle so we get the other side, and only check for 90 degree angles
+                //If the angle difference is too big, just invert the angle and only check for the smaller angle
+                //This WOULDN'T WORK with some super complex shapes that have big angles, but for our use case it doesn't matter
                 float angleDiff = diff > MathHelper.Pi ? MathHelper.TwoPi - diff : diff;
 
                 //This conversion is technically unnecessary, we could just use radians it's just easier to wrap my head around this lol
                 float diffDegrees = angleDiff * 180 / MathF.PI;
-          //      Main.NewText(diffDegrees);
+
+                //debug code
+                //Main.NewText(diffDegrees);
                 if (diffDegrees >= minAngle && diffDegrees <= maxAngle)
                 {
                     numMatches++;

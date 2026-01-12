@@ -129,6 +129,9 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 
         private void DrawDottedLine(GraphicsDevice graphicsDevice)
         {
+            Vector2 startPosition = new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f;
+            startPosition.Y -= 200;
+
             List<Vector2> points = new List<Vector2>();
             float numPoints = 72;
             for(int n = 0; n < 5; n++)
@@ -142,7 +145,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
                 for(float i = 0; i < pointsPerSide; i++)
                 {
                     Vector2 interp = Vector2.Lerp(offset, nextOffset, i / pointsPerSide);
-                    points.Add(StartDrawingPosition + interp);
+                    points.Add(startPosition + interp);
                 }
             }
 

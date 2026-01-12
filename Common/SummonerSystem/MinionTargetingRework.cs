@@ -1,8 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.ArmorRework;
+﻿using Stellamod.Common.ArmorRework;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
-using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
@@ -29,13 +26,12 @@ namespace Stellamod.Common.SummonerSystem
     {
 
     }
+
     public class DummyNPC : ModNPC
     {
+        private float _totalAmountHealed;
         private ref float KillMyselfTimer => ref NPC.ai[0];
-
         private ref float Lifetime => ref NPC.ai[1];
-
-        private ref float IFrameTimer => ref NPC.ai[2];
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -49,7 +45,7 @@ namespace Stellamod.Common.SummonerSystem
             NPC.aiStyle = -1;
             NPC.ShowNameOnHover = false;
             NPC.takenDamageMultiplier = 0.8f;
-         
+
         }
 
         public override void OnSpawn(IEntitySource source)
@@ -66,20 +62,30 @@ namespace Stellamod.Common.SummonerSystem
 
             Lifetime--;
             NPC.life = (int)Lifetime;
-            if(NPC.life <= 0)
+            if (NPC.life <= 0)
             {
                 NPC.active = false;
             }
 
-            IFrameTimer--;
             if (NPC.HasBuff<RuneHealing>())
             {
-                Lifetime += 2;
-
-                if (Main.GameUpdateCount % 10 == 0)
-                    NPC.HealEffect(5);
+                float healingTime = 120f;
+                float totalHealingAMount = NPC.lifeMax * 0.2f;
+                float amountToHealPerTick = totalHealingAMount / healingTime;
+                Lifetime += amountToHealPerTick;
+                _totalAmountHealed += amountToHealPerTick;
+                if (_totalAmountHealed >= 100)
+                {
+                    NPC.HealEffect(100);
+                    _totalAmountHealed -= 100;
+                }
             }
-           
+            else if (_totalAmountHealed > 0)
+            {
+                NPC.HealEffect((int)_totalAmountHealed);
+                _totalAmountHealed = 0;
+            }
+
             if (NPC.HasBuff<SpectralMinion>())
                 KillMyselfTimer = 0;
             else
@@ -90,17 +96,11 @@ namespace Stellamod.Common.SummonerSystem
             }
         }
 
-        public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
-        {
-            base.ModifyIncomingHit(ref modifiers);
-         //   modifiers.FinalDamage *= 0;
-        }
-
         public override void HitEffect(NPC.HitInfo hit)
         {
             base.HitEffect(hit);
             Lifetime -= hit.SourceDamage;
-            
+
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -113,18 +113,20 @@ namespace Stellamod.Common.SummonerSystem
         IDrawSpectral,
         ITargetable
     {
-        private Vector2 _teleportationPoint;
+        private float _damageBoostTimer;
         private bool _spawnedMinionNPC;
         private int _npcWhoAmI = -1;
+        private Vector2 _teleportationPoint;
+
         private Player Owner => Main.player[Projectile.owner];
-        public static event Action<Projectile> OnKillMinion;
+
         public float lifetime;
-        private float _damageBoostTimer;
+
+        public static event Action<Projectile> OnKillMinion;
         public virtual int GetAggro()
         {
             return -500;
         }
-
 
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -174,7 +176,7 @@ namespace Stellamod.Common.SummonerSystem
             npc.AddBuff(ModContent.BuffType<RuneHealing>(), 30);
         }
 
-        
+
 
         public void Teleport(Vector2 teleportCenter)
         {
@@ -187,7 +189,7 @@ namespace Stellamod.Common.SummonerSystem
         public override void AI()
         {
             base.AI();
-            if(_damageBoostTimer > 0)
+            if (_damageBoostTimer > 0)
             {
                 if (Main.rand.NextBool(4))
                 {
@@ -206,7 +208,7 @@ namespace Stellamod.Common.SummonerSystem
 
                 _damageBoostTimer--;
             }
-            if(_teleportationPoint.X != 0 || _teleportationPoint.Y != 0)
+            if (_teleportationPoint.X != 0 || _teleportationPoint.Y != 0)
             {
                 Projectile.Center = _teleportationPoint;
                 _teleportationPoint = Vector2.Zero;
@@ -224,11 +226,12 @@ namespace Stellamod.Common.SummonerSystem
             Projectile.Kill();
             OnKillMinion?.Invoke(Projectile);
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
-
             return false;
         }
+
         public virtual void DrawSpectralWhites(SpriteBatch spriteBatch)
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
@@ -258,7 +261,7 @@ namespace Stellamod.Common.SummonerSystem
             Point p = Projectile.position.ToTileCoordinates();
             Color lightColor = Lighting.GetColor(p.X, p.Y);
             Color finalColor = Color.White.MultiplyRGB(lightColor);
-            if(_damageBoostTimer > 0)
+            if (_damageBoostTimer > 0)
             {
                 Color flickerColor = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16));
                 flickerColor = flickerColor.MultiplyRGB(lightColor);
@@ -271,7 +274,7 @@ namespace Stellamod.Common.SummonerSystem
         {
             base.ModifyHitNPC(target, ref modifiers);
             modifiers.FinalDamage.Base += Owner.GetModPlayer<ArmorStatsPlayer>().summonDamage;
-            if(_damageBoostTimer > 0)
+            if (_damageBoostTimer > 0)
             {
                 modifiers.FinalDamage.Base += 0.15f;
             }
