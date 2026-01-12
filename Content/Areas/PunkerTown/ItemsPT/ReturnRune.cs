@@ -229,7 +229,9 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
                     innerColor = Color.White,
                     outerColor = Color.Blue
                 };
-                DustParticle.Spawn(trailPoint + Main.screenPosition, Vector2.Zero, spawnParams);
+                DustParticle dp = DustParticle.Spawn(trailPoint + Main.screenPosition, Vector2.Zero, spawnParams);
+                dp.gravity = 0.06f;
+                dp.fast = true;
             }
         }
     }
