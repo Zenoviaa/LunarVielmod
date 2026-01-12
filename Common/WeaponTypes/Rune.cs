@@ -49,7 +49,7 @@ namespace Stellamod.Common.WeaponTypes
                     Main.DrawItemIcon(spriteBatch, item, position, glowColor, 32);
                 }
 
-                if (Main.rand.NextBool(16))
+                if (Main.rand.NextBool(32) && !Main.gameInactive)
                 {
                     DustParticle dp = DustParticle.SpawnInUI(position + Main.rand.NextVector2Circular(32, 32), -Vector2.UnitY, Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
                     dp.gravity = 0;
@@ -157,6 +157,7 @@ namespace Stellamod.Common.WeaponTypes
                 bool shapeCheck = MatchShapeCheck(shapePointsArr);
                 if (shapeCheck)
                 {
+                    //Main.NewText("Success");
                     foreach (var projectile in Main.ActiveProjectiles)
                     {
                         if (projectile.owner != Projectile.owner)
@@ -171,6 +172,7 @@ namespace Stellamod.Common.WeaponTypes
                 }
                 else
                 {
+                    //Main.NewText("Fail");
                     Projectile.Kill();
                 }
             }

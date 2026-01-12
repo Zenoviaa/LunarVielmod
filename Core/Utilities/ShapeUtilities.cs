@@ -77,6 +77,7 @@ namespace Stellamod.Core.Utilities
 
                 //This conversion is technically unnecessary, we could just use radians it's just easier to wrap my head around this lol
                 float diffDegrees = angleDiff * 180 / MathF.PI;
+          //      Main.NewText(diffDegrees);
                 if (diffDegrees >= minAngle && diffDegrees <= maxAngle)
                 {
                     numMatches++;

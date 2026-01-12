@@ -1727,3 +1727,6 @@ IcicleManaBlast.DisplayName: Icicle Mana Blast
 IcicleManaBlastSpawner.DisplayName: Icicle Mana Blast Spawner
 MoltenFireball.DisplayName: Molten Fireball
 ReturnRuneShaper.DisplayName: Return Rune Shaper
+HealthRuneShaper.DisplayName: Health Rune Shaper
+DamageRuneShaper.DisplayName: Damage Rune Shaper
+ForwardRuneShaper.DisplayName: Forward Rune Shaper

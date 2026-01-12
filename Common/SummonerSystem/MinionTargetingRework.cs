@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.ArmorRework;
+using Stellamod.Content.Areas.SpringHills.WeaponsSH;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -69,6 +72,14 @@ namespace Stellamod.Common.SummonerSystem
             }
 
             IFrameTimer--;
+            if (NPC.HasBuff<RuneHealing>())
+            {
+                Lifetime += 2;
+
+                if (Main.GameUpdateCount % 10 == 0)
+                    NPC.HealEffect(5);
+            }
+           
             if (NPC.HasBuff<SpectralMinion>())
                 KillMyselfTimer = 0;
             else
@@ -108,6 +119,7 @@ namespace Stellamod.Common.SummonerSystem
         private Player Owner => Main.player[Projectile.owner];
         public static event Action<Projectile> OnKillMinion;
         public float lifetime;
+        private float _damageBoostTimer;
         public virtual int GetAggro()
         {
             return -500;
@@ -120,6 +132,7 @@ namespace Stellamod.Common.SummonerSystem
             writer.Write(_spawnedMinionNPC);
             writer.Write(_npcWhoAmI);
             writer.WriteVector2(_teleportationPoint);
+            writer.Write(_damageBoostTimer);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
@@ -127,6 +140,7 @@ namespace Stellamod.Common.SummonerSystem
             _spawnedMinionNPC = reader.ReadBoolean();
             _npcWhoAmI = reader.ReadInt32();
             _teleportationPoint = reader.ReadVector2();
+            _damageBoostTimer = reader.ReadSingle();
         }
 
         private void ManageHealthbar()
@@ -148,6 +162,19 @@ namespace Stellamod.Common.SummonerSystem
                 Death();
             }
         }
+        public void DamageBuff()
+        {
+            _damageBoostTimer += 120;
+            Projectile.netUpdate = true;
+        }
+
+        public void Heal()
+        {
+            NPC npc = Main.npc[_npcWhoAmI];
+            npc.AddBuff(ModContent.BuffType<RuneHealing>(), 30);
+        }
+
+        
 
         public void Teleport(Vector2 teleportCenter)
         {
@@ -160,6 +187,25 @@ namespace Stellamod.Common.SummonerSystem
         public override void AI()
         {
             base.AI();
+            if(_damageBoostTimer > 0)
+            {
+                if (Main.rand.NextBool(4))
+                {
+                    var spawnParams = new DustParticleSpawnParams
+                    {
+                        innerColor = Color.Red,
+                        outerColor = Color.DarkRed,
+                        scaleRange = new Vector2(0.1f, 1f)
+
+                    };
+                    var dp = DustParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(24, 24), -Vector2.UnitY * 4 * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+                    dp.gravity = 0;
+                    dp.fast = true;
+                    dp.dampening = 0.05f;
+                }
+
+                _damageBoostTimer--;
+            }
             if(_teleportationPoint.X != 0 || _teleportationPoint.Y != 0)
             {
                 Projectile.Center = _teleportationPoint;
@@ -212,12 +258,23 @@ namespace Stellamod.Common.SummonerSystem
             Point p = Projectile.position.ToTileCoordinates();
             Color lightColor = Lighting.GetColor(p.X, p.Y);
             Color finalColor = Color.White.MultiplyRGB(lightColor);
+            if(_damageBoostTimer > 0)
+            {
+                Color flickerColor = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16));
+                flickerColor = flickerColor.MultiplyRGB(lightColor);
+                finalColor = flickerColor;
+            }
+
             spriteBatch.Draw(texture, drawPos, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
         }
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             base.ModifyHitNPC(target, ref modifiers);
             modifiers.FinalDamage.Base += Owner.GetModPlayer<ArmorStatsPlayer>().summonDamage;
+            if(_damageBoostTimer > 0)
+            {
+                modifiers.FinalDamage.Base += 0.15f;
+            }
         }
         public override void OnKill(int timeLeft)
         {

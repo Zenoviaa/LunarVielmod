@@ -987,3 +987,8 @@ IllikenIceFury: {
 	DisplayName: Illiken Ice Fury
 	Description: Mods.Stellamod.Buffs.IllikenIceFury.Description
 }
+
+RuneHealing: {
+	DisplayName: Rune Healing
+	Description: Mods.Stellamod.Buffs.RuneHealing.Description
+}

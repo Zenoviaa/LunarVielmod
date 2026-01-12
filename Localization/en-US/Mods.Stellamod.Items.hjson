@@ -10378,3 +10378,18 @@ ReturnRune: {
 	DisplayName: Return Rune
 	Tooltip: Draw a square to instantly summon your minions back to you!
 }
+
+HealthRune: {
+	DisplayName: Health Rune
+	Tooltip: Draw a triangle to heal up your summons a little bit!
+}
+
+DamageRune: {
+	DisplayName: Damage Rune
+	Tooltip: Draw a circle to boost the damage of your minions by 15%!
+}
+
+ForwardRune: {
+	DisplayName: Forward Rune
+	Tooltip: Draw a pentagon to teleport your minions to your cursor!
+}
