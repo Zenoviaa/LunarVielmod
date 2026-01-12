@@ -29,6 +29,12 @@ namespace Stellamod.Core.Particles
                 _center = value;
             }
         }
+        
+        public Vector2 DrawPosition
+        {
+            get => drawInUI ? Center : Center - Main.screenPosition;
+        }
+
         public Vector2 Velocity;
         public float fadeIn;
         public float Scale;
@@ -42,6 +48,7 @@ namespace Stellamod.Core.Particles
         public BaseShader customShader;
         public Entity parent;
         public bool hasParent;
+        public bool drawInUI;
 
         protected sealed override void Register()
         {

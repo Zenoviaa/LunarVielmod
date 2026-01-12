@@ -1,23 +1,26 @@
-﻿
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Stellamod.Core.Particles
 {
     /// <summary>
     /// Manages drawing all particles to the screen
     /// </summary>
+    [Autoload(Side = ModSide.Client)]
     public class ParticleSystemV2 : ModSystem
     {
+        private GameTime _lastUpdateUiGameTime;
         public static int MaxParticleCount => 500;
-        public static List<BaseParticle> AdditiveParticles = new(MaxParticleCount);
-        public static List<BaseParticle> AlphaBlendedParticles = new(MaxParticleCount);
+
+        private static List<BaseParticle> AdditiveParticles = new(MaxParticleCount);
+        private static List<BaseParticle> AlphaBlendedParticles = new(MaxParticleCount);
+        private static List<BaseParticle> UIParticles = new(MaxParticleCount);
         public override void Load()
         {
             base.Load();
@@ -32,6 +35,9 @@ namespace Stellamod.Core.Particles
 
             AlphaBlendedParticles.Clear();
             AlphaBlendedParticles = null;
+
+            UIParticles.Clear();
+            UIParticles = null;
         }
 
 
@@ -54,16 +60,13 @@ namespace Stellamod.Core.Particles
 
                 particle.Update();
                 particle.Center += particle.Velocity;
-                if(particle.parent != null)
+                if (particle.parent != null)
                 {
                     Vector2 parentMovement = particle.parent.position - particle.parent.oldPosition;
                     particle.Center += parentMovement;
                     particle.hasParent = true;
                 }
                 if (particle.hasParent && !particle.parent.active)
-                    particle.active = false;
-
-                if (particle.shouldKilledOutScreen && !ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     particle.active = false;
 
                 if (particle.Scale < 0.001f)
@@ -91,7 +94,31 @@ namespace Stellamod.Core.Particles
                 }
                 if (particle.hasParent && !particle.parent.active)
                     particle.active = false;
-                if (particle.shouldKilledOutScreen && !ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
+
+                if (particle.Scale < 0.001f)
+                    particle.active = false;
+
+                if (particle.fadeIn > 1000)
+                    particle.active = false;
+            }
+
+
+            for (int i = 0; i < UIParticles.Count; i++)
+            {
+                BaseParticle particle = UIParticles[i];
+
+                if (particle == null)
+                    continue;
+
+                particle.Update();
+                particle.Center += particle.Velocity;
+                if (particle.parent != null)
+                {
+                    Vector2 parentMovement = particle.parent.position - particle.parent.oldPosition;
+                    particle.Center += parentMovement;
+                    particle.hasParent = true;
+                }
+                if (particle.hasParent && !particle.parent.active)
                     particle.active = false;
 
                 if (particle.Scale < 0.001f)
@@ -103,6 +130,7 @@ namespace Stellamod.Core.Particles
 
             AdditiveParticles.RemoveAll(p => p == null || !p.active);
             AlphaBlendedParticles.RemoveAll(p => p == null || !p.active);
+            UIParticles.RemoveAll(p => p == null || !p.active);
         }
 
         private void DrawMainParticles(On_Main.orig_DrawDust orig, Main self)
@@ -112,7 +140,7 @@ namespace Stellamod.Core.Particles
             PixelationManager.QueueSpritebatchDrawAction(DrawPixelParticles, DrawLayer.OverNPCsAdditive);
         }
 
-        public void DrawAlphaBlendedParticles(SpriteBatch spriteBatch)
+        private void RenderAlphaParticles(SpriteBatch spriteBatch)
         {
             BaseShader myCustomShader = null;
             for (int i = 0; i < AlphaBlendedParticles.Count; i++)
@@ -140,17 +168,17 @@ namespace Stellamod.Core.Particles
             }
         }
 
-        public void DrawAlphaPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)
+        private void DrawAlphaPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)
         {
-            DrawAlphaBlendedParticles(spriteBatch);
+            RenderAlphaParticles(spriteBatch);
         }
 
-        public void DrawPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)
+        private void DrawPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)
         {
-            DrawParticles(spriteBatch);
+            RenderAdditiveParticles(spriteBatch);
         }
 
-        public void DrawParticles(SpriteBatch spriteBatch)
+        private void RenderAdditiveParticles(SpriteBatch spriteBatch)
         {
             BaseShader myCustomShader = null;
             spriteBatch.End();
@@ -177,7 +205,60 @@ namespace Stellamod.Core.Particles
                             myCustomShader.Effect, Main.GameViewMatrix.TransformationMatrix);
                     }
                 }
+
                 particle.Draw(spriteBatch);
+            }
+        }
+
+        public override void UpdateUI(GameTime gameTime)
+        {
+            base.UpdateUI(gameTime);
+            _lastUpdateUiGameTime = gameTime;
+        }
+
+        public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
+        {
+            int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+            if (mouseTextIndex != -1)
+            {
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "Scarlet Sun:UI Particles",
+                    delegate
+                    {
+                        if (_lastUpdateUiGameTime != null && UIParticles.Count > 0)
+                        {
+                            SpriteBatch spriteBatch = Main.spriteBatch;
+                            spriteBatch.End();
+                            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, default, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix);
+                            BaseShader myCustomShader = null;
+                            for (int i = 0; i < UIParticles.Count; i++)
+                            {
+                                var particle = UIParticles[i];
+                                if (particle == null || !particle.active)
+                                    continue;
+
+                                if (particle.customShader != myCustomShader)
+                                {
+                                    spriteBatch.End();
+                                    myCustomShader = particle.customShader;
+                                    if (myCustomShader == null)
+                                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, default, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix);
+                                    else
+                                    {
+                                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise,
+                                            myCustomShader.Effect, Main.UIScaleMatrix);
+                                    }
+                                }
+
+                                particle.Draw(spriteBatch);
+                            }
+
+                            spriteBatch.End();
+                            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
+                        }
+                        return true;
+                    },
+                    InterfaceScaleType.UI));
             }
         }
 
@@ -189,6 +270,11 @@ namespace Stellamod.Core.Particles
         public static void AddAlphaBlendedParticle<T>(T p) where T : BaseParticle
         {
             AlphaBlendedParticles.Add(p);
+        }
+
+        public static void AddUIParticle<T>(T p) where T : BaseParticle, new()
+        {
+            UIParticles.Add(p);
         }
     }
 }

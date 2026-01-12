@@ -42,6 +42,10 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+            public static class Rune
+            {
+                public static SoundStyle RuneTeleport = new SoundStyle($"{Path}Runes/RuneTeleport");
+            }
             public static class E
             {
                 public static SoundStyle DarkTentacleStab = new SoundStyle($"{Path}E/DarkTentacleStab");

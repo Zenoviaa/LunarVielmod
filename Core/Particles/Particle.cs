@@ -53,6 +53,7 @@ namespace Stellamod.Core.Particles
         private static void SetParticleDefaults(T t)
         {
             t.fadeIn = 0;
+            t.drawInUI = false;
             t.hasParent = false;
         }
         public static T Spawn(Vector2 position, Vector2 velocity, Color? color = null, float Scale = 1f)
@@ -94,6 +95,27 @@ namespace Stellamod.Core.Particles
 
             particle.OnSpawn();
             ParticleSystemV2.AddAlphaBlendedParticle(particle);
+            return particle;
+        }
+        public static T SpawnInUI(Vector2 position, Vector2 velocity, Color? color = null, float Scale = 1f)
+        {
+            T particle = GetParticle();
+
+            //Don't do anyth of this other stuff cause the server doesn't need to simulate particles
+            if (Main.netMode == NetmodeID.Server)
+                return particle;
+
+            SetParticleDefaults(particle);
+            particle.active = true;
+            particle.color = color.HasValue ? color.Value : Color.White;
+            particle.parent = null;
+            particle.Center = position;
+            particle.Velocity = velocity;
+            particle.Scale = Scale;
+            particle.drawInUI = true;
+
+            particle.OnSpawn();
+            ParticleSystemV2.AddUIParticle(particle);
             return particle;
         }
     }

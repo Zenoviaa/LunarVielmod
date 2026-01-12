@@ -144,5 +144,20 @@ namespace Stellamod.Core.Bases
             item.useStyle = ItemUseStyleID.Swing;
 
         }
+        public static void DefaultToRune(this Item item, int runeProjectileType)
+        {
+            RuneGlobalItem globalItem = item.GetGlobalItem<RuneGlobalItem>();
+            globalItem.isRune = true;
+        //    item.damage = 18;
+            item.DamageType = DamageClass.Summon;
+            item.noUseGraphic = true;
+            item.noMelee = true;
+            item.mana = 0;
+            item.useTime = 9;
+            item.useAnimation = 9;
+            item.useStyle = ItemUseStyleID.Swing;
+            item.shoot = runeProjectileType;
+            item.shootSpeed = 1;
+        }
     }
 }

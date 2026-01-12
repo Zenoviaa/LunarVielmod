@@ -128,6 +128,11 @@ Common: {
 		[c/FFA500:Mana Spheres] are ball of magic that consumes no mana but are quite weak
 		A safe option for mages to use while they're recovering their mana!
 		'''
+	RuneHelp:
+		'''
+		[c/FFA500:Runes] are magical shapes that will support your summons when drawn
+		Match the shape as best you can to use them!
+		'''
 	StatAddition: "{1} increased {0}"
 	StatSubtraction: "{1} decreased {0}"
 	StatAdditionAlt: Increases {0} by {1}
@@ -10367,4 +10372,9 @@ IllikenHelmet: {
 IllikenLegs: {
 	DisplayName: Illiken Legs
 	Tooltip: ""
+}
+
+ReturnRune: {
+	DisplayName: Return Rune
+	Tooltip: Draw a square to instantly summon your minions back to you!
 }

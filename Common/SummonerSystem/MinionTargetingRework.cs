@@ -102,6 +102,7 @@ namespace Stellamod.Common.SummonerSystem
         IDrawSpectral,
         ITargetable
     {
+        private Vector2 _teleportationPoint;
         private bool _spawnedMinionNPC;
         private int _npcWhoAmI = -1;
         private Player Owner => Main.player[Projectile.owner];
@@ -118,12 +119,14 @@ namespace Stellamod.Common.SummonerSystem
             base.SendExtraAI(writer);
             writer.Write(_spawnedMinionNPC);
             writer.Write(_npcWhoAmI);
+            writer.WriteVector2(_teleportationPoint);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             _spawnedMinionNPC = reader.ReadBoolean();
             _npcWhoAmI = reader.ReadInt32();
+            _teleportationPoint = reader.ReadVector2();
         }
 
         private void ManageHealthbar()
@@ -145,9 +148,24 @@ namespace Stellamod.Common.SummonerSystem
                 Death();
             }
         }
+
+        public void Teleport(Vector2 teleportCenter)
+        {
+            if (!this.OwnedByLocalClient())
+                return;
+            _teleportationPoint = teleportCenter;
+            Projectile.netUpdate = true;
+        }
+
         public override void AI()
         {
             base.AI();
+            if(_teleportationPoint.X != 0 || _teleportationPoint.Y != 0)
+            {
+                Projectile.Center = _teleportationPoint;
+                _teleportationPoint = Vector2.Zero;
+            }
+
             Owner.GetModPlayer<BellPlayer>().hasBellMinions = true;
             if (!SummonHelper.CheckMinionActive<BellBlessing>(Owner, Projectile))
                 return;
