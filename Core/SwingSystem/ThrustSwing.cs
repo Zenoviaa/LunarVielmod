@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 
@@ -50,7 +51,7 @@ namespace Stellamod.Core.SwingSystem
         {
             float time = swingProjectile.Interpolant;
             float ease = Easing(time);
-            return ease > 0f && ease <= 0.8f;
+            return time > 0f && time <= 0.7f;
         }
         private void CalculateOffset(float time, Vector2 velocity, out Vector2 offset)
         {
@@ -72,12 +73,30 @@ namespace Stellamod.Core.SwingSystem
 
             if (!_hasThrust && time >= 0.1f)
             {
-                ThrustParticleOffset = ThrowDistance / 2;
+                ThrustParticleOffset = ThrowDistance / 4;
                 if (OverrideVelocity.HasValue)
                 {
                     velocity = OverrideVelocity.Value;
                 }
-                FXUtil.SimpleImpactEffect(position + ThrustParticleOffset * velocity.SafeNormalize(Vector2.Zero), velocity, Main.rand.Next(4, 8), Color.White, Color.LightGray, Color.Black);
+                //FXUtil.SimpleImpactEffect(position + ThrustParticleOffset * velocity.SafeNormalize(Vector2.Zero), velocity, Main.rand.Next(4, 8), Color.White, Color.LightGray, Color.Black);
+
+                float numDust = 3;
+                for(int n = 0; n < numDust; n++)
+                {
+                    DustParticleSpawnParams spawnparams = new DustParticleSpawnParams
+                    {
+                        outerColor = Color.LightSkyBlue,
+                        gravity = 0,
+                        scaleRange = new Vector2(0.2f, 2f)
+
+                    };
+                    
+                    var dp = DustParticle.Spawn(position + Main.rand.NextVector2Circular(16, 16) + ThrustParticleOffset * velocity.SafeNormalize(Vector2.Zero), velocity * Main.rand.NextFloat(0.5f, 1f) * 4, spawnparams);
+                    dp.dampening = 0.1f;
+                }
+
+                ThrustParticle thrustParticle = ThrustParticle.Spawn(position , velocity * 2, Color.White, Scale: 1f);
+                thrustParticle.bloomColor = Color.LightSkyBlue;
                 _hasThrust = true;
             }
             if (!_hasPlayedSound && time >= 0.35f && Sound != null)
@@ -90,7 +109,7 @@ namespace Stellamod.Core.SwingSystem
             var projectile = swingProjectile.Projectile;
             projectile.Center = swingProjectile.Owner.Center + offset;
             projectile.rotation = (projectile.Center - swingProjectile.Owner.Center).ToRotation() + MathHelper.PiOver4;
-            swingProjectile.extraLength += 16;
+            swingProjectile.extraLength = 128;
         }
 
         public void CalculateAfterImagePoints(BaseSwingProjectileV2 swingProjectile)

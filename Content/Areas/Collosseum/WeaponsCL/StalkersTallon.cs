@@ -57,6 +57,8 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             SwingV2Helper.AddSpearSwingStyle(this);
             Trailer = new DesertBlazingTrail();
             useAfterImage = true;
+            //outlineColor = Color.White;
+          //  useAfterImage = true;
         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)

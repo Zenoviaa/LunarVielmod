@@ -6,6 +6,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -184,16 +185,13 @@ namespace Stellamod.Core.SwingSystem
             length *= 1.6f;
             length += swordBeamLength / 2;
             length += extraLength;
-
             float rotation = Projectile.rotation;
-
-            //Oopsie
-            //Ourh itboxes were 45 degrees off!!
-            rotation += MathHelper.PiOver4;
+            rotation -= MathHelper.PiOver4;
             Vector2 start = Projectile.Center - rotation.ToRotationVector2() * length;
             Vector2 end = Projectile.Center + rotation.ToRotationVector2() * length;
             float collisionPoint = 0f;
-            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 12, ref collisionPoint);
+            bool check =  Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 16, ref collisionPoint);
+            return check;
         }
 
         public override void AI()
@@ -241,7 +239,6 @@ namespace Stellamod.Core.SwingSystem
 
             //We now have the offset so we can apply that to the weapon
             drawCentered = false;
-            extraLength = 0;
             swing.UpdateSwing(this);
 
             //Set the position of the hand for the swing
@@ -307,10 +304,26 @@ namespace Stellamod.Core.SwingSystem
             if (useAfterImage)
                 DrawAfterImage(ref lightColor, OldCenterPos);
 
+          
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedSwingTrails, DrawLayer.OverNPCs);
             DrawSwordBeam(ref lightColor);
             DrawSwordSprite(ref lightColor);
             return false;
+        }
+
+        private void DebugDrawHitboxCheck()
+        {
+            Texture2D texture = GetTexture();
+            float length = texture.Width / 2 + texture.Height / 2;
+            length *= 1.6f;
+            length += swordBeamLength / 2;
+            length += extraLength;
+            float rotation = Projectile.rotation;
+            rotation -= MathHelper.PiOver4;
+            Vector2 start = Projectile.Center - rotation.ToRotationVector2() * length;
+            Vector2 end = Projectile.Center + rotation.ToRotationVector2() * length;
+            Primitives2D.DrawLine(Main.spriteBatch, start - Main.screenPosition, end - Main.screenPosition, Color.Green);
+
         }
 
         public void CloneProjectile()
@@ -386,6 +399,7 @@ namespace Stellamod.Core.SwingSystem
                 Color drawColor = GetAfterImageColor(interpolant);
                 drawColor *= EasingFunction.QuadraticBump(interpolant);
                 drawColor.A = 0;
+                drawColor *= 0.5f;
                 float drawScale = 1.15f + growScale;
                 Vector2 position = afterImageCache[a];
                 float drawRotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
