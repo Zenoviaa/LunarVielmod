@@ -51,6 +51,11 @@ Common: {
 		Charged shots do much more damage!
 		Hold right click to use your special
 		'''
+	GuardianHelp:
+		'''
+		[c/FFA500:Guardians] are a primary summon for your bell, they go into the big slot
+		They deal the bulk of your damage, and have a variety of moves!
+		'''
 	StyleSword: Sword Attack Style
 	BasicSlash: "{0}"
 	StaminaSlash: Special: {0}
@@ -10393,4 +10398,9 @@ DamageRune: {
 ForwardRune: {
 	DisplayName: Forward Rune
 	Tooltip: Draw a pentagon to teleport your minions to your cursor!
+}
+
+JackingJack: {
+	DisplayName: Jacking Jack
+	Tooltip: ""
 }

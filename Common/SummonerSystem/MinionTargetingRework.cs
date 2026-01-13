@@ -118,10 +118,10 @@ namespace Stellamod.Common.SummonerSystem
         private int _npcWhoAmI = -1;
         private Vector2 _teleportationPoint;
 
-        private Player Owner => Main.player[Projectile.owner];
+        protected Player Owner => Main.player[Projectile.owner];
 
         public float lifetime;
-
+        public bool isGuardian;
         public static event Action<Projectile> OnKillMinion;
         public virtual int GetAggro()
         {
@@ -135,6 +135,7 @@ namespace Stellamod.Common.SummonerSystem
             writer.Write(_npcWhoAmI);
             writer.WriteVector2(_teleportationPoint);
             writer.Write(_damageBoostTimer);
+            writer.Write(isGuardian);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
@@ -143,6 +144,7 @@ namespace Stellamod.Common.SummonerSystem
             _npcWhoAmI = reader.ReadInt32();
             _teleportationPoint = reader.ReadVector2();
             _damageBoostTimer = reader.ReadSingle();
+            isGuardian = reader.ReadBoolean();
         }
 
         private void ManageHealthbar()
@@ -186,9 +188,16 @@ namespace Stellamod.Common.SummonerSystem
             Projectile.netUpdate = true;
         }
 
+
+        //TODO: Seal this so you can't accidentally override it
         public override void AI()
         {
             base.AI();
+            AI_BellMinionLogic();
+        }
+
+        private void AI_BellMinionLogic()
+        {
             if (_damageBoostTimer > 0)
             {
                 if (Main.rand.NextBool(4))
@@ -215,11 +224,16 @@ namespace Stellamod.Common.SummonerSystem
             }
 
             Owner.GetModPlayer<BellPlayer>().hasBellMinions = true;
+            if (isGuardian)
+            {
+                Owner.GetModPlayer<BellPlayer>().hasGuardian = true;
+            }
             if (!SummonHelper.CheckMinionActive<BellBlessing>(Owner, Projectile))
                 return;
 
             ManageHealthbar();
         }
+
         public virtual void Death()
         {
             FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGray, Color.Blue);
@@ -242,12 +256,14 @@ namespace Stellamod.Common.SummonerSystem
             float rotation = Projectile.rotation;
             Point p = Projectile.position.ToTileCoordinates();
             Color lightColor = Lighting.GetColor(p.X, p.Y);
-            Color finalColor = Color.White.MultiplyRGB(lightColor);
 
-            spriteBatch.Draw(texture, drawPos - Vector2.UnitX * 2, frame, Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            spriteBatch.Draw(texture, drawPos + Vector2.UnitX * 2, frame, Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            spriteBatch.Draw(texture, drawPos - Vector2.UnitY * 2, frame, Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            spriteBatch.Draw(texture, drawPos + Vector2.UnitY * 2, frame, Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            Color baseColor = isGuardian ? Color.Red : Color.White;
+            Color finalColor = baseColor.MultiplyRGB(lightColor);
+
+            spriteBatch.Draw(texture, drawPos - Vector2.UnitX * 2, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(texture, drawPos + Vector2.UnitX * 2, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(texture, drawPos - Vector2.UnitY * 2, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(texture, drawPos + Vector2.UnitY * 2, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
         }
 
         public virtual void DrawSpectral(SpriteBatch spriteBatch)

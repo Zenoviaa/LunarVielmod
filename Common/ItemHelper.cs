@@ -39,10 +39,7 @@ namespace Stellamod.Common
                         //The template instance does not have all the global items and whatnot applied to them
                         minionCollection.Add(itemClone);
                     }
-                }
-                if (modItem.Item.TryGetGlobalItem(out GuardianGlobalItem guardian))
-                {
-                    if (guardian.isGuardian)
+                    else if (bellMinion.isGuardian)
                     {
                         Item itemClone = new Item(modItem.Item.type);
                         //The template instance does not have all the global items and whatnot applied to them

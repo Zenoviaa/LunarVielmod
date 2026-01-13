@@ -64,6 +64,7 @@ namespace Stellamod.Common.SummonerSystem
 
         public bool isSummoning;
         public bool hasBellMinions;
+        public bool hasGuardian;
         public float summonRatio => castTimer / GetCastingTime();
         public float standDamageBonus;
        
@@ -75,6 +76,7 @@ namespace Stellamod.Common.SummonerSystem
 
             isSummoning = false;
             hasBellMinions = false;
+            hasGuardian = false;
         }
 
 
@@ -138,6 +140,22 @@ namespace Stellamod.Common.SummonerSystem
         {
             if (Main.myPlayer != Player.whoAmI)
                 return;
+
+            if(Guardian != null && !Guardian.IsAir && !hasGuardian)
+            {
+                var minionItem = Guardian;
+                int newDamage = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(minionItem.damage);
+                Vector2 startpos = Player.Bottom - new Vector2(0, 50);
+                startpos.X += Main.rand.NextFloat(-100, 100);
+
+                float health = minionItem.GetGlobalItem<BellMinionGlobalItem>().health;
+                ArmorStatsPlayer statsPlayer = Player.GetModPlayer<ArmorStatsPlayer>();
+                health *= 1.0f + statsPlayer.minionSummonHealth;
+                SummoningBeam beam = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), startpos, Vector2.Zero,
+                    ModContent.ProjectileType<SummoningBeam>(), newDamage, minionItem.knockBack, Player.whoAmI,
+                    ai1: minionItem.shoot, ai2: health).ModProjectile as SummoningBeam;
+                beam.isGuardian = true;
+            }
 
             for(int i = 0; i < Player.maxMinions && i < _minions.Count; i++)
             {

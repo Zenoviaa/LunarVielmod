@@ -44,7 +44,7 @@ namespace Stellamod.Common.SummonerSystem.UI
         {
             if (item.IsAir)
                 return true;
-            GuardianGlobalItem guardianItem = item.GetGlobalItem<GuardianGlobalItem>();
+            BellMinionGlobalItem guardianItem = item.GetGlobalItem<BellMinionGlobalItem>();
             if (guardianItem.isGuardian)
                 return true;
 

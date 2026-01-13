@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.SwingSystem;
-using Stellamod.Core.Tooltips;
+﻿using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -12,20 +10,25 @@ namespace Stellamod.Common.SummonerSystem
     {
         public override void ModifyExpandableTooltips(Item item, List<TooltipLine> lines)
         {
-
             BellMinionGlobalItem bellMinion = item.GetGlobalItem<BellMinionGlobalItem>();
-            if (bellMinion.isBellMinion)
+            if (bellMinion.isGuardian)
+            {
+                TooltipLine line = new TooltipLine(Mod, "GuardianHelp", LangText.Common("GuardianHelp"));
+                lines.Add(line);
+            }
+            else if (bellMinion.isBellMinion)
             {
                 TooltipLine line = new TooltipLine(Mod, "MinionHelp", LangText.Common("BellMinionHelp"));
                 lines.Add(line);
             }
-
         }
     }
+
     public class BellMinionGlobalItem : GlobalItem
     {
         public override bool InstancePerEntity => true;
         public bool isBellMinion;
+        public bool isGuardian;
         public float addedCastingTime;
         public int health;
         public override bool CanUseItem(Item item, Player player)
@@ -51,17 +54,6 @@ namespace Stellamod.Common.SummonerSystem
                 line.OverrideColor = Color.Lerp(new Color(80, 187, 180), Color.Black, 0.25f);
                 tooltips.Add(line);
             }
-        }
-    }
-    public class GuardianGlobalItem : GlobalItem
-    {
-        public override bool InstancePerEntity => true;
-        public bool isGuardian;
-        public override bool CanUseItem(Item item, Player player)
-        {
-            if (isGuardian)
-                return false;
-            return base.CanUseItem(item, player);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Stellamod.Common.SummonerSystem
             var shader = SpectralShader.Instance;
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
                 shader.Effect, Main.GameViewMatrix.TransformationMatrix);
-            Main.spriteBatch.Draw(_rt, Vector2.Zero, null, Color.White * 0.47f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(_rt, Vector2.Zero, null, Color.White * 0.87f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             Main.spriteBatch.End();
         }
 

@@ -1,9 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -17,6 +14,8 @@ namespace Stellamod.Common.SummonerSystem
         private int MinionToSummon => (int)Projectile.ai[1];
         private ref float Lifetime => ref Projectile.ai[2];
         private Player Owner => Main.player[Projectile.owner];
+
+        public bool isGuardian;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -46,8 +45,10 @@ namespace Stellamod.Common.SummonerSystem
                 {
                     Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         MinionToSummon, Projectile.damage, Projectile.knockBack, Projectile.owner);
+
                     AbstractBellSummon bellSummon = p.ModProjectile as AbstractBellSummon;
                     bellSummon.lifetime = Lifetime;
+                    bellSummon.isGuardian = isGuardian;
                     p.netUpdate = true;
                     Owner.AddBuff(ModContent.BuffType<BellBlessing>(), 25);
                 }
