@@ -14,4 +14,10 @@ IllikenHelmet: {
 	Lore: Armor crafted by the heaviest of hands, but fragile souls, a touch from a hammer and it could break. Blacksmiths, Mages, and Glassblowers united crafted an armor that could provide extra space within its hull. As during the building times of the Royal Capital Sector, this armor was supposed to carry more supplies to Verlia.
 }
 
+DaediaMask: {
+	SetBonus: Summons a few flying moths to circle around you and attack nearby enemies
+	Type: Summoner
+	Lore: It represents a lazy goddess somewhere far away, its ties are endless and it resembles its form similar to even those who exist on this world, having the same sigil on its back that the Alca family own. Are they descendents of this Sin of Sloth?
+}
+
 SetBonus: Set Bonus: {0}

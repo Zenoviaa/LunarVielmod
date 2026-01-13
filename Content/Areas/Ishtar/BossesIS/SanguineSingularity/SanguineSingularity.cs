@@ -256,7 +256,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             NPC.height = 48;
             NPC.damage = 100;
             NPC.defense = 40;
-            NPC.lifeMax = 27000;
+            NPC.lifeMax = 46000;
             NPC.scale = 1f;
             NPC.aiStyle = -1;
 

@@ -1882,30 +1882,17 @@ XexterianHeatplate: {
 }
 
 DaediaThighs: {
-	Tooltip:
-		'''
-		+40 Life!
-		30% Increased movement speed!
-		Walk like a flowery goddess with flower boots!
-		'''
+	Tooltip: ""
 	DisplayName: Daedia Thighs
 }
 
 DaediaMask: {
-	Tooltip:
-		'''
-		+35 Life!
-		A little halo over a new spiritual goddess!
-		'''
+	Tooltip: ""
 	DisplayName: Daedia Mask
 }
 
 DaediaBreastplate: {
-	Tooltip:
-		'''
-		+30 Life!
-		+2 Summons
-		'''
+	Tooltip: ""
 	DisplayName: Daedia Breastplate
 }
 

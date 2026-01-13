@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
+using Stellamod.Common.ArmorRework;
+using Stellamod.Content.Areas.Illuria.ArmorsIL;
 using Stellamod.Core.Effects;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -255,19 +257,9 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.ArmorWD
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Lovestruck Mask");
-            /* Tooltip.SetDefault("Magical essence of an Lusting Goddess"
-				+ "\n+7% increased damage" +
-				"\n+40 Health"); */
-
+            base.SetStaticDefaults();
+            ArmorSetSystem.RegisterArmorSet<DaediaMask, DaediaBreastplate, DaediaThighs>();
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-
-            // If your head equipment should draw hair while drawn, use one of the following:
-            // ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
-            // ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat
-            // ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
-            // ArmorIDs.Head.Sets.DrawBackHair[Item.headSlot] = true;
-            // ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true; 
         }
 
         public override void SetDefaults()
@@ -276,13 +268,14 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.ArmorWD
             Item.height = 18; // Height of the item
             Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
             Item.rare = ItemRarityID.LightRed; // The rarity of the item
-            Item.defense = 1; // The amount of defense the item will give when equipped
         }
 
         public override void UpdateEquip(Player player)
         {
-            player.statLifeMax2 += 35;
-            player.hasAngelHalo = true;
+            ArmorStatsPlayer armorStatsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
+            armorStatsPlayer.summonCastTime += 0.2f;
+            armorStatsPlayer.accessorySlots += 1;
+            armorStatsPlayer.defenseBonus += 3;
         }
 
         // IsArmorSet determines what armor pieces are needed for the setbonus to take effect
@@ -294,10 +287,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.ArmorWD
         // UpdateArmorSet allows you to give set bonuses to the armor.
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = LangText.SetBonus(this);
             player.GetModPlayer<DaediaPlayer>().hasDaediaSetBonus = true;
-            player.maxMinions += 1;
-
         }
 
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -311,10 +301,6 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.ArmorWD
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            // DisplayName.SetDefault("Lovestruck Breastplate");
-            /* Tooltip.SetDefault("Feel the love!"
-				+ "\n+60 Health and +1 minion slot"); */
-
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
@@ -324,13 +310,13 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.ArmorWD
             Item.height = 18; // Height of the item
             Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
             Item.rare = ItemRarityID.LightRed; // The rarity of the item
-            Item.defense = 3; // The amount of defense the item will give when equipped
         }
 
         public override void UpdateEquip(Player player)
         {
-            player.maxMinions += 2; // Increase how many minions the player can have by one
-            player.statLifeMax2 += 10;
+            ArmorStatsPlayer armorStatsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
+            armorStatsPlayer.accessorySlots += 2;
+            armorStatsPlayer.defenseBonus += 3;
 
         }
 
@@ -345,11 +331,6 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.ArmorWD
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Lovestruck Thighs");
-            /* Tooltip.SetDefault("Sexy!"
-				+ "\n10% increased movement speed" +
-				"\n+60 Health"); */
-
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
@@ -359,13 +340,12 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.ArmorWD
             Item.height = 18; // Height of the item
             Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
             Item.rare = ItemRarityID.LightRed; // The rarity of the item
-            Item.defense = 2; // The amount of defense the item will give when equipped
         }
         public override void UpdateEquip(Player player)
         {
-            player.moveSpeed += 0.3f; // Increase the movement speed of the player
-            player.statLifeMax2 += 40;
-            player.flowerBoots = true;
+            ArmorStatsPlayer armorStatsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
+            armorStatsPlayer.minionAggressiveness += 100;
+            armorStatsPlayer.defenseBonus += 2;
         }
 
 
