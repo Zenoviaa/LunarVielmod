@@ -15,6 +15,7 @@ namespace Stellamod.Common.SummonerSystem.UI
     public class BellHudSlotUIState : UIState
     {
         public BellSlotPanel panel;
+        public BellMinionHealthbarUI healthBarUI;
         public BellHudSlotUIState() : base()
         {
 
@@ -24,8 +25,18 @@ namespace Stellamod.Common.SummonerSystem.UI
         {
             panel = new();
             Append(panel);
+
+            healthBarUI = new();
+            Append(healthBarUI);
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            healthBarUI.Left.Set(0, 0.1f);
+            healthBarUI.Top.Set(-100, 1f);
         }
     }
+
     public class BellSlotPanel : UIPanel
     {
         private UIPanel _panel;

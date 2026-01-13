@@ -545,7 +545,8 @@ namespace Stellamod.Core.Tooltips
                 }
 
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLine.Font, drawableLine.Text,
-                    new Vector2(X, drawableLine.Y + yOffset), realLineColor * alpha, drawableLine.Rotation, drawableLine.Origin, drawableLine.BaseScale * alpha, drawableLine.MaxWidth, drawableLine.Spread);
+                    new Vector2(X, drawableLine.Y + yOffset), realLineColor * alpha, drawableLine.Rotation, drawableLine.Origin, drawableLine.BaseScale * alpha,
+                    drawableLine.MaxWidth, drawableLine.Spread);
                 yOffset += (int)(FontAssets.MouseText.Value.MeasureString(drawableLine.Text).Y);
             }
 

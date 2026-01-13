@@ -166,6 +166,12 @@ namespace Stellamod.Common.SummonerSystem
                 Death();
             }
         }
+
+        public NPC GetAttachedNPC()
+        {
+            return Main.npc[_npcWhoAmI];
+        }
+
         public void DamageBuff()
         {
             _damageBoostTimer += 120;

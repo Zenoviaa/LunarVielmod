@@ -198,3 +198,8 @@ Godrays: {
 	Label: Godrays
 	Tooltip: ""
 }
+
+DisableSummonHealthbar: {
+	Label: Disable Summon Healthbar
+	Tooltip: ""
+}

@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Terraria;
@@ -16,6 +17,7 @@ namespace Stellamod.Common.SummonerSystem
         private Player Owner => Main.player[Projectile.owner];
 
         public bool isGuardian;
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -76,22 +78,13 @@ namespace Stellamod.Common.SummonerSystem
 
         public override bool PreDraw(ref Color lightColor)
         {
-            SparkyShader sparkyShader = SparkyShader.Instance;
-            sparkyShader.InnerColor = Color.White;
-            sparkyShader.OuterColor = Main.DiscoColor;
-            sparkyShader.Time = Timer * 0.3f;
-            sparkyShader.Distortion = -0.15f;
+            Texture2D texture = AssetManager.GlowMask.GradientPillar.Value;
+            Vector2 drawOrigin = new Vector2(texture.Width / 2f, texture.Height);
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Restart(effect: sparkyShader.Effect, blendState: BlendState.Additive);
-
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            spriteBatch.Draw(texture, drawPos, null,
-                Color.White,
-                0, texture.Size() / 2f,
-            _scale, SpriteEffects.None, 0);
-
-            spriteBatch.Restart(blendState: BlendState.Additive, effect: null);
+            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+            Color drawColor = Color.Lerp(Color.White, Color.Black, Timer / 30f);
+            drawColor.A = 0;
+            spriteBatch.Draw(texture, drawPosition, null, drawColor, 0, drawOrigin, 1, SpriteEffects.None, 0);
             return false;
         }
     }

@@ -56,7 +56,7 @@ FCMinion.DisplayName: F C Minion
 FireflyMinion.DisplayName: Firefly Minion
 HMArncharMinionLeft.DisplayName: H M Arnchar Minion Left
 HMArncharMinionRight.DisplayName: H M Arnchar Minion Right
-IceboundMinion.DisplayName: Icebound Minion
+IceboundMinion.DisplayName: Icebound Bat
 IrradiatedCreeper2.DisplayName: Irradiated Creeper2
 Ivyaken.DisplayName: Ivyaken
 JacksonPollockMinion.DisplayName: Jackson Pollock Minion
@@ -1217,7 +1217,7 @@ JellyMinionProj.DisplayName: Jelly Minion Proj
 JacksonPollockMinionProj.DisplayName: Jackson Pollock Minion Proj
 IvyakenMinionProj.DisplayName: Ivyaken Minion Proj
 IrradiatedCreeperMinionProj.DisplayName: Irradiated Creeper Minion Proj
-IceboundMinionProj.DisplayName: Icebound Minion Proj
+IceboundMinionProj.DisplayName: Icebound Bat
 HMArncharMinionRightProj.DisplayName: H M Arnchar Minion Right Proj
 HMArncharMinionLeftProj.DisplayName: H M Arnchar Minion Left Proj
 HallowWandMinionProj.DisplayName: Hallow Wand Minion Proj
@@ -1733,4 +1733,4 @@ ForwardRuneShaper.DisplayName: Forward Rune Shaper
 JackingJackFire.DisplayName: Jacking Jack Fire
 JackingJackFireball.DisplayName: Jacking Jack Fireball
 JackingJackFirePulse.DisplayName: Jacking Jack Fire Pulse
-JackingJackSummon.DisplayName: Jacking Jack Summon
+JackingJackSummon.DisplayName: Jack

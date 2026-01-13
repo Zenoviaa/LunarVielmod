@@ -87,7 +87,7 @@ namespace Stellamod.Common.SummonerSystem.UI
             Vector2 centerPos = pos + rectangle.Size() / 2f;
             spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
 
-            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale, 32, Color.White);
+            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale * 1.5f, 32, Color.White);
             Main.inventoryScale = oldScale;
         }
     }

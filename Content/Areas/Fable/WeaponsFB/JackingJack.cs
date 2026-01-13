@@ -167,58 +167,57 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             if (_frameTimer >= 1f)
             {
                 _frameTimer = 0;
-                _frame++;
+                Projectile.frame++;
             }
 
             switch (_animation)
             {
                 default:
                 case AnimationState.Idle:
-                    if (_frame >= 4f)
+                    if (Projectile.frame >= 4f)
                     {
-                        _frame = 0;
+                        Projectile.frame = 0;
                     }
                     break;
                 case AnimationState.Cast_Hand_Up:
-                    if (_frame >= 8f)
+                    if (Projectile.frame >= 8f)
                     {
-                        _frame = 7;
+                        Projectile.frame = 7;
                     }
                     break;
                 case AnimationState.Cast_Hold_Out:
-                    if (_frame >= 12)
+                    if (Projectile.frame >= 12)
                     {
-                        _frame = 8;
+                        Projectile.frame = 8;
                     }
                     break;
                 case AnimationState.Cast_Put_Down:
-                    if (_frame >= 16)
+                    if (Projectile.frame >= 16)
                     {
-                        _frame = 15;
+                        Projectile.frame = 15;
                     }
                     break;
                 case AnimationState.Summon_Hand_Up:
-                    if (_frame >= 20)
+                    if (Projectile.frame >= 20)
                     {
-                        _frame = 19;
+                        Projectile.frame = 19;
                     }
                     break;
                 case AnimationState.Summon_Hold_Out:
-                    if (_frame >= 24)
+                    if (Projectile.frame >= 24)
                     {
-                        _frame = 20;
+                        Projectile.frame = 20;
                     }
                     break;
                 case AnimationState.Summon_Hand_Down:
-                    if (_frame >= 28)
+                    if (Projectile.frame >= 28)
                     {
-                        _frame = 0;
-                        _frame = 27;
+                        Projectile.frame = 0;
+                        Projectile.frame = 27;
                     }
                     break;
             }
        
-            Projectile.frame = _frame;
         }
 
         private void AI_Idle()

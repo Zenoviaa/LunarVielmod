@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.UI;
+﻿using Stellamod.UI;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -24,14 +23,11 @@ namespace Stellamod.Common.SummonerSystem.UI
         {
             base.OnModLoad();
             _userInterface = new UserInterface();
-
             _hudUserInterface = new UserInterface();
+            _hudUserInterface.SetState(null);
+
             bellUIState = new BellUIState();
             bellHudSlotUIState = new BellHudSlotUIState();
-
-
-
-            _hudUserInterface.SetState(null);
         }
 
         public override void UpdateUI(GameTime gameTime)
@@ -132,7 +128,6 @@ namespace Stellamod.Common.SummonerSystem.UI
                         if (_lastUpdateUiGameTime != null && _hudUserInterface?.CurrentState != null)
                         {
                             _hudUserInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
-
                         }
 
                         return true;

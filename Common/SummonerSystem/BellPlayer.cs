@@ -141,7 +141,22 @@ namespace Stellamod.Common.SummonerSystem
             if (Main.myPlayer != Player.whoAmI)
                 return;
 
-            if(Guardian != null && !Guardian.IsAir && !hasGuardian)
+            bool alreadyHasGuardian = false;
+            foreach(var projectile in Main.ActiveProjectiles)
+            {
+                if (projectile.owner != Player.whoAmI)
+                    continue;
+                if(projectile.ModProjectile is AbstractBellSummon summon)
+                {
+                    if (summon.isGuardian)
+                    {
+                        alreadyHasGuardian = true;
+                        break;
+                    }
+                    
+                }
+            }
+            if(Guardian != null && !Guardian.IsAir && !alreadyHasGuardian)
             {
                 var minionItem = Guardian;
                 int newDamage = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(minionItem.damage);

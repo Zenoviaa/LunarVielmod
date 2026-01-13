@@ -130,6 +130,9 @@ namespace Stellamod
         [DefaultValue(false)]
         public bool FocusMode;
 
+        [DefaultValue(false)]
+        public bool DisableSummonHealthbar;
+
         [DefaultValue(true)]
         public bool DisableBossNameHover;
 

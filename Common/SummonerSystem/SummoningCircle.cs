@@ -1,8 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using log4net.Core;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -13,7 +18,16 @@ namespace Stellamod.Common.SummonerSystem
         private float _colorLerp;
         private ref float Timer => ref Projectile.ai[0];
         private Player Owner => Main.player[Projectile.owner];
-
+        private TexturedQuad _texturedQuad;
+        private TexturedQuad TexturedQuad
+        {
+            get
+            {
+                _texturedQuad ??= new TexturedQuad();
+                return _texturedQuad;
+            }
+        }
+        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -32,8 +46,18 @@ namespace Stellamod.Common.SummonerSystem
             {
                 Vector2 position = Owner.Center;
                 position.X += Main.rand.NextFloat(-100, 100);
-                Vector2 velocity = -Vector2.UnitY;
-                Dust.NewDustPerfect(position, ModContent.DustType<GlyphDust>(), velocity, newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                Vector2 velocity = -Vector2.UnitY * Main.rand.NextFloat(1f, 3f);
+                DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+                {
+                    outerColor = Color.White,
+                    gravity = 0,
+                    scaleRange = new Vector2(0.2f, 0.5f)
+                    
+                };
+
+                var dp = DustParticle.Spawn(position, velocity, spawnParams);
+                dp.parent = Owner;
+                dp.fast = true;
             }
             if (Owner.HasBuff<BellSummoning>())
                 Projectile.timeLeft = 30;
@@ -41,51 +65,47 @@ namespace Stellamod.Common.SummonerSystem
             BellPlayer bellPlayer = Owner.GetModPlayer<BellPlayer>();
             _colorLerp = MathHelper.Lerp(_colorLerp, bellPlayer.summonRatio, 0.1f);
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D ringTexture = ModContent.Request<Texture2D>(Texture).Value;
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedRings);
             SpriteBatch spriteBatch = Main.spriteBatch;
-            var shader = RadiantShader.Instance;
-            shader.InnerColor = Color.White;
-            shader.OuterColor = Color.LightBlue;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, default, default, default, shader.Effect, Main.GameViewMatrix.TransformationMatrix);
-
-            Color auraColor = Color.White;
-            auraColor *= Timer / 30f;
-            auraColor *= Projectile.timeLeft / 30f;
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            Rectangle? frameRect = null;
-            Vector2 scale = new Vector2(1f, 0.05f);
-            Vector2 drawScale = scale * Vector2.One;
-            drawScale *= MathHelper.Lerp(0.8f, 1f, ExtraMath.Osc(0f, 1f));
-
-            float drawRotation = Projectile.rotation;
-            Vector2 drawOrigin = ringTexture.Size() / 2f;
-            spriteBatch.Draw(ringTexture, drawPos, frameRect, auraColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-            spriteBatch.Draw(ringTexture, drawPos, frameRect, auraColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-            DrawProgressBeam(ref lightColor);
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-    
+            var glowMask = AssetManager.GlowMask.SimpleGlowCircle;
+            Color glowColor = Color.White;
+            glowColor = Color.Lerp(Color.Black, Color.White, EasingFunction.InOutSine(Timer / 30f) * 0.25f);
+            glowColor.A = 0;
+            Vector2 scale = new Vector2(0.7f, 0.15f);
+            spriteBatch.Draw(glowMask.Value, Projectile.Center + Vector2.UnitY * 16 - Main.screenPosition, null, glowColor, 0, glowMask.Size() / 2f, scale, SpriteEffects.None, 0);
             return false;
         }
 
-        private void DrawProgressBeam(ref Color lightColor)
+        private void DrawPixelatedRings(GraphicsDevice graphicsDevice)
         {
-            Texture2D beamTexture = ModContent.Request<Texture2D>(Texture + "_Beam").Value;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            Vector2 drawOrigin = beamTexture.Size() / 2f;
+            float ease = EasingFunction.InOutSine(Timer / 30f);
+            Vector2 ring1Scale = Vector2.Lerp(Vector2.Zero, Vector2.One * new Vector2(1, 0.35f), ease);
+            float perspectiveRotation = Main.GlobalTimeWrappedHourly * 8;
+            DrawRingInner(ring1Scale, Color.White, -Vector2.UnitY, perspectiveRotation);
+        }
 
-            BellPlayer bellPlayer = Owner.GetModPlayer<BellPlayer>();
-            Color drawColor = Color.Lerp(Color.Transparent, Color.White * 0.5f, _colorLerp);
-            drawColor *= Projectile.timeLeft / 30f;
-            Vector2 drawScale = new Vector2(0.85f, 1f);
-     
-            drawPos -= new Vector2(0, beamTexture.Height / 2);
-            drawPos.Y += 4;
-            spriteBatch.Draw(beamTexture, drawPos, null, drawColor, Projectile.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+        private void DrawRingInner(Vector2 size, Color color, Vector2 velocity, float perspectiveRotation)
+        {
+            MagicCircleShader magicCircleShader = MagicCircleShader.Instance;
+
+            //Here we need to prepare the shader
+            float numFrames = 1f;
+            float f = 0;
+            Vector2 tiling = new Vector2(1f, 1f / numFrames);
+            Vector2 offset = new Vector2(0, f * 1f / numFrames);
+            Vector4 tilingOffset = new Vector4(offset.X, offset.Y, tiling.X, tiling.Y);
+            magicCircleShader.TilingOffset = tilingOffset;
+            magicCircleShader.RingTexture = AssetManager.GlowMask.MagicCircle;
+
+            Color auraColor = Color.Lerp(Color.Black, Color.White, EasingFunction.InOutSine(Timer / 30f));
+            auraColor = auraColor.MultiplyRGB(color);
+
+            TexturedQuad.CalculatePerspectiveCenterVertices2(Projectile.Center  + Vector2.UnitY * 16, 180, 180, velocity.ToRotation(), perspectiveRotation);
+            TexturedQuad.SetColor(auraColor);
+            TexturedQuad.DrawWithShader(magicCircleShader);
         }
 
         public override void OnKill(int timeLeft)
