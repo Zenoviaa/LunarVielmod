@@ -5,9 +5,31 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core
 {
+    public class DomainExpansionPlayer : ModPlayer
+    {
+
+        public override void PreUpdateMovement()
+        {
+            base.PreUpdateMovement();
+            DomainExpansionManager domainExpansionManager = ModContent.GetInstance<DomainExpansionManager>();
+            if (domainExpansionManager.inSpace)
+            {
+
+                Player.gills = true;
+                Player.breath = Player.breathMax;
+                Player.ignoreWater = true;
+                Player.waterWalk = false;
+                Player.waterWalk2 = false;
+            }
+        }
+
+
+    }
+
     public class DomainExpansionManager : ModSystem
     {
         private bool[] _prevTileSolid;
+
         public bool inSpace;
         public bool noWings;
         public bool hoveringPlatform;
@@ -16,12 +38,28 @@ namespace Stellamod.Core
         {
             base.OnModLoad();
             On_Player.SlopingCollision += HoverPlatformCollisionCheck;
+            On_Collision.WetCollision += DisableWetCollisions;
+        }
+
+        private bool DisableWetCollisions(On_Collision.orig_WetCollision orig, Vector2 Position, int Width, int Height)
+        {
+            if (inSpace)
+                return false;
+
+           return orig(Position, Width, Height);
         }
 
         public override void OnModUnload()
         {
             base.OnModUnload();
+            On_Collision.WetCollision -= DisableWetCollisions;
             On_Player.SlopingCollision -= HoverPlatformCollisionCheck;
+        }
+
+        private void WaterCollisionCheck(On_Player.orig_WaterCollision orig, Player self, bool fallThrough, bool ignorePlats)
+        {
+        
+            orig(self, fallThrough, ignorePlats);
         }
 
         private void HoverPlatformCollisionCheck(On_Player.orig_SlopingCollision orig, Player self, bool fallThrough, bool ignorePlats)
@@ -70,6 +108,8 @@ namespace Stellamod.Core
                 _prevTileSolid[t] = Main.tileSolid[t];
                 Main.tileSolid[t] = false;
             }
+
+
         }
 
         public override void PostUpdatePlayers()
@@ -77,6 +117,7 @@ namespace Stellamod.Core
             base.PostUpdatePlayers();
             if (!inSpace)
                 return;
+
 
             for (int t = 0; t < Main.tileSolid.Length; t++)
             {

@@ -80,13 +80,34 @@ namespace Stellamod.Core.LunarLightingSystem
 
         }
 
+        private bool IsEnabled
+        {
+            get
+            {
+                DomainExpansionManager domainExpansionManager = ModContent.GetInstance<DomainExpansionManager>();
+                return !domainExpansionManager.inSpace;
+            }
+        }
+        private static bool IsActive
+        {
+            get
+            {
+                DomainExpansionManager domainExpansionManager = ModContent.GetInstance<DomainExpansionManager>();
+                return !domainExpansionManager.inSpace;
+            }
+        }
         private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
         {
-            RenderLightsV2();
-            if (DrawSunShadows2())
+
+            if (IsActive)
             {
-                RenderShadows();
+                RenderLightsV2();
+                if (DrawSunShadows2())
+                {
+                    RenderShadows();
+                }
             }
+
         
      
             orig();
@@ -94,7 +115,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void DrawShadowsBehindTiles(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
         {
-            if (behindTiles && DrawSunShadows2())
+            if (behindTiles && DrawSunShadows2() && IsActive)
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.Draw(_tileSunShadowRT, Vector2.Zero, Color.White);
@@ -165,7 +186,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private static bool DrawSunShadows2()
         {
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
-            return config.SunShadows;
+            return config.SunShadows2;
         }
 
         private static void DrawTileShadowMapToScreen()
@@ -356,7 +377,8 @@ namespace Stellamod.Core.LunarLightingSystem
                 return false;
             if (Main.gameMenu)
                 return false;
-
+            if (!IsActive)
+                return false;
             return true;
         }
 

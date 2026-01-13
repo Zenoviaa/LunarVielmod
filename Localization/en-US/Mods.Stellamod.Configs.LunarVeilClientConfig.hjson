@@ -181,7 +181,7 @@ SplitPaletteShaders: {
 
 DisableBossNameHover: {
 	Label: Disable Boss Name Hover
-	Tooltip: ""
+	Tooltip: Toggles the display name for the boss when you hover over them
 }
 
 Bloom: {
@@ -190,16 +190,16 @@ Bloom: {
 }
 
 SunShadows2: {
-	Tooltip: ""
-	Label: Sun Shadows2
+	Tooltip: Draws a dark shadow behind some of the background objects that positions based on the sun
+	Label: Drop Shadows
 }
 
 Godrays: {
 	Label: Godrays
-	Tooltip: ""
+	Tooltip: Toggles the godray particle effects
 }
 
 DisableSummonHealthbar: {
 	Label: Disable Summon Healthbar
-	Tooltip: ""
+	Tooltip: Toggles the minion healthbar UIs in the bottom left
 }
