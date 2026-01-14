@@ -99,12 +99,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             shader.Power = 0.25f;
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, Projectile.oldRot, StripColors, StripWidth, shader, offset: Projectile.Size / 2);
 
-            var windShader = RichLaserShader.Instance;
+            var windShader = BasicLaserShader.Instance;
             float alpha = 0f;
-            windShader.LaserColor = Color.Lerp(Color.White, Color.Black, alpha);
             windShader.InnerColor = Color.Lerp(Color.LightGray, Color.Black, alpha);
             windShader.OuterColor = Color.Lerp(Color.DarkGray, Color.Black, alpha);
-            windShader.LaserTexture = TrailRegistry.Dashtrail;
+            windShader.LaserTexture = TrailRegistry.VortexTrail;
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, StripColors2, StripWidth2, windShader, offset: Projectile.Size / 2);
         }
 

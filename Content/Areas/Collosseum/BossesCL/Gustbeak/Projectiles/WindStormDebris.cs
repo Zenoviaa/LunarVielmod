@@ -24,7 +24,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         {
             base.SetStaticDefaults();
             Main.projFrames[Type] = 1;
-            ProjectileID.Sets.TrailCacheLength[Type] = 64;
+            ProjectileID.Sets.TrailCacheLength[Type] = 32;
             ProjectileID.Sets.TrailingMode[Type] = 2;
         }
 
