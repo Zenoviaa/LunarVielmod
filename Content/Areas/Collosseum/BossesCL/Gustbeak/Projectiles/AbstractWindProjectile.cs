@@ -98,6 +98,14 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             shader.Distortion = 0.15f;
             shader.Power = 0.25f;
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, Projectile.oldRot, StripColors, StripWidth, shader, offset: Projectile.Size / 2);
+
+            var windShader = RichLaserShader.Instance;
+            float alpha = 0f;
+            windShader.LaserColor = Color.Lerp(Color.White, Color.Black, alpha);
+            windShader.InnerColor = Color.Lerp(Color.LightGray, Color.Black, alpha);
+            windShader.OuterColor = Color.Lerp(Color.DarkGray, Color.Black, alpha);
+            windShader.LaserTexture = TrailRegistry.Dashtrail;
+            TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, StripColors2, StripWidth2, windShader, offset: Projectile.Size / 2);
         }
 
         public virtual Color StripColors(float progressOnStrip)
@@ -109,10 +117,20 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 
             return result;
         }
+        public Color StripColors2(float progressOnStrip)
+        {
+            Color black = Color.Black;
 
+            Color trailColor = StripColors(progressOnStrip) * MathHelper.SmoothStep(1f, 0f, progressOnStrip);
+            return trailColor;
+        }
         public virtual float StripWidth(float progressOnStrip)
         {
             return MathHelper.Lerp(26f, 48, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
+        }
+        public float StripWidth2(float progressOnStrip)
+        {
+            return StripWidth(progressOnStrip) * 0.6f;
         }
 
 
