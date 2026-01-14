@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Helpers;
 using Terraria;
@@ -17,6 +18,12 @@ namespace Stellamod.Content.Areas.Collosseum.Event
         private float DeathProgress;
         private bool Die;
         private float Length;
+
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 1000;
+        }
 
         public override void SetDefaults()
         {
@@ -91,20 +98,28 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             chainColor = Color.Lerp(Color.Transparent, chainColor, inProgress);
             chainColor = Color.Lerp(chainColor, Color.Transparent, deathProgress);
 
+            spriteBatch.Restart(samplerState: SamplerState.PointWrap, effect: SpriteWhiteShader.Instance.Effect);
+            for (int i = 0; i < 4; i++)
+            {
+                float ratio = (float)i / 4f;
+                Vector2 offset = (ratio * MathHelper.TwoPi).ToRotationVector2() * 2;
+                Rectangle drawRectangle = destinationRectangle;
+                drawRectangle.X += (int)offset.X;
+                drawRectangle.Y += (int)offset.Y;
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.Red, Projectile.rotation, drawOrigin, SpriteEffects.None, 0);
+            }
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, chainColor, Projectile.rotation, drawOrigin, SpriteEffects.None, 0);
 
             spriteBatch.Restart(samplerState: SamplerState.PointWrap);
-
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, chainColor, Projectile.rotation, drawOrigin, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, chainColor, Projectile.rotation, drawOrigin, SpriteEffects.None, 0);   
             spriteBatch.RestartDefaults();
-            //     spriteBatch.Draw(texture, drawPos, null, chainColor, Projectile.rotation, drawOrigin, 5f, SpriteEffects.None, 0);
             return false;
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             base.OnHitPlayer(target, info);
-            //Some debuff or something
-            target.AddBuff(BuffID.Frozen, 20);
+            target.AddBuff(BuffID.Frozen, 24);
         }
     }
 }
