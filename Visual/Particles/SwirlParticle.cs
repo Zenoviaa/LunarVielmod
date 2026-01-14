@@ -61,7 +61,7 @@ namespace Stellamod.Visual.Particles
             shader.Apply();
 
             var textureAsset = GetTexture();
-            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, Color.White, Rotation, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, color, Rotation, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
         }
     }
 }

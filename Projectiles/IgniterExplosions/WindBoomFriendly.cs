@@ -7,7 +7,7 @@ using Terraria.ID;
 
 namespace Stellamod.Projectiles.IgniterExplosions
 {
-    public class WindBoomFriendly : BaseWindProjectile
+    public class WindBoomFriendly : AbstractWindProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()

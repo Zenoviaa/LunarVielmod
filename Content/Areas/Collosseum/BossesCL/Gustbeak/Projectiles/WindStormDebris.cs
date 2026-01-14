@@ -1,13 +1,20 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Content.Gores;
+using Stellamod.Core.Particles;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
-    public class WindStormDebris : BaseWindProjectile,
+    public class WindStormDebris : AbstractWindProjectile,
         IDrawOutlines
     {
         private Vector2 _scale;
@@ -17,7 +24,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         {
             base.SetStaticDefaults();
             Main.projFrames[Type] = 1;
-            ProjectileID.Sets.TrailCacheLength[Type] = 16;
+            ProjectileID.Sets.TrailCacheLength[Type] = 64;
             ProjectileID.Sets.TrailingMode[Type] = 2;
         }
 
@@ -36,7 +43,21 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             base.AI();
             _scale = Vector2.Lerp(_scale, Vector2.One, 0.1f);
 
+            if(Timer % 8 == 0)
+            {
+                ShockOvalSpawnParams spawnParams = new ShockOvalSpawnParams
+                {
+                    innerColor = Color.White,
+                    outerColor = Color.DarkGray
+                };
+                ShockOvalParticle sp = ShockOvalParticle.Spawn(Projectile.Center, -Projectile.velocity * 0.4f, spawnParams);
+                sp.color *= 0.85f;
+                sp.Scale *= 0.6f;
 
+                sp = ShockOvalParticle.Spawn(Projectile.Center, -Projectile.velocity * 0.2f, spawnParams);
+                sp.color *= 0.85f;
+                sp.Scale *= 0.3f;
+            }
             if (Timer == 1 && Main.myPlayer == Projectile.owner)
             {
                 FallDownTime = Main.rand.NextFloat(15, 100);
@@ -73,6 +94,94 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             }
             SoundEngine.PlaySound(SoundID.Item70, Projectile.position);
             FXUtil.ShakeCamera(Projectile.position, 1024, 8);
+
+            int[] gores = AutoGoreLoader.FindGores("GrayRock");
+            foreach (int g in gores)
+            {
+                Gore.NewGore(Projectile.GetSource_FromThis(),
+                    Projectile.Center,
+                    -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
+            }
+
+
+            var sear = LegacyParticle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
+            sear.innerColor = Color.Gray;
+            sear.outerColor = Color.Blue;
+            sear.fadeToColor = Color.Black;
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+            ShakeModSystem.Shake = 2;
+
+
+            for (float f = 0; f < 4f; f++)
+            {
+                Vector2 pos = Projectile.Center;
+                pos += Main.rand.NextVector2Circular(80, 80);
+                var zap = LegacyParticle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(10) * Main.rand.NextFloat(2, 15));
+                zap.innerColor = Color.Gray;
+                zap.outerColor = Color.Blue;
+                zap.fadeToColor = Color.Black;
+                zap.Scale *= Main.rand.NextFloat(0f, 0.5f);
+                zap.Rotation = Main.rand.NextFloat(0f, 3f);
+            }
+
+            SoundStyle smashSound;
+            int sound = Main.rand.Next(3);
+            switch (sound)
+            {
+                default:
+                case 0:
+                    smashSound = Main.rand.NextBool(2) ? SoundRegistry.HammerHit1 : SoundRegistry.HammerHit2;
+                    break;
+                case 1:
+                    smashSound = AssetRegistry.Sounds.Bishinine.Comet1;
+                    break;
+                case 2:
+                    smashSound = AssetRegistry.Sounds.Bishinine.Comet2;
+                    foreach (int g in gores)
+                    {
+                        Gore.NewGore(Projectile.GetSource_FromThis(),
+                            Projectile.Center,
+                            -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
+                    }
+                    FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
+                    var p3 = FXUtil.GlowCircleBoom(Projectile.Center,
+                       innerColor: Color.Gray,
+                       glowColor: Color.LightBlue,
+                       outerGlowColor: Color.DarkBlue, duration: 15, baseSize: .09f);
+                    p3.Scale *= 4;
+                    break;
+            }
+
+
+            smashSound.PitchVariance = 0.2f;
+            SoundEngine.PlaySound(smashSound, Projectile.position);
+
+
+            var part = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+            part.fadeToColor = Color.Black;
+            part.outerColor = Color.Gray;
+            part.noStretch = true;
+            part.shrink = true;
+
+            var part2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+            part2.fadeToColor = Color.Black;
+            part2.outerColor = Color.Gray;
+            part2.noStretch = true;
+            part2.color *= 0.5f;
+            for (float f = 0; f < 5; f++)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(16, 16);
+                vel.Y -= 10;
+                var d = Dust.NewDustPerfect(Projectile.Center,
+                    ModContent.DustType<GlowSparkleDust>(), newColor: Color.Gray, Scale: Main.rand.NextFloat(0f, 2f), Velocity: vel);
+
+            }
+
+            float boomSize = Main.rand.NextFloat(0.06f, 0.08f);
+            FXUtil.GlowCircleBoom(Projectile.Center,
+               innerColor: Color.Gray,
+               glowColor: Color.LightBlue,
+               outerGlowColor: Color.DarkBlue, duration: 15, baseSize: boomSize * 2);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -85,6 +194,10 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         public override float StripWidth(float progressOnStrip)
         {
             return base.StripWidth(progressOnStrip) * 0.66f;
+        }
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            this.OutlineNoRestart(Color.Red, ref lightColor, _scale);
         }
     }
 }

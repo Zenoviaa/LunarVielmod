@@ -1,13 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Particles;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
-    public class WindBlast : BaseWindProjectile
+    public class WindBlast : AbstractWindProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -30,6 +32,15 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         public override void AI()
         {
             base.AI();
+            if (Timer == 1)
+            {
+                for (float i = 0; i < 3; i++)
+                {
+                    var donutParticle = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 4 * MathHelper.Lerp(15, 1f, i / 3f));
+                    donutParticle.Scale *= MathHelper.Lerp(0.3f, 1f, i / 3f);
+
+                }
+            }
             float chargeProgress = Timer / 60f;
             int divisor = (int)MathHelper.Lerp(6, 6, chargeProgress);
             if (Timer % divisor == 0)

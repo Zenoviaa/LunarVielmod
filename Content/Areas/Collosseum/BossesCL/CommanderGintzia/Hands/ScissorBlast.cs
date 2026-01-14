@@ -8,7 +8,7 @@ using Terraria.ID;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 {
-    public class ScissorBlast : BaseWindProjectile
+    public class ScissorBlast : AbstractWindProjectile
     {
         private Vector2 BoomerangVelocity;
         public override void SendExtraAI(BinaryWriter writer)

@@ -6,7 +6,7 @@ using Terraria.ID;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
-    public class WindBoom : BaseWindProjectile
+    public class WindBoom : AbstractWindProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
@@ -40,8 +40,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             }
 
             float progress = Timer / 30f;
-            float easedProgress = Easing.OutCirc(progress);
-            float spikingEasedProgress = Easing.OutCirc(progress);
+            float easedProgress = EasingFunction.QuadraticBump(progress);
+            float spikingEasedProgress = EasingFunction.QuadraticBump(progress);
             if (Timer < 10)
             {
                 Vector2 offset = (Timer / 10f).ToRotationVector2() * 4;

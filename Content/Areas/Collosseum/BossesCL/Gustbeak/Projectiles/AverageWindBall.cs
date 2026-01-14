@@ -1,13 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Particles;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
-    public class AverageWindBall : BaseWindProjectile
+    public class AverageWindBall : AbstractWindProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -32,6 +34,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         public override void AI()
         {
             base.AI();
+
 
             Wind.ColorFunc = WindColorFunction;
             float chargeProgress = Timer / 60f;

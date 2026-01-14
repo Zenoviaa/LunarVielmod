@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Helpers;
 using Terraria;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
-    public class WindAura : BaseWindProjectile
+    public class WindAura : AbstractWindProjectile
     {
         private int ParentIndex
         {
@@ -89,6 +90,19 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
                 drawPos += offset;
                 DrawWindBall(drawPos, ref lightColor);
             }
+
+            Texture2D texture = AssetManager.GlowMask.SpiralVortex.Value;
+            Vector2 shadowDrawPos = Projectile.Center - Main.screenPosition;
+            Vector2 shadowDrawOrigin = texture.Size() / 2f;
+            float drawScale = DrawScale * 2;
+            drawScale *= MathHelper.Lerp(3f, 1f, EasingFunction.InOutSine(Timer / 30f));
+
+            Color drawColor = Color.White;
+            drawColor.A = 0;
+            drawColor *= MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 30f));
+            float rotation2 = Main.GlobalTimeWrappedHourly * 12;
+            spriteBatch.Draw(texture, shadowDrawPos, null, drawColor * 0.1f, rotation2, shadowDrawOrigin, drawScale * 0.7f, SpriteEffects.None, layerDepth: 0);
+            spriteBatch.Draw(texture, shadowDrawPos, null, drawColor * 0.2f, rotation2 * 1.5f, shadowDrawOrigin, drawScale * 0.15f, SpriteEffects.None, layerDepth: 0);
             return false;
         }
     }

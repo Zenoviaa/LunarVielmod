@@ -1,13 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
-    public class WingAirblast : BaseWindProjectile
+    public class WingAirblast : AbstractWindProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -30,8 +31,12 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         public override void AI()
         {
             base.AI();
+            if(Timer == 1)
+            {
+                DrawScale = Main.rand.NextFloat(0.6f, 1f);
+            }
             float chargeProgress = Timer / 60f;
-            int divisor = (int)MathHelper.Lerp(6, 6, chargeProgress);
+            int divisor = (int)MathHelper.Lerp(12, 12, chargeProgress);
             if (Timer % divisor == 0)
             {
                 //Spawn new slashes on our little wind orb
@@ -44,9 +49,31 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
                 rotation = offset.ToRotation();
                 Wind.NewSlash(offset, rotation);
             }
+            if (Timer % 16 == 0)
+            {
+                ShockOvalSpawnParams spawnParams = new ShockOvalSpawnParams
+                {
+                    innerColor = Color.White,
+                    outerColor = Color.DarkGray
+                };
+                ShockOvalParticle sp = ShockOvalParticle.Spawn(Projectile.Center, -Projectile.velocity * 0.4f, spawnParams);
+                sp.color *= 0.85f;
+                sp.Scale *= 0.9f;
 
-            Projectile.velocity *= 1.015f;
-            Wind.ExpandMultiplier = 0.25f;
+                sp = ShockOvalParticle.Spawn(Projectile.Center, -Projectile.velocity * 0.2f, spawnParams);
+                sp.color *= 0.85f;
+                sp.Scale *= 0.6f;
+            }
+            if (Projectile.velocity.Length() < 10f)
+            {
+                Projectile.velocity *= 1.1f;
+            }
+            else
+            {
+                Projectile.extraUpdates = 1;
+            }
+
+                Wind.ExpandMultiplier = 0.25f;
         }
 
         public override bool PreDraw(ref Color lightColor)

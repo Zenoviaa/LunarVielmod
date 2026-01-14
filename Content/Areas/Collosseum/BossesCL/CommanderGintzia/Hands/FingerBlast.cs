@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 {
-    public class FingerBlast : BaseWindProjectile
+    public class FingerBlast : AbstractWindProjectile
     {
         public override void SetStaticDefaults()
         {

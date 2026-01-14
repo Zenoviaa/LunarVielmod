@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
@@ -11,6 +12,7 @@ using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
 using Stellamod.Projectiles;
 using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -396,6 +398,15 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            Texture2D texture = AssetManager.GlowMask.SpiralVortex.Value;
+            Vector2 shadowDrawPos = NPC.Center - Main.screenPosition;
+            Vector2 shadowDrawOrigin = texture.Size() / 2f;
+            float drawScale = 1;
+            Color spiralCOlor = Color.White;
+            spiralCOlor.A = 0;
+            float rotation = Main.GlobalTimeWrappedHourly * 12;
+            spriteBatch.Draw(texture, shadowDrawPos, null, spiralCOlor * 0.1f, rotation, shadowDrawOrigin, drawScale * 0.7f, SpriteEffects.None, layerDepth: 0);
+            spriteBatch.Draw(texture, shadowDrawPos, null, spiralCOlor * 0.2f, rotation * 1.5f, shadowDrawOrigin, drawScale * 0.15f, SpriteEffects.None, layerDepth: 0);
             //Draw back to front i think
             //Back sprites
             for (int i = 0; i < Segments.Length; i++)
@@ -440,6 +451,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                 FlipValue = MathHelper.Clamp(FlipValue, -1f, 1f);
             }
 
+            if (Main.rand.NextBool(64))
+            {
+                WindDebrisParticle wsp = WindDebrisParticle.SpawnInAlphaLayer(NPC.Center, Vector2.Zero, Color.White);
+                wsp.parent = NPC;
+            }
             Head.drawHelmet = DrawHelmet;
 
             Vector2[] curvePositions = CalculateCurve();
@@ -470,6 +486,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                     SwitchState(AIState.Despawn);
                 }
 
+            }
+            if (Main.rand.NextBool(32))
+            {
+                WindStormParticle wsp = WindStormParticle.Spawn(NPC.Center, Vector2.Zero);
+                wsp.parent = NPC;
             }
 
             switch (State)
@@ -1334,7 +1355,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                 }
             }
 
-            if (Timer == 40)
+            if (Timer == 32)
             {
                 DashVelocity *= 0.5f;
             }
