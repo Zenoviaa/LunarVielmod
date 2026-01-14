@@ -21,7 +21,7 @@ namespace Stellamod.Common.ArmorShop
 
             var line = new TooltipLine(Mod, "ArmorType", LangText.ArmorShopClass(set.heads[0].ModItem));
             line.OverrideColor = Color.Yellow;
-            tooltips.Add(line);
+          //  tooltips.Add(line);
         }
     }
 }

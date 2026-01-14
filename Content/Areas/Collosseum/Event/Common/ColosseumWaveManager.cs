@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander;
 using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak;
@@ -11,8 +12,10 @@ using Stellamod.NPCs;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI.Chat;
 
 namespace Stellamod.Content.Areas.Collosseum.Event.Common
 {
@@ -433,11 +436,20 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Texture2D texture = TextureRegistry.BasicGlow.Value;
             Vector2 drawPosition = NPC.Center - screenPos;
-            Color glowColor = Color.Lerp(Color.White, Color.Goldenrod, ExtraMath.Osc(0f, 1f));
-            glowColor.A = 0;
-          //  spriteBatch.Draw(texture, drawPosition, null, glowColor, NPC.rotation, texture.Size() / 2f, NPC.scale, SpriteEffects.None, 0);
+            Color glowColor = Color.Black;
+            spriteBatch.Draw(texture, drawPosition - new Vector2(0, 24), null, glowColor, NPC.rotation, texture.Size() / 2f, NPC.scale * new Vector2(1.5f, 1f), SpriteEffects.None, 0);
+            string waveString = $"Wave: {_waveIndex}";
+            float x = FontAssets.MouseText.Value.MeasureString(waveString).X;
+            float y = FontAssets.MouseText.Value.MeasureString(waveString).Y;
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, waveString,
+                drawPosition - new Vector2(0, 32), Color.White, 0, new Vector2(x * 0.5f, y * 0.5f), Vector2.One * ExtraMath.Osc(1f, 1.2f));
+            waveString = $"{_enemyCount + 1} Left";
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, waveString,
+                drawPosition - new Vector2(0, 8), Color.White, 0, new Vector2(x * 0.5f, y * 0.5f), Vector2.One * ExtraMath.Osc(1f, 1.2f) * 0.9f);
+
+            // 
             return false;
         }
     }

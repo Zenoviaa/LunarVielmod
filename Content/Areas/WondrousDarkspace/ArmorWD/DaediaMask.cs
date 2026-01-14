@@ -7,9 +7,11 @@ using Stellamod.Core.Effects;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trailing;
+using Stellamod.Trails;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -190,11 +192,20 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.ArmorWD
         public override bool PreDraw(ref Color lightColor)
         {
             _trailer ??= TrailPresets.StarringBalls;
-            _trailer.DrawTrail(ref lightColor, Projectile.oldPos);
+            //_trailer.DrawTrail(ref lightColor, Projectile.oldPos);
             _trailer.TrailWidthFunction = (float interpolant) =>
             {
                 return MathHelper.Lerp(6, 3, EasingFunction.InOutSine(interpolant));
             };
+            for(int i = 0; i < Projectile.oldPos.Length; i++)
+            {
+                float ratio = (float)i / (float)Projectile.oldPos.Length;
+                Color color = Color.Lerp(Color.White, Color.Black, ratio) * 0.1f;
+                color.A = 0;
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                Texture2D texture = TextureAssets.Projectile[Type].Value;
+                spriteBatch.Draw(texture, Projectile.oldPos[i] + Projectile.Size * 0.5f - Main.screenPosition, Projectile.Frame(), color, Projectile.oldRot[i], Projectile.Frame().Size() * 0.5f, 1f, SpriteEffects.None, 0);
+            }
             this.DrawCentered(ref lightColor);
             return false;
         }
