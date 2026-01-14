@@ -106,7 +106,7 @@ namespace Stellamod.Visual.Particles
         }
         public Color GetTrailColor(float completionRatio)
         {
-            return Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(completionRatio)) * MathHelper.SmoothStep(1f, 0f, fadeIn / time);
+            return Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(completionRatio)) * MathHelper.SmoothStep(1f, 0f, fadeIn / time) * 0.5f;
         }
 
         public float GetTrailWidth(float completionRatio)

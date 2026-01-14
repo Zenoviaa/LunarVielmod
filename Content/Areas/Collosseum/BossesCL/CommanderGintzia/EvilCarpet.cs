@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
@@ -120,22 +121,21 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Texture2D texture = TextureAssets.Npc[Type].Value;
             Vector2 drawPos = NPC.Center - screenPos;
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
             float drawRotation = NPC.rotation;
             float drawScale = NPC.scale;
             float dp = 1f - DespawnProgress;
-            spriteBatch.Restart(blendState: BlendState.Additive);
             for (float f = 0f; f < 1f; f += 0.25f)
             {
                 float rot = f * MathHelper.ToRadians(360);
                 Vector2 offset = rot.ToRotationVector2() * VectorHelper.Osc(2f, 4f);
                 Vector2 glowDrawPos = drawPos + offset;
                 Color glowColor = drawColor * 0.8f;
+                glowColor.A = 0;
                 spriteBatch.Draw(texture, glowDrawPos, NPC.frame, glowColor * dp, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
             }
-            spriteBatch.RestartDefaults();
             spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor * dp, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0f);
             return false;
         }
@@ -144,7 +144,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         {
             NPC parent = Main.npc[ParentIndex];
             if (!parent.active || parent.type != ModContent.NPCType<CommanderGintzia>())
-                return true;
+                return base.CheckActive();
             return false;
         }
 
