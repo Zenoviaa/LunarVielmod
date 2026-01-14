@@ -3,6 +3,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -64,7 +65,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             float dayProgress = Main.dayTime ? (float)Main.time / (float)Main.dayLength : (float)Main.time / (float)Main.nightLength;
             float radians = MathHelper.Lerp(MathHelper.ToRadians(-45), MathHelper.ToRadians(45), dayProgress);
-            Vector2 sunDirection = Vector2.UnitY.RotatedBy(radians) * 500;
+            Vector2 sunDirection = Vector2.UnitY.RotatedBy(radians) * 400;
             if (dayProgress <= 0.1f || dayProgress >= 0.9f)
             {
 
@@ -118,7 +119,7 @@ namespace Stellamod.Core.LunarLightingSystem
             graphicsDevice.RasterizerState.CullMode = CullMode.None;
             graphicsDevice.BlendState = BlendState.AlphaBlend;
             graphicsDevice.DrawUserIndexedPrimitives(
-              PrimitiveType.TriangleList, ShadowVertices, 0, _primitiveIndex, ShadowIndexBuffer, 0, _primitiveIndex / 3);
+              PrimitiveType.TriangleList, ShadowVertices, 0, _primitiveIndex, ShadowIndexBuffer, 0, _primitiveIndex / 2);
         }
 
         private static bool IsFull()
@@ -165,10 +166,10 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             _primitiveIndex = 0;
             Vector2 topLeftOfPointLight = Main.screenPosition;
-            Vector2 bottomRightOfPointLight = topLeftOfPointLight + new Vector2(Main.screenWidth * 2, Main.screenHeight);
 
             Point topLeftTile = topLeftOfPointLight.ToTileCoordinates();
-            Point bottomRightTIle = bottomRightOfPointLight.ToTileCoordinates();
+            topLeftTile.Y -= 16;
+            Point bottomRightTIle = topLeftTile + new Point(150, 70);
 
 
             int startTileX = topLeftTile.X;
@@ -223,7 +224,7 @@ namespace Stellamod.Core.LunarLightingSystem
                     //Vertex 3
                     Vector2 bottomRight = worldPoint + new Vector2(16, 16);
 
-                   // AddQuad(topLeft, bottomRight);
+                    AddQuad(topLeft, bottomRight);
                     AddQuad(topRight, bottomLeft);
                 }
             }

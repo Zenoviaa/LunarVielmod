@@ -83,8 +83,13 @@ namespace Stellamod.Common.SummonerSystem
             SpriteBatch spriteBatch = Main.spriteBatch;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Color drawColor = Color.Lerp(Color.White, Color.Black, Timer / 30f);
+            drawColor = Color.Lerp(drawColor, Color.Black, 0.2f);
             drawColor.A = 0;
-            spriteBatch.Draw(texture, drawPosition, null, drawColor, 0, drawOrigin, 1, SpriteEffects.None, 0);
+            Vector2 beamScael = Vector2.One;
+            beamScael.X *= 0.35f;
+            beamScael.X *= MathHelper.SmoothStep(0f, 1f, EasingFunction.QuadraticBump(Timer / 30f));
+            beamScael.Y *= MathHelper.SmoothStep(0f, 1f, Timer / 30f);
+            spriteBatch.Draw(texture, drawPosition, null, drawColor, 0, drawOrigin, beamScael, SpriteEffects.None, 0);
             return false;
         }
     }

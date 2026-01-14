@@ -437,7 +437,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
             Vector2 drawPosition = NPC.Center - screenPos;
             Color glowColor = Color.Lerp(Color.White, Color.Goldenrod, ExtraMath.Osc(0f, 1f));
             glowColor.A = 0;
-            spriteBatch.Draw(texture, drawPosition, null, glowColor, NPC.rotation, texture.Size() / 2f, NPC.scale, SpriteEffects.None, 0);
+          //  spriteBatch.Draw(texture, drawPosition, null, glowColor, NPC.rotation, texture.Size() / 2f, NPC.scale, SpriteEffects.None, 0);
             return false;
         }
     }
