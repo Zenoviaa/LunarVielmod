@@ -81,8 +81,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         {
             base.PreDraw(ref lightColor);
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Restart(blendState: BlendState.Additive);
-
             for (float f = 0f; f < 1f; f += 0.25f)
             {
                 Vector2 drawPos = Projectile.Center - Main.screenPosition;
@@ -91,8 +89,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
                 drawPos += offset;
                 DrawWindBall(drawPos, ref lightColor);
             }
-
-            spriteBatch.RestartDefaults();
             return false;
         }
     }

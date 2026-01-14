@@ -396,8 +396,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-
-
             //Draw back to front i think
             //Back sprites
             for (int i = 0; i < Segments.Length; i++)
@@ -406,12 +404,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                 segment.drawArmored = true;
             }
             DrawGustbeak(spriteBatch, screenPos, drawColor);
-
-
-            spriteBatch.RestartDefaults();
-            Wind.Draw(spriteBatch, drawColor);
             DrawCage(spriteBatch, screenPos, drawColor);
-
             return false;
         }
 

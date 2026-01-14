@@ -158,7 +158,7 @@ namespace Stellamod.Core.DrawEffects
             return slash;
         }
 
-        public void Draw(SpriteBatch spriteBatch, Color drawColor)
+        public void Draw(GraphicsDevice graphicDevice)
         {
             var shader = MagicRadianceShader.Instance;
             shader.PrimaryTexture = TrailRegistry.GlowTrail;

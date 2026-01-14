@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
 using System;
 using Terraria;
@@ -37,20 +35,20 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         {
             base.AI();
             _scale = Vector2.Lerp(_scale, Vector2.One, 0.1f);
-         
+
 
             if (Timer == 1 && Main.myPlayer == Projectile.owner)
             {
                 FallDownTime = Main.rand.NextFloat(15, 100);
                 Projectile.netUpdate = true;
             }
-         
+
             Projectile.rotation += 0.02f;
             Projectile.rotation -= Projectile.velocity.Length() * 0.025f;
             if (Timer > FallDownTime)
             {
                 Projectile.tileCollide = true;
-                if(Projectile.velocity.Y < 16)
+                if (Projectile.velocity.Y < 16)
                     Projectile.velocity.Y += 1f;
             }
             else
@@ -77,17 +75,13 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             FXUtil.ShakeCamera(Projectile.position, 1024, 8);
         }
 
-        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
-        {
-            this.OutlineNoRestart(Color.Red, ref lightColor, _scale);
-        }
-
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawWindTrail(ref lightColor);
+            DrawWindSlashes(ref lightColor);
             this.DrawCentered(ref lightColor, _scale);
             return false;
         }
+
         public override float StripWidth(float progressOnStrip)
         {
             return base.StripWidth(progressOnStrip) * 0.66f;

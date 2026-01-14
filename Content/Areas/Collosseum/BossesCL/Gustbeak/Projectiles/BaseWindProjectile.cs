@@ -8,10 +8,12 @@ using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
+using Stellamod.Core.Pixelation;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
 {
-    public abstract class BaseWindProjectile : ModProjectile
+    public abstract class BaseWindProjectile : ModProjectile,
+        IDrawOutlines
     {
         private CoreWind _wind;
 
@@ -43,7 +45,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             DrawHelper.AnimateTopToBottom(Projectile, 2);
         }
 
-        protected virtual void DrawWindTrail(ref Color lightColor)
+        protected virtual void DrawWindTrail()
         {
             var shader = MagicRadianceShader.Instance;
             shader.PrimaryTexture = TrailRegistry.GlowTrail;
@@ -57,12 +59,9 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             shader.Speed = 5.2f;
             shader.Distortion = 0.15f;
             shader.Power = 0.25f;
-
-            //This just applis the shader changes
-
-            //Main Fill
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, Projectile.oldRot, StripColors, StripWidth, shader, offset: Projectile.Size / 2);
         }
+
         public virtual Color StripColors(float progressOnStrip)
         {
             //  return Color.Lerp(Color.LightGoldenrodYellow, Color.White, Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
@@ -76,10 +75,17 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         {
             return MathHelper.Lerp(26f, 32f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
         }
+
+
         protected virtual void DrawWindSlashes(ref Color lightColor)
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Wind.Draw(spriteBatch, lightColor);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedWind);
+        }
+
+        public void DrawPixelatedWind(GraphicsDevice graphicsDevice)
+        {
+            DrawWindTrail();
+            Wind.Draw(graphicsDevice);
         }
 
         protected virtual void DrawWindBall(ref Color lightColor)
@@ -94,6 +100,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             float drawScale = 1f * DrawScale;
             spriteBatch.Draw(texture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, layerDepth: 0);
         }
+
         protected virtual void DrawWindBall(Vector2 drawPos, ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -101,28 +108,40 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             Rectangle frame = Projectile.Frame();
             Vector2 drawOrigin = frame.Size() / 2f;
             Color drawColor = Color.White.MultiplyRGB(lightColor);
+            drawColor.A = 0;
             drawColor *= 0.35f;
+
             float drawRotation = Projectile.rotation;
             float drawScale = 0.5f * DrawScale;
             spriteBatch.Draw(texture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, layerDepth: 0);
         }
-        protected virtual void DrawBackShadow(ref Color lightColor)
+
+        protected virtual void DrawBackShadow(Vector2 screenPos, Color spriteColor, ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = TextureRegistry.BasicGlow.Value;
-            Vector2 shadowDrawPos = Projectile.Center - Main.screenPosition;
+            Vector2 shadowDrawPos = Projectile.Center - screenPos;
             Vector2 shadowDrawOrigin = texture.Size() / 2f;
             float drawScale = 0.66f * DrawScale;
-            Color drawColor = Color.Black.MultiplyRGB(lightColor) * ShadowScale;
+            Color drawColor = spriteColor.MultiplyRGB(lightColor) * ShadowScale;
             spriteBatch.Draw(texture, shadowDrawPos, null, drawColor, 0, shadowDrawOrigin, drawScale, SpriteEffects.None, layerDepth: 0);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawBackShadow(ref lightColor);
-            DrawWindTrail(ref lightColor);
+            DrawBackShadow(Main.screenPosition, Color.Black, ref lightColor);
             DrawWindSlashes(ref lightColor);
             return false;
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            Vector2 v = Vector2.UnitY * 2;
+            Vector2 h = Vector2.UnitX * 2;
+            DrawBackShadow(screenPos + v, Color.Red, ref lightColor);
+            DrawBackShadow(screenPos - v, Color.Red, ref lightColor);
+            DrawBackShadow(screenPos + h, Color.Red, ref lightColor);
+            DrawBackShadow(screenPos - h, Color.Red, ref lightColor);
         }
     }
 }
