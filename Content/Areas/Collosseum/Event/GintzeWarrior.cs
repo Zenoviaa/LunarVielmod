@@ -35,6 +35,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             get => (AIState)NPC.ai[1];
             set => NPC.ai[1] = (float)value;
         }
+        private ref float RandFactor => ref NPC.ai[2];
         private float DirectionToTarget
         {
             get
@@ -81,10 +82,15 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             GintzeHitEffect(hit);
         }
 
+        public override bool CanHitNPC(NPC target)
+        {
+            return base.CanHitNPC(target) && State == AIState.Dash && Timer <= 30;
+        }
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            return base.CanHitPlayer(target, ref cooldownSlot) && State == AIState.Dash;
+            return base.CanHitPlayer(target, ref cooldownSlot) && State == AIState.Dash && Timer <= 30;
         }
+
         private int _frame = 0;
         public override void FindFrame(int frameHeight)
         {
@@ -107,6 +113,14 @@ namespace Stellamod.Content.Areas.Collosseum.Event
         public override void Colosseum_AI()
         {
             base.Colosseum_AI();
+            if (MultiplayerHelper.IsHost)
+            {
+                if(RandFactor == 0)
+                {
+                    RandFactor = Main.rand.NextFloat(0f, 60f);
+                    NPC.netUpdate = true;
+                }
+            }
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             if (!NPC.HasValidTarget)
                 NPC.TargetClosest();
@@ -192,7 +206,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             NPC.velocity.X *= 0.8f;
             TargetOutlineColor = Color.Yellow;
             _pauseAnimation = true;
-            if(Timer >= 100)
+            if(Timer >= 100 + RandFactor)
             {
                 SwitchState(AIState.Dash);
             }
@@ -208,6 +222,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             float dashTime = 60f;
             if(Timer < 30)
             {
+                TargetOutlineColor = Color.Red;
                 NPC.velocity.X *= 1.1f;
             }
             else

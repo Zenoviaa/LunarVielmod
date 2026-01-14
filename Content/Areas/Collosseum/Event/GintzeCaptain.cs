@@ -36,6 +36,8 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             get => (AIState)NPC.ai[1];
             set => NPC.ai[1] = (float)value;
         }
+
+
         private Player Target => Main.player[NPC.target];
         private float DirectionToTarget
         {

@@ -25,6 +25,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event
         private Vector2 _targetPos;
         public bool Dir;
         private ref float Timer => ref NPC.ai[0];
+        private ref float RandFactor => ref NPC.ai[1];
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
@@ -95,6 +96,11 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             GintzeHitEffect(hit);
         }
 
+        public override bool CanHitNPC(NPC target)
+        {
+            return base.CanHitNPC(target) && _contactDamage;
+        }
+
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
@@ -103,6 +109,15 @@ namespace Stellamod.Content.Areas.Collosseum.Event
         public override void Colosseum_AI()
         {
             base.Colosseum_AI();
+            if (MultiplayerHelper.IsHost)
+            {
+                if (RandFactor == 0)
+                {
+                    RandFactor = Main.rand.NextFloat(0f, 60f);
+                    NPC.netUpdate = true;
+                }
+            }
+
             Player player = Main.player[NPC.target];
             if (!NPC.HasValidTarget)
                 NPC.TargetClosest();
@@ -111,10 +126,12 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             NPC.rotation = NPC.velocity.X * 0.03f;
             _targetPos = player.Center;
             Timer++;
-            if (NPC.ai[0] >= 200)
+
+            if (Timer >= 200 + RandFactor)
             {
-                NPC.ai[0] = 0;
+                Timer = 0;
             }
+
             if (_contactDamage)
                 TargetOutlineColor = Color.Red;
             else if (_warn)

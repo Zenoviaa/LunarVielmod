@@ -34,6 +34,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event
         }
 
         private ref float BuiltUpSpeed => ref NPC.ai[2];
+        private ref float RandFactor => ref NPC.ai[3];
         private Player Target => Main.player[NPC.target];
         private float DirectionToTarget
         {
@@ -73,6 +74,11 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             return Target.Bottom.Y - 16 > NPC.Bottom.Y;
         }
 
+        public override bool CanHitNPC(NPC target)
+        {
+            return base.CanHitNPC(target) && State == AIState.Chase;
+        }
+
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             return base.CanHitPlayer(target, ref cooldownSlot) && State == AIState.Chase;
@@ -81,6 +87,14 @@ namespace Stellamod.Content.Areas.Collosseum.Event
         public override void Colosseum_AI()
         {
             base.Colosseum_AI();
+            if (MultiplayerHelper.IsHost)
+            {
+                if(RandFactor == 0)
+                {
+                    RandFactor = Main.rand.NextFloat(-1.5f, 2f);
+                    NPC.netUpdate = true;
+                }
+            }
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
             switch (State)
@@ -107,7 +121,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity.X, 0.02f);
             if (NPC.collideY)
             {
-                if(BuiltUpSpeed < 5)
+                if(BuiltUpSpeed < 5 + RandFactor)
                     BuiltUpSpeed += 0.1f;
             }
             bool jumpWhenBelowPlayer = Target.Bottom.Y < NPC.Top.Y && NPC.collideY;

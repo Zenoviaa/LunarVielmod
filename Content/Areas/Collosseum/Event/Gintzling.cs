@@ -39,6 +39,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             get => (AIState)NPC.ai[1];
             set => NPC.ai[1] = (float)value;
         }
+        private ref float RandFactor => ref NPC.ai[2];
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 8;
@@ -48,16 +49,22 @@ namespace Stellamod.Content.Areas.Collosseum.Event
 
         public override void SetDefaults()
         {
-            NPC.width = 58; // The width of the npc's hitbox (in pixels)
-            NPC.height = 58; // The height of the npc's hitbox (in pixels)
-            NPC.aiStyle = -1; // This npc has a completely unique AI, so we set this to -1. The default aiStyle 0 will face the player, which might conflict with custom AI code.
-            NPC.damage = 30; // The amount of damage that this npc deals
-            NPC.defense = 10; // The amount of defense that this npc has
-            NPC.lifeMax = 70; // The amount of health that this npc has
+            base.SetDefaults();
+            NPC.width = 58;
+            NPC.height = 58; 
+            NPC.aiStyle = -1; 
+            NPC.damage = 30; 
+            NPC.defense = 10; 
+            NPC.lifeMax = 70; 
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
             NPC.value = 50f; // How many copper coins the NPC will drop when killed.
             NPC.knockBackResist = 0.4f;
+        }
+
+        public override bool CanHitNPC(NPC target)
+        {
+            return base.CanHitNPC(target) && _contactDamage;
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -68,6 +75,14 @@ namespace Stellamod.Content.Areas.Collosseum.Event
         public override void Colosseum_AI()
         {
             base.Colosseum_AI();
+            if (MultiplayerHelper.IsHost)
+            {
+                if(RandFactor == 0)
+                {
+                    RandFactor = Main.rand.NextFloat(0f, 60f);
+                    NPC.netUpdate = true;
+                }
+            }
             if (!NPC.HasValidTarget)
                 NPC.TargetClosest();
 
@@ -78,6 +93,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             else
                 TargetOutlineColor = Color.Transparent;
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+
             _warn = false;
             _contactDamage = false;
             _pauseAnimation = false;
@@ -108,11 +124,10 @@ namespace Stellamod.Content.Areas.Collosseum.Event
 
         private void AI_Idle()
         {
-
             Timer++;
             NPC.velocity.X *= 0.9f;
             NPC.direction = (Target.Center.X > NPC.Center.X) ? 1 : -1;
-            if(Timer >= 100)
+            if(Timer >= 100 + RandFactor)
             {
                 SwitchState(AIState.JumpWarn);
             }
@@ -120,7 +135,8 @@ namespace Stellamod.Content.Areas.Collosseum.Event
 
         private void AI_Jump()
         {
-            Timer++; _pauseAnimation = true;
+            Timer++; 
+            _pauseAnimation = true;
             _contactDamage = true;
             if (Timer == 1)
             {

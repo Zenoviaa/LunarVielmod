@@ -38,6 +38,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             set => NPC.ai[1] = (float)value;
         }
 
+        private ref float RandFactor => ref NPC.ai[2];
         private Player Target => Main.player[NPC.target];
         private float DirectionToTarget
         {
@@ -94,6 +95,10 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             NPC.frame.Y = frameHeight * _frame;
         }
 
+        public override bool CanHitNPC(NPC target)
+        {
+            return base.CanHitNPC(target) && _contactDamage;
+        }
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;

@@ -30,6 +30,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             set => NPC.ai[1] = (float)value;
         }
 
+        private ref float RandFactor => ref NPC.ai[2];
         private Player Target => Main.player[NPC.target];
         private float SightLineProgress;
         private Vector2 FireVelocity;
@@ -50,6 +51,11 @@ namespace Stellamod.Content.Areas.Collosseum.Event
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 11;
+        }
+
+        public override bool CanHitNPC(NPC target)
+        {
+            return false;
         }
 
         //No contact damage, I'm sorry brah
@@ -89,6 +95,14 @@ namespace Stellamod.Content.Areas.Collosseum.Event
         public override void Colosseum_AI()
         {
             base.Colosseum_AI();
+            if (MultiplayerHelper.IsHost)
+            {
+                if(RandFactor == 0)
+                {
+                    RandFactor = Main.rand.NextFloat(0f, 60f);
+                    NPC.netUpdate = true;
+                }
+            }
             if (!NPC.HasValidTarget)
                 NPC.TargetClosest();
 
@@ -111,14 +125,19 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             {
                 NPC.TargetClosest();
             }
-            float moveSpeed = 0.5f;
+            float moveSpeed = 1.3f;
             Vector2 targetVelocity = new Vector2(-DirectionToTarget * moveSpeed, 0);
             NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetVelocity.X, 0.3f);
             float distanceToTarget = Vector2.Distance(NPC.Center, Target.Center);
             float targetSineLineProgress = 0f;
             SightLineProgress = MathHelper.Lerp(SightLineProgress, targetSineLineProgress, 0.1f);
-            if (distanceToTarget > FleeDistance && Timer > 60)
+            if (distanceToTarget > FleeDistance && Timer > 60 + RandFactor)
             {
+                if (MultiplayerHelper.IsHost)
+                {
+                    RandFactor = Main.rand.NextFloat(0f, 60f);
+                    NPC.netUpdate = true;
+                }
                 SwitchState(AIState.Spear_Throw);
             }
         }
