@@ -38,7 +38,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
                 {
                     var donutParticle = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 4 * MathHelper.Lerp(15, 1f, i / 3f));
                     donutParticle.Scale *= MathHelper.Lerp(0.3f, 1f, i / 3f);
-
+                    donutParticle.Velocity *= 0.1f;
                 }
             }
             float chargeProgress = Timer / 60f;

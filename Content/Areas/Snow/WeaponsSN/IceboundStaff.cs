@@ -132,33 +132,19 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
 
         public void DrawTrail(Vector2[] oldPos)
         {
-            var shader = MagicNormalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.GlowTrail;
-            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
-            shader.BlendState = BlendState.Additive;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 0.5f;
-            shader.Repeats = 1f;
+            var shader = BasicLaserAlphaShader.Instance;
             //This just applis the shader changes
             TrailDrawer.Draw(Main.spriteBatch, oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
         }
 
         private Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White, Color.SpringGreen, completionRatio);
+            return Color.Lerp(Color.White, Color.SpringGreen, completionRatio) * MathHelper.SmoothStep(1f, 0f, completionRatio) * EasingFunction.QuadraticBump(completionRatio);
         }
 
         private float WidthFunction(float completionRatio)
         {
-            float w = 12;
-            float ew = w / 10;
-            float width = w ;
-
-            float p = completionRatio / 0.5f;
-            float ep = EasingFunction.OutCirc(p);
-            float circleWidth = MathHelper.Lerp(0, w, ep);
-            float trailWidth = MathHelper.Lerp(width, 0, EasingFunction.OutCirc(completionRatio));
-            return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
+            return MathHelper.SmoothStep(12, 0, completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)

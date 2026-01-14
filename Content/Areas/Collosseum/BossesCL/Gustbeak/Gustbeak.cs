@@ -1074,6 +1074,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             Wind.ExpandMultiplier = MathHelper.Lerp(4f, 2f, easedWindChargeProgress);
             if (Timer % 20 == 0)
             {
+                NPC.velocity = -velToPlayer * 0.5f;
                 WindCharge = 0;
                 SoundStyle windCast = new SoundStyle($"Stellamod/Assets/Sounds/WindCast", variantSuffixesStart: 1, numVariants: 2);
                 windCast.PitchVariance = 0.15f;
