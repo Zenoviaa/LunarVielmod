@@ -40,8 +40,9 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             Timer++;
             if(Timer == 1 && Projectile.velocity.Length() > 2)
             {
-                CrescentSlashParticle.Spawn(Projectile.Center, Projectile.velocity * 3);
-             //   CrescentSlashParticle.Spawn(Projectile.Center, Projectile.velocity.RotatedByRandom(4f) * Main.rand.NextFloat(0.5f, 1f));
+                CrescentSlashParticle sp = CrescentSlashParticle.Spawn(Projectile.Center, Projectile.velocity * 3);
+                sp.color *= 0.3f;
+                //   CrescentSlashParticle.Spawn(Projectile.Center, Projectile.velocity.RotatedByRandom(4f) * Main.rand.NextFloat(0.5f, 1f));
             }
 
             Wind.AI(Projectile.Center);
@@ -65,11 +66,14 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
                 wsp.color *= 0.5f;
             }
 
-            if (Main.rand.NextBool(8))
+            if (Main.rand.NextBool(12))
             {
-                DustParticle wsp = DustParticle.Spawn(Projectile.Center, -Projectile.velocity.RotatedByRandom(1f) * Main.rand.NextFloat(0.5f, 1f));
+                DustParticle wsp = DustParticle.Spawn(Projectile.Center, -Projectile.velocity.RotatedByRandom(1f) * Main.rand.NextFloat(0.15f, 0.5f));
                 wsp.gravity = 0f;
+                wsp.dampening = 0.1f;
                 wsp.Scale *= 0.5f;
+                wsp.innerColor = Color.White * 0.3f;
+                wsp.outerColor = Color.DarkGray * 0.3f;
             }
 
             if (Main.rand.NextBool(8))
@@ -203,9 +207,9 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             Vector2 shadowDrawPos = Projectile.Center - Main.screenPosition;
             Vector2 shadowDrawOrigin = texture.Size() / 2f;
             float drawScale = DrawScale;
-            Color drawColor = Color.DarkGray;
+            Color drawColor = Color.White;
             drawColor.A = 0;
-            spriteBatch.Draw(texture, shadowDrawPos, null, drawColor * 0.1f, 0, shadowDrawOrigin, drawScale * 0.4f, SpriteEffects.None, layerDepth: 0);
+            spriteBatch.Draw(texture, shadowDrawPos, null, drawColor * 0.5f, 0, shadowDrawOrigin, drawScale * 0.15f, SpriteEffects.None, layerDepth: 0);
 
         }
         private void DrawSpiralVortex()

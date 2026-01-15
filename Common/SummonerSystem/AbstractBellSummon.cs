@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.ArmorRework;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -14,6 +15,7 @@ namespace Stellamod.Common.SummonerSystem
 {
     public abstract class AbstractBellSummon : ModProjectile,
         IDrawSpectral,
+        IDrawOutlines,
         ITargetable
     {
         private float _damageBoostTimer;
@@ -182,6 +184,8 @@ namespace Stellamod.Common.SummonerSystem
         }
         public virtual void DrawSpectralWhites(SpriteBatch spriteBatch)
         {
+            if (isGuardian)
+                return;
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             Rectangle frame = Projectile.Frame();
@@ -236,6 +240,28 @@ namespace Stellamod.Common.SummonerSystem
         {
             base.OnKill(timeLeft);
 
+        }
+
+        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            if (!isGuardian)
+                return;
+
+            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Rectangle frame = Projectile.Frame();
+            Vector2 drawOrigin = frame.Size() / 2f;
+
+            float rotation = Projectile.rotation;
+            Point p = Projectile.position.ToTileCoordinates();
+
+            Color baseColor = Color.LightGreen;
+            Color finalColor = baseColor.MultiplyRGB(lightColor);
+
+            spriteBatch.Draw(texture, drawPos - Vector2.UnitX * 2, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(texture, drawPos + Vector2.UnitX * 2, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(texture, drawPos - Vector2.UnitY * 2, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(texture, drawPos + Vector2.UnitY * 2, frame, finalColor, Projectile.rotation, Projectile.Frame().Size() / 2f, 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
         }
     }
 }

@@ -57,11 +57,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
                     outerColor = Color.DarkGray
                 };
                 ShockOvalParticle sp = ShockOvalParticle.Spawn(Projectile.Center, -Projectile.velocity * 0.4f, spawnParams);
-                sp.color *= 0.85f;
+                sp.color *= 0.2f;
                 sp.Scale *= 0.9f;
 
                 sp = ShockOvalParticle.Spawn(Projectile.Center, -Projectile.velocity * 0.2f, spawnParams);
-                sp.color *= 0.85f;
+                sp.color *= 0.2f;
                 sp.Scale *= 0.6f;
             }
             if (Projectile.velocity.Length() < 10f)

@@ -1056,7 +1056,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 
 
             //Home to this point
-            NPC.velocity = Vector2.Lerp(NPC.velocity, velToPlayer * 1, 0.01f);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velToPlayer * 1, 0.02f);
             NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 0.02f;
 
             if (Timer % 4 == 0)
@@ -1074,7 +1074,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             Wind.ExpandMultiplier = MathHelper.Lerp(4f, 2f, easedWindChargeProgress);
             if (Timer % 20 == 0)
             {
-                NPC.velocity = -velToPlayer * 0.5f;
+                NPC.velocity = -velToPlayer * 1.2f;
                 WindCharge = 0;
                 SoundStyle windCast = new SoundStyle($"Stellamod/Assets/Sounds/WindCast", variantSuffixesStart: 1, numVariants: 2);
                 windCast.PitchVariance = 0.15f;
@@ -1095,7 +1095,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
                     int knockback = 32;
                     Vector2 firePoint = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
                     Vector2 fireVelocity = (Target.Center - firePoint).SafeNormalize(Vector2.Zero);
-                    fireVelocity *= 8;
+                    fireVelocity *= 4;
 
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), firePoint, fireVelocity,
                         ModContent.ProjectileType<WingAirblast>(), damage, knockback, Main.myPlayer);

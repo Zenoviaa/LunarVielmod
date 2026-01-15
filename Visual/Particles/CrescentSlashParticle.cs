@@ -53,11 +53,11 @@ namespace Stellamod.Visual.Particles
             shader.Apply();
 
 
-            Color multiplyColor = Color.Lerp(Color.White, Color.Black, _completionRatio);
+            Color multiplyColor = color.MultiplyRGB(Color.Lerp(Color.White, Color.Black, _completionRatio));
             var textureAsset = GetTexture();
             spriteBatch.Draw(textureAsset.Value, centerPos, Frame, multiplyColor, Rotation, Frame.Size() / 2f, Scale * _stretchScale * 0.4f, SpriteEffects.None, 0);
 
-            multiplyColor = Color.Lerp(Color.Lerp(Color.White, bloomColor, _completionRatio), Color.Black, _completionRatio);
+            multiplyColor = color.MultiplyRGB(Color.Lerp(Color.Lerp(Color.White, bloomColor, _completionRatio), Color.Black, _completionRatio));
          //   spriteBatch.Draw(textureAsset.Value, centerPos, Frame, multiplyColor, Rotation, Frame.Size() / 2f, Scale * _stretchScale * 1.2f, SpriteEffects.None, 0);
             spriteBatch.Draw(textureAsset.Value, centerPos, Frame, multiplyColor, Rotation, Frame.Size() / 2f, Scale * _stretchScale, SpriteEffects.None, 0);
         }

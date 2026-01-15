@@ -51,11 +51,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
                     outerColor = Color.DarkGray
                 };
                 ShockOvalParticle sp = ShockOvalParticle.Spawn(Projectile.Center, -Projectile.velocity * 0.4f, spawnParams);
-                sp.color *= 0.85f;
+                sp.color *= 0.45f;
                 sp.Scale *= 0.6f;
 
                 sp = ShockOvalParticle.Spawn(Projectile.Center, -Projectile.velocity * 0.2f, spawnParams);
-                sp.color *= 0.85f;
+                sp.color *= 0.45f;
                 sp.Scale *= 0.3f;
             }
             if (Timer == 1 && Main.myPlayer == Projectile.owner)
@@ -92,8 +92,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 FXUtil.GlowStretch(Projectile.Center, velocity);
             }
-            SoundEngine.PlaySound(SoundID.Item70, Projectile.position);
-            FXUtil.ShakeCamera(Projectile.position, 1024, 8);
+
+            FXUtil.ShakeCamera(Projectile.position, 1024, 3);
 
             int[] gores = AutoGoreLoader.FindGores("GrayRock");
             foreach (int g in gores)
@@ -129,14 +129,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             switch (sound)
             {
                 default:
-                case 0:
-                    smashSound = Main.rand.NextBool(2) ? SoundRegistry.HammerHit1 : SoundRegistry.HammerHit2;
-                    break;
                 case 1:
-                    smashSound = AssetRegistry.Sounds.Bishinine.Comet1;
+                    smashSound = new SoundStyle("Stellamod/Assets/Sounds/RockBreak1");
                     break;
                 case 2:
-                    smashSound = AssetRegistry.Sounds.Bishinine.Comet2;
+                    smashSound = new SoundStyle("Stellamod/Assets/Sounds/RockBreak2");
                     foreach (int g in gores)
                     {
                         Gore.NewGore(Projectile.GetSource_FromThis(),
@@ -148,7 +145,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
                        innerColor: Color.Gray,
                        glowColor: Color.LightBlue,
                        outerGlowColor: Color.DarkBlue, duration: 15, baseSize: .09f);
-                    p3.Scale *= 4;
+                    p3.Scale *= 2;
                     break;
             }
 
@@ -168,7 +165,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             part2.outerColor = Color.Gray;
             part2.noStretch = true;
             part2.color *= 0.5f;
-            for (float f = 0; f < 5; f++)
+            for (float f = 0; f < 3; f++)
             {
                 Vector2 vel = Main.rand.NextVector2Circular(16, 16);
                 vel.Y -= 10;
@@ -181,7 +178,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
             FXUtil.GlowCircleBoom(Projectile.Center,
                innerColor: Color.Gray,
                glowColor: Color.LightBlue,
-               outerGlowColor: Color.DarkBlue, duration: 15, baseSize: boomSize * 2);
+               outerGlowColor: Color.DarkBlue, duration: 15, baseSize: boomSize);
         }
 
         public override bool PreDraw(ref Color lightColor)
