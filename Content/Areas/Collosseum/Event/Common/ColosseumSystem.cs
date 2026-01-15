@@ -63,7 +63,8 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
         }
         private Color OverrideLightingColor(On_Lighting.orig_GetColor_int_int orig, int x, int y)
         {
-            bool shouldDarken = darkenLights && (_wallTimer > 0 || !Main.tileSolid[Main.tile[x, y].TileType]);
+            bool tileSolid = WorldGen.InWorld(x, y) && Main.tileSolid[Main.tile[x, y].TileType];
+            bool shouldDarken = darkenLights && (_wallTimer > 0 || !tileSolid);
 
             if (shouldDarken)
             {
