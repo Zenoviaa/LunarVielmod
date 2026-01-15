@@ -1,10 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
+using Stellamod.Trails;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -291,9 +295,51 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(texture, drawPos, NPC.frame, gintziaColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
         }
+        private Color StripColors(float progressOnStrip)
+        {
+            //  return Color.Lerp(Color.LightGoldenrodYellow, Color.White, Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
+            return Color.Lerp(Color.Transparent, Color.LightGray, EasingFunction.QuadraticBump(progressOnStrip)) * 0.5f;
+        }
+
+        private float StripWidth(float progressOnStrip)
+        {
+            float baseWidth = 80;
+            return MathHelper.SmoothStep(baseWidth, baseWidth, progressOnStrip);
+        }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            var shader = MagicRadianceShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
+            shader.NoiseTexture = TrailRegistry.CloudsSmall;
+            shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
+            shader.PrimaryColor = Color.Lerp(Color.White, Color.LightGray, 0.5f);
+            shader.NoiseColor = Color.LightGray;
+            shader.OutlineColor = Color.Transparent;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 5.2f;
+            shader.Distortion = 0.15f;
+            shader.Power = 0.25f;
+
+            //This just applis the shader changes
+
+            //Main Fill
+            List<Vector2> gustpos = new List<Vector2>();
+            Vector2 start = _keyPosition - Vector2.UnitX * 64;
+            Vector2 end = _keyPosition + Vector2.UnitX * 64;
+            float numPoints = 80f;
+            for (float f = 0; f < numPoints; f++)
+            {
+                float lerpValue = f / numPoints;
+                Vector2 gustPoint = Vector2.Lerp(end, start, lerpValue);
+                gustpos.Add(gustPoint);
+            }
+
+            Vector2[] arr = gustpos.ToArray();
+            float[] rot = new float[arr.Length];
+            TrailDrawer.Draw(Main.spriteBatch, arr, rot, StripColors, StripWidth, shader);
+
             //Draw Key
             Texture2D keyTexture = TextureAssets.Item[ModContent.GetInstance<VoidKey>().Type].Value;
             Vector2 drawOrigin = keyTexture.Size() / 2f;
