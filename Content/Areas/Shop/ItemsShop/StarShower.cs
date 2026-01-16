@@ -40,19 +40,26 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
         {
     
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
+            SoundStyle shootSound = new SoundStyle("Stellamod/Assets/Sounds/Astalaiya3");
             if (Star == 0)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya3"), player.position);
+                shootSound = new SoundStyle("Stellamod/Assets/Sounds/Astalaiya3");
+
             }
             if (Star == 1)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya2"), player.position);
+                shootSound = new SoundStyle("Stellamod/Assets/Sounds/Astalaiya2");
+
             }
             if (Star == 2)
             {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Astalaiya1"), player.position);
+                shootSound = new SoundStyle("Stellamod/Assets/Sounds/Astalaiya1");
+
 
             }
+            shootSound.Volume = 0.4f;
+            shootSound.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(shootSound, player.position);
             Star += 1;
             Star = Star % 3;
         }

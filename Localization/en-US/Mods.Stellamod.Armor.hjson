@@ -1,3 +1,10 @@
+AstrasilkHead: {
+	Log: Act 1 mage armor
+	Lore: Blessed armor from the stars, granting magic capabilities through wands across time under the aurora.
+	Type: Magic
+	SetBonus: Every 5 hits it rains a falling star that does some great damage!
+}
+
 LovestruckMask: {
 	Log: Act 1 summoner guardian armor
 	Lore: Blessed armor from the stars, said to never touch the outside of the armor, or else you’ll be forever attracted to it... I wonder how true that is.

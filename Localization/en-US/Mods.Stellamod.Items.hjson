@@ -205,11 +205,6 @@ SetBonus: {
 		Small bits of paint left in your tracks.
 		Crit chance and armor penetration increased by 20!
 		'''
-	AstrasilkHead:
-		'''
-		Stars orbit around you
-		Hit an enemy 5 times to rain down a gigantic star upon them!
-		'''
 	DaedenMask:
 		'''
 		This armor is really scuffed...
@@ -2294,17 +2289,17 @@ AcidVisor: {
 
 AstrasilkBody: {
 	DisplayName: Astrasilk Robe
-	Tooltip: +15% magic critical strike chance
+	Tooltip: ""
 }
 
 AstrasilkHead: {
 	DisplayName: Astrasilk Hat
-	Tooltip: Slightly increases mana regeneration
+	Tooltip: ""
 }
 
 AstrasilkLegs: {
 	DisplayName: Astrasilk Leggings
-	Tooltip: Increases movement speed by 20%
+	Tooltip: ""
 }
 
 ElagentBody: {
