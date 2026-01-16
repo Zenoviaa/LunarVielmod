@@ -1,7 +1,7 @@
-using Stellamod.Buffs;
-using Stellamod.Helpers;
+using Stellamod.Common.ArmorRework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -44,24 +44,32 @@ namespace Stellamod.Items.Armors.ShadeWraith
     [AutoloadEquip(EquipType.Head)]
     public class ShadeWraithHead : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ArmorSetSystem.RegisterArmorSet<ShadeWraithHead, ShadeWraithBody, ShadeWraithLegs>();
+        }
+
         public override void SetDefaults()
         {
             Item.width = 40;
             Item.height = 30;
             Item.value = 10000;
             Item.rare = ItemRarityID.Green;
-            Item.defense = 5;
         }
 
         public override void UpdateEquip(Player player)
         {
-            player.GetDamage(DamageClass.Generic) += 0.02f;
+            var stats = player.GetStats();
+            stats.meleeAttackSpeed += 0.25f;
+            stats.defenseBonus += 4;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
-            return body.type == Mod.Find<ModItem>("ShadeWraithBody").Type && legs.type == Mod.Find<ModItem>("ShadeWraithLegs").Type;
+            return body.type == ModContent.ItemType<ShadeWraithBody>() && legs.type == ModContent.ItemType<ShadeWraithLegs>();
         }
+
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadow = true;
@@ -69,10 +77,50 @@ namespace Stellamod.Items.Armors.ShadeWraith
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = LangText.SetBonus(this);//"Become greatly empowered for a short time when low on health!\nJust one last breath...");
             player.GetModPlayer<ShadeWraithPlayer>().hasSetBonus = true;
         }
+    }
 
+    [AutoloadEquip(EquipType.Body)]
+    public class ShadeWraithBody : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
 
+        public override void SetDefaults()
+        {
+            Item.width = 18; // Width of the item
+            Item.height = 18; // Height of the item
+            Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
+            Item.rare = ItemRarityID.Green; // The rarity of the item
+        }
+
+        public override void UpdateEquip(Player player)
+        {
+            var stats = player.GetStats();
+            stats.defenseBonus += 5;
+            stats.meleeDamage += 0.05f;
+        }
+    }
+    [AutoloadEquip(EquipType.Legs)]
+    public class ShadeWraithLegs : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 28;
+            Item.height = 22;
+            Item.value = 10000;
+            Item.rare = ItemRarityID.Green;
+        }
+
+        public override void UpdateEquip(Player player)
+        {
+            var stats = player.GetStats();
+            stats.meleeArmorPenetration += 3;
+            stats.defenseBonus += 4;
+        }
     }
 }

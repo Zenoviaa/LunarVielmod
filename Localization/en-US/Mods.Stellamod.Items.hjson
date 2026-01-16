@@ -2394,17 +2394,17 @@ LeatherLegs: {
 
 ShadeWraithBody: {
 	DisplayName: Shade Wraith Chainplate
-	Tooltip: Increased life by 20!
+	Tooltip: ""
 }
 
 ShadeWraithHead: {
 	DisplayName: Shade Wraith Mask
-	Tooltip: +2% Damage for all classes (except throwing)
+	Tooltip: ""
 }
 
 ShadeWraithLegs: {
 	DisplayName: Shade Wraith Pants
-	Tooltip: Slightly increased movement speed.
+	Tooltip: ""
 }
 
 TerricBody: {

@@ -1,3 +1,10 @@
+ShadeWraithHead: {
+	Log: Early-game decent melee, and attack speed armor
+	Type: Defensive
+	SetBonus: You gain 30% increased melee damage and movement speed when you drop below 40% health for 5 seconds!
+	Lore: An old armor made from granite, Manman made it himself, one of his least favorite works though...
+}
+
 CelestiaMoonHelmet: {
 	Log: Early-game high defensive armor
 	Type: Defensive
