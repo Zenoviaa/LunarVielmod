@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Armors.Lovestruck
+namespace Stellamod.Content.Armors.Lovestruck
 {
     public class LovestruckP : ModProjectile
     {

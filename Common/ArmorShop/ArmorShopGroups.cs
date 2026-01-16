@@ -2,6 +2,7 @@
 using Stellamod.Content.Armors.Celestia;
 using Stellamod.Content.Armors.ForestCore;
 using Stellamod.Content.Armors.Leather;
+using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Content.Armors.ShadeWraith;
 using Stellamod.Content.Armors.Winterborn;
 using Stellamod.Content.CommonMaterials;
@@ -21,7 +22,6 @@ using Stellamod.Items.Armors.HeavyMetal;
 using Stellamod.Items.Armors.Huntrian;
 using Stellamod.Items.Armors.Illurian;
 using Stellamod.Items.Armors.Jianxin;
-using Stellamod.Items.Armors.Lovestruck;
 using Stellamod.Items.Armors.LunarianVoid;
 using Stellamod.Items.Armors.Scrappy;
 using Stellamod.Items.Armors.Staffigy;

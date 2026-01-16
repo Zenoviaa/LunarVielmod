@@ -2,6 +2,7 @@
 using Stellamod.Buffs;
 using Stellamod.Buffs.Minions;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
+using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Core.ToolsSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -11,7 +12,6 @@ using Stellamod.Items.Armors.Alsis;
 using Stellamod.Items.Armors.Artisan;
 using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Govheil;
-using Stellamod.Items.Armors.Lovestruck;
 using Stellamod.Items.Armors.Terric;
 using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
