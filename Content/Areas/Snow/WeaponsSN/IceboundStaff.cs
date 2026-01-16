@@ -44,6 +44,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
     {
         private ref float Timer => ref Projectile.ai[0];
         private ref float IsLeader => ref Projectile.ai[1];
+        private ref float CooldownTimer => ref Projectile.ai[2];
         private Projectile Leader
         {
             get
@@ -214,7 +215,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             }
             Player player = Main.player[Projectile.owner];
             Projectile.spriteDirection = Projectile.direction;
-
+            CooldownTimer--;
             bool isLeader = Leader.whoAmI == Projectile.whoAmI;
             if (isLeader)
             {
@@ -224,7 +225,8 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
                     out Vector2 targetCenter);
                 if (foundTarget)
                 {
-                    AI_MoveToward(targetCenter, 12, 2);
+                    if(CooldownTimer <= 0)
+                        AI_MoveToward(targetCenter, 12, 1);
                 }
                 else
                 {
@@ -256,7 +258,8 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
                     float distanceToLeader = Vector2.Distance(Projectile.Center, targetCenter);
                     if (distanceToLeader > 64)
                     {
-                        AI_MoveToward(targetCenter, 16, 1);
+                        if (CooldownTimer <= 0)
+                            AI_MoveToward(targetCenter, 16, 1);
                     }
                 }
             }
@@ -269,6 +272,8 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             base.OnHitNPC(target, hit, damageDone);
             Projectile.velocity = Main.rand.NextVector2CircularEdge(16, 16);
             Projectile.velocity = Projectile.velocity.RotatedByRandom(MathHelper.TwoPi);
+            CooldownTimer = 5;
+            Projectile.netUpdate = true;
             if (Main.rand.NextBool(16))
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WinterStorm"), Projectile.position);

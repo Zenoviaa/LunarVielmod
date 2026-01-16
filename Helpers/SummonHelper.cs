@@ -322,10 +322,10 @@ namespace Stellamod.Helpers
             if (owner.HasMinionAttackTargetNPC)
             {
                 NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-                float between = Vector2.Distance(npc.Center, minion.Center);
+                float between = Vector2.Distance(npc.Center, owner.Center);
 
                 // Reasonable distance away so it doesn't target across multiple screens
-                if (between < 2000f)
+                if (between < 600)
                 {
                     distanceFromTarget = between;
                     targetCenter = npc.Center;
@@ -342,10 +342,10 @@ namespace Stellamod.Helpers
                         continue;
                     if (npc.CanBeChasedBy())
                     {
-                        float between = Vector2.Distance(npc.Center, minion.Center);
+                        float between = Vector2.Distance(npc.Center, owner.Center);
                         bool closest = Vector2.Distance(minion.Center, targetCenter) > between;
                         bool inRange = between < distanceFromTarget;
-                        bool lineOfSight = Collision.CanHitLine(minion.position, minion.width, minion.height, npc.position, npc.width, npc.height);
+                        bool lineOfSight = Collision.CanHitLine(owner.position, owner.width, owner.height, npc.position, npc.width, npc.height);
                         if (((closest && inRange) || !foundTarget) && lineOfSight)
                         {
                             distanceFromTarget = between;
@@ -357,21 +357,6 @@ namespace Stellamod.Helpers
             }
         }
 
-        public static NPC NearestChaseableNPC(Vector2 position)
-        {
-            NPC found = null;
-            float dist = float.MaxValue;
-            foreach (var npc in Main.ActiveNPCs)
-            {
-                float distanceToNPC = Vector2.Distance(position, npc.position);
-                if (distanceToNPC < dist)
-                {
-                    dist = distanceToNPC;
-                    found = npc;
-                }
-            }
-            return found;
-        }
         public static void SearchForTargetsThroughTiles(Player owner, Projectile minion, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter, float startingSearchDistanceFromTarget = 700f)
         {
             // Starting search distance

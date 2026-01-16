@@ -36,7 +36,7 @@ namespace Stellamod.Items.Consumables
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<GlisteningOre>(), 25);
+            recipe.AddIngredient(ModContent.ItemType<GlisteningOre>(), 5);
             recipe.Register();
         }
 

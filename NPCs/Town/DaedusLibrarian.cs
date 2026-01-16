@@ -113,7 +113,7 @@ namespace Stellamod.NPCs.Town
             NPC.friendly = true; // NPC Will not attack player
             NPC.width = 128;
             NPC.height = 128;
-            NPC.aiStyle = 0;
+            NPC.aiStyle = -1;
             NPC.damage = 90;
             NPC.defense = 42;
             NPC.lifeMax = 2000;

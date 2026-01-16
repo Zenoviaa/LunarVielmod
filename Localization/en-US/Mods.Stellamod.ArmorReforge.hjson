@@ -6,13 +6,13 @@ GreatEyed: {
 	Downside: -15% damage
 }
 
-Artificticious:{
+Artificticious: {
 	DisplayName: Artificticious
 	Upside: -25% artifact mana cost
 	Downside: -10% damage
 }
 
-GraftProtected:{
+GraftProtected: {
 	DisplayName: Graft-Protected
 	Upside: +10% general endurance
 	Downside:
@@ -22,7 +22,7 @@ GraftProtected:{
 		'''
 }
 
-RavenousRaged:{
+RavenousRaged: {
 	DisplayName: Ravenous-Raged
 	Upside: +30% melee attack speed
 	Downside:
@@ -32,25 +32,19 @@ RavenousRaged:{
 		'''
 }
 
-Drugged:{
+Drugged: {
 	DisplayName: Drugged
 	Upside:
 		'''
 		+2 insource slots
 		+5% damage
 		'''
-	Downside:
-		'''
-		-100% incoming damage
-		'''
+	Downside: +100% incoming damage
 }
 
-Critical:{
+Critical: {
 	DisplayName: Critical
-	Upside:
-		'''
-		+15% critical strike chance
-		'''
+	Upside: +15% critical strike chance
 	Downside:
 		'''
 		-40% critical strike damage
@@ -58,21 +52,11 @@ Critical:{
 		'''
 }
 
-
-Credited:{
+Credited: {
 	DisplayName: Credited
-	Upside:
-		'''
-		+75% critical strike damage
-		'''
-	Downside:
-		'''
-		-50 health
-		'''
+	Upside: +75% critical strike damage
+	Downside: -50 health
 }
-
-
-
 
 Sharpening: {
 	DisplayName: Sharpening
@@ -202,7 +186,7 @@ Vampiric: {
 
 RogueThrown: {
 	DisplayName: RogueThrown
-	Upside: +12% throwing damage
+	Upside: +12% ranged damage
 	Downside:
 		'''
 		+18% incoming damage
@@ -383,4 +367,34 @@ Demolighting: {
 Slashing: {
 	DisplayName: Slashing
 	Upside: -6% incoming contact damage
+}
+
+Targetted: {
+	DisplayName: Targetted
+	Upside: +10 aggro
+}
+
+DeadEyed: {
+	DisplayName: Dead-Eyed
+	Upside: +25% critical strike damage
+}
+
+Protected: {
+	DisplayName: Protected
+	Upside: +2% general endurance
+}
+
+Bossy: {
+	DisplayName: Bossy
+	Upside: +4% boss endurance
+}
+
+Penetrative: {
+	DisplayName: Penetrative
+	Upside: +3 armor penetration
+}
+
+MeleeSpeed: {
+	DisplayName: Melee Speed
+	Upside: +7% melee attack speed
 }

@@ -55,7 +55,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted.Projectiles
         {
             base.AI();
             NPC.rotation += Main.rand.NextFloat(0.01f, 0.02f);
-            NPC.TargetClosest();
+            if(!NPC.HasValidTarget)
+                NPC.TargetClosest();
             Player target = Main.player[NPC.target];
 
             AttackTimer++;

@@ -2,6 +2,7 @@
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
+using Stellamod.Core;
 using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Core.ZTileSystem;
@@ -239,6 +240,14 @@ namespace Stellamod
                         }
                     }
 
+                    break;
+
+                case MessageType.AggroSync:
+                    {
+                        int seed = reader.ReadInt32();
+                        AggroSystem aggroSystem = ModContent.GetInstance<AggroSystem>();
+                        aggroSystem.seed = seed;
+                    }
                     break;
             }
         }

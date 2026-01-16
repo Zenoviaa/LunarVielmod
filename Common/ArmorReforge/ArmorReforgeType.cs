@@ -35,6 +35,14 @@
         Feathered,
         Shattered,
         Clerical,
-        Summoned
+        Summoned,
+        GreatEyed,
+        Artificticious,
+        GraftProtected,
+        RavenousRaged,
+        Drugged,
+        Critical,
+        Credited,
+
     }
 }

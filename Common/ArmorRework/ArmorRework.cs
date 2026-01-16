@@ -6,6 +6,7 @@ using ReLogic.Graphics;
 using Stellamod.Buffs;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.XixianFlaskSystem;
+using Stellamod.Core;
 using Stellamod.Core.Tooltips;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -1359,7 +1360,9 @@ namespace Stellamod.Common.ArmorRework
 
             Player.GetDamage(DamageClass.Melee) += meleeDamage;
             Player.GetArmorPenetration(DamageClass.Melee) += meleeArmorPenetration;
-            Player.aggro += meleeAggressiveness;
+            AggroSystem aggroSystem = ModContent.GetInstance<AggroSystem>();
+            aggroSystem.aggro[Player.whoAmI] += meleeAggressiveness;
+
             Player.GetDamage(DamageClass.Ranged) += rangedDamage;
             Player.GetDamage(DamageClass.Magic) += magicDamage;
             Player.statManaMax2 += totalMana;

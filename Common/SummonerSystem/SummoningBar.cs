@@ -22,6 +22,7 @@ namespace Stellamod.Common.SummonerSystem
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
+            Projectile.timeLeft = 10;
         }
 
         public override void AI()

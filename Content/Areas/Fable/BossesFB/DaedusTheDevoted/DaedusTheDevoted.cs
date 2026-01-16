@@ -612,7 +612,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             NPC.boss = true;
             NPC.npcSlots = 10f;
             NPC.takenDamageMultiplier = 0.9f;
-            NPC.aiStyle = 0;
+            NPC.aiStyle = -1;
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Daedus");
         }
 
@@ -932,7 +932,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             Timer++;
             if(Timer == 1)
             {
-                NPC.TargetClosest();
+                //      NPC.TargetClosest();
+                NPC.TargetClosestByAggro();
             }
           
             if (!NPC.HasValidTarget)

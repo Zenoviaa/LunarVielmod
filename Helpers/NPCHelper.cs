@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -7,6 +6,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
+
     public static class NPCHelper
     {
         public static void Kill(this NPC npc)

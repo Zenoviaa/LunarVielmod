@@ -12,6 +12,12 @@
         Powding,
         Exploding,
         Demolighting,
-        Slashing
+        Slashing,
+        Targetted,
+        DeadEyed,
+        Protected,
+        Bossy,
+        Penetrative,
+        MeleeSpeed
     }
 }

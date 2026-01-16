@@ -8,6 +8,7 @@ using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -95,7 +96,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
 
             //Setup the music and boss bar
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Jack");
-            NPC.aiStyle = 0;
+            NPC.aiStyle = -1;
 
         }
 
@@ -173,7 +174,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             SpriteEffects spriteEffects = NPC.spriteDirection != -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPos = NPC.Center - screenPos;
-            drawPos.Y -= 8;
             float outlineOffset = 2;
             Vector2 left = Vector2.UnitX * -outlineOffset;
             Vector2 right = Vector2.UnitX * outlineOffset;
@@ -240,14 +240,16 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            return base.PreDraw(spriteBatch, screenPos, drawColor);
+            spriteBatch.Draw(TextureAssets.Npc[Type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, effects, 0);
+            return false;
         }
 
         public override void AI()
         {
             base.AI();
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
-
+            NPC.direction = Target.Center.X < NPC.Center.X ? -1 : 1;
+            NPC.spriteDirection = NPC.direction;
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
@@ -625,7 +627,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
                     {
                         NPC.TargetClosest();
                         float jumpSpeed = 5;
-                        float jumpHorizontalSpeed = 12;
+                        float jumpHorizontalSpeed = 6;
                         if (InPhase2)
                         {
                             jumpSpeed *= 0.85f;

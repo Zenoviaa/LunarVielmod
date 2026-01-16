@@ -223,7 +223,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         private void AI_Idle()
         {
             Timer++;
-
+            _animation = AnimationState.Idle;
             Projectile.tileCollide = true;
             Projectile.spriteDirection = Owner.Center.X < Projectile.Center.X ? 1 : -1;
             Projectile.velocity.X *= 0.9f;

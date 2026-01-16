@@ -154,6 +154,25 @@ namespace Stellamod.Common.ArmorReforge
                 case AccessoryReforgeType.Slashing:
                     player.GetModPlayer<ContactDamageReductionPlayer>().contactEndurance += 0.06f;
                     break;
+                case AccessoryReforgeType.Targetted:
+                    player.GetStats().meleeAggressiveness += 100;
+                    break;
+                case AccessoryReforgeType.DeadEyed:
+                    player.GetStats().criticalStrikeDamage += 0.25f;
+                    break;
+                case AccessoryReforgeType.Protected:
+                    player.GetStats().generalEndurance += 0.02f;
+                    break;
+                case AccessoryReforgeType.Bossy:
+                    player.GetStats().bossEndurance += 0.04f;
+                    break;
+                case AccessoryReforgeType.Penetrative:
+                    player.GetArmorPenetration(DamageClass.Generic) += 3;
+                    break;
+                case AccessoryReforgeType.MeleeSpeed:
+                    player.GetStats().meleeAttackSpeed += 0.07f;
+                    break;
+
             }
         }
 
@@ -285,7 +304,7 @@ namespace Stellamod.Common.ArmorReforge
                     player.endurance -= 0.1f;
                     break;
                 case ArmorReforgeType.RogueThrown:
-                    player.GetDamage(DamageClass.Throwing) += 0.12f;
+                    player.GetDamage(DamageClass.Ranged) += 0.12f;
                     player.endurance -= 0.18f;
                     player.statLifeMax2 -= 40;
                     player.lifeRegen -= 2;
@@ -365,7 +384,7 @@ namespace Stellamod.Common.ArmorReforge
                     player.GetModPlayer<ArmorStatsPlayer>().criticalStrikeDamage += 1f;
                     player.GetDamage(DamageClass.Generic) -= 0.15f;
                     break;
-                case ArmorReforgeType.Artificiticious:
+                case ArmorReforgeType.Artificticious:
                     player.GetStats().artifactManaReduction += 0.25f;
                     player.GetDamage(DamageClass.Generic) -= 0.1f;
                     break;

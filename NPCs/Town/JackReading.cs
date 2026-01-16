@@ -58,7 +58,7 @@ namespace Stellamod.NPCs.Town
             NPC.friendly = true; // NPC Will not attack player
             NPC.width = 54;
             NPC.height = 65;
-            NPC.aiStyle = 0;
+            NPC.aiStyle = -1;
             NPC.damage = 90;
             NPC.defense = 42;
             NPC.lifeMax = 2000;
@@ -70,6 +70,11 @@ namespace Stellamod.NPCs.Town
             NPC.BossBar = Main.BigBossProgressBar.NeverValid;
             SpawnAtPoint = true;
             HasTownDialogue = true;
+        }
+        public override void AI()
+        {
+            base.AI();
+
         }
 
         public override void FindFrame(int frameHeight)

@@ -1,5 +1,7 @@
 ﻿using Stellamod.Common.ArmorRework;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
+using Stellamod.Core;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -145,6 +147,7 @@ namespace Stellamod.Common.SummonerSystem
 
             Main.player[_playerIndex] = _fakePlayerQueue.Dequeue();
             Player playerToUse = Main.player[_playerIndex];
+            playerToUse.whoAmI = _playerIndex;
             _needsFixing[_playerIndex] = true;
             _playerIndex++;
             return playerToUse;
@@ -162,13 +165,17 @@ namespace Stellamod.Common.SummonerSystem
                 if (proj.ModProjectile is ITargetable targetable)
                 {
                     Player player = GetFreePlayer();
+                    player.ResetEffects();
                     player.active = true;
                     player.dead = false;
                     player.position = proj.position;
+                    player.name = proj.Name;
 
                     ArmorStatsPlayer statsPlayer = Main.player[proj.owner].GetModPlayer<ArmorStatsPlayer>();
                     int baseAggro = targetable.GetAggro();
-                    player.aggro += baseAggro + statsPlayer.minionAggressiveness;
+
+                    AggroSystem aggroSystem = ModContent.GetInstance<AggroSystem>();
+                    aggroSystem.aggro[player.whoAmI] += baseAggro + statsPlayer.minionAggressiveness;
                 }
             }
         }

@@ -26,7 +26,8 @@
         BreakRibbon,
 
         PlaceDecoration,
-        BreakDecoration
+        BreakDecoration,
+        AggroSync
     }
 
     public enum DialogueType : byte
