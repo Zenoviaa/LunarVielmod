@@ -71,13 +71,13 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 
             //A square has 4 90 degree angles
             //We'll add a margin of error though so you can still mess up a little bit and get credit for it
-            float marginOfError = 20;
+            float marginOfError = 30;
             float targetAngle = 120;
             float numMatches = ShapeUtilities.CountAngles(lines, targetAngle, marginOfError);
 
             //Finally check that this is roughly a closed shape
             //Pretty sure that a simple distance check can't realistically be cheated
-            float distanceToEndPointThreshold = 120;
+            float distanceToEndPointThreshold = 200;
             bool startAndEndPointsMeet = Vector2.Distance(lines[0].a, lines[lines.Count - 1].b) <= distanceToEndPointThreshold;
             return numMatches >= 3 && startAndEndPointsMeet;
         }

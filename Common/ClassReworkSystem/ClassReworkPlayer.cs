@@ -96,7 +96,6 @@ namespace Stellamod.Common.ClassReworkSystem
              * You get better dodging options, as well as using Runes, Chakrams and Orbs to empower your friends and attack your foes to keep them alive. 
              * +1 Summon, +1 Stamina +2 Insource Slots
              */
-            Player.maxMinions++;
             Player.GetModPlayer<DashPlayer>().MaxDashCount += 1;
             FlaskPlayer flaskPlayer = Player.GetModPlayer<FlaskPlayer>();
             flaskPlayer.maxInsourceCount += 2;

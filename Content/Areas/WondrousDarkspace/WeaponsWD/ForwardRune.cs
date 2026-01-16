@@ -54,13 +54,13 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 
             //A square has 4 90 degree angles
             //We'll add a margin of error though so you can still mess up a little bit and get credit for it
-            float marginOfError = 30;
+            float marginOfError = 32;
             float targetAngle = 72;
             float numMatches = ShapeUtilities.CountAngles(lines, targetAngle, marginOfError);
 
             //Finally check that this is roughly a closed shape
             //Pretty sure that a simple distance check can't realistically be cheated
-            float distanceToEndPointThreshold = 120;
+            float distanceToEndPointThreshold = 180;
             bool startAndEndPointsMeet = Vector2.Distance(lines[0].a, lines[lines.Count - 1].b) <= distanceToEndPointThreshold;
             return numMatches >= 5 && startAndEndPointsMeet;
         }

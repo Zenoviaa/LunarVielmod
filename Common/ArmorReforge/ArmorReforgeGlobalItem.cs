@@ -361,6 +361,38 @@ namespace Stellamod.Common.ArmorReforge
                     player.maxMinions += 1;
 
                     break;
+                case ArmorReforgeType.GreatEyed:
+                    player.GetModPlayer<ArmorStatsPlayer>().criticalStrikeDamage += 1f;
+                    player.GetDamage(DamageClass.Generic) -= 0.15f;
+                    break;
+                case ArmorReforgeType.Artificiticious:
+                    player.GetStats().artifactManaReduction += 0.25f;
+                    player.GetDamage(DamageClass.Generic) -= 0.1f;
+                    break;
+                case ArmorReforgeType.GraftProtected:
+                    player.GetStats().generalEndurance += 0.1f;
+                    player.GetDamage(DamageClass.Generic) -= 0.05f;
+                    player.GetStats().movementSpeedBonus -= 0.2f;
+                    break;
+                case ArmorReforgeType.RavenousRaged:
+                    player.GetStats().meleeAttackSpeed += 0.3f;
+                    player.GetDamage(DamageClass.Generic) -= 0.05f;
+                    player.GetStats().generalEndurance -= 0.15f;
+                    break;
+                case ArmorReforgeType.Drugged:
+                    player.GetStats().insourceSlots += 2;
+                    player.GetDamage(DamageClass.Generic) += 0.05f;
+                    player.endurance -= 1;
+                    break;
+                case ArmorReforgeType.Critical:
+                    player.GetStats().criticalStrikeChance += 0.15f;
+                    player.GetStats().criticalStrikeDamage -= 0.4f;
+                    player.GetStats().movementSpeedBonus -= 0.2f;
+                    break;
+                case ArmorReforgeType.Credited:
+                    player.GetStats().healthBonus -= 50;
+                    player.GetStats().criticalStrikeDamage += 0.75f;
+                    break;
             }
         }
 
