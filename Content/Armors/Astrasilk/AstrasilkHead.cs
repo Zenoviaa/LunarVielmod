@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Armors.Astrasilk
+namespace Stellamod.Content.Armors.Astrasilk
 {
     public class AstrasilkPlayer : ModPlayer
     {

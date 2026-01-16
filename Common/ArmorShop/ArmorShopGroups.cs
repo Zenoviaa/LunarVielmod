@@ -1,4 +1,5 @@
 ﻿using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
+using Stellamod.Content.Armors.Astrasilk;
 using Stellamod.Content.Armors.Celestia;
 using Stellamod.Content.Armors.ForestCore;
 using Stellamod.Content.Armors.Leather;
@@ -10,7 +11,6 @@ using Stellamod.Content.Items.Materials;
 using Stellamod.Items.Armors.AcidArmour;
 using Stellamod.Items.Armors.Appretience;
 using Stellamod.Items.Armors.Artisan;
-using Stellamod.Items.Armors.Astrasilk;
 using Stellamod.Items.Armors.Daeden;
 using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Elagent;
