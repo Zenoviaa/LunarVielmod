@@ -1,5 +1,5 @@
-﻿using Stellamod.Helpers;
-using Stellamod.Items.Armors.HeavyMetal;
+﻿using Stellamod.Content.Armors.HeavyMetal;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;

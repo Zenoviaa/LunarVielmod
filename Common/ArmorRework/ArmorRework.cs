@@ -1266,7 +1266,7 @@ namespace Stellamod.Common.ArmorRework
             AddLineIfDifferentInt("GunAmmoAmount", rangedGunAmmoAmount, originalStatsPlayer.rangedGunAmmoAmount);
             AddLineIfDifferentInt("Stealthiness", rangedStealthtiness, originalStatsPlayer.rangedStealthtiness);
             AddLineIfDifferent("SummonCastTime", summonCastTime, originalStatsPlayer.summonCastTime, invert: true);
-            AddLineIfDifferent("MinionSlots", minionSlots, originalStatsPlayer.minionSlots);
+            AddLineIfDifferentInt("MinionSlots", minionSlots, originalStatsPlayer.minionSlots);
             AddLineIfDifferent("MainMinionDamage", mainSummonDamage, originalStatsPlayer.mainSummonDamage);
             AddLineIfDifferent("MainMinionHealth", mainSummonHealth, originalStatsPlayer.mainSummonHealth);
             AddLineIfDifferent("MinionHealth", minionSummonHealth, originalStatsPlayer.minionSummonHealth);

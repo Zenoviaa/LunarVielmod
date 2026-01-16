@@ -2,6 +2,7 @@
 using Stellamod.Content.Armors.Astrasilk;
 using Stellamod.Content.Armors.Celestia;
 using Stellamod.Content.Armors.ForestCore;
+using Stellamod.Content.Armors.HeavyMetal;
 using Stellamod.Content.Armors.Leather;
 using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Content.Armors.ShadeWraith;
@@ -18,7 +19,6 @@ using Stellamod.Items.Armors.Eldritchian;
 using Stellamod.Items.Armors.Flower;
 using Stellamod.Items.Armors.Garbage;
 using Stellamod.Items.Armors.Govheil;
-using Stellamod.Items.Armors.HeavyMetal;
 using Stellamod.Items.Armors.Huntrian;
 using Stellamod.Items.Armors.Illurian;
 using Stellamod.Items.Armors.Jianxin;
