@@ -1,24 +1,17 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs.Minions;
+using Stellamod.Common.ArmorRework;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Summons.Minions
+namespace Stellamod.Content.Armors.ForestCore
 {
-    /*
-         * This minion shows a few mandatory things that make it behave properly. 
-         * Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
-         * If the player targets a certain NPC with right-click, it will fly through tiles to it
-         * If it isn't attacking, it will float near the player with minimal movement
-         */
-    public class FCMinionProj : ModProjectile
+    public class ForestCoreBow : ModProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("HMArncharMinion");
@@ -38,8 +31,8 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         public sealed override void SetDefaults()
         {
-            Projectile.width = 18;
-            Projectile.height = 28;
+            Projectile.width = 32;
+            Projectile.height = 32;
             // Makes the minion go through tiles freely
             Projectile.tileCollide = false;
 
@@ -65,19 +58,10 @@ namespace Stellamod.Projectiles.Summons.Minions
         {
             return true;
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
-        }
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.OrangeRed, Color.Transparent, completionRatio) * 0.7f;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -92,12 +76,13 @@ namespace Stellamod.Projectiles.Summons.Minions
             }
             return true;
         }
-
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            if (!SummonHelper.CheckMinionActive<FCMinionBuff>(player, Projectile))
+            ForestCorePlayer forestCorePlayer = player.GetModPlayer<ForestCorePlayer>();
+            if (!forestCorePlayer.hasForestCoreSet)
                 return;
+            Projectile.timeLeft = 2;
 
             #region General behavior
             Vector2 idlePosition = player.Center;
@@ -160,9 +145,8 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (!foundTarget)
             {
                 // This code is required either way, used for finding a target
-                for (int i = 0; i < Main.maxNPCs; i++)
+                foreach (NPC npc in Main.ActiveNPCs)
                 {
-                    NPC npc = Main.npc[i];
                     if (npc.CanBeChasedBy())
                     {
                         float between = Vector2.Distance(npc.Center, Projectile.Center);
@@ -208,8 +192,12 @@ namespace Stellamod.Projectiles.Summons.Minions
                     {
                         Vector2 direction = targetCenter - Projectile.Center;
                         var EntitySource = Projectile.GetSource_Death();
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
-                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ProjectileID.FireArrow, 6, 1, Main.myPlayer, 0, 0);
+                        if (this.OwnedByLocalClient())
+                        {
+                            Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, direction.X * 25, direction.Y * 25, ProjectileID.WoodenArrowFriendly, 
+                                Main.player[Projectile.owner].HeldItem.damage, 1, Projectile.owner, 0, 0);
+                        }
+
                         Projectile.ai[1] = 0;
                     }
 
@@ -294,6 +282,112 @@ namespace Stellamod.Projectiles.Summons.Minions
 
             // Some visuals here
             #endregion
+        }
+    }
+    public class ForestCorePlayer : ModPlayer
+    {
+        public bool hasForestCoreSet;
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            hasForestCoreSet = false;
+        }
+        public override void PostUpdateMiscEffects()
+        {
+            base.PostUpdateMiscEffects();
+            if (Main.myPlayer == Player.whoAmI && hasForestCoreSet)
+            {
+                int type = ModContent.ProjectileType<ForestCoreBow>();
+                if (Player.ownedProjectileCounts[type] == 0)
+                {
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, type, 6, 1, Player.whoAmI);
+                }
+            }
+            if (hasForestCoreSet)
+            {
+                Player.AddBuff(ModContent.BuffType<FCMinionBuff>(), 2);
+            }
+        }
+    }
+    [AutoloadEquip(EquipType.Head)]
+    public class ForestCoreHead : ModItem
+    {
+        public bool Spetalite = false;
+        public override void SetStaticDefaults()
+        {
+            ArmorSetSystem.RegisterArmorSet<ForestCoreHead, ForestCoreBody, ForestCoreLegs>();
+        }
+
+        public override void SetDefaults()
+        {
+            Item.width = 40;
+            Item.height = 30;
+            Item.value = 10000;
+            Item.rare = ItemRarityID.Blue;
+        }
+
+        public override void UpdateEquip(Player player)
+        {
+            ArmorStatsPlayer stats = player.GetModPlayer<ArmorStatsPlayer>();
+            stats.insourceTimeFlatBonus += 2;
+            stats.accessorySlots++;
+            stats.defenseBonus += 2;
+        }
+
+        public override bool IsArmorSet(Item head, Item body, Item legs)
+        {
+            return body.type == ModContent.ItemType<ForestCoreBody>() && legs.type == ModContent.ItemType<ForestCoreLegs>();
+        }
+
+        public override void ArmorSetShadows(Player player)
+        {
+            player.armorEffectDrawShadow = true;
+        }
+
+        public override void UpdateArmorSet(Player player)
+        {
+            ForestCorePlayer forestCorePlayer = player.GetModPlayer<ForestCorePlayer>();
+            forestCorePlayer.hasForestCoreSet = true;
+        }
+    }
+
+    [AutoloadEquip(EquipType.Body)]
+    public class ForestCoreBody : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 30;
+            Item.height = 30;
+            Item.value = Item.sellPrice(0, 0, 20, 0);
+            Item.rare = ItemRarityID.Blue;
+        }
+
+        public override void UpdateEquip(Player player)
+        {
+            ArmorStatsPlayer stats = player.GetModPlayer<ArmorStatsPlayer>();
+            stats.stamina += 1;
+            stats.accessorySlots++;
+            stats.defenseBonus += 2;
+        }
+    }
+
+    [AutoloadEquip(EquipType.Legs)]
+    public class ForestCoreLegs : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 28;
+            Item.height = 22;
+            Item.value = 10000;
+            Item.rare = ItemRarityID.Blue;
+        }
+
+        public override void UpdateEquip(Player player)
+        {
+            ArmorStatsPlayer stats = player.GetModPlayer<ArmorStatsPlayer>();
+            stats.inventorySlots += 3;
+            stats.insourceSlots+=2;
+            stats.defenseBonus += 1;
         }
     }
 }

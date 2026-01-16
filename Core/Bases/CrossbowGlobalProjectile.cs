@@ -7,6 +7,7 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Armors.Leather;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
@@ -53,16 +54,36 @@ namespace Stellamod.Core.Bases
             base.PostAI(projectile);
             if (!CrossbowShot)
                 return;
-
+            projectile.position += projectile.velocity;
             if (!Initialized)
             {
                 CrossbowOldPos = new Vector2[16];
 
                 projectile.extraUpdates += 1;
                 projectile.ArmorPenetration += 10;
+
+                Player owner = Main.player[projectile.owner];
+                LeatherPlayer leatherPlayer = owner.GetModPlayer<LeatherPlayer>();
+                if (leatherPlayer.hasLeatherSetBonus)
+                {
+                    ShockOvalSpawnParams spawnParams = new ShockOvalSpawnParams
+                    {
+                        innerColor = Color.White,
+                        outerColor = Color.DarkGray
+                    };
+                    ShockOvalParticle sp = ShockOvalParticle.Spawn(projectile.Center, -projectile.velocity * 0.4f, spawnParams);
+                    sp.color *= 0.2f;
+                    sp.Scale *= 0.9f;
+
+                    sp = ShockOvalParticle.Spawn(projectile.Center, -projectile.velocity * 0.2f, spawnParams);
+                    sp.color *= 0.2f;
+                    sp.Scale *= 0.6f;
+                }
+
                 Initialized = true;
             }
 
+            projectile.position += projectile.velocity * 0.25f;
             if(projectile.velocity.Length() < 15)
                 projectile.velocity *= 1.5f;
             for (int i = CrossbowOldPos.Length - 1; i > 0; i--)
@@ -148,10 +169,10 @@ namespace Stellamod.Core.Bases
                 return;
             }
 
-            if(projectile.penetrate <= 0)
+            if(projectile.penetrate <= 1)
             {
                 Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.position, projectile.velocity,
-    ModContent.ProjectileType<CrossbowLodgedArrow>(), projectile.damage, projectile.knockBack, projectile.owner,
+                    ModContent.ProjectileType<CrossbowLodgedArrow>(), projectile.damage, projectile.knockBack, projectile.owner,
     ai1: projectile.type, ai2: target.whoAmI);
 
                 float size = 0.12f + Main.rand.NextFloat(-0.04f, 0.04f);

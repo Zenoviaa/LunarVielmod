@@ -989,6 +989,7 @@ namespace Stellamod.Common.ArmorRework
         public int accessorySlots;
         public int insourceSlots;
         public int inventorySlots;
+        public float insourceTimeFlatBonus;
         public float insourceTimeBonus;
         public float movementSpeedBonus;
 

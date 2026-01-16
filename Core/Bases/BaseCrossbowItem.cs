@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -143,6 +144,7 @@ namespace Stellamod.Core.Bases
             Vector2 fireVelocity = shootParams.velocity * shootParams.speed;
             fireVelocity *= 3;
             fireVelocity *= shootParams.chargeStrength;
+
 
             float bowDamage = shootParams.damage * shootParams.chargeStrength;
             Projectile crossShot = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity,

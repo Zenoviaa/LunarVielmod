@@ -1,4 +1,5 @@
 ﻿using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
+using Stellamod.Content.Armors.ForestCore;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Items.Armors;
@@ -11,7 +12,6 @@ using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Elagent;
 using Stellamod.Items.Armors.Eldritchian;
 using Stellamod.Items.Armors.Flower;
-using Stellamod.Items.Armors.ForestCore;
 using Stellamod.Items.Armors.Garbage;
 using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Armors.HeavyMetal;
@@ -25,7 +25,6 @@ using Stellamod.Items.Armors.Scissorian;
 using Stellamod.Items.Armors.Scrappy;
 using Stellamod.Items.Armors.ShadeWraith;
 using Stellamod.Items.Armors.Staffigy;
-using Stellamod.Items.Armors.Stone;
 using Stellamod.Items.Armors.Terric;
 using Stellamod.Items.Armors.Ulven;
 using Stellamod.Items.Armors.Verl;
@@ -57,14 +56,6 @@ namespace Stellamod.Common.ArmorShop
             ivythornSet.AddLegs(ModContent.ItemType<ForestCoreLegs>());
             ivythornSet.SetMaterial(ModContent.ItemType<Ivythorn>());
             ivythornSet.Register();
-
-            //Stonia done
-            ArmorShopSet st = new ArmorShopSet();
-            st.AddHead(ModContent.ItemType<StoniaHat>());
-            st.AddBody(ModContent.ItemType<StoniaChestplate>());
-            st.AddLegs(ModContent.ItemType<StoniaBoots>());
-            st.SetMaterial(ItemID.StoneBlock);
-            st.Register();
 
             //leather done
             ArmorShopSet leth = new ArmorShopSet();
@@ -201,7 +192,7 @@ namespace Stellamod.Common.ArmorShop
             Ele.SetMaterial(ItemID.Feather);
             Ele.Register();
 
-      
+
 
             //---------- Hardmode
 

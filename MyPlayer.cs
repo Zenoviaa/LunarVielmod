@@ -940,23 +940,6 @@ namespace Stellamod
             }
 
 
-            if (FCArmor)
-            {
-                FCArmorTime++;
-                if (FCArmorTime <= 1)
-                {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CorsageRune1"), Player.position);
-                    var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<FCMinionProj>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
-                    player.AddBuff(ModContent.BuffType<FCMinionBuff>(), 99999);
-                }
-
-            }
-            else
-            {
-                player.ClearBuff(ModContent.BuffType<FCMinionBuff>());
-                FCArmorTime = 0;
-            }
 
             if (ZoneAcid || ZoneLab)
             {

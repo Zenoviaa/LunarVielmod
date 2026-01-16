@@ -14,6 +14,7 @@ namespace Stellamod.Assets
             public static Asset<Texture2D> MuzzleFlash;
             public static Asset<Texture2D> Shine;
             public static Asset<Texture2D> MagicCircle;
+            public static Asset<Texture2D> MagicCircle2;
         }
  
         public class LaserTextures
@@ -34,6 +35,8 @@ namespace Stellamod.Assets
             GlowMask.MuzzleFlash = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MuzzleFlash");
             GlowMask.Shine = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Shine");
             GlowMask.MagicCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MagicCircle1");
+            GlowMask.MagicCircle2 = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MagicCircle2");
+
 
 
             LaserTextures.TexturedLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser");
@@ -52,6 +55,7 @@ namespace Stellamod.Assets
             GlowMask.SimpleGlowCircle = null;
             GlowMask.Shine = null;
             GlowMask.MagicCircle = null;
+            GlowMask.MagicCircle2 = null;
 
             LaserTextures.TexturedLaser = null;
             LaserTextures.TexturedLaser2 = null;

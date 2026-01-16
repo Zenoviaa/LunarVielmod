@@ -258,7 +258,6 @@ SetBonus: {
 		Turns all your wooden arrows into flower arrows! Which when hitting a target,
 		splits into little golden shots that hit back!
 		'''
-	ForestCoreHead: Summons a forest bow to fight for you!
 	GarbageMask:
 		'''
 		Grants immunity to knockback!
@@ -340,7 +339,6 @@ SetBonus: {
 		Become greatly empowered for a short time when low on health!
 		Just one last breath...
 		'''
-	StoniaHat: Immunity to fall damage!
 	TerricHead:
 		'''
 		You build up magical crit chance over time!
@@ -690,35 +688,17 @@ GintzeMask: {
 
 StoniaBoots: {
 	DisplayName: Stonia Boots
-	Tooltip:
-		'''
-		Rizzy Stone
-		+2% Damage!
-		Heavily Increased Falling!
-		Woa rocks!
-		'''
+	Tooltip: ""
 }
 
 StoniaChestplate: {
 	DisplayName: Stonia Chestplate
-	Tooltip:
-		'''
-		Weak Stone?
-		+1% Damage!
-		+2 Penetration
-		+2 Critical Strike Chance!
-		'''
+	Tooltip: ""
 }
 
 StoniaHat: {
 	DisplayName: Stonia Hat
-	Tooltip:
-		'''
-		Happy Stone?
-		+3% Damage
-		+5 Penetration
-		+5 Critical Strike Chance!
-		'''
+	Tooltip: ""
 }
 
 AstolfoBody: {
@@ -2395,17 +2375,17 @@ ElagentLegs: {
 
 ForestCoreBody: {
 	DisplayName: Forest Core Chestplate
-	Tooltip: Increases crit chance by 2%
+	Tooltip: ""
 }
 
 ForestCoreHead: {
 	DisplayName: Forest Core Mask
-	Tooltip: Increases damage by 2
+	Tooltip: ""
 }
 
 ForestCoreLegs: {
 	DisplayName: Forest Core Pants
-	Tooltip: Increases movement speed by 10%
+	Tooltip: ""
 }
 
 HeavyMetalBody: {
@@ -2425,25 +2405,17 @@ HeavyMetalLegs: {
 
 LeatherBody: {
 	DisplayName: Leather Armor
-	Tooltip: 4% increased ranged crit chance
+	Tooltip: ""
 }
 
 LeatherHead: {
 	DisplayName: Leather Hat
-	Tooltip:
-		'''
-		4% increased ranged crit chance
-		10% increased ranged damage
-		'''
+	Tooltip: ""
 }
 
 LeatherLegs: {
 	DisplayName: Leather Legs
-	Tooltip:
-		'''
-		4% increased ranged crit chance
-		10% increased movement speed
-		'''
+	Tooltip: ""
 }
 
 ShadeWraithBody: {

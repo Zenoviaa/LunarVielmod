@@ -3,8 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.ArmorRework;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using Stellamod.Items.Armors.Leather;
+using Stellamod.Projectiles.Swords.Altride;
 using System;
 using System.IO;
 using Terraria;
@@ -24,6 +28,19 @@ namespace Stellamod.Core.Bases
         }
 
         //Texture assets that we need
+        private float _magicRingTimer;
+        private float _magicRingShootTimer;
+
+        private TexturedQuad _texturedQuad;
+        private TexturedQuad TexturedQuad
+        {
+            get
+            {
+                _texturedQuad ??= new TexturedQuad();
+                return _texturedQuad;
+            }
+        }
+
         private Asset<Texture2D> _crosshairTextureAsset;
         private Asset<Texture2D> _bloomlineTextureAsset;
 
@@ -134,6 +151,9 @@ namespace Stellamod.Core.Bases
         public virtual void AI_TakeAim()
         {
             Timer++;
+            _magicRingTimer++;
+            if (_magicRingTimer >= AimTime)
+                _magicRingTimer = AimTime;
             if (Timer == 1)
             {
                 SoundStyle crossbowPull = AssetRegistry.Sounds.Bow.CrossbowPull;
@@ -200,6 +220,7 @@ namespace Stellamod.Core.Bases
         public virtual void AI_AimFire()
         {
             Timer++;
+            _magicRingShootTimer++;
             if (Timer == 1)
             {
                 SoundStyle aimSound = AssetRegistry.Sounds.Bow.Aim;
@@ -310,6 +331,41 @@ namespace Stellamod.Core.Bases
             spriteBatch.Draw(_bloomlineTextureAsset.Value, Projectile.Center - Main.screenPosition, null, drawColor, rotation,
                aimLineOrigin, scale, SpriteEffects.None, 0);
         }
+        private void DrawPixelatedRings(GraphicsDevice graphicsDevice)
+        {
+            float ease = EasingFunction.InOutSine(_magicRingTimer / AimTime);
+            Vector2 ring1Scale = Vector2.Lerp(Vector2.Zero, Vector2.One * new Vector2(1, 0.35f), ease);
+
+            float perspectiveRotation = Main.GlobalTimeWrappedHourly * 8;
+            DrawRingInner(ring1Scale, Color.White, Vector2.Lerp(Vector2.Zero, Projectile.velocity.SafeNormalize(Vector2.Zero) * 48, ease), perspectiveRotation);
+        
+        }
+
+        private void DrawRingInner(Vector2 size, Color color, Vector2 velocity, float perspectiveRotation)
+        {
+            MagicCircleShader magicCircleShader = MagicCircleShader.Instance;
+
+            //Here we need to prepare the shader
+            float numFrames = 1f;
+            float f = 0;
+            Vector2 tiling = new Vector2(1f, 1f / numFrames);
+            Vector2 offset = new Vector2(0, f * 1f / numFrames);
+            Vector4 tilingOffset = new Vector4(offset.X, offset.Y, tiling.X, tiling.Y);
+            magicCircleShader.TilingOffset = tilingOffset;
+            magicCircleShader.RingTexture = AssetManager.GlowMask.MagicCircle2;
+
+            float ease = EasingFunction.InOutSine(_magicRingTimer / AimTime);
+            Color auraColor = Color.Lerp(Color.Black, Color.White, ease * 0.5f);
+            auraColor = auraColor.MultiplyRGB(color);
+
+            float radius = MathHelper.Lerp(45, 90, ease);
+            radius *= MathHelper.SmoothStep(1f, 0f, EasingFunction.OutCirc(_magicRingShootTimer / FireTime));
+            velocity *= MathHelper.SmoothStep(1f, 2f, EasingFunction.OutCirc(_magicRingShootTimer / FireTime));
+            TexturedQuad.CalculatePerspectiveCenterVertices(Projectile.Center + velocity, radius, radius, velocity.ToRotation(), perspectiveRotation);
+            TexturedQuad.SetColor(auraColor);
+            TexturedQuad.DrawWithShader(magicCircleShader);
+        }
+
 
         private void PixelatedCrosshairDraw(SpriteBatch spriteBatch, Vector2 screenPos)
         {
@@ -399,6 +455,27 @@ namespace Stellamod.Core.Bases
 
         public override bool PreDraw(ref Color lightColor)
         {
+            var leatherPlayer = Owner.GetModPlayer<LeatherPlayer>();
+            if (leatherPlayer.hasLeatherSetBonus)
+            {
+                PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedRings);
+                Texture2D glow = AssetManager.GlowMask.SimpleGlowCircle.Value;
+                Vector2 drawOrigin = glow.Size() / 2f;
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                Vector2 drawCenter = Projectile.Center - Main.screenPosition;
+
+
+                float ease = EasingFunction.InOutSine(_magicRingTimer / AimTime);
+                Vector2 offset = Vector2.Lerp(Vector2.Zero, Projectile.velocity.SafeNormalize(Vector2.Zero) * 48, ease);
+                drawCenter += offset;
+                Color glowColor = Color.Lerp(Color.White, Color.Black, 0.75f);
+                glowColor.A = 0;
+                Vector2 scale = new Vector2(0.5f, 1f) * 0.3f;
+                scale *= MathHelper.SmoothStep(0f, 1f, EasingFunction.InOutSine(_magicRingTimer / AimTime));
+                scale *= MathHelper.SmoothStep(1f, 0f, EasingFunction.OutCirc(_magicRingShootTimer / FireTime));
+                spriteBatch.Draw(glow, drawCenter, null, glowColor, Projectile.velocity.ToRotation(), drawOrigin, scale, SpriteEffects.None, 0);
+            }
+
             DrawAimingLines(ref lightColor);
             DrawSprite(ref lightColor);
             if (State == AIState.Take_Aim || State == AIState.Aim)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
+using Stellamod.Content.Armors.ForestCore;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Projectiles.Summons.Sentries;
@@ -91,7 +92,7 @@ namespace Stellamod.Buffs.Minions
         }
     }
 
-    public class FCMinionBuff : MinionBuff<FCMinionProj> { }
+    public class FCMinionBuff : MinionBuff<ForestCoreBow> { }
 
     public class HallowWandMinionBuff : MinionBuff<HallowWandMinionProj> { }
 
