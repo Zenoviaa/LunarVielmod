@@ -15,6 +15,7 @@ using Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
+using Stellamod.Content.Armors.Ravaging;
 using Stellamod.Helpers;
 using Terraria.ModLoader;
 
@@ -69,6 +70,9 @@ namespace Stellamod.Content.BossPages
             bossNPC = ModContent.GetInstance<WoodlandRavager>();
             progression = 3;
             flag = DownedBossFlag.Woodland_Ravager;
+            AddReward<RavagingHelmet>();
+            AddReward<RavagingChestplate>();
+            AddReward<RavagingLegs>();
         }
     }
 

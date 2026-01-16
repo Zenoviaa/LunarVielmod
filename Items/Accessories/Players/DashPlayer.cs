@@ -4,6 +4,7 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -105,6 +106,7 @@ namespace Stellamod.Items.Accessories.Players
         public int DashTimer = 0; // frames remaining in the dash
         public bool DoubleTapped = false;
         public bool DashAugmentEquipped = false;
+        public bool IsDashing { get; private set; }
         public BaseDashItem DashItem;
         public float DashCountTimer;
         public float MaxDashCountTimer;
@@ -117,6 +119,16 @@ namespace Stellamod.Items.Accessories.Players
         public float DashVelocityBonus;
         public int ExtraImmunityFramesBonus;
         public bool DashedThisFrame;
+
+        private HashSet<NPC> _dashedThroughSetBacking;
+        public HashSet<NPC> DashedThroughSet
+        {
+            get
+            {
+                _dashedThroughSetBacking ??= new HashSet<NPC>();
+                return _dashedThroughSetBacking;
+            }
+        }
         public static event Action<Player> OnDash;
         public static event Action<Player, int> OnUseStamina;
         public override void ResetEffects()
@@ -133,6 +145,8 @@ namespace Stellamod.Items.Accessories.Players
             DashVelocity = 10;
             DashDuration = 40;
             DashCooldown = 44;
+            IsDashing = DashTimer > 0;
+
             // ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
             // When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
             // If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
@@ -201,6 +215,7 @@ namespace Stellamod.Items.Accessories.Players
             {
                 float dashVelocity = DashVelocity;
                 dashVelocity *= (1.0f + DashRegenerationBonus);
+                DashedThroughSet.Clear();
                 DashCount--;
                 DashCountTimer = 0;
                 DashedThisFrame=true;

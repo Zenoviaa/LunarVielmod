@@ -114,6 +114,10 @@ namespace Stellamod.Common.BossBannerSystem
             this.GetLocalization(nameof(WhereToFind), () => "In Your Mom");
             this.GetLocalization(nameof(Lore), () => "Birthed by your mom");
         }
+        public void AddReward<T>() where T : ModItem
+        {
+            Rewards.Add(ModContent.GetInstance<T>().Item);
+        }
 
         public void AddReward(Item item)
         {

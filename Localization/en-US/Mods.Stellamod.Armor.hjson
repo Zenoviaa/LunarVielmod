@@ -1,3 +1,9 @@
+RavagingHelmet: {
+	Lore: An armor from an old ravaged beast, long stayed and love lived. The horns bear marks that no one person could cause, it has been beaten up for years on end, and it seems you came to give misery upon a creature and wear it for pride.
+	Type: Dodge
+	SetBonus: Your dash is longer and faster, and if you dash through an enemy a rock will fall on them
+}
+
 HeavyMetalHead: {
 	Log: Act I Minion summoner armor
 	Lore: Fashion for the ginzte people. Once a part of the Illuria, they gained their own sense of fashion to mimic their leader Ginztia, and now everyone wears it. The armor is heavy and weighted, but allows the wind to breeze through when it gets warm.

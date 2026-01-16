@@ -10306,3 +10306,18 @@ JackingJack: {
 	DisplayName: Jacking Jack
 	Tooltip: ""
 }
+
+RavagingChestplate: {
+	DisplayName: Ravaging Chestplate
+	Tooltip: ""
+}
+
+RavagingHelmet: {
+	DisplayName: Ravaging Helmet
+	Tooltip: ""
+}
+
+RavagingLegs: {
+	DisplayName: Ravaging Legs
+	Tooltip: ""
+}
