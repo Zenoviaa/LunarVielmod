@@ -263,12 +263,6 @@ SetBonus: {
 		Every few seconds you'll gain a major increase to Magic and Summon damage
 		+2 Summons!
 		'''
-	HeavyMetalHead:
-		'''
-		2 Gintze Guards come to fight for you
-		+1 Summons!
-		20% Reduced damage! Very Heavy, and defensive!
-		'''
 	HuntrianHelmet:
 		'''
 		Increases life regen by a big amount!
@@ -2339,17 +2333,17 @@ ForestCoreLegs: {
 
 HeavyMetalBody: {
 	DisplayName: Gintzl Chestplate
-	Tooltip: Just gives defense smh.
+	Tooltip: ""
 }
 
 HeavyMetalHead: {
 	DisplayName: Gintzl Mask
-	Tooltip: It has a good summon set bonus, trust me.
+	Tooltip: ""
 }
 
 HeavyMetalLegs: {
 	DisplayName: Gintzl Pants
-	Tooltip: +5% Movement speed
+	Tooltip: ""
 }
 
 LeatherBody: {

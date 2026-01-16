@@ -1,6 +1,8 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Particles;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -29,15 +31,16 @@ namespace Stellamod.Projectiles.Thrown
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.NextBool(2))
-                target.AddBuff(BuffID.Poisoned, 180);
+
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Projectile.penetrate--;
             if (Projectile.penetrate <= 0)
-                Projectile.Kill();
+            {
+
+            }
             else
             {
                 if (Projectile.velocity.X != oldVelocity.X)
@@ -83,7 +86,12 @@ namespace Stellamod.Projectiles.Thrown
             for (int i = 0; i < 2; i++)
             {
                 SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                var particle = Particle<DustParticle>.Spawn(Projectile.Center, Projectile.oldVelocity.RotatedByRandom(0.5f) * Main.rand.NextFloat(0.5f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                particle.gravity = 0;
+                particle.dampening = 0.05f;
             }
         }
     }
