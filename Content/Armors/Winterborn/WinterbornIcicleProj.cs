@@ -1,18 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-
-using Stellamod.Dusts;
-using Stellamod.Helpers;
+﻿using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Armors.Winterborn
+namespace Stellamod.Content.Armors.Winterborn
 {
     public class WinterbornIcicleProj : ModProjectile
     {
-        private float _dustTimer;
         private float Health
         {
             get => Projectile.ai[0];
@@ -48,6 +46,7 @@ namespace Stellamod.Items.Armors.Winterborn
         public override void AI()
         {
             Timer++;
+            Projectile.scale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 30f));
             if (Timer == 1 && Main.myPlayer == Projectile.owner)
             {
                 SoundEngine.PlaySound(SoundID.Item28, Projectile.position);
@@ -55,18 +54,13 @@ namespace Stellamod.Items.Armors.Winterborn
                 Projectile.netUpdate = true;
             }
 
-            _dustTimer++;
-            if (_dustTimer >= 24)
+            if (Main.rand.NextBool(32))
             {
-                _dustTimer = 0;
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
-                    ModContent.DustType<GunFlash>(), newColor: Color.LightCyan, Scale: 0.6f);
-                Dust.NewDustPerfect(Projectile.position,
-                    ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.NextFloat(0.2f, 1f)).RotatedByRandom(19.0), 0, Color.LightCyan, 0.5f).noGravity = true;
+                FlakeParticle fp = FlakeParticle.Spawn(Projectile.Center, Vector2.Zero);
+                fp.Scale *= 0.15f;
+                fp.gravity = 0;
             }
-
             AI_RotateAroundOwner();
-            AI_CollideWithProjectiles();
         }
 
         private void AI_RotateAroundOwner()
@@ -84,41 +78,27 @@ namespace Stellamod.Items.Armors.Winterborn
             //Projectile.rotation = Owner.Center.DirectionTo(Projectile.Center).ToRotation();
         }
 
-        private void AI_CollideWithProjectiles()
-        {
-            Rectangle myRect = Projectile.getRect();
-            for (int i = 0; i < Main.maxProjectiles; i++)
-            {
-                Projectile p = Main.projectile[i];
-                if (p.hostile)
-                {
-                    Rectangle otherRect = p.getRect();
-                    if (Projectile.Colliding(myRect, otherRect) && p.active && p.penetrate == 0)
-                    {
-                        for (int t = 0; t < 8; t++)
-                        {
-                            Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
-                            float scale = Main.rand.NextFloat(0.5f, 0.75f);
-                            Dust.NewDustPerfect(Projectile.Center, DustID.Ice, speed, newColor: Color.White, Scale: scale);
-                        }
-
-                        Health -= p.damage;
-                        if (Health <= 0)
-                        {
-                            Projectile.Kill();
-                        }
-
-                        SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
-                        p.Kill();
-
-                    }
-                }
-            }
-        }
-
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawHelper.DrawAdditiveAfterImage(Projectile, Color.LightCyan, Color.Transparent, ref lightColor);
+            var projectile = Projectile;
+            Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
+            int projFrames = Main.projFrames[projectile.type];
+            int frameHeight = texture.Height / projFrames;
+            int startY = frameHeight * projectile.frame;
+
+            Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
+            Vector2 drawOrigin = sourceRectangle.Size() / 2f;
+            //drawOrigin.X = projectile.spriteDirection == 1 ? sourceRectangle.Width - offsetX : offsetX;
+            for (int k = 0; k < projectile.oldPos.Length; k++)
+            {
+                Color startColor = Color.White;
+                Color endColor = Color.Black;
+                Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + drawOrigin;// + new Vector2(0f, projectile.gfxOffY);
+                Color color = projectile.GetAlpha(Color.Lerp(startColor, endColor, 1f / projectile.oldPos.Length * k) * (1f - 1f / projectile.oldPos.Length * k));
+                color = Color.Lerp(color, Color.Black, 0.85f);
+                color.A = 0;
+                Main.spriteBatch.Draw(texture, drawPos, sourceRectangle, color, projectile.oldRot[k], drawOrigin, projectile.scale, SpriteEffects.None, 0f);
+            }
             return base.PreDraw(ref lightColor);
         }
 
@@ -131,10 +111,11 @@ namespace Stellamod.Items.Armors.Winterborn
                 Dust.NewDustPerfect(Projectile.Center, DustID.Ice, speed, newColor: Color.White, Scale: scale);
             }
 
-            SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
+       
             Health -= damageDone;
             if (Health <= 0)
             {
+                SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
                 Projectile.Kill();
             }
         }

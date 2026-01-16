@@ -2450,17 +2450,17 @@ TerricLegs: {
 
 WinterbornBody: {
 	DisplayName: Winterborn Chestplate
-	Tooltip: +20 Health!
+	Tooltip: ""
 }
 
 WinterbornHead: {
 	DisplayName: Winterborn Robin Mask
-	Tooltip: Increased Mana Regeneration
+	Tooltip: ""
 }
 
 WinterbornLegs: {
 	DisplayName: Winterborn Pants
-	Tooltip: 10% Increased movement speed!
+	Tooltip: ""
 }
 
 DreadmireBag: {

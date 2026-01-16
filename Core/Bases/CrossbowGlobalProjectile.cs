@@ -1,19 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
+using Stellamod.Content.Armors.Leather;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Armors.Leather;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.IO;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -54,7 +50,10 @@ namespace Stellamod.Core.Bases
             base.PostAI(projectile);
             if (!CrossbowShot)
                 return;
-            projectile.position += projectile.velocity;
+
+            Player owner = Main.player[projectile.owner];
+            LeatherPlayer leatherPlayer = owner.GetModPlayer<LeatherPlayer>();
+     
             if (!Initialized)
             {
                 CrossbowOldPos = new Vector2[16];
@@ -62,8 +61,7 @@ namespace Stellamod.Core.Bases
                 projectile.extraUpdates += 1;
                 projectile.ArmorPenetration += 10;
 
-                Player owner = Main.player[projectile.owner];
-                LeatherPlayer leatherPlayer = owner.GetModPlayer<LeatherPlayer>();
+
                 if (leatherPlayer.hasLeatherSetBonus)
                 {
                     ShockOvalSpawnParams spawnParams = new ShockOvalSpawnParams
@@ -82,9 +80,12 @@ namespace Stellamod.Core.Bases
 
                 Initialized = true;
             }
+            if (leatherPlayer.hasLeatherSetBonus)
+            {
+                projectile.position += projectile.velocity * 0.25f;
+            }
 
-            projectile.position += projectile.velocity * 0.25f;
-            if(projectile.velocity.Length() < 15)
+            if (projectile.velocity.Length() < 15)
                 projectile.velocity *= 1.5f;
             for (int i = CrossbowOldPos.Length - 1; i > 0; i--)
             {
@@ -93,8 +94,8 @@ namespace Stellamod.Core.Bases
             if (CrossbowOldPos.Length > 0)
                 CrossbowOldPos[0] = projectile.position;
 
-           // projectile.velocity.Y -= 0.075f;
-       
+            // projectile.velocity.Y -= 0.075f;
+
         }
         private Color ColorFunction(float completionRatio)
         {
@@ -141,7 +142,7 @@ namespace Stellamod.Core.Bases
 
         public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
         {
-            if(!CrossbowShot)
+            if (!CrossbowShot)
                 return base.OnTileCollide(projectile, oldVelocity);
 
             bool shouldKill = base.OnTileCollide(projectile, oldVelocity);
@@ -169,7 +170,7 @@ namespace Stellamod.Core.Bases
                 return;
             }
 
-            if(projectile.penetrate <= 1)
+            if (projectile.penetrate <= 1)
             {
                 Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.position, projectile.velocity,
                     ModContent.ProjectileType<CrossbowLodgedArrow>(), projectile.damage, projectile.knockBack, projectile.owner,

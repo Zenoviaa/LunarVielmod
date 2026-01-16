@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Armors.Leather
+namespace Stellamod.Content.Armors.Leather
 {
     public class LeatherPlayer : ModPlayer
     {
