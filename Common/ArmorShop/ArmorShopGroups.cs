@@ -22,7 +22,6 @@ using Stellamod.Items.Armors.Illurian;
 using Stellamod.Items.Armors.Jianxin;
 using Stellamod.Items.Armors.Lovestruck;
 using Stellamod.Items.Armors.LunarianVoid;
-using Stellamod.Items.Armors.Scissorian;
 using Stellamod.Items.Armors.Scrappy;
 using Stellamod.Items.Armors.ShadeWraith;
 using Stellamod.Items.Armors.Staffigy;
@@ -88,14 +87,6 @@ namespace Stellamod.Common.ArmorShop
             SW.AddLegs(ModContent.ItemType<ShadeWraithLegs>());
             SW.SetMaterial(ItemID.GraniteBlock);
             SW.Register();
-
-            //Scissorian done
-            ArmorShopSet Ss = new ArmorShopSet();
-            Ss.AddHead(ModContent.ItemType<ScissorianMask>());
-            Ss.AddBody(ModContent.ItemType<ScrappyBody>());
-            Ss.AddLegs(ModContent.ItemType<ScissorianGreaves>());
-            Ss.SetMaterial(ModContent.ItemType<AuroreanStarI>());
-            Ss.Register();
 
             //lovestruck done
             ArmorShopSet los = new ArmorShopSet();
