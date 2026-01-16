@@ -6,6 +6,11 @@ namespace Stellamod.Assets
 {
     public class AssetManager : ModSystem
     {
+        public class Noise
+        {
+            public static Asset<Texture2D> Whirly;
+        }
+
         public class GlowMask
         {
             public static Asset<Texture2D> SpiralVortex;
@@ -44,6 +49,9 @@ namespace Stellamod.Assets
             LaserTextures.SnowflakeLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/SnowflakeLaser");
             LaserTextures.Lightning = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Lightning");
             LaserTextures.Lightning2 = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Lightning2");
+
+            Noise.Whirly = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Whirly");
+
         }
         public override void OnModUnload()
         {
@@ -62,6 +70,8 @@ namespace Stellamod.Assets
             LaserTextures.SnowflakeLaser = null;
             LaserTextures.Lightning = null;
             LaserTextures.Lightning2 = null;
+
+            Noise.Whirly = null;
         }
     }
 }

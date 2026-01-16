@@ -992,3 +992,13 @@ RuneHealing: {
 	DisplayName: Rune Healing
 	Description: Mods.Stellamod.Buffs.RuneHealing.Description
 }
+
+Celestially: {
+	DisplayName: Celestially
+	Description: You feel protected...
+}
+
+CelestiallyDown: {
+	DisplayName: Celestially Down
+	Description: You feel naked...
+}

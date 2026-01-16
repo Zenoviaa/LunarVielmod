@@ -1,10 +1,10 @@
 ﻿using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
+using Stellamod.Content.Armors.Celestia;
 using Stellamod.Content.Armors.ForestCore;
 using Stellamod.Content.Armors.Leather;
 using Stellamod.Content.Armors.Winterborn;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
-using Stellamod.Items.Armors;
 using Stellamod.Items.Armors.AcidArmour;
 using Stellamod.Items.Armors.Appretience;
 using Stellamod.Items.Armors.Artisan;
@@ -76,7 +76,6 @@ namespace Stellamod.Common.ArmorShop
             //Celestial Moon Set done
             ArmorShopSet celestiaMoonSet = new ArmorShopSet();
             celestiaMoonSet.AddHead(ModContent.ItemType<CelestiaMoonHelmet>());
-            celestiaMoonSet.AddHead(ModContent.ItemType<CelestiaMoonMask>());
             celestiaMoonSet.AddBody(ModContent.ItemType<CelestiaMoonBreastplate>());
             celestiaMoonSet.AddLegs(ModContent.ItemType<CelestiaMoonLegs>());
             celestiaMoonSet.SetMaterial(ModContent.ItemType<GlisteningOre>());

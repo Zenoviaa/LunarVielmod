@@ -1,3 +1,10 @@
+CelestiaMoonHelmet: {
+	Log: Early-game high defensive armor
+	Type: Defensive
+	SetBonus: You get a green aura around you that covers your body, that reduces the damage of the first hit every 30 seconds, by 50%!
+	Lore: One of the gifted armors from Celestia, a goddess that was no longer seen after the first God war, she gave protection and life and legends have it that all of the 7 sins had to try at the same time to take her down, nobody knows where she is today.
+}
+
 WinterbornHead: {
 	Log: Early-game ice magic armor
 	Type: Magic

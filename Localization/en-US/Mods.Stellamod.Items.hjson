@@ -17,6 +17,7 @@ Common: {
 		After it bounces, click it again midair to ricochet back again
 		Keep the combo going to gain a damage multiplier!
 		'''
+	Resisted: Resisted!
 	CanSwapped: Can be changed to{0}!
 	TypeSwapped: Damage Type Swapped!
 	PowderDamage: Increases igniter card damage by {0}%!
@@ -181,16 +182,6 @@ Common: {
 }
 
 SetBonus: {
-	CelestiaMoonHelmet:
-		'''
-		Increases life regen by a great amount!
-		Move faster and enemies  that hit you take damage back!
-		'''
-	CelestiaMoonMask:
-		'''
-		Increases life regen by a great amount!
-		Move faster and gain the effects of magic cuffs!
-		'''
 	VirulentHelm: Stand still to emit a toxic aura!
 	AcidMask: Stand still to emit a toxic aura!
 	AcidRobe: Stand still to emit a toxic aura!
@@ -580,39 +571,22 @@ ThornedBook: {
 
 CelestiaMoonBreastplate: {
 	DisplayName: Celestia Moon Breastplate
-	Tooltip:
-		'''
-		Magical essence of an empress!
-		+20 max mana and +1 minion slot
-		'''
+	Tooltip: ""
 }
 
 CelestiaMoonHelmet: {
 	DisplayName: Celestia Moon Helmet
-	Tooltip:
-		'''
-		Magical essence of an Emperor
-		+2% increased ranged and melee damage
-		+15 Health
-		'''
+	Tooltip: ""
 }
 
 CelestiaMoonLegs: {
 	DisplayName: Celestia Moon Leggings
-	Tooltip:
-		'''
-		Magical essence of an empress!
-		3% increased movement speed
-		'''
+	Tooltip: ""
 }
 
 CelestiaMoonMask: {
 	DisplayName: Celestia Moon Mask
-	Tooltip:
-		'''
-		Magical essence of an empress!
-		+20 Max mana and +1 Minion Slot
-		'''
+	Tooltip: ""
 }
 
 HuntrianBoots: {
