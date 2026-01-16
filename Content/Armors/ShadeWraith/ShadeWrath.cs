@@ -3,7 +3,7 @@ using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Armors.ShadeWraith
+namespace Stellamod.Content.Armors.ShadeWraith
 {
     public class ShadeWrath : ModBuff
     {

@@ -37,6 +37,7 @@ namespace Stellamod.Content.Armors.Leather
             var stats = player.GetStats();
             stats.criticalStrikeDamage += 0.25f;
             stats.defenseBonus += 2;
+            stats.accessorySlots += 1;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -87,6 +88,7 @@ namespace Stellamod.Content.Armors.Leather
             var stats = player.GetStats();
             stats.rangedBowChargeTime += 0.3f;
             stats.defenseBonus += 1;
+            stats.accessorySlots += 1;
         }
     }
 }

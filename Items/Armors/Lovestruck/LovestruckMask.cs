@@ -1,4 +1,4 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Common.ArmorRework;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -6,26 +6,46 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Items.Armors.Lovestruck
 {
-    // The AutoloadEquip attribute automatically attaches an equip texture to this item.
-    // Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
+    public class LovestruckPlayer : ModPlayer
+    {
+        public bool hasLovestruckSetBonus;
+        public float lovestruckTimer;
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            hasLovestruckSetBonus = false;
+        }
+        public override void PostUpdateMiscEffects()
+        {
+            base.PostUpdateMiscEffects();
+            if(lovestruckTimer > 0)
+            {
+                Player.loveStruck = true;
+                lovestruckTimer--;
+            }
+        }
+        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
+        {
+            base.OnHitByNPC(npc, hurtInfo);
+            if (hasLovestruckSetBonus)
+            {
+                lovestruckTimer = 30;
+                npc.AddBuff(BuffID.Burning, 720);
+                npc.AddBuff(BuffID.OnFire3, 720);
+                npc.AddBuff(BuffID.Frostburn, 360);
+                npc.AddBuff(BuffID.Confused, 720);
+                npc.AddBuff(BuffID.ShadowFlame, 120);
+            }
+        }
+    }
+
     [AutoloadEquip(EquipType.Head)]
     public class LovestruckMask : ModItem
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Lovestruck Mask");
-            /* Tooltip.SetDefault("Magical essence of an Lusting Goddess"
-				+ "\n+7% increased damage" +
-				"\n+40 Health"); */
-
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-
-            // If your head equipment should draw hair while drawn, use one of the following:
-            // ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
-            // ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat
-            // ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
-            // ArmorIDs.Head.Sets.DrawBackHair[Item.headSlot] = true;
-            // ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true; 
+            ArmorSetSystem.RegisterArmorSet<LovestruckMask, LovestruckBreastplate, LovestruckLegs>();
         }
 
         public override void SetDefaults()
@@ -34,32 +54,75 @@ namespace Stellamod.Items.Armors.Lovestruck
             Item.height = 18; // Height of the item
             Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
             Item.rare = ItemRarityID.Blue; // The rarity of the item
-            Item.defense = 1; // The amount of defense the item will give when equipped
         }
 
         public override void UpdateEquip(Player player)
         {
-            player.statLifeMax2 += 40;
-            player.GetDamage(DamageClass.Generic) *= 1.07f;
+            var stats = player.GetStats();
+            stats.defenseBonus += 4;
+            stats.summonCastTime += 0.1f;
+            stats.accessorySlots++;
         }
 
-        // IsArmorSet determines what armor pieces are needed for the setbonus to take effect
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
             return body.type == ModContent.ItemType<LovestruckBreastplate>() && legs.type == ModContent.ItemType<LovestruckLegs>();
         }
 
-        // UpdateArmorSet allows you to give set bonuses to the armor.
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = LangText.SetBonus(this);//"Increases life regen by a good amount!" + "\nEnemies become lovestruck when you are hit, or when you hit them!" + "\nThis weakens, burns and confuses, slows and does exponential damage"); // This is the setbonus tooltip
-            player.lifeRegen += 1;
-            player.GetModPlayer<MyPlayer>().Lovestruck = true;
-            player.loveStruck = true;
-            player.GetModPlayer<MyPlayer>().LovestruckBCooldown--;
+            player.GetModPlayer<LovestruckPlayer>().hasLovestruckSetBonus = true;
+      
+        }
+    }
 
+    [AutoloadEquip(EquipType.Body)]
+    public class LovestruckBreastplate : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
-        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+        public override void SetDefaults()
+        {
+            Item.width = 18; // Width of the item
+            Item.height = 18; // Height of the item
+            Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
+            Item.rare = ItemRarityID.Blue; // The rarity of the item
+        }
+
+        public override void UpdateEquip(Player player)
+        {
+            var stats = player.GetStats();
+            stats.defenseBonus += 5;
+            stats.mainSummonDamage += 0.25f;
+            stats.accessorySlots++;
+        }
+    }
+
+    [AutoloadEquip(EquipType.Legs)]
+    public class LovestruckLegs : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
+
+        public override void SetDefaults()
+        {
+            Item.width = 18; // Width of the item
+            Item.height = 18; // Height of the item
+            Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
+            Item.rare = ItemRarityID.Blue; // The rarity of the item
+        }
+
+        public override void UpdateEquip(Player player)
+        {
+            var stats = player.GetStats();
+            stats.defenseBonus += 4;
+            stats.minionAggressiveness += 100;
+        }
     }
 }

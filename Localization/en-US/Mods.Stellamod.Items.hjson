@@ -291,12 +291,6 @@ SetBonus: {
 		This aura also lessens enemy damage by 10% and damages enemies.
 		Enemies are less likely to target you!
 		'''
-	LovestruckMask:
-		'''
-		Increases life regen by an enormous amount!
-		Enemies become lovestruck when you are hit, or when you hit them!
-		This weakens, burns and confuses, slows and does exponential damage
-		'''
 	MardenthMask:
 		'''
 		Increases life regen
@@ -623,31 +617,17 @@ HuntrianHelmet: {
 
 LovestruckBreastplate: {
 	DisplayName: Lovestruck Breastplate
-	Tooltip:
-		'''
-		Feel the love!
-		+20 Health and +1 minion slot
-		'''
+	Tooltip: ""
 }
 
 LovestruckLegs: {
 	DisplayName: Lovestruck Thighs
-	Tooltip:
-		'''
-		Sexy!
-		10% increased movement speed
-		+20 Health
-		'''
+	Tooltip: ""
 }
 
 LovestruckMask: {
 	DisplayName: Lovestruck Mask
-	Tooltip:
-		'''
-		Magical essence of an Lusting Goddess
-		+7% increased damage
-		+40 Health
-		'''
+	Tooltip: ""
 }
 
 GintzeMask: {

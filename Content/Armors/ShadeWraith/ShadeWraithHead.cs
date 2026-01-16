@@ -5,7 +5,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Armors.ShadeWraith
+namespace Stellamod.Content.Armors.ShadeWraith
 {
     public class ShadeWraithPlayer : ModPlayer
     {
@@ -63,6 +63,7 @@ namespace Stellamod.Items.Armors.ShadeWraith
             var stats = player.GetStats();
             stats.meleeAttackSpeed += 0.25f;
             stats.defenseBonus += 4;
+            stats.accessorySlots++;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -103,6 +104,7 @@ namespace Stellamod.Items.Armors.ShadeWraith
             var stats = player.GetStats();
             stats.defenseBonus += 5;
             stats.meleeDamage += 0.05f;
+            stats.accessorySlots++;
         }
     }
     [AutoloadEquip(EquipType.Legs)]
@@ -121,6 +123,7 @@ namespace Stellamod.Items.Armors.ShadeWraith
             var stats = player.GetStats();
             stats.meleeArmorPenetration += 3;
             stats.defenseBonus += 4;
+            stats.accessorySlots++;
         }
     }
 }

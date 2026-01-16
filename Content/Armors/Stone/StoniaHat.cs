@@ -69,6 +69,7 @@ namespace Stellamod.Content.Armors.Stone
             ArmorStatsPlayer armorStatsPlayer = player.GetModPlayer<ArmorStatsPlayer>();
             armorStatsPlayer.defenseBonus += 3;
             armorStatsPlayer.generalEndurance += 0.05f;
+            armorStatsPlayer.accessorySlots += 1;
         }
     } 
   

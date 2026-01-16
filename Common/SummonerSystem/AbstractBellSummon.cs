@@ -30,7 +30,7 @@ namespace Stellamod.Common.SummonerSystem
         public static event Action<Projectile> OnKillMinion;
         public virtual int GetAggro()
         {
-            return -500;
+            return -50;
         }
 
         public override void SendExtraAI(BinaryWriter writer)

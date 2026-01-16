@@ -1,26 +1,33 @@
+LovestruckMask: {
+	Log: Act 1 summoner guardian armor
+	Lore: Blessed armor from the stars, said to never touch the outside of the armor, or else you’ll be forever attracted to it... I wonder how true that is.
+	Type: Summoner
+	SetBonus: Cheese-touch
+}
+
 ShadeWraithHead: {
-	Log: Early-game decent melee, and attack speed armor
+	Log: Act 1 decent melee, and attack speed armor
 	Type: Defensive
 	SetBonus: You gain 30% increased melee damage and movement speed when you drop below 40% health for 5 seconds!
 	Lore: An old armor made from granite, Manman made it himself, one of his least favorite works though...
 }
 
 CelestiaMoonHelmet: {
-	Log: Early-game high defensive armor
+	Log: Act 1 high defensive armor
 	Type: Defensive
 	SetBonus: You get a green aura around you that covers your body, that reduces the damage of the first hit every 30 seconds, by 50%!
 	Lore: One of the gifted armors from Celestia, a goddess that was no longer seen after the first God war, she gave protection and life and legends have it that all of the 7 sins had to try at the same time to take her down, nobody knows where she is today.
 }
 
 WinterbornHead: {
-	Log: Early-game ice magic armor
+	Log: Act 1 ice magic armor
 	Type: Magic
 	SetBonus: Gain up to 3 orbiting snowballs that hit enemies and fly around you. They can break, but they regenerate back!
 	Lore: A frozen armor carved and sculpted by the great sculptor Lia, nobody knows of her origins anymore but her statues appear everywhere, this is one of many that remain.
 }
 
 LeatherHead: {
-	Log: Early-game general ranged and crit armor
+	Log: Act 1 general ranged and crit armor
 	Type: Ranged
 	SetBonus: Makes all your bows have a spell circle around it when they are charging, it enhances arrow speed by 30%!
 	Lore: A simple hunter’s armor, used in hunting small animals made by a small tribe called the Veldi, usually made in red. The armor was sold to Manman because it wasn’t so.
@@ -33,7 +40,7 @@ StoniaHat: {
 }
 
 ForestCoreHead: {
-	Log: Early-game general resource armor
+	Log: Act 1 general resource armor
 	SetBonus: Has a bow that shoots arrows that follow, doing equal damage to the weapon you hold.
 	Type: Resource
 	Lore: An armor full of secrets and mystery, it holds what we know as plant life, and the armor itself photosynthesizes to carry the nutrients to provide the armor its abilities. Manman says this armor was made by a student of Zui's, who no longer is alive, so it holds some sentimental value to her. Apparently, they used to steal spells from others and try to pass it off as her own, but she's gone now aren�t they?
@@ -56,6 +63,7 @@ IllikenHelmet: {
 }
 
 DaediaMask: {
+	Log: Act 1 summoner armor
 	SetBonus: Summons a few flying moths to circle around you and attack nearby enemies
 	Type: Summoner
 	Lore: It represents a lazy goddess somewhere far away, its ties are endless and it resembles its form similar to even those who exist on this world, having the same sigil on its back that the Alca family own. Are they descendents of this Sin of Sloth?

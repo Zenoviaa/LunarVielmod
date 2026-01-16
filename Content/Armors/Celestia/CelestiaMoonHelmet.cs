@@ -186,6 +186,7 @@ namespace Stellamod.Content.Armors.Celestia
             var stats = player.GetStats();
             stats.defenseBonus += 5;
             stats.healthBonus += 35;
+            stats.accessorySlots++;
         }
 
         // IsArmorSet determines what armor pieces are needed for the setbonus to take effect
@@ -226,6 +227,7 @@ namespace Stellamod.Content.Armors.Celestia
             var stats = player.GetStats();
             stats.defenseBonus += 7;
             stats.generalEndurance += 0.2f;
+            stats.accessorySlots++;
         }
     }  
     
@@ -250,6 +252,7 @@ namespace Stellamod.Content.Armors.Celestia
             var stats = player.GetStats();
             stats.criticalStrikeChance += 0.03f;
             stats.defenseBonus += 3;
+            stats.accessorySlots++;
         }
     }
 }

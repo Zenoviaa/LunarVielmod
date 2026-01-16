@@ -59,6 +59,7 @@ namespace Stellamod.Content.Armors.Winterborn
             stats.criticalStrikeDamage += 0.1f;
             stats.artifactManaReduction += 0.35f;
             stats.defenseBonus += 2;
+            stats.accessorySlots++;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -94,6 +95,7 @@ namespace Stellamod.Content.Armors.Winterborn
             var stats = player.GetStats();
             stats.magicDamage += 0.07f;
             stats.defenseBonus += 4;
+            stats.accessorySlots++;
         }
     }
 
@@ -113,6 +115,7 @@ namespace Stellamod.Content.Armors.Winterborn
             var stats = player.GetStats();
             stats.totalMana += 40;
             stats.defenseBonus += 2;
+            stats.accessorySlots++;
         }
     }
 }
