@@ -19,7 +19,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 14;
+            Item.damage = 18;
             Item.shoot = ModContent.ProjectileType<InfernisSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<InfernisProj>();
             meleeWeaponType = MeleeWeaponType.Spear;

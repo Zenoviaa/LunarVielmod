@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.IgnitersNPowders;
+using Stellamod.Common.SummonerSystem;
 using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Helpers;
@@ -355,7 +356,8 @@ namespace Stellamod.Common.ArmorReforge
 
                     break;
                 case ArmorReforgeType.Summoned:
-                    player.endurance -= 0.15f;
+                    player.GetModPlayer<BellPlayer>().incomingDamageMultiplier += 0.85f;
+                    player.endurance -= 0.5f;
                     player.maxMinions += 1;
 
                     break;

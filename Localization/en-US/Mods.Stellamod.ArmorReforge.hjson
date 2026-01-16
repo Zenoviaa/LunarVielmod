@@ -254,7 +254,11 @@ Clerical: {
 Summoned: {
 	DisplayName: Summoned
 	Upside: +1 max minion
-	Downside: +15% incoming damage
+	Downside:
+		'''
+		+50% incoming damage to you!
+		+85% incoming damage to minions and guardians
+		'''
 }
 
 Hearty: {

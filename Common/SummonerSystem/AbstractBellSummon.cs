@@ -57,7 +57,7 @@ namespace Stellamod.Common.SummonerSystem
             if (!_spawnedMinionNPC && MultiplayerHelper.IsHost)
             {
                 _npcWhoAmI = NPC.NewNPC(Projectile.GetSource_FromThis(), (int)Projectile.Center.X, (int)Projectile.Center.Y,
-                    ModContent.NPCType<DummyNPC>(), ai1: lifetime);
+                    ModContent.NPCType<DummyNPC>(), ai1: lifetime, ai2: Projectile.owner);
                 _spawnedMinionNPC = true;
                 Projectile.netUpdate = true;
             }

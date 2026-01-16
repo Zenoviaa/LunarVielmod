@@ -26,6 +26,8 @@ namespace Stellamod.Common.SummonerSystem
         private float _totalAmountHealed;
         private ref float KillMyselfTimer => ref NPC.ai[0];
         private ref float Lifetime => ref NPC.ai[1];
+        private int Owner =>  (int)NPC.ai[2];
+        private Player MyOwner => Main.player[(int)Owner];
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -88,6 +90,13 @@ namespace Stellamod.Common.SummonerSystem
             {
                 NPC.active = false;
             }
+        }
+
+        public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyIncomingHit(ref modifiers);
+            BellPlayer bellPlayer = MyOwner.GetModPlayer<BellPlayer>();
+            modifiers.FinalDamage *= bellPlayer.incomingDamageMultiplier;
         }
 
         public override void HitEffect(NPC.HitInfo hit)
