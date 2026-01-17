@@ -107,11 +107,11 @@ namespace Stellamod.Core.StructureSelector
             }
         }
 
-        static Mod Mod = ModContent.GetInstance<Stellamod>();
 
         public void Refresh()
         {
             _grid.Clear();
+            Mod Mod = Stellamod.Instance;
             string[] filePaths = Directory.GetFiles(Main.SavePath + $"/ModSources/{Mod.Name}", "*.str",
                                          SearchOption.AllDirectories);
             Array.Sort(filePaths, new AlphabetComparer());

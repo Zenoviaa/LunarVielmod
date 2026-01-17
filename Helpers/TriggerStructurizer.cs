@@ -1,8 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.TriggersSystem;
+﻿using Stellamod.Core.TriggersSystem;
 using System.IO;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -11,7 +9,7 @@ namespace Stellamod.Helpers
     public static class TriggerStructurizer
     {
         private const string FileExtension = ".tle";
-        private static Mod Mod = ModContent.GetInstance<Stellamod>();
+        private static Mod Mod => Stellamod.Instance;
         public static void SaveStruct(string fileName, Point bottomLeft, Point topRight)
         {
             TriggerManager triggerManager = ModContent.GetInstance<TriggerManager>();
@@ -22,7 +20,7 @@ namespace Stellamod.Helpers
                 {
                     //tile
                     Point point = new Point(x, y);
-                    if(triggerManager.TryGetTrigger(point, out var trigger))
+                    if (triggerManager.TryGetTrigger(point, out var trigger))
                     {
                         int xOffset = x - bottomLeft.X;
                         int yOffset = bottomLeft.Y - y;
@@ -32,7 +30,7 @@ namespace Stellamod.Helpers
 
 
                         tag["_id"] = trigger.id;
-                        if(trigger is ISaveData saveData)
+                        if (trigger is ISaveData saveData)
                         {
                             saveData.SaveData(tag);
                         }
@@ -42,7 +40,7 @@ namespace Stellamod.Helpers
                     }
 
 
-                  
+
                 }
             }
 
@@ -79,7 +77,7 @@ namespace Stellamod.Helpers
                 int yOffset = element.Get<int>("_y");
                 int type = element.Get<int>("_id");
                 Trigger trigger = TriggerFactory.Create((TriggerID)type);
-               if(trigger is ISaveData saveData)
+                if (trigger is ISaveData saveData)
                 {
                     saveData.LoadData(element);
                 }

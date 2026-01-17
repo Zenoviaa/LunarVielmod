@@ -35,8 +35,8 @@ namespace Stellamod.Core.Waters
         {
             WaterPlayer.PostUpdateEvent -= UpdateActiveAddon;
             IL_Main.DoDraw -= AddWaterShader;
-            addons ??= null;
-            activeAddon ??= null;
+            addons = null;
+            activeAddon = null;
         }
 
         private void AddWaterShader(ILContext il)

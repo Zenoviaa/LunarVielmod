@@ -1,7 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets.Biomes;
+﻿using Stellamod.Assets.Biomes;
 using Stellamod.Content.Areas.Collosseum.WeaponsCL;
 using Stellamod.Content.Areas.Shop.ItemsShop;
 using Stellamod.Dusts;
@@ -14,7 +11,6 @@ using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Thrown;
-using Stellamod.Projectiles.Magic;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -71,6 +67,12 @@ namespace Stellamod.NPCs.Town
         {
             // Adds our Shimmer Head to the NPCHeadLoader.
             ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
+        }
+
+        public override void Unload()
+        {
+            base.Unload();
+            NPCProfile = null;
         }
 
         public override void SetStaticDefaults()

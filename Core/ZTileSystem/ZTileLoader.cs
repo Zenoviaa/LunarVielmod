@@ -21,6 +21,11 @@ public class ZTileLoader : ModSystem
         }
     }
 
+    public override void Unload()
+    {
+        base.Unload();
+        Tiles = null;
+    }
 
     public ZTile GetTile(ushort type)
     {

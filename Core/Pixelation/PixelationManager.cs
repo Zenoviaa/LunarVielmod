@@ -38,8 +38,8 @@ namespace Stellamod.Core.Pixelation
         public PixelTarget(int downSamples = 2, BlendState blendState = null)
         {
             _downSamples = downSamples;
-            _downScaleRenderTarget = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize, downSamples);
-            _originalRenderTarget = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
+            _downScaleRenderTarget = ManagedRenderTarget.New(null, downSamples);
+            _originalRenderTarget = ManagedRenderTarget.New();
             _spritebatchActionsQueue = new Queue<SpritebatchDrawAction>(100);
             _primitivesActionsQueue = new Queue<PrimitivesDrawAction>(100);
             _blendState = blendState == null ? BlendState.AlphaBlend : blendState;
@@ -179,7 +179,15 @@ namespace Stellamod.Core.Pixelation
         {
             base.OnModUnload();
             On_Main.CheckMonoliths -= ManageCustomRenderTargets;
+
         }
+        public override void Unload()
+        {
+            base.Unload();
+            _renderers = null;
+            _comparer = null;
+        }
+
         private void ManageCustomRenderTargets(On_Main.orig_CheckMonoliths orig)
         {
             if (!Main.gameMenu)
@@ -247,6 +255,19 @@ namespace Stellamod.Core.Pixelation
             _behindTilesPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
 
             _behindTilesOutlinePixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+        }
+        public override void Unload()
+        {
+            base.Unload();
+            _overNPCsPixelTarget = null;
+            _overNPCsPixelTargetWithOutline = null;
+            _behindNPCsPixelTargetWithOutline = null;
+            _overNPCsPixelTargetAdditive = null;
+            _frontGrassPixelTarget = null;
+            _backGrassPixelTarget = null;
+            _overPlayersPixelTarget = null;
+            _behindTilesPixelTarget = null;
+            _behindTilesOutlinePixelTarget = null;
         }
 
         private void RenderBehindTiles2(On_Main.orig_DoDraw_Tiles_NonSolid orig, Main self)

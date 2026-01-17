@@ -95,6 +95,15 @@ namespace Stellamod.Common.BossBannerSystem
         public ModNPC bossNPC;
         public float progression;
         public DownedBossFlag flag;
+        public override void Unload()
+        {
+            base.Unload();
+            Rewards = null;
+            MasterModeRewards = null;
+            NoHitRewards = null;
+            bossNPC = null;
+        }
+
         protected sealed override void Register()
         {
             ModTypeLookup<BossPage>.Register(this);

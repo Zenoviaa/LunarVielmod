@@ -50,6 +50,15 @@ namespace Stellamod.Core.Particles
         public bool hasParent;
         public bool drawInUI;
 
+        public override void Unload()
+        {
+            base.Unload();
+            _textureAsset = null;
+            shader = null;
+            customShader = null;
+            parent = null;
+        }
+
         protected sealed override void Register()
         {
             ModTypeLookup<BaseParticle>.Register(this);

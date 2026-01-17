@@ -26,14 +26,17 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         {
             base.OnModLoad();
             _drawActionQueue = new Queue<PixelTarget.SpritebatchDrawAction>(100);
-            _iceRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
-            _icicleMaskRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
-            _icicleRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
+            _iceRT = ManagedRenderTarget.New();
+            _icicleMaskRT = ManagedRenderTarget.New();
+            _icicleRT = ManagedRenderTarget.New();
         }
 
         public override void OnModUnload()
         {
             base.OnModUnload();
+            _iceRT = null;
+            _icicleMaskRT = null;   
+            _icicleRT = null;
         }
 
         public void Render()

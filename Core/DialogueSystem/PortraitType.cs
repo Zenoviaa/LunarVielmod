@@ -24,6 +24,12 @@ namespace Stellamod.Core.DialogueSystem
             }
         }
 
+        public override void Unload()
+        {
+            base.Unload();
+            PortraitAssets = null;
+        }
+
         private static void LoadPortrait(int i, string fileName)
         {
             string texturePath = typeof(PortraitLoader).DirectoryHere() + "/"+fileName;

@@ -259,6 +259,7 @@ namespace Stellamod
             Instance = null;
             if (!Main.dedServ)
             {
+                ShaderRegistry.UnloadOrderedLoadables();
                 string backButton = "Terraria/Images/UI/Bestiary/Button_Back";
                 string forwardButton = "Terraria/Images/UI/Bestiary/Button_Forward";
 

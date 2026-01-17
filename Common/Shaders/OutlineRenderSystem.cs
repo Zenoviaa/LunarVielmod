@@ -25,7 +25,7 @@ namespace Stellamod.Common.Shaders
             On_Main.DrawNPCs += DrawOutlines;
             On_Main.CheckMonoliths += DrawToPlayerOutlineRT;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawPlayerOutlineRTToScreen;
-            _playerOutlineRenderRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
+            _playerOutlineRenderRT = ManagedRenderTarget.New();
         }
 
 

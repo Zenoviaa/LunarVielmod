@@ -1,6 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
+using Stellamod.Core.Utilities;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -16,55 +15,64 @@ namespace Stellamod.Common.SummonerSystem
     [Autoload(Side = ModSide.Client)]
     public class SpectralSummonDrawSystem : ModSystem
     {
-        private Vector2 _prevScreenSize;
-
-        private static RenderTarget2D _rt;
+        private ManagedRenderTarget _spectralRenderTarget;
         private static List<IDrawSpectral> _spectralDraws = new();
-
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            _spectralRenderTarget = ManagedRenderTarget.New();
+        }
 
         public override void Load()
         {
             On_Main.CheckMonoliths += DrawToCustomRenderTargets;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRenderTarget;
-
-            ResizeRenderTarget(true);
         }
 
         public override void Unload()
         {
             On_Main.CheckMonoliths -= DrawToCustomRenderTargets;
             On_Main.DoDraw_DrawNPCsOverTiles -= DrawPixelRenderTarget;
+            _spectralDraws?.Clear();
+            _spectralDraws = null;
+            _spectralRenderTarget = null;
         }
 
-        public override void PostUpdateEverything() => ResizeRenderTarget(false);
 
         private void DrawPixelRenderTarget(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
         {
             orig(self);
+            if (Main.gameMenu)
+                return;
+
             var shader = SpectralShader.Instance;
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
                 shader.Effect, Main.GameViewMatrix.TransformationMatrix);
-            Main.spriteBatch.Draw(_rt, Vector2.Zero, null, Color.White * 0.87f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(_spectralRenderTarget, Vector2.Zero, null, Color.White * 0.87f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             Main.spriteBatch.End();
         }
 
         private void DrawToCustomRenderTargets(On_Main.orig_CheckMonoliths orig)
         {
-            // Clear our render target from the previous frame.
-            _spectralDraws.Clear();
-            foreach (var proj in Main.ActiveProjectiles)
+            if (!Main.gameMenu)
             {
-                if (proj.ModProjectile is IDrawSpectral minion)
+                // Clear our render target from the previous frame.
+                _spectralDraws.Clear();
+                foreach (var proj in Main.ActiveProjectiles)
                 {
-                    _spectralDraws.Add(minion);
+                    if (proj.ModProjectile is IDrawSpectral minion)
+                    {
+                        _spectralDraws.Add(minion);
+                    }
                 }
+
+                // Draw the prims. The render target gets set here.
+                DrawToRenderTarget(_spectralRenderTarget, _spectralDraws);
+
+                // Clear the current render target.
+                Main.graphics.GraphicsDevice.SetRenderTarget(null);
+
             }
-
-            // Draw the prims. The render target gets set here.
-            DrawToRenderTarget(_rt, _spectralDraws);
-
-            // Clear the current render target.
-            Main.graphics.GraphicsDevice.SetRenderTarget(null);
 
             // Call orig.
             orig();
@@ -108,32 +116,6 @@ namespace Stellamod.Common.SummonerSystem
             graphicsDevice.SetRenderTarget(renderTarget);
             // "Flush" the screen, removing any previous things drawn to it.
             graphicsDevice.Clear(Color.Transparent);
-        }
-
-        private void ResizeRenderTarget(bool load)
-        {
-            // If not in the game menu, and we arent a dedicated server,
-            if (!Main.gameMenu && !Main.dedServ || load && !Main.dedServ)
-            {
-                // Get the current screen size.
-                Vector2 currentScreenSize = new(Main.screenWidth, Main.screenHeight);
-                // If it does not match the previous one, we need to update it.
-                if (currentScreenSize != _prevScreenSize)
-                {
-                    Main.QueueMainThreadAction(() =>
-                    {
-                        if (_rt != null && !_rt.IsDisposed)
-                            _rt.Dispose();
-
-                        _rt = new RenderTarget2D(Main.graphics.GraphicsDevice,
-                            Main.screenWidth,
-                            Main.screenHeight);
-                    });
-
-                }
-
-                _prevScreenSize = currentScreenSize;
-            }
         }
     }
 }

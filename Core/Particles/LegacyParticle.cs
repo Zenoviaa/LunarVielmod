@@ -31,6 +31,12 @@ namespace Stellamod.Core.Particles
         public Rectangle Frame;
         public ArmorShaderData shader;
         public BaseShader customShader;
+        public override void Unload()
+        {
+            base.Unload();
+            customShader = null;
+            shader = null;
+        }
 
         protected sealed override void Register()
         {

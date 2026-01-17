@@ -1,10 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using SteelSeries.GameSense;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
@@ -22,6 +18,21 @@ namespace Stellamod.Core.Palettes
             LoadPalettes();
         }
 
+        public override void Unload()
+        {
+            base.Unload();
+            if (_colorAtlas == null)
+                return;
+            Main.QueueMainThreadAction(() =>
+            {
+                foreach (var kvp in _colorAtlas)
+                {
+                    kvp.Value?.Dispose();
+                }
+                _colorAtlas = null;
+            });
+
+        }
 
         public static Texture3D GetColorSpectrum(string path)
         {
@@ -36,7 +47,7 @@ namespace Stellamod.Core.Palettes
             {
                 if (file.Contains(".pal"))
                 {
-            
+
                     Main.QueueMainThreadAction(() =>
                     {
                         using (var stream = mod.GetFileStream(file))
@@ -46,7 +57,7 @@ namespace Stellamod.Core.Palettes
                             Vector3[] palette = ReadPaletteVector3(stream);
                             Texture3D colorSpectrum = CreateColorSpectrumTexture(palette);
 
-                            _colorAtlas.Add(fileName, colorSpectrum);                    
+                            _colorAtlas.Add(fileName, colorSpectrum);
                         }
                     });
 
@@ -58,7 +69,7 @@ namespace Stellamod.Core.Palettes
             int lineNum = 1;
             int pal = 0;
             List<Vector3> palette = new List<Vector3>();
-          
+
             using (var streamReader = new StreamReader(stream))
             {
                 String line;
@@ -144,9 +155,9 @@ namespace Stellamod.Core.Palettes
 
             XYZ.X = XYZ.X / 95.047f;
             XYZ.Y = XYZ.Y / 100.0f;
-            XYZ.Z = XYZ.Z / 108.883f;  
+            XYZ.Z = XYZ.Z / 108.883f;
 
-           
+
             void XYZThing(ref float v)
             {
                 if (v > 0.008856)
@@ -295,10 +306,10 @@ namespace Stellamod.Core.Palettes
                         //Calculate RGB values based on the size of the texture
                         float r = x;
                         r /= dimension;
-         
+
                         float g = y;
                         g /= dimension;
-    
+
                         float b = z;
                         b /= dimension;
 
@@ -341,7 +352,7 @@ namespace Stellamod.Core.Palettes
                         rgb.Y = ((float)y / dimension) * 255f;
                         rgb.Z = ((float)z / dimension) * 255f;
 
-      
+
                         if (palette != null)
                         {
                             rgb = FindNearestColorInPalette(rgb, palette);

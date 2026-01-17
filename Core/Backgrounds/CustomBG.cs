@@ -20,6 +20,12 @@ namespace Stellamod.Core.Backgrounds
         public Color DrawColor;
         public bool IgnorePaletteShader;
         public float LocalParallaxSpeed=1f;
+        public override void Unload()
+        {
+            base.Unload();
+            Layers = null;
+        }
+
         public virtual bool IsActive()
         {
             return false;

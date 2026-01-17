@@ -10,7 +10,7 @@ namespace Stellamod.Helpers
     internal static class TileEntityStructurizer
     {
         private const string FileExtension = ".ten";
-        private static Mod Mod = ModContent.GetInstance<Stellamod>();
+        private static Mod Mod => Stellamod.Instance;
         public static void SaveStruct(string fileName, Point bottomLeft, Point topRight)
         {
             TagCompound root = new TagCompound();

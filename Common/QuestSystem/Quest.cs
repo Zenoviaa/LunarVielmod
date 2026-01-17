@@ -96,6 +96,11 @@ namespace Stellamod.Common.QuestSystem
             this.GetLocalization(nameof(IntroText), () => "");
         }
 
+        public override void Unload()
+        {
+            base.Unload();
+            _rewards = null;
+        }
         public void AddReward(int itemId, int stack)
         {
             Item item = new Item(itemId);

@@ -36,13 +36,18 @@ namespace Stellamod.Common.BossBannerSystem
             ModTypeLookup<BossBanner>.Register(this);
         }
 
+        public override void Unload()
+        {
+            base.Unload();
+            BannerTextureAsset = null;
+        }
         public sealed override void SetupContent()
         {
             base.SetupContent();
             SetStaticDefaults();
             this.GetLocalization(nameof(DisplayName), () => "");
             this.GetLocalization(nameof(Description), () => "");
-            BannerTextureAsset = RequestBannerTexture();
+  
         }
 
         public static BossPage[] GetBossPages(BossBannerType banner)
@@ -61,7 +66,7 @@ namespace Stellamod.Common.BossBannerSystem
         public static Asset<Texture2D> RequestTexture(string fileName)
         {
             Type type = typeof(BossBanner);
-            return ModContent.Request<Texture2D>(type.DirectoryHere() + "/" + fileName);
+            return ModContent.Request<Texture2D>(type.DirectoryHere() + "/" + fileName, AssetRequestMode.ImmediateLoad);
         }
 
         public static Asset<Texture2D> RequestBannerTexture()
@@ -101,6 +106,7 @@ namespace Stellamod.Common.BossBannerSystem
         }
         public static Rectangle GetBannerFrame(BossBannerType type)
         {
+            BannerTextureAsset ??= RequestBannerTexture();
             int frameIndex = (int)type;
             const int Frame_Height = 128;
             Rectangle frame = new Rectangle(0, frameIndex * Frame_Height, BannerTextureAsset.Value.Width, Frame_Height);

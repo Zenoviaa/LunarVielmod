@@ -5,6 +5,7 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -39,9 +40,9 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
     {
 
         private Point _oldScreenSize;
-        private RenderTarget2D _bloodBGRenderRT;
-        private RenderTarget2D _pixelRenderRT;
-        private RenderTarget2D _pixelScreenRenderRT;
+        private ManagedRenderTarget _bloodBGRenderRT;
+        private ManagedRenderTarget _pixelRenderRT;
+        private ManagedRenderTarget _pixelScreenRenderRT;
         private List<IDrawSanguineBlood> _draws = new List<IDrawSanguineBlood>(100);
 
         public int DownSamples => 4;
@@ -50,18 +51,22 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
         public override void OnModLoad()
         {
             base.OnModLoad();
+            _bloodBGRenderRT = ManagedRenderTarget.New();
+            _pixelRenderRT = ManagedRenderTarget.New(null, 4);
+            _pixelScreenRenderRT = ManagedRenderTarget.New();
+
             On_Main.CheckMonoliths += RenderToPixelationRT;
             On_Main.DrawNPCs += DrawBlack;
             On_Main.DoDraw_WallsTilesNPCs += DrawBloodRTToScreen;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawPixelRTToScreen;
-            Main.OnResolutionChanged += ResizeTargets;
 
         }
-
-        public override void Load()
+        public override void Unload()
         {
-            base.Load();
-            ResizeRenderTargets();
+            base.Unload();
+            _bloodBGRenderRT = null;
+            _pixelRenderRT = null;
+            _pixelScreenRenderRT = null;
         }
 
         public override void OnModUnload()
@@ -71,7 +76,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             On_Main.DrawNPCs -= DrawBlack;
             On_Main.DoDraw_WallsTilesNPCs -= DrawBloodRTToScreen;
             On_Main.DoDraw_DrawNPCsOverTiles -= DrawPixelRTToScreen;
-            Main.OnResolutionChanged -= ResizeTargets;
         }
 
         private float _beatCounter;
@@ -199,11 +203,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             orig(self, behindTiles);
         }
 
-        public override void PostUpdateEverything()
-        {
-            base.PostUpdateEverything();
-            ResizeRenderTargets();
-        }
         private void RenderToPixelationRT(On_Main.orig_CheckMonoliths orig)
         {
             orig();
@@ -314,31 +313,6 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
             spriteBatch.Draw(_pixelRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             spriteBatch.End();
-        }
-
-        private void ResizeRenderTargets()
-        {
-            Point screenSize = Main.ScreenSize;
-            if (_oldScreenSize != screenSize)
-            {
-                Main.QueueMainThreadAction(() =>
-                {
-                    _pixelRenderRT.Release();
-                    _pixelRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X / DownSamples, screenSize.Y / DownSamples, false, SurfaceFormat.Color, DepthFormat.None);
-
-                    _pixelScreenRenderRT.Release();
-                    _pixelScreenRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y, false, SurfaceFormat.Color, DepthFormat.None);
-                  
-                    _bloodBGRenderRT.Release();
-                    _bloodBGRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, screenSize.X, screenSize.Y, false, SurfaceFormat.Color, DepthFormat.None);
-
-                });
-                _oldScreenSize = screenSize;
-            }
-        }
-        private void ResizeTargets(Vector2 vector)
-        {
-            ResizeRenderTargets();
         }
     }
 }

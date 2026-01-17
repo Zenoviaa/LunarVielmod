@@ -49,7 +49,6 @@ namespace Stellamod.Core.Backgrounds
     }
     public class CustomBGManager : ModSystem
     {
-        private BlendState _currentBlendState;
         private Shader _currentShader;
         public List<CustomBG> Backgrounds = new List<CustomBG>();
         public bool onScreen;
@@ -60,6 +59,12 @@ namespace Stellamod.Core.Backgrounds
             On_Main.DoDraw_WallsTilesNPCs += DrawBehindWalls;
             On_OverlayManager.Draw += DrawBackgrounds;
             Backgrounds = ModContent.GetContent<CustomBG>().ToList();
+        }
+
+        public override void Unload()
+        {
+            base.Unload();
+            Backgrounds = null;
         }
 
 
@@ -215,7 +220,7 @@ namespace Stellamod.Core.Backgrounds
                 DepthStencilState.None,
                 RasterizerState.CullCounterClockwise,
                 effect);
-            _currentBlendState = bgLayer.BlendState;
+
             _currentShader = bgLayer.Shader;
             _currentShader?.ApplyToEffect();
         }

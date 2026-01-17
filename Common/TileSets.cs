@@ -20,6 +20,8 @@ namespace Stellamod.Common
         {
             base.OnModUnload();
             GrassyTiles.Clear();
+            GrassyTiles = null;
+            _lastProfile = null;
         }
 
         public static Dictionary<int, GrassProfile> GrassyTiles { get; private set; }

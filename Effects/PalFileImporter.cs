@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using SteelSeries.GameSense;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -12,7 +9,7 @@ namespace Stellamod.Effects
 {
     public static class PalFileImporter
     {
-        static Mod Mod = ModContent.GetInstance<Stellamod>();
+        public static Mod Mod => Stellamod.Instance;
         public static Texture2D CreatePaletteTexture(Color[] colors)
         {
             Texture2D texture = new Texture2D(Main.graphics.GraphicsDevice, colors.Length, 1);

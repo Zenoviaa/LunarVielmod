@@ -6,7 +6,7 @@ namespace Stellamod.Core.DialogueSystem
 {
     public class DialogueLoader : ModSystem
     {
-        public static readonly IDictionary<int, BaseDialogue> quests = new Dictionary<int, BaseDialogue>();
+        public static IDictionary<int, BaseDialogue> quests = new Dictionary<int, BaseDialogue>();
         public static int QuestCount { get; private set; }
 
         public static void RegisterQuest(BaseDialogue quest)
@@ -15,11 +15,18 @@ namespace Stellamod.Core.DialogueSystem
             quest.Type = id;
             quests.TryAdd(id, quest);
         }
-
-        public override void OnModUnload()
+        public override void Load()
         {
-            base.OnModUnload();
+            base.Load();
+            quests = new Dictionary<int, BaseDialogue>();
+            QuestCount = 0;
+        }
+
+        public override void Unload()
+        {
+            base.Unload();
             quests.Clear();
+            quests = null;
             QuestCount = 0;
         }
 
