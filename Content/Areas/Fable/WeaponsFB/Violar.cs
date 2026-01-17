@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -17,6 +18,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
     {
         public override void SetDefaults()
         {
+            Item.DefaultToArtifact();
             Item.width = 40;
             Item.height = 10;
             Item.scale = 1f;
@@ -28,7 +30,6 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             Item.UseSound = new SoundStyle("Stellamod/Assets/Sounds/violar");
 
             // Weapon Properties
-            Item.DamageType = DamageClass.Ranged;
             Item.damage = 8;
             Item.knockBack = 5f;
             Item.noMelee = true;
@@ -51,12 +52,6 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
                 material: ModContent.ItemType<AlcadizScrap>());
         }
     }
-
-
-
-
-
-
 
     public class Violarproj : ModProjectile
     {
@@ -103,12 +98,12 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void OnKill(int timeLeft)
         {
             FXUtil.GlowCircleBoom(Projectile.Center, Color.Yellow, Color.Orange, Color.Red);
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 7; i++)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 1f).noGravity = true;
             }
 
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 7; i++)
             {
                 Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
             }
@@ -116,8 +111,6 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             FXUtil.ShakeCamera(Projectile.Center, 1024, 32f);
         }
-
-
 
         public override void PostDraw(Color lightColor)
         {
@@ -136,59 +129,58 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
         public override void AI()
         {
-            Projectile.velocity *= 0.98f;
+            Projectile.velocity *= 0.98f;  
+            Timer++;
+            if (Timer == 150)
             {
-                Timer++;
-                if (Timer == 150)
+                int S1 = Main.rand.Next(0, 3);
+                if (S1 == 0)
                 {
-                    int S1 = Main.rand.Next(0, 3);
-                    if (S1 == 0)
-                    {
-                        SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong"), Projectile.position);
-                    }
-                    if (S1 == 1)
-                    {
-                        SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong2"), Projectile.position);
-                    }
-                    if (S1 == 2)
-                    {
-                        SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong3"), Projectile.position);
-                    }
-                    int S2 = Main.rand.Next(0, 3);
-                    if (S2 == 0)
-                    {
-                        SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong"), Projectile.position);
-                    }
-                    if (S2 == 1)
-                    {
-                        SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong2"), Projectile.position);
-                    }
-                    if (S2 == 2)
-                    {
-                        SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong3"), Projectile.position);
-                    }
-
-
-                    var entitySource = Projectile.GetSource_FromThis();
-                    if (Main.myPlayer == Projectile.owner)
-                    {
-                        Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music1").Type, Projectile.damage, 0, Projectile.owner);
-                        Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music2").Type, Projectile.damage, 0, Projectile.owner);
-                        Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music1").Type, Projectile.damage, 0, Projectile.owner);
-                        Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music2").Type, Projectile.damage, 0, Projectile.owner);
-                    }
-
-
-                    Projectile.Kill();
-                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"), Projectile.position);
-                    Timer = 0;
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong"), Projectile.position);
                 }
-                if (Timer >= 100)
+                if (S1 == 1)
                 {
-                    Projectile.scale += 0.002f;
-                    ExplodingTimer += 0.005f;
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong2"), Projectile.position);
                 }
+                if (S1 == 2)
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong3"), Projectile.position);
+                }
+                int S2 = Main.rand.Next(0, 3);
+                if (S2 == 0)
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong"), Projectile.position);
+                }
+                if (S2 == 1)
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong2"), Projectile.position);
+                }
+                if (S2 == 2)
+                {
+                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong3"), Projectile.position);
+                }
+
+
+                var entitySource = Projectile.GetSource_FromThis();
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music1").Type, Projectile.damage, 0, Projectile.owner);
+                    Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music2").Type, Projectile.damage, 0, Projectile.owner);
+                    Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music1").Type, Projectile.damage, 0, Projectile.owner);
+                    Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music2").Type, Projectile.damage, 0, Projectile.owner);
+                }
+
+
+                Projectile.Kill();
+                SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"), Projectile.position);
+                Timer = 0;
             }
+            if (Timer >= 100)
+            {
+                Projectile.scale += 0.002f;
+                ExplodingTimer += 0.005f;
+            }
+            
         }
     }
 }
