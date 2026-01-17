@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace Stellamod.Assets
@@ -31,6 +32,11 @@ namespace Stellamod.Assets
             public static Asset<Texture2D> Lightning2;
 
         }
+        public static SoundStyle GetSound(string name)
+        {
+            return new SoundStyle($"Stellamod/Assets/Sounds/{name}");
+        }
+
         public override void OnModLoad()
         {
             base.OnModLoad();

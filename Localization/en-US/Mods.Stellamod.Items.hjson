@@ -546,9 +546,8 @@ ThornedBook: {
 	DisplayName: Thorned Book
 	Tooltip:
 		'''
-		When enemies hit you, you deal big amounts of damage back!
-		+3% Melee damage...
-		-5 defense
+		Deal 5x damage back when an enemy hits you!
+		-10 defense
 		'''
 }
 

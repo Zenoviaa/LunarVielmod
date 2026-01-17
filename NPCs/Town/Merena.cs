@@ -1,20 +1,13 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core;
+﻿using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Armors.Alsis;
 using Stellamod.Items.Materials;
-using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Thrown;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
@@ -93,7 +86,7 @@ namespace Stellamod.NPCs.Town
             NPC.frame.Y = frame * frameHeight;
         }
 
-  
+
         //This prevents the NPC from despawning
         public override bool CheckActive()
         {
@@ -118,7 +111,7 @@ namespace Stellamod.NPCs.Town
         }
 
 
-      
+
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
@@ -134,7 +127,6 @@ namespace Stellamod.NPCs.Town
             .Add(new Item(ItemID.AbigailsFlower) { shopCustomPrice = Item.buyPrice(gold: 1) })
             .Add(new Item(ModContent.ItemType<BurnedCarianTome>()))
             .Add<AlcadBomb>(MerenaQuestSystem.ShopConditionKillVerlia) //{ shopCustomPrice = Item.buyPrice(silver: 10) })//{ shopCustomPrice = Item.buyPrice(platinum: 1) })
-            .Add<AlcadThrowingCards>(MerenaQuestSystem.ShopConditionKillVerlia)
             .Add<PearlescentScrap>(MerenaQuestSystem.ShopConditionKillVerlia)
             .Add<AlsisMask>(MerenaQuestSystem.ShopConditionTome)
             .Add<AlsisChestplate>(MerenaQuestSystem.ShopConditionTome)
