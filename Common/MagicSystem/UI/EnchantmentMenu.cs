@@ -18,12 +18,9 @@ namespace Stellamod.Common.MagicSystem.UI
 {
     public class EnchantmentMenu : UIPanel
     {
-        private Texture2D _enchantmentPanel;
-        private StaffEditingContext _ctx;
         private UIGrid _grid;
         private UIGrid _timedGrid;
         private UIImage _backgroundSquare;
-        private UIScrollbar _scrollbar;
         private XButton _xButton;
 
         private InventoryMenu _inventoryMenu;
@@ -31,19 +28,12 @@ namespace Stellamod.Common.MagicSystem.UI
         private StaffSlot _staffSlot;
         private ElementSlot _elementSlot;
 
-        private static readonly Asset<Texture2D> BackgroundSquareTexture;
-        static EnchantmentMenu()
-        {
-            // Don't run this on the server
-            if (Main.dedServ)
-                return;
-            string texturePath = typeof(EnchantmentMenu).DirectoryHere() + "/EnchantingMenu";
-            BackgroundSquareTexture = ModContent.Request<Texture2D>(texturePath);
-        }
-
-
+        private readonly Asset<Texture2D> BackgroundSquareTexture;
         public EnchantmentMenu() : base()
         {
+            string texturePath = typeof(EnchantmentMenu).DirectoryHere() + "/EnchantingMenu";
+            BackgroundSquareTexture = ModContent.Request<Texture2D>(texturePath);
+
             _grid = new UIGrid();
             _timedGrid = new UIGrid();
             _inventoryMenu = new InventoryMenu();
@@ -62,7 +52,6 @@ namespace Stellamod.Common.MagicSystem.UI
 
         public void UseContext(StaffEditingContext ctx)
         {
-            _ctx = ctx;
             _grid.Clear();
             _timedGrid.Clear();
             for (int i = 0; i < ctx.staffToEdit.GetCombinedNormalSlotCount(Main.LocalPlayer); i++)
@@ -89,12 +78,7 @@ namespace Stellamod.Common.MagicSystem.UI
         {
             _inventoryMenu?.SetEnchantments();
         }
-        public override void OnActivate()
-        {
-            base.OnActivate();
-            _enchantmentPanel = ModContent.Request<Texture2D>(GetType().DirectoryHere() + $"/EnchantingMenu", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
 
-        }
 
         public override void OnInitialize()
         {
@@ -174,9 +158,9 @@ namespace Stellamod.Common.MagicSystem.UI
             uiSystem.CloseUI();
         }
 
-        private static bool _isDragging;
-        private static Vector2? _drag = null;
-        private static Vector2 _pos;
+        private bool _isDragging;
+        private Vector2? _drag = null;
+        private Vector2 _pos;
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);

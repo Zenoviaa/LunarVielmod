@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Items.MoonlightMagic.Elements;
+﻿using Stellamod.Common;
+using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -22,7 +23,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments
             base.AI();
             if (!HasSwapped)
             {
-                var enchantmentsToSpawn = AllEnchantments;
+                var enchantmentsToSpawn = ItemHelper.Enchantments;
                 for (int i = 0; i < 10; i++)
                 {
                     BaseEnchantment enchantmentToSwapTo = enchantmentsToSpawn[Main.rand.Next(0, enchantmentsToSpawn.Length)];

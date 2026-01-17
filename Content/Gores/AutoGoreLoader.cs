@@ -15,6 +15,12 @@ namespace Stellamod.Content.Gores
                 _goreLookup.TryAdd(modGore.Name, modGore);
             }
         }
+        public override void Unload()
+        {
+            base.Unload();
+            _goreLookup = null;
+        }
+
 
         public static int[] FindGores(string rootName)
         {

@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Items.MoonlightMagic.Elements;
+﻿using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -15,25 +13,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
         IAdvancedMagicAddon,
         ICloneable
     {
-        private static BaseEnchantment[] _enchantments;
-
-        public static int[] GetTypes()
-        {
-            BaseEnchantment[] allEnchantments = BaseEnchantment.AllEnchantments;
-            int numResults = allEnchantments.Length;
-            int[] enchantmentTypes = new int[numResults];
-            for (int i = 0; i < enchantmentTypes.Length; i++)
-            {
-                enchantmentTypes[i] = allEnchantments[i].Type;
-            }
-            return enchantmentTypes;
-        }
         public static int[] GetNonSpecialTypes()
         {
-            List<BaseEnchantment> allEnchantmentsList = BaseEnchantment.AllEnchantments.ToList();
-            allEnchantmentsList.RemoveAll(x => EnchantmentHelper.SpecialEnchantments.Contains(x.Type));
-
-            BaseEnchantment[] allEnchantments = allEnchantmentsList.ToArray();
+            BaseEnchantment[] allEnchantments = Stellamod.Instance.GetContent<BaseEnchantment>().ToArray();
             int numResults = allEnchantments.Length;
             int[] enchantmentTypes = new int[numResults];
             for (int i = 0; i < enchantmentTypes.Length; i++)
@@ -43,15 +25,6 @@ namespace Stellamod.Content.Items.MoonlightMagic
             return enchantmentTypes;
         }
 
-        public static BaseEnchantment[] AllEnchantments
-        {
-            get
-            {
-                if (_enchantments == null)
-                    _enchantments = Stellamod.Instance.GetContent<BaseEnchantment>().ToArray();
-                return _enchantments;
-            }
-        }
 
         public AdvancedMagicProjectile MagicProj { get; set; }
         public Projectile Projectile => MagicProj.Projectile;
@@ -66,6 +39,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public int Countertimer;
         public bool isTimedEnchantment => time > 0;
         public bool isSuper;
+        public bool isSpecial;
         public virtual float GetStaffManaModifier() { return 0.2f; }
 
         public object Clone()
@@ -81,7 +55,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public bool SynergizesWith(int elementType)
         {
             ModItem item = ModContent.GetModItem(elementType);
-            if(item is BaseElement element)
+            if (item is BaseElement element)
             {
                 return element.IsSynergizingWith(GetElementType());
             }

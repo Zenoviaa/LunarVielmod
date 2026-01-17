@@ -29,6 +29,7 @@ namespace Stellamod.Core.Particles
             On_Main.DrawDust += DrawMainParticles;
         }
 
+     
         public override void PostAddRecipes()
         {
             if (Main.dedServ)
@@ -51,7 +52,9 @@ namespace Stellamod.Core.Particles
 
             ParticleAssets = null;
             Particles = null;
+            BlackParticles = null;
         }
+        
 
 
         public override void PostUpdateDusts()

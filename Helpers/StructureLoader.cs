@@ -13,14 +13,14 @@ namespace Stellamod.Helpers
     /// <summary>
     /// Class holding methods to save/load structs to binary .str files
     /// </summary>
-    public static class StructureLoader
+    public class StructureLoader : ModSystem
     {
         static Point? BottomLeft = null;
-        static Mod Mod = ModContent.GetInstance<Stellamod>();
         public static event Action<Point, string> OnStructPlace;
+        public static Mod Instance => Stellamod.Instance;
         public static Rectangle ReadRectangle(string Path)
         {
-            using var stream = Mod.GetFileStream(Path + ".str");
+            using var stream = Instance.GetFileStream(Path + ".str");
             using var reader = new BinaryReader(stream, Encoding.UTF8, false);
             int width = reader.ReadInt32();
             int height = reader.ReadInt32();
@@ -92,7 +92,7 @@ namespace Stellamod.Helpers
         /// <returns>A array of ints, corrsponding to the index of chests placed in the struct, from bottom left to top right</returns>
         public static int[] ReadStruct(Point BottomLeft, string Path, int[] tileBlend = null)
         {
-            using var stream = Mod.GetFileStream(Path + ".str");
+            using var stream = Instance.GetFileStream(Path + ".str");
             using var reader = new BinaryReader(stream, Encoding.UTF8, false);
             List<int> ChestIndexs = new List<int>();
             int Xlenght = reader.ReadInt32();
@@ -237,7 +237,7 @@ namespace Stellamod.Helpers
             }
             else
             {
-                Mod.Logger.Warn("Mod was not loaded for walltype, returning 0");
+                Instance.Logger.Warn("Mod was not loaded for walltype, returning 0");
                 return 0;
             }
         }
@@ -254,7 +254,7 @@ namespace Stellamod.Helpers
             else
             {
                 //I should place unloded tiles but idk how
-                Mod.Logger.Warn("Mod was not loaded, placing dirt instead");
+                Instance.Logger.Warn("Mod was not loaded, placing dirt instead");
                 return TileID.Dirt;
             }
         }

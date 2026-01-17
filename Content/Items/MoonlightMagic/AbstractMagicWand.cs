@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.MagicSystem.UI;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
@@ -416,7 +417,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             for(int i = 0; i < normalEnchantments.Count; i++)
             {
-                var enchantmentsToSpawn = BaseEnchantment.AllEnchantments;
+                var enchantmentsToSpawn = ItemHelper.Enchantments;
                 BaseEnchantment enchantmentToSwapTo = enchantmentsToSpawn[Main.rand.Next(0, enchantmentsToSpawn.Length)];
                 normalEnchantments[i] = enchantmentToSwapTo.Item;
             }

@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Trails;
@@ -21,7 +19,6 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         private ManagedRenderTarget _icicleRT;
         private Queue<PixelTarget.SpritebatchDrawAction> _drawActionQueue;
         private bool _ices;
-        private bool _reRenderIce;
 
         public int Priority => 0;
 
@@ -32,8 +29,8 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             _iceRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
             _icicleMaskRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
             _icicleRT = ManagedRenderTarget.New(ManagedRenderTarget.GetScreenTargetSize);
-            _reRenderIce = true;
         }
+
         public override void OnModUnload()
         {
             base.OnModUnload();

@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -50,11 +48,11 @@ namespace Stellamod.Common.BossBannerSystem
         public static BossPage[] GetBossPages(BossBannerType banner)
         {
             List<BossPage> pages = new List<BossPage>();
-            foreach (var bossPage in BossPage.Pages)
+            foreach (var page in ModContent.GetContent<BossPage>())
             {
-                if (bossPage.banner == banner)
+                if (page.banner == banner)
                 {
-                    pages.Add(bossPage);
+                    pages.Add(page);
                 }
             }
             return pages.ToArray();

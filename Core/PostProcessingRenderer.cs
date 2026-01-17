@@ -30,6 +30,8 @@ namespace Stellamod.Core
         public override void Unload()
         {
             base.Unload();
+            _passes?.Clear();
+            _passes = null;
             On_OverlayManager.Draw -= DrawPostProcessingPasses;
         }
         public static void AddPass(IPostProcessingPass pass)

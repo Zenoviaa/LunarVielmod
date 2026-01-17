@@ -16,8 +16,8 @@ namespace Stellamod.Core.Utilities
     public class ManagedRenderTarget
     {
         private Point _oldScreenSize;
-        private readonly int _downSamples;
-        private readonly ResizeFunction _resizeFunction;
+        private int _downSamples;
+        private ResizeFunction _resizeFunction;
         private RenderTarget2D _renderTarget;
         private bool _mipMap;
         private SurfaceFormat _surfaceFormat;
@@ -34,6 +34,13 @@ namespace Stellamod.Core.Utilities
             //Setting to 1 here just incase we get a division by 0 somewhere for like a single frame
             Width = 1;
             Height = 1;
+        }
+
+        public void Dispose()
+        {
+            _renderTarget?.Dispose();
+            _resizeFunction = null;
+            _renderTarget = null;
         }
 
         public static RenderTarget2D DummyTarget;
@@ -65,7 +72,6 @@ namespace Stellamod.Core.Utilities
 
             _oldScreenSize = screenSize;
             Main.QueueMainThreadAction(Resize);
-
         }
 
 
@@ -124,6 +130,15 @@ namespace Stellamod.Core.Utilities
         public override void Unload()
         {
             base.Unload();
+            ManagedRenderTarget.DummyTarget = null;
+            ManagedRenderTarget.Semaphore = null;
+            if (_managedRenderTargets == null)
+                return;
+            foreach(var target in _managedRenderTargets)
+            {
+                target.Dispose();
+            }
+            _managedRenderTargets?.Clear();
         }
 
 

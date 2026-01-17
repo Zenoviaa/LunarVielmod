@@ -62,7 +62,6 @@ namespace Stellamod.Common.BossBannerSystem
     public class BossPage : ModType,
         ILocalizedModType
     {
-        public static List<BossPage> Pages { get; private set; }
         public string LocalizationCategory => "BossPages";
         public string DisplayName
         {
@@ -107,13 +106,12 @@ namespace Stellamod.Common.BossBannerSystem
             Rewards = new List<Item>();
             MasterModeRewards = new List<Item>();
             NoHitRewards = new List<Item>();
-            Pages ??= new List<BossPage>();
-            Pages.Add(this);
             SetStaticDefaults();
             this.GetLocalization(nameof(DisplayName), () => "Who???");
             this.GetLocalization(nameof(WhereToFind), () => "In Your Mom");
             this.GetLocalization(nameof(Lore), () => "Birthed by your mom");
         }
+
         public void AddReward<T>() where T : ModItem
         {
             Rewards.Add(ModContent.GetInstance<T>().Item);

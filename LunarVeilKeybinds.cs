@@ -40,5 +40,22 @@ namespace Stellamod
             DecorUpZ = KeybindLoader.RegisterKeybind(Mod, "Increase Decoration Z", ",");
             DecorDownZ = KeybindLoader.RegisterKeybind(Mod, "Decrease Decoration Z", ".");
         }
+        public override void Unload()
+        {
+            base.Unload();
+            DashKeybind = null;
+            QuestKeybind = null;
+            FlaskKeybind = null;
+            BellKeybind = null;
+            ToolKeybind = null;
+            DecorRotateLeft = null;
+            DecorRotateRight = null;
+            DecorPrevFrame = null;
+            DecorNextFrame = null;
+            DecorUpscale = null;
+            DecorDownscale = null;
+            DecorUpZ = null;
+            DecorDownZ = null;
+        }
     }
 }

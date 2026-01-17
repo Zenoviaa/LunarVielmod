@@ -1,7 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.Xna.Framework;
-using Stellamod.Common.DungeonGeneration;
-using Stellamod.NPCs;
+﻿using Stellamod.Common.DungeonGeneration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,8 +15,7 @@ namespace Stellamod.Helpers
     /// </summary>
     public static class Structurizer
     {
-        static Point? BottomLeft = null;
-        static Mod Mod = ModContent.GetInstance<Stellamod>();
+        static Mod Mod => Stellamod.Instance;
         public static event Action<Point, string> OnStructPlace;
         public static bool FlipStructure;
         public static string SelectedStructure = string.Empty;
@@ -31,6 +27,7 @@ namespace Stellamod.Helpers
             using var stream = Mod.GetFileStream(path);
             return ReadRectangle(stream);
         }
+
         public static Rectangle ReadRectangle(Stream stream)
         {
             using var reader = new BinaryReader(stream, Encoding.UTF8, false);
@@ -55,7 +52,7 @@ namespace Stellamod.Helpers
             Rectangle rectangle = ReadRectangle(structureFile);
             Point protectionPoint = tilePoint;
             protectionPoint.Y -= rectangle.Height;
-      
+
             rectangle.Location = protectionPoint;
 
             if (!structures.CanPlace(rectangle))
@@ -379,7 +376,7 @@ namespace Stellamod.Helpers
 
                     Tile tile = Main.tile[x, y];
                     if (TileID.Sets.IsATreeTrunk[tile.TileType])
-                    {  
+                    {
                         WorldGen.KillTile(x, y, noItem: true);
                     }
                 }
@@ -396,7 +393,7 @@ namespace Stellamod.Helpers
             ClearTrees(BottomLeft, Path);
             using Stream stream = Mod.GetFileStream(Path + ".str");
             OnStructPlace?.Invoke(BottomLeft, Path);
-        
+
             int[] indices = ReadStruct(stream, BottomLeft, tileBlend);
 
             TriggerStructurizer.ReadStruct(Path, BottomLeft);
@@ -408,7 +405,7 @@ namespace Stellamod.Helpers
 
         public static int[] ReadSavedStruct(string filePath, Point BottomLeft, int[] tileBlend = null)
         {
-   
+
             if (!filePath.Contains(".str"))
                 filePath += ".str";
             string savedPath = Main.SavePath + "/ModSources/" + Mod.Name + "/" + filePath;
@@ -554,7 +551,7 @@ namespace Stellamod.Helpers
             DebugHelper.NewTextOnlyInTesting("Structure Saved");
         }
 
-    
+
         private static void WriteModdedWall(BinaryWriter writer, Tile t)
         {
             ModWall modwall = WallLoader.GetWall(t.WallType);
