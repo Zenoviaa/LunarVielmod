@@ -109,8 +109,12 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
                 DustParticle.Spawn(Projectile.Center, inverseVelocity);
             }
 
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
-                ModContent.ProjectileType<HornetKaboom>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
+            if (this.OwnedByLocalClient())
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                    ModContent.ProjectileType<HornetKaboom>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
+            }
+
             SoundStyle flameUp = AssetManager.GetSound("flameup");
             flameUp.PitchVariance = 0.3f;
             SoundEngine.PlaySound(flameUp, Projectile.position);

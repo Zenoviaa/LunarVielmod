@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.WeaponTypes;
 using Stellamod.Content.CommonMaterials;
@@ -16,8 +14,6 @@ using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -273,7 +269,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
             }
 
-            if(Timer == 5)
+            if (Timer == 5)
             {
                 ShockOvalSpawnParams spawnParams = new ShockOvalSpawnParams
                 {
@@ -335,19 +331,19 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             }
 
 
-            if(Main.myPlayer == Projectile.owner)
+            if (Main.myPlayer == Projectile.owner)
             {
                 HomingTarget = Main.MouseWorld;
 
-    
+
                 Projectile.netUpdate = true;
             }
-            if(Timer < 30f)
+            if (Timer < 30f)
             {
                 Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, HomingTarget);
                 Projectile.velocity = Vector2.Lerp(_initialVelocity, homingVelocity, EasingFunction.InOutSine(Timer / 30f));
             }
-     
+
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -392,7 +388,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             shader.InnerColor = Color.Orange;
             shader.OuterColor = Color.Red;
             shader.LaserTexture = TrailRegistry.SpikyTrail1;
-     
+
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -404,7 +400,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             base.OnKill(timeLeft);
 
             float boomSize = Main.rand.NextFloat(0.03f, 0.04f);
-            for(float n =0; n < 2f; n++)
+            for (float n = 0; n < 2f; n++)
             {
                 var spawnParams = new DustParticleSpawnParams();
                 spawnParams.innerColor = Color.OrangeRed;

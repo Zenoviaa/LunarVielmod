@@ -215,27 +215,33 @@ namespace Stellamod.Common.GunSystem
             return ShootProjectile(player, source, position, velocity, type, damage, knockback);
         }
 
+        public void BasicMuzzleFlash(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor)
+        {
+            MuzzleFlashParticle flashParticle = MuzzleFlashParticle.Spawn(position, velocity, innerColor);
+            flashParticle.innerColor = innerColor;
+            flashParticle.bloomColor = outerColor;
+
+            for (float f = 0; f < 2; f++)
+            {
+                DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+                {
+                    gravity = 0f,
+                    innerColor = innerColor,
+                    outerColor = outerColor,
+                    scaleRange = new Vector2(0.3f, 0.8f)
+                };
+                var dp = DustParticle.Spawn(position, velocity.RotatedByRandom(0.3f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+                dp.dampening = 0.1f;
+            }
+        }
+
         public virtual void ShootEffects(Vector2 position, Vector2 velocity)
         {
             SoundStyle shootSound = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew7");
             shootSound.PitchVariance = 0.3f;
             shootSound.Volume = 0.5f;
             SoundEngine.PlaySound(shootSound, position);
-
-            FXUtil.GlowCircleBoom(position, Color.White, Color.Yellow, Color.Red, baseSize: 0.03f, duration: 15);
-
-            for (float f = 0; f < 3; f++)
-            {
-                float rot = f / 8f;
-                rot += Main.rand.NextFloat(-0.5f, 0.5f);
-                var p = LegacyParticle.NewParticle<ImpactParticle>(position, velocity.RotatedByRandom(0.7f));
-                p.fast = true;
-            }
-            for (float f = 0; f < 2; f++)
-            {
-                Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(), velocity.RotatedByRandom(0.3f), Scale: Main.rand.NextFloat(0.5f, 1f));
-              //  Particle.NewParticle<DustParticle>(position, velocity.RotatedByRandom(0.3f), Scale: Main.rand.NextFloat(0.5f, 1f));
-            }
+            BasicMuzzleFlash(position, velocity, Color.Yellow, Color.Red);
         }
     }
     public class Reloading : ModBuff
@@ -314,7 +320,7 @@ namespace Stellamod.Common.GunSystem
             }
 
             if (Main.myPlayer == Player.whoAmI &&
-                Player.ownedProjectileCounts[ModContent.ProjectileType<GunHold>()] == 0)
+                Player.ownedProjectileCounts[ModContent.ProjectileType<GunHold>()] == 0 && (Player.channel || Player.controlUseItem))
             {
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                     ModContent.ProjectileType<GunHold>(), 1, 1, Player.whoAmI);
@@ -411,10 +417,15 @@ namespace Stellamod.Common.GunSystem
         public override void AI()
         {
             base.AI();
-            if (Owner.HeldItem.ModItem is BaseGun)
+            if (Owner.HeldItem.ModItem is BaseGun && (Owner.channel || Owner.controlUseItem))
             {
                 Projectile.timeLeft = 2;
             }
+            else
+            {
+                return;
+            }
+
             if (Main.myPlayer == Projectile.owner)
             {
                 Vector2 mousePos = Main.MouseWorld;
@@ -423,7 +434,11 @@ namespace Stellamod.Common.GunSystem
                 Projectile.netUpdate = true;
 
             }
-            Projectile.Center = Owner.MountedCenter - new Vector2(0, 7);
+
+
+            Vector2? holdOutOffset = Owner.HeldItem.ModItem.HoldoutOffset();
+            Vector2 offset = holdOutOffset.HasValue ? holdOutOffset.Value : Vector2.Zero;
+            Projectile.Center = Owner.MountedCenter - new Vector2(0, 7) + offset;
             Projectile.rotation = HoldRotation;
 
             if (State != AIState.Reload && GunHoldPlayer.doCoolReloadAnimation)
@@ -469,8 +484,6 @@ namespace Stellamod.Common.GunSystem
             }
 
             Owner.itemRotation = rotation * Owner.direction;
-            //Owner.itemTime = 2;
-            //Owner.itemAnimation = 2;
 
             // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90));// set arm position (90 degree offset since arm starts lowered)
