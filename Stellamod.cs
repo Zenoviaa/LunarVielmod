@@ -27,15 +27,13 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Stellamod
 {
-
-
     public class Stellamod : Mod
     {
         public Stellamod()
         {
             Instance = this;
-
         }
+
         // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
         public static ModPacket WriteToPacket(ModPacket packet, byte msg, params object[] param)
         {
@@ -62,16 +60,15 @@ namespace Stellamod
 
         public override void HandlePacket(BinaryReader reader, int whoAmI) => MultiplayerHelper.HandlePacket(reader, whoAmI);
 
-        public static Stellamod Instance;
+        public static Stellamod Instance { get; private set; }
         public static int MedalCurrencyID;
         public static int EreshstylCurrencyID;
         public static int NoHitCrystalCurrencyID;
         public static int DragonShardCurrencyID;
         public override void Load()
         {
-
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+ 
             if (Main.netMode != NetmodeID.Server)
             {
                 ShaderLoader.LoadShaders(this);
@@ -259,6 +256,7 @@ namespace Stellamod
 
         public override void Unload()
         {
+            Instance = null;
             if (!Main.dedServ)
             {
                 string backButton = "Terraria/Images/UI/Bestiary/Button_Back";
@@ -360,7 +358,6 @@ namespace Stellamod
             scale *= 0.3f;
             drawColor.A = 0;
             spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), drawColor, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), scale, SpriteEffects.None, 0f);
-       
             return false;
         }
     }

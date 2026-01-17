@@ -14,7 +14,6 @@ namespace Stellamod.Common.ItemBrowser
         private UIPanel _panel;
         private UIScrollbar _scrollbar;
         private UIList _uiList;
-        private bool _needsCalculate;
         public ItemBrowserTabMenu(ItemBrowserMenu menu, UIScrollbar scrollbar)
         {
             _menu = menu;
@@ -62,14 +61,10 @@ namespace Stellamod.Common.ItemBrowser
         public Category LastParentCategory;
         public void SetCategory(Category category)
         {
-
             if (Category == category)
                 return;
             Category = category;
-            //Console.WriteLine($"Set Category to {category.displayName}");
-
             _menu.AddElements(category);
-
             if (category == null || category.subCategories.Length > 0)
             {
 

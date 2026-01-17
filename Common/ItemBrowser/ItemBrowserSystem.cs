@@ -23,7 +23,6 @@ namespace Stellamod.Common.ItemBrowser
         private GameTime _lastUpdateUiGameTime;
         public ItemBrowserUIState browserUIState;
         public override int uiSlot => Slot_MajorUI;
-
         public override void OnModLoad()
         {
             base.OnModLoad();

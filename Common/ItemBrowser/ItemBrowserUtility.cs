@@ -40,13 +40,20 @@ namespace Stellamod.Common.ItemBrowser
     [Autoload(Side = ModSide.Client)]
     public class ItemCategoryUtility : ModSystem
     {
+        public static Category All;
         public override void PostAddRecipes()
         {
             base.PostAddRecipes();
             InitializeCategories();
         }
 
-        public static Category All;
+
+        public override void Unload()
+        {
+            base.Unload();
+            All = null;
+        }
+
         public static void InitializeCategories()
         {
             //Melee subclasses

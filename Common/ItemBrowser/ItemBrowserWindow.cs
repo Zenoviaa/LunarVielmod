@@ -28,19 +28,11 @@ namespace Stellamod.Common.ItemBrowser
         private ItemBrowserTabMenu _tabMenu;
         private UIInputTextField _textBox;
         private ItemBrowserModFilterButton _modFilterButton;
-        private static readonly Asset<Texture2D> BackgroundSquareTexture;
-        static ItemBrowserWindow()
-        {
-            // Don't run this on the server
-            if (Main.dedServ)
-                return;
-            string texturePath = typeof(ItemBrowserWindow).DirectoryHere() + "/ItemBrowserMenu";
-            BackgroundSquareTexture = ModContent.Request<Texture2D>(texturePath);
-        }
-
-
+        private readonly Asset<Texture2D> BackgroundSquareTexture;
         public ItemBrowserWindow() : base()
         {
+            string texturePath = typeof(ItemBrowserWindow).DirectoryHere() + "/ItemBrowserMenu";
+            BackgroundSquareTexture = ModContent.Request<Texture2D>(texturePath);
             _backgroundSquare = new UIImage(BackgroundSquareTexture)
             {
                 HAlign = 0f,
@@ -143,10 +135,10 @@ namespace Stellamod.Common.ItemBrowser
 
             _tabMenu.VAlign = 0.8f;
         }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
             _modFilterButton.Left.Pixels = 64;
             _modFilterButton.Top.Pixels = 128;
             //Constantly lock the UI in the position regardless of resolution changes
@@ -160,14 +152,12 @@ namespace Stellamod.Common.ItemBrowser
             itemBrowserSystem.CloseUI();
         }
 
-        private static bool _isDragging;
-        private static Vector2? _drag = null;
-        private static Vector2 _pos;
+        private bool _isDragging;
+        private Vector2? _drag = null;
+        private Vector2 _pos;
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
-
-
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             Vector2 ratioPos = new Vector2(config.EnchantmentMenuX, config.EnchantmentMenuY);
             if (ratioPos.X < 0f || ratioPos.X > 100f)
