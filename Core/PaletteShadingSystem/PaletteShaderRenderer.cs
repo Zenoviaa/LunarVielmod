@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Utilities;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
@@ -30,17 +31,19 @@ namespace Stellamod.Core.PaletteShadingSystem
     {
         public int PostProcessPriority => 10;
         private PaletteEffect[] _paletteEffects;
-        private RenderTarget2D _paletteRenderRT;
-        private Vector2 _previousScreenSize;
-        public override void Load()
+        private ManagedRenderTarget _paletteRenderRT;
+        public override void Unload()
         {
-            ResizeRenderTarget(true);
+            base.Unload();
+            _paletteEffects = null;
+            _paletteRenderRT = null;
         }
 
         public override void OnModLoad()
         {
             base.OnModLoad();
             _paletteEffects = ModContent.GetContent<PaletteEffect>().ToArray();
+            _paletteRenderRT = ManagedRenderTarget.New();
             PostProcessingRenderer.AddPass(this);
         }
 
@@ -65,35 +68,14 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
-            ResizeRenderTarget(false);
             UpdatePaletteEffects();
-        }
-
-        private void ResizeRenderTarget(bool load)
-        {
-            if (!Main.gameMenu && !Main.dedServ || load && !Main.dedServ)
-            {
-                Vector2 currentScreenSize = new(Main.screenWidth, Main.screenHeight);
-                if (currentScreenSize != _previousScreenSize)
-                {
-                    Main.QueueMainThreadAction(() =>
-                    {
-                        if (_paletteRenderRT != null && !_paletteRenderRT.IsDisposed)
-                            _paletteRenderRT.Dispose();
-
-
-                        _paletteRenderRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false,
-                            SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
-
-                    });
-                }
-
-                _previousScreenSize = currentScreenSize;
-            }
         }
 
         public void RenderToScreen()
         {
+            if (Main.gameMenu)
+                return;
+
             Effect paletteEffect = null;
             PalettePriority priority = PalettePriority.Low;
             float fade = 0f;
