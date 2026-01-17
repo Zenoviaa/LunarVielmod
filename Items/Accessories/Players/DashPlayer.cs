@@ -56,7 +56,7 @@ namespace Stellamod.Items.Accessories.Players
 
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Owner.width * 0.62f;
+            float baseWidth = Projectile.scale * Owner.height * 0.62f;
             return MathHelper.SmoothStep(baseWidth, baseWidth, completionRatio);
         }
 

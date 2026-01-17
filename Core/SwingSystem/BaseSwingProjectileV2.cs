@@ -408,7 +408,7 @@ namespace Stellamod.Core.SwingSystem
                   position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
                     sourceRectangle, drawColor, drawRotation, origin, drawScale, SpriteEffects.None, 0); // drawing the sword itself
             }
-       //     spriteBatch.RestartDefaults();
+            //     spriteBatch.RestartDefaults();
         }
 
         public virtual void DrawSwingTrail(ref Color lightColor, Vector2[] swingTrailCache)

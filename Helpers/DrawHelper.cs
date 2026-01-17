@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Trails;
@@ -14,6 +12,12 @@ namespace Stellamod.Helpers
 {
     public static class DrawHelper
     {
+        public static Texture2D CreateGradient(params Color[] colors)
+        {
+            Texture2D tex2D = new Texture2D(Main.graphics.GraphicsDevice, colors.Length, 1);
+            tex2D.SetData(colors);
+            return tex2D;
+        }
         public static void DrawBloomLine(SpriteBatch spriteBatch, Vector2 drawCenter, Color color, float targetRotation, float alpha)
         {
             Texture2D bloomLinTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
@@ -39,7 +43,7 @@ namespace Stellamod.Helpers
             Vector2 drawOrigin = texture.Size() / 2f;
             float width = 32;
             float height = 8;
-            for(float n = 0; n < numStars; n++)
+            for (float n = 0; n < numStars; n++)
             {
                 float ratio = n / numStars;
                 float radians = MathHelper.TwoPi * ratio;

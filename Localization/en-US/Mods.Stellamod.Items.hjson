@@ -10331,3 +10331,10 @@ MyLittlePlushie: {
 		You take 100% more damage
 		'''
 }
+
+StopSignSword: {
+	DisplayName: Stop Sign Sword
+	Tooltip: Stop!
+	BasicSlash: Spins around a bit more than a regular sword
+	StaminaSlash: Throws the sword like a boomerang!
+}
