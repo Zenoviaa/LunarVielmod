@@ -56,13 +56,13 @@ namespace Stellamod.Items.Accessories.Players
 
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 0.62f;
+            float baseWidth = Projectile.scale * Owner.width * 0.62f;
             return MathHelper.SmoothStep(baseWidth, baseWidth, completionRatio);
         }
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.White, Color.Transparent, MathHelper.SmoothStep(0f, 1f, completionRatio));
+            return Color.Lerp(Color.White, Color.Transparent, MathHelper.SmoothStep(0f, 1f, completionRatio)) * EasingFunction.QuadraticBump(completionRatio);
         }
 
         public override bool PreDraw(ref Color lightColor)

@@ -10321,3 +10321,13 @@ RavagingLegs: {
 	DisplayName: Ravaging Legs
 	Tooltip: ""
 }
+
+MyLittlePlushie: {
+	DisplayName: My Little Plushie
+	Tooltip:
+		'''
+		Shrinks you down to the size of a tile!
+		Greatly increased jump height and traction
+		You take 100% more damage
+		'''
+}
