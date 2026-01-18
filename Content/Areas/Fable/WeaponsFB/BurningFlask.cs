@@ -106,8 +106,12 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             {
                 Vector2 inverseVelocity = -Projectile.oldVelocity;
                 inverseVelocity = inverseVelocity.RotatedByRandom(1.5f) * Main.rand.NextFloat(0.5f, 1f);
-                DustParticle.Spawn(Projectile.Center, inverseVelocity);
-            }
+                var dp = DustParticle.Spawn(Projectile.Center, inverseVelocity);
+                dp.dampening = 0.1f;
+                dp.Scale *= 0.5f;
+                dp.innerColor = Color.OrangeRed;
+                dp.outerColor = Color.DarkRed;
+            }FXUtil.GlowCircleBoom(Projectile.Center, Color.Yellow, Color.OrangeRed, Color.DarkRed);
 
             if (this.OwnedByLocalClient())
             {

@@ -18,8 +18,8 @@ namespace Stellamod.Projectiles
         {
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Magic;
-            Projectile.width = 60;
-            Projectile.height = 60;
+            Projectile.width = 50;
+            Projectile.height = 76;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 50;
             Projectile.scale = 1.3f;

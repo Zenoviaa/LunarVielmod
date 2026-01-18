@@ -1002,3 +1002,8 @@ CelestiallyDown: {
 	DisplayName: Celestially Down
 	Description: You feel naked...
 }
+
+CinderediatingLantern: {
+	DisplayName: Cinderediating Lantern
+	Description: Mods.Stellamod.Buffs.CinderediatingLantern.Description
+}

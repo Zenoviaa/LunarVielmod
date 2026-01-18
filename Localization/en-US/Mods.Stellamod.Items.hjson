@@ -2739,6 +2739,8 @@ EventHorizon: {
 FrostBringer: {
 	DisplayName: Frost Bringer
 	Tooltip: Damage reduces the farther you are away from the target
+	BasicSlash: No Effect
+	StaminaSlash: No Effect
 }
 
 IrradiatedGreatBlade: {
@@ -5023,7 +5025,11 @@ WaterproofHeadphones: {
 
 BurningFlask: {
 	DisplayName: Burning Flask
-	Tooltip: Please just don't set the house on fire..
+	Tooltip:
+		'''
+		Lobs a flaming flask that explodes into flames
+		Please just don't set the house on fire..
+		'''
 }
 
 ComicalTrident: {
@@ -5594,6 +5600,8 @@ CinderedCard: {
 VeroshotBow: {
 	DisplayName: Veroshot Bow
 	Tooltip: ""
+	BasicSlash: ""
+	StaminaSlash: No Effect
 }
 
 AzaleanChestplate: {
@@ -10340,4 +10348,21 @@ StopSignSword: {
 	Tooltip: Stop!
 	BasicSlash: Spins around a bit more than a regular sword
 	StaminaSlash: Throws the sword like a boomerang!
+}
+
+FlamelashChakrams: {
+	BasicSlash: No Effect
+	StaminaSlash: No Effect
+	DisplayName: Flamelash Chakrams
+	Tooltip: ""
+}
+
+ArncharBallBuster: {
+	DisplayName: Arnchar Ball Buster
+	Tooltip: ""
+}
+
+FlamingBall: {
+	DisplayName: Flaming Ball
+	Tooltip: ""
 }
