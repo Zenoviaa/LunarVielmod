@@ -40,7 +40,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-2, 0);
+            return new Vector2(8, 0);
         }
 
         public override bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

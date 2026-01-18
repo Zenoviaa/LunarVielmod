@@ -42,7 +42,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         }
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-24, 0);
+            return new Vector2(12, 0);
         }
 
         public override bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -85,7 +85,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 }
 
                 //Dust Burst Towards Mouse
-                int count = _comboCounter;
+                int count = (int)(_comboCounter * 0.5f);
                 for (int k = 0; k < count; k++)
                 {
                     Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(7));

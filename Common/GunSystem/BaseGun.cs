@@ -473,6 +473,7 @@ namespace Stellamod.Common.GunSystem
             {
                 Vector2? holdOutOffset = Owner.HeldItem.ModItem.HoldoutOffset();
                 Vector2 offset = holdOutOffset.HasValue ? holdOutOffset.Value : Vector2.Zero;
+                offset = offset.RotatedBy(HoldRotation);
                 Projectile.Center = Owner.MountedCenter - new Vector2(0, 7) + offset;
                 Projectile.rotation = HoldRotation;
             }
