@@ -132,9 +132,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             }
 
             Player player = Main.player[Projectile.owner];
-            if (!SummonHelper.CheckMinionActive<VehementMinionBuff>(player, Projectile))
-                return;
-
             NPC target = ProjectileHelper.FindNearestEnemyThroughWalls(Projectile.Center, 1024);
             if (target != null)
             {
