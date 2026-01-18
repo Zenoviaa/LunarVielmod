@@ -56,11 +56,28 @@ namespace Stellamod.Core.Bases
             _swings.Add(new OvalSwing
             {
                 Duration = duration,
+                XSwingRadius = 4,
+                YSwingRadius = 4,
+                SwingDegrees = swingDegrees,
+                SpinThrowDistance = 32,
+                SpinDegrees = 1,
+                AlwaysShowTrail = true,
+                Easing = (float lerpValue) => lerpValue,
+                Sound = LightSpin,
+                HitCount = 2
+            });
+            return this;
+        }
+        public ComboBuilder AddChakramSpin2(float duration = 30, float xSwingRadius = 128, float ySwingRadius = 64, float swingDegrees = 480, int hitCount = 2)
+        {
+            _swings.Add(new OvalSwing
+            {
+                Duration = duration,
                 XSwingRadius = xSwingRadius,
                 YSwingRadius = ySwingRadius,
                 SwingDegrees = swingDegrees,
                 SpinThrowDistance = 0,
-                SpinDegrees = 1,
+                SpinDegrees = 32,
                 AlwaysShowTrail = true,
                 Easing = (float lerpValue) => lerpValue,
                 Sound = LightSpin,
@@ -83,6 +100,8 @@ namespace Stellamod.Core.Bases
                 Duration = duration,
                 ThrowDistance = throwDistance,
                 Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
+                SpinDegrees = 360,
+               
                 Sound = spearSlash2
             });
             return this;

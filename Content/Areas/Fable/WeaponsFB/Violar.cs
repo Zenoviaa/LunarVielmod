@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Dusts;
@@ -9,6 +10,7 @@ using Stellamod.Items.Materials;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -63,13 +65,11 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         }
         public override void SetDefaults()
         {
-            Projectile.damage = 0;
-            Projectile.width = 20;
-            Projectile.height = 20;
+            Projectile.width = 64;
+            Projectile.height = 64;
             Projectile.friendly = true;
-            Projectile.DamageType = DamageClass.Ranged;
             Projectile.ignoreWater = true;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.ownerHitCheck = true;
             Projectile.extraUpdates = 1;
@@ -109,7 +109,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             }
 
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
-            FXUtil.ShakeCamera(Projectile.Center, 1024, 32f);
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 4);
         }
 
         public override void PostDraw(Color lightColor)
@@ -117,14 +117,18 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             string glowTexture = Texture + "_White";
             Texture2D whiteTexture = ModContent.Request<Texture2D>(glowTexture).Value;
 
-            Vector2 textureSize = new Vector2(70, 74);
-            Vector2 drawOrigin = textureSize / 2;
-
             //Lerping
             float progress = ExplodingTimer;
             Color drawColor = Color.Lerp(Color.Transparent, Color.Orange, progress);
-            Vector2 drawPosition = Projectile.position - Main.screenPosition + drawOrigin;
-            Main.spriteBatch.Draw(whiteTexture, drawPosition, Projectile.Frame(), drawColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+            Main.spriteBatch.Draw(whiteTexture, drawPosition, Projectile.Frame(), drawColor, Projectile.rotation, Projectile.Frame().Size() * 0.5f, Projectile.scale, SpriteEffects.None, 0f);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D projectileTexture = TextureAssets.Projectile[Type].Value;
+            Main.spriteBatch.Draw(projectileTexture, Projectile.Center - Main.screenPosition, Projectile.Frame(), lightColor, Projectile.rotation, Projectile.Frame().Size() * 0.5f, Projectile.scale, SpriteEffects.None, 0f);
+            return false;
         }
 
         public override void AI()
@@ -146,38 +150,36 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
                 {
                     SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong3"), Projectile.position);
                 }
-                int S2 = Main.rand.Next(0, 3);
-                if (S2 == 0)
-                {
-                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong"), Projectile.position);
-                }
-                if (S2 == 1)
-                {
-                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong2"), Projectile.position);
-                }
-                if (S2 == 2)
-                {
-                    SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowSong3"), Projectile.position);
-                }
-
 
                 var entitySource = Projectile.GetSource_FromThis();
-                if (Main.myPlayer == Projectile.owner)
+                for (float f = 0; f < 6; f++)
                 {
-                    Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music1").Type, Projectile.damage, 0, Projectile.owner);
-                    Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music2").Type, Projectile.damage, 0, Projectile.owner);
-                    Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music1").Type, Projectile.damage, 0, Projectile.owner);
-                    Projectile.NewProjectile(entitySource, Projectile.position, new Vector2(Main.rand.Next(-6, 6), Main.rand.Next(-6, 6)), Mod.Find<ModProjectile>("Music2").Type, Projectile.damage, 0, Projectile.owner);
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<MusicDust>(),
+                        (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Orange, Main.rand.NextFloat(1f, 6f)).noGravity = true;
+                }
+                for (float i = 0; i < 4; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.Orange,
+                        outerGlowColor: Color.Black,
+                        duration: Main.rand.NextFloat(12, 25),
+                        baseSize: Main.rand.NextFloat(0.01f, 0.15f));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
 
-
                 Projectile.Kill();
-                SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"), Projectile.position);
+                SoundStyle explosionSound = AssetManager.GetSound("MorrowExp");
+                explosionSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(explosionSound, Projectile.position);
                 Timer = 0;
             }
             if (Timer >= 100)
             {
-                Projectile.scale += 0.002f;
+                Projectile.scale += 0.01f;
                 ExplodingTimer += 0.005f;
             }
             

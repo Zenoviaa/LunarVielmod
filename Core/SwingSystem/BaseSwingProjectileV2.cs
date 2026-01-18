@@ -8,6 +8,7 @@ using Stellamod.Core.Effects;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -119,7 +120,7 @@ namespace Stellamod.Core.SwingSystem
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            if (ComboIndex >= _swings.Count)
+            if ((ComboIndex+1) >= _swings.Count)
             {
                 SwingPlayerV2 swingPlayer = Owner.GetModPlayer<SwingPlayerV2>();
                 swingPlayer.ResetCombo();
@@ -136,6 +137,7 @@ namespace Stellamod.Core.SwingSystem
                 swingRotationCache = new float[16];
                 oldTime = new float[200];
                 DefineCombo();
+
                 ISwing swing = GetSwing();
                 swing.SetDirection((int)SwingDirection);
                 float hitCount = swing.GetHitCount();
@@ -157,6 +159,8 @@ namespace Stellamod.Core.SwingSystem
             {
                 return _swings[ComboIndex];
             }
+
+            Main.NewText($"Somehow doing the deafult swing");
             return _swings[0];
         }
 
@@ -197,6 +201,7 @@ namespace Stellamod.Core.SwingSystem
         public override void AI()
         {
             base.AI();
+     
             //We want to initalize like this for better MP compatibility, using a timer might not always be seen on all clients
             AI_Initialize();
             if(bounceTimer > 0)
@@ -407,6 +412,7 @@ namespace Stellamod.Core.SwingSystem
                 float interpolant = a;
                 interpolant /= (float)afterImageCache.Length;
                 Texture2D texture = GetTexture();
+
                 int frameHeight = texture.Height / Main.projFrames[Projectile.type];
                 int startY = frameHeight * Projectile.frame;
 
@@ -528,7 +534,22 @@ namespace Stellamod.Core.SwingSystem
 
                 spriteBatch.RestartDefaults();
             }
-        
+
+            //gonna try something
+            /*
+            Texture2D glowSlashTexture = ModContent.Request<Texture2D>("Stellamod/Visual/Particles/CrescentSlashParticle").Value;
+            Vector2 drawOrigin = glowSlashTexture.Size() * 0.5f;
+            Color glowingColor = Color.LightSkyBlue;
+            glowingColor *= 0.5f;
+            glowingColor *= EasingFunction.QuadraticBump(Interpolant);
+            glowingColor.A = 0;
+            float rotation = Projectile.rotation - MathHelper.PiOver2;
+
+            Vector2 center = Vector2.Lerp(Projectile.Center, Owner.Center, 0.5f);
+            Vector2 slashPosition = center - Main.screenPosition;
+     
+            spriteBatch.Draw(glowSlashTexture, slashPosition, null, glowingColor, rotation, drawOrigin, Projectile.scale * 0.75f, SpriteEffects.None, 0);
+            */
         }
 
         public virtual void DrawSwordBeam(ref Color lightColor)

@@ -28,7 +28,7 @@ namespace Stellamod.Items.Weapons.Ranged.Balls
 
             //Variables
             //Easing
-            EasingFunction = (float lerpValue) => Easing.InOutExpo(lerpValue, 7);
+            Easer = (float lerpValue) => Easing.InOutExpo(lerpValue, 7);
 
             //How far it drags behind you
             DragDistance = 126;

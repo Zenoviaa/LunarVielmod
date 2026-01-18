@@ -1,4 +1,6 @@
-﻿using Stellamod.Core.Bases;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -19,7 +21,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 6;
+            Item.damage = 12;
             Item.shoot = ModContent.ProjectileType<FlamingBallProj>();
         }
     }
@@ -35,7 +37,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
             //Variables
             //Easing
-            EasingFunction = (float lerpValue) => Easing.InOutExpo(lerpValue, 7);
+            Easer = (float lerpValue) => Easing.InOutExpo(lerpValue, 7);
 
             //How far it drags behind you
             DragDistance = 126;
@@ -76,7 +78,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             base.AI();
 
-            if (Main.rand.NextBool(5))
+            if (Main.rand.NextBool(8))
             {
                 switch (Main.rand.Next(2))
                 {
@@ -85,24 +87,83 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                         sp.gravity = 0f;
                         sp.fast = true;
                         sp.dampening = 0.1f;
+                        sp.Scale *= 0.33f;
                         break;
                     case 1:
                         FlameParticle sp2 = Particle<FlameParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 16), Scale: Main.rand.NextFloat(0.1f, 0.2f));
                         sp2.gravity = 0f;
                         sp2.fast = true;
                         sp2.dampening = 0.1f;
+                        sp2.Scale *= 0.13f;
                         break;
                 }
             }
         }
+
+        private float GetTrailWidth(float completionRatio)
+        {
+            return MathHelper.Lerp(0, 32, completionRatio) * EasingFunction.QuadraticBump(UnEasedLerpValue);
+        }
+
+        private Color GetTrailColor(float p)
+        {
+            Color trailColor = Color.Lerp(Color.White, Color.LightBlue, p);
+            return trailColor;
+        }
+
+        protected override void DrawSlashTrail(ref Color lightColor, Vector2[] slashPos)
+        {
+            //   base.DrawSlashTrail(ref lightColor, slashPos);
+            RichLaserShader laserShader = RichLaserShader.Instance;
+            laserShader.LaserColor = Color.Goldenrod;
+            laserShader.InnerColor = Color.Red;
+            laserShader.OuterColor = Color.DarkRed;
+            TrailDrawer.Draw(Main.spriteBatch, slashPos, GetTrailColor, GetTrailWidth, laserShader);
+        }
+
+        protected override void DrawBallSprite(ref Color lightColor)
+        {
+            base.DrawBallSprite(ref lightColor);
+            Texture2D glowTexture = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            Vector2 drawOrigin = glowTexture.Size() * 0.5f;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Vector2 drawCenter = Projectile.Center - Main.screenPosition;
+            Color glowColor = Color.OrangeRed;
+            glowColor.A = 0;
+            spriteBatch.Draw(glowTexture, drawCenter, null, glowColor, 0, drawOrigin, Projectile.scale * 0.15f, SpriteEffects.None, 0);
+        }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            SoundStyle spearHit2 = SoundRegistry.NSwordHit1;
-            spearHit2.PitchVariance = 0.2f;
+
+
             if (!_hit)
             {
-                SoundEngine.PlaySound(spearHit2, Projectile.position);
+                float numDust = 6;
+                for(float n = 0; n < numDust; n++)
+                {
+                    DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+                    {
+                        innerColor = Color.OrangeRed,
+                        outerColor = Color.DarkRed
+                    };
+                    DustParticle.Spawn(target.Center, -Vector2.UnitY.RotatedByRandom(1.5f) * Main.rand.NextFloat(2f, 8f), spawnParams);
+                }
+                SoundStyle hitSound;
+                switch (Main.rand.Next(2))
+                {
+                    default:
+                    case 0:
+                        hitSound = AssetManager.GetSound("Fire/FireballShoot1");
+                        break;
+                    case 1:
+                        hitSound = AssetManager.GetSound("Fire/FireballShoot2");
+                        break;
+                }
+           
+                hitSound.PitchVariance = 0.3f;
+                hitSound.Volume = 0.66f;
+                SoundEngine.PlaySound(hitSound, target.Center);
                 FXUtil.ShakeCamera(target.Center, 1024, 2);
                 _hit = true;
             }

@@ -168,7 +168,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-                (Color)GetAlpha(lightColor), 0f, origin, 4f, SpriteEffects.None, 0f);
+                (Color)GetAlpha(lightColor), 0f, origin, 3f, SpriteEffects.None, 0f);
             return false;
         }
     }
@@ -206,11 +206,11 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 morrowExp.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(morrowExp, Projectile.position);
 
-                FXUtil.GlowCircleBoom(Projectile.Center,
+                var boom = FXUtil.GlowCircleBoom(Projectile.Center,
                     innerColor: Color.White,
                     glowColor: Color.Yellow,
                     outerGlowColor: Color.Red, duration: 25, baseSize: 0.24f);
-
+                boom.Scale *= 0.75f;
                 for (float i = 0; i < 8; i++)
                 {
                     float progress = i / 4f;
@@ -224,11 +224,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                         baseSize: Main.rand.NextFloat(0.1f, 0.2f),
                         duration: Main.rand.NextFloat(15, 25));
                     particle.Rotation = rot + MathHelper.ToRadians(45);
-                }
-
-                for (int i = 0; i < 8; i++)
-                {
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
                 }
             }
         }
@@ -465,11 +460,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                     outerGlowColor: Color.Red,
                     baseSize: 0.2f);
                 particle.Rotation = rot + MathHelper.ToRadians(45);
-            }
-
-            for (int i = 0; i < 6; i++)
-            {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
             }
 
             for (int i = 0; i < Main.rand.Next(7, 13); i++)

@@ -21,12 +21,12 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults()
         {
             Item.DefaultToArtifact();
-            Item.damage = 39; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
+            Item.damage = 18; // Sets the Item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
             Item.DamageType = DamageClass.Magic;
             Item.width = 20; // hitbox width of the Item
             Item.height = 20; // hitbox height of the Item
-            Item.useTime = 18; // The Item's use time in ticks (60 ticks == 1 second.)
-            Item.useAnimation = 18; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
+            Item.useTime = 36; // The Item's use time in ticks (60 ticks == 1 second.)
+            Item.useAnimation = 36; // The length of the Item's use animation in ticks (60 ticks == 1 second.)
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.noMelee = true; //so the Item's animation doesn't do damage
             Item.knockBack = 3; // Sets the Item's knockback. Note that projectiles shot by this weapon will use its and the used ammunition's knockback added together.
@@ -36,7 +36,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.shoot = ModContent.ProjectileType<WaxBall>();
             Item.shootSpeed = 18f; // the speed of the projectile (measured in pixels per frame)
             Item.channel = true;
-            Item.mana = 8;
+            Item.mana = 25;
             Item.autoReuse = true;
         }
 
@@ -78,6 +78,8 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Projectile.friendly = true;
             Projectile.timeLeft = 30;
             Projectile.tileCollide = false;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
         }
 
         public override void AI()
@@ -86,26 +88,32 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Timer++;
             if (Timer == 1)
             {
-                SoundStyle sound = AssetManager.GetSound("Waxing");
+                SoundStyle sound = AssetManager.GetSound("Fire/Waxing");
                 sound.PitchVariance = 0.3f;
                 sound.Volume = 0.75f;
                 SoundEngine.PlaySound(sound, Projectile.position);
 
-                float numDust = 24;
+                var p = FXUtil.GlowCircleBoom(Projectile.Center, Color.Yellow, Color.OrangeRed, Color.Red);
+                p.Scale *= 1.5f;
+                
+                float numDust = 12;
                 for (float n = 0; n < numDust; n++)
                 {
-                    Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
-                    WaxParticle.SpawnInAlphaLayer(Projectile.Center, velocity, Color.White, Scale: Main.rand.NextFloat(0.75f, 1f));
+                    Vector2 velocity = Main.rand.NextVector2Circular(6, 6);
+                    WaxParticle w = WaxParticle.SpawnInAlphaLayer(Projectile.Center, velocity, Color.White, Scale: Main.rand.NextFloat(0.75f, 1f));
+                    
                 }
 
                 numDust = 12;
                 for (float n = 0; n < numDust; n++)
                 {
-                    Vector2 velocity = Main.rand.NextVector2Circular(16, 16) * 2f;
-                    SparkleParticle sp = SparkleParticle.Spawn(Projectile.Center, velocity, Color.White, Scale: Main.rand.NextFloat(0.75f, 1f));
+                    Vector2 velocity = Main.rand.NextVector2Circular(8, 8) * 2f;
+                    SparkleParticle sp = SparkleParticle.Spawn(Projectile.Center, velocity, Color.White, Scale: Main.rand.NextFloat(0.25f, 1f));
                     sp.flickering = true;
                     sp.innerColor = Color.OrangeRed;
-                    sp.outerColor = Color.DarkRed;
+                    sp.outerColor = Color.Red;
+                    sp.gravity = 0f;
+                    sp.dampening = 0.1f;
                 }
 
                 for (int i = 0; i < 2; i++)
@@ -121,7 +129,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 for (int n = 0; n < numDust; n++)
                 {
                     var sp = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(64, 64), -Vector2.UnitY, Scale: Main.rand.NextFloat(1f, 2f));
-                    sp.initialColor = Color.Brown;
+                    sp.initialColor = Color.White;
                 }
 
                 for (int n = 0; n < numDust; n++)
@@ -161,7 +169,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             base.OnKill(timeLeft);
             if (this.OwnedByLocalClient())
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<WaxBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<WaxBoom>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
             }
         }
 
@@ -175,53 +183,79 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void AI()
         {
             Timer++;
-            Projectile.velocity *= 0.98f;
-            if (Projectile.velocity.Length() <= 0.5f)
+            if(Timer < 15)
             {
-                Projectile.scale *= 1.01f;
+                Projectile.scale = MathHelper.SmoothStep(0f, 1f, Timer / 15f);
+            }
+            Projectile.velocity *= 0.98f;
+            if (Projectile.velocity.Length() <= 0.5f || Projectile.timeLeft < 15)
+            {
+                Projectile.scale *= 1.1f;
                 if (Projectile.scale >= 1.5f)
                 {
                     Projectile.Kill();
                 }
             }
+            if (Timer % 16 == 0)
+            {
+                DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+                {
+                    innerColor = Color.OrangeRed,
+                    outerColor = Color.Red,
+                    scaleRange = new Vector2(1.5f, 2f) * Projectile.scale
+                };
+                var dp = DustParticle.Spawn(Projectile.Center, -Vector2.UnitY.RotatedByRandom(1.5f), spawnParams);
+                dp.parent = Projectile;
 
-            if (Main.rand.NextBool(5))
+                if (Main.rand.NextBool(3))
+                {
+                    DustParticle.Spawn(Projectile.Center, -Vector2.UnitY.RotatedByRandom(1.5f), spawnParams);
+                }
+                if (Main.rand.NextBool(6))
+                {
+                    SmokeParticle sp = SmokeParticle.Spawn(Projectile.Center, -Vector2.UnitY.RotatedByRandom(1.5f), Scale: Main.rand.NextFloat(0.25f, 0.5f));
+                    sp.initialColor = Color.Lerp(Color.Red, Color.Black, 0.75f);
+                    sp.Scale *= Projectile.scale;
+                }
+            }
+
+            if (Main.rand.NextBool(12))
             {
                 WaxParticle.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(32, 32), Vector2.Zero, Color.White, Main.rand.NextFloat(0.5f, 1f));
             }
 
-            if (Main.rand.NextBool(5))
-            {
-                switch (Main.rand.Next(2))
-                {
-                    case 0:
-                        DustParticle sp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.3f, 16), Scale: Main.rand.NextFloat(0.5f, 1.5f));
-                        sp.gravity = 0f;
-                        sp.fast = true;
-                        sp.dampening = 0.1f;
-                        break;
-                    case 1:
-                        FlameParticle sp2 = Particle<FlameParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(1f, 16), Scale: Main.rand.NextFloat(0.1f, 0.2f));
-                        sp2.gravity = 0f;
-                        sp2.fast = true;
-                        sp2.dampening = 0.1f;
-                        break;
-                }
-            }
-            DrawHelper.AnimateTopToBottom(Projectile, 4);
+            Projectile.rotation = Projectile.velocity.X * -0.05f;
+            NPC closest = NPCHelper.FindClosestNPC(Projectile.Center, 1024);
+            if (closest != null)
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, 1);
+            DrawHelper.AnimateTopToBottom(Projectile, 5);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            this.DrawCentered(ref lightColor);
             Texture2D glowTexture = AssetManager.GlowMask.SimpleGlowCircle.Value;
             Vector2 drawOrigin = glowTexture.Size() * 0.5f;
             SpriteBatch spriteBatch = Main.spriteBatch;
             Vector2 drawCenter = Projectile.Center - Main.screenPosition;
             Color glowColor = Color.Red;
             glowColor *= ExtraMath.Osc(0.5f, 1f);
+            glowColor *= 0.3f;
             glowColor.A = 0;
             spriteBatch.Draw(glowTexture, drawCenter, null, glowColor, 0, drawOrigin, Projectile.scale * 0.3f, SpriteEffects.None, 0);
+            this.DrawCentered(ref lightColor);
+
+
+            float interp = Timer / 180f;
+            float ease = MathHelper.SmoothStep(1f, 0f, interp);
+            glowColor = Color.Red;
+            glowColor *= ExtraMath.Osc(0.5f, 1f, speed: 16);
+            glowColor.A = 0;
+            spriteBatch.Draw(glowTexture, drawCenter - new Vector2(0, 16 + 24 * ease).RotatedBy(Projectile.rotation), null, glowColor, 0, drawOrigin, Projectile.scale * 0.08f, SpriteEffects.None, 0);
+
+            glowColor = Color.Yellow;
+            glowColor *= ExtraMath.Osc(0.5f, 1f, speed: 16);
+            glowColor.A = 0;
+            spriteBatch.Draw(glowTexture, drawCenter - new Vector2(0, 16 + 24 * ease).RotatedBy(Projectile.rotation), null, glowColor, 0, drawOrigin, Projectile.scale * 0.05f, SpriteEffects.None, 0);
             return false;
         }
 

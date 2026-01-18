@@ -26,6 +26,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             Item.shoot = ModContent.ProjectileType<FrostBringerSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<FrostBringerStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Sword;
+            staminaCost = 1;
         }
 
         public override void AddRecipes()
@@ -44,6 +45,9 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             SwingV2Helper.AddSwordSwingStyle(this);
             BlackFireShader blackFireShader = new BlackFireShader();
             blackFireShader.SetDefaults();
+            blackFireShader.InnerColor = Color.LightSkyBlue;
+            blackFireShader.OuterColor = Color.DarkBlue;
+            blackFireShader.BackColor = Color.Violet;
             SlashTrailer devilsPeak = new SlashTrailer
             {
                 Shader = blackFireShader,
@@ -112,8 +116,8 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
 
     public class FrostBringerStaminaSlash : ModProjectile
     {
-        public override string Texture => ModContent.GetInstance<FrostBringer>().Texture;
         private ref float Timer => ref Projectile.ai[0];
+        private ref float HitstopTimer => ref Projectile.ai[1];
         private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
         {
@@ -130,13 +134,19 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 180;
-
+            Projectile.extraUpdates = 1;
         }
 
 
         public override void AI()
         {
             base.AI();
+            if(HitstopTimer > 0)
+            {
+                Projectile.velocity *= 1.1f;
+                HitstopTimer--;
+                return;
+            }
             Timer++;
             if (Timer == 1)
             {
@@ -160,20 +170,70 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
                 FlakeParticle.Spawn(Projectile.Center, Vector2.Zero, spawnParams);
             }
 
-            Projectile.velocity *= 0.98f;
-            if (Projectile.velocity.Length() <= 0.5f)
-                Projectile.Kill();
+            if(Timer > 60)
+            {
+                Projectile.velocity *= 0.98f;
+                if (Projectile.velocity.Length() <= 1f)
+                    Projectile.Kill();
+
+            }
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 
-            float outScale = MathHelper.SmoothStep(1f, 0f, (float)Projectile.timeLeft / 30f);
+            float outScale = MathHelper.SmoothStep(0f, 1f, (float)Projectile.timeLeft / 30f);
             Projectile.scale = outScale;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
+            SoundStyle hitSound = SoundID.Item28;
+            hitSound.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(hitSound, target.Center);
+
             target.AddBuff(BuffID.Frostburn, 60);
+
+            for (float i = 0; i < 2; i++)
+            {
+                var donutParticle = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 4 * MathHelper.Lerp(15, 1f, i / 3f));
+                donutParticle.Scale *= MathHelper.Lerp(0.3f, 1f, i / 3f);
+                donutParticle.Velocity *= 0.1f;
+                donutParticle.color = Color.LightSkyBlue;
+                donutParticle.innerColor = Color.LightSkyBlue;
+                donutParticle.outerColor = Color.Violet;
+            }
+
+            HitstopTimer = 4;
+            float nuMDust = 8;
+            for (float n = 0; n < nuMDust; n++)
+            {
+                FlakeParticleSpawnParams spawnParams = new FlakeParticleSpawnParams
+                {
+                    gravity = 0,
+                    scaleRange = new Vector2(0.2f, 0.5f)
+                };
+                Vector2 velocity = Main.rand.NextVector2Circular(4, 4);
+                FlakeParticle.Spawn(target.Center, velocity, spawnParams);
+            }
+
+            nuMDust = 4;
+            for (float n = 0; n < nuMDust; n++)
+            {
+                DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+                {
+                    innerColor = Color.Cyan,
+                    outerColor = Color.Violet,
+                    gravity = 0,
+                    scaleRange = new Vector2(0.5f, 1f)
+                };
+                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                DustParticle dp = DustParticle.Spawn(target.Center, velocity, spawnParams);
+                dp.dampening = 0.1f;
+            }
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
+            ModContent.ProjectileType<BaseHitEffect>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+            FXUtil.GlowCircleBoom(target.Center, Color.Cyan, Color.DarkBlue, Color.Violet);
+            FXUtil.ShakeCamera(target.Center, 1024, 4);
         }
 
         public override void OnKill(int timeLeft)
@@ -201,7 +261,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
                 float rotation = Projectile.oldRot[i];
                 float ratio = (float)i / (float)Projectile.oldRot.Length;
                 Color afterImageColor = Color.Lerp(Color.White, Color.Transparent, MathHelper.SmoothStep(0f, 1f, ratio));
-                afterImageColor *= 0.2f;
+                afterImageColor *= 0.4f;
                 spriteBatch.Draw(texture, drawCenter, null, afterImageColor, rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
             }
 

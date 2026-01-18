@@ -36,7 +36,7 @@ namespace Stellamod.Visual.Particles
         public static FlakeParticle Spawn(Vector2 position, Vector2 velocity, FlakeParticleSpawnParams? spawnParams = null)
         {
             if (!spawnParams.HasValue)
-                spawnParams = new FlakeParticleSpawnParams();
+                spawnParams = FlakeParticleSpawnParams.Default;
             FlakeParticleSpawnParams settings = spawnParams.Value;
             float scale = Main.rand.NextFloat(settings.scaleRange.X, settings.scaleRange.Y);
             FlakeParticle dp = Spawn(position, velocity, Color.White, scale);

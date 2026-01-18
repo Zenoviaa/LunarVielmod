@@ -5361,7 +5361,11 @@ LifeSeekingVial: {
 
 GraftedWaxMelter: {
 	DisplayName: Grafted Wax Artifact
-	Tooltip: Make this shit feel like a firework party! I say let the children burn.
+	Tooltip:
+		'''
+		Make this shit feel like a firework party! I say let the children burn.
+		Shoots expanding wax candles that slowly home and then explode...
+		'''
 }
 
 AlcadBomb: {
@@ -5599,9 +5603,9 @@ CinderedCard: {
 
 VeroshotBow: {
 	DisplayName: Veroshot Bow
-	Tooltip: ""
-	BasicSlash: ""
-	StaminaSlash: No Effect
+	Tooltip: Firepower!
+	BasicSlash: Shoots a spread of 4 hellfire arrows in addition to the regular arrow
+	StaminaSlash: Shoots a napalm arrow that drops behind little flaming sparks!
 }
 
 AzaleanChestplate: {

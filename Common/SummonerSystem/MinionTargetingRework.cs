@@ -57,7 +57,8 @@ namespace Stellamod.Common.SummonerSystem
         public override void AI()
         {
             base.AI();
-
+            if (Lifetime >= NPC.lifeMax)
+                Lifetime = NPC.lifeMax;
             Lifetime--;
             NPC.life = (int)Lifetime;
             if (NPC.life <= 0)

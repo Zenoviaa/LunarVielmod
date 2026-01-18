@@ -21,7 +21,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             Item.DefaultToArtifact();
             Item.damage = 50;
-            Item.mana = 5;
+            Item.mana = 45;
             Item.width = 18;
             Item.height = 21;
             Item.useTime = 40;
@@ -37,7 +37,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.shoot = ModContent.ProjectileType<SplitFlameBlast>();
             Item.shootSpeed = 4f;
             Item.autoReuse = true;
-            Item.crit = 7;
         }
         public override void AddRecipes()
         {

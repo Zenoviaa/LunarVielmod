@@ -41,7 +41,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults()
         {
             base.SetDefaults();
-            DrawScale = 1f;
+            DrawScale = 0.5f;
             Projectile.width = 132;
             Projectile.height = 132;
         }
@@ -49,7 +49,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void Start()
         {
             base.Start();
-            float numDust = 16;
+            float numDust = 8;
             for(float n = 0; n < numDust; n++)
             {
                 DustParticleSpawnParams spawnParams = new DustParticleSpawnParams

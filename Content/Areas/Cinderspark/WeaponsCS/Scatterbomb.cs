@@ -184,10 +184,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                     particle.Rotation = rot + MathHelper.ToRadians(45);
                 }
 
-                for (int i = 0; i < 8; i++)
-                {
-                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
-                }
                 FXUtil.ShakeCamera(Projectile.position, 1024, 8);
             }
 

@@ -33,6 +33,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void AI()
         {
             base.AI();
+            Projectile.velocity *= 0.9f;
             Timer++;
             if(Timer == 1)
             {
@@ -64,7 +65,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             {
                 DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
                 {
-                    innerColor = Color.Yellow,
+                    innerColor = Color.OrangeRed,
                     outerColor = Color.Red,
                     scaleRange = new Vector2(0.5f, 0.9f) * Projectile.scale
                 };
@@ -73,6 +74,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
             Projectile.scale = MathHelper.SmoothStep(0f, 1f, ((float)Projectile.timeLeft / 120f));
             Projectile.velocity *= 1.1f;
+            Projectile.velocity.Y += 0.15f;
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
@@ -115,23 +117,23 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Projectile.penetrate = -1;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 24;
-            Projectile.timeLeft = 180;
+            Projectile.timeLeft = 120;
         }
 
         public override void AI()
         {
             base.AI();
             Timer++;
-            if(Timer % 7 == 0)
+            if(Timer % 8 == 0)
             {
                 DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
                 {
-                    innerColor = Color.Yellow,
+                    innerColor = Color.OrangeRed,
                     outerColor = Color.Red,
-                    scaleRange = new Vector2(0.5f, 0.9f) * Projectile.scale
+                    scaleRange = new Vector2(1.5f, 2f) * Projectile.scale
                 };
                 var dp = DustParticle.Spawn(Projectile.Center, -Vector2.UnitY.RotatedByRandom(1.5f), spawnParams);
-                dp.parent = Projectile;
+             //   dp.parent = Projectile;
                 if (Main.rand.NextBool(3))
                 {
                     DustParticle.Spawn(Projectile.Center, -Vector2.UnitY.RotatedByRandom(1.5f), spawnParams);
@@ -143,18 +145,45 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                     sp.Scale *= Projectile.scale;
                 }
             }
+            Projectile.velocity.X *= 0.94f;
             Projectile.velocity.Y += 0.5f;
-            Projectile.scale = MathHelper.SmoothStep(0f, 1f, ((float)Projectile.timeLeft / 180f));
+            Projectile.scale = MathHelper.SmoothStep(0f, 1f, ((float)Projectile.timeLeft / 120f));
+            if(Projectile.timeLeft == 1)
+            {
+                SmokeParticle sp = SmokeParticle.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY, Scale: 0.4f);
+                sp.initialColor = Color.Lerp(Color.White, Color.Black, 0.8f);
+            }
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            return base.PreDraw(ref lightColor);
+            Texture2D ballTexture = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            Vector2 drawOrigin = ballTexture.Size() * 0.5f;
+            Vector2 drawCenter = Projectile.Center - Main.screenPosition;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+
+            Color glowColor = Color.OrangeRed;
+            glowColor.A = 0;
+            spriteBatch.Draw(ballTexture, drawCenter, null, glowColor, 0, drawOrigin, Projectile.scale * 0.06f, SpriteEffects.None, 0);
+
+            glowColor = Color.Goldenrod;
+            glowColor.A = 0;
+            spriteBatch.Draw(ballTexture, drawCenter, null, glowColor, 0, drawOrigin, Projectile.scale * 0.06f, SpriteEffects.None, 0);
+            return false;
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             if (Projectile.velocity.Y != oldVelocity.Y)
+            {
                 Projectile.velocity.Y = -oldVelocity.Y * 0.5f;
+                if (this.OwnedByLocalClient())
+                {
+                    Projectile.velocity.X += Main.rand.NextFloat(-15f, 15f);
+                    Projectile.netUpdate = true;
+                }
+
+            }
+
             return false;
         }
 
@@ -174,33 +203,18 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             base.SetDefaults();
             Item.damage = 25;
-            Item.width = 50;
-            Item.height = 50;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.knockBack = 4;
-            Item.value = Item.sellPrice(0, 2, 1, 29);
-            Item.rare = ItemRarityID.Blue;
-            Item.autoReuse = true;
-            Item.DamageType = DamageClass.Ranged;
-            Item.shoot = ProjectileID.PurificationPowder;
-            Item.shootSpeed = 40f;
-            Item.useAmmo = AmmoID.Arrow;
-            Item.UseSound = SoundID.Item5;
-            Item.useAnimation = 40;
-            Item.useTime = 40;
-            Item.channel = true;
-            Item.scale = 1f;
-            Item.consumeAmmoOnLastShotOnly = true;
-            Item.noMelee = true;
+            Item.shootSpeed = 15;
         }
 
         public override Vector2? HoldoutOffset()
         {
+       
             return new Vector2(-5f, 0f);
         }
 
         public override void ShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)
         {
+  
             base.ShootBow(player, source, shootParams);
             int Sound = Main.rand.Next(1, 3);
             SoundStyle shootSound;
@@ -216,7 +230,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             shootSound.Volume = 0.5f;
             shootSound.PitchVariance = 0.25f;
             Vector2 position = shootParams.position;
-            Vector2 velocity = shootParams.velocity * shootParams.speed;
+            Vector2 velocity = shootParams.fireVelocity * 3;
             int damage = shootParams.damage;
             float knockback = shootParams.knockBack;
             SoundEngine.PlaySound(shootSound, position);

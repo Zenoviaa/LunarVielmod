@@ -2,6 +2,7 @@
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,6 +27,14 @@ namespace Stellamod.Core
         private void TargetClosestBetter(On_NPC.orig_TargetClosest orig, NPC self, bool faceTarget)
         {
             self.TargetClosestByAggro();
+            if(faceTarget && self.HasValidTarget)
+            {
+                Player target = Main.player[self.target];
+                Rectangle targetRect = target.getRect();
+                self.direction = 1;
+                if ((float)(targetRect.X + targetRect.Width / 2) < self.position.X + (float)(self.width / 2))
+                    self.direction = -1;
+            }
         }
     }
 

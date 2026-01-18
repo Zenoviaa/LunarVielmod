@@ -15,7 +15,7 @@ namespace Stellamod.Visual.Particles
         public float gravity;
         public override void OnSpawn()
         {
-            gravity = 0.1f;
+            gravity = 0.06f;
             time = Main.rand.Next(60, 120);
             Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
             Rotation = Main.rand.NextFloat(0f, MathHelper.TwoPi);

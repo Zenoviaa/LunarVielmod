@@ -62,31 +62,27 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
                     ModContent.ProjectileType<CinderBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
 
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < 16; i++)
                 {
                     DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
                     {
-                        innerColor = Color.Yellow,
+                        innerColor = Color.OrangeRed,
                         outerColor = Color.Red,
-                        scaleRange = new Vector2(0.3f, 0.7f)
+                        scaleRange = new Vector2(0.3f, 1f)
                     };
-                    DustParticle.Spawn(target.Center, Main.rand.NextVector2Circular(8, 8), spawnParams);
+                    DustParticle.Spawn(target.Center, Main.rand.NextVector2Circular(32, 32), spawnParams);
                 }
 
                 for (int i = 0; i < 8; i++)
                 {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Yellow, 1f).noGravity = true;
-                }
-                for (int i = 0; i < 8; i++)
-                {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 1f).noGravity = true;
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.OrangeRed, 1f).noGravity = true;
                 }
 
-                FXUtil.GlowCircleBoom(target.Center,
+                var boom  = FXUtil.GlowCircleBoom(target.Center,
                     innerColor: Color.White,
-                    glowColor: Color.Yellow,
+                    glowColor: Color.OrangeRed,
                     outerGlowColor: Color.Red, duration: 25, baseSize: 0.2f);
-
+                boom.Scale *= 0.6f;
                 for (int i = 0; i < 16; i++)
                 {
                     Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);

@@ -195,7 +195,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
             }
             Timer = 1;
-            mySound.Volume = 0.3f;
+            mySound.Volume = 0.15f;
             mySound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(mySound, Projectile.position);
         }
@@ -252,12 +252,12 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Timer++;
             if (Timer == 1)
             {
-                for (float f = 0; f < 6; f++)
+                for (float f = 0; f < 2; f++)
                 {
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<MusicDust>(),
                         (Vector2.One * Main.rand.NextFloat(0.2f, 5f)).RotatedByRandom(19.0), 0, Color.Orange, Main.rand.NextFloat(1f, 3f)).noGravity = true;
                 }
-                for (float i = 0; i < 4; i++)
+                for (float i = 0; i < 2; i++)
                 {
                     float progress = i / 4f;
                     float rot = progress * MathHelper.ToRadians(360);

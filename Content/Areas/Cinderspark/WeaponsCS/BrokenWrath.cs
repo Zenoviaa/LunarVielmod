@@ -20,7 +20,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 23;
+            Item.damage = 12;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 40;
             Item.height = 40;
@@ -93,7 +93,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             newVect = origVect.RotatedBy(System.Math.PI / (Main.rand.Next(72, 1300) / 23));
             Projectile.NewProjectile(source, position, newVect, ModContent.ProjectileType<BTech3>(), damage, knockback, player.whoAmI, 0f, 0f);
             newVect = origVect.RotatedBy(System.Math.PI / (Main.rand.Next(72, 1300) / 13));
-            return false;
+            return base.GunShot(player, source, position, velocity, type, damage, knockback);
         }
 
         public override void AddRecipes()
@@ -160,7 +160,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             for (float f = 0; f < 12; f++)
             {
-                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                Vector2 velocity = Main.rand.NextVector2Circular(5, 5);
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), velocity, 0, MainColor, Main.rand.NextFloat(1f, 3f)).noGravity = true;
             }
 

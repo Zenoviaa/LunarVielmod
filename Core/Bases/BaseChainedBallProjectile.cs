@@ -42,7 +42,7 @@ namespace Stellamod.Core.Bases
         protected float SwingXRadius { get; set; }
         protected float SwingYRadius { get; set; }
         protected Vector2 StartPosition { get; set; }
-        protected Func<float, float> EasingFunction { get; set; }
+        protected Func<float, float> Easer { get; set; }
         protected float UnEasedLerpValue { get; set; }
         protected float SmoothedLerpValue { get; set; }
         protected float BaseSwingTime { get; set; }
@@ -88,7 +88,7 @@ namespace Stellamod.Core.Bases
 
 
             //Other Variables
-            EasingFunction = (float lerpValue) => Easing.InOutExpo(lerpValue, 7);
+            Easer = (float lerpValue) => Easing.InOutExpo(lerpValue, 7);
             DragDistance = 126;
             SwingRange = MathHelper.ToRadians(360);
             OvalRotOffset = MathHelper.ToRadians(-90);
@@ -105,6 +105,7 @@ namespace Stellamod.Core.Bases
 
             SoundStyle soundStyle = SoundRegistry.BallSwing;
             soundStyle.PitchVariance = 0.15f;
+            soundStyle.Volume = 0.25f;
             SwingSound = soundStyle;
 
             SoundStyle bounceStyle = SoundID.DD2_WitherBeastCrystalImpact;
@@ -224,7 +225,7 @@ namespace Stellamod.Core.Bases
             float targetRotation = Projectile.velocity.ToRotation();
 
             UnEasedLerpValue = lerpValue;
-            swingProgress = EasingFunction(swingProgress);
+            swingProgress = Easer(swingProgress);
             SmoothedLerpValue = swingProgress;
 
             //Swinging Sound
@@ -261,13 +262,13 @@ namespace Stellamod.Core.Bases
                 //Calculate starting lerp value
                 float startTrailLerpValue = MathHelper.Clamp(lerpValue - TrailStartOffset, 0, 1);
                 float startTrailProgress = startTrailLerpValue;
-                startTrailProgress = EasingFunction(startTrailLerpValue);
+                startTrailProgress = Easer(startTrailLerpValue);
 
 
                 //Calculate ending lerp value
                 float endTrailLerpValue = lerpValue;
                 float endTrailProgress = endTrailLerpValue;
-                endTrailProgress = EasingFunction(endTrailLerpValue);
+                endTrailProgress = Easer(endTrailLerpValue);
 
                 //Lerp in between points
                 float smoothedTrailProgress = MathHelper.Lerp(startTrailProgress, endTrailProgress, progressOnTrail);
@@ -315,7 +316,11 @@ namespace Stellamod.Core.Bases
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             //Bounce code
-            Projectile.velocity.Y = -Projectile.velocity.Y / 2f;
+            if (Projectile.velocity.X != oldVelocity.X)
+                Projectile.velocity.X = -oldVelocity.X;
+            if (Projectile.velocity.Y != oldVelocity.Y)
+                Projectile.velocity.Y = -oldVelocity.Y * 0.7f;
+        
             if (!_playedBounceSound && BounceSound != null)
             {
                 SoundEngine.PlaySound(BounceSound, Projectile.position);

@@ -59,8 +59,8 @@ IceboundMinionBuff: {
 }
 
 HMMinionBuff: {
-	Description: You're so dead.
-	DisplayName: H M Minion Buff
+	Description: You have two gintze soldiers protecting you!
+	DisplayName: Gintze Guardians
 }
 
 FCMinionBuff: {
@@ -1005,5 +1005,5 @@ CelestiallyDown: {
 
 CinderediatingLantern: {
 	DisplayName: Cinderediating Lantern
-	Description: Mods.Stellamod.Buffs.CinderediatingLantern.Description
+	Description: You have a magical lantern lighting the way!
 }

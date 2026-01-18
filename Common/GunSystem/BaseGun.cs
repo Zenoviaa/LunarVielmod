@@ -245,18 +245,26 @@ namespace Stellamod.Common.GunSystem
 
         public void BasicMuzzleFlash(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor)
         {
+            var p = FXUtil.GlowCircleBoom(position, innerColor, outerColor, Color.Black);
+            p.Scale *= 0.3f;
+
+            var sp = SmokeParticle.SpawnInAlphaLayer(position, velocity * 0.2f, Color.DarkGray);
+            sp.initialColor = Color.Lerp(Color.Red, Color.Black, 0.6f);
+            sp.fast = true;
+
             MuzzleFlashParticle flashParticle = MuzzleFlashParticle.Spawn(position, velocity, innerColor);
             flashParticle.innerColor = innerColor;
             flashParticle.bloomColor = outerColor;
+            flashParticle.Scale *= 0.25f;
 
-            for (float f = 0; f < 2; f++)
+            for (float f = 0; f < 3; f++)
             {
                 DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
                 {
                     gravity = 0f,
                     innerColor = innerColor,
                     outerColor = outerColor,
-                    scaleRange = new Vector2(0.3f, 0.8f)
+                    scaleRange = new Vector2(0.3f, 1f)
                 };
                 var dp = DustParticle.Spawn(position, velocity.RotatedByRandom(0.3f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
                 dp.dampening = 0.1f;
@@ -267,7 +275,7 @@ namespace Stellamod.Common.GunSystem
         {
             SoundStyle shootSound = new SoundStyle("Stellamod/Assets/Sounds/GunShootNew7");
             shootSound.PitchVariance = 0.3f;
-            shootSound.Volume = 0.5f;
+            shootSound.Volume = 0.15f;
             SoundEngine.PlaySound(shootSound, position);
             BasicMuzzleFlash(position, velocity, Color.Yellow, Color.Red);
         }
@@ -353,7 +361,7 @@ namespace Stellamod.Common.GunSystem
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
                     ModContent.ProjectileType<GunHold>(), 1, 1, Player.whoAmI);
             }
-            if (heldGun.NeedsReloading())
+            if (heldGun.NeedsReloading() && !Player.channel)
             {
                 Player.AddBuff(ModContent.BuffType<Reloading>(), 2);
                 isReloading = true;
@@ -446,13 +454,11 @@ namespace Stellamod.Common.GunSystem
         public override void AI()
         {
             base.AI();
+            bool isUsing = false;
             if (Owner.HeldItem.ModItem is BaseGun && (Owner.channel || Owner.controlUseItem))
             {
+                isUsing = true;
                 Projectile.timeLeft = 120;
-            }
-            else
-            {
-                return;
             }
 
             if (Main.myPlayer == Projectile.owner)
@@ -462,12 +468,15 @@ namespace Stellamod.Common.GunSystem
                 HoldRotation = rotationVector.ToRotation();
                 Projectile.netUpdate = true;
             }
-
-
-            Vector2? holdOutOffset = Owner.HeldItem.ModItem.HoldoutOffset();
-            Vector2 offset = holdOutOffset.HasValue ? holdOutOffset.Value : Vector2.Zero;
-            Projectile.Center = Owner.MountedCenter - new Vector2(0, 7) + offset;
-            Projectile.rotation = HoldRotation;
+       
+            if(Owner.HeldItem.ModItem != null)
+            {
+                Vector2? holdOutOffset = Owner.HeldItem.ModItem.HoldoutOffset();
+                Vector2 offset = holdOutOffset.HasValue ? holdOutOffset.Value : Vector2.Zero;
+                Projectile.Center = Owner.MountedCenter - new Vector2(0, 7) + offset;
+                Projectile.rotation = HoldRotation;
+            }
+  
 
             if (State != AIState.Reload && GunHoldPlayer.doCoolReloadAnimation)
             {
@@ -543,6 +552,9 @@ namespace Stellamod.Common.GunSystem
 
         public override bool PreDraw(ref Color lightColor)
         {
+            if (Owner.HeldItem.ModItem == null)
+                return false;
+
             Texture2D texture = ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture).Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             SpriteBatch spriteBatch = Main.spriteBatch;

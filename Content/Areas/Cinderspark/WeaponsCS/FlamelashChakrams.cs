@@ -18,6 +18,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults2()
         {
             base.SetDefaults2();
+            Item.damage = 6;
             Item.DamageType = DamageClass.Summon;
             Item.shoot = ModContent.ProjectileType<FlamelashChakramsSlash>();
         }
@@ -39,18 +40,16 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             //2. spin around twice
             comboBuilder.AddChakramSpin();
 
+            comboBuilder.AddChakramSpin();
+
+            //2. spin around twice
+            comboBuilder.AddChakramSpin();
+
             //3. throw one forward
-            comboBuilder.AddChakramThrow();
-
-            //4. throw the other forward
-            //5. spin around again
+            comboBuilder.AddChakramThrow(throwDistance: 322);
             comboBuilder.AddChakramSpin();
+            comboBuilder.AddChakramSpin2(duration: 42, hitCount: 3, swingDegrees: 720);
 
-            //6. throw them up
-            comboBuilder.AddChakramThrow();
-
-            //7. one more spin
-            comboBuilder.AddChakramSpin();
             comboBuilder.AddToProjectile(this);
 
 
@@ -77,13 +76,24 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void AI()
         {
             base.AI();
-            if (!_spawnedClone)
+            if (!_spawnedClone && Interpolant > 0.5f)
             {
                 if (IsFinishingSwing())
                 {
-                    Owner.velocity += Projectile.velocity;
+                    Owner.velocity += Projectile.velocity * 0.1f;
                 }
                 MirrorProjectile();
+                _spawnedClone = true;
+            }
+            if (Main.rand.NextBool(100))
+            {
+                DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+                {
+                    innerColor = Color.OrangeRed,
+                    outerColor = Color.Red,
+                    scaleRange = new Vector2(0.4f, 0.6f)
+                };
+                DustParticle.Spawn(Projectile.Center, Vector2.Zero, spawnParams);
             }
             glowColor = Color.Lerp(Color.Transparent, Color.Red * 0.5f, EasingFunction.QuadraticBump(Interpolant));
             growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));

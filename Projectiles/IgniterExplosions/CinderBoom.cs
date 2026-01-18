@@ -19,7 +19,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Projectile.width = 196;
             Projectile.height = 196;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 30;
+            Projectile.timeLeft = 20;
             Projectile.scale = 1f;
         }
 
@@ -41,7 +41,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
         public override bool PreAI()
         {
             Projectile.tileCollide = false;
-            if (++Projectile.frameCounter >= 3)
+            if (++Projectile.frameCounter >= 2)
             {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= 10)
