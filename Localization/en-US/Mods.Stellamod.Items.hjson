@@ -1266,8 +1266,12 @@ PrismaticBalls: {
 }
 
 Splitflame: {
-	DisplayName: Split-flame candle
-	Tooltip: Totally not the candle from split, totally.
+	DisplayName: Split-flame Candle Artifact
+	Tooltip:
+		'''
+		Summons a tiny ember that goes forward and explodes!
+		Totally not the candle from split, totally.
+		'''
 }
 
 Antaciz: {

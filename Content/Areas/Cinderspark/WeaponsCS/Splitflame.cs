@@ -2,10 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -13,18 +15,11 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 {
-    public class Splitflame : ClassSwapItem
+    public class Splitflame : ModItem
     {
-        public override DamageClass AlternateClass => DamageClass.Throwing;
-
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 25;
-            Item.mana = 0;
-        }
-
         public override void SetDefaults()
         {
+            Item.DefaultToArtifact();
             Item.damage = 50;
             Item.mana = 5;
             Item.width = 18;
@@ -70,7 +65,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             base.AI();
             Timer++;
-            if (Timer % 5 == 0)
+            if (Timer % 6 == 0)
             {
                 Color glyphColor = Color.Red;
                 switch (Main.rand.Next(3))
@@ -85,6 +80,21 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                         glyphColor = Color.Yellow;
                         break;
                 }
+
+                if (Main.rand.NextBool(3))
+                {
+                    DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+                    {
+                        innerColor = Color.Yellow,
+                        outerColor = Color.Red,
+                        gravity=0f,
+                        scaleRange = new Vector2(0.2f, 0.6f)
+                    };
+                    var dp = DustParticle.Spawn(Projectile.Center, -Vector2.UnitY, spawnParams);
+                    dp.dampening = 0.1f;
+                }
+                    
+                Dust.NewDustPerfect(Projectile.Center, DustID.Torch, Projectile.velocity * 0.1f, 0, glyphColor, 1f).noGravity = true;
                 if (Main.rand.NextBool(3))
                     Dust.NewDustPerfect(Projectile.Center, DustID.Torch, Projectile.velocity * 0.1f, 0, glyphColor, 1f).noGravity = true;
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, glyphColor, 1f).noGravity = true;
