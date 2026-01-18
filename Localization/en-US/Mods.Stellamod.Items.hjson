@@ -5354,7 +5354,7 @@ LifeSeekingVial: {
 }
 
 GraftedWaxMelter: {
-	DisplayName: Grafted Wax Melter
+	DisplayName: Grafted Wax Artifact
 	Tooltip: Make this shit feel like a firework party! I say let the children burn.
 }
 
