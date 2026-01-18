@@ -158,7 +158,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
     public class ArchariliteArrowSmall : ModProjectile
     {
-        private ref float Timer => ref Projectile.ai[1];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Archarilite Arrow");
@@ -180,7 +179,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Projectile.height = 17;
             Projectile.timeLeft = 290;
             Projectile.knockBack = 12.9f;
-            Projectile.aiStyle = 1;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             AIType = ProjectileID.Bullet;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
@@ -189,7 +188,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         public override void AI()
         {
-            Timer++;
             Projectile.velocity *= 1.01f;
             if (Main.rand.NextBool(5))
             {
@@ -205,7 +203,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             for (int i = 0; i < 4; i++)
             {
-
                 Vector2 velocity = Projectile.oldVelocity.RotatedByRandom(MathHelper.ToRadians(15));
                 velocity *= Main.rand.NextFloat(0.2f, 1f);
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowSparkleDust>(), velocity, 0, Color.OrangeRed, Main.rand.NextFloat(0.2f, 1f)).noGravity = true;

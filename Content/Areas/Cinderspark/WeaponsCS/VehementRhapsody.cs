@@ -1,23 +1,56 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿
+using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.SummonerSystem;
+using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
+using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Harvesting;
+using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Summons.Minions
+
+namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 {
-
-
-    public class VehementMinionProj : ModProjectile
+    public class VehementRhapsody : ModItem
     {
-        private Player Owner => Main.player[Projectile.owner];
+
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("Irradiated Creeper Staff");
+            // Tooltip.SetDefault("Summons an Irradiated Creeper to fight with you");
+            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
+            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+        }
+
+        public override void SetDefaults()
+        {
+            Item.DefaultToBellMinion(ModContent.ProjectileType<VehementMinionProj>());
+            Item.damage = 13;
+            Item.knockBack = 3;
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<Cinderscrap>());
+        }
+    }
+
+    public class VehementMinionProj : AbstractBellSummon
+    {
         private ref float Timer => ref Projectile.ai[0];
         private ref float SpeedTimer => ref Projectile.ai[1];
         private ref float HitCount => ref Projectile.ai[2];
@@ -69,6 +102,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         private float alphaCounter = 0;
         public override void AI()
         {
+            base.AI();
             Timer++;
             if (SpeedTimer > 0)
             {
@@ -79,10 +113,24 @@ namespace Stellamod.Projectiles.Summons.Minions
             {
                 Projectile.extraUpdates = 0;
             }
-            if (Timer % 6 == 0)
+            if (Timer % 16 == 0)
             {
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.Goldenrod, Main.rand.NextFloat(1f, 3f)).noGravity = true;
             }
+
+            if (Main.rand.NextBool(12))
+            {
+                DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+                {
+                    innerColor = Color.Yellow,
+                    outerColor = Color.Red,
+                    scaleRange = new Vector2(0.3f, 0.7f),
+                    gravity = 0
+                };
+                var dp = DustParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(1, 1), spawnParams);
+                dp.dampening = 0.1f;
+            }
+
             Player player = Main.player[Projectile.owner];
             if (!SummonHelper.CheckMinionActive<VehementMinionBuff>(player, Projectile))
                 return;
@@ -155,12 +203,6 @@ namespace Stellamod.Projectiles.Summons.Minions
             SoundEngine.PlaySound(mySound, Projectile.position);
         }
 
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return Color.White;
-        }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width;
@@ -172,17 +214,20 @@ namespace Stellamod.Projectiles.Summons.Minions
             return Color.Lerp(Color.Goldenrod, Color.LightGoldenrodYellow, completionRatio) * 0.7f;
         }
 
+        private void DrawVehementTrail(GraphicsDevice graphicsDevice)
+        {
+            RichLaserShader richLaserShader = RichLaserShader.Instance;
+            richLaserShader.LaserColor = Color.Yellow * 0.6f;
+            richLaserShader.InnerColor = Color.OrangeRed * 0.6f;
+            richLaserShader.OuterColor = Color.Red * 0.6f;
+            TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction, richLaserShader, Projectile.Size * 0.5f);
+        }
+
         public override bool PreDraw(ref Color lightColor)
         {
+            PixelationManager.QueuePrimitivesDrawAction(DrawVehementTrail);
             Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
             Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (5 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.17f * (5 + 0.6f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(85f * alphaCounter), (int)(35f * alphaCounter), (int)(15f * alphaCounter), 0), Projectile.rotation, new Vector2(32, 32), 0.07f * (5 + 0.6f), SpriteEffects.None, 0f);
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), Projectile.scale, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             return false;
         }
     }

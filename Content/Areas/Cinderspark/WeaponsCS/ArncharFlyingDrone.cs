@@ -153,6 +153,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 }
 
                 mySound.PitchVariance = 0.2f;
+                mySound.Volume = 0.66f;
                 SoundEngine.PlaySound(mySound, Projectile.position);
                 Vector2 fireVelocity = (targetCenter - Projectile.Center).SafeNormalize(Vector2.Zero) * 12;
                 Projectile.velocity -= fireVelocity * 0.5f;
@@ -187,7 +188,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Player player = Main.player[Projectile.owner];
             Projectile.spriteDirection = Projectile.direction;
 
-            if (Main.rand.NextBool(12))
+            if (Main.rand.NextBool(16))
             {
                 if (Main.rand.NextBool(2))
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(), Projectile.velocity * 0.1f, 0, Color.OrangeRed, Main.rand.NextFloat(1f, 2f)).noGravity = true;
