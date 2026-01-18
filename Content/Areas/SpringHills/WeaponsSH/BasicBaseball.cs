@@ -15,7 +15,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             base.SetDefaults();
             Item.DefaultToCombatTool(0.01f, 0.04f, 1);
             Item.damage = 11;
-            Item.DamageType = DamageClass.Throwing;
+            Item.DamageType = DamageClass.Ranged;
             Item.width = 24;
             Item.height = 24;
             Item.noUseGraphic = true;

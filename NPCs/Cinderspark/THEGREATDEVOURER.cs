@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets.Biomes;
+using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Helpers;
 using Stellamod.Items.Harvesting;
-using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
