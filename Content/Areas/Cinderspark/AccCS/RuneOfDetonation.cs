@@ -1,18 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
+using Stellamod.Items;
 using Stellamod.Items.Harvesting;
-using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace Stellamod.Items.Accessories.Runes
+namespace Stellamod.Content.Areas.Cinderspark.AccCS
 {
     public class RuneOfDetonationBomb : ModProjectile
     {
@@ -36,7 +34,7 @@ namespace Stellamod.Items.Accessories.Runes
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 Vector2 explosionPosition = Projectile.Center;
                 explosionPosition += Main.rand.NextVector2Circular(32, 32);
@@ -45,9 +43,18 @@ namespace Stellamod.Items.Accessories.Runes
                 {
                     float rot = f / 8f;
                     rot += Main.rand.NextFloat(-0.5f, 0.5f);
-                    Vector2 velocity = (rot*MathHelper.TwoPi).ToRotationVector2();
+                    Vector2 velocity = (rot * MathHelper.TwoPi).ToRotationVector2();
                     velocity *= Main.rand.NextFloat(4, 8);
                     LegacyParticle.NewParticle<ImpactParticle>(Projectile.Center, velocity);
+                }
+
+                for (float f = 0; f < 8; f++)
+                {
+                    float rot = f / 8f;
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 velocity = (rot * MathHelper.TwoPi).ToRotationVector2();
+                    velocity *= Main.rand.NextFloat(4, 8);
+                    LegacyParticle.NewParticle<EmberParticle>(Projectile.Center, velocity);
                 }
                 FXUtil.GlowCircleBoom(Projectile.Center, Color.Yellow, Color.Orange, Color.Red);
 

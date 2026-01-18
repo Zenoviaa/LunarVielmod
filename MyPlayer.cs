@@ -360,15 +360,7 @@ namespace Stellamod
             {
                 GHETarget = victim;
             }
-            if (DetonationRune)
-            {
-                if (Main.rand.NextBool(7))
-                {
-                    var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, victim.Center.X, victim.Center.Y, 0, 0, ModContent.ProjectileType<DetonationBomb>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
 
-                }
-            }
 
             if (RadiantBomb && RadiantBombCooldown <= 0)
             {
