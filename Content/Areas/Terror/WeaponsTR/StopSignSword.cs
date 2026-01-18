@@ -280,10 +280,13 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
         public override void Unload()
         {
             base.Unload();
-            GradientTexture?.Dispose();
-            GradientTexture = null;
-            GradientTexture2?.Dispose();
-            GradientTexture2 = null;
+            Main.QueueMainThreadAction(() =>
+            {
+                GradientTexture?.Dispose();
+                GradientTexture = null;
+                GradientTexture2?.Dispose();
+                GradientTexture2 = null;
+            });
         }
 
         public override void DefineCombo()
