@@ -246,7 +246,7 @@ namespace Stellamod.Common.GunSystem
         public void BasicMuzzleFlash(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor)
         {
             var p = FXUtil.GlowCircleBoom(position, innerColor, outerColor, Color.Black);
-            p.Scale *= 0.3f;
+            p.Scale *= 0.5f;
 
             var sp = SmokeParticle.SpawnInAlphaLayer(position, velocity * 0.2f, Color.DarkGray);
             sp.initialColor = Color.Lerp(Color.Red, Color.Black, 0.6f);
@@ -257,7 +257,7 @@ namespace Stellamod.Common.GunSystem
             flashParticle.bloomColor = outerColor;
             flashParticle.Scale *= 0.25f;
 
-            for (float f = 0; f < 3; f++)
+            for (float f = 0; f < 4; f++)
             {
                 DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
                 {
@@ -270,6 +270,7 @@ namespace Stellamod.Common.GunSystem
                 dp.dampening = 0.1f;
             }
         }
+
 
         public virtual void ShootEffects(Vector2 position, Vector2 velocity)
         {
