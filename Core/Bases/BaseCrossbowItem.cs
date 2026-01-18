@@ -163,11 +163,13 @@ namespace Stellamod.Core.Bases
     {
         public Vector2 position;
         public Vector2 velocity;
+        public Vector2 fireVelocity => velocity * speed;
         public int projToShoot;
         public float speed;
         public int damage;
         public float knockBack;
         public int useAmmoItemId;
         public float chargeStrength;
+
     }
 }
