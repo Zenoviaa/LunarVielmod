@@ -22,8 +22,6 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
         public override void SetDefaults()
         {
             base.SetDefaults();
-            remainingAmmo = maxAmmo = 3;
-            reloadWindow = 120;
             Item.damage = 54;
             Item.width = 94;
             Item.height = 36;
@@ -40,6 +38,13 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
             Item.useAnimation = 70;
             Item.useTime = 70;
             Item.noMelee = true;
+        }
+
+        public override void SetMagazine(ref GunReloadParams fireParams)
+        {
+            base.SetMagazine(ref fireParams);
+            fireParams.maxAmmo = 3;
+            fireParams.reloadWindow = 120;
         }
 
         public override bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

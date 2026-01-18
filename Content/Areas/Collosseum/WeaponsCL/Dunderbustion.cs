@@ -26,9 +26,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
     {
         public override void SetDefaults()
         {
-            remainingAmmo = 32;
-            maxAmmo = 32;
-            reloadWindow = 30;
+            base.SetDefaults();
             Item.damage = 12;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 56;
@@ -45,6 +43,12 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             Item.noUseGraphic = true;
         }
 
+        public override void SetMagazine(ref GunReloadParams fireParams)
+        {
+            base.SetMagazine(ref fireParams);
+            fireParams.maxAmmo = 32;
+            fireParams.reloadWindow = 30;
+        }
         public override void AddRecipes()
         {
             base.AddRecipes();

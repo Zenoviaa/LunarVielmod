@@ -105,27 +105,55 @@ namespace Stellamod.Common.GunSystem
             return false;
         }
     }
+    public struct GunReloadParams
+    {
+        public int maxAmmo;
+        public float reloadWindow;
+        public GunReloadParams()
+        {
+            maxAmmo = 6;
+            reloadWindow = 30;
+        }
+    }
+
     public abstract class BaseGun : ModItem
     {
         public int remainingAmmo = 6;
-        public int maxAmmo = 6;
-        public float reloadWindow = 30;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            remainingAmmo = 6;
-            maxAmmo = 6;
-            reloadWindow = 30;
+            GunReloadParams reloadParams = new GunReloadParams();
+            SetMagazine(ref reloadParams);
+            remainingAmmo = reloadParams.maxAmmo;
             Item.DamageType = DamageClass.Ranged;
             Item.useAmmo = AmmoID.Bullet;
             Item.noUseGraphic = true;
+        }
+
+        /// <summary>
+        /// Set the max ammo and reload window counts for this weapon
+        /// If none is set, defaults to 6 max ammo and 30 reload window
+        /// </summary>
+        /// <param name="fireParams"></param>
+        public virtual void SetMagazine(ref GunReloadParams fireParams)
+        {
+
         }
 
         public int GetMaxAmmo(Player player)
         {
             //We can use local player here can reloading is never checked over clients, I think
             //ehh
-            return maxAmmo + player.GetModPlayer<ArmorStatsPlayer>().rangedGunAmmoAmount;
+            GunReloadParams reloadParams = new GunReloadParams();
+            SetMagazine(ref reloadParams);
+            return reloadParams.maxAmmo + player.GetModPlayer<ArmorStatsPlayer>().rangedGunAmmoAmount;
+        }
+
+        public float GetReloadWindow()
+        {
+            GunReloadParams reloadParams = new GunReloadParams();
+            SetMagazine(ref reloadParams);
+            return reloadParams.reloadWindow;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -154,7 +182,7 @@ namespace Stellamod.Common.GunSystem
                 tooltips.Add(line);
             }
 
-            line = new TooltipLine(Mod, "AmmoCapacity", LangText.Common("MagazineHelp", maxAmmo))
+            line = new TooltipLine(Mod, "AmmoCapacity", LangText.Common("MagazineHelp", GetMaxAmmo(Main.LocalPlayer)))
             {
                 OverrideColor = Color.White
             };
@@ -272,7 +300,7 @@ namespace Stellamod.Common.GunSystem
             if (heldGun == null)
                 reloadTime = 60;
             else
-                reloadTime = heldGun.reloadWindow;
+                reloadTime = heldGun.GetReloadWindow();
         }
 
         public bool TimedReload()
@@ -407,6 +435,7 @@ namespace Stellamod.Common.GunSystem
             Projectile.hide = true;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
+            Projectile.timeLeft = 120;
         }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -419,7 +448,7 @@ namespace Stellamod.Common.GunSystem
             base.AI();
             if (Owner.HeldItem.ModItem is BaseGun && (Owner.channel || Owner.controlUseItem))
             {
-                Projectile.timeLeft = 2;
+                Projectile.timeLeft = 120;
             }
             else
             {
@@ -432,7 +461,6 @@ namespace Stellamod.Common.GunSystem
                 Vector2 rotationVector = mousePos - Owner.Center;
                 HoldRotation = rotationVector.ToRotation();
                 Projectile.netUpdate = true;
-
             }
 
 

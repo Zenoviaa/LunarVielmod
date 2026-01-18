@@ -589,9 +589,6 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         public override void SetDefaults()
         {
             //  base.SetDefaults();
-            remainingAmmo = 16;
-            maxAmmo = 16;
-            reloadWindow = 30;
             Item.damage = 100;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 56;
@@ -608,6 +605,12 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             Item.noUseGraphic = true;
         }
 
+        public override void SetMagazine(ref GunReloadParams fireParams)
+        {
+            base.SetMagazine(ref fireParams);
+            fireParams.maxAmmo = 16;
+            fireParams.reloadWindow = 30;
+        }
         public override void AddRecipes()
         {
             base.AddRecipes();

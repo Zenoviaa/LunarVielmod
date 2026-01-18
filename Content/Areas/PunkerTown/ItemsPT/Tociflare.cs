@@ -25,15 +25,13 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         public override void SetDefaults()
         {
             base.SetDefaults();
-            remainingAmmo = 32;
-            maxAmmo = 32;
-            reloadWindow = 120;
             Item.width = 62;
             Item.height = 32;
             Item.useTime = 4;
             Item.useAnimation = 4;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
+
             SoundStyle guh = SoundID.Item34;
             guh.Pitch = -0.5f;
             Item.UseSound = guh;
@@ -47,6 +45,13 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             Item.useTime = 8;
             Item.useAnimation = 8;
             Item.shootSpeed = 1;
+        }
+
+        public override void SetMagazine(ref GunReloadParams fireParams)
+        {
+            base.SetMagazine(ref fireParams);
+            fireParams.reloadWindow = 120;
+            fireParams.maxAmmo = 32;
         }
 
         public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

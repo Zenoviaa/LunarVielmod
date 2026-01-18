@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.GunSystem;
+﻿using Stellamod.Common.GunSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
@@ -19,7 +18,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             base.SetDefaults();
             remainingAmmo = 29;
-            maxAmmo = 29;
             Item.width = 92;
             Item.height = 44;
             Item.DamageType = DamageClass.Ranged;
@@ -36,6 +34,11 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.shoot = ProjectileID.Bullet;
             Item.useAmmo = AmmoID.Bullet;
             Item.noMelee = true;
+        }
+        public override void SetMagazine(ref GunReloadParams fireParams)
+        {
+            base.SetMagazine(ref fireParams);
+            fireParams.maxAmmo = 29;
         }
         public override Vector2? HoldoutOffset()
         {

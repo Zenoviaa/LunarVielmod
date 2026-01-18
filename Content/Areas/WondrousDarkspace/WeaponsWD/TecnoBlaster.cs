@@ -26,8 +26,6 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
         public override void SetDefaults()
         {
             remainingAmmo = 16;
-            maxAmmo = 16;
-            reloadWindow = 30;
             Item.damage = 62;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 56;
@@ -44,6 +42,12 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             Item.noUseGraphic = true;
         }
 
+        public override void SetMagazine(ref GunReloadParams fireParams)
+        {
+            base.SetMagazine(ref fireParams);
+            fireParams.maxAmmo = 16;
+            fireParams.reloadWindow = 30;
+        }
         public override void AddRecipes()
         {
             base.AddRecipes();

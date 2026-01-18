@@ -303,6 +303,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         public override void SetDefaults()
         {
+            base.SetDefaults();
             Item.damage = 15;
             Item.width = 50;
             Item.height = 50;
@@ -322,10 +323,12 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.autoReuse = false;
             Item.shoot = ModContent.ProjectileType<FireballCharge>();
         }
+
         public override void ShootEffects(Vector2 position, Vector2 velocity)
         {
             //base.ShootEffects(position, velocity);
         }
+
         public override bool CanUseItem(Player player)
         {
             return base.CanUseItem(player) && player.ownedProjectileCounts[Type] == 0;

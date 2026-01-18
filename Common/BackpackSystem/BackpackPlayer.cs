@@ -192,7 +192,6 @@ namespace Stellamod.Common.BackpackSystem
     public class BackpackSlot : UIElement
     {
         private readonly int _index;
-        private readonly bool _isTimedSlot;
         private readonly int _context;
         private readonly float _scale;
         public Item Item;

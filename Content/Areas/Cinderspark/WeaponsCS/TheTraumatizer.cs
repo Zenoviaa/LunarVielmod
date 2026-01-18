@@ -46,10 +46,13 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.value = Item.sellPrice(0, 5, 0, 0);
             Item.noUseGraphic = true;
             Item.damage = 16;
-            remainingAmmo = 12;
-            maxAmmo = 12;
         }
 
+        public override void SetMagazine(ref GunReloadParams fireParams)
+        {
+            base.SetMagazine(ref fireParams);
+            fireParams.maxAmmo = 12;
+        }
         public override void ShootEffects(Vector2 position, Vector2 velocity)
         {
             //   base.ShootEffects(position, velocity);

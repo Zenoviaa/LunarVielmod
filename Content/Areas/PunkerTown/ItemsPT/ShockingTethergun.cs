@@ -335,9 +335,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
     {
         public override void SetDefaults()
         {
-            remainingAmmo = 4;
-            maxAmmo = 4;
-            reloadWindow = 60;
+           // base.SetDefaults();
             Item.damage = 24;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 56;
@@ -354,6 +352,12 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             Item.noUseGraphic = true;
         }
 
+        public override void SetMagazine(ref GunReloadParams fireParams)
+        {
+            base.SetMagazine(ref fireParams);
+            fireParams.maxAmmo = 4;
+            fireParams.reloadWindow = 60;
+        }
         public override void ShootEffects(Vector2 position, Vector2 velocity)
         {
             SoundStyle shootSound = AssetRegistry.Sounds.Gun.ShockLineShoot;

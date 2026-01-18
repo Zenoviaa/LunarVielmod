@@ -31,8 +31,8 @@ namespace Stellamod.Common.GunSystem
         public float ImageScale = 1f;
 
         public Vector2 NormalizedOrigin = Vector2.Zero;
-        private static Vector2? _drag = null;
-        private static bool _isDragging;
+        private Vector2? _drag = null;
+        private bool _isDragging;
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
@@ -61,7 +61,7 @@ namespace Stellamod.Common.GunSystem
             drawPos.Y = (int)(drawPos.Y * 0.01f * Main.screenHeight);
 
             Rectangle mouseRect = new Rectangle((int)Main.MouseScreen.X, (int)Main.MouseScreen.Y, 8, 8);
-            Vector2 size = new Vector2(_filled.Width, _filled.Height * gun.maxAmmo);
+            Vector2 size = new Vector2(_filled.Width, _filled.Height * gun.GetMaxAmmo(Main.LocalPlayer));
             Rectangle barRect = Utils.CenteredRectangle(drawPos + size / 2, size * Main.UIScale);
             barRect.Location -= new Point(0, (int)(size.Y / 2));
             MouseState ms = Mouse.GetState();

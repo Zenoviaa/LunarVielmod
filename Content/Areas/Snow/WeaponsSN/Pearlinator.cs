@@ -24,9 +24,6 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
         public override void SetDefaults()
         {
             base.SetDefaults();
-            remainingAmmo = 32;
-            maxAmmo = 32;
-            reloadWindow = 120;
             Item.width = 62;
             Item.height = 32;
             Item.useTime = 4;
@@ -46,6 +43,12 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             Item.shootSpeed = 1;
         }
 
+        public override void SetMagazine(ref GunReloadParams fireParams)
+        {
+            base.SetMagazine(ref fireParams);
+            fireParams.maxAmmo = 32;
+            fireParams.reloadWindow = 120;
+        }
         public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
   

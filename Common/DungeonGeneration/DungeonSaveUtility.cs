@@ -15,14 +15,8 @@ namespace Stellamod.Common.DungeonGeneration
 {
     public class DungeonSaveHelper : ModItem
     {
-        private int _useIndex;
         public override void SetStaticDefaults()
         {
-            /* Tooltip.SetDefault("Meatballs" +
-				"\nDo not be worried, this mushes reality into bit bits and then shoots it!" +
-				"\nYou can never miss :P"); */
-            // DisplayName.SetDefault("Teraciz");
-
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
