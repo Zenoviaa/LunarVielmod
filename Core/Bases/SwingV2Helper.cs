@@ -50,6 +50,44 @@ namespace Stellamod.Core.Bases
                 swingProjectile.Add(swing);
             }
         }
+
+        public ComboBuilder AddChakramSpin(float duration = 30, float xSwingRadius = 64, float ySwingRadius = 64, float swingDegrees = 480, int hitCount = 2)
+        {
+            _swings.Add(new OvalSwing
+            {
+                Duration = duration,
+                XSwingRadius = xSwingRadius,
+                YSwingRadius = ySwingRadius,
+                SwingDegrees = swingDegrees,
+                SpinThrowDistance = 0,
+                SpinDegrees = 1,
+                AlwaysShowTrail = true,
+                Easing = (float lerpValue) => lerpValue,
+                Sound = LightSpin,
+                HitCount = 2
+            });
+            return this;
+        }
+
+        public ComboBuilder AddChakramThrow(float duration = 24, float throwDistance = 180)
+        {
+            SoundStyle spearSlash1 = SoundRegistry.SpearSlash1;
+            SoundStyle spearSlash2 = SoundRegistry.SpearSlash2;
+            SoundStyle nSpin = SoundRegistry.NSwordSpin1;
+            spearSlash1.PitchVariance = 0.25f;
+            spearSlash2.PitchVariance = 0.25f;
+            nSpin.PitchVariance = 0.2f;
+
+            _swings.Add(new ThrustSwing
+            {
+                Duration = duration,
+                ThrowDistance = throwDistance,
+                Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
+                Sound = spearSlash2
+            });
+            return this;
+        }
+
         public ComboBuilder AddSpinningSwordSlash(float duration = 45, float xSwingRadius = 1, float ySwingRadius = 1, float swingDegrees = 720, int hitCount = 1)
         {
             _swings.Add(new OvalSwing

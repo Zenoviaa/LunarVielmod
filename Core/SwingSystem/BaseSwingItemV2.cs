@@ -106,6 +106,9 @@ namespace Stellamod.Core.SwingSystem
 
         public virtual void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            if (type == -1)
+                return;
+
             //Only do the swinging initialization if it is a swing projectile lol
             var proj = ModContent.GetModProjectile(type);
             if (proj is BaseSwingProjectileV2)

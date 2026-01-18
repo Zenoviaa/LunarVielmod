@@ -209,6 +209,7 @@ namespace Stellamod.Core.Bases
                 if (Projectile.owner == Main.myPlayer && Timer == 1)
                 {
                     Projectile.velocity = (Main.MouseWorld - Owner.Center).SafeNormalize(Vector2.Zero);
+                    Projectile.netUpdate=true;
                 }
                 Projectile.ResetLocalNPCHitImmunity();
             }
@@ -341,8 +342,6 @@ namespace Stellamod.Core.Bases
         private void DrawSlashGlow()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
             Texture2D closeYourBalls = ModContent.Request<Texture2D>(Texture).Value;
 
             //Calculate Drawing Vars
@@ -353,6 +352,7 @@ namespace Stellamod.Core.Bases
 
             Vector2 drawOrigin = closeYourBalls.Size() / 2f;
             Color drawColor = Color.Lerp(Color.Transparent, Color.White, Easing.SpikeOutCirc(UnEasedLerpValue));
+            drawColor.A = 0;
             float drawScale = Projectile.scale;
             float drawRotation = Projectile.rotation;
             SpriteEffects drawEffects = Projectile.Center.X < Owner.Center.X ? SpriteEffects.None : SpriteEffects.None;
@@ -361,9 +361,6 @@ namespace Stellamod.Core.Bases
             //Actually draw it
             spriteBatch.Draw(closeYourBalls, drawPos, null, drawColor, drawRotation, drawOrigin, drawScale, drawEffects, layerDepth);
 
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
         }
 
         protected virtual void DrawSlashTrail(ref Color lightColor, Vector2[] slashPos)

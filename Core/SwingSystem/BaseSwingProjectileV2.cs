@@ -343,7 +343,23 @@ namespace Stellamod.Core.SwingSystem
                 swingProj.isChildProjectile = true;
             }
         }
+        public void MirrorProjectile()
+        {
+            if (isChildProjectile)
+                return;
 
+            if (Main.myPlayer == Projectile.owner)
+            {
+                ComboPlayer comboPlayer = Owner.GetModPlayer<ComboPlayer>();
+                int combo = (int)(ComboIndex);
+                int dir = -comboPlayer.ComboDirection;
+                var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity,
+                    Type, Projectile.damage, Projectile.knockBack,
+                               Owner.whoAmI, ai2: combo, ai1: dir);
+                BaseSwingProjectileV2 swingProj = p.ModProjectile as BaseSwingProjectileV2;
+                swingProj.isChildProjectile = true;
+            }
+        }
         public void Bounce(float bounceTicks)
         {
             Projectile.ResetLocalNPCHitImmunity();
