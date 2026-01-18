@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.Cinderspark.AccCS;
+using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
