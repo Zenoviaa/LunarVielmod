@@ -1,10 +1,13 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Harvesting;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -21,6 +24,11 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.damage = 6;
             Item.DamageType = DamageClass.Summon;
             Item.shoot = ModContent.ProjectileType<FlamelashChakramsSlash>();
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<Cinderscrap, BlankSafunai>();
         }
     }
 

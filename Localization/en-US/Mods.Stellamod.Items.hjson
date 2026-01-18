@@ -10370,3 +10370,14 @@ FlamingBall: {
 	DisplayName: Flaming Ball
 	Tooltip: ""
 }
+
+FirebirdScythe: {
+	BasicSlash: No Effect
+	StaminaSlash:
+		'''
+		Spins the scythe around you, heating it up until you explode!
+		You also take damage from this... but it's worth it, trust...
+		'''
+	DisplayName: Firebird Scythe
+	Tooltip: ""
+}

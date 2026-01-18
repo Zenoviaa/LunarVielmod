@@ -1,14 +1,12 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Harvesting;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -23,6 +21,12 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             base.SetDefaults();
             Item.damage = 12;
             Item.shoot = ModContent.ProjectileType<FlamingBallProj>();
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<Cinderscrap, BlankOrb>();
         }
     }
 
@@ -140,7 +144,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             if (!_hit)
             {
                 float numDust = 6;
-                for(float n = 0; n < numDust; n++)
+                for (float n = 0; n < numDust; n++)
                 {
                     DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
                     {
@@ -160,7 +164,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                         hitSound = AssetManager.GetSound("Fire/FireballShoot2");
                         break;
                 }
-           
+
                 hitSound.PitchVariance = 0.3f;
                 hitSound.Volume = 0.66f;
                 SoundEngine.PlaySound(hitSound, target.Center);
