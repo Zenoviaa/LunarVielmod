@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.IgniterExplosions
@@ -76,17 +78,20 @@ namespace Stellamod.Projectiles.IgniterExplosions
             }
         }
 
-        public override bool PreDraw(ref Color lightColor)
+        private void DrawPixelExplosion(SpriteBatch spriteBatch, Vector2 screenPos)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = TextureAssets.Projectile[Type].Value;
+            Vector2 drawPos = Projectile.Center - screenPos;
             Color drawColor = Color.White;
             if (BlackIsTransparency)
                 drawColor.A = 0;
 
             Rectangle animationFrame = texture.GetFrame(_frame, FrameCount);
             spriteBatch.Draw(texture, drawPos, animationFrame, drawColor, Projectile.rotation, animationFrame.Size() / 2, DrawScale, SpriteEffects.None, 0);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelExplosion);
             return false;
         }
     }
