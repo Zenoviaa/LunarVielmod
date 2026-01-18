@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Areas.SpringHills.WeaponsSH;
+﻿using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
+using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Terraria;
 using Terraria.ModLoader;
 

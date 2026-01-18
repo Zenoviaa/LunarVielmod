@@ -110,10 +110,6 @@ namespace Stellamod.Projectiles
             }
             var EntitySource = Projectile.GetSource_Death();
 
-            if (Main.netMode != NetmodeID.MultiplayerClient)
-            {
-                Projectile.NewProjectile(EntitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<CandleShotProj2>(), Projectile.damage, 1, Main.myPlayer, 0, 0);
-            }
         }
 
     }
