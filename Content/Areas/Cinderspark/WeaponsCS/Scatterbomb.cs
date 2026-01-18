@@ -1,19 +1,57 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Items;
+using Stellamod.Items.Harvesting;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Thrown
+namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 {
+    public class Scatterbombs : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
+
+        public override void SetDefaults()
+        {
+            Item.DefaultToCombatTool(0.06f, 0.4f, 1);
+            Item.damage = 70;
+            Item.width = 50;
+            Item.height = 50;
+            Item.useStyle = ItemUseStyleID.Swing;
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
+            Item.rare = ItemRarityID.Blue;
+            Item.shoot = ModContent.ProjectileType<ScatterbombP>();
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankOrb>(), material: ModContent.ItemType<Cinderscrap>());
+        }
+
+        public override Vector2? HoldoutOffset()
+        {
+            return new Vector2(-3f, -2f);
+        }
+    }
+
     public class ScatterbombP : ModProjectile
     {
         private float _rotation;
+        private ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 25;
@@ -31,26 +69,30 @@ namespace Stellamod.Projectiles.Thrown
             Projectile.timeLeft = 3600;
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 0.5f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.OrangeRed, Color.Transparent, completionRatio);
-        }
-
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.VortexTrail);
             DrawHelper.DrawAdditiveAfterImage(Projectile, Color.OrangeRed, Color.Transparent, ref lightColor);
             return base.PreDraw(ref lightColor);
         }
 
         public override void AI()
         {
+            Timer++;
+            if (Timer % 8 == 0)
+            {
+                DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+                {
+                    innerColor = Color.Yellow,
+                    outerColor = Color.Red,
+                    scaleRange = new Vector2(0.2f, 0.6f),
+                    gravity = 0
+
+                };
+
+                var dp = DustParticle.Spawn(Projectile.Center, -Vector2.UnitY, spawnParams);
+                dp.dampening = 0.1f;
+
+            }
             Projectile.rotation += _rotation;
             _rotation += 0.01f;
 
@@ -63,11 +105,13 @@ namespace Stellamod.Projectiles.Thrown
             Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
         }
 
-
         public override void OnKill(int timeLeft)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.oldVelocity,
-                ModContent.ProjectileType<ScatterBoomer>(), Projectile.damage * 3, Projectile.knockBack, Projectile.owner);
+            if (this.OwnedByLocalClient())
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.oldVelocity,
+                    ModContent.ProjectileType<ScatterBoomer>(), Projectile.damage * 3, Projectile.knockBack, Projectile.owner);
+            }
         }
     }
 
@@ -154,7 +198,7 @@ namespace Stellamod.Projectiles.Thrown
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center - Projectile.velocity.SafeNormalize(Vector2.Zero) * 128, Projectile.velocity,
                         ModContent.ProjectileType<ScatterBoom>(), Projectile.damage * 3, Projectile.knockBack, Projectile.owner);
                 }
-                for (float f = 0; f < 20; f++)
+                for (float f = 0; f < 12; f++)
                 {
                     Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
                         (Vector2.One * Main.rand.NextFloat(0.2f, 10)).RotatedByRandom(19.0), 0, Color.Red, Main.rand.NextFloat(1f, 3f)).noGravity = true;
@@ -163,6 +207,63 @@ namespace Stellamod.Projectiles.Thrown
                 FXUtil.ShakeCamera(Projectile.position, 1024, 32);
                 ShakeModSystem.Shake = 3;
             }
+        }
+    }
+    public class ScatterBoom : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("FrostShotIN");
+            Main.projFrames[Projectile.type] = 6;
+        }
+
+        public override void SetDefaults()
+        {
+            Projectile.tileCollide = false;
+            Projectile.localNPCHitCooldown = -1;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.friendly = true;
+            Projectile.width = 520 / 2;
+            Projectile.height = 688 / 2;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 18;
+            Projectile.hostile = true;
+        }
+
+        public override void AI()
+        {
+            Lighting.AddLight(Projectile.position, Color.Red.ToVector3() * 1.5f);
+        }
+
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+
+        public override bool PreAI()
+        {
+
+            Projectile.tileCollide = false;
+            if (++Projectile.frameCounter >= 3)
+            {
+                Projectile.frameCounter = 0;
+                if (++Projectile.frame >= 6)
+                {
+                    Projectile.frame = 0;
+                }
+            }
+            return true;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Color drawColor = Color.White;
+            //	drawColor = drawColor.MultiplyRGB(lightColor);
+            drawColor.A = 0;
+            Texture2D texture = TextureAssets.Projectile[Type].Value;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, Projectile.Frame(), drawColor, Projectile.velocity.ToRotation() - MathHelper.PiOver2, Projectile.Frame().Size() / 2f, 1f, SpriteEffects.None, 0);
+            return false;
         }
     }
 }

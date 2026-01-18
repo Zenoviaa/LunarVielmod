@@ -40,10 +40,6 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
     public class IvynthornChokerPlayer : ModPlayer
     {
         private float _timer;
-        private float _spawnTimer;
-        private int _vineDamage;
-
-        private int _numToSpawn;
         public bool hasChoker;
         public int thornsDamage;
 

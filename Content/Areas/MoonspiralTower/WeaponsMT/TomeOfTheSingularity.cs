@@ -5,6 +5,7 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Trails;
@@ -130,12 +131,16 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
             base.OnKill(timeLeft);
             if (!IsSmall)
             {
-                for (int i = 0; i < 2; i++)
+                if (this.OwnedByLocalClient())
                 {
-                    Vector2 vel = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
-                    vel = vel.RotatedByRandom(MathHelper.ToRadians(30));
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, vel, Type, Projectile.damage / 2, Projectile.knockBack, Projectile.owner, ai1: 1);
+                    for (int i = 0; i < 2; i++)
+                    {
+                        Vector2 vel = -Vector2.UnitY * Main.rand.NextFloat(4, 8);
+                        vel = vel.RotatedByRandom(MathHelper.ToRadians(30));
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, vel, Type, Projectile.damage / 2, Projectile.knockBack, Projectile.owner, ai1: 1);
+                    }
                 }
+
                 for (int i = 0; i < 2; i++)
                 {
                     DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(2, 2), Color.White, Scale: Main.rand.NextFloat(0.3f, 1.5f));

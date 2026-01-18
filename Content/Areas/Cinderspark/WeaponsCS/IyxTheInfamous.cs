@@ -206,10 +206,9 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             SoundStyle spearHit = SoundRegistry.SpearHit1;
             spearHit.PitchVariance = 0.5f;
             SoundEngine.PlaySound(spearHit, Projectile.position);
-            if (ComboIndex == 5)
+            if (IsFinishingSwing())
             {
-                modifiers.FinalDamage *= 2;
-
+                DamageHelper.PercentIncreasedamage(ref modifiers, 0.5f);
             }
         }
         public override void OnKill(int timeLeft)
@@ -313,7 +312,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             int combo = ComboIndex + 1;
             int dir = comboPlayer.ComboDirection;
 
-            if (ComboIndex < ComboCount)
+            if (ComboIndex < ComboCount && this.OwnedByLocalClient())
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Main.MouseWorld - Owner.Center, Projectile.type, Projectile.damage, Projectile.knockBack,
                             Projectile.owner, ai2: combo, ai1: dir);
