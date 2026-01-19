@@ -1,12 +1,10 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
@@ -25,11 +23,15 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             base.PostHurt(info);
             if (!hasThornedBook)
                 return;
-            if(info.DamageSource.SourceNPCIndex != -1)
+            if (info.DamageSource.SourceNPCIndex != -1)
             {
                 NPC npc = Main.npc[info.DamageSource.SourceNPCIndex];
-                npc.SimpleStrikeNPC(info.Damage * 5, -info.HitDirection);
-                
+                float damage = info.Damage * 5;
+                if (npc.boss)
+                    damage *= 0.5f;
+                damage = MathHelper.Clamp(damage, 0, 200);
+                npc.SimpleStrikeNPC((int)damage, -info.HitDirection);
+
                 SoundStyle sound = AssetManager.GetSound("Thorny");
                 sound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(sound, Player.position);
