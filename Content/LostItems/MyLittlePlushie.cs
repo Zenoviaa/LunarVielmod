@@ -20,12 +20,30 @@ namespace Stellamod.Content.LostItems
             base.OnModLoad();
             On_Player.ResizeHitbox += MiniPlayerHitbox;
             On_LegacyPlayerRenderer.DrawPlayer += MiniPlayer;
+            On_Mount.SetMount += ChangeMountedPlayerHitbox;
         }
+
+
         public override void OnModUnload()
         {
             base.OnModUnload();
+  
             On_Player.ResizeHitbox -= MiniPlayerHitbox;
             On_LegacyPlayerRenderer.DrawPlayer -= MiniPlayer;
+            On_Mount.SetMount -= ChangeMountedPlayerHitbox;
+        }
+        private void ChangeMountedPlayerHitbox(On_Mount.orig_SetMount orig, Mount self, int m, Player mountedPlayer, bool faceLeft)
+        {
+            MyLittlePlushiePlayer plushiePlayer = mountedPlayer.GetModPlayer<MyLittlePlushiePlayer>();
+            if (plushiePlayer.hasLittlePlushie)
+            {
+                self._data.heightBoost *= 0;
+
+            }
+            orig(self, m, mountedPlayer, faceLeft);
+  
+
+
         }
 
         private void MiniPlayerHitbox(On_Player.orig_ResizeHitbox orig, Player self)
@@ -36,9 +54,10 @@ namespace Stellamod.Content.LostItems
                 self.width = 12;
                 self.height = 16;
 
+                /*
                 self.position.Y += self.height;
                 self.height = 16 + self.HeightOffsetBoost;
-                self.position.Y -= self.height;
+                self.position.Y -= self.height;*/
             }
             else
             {

@@ -21,9 +21,9 @@ namespace Stellamod.Content.Areas.Cinderspark.AccCS
         public override void SetDefaults()
         {
             base.SetDefaults();
-            FlashlightDegrees = 30;
-            FlashlightLength = 800;
-            FlashlightWidth = 860;
+            FlashlightDegrees = 45;
+            FlashlightLength = 900;
+            FlashlightWidth = 960;
         }
         protected override ILight GetLight()
         {

@@ -25,7 +25,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         public override void SetDefaults()
         {
-            Item.DefaultToCombatTool(0.06f, 0.4f, 1);
+            Item.DefaultToCombatTool(0.05f, 0.5f, 2);
             Item.damage = 70;
             Item.width = 50;
             Item.height = 50;

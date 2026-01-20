@@ -27,6 +27,7 @@ Common: {
 	IgniterCardType: Igniter Weapon Type
 	GenericDamage: " generic damage"
 	Lantern: Lantern Light Pet
+	LunarStrength: "{0} strength"
 	LanternHelp:
 		'''
 		Summons a magical lantern to follow you and provide light
@@ -2117,8 +2118,8 @@ LunarBand: {
 	DisplayName: Lunar Band
 	Tooltip:
 		'''
-		Increases critical strike chance by 8%
-		During night, you have 12% more damage and give off some light
+		Gradually increases damage, up to +20% at night
+		While the moon is at its apex you are strongest...
 		'''
 }
 

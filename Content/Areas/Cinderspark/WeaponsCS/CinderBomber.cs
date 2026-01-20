@@ -19,7 +19,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             base.SetDefaults();
             Item.DefaultToCombatTool(0.01f, 0.04f, 1);
-            Item.damage = 72;
+            Item.damage = 8;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 24;
             Item.height = 24;
@@ -30,7 +30,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 6;
             Item.rare = ItemRarityID.LightPurple;
-            Item.crit = 16;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<CinderBomberProj>();
