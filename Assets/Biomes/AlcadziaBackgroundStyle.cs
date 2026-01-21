@@ -39,7 +39,7 @@ namespace Stellamod.Backgrounds
         {
 
 
-            scale = 0.9f;
+            scale = 1f;
             parallax = 0.3;
             //b = 1400;
 
