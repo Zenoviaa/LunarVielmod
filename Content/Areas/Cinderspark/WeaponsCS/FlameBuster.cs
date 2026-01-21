@@ -1,5 +1,8 @@
-﻿using Stellamod.Common.GunSystem;
+﻿using Stellamod.Assets;
+using Stellamod.Common.GunSystem;
+using Stellamod.Common.Players;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.Projectiles.Gun;
@@ -21,7 +24,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.width = 92;
             Item.height = 44;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 4;
+            Item.damage = 12;
             Item.value = Item.sellPrice(gold: 2);
             Item.useTime = 29;
             Item.useAnimation = 29;
@@ -39,6 +42,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             base.SetMagazine(ref fireParams);
             fireParams.maxAmmo = 29;
+            fireParams.reloadWindow = 180;
         }
         public override Vector2? HoldoutOffset()
         {
@@ -60,10 +64,10 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             {
                 Item.useTime--;
                 Item.useAnimation--;
-                float recoilStrength = 7;
-                Vector2 targetVelocity = -velocity.SafeNormalize(Vector2.Zero) * recoilStrength;
-                player.velocity = VectorHelper.VelocityUpTo(player.velocity, targetVelocity);
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 16f);
+                float recoilStrength = 5;
+                player.AddRecoil(-velocity.SafeNormalize(Vector2.Zero) * recoilStrength);
+                FXUtil.ShakeCamera(player.Center, 1024, 8f);
+
                 int numProjectiles = Main.rand.Next(2, 5);
                 velocity *= 2.5f;
                 type = ModContent.ProjectileType<CinderFlameball>();
@@ -93,7 +97,9 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                     Dust.NewDust(position, 0, 0, DustID.Smoke, newVelocity.X * 0.5f, newVelocity.Y * 0.5f);
                 }
 
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/CinderBraker"), position);
+                SoundStyle shootSound = AssetManager.GetSound("CinderBraker");
+                shootSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(shootSound, position);
                 return false;
             }
             else

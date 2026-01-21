@@ -55,7 +55,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         }
         public override void ShootEffects(Vector2 position, Vector2 velocity)
         {
-            //   base.ShootEffects(position, velocity);
+            //  base.ShootEffects(position, velocity);
 
 
         }
@@ -118,11 +118,11 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             }
             if(Timer == 2)
             {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/TraumatizerLaserFire") with { PitchVariance = 0.1f }, Projectile.position);
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/TraumatizerLaserFire") with { PitchVariance = 0.3f }, Projectile.position);
             }
             if (Timer < 3)
             {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/TraumatizerLaserStart"));
+                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/TraumatizerLaserStart"), Projectile.position);
             }
 
 

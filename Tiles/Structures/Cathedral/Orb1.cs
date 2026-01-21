@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Dusts;
 using System;
 using Terraria;
@@ -70,14 +71,23 @@ namespace Stellamod.Tiles.Structures.Cathedral
 
             if (tile == null || !tile.HasTile) { return false; }
 
-            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Particles/GradientPillar").Value;
+            bool left = Framing.GetTileSafely(i - 1, j).TileType == ModContent.TileType<Orb1>();
+            bool up = Framing.GetTileSafely(i, j - 1).TileType == ModContent.TileType<Orb1>();
 
-            Vector2 offScreen = new Vector2(Main.offScreenRange);
-            Vector2 globalPosition = p.ToWorldCoordinates(0f, 0f);
-            Vector2 position = globalPosition + offScreen - Main.screenPosition + new Vector2(0f, -100f + 16f);
-            Color color = new Color(0.05f, 0.08f, 0.2f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
+            if(!left && !up)
+            {
+                Texture2D texture = AssetManager.GlowMask.GradientPillar.Value;
 
-            Main.EntitySpriteDraw(texture, position, null, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
+                Vector2 offScreen = new Vector2(Main.offScreenRange);
+                Vector2 worldPosition = p.ToWorldCoordinates(0f, 0f);
+                Vector2 position = worldPosition + offScreen - Main.screenPosition;// + new Vector2(0f, -100f + 16f);
+                Color color = new Color(0.05f, 0.08f, 0.2f, 0f) * (2 * (((float)Math.Sin(Main.GameUpdateCount * 0.02f) + 4) / 4));
+                Vector2 scale = new Vector2(0.5f, 1f);
+                Vector2 origin = new Vector2(0, texture.Height / 2);
+                position.Y += 32;
+                Main.EntitySpriteDraw(texture, position, null, color, 0f, origin, scale, SpriteEffects.None, 0);
+            }
+
 
             return true;
         }

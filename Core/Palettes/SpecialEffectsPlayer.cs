@@ -213,7 +213,7 @@ namespace Stellamod.Core.Palettes
             {
                 darkness += 1;
             }
-            UsePaletteShader("RoyalCapital.pal", royalCapitalPaletteActive, ref paletteUseProgress[3]);
+       //     UsePaletteShader("RoyalCapital.pal", royalCapitalPaletteActive, ref paletteUseProgress[3]);
 
             /*
 

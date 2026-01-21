@@ -238,7 +238,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             if (this.OwnedByLocalClient())
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Vector2.Zero, 
-                    ModContent.ProjectileType<FirebirdBoom>(), Projectile.damage * 5, Projectile.knockBack, Projectile.owner);
+                    ModContent.ProjectileType<FirebirdBoom>(), Projectile.damage * 10, Projectile.knockBack, Projectile.owner);
             }
         }
         public override bool PreDraw(ref Color lightColor)

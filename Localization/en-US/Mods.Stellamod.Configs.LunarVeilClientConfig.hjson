@@ -203,3 +203,8 @@ DisableSummonHealthbar: {
 	Label: Disable Summon Healthbar
 	Tooltip: Toggles the minion healthbar UIs in the bottom left
 }
+
+Dither: {
+	Label: Dither
+	Tooltip: ""
+}

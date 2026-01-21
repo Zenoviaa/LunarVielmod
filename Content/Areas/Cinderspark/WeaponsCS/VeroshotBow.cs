@@ -202,7 +202,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 25;
+            Item.damage = 20;
             Item.shootSpeed = 15;
         }
 

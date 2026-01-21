@@ -65,7 +65,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override bool IsActive(Player player)
         {
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
-            return false;
+            return myPlayer.ZoneAlcadzia;
         }
     }
 
@@ -193,6 +193,8 @@ namespace Stellamod.Core.PaletteShadingSystem
             PalettizerShader palettizerShader = PalettizerShader.Instance;
             palettizerShader.PaletteTexture = PaletteHelper.GetColorSpectrum(palFile);
             palettizerShader.Progress = fade;
+            palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
+            palettizerShader.ImageSize = new Vector2(Main.screenWidth, Main.screenHeight);
             return palettizerShader.Effect;
         }
 

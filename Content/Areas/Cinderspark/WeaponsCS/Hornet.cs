@@ -35,7 +35,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
             // Weapon Properties
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 14;
+            Item.damage = 12;
             Item.knockBack = 4;
             Item.noMelee = true;
 

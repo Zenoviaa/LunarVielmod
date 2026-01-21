@@ -27,7 +27,8 @@
 
         PlaceDecoration,
         BreakDecoration,
-        AggroSync
+        AggroSync,
+        RecoilPlayerSync
     }
 
     public enum DialogueType : byte

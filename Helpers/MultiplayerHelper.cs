@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.DungeonGeneration;
+using Stellamod.Common.Players;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Core;
@@ -134,7 +135,20 @@ namespace Stellamod
                         }
                     }
                     break;
+                case MessageType.RecoilPlayerSync:
+                    {
 
+                        byte playernumber = reader.ReadByte();
+                        RecoilPlayer recoilPlayer = Main.player[playernumber].GetModPlayer<RecoilPlayer>();
+                        recoilPlayer.ReceivePlayerSync(reader);
+
+                        if (Main.netMode == NetmodeID.Server)
+                        {
+                            // Forward the changes to the other clients
+                            recoilPlayer.SyncPlayer(-1, whoAmI, false);
+                        }
+                    }
+                    break;
                 case MessageType.ResetColosseum:
                     if (Main.netMode == NetmodeID.Server)
                     {

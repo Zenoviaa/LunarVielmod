@@ -20,7 +20,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 12;
+            Item.damage = 16;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 40;
             Item.height = 40;
