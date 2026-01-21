@@ -176,8 +176,10 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static void DrawAccumulatedLightMapToScreen()
         {
+            var shader = DitherShader.Instance;
+            shader.ImageSize = new Vector2(Main.screenWidth, Main.screenHeight);
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply);
+            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, shader.Effect);
             spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
             spriteBatch.End();
         }

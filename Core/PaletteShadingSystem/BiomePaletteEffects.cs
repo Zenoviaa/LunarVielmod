@@ -194,7 +194,7 @@ namespace Stellamod.Core.PaletteShadingSystem
             palettizerShader.PaletteTexture = PaletteHelper.GetColorSpectrum(palFile);
             palettizerShader.Progress = fade;
             palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
-            palettizerShader.ImageSize = new Vector2(Main.screenWidth, Main.screenHeight);
+            palettizerShader.ImageSize = new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f;
             return palettizerShader.Effect;
         }
 
