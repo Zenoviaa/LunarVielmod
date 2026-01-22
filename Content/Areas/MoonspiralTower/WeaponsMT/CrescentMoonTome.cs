@@ -25,9 +25,12 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 28;
-            Item.mana = 10;
+            Item.damage = 30;
+            Item.mana = 7;
             Item.shootSpeed = 2;
+
+            Item.useAnimation = 9;
+            Item.useTime = 9;
             Item.shoot = ModContent.ProjectileType<MiniCrescentMoon>();
         }
         public override Color GetTomeHintColor()
@@ -41,7 +44,6 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
         public override void AddRecipes()
@@ -68,6 +70,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
                 }
             }
         }
+        private ref float RandScale => ref Projectile.ai[2];
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -84,8 +87,8 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
             Projectile.ignoreWater = true;
 
             Projectile.penetrate = 2;
-            Projectile.usesIDStaticNPCImmunity = true;
-            Projectile.idStaticNPCHitCooldown = 20;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
         }
 
         public override void AI()
@@ -95,6 +98,13 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
             Timer++;
             if(Timer == 1)
             {
+                Projectile.velocity *= 0.1f;
+                if (this.OwnedByLocalClient())
+                {
+                    RandScale = Main.rand.NextFloat(0.5f, 1f);
+                    Projectile.position += Main.rand.NextVector2Circular(32, 32);
+                    Projectile.netUpdate = true;
+                }
                 SoundStyle softSummon = new SoundStyle("Stellamod/Assets/Sounds/SoftSummon2");
                 softSummon.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(softSummon, Projectile.position);
@@ -112,10 +122,12 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
             }
             else
             {
-                if (Projectile.velocity.Length() < 15)
-                    Projectile.velocity *= MathHelper.Lerp(1.0001f, 1.1f, Timer / 60f);
+                float maxSpeed = RandScale * 18f;
+                if (Projectile.velocity.Length() < maxSpeed)
+                    Projectile.velocity *= MathHelper.Lerp(1.001f, 1.1f, Timer / 120f);
             }
 
+            Projectile.scale = MathHelper.Lerp(0f, RandScale, EasingFunction.InOutSine(Timer / 45f));
             Projectile.rotation += 0.05f;
             Projectile.rotation += Projectile.velocity.Length() * 0.05f * MathF.Sign(Projectile.velocity.X);
             Lighting.AddLight(Projectile.position, TorchID.White);
@@ -138,6 +150,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
                     DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(0.3f), Color.White, Scale: 0.5f);
                     dp.dampening = 0.1f;
                     dp.outerColor = Color.SkyBlue;
+                    dp.Scale *= Projectile.scale;
                 }
                 Bounce = true;
                 return false;
@@ -152,6 +165,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
                 DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, -Projectile.oldVelocity.RotatedByRandom(0.3f), Color.White, Scale: 0.5f);
                 dp.dampening = 0.1f;
                 dp.outerColor = Color.SkyBlue;
+                dp.Scale *= Projectile.scale;
             }
             for (float i = 0; i < 4; i++)
             {
@@ -166,7 +180,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
                     baseSize: Main.rand.NextFloat(0.1f, 0.2f),
                     duration: Main.rand.NextFloat(15, 25));
                 particle.Rotation = rot + MathHelper.ToRadians(45);
-                particle.Scale *= 0.5f;
+                particle.Scale *= 0.5f * Projectile.scale;
             }
             FXUtil.GlowCircleBoom(Projectile.Center,
                     innerColor: Color.White,
@@ -185,7 +199,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
 
         private float GetTrailWidth(float completionRatio)
         {
-            return MathHelper.SmoothStep(36, 0, completionRatio);
+            return MathHelper.SmoothStep(36, 0, completionRatio) * Projectile.scale;
         }
 
         private void DrawPixelatedTrail(GraphicsDevice graphicsDevice)
@@ -208,7 +222,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT
                 drawColor *= 0.25f;
 
                 Vector2 drawCenter = Projectile.oldPos[i] + Projectile.Size / 2f - screenPos;
-                float scale = MathHelper.Lerp(1f, 0f, ratio);
+                float scale = MathHelper.Lerp(1f, 0f, ratio) * Projectile.scale;
                 spriteBatch.Draw(texture, drawCenter, null, drawColor, Projectile.oldRot[i], drawOrigin, scale, SpriteEffects.None, 0);
             }
         }
