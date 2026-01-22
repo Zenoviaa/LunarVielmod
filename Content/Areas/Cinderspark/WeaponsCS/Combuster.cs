@@ -19,7 +19,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.DefaultToArtifact();
             Item.width = 20;
             Item.height = 54;
-            Item.damage = 9;
+            Item.damage = 13;
             Item.knockBack = 8;
             Item.DamageType = DamageClass.Magic;
             Item.mana = 25;

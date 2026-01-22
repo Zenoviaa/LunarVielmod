@@ -1007,3 +1007,8 @@ CinderediatingLantern: {
 	DisplayName: Cinderediating Lantern
 	Description: You have a magical lantern lighting the way!
 }
+
+MortBuff: {
+	DisplayName: Mort Buff
+	Description: Mods.Stellamod.Buffs.MortBuff.Description
+}

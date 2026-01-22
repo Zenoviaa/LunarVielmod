@@ -2771,7 +2771,7 @@ ScarecrowSaber: {
 
 SkyrageShasher: {
 	DisplayName: Skyrage Shasher
-	Tooltip: "Pew pew pew"
+	Tooltip: Pew pew pew
 	BasicSlash: Spins around quickly two times and fires a laser at the end of its combo!
 	StaminaSlash: Fires a powerful beam
 }
@@ -10387,5 +10387,10 @@ FirebirdScythe: {
 
 MaskingWallBlock: {
 	DisplayName: Masking Wall Block
+	Tooltip: ""
+}
+
+MortItem: {
+	DisplayName: Mort Item
 	Tooltip: ""
 }

@@ -256,7 +256,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Projectile.width = 24;
             Projectile.height = 24;
             Projectile.friendly = true;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             Projectile.timeLeft = 200;
         }
         public override void AI()
@@ -267,6 +267,10 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             {
                 _initialVelocity = Projectile.velocity;
 
+            }
+            if(Timer > 30)
+            {
+                Projectile.tileCollide = true;
             }
 
             if (Timer == 5)
