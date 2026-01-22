@@ -24,6 +24,11 @@ namespace Stellamod.Content.Biomes
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
+            if (Player.GetModPlayer<MyPlayer>().ZoneAlcadzia)
+            {
+                Main.GraveyardVisualIntensity = 0.4f;
+            }
+        
             if(Player.whoAmI == Main.myPlayer)
             {
                 AddForegroundOrBackground();

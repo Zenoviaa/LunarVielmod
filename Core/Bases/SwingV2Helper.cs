@@ -168,6 +168,66 @@ namespace Stellamod.Core.Bases
             });
             return this;
         }
+
+        public ComboBuilder AddSpearSlash1(float duration = 22, float xSwingRadius = 100, float ySwingRadius = 50, float swingDegrees = 90)
+        {
+            SoundStyle spearSlash1 = SoundRegistry.SpearSlash1;
+            SoundStyle spearSlash2 = SoundRegistry.SpearSlash2;
+            SoundStyle nSpin = SoundRegistry.NSwordSpin1;
+            spearSlash1.PitchVariance = 0.25f;
+            spearSlash2.PitchVariance = 0.25f;
+            nSpin.PitchVariance = 0.2f;
+            _swings.Add(new OvalSwing
+            {
+                Duration = duration,
+                XSwingRadius = xSwingRadius,
+                YSwingRadius = ySwingRadius,
+                SwingDegrees = swingDegrees,
+                Easing = (float lerpValue) => EasingFunction.Anticipation(lerpValue),
+                Sound = spearSlash1,
+            });
+            return this;
+        }
+        public ComboBuilder AddSpearThrust1(float duration = 15, float throwDistance = 120)
+        {
+            SoundStyle spearSlash1 = SoundRegistry.SpearSlash1;
+            SoundStyle spearSlash2 = SoundRegistry.SpearSlash2;
+            SoundStyle nSpin = SoundRegistry.NSwordSpin1;
+            spearSlash1.PitchVariance = 0.25f;
+            spearSlash2.PitchVariance = 0.25f;
+            nSpin.PitchVariance = 0.2f;
+
+            _swings.Add(new ThrustSwing
+            {
+                Duration = duration,
+                ThrowDistance = throwDistance,
+                Easing = (float lerpValue) => EasingFunction.QuadraticBump(lerpValue),
+                Sound = spearSlash2
+            });
+            return this;
+        }
+        public ComboBuilder AddSpearSpin1(float duration = 60, float swingDegrees = 360 * 4, float xSwingRadius = 64, float ySwingRadius = 64, int hitCount = 8)
+        {
+            SoundStyle spearSlash1 = SoundRegistry.SpearSlash1;
+            SoundStyle spearSlash2 = SoundRegistry.SpearSlash2;
+            SoundStyle nSpin = SoundRegistry.NSwordSpin1;
+            spearSlash1.PitchVariance = 0.25f;
+            spearSlash2.PitchVariance = 0.25f;
+            nSpin.PitchVariance = 0.2f;
+
+            _swings.Add(new OvalSwing
+            {
+                Duration = duration,
+                SwingDegrees = swingDegrees,
+                XSwingRadius = xSwingRadius,
+                YSwingRadius = ySwingRadius,
+                HitCount = hitCount,
+                Easing = (float lerpValue) => lerpValue,
+                Sound = nSpin
+            });
+
+            return this;
+        }
     }
     public static class SwingV2Helper
     {

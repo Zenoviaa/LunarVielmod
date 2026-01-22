@@ -40,14 +40,15 @@ namespace Stellamod.Core.WallBackgroundSystem
     {
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
-            //   MaskedWallRenderer.QueueDraw(new Point(i, j));
+            MaskedWallRenderer.QueueDraw(new Point(i, j));
+            /*
             Vector2 worldPos = new Point(i, j).ToWorldCoordinates(0, 0);
             worldPos += new Vector2(Main.offScreenRange);
-
+     
             MaskedWallRenderer wallRenderer = ModContent.GetInstance<MaskedWallRenderer>();
             Texture2D texture = wallRenderer.GetBackgroundTexture();
             Rectangle sourceRect = wallRenderer.GetSourceRectangle(i, j);
-            spriteBatch.Draw(texture, worldPos - Main.screenPosition, sourceRect, Color.White);
+            spriteBatch.Draw(texture, worldPos - Main.screenPosition, sourceRect, Color.White);*/
             return false;
         }
     }
@@ -110,7 +111,7 @@ namespace Stellamod.Core.WallBackgroundSystem
         }
         public void Render()
         {
-            return;
+      
             //No need to render if there's no draws
             Point topLeft = (Main.Camera.Center - new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.5f)).ToTileCoordinates();
 

@@ -27,7 +27,7 @@ namespace Stellamod.Content.Areas.Abyss.AccAB
             float nightProgress = (float)(Main.time / Main.nightLength);
             float nightEasing = EasingFunction.QuadraticBump(nightProgress);
           
-            float damageBoost = MathHelper.Lerp(0f, 0.2f, nightEasing);
+            float damageBoost = MathHelper.Lerp(0f, 0.15f, nightEasing);
             return damageBoost;
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)

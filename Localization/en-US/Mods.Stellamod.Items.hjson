@@ -2118,7 +2118,7 @@ LunarBand: {
 	DisplayName: Lunar Band
 	Tooltip:
 		'''
-		Gradually increases damage, up to +20% at night
+		Gradually increases damage, up to +15% at night
 		While the moon is at its apex you are strongest...
 		'''
 }
@@ -2771,7 +2771,9 @@ ScarecrowSaber: {
 
 SkyrageShasher: {
 	DisplayName: Skyrage Shasher
-	Tooltip: Casts bouncing wind slashes
+	Tooltip: "Pew pew pew"
+	BasicSlash: Spins around quickly two times and fires a laser at the end of its combo!
+	StaminaSlash: Fires a powerful beam
 }
 
 GladiatorSpear: {
@@ -10358,7 +10360,7 @@ StopSignSword: {
 FlamelashChakrams: {
 	BasicSlash: No Effect
 	StaminaSlash: No Effect
-	DisplayName: Flamelash Chakrams
+	DisplayName: Flamelash Dualrangs
 	Tooltip: ""
 }
 

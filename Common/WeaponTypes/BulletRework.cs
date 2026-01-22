@@ -13,6 +13,10 @@ namespace Stellamod.Common.WeaponTypes
             {
                 entity.damage = 1;
             }
+            if (entity.ammo == AmmoID.Arrow)
+            {
+                entity.damage = 5;
+            }
         }
     }
 }
