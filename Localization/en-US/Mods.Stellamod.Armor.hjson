@@ -1,3 +1,11 @@
+StaffigyHat: {
+	Type: Magic
+	Lore: Simple armor crafted from the mysterious moth-shaped souls, why can they morph, let alone be turned into armor? It seems like each moth has a different set of attributes, but this armor, it’s perfect...
+	SetBonus: Makes your wand charge speed 25% faster!
+	Log: Act I Wand, Mage armor
+}
+
+
 HuntrianHelmet: {
 	Type: Resource
 	Lore: The battle scars on this armor show, the stingers imbue have a shocking amount of poison, which spikes everything around. Sometimes, it’s even a hassle to put on.

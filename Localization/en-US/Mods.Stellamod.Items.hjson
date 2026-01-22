@@ -9240,21 +9240,17 @@ InsourcedBrew: {
 }
 
 StaffigyRobe: {
-	Tooltip:
-		'''
-		+40 Max Mana
-		5% increased Magical Critical Strike Chance!
-		'''
+	Tooltip: ""
 	DisplayName: Staffigy Robe
 }
 
 StaffigyPants: {
-	Tooltip: 30% increased movement speed!
+	Tooltip: ""
 	DisplayName: Staffigy Pants
 }
 
 StaffigyHat: {
-	Tooltip: +10% Magic damage!
+	Tooltip: ""
 	DisplayName: Staffigy Hat
 }
 

@@ -1,22 +1,16 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
-using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
+using Stellamod.Common.ArmorRework;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Helpers;
-using Stellamod.Items.Armors.Scrappy;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace Stellamod.Items.Armors.Staffigy
+namespace Stellamod.Content.Armors.Staffigy
 {
-   
+
     public class StaffigyCrescent : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
@@ -71,7 +65,6 @@ namespace Stellamod.Items.Armors.Staffigy
         }
     }
 
-
     public class StaffigyPlayer : ModPlayer
     {
         public bool hasStaffigySetBonus;
@@ -87,10 +80,8 @@ namespace Stellamod.Items.Armors.Staffigy
             if (hasStaffigySetBonus && Player.ownedProjectileCounts[projType] == 0 && Main.myPlayer == Player.whoAmI)
             {
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, projType, 1, 1, Main.myPlayer);
-
             }
         }
-
     }
 
     [AutoloadEquip(EquipType.Head)]
@@ -100,22 +91,16 @@ namespace Stellamod.Items.Armors.Staffigy
         {
             base.SetStaticDefaults();
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-
             ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
-        }
-
-        public override void SetDefaults()
-        {
-            Item.width = 40;
-            Item.height = 30;
-            Item.value = 10000;
-            Item.rare = ItemRarityID.Green;
-            Item.defense = 5;
+            ArmorSetSystem.RegisterArmorSet<StaffigyHat, StaffigyRobe, StaffigyPants>();
         }
 
         public override void UpdateEquip(Player player)
         {
-            player.GetDamage(DamageClass.Magic) += 0.1f;
+            var stats = player.GetModPlayer<ArmorStatsPlayer>();
+            stats.wandTimerEnchantmentSlots += 2;
+            stats.defenseBonus += 4;
+            stats.accessorySlots += 1;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -123,23 +108,45 @@ namespace Stellamod.Items.Armors.Staffigy
             return body.type == ModContent.ItemType<StaffigyRobe>()
                 && legs.type == ModContent.ItemType<StaffigyPants>();
         }
+
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadow = true;
         }
 
-       
         public override void UpdateArmorSet(Player player)
         {
-            player.GetModPlayer<AdvancedMagicPlayer>().chargeTimeBonus += 0.2f;
+            player.GetModPlayer<AdvancedMagicPlayer>().chargeTimeBonus += 0.25f;
             player.GetModPlayer<StaffigyPlayer>().hasStaffigySetBonus = true;
-            player.setBonus = LangText.SetBonus(this);//"Become greatly empowered for a short time when low on health!\nJust one last breath...");
-    
-            player.statManaMax2 += 20;
+        }
+    }
 
-
+    [AutoloadEquip(EquipType.Body)]
+    public class StaffigyRobe : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
+        public override void UpdateEquip(Player player)
+        {
+            var stats = player.GetModPlayer<ArmorStatsPlayer>();
+            stats.magicDamage += 0.07f;
+            stats.defenseBonus += 5;
+            stats.accessorySlots += 1;
+        }
+    }
 
+    [AutoloadEquip(EquipType.Legs)]
+    public class StaffigyPants : ModItem
+    {
+        public override void UpdateEquip(Player player)
+        {
+            var stats = player.GetModPlayer<ArmorStatsPlayer>();
+            stats.defenseBonus += 2;
+            stats.totalMana += 40;
+        }
     }
 }
