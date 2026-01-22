@@ -1,3 +1,9 @@
+JacklerHat: {
+	Lore: A fun costume Veldrin got for his brother, Veldris, to give to Veizal for Christmas as a helping hand since they were low on funds. They both made it together! Veldrin knows that his brother has a huge crush on the woman he lives with so he decided to give his brother something to help out.
+	Type: Summoner
+	SetBonus: Minions explode into rose petals upon death, which does great damage!
+}
+
 RavagingHelmet: {
 	Lore: An armor from an old ravaged beast, long stayed and love lived. The horns bear marks that no one person could cause, it has been beaten up for years on end, and it seems you came to give misery upon a creature and wear it for pride.
 	Type: Dodge
