@@ -10394,3 +10394,18 @@ MortItem: {
 	DisplayName: Mort Item
 	Tooltip: ""
 }
+
+BellMasterCloak: {
+	DisplayName: Bell Master Cloak
+	Tooltip: ""
+}
+
+BellMasterHood: {
+	DisplayName: Bell Master Hood
+	Tooltip: ""
+}
+
+BellMasterLegs: {
+	DisplayName: Bell Master Legs
+	Tooltip: ""
+}

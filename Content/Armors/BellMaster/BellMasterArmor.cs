@@ -44,8 +44,11 @@ namespace Stellamod.Content.Armors.BellMaster
 
     public class GoldenBell : ModProjectile
     {
+        private float _hitTimer;
+        private NPC _target;
         private Player Owner => Main.player[Projectile.owner];
         private ref float Timer => ref Projectile.ai[0];
+        private ref float Speed => ref Projectile.ai[1];
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -59,26 +62,68 @@ namespace Stellamod.Content.Armors.BellMaster
         public override void AI()
         {
             base.AI();
+            Timer++;
             BellMasterPlayer bellMasterPlayer = Owner.GetModPlayer<BellMasterPlayer>();
             if (bellMasterPlayer.hasBellMasterSetBonus)
                 Projectile.timeLeft = 2;
 
             //Movement code
-            NPC nearest = NPCHelper.FindClosestNPC(Owner.position, 1500);
-            Vector2 targetCenter = Owner.Center;
-            float offset = 128;
-            if(nearest != null)
+            if(_target == null || !_target.active)
             {
-                targetCenter = nearest.Center;
-                offset = MathF.Max(nearest.width, nearest.height) + 64;
+                NPC nearest = NPCHelper.FindClosestNPC(Owner.position, 1500);
+                _target = nearest;
             }
 
-            Vector2 rotatedCenter = targetCenter + Vector2.UnitY.RotatedBy(Timer * 0.05f) * offset;
+            if (Main.rand.NextBool(12))
+            {
+                Vector2 pos = Projectile.position;
+                pos.X += Main.rand.Next(0, Projectile.width);
+                pos.Y += Main.rand.Next(0, Projectile.height);
+                SparkleParticle sp = SparkleParticle.Spawn(pos, Vector2.Zero);
+                sp.innerColor = Color.Goldenrod;
+                sp.outerColor = Color.DarkGoldenrod;
+                sp.flickering = true;
+                sp.Scale *= 0.5f;
+                sp.gravity *= 0.5f;
+            }
+
+
+            Vector2 targetCenter = Owner.Center;
+            float offset = 128;
+            if(_target != null && _target.active)
+            {
+ 
+                targetCenter = _target.Center;
+                offset = MathF.Max(_target.width, _target.height) + 64;
+                if (Vector2.Distance(targetCenter, Owner.Center) > 800)
+                    _target = null;
+            } else
+            {
+
+            }
+      
+            float speedValue1 = MathHelper.Max(12, Owner.velocity.Length());
+            float speedValue2 = Vector2.Distance(Projectile.Center, targetCenter) * 0.05f;
+            float s = MathHelper.Max(speedValue1, speedValue2);
+
+            if (Vector2.Distance(Projectile.Center, Owner.Center) > 2500)
+                Projectile.Center = Owner.Center;
+            Speed = MathHelper.Lerp(Speed, s, 0.1f);
+
+                
+            Vector2 rotatedCenter = targetCenter + Vector2.UnitY.RotatedBy(Timer * 0.015f) * offset;
             Vector2 velocityToMove = rotatedCenter - Projectile.Center ;
-            Vector2 diff = velocityToMove - Projectile.velocity;
-            Projectile.velocity += diff * 0.3f;
+            Vector2 normalVelocity = velocityToMove.SafeNormalize(Vector2.Zero);
+            float speed = MathF.Min(Vector2.Distance(rotatedCenter, Projectile.Center), Speed);
+            Projectile.velocity = normalVelocity * speed;
             Projectile.rotation = Projectile.velocity.X * 0.05f;
 
+            if (_hitTimer > 0)
+            {
+                _hitTimer--;
+            }
+
+            Projectile.scale = MathHelper.SmoothStep(1f, 0.5f, _hitTimer / 15f);
             //Ricochet
             Rectangle myRect = Projectile.getRect();
             foreach(var proj in Main.ActiveProjectiles)
@@ -87,9 +132,11 @@ namespace Stellamod.Content.Armors.BellMaster
                     continue;
                 if (proj.type == Type)
                     continue;
+                if (proj.hostile)
+                    continue;
 
                 Rectangle projRect = proj.getRect();
-                if (!myRect.Intersects(projRect))
+                if (!proj.Colliding(myRect, projRect))
                     continue;
 
                 //Needs to be reflected
@@ -97,26 +144,38 @@ namespace Stellamod.Content.Armors.BellMaster
                 if (goldenBellGlobalProjectile.isReflected)
                     continue;
 
-                Vector2 newVelocity = (nearest.Center - proj.Center).SafeNormalize(Vector2.Zero) * proj.velocity.Length();
+                Vector2 reflectedCenter;
+                if (_target != null)
+                    reflectedCenter = _target.Center;
+                else
+                {
+                    reflectedCenter = Projectile.Center + proj.velocity.RotatedBy(MathHelper.PiOver2);
+                }
+
+                    Vector2 newVelocity = (reflectedCenter - proj.Center).SafeNormalize(Vector2.Zero) * proj.velocity.Length();
                 proj.velocity = newVelocity;
 
+                _hitTimer = 15;
                 SoundStyle hitSound = AssetRegistry.Sounds.Bishinine.BellHit1;
                 hitSound.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(hitSound, Projectile.position);
 
-                ThrustParticle.Spawn(Projectile.Center, proj.Center - Projectile.Center);
+                ThrustParticle tp = ThrustParticle.Spawn(Projectile.Center, proj.velocity * 0.15f);
+                tp.Scale *= 0.66f;
+                tp.innerColor = Color.Goldenrod;
+                tp.bloomColor = Color.DarkGoldenrod;
                 for(float f =0; f < 3f; f++)
                 {
                     DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
                     {
                         scaleRange = new Vector2(0.3f, 0.6f)
                     };
-                    DustParticle.Spawn(Projectile.Center, proj.velocity.RotatedByRandom(1f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+                    DustParticle.Spawn(Projectile.Center, proj.velocity.RotatedByRandom(1f) * Main.rand.NextFloat(0.5f, 1f) * 0.2f, spawnParams);
 
                     if (Main.rand.NextBool(3))
                     {
-                        var dp = SparkleParticle.Spawn(Projectile.Center, proj.velocity.RotatedByRandom(1f) * Main.rand.NextFloat(0.25f, 0.5f));
-                        dp.Scale *= 0.85f;
+                        var dp = SparkleParticle.Spawn(Projectile.Center, proj.velocity.RotatedByRandom(1f) * Main.rand.NextFloat(0.25f, 0.5f) * 0.2f);
+                        dp.Scale *= 0.5f;
                         dp.dampening = 0.1f;
                         dp.flickering = true;
                         dp.innerColor = Color.White;
@@ -137,6 +196,21 @@ namespace Stellamod.Content.Armors.BellMaster
             Vector2 drawCenter = Projectile.Center - Main.screenPosition;
             drawCenter.Y += ExtraMath.Osc(-1f, 1f);
             spriteBatch.Draw(texture, drawCenter, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+            for(float f = 0f; f < 4f; f++)
+            {
+                float rot = MathHelper.TwoPi * f / 4f;
+                Vector2 offset = rot.ToRotationVector2() * ExtraMath.Osc(0f, 8);
+                Color glowCOlor = Color.Gold;
+                glowCOlor *= 0.1f;
+                glowCOlor.A = 0;
+                spriteBatch.Draw(texture, drawCenter + offset, null, glowCOlor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+            }
+            Texture2D glowMask = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            Vector2 glowOrigin = glowMask.Size() * 0.5f;
+            Color glowMaskColor = Color.Gold;
+            glowMaskColor *= 0.25f;
+            glowMaskColor.A = 0;
+            spriteBatch.Draw(glowMask, drawCenter , null, glowMaskColor, Projectile.rotation, glowOrigin, Projectile.scale * 0.3f, SpriteEffects.None, 0);
             return false;
         }
     }
@@ -154,7 +228,13 @@ namespace Stellamod.Content.Armors.BellMaster
             base.PostUpdateMiscEffects();
             if (Main.myPlayer != Player.whoAmI)
                 return;
-
+            if (!hasBellMasterSetBonus)
+                return;
+            int bellType = ModContent.ProjectileType<GoldenBell>();
+            if (Player.ownedProjectileCounts[bellType] == 0)
+            {
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, bellType, 1, 1, Player.whoAmI);
+            }
         }
     }
 
