@@ -1020,6 +1020,7 @@ namespace Stellamod.Common.ArmorRework
         public float rangedDamage;
         public int rangedPiercing;
         public int rangedGunAmmoAmount;
+        public float rangedGunAmmoAmountPct;
         public int rangedStealthtiness;
 
         public float summonCastTime;
@@ -1102,6 +1103,7 @@ namespace Stellamod.Common.ArmorRework
             rangedPiercing = 0;
             rangedGunAmmoAmount = 0;
             rangedStealthtiness = 0;
+            rangedGunAmmoAmountPct = 0;
 
             //Summoner Stats
             summonCastTime = 0;

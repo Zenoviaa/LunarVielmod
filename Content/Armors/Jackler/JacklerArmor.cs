@@ -1,6 +1,4 @@
-﻿using Stellamod.Assets;
-using Stellamod.Common.ArmorRework;
-using Stellamod.Common.SummonerSystem;
+﻿using Stellamod.Common.ArmorRework;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -32,7 +30,7 @@ namespace Stellamod.Content.Armors.Jackler
         {
             base.AI();
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 16);
                 FXUtil.GlowCircleBoom(Projectile.Center,
@@ -43,18 +41,18 @@ namespace Stellamod.Content.Armors.Jackler
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
                 for (float f = 0; f < 4; f++)
                 {
-                    Particle<DustParticle>.Spawn(Projectile.Center, 
+                    Particle<DustParticle>.Spawn(Projectile.Center,
                         Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(6, 8f), Scale: Main.rand.NextFloat(0.5f, 1f));
                 }
 
                 for (float f = 0; f < 6; f++)
                 {
-                    var smoke = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, 
+                    var smoke = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center,
                         -Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(1, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
                     smoke.initialColor = Color.DarkGray;
                 }
 
-                for(float f = 0; f < 8; f++)
+                for (float f = 0; f < 8; f++)
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                     var rose = Particle<RosePetalParticle>.SpawnInAlphaLayer(Projectile.Center, velocity, Scale: Main.rand.NextFloat(0.8f, 1.6f));
@@ -92,7 +90,7 @@ namespace Stellamod.Content.Armors.Jackler
 
             if (Main.myPlayer != projectile.owner)
                 return;
-            Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, Vector2.Zero, 
+            Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<JacklerBoom>(), projectile.damage * 2, 1, projectile.owner);
         }
     }
@@ -170,7 +168,7 @@ namespace Stellamod.Content.Armors.Jackler
         {
             ArmorStatsPlayer stats = player.GetModPlayer<ArmorStatsPlayer>();
             stats.accessorySlots++;
-            stats.minionSummonHealth+= -0.20f;
+            stats.minionSummonHealth += -0.20f;
             stats.defenseBonus += 3;
         }
     }

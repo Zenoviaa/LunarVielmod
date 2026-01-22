@@ -1,3 +1,9 @@
+BellMasterHood: {
+	Lore: Crafted from ancient silk of a fallen kingdom, decorated with bells along the way. I wonder what secrets the fabric itself holds. It’s said to do wonders for the backlines of the army, holding snipers...
+	Type: Ranged
+	SetBonus: Summons a large bell that hovers and circles around nearby enemies, when it is shot at, it rings and redirects the projectile to the nearest enemy and boosts the damage by 50%!
+}
+
 JacklerHat: {
 	Lore: A fun costume Veldrin got for his brother, Veldris, to give to Veizal for Christmas as a helping hand since they were low on funds. They both made it together! Veldrin knows that his brother has a huge crush on the woman he lives with so he decided to give his brother something to help out.
 	Type: Summoner
