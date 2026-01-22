@@ -574,34 +574,17 @@ CelestiaMoonMask: {
 
 HuntrianBoots: {
 	DisplayName: Huntrian Boots
-	Tooltip:
-		'''
-		Corroded Woods
-		+5% Damage!
-		-10 Health
-		+7 Critical Strike Chance!
-		'''
+	Tooltip: ""
 }
 
 HuntrianChestplate: {
 	DisplayName: Huntrian Chestplate
-	Tooltip:
-		'''
-		Corroded Woods
-		+5% Damage!" 
-		+10 Health" 
-		+10 Critical Strike Chance!
-		'''
+	Tooltip: ""
 }
 
 HuntrianHelmet: {
 	DisplayName: Huntrian Helmet
-	Tooltip:
-		'''
-		Corroded Woods
-		+5% Damage!
-		+20 Health
-		'''
+	Tooltip: ""
 }
 
 LovestruckBreastplate: {

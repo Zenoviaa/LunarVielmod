@@ -1012,3 +1012,8 @@ MortBuff: {
 	DisplayName: Mort Buff
 	Description: Mods.Stellamod.Buffs.MortBuff.Description
 }
+
+HuntrianVenom: {
+	DisplayName: Huntrian Venom
+	Description: Mods.Stellamod.Buffs.HuntrianVenom.Description
+}

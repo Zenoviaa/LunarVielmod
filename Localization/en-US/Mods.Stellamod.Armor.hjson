@@ -1,3 +1,10 @@
+HuntrianHelmet: {
+	Type: Resource
+	Lore: The battle scars on this armor show, the stingers imbue have a shocking amount of poison, which spikes everything around. Sometimes, it’s even a hassle to put on.
+	SetBonus: Have an aura that if anything walks in, gets poisoned heavily for 3 minutes, inflicting a dangerous venom that reduces enemies’ defense by 10 as well as damaging them with a constant effect.
+	Log: Act I Resource, Insource-Accessory armor
+}
+
 BellMasterHood: {
 	Lore: Crafted from ancient silk of a fallen kingdom, decorated with bells along the way. I wonder what secrets the fabric itself holds. It’s said to do wonders for the backlines of the army, holding snipers...
 	Type: Ranged
