@@ -1,3 +1,10 @@
+LunarianVoidHead: {
+	Type: Melee
+	Lore: A sighted armor with a little slit in the middle, the convulging matter that made this armor still pulses, it even has a faint glow with its pulsing.
+	SetBonus: Hitting strike, hitting an enemy while getting hit with a melee weapon grants this huge strike on an enemy that does 400% more damage and a blue spark and flash on them, you also glow a bit in the dark
+	Log: Act I Melee Damage armor
+}
+
 VextinMask: {
 	Type: Defensive
 	Lore: The sands shift beneath your feet, as if you tread lightly, the fabric was especially crafted by a clothier of some sort, sown together on the deathbed of themselves as a last hope, and eventually made it into Manman’s hands. What other secrets does the fabric hold?

@@ -705,31 +705,17 @@ VerlMask: {
 
 VextinBoots: {
 	DisplayName: Vextin Boots
-	Tooltip:
-		'''
-		Hide in the sands
-		+5% Damage
-		+20 Health
-		'''
+	Tooltip: ""
 }
 
 VextinMask: {
 	DisplayName: Vextin Mask
-	Tooltip:
-		'''
-		You feel the hidden sands flow in you
-		+7% increased damage
-		+20 Health
-		'''
+	Tooltip: ""
 }
 
 VextinRobe: {
 	DisplayName: Vextin Robe
-	Tooltip:
-		'''
-		Roam the wonderous sands	
-		+40 Health
-		'''
+	Tooltip: ""
 }
 
 Gambit: {
@@ -3966,26 +3952,17 @@ VampireScepter: {
 
 LunarianVoidBody: {
 	DisplayName: Lunarian Void Chestplate
-	Tooltip: +10% Throwing Damage
+	Tooltip: ""
 }
 
 LunarianVoidHead: {
 	DisplayName: Lunarian Void Helmet
-	Tooltip:
-		'''
-		+10 Throwing Critical Strike Chance!
-		+20 Health
-		+25% Throwing Damage
-		'''
+	Tooltip: ""
 }
 
 LunarianVoidLegs: {
 	DisplayName: Lunarian Void Legs
-	Tooltip:
-		'''
-		Increased movement speed 2%
-		+5% Throwing Damage
-		'''
+	Tooltip: ""
 }
 
 SandStorm: {
