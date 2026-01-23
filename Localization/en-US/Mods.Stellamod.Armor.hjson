@@ -1,3 +1,10 @@
+VextinMask: {
+	Type: Defensive
+	Lore: The sands shift beneath your feet, as if you tread lightly, the fabric was especially crafted by a clothier of some sort, sown together on the deathbed of themselves as a last hope, and eventually made it into Manman’s hands. What other secrets does the fabric hold?
+	SetBonus: Run fast on sand, and every time you get hit by an enemy, you gain a defensive shield that blocks 50% damage the next hit! You have a little sand shield bubble around you when you are blocking the next hit
+	Log: Act I Speed and Defense armor
+}
+
 TerricHead: {
 	Type: Ranged
 	Lore: Created by Vul and given to Manman, this armor reaches the highest heights of stealing life. To try to recreate this armor seems impossible. It’s made from brewing in a cauldron no longer found.
