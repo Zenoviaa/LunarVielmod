@@ -10,7 +10,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
     public static class AdvancedMagicUtil
     {
 
-        public static void NewMagicProjectile(Vector2 firePosition, AbstractMagicWand item, Projectile sourceProjectile, float charge)
+        public static AdvancedMagicProjectile NewMagicProjectile(Vector2 firePosition, AbstractMagicWand item, Projectile sourceProjectile, float charge)
         {
             Player player = Main.player[sourceProjectile.owner];
             float speed = sourceProjectile.velocity.Length();
@@ -20,6 +20,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                                 ModContent.ProjectileType<AdvancedMagicProjectile>(), sourceProjectile.damage, sourceProjectile.knockBack, sourceProjectile.owner, 
                                 ai1: charge);
             p.netUpdate = true;
+            return p.ModProjectile as AdvancedMagicProjectile;
         }
 
 

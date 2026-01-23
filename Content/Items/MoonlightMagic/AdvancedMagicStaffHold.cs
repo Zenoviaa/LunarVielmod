@@ -70,6 +70,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private AdvancedMagicPlayer MagicPlayer => Owner.GetModPlayer<AdvancedMagicPlayer>();
         private BaseElement Element => GetElement();
 
+        public static event Action<Player, AdvancedMagicProjectile> OnCastMagic;
         private float GetChargeTime()
         {
             const float Base_Charge_Time = 360;
@@ -364,7 +365,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 Projectile.knockBack = knockback;
 
 
-                AdvancedMagicUtil.NewMagicProjectile(ballPosition, staff, Projectile, levelProgress);
+                AdvancedMagicProjectile advancedMagicProjectile = AdvancedMagicUtil.NewMagicProjectile(ballPosition, staff, Projectile, levelProgress);
+                OnCastMagic?.Invoke(Owner, advancedMagicProjectile);
                 Projectile.velocity = oldVelocity;
 
                 for (int i = 0; i < 7 * levelProgress; i++)

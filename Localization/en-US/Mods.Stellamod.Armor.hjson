@@ -1,3 +1,9 @@
+MoonskerHood: {
+	Type: Magic
+	Lore: One said that this armor is of Ereshkigal’s most loyal worshippers, it whispers in your ear, speaking with sounds, and sometimes moths fly out. The armor is filled with power and spirits… I guess this is where she likes to hide some of her moths...
+	SetBonus: Wand Casting time reduced by 30%, as well as having a few orbiting moons around you that shoot off when you cast a wand spell, that do half the damage!
+}
+
 LunarianVoidHead: {
 	Type: Melee
 	Lore: A sighted armor with a little slit in the middle, the convulging matter that made this armor still pulses, it even has a faint glow with its pulsing.

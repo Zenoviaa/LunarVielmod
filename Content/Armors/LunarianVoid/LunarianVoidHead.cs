@@ -9,7 +9,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Armors.LunarianVoid
+namespace Stellamod.Content.Armors.LunarianVoid
 {
     public class LunarianVoidCounterSlash : ModProjectile
     {

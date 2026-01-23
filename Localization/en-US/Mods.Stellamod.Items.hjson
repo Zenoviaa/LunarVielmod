@@ -10365,3 +10365,18 @@ BellMasterLegs: {
 	DisplayName: Bell Master Legs
 	Tooltip: ""
 }
+
+MoonskerHood: {
+	DisplayName: Moonsker Hood
+	Tooltip: ""
+}
+
+MoonskerPants: {
+	DisplayName: Moonsker Pants
+	Tooltip: ""
+}
+
+MoonskerRobe: {
+	DisplayName: Moonsker Robe
+	Tooltip: ""
+}
