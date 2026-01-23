@@ -197,7 +197,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             float _ = 0f;
             float width = Projectile.width * 0.8f;
             Vector2 start = Projectile.Center;
-            Vector2 end = start + Projectile.velocity * BeamLength;
+            Vector2 end = EndPoint;
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, width, ref _);
         }
 

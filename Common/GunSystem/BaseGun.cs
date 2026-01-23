@@ -299,6 +299,7 @@ namespace Stellamod.Common.GunSystem
         public int successfulReloads;
         public float reloadRatio => reloadTimer / reloadTime;
         public BaseGun HeldGun => Player.HeldItem.ModItem as BaseGun;
+        public static event Action<Player, BaseGun> OnReload;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -383,7 +384,7 @@ namespace Stellamod.Common.GunSystem
                             successfulReloads = 0;
                             heldGun.Reload();
                             reloadFireDelay = 60;
-
+                            OnReload?.Invoke(Player, heldGun);
                         }
                         else
                         {

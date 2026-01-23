@@ -5,6 +5,7 @@ using Stellamod.Assets;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Armors.Leather;
+using Stellamod.Content.Armors.Terric;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -230,9 +231,11 @@ namespace Stellamod.Core.Bases
                 if(Owner.HeldItem.ModItem is BaseCrossbowItem cb && Main.myPlayer == Projectile.owner)
                 {
                     Owner.PickAmmo(Owner.HeldItem, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId);
+                    Vector2 firePosition = Owner.Center;
+                    ItemLoader.ModifyShootStats(Owner.HeldItem, Owner, ref firePosition, ref Projectile.velocity, ref projToShoot, ref damage, ref knockBack);
                     ShootParams @params = new ShootParams
                     {
-                        position = Owner.Center,
+                        position = firePosition,
                         velocity = Projectile.velocity,
                         chargeStrength = ChargeStrength,
                         damage = damage,
@@ -352,10 +355,14 @@ namespace Stellamod.Core.Bases
             Vector2 offset = new Vector2(0, f * 1f / numFrames);
             Vector4 tilingOffset = new Vector4(offset.X, offset.Y, tiling.X, tiling.Y);
             magicCircleShader.TilingOffset = tilingOffset;
-            magicCircleShader.RingTexture = AssetManager.GlowMask.MagicCircle2;
+
+            CrossbowPlayer crossbowPlayer = Owner.GetModPlayer<CrossbowPlayer>();
+            magicCircleShader.RingTexture = crossbowPlayer.magicCircleTextureAsset;
+
+            Color targetColor = crossbowPlayer.magicCircleColor;
 
             float ease = EasingFunction.InOutSine(_magicRingTimer / AimTime);
-            Color auraColor = Color.Lerp(Color.Black, Color.White, ease * 0.5f);
+            Color auraColor = Color.Lerp(Color.Black, targetColor, ease * 0.5f);
             auraColor = auraColor.MultiplyRGB(color);
 
             float radius = MathHelper.Lerp(45, 90, ease);
@@ -455,8 +462,8 @@ namespace Stellamod.Core.Bases
 
         public override bool PreDraw(ref Color lightColor)
         {
-            var leatherPlayer = Owner.GetModPlayer<LeatherPlayer>();
-            if (leatherPlayer.hasLeatherSetBonus)
+            var crossbowPlayer = Owner.GetModPlayer<CrossbowPlayer>();
+            if (crossbowPlayer.magicCircleTextureAsset != null)
             {
                 PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedRings);
                 Texture2D glow = AssetManager.GlowMask.SimpleGlowCircle.Value;
@@ -468,7 +475,7 @@ namespace Stellamod.Core.Bases
                 float ease = EasingFunction.InOutSine(_magicRingTimer / AimTime);
                 Vector2 offset = Vector2.Lerp(Vector2.Zero, Projectile.velocity.SafeNormalize(Vector2.Zero) * 48, ease);
                 drawCenter += offset;
-                Color glowColor = Color.Lerp(Color.White, Color.Black, 0.75f);
+                Color glowColor = Color.Lerp(crossbowPlayer.magicCircleColor, Color.Black, 0.75f);
                 glowColor.A = 0;
                 Vector2 scale = new Vector2(0.5f, 1f) * 0.3f;
                 scale *= MathHelper.SmoothStep(0f, 1f, EasingFunction.InOutSine(_magicRingTimer / AimTime));

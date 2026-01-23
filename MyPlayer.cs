@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using Stellamod.Buffs;
-using Stellamod.Buffs.Minions;
 using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Core.ToolsSystem;
@@ -12,7 +11,6 @@ using Stellamod.Items.Armors.Alsis;
 using Stellamod.Items.Armors.Artisan;
 using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Govheil;
-using Stellamod.Items.Armors.Terric;
 using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
@@ -21,7 +19,6 @@ using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.Verlia;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Paint;
-using Stellamod.Projectiles.Summons.Minions;
 using Stellamod.Projectiles.Swords;
 using System.Collections.Generic;
 using Terraria;
@@ -1711,46 +1708,6 @@ namespace Stellamod
         {
             //Terric Setbonus
 
-            if (Teric)
-            {
-                TericGramTime++;
-                if (TericGramLevel == 2)
-                {
-                    Lighting.AddLight(Player.Center, Color.DarkRed.ToVector3() * 0.5f * Main.essScale);
-                    Player.GetCritChance(DamageClass.Magic) += 21;
-                }
-                if (TericGramLevel == 1)
-                {
-                    Lighting.AddLight(Player.Center, Color.DarkRed.ToVector3() * 0.25f * Main.essScale);
-                    Player.GetCritChance(DamageClass.Magic) += 10;
-                }
-
-                if (TericGramTime >= 340)
-                {
-                    TericGramTime = 0;
-                    if (TericGramLevel < 2)
-                    {
-                        if (TericGramLevel == 1)
-                        {
-                            var EntitySource = Player.GetSource_FromThis();
-                            NPC.NewNPC(EntitySource, (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<TericGramNPC2>());
-                            TericGramLevel += 1;
-                        }
-                        else
-                        {
-                            Lighting.AddLight(Player.Center, Color.DarkRed.ToVector3() * 0.75f * Main.essScale);
-                            var EntitySource = Player.GetSource_FromThis();
-                            NPC.NewNPC(EntitySource, (int)Player.Center.X, (int)Player.Center.Y, ModContent.NPCType<TericGramNPC>());
-                            TericGramLevel += 1;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                TericGramTime = 0;
-                TericGramLevel = 0;
-            }
 
             //Sap Container's Effect
             if (ArcaneM)

@@ -1,10 +1,16 @@
+TerricHead: {
+	Type: Ranged
+	Lore: Created by Vul and given to Manman, this armor reaches the highest heights of stealing life. To try to recreate this armor seems impossible. It’s made from brewing in a cauldron no longer found.
+	SetBonus: Turns regular arrows into blood arrows, that regenerate your life on hit, and has a blood spell circle on your bows, guns also regenerate you by 1 everytime you reload
+	Log: Act I Life steal ranger armor
+}
+
 StaffigyHat: {
 	Type: Magic
 	Lore: Simple armor crafted from the mysterious moth-shaped souls, why can they morph, let alone be turned into armor? It seems like each moth has a different set of attributes, but this armor, it’s perfect...
 	SetBonus: Makes your wand charge speed 25% faster!
 	Log: Act I Wand, Mage armor
 }
-
 
 HuntrianHelmet: {
 	Type: Resource

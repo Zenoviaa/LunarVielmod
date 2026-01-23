@@ -2365,17 +2365,17 @@ ShadeWraithLegs: {
 
 TerricBody: {
 	DisplayName: Terric Chestplate
-	Tooltip: +40 Health
+	Tooltip: ""
 }
 
 TerricHead: {
 	DisplayName: Terric Hat
-	Tooltip: +13% Increased Magic Damage
+	Tooltip: ""
 }
 
 TerricLegs: {
 	DisplayName: Terric Trousers
-	Tooltip: Increased movement speed!
+	Tooltip: ""
 }
 
 WinterbornBody: {

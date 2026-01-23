@@ -10,5 +10,6 @@
 	</PropertyGroup>
 	<ItemGroup>
 	  <Folder Include="Items\Armors\Huntrian\" />
+	  <Folder Include="Items\Armors\Staffigy\" />
 	</ItemGroup>
 </Project>

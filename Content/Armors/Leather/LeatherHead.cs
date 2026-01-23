@@ -1,4 +1,6 @@
+using Stellamod.Assets;
 using Stellamod.Common.ArmorRework;
+using Stellamod.Core.Bases;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,6 +14,16 @@ namespace Stellamod.Content.Armors.Leather
         {
             base.ResetEffects();
             hasLeatherSetBonus= false;
+        }
+        public override void PostUpdateEquips()
+        {
+            base.PostUpdateEquips();
+            if (hasLeatherSetBonus)
+            {
+                CrossbowPlayer crossbowPlayer = Player.GetModPlayer<CrossbowPlayer>();
+                crossbowPlayer.magicCircleColor = Color.White;
+                crossbowPlayer.magicCircleTextureAsset = AssetManager.GlowMask.MagicCircle2;
+            }
         }
     }
 

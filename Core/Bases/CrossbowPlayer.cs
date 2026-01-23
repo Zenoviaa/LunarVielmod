@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using ReLogic.Content;
 using Stellamod.Items.Accessories.Players;
 using Terraria;
 using Terraria.ModLoader;
@@ -15,11 +16,15 @@ namespace Stellamod.Core.Bases
         public float burstRate;
         public float burstChargeStrength;
         public Vector2 burstVelocity;
+        public Asset<Texture2D> magicCircleTextureAsset;
+        public Color magicCircleColor;
         public override void ResetEffects()
         {
             base.ResetEffects();
             takeAim = false;
             usingStamina = false;
+            magicCircleTextureAsset = null;
+            magicCircleColor = Color.White;
         }
         public override void PostUpdateEquips()
         {
