@@ -165,8 +165,9 @@ namespace Stellamod.Common.SummonerSystem
             {
                 if (proj.ModProjectile is ITargetable targetable)
                 {
+              
                     Player player = GetFreePlayer();
-                    player.ResetEffects();
+                  //  player.ResetEffects();
                     player.active = true;
                     player.dead = false;
                     player.position = proj.position;

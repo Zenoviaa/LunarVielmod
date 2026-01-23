@@ -28,7 +28,7 @@ namespace Stellamod.Visual.Particles
         {
             Velocity.Y += gravity;
             Velocity *= 1.0f - dampening;
-            Rotation = Velocity.ToRotation();
+            Rotation = Velocity.ToRotation() + fadeIn * 0.001f;
             Scale *= 0.97f;
             if (fast)
                 Scale *= 0.98f;

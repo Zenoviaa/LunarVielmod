@@ -146,7 +146,9 @@ namespace Stellamod.Common.GunSystem
             //ehh
             GunReloadParams reloadParams = new GunReloadParams();
             SetMagazine(ref reloadParams);
-            return reloadParams.maxAmmo + player.GetModPlayer<ArmorStatsPlayer>().rangedGunAmmoAmount;
+            float maxAmmo = reloadParams.maxAmmo + player.GetModPlayer<ArmorStatsPlayer>().rangedGunAmmoAmount;
+            maxAmmo *= 1.0f + player.GetModPlayer<ArmorStatsPlayer>().rangedGunAmmoAmountPct;
+            return (int)maxAmmo;
         }
 
         public float GetReloadWindow()

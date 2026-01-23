@@ -2,6 +2,7 @@
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -55,7 +56,7 @@ namespace Stellamod.Content.Armors.Jackler
                 for (float f = 0; f < 8; f++)
                 {
                     Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
-                    var rose = Particle<RosePetalParticle>.SpawnInAlphaLayer(Projectile.Center, velocity, Scale: Main.rand.NextFloat(0.8f, 1.6f));
+                    var rose = Particle<RosePetalParticle>.SpawnInAlphaLayer(Projectile.Center, velocity, Scale: Main.rand.NextFloat(0.8f, 2.5f));
                 }
 
                 for (float i = 0; i < 8; i++)
@@ -85,6 +86,7 @@ namespace Stellamod.Content.Armors.Jackler
 
             Player owner = Main.player[projectile.owner];
             JacklerPlayer jacklerPlayer = owner.GetModPlayer<JacklerPlayer>();
+            Console.WriteLine(jacklerPlayer.hasJacklerSetBonus);
             if (!jacklerPlayer.hasJacklerSetBonus)
                 return;
 

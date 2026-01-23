@@ -101,7 +101,7 @@ namespace Stellamod.Content.Armors.Huntrian
             bubbleShader.Time = Main.GlobalTimeWrappedHourly * -1;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             spriteBatch.Restart(blendState: BlendState.Additive, effect: bubbleShader.Effect);
-            spriteBatch.Draw(texture, drawPos, null, Color.White * EasingFunction.InOutSine(Projectile.timeLeft / 60f) * EasingFunction.InOutSine(Timer / 60f), Projectile.rotation, texture.Size() / 2f, Projectile.scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos, null, Color.White * EasingFunction.InOutSine(Projectile.timeLeft / 60f) * EasingFunction.InOutSine(Timer / 60f), Projectile.rotation, texture.Size() / 2f, Projectile.scale * 0.66f, SpriteEffects.None, 0);
 
             spriteBatch.RestartDefaults();
 

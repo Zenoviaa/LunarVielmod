@@ -1267,6 +1267,7 @@ namespace Stellamod.Common.ArmorRework
             AddLineIfDifferent("BowChargeTime", rangedBowChargeTime, originalStatsPlayer.rangedBowChargeTime, invert: true);
             AddLineIfDifferentInt("Piercing", rangedPiercing, originalStatsPlayer.rangedPiercing);
             AddLineIfDifferentInt("GunAmmoAmount", rangedGunAmmoAmount, originalStatsPlayer.rangedGunAmmoAmount);
+            AddLineIfDifferent("GunAmmoAmount", rangedGunAmmoAmountPct, originalStatsPlayer.rangedGunAmmoAmountPct);
             AddLineIfDifferentInt("Stealthiness", rangedStealthtiness, originalStatsPlayer.rangedStealthtiness);
             AddLineIfDifferent("SummonCastTime", summonCastTime, originalStatsPlayer.summonCastTime, invert: true);
             AddLineIfDifferentInt("MinionSlots", minionSlots, originalStatsPlayer.minionSlots);
@@ -1311,6 +1312,7 @@ namespace Stellamod.Common.ArmorRework
             armorStatsPlayer.rangedPiercing = otherPlayer.rangedPiercing - rangedPiercing;
             armorStatsPlayer.rangedGunAmmoAmount = otherPlayer.rangedGunAmmoAmount - rangedGunAmmoAmount;
             armorStatsPlayer.rangedStealthtiness = otherPlayer.rangedStealthtiness - rangedStealthtiness;
+            armorStatsPlayer.rangedGunAmmoAmountPct = otherPlayer.rangedGunAmmoAmountPct - rangedGunAmmoAmountPct;
 
             armorStatsPlayer.summonCastTime = otherPlayer.summonCastTime - summonCastTime;
             armorStatsPlayer.summonDamage = otherPlayer.summonDamage - summonDamage;
