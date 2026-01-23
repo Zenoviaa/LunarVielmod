@@ -133,7 +133,12 @@ namespace Stellamod.Core.Utilities
             ManagedRenderTarget.Semaphore = null;
             if (_managedRenderTargets == null)
                 return;
-            foreach(var target in _managedRenderTargets)
+            Main.QueueMainThreadAction(DisposeRenderTargets);
+
+        }
+        private void DisposeRenderTargets()
+        {
+            foreach (var target in _managedRenderTargets)
             {
                 target.Dispose();
             }

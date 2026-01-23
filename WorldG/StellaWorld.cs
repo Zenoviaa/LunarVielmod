@@ -115,7 +115,17 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Granite");
             DisableGenTask(tasks, "Jungle");
             DisableGenTask(tasks, "Wall Variety");
-    
+
+
+            int oceanSand = tasks.FindIndex(genpass => genpass.Name.Equals("Ocean Sand"));
+            tasks[oceanSand].Disable();
+            tasks.Insert(oceanSand + 1, new ReworkedOceanSandPass());
+
+            oceanSand = tasks.FindIndex(genpass => genpass.Name.Equals("Beaches"));
+            tasks[oceanSand].Disable();
+            tasks.Insert(oceanSand + 1, new ReworkedBeachesPass());
+
+
             int fullDesert = tasks.FindIndex(genpass => genpass.Name.Equals("Full Desert"));
             tasks[fullDesert] = new PassLegacy("Lock Full Desert", LockDesert);
 
@@ -464,16 +474,24 @@ namespace Stellamod.WorldG
         {
             progress.Message = "Locking Snow Biome Location";
             GenVars.jungleOriginX = (Main.maxTilesX / 4) - 100;
-
+        
+            //Set snow biome location
             int centerSnowBiome = Main.maxTilesX / 2;
             GenVars.snowOriginLeft = centerSnowBiome + 1600;
             GenVars.snowOriginRight = GenVars.snowOriginLeft + 1200;
 
+            //Set dungeon and jungle sides
             GenVars.tLeft = GenVars.jungleOriginX;
             GenVars.tRight = GenVars.jungleOriginX + 100;
             GenVars.tTop = Main.maxTilesY / 2;
             GenVars.tBottom = GenVars.tTop + 100;
             GenVars.dungeonSide = 1;
+
+            //Remove the left beach
+            GenVars.leftBeachEnd = 100;
+            GenVars.shellStartXLeft = 100;
+            GenVars.shellStartYLeft = 100;
+      
         }
 
         private void WorldGenSkullrunner(GenerationProgress progress, GameConfiguration configuration)
@@ -1669,7 +1687,8 @@ namespace Stellamod.WorldG
         private void WorldGenGrassPass(GenerationProgress progress, GameConfiguration configuration)
         {
             var genRand = WorldGen.genRand;
-            for (int x = 0; x < Main.maxTilesX; x++)
+            int fluff = 10;
+            for (int x = fluff; x < Main.maxTilesX - fluff; x++)
             {
                 for (int y = (int)Main.worldSurface - 10; y < (int)Main.worldSurface + 600; y++)
                 {
