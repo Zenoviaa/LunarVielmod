@@ -1,5 +1,6 @@
 ﻿
 using Stellamod.Content.Areas.SpringHills.TilesSH;
+using Stellamod.Content.Areas.WorldsEnd.TilesWE;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Abyss.Aurelus;
@@ -116,8 +117,12 @@ namespace Stellamod
 
         public int CathedralCount;
         public int MorrowCount;
+
+        public int WorldsEndCount;
+        public static bool InWorldsEnd => ModContent.GetInstance<BiomeTileCounts>().WorldsEndCount >= 50;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
+            WorldsEndCount = tileCounts[ModContent.TileType<WhiteGrass>()];
             MarshCount = tileCounts[ModContent.TileType<RainforestGrass>()];
             MorrowCount = tileCounts[ModContent.TileType<OvermorrowdirtTile>()];
             CathedralCount = tileCounts[ModContent.TileType<CathediteTile>()];

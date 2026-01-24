@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Content.Biomes;
 using Stellamod.Helpers;
 using System.Linq;
 using Terraria;
@@ -10,6 +11,37 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Utilities
 {
+    public class PetalStorm : ScreenShader
+    {
+        private EffectParameter _timeParam;
+        private EffectParameter _petalTextureParam;
+        private EffectParameter _distortingNoiseTextureParam;
+        private EffectParameter _offsetParam;
+        private EffectParameter _tilingParam;
+        public override void ApplyEffect(ScreenShaderData screenShaderData)
+        {
+            base.ApplyEffect(screenShaderData);
+            Effect effect = screenShaderData.Shader;
+            _timeParam ??= effect.Parameters["time"];
+            _timeParam.SetValue(Main.GlobalTimeWrappedHourly * 16);
+
+            _petalTextureParam ??= effect.Parameters["petalTexture"];
+            _petalTextureParam.SetValue(AssetManager.LaserTextures.PetalNoise.Value);
+
+
+            _distortingNoiseTextureParam ??= effect.Parameters["distortingNoiseTexture"];
+            _distortingNoiseTextureParam.SetValue(AssetManager.Noise.Whirly.Value);
+
+
+            _offsetParam ??= effect.Parameters["offset"];
+            _offsetParam.SetValue(Main.Camera.Center * 0.002f);
+
+
+            _tilingParam ??= effect.Parameters["tiling"];
+            _tilingParam.SetValue(new Vector2(2f, 8f));
+        }
+    }
+
     public class DarkSmear : ScreenShader
     {
         private EffectParameter _maskTextureParam;

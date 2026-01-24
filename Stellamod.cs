@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Backgrounds;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.WorldsEnd;
 using Stellamod.Content.Currencies;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Helpers;
@@ -95,7 +96,7 @@ namespace Stellamod
                 Filters.Scene["Stellamod:Starbloom"] = new Filter(new StellaScreenShader("FilterMiniTower").UseColor(0.5f, 0.2f, 0.7f).UseOpacity(0.65f), EffectPriority.VeryHigh);
                 SkyManager.Instance["Stellamod:Starbloom"] = new StarbloomSky();
                 SkyManager.Instance["Stellamod:NiiviSky"] = new NiiviSky();
-
+                SkyManager.Instance["Stellamod:WorldsEndSky"] = new WorldsEndSky();
 
                 Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
                 GameShaders.Misc["Stellamod:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");

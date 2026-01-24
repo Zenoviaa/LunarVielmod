@@ -10380,3 +10380,8 @@ MoonskerRobe: {
 	DisplayName: Moonsker Robe
 	Tooltip: ""
 }
+
+WhiteGrassBlock: {
+	DisplayName: White Grass Block
+	Tooltip: ""
+}

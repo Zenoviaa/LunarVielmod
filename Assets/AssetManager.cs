@@ -24,6 +24,7 @@ namespace Stellamod.Assets
             public static Asset<Texture2D> MagicCircle;
             public static Asset<Texture2D> MagicCircle2;
             public static Asset<Texture2D> MagicBloodCircle;
+            public static Asset<Texture2D> EmptyGradient;
         }
  
         public class LaserTextures
@@ -33,7 +34,7 @@ namespace Stellamod.Assets
             public static Asset<Texture2D> SnowflakeLaser;
             public static Asset<Texture2D> Lightning;
             public static Asset<Texture2D> Lightning2;
-
+            public static Asset<Texture2D> PetalNoise;
         }
         public static SoundStyle GetSound(string name)
         {
@@ -53,12 +54,14 @@ namespace Stellamod.Assets
             GlowMask.MagicCircle2 = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MagicCircle2");
             GlowMask.MagicBloodCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MagicBloodCircle");
             GlowMask.SpiralVortex2 = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/SpiralVortex2");
+            GlowMask.EmptyGradient = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/EmptyGradient");
 
             LaserTextures.TexturedLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser");
             LaserTextures.TexturedLaser2 = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser2");
             LaserTextures.SnowflakeLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/SnowflakeLaser");
             LaserTextures.Lightning = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Lightning");
             LaserTextures.Lightning2 = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Lightning2");
+            LaserTextures.PetalNoise = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/PetalNoise");
 
             Noise.Whirly = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Whirly");
 
@@ -77,12 +80,14 @@ namespace Stellamod.Assets
             GlowMask.MagicCircle = null;
             GlowMask.MagicCircle2 = null;
             GlowMask.MagicBloodCircle = null;
+            GlowMask.EmptyGradient = null;
 
             LaserTextures.TexturedLaser = null;
             LaserTextures.TexturedLaser2 = null;
             LaserTextures.SnowflakeLaser = null;
             LaserTextures.Lightning = null;
             LaserTextures.Lightning2 = null;
+            LaserTextures.PetalNoise = null;
 
             Noise.Whirly = null;
         }

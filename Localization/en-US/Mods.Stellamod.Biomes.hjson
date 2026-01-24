@@ -182,3 +182,8 @@ PunkerTown: {
 	DisplayName: Punker Town
 	TownNPCDialogueName: the Punker Town
 }
+
+WorldsEndBiome: {
+	TownNPCDialogueName: the Worlds End Biome
+	DisplayName: Worlds End Biome
+}

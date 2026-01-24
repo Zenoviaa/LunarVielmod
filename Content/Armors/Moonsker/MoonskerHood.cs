@@ -224,6 +224,7 @@ namespace Stellamod.Content.Armors.Moonsker
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
+            Projectile.timeLeft = 10;
         }
 
    
@@ -236,6 +237,8 @@ namespace Stellamod.Content.Armors.Moonsker
         public override void AI()
         {
             base.AI();
+            if (Owner.GetModPlayer<MoonskerPlayer>().hasMoonskerSetBonus)
+                Projectile.timeLeft = 10;
             Timer += MathHelper.TwoPi * 0.003f;
             ScaleTimer++;
             Vector2 offset = Vector2.UnitY.RotatedBy(Timer);

@@ -2,7 +2,11 @@
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Gores.Foreground;
 using Stellamod.Core.Foreground;
+using Stellamod.Core.Utilities;
+using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Biomes
@@ -21,22 +25,57 @@ namespace Stellamod.Content.Biomes
         public bool ZoneDesertTown;
         public bool ZoneMarsh;
         public bool ZonePunkerTown;
+        public bool ZoneWorldsEnd;
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
-            if (Player.GetModPlayer<MyPlayer>().ZoneAlcadzia)
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+            if (Player.GetModPlayer<MyPlayer>().ZoneAlcadzia || ZoneWorldsEnd)
             {
                 Main.GraveyardVisualIntensity = 0.4f;
             }
         
             if(Player.whoAmI == Main.myPlayer)
             {
+   
+                if (ZoneWorldsEnd)
+                {
+                    PetalStorm s = ScreenShader.GetInstance<PetalStorm>();
+                    s.alpha = 1;
+                }
                 AddForegroundOrBackground();
                 Player.ManageSpecialBiomeVisuals("Stellamod:Marsh", ZoneMarsh);
             }
+            if (ZoneWorldsEnd)
+            {
+                ActivateWorldsEndSky();
+
+            }
+            else
+            {
+                DeActivateWorldsEndSkyy();
+            }
 
         }
+        private void ActivateWorldsEndSky()
+        {
+            if (!SkyManager.Instance["Stellamod:WorldsEndSky"].IsActive())
+            {
+                Vector2 targetCenter = Player.Center;
+                SkyManager.Instance.Activate("Stellamod:WorldsEndSky", targetCenter);
+            }
+        }
 
+        private void DeActivateWorldsEndSkyy()
+        {
+            if (SkyManager.Instance["Stellamod:WorldsEndSky"].IsActive())
+            {
+                Vector2 targetCenter = Player.Center;
+                SkyManager.Instance.Deactivate("Stellamod:WorldsEndSky", targetCenter);
+            }
+        }
         private void AddForegroundOrBackground()
         {
 
@@ -81,7 +120,25 @@ namespace Stellamod.Content.Biomes
                     ForegroundParticleRenderer.NewParticle<MarshPetal>();
                 }
             }
-            
+            if (ZoneWorldsEnd)
+            {
+                Main.windSpeedTarget = 50 * 0.01f;
+                if (Main.rand.NextBool(32))
+                {
+                    float xPosition = Main.rand.Next(-(int)(Main.screenWidth * 0.25f), (int)(Main.screenWidth * 0.25f));
+                    float yPosition = Main.rand.NextFloat(-Main.screenHeight * 0.25f, Main.screenHeight * 0.25f);
+                    Vector2 pos = Main.LocalPlayer.Center + new Vector2(xPosition, yPosition);
+                    SparkleParticle sp = SparkleParticle.Spawn(pos, Vector2.Zero, Scale: 0.25f);
+                    sp.flickering = true;
+                    sp.gravity = 0;
+                    sp.fast = true;
+                }
+                if (Main.rand.NextBool(8))
+                {
+                    ForegroundParticleRenderer.NewParticle<GreyPetal>();
+                }
+            }
+
         }
 
         private void SpringHillsForegroundBackground()
