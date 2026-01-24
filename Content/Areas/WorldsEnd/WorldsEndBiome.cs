@@ -40,7 +40,10 @@ namespace Stellamod.Content.Areas.WorldsEnd
             {
 
                 SkyGradientShader skyGradientShader = SkyGradientShader.Instance;
-                skyGradientShader.H = 0.5f;
+                skyGradientShader.H = 0.25f;
+                skyGradientShader.Bend = -0.125f;
+                skyGradientShader.MidColor = Color.Black;
+                skyGradientShader.EndColor = Color.White;
                 spriteBatch.Restart(effect: skyGradientShader.Effect);
                 Rectangle targetRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
                 spriteBatch.Draw(AssetManager.GlowMask.EmptyGradient.Value, targetRectangle, Color.White);
