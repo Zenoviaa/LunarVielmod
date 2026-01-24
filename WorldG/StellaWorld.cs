@@ -10,6 +10,7 @@ using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
+using Stellamod.Content.Areas.WorldsEnd.TilesWE;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.RibbonSystem;
@@ -70,6 +71,7 @@ namespace Stellamod.WorldG
 
         public Point MarshLocation { get; private set; }
 
+        public Point AlcadLocation { get; private set; }
         public Point GothiviaSpawnOffset => new Point(246, -99);
         private void DisableGenTask(List<GenPass> tasks, string passName)
         {
@@ -171,14 +173,15 @@ namespace Stellamod.WorldG
             {
                 tasks.Insert(MorrowGen + 1, new PassLegacy("Marsh Jungle", WorldGenMarsh));
                 tasks.Insert(MorrowGen + 2, new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
-                tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
-                tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
-                tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Illuria", WorldGenIlluria));
-                tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
-                tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
-                tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-                tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
-                tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Misty Dungeon", GenerateMistyDungeon));
+                tasks.Insert(MorrowGen + 3, new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
+                tasks.Insert(MorrowGen + 4, new PassLegacy("World Gen Other stones", WorldGenDarkstone));
+                tasks.Insert(MorrowGen + 5, new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
+                tasks.Insert(MorrowGen + 6, new PassLegacy("World Gen Illuria", WorldGenIlluria));
+                tasks.Insert(MorrowGen + 7, new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
+                tasks.Insert(MorrowGen + 8, new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
+                tasks.Insert(MorrowGen + 9, new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+                tasks.Insert(MorrowGen + 10, new PassLegacy("World Gen Dungeon Location", WorldGenDungeonLocation));
+                tasks.Insert(MorrowGen + 11, new PassLegacy("World Gen Misty Dungeon", GenerateMistyDungeon));
             }
 
             int CathedralGen3 = tasks.FindIndex(genpass => genpass.Name.Equals("Buried Chests"));
@@ -219,6 +222,87 @@ namespace Stellamod.WorldG
             }
         }
 
+        private void WorldGenWorldsEnd(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Ending the World";
+
+            int startTileX = 0;
+            int endTileX = AlcadLocation.X;
+            int maxDepth = 125;
+            int minDepth = 25;
+            int grass = ModContent.TileType<WhiteGrass>();
+
+            //Create a base for all the grass
+            for(int tileX = startTileX; tileX < endTileX; tileX++)
+            {
+                int startY = (int)Main.worldSurface - 100;
+                while (!WorldGen.SolidTile(tileX, startY))
+                    startY++;
+
+                float width = endTileX - startTileX;
+                float ratio = (float)(tileX - startTileX) / width;
+                int depth = (int)MathHelper.SmoothStep(maxDepth, minDepth, ratio);
+                for(int tileY = startY; tileY < startY + depth; tileY++)
+                {
+                    WorldGen.TileRunner(tileX, tileY, 2, 4, grass);
+                }
+            }
+
+            Point startSlope = AlcadLocation;
+            startSlope.X -= 250;
+
+            int startSlopeY = startSlope.Y;
+
+            for (int tileX = startSlope.X; tileX < endTileX; tileX++)
+            {
+                float ratio = (float)(tileX - startSlope.X) / (float)(endTileX - startSlope.X);
+                float y = MathHelper.SmoothStep(0f, 27, ratio);
+                int tileY = (int)(startSlopeY - y);
+                for(int innerY = tileY; innerY < startSlopeY; innerY++)
+                {
+                    WorldGen.PlaceTile(tileX, innerY, grass, forced: true);
+                }
+         
+            }
+
+            //Generate water bowl
+            int maxLakeDepth = 40;
+            Point waterStart = new Point();
+            waterStart.X = 4;
+            waterStart.Y = (int)Main.worldSurface - 100;
+            while (!WorldGen.SolidTile(waterStart))
+                waterStart.Y++;
+
+            Point waterEnd = new Point();
+            waterEnd.X = waterStart.X + 200;
+            waterEnd.Y = (int)Main.worldSurface - 100;
+            while (!WorldGen.SolidTile(waterEnd))
+                waterEnd.Y++;
+            for(int lakeX = waterStart.X; lakeX < waterEnd.X; lakeX++)
+            {
+                float ratio = (float)(lakeX - waterStart.X) / (float)(waterEnd.X - waterStart.X);
+                float bump = EasingFunction.QuadraticBump(ratio);
+                int depth = (int)MathHelper.Lerp(0, maxLakeDepth, bump);
+                
+                int startY = (int)Main.worldSurface - 100;
+                while (!WorldGen.SolidTile(lakeX, startY))
+                    startY++;
+                int endY = startY + depth;
+                int d = 0;
+                for(int lakeY = startY; lakeY < endY; lakeY++)
+                {
+                    WorldGen.KillTile(lakeX, lakeY);
+                    WorldGen.KillWall(lakeX, lakeY);
+                    d++;
+                    if(d > 10)
+                    {
+                        
+                        WorldGen.PlaceLiquid(lakeX, lakeY, (byte)LiquidID.Water, byte.MaxValue);
+                    }
+               
+                }
+            }
+        }
 
         private void WorldGenWater(GenerationProgress progress, GameConfiguration configuration)
         {
@@ -1832,7 +1916,8 @@ namespace Stellamod.WorldG
             }
 
             //High Tree Caves
-            for (int x = 0; x < Main.maxTilesX; x++)
+            int worldsEndEdge = 600;
+            for (int x = worldsEndEdge; x < Main.maxTilesX; x++)
             {
                 int caveMakerSteps = 32;
                 for (int j = 0; j < caveMakerSteps; j++)
@@ -6461,6 +6546,7 @@ namespace Stellamod.WorldG
                     Point Loc = new Point(smx + 20, smyy + 10);
                     rectangle.Location = Loc;
                     NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
+                    AlcadLocation = Loc;
                     Structurizer.ProtectStructure(Loc, "Structures/RoyalCapital");
                     var tileBlend = new int[]
                     {

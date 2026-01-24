@@ -47,16 +47,18 @@ namespace Stellamod.Content.Biomes
                 }
                 AddForegroundOrBackground();
                 Player.ManageSpecialBiomeVisuals("Stellamod:Marsh", ZoneMarsh);
-            }
-            if (ZoneWorldsEnd)
-            {
-                ActivateWorldsEndSky();
+                if (ZoneWorldsEnd)
+                {
+                    ActivateWorldsEndSky();
+
+                }
+                else
+                {
+                    DeActivateWorldsEndSkyy();
+                }
 
             }
-            else
-            {
-                DeActivateWorldsEndSkyy();
-            }
+            //  Main.NewText(SkyManager.Instance["Stellamod:WorldsEndSky"].IsActive());
 
         }
         private void ActivateWorldsEndSky()
@@ -128,7 +130,7 @@ namespace Stellamod.Content.Biomes
                     float xPosition = Main.rand.Next(-(int)(Main.screenWidth * 0.25f), (int)(Main.screenWidth * 0.25f));
                     float yPosition = Main.rand.NextFloat(-Main.screenHeight * 0.25f, Main.screenHeight * 0.25f);
                     Vector2 pos = Main.LocalPlayer.Center + new Vector2(xPosition, yPosition);
-                    SparkleParticle sp = SparkleParticle.Spawn(pos, Vector2.Zero, Scale: 0.25f);
+                    SparkleParticle sp = SparkleParticle.Spawn(pos, Vector2.Zero, Scale: 0.7f);
                     sp.flickering = true;
                     sp.gravity = 0;
                     sp.fast = true;

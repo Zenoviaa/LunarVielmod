@@ -18,6 +18,7 @@ namespace Stellamod.Content.Areas.WorldsEnd
         private float _drawOpacity;
         public override void Update(GameTime gameTime)
         {
+         
             if (_isActive && _drawOpacity < 1f)
             {
                 _drawOpacity += 0.01f;
@@ -40,13 +41,14 @@ namespace Stellamod.Content.Areas.WorldsEnd
             {
 
                 SkyGradientShader skyGradientShader = SkyGradientShader.Instance;
-                skyGradientShader.H = 0.25f;
-                skyGradientShader.Bend = -0.125f;
-                skyGradientShader.MidColor = Color.Black;
-                skyGradientShader.EndColor = Color.White;
+                skyGradientShader.H = 0.15f;
+                skyGradientShader.Bend = -0.25f;
+                skyGradientShader.StartColor = Color.Black;
+                skyGradientShader.MidColor = Color.Blue;
+                skyGradientShader.EndColor = Color.Aquamarine;
                 spriteBatch.Restart(effect: skyGradientShader.Effect);
                 Rectangle targetRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-                spriteBatch.Draw(AssetManager.GlowMask.EmptyGradient.Value, targetRectangle, Color.White);
+                spriteBatch.Draw(AssetManager.GlowMask.EmptyGradient.Value, targetRectangle, Color.White * _drawOpacity);
                 spriteBatch.RestartDefaults();
             }
         }

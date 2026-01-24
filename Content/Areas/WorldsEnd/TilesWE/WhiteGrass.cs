@@ -98,7 +98,7 @@ namespace Stellamod.Content.Areas.WorldsEnd.TilesWE
             Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
-            AddMapEntry(Color.Gray);
+            AddMapEntry(Color.LightGray);
         }
 
         public override void RandomUpdate(int i, int j)
