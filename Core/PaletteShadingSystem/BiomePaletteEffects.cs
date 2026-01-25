@@ -16,8 +16,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override bool IsActive(Player player)
         {
             BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
-
-            return true;
+            return myPlayer.ZoneMoonspiralTower;
         }
     }
     public class AbyssPaletteEffect : PaletteEffect
