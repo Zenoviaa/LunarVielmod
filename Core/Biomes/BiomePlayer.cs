@@ -37,7 +37,7 @@ namespace Stellamod.Content.Biomes
             {
                 Main.GraveyardVisualIntensity = 0.4f;
             }
-            Main.GraveyardVisualIntensity = 0.2f;
+
             if (Player.whoAmI == Main.myPlayer)
             {
    
