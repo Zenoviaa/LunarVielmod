@@ -1161,6 +1161,7 @@ namespace Stellamod.Common.ArmorRework
 
         private void ApplyArmor(Item item, Player player)
         {
+        
             /*
             if (item.accessory)
             {
