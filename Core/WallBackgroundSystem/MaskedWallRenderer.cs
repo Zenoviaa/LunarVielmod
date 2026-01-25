@@ -93,8 +93,6 @@ namespace Stellamod.Core.WallBackgroundSystem
         }
         private void DrawWalls(On_Main.orig_DoDraw_WallsTilesNPCs orig, Main self)
         {
-            //TODO: Remove this
-            Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower = true;
             _renderTimer--;
             if (_renderTimer > 0 && _activeMaskedWallBackground != null)
                 DrawMaskedBG();

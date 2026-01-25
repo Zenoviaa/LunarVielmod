@@ -172,7 +172,7 @@ namespace Stellamod.Core.LunarLightingSystem
                  
                     float luminosity = color.X + color.Y + color.Z / 3f;
 
-                    if (luminosity < 1f)
+                    if (luminosity < 0.5f)
                         continue;
                     numTilesProducingLight++;
 

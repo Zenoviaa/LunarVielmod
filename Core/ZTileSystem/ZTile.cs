@@ -107,8 +107,8 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
                 drawOffset = Vector2.Zero;
                 break;
             case TileDrawOrigin.TopDown:
-                drawOffset = new Vector2(0, frameHeight / 2f);
-
+                drawOffset = new Vector2(0, 0);
+                drawOrigin = new Vector2(frame.Width / 2, 0);
                 break;
 
         }
@@ -145,7 +145,7 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
         //Calculate wind if any
         if(windSwayMagnitude > 0)
         {
-            drawRotation += GetLeafSway(windSwayOffset, windSwayMagnitude, windSwaySpeed);
+            drawRotation += GetLeafSway(windSwayOffset + drawParams.tilePosition.x, windSwayMagnitude, windSwaySpeed);
         }
 
 
