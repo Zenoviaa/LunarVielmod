@@ -120,12 +120,16 @@ namespace Stellamod
 
         public int WorldsEndCount;
         public static bool InWorldsEnd => ModContent.GetInstance<BiomeTileCounts>().WorldsEndCount >= 50;
+
+        public int MoonspiralTowerCount;
+        public static bool InMoonspiralTower => ModContent.GetInstance<BiomeTileCounts>().MoonspiralTowerCount >= 50;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
+            MoonspiralTowerCount = tileCounts[ModContent.TileType<CathediteTile>()];
             WorldsEndCount = tileCounts[ModContent.TileType<WhiteGrass>()];
             MarshCount = tileCounts[ModContent.TileType<RainforestGrass>()];
             MorrowCount = tileCounts[ModContent.TileType<OvermorrowdirtTile>()];
-            CathedralCount = tileCounts[ModContent.TileType<CathediteTile>()];
+         //   CathedralCount = tileCounts[ModContent.TileType<CathediteTile>()];
             MistyDungeonCount = tileCounts[TileID.BlueDungeonBrick] + tileCounts[TileID.GreenDungeonBrick] + tileCounts[TileID.PinkDungeonBrick] + tileCounts[ModContent.TileType<MothlightBrick>()];
             SpringGrassCount = tileCounts[ModContent.TileType<SpringGrass>()];
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];

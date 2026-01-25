@@ -187,3 +187,8 @@ WorldsEndBiome: {
 	TownNPCDialogueName: the Worlds End Biome
 	DisplayName: Worlds End Biome
 }
+
+MoonspiralTowerBiome: {
+	DisplayName: Moonspiral Tower Biome
+	TownNPCDialogueName: the Moonspiral Tower Biome
+}

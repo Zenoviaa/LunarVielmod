@@ -1,5 +1,8 @@
-﻿using Stellamod.Assets;
+﻿using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Biomes;
+using Stellamod.Core.MoonWaters;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using System;
@@ -8,48 +11,108 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
-using Terraria.GameContent.Creative;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.WallBackgroundSystem
 {
-    public class MaskingWallBlock : ModItem
+    public class MaskedWallDrawLayer
     {
+        public Asset<Texture2D> textureAsset;
+        public Vector2 parallax;
+        public bool additive;
+    }
+    
+    public class MoonspiralTowerMaskedWallBackground : MaskedWallBackground
+    {
+        private Asset<Texture2D> _moonspiralTowerFrontPaneTextureAsset;
+        private Asset<Texture2D> _moonspiralTowerFrontTextureAsset;
+        private Asset<Texture2D> _moonspiralTowerMidTextureAsset;
+        private Asset<Texture2D> _moonspiralTowerBackTextureAsset;
+        
         public override void SetStaticDefaults()
         {
-            // Tooltip.SetDefault("This is a modded wall.");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 400;
+            base.SetStaticDefaults();
+            _moonspiralTowerFrontPaneTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerFrontPane");
+            _moonspiralTowerFrontTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerFront");
+            _moonspiralTowerMidTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerMid");
+            _moonspiralTowerBackTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerFar");
         }
-        public override void SetDefaults()
+
+        public override void Unload()
         {
-            Item.width = 12;
-            Item.height = 12;
-            Item.maxStack = Item.CommonMaxStack;
-            Item.useTurn = true;
-            Item.autoReuse = true;
-            Item.useAnimation = 15;
-            Item.useTime = 7;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.consumable = true;
-            Item.createWall = ModContent.WallType<MaskingWall>();
+            base.Unload();
+            _moonspiralTowerFrontPaneTextureAsset = null;
+            _moonspiralTowerFrontTextureAsset = null;
+            _moonspiralTowerMidTextureAsset = null;
+            _moonspiralTowerBackTextureAsset = null;
+        }
+        
+        public override bool IsActive(Player player)
+        {
+            BiomePlayer biomePlayer = player.GetModPlayer<BiomePlayer>();
+            return biomePlayer.ZoneMoonspiralTower;
+        }
+
+        public override void SetupDrawLayers()
+        {
+            base.SetupDrawLayers();
+            DrawLayers[3].textureAsset = _moonspiralTowerFrontPaneTextureAsset;
+            DrawLayers[3].parallax = new Vector2(0.05f);
+            DrawLayers[3].additive = true;
+
+            DrawLayers[2].textureAsset = _moonspiralTowerFrontTextureAsset;
+            DrawLayers[2].parallax = new Vector2(0.05f);
+           
+            DrawLayers[1].textureAsset = _moonspiralTowerMidTextureAsset;
+            DrawLayers[1].parallax = new Vector2(0.0135f);
+
+            DrawLayers[0].textureAsset = _moonspiralTowerBackTextureAsset;
+            DrawLayers[0].parallax = new Vector2(0.00075f);
         }
     }
 
-    public class MaskingWall : ModWall
+    public abstract class MaskedWallBackground : ModType
     {
-        public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+        public float Alpha { get; set; }
+        public MaskedWallDrawLayer[] DrawLayers { get; private set; }
+        protected override void Register()
         {
-            MaskedWallRenderer.QueueDraw(new Point(i, j));
-            /*
-            Vector2 worldPos = new Point(i, j).ToWorldCoordinates(0, 0);
-            worldPos += new Vector2(Main.offScreenRange);
-     
-            MaskedWallRenderer wallRenderer = ModContent.GetInstance<MaskedWallRenderer>();
-            Texture2D texture = wallRenderer.GetBackgroundTexture();
-            Rectangle sourceRect = wallRenderer.GetSourceRectangle(i, j);
-            spriteBatch.Draw(texture, worldPos - Main.screenPosition, sourceRect, Color.White);*/
+            ModTypeLookup<MaskedWallBackground>.Register(this);
+        }
+
+        public sealed override void SetupContent()
+        {
+            base.SetupContent();
+            SetStaticDefaults();
+        }
+
+        public override void Unload()
+        {
+            base.Unload();
+            DrawLayers = null;
+        }
+
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            DrawLayers = new MaskedWallDrawLayer[10];
+            for (int i = 0; i < DrawLayers.Length; i++)
+                DrawLayers[i] = new MaskedWallDrawLayer();
+        }
+
+        public virtual bool IsActive(Player player)
+        {
             return false;
+        }
+
+        /// <summary>
+        /// Called before the background gets drawn, load textures and set parallax values in here, gonna call this every frame for hot reload purposes, but afterwards make it only call once
+        /// If editing the draw layers array, note that there is a buffer of 10 layers, if you go above that you'll get an index out of range exception
+        /// 0 is the front, 9 is the back
+        /// </summary>
+        public virtual void SetupDrawLayers()
+        {
+
         }
     }
 
@@ -58,11 +121,12 @@ namespace Stellamod.Core.WallBackgroundSystem
         IRenderer
     {
         private int _renderTimer;
-        private bool _rendered;
         private Queue<Point> _drawQueue;
         private ManagedRenderTarget _wallMaskRenderTarget;
         private ManagedRenderTarget _backgroundTarget;
-        private ManagedRenderTarget _combinedTarget;
+
+        private MaskedWallBackground[] _maskedWallBackgrounds;
+        private MaskedWallBackground _activeMaskedWallBackground;
         public int Priority => 0;
 
         public override void OnModLoad()
@@ -71,31 +135,19 @@ namespace Stellamod.Core.WallBackgroundSystem
             _drawQueue = new Queue<Point>();
             _wallMaskRenderTarget = ManagedRenderTarget.New();
             _backgroundTarget = ManagedRenderTarget.New();
-            _combinedTarget = ManagedRenderTarget.New();
+
+            _maskedWallBackgrounds = ModContent.GetContent<MaskedWallBackground>().ToArray();
             On_Main.DoDraw_WallsTilesNPCs += DrawWalls;
-           // Main
         }
         private void DrawWalls(On_Main.orig_DoDraw_WallsTilesNPCs orig, Main self)
         {
             _renderTimer--;
-            if (_renderTimer > 0)
+            if (_renderTimer > 0 && _activeMaskedWallBackground != null)
                 DrawMaskedBG();
             orig(self);
         }
 
-        public Texture2D GetBackgroundTexture()
-        {
-            Texture2D backgroundTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Biomes/AlcadziaBiomeBackground2").Value;
-            return backgroundTexture;
-        }
-        public Rectangle GetSourceRectangle(int tileX, int tileY)
-        {
-            Texture2D backgroundTexture = GetBackgroundTexture();
-            int loopedX = (tileX * 16) % backgroundTexture.Width;
-            int loopedY = (tileY * 16) % backgroundTexture.Height;
-            Rectangle sourceRect = new Rectangle(loopedX, loopedY, 16, 16);
-            return sourceRect;
-        }
+
         public override void OnModUnload()
         {
             base.OnModUnload();
@@ -105,13 +157,43 @@ namespace Stellamod.Core.WallBackgroundSystem
 
         private void DrawMaskedBG()
         {
-           
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(_backgroundTarget, Vector2.Zero, null, Color.White);
         }
+
+        private void SelectActiveMaskedWallBackground()
+        {
+       
+            //What we're gonna do is select the first background that has an alpha
+            _activeMaskedWallBackground = null;
+            for (int i = 0; i < _maskedWallBackgrounds.Length; i++)
+            {
+                MaskedWallBackground maskedWallBackground = _maskedWallBackgrounds[i];
+                maskedWallBackground.SetupDrawLayers();
+                Player player = Main.LocalPlayer;
+                bool isActive = maskedWallBackground.IsActive(player);
+                if (maskedWallBackground.Alpha > 0 && !isActive)
+                {
+                    _activeMaskedWallBackground = maskedWallBackground;
+                    maskedWallBackground.Alpha -= 0.1f;
+                    maskedWallBackground.Alpha = MathHelper.Clamp(maskedWallBackground.Alpha, 0f, 1f);
+                    break;
+                } else if (maskedWallBackground.Alpha <= 1 && isActive)
+                {
+                    _activeMaskedWallBackground = maskedWallBackground;
+                    maskedWallBackground.Alpha += 0.1f;
+                    maskedWallBackground.Alpha = MathHelper.Clamp(maskedWallBackground.Alpha, 0f, 1f);
+                    break;
+                }
+            }
+        }
         public void Render()
         {
-      
+            SelectActiveMaskedWallBackground();
+            if (_activeMaskedWallBackground == null)
+                return;
+
+
             //No need to render if there's no draws
             Point topLeft = (Main.Camera.Center - new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.5f)).ToTileCoordinates();
 
@@ -127,55 +209,70 @@ namespace Stellamod.Core.WallBackgroundSystem
                         _drawQueue.Enqueue(new Point(x, y));
                 }
             }
-     
-            if (_drawQueue.Count <= 0)
-                return;
+
             RenderMask();
             _renderTimer = 64;
         }
 
         private void RenderMask()
         {
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_wallMaskRenderTarget);
-            graphicsDevice.Clear(Color.Transparent);
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
-                Main.GameViewMatrix.TransformationMatrix);
 
-            Texture2D texture = AssetManager.GlowMask.WhiteSquare.Value;
-            Vector2 drawOrigin = new Vector2(8);
-            Vector2 drawScale = Vector2.One;
-            while (_drawQueue.Count > 0)
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            if (_drawQueue.Count > 0)
             {
-                Point tilePoint = _drawQueue.Dequeue();
-                Vector2 worldPosition = tilePoint.ToWorldCoordinates();
-               // Dust.NewDust(worldPosition, 1, 1, DustID.GemAmethyst);
-                Vector2 drawPosition = worldPosition - Main.screenPosition;
-                spriteBatch.Draw(texture, drawPosition, null, Color.White, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
+          
+                graphicsDevice.SetRenderTarget(_wallMaskRenderTarget);
+                graphicsDevice.Clear(Color.Transparent);
+  
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
+                    Main.GameViewMatrix.TransformationMatrix);
+
+                Texture2D texture = AssetManager.GlowMask.WhiteSquare.Value;
+                Vector2 drawOrigin = new Vector2(8);
+                Vector2 drawScale = Vector2.One;
+                while (_drawQueue.Count > 0)
+                {
+                    Point tilePoint = _drawQueue.Dequeue();
+                    Vector2 worldPosition = tilePoint.ToWorldCoordinates();
+                    Vector2 drawPosition = worldPosition - Main.screenPosition;
+                    spriteBatch.Draw(texture, drawPosition, null, Color.White, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
+                }
+
+                spriteBatch.End();
             }
-            spriteBatch.End();
+
 
             graphicsDevice.SetRenderTarget(_backgroundTarget);
             graphicsDevice.Clear(Color.Transparent);
-            BackgroundParallaxShader backgroundShader = BackgroundParallaxShader.Instance;
-            float parallaxX = Main.screenPosition.X * 0.25f * 1f;
+            for (int i = 0; i < _activeMaskedWallBackground.DrawLayers.Length; i++)
+            {
+                MaskedWallDrawLayer drawLayer = _activeMaskedWallBackground.DrawLayers[i];
+                if (drawLayer == null)
+                    break; 
+                if (drawLayer.textureAsset == null)
+                    break;
+                BackgroundParallaxShader backgroundShader = BackgroundParallaxShader.Instance;
+                backgroundShader.Parallax = drawLayer.parallax * 0.001f * Main.Camera.Center;
+                spriteBatch.Begin(default,
+                    default,
+                    SamplerState.PointClamp,
+                    default,
+                    default,
+                    effect: backgroundShader.Effect);
+                Vector2 drawPosition = Vector2.Zero;
+                Rectangle drawRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+                Color drawColor = Color.White * _activeMaskedWallBackground.Alpha;
+                if (drawLayer.additive)
+                    drawColor.A = 0;
+                spriteBatch.Draw(drawLayer.textureAsset.Value, drawPosition, drawRectangle, drawColor, 0, drawLayer.textureAsset.Value.Size() * 0.5f, 3.5f, SpriteEffects.None, 0);
+                spriteBatch.End();
+            }
 
-
-            backgroundShader.Parallax = new Vector2(parallaxX * 0.01f, 0.1f);
-            Texture2D backgroundTexture = ModContent.Request<Texture2D>("Stellamod/Assets/Biomes/AlcadziaBiomeBackground2").Value;
-            float yOffset = Main.screenHeight - backgroundTexture.Height;
-            Vector2 drawPos = new Vector2(0, yOffset);
-
-            Rectangle sourceRect = new Rectangle(0, 0, _backgroundTarget.Width, backgroundTexture.Height);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer,
-             backgroundShader.Effect);
-            spriteBatch.Draw(backgroundTexture, drawPos, sourceRect, Color.White);
-            spriteBatch.End();
-
+            /*
             spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Multiply);
             spriteBatch.Draw(_wallMaskRenderTarget, Vector2.Zero, null, Color.White);
-            spriteBatch.End();
+            spriteBatch.End();*/
 
         }
         public static void QueueDraw(Point tilePoint)

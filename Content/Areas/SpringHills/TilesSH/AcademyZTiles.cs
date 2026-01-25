@@ -19,10 +19,8 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
             drawOrigin = TileDrawOrigin.BottomUp;
         }
 
-        public override void PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
         {
-            base.PreDraw(spriteBatch, drawPosition, screenPos, drawParams);
-
             void RenderFlagPost(SpriteBatch spriteBatch, Vector2 screenPos)
             {
                 Asset<Texture2D> flagTexture = ModContent.Request<Texture2D>(Texture + "_Flag");
@@ -48,6 +46,7 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
             }
 
             PixelationManager.QueueSpritebatchDrawAction(RenderFlagPost, DrawLayer.BehindTiles);
+            return true;
         }
     }
 

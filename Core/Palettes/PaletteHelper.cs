@@ -45,9 +45,10 @@ namespace Stellamod.Core.Palettes
             Mod mod = Stellamod.Instance;
             foreach (var file in mod.GetFileNames())
             {
+                Console.WriteLine(file);
                 if (file.Contains(".pal"))
                 {
-
+                
                     Main.QueueMainThreadAction(() =>
                     {
                         using (var stream = mod.GetFileStream(file))

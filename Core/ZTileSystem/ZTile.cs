@@ -164,14 +164,15 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
         SpriteEffects spriteEffects = drawParams.tileData.flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         if (drawParams.tileData.flipX)
             drawRotation *= -1;
-        PreDraw(spriteBatch, drawPosition + drawOffset, screenPos, drawParams);
-        spriteBatch.Draw(tileTextureAsset.Value, drawPosition + drawOffset, frame, drawColor, drawRotation, drawOrigin, drawParams.tileData.scale, spriteEffects, 0);
+        bool doDraw = PreDraw(spriteBatch, drawPosition + drawOffset, screenPos, drawParams);
+        if(doDraw)
+            spriteBatch.Draw(tileTextureAsset.Value, drawPosition + drawOffset, frame, drawColor, drawRotation, drawOrigin, drawParams.tileData.scale, spriteEffects, 0);
         PostDraw(spriteBatch, drawPosition + drawOffset, screenPos, drawParams);
     }
 
-    public virtual void PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+    public virtual bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
     {
-
+        return true;
     }
 
     public virtual void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
