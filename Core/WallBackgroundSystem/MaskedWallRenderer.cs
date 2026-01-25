@@ -26,12 +26,14 @@ namespace Stellamod.Core.WallBackgroundSystem
     {
         private Asset<Texture2D> _moonspiralTowerFrontPaneTextureAsset;
         private Asset<Texture2D> _moonspiralTowerFrontTextureAsset;
+        private Asset<Texture2D> _moonspiralTowerFrontGlowBallTextureAsset;
         private Asset<Texture2D> _moonspiralTowerMidTextureAsset;
         private Asset<Texture2D> _moonspiralTowerBackTextureAsset;
         
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+            _moonspiralTowerFrontGlowBallTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerFrontGlowBall");
             _moonspiralTowerFrontPaneTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerFrontPane");
             _moonspiralTowerFrontTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerFront");
             _moonspiralTowerMidTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Backgrounds/MoonspiralTowerMid");
@@ -41,6 +43,7 @@ namespace Stellamod.Core.WallBackgroundSystem
         public override void Unload()
         {
             base.Unload();
+            _moonspiralTowerFrontGlowBallTextureAsset = null;
             _moonspiralTowerFrontPaneTextureAsset = null;
             _moonspiralTowerFrontTextureAsset = null;
             _moonspiralTowerMidTextureAsset = null;
@@ -50,19 +53,25 @@ namespace Stellamod.Core.WallBackgroundSystem
         public override bool IsActive(Player player)
         {
             BiomePlayer biomePlayer = player.GetModPlayer<BiomePlayer>();
-            return biomePlayer.ZoneMoonspiralTower;
+            return true;
         }
 
         public override void SetupDrawLayers()
         {
             base.SetupDrawLayers();
-            DrawLayers[3].textureAsset = _moonspiralTowerFrontPaneTextureAsset;
-            DrawLayers[3].parallax = new Vector2(0.05f);
-            DrawLayers[3].additive = true;
+            DrawScale = 2.5f;
+            DrawLayers[4].textureAsset = _moonspiralTowerFrontPaneTextureAsset;
+            DrawLayers[4].parallax = new Vector2(0.1f);
+            DrawLayers[4].additive = true;
 
-            DrawLayers[2].textureAsset = _moonspiralTowerFrontTextureAsset;
-            DrawLayers[2].parallax = new Vector2(0.05f);
-           
+            DrawLayers[3].textureAsset = _moonspiralTowerFrontTextureAsset;
+            DrawLayers[3].parallax = new Vector2(0.1f);
+
+
+            DrawLayers[2].textureAsset = _moonspiralTowerFrontGlowBallTextureAsset;
+            DrawLayers[2].parallax = new Vector2(0.0135f);
+            DrawLayers[2].additive = true;
+
             DrawLayers[1].textureAsset = _moonspiralTowerMidTextureAsset;
             DrawLayers[1].parallax = new Vector2(0.0135f);
 
@@ -73,6 +82,7 @@ namespace Stellamod.Core.WallBackgroundSystem
 
     public abstract class MaskedWallBackground : ModType
     {
+        public float DrawScale { get; set; }
         public float Alpha { get; set; }
         public MaskedWallDrawLayer[] DrawLayers { get; private set; }
         protected override void Register()
@@ -141,6 +151,8 @@ namespace Stellamod.Core.WallBackgroundSystem
         }
         private void DrawWalls(On_Main.orig_DoDraw_WallsTilesNPCs orig, Main self)
         {
+            //TODO: Remove this
+            Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower = true;
             _renderTimer--;
             if (_renderTimer > 0 && _activeMaskedWallBackground != null)
                 DrawMaskedBG();
@@ -265,7 +277,7 @@ namespace Stellamod.Core.WallBackgroundSystem
                 Color drawColor = Color.White * _activeMaskedWallBackground.Alpha;
                 if (drawLayer.additive)
                     drawColor.A = 0;
-                spriteBatch.Draw(drawLayer.textureAsset.Value, drawPosition, drawRectangle, drawColor, 0, drawLayer.textureAsset.Value.Size() * 0.5f, 3.5f, SpriteEffects.None, 0);
+                spriteBatch.Draw(drawLayer.textureAsset.Value, drawPosition, drawRectangle, drawColor, 0, drawLayer.textureAsset.Value.Size() * 0.5f, _activeMaskedWallBackground.DrawScale, SpriteEffects.None, 0);
                 spriteBatch.End();
             }
 

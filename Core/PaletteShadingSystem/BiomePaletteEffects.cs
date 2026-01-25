@@ -9,6 +9,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.PaletteShadingSystem
 {
+    public class MoonspiralTowerPaletteEffect : PaletteEffect
+    {
+        public override PaletteType PaletteType => PaletteType.LunarShader;
+        public override PalettePriority Priority => PalettePriority.Medium;
+        public override bool IsActive(Player player)
+        {
+            BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
+
+            return true;
+        }
+    }
     public class AbyssPaletteEffect : PaletteEffect
     {
         public override PaletteType PaletteType => PaletteType.LunarShader;
