@@ -30,7 +30,7 @@ namespace Stellamod.Core.LunarLightingSystem
         //Set up our data for all of our point lights
         //We'll use a data-oriented approach so it's as fast as possible
         public static PointLightData[] PointLights = new PointLightData[MAX_POINT_LIGHTS];
-        public static VertexPositionColorTexture[][] PointLightVertices = new VertexPositionColorTexture[MAX_POINT_LIGHTS][];
+        public static VertexPositionColorTexture[] PointLightVertices = new VertexPositionColorTexture[MAX_POINT_LIGHTS * 4];
         public static VertexPositionColor[][] ShadowVertices = new VertexPositionColor[MAX_POINT_LIGHTS][];
         public static int[] ShadowPrimitiveCount = new int[MAX_POINT_LIGHTS];
 
@@ -111,7 +111,6 @@ namespace Stellamod.Core.LunarLightingSystem
 
             for(int i = 0; i < MAX_POINT_LIGHTS; i++)
             {
-                PointLightVertices[i] = new VertexPositionColorTexture[POINT_LIGHT_VERTEX_COUNT];
                 ShadowVertices[i] = new VertexPositionColor[POINT_LIGHT_MAX_SHADOW_VERTEX_COUNT];
                 LightAtlasRectangles[i] = new Rectangle(x * pointLightSize, y * pointLightSize, pointLightSize, pointLightSize);
                 y++;
@@ -298,7 +297,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             //First we need to get our data
             ref PointLightData pointLightData = ref PointLights[index];
-            ref VertexPositionColorTexture[] lightVertices = ref PointLightVertices[index];
+            int startIndex = index * 4;
             ref VertexPositionColor[] shadowVertices = ref ShadowVertices[index];
             int primitiveCount = ShadowPrimitiveCount[index];
 
@@ -318,14 +317,14 @@ namespace Stellamod.Core.LunarLightingSystem
                 pass.Apply();
                 // Set this _after_ Apply, otherwise EffectParameters override it!
                 graphicsDevice.Textures[0] = null;
-                graphicsDevice.DrawUserPrimitives(
-                  PrimitiveType.TriangleList, lightVertices, 0, lightVertices.Length / 3);
+                graphicsDevice.DrawUserIndexedPrimitives(
+                  PrimitiveType.TriangleList, PointLightVertices, startIndex, 4, SunLightManager.ShadowIndexBuffer, 0, 2);
 
             }
 
             if (primitiveCount <= 0)
                 return;
-
+           
             graphicsDevice.BlendState = BlendState.AlphaBlend;
 
             var shadowShader = TileShadowShader.Instance;
@@ -451,8 +450,6 @@ namespace Stellamod.Core.LunarLightingSystem
         public static void CastLight(int index)
         {
             ref PointLightData data = ref PointLights[index];
-            ref VertexPositionColorTexture[] vertices = ref PointLightVertices[index];
-
             Vector2 position = data.position;
             float radius = data.radius;
             Color color = data.color;
@@ -462,13 +459,11 @@ namespace Stellamod.Core.LunarLightingSystem
             Vector2 bottomRight = position + new Vector2(radius, radius);
             Vector2 topRight = position + new Vector2(radius, -radius);
 
-            vertices[0] = new VertexPositionColorTexture(new Vector3(topLeft, 0), color, new Vector2(0, 0));
-            vertices[1] = new VertexPositionColorTexture(new Vector3(topRight, 0), color, new Vector2(1, 0));
-            vertices[2] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), color, new Vector2(1, 1));
-
-            vertices[3] = new VertexPositionColorTexture(new Vector3(topLeft, 0), color, new Vector2(0, 0));
-            vertices[4] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), color, new Vector2(0, 1));
-            vertices[5] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), color, new Vector2(1, 1));
+            int startIndex = index * 4;
+            PointLightVertices[startIndex] = new VertexPositionColorTexture(new Vector3(topLeft, 0), color, new Vector2(0, 0));
+            PointLightVertices[startIndex + 2] = new VertexPositionColorTexture(new Vector3(topRight, 0), color, new Vector2(1, 0));
+            PointLightVertices[startIndex + 3] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), color, new Vector2(0, 1));
+            PointLightVertices[startIndex + 1] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), color, new Vector2(1, 1));
         }
 
 

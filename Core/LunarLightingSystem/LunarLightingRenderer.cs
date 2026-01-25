@@ -196,7 +196,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private static void DrawSoftGlows()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
             Texture2D glowTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
             Vector2 drawOrigin = glowTexture.Size() / 2f;
@@ -214,7 +214,8 @@ namespace Stellamod.Core.LunarLightingSystem
 
                 Color drawColor = Lighting.GetColor(tilePosition.X, tilePosition.Y);
                 drawColor *= ExtraMath.Osc(0.9f, 1f, speed: 2, offset: tilePosition.X + tilePosition.Y);
-                drawColor *= 0.23f;
+                drawColor *= 0.13f;
+                drawColor.A = 0;
                 spriteBatch.Draw(glowTexture, drawPosition, null, drawColor, 0, drawOrigin, 2, SpriteEffects.None, 0);
             }
 
