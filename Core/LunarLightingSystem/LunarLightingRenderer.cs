@@ -1,9 +1,5 @@
-﻿
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Drawing;
@@ -26,6 +22,7 @@ namespace Stellamod.Core.LunarLightingSystem
             return base.PreDraw(i, j, type, spriteBatch);
         }
     }
+
     [Autoload(Side = ModSide.Client)]
     public class LunarLightingRenderer : ModSystem,
         IPostProcessingPass
@@ -36,24 +33,21 @@ namespace Stellamod.Core.LunarLightingSystem
         private static Vector2 _previousScreenSize;
         private static RenderTarget2D _accumulatedLightRT;
 
+        private static bool _isLoaded;
         private static bool _initAtlas;
         private static RenderTarget2D _pointLightRT;
         private static RenderTarget2D _tempLightMapAtlasRT;
         private static RenderTarget2D _tileShadowMap;
         private static RenderTarget2D _tileBlurRT;
         private static RenderTarget2D _tileSunShadowRT;
+        private static RenderTarget2D _pixelLightRT;
 
         private static List<ILightEmitter> _emitters;
         private static List<IBackLightModifier> _backLightModifiers;
 
-        private static int _ambientLightIndex;
-        private static TileAmbientLight[] _ambientLights = new TileAmbientLight[Max_Ambient_Lights];
-
         public static Color BackLightColor;
         public static Color SunColor;
         public static Vector3 AmbientLight;
-        public const int Max_Ambient_Lights = 2000;
-
         public static RenderTarget2D GetAccumulatedLightMap()
         {
             return _accumulatedLightRT;
@@ -64,8 +58,6 @@ namespace Stellamod.Core.LunarLightingSystem
 
             _backLightModifiers = new List<IBackLightModifier>();
             _emitters = new List<ILightEmitter>();
-            ResizeRenderTarget(true);
-
 
             On_Main.CheckMonoliths += RenderToLightMaps;
             On_Main.DoDraw += LightRenderLoop;
@@ -74,20 +66,13 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void Unload()
         {
             base.Unload();
+            Main.QueueMainThreadAction(UnloadRenderTargets);
             On_Main.CheckMonoliths -= RenderToLightMaps;
             On_Main.DoDraw -= LightRenderLoop;
             On_Main.DrawCachedNPCs -= DrawShadowsBehindTiles;
 
         }
 
-        private bool IsEnabled
-        {
-            get
-            {
-                DomainExpansionManager domainExpansionManager = ModContent.GetInstance<DomainExpansionManager>();
-                return !domainExpansionManager.inSpace;
-            }
-        }
         private static bool IsActive
         {
             get
@@ -99,7 +84,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
         {
 
-            if (IsActive)
+            if (IsActive && _isLoaded)
             {
                 RenderLightsV2();
                 if (DrawSunShadows2())
@@ -108,14 +93,14 @@ namespace Stellamod.Core.LunarLightingSystem
                 }
             }
 
-        
-     
+
+
             orig();
         }
 
         private void DrawShadowsBehindTiles(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
         {
-            if (behindTiles && DrawSunShadows2() && IsActive)
+            if (behindTiles && DrawSunShadows2() && IsActive && _isLoaded)
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.Draw(_tileSunShadowRT, Vector2.Zero, Color.White);
@@ -150,13 +135,15 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             _emitters.Clear();
             _backLightModifiers.Clear();
-            ClearAmbientLights();
         }
 
         private static void DrawToScreen()
         {
             if (!ShouldRender())
                 return;
+            if (!_isLoaded)
+                return;
+
 
 
             //PreviewLightMaps();
@@ -176,11 +163,12 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static void DrawAccumulatedLightMapToScreen()
         {
-            var shader = DitherShader.Instance;
-            shader.ImageSize = new Vector2(Main.screenWidth, Main.screenHeight);
+            Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
+            SimpleBlurShader simpleBlurShader = SimpleBlurShader.Instance;
+            simpleBlurShader.TexelSize = texelSize;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, shader.Effect);
-            spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, simpleBlurShader.Effect);
+            spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             spriteBatch.End();
         }
 
@@ -292,7 +280,7 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
             LightingPreDrawEdit.DontRenderPreDraw = false;
 
-            graphicsDevice.SetRenderTarget(_tileBlurRT);  
+            graphicsDevice.SetRenderTarget(_tileBlurRT);
             graphicsDevice.Clear(Color.Transparent);
 
             Effect effect = GameShaders.Misc["LunarVeil:SunShadow"].Shader;
@@ -319,7 +307,7 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, blurEffect);
 
             spriteBatch.Draw(_tileBlurRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-           
+
             spriteBatch.End();
 
         }
@@ -331,12 +319,12 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 BackLightColor = Color.White * 0.8f;
             }
-     
+
             foreach (var backLightModifier in _backLightModifiers)
             {
                 backLightModifier.ModifyBackLight(ref BackLightColor);
             }
-           
+
             _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
             SunColor = Color.Lerp(SunColor, Main.ColorOfTheSkies, 0.1f);
 
@@ -355,21 +343,6 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void PostUpdateEverything()
         {
             ResizeRenderTarget(false);
-        }
-
-        public static void ClearAmbientLights()
-        {
-            _ambientLightIndex = 0;
-        }
-
-        public static void AddAmbientLight(TileAmbientLight ambientLight)
-        {
-            if (_ambientLightIndex < _ambientLights.Length)
-            {
-                int index = _ambientLightIndex;
-                _ambientLights[index] = ambientLight;
-                _ambientLightIndex++;
-            }
         }
 
         private static bool ShouldRender()
@@ -410,14 +383,14 @@ namespace Stellamod.Core.LunarLightingSystem
             }
 
             //Prepare to draw to the accumulate light render target
-     
+
             graphicsDevice.SetRenderTarget(_accumulatedLightRT);
             graphicsDevice.Clear(_backLightColor);
 
             //Render Sun
             SunLightManager.RenderSunLight();
 
-    
+
             var effect = PointLightSoftenShader.Instance.Effect;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
@@ -474,23 +447,15 @@ namespace Stellamod.Core.LunarLightingSystem
                     spriteBatch.End();
                 }
             }
-
-            ClearAmbientLights();
-            //     FindAmbientLights();
-
-            if (_ambientLightIndex > 0)
-            {
-                Texture2D glowMask = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
-                Vector2 drawOrigin = glowMask.Size() / 2f;
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-                for (int i = 0; i < _ambientLightIndex; i++)
-                {
-                    TileAmbientLight ambientLight = _ambientLights[i];
-                    spriteBatch.Draw(glowMask, ambientLight.position - Main.screenPosition, null, ambientLight.color, 0, drawOrigin, 2 * ambientLight.radius / 64f, SpriteEffects.None, 0);
-                }
-                spriteBatch.End();
-            }
             graphicsDevice.SetRenderTarget(null);
+
+            graphicsDevice.SetRenderTarget(_pixelLightRT);
+            graphicsDevice.Clear(Color.Transparent);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, Main.Rasterizer, null);
+            spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+            spriteBatch.End();
+            graphicsDevice.SetRenderTarget(null);
+
         }
 
 
@@ -501,47 +466,68 @@ namespace Stellamod.Core.LunarLightingSystem
             _initAtlas = true;
         }
 
+        private void UnloadRenderTargets()
+        {
+            _accumulatedLightRT?.Dispose();
+            _tileShadowMap?.Dispose();
+            _pointLightRT?.Dispose();
+            _tileBlurRT?.Dispose();
+            _tileSunShadowRT?.Dispose();
+            _pixelLightRT?.Dispose();
+            _tempLightMapAtlasRT?.Dispose();
+
+            _tempLightMapAtlasRT = null;
+            _pixelLightRT = null;
+            _accumulatedLightRT = null;
+            _tileShadowMap = null;
+            _pointLightRT = null;
+            _tileBlurRT = null;
+            _tileSunShadowRT = null;
+            _isLoaded = false;
+        }
+
+        private void ResizeRenderTargets()
+        {
+            if (_accumulatedLightRT != null && !_accumulatedLightRT.IsDisposed)
+                _accumulatedLightRT.Dispose();
+            if (_pointLightRT != null && !_pointLightRT.IsDisposed)
+                _pointLightRT.Dispose();
+            if (_tileShadowMap != null && !_tileShadowMap.IsDisposed)
+                _tileShadowMap.Dispose();
+            if (_tileBlurRT != null && !_tileBlurRT.IsDisposed)
+                _tileBlurRT.Dispose();
+            if (_tileSunShadowRT != null && !_tileSunShadowRT.IsDisposed)
+                _tileSunShadowRT.Dispose();
+            if (_pixelLightRT != null && !_pixelLightRT.IsDisposed)
+                _pixelLightRT.Dispose();
+            if (!_initAtlas)
+            {
+                InitAtlas();
+            }
+
+            _tileSunShadowRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
+            _tileBlurRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
+            _tileShadowMap = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth + Main.offScreenRange * 2, Main.screenHeight + Main.offScreenRange * 2);
+            _pointLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false,
+                SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+            _accumulatedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false,
+                SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+            _pixelLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, (int)(Main.screenWidth * 0.5f), (int)(Main.screenHeight * 0.5f), false,
+                SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+            _isLoaded = true;
+        }
+
         private void ResizeRenderTarget(bool load)
         {
-            // If not in the game menu, and we arent a dedicated server,
-            if (!Main.gameMenu && !Main.dedServ || load && !Main.dedServ)
-            {
-                // Get the current screen size.
-                Vector2 currentScreenSize = new(Main.screenWidth, Main.screenHeight);
-                // If it does not match the previous one, we need to update it.
-                if (currentScreenSize != _previousScreenSize)
-                {
-                    // Render target stuff should be done on the main thread only.
-                    Main.QueueMainThreadAction(() =>
-                    {
-                        if (_accumulatedLightRT != null && !_accumulatedLightRT.IsDisposed)
-                            _accumulatedLightRT.Dispose();
-                        if (_pointLightRT != null && !_pointLightRT.IsDisposed)
-                            _pointLightRT.Dispose();
-                        if (_tileShadowMap != null && !_tileShadowMap.IsDisposed)
-                            _tileShadowMap.Dispose();
-                        if (_tileBlurRT != null && !_tileBlurRT.IsDisposed)
-                            _tileBlurRT.Dispose();
-                        if (_tileSunShadowRT != null && !_tileSunShadowRT.IsDisposed)
-                            _tileSunShadowRT.Dispose();
-                        if (!_initAtlas)
-                        {
-                            InitAtlas();
-                        }
-                        _tileSunShadowRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
-                        _tileBlurRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
-                        _tileShadowMap = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth + Main.offScreenRange * 2, Main.screenHeight + Main.offScreenRange * 2);
-                        _pointLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false,
-                            SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
-                        _accumulatedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false,
-                            SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
-
-                    });
-
-                }
-                // Set the current one to the previous one for next frame.
-                _previousScreenSize = currentScreenSize;
-            }
+            if (Main.gameMenu)
+                return;
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            Vector2 currentScreenSize = new(Main.screenWidth, Main.screenHeight);
+            if (currentScreenSize == _previousScreenSize)
+                return;
+            Main.QueueMainThreadAction(ResizeRenderTargets);
+            _previousScreenSize = currentScreenSize;
         }
 
         public void RenderToScreen()

@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -40,7 +38,7 @@ namespace Stellamod.Core.Utilities
         public override void PostUpdateNPCs()
         {
             base.PostUpdateNPCs();
-            foreach(var item in _afterImages)
+            foreach (var item in _afterImages)
             {
                 item.position += item.velocity;
                 item.time++;
@@ -50,16 +48,16 @@ namespace Stellamod.Core.Utilities
 
         private void DrawAfterImages(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
-            if(_afterImages.Count > 0)
+            if (_afterImages.Count > 0)
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
-                for(int i = 0; i < _afterImages.Count; i++)
+                for (int i = 0; i < _afterImages.Count; i++)
                 {
                     AfterImage afterImage = _afterImages[i];
                     Texture2D afterImageTexture = ModContent.Request<Texture2D>(afterImage.texture).Value;
                     Vector2 drawOrigin = afterImage.origin;
                     Vector2 drawPosition = afterImage.position - Main.screenPosition;
-           
+
                     float fadeTime = 30f;
                     float fadeRatio = afterImage.time / fadeTime;
                     float alpha = MathHelper.Lerp(1f, 0f, fadeRatio);
@@ -69,7 +67,7 @@ namespace Stellamod.Core.Utilities
                     spriteBatch.Draw(afterImageTexture, drawPosition, afterImage.frame, afterImageColor, afterImage.rotation, afterImage.origin, afterImage.scale, afterImage.spriteEffects, 0);
                 }
             }
-      
+
 
             orig(self, behindTiles);
         }
