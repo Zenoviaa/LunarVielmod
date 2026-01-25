@@ -27,6 +27,7 @@ namespace Stellamod.Core.WallBackgroundSystem
         public float DrawScale { get; set; }
         public float Alpha { get; set; }
         public MaskedWallDrawLayer[] DrawLayers { get; private set; }
+        public Vector2 StartParallaxPosition { get; set; }
         protected override void Register()
         {
             ModTypeLookup<MaskedWallBackground>.Register(this);
@@ -124,6 +125,10 @@ namespace Stellamod.Core.WallBackgroundSystem
                 maskedWallBackground.SetupDrawLayers();
                 Player player = Main.LocalPlayer;
                 bool isActive = maskedWallBackground.IsActive(player);
+                if(maskedWallBackground.Alpha <= 0)
+                {
+                    maskedWallBackground.StartParallaxPosition = Main.Camera.Center;
+                }
                 if (maskedWallBackground.Alpha > 0 && !isActive)
                 {
                     _activeMaskedWallBackground = maskedWallBackground;
@@ -205,7 +210,8 @@ namespace Stellamod.Core.WallBackgroundSystem
                 if (drawLayer.textureAsset == null)
                     break;
                 BackgroundParallaxShader backgroundShader = BackgroundParallaxShader.Instance;
-                backgroundShader.Parallax = drawLayer.parallax * 0.001f * Main.Camera.Center;
+                Vector2 cameraMovement = Main.Camera.Center - _activeMaskedWallBackground.StartParallaxPosition;
+                backgroundShader.Parallax = drawLayer.parallax * 0.001f * (cameraMovement);
                 spriteBatch.Begin(default,
                     default,
                     SamplerState.PointClamp,
