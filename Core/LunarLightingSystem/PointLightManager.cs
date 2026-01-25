@@ -136,6 +136,13 @@ namespace Stellamod.Core.LunarLightingSystem
             return position.X >= cameraTopLeft.X && position.X <= cameraBottomRight.X && position.Y >= cameraTopLeft.Y && position.Y <= cameraBottomRight.Y;
         }
 
+        private static bool IsValidTileForPointLight(Tile tile)
+        {
+            if (!Main.tileLighted[tile.TileType])
+                return false;
+            return true;
+        }
+
         private static void FindPointLightSourcesFromTiles()
         {
  
@@ -158,37 +165,34 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
                 {
-                    if (!WorldGen.InWorld(x, y))
-                        continue;
-                    Tile tile = Main.tile[x, y];
-            
-                    if (!Main.tileLighted[tile.TileType])
-                        continue;
-                    Point lightTilePoint = new Point(x, y);
+                    Tile tile = Framing.GetTileSafely(x, y);
 
-  
+                    Point lightTilePoint = new Point(x, y);
+                    if (!IsValidTileForPointLight(tile))
+                        continue;
+
                     Vector3 color;
                     tileScanner.GetTileLight(x, y, out color);
                  
-                    float luminosity = color.X + color.Y + color.Z / 3f;
-
-                    if (luminosity < 0.5f)
+                    float luminosity = (color.X + color.Y + color.Z) / 3f;
+                    if (luminosity < 0.2f)
                         continue;
+
                     numTilesProducingLight++;
 
-                    if (!EmittingTiles[lightTilePoint.X, lightTilePoint.Y] && luminosity >= 1f)
-                    {
-                      
-                        Vector2 position = lightTilePoint.ToWorldCoordinates();
-                        Color lightColor = new Color(color);
-                        lightColor.A = 1;
-                        PointLightData pointLightData = new PointLightData(lightColor, position, 0.5f, 800);
-                        int index = AddPointLight(pointLightData);
-                        if (index == -1)
-                            continue;
-                        EmittingTiles[lightTilePoint.X, lightTilePoint.Y] = true;
-                        LightPoints[index] = lightTilePoint;
-                    }
+                    if (EmittingTiles[lightTilePoint.X, lightTilePoint.Y])
+                        continue;
+
+                 //   Main.NewText(luminosity);
+                    Vector2 position = lightTilePoint.ToWorldCoordinates();
+                    Color lightColor = new Color(color);
+                    lightColor.A = 1;
+                    PointLightData pointLightData = new PointLightData(lightColor, position, luminosity * 0.5f, 800);
+                    int index = AddPointLight(pointLightData);
+                    if (index == -1)
+                        continue;
+                    EmittingTiles[lightTilePoint.X, lightTilePoint.Y] = true;
+                    LightPoints[index] = lightTilePoint;
                 }
             }
 
