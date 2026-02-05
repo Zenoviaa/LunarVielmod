@@ -13,7 +13,7 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
 
         }
-
+        //
         public override void SetDefaults()
         {
             Item.width = 12;
