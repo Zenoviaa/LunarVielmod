@@ -19,7 +19,7 @@ namespace Stellamod.Common.WeaponUpgrade
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
             base.ModifyWeaponDamage(item, player, ref damage);
-            float damageModifier = weaponLevel * 0.20f;
+            float damageModifier = weaponLevel * 0.25f;
             damage += damageModifier;
         }
 
