@@ -195,6 +195,7 @@ namespace Stellamod.Core.LunarLightingSystem
         }
         private static void DrawSoftGlows()
         {
+            /*
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
@@ -219,7 +220,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 spriteBatch.Draw(glowTexture, drawPosition, null, drawColor, 0, drawOrigin, 2, SpriteEffects.None, 0);
             }
 
-            spriteBatch.End();
+            spriteBatch.End();*/
         }
 
         private static void PreviewLightMaps()
