@@ -32,7 +32,7 @@ namespace Stellamod
     {
         public Stellamod()
         {
-            Instance = this;
+        
         }
 
         // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
@@ -61,7 +61,7 @@ namespace Stellamod
 
         public override void HandlePacket(BinaryReader reader, int whoAmI) => MultiplayerHelper.HandlePacket(reader, whoAmI);
 
-        public static Stellamod Instance { get; private set; }
+        public static Stellamod Instance => ModContent.GetInstance<Stellamod>();
         public static int MedalCurrencyID;
         public static int EreshstylCurrencyID;
         public static int NoHitCrystalCurrencyID;
@@ -69,7 +69,7 @@ namespace Stellamod
         public override void Load()
         {
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 
+         //   Instance = this;
             if (Main.netMode != NetmodeID.Server)
             {
                 ShaderLoader.LoadShaders(this);
@@ -230,7 +230,7 @@ namespace Stellamod
             }
             On_UIWorldListItem.DrawSelf += DrawWorldIconHook;
 
-            Instance = this;
+           // Instance = this;
         }
 
 
@@ -260,7 +260,7 @@ namespace Stellamod
 
         public override void Unload()
         {
-            Instance = null;
+            //Instance = null;
             if (!Main.dedServ)
             {
                 ShaderRegistry.UnloadOrderedLoadables();

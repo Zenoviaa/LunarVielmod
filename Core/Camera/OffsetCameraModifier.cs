@@ -9,7 +9,7 @@ namespace Stellamod.Core.Camera
         private Vector2 _cameraOffset;
         public string UniqueIdentity { get; private set; }
 
-        public bool Finished => false;
+        public bool Finished => !CameraSystem.IsLoaded;
 
         public static Vector2 FocusTargetOffset;
 

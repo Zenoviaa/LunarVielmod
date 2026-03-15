@@ -1,10 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Helpers;
 using Terraria;
 using Terraria.Graphics.CameraModifiers;
 
@@ -17,7 +11,7 @@ namespace Stellamod.Core.Camera
         private static bool _shouldRetarget;
         public string UniqueIdentity { get; private set; }
 
-        public bool Finished => false;
+        public bool Finished => !CameraSystem.IsLoaded;
 
         private static Vector2 _newTarget;
         public static Vector2 ReTargetPosition
@@ -42,7 +36,7 @@ namespace Stellamod.Core.Camera
                 {
                     _timer = 0;
                 }
-          
+
             }
             else
             {

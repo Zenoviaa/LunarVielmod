@@ -9,7 +9,7 @@ namespace Stellamod.Core.Camera
     {
         private Vector2? _oldCameraPosition;
         public string UniqueIdentity => "crystalmoon_camerasmooth";
-        public bool Finished => false;
+        public bool Finished => !CameraSystem.IsLoaded;
 
         public void Update(ref CameraInfo cameraPosition)
         {
