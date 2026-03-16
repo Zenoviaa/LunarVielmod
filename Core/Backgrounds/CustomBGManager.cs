@@ -160,7 +160,7 @@ namespace Stellamod.Core.Backgrounds
             Color drawColor = Main.ColorOfTheSkies * drawAlpha;
             if (bg.NoSurfaceLight)
                 drawColor = Color.White * drawAlpha;
-            float parallaxX = Main.screenPosition.X * bgLayer.Parallax * 0.25f * bg.LocalParallaxSpeed;
+            float parallaxX = Main.screenPosition.X * bgLayer.Parallax * bg.LocalParallaxSpeed;
             int width = (int)bgLayer.Texture.Size().X;
             int height = (int)bgLayer.Texture.Size().Y;
 
