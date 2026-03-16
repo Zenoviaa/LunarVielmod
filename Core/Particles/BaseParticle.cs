@@ -1,7 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Common.Shaders;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -16,7 +13,7 @@ namespace Stellamod.Core.Particles
     {
         private Asset<Texture2D> _textureAsset;
 
-      
+
         private Vector2 _center;
         public Vector2 Center
         {
@@ -29,7 +26,7 @@ namespace Stellamod.Core.Particles
                 _center = value;
             }
         }
-        
+
         public Vector2 DrawPosition
         {
             get => drawInUI ? Center : Center - Main.screenPosition;
@@ -72,7 +69,7 @@ namespace Stellamod.Core.Particles
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-   
+
         }
 
         public Asset<Texture2D> GetTexture()

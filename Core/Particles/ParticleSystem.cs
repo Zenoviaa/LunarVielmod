@@ -51,7 +51,9 @@ namespace Stellamod.Core.Particles
             ParticleLoader.Unload();
 
             ParticleAssets = null;
+            Particles?.Clear();
             Particles = null;
+            BlackParticles?.Clear();
             BlackParticles = null;
         }
         
