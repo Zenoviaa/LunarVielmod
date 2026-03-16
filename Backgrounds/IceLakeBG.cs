@@ -1,16 +1,54 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas;
 using Stellamod.Core.Backgrounds;
 using Stellamod.Core.Effects;
 using Terraria;
+using Terraria.ModLoader;
 namespace Stellamod.Backgrounds
 {
+    public class IceBackgroundRemove : ModBiome
+    {
+        public override int Music
+        {
+            get
+            {
+                return -1;
+            }
+        }
+        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
+        public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<NoBackgroundStyle>();
+        public override bool IsBiomeActive(Player player)
+        {
+       //     Main.NewText(player.ZoneSnow);
+
+            return player.ZoneSnow;
+        }
+    }
+
     public class IceLakeBG : CustomBG
     {
+        public CustomBGLayer vanillaLayer;
         public CustomBGLayer backLayer;
         public CustomBGLayer back2Layer;
         public CustomBGLayer midLayer;
         public CustomBGLayer frontLayer;
         public CustomBGLayer front2Layer;
+        private void AddBackmostLayer()
+        {
+            vanillaLayer = new CustomBGLayer();
+            vanillaLayer.Texture = ModContent.Request<Texture2D>("Terraria/Images/Background_98");
+            vanillaLayer.DrawOffset = Vector2.Zero;
+            AddLayer(vanillaLayer);
+        }
+
+        private void AddBackmost2Layer()
+        {
+            backLayer = new CustomBGLayer();
+            backLayer.Texture = ModContent.Request<Texture2D>("Terraria/Images/Background_101");
+            backLayer.DrawOffset = Vector2.Zero;
+            AddLayer(backLayer);
+        }
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -23,12 +61,8 @@ namespace Stellamod.Backgrounds
             bleedLayer.DrawOffset = new Vector2(0, bleedLayer.Texture.Size().Y * DrawScale * 2);
             AddLayer(bleedLayer);
 
-
-            backLayer = new CustomBGLayer();
-            backLayer.SetTexture("Assets/Textures/Backgrounds/IceBack");
-            backLayer.Parallax = startParallax;
-            backLayer.DrawOffset = Vector2.Zero;
-            AddLayer(backLayer);
+            AddBackmostLayer();
+            AddBackmost2Layer();
 
             //Guh
             CustomBGLayer backFogLayer = new CustomBGLayer();
@@ -82,12 +116,21 @@ namespace Stellamod.Backgrounds
         public override void SetDrawDefaults()
         {
             base.SetDrawDefaults();
-            LocalParallaxSpeed = 4;
-            backLayer.Parallax = 0.12f;
-            back2Layer.Parallax = 0.14f;
-            midLayer.Parallax = 0.16f;
-            frontLayer.Parallax = 0.18f;
-            front2Layer.Parallax = 0.2f;
+            DrawScale = 1.5f;
+            LocalParallaxSpeed = 1 / 1.5f;
+            vanillaLayer.Parallax = 0.05f;
+            backLayer.Parallax = 0.08f;
+            backLayer.DrawScale = 1f / 1.5f;
+            vanillaLayer.DrawScale = 1f / 1.5f;
+
+            backLayer.DrawOffset = new Vector2(0, 500);
+            vanillaLayer.DrawOffset = new Vector2(0, 500);
+
+            back2Layer.DrawScale = 1f;
+            back2Layer.Parallax = 0.09f;
+            midLayer.Parallax = 0.09f;
+            frontLayer.Parallax = 0.12f;
+            front2Layer.Parallax = 0.18f;
         }
 
         public override bool IsActive()

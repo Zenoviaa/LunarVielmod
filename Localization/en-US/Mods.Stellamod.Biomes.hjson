@@ -192,3 +192,8 @@ MoonspiralTowerBiome: {
 	DisplayName: Moonspiral Tower Biome
 	TownNPCDialogueName: the Moonspiral Tower Biome
 }
+
+IceBackgroundRemove: {
+	DisplayName: Ice Background Remove
+	TownNPCDialogueName: the Ice Background Remove
+}
