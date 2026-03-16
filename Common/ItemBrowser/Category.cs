@@ -4,6 +4,7 @@ namespace Stellamod.Common.ItemBrowser
 {
     public class Category
     {
+
         public Category(string displayName, ItemBrowserUtility.CompareFunction compareFunction, params Category[] subCategories)
         {
             this.displayName = displayName;

@@ -31,6 +31,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Item.UseSound = SoundID.DD2_BetsyFireballShot;
         }
 
+
         public override void AddRecipes()
         {
             base.AddRecipes();

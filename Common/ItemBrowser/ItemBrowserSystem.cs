@@ -49,6 +49,7 @@ namespace Stellamod.Common.ItemBrowser
 
         public override void UpdateUI(GameTime gameTime)
         {
+            /*
             if (InputHelper.KeyDown(Keys.F1))
             {
                 _pressed = true;
@@ -61,7 +62,7 @@ namespace Stellamod.Common.ItemBrowser
                     CloseUI();
 
                 _pressed = false;
-            }
+            }*/
             _lastUpdateUiGameTime = gameTime;
             if (_userInterface?.CurrentState != null)
             {

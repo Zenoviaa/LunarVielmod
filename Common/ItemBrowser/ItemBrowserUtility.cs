@@ -44,7 +44,7 @@ namespace Stellamod.Common.ItemBrowser
         public override void PostAddRecipes()
         {
             base.PostAddRecipes();
-            InitializeCategories();
+            //InitializeCategories();
         }
 
 
@@ -216,6 +216,7 @@ namespace Stellamod.Common.ItemBrowser
     public static class ItemBrowserUtility
     {
         public delegate bool CompareFunction(Item item);
+       
         private static void ItemSearchInnerLoop(Category category, Item item, List<Item> output)
         {
             if (category == null)
