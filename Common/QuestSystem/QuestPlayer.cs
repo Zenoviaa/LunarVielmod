@@ -1,6 +1,5 @@
 ﻿using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.UI.PopupSystem;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -17,6 +16,11 @@ namespace Stellamod.Common.QuestSystem
         {
             base.OnModLoad();
             quests = ModContent.GetContent<Quest>().ToArray();
+        }
+        public override void Unload()
+        {
+            base.Unload();
+            quests = null;
         }
     }
 
@@ -107,12 +111,12 @@ namespace Stellamod.Common.QuestSystem
 
             ActiveQuests.Add(quest);
             quest.StartQuest(Player);
-            if(Main.netMode != NetmodeID.Server)
+            if (Main.netMode != NetmodeID.Server)
             {
                 PopupUISystem popupUISystem = ModContent.GetInstance<PopupUISystem>();
                 popupUISystem.OpenUI("NewQuest");
             }
-       
+
             RecalculateUI = true;
             return true;
         }
@@ -169,14 +173,14 @@ namespace Stellamod.Common.QuestSystem
         public override void PostUpdate()
         {
             base.PostUpdate();
- 
-      
+
+
         }
 
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
-   
+
             if (Player.dead)
                 return;
             if (Main.GameUpdateCount % 30 == 0)

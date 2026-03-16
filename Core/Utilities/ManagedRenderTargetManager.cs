@@ -60,7 +60,7 @@ namespace Stellamod.Core.Utilities
             Point screenSize = _resizeFunction();
             Point newSize = new Point(screenSize.X / _downSamples, screenSize.Y / _downSamples);
             _renderTarget.Release();
-            _renderTarget = new RenderTarget2D(Main.graphics.GraphicsDevice, newSize.X, newSize.Y, mipMap: _mipMap, _surfaceFormat, _depthFormat,0, RenderTargetUsage.DiscardContents );
+            _renderTarget = new RenderTarget2D(Main.graphics.GraphicsDevice, newSize.X, newSize.Y, mipMap: _mipMap, _surfaceFormat, _depthFormat,0, RenderTargetUsage.PlatformContents );
 
             Width = newSize.X;
             Height = newSize.Y;

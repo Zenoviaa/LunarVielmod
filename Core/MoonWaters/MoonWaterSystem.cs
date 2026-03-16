@@ -238,6 +238,7 @@ namespace Stellamod.Core.MoonWaters
             On_Main.CheckMonoliths += RenderHook;
             On_Main.DrawDust += CopyScreenTarget;
             On_OverlayManager.Draw += ApplyWaterShader;
+            On_Main.Draw += DrawToScreen;
         }
         public override void Unload()
         {
@@ -245,7 +246,20 @@ namespace Stellamod.Core.MoonWaters
             On_Main.CheckMonoliths -= RenderHook;
             On_Main.DrawDust -= CopyScreenTarget;
             On_OverlayManager.Draw -= ApplyWaterShader;
+            On_Main.Draw -= DrawToScreen;
+            _pixelWaterStyles = null;
+            _heightsToDraw.Clear();
         }
+
+        private void DrawToScreen(On_Main.orig_Draw orig, Main self, GameTime gameTime)
+        {
+            orig(self, gameTime);
+            if (Main.gameMenu)
+                return;
+
+          //  DrawWaterBaseToScreen();
+        }
+
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -323,8 +337,6 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.Begin();
             spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
             spriteBatch.End();
-
-       //     DrawWaterBaseToScreen();
         }
 
         private void ApplyWaterShader(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
@@ -352,6 +364,8 @@ namespace Stellamod.Core.MoonWaters
 
                 _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombineRTDrawing"];
                 _waterEffect.Parameters["WaterTexture"].SetValue(_waterTextureRTOutput);
+
+
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                     _waterEffect, Main.Transform);
 
@@ -362,7 +376,9 @@ namespace Stellamod.Core.MoonWaters
 
   
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+                //DrawWaterBaseToScreen();
             }
+
         }
 
         private void CopyScreenTargetToSwap()
@@ -458,7 +474,32 @@ namespace Stellamod.Core.MoonWaters
             graphicsDevice.SetRenderTarget(null);
         }
 
-
+        private void ApplyScreenOffset()
+        {
+            //Apply an offset so the texture doesn't move when you're moving
+            //This will wrap inside the shader
+            Vector2 texelSize = Vector2.One / new Vector2(_drawLocation.Width, _drawLocation.Height);
+            Vector2 screenoffset = Main.screenPosition * texelSize;
+            _waterEffect.Parameters["screenOffset"].SetValue(screenoffset);
+        }
+        private void ApplyScreenOffset(float scale)
+        {
+            //Apply an offset so the texture doesn't move when you're moving
+            //This will wrap inside the shader
+            Vector2 texelSize = Vector2.One / new Vector2(_drawLocation.Width, _drawLocation.Height);
+            Vector2 screenoffset = Main.screenPosition * texelSize;
+            screenoffset *= (1f / scale);
+            _waterEffect.Parameters["screenOffset"].SetValue(screenoffset);
+        }
+        private void ApplyScreenOffset(float scale, Vector2 textureSize)
+        {
+            //Apply an offset so the texture doesn't move when you're moving
+            //This will wrap inside the shader
+            Vector2 texelSize = Vector2.One / textureSize;
+            Vector2 screenoffset = Main.screenPosition * texelSize;
+            screenoffset *= (1f / scale);
+            _waterEffect.Parameters["screenOffset"].SetValue(screenoffset);
+        }
         private void DrawWaterBase(SpriteBatch spriteBatch)
         {
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["SpriteDrawing"];
@@ -466,11 +507,11 @@ namespace Stellamod.Core.MoonWaters
             _waterEffect.Parameters["time"].SetValue(_time);
             _waterEffect.Parameters["levels"].SetValue(18);
             _waterEffect.Parameters["distortion"].SetValue(0.05f);
-            ApplyScreenOffset();
+  //          ApplyScreenOffset();
 
             Vector2 stretchScale = new Vector2(1, 0.5f);
             GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_waterTextureRT);
+            graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
             graphicsDevice.Clear(Color.LightSeaGreen);
 
             //Draw the base texture
@@ -485,6 +526,19 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
             spriteBatch.Draw(_pixelWater.NoiseTexture.Value, _drawLocation, null, Color.White * 0.5f);
             spriteBatch.End();
+
+
+  
+            graphicsDevice.SetRenderTarget(_waterTextureRT);
+            graphicsDevice.Clear(Color.Transparent);
+
+
+            _waterEffect.CurrentTechnique = _waterEffect.Techniques["WrapDrawing"];
+            ApplyScreenOffset(scale: 2);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                _waterEffect);
+            spriteBatch.Draw(_waterTextureRTSwap, _drawLocation, null, baseColor);
+            spriteBatch.End();
         }
 
         private void DrawWaterGradient(SpriteBatch spriteBatch)
@@ -496,7 +550,7 @@ namespace Stellamod.Core.MoonWaters
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["GradientDrawing"];
             _waterEffect.Parameters["startGradient"].SetValue(_pixelWater.StartGradientColor.ToVector3());
             _waterEffect.Parameters["endGradient"].SetValue(_pixelWater.EndGradientColor.ToVector3());
-
+          //  ApplyScreenOffset();
             //Draw gradient
             graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
             graphicsDevice.Clear(Color.Transparent);
@@ -507,14 +561,26 @@ namespace Stellamod.Core.MoonWaters
 
         private void DrawWaterCaustics(SpriteBatch spriteBatch)
         {
+            //Draw Caustics
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["CausticsDrawing"];
             _waterEffect.Parameters["time"].SetValue(_time * 2);
             _waterEffect.Parameters["distortion"].SetValue(0.05f);
             _waterEffect.Parameters["tiling"].SetValue(Vector2.One * 6 * Tiling * _pixelWater.TilingMultiplier);
-            ApplyScreenOffset();
 
+            GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
+            graphicsDevice.SetRenderTarget(_waterTextureRT);
+            graphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
             spriteBatch.Draw(_pixelWater.CausticsTexture.Value, _drawLocation, null, _pixelWater.CausticsColor);
+            spriteBatch.End();
+
+            graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
+    
+            _waterEffect.CurrentTechnique = _waterEffect.Techniques["WrapDrawing"];
+            ApplyScreenOffset(scale: 2);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                _waterEffect);
+            spriteBatch.Draw(_waterTextureRT, _drawLocation, null, Color.White);
             spriteBatch.End();
         }
 
@@ -525,10 +591,22 @@ namespace Stellamod.Core.MoonWaters
             _waterEffect.Parameters["distortion"].SetValue(0.05f);
             _waterEffect.Parameters["tiling"].SetValue(Vector2.One * 8 * Tiling * _pixelWater.TilingMultiplier);
             _waterEffect.Parameters["HeightMapTexture"].SetValue(_waterHeightMapRT);
-            ApplyScreenOffset();
+
+            GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
+            graphicsDevice.SetRenderTarget(_waterTextureRT);
+            graphicsDevice.Clear(Color.Transparent);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
             spriteBatch.Draw(_pixelWater.CausticsTexture.Value, _drawLocation, null, Color.White * 0.5f);
+            spriteBatch.End();
+
+
+            graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
+            _waterEffect.CurrentTechnique = _waterEffect.Techniques["WrapDrawing"];
+            ApplyScreenOffset(scale: 2);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                _waterEffect);
+            spriteBatch.Draw(_waterTextureRT, _drawLocation, null, Color.White);
             spriteBatch.End();
         }
 
@@ -539,31 +617,12 @@ namespace Stellamod.Core.MoonWaters
             _waterEffect.Parameters["distortion"].SetValue(0.05f);
             _waterEffect.Parameters["tiling"].SetValue(Vector2.One * 2 * Tiling * _pixelWater.TilingMultiplier);
             _waterEffect.Parameters["HeightMapTexture"].SetValue(_waterHeightMapRT);
-            ApplyScreenOffset();
-
+            ApplyScreenOffset(scale: 1f);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
             spriteBatch.Draw(_perlinNoise, _drawLocation, null, Color.White);
             spriteBatch.End();
         }
 
-        private Vector2 _movement;
-        private void ApplyScreenOffset()
-        {
-            Vector2 screenOffset = Main.screenPosition;
-            Vector2 diff = Main.screenPosition - Main.screenLastPosition;
-            _movement += diff;
-            //Ok so the screen position is indeed in pixels that's good
-            //One pixel movement on the world needs to translate to one pixel movement on this water texture
-
-            Vector2 texelSize = (Vector2.One) / new Vector2(_waterTextureRT.Width, _waterTextureRT.Height );
-
-            //I have no clue what this number is or how to calculate it 
-            //All I know is that there is a number somewhere around here that converts the world pixel space to local pixel space correctly
-            //And makes the thing move, 0.28 is just an approximation so it still moves VERY slightly
-            //Once I figure out how to calculate this and what it is I'll change it :P
-            float pixelSpaceFixer = 0.28f;
-            _waterEffect.Parameters["screenOffset"].SetValue(_movement * texelSize * 0.29f);
-        }
 
         private void DrawReflection(SpriteBatch spriteBatch)
         {
@@ -594,6 +653,8 @@ namespace Stellamod.Core.MoonWaters
             _drawLocation = new Rectangle(0, 0, _waterTextureRTOutput.Width, _waterTextureRTOutput.Height);
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["PosterizeDrawing"];
             _waterEffect.Parameters["levels"].SetValue(10);
+
+
 
             GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
             graphicsDevice.SetRenderTarget(_waterTextureRTOutput);
@@ -634,12 +695,13 @@ namespace Stellamod.Core.MoonWaters
             UpdatePixelWater();
 
             DrawWaterBase(spriteBatch);
-    
+
+
+
             DrawWaterGradient(spriteBatch);
             DrawWaterCaustics(spriteBatch);
-
-            DrawWaterSparkle(spriteBatch);
-            DrawWaterFoam(spriteBatch);
+          //  DrawWaterSparkle(spriteBatch);
+             DrawWaterFoam(spriteBatch);
             DrawReflection(spriteBatch);
             // 
             DrawPosterization(spriteBatch);
@@ -751,10 +813,10 @@ namespace Stellamod.Core.MoonWaters
         {
             //This is just for testing purposes to make sure the texture looks the way we want it to
 
-            Main.graphics.GraphicsDevice.Clear(Color.Transparent);
+          //  Main.graphics.GraphicsDevice.Clear(Color.Transparent);
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            spriteBatch.Draw(_waterTextureRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 2, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_waterTextureRT, Vector2.Zero, null, Color.White * 0.5f, 0f, Vector2.Zero, 2, SpriteEffects.None, 0f);
             spriteBatch.End();
         }
 

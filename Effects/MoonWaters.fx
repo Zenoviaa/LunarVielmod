@@ -77,10 +77,9 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float2 coords = input.TextureCoordinates;
         
     //Distort the coordinates
-    float d = tex2D(SpriteTextureSampler, coords + screenOffset);
+    float d = tex2D(SpriteTextureSampler, coords);
     float2 distortionOffset = float2(sin(d), cos(d)) * distortion;
     coords *= tiling;
-    coords += screenOffset;
     coords += distortionOffset;
     
     float2 offset = float2(time * -0.05, 0.0);
@@ -94,6 +93,16 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     finalColor.r = posterize(finalColor.r, levels);
     finalColor.g = posterize(finalColor.g, levels);
     finalColor.b = posterize(finalColor.b, levels);
+    return finalColor;
+}
+
+float4 WrapPS(VertexShaderOutput input) : COLOR
+{
+    float2 coords = input.TextureCoordinates;
+    coords += screenOffset;
+    coords = frac(coords);
+    //Distort the coordinates
+    float4 finalColor = tex2D(SpriteTextureSampler, coords);
     return finalColor;
 }
 
@@ -180,14 +189,12 @@ float4 CausticsPS(VertexShaderOutput input) : COLOR
 {
     float2 coords = input.TextureCoordinates;
     coords *= tiling;
-
     
-    float d = tex2D(SpriteTextureSampler, coords + float2(time * -0.02, time * -0.04) + screenOffset).r;
+    float d = tex2D(SpriteTextureSampler, coords + float2(time * -0.02, time * -0.04)).r;
     float rotOffset = d * 3.14;
     float2 distortionOffset = float2(sin(rotOffset), cos(rotOffset)) * distortion;
  
     float2 distortedCoords = coords + distortionOffset;
-    distortedCoords += screenOffset;
     float2 offset = float2(time * -0.05, 0.0);
     float2 offset2 = float2(time * 0.05, 0.3);
     
@@ -200,6 +207,7 @@ float4 CausticsPS(VertexShaderOutput input) : COLOR
 float4 PosterizePS(VertexShaderOutput input) : COLOR
 {
     float2 coords = input.TextureCoordinates;
+   
     float4 finalColor = tex2D(SpriteTextureSampler, coords);
     finalColor.r = posterize(finalColor.r, levels);
     finalColor.g = posterize(finalColor.g, levels);
@@ -215,15 +223,13 @@ float4 SparklingCausticsPS(VertexShaderOutput input) : COLOR
     float alpha = heightMapColor.a;
     alpha = pow(alpha, 4.0);
     coords *= tiling;
-
     
-    float d = tex2D(SpriteTextureSampler, coords + float2(time * -0.02, time * -0.04) + screenOffset).r;
+    float d = tex2D(SpriteTextureSampler, coords + float2(time * -0.02, time * -0.04)).r;
     float rotOffset = d * 3.14;
     float2 distortionOffset = float2(sin(rotOffset), cos(rotOffset)) * distortion;
  
     float2 distortedCoords = coords + distortionOffset;
-    distortedCoords += screenOffset;
-    
+
     float2 offset = float2(time * -0.05, 0.0);
     float2 offset2 = float2(time * 0.05, 0.3);
     
@@ -241,7 +247,7 @@ float4 FoamPS(VertexShaderOutput input) : COLOR
     float2 coords = input.TextureCoordinates;
     float4 heightMapColor = tex2D(HeightMapTextureSampler, coords);
     float2 offsetCoords = (coords * tiling) + float2(0.0, time * -0.05);
-    offsetCoords += coords + screenOffset;
+    offsetCoords += screenOffset;
     
     float foam = tex2D(SpriteTextureSampler, offsetCoords);
     float power = lerp(8.0, 0.3, heightMapColor.a);
@@ -287,6 +293,7 @@ float4 CombinePS(VertexShaderOutput input) : COLOR
     float3 gradient = lerp(endGradient, startGradient, heightMapColor.a);
     
     //First let's calculate the gradient
+
     float4 baseWaterColor = tex2D(SpriteTextureSampler, coords);
     
     //Don't want to write if statements in a shader if possible
@@ -309,6 +316,13 @@ technique SpriteDrawing
     pass P0
     {
         PixelShader = compile PS_SHADERMODEL MainPS();
+    }
+};
+technique WrapDrawing
+{
+    pass P0
+    {
+        PixelShader = compile PS_SHADERMODEL WrapPS();
     }
 };
 technique HeightDrawing
