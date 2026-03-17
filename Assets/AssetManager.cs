@@ -9,6 +9,7 @@ namespace Stellamod.Assets
     {
         public class Noise
         {
+            public static Asset<Texture2D> AuroraRays;
             public static Asset<Texture2D> Whirly;
         }
 
@@ -65,6 +66,7 @@ namespace Stellamod.Assets
 
             Noise.Whirly = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Whirly");
 
+            Noise.AuroraRays = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/AuroraRays");
         }
         public override void OnModUnload()
         {
@@ -90,6 +92,7 @@ namespace Stellamod.Assets
             LaserTextures.PetalNoise = null;
 
             Noise.Whirly = null;
+            Noise.AuroraRays = null;
         }
     }
 }

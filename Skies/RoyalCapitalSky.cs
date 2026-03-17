@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
 using Stellamod.Content.Biomes;
@@ -12,6 +14,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Skies
 {
+
     public class RoyalCapitalStars : ModSystem
     {
         private Vector2 _parallax;

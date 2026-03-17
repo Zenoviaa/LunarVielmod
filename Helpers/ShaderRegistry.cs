@@ -198,6 +198,8 @@ namespace Stellamod.Helpers
 
             //Skies
 
+           
+
             SkyManager.Instance["LunarVeil:RoyalCapitalSky"] = new RoyalCapitalSky();
             SkyManager.Instance["LunarVeil:RoyalCapitalSky"].Load();
 
