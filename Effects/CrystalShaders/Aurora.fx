@@ -30,6 +30,16 @@ sampler2D GradientTextureSampler = sampler_state
     AddressU = wrap;
     AddressV = wrap;
 };
+Texture2D GradientBackTexture;
+sampler2D GradientBackTextureSampler = sampler_state
+{
+    Texture = <GradientBackTexture>;
+    magfilter = POINT;
+    minfilter = POINT;
+    mipfilter = POINT;
+    AddressU = wrap;
+    AddressV = wrap;
+};
 
 Texture2D DistortionTexture;
 sampler2D DistortionTextureSampler = sampler_state
@@ -56,6 +66,9 @@ float QuadraticBump(float t)
 float SampleRayNoise(float2 coords, float2 noiseOffset)
 {
     float2 uv = coords;
+    uv += Parallax;
+    uv = frac(uv);
+    
     float2 distortedCoords = uv;
     distortedCoords += float2(Time * -0.05, 0.0);
     distortedCoords = frac(distortedCoords);
@@ -74,6 +87,10 @@ float SampleRayNoise(float2 coords, float2 noiseOffset)
     auroraCoords += noiseOffset;
     auroraCoords = frac(auroraCoords);
     float noise = tex2D(uImage0, auroraCoords).r;
+    
+    //Create oscilliation in the colors
+    float black = sin(Time + uv.x * 16.0) * 0.5 + 0.5;
+    noise *= black;
     return noise;
 }
 
@@ -86,8 +103,17 @@ float3 SampleRayColor(float2 uv, float depth)
     const float3 auroraBackEnd = float3(194.0 / 255.0, 91.0 / 255.0, 198.0 / 255.0);
     
 
+    float2 gradientCoords = uv * 8.0;
+    gradientCoords.x += Time * -0.1;
+    gradientCoords = frac(gradientCoords);
+    float3 gradientStartRGB = tex2D(GradientTextureSampler, gradientCoords).rgb;
+    float3 gradientEndRGB = tex2D(GradientBackTextureSampler, gradientCoords).rgb;
+    
+    
+    
+    
     float3 mixedEnd = lerp(auroraEnd, auroraBackEnd, depth);
-    float3 col = lerp(auroraStart, mixedEnd, uv.y);
+    float3 col = lerp(gradientStartRGB, gradientEndRGB, uv.y);
     return col;
 }
 

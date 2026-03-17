@@ -327,7 +327,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 Color color1 = Color.Lerp(Color.LightGreen, Color.LightPink, ExtraMath.Osc(0f, 1f, speed: 0.4f));
                 Color color2 = Color.Lerp(Color.Cyan, color1, ExtraMath.Osc(0f, 1f, offset: 1, speed: 0.4f));
                 Color finalColor = Color.Lerp(Color.White, color2, ExtraMath.Osc(0f, 1f, offset: 2, speed: 0.4f) * 0.5f);
-                BackLightColor = finalColor * 0.6f;
+                BackLightColor = finalColor * 0.8f;
             }
             foreach (var backLightModifier in _backLightModifiers)
             {

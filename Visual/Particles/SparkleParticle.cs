@@ -18,6 +18,7 @@ namespace Stellamod.Visual.Particles
         public float dampening;
         public bool fast;
         public bool flickering;
+        public bool easeInFade;
         public override void OnSpawn()
         {
             gravity = 0.2f;
@@ -64,6 +65,10 @@ namespace Stellamod.Visual.Particles
             if (flickering)
             {
                 color *= ExtraMath.Osc(0f, 1f, speed: 8, 0);
+            }
+            if (easeInFade)
+            {
+                color *= EasingFunction.InOutSine(fadeIn / 30f);
             }
             spriteBatch.Draw(textureAsset.Value, centerPos, Frame, color, Rotation, Frame.Size() / 2f, Scale, SpriteEffects.None, 0);
         }

@@ -12,6 +12,10 @@ namespace Stellamod.Backgrounds
         {
             get
             {
+                if (!Main.dayTime)
+                {
+                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/CountingStars");
+                }
                 return -1;
             }
         }

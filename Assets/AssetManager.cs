@@ -26,6 +26,10 @@ namespace Stellamod.Assets
             public static Asset<Texture2D> MagicCircle2;
             public static Asset<Texture2D> MagicBloodCircle;
             public static Asset<Texture2D> EmptyGradient;
+            public static Asset<Texture2D> AuroraGradient;
+            public static Asset<Texture2D> AuroraBackGradient;
+            public static Asset<Texture2D> ShootingStarTrail;
+            public static Asset<Texture2D> ShootingStarGlint;
         }
  
         public class LaserTextures
@@ -56,7 +60,10 @@ namespace Stellamod.Assets
             GlowMask.MagicBloodCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MagicBloodCircle");
             GlowMask.SpiralVortex2 = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/SpiralVortex2");
             GlowMask.EmptyGradient = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/EmptyGradient");
-
+            GlowMask.AuroraGradient = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/AuroraGradient");
+            GlowMask.AuroraBackGradient = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/AuroraBackGradient");
+            GlowMask.ShootingStarGlint = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/ShootingStarGlint");
+            GlowMask.ShootingStarTrail = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/ShootingStarParticle");
             LaserTextures.TexturedLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser");
             LaserTextures.TexturedLaser2 = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser2");
             LaserTextures.SnowflakeLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/SnowflakeLaser");
@@ -83,6 +90,10 @@ namespace Stellamod.Assets
             GlowMask.MagicCircle2 = null;
             GlowMask.MagicBloodCircle = null;
             GlowMask.EmptyGradient = null;
+            GlowMask.ShootingStarGlint = null;
+            GlowMask.ShootingStarTrail = null;
+            GlowMask.AuroraGradient = null;
+            GlowMask.AuroraBackGradient = null;
 
             LaserTextures.TexturedLaser = null;
             LaserTextures.TexturedLaser2 = null;

@@ -35,6 +35,8 @@ float2 resolution;
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 {
+    coords += uDirection;
+    coords = frac(coords);
     float l = length(coords);
     float2 starNoiseCoords = (coords * resolution - uSourceRect.xy) / primaryTextureSize;
     
