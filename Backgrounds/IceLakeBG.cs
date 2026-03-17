@@ -31,6 +31,7 @@ namespace Stellamod.Backgrounds
 
     public class IceLakeBG : CustomBG
     {
+        public CustomBGLayer bleedLayer;
         public CustomBGLayer vanillaLayer;
         public CustomBGLayer backLayer;
         public CustomBGLayer back2Layer;
@@ -58,12 +59,8 @@ namespace Stellamod.Backgrounds
             base.SetStaticDefaults();
             DrawScale = 1.5f;
             DrawOffset = new Vector2(0, -100);
+
             float startParallax = 0.15f;
-            CustomBGLayer bleedLayer = new CustomBGLayer();
-            bleedLayer.SetTexture("Assets/Textures/Backgrounds/IceUnderground");
-            bleedLayer.Parallax = startParallax;
-            bleedLayer.DrawOffset = new Vector2(0, bleedLayer.Texture.Size().Y * DrawScale * 2);
-            AddLayer(bleedLayer);
 
             AddBackmostLayer();
             AddBackmost2Layer();
@@ -116,6 +113,11 @@ namespace Stellamod.Backgrounds
             front2Layer.DrawOffset = Vector2.Zero;
             AddLayer(front2Layer);
 
+            bleedLayer = new CustomBGLayer();
+            bleedLayer.SetTexture("Assets/Textures/Backgrounds/IceUnderground");
+            bleedLayer.Parallax = startParallax;
+            bleedLayer.DrawOffset = new Vector2(0, bleedLayer.Texture.Size().Y * DrawScale * 2);
+            AddLayer(bleedLayer);
         }
         public override void SetDrawDefaults()
         {
@@ -135,6 +137,11 @@ namespace Stellamod.Backgrounds
             midLayer.Parallax = 0.09f;
             frontLayer.Parallax = 0.12f;
             front2Layer.Parallax = 0.18f;
+
+            frontLayer.DrawOffset = front2Layer.DrawOffset = new Vector2(0, 0);
+            bleedLayer.DrawOffset = new Vector2(0, 1590);
+            bleedLayer.Parallax = front2Layer.Parallax;
+            DrawOffset = new Vector2(0, 0);
         }
 
         public override bool IsActive()
