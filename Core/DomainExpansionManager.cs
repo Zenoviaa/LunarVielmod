@@ -26,6 +26,19 @@ namespace Stellamod.Core
 
     }
 
+    public class DomainExpansionGlobalProjectile : GlobalProjectile
+    {
+        public override void SetDefaults(Projectile entity)
+        {
+            base.SetDefaults(entity);
+            DomainExpansionManager domainExpansionManager = ModContent.GetInstance<DomainExpansionManager>();
+            if (domainExpansionManager.inSpace)
+            {
+                entity.tileCollide = false;
+            }
+        }
+    }
+
     public class DomainExpansionManager : ModSystem
     {
         private bool[] _prevTileSolid;
@@ -37,6 +50,7 @@ namespace Stellamod.Core
         public override void OnModLoad()
         {
             base.OnModLoad();
+         
             On_Player.SlopingCollision += HoverPlatformCollisionCheck;
             On_Collision.WetCollision += DisableWetCollisions;
         }

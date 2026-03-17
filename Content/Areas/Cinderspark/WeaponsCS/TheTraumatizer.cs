@@ -153,6 +153,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
             Projectile.Center = Owner.MountedCenter; 
             float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile, 800);
+
             BeamLength = targetBeamLength;
             // Fade in.
             Projectile.alpha = Utils.Clamp(Projectile.alpha - 25, 0, 255);
