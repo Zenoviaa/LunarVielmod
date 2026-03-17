@@ -104,7 +104,7 @@ public class AuroraEffectRenderer : ModSystem
         skyGradientShader.H = 0;
         skyGradientShader.Bend = -0.24f;
         skyGradientShader.StartColor = Color.Transparent;
-        skyGradientShader.MidColor = Color.Lerp(Color.Transparent, Color.Blue * 0.83f, ease);
+        skyGradientShader.MidColor = Color.Lerp(Color.Transparent, Color.Blue * 0.5f, ease);
         skyGradientShader.EndColor = Color.Transparent;
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone,
             skyGradientShader.Effect);
@@ -143,7 +143,7 @@ public class AuroraEffectRenderer : ModSystem
         Color rayColorGlow = Color.Blue;
         rayColorGlow.A = 0;
         Rectangle dstRect3 = new Rectangle(-8, 0, (int)(_auroraRT.Width * 2f), (int)(_auroraRT.Height * 0.4f));
-        spriteBatch.Draw(texture, dstRect3, srcRect, rayColorGlow * 1 * ease, rotation, Vector2.Zero, SpriteEffects.None, 0);
+        spriteBatch.Draw(texture, dstRect3, srcRect, rayColorGlow * 0.5f * ease, rotation, Vector2.Zero, SpriteEffects.None, 0);
 
         //    spriteBatch.Draw(texture, dstRect2, srcRect2, rayColor * 0.3f, backRotation, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
 
