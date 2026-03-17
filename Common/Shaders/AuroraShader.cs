@@ -102,7 +102,7 @@ public class AuroraEffectRenderer : ModSystem
 
         SkyGradientShader skyGradientShader = SkyGradientShader.Instance;
         skyGradientShader.H = 0;
-        skyGradientShader.Bend = -0.4f;
+        skyGradientShader.Bend = -0.24f;
         skyGradientShader.StartColor = Color.Transparent;
         skyGradientShader.MidColor = Color.Lerp(Color.Transparent, Color.Blue * 0.83f, ease);
         skyGradientShader.EndColor = Color.Transparent;
