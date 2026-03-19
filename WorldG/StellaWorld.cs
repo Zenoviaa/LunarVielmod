@@ -374,9 +374,9 @@ namespace Stellamod.WorldG
             WorldGen.TileRunner(capitalSpot.X + 260, capitalSpot.Y + 600, 550, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
 
 
-            int sb = ModContent.TileType<Tiles.StarbloomDirt>();
-            TileID.Sets.CanBeClearedDuringOreRunner[sb] = false;
-            TileID.Sets.CanBeClearedDuringGeneration[sb] = false;
+            //int sb = ModContent.TileType<Tiles.StarbloomDirt>();
+           // TileID.Sets.CanBeClearedDuringOreRunner[sb] = false;
+          //  TileID.Sets.CanBeClearedDuringGeneration[sb] = false;
 
 
         }
