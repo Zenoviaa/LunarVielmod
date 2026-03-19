@@ -113,11 +113,17 @@ namespace Stellamod.WorldG
     }
     public class StellaWorld : ModSystem
     {
+        public Point RoyalCapitalLocation { get; private set; }
+        public Point VeizalHillStartLcoation { get; private set; }
+        public Point VeizalHillEndLocation { get; private set; }
         public Point MistyHillStartLocation { get; private set; }
         public Point MistyHillEndLocation { get; private set; }
         public Point MistyDungeonLocation { get; private set; }
         public Point FableFarEdgeLocation { get; private set; }
         public Point FableLocation { get; private set; }
+     
+        public Point FableHillStartLocation { get; private set; }
+        public Point FableHillEndLocation { get; private set; }
         public Point DesertLocation { get; private set; }
         public Point WitchTownLocation { get; private set; }
         public Point ManorLocation { get; private set; }
@@ -275,6 +281,7 @@ namespace Stellamod.WorldG
 
         private void AddNewGenerationPasses(List<GenPass> tasks, ref double totalWeight)
         {
+            WorldGen.crimson = true;
             PassWriter passWriter = new PassWriter(tasks);
             passWriter.SetInsertionIndex("Ocean Sand");
             passWriter.NextPass(new ReworkedOceanSandPass());
@@ -288,9 +295,19 @@ namespace Stellamod.WorldG
             passWriter.NextPass(new PassLegacy("Set Xix Village Location", SetXixVillageLocation));
             passWriter.NextPass(new PassLegacy("World Gen GenVar Locations", WorldGenVarLocations));
             passWriter.NextPass(new PassLegacy("World Gen GenVar Locations2", WorldGenSpawnPoint));
-       
+            passWriter.NextPass(new PassLegacy("FableTerrain", WorldGenFableTerrain));
+            passWriter.NextPass(new PassLegacy("MarshTerrain", WorldGenMarsh));
+            passWriter.NextPass(new PassLegacy("Veizal Hill Terrain", WorldGenVeizalHillsTerrain));
+            passWriter.NextPass(new PassLegacy("Misty Dungeon Hill Terrain", WorldGenMistyDungeonHill));
+            passWriter.NextPass(new PassLegacy("Caves 1", WorldGenCaves));
+            passWriter.NextPass(new PassLegacy("RoyalCapitalTerrain", WorldGenCapitalTerrain));
+            passWriter.NextPass(new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
+
             passWriter.SetInsertionIndex("Shimmer");
             passWriter.NextPass(new PassLegacy("Fake Shimmer", WorldGenShimmerSpot));
+
+            passWriter.SetInsertionIndex("Planting Trees");
+            passWriter.NextPass(new PassLegacy("MarshTrees", WorldGenMarshTrees));
 
             passWriter.SetInsertionIndex("Micro Biomes");
             passWriter.NextPass(new PassLegacy("World Gen Other stones", WorldGenDarkstone));
@@ -301,13 +318,11 @@ namespace Stellamod.WorldG
             passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
 
             passWriter.NextPass(new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
-            passWriter.NextPass(new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
-            passWriter.NextPass(new PassLegacy("World Gen Marsh", WorldGenMarsh));
+
             passWriter.NextPass(new PassLegacy("World Gen Hills and Veizal House", WorldGenHillsAndVeizal));
 
             passWriter.NextPass(new PassLegacy("HillsnFable", WorldGenFabiliaRuin));
             passWriter.NextPass(new PassLegacy("World Gen Rysa House", WorldGenRysaHouse));
-            passWriter.NextPass(new PassLegacy("MistyDungeonHill", WorldGenMistyDungeonHill));
             passWriter.NextPass(new PassLegacy("MistyDungeon", GenerateMistyDungeon));
 
             passWriter.SetInsertionIndex("Generate Ice Biome");
@@ -323,7 +338,7 @@ namespace Stellamod.WorldG
 
             passWriter.SetInsertionIndex("Jungle");
             passWriter.NextPass(new MarshJungleMudPass());
-            passWriter.NextPass(new PassLegacy("Caves 1", WorldGenCaves));
+          
             passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
 
             //Set desert location
@@ -343,12 +358,25 @@ namespace Stellamod.WorldG
             passWriter.NextPass(new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
             passWriter.NextPass(new PassLegacy("World Gen Stone Golem Cave", WorldGenStoneGolemCave));
             passWriter.NextPass(new PassLegacy("Grassing Caves", WorldGenGrassPass));
-
         }
 
-        private void WorldGenHillsAndVeizal(GenerationProgress progress, GameConfiguration configuration)
+        private void WorldGenCapitalTerrain(GenerationProgress progress, GameConfiguration configuration)
         {
-            progress.Message = "Hills and Veizal's House";
+            progress.Message = "Royal Capital Dirt";
+
+            Point capitalSpot = new Point(666, 1000);
+            capitalSpot = FallToSolidTile(capitalSpot);
+            RoyalCapitalLocation = capitalSpot;
+            WorldGen.TileRunner(capitalSpot.X + 260, capitalSpot.Y + 10, 350, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, false);
+            WorldGen.TileRunner(capitalSpot.X + 260, capitalSpot.Y + 100, 550, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
+            WorldGen.TileRunner(capitalSpot.X + 260, capitalSpot.Y + 250, 350, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
+            WorldGen.TileRunner(capitalSpot.X + 260, capitalSpot.Y + 400, 550, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
+            WorldGen.TileRunner(capitalSpot.X + 260, capitalSpot.Y + 600, 550, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
+
+        }
+        private void WorldGenVeizalHillsTerrain(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Veizal Hills Terrain";
             Point startHillTile = MarshLocation;
             startHillTile.X += 1400;
             Point endHillTile = startHillTile;
@@ -359,13 +387,14 @@ namespace Stellamod.WorldG
             {
                 endHillTile.Y++;
             }
-
+         
 
             //Move the start tile backwards so it connects to the marsh
             while (WorldGen.InWorld(startHillTile.X, startHillTile.Y) && !WorldGen.SolidTile(endHillTile.X, endHillTile.Y))
             {
                 startHillTile.X--;
             }
+
 
             Point waterLakeStart = new Point();
             waterLakeStart.X = (int)MathHelper.Lerp(startHillTile.X, endHillTile.X, 0.2f);
@@ -380,6 +409,8 @@ namespace Stellamod.WorldG
             //Move a bit more into the hill so it's more cleanly integrated
             startHillTile.X -= 80;
 
+            VeizalHillStartLcoation = startHillTile;
+            VeizalHillEndLocation = endHillTile;
             for (int x = startHillTile.X; x < endHillTile.X; x++)
             {
                 //Calculate heights, creating a slowly descending slope
@@ -403,6 +434,11 @@ namespace Stellamod.WorldG
                 }
             }
             GenerateBowlLake(waterLakeStart, waterLakeEnd, maxLakeDepth: 65);
+        }
+        private void WorldGenHillsAndVeizal(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Hills and Veizal's House";
+   
             //Place Veizal Manor
             StructureMap structures = GenVars.structures;
             string structure = "Struct/Overworld/VeizalManor";
@@ -416,7 +452,7 @@ namespace Stellamod.WorldG
             for (int a = 0; a < maxAttemptCount; a++)
             {
                 // Select a place in the first 6th of the world, avoiding the oceans
-                int x = (int)MathHelper.Lerp(startHillTile.X, endHillTile.X, 0.8f);
+                int x = (int)MathHelper.Lerp(VeizalHillStartLcoation.X, VeizalHillEndLocation.X, 0.8f);
                 int y = (int)(Main.worldSurface - 500);
                 Point tileToPlaceOn = FallToSolidTile(x, y);
                 int cathedralY = tileToPlaceOn.Y;
@@ -616,10 +652,13 @@ namespace Stellamod.WorldG
             progress.Message = "Ending the World";
 
             int startTileX = 0;
-            int endTileX = AlcadLocation.X;
+            int endTileX = RoyalCapitalLocation.X;
             int maxDepth = 125;
             int minDepth = 25;
             int grass = ModContent.TileType<WhiteGrass>();
+
+            TileID.Sets.CanBeClearedDuringGeneration[grass] = false;
+            TileID.Sets.CanBeClearedDuringOreRunner[grass] = false;
 
             //Create a base for all the grass
             for (int tileX = startTileX; tileX < endTileX; tileX++)
@@ -637,7 +676,7 @@ namespace Stellamod.WorldG
                 }
             }
 
-            Point startSlope = AlcadLocation;
+            Point startSlope = RoyalCapitalLocation;
             startSlope.X -= 250;
 
             int startSlopeY = startSlope.Y;
@@ -922,6 +961,12 @@ namespace Stellamod.WorldG
             progress.Message = "Creating the Marsh";
             int marshTileLength = 1400;
             VeilGen.GenerateMarsh(MarshLocation, marshTileLength);
+        }
+        private void WorldGenMarshTrees(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Planting the Marshy Trees";
+            int marshTileLength = 1400;
+            VeilGen.GenerateMarshFoliage(MarshLocation, marshTileLength);
 
             //Place Gothivia Spot
             Point treeTile = MarshLocation + GothiviaSpawnOffset;
@@ -931,7 +976,6 @@ namespace Stellamod.WorldG
             }
             WorldGen.PlaceWall(treeTile.X, treeTile.Y, ModContent.WallType<TheSeededTree>());
         }
-
         private void WorldGenVarLocations(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Locking Snow Biome Location";
@@ -1748,7 +1792,7 @@ namespace Stellamod.WorldG
             evilPoint.X += 200;
             evilPoint.Y -= 300;
             evilPoint = FallToSolidTile(evilPoint);
-
+            evilPoint.Y += 150;
             int radius = 96;
             ushort blockType = WorldGen.crimson ? TileID.Crimstone : TileID.Ebonstone;
             ushort wallType = WorldGen.crimson ? WallID.CrimsonUnsafe1 : WallID.CorruptionUnsafe1;
@@ -2869,7 +2913,7 @@ namespace Stellamod.WorldG
             progress.Message = "A Mysterious Hill...";
             //Calculate the starting location
             Point startHillTile = FableFarEdgeLocation;
-            startHillTile.X += 248;
+            startHillTile.X += 150;
             startHillTile.Y -= 200;
             startHillTile = FallToSolidTile(startHillTile.X, startHillTile.Y);
             startHillTile.Y += 36;
@@ -2903,18 +2947,16 @@ namespace Stellamod.WorldG
             MistyDungeonLocation = placementTile;      
         }
 
-
-
-
-        private void WorldGenFabiliaRuin(GenerationProgress progress, GameConfiguration configuration)
+        private void WorldGenFableTerrain(GenerationProgress progress, GameConfiguration configuration)
         {
-            progress.Message = "Daedus is Reading Books...";
+            progress.Message = "Fable Terrain";
             //Calculate the starting location
             Point startHillTile = WitchTownLocation;
             startHillTile.X += 248;
             startHillTile.Y -= 200;
             startHillTile = FallToSolidTile(startHillTile.X, startHillTile.Y);
             startHillTile.Y += 36;
+            FableHillStartLocation = startHillTile;
 
             //Calculate the ending location
             Point endHillTile = startHillTile;
@@ -2922,6 +2964,7 @@ namespace Stellamod.WorldG
             endHillTile.Y -= 200;
             endHillTile = FallToSolidTile(endHillTile.X, endHillTile.Y);
             endHillTile.Y += 10;
+            FableHillEndLocation = endHillTile;
 
             float hillHeight = 200;
             float width = endHillTile.X - startHillTile.X;
@@ -2943,17 +2986,22 @@ namespace Stellamod.WorldG
             placementTile += new Point(10, 53);
 
             FableLocation = placementTile;
-            NPCs.Town.AlcadSpawnSystem.FableTile = placementTile;
+        }
+        private void WorldGenFabiliaRuin(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Daedus is Reading Books...";
+
+            NPCs.Town.AlcadSpawnSystem.FableTile = FableLocation;
             Structurizer.PlaceAndProtect(new StructurePlacementParams
             {
-                tile = placementTile,
+                tile = FableLocation,
                 structurePath = StructureAssets.Fable,
                 tileBlend = Structurizer.DefaultTileBlend
             });
 
             //Placing a falling off slope at the end of the structure
             Rectangle fableRect = Structurizer.ReadRectangle(StructureAssets.Fable);
-            Point fableFalloffStart = placementTile + new Point(fableRect.Width, 0);
+            Point fableFalloffStart = FableLocation + new Point(fableRect.Width, 0);
             fableFalloffStart.Y -= 54;
             fableFalloffStart.X -= 20;
 
@@ -2962,7 +3010,7 @@ namespace Stellamod.WorldG
             fableFalloffEnd = FallToSolidTile(fableFalloffEnd.X, fableFalloffEnd.Y);
             fableFalloffEnd.Y += 10;
 
-            width = fableFalloffEnd.X - fableFalloffStart.X;
+            float width = fableFalloffEnd.X - fableFalloffStart.X;
             for (int x = fableFalloffStart.X; x < fableFalloffEnd.X; x++)
             {
                 float ratio = (x - fableFalloffStart.X) / width;
@@ -2976,11 +3024,11 @@ namespace Stellamod.WorldG
 
             FableFarEdgeLocation = fableFalloffEnd;
             Point startCaveTile = new Point();
-            startCaveTile.X = (int)MathHelper.Lerp(startHillTile.X, endHillTile.X, 0.2f);
+            startCaveTile.X = (int)MathHelper.Lerp(FableHillStartLocation.X, FableHillEndLocation.X, 0.2f);
             startCaveTile.Y = (int)(Main.worldSurface - 400);
 
             Point endCaveTile = new Point();
-            endCaveTile.X = (int)MathHelper.Lerp(startHillTile.X, endHillTile.X, 0.4f);
+            endCaveTile.X = (int)MathHelper.Lerp(FableHillStartLocation.X, FableHillEndLocation.X, 0.4f);
             endCaveTile.Y = (int)(Main.worldSurface - 400);
 
             startCaveTile = FallToSolidTile(startCaveTile.X, startCaveTile.Y);
@@ -6964,146 +7012,113 @@ namespace Stellamod.WorldG
             int attempts = 0;
             while (!placed && attempts++ < 10000000)
             {
-                // Select a place in the first 6th of the world, avoiding the oceans
-                int smx = WorldGen.genRand.Next(400, (Main.maxTilesX) / 15); // from 50 since there's a unaccessible area at the world's borders
-                                                                             // 50% of choosing the last 6th of the world
-                                                                             // Choose which side of the world to be on randomly
-                smx += 150;
-                //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-                int smy = ((int)(Main.worldSurface - 200));
-
-                // We go down until we hit a solid tile or go under the world's surface
-                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
+                Point Loc = RoyalCapitalLocation; 
+                rectangle.Location = Loc;
+                NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
+                AlcadLocation = Loc;
+                Structurizer.ProtectStructure(Loc, "Structures/RoyalCapital");
+                var tileBlend = new int[]
                 {
-                    smy++;
-                }
+                    TileID.RubyGemspark
+                };
 
-                // If we went under the world's surface, try again
-                if (smy > Main.worldSurface - 20)
+                int[] ChestIndexs = Structurizer.ReadStruct(Loc, "Structures/RoyalCapital", tileBlend);
+
+                foreach (int chestIndex in ChestIndexs)
                 {
-                    continue;
-                }
-                Tile tile = Main.tile[smx, smy];
+                    var chest = Main.chest[chestIndex];
+                    // etc
 
-                int smxx = smx;
-                int smyy = smy;
-                for (int da = 0; da < 1; da++)
-                {
-                    pointAlcadthingy = new Point(smx - 10, smyy + 3);
+                    // itemsToAdd will hold type and stack data for each item we want to add to the chest
+                    var itemsToAdd = new List<(int type, int stack)>();
 
-                    WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 10, 300, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, false);
-                    WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 100, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
-                    WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 250, 300, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
-                    WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 400, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
-                    WorldGen.TileRunner(pointAlcadthingy.X + 260, pointAlcadthingy.Y + 600, 500, 2, ModContent.TileType<Tiles.StarbloomDirt>(), true, 0f, 0f, true, true);
+                    // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+                    int specialItem = new Terraria.Utilities.WeightedRandom<int>(
 
-                    Point Loc = new Point(smx + 20, smyy + 10);
-                    rectangle.Location = Loc;
-                    NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
-                    AlcadLocation = Loc;
-                    Structurizer.ProtectStructure(Loc, "Structures/RoyalCapital");
-                    var tileBlend = new int[]
+                        //  Tuple.Create(ModContent.ItemType<LostScrap>(), 0.1),
+                        Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+
+                    // Choose no item with a high weight of 7.
+                    );
+                    if (specialItem != ItemID.None)
                     {
-                        TileID.RubyGemspark
-                    };
-
-                    int[] ChestIndexs = Structurizer.ReadStruct(Loc, "Structures/RoyalCapital", tileBlend);
-
-                    foreach (int chestIndex in ChestIndexs)
+                        itemsToAdd.Add((specialItem, 1));
+                    }
+                    // Using a switch statement and a random choice to add sets of items.
+                    switch (Main.rand.Next(6))
                     {
-                        var chest = Main.chest[chestIndex];
-                        // etc
+                        case 0:
+                            itemsToAdd.Add((ModContent.ItemType<LittleWand>(), Main.rand.Next(1, 1)));
+                            itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
 
-                        // itemsToAdd will hold type and stack data for each item we want to add to the chest
-                        var itemsToAdd = new List<(int type, int stack)>();
-
-                        // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-                        int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-                            //  Tuple.Create(ModContent.ItemType<LostScrap>(), 0.1),
-                            Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-                        // Choose no item with a high weight of 7.
-                        );
-                        if (specialItem != ItemID.None)
-                        {
-                            itemsToAdd.Add((specialItem, 1));
-                        }
-                        // Using a switch statement and a random choice to add sets of items.
-                        switch (Main.rand.Next(6))
-                        {
-                            case 0:
-                                itemsToAdd.Add((ModContent.ItemType<LittleWand>(), Main.rand.Next(1, 1)));
-                                itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-
-                                ;
-                                itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
-                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
-                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
-                                break;
-                            case 1:
-                                itemsToAdd.Add((ModContent.ItemType<AlcaricQuiver>(), Main.rand.Next(1, 1)));
-                                itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-                                itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-                                itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+                            ;
+                            itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+                            itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+                            itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
+                            break;
+                        case 1:
+                            itemsToAdd.Add((ModContent.ItemType<AlcaricQuiver>(), Main.rand.Next(1, 1)));
+                            itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+                            itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+                            itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
 
 
-                                itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-                                itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
-                                break;
-                            case 2:
-                                itemsToAdd.Add((ModContent.ItemType<BlackRose>(), Main.rand.Next(1, 1)));
-                                itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-                                itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
+                            itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+                            itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+                            break;
+                        case 2:
+                            itemsToAdd.Add((ModContent.ItemType<BlackRose>(), Main.rand.Next(1, 1)));
+                            itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+                            itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
 
-                                itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-                                itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-                                break;
-                            case 3:
-                                //   itemsToAdd.Add((ModContent.ItemType<FloweredInsource>(), Main.rand.Next(1, 1)));
-                                // itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
-                                itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-                                itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-                                itemsToAdd.Add((ModContent.ItemType<AlcadizScrap>(), Main.rand.Next(5, 20)));
+                            itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
+                            itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+                            break;
+                        case 3:
+                            //   itemsToAdd.Add((ModContent.ItemType<FloweredInsource>(), Main.rand.Next(1, 1)));
+                            // itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
+                            itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+                            itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+                            itemsToAdd.Add((ModContent.ItemType<AlcadizScrap>(), Main.rand.Next(5, 20)));
 
-                                itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
+                            itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
 
-                                break;
-                            case 4:
-                                itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
-                                itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-                                itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-                                itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
+                            break;
+                        case 4:
+                            itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+                            itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+                            itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+                            itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
 
-                                itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-                                itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-                                break;
+                            itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
+                            itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+                            break;
 
-                            case 5:
-                                itemsToAdd.Add((ItemID.FuneralHat, Main.rand.Next(1, 1)));
-                                itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-                                itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
-                                itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-                                itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-                                break;
+                        case 5:
+                            itemsToAdd.Add((ItemID.FuneralHat, Main.rand.Next(1, 1)));
+                            itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+                            itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
+                            itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
+                            itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+                            break;
 
 
-                        }
+                    }
 
-                        // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-                        int chestItemIndex = 0;
-                        foreach (var itemToAdd in itemsToAdd)
-                        {
-                            Item item = new Item();
-                            item.SetDefaults(itemToAdd.type);
-                            item.stack = itemToAdd.stack;
-                            chest.item[chestItemIndex] = item;
-                            chestItemIndex++;
-                            if (chestItemIndex >= 40)
-                                break; // Make sure not to exceed the capacity of the chest
-                        }
+                    // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+                    int chestItemIndex = 0;
+                    foreach (var itemToAdd in itemsToAdd)
+                    {
+                        Item item = new Item();
+                        item.SetDefaults(itemToAdd.type);
+                        item.stack = itemToAdd.stack;
+                        chest.item[chestItemIndex] = item;
+                        chestItemIndex++;
+                        if (chestItemIndex >= 40)
+                            break; // Make sure not to exceed the capacity of the chest
                     }
                 }
+                
 
                 placed = true;
 

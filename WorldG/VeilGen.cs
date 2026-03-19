@@ -966,7 +966,7 @@ namespace Stellamod.WorldG
             return y + 0.1f;
         }
 
-        public static void GenerateMarsh(Point startTile, int length)
+        public static void GenerateMarshFoliage(Point startTile, int length)
         {
             var genRand = WorldGen.genRand;
 
@@ -978,15 +978,9 @@ namespace Stellamod.WorldG
             for (int x = startTile.X; x < endTile.X; x++)
             {
                 float localX = x - startTile.X;
-
                 float ratio = localX / (float)length;
-                // Console.WriteLine(ratio);
                 int height = (int)(GetMarshHeight(ratio) * mountainHeight);
                 heights[x - startTile.X] = height;
-                for (int y = 0; y < height; y++)
-                {
-                    WorldGen.PlaceTile(x, startTile.Y - y, grassTileType);
-                }
             }
 
             ushort uGrassTileType = (ushort)grassTileType;
@@ -1118,6 +1112,28 @@ namespace Stellamod.WorldG
                             point += (baseDirection * caveWidth).RotatedByRandom(MathHelper.ToRadians(30)).ToPoint();
                         }
                     }
+                }
+            }
+        }
+        public static void GenerateMarsh(Point startTile, int length)
+        {
+            var genRand = WorldGen.genRand;
+
+            //Generate the terrain
+            Point endTile = startTile + new Point(length, 0);
+            int mountainHeight = 200;
+            int[] heights = new int[length];
+            int grassTileType = ModContent.TileType<RainforestGrass>();
+            for (int x = startTile.X; x < endTile.X; x++)
+            {
+                float localX = x - startTile.X;
+
+                float ratio = localX / (float)length;
+                int height = (int)(GetMarshHeight(ratio) * mountainHeight);
+                heights[x - startTile.X] = height;
+                for (int y = 0; y < height; y++)
+                {
+                    WorldGen.PlaceTile(x, startTile.Y - y, grassTileType);
                 }
             }
         }
