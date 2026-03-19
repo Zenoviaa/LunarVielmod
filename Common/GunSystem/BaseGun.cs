@@ -300,7 +300,19 @@ namespace Stellamod.Common.GunSystem
         public int numberOfReloadsNeeded;
         public int successfulReloads;
         public float reloadRatio => reloadTimer / reloadTime;
-        public BaseGun HeldGun => Player.HeldItem.ModItem as BaseGun;
+        public BaseGun HeldGun
+        {
+            get
+            {
+                BaseGun mouseGun = Main.mouseItem.ModItem as BaseGun;
+
+                if (mouseGun != null)
+                    return mouseGun;
+                BaseGun myGun = Player.HeldItem.ModItem as BaseGun;
+                return myGun;
+                
+            }
+        }
         public static event Action<Player, BaseGun> OnReload;
         public override void ResetEffects()
         {
