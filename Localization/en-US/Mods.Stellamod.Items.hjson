@@ -28,6 +28,7 @@ Common: {
 	GenericDamage: " generic damage"
 	Lantern: Lantern Light Pet
 	LunarStrength: "{0} strength"
+	NoMount: "Your mount withers away..."
 	LanternHelp:
 		'''
 		Summons a magical lantern to follow you and provide light

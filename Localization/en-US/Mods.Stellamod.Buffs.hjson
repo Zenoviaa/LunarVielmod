@@ -925,7 +925,7 @@ SpectralMinion: {
 
 BurnedWings: {
 	DisplayName: Burned Wings
-	Description: Mods.Stellamod.Buffs.BurnedWings.Description
+	Description: You are unable to fly, your wings are weak and burn away...
 }
 
 GreenCarpetMountBuff: {
