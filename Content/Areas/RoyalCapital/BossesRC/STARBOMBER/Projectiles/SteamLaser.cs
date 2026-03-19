@@ -17,7 +17,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
 {
     public class SteamLaser : ModProjectile
     {
-        private float BeamLength;
         private Vector2[] _laserPoints;
         private Vector2[] LaserPoints
         {
