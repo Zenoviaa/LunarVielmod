@@ -66,6 +66,8 @@ namespace Stellamod.Backgrounds
 
         public override bool IsActive()
         {
+            LocalParallaxSpeed = 0.3f;
+            DrawOffset = new Vector2(0, 150);
             return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMarsh;
         }
     }

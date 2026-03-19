@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
 using System;
 using System.Reflection;
 using Terraria;
@@ -14,8 +13,8 @@ namespace Stellamod.WorldG
     {
 
         //We can set the world size to anything, 8400x2400 is large world
-        public int NewMaxTilesX => 9800;
-        public int NewMaxTilesY => 3600;
+        public int NewMaxTilesX => 11800;
+        public int NewMaxTilesY => 4800;
 
         public static int? XSizeOverride;
         public static int? YSizeOverride;

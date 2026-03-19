@@ -10,6 +10,12 @@ using Terraria.WorldBuilding;
 
 namespace Stellamod.Helpers
 {
+    public struct StructurePlacementParams
+    {
+        public Point tile;
+        public string structurePath;
+        public int[] tileBlend;
+    }
     /// <summary>
     /// Class holding methods to save/load structs to binary .str files
     /// </summary>
@@ -28,6 +34,13 @@ namespace Stellamod.Helpers
             return ReadRectangle(stream);
         }
 
+        public static int[] DefaultTileBlend = new int[] { TileID.RubyGemspark };
+        public static int[] PlaceAndProtect(StructurePlacementParams @params)
+        {
+            int[] chestIndices = Structurizer.ReadStruct(@params.tile, @params.structurePath, @params.tileBlend);
+            Structurizer.ProtectStructure(@params.tile, @params.structurePath);
+            return chestIndices;
+        }
         public static Rectangle ReadRectangle(Stream stream)
         {
             using var reader = new BinaryReader(stream, Encoding.UTF8, false);
@@ -377,6 +390,7 @@ namespace Stellamod.Helpers
                     Tile tile = Main.tile[x, y];
                     if (TileID.Sets.IsATreeTrunk[tile.TileType])
                     {
+                      
                         WorldGen.KillTile(x, y, noItem: true);
                     }
                 }

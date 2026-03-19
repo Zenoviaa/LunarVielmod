@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Steamworks;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Terraria;
@@ -87,6 +88,7 @@ namespace Stellamod.Visual.Particles
         public Vector2 stretchScale;
         public float dampening;
         public bool fast;
+        public bool noTileCollide;
 
         public static DustParticle Spawn(Vector2 position, Vector2 velocity, DustParticleSpawnParams? spawnParams = null)
         {
@@ -128,6 +130,9 @@ namespace Stellamod.Visual.Particles
                 active = false;
 
             //Bouncing
+            if (noTileCollide)
+                return;
+
             Vector2 collisionVelocity = Collision.TileCollision(Center, Velocity, 2, 2);
             if (Velocity.X != collisionVelocity.X)
                 Velocity.X = -collisionVelocity.X;
