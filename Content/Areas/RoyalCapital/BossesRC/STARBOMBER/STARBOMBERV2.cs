@@ -586,7 +586,7 @@ public class STARBOMBERV2 : ScarletBoss,
         float i = (MathF.Sin(osc) + 0.5f) / 0.5f;
         StandHeight = MathHelper.Lerp(270, 300, i);
 
-        if(_aggroed)
+        if(_aggroed && !DownedBossTracker.IsDowned(DownedBossFlag.StarBomber))
             MyTarget.AddBuff(ModContent.BuffType<BurnedWings>(), 2);
 
         switch (State)
