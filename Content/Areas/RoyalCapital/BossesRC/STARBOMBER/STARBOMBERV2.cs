@@ -824,7 +824,7 @@ public class STARBOMBERV2 : ScarletBoss,
         }
 
         SwitchState(_patternManager.NextPattern());
-//        SwitchState(AIState.PeenarBlast_Start);
+    //    SwitchState(AIState.SteamWhistle_Start);
     //    SwitchState(AIState.CrashJump_Start);
     }
 

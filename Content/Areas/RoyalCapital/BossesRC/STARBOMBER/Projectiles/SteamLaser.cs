@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
@@ -17,6 +19,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
 {
     public class SteamLaser : ModProjectile
     {
+        private Vector2 _startPoint;
         private Vector2[] _laserPoints;
         private Vector2[] LaserPoints
         {
@@ -54,6 +57,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             Timer++;
             if (Timer == 1)
             {
+                _startPoint = Projectile.Center;
                 SoundStyle railgun = AssetRegistry.Sounds.STARBOMBER.STARRAILGUN;
                 railgun.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(railgun, Projectile.position);
@@ -161,7 +165,18 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
         }
         private float WidthFunction(float completionRatio)
         {
-            return 48 * EasingFunction.QuadraticBump(Timer / 30f);
+            return 32 * EasingFunction.QuadraticBump(Timer / 30f);
+        }
+        private void DrawPixelatedBeam(GraphicsDevice graphicsDevice)
+        {
+            var shader = RichLaserShader.Instance;
+            shader.LaserColor = Color.Pink;
+            shader.InnerColor = Color.Lerp(Color.LightPink, Color.Blue, 0.75f);
+            shader.OuterColor = Color.Violet;
+            shader.LaserTexture = TrailRegistry.BeamTrail;
+            shader.BloomTexture = TrailRegistry.CrystalTrail;
+
+            TrailDrawer.Draw(Main.spriteBatch, LaserPoints, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
         }
         private void DrawLaser()
         {
@@ -176,10 +191,57 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
             TrailDrawer.Draw(spriteBatch, LaserPoints, ColorFunction, WidthFunction, shader, Projectile.Size / 2f);
 
         }
+        public void DrawPixelatedMuzzleFlash(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            Asset<Texture2D> muzzleFlashTexture = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/MuzzleFlash");
+            Vector2 drawOrigin = muzzleFlashTexture.Size() / 2f;
+            Vector2 drawCenter = Projectile.Center - screenPos;
+            Color drawColor = Color.Pink;
+            drawColor.A = 0;
 
+            float width = (float)Projectile.timeLeft / 30f;
+            float outWidth = EasingFunction.InOutSine(width);
+            float scale = outWidth;
+            Vector2 flashScale = Vector2.One;
+            flashScale.X *= 1.5f;
+            flashScale.Y *= 1.2f;
+            flashScale *= scale;
+            spriteBatch.Draw(muzzleFlashTexture.Value, drawCenter, null, drawColor, Projectile.velocity.ToRotation(), drawOrigin, flashScale, SpriteEffects.None, 0);
+
+            drawColor = Color.White;
+            drawColor.A = 0;
+            spriteBatch.Draw(muzzleFlashTexture.Value, drawCenter, null, drawColor, Projectile.velocity.ToRotation(), drawOrigin, flashScale * 0.6f, SpriteEffects.None, 0);
+
+            Asset<Texture2D> impactTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/ZuiEffect");
+            drawOrigin = impactTexture.Size() / 2f;
+
+            Vector2 impactPoint = _startPoint;
+            scale *= ExtraMath.Osc(0.66f, 1f, speed: 32);
+
+            drawCenter = impactPoint - screenPos;
+            drawColor = Color.Pink;
+            drawColor.A = 0;
+
+            float rot = Main.GlobalTimeWrappedHourly;
+            spriteBatch.Draw(impactTexture.Value, drawCenter, null, drawColor, rot, drawOrigin, scale * 1.2f, SpriteEffects.None, 0);
+
+            drawColor = Color.White;
+            drawColor.A = 0;
+            spriteBatch.Draw(impactTexture.Value, drawCenter, null, drawColor, rot, drawOrigin, scale * 0.8f, SpriteEffects.None, 0);
+
+            impactTexture = AssetManager.GlowMask.SpiralVortex;
+            scale = 0.4f;
+            drawOrigin = impactTexture.Size() * 0.5f;
+            rot += Main.GlobalTimeWrappedHourly * 4;
+
+            float outEasing = (float)Projectile.timeLeft / 60f;
+            outEasing = EasingFunction.InOutSine(outEasing);
+            scale *= outEasing;
+        }
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawLaser();
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedMuzzleFlash);
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedBeam);
             return false;
         }
     }
