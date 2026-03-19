@@ -22,7 +22,7 @@ namespace Stellamod.WorldG.MarshJungle
         protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Growing Jungle Mud";
-            int width = Main.maxTilesX / 6;
+            int width = 1850;
 
             //Get the bounds of the jungle
             int halfWidth = width / 2;

@@ -113,7 +113,11 @@ namespace Stellamod.WorldG
     }
     public class StellaWorld : ModSystem
     {
-
+        public Point MistyHillStartLocation { get; private set; }
+        public Point MistyHillEndLocation { get; private set; }
+        public Point MistyDungeonLocation { get; private set; }
+        public Point FableFarEdgeLocation { get; private set; }
+        public Point FableLocation { get; private set; }
         public Point DesertLocation { get; private set; }
         public Point WitchTownLocation { get; private set; }
         public Point ManorLocation { get; private set; }
@@ -272,28 +276,74 @@ namespace Stellamod.WorldG
         private void AddNewGenerationPasses(List<GenPass> tasks, ref double totalWeight)
         {
             PassWriter passWriter = new PassWriter(tasks);
-            int terrainIndex = tasks.FindIndex(x => x.Name.Equals("Terrain"));
+            passWriter.SetInsertionIndex("Ocean Sand");
+            passWriter.NextPass(new ReworkedOceanSandPass());
+
+            passWriter.SetInsertionIndex("Beaches");
+            passWriter.NextPass(new ReworkedBeachesPass());
+
             passWriter.SetInsertionIndex("Terrain");
             passWriter.NextPass(new VanillaTerrainPass());
             passWriter.NextPass(new PassLegacy("Desert Pyr", InitializePyr));
             passWriter.NextPass(new PassLegacy("Set Xix Village Location", SetXixVillageLocation));
             passWriter.NextPass(new PassLegacy("World Gen GenVar Locations", WorldGenVarLocations));
             passWriter.NextPass(new PassLegacy("World Gen GenVar Locations2", WorldGenSpawnPoint));
+       
+            passWriter.SetInsertionIndex("Shimmer");
+            passWriter.NextPass(new PassLegacy("Fake Shimmer", WorldGenShimmerSpot));
+
+            passWriter.SetInsertionIndex("Micro Biomes");
+            passWriter.NextPass(new PassLegacy("World Gen Other stones", WorldGenDarkstone));
+            passWriter.NextPass(new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
+            passWriter.NextPass(new PassLegacy("World Gen Illuria", WorldGenIlluria));
+            passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
+            passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
+            passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+
             passWriter.NextPass(new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
             passWriter.NextPass(new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
             passWriter.NextPass(new PassLegacy("World Gen Marsh", WorldGenMarsh));
             passWriter.NextPass(new PassLegacy("World Gen Hills and Veizal House", WorldGenHillsAndVeizal));
+
             passWriter.NextPass(new PassLegacy("HillsnFable", WorldGenFabiliaRuin));
+            passWriter.NextPass(new PassLegacy("World Gen Rysa House", WorldGenRysaHouse));
+            passWriter.NextPass(new PassLegacy("MistyDungeonHill", WorldGenMistyDungeonHill));
+            passWriter.NextPass(new PassLegacy("MistyDungeon", GenerateMistyDungeon));
+
+            passWriter.SetInsertionIndex("Generate Ice Biome");
+            passWriter.NextPass(new ReworkedVanillaIceBiomePass());
+            passWriter.NextPass(new PassLegacy("Ice Clumping", IceClump));
+            passWriter.NextPass(new PassLegacy("Ice Spikes", MakingIcyRandomness));
+            passWriter.NextPass(new PassLegacy("World Gen Abysm", WorldGenAbysm));
+            passWriter.NextPass(new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
+            passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
+            passWriter.NextPass(new PassLegacy("Icey Caverns", WorldGenIceCaverns));
+            passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
+            passWriter.NextPass(new PassLegacy("Ice Housing 3", SurfaceIceHouses));
+
+            passWriter.SetInsertionIndex("Jungle");
+            passWriter.NextPass(new MarshJungleMudPass());
+            passWriter.NextPass(new PassLegacy("Caves 1", WorldGenCaves));
+            passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
+
             //Set desert location
             passWriter.SetInsertionIndex("Full Desert");
             passWriter.ReplacePass(new PassLegacy("Full Desert Rework", LockDesert));
 
             //Final Structures and Whatnot
             passWriter.SetInsertionIndex("Final Cleanup");
+            passWriter.NextPass(new PassLegacy("World Gen Manor", WorldGenManor));
+            passWriter.NextPass(new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
+            passWriter.NextPass(new PassLegacy("World Gen Dock", WorldGenDock));
+            passWriter.NextPass(new PassLegacy("World Gen Evil", WorldGenEvil));
+            passWriter.NextPass(new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
+            passWriter.NextPass(new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
+            passWriter.NextPass(new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
             passWriter.NextPass(new PassLegacy("World Gen Colosseum", WorldGenColosseum));
             passWriter.NextPass(new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
             passWriter.NextPass(new PassLegacy("World Gen Stone Golem Cave", WorldGenStoneGolemCave));
-       
+            passWriter.NextPass(new PassLegacy("Grassing Caves", WorldGenGrassPass));
+
         }
 
         private void WorldGenHillsAndVeizal(GenerationProgress progress, GameConfiguration configuration)
@@ -556,7 +606,7 @@ namespace Stellamod.WorldG
             DisableGenTask(tasks, "Granite");
             DisableGenTask(tasks, "Jungle");
             DisableGenTask(tasks, "Wall Variety");
-            DisableAllGenTasks(tasks);
+          //  DisableAllGenTasks(tasks);
             //    AddWorldGenTasks(tasks, ref totalWeight);
             AddNewGenerationPasses(tasks, ref totalWeight);
         }
@@ -716,24 +766,7 @@ namespace Stellamod.WorldG
             int attempts = 0;
             while (!placed && attempts++ < 10000000)
             {
-                int centerX = Main.maxTilesX - Main.maxTilesX / 6;
-                centerX += 200;
-                int smx = WorldGen.genRand.Next(centerX, centerX + 500);
-                int smy = ((int)(Main.worldSurface - 200));
-
-                // We go down until we hit a solid tile or go under the world's surface
-                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
-                {
-                    smy++;
-                }
-
-                // If we went under the world's surface, try again
-                if (smy > Main.worldSurface - 20)
-                {
-                    continue;
-                }
-
-                Point point = new Point(smx, smy);
+                Point point = MistyDungeonLocation;
                 Point vectorToOrigin = (point - rectangle.Top().ToPoint());
                 rectangle.Location += vectorToOrigin;
 
@@ -887,17 +920,6 @@ namespace Stellamod.WorldG
         private void WorldGenMarsh(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Creating the Marsh";
-            int marshX = GenVars.jungleOriginX - 1300;
-            int marshY = (int)Main.worldSurface - 500;
-            for (int i = 0; i < 1000; i++)
-            {
-                marshY++;
-                if (WorldGen.SolidTile(new Point(marshX, marshY)))
-                    break;
-            }
-
-            marshY += 25;
-            MarshLocation = new Point(marshX, marshY);
             int marshTileLength = 1400;
             VeilGen.GenerateMarsh(MarshLocation, marshTileLength);
 
@@ -913,11 +935,17 @@ namespace Stellamod.WorldG
         private void WorldGenVarLocations(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Locking Snow Biome Location";
-            GenVars.jungleOriginX = (Main.maxTilesX / 4) - 100;
+            Point marshSpot = new Point();
+            marshSpot.Y = (int)(Main.worldSurface - 2000);
+            marshSpot.X = 1550;
+            marshSpot = FallToSolidTile(marshSpot.X, marshSpot.Y);
+            marshSpot.Y += 25;
+            MarshLocation = marshSpot;
+            GenVars.jungleOriginX = marshSpot.X + 700;
 
             //Set snow biome location
-            int centerSnowBiome = Main.maxTilesX / 2;
-            GenVars.snowOriginLeft = centerSnowBiome + 1600;
+          
+            GenVars.snowOriginLeft = WitchTownLocation.X + 4000;
             GenVars.snowOriginRight = GenVars.snowOriginLeft + 1200;
 
             //Set dungeon and jungle sides
@@ -1456,7 +1484,7 @@ namespace Stellamod.WorldG
             progress.Message = "Fishing for femboys";
             var genRand = WorldGen.genRand;
             int dockX = Main.maxTilesX - 1;
-            int dockY = (int)Main.worldSurface - 250;
+            int dockY = (int)Main.worldSurface - 1000;
 
             //Get the edge of the right ocean
             Tile dockTile = Main.tile[dockX, dockY];
@@ -1716,32 +1744,10 @@ namespace Stellamod.WorldG
         {
             progress.Message = "Making the evil";
             var genRand = WorldGen.genRand;
-            Point evilPoint = Point.Zero;
-
-            int xMin = 1500;
-            int xMax = (Main.maxTilesX / 2) - 1000;
-            if (xMax < xMin)
-            {
-                xMax = xMin + 2;
-            }
-
-            for (int a = 0; a < 100000; a++)
-            {
-
-                int x = genRand.Next(xMin, xMax);
-                int y = (int)Main.worldSurface - 50;
-                while (!WorldGen.SolidTile(x, y))
-                {
-                    y++;
-                }
-
-                Tile tile = Main.tile[x, y];
-                if (tile.TileType != TileID.Grass && tile.TileType != TileID.Dirt)
-                    continue;
-
-                evilPoint = new Point(x, y);
-                evilPoint.Y += 200;
-            }
+            Point evilPoint = MistyHillEndLocation;
+            evilPoint.X += 200;
+            evilPoint.Y -= 300;
+            evilPoint = FallToSolidTile(evilPoint);
 
             int radius = 96;
             ushort blockType = WorldGen.crimson ? TileID.Crimstone : TileID.Ebonstone;
@@ -2128,9 +2134,11 @@ namespace Stellamod.WorldG
         {
             var genRand = WorldGen.genRand;
             int fluff = 10;
+            int startFloweringY = (int)(Main.worldSurface - 25);
+            int startGrassingY = startFloweringY - 600;
             for (int x = fluff; x < Main.maxTilesX - fluff; x++)
             {
-                for (int y = (int)Main.worldSurface - 10; y < (int)Main.worldSurface + 600; y++)
+                for (int y = startGrassingY; y < (int)Main.worldSurface + 600; y++)
                 {
                     Tile tile = Main.tile[x, y];
                     if (!tile.HasTile)
@@ -2145,6 +2153,8 @@ namespace Stellamod.WorldG
                     if (hasAny && (tile.TileType == TileID.Dirt || tile.TileType == TileID.Stone || tile.TileType == TileID.Grass))
                     {
                         WorldGen.PlaceTile(x, y, TileID.Grass, forced: true);
+                        if (y < startFloweringY)
+                            continue;
                         Point point = new Point(x, y);
                         int steps = genRand.Next(1, 4);
                         Vector2 baseDirection = -Vector2.UnitY;
@@ -2854,6 +2864,47 @@ namespace Stellamod.WorldG
             return y + 0.1f;
         }
 
+        private void WorldGenMistyDungeonHill(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "A Mysterious Hill...";
+            //Calculate the starting location
+            Point startHillTile = FableFarEdgeLocation;
+            startHillTile.X += 248;
+            startHillTile.Y -= 200;
+            startHillTile = FallToSolidTile(startHillTile.X, startHillTile.Y);
+            startHillTile.Y += 36;
+            MistyHillStartLocation = startHillTile;
+
+            //Calculate the ending location
+            Point endHillTile = startHillTile;
+            endHillTile.X += 2200;
+            endHillTile.Y -= 200;
+            endHillTile = FallToSolidTile(endHillTile.X, endHillTile.Y);
+            endHillTile.Y += 10;
+            MistyHillEndLocation = endHillTile;
+
+            float hillHeight = 350;
+            float width = endHillTile.X - startHillTile.X;
+            for (int x = startHillTile.X; x < endHillTile.X; x++)
+            {
+                float ratio = (x - startHillTile.X) / width;
+                float height = (int)(GetFableHillHeight(ratio) * hillHeight);
+                for (int y = 0; y < height; y++)
+                {
+                    WorldGen.PlaceTile(x, startHillTile.Y - y, TileID.Dirt);
+                }
+            }
+
+            //Place the fable
+            Point placementTile = new Point();
+            placementTile.X = (int)MathHelper.Lerp(startHillTile.X, endHillTile.X, 0.65f);
+            placementTile.Y = (int)(Main.worldSurface - 400);
+            placementTile = FallToSolidTile(placementTile.X, placementTile.Y);
+            MistyDungeonLocation = placementTile;      
+        }
+
+
+
 
         private void WorldGenFabiliaRuin(GenerationProgress progress, GameConfiguration configuration)
         {
@@ -2891,6 +2942,7 @@ namespace Stellamod.WorldG
             placementTile = FallToSolidTile(placementTile.X, placementTile.Y);
             placementTile += new Point(10, 53);
 
+            FableLocation = placementTile;
             NPCs.Town.AlcadSpawnSystem.FableTile = placementTile;
             Structurizer.PlaceAndProtect(new StructurePlacementParams
             {
@@ -2922,6 +2974,7 @@ namespace Stellamod.WorldG
                 }
             }
 
+            FableFarEdgeLocation = fableFalloffEnd;
             Point startCaveTile = new Point();
             startCaveTile.X = (int)MathHelper.Lerp(startHillTile.X, endHillTile.X, 0.2f);
             startCaveTile.Y = (int)(Main.worldSurface - 400);
@@ -3374,45 +3427,17 @@ namespace Stellamod.WorldG
             {
                 TileID.RubyGemspark
             };
+            Point rysaHousePoint = new Point();
+            rysaHousePoint = FableFarEdgeLocation;
+            rysaHousePoint.X += 400;
+            rysaHousePoint.Y -= 300;
+            rysaHousePoint = FallToSolidTile(rysaHousePoint.X, rysaHousePoint.Y);
             while (!placed && attempts++ < 10000000)
             {
-                //Left Side Placement
-                int smx = genRand.Next(400, (Main.maxTilesX / 3));
-
-                //Right Side Placement
-                if (genRand.NextBool(2))
-                {
-                    smx = genRand.Next((Main.maxTilesX) - (Main.maxTilesX / 3), (Main.maxTilesX) - 200);
-                }
-
-                int smy = ((int)(Main.worldSurface - 250));
-
-                // We go down until we hit a solid tile or go under the world's surface
-                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
-                {
-                    smy++;
-                }
-
-                // If we went under the world's surface, try again
-                if (smy > Main.worldSurface - 20)
-                {
-                    continue;
-                }
-
-                Tile tile = Main.tile[smx, smy];
-                // If the type of the tile we are placing the tower on doesn't match what we want, try again
-                if (!(tile.TileType == TileID.Dirt
-                    || tile.TileType == TileID.Stone
-                    || tile.TileType == TileID.Grass))
-                {
-                    continue;
-                }
-
-                Point Loc = new Point(smx, smy + 1);
                 string structure = "Structures/Rysahouse";
                 Rectangle rectangle = Structurizer.ReadRectangle(structure);
-                int[] ChestIndexs = Structurizer.ReadStruct(Loc, structure, tileBlend);
-                GenerateFallingWoodenBeams(rectangle, Loc);
+                int[] ChestIndexs = Structurizer.ReadStruct(rysaHousePoint, structure, tileBlend);
+                GenerateFallingWoodenBeams(rectangle, rysaHousePoint);
 
                 foreach (int chestIndex in ChestIndexs)
                 {
@@ -3646,11 +3671,12 @@ namespace Stellamod.WorldG
          
         }
 
+        private Point FallToSolidTile(Point tile) => FallToSolidTile(tile.X, tile.Y);
         private Point FallToSolidTile(int x, int y)
         {
             Point start = new Point(x, y);
             Point current = start;
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < Main.maxTilesY; i++)
             {
 
                 if (WorldGen.SolidTile(current.X, current.Y))
@@ -4011,46 +4037,17 @@ namespace Stellamod.WorldG
             {
                 TileID.RubyGemspark
             };
+
+            Point windmillPlacementTile = new Point();
+            windmillPlacementTile.X = (int)MathHelper.Lerp(MistyHillStartLocation.X, MistyHillEndLocation.X, 0.45f);
+            windmillPlacementTile.Y = (int)(Main.worldSurface - 1200);
+            windmillPlacementTile = FallToSolidTile(windmillPlacementTile.X, windmillPlacementTile.Y);
             while (!placed && attempts++ < 10000000)
             {
-                //Left Side Placement
-                int smx = genRand.Next(400, (Main.maxTilesX / 3));
-
-                //Right Side Placement
-                if (genRand.NextBool(2))
-                {
-                    smx = genRand.Next((Main.maxTilesX) - (Main.maxTilesX / 3), (Main.maxTilesX) - 200);
-                }
-
-                int smy = ((int)(Main.worldSurface - 250));
-
-                // We go down until we hit a solid tile or go under the world's surface
-                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
-                {
-                    smy++;
-                }
-
-                // If we went under the world's surface, try again
-                if (smy > Main.worldSurface - 20)
-                {
-                    continue;
-                }
-
-                Tile tile = Main.tile[smx, smy];
-                // If the type of the tile we are placing the tower on doesn't match what we want, try again
-                if (!(tile.TileType == TileID.Dirt
-                    || tile.TileType == TileID.Stone
-                    || tile.TileType == TileID.Grass))
-                {
-                    continue;
-                }
-
-                Point Loc = new Point(smx, smy + 1);
                 string structure = "Struct/Overworld/Windmill";
-
-                int[] ChestIndexs = Structurizer.ReadStruct(Loc, structure, tileBlend);
+                int[] ChestIndexs = Structurizer.ReadStruct(windmillPlacementTile, structure, tileBlend);
                 Rectangle structureRectangle = Structurizer.ReadRectangle(structure);
-                structureRectangle.Location = Loc;
+                structureRectangle.Location = windmillPlacementTile;
                 for (int beamX = structureRectangle.Location.X;
                     beamX < structureRectangle.Location.X + structureRectangle.Width; beamX += 4)
                 {
