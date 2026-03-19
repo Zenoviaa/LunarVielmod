@@ -262,6 +262,7 @@ public class STARBOMBERV2 : ScarletBoss,
     private float _deathLerp;
     private float _spinTelegraphLerp;
     private float _acceleration;
+    private float _spawnTimer;
 
     private bool _contactDamage;
     private bool _namePlate;
@@ -361,7 +362,7 @@ public class STARBOMBERV2 : ScarletBoss,
             return _legs2;
         }
     }
-    private float LegRadius => 130;
+    private float LegRadius => MathHelper.SmoothStep(80, 130, _spawnTimer / 120f);
 
     private Vector2 _gunShootTargetPosition;
     private Vector2 _gunShootTrackingVelocity;
@@ -561,6 +562,10 @@ public class STARBOMBERV2 : ScarletBoss,
     public override void AI()
     {
         
+        if(_spawnTimer < 120)
+        {
+            _spawnTimer++;
+        }
         _gunSilhouetteColor = Color.Lerp(Color.White, Color.Black, 0.75f);
         _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
         _gunOutlineColor = Color.Lerp(_gunOutlineColor, TargetGunOutlineColor, 0.1f);
