@@ -399,8 +399,12 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.oldVelocity,
-                ModContent.ProjectileType<BishinineCometBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            if (this.OwnedByLocalClient())
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.oldVelocity,
+                    ModContent.ProjectileType<BishinineCometBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
+
         }
     }
 }
