@@ -2,6 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Terror.WeaponsTR;
 using Stellamod.Dusts;
 using System;
 using Terraria;
@@ -107,7 +108,7 @@ namespace Stellamod.Projectiles.Gun
                     float offsetY = Main.rand.Next(-50, 50) * 0.01f;
                     int damage = Main.expertMode ? 10 : 14;
                     if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<DeathShotProj>(), Projectile.damage, 1,
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, direction.X + offsetX, direction.Y + offsetY, ModContent.ProjectileType<DeathSnipe>(), Projectile.damage, 1,
                             Main.myPlayer, 0, 0);
                 }
             }

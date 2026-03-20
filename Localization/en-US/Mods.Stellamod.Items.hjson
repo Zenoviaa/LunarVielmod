@@ -2832,7 +2832,7 @@ Crysalizer: {
 
 DeathShot: {
 	DisplayName: Death Shot
-	Tooltip: A sniper for a the skull emoji.
+	Tooltip: Deals more damage when low on ammo, the final shot is a powerful exploding round!
 }
 
 DivineSniper: {
