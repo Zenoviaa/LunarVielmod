@@ -235,7 +235,7 @@ namespace Stellamod.Core.Palettes
             CalculateDarkness();
             ApplyBloom();
 
-            ToggleScreenShader("LunarVeil:DarknessVignette", darkness != 0);
+        //    ToggleScreenShader("LunarVeil:DarknessVignette", darkness != 0);
 
           //  Main.ColorOfTheSkies = Color.Black;
             bool evilAreaActive = Player.ZoneCrimson || Player.ZoneCorrupt;
@@ -248,7 +248,7 @@ namespace Stellamod.Core.Palettes
             screenShaderData.UseProgress(darknessCurve);
             screenShaderData.Shader.Parameters["blackCurve"].SetValue(blackCurve);
             screenShaderData.Shader.Parameters["whiteCurve"].SetValue(whiteCurve);
-            ToggleScreenShader("LunarVeil:DarknessCurve", darknessCurve != 0);
+           // ToggleScreenShader("LunarVeil:DarknessCurve", darknessCurve != 0);
 
 
             if (hellPaletteActive || desertPaletteActive || desertTopPaletteActive)

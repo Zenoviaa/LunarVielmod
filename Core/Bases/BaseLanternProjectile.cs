@@ -128,7 +128,7 @@ namespace Stellamod.Core.Bases
             Projectile.rotation = Projectile.velocity.X / 60f;
 
             _light = GetLight();
-            _light.RayCast(Projectile.Center, _lightVelocity, FlashlightWidth * 0.66f, FlashlightLength * 0.5f);
+            _light.RayCast(Projectile.Center, _lightVelocity, FlashlightWidth, FlashlightLength);
         }
 
         private void AI_Flashlight()
@@ -156,7 +156,7 @@ namespace Stellamod.Core.Bases
             }
 
             _light = GetLight();
-            _light.RayCast(Projectile.Center, _lightVelocity, FlashlightWidth, FlashlightLength);
+            _light.RayCast(Projectile.Center, _lightVelocity, FlashlightWidth * 1.5f, FlashlightLength * 2f);
         }
 
         protected virtual void DrawLanternSprite(ref Color lightColor)
@@ -188,8 +188,8 @@ namespace Stellamod.Core.Bases
             spriteBatch.Draw(glowTexture, Projectile.Center - Main.screenPosition, null, glowColor, 0, glowTexture.Size() / 2f, 1, SpriteEffects.None, 0);
 
             glowTexture = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
-            glowColor *= 0.5f;
-            spriteBatch.Draw(glowTexture, Projectile.Center - Main.screenPosition, null, glowColor, 0, glowTexture.Size() / 2f, 0.75f, SpriteEffects.None, 0);
+            glowColor *= 0.25f;
+            spriteBatch.Draw(glowTexture, Projectile.Center - Main.screenPosition, null, glowColor, 0, glowTexture.Size() / 2f, 0.35f, SpriteEffects.None, 0);
         }
 
         public override bool PreDraw(ref Color lightColor)

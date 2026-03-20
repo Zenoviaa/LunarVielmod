@@ -315,7 +315,7 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("MarshTerrain", WorldGenMarsh));
         passWriter.NextPass(new PassLegacy("Veizal Hill Terrain", WorldGenVeizalHillsTerrain));
         passWriter.NextPass(new PassLegacy("Misty Dungeon Hill Terrain", WorldGenMistyDungeonHill));
-        passWriter.NextPass(new PassLegacy("Jungle Caves", JungleCavesPass));
+       // passWriter.NextPass(new PassLegacy("Jungle Caves", JungleCavesPass));
         passWriter.NextPass(new PassLegacy("RoyalCapitalTerrain", WorldGenCapitalTerrain));
         passWriter.NextPass(new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
         passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
@@ -359,7 +359,7 @@ public class StellaWorld : ModSystem
 
         passWriter.SetInsertionIndex("Jungle");
         passWriter.NextPass(new MarshJungleMudPass());
-      
+        passWriter.NextPass(new PassLegacy("Jungle Surface Caves", WorldGenJungleSurfaceCaves));
         passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
 
         //Set desert location
@@ -380,7 +380,15 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Stone Golem Cave", WorldGenStoneGolemCave));
         passWriter.NextPass(new PassLegacy("Grassing Caves", WorldGenGrassPass));
     }
-
+    private void WorldGenJungleSurfaceCaves(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Jungle Surface Caves";
+        int caveOriginX = GenVars.jungleOriginX;
+        int caveOriginY = MarshLocation.Y;
+        caveOriginY -= 35;
+        GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("JungleTop");
+        prefab.PasteErase(caveOriginX, caveOriginY, PrefabPlacementType.FromTopCenter);
+    }
     private void WorldGenCapitalTerrain(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Royal Capital Dirt";
@@ -2324,7 +2332,7 @@ public class StellaWorld : ModSystem
             int caveOriginX = genRand.Next(15, Main.maxTilesX - 15);
             int caveOriginY = genRand.Next((int)GenVars.rockLayerHigh, Main.UnderworldLayer);
             GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("CavernCave_1");
-            prefab.EraseTilesLikeAMask(caveOriginX, caveOriginY);
+            prefab.PasteErase(caveOriginX, caveOriginY, PrefabPlacementType.FromTopLeft);
         }
     }
 
@@ -2333,7 +2341,7 @@ public class StellaWorld : ModSystem
         progress.Message = "Tree-like Caves carve deeply...";
         var genRand = WorldGen.genRand;
         //High Tree Caves
-        int worldsEndEdge = 600;
+        int worldsEndEdge = 3300;
         for (int x = worldsEndEdge; x < Main.maxTilesX; x++)
         {
             int caveMakerSteps = 32;

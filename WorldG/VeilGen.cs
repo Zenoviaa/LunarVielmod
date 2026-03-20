@@ -37,6 +37,13 @@ public static class TextureUtilities
     }
 }
 
+public enum PrefabPlacementType : byte
+{
+    FromTopLeft,
+    FromTopCenter,
+    FromCenter
+}
+
 /// <summary>
 /// Encapsulates a texture for world generation purposes, in most cases we're just going to use the texture as a mask for erasing tiles.
 /// </summary>
@@ -67,8 +74,21 @@ public class GenerationPrefab : IDisposable
     }
 
 
-    public void EraseTilesLikeAMask(int originX, int originY)
+    public void PasteErase(int originX, int originY, PrefabPlacementType placementType)
     {
+        switch (placementType)
+        {
+            case PrefabPlacementType.FromTopLeft:
+                break;
+            case PrefabPlacementType.FromTopCenter:
+                originX -= Width / 2;
+                break;
+            case PrefabPlacementType.FromCenter:
+                originX -= Width / 2;
+                originY -= Height / 2;
+                break;
+        }
+
         for(int x = 0; x < Width; x++)
         {
             for(int y = 0; y < Height; y++)
