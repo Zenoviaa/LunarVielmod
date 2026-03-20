@@ -1909,8 +1909,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
                 if (MultiplayerHelper.IsHost)
                 {
-                    ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-                    shaderSystem.UnVignetteScreen();
                     SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DUAL2") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
 
                     Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;

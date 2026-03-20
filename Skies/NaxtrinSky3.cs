@@ -121,7 +121,7 @@ namespace Stellamod.Skies
 
                 Effect storm = Neffect;
                 storm.Parameters["uScreenSize"].SetValue(Main.ScreenSize.ToVector2());
-                storm.Parameters["uTexture0"].SetValue(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Noise7").Value);
+                storm.Parameters["uTexture0"].SetValue(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/PerlinNoise").Value);
                 storm.Parameters["uTexture1"].SetValue(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Noise8").Value);
                 storm.Parameters["uOffsetPosition"].SetValue(offset);
                 storm.Parameters["uWorldPosition"].SetValue((Main.screenPosition + Main.ScreenSize.ToVector2() / 2f) / 5.5f);
@@ -163,7 +163,7 @@ namespace Stellamod.Skies
 
                 Effect storm = Neffect;
                 storm.Parameters["uScreenSize"].SetValue(Main.ScreenSize.ToVector2());
-                storm.Parameters["uTexture0"].SetValue(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Noise7").Value);
+                storm.Parameters["uTexture0"].SetValue(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/PerlinNoise").Value);
                 storm.Parameters["uTexture1"].SetValue(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Noise8").Value);
                 storm.Parameters["uOffsetPosition"].SetValue(offset);
                 storm.Parameters["uWorldPosition"].SetValue((Main.screenPosition + Main.ScreenSize.ToVector2() / 2f) / 2.5f);

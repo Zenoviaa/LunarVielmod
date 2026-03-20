@@ -131,6 +131,7 @@ namespace Stellamod.Helpers
                 }
             }
 
+
             if (_useVignette)
             {
                 if (!FilterManager[ShaderRegistry.Screen_Vignette].IsActive())
@@ -154,12 +155,10 @@ namespace Stellamod.Helpers
                     shaderData.UseProgress(_vignetteStrength);
                     shaderData.UseOpacity(_vignetteOpacity);
                 }
-                else
+                if (FilterManager[ShaderRegistry.Screen_Vignette].IsActive())
                 {
-                    if (FilterManager[ShaderRegistry.Screen_Vignette].IsActive())
-                    {
-                        FilterManager.Deactivate(ShaderRegistry.Screen_Vignette);
-                    }
+ 
+                    FilterManager.Deactivate(ShaderRegistry.Screen_Vignette);
                 }
             }
         }

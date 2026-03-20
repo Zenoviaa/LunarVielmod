@@ -7,6 +7,7 @@ using Stellamod.Content.Areas.Collosseum.TilesCL;
 using Stellamod.Content.Areas.Collosseum.WeaponsCL;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Areas.SpringHills.AccSH;
+using Stellamod.Content.Areas.SpringHills.TilesSH;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Content.Areas.WorldsEnd.TilesWE;
@@ -79,6 +80,11 @@ public class PassWriter
         Tasks.Insert(_insertionIndex, genPass);
 
     }
+    public void DisablePass(string passName)
+    {
+        Tasks[Tasks.FindIndex(genpass => genpass.Name.Equals(passName))].Disable();
+
+    }
     public void ReplacePass(GenPass genPass)
     {
         Tasks[_insertionIndex] = genPass;
@@ -116,6 +122,7 @@ public class StellaWorld : ModSystem
         }
     }
 
+    /*
     private void AddWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
     {
         //We don't need this for now
@@ -223,17 +230,80 @@ public class StellaWorld : ModSystem
             tasks.Insert(CathedralGen2 + 20, new PassLegacy("World Gen Fable", WorldGenFabiliaRuin));
             //     tasks.Insert(CathedralGen2 + 22, new PassLegacy("World Gen Water", WorldGenWater));
         }
+    }*/
+
+    private void ForceCrimson(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Nothing Lol";
+        WorldGen.WorldGenParam_Evil = 1;
+        WorldGen.crimson = true;
     }
 
+    private void CindersparkCavesPass(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Making Cinderspark Caves";
+        var genRand = WorldGen.genRand; 
+        for (int x = 0; x < Main.maxTilesX; x++)
+        {
+            int caveMakerSteps = 32;
+            for (int j = 0; j < caveMakerSteps; j++)
+            {
+                int y = genRand.Next((int)Main.maxTilesY - 600, (int)Main.maxTilesY - 350);
+                Tile tile = Main.tile[x, y];
+                if (!genRand.NextBool(1512))
+                    continue;
+
+                int clearingCaveWidth = 15;
+                int clearingCaveSteps = 500;
+
+                //Cave position in tiles
+                Vector2 clearingPosition = new Vector2((int)x, (int)y);
+
+                //Starting cave direction
+
+                Vector2 clearingCaveDirection = Main.rand.NextVector2Circular(1, 1);//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+
+                //How much the tile runner is gonna carve out
+                Vector2 clearingCaveStrength = new Vector2(20, 25);
+
+                VeilGen.GenerateOpenCaveClearing(clearingPosition,
+                    clearingCaveDirection,
+                    clearingCaveStrength,
+                    clearingCaveWidth,
+                    clearingCaveSteps);
+
+                int numBranches = genRand.Next(3, 6);
+                for (int k = 0; k < numBranches; k++)
+                {
+                    int caveWidth = genRand.Next(2, 8);
+                    int caveSteps = genRand.Next(25, 50);
+
+                    //Cave position in tiles
+                    Vector2 cavePosition = new Vector2(x, y);
+
+                    //Starting cave direction
+                    Vector2 baseCaveDirection = -Vector2.UnitY.RotateRandom(MathHelper.ToRadians(80));//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+
+                    //How much the tile runner is gonna carve out
+                    Vector2 caveStrength = new Vector2(5, 7);
+
+                    //Chance to open up
+                    VeilGen.GenerateStraightCaves(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps);
+                }
+            }
+        }
+    }
     private void AddNewGenerationPasses(List<GenPass> tasks, ref double totalWeight)
     {
-        WorldGen.crimson = true;
         PassWriter passWriter = new PassWriter(tasks);
         passWriter.SetInsertionIndex("Ocean Sand");
         passWriter.NextPass(new ReworkedOceanSandPass());
 
         passWriter.SetInsertionIndex("Beaches");
         passWriter.NextPass(new ReworkedBeachesPass());
+
+        passWriter.SetInsertionIndex("Reset");
+        passWriter.NextPass(new PassLegacy("Crimsoning", ForceCrimson));
 
         passWriter.SetInsertionIndex("Terrain");
         passWriter.NextPass(new VanillaTerrainPass());
@@ -245,9 +315,13 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("MarshTerrain", WorldGenMarsh));
         passWriter.NextPass(new PassLegacy("Veizal Hill Terrain", WorldGenVeizalHillsTerrain));
         passWriter.NextPass(new PassLegacy("Misty Dungeon Hill Terrain", WorldGenMistyDungeonHill));
-        passWriter.NextPass(new PassLegacy("Caves 1", WorldGenCaves));
+        passWriter.NextPass(new PassLegacy("Jungle Caves", JungleCavesPass));
         passWriter.NextPass(new PassLegacy("RoyalCapitalTerrain", WorldGenCapitalTerrain));
         passWriter.NextPass(new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
+        passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
+        passWriter.NextPass(new PassLegacy("Cinderspark Caves", CindersparkCavesPass));
+        passWriter.NextPass(new PassLegacy("Tree Caves", TreeCavesPass));
+        passWriter.NextPass(new PassLegacy("Cavernous Caves", CavernousCavesPass));
 
         passWriter.SetInsertionIndex("Shimmer");
         passWriter.NextPass(new PassLegacy("Fake Shimmer", WorldGenShimmerSpot));
@@ -256,10 +330,11 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("MarshTrees", WorldGenMarshTrees));
 
         passWriter.SetInsertionIndex("Micro Biomes");
+        passWriter.DisablePass("Micro Biomes");
         passWriter.NextPass(new PassLegacy("World Gen Other stones", WorldGenDarkstone));
         passWriter.NextPass(new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
         passWriter.NextPass(new PassLegacy("World Gen Illuria", WorldGenIlluria));
-        passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
+
         passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
         passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
 
@@ -2238,45 +2313,25 @@ public class StellaWorld : ModSystem
 
     }
 
-    private void WorldGenCaves(GenerationProgress progress, GameConfiguration configuration)
+    private void CavernousCavesPass(GenerationProgress progress, GameConfiguration configuration)
     {
-        progress.Message = "The caves she told you not to worry about";
+        progress.Message = "The deep underground is calling...";
         var genRand = WorldGen.genRand;
 
-        for (int x = 0; x < Main.maxTilesX; x++)
+        int numCaves = 120;
+        for(int n = 0; n < numCaves; n++)
         {
-            int caveMakerSteps = 32;
-            for (int j = 0; j < caveMakerSteps; j++)
-            {
-                int y = genRand.Next((int)GenVars.rockLayerHigh, (int)GenVars.lavaLine);
-                Tile tile = Main.tile[x, y];
-                if (tile.TileType == TileID.Sand ||
-                    tile.TileType == TileID.Mud ||
-                    tile.TileType == TileID.SnowBlock ||
-                    tile.TileType == TileID.IceBlock)
-                    continue;
-                if (!genRand.NextBool(450))
-                    continue;
-
-                int caveWidth = genRand.Next(5, 8);
-                int caveSteps = genRand.Next(150, 200);
-
-                //Cave position in tiles
-                Vector2 cavePosition = new Vector2(x, y);
-
-                //Starting cave direction
-                Vector2 baseCaveDirection = Vector2.UnitY;//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
-
-                //How much the tile runner is gonna carve out
-                Vector2 caveStrength = new Vector2(12, 14);
-
-                //Chance to open up
-                int clearingDenominator = 128;
-                VeilGen.GenerateHighCaves(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps,
-                    clearingDenominator);
-            }
+            int caveOriginX = genRand.Next(15, Main.maxTilesX - 15);
+            int caveOriginY = genRand.Next((int)GenVars.rockLayerHigh, Main.UnderworldLayer);
+            GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("CavernCave_1");
+            prefab.EraseTilesLikeAMask(caveOriginX, caveOriginY);
         }
+    }
 
+    private void TreeCavesPass(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Tree-like Caves carve deeply...";
+        var genRand = WorldGen.genRand;
         //High Tree Caves
         int worldsEndEdge = 600;
         for (int x = worldsEndEdge; x < Main.maxTilesX; x++)
@@ -2311,117 +2366,21 @@ public class StellaWorld : ModSystem
                     splitDenominator);
             }
         }
+    }
 
+    private void JungleCavesPass(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "The Jungle Branches Out...";
+        var genRand = WorldGen.genRand;
 
-        for (int x = 0; x < Main.maxTilesX; x++)
-        {
-            int caveMakerSteps = 32;
-            for (int j = 0; j < caveMakerSteps; j++)
-            {
-                int y = genRand.Next((int)Main.maxTilesY - 600, (int)Main.maxTilesY - 350);
-                Tile tile = Main.tile[x, y];
-                if (tile.TileType == TileID.Sand ||
-                    tile.TileType == TileID.Mud ||
-                    tile.TileType == TileID.SnowBlock ||
-                    tile.TileType == TileID.IceBlock)
-                    continue;
-                if (!genRand.NextBool(1512))
-                    continue;
-
-                int clearingCaveWidth = 15;
-                int clearingCaveSteps = 500;
-
-                //Cave position in tiles
-                Vector2 clearingPosition = new Vector2((int)x, (int)y);
-
-                //Starting cave direction
-
-                Vector2 clearingCaveDirection = Main.rand.NextVector2Circular(1, 1);//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
-
-                //How much the tile runner is gonna carve out
-                Vector2 clearingCaveStrength = new Vector2(20, 25);
-
-                VeilGen.GenerateOpenCaveClearing(clearingPosition,
-                    clearingCaveDirection,
-                    clearingCaveStrength,
-                    clearingCaveWidth,
-                    clearingCaveSteps);
-
-                int numBranches = genRand.Next(3, 6);
-                for (int k = 0; k < numBranches; k++)
-                {
-                    int caveWidth = genRand.Next(2, 8);
-                    int caveSteps = genRand.Next(25, 50);
-
-                    //Cave position in tiles
-                    Vector2 cavePosition = new Vector2(x, y);
-
-                    //Starting cave direction
-                    Vector2 baseCaveDirection = -Vector2.UnitY.RotateRandom(MathHelper.ToRadians(80));//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
-
-                    //How much the tile runner is gonna carve out
-                    Vector2 caveStrength = new Vector2(5, 7);
-
-                    //Chance to open up
-                    VeilGen.GenerateStraightCaves(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps);
-                }
-            }
-        }
-
-        for (int x = 0; x < Main.maxTilesX; x++)
-        {
-            int caveMakerSteps = 32;
-            for (int j = 0; j < caveMakerSteps; j++)
-            {
-                int y = genRand.Next((int)GenVars.worldSurfaceLow, (int)Main.maxTilesY);
-                Tile tile = Main.tile[x, y];
-                if (tile.TileType == TileID.Sand ||
-                    tile.TileType == TileID.Mud ||
-                    tile.TileType == TileID.SnowBlock ||
-                    tile.TileType == TileID.IceBlock)
-                    continue;
-                if (!genRand.NextBool(64))
-                    continue;
-
-                //Cave position in tiles
-                Vector2 clearingPosition = new Vector2((int)x, (int)y);
-                int caveWidth = genRand.Next(4, 16);
-                Point point = new Point((int)clearingPosition.X, (int)clearingPosition.Y);
-                bool isInLavaLayer = clearingPosition.Y > GenVars.lavaLine;
-                int liquidType = isInLavaLayer ? LiquidID.Lava : LiquidID.Water;
-                if (liquidType == LiquidID.Lava)
-                {
-                    if (!genRand.NextBool(4))
-                        continue;
-                }
-
-                if (point.X - caveWidth > 0 && point.X + caveWidth < Main.maxTilesX && point.Y + caveWidth < Main.maxTilesY && point.Y - caveWidth > 0)
-                {
-                    WorldUtils.Gen(point,
-                     new Shapes.Circle(caveWidth, caveWidth),
-                     new Actions.SetLiquid(type: liquidType));
-                }
-            }
-        }
         int num = genRand.Next(120, 150);
         for (int n = 0; n < num; n++)
         {
-            int x = genRand.Next(0, Main.maxTilesX);
+            int originX = GenVars.jungleOriginX;
+            int x = genRand.Next(originX - 1000, originX + 1000);
             int yMax = Main.maxTilesY;
             int yMin = yMax - 500;
             int y = genRand.Next(yMin, yMax);
-            // We go down until we hit a solid tile or go under the world's surface
-            while (!WorldGen.SolidTile(x, y))
-            {
-                y++;
-            }
-
-            // If we went under the world's surface, try again
-            if (y >= Main.maxTilesY)
-            {
-                n--;
-                continue;
-            }
 
             int caveWidth = genRand.Next(3, 6);
             int caveSteps = genRand.Next(300, 700);
@@ -2453,9 +2412,6 @@ public class StellaWorld : ModSystem
                     continue;
 
                 Tile tile = Main.tile[x, y];
-                if (tile.TileType != TileID.Mud)
-                    continue;
-
                 Point tilePoint = new Point(x, y);
                 int rectWidth = 50;
 
@@ -2823,6 +2779,7 @@ public class StellaWorld : ModSystem
     private void WorldGenMistyDungeonHill(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "A Mysterious Hill...";
+        Console.WriteLine($"Fable Far Edge {FableFarEdgeLocation}");
         //Calculate the starting location
         Point startHillTile = FableFarEdgeLocation;
         startHillTile.X += 150;
@@ -2898,6 +2855,35 @@ public class StellaWorld : ModSystem
         placementTile += new Point(10, 53);
 
         FableLocation = placementTile;
+
+
+
+
+        //Placing a falling off slope at the end of the structure
+        Rectangle fableRect = Structurizer.ReadRectangle(StructureAssets.Fable);
+        Point fableFalloffStart = FableLocation + new Point(fableRect.Width, 0);
+        fableFalloffStart.Y -= 54;
+        fableFalloffStart.X -= 20;
+
+        Point fableFalloffEnd = fableFalloffStart;
+        fableFalloffEnd.X += 150;
+        fableFalloffEnd = FallToSolidTile(fableFalloffEnd.X, fableFalloffEnd.Y);
+        fableFalloffEnd.Y += 10;
+
+        width = fableFalloffEnd.X - fableFalloffStart.X;
+        for (int x = fableFalloffStart.X; x < fableFalloffEnd.X; x++)
+        {
+            float ratio = (x - fableFalloffStart.X) / width;
+            int startY = (int)MathHelper.SmoothStep(fableFalloffStart.Y, fableFalloffEnd.Y, ratio);
+            Point tilePlace = new Point(x, startY);
+            for (int y = startY; y < fableFalloffEnd.Y; y++)
+            {
+                WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
+            }
+        }
+
+        FableFarEdgeLocation = fableFalloffEnd;
+
     }
     private void WorldGenFabiliaRuin(GenerationProgress progress, GameConfiguration configuration)
     {
@@ -3008,30 +2994,33 @@ public class StellaWorld : ModSystem
     private void WorldGenCinderspark(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Searing the deepest caverns";
+        ushort dirtTile = (ushort)ModContent.TileType<CindersparkDirt>();
         var genRand = WorldGen.genRand;
         for (int x = 0; x < Main.maxTilesX; x++)
         {
             int yMax = (Main.UnderworldLayer - (Main.maxTilesY / 20));
             int yMin = yMax - 50;
-            int y = genRand.Next(yMin, yMax);
+
+            float ratio = (float)x / (float)Main.maxTilesX;
+
+            float y = yMin;
+            y += MathF.Sin(ratio * 64) * 8;
+            y += MathF.Sin(ratio * 64) * 4;
+            int startY = (int)y;
+            int endY = startY;
             // We go down until we hit a solid tile or go under the world's surface
-            while (!WorldGen.SolidTile(x, y) && y <= Main.UnderworldLayer)
+            while (endY <= Main.UnderworldLayer)
             {
-                y++;
+                endY++;
             }
+           
 
-            // If we went under the world's surface, try again
-            if (y > Main.UnderworldLayer)
+            for (int j = startY; j < endY; j++)
             {
-                continue;
-            }
-
-            Point tileRunPoint = new Point(x, y);
-            if (x % 24 == 0)
-            {
-                WorldGen.TileRunner(tileRunPoint.X, tileRunPoint.Y,
-                    genRand.Next(150, 150),
-                    genRand.Next(500, 500), ModContent.TileType<CindersparkDirt>());
+                Tile t = Main.tile[x, j];
+                t.ClearEverything();
+                t.TileType = dirtTile;
+                t.HasTile = true;
             }
         }
     }
@@ -3631,7 +3620,10 @@ public class StellaWorld : ModSystem
      
     }
 
-    private Point FallToSolidTile(Point tile) => FallToSolidTile(tile.X, tile.Y);
+    private Point FallToSolidTile(Point tile)
+    {
+        return FallToSolidTile(tile.X, tile.Y);
+    }
     private Point FallToSolidTile(int x, int y)
     {
         Point start = new Point(x, y);
@@ -3639,7 +3631,7 @@ public class StellaWorld : ModSystem
         for (int i = 0; i < Main.maxTilesY; i++)
         {
 
-            if (WorldGen.SolidTile(current.X, current.Y))
+            if (WorldGen.InWorld(current.X, current.Y) && WorldGen.SolidTile(current.X, current.Y))
                 return current;
             current.Y += 1;
         }
