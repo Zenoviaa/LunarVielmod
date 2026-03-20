@@ -21,7 +21,7 @@ namespace Stellamod.Items.Weapons.Summon
         {
             base.SetDefaults();
             Item.DefaultToBellMinion(ModContent.ProjectileType<DripplerMinionProj>());
-            Item.damage = 27;
+            Item.damage = 16;
             Item.knockBack = 3f;
         }
 
@@ -46,24 +46,18 @@ namespace Stellamod.Items.Weapons.Summon
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
         }
 
+
         public sealed override void SetDefaults()
         {
-            Projectile.width = 18;
-            Projectile.height = 28;
-            // Makes the minion go through tiles freely
+            Projectile.width = 12;
+            Projectile.height = 12;
             Projectile.tileCollide = false;
-
-            // These below are needed for a minion weapon
-            // Only controls if it deals damage to enemies on contact (more on that later)
             Projectile.friendly = true;
-            // Only determines the damage type
             Projectile.minion = true;
-            // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
             Projectile.minionSlots = 1f;
-            // Needed so the minion doesn't despawn on collision with enemies or tiles
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 20;
+            Projectile.localNPCHitCooldown = 40;
         }
 
         // Here you can decide if your minion breaks things like grass or pots
@@ -246,6 +240,7 @@ namespace Stellamod.Items.Weapons.Summon
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = TextureAssets.Projectile[Type].Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            drawPos.Y += ExtraMath.Osc(0f, -16f, speed: 8);
             Vector2 drawOrigin = texture.Size() / 2f;
             Vector2 drawScale = Vector2.One;
             drawScale.X = VectorHelper.Osc(0.85f, 1f, speed: 8f, offset: 2f);
@@ -260,6 +255,7 @@ namespace Stellamod.Items.Weapons.Summon
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D texture = ModContent.Request<Texture2D>(Texture + "_Eyes").Value;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            drawPos.Y += ExtraMath.Osc(0f, -16f, speed: 8);
             Vector2 drawOrigin = texture.Size() / 2f - Projectile.velocity.SafeNormalize(Vector2.Zero) * 8;
             Vector2 drawScale = Vector2.One;
             drawScale.X = VectorHelper.Osc(0.75f, 1f, speed: 2f, offset: 2f);
@@ -294,6 +290,7 @@ namespace Stellamod.Items.Weapons.Summon
 
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
             drawPos.Y += 32;
+            drawPos.Y += ExtraMath.Osc(0f, -16f, speed: 8);
             Vector2 drawOrigin = texture.Size() / 2f;
             spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor), 0f, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
 
