@@ -2594,7 +2594,7 @@ LeadGauntlets: {
 }
 
 Pericarditis: {
-	DisplayName: Pericarditis
+	DisplayName: Bloody Rocket Artifact
 	Tooltip: Channels blood magic to fire a powerful bloody blast
 }
 
