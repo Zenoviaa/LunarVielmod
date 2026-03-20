@@ -487,11 +487,7 @@ JellyfishTissue: {
 
 MOTT: {
 	DisplayName: M.O.T.T
-	Tooltip:
-		'''
-		Every 10 seconds drop high damage spiky balls on the ground
-		+5% Ranged damage...
-		'''
+	Tooltip: Every few seconds, drop high damage spiky balls on the ground!
 }
 
 PaperPaws: {

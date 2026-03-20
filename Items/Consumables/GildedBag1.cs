@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Collosseum.AccCL;
 using Stellamod.Content.Currencies;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories;
 using Stellamod.Items.Ores;
 using Stellamod.Items.Weapons.PowdersItem;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
