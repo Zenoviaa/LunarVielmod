@@ -1,54 +1,28 @@
-
-using Microsoft.Xna.Framework;
 using Stellamod.Buffs.Minions;
+using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
+using Stellamod.Helpers;
 using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Summons.Minions;
+using Stellamod.Projectiles;
+using System;
 using Terraria;
-using Terraria.DataStructures;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Items.Weapons.Summon
 {
-    public class DripplerStaff : ClassSwapItem
+    public class DripplerStaff : ModItem
     {
-
-        public override DamageClass AlternateClass => DamageClass.Magic;
-
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 7;
-            Item.mana = 10;
-        }
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Drippler Staff");
-            // Tooltip.SetDefault("Summons an Drippler to fight with you");
-            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
-            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-        }
-
         public override void SetDefaults()
         {
-            Item.damage = 15;
+            base.SetDefaults();
+            Item.DefaultToBellMinion(ModContent.ProjectileType<DripplerMinionProj>());
+            Item.damage = 27;
             Item.knockBack = 3f;
-            Item.mana = 10;
-            Item.width = 32;
-            Item.height = 32;
-            Item.useTime = 36;
-            Item.useAnimation = 36;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.value = Item.sellPrice(0, 0, 32, 0);
-            Item.rare = ItemRarityID.Green;
-            Item.UseSound = SoundID.Item44;
-
-            // These below are needed for a minion weapon
-            Item.noMelee = true;
-            Item.DamageType = DamageClass.Summon;
-            Item.buffType = ModContent.BuffType<DripplerMinionBuff>();
-            // No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-            Item.shoot = ModContent.ProjectileType<DripplerMinionProj>();
         }
 
         public override void AddRecipes()
@@ -56,19 +30,275 @@ namespace Stellamod.Items.Weapons.Summon
             base.AddRecipes();
             this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<TerrorFragments>());
         }
+    }
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+    public class DripplerMinionProj : AbstractBellSummon
+    {
+        private Vector2 _targetOffset;
+        private int _targetNpc = -1;
+        private Player Owner => Main.player[Projectile.owner];
+        public override void SetStaticDefaults()
         {
-            // This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
-            player.AddBuff(Item.buffType, 2);
+            Main.projFrames[Projectile.type] = 4;
+            Main.projPet[Projectile.type] = true;
+            ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
+            ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
+            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+        }
 
-            // Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
-            position = Main.MouseWorld;
-            var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
-            projectile.originalDamage = Item.damage;
+        public sealed override void SetDefaults()
+        {
+            Projectile.width = 18;
+            Projectile.height = 28;
+            // Makes the minion go through tiles freely
+            Projectile.tileCollide = false;
 
-            // Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
+            // These below are needed for a minion weapon
+            // Only controls if it deals damage to enemies on contact (more on that later)
+            Projectile.friendly = true;
+            // Only determines the damage type
+            Projectile.minion = true;
+            // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
+            Projectile.minionSlots = 1f;
+            // Needed so the minion doesn't despawn on collision with enemies or tiles
+            Projectile.penetrate = -1;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 20;
+        }
+
+        // Here you can decide if your minion breaks things like grass or pots
+        public override bool? CanCutTiles()
+        {
             return false;
+        }
+
+        // This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
+        public override bool MinionContactDamage()
+        {
+            return true;
+        }
+
+        private float Timer
+        {
+            get => Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
+
+        private int StickToNPC
+        {
+            get => (int)Projectile.ai[1];
+            set => Projectile.ai[1] = value;
+        }
+
+        private ref float StickTimer => ref Projectile.ai[1];
+
+
+        private void AI_IdleAroundOwner()
+        {
+            float index = SummonHelper.GetProjectileIndex(Projectile);
+
+            float swingRange = MathHelper.TwoPi;
+            float swingXRadius = 128;
+            float swingYRadius = 16;
+            float swingProgress = Main.GlobalTimeWrappedHourly * 0.25f;
+            swingProgress += index * MathHelper.TwoPi;
+            float xOffset = swingXRadius * MathF.Sin(swingProgress * swingRange + swingRange);
+            float yOffset = swingYRadius * MathF.Cos(swingProgress * swingRange + swingRange);
+            Vector2 offset = new Vector2(xOffset, yOffset);
+            Vector2 targetCenter = Owner.Center + offset + new Vector2(0, -64);
+            Projectile.velocity = (targetCenter - Projectile.Center) * 0.1f;
+            // AI_Movement(targetCenter, moveSpeed: 20);
+        }
+
+
+        public override void AI()
+        {
+            base.AI();
+            Projectile.spriteDirection = Projectile.direction;
+            SummonHelper.SearchForTargets(Owner, Projectile,
+                out bool foundTarget,
+                out float distanceFromTarget,
+                out Vector2 targetCenter);
+
+            if (Main.rand.NextBool(12))
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Blood);
+            }
+
+            if (StickTimer > 0)
+            {
+                AI_Sticking();
+            }
+
+            if (foundTarget)
+            {
+                if (_targetNpc == -1)
+                {
+                    Projectile.velocity = (targetCenter - Projectile.Center) * 0.05f;
+                }
+            }
+            else
+            {
+                AI_IdleAroundOwner();
+            }
+
+            Visuals();
+        }
+
+        private void AI_Sticking()
+        {
+            StickTimer--;
+            if (StickTimer <= 0)
+            {
+                _targetNpc = -1;
+            }
+
+            if (_targetNpc == -1)
+                return;
+
+            NPC targetNpc = Main.npc[_targetNpc];
+            if (!targetNpc.active)
+            {
+                _targetNpc = -1;
+                return;
+            }
+
+            if (!targetNpc.CanBeChasedBy())
+            {
+                _targetNpc = -1;
+                return;
+            }
+
+            Vector2 targetPos = targetNpc.position - _targetOffset;
+            Vector2 directionToTarget = Projectile.position.DirectionTo(targetPos);
+            float dist = Vector2.Distance(Projectile.position, targetPos);
+            Projectile.velocity = (directionToTarget * dist) + new Vector2(0.001f, 0.001f);
+            Timer++;
+            if (Timer >= 90)
+            {
+                float speedX = Main.rand.Next(-15, 15);
+                float speedY = Main.rand.Next(-15, -15);
+                Vector2 speed = new Vector2(speedX, speedY);
+
+                SoundEngine.PlaySound(SoundID.NPCHit18, targetNpc.Center);
+                SoundEngine.PlaySound(SoundID.Item171, targetNpc.Center);
+
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), (int)targetNpc.Center.X, (int)targetNpc.Center.Y, speed.X, speed.Y,
+                                      ModContent.ProjectileType<BloodWaterProj>(), Projectile.damage / 2, 1f, Projectile.owner);
+                }
+
+                Timer = 0;
+            }
+        }
+
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(target, hit, damageDone);
+            StickTimer = 30;
+            _targetNpc = target.whoAmI;
+            _targetOffset = (target.position - Projectile.position) + new Vector2(0.001f, 0.001f);
+        }
+
+        private void Visuals()
+        {
+            Projectile.rotation = Projectile.velocity.X * 0.05f;
+
+
+            // Some visuals here
+            Lighting.AddLight(Projectile.Center, Color.Red.ToVector3() * 0.278f);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+
+            return false;
+        }
+
+
+        public override void DrawSpectral(SpriteBatch spriteBatch)
+        {
+            base.DrawSpectral(spriteBatch);
+            Color lightColor = Color.White;
+            DrawGlow(ref lightColor);
+            DrawTentacles(ref lightColor);
+            DrawBody(ref lightColor);
+            DrawEyes(ref lightColor);
+        }
+        private void DrawGlow(ref Color lightColor)
+        {
+            Texture2D dimLightTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
+            float drawScale = 1f;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            for (int i = 0; i < 3; i++)
+            {
+                Color glowColor = Color.Red;
+                glowColor.A = 0;
+                spriteBatch.Draw(dimLightTexture, Projectile.Center - Main.screenPosition, null, glowColor,
+                    Projectile.rotation, dimLightTexture.Size() / 2f, drawScale * VectorHelper.Osc(0.85f, 1f, speed: 8, offset: Projectile.whoAmI), SpriteEffects.None, 0f);
+            }
+
+        }
+        private void DrawBody(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = TextureAssets.Projectile[Type].Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            Vector2 drawScale = Vector2.One;
+            drawScale.X = VectorHelper.Osc(0.85f, 1f, speed: 8f, offset: 2f);
+            drawScale.Y = VectorHelper.Osc(0.85f, 1f, speed: 8f, offset: 4f);
+            drawOrigin -= Projectile.velocity * 0.5f;
+            spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor), Projectile.rotation, drawOrigin,
+      drawScale, SpriteEffects.None, 0);
+        }
+
+        private void DrawEyes(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>(Texture + "_Eyes").Value;
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            Vector2 drawOrigin = texture.Size() / 2f - Projectile.velocity.SafeNormalize(Vector2.Zero) * 8;
+            Vector2 drawScale = Vector2.One;
+            drawScale.X = VectorHelper.Osc(0.75f, 1f, speed: 2f, offset: 2f);
+            drawScale.Y = VectorHelper.Osc(0.75f, 1f, speed: 2f, offset: 4f);
+            drawPos += Main.rand.NextVector2Circular(1, 1);
+            spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor), Projectile.rotation, drawOrigin,
+               drawScale, SpriteEffects.None, 0);
+        }
+
+        private void DrawTentacles(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D texture = ModContent.Request<Texture2D>(Texture + "_Tentacles").Value;
+            MiscShaderData shaderData = GameShaders.Misc["LunarVeil:DaedusRobe"];
+            shaderData.Shader.Parameters["windNoiseTexture"].SetValue(TextureRegistry.CloudNoise.Value);
+
+            float speed = 1;
+            shaderData.Shader.Parameters["uImageSize0"].SetValue(texture.Size());
+            shaderData.Shader.Parameters["startPixel"].SetValue(31);
+            shaderData.Shader.Parameters["endPixel"].SetValue(58);
+            shaderData.Shader.Parameters["time"].SetValue(Main.GlobalTimeWrappedHourly * speed);
+            shaderData.Shader.Parameters["distortionStrength"].SetValue(0.075f);
+
+
+            Vector2 vel = -Projectile.velocity * 0.05f;
+            vel.Y *= 0.25f;
+            shaderData.Shader.Parameters["movementVelocity"].SetValue(vel);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, default, default, default, shaderData.Shader, Main.GameViewMatrix.TransformationMatrix);
+
+
+            Vector2 drawPos = Projectile.Center - Main.screenPosition;
+            drawPos.Y += 32;
+            Vector2 drawOrigin = texture.Size() / 2f;
+            spriteBatch.Draw(texture, drawPos, null, Color.White.MultiplyRGB(lightColor), 0f, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
     }
 }

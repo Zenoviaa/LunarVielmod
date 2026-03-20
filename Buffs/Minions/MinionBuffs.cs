@@ -43,8 +43,6 @@ namespace Stellamod.Buffs.Minions
 
     public class CloudMinionBuff : MinionBuff<CloudMinionProj> { }
 
-    public class DripplerMinionBuff : MinionBuff<DripplerMinionProj> { }
-
     public class FireflyMinionBuff : MinionBuff<LilFly>
     {
         public override void SetStaticDefaults()
