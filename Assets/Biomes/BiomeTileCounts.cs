@@ -123,8 +123,11 @@ namespace Stellamod
 
         public int MoonspiralTowerCount;
         public static bool InMoonspiralTower => ModContent.GetInstance<BiomeTileCounts>().MoonspiralTowerCount >= 50;
+        public int ForestCount;
+        public static bool InForest => ModContent.GetInstance<BiomeTileCounts>().ForestCount >= 25;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
+            ForestCount = tileCounts[TileID.Grass];
             MoonspiralTowerCount = tileCounts[ModContent.TileType<CathediteTile>()];
             WorldsEndCount = tileCounts[ModContent.TileType<WhiteGrass>()];
             MarshCount = tileCounts[ModContent.TileType<RainforestGrass>()];

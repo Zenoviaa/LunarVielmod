@@ -197,3 +197,8 @@ IceBackgroundRemove: {
 	DisplayName: Ice Background Remove
 	TownNPCDialogueName: the Ice Background Remove
 }
+
+ForestBiome: {
+	DisplayName: Forest Biome
+	TownNPCDialogueName: the Forest Biome
+}

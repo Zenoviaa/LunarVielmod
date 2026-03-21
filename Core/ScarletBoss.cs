@@ -26,8 +26,6 @@ namespace Stellamod.Core
             NPC.boss = true;
 
         }
-
-
         public override void SendExtraAI(BinaryWriter writer)
         {
             
