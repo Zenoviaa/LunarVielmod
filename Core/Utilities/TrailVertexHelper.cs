@@ -124,54 +124,6 @@ namespace Stellamod.Core.Utilities
             indices[indices.Length - 1] = 1;
         }
 
-        public void CreateCircleVertices(Vector2 center, float radius, int numPoints,
-            out VertexPositionColorTexture[] vertices, out int[] indices)
-        {
-            //So what I want to do is create a primtive circle
-            //Before anything we need the center vertex
-            Color centerColor = Color.White;
-            Vector2 centerTextureCoordinate = Vector2.Zero;
-
-            int numVertices = numPoints * 4;
-            vertices = new VertexPositionColorTexture[numVertices];
-            //First let's get evenly spaced points
-            float range = (float)numPoints / MathHelper.TwoPi * ExtraMath.Osc(0.85f, 1f, 1) * 0.1f;
-            radius *= ExtraMath.Osc(0.6f, 1f, 4f);
-            for(int n = 0; n < numPoints; n++)
-            {
-                float ratio = (float)n / (float)numPoints;
-                float radians = ratio * MathHelper.TwoPi;
-                Vector2 direction = radians.ToRotationVector2();
-           
-
-
-                direction *= radius * ExtraMath.Osc(0.95f, 1f, 3f, n * 16f);
-
-                Vector2 leftOffset = direction.RotatedBy(-range);
-                Vector2 rightOffset = direction.RotatedBy(range);
-
-                Color color = Color.White;
-                Vector2 edgeTextureCoordinate = new Vector2(1, 1);
-
-                //Now we have a left and a right, ok.
-                //This hsould get us our texture back
-                //If not we'll introduce some more points
-                VertexPositionColorTexture topleft = new VertexPositionColorTexture(new Vector3(center + leftOffset, 0), color, new Vector2(0, 1));
-                VertexPositionColorTexture topRight = new VertexPositionColorTexture(new Vector3(center + rightOffset, 0), color, new Vector2(1, 1));
-                VertexPositionColorTexture bottomRight = new VertexPositionColorTexture(new Vector3(center, 0), color, new Vector2(0, 0));
-                VertexPositionColorTexture bottomLeft = new VertexPositionColorTexture(new Vector3(center, 0), color, new Vector2(1, 0));
-
-
-
-
-                int startIndex = n * 4;
-                vertices[startIndex] = topleft;
-                vertices[startIndex + 1] = bottomRight;
-                vertices[startIndex + 2] = topRight;
-                vertices[startIndex + 3] = bottomLeft;
-            }
-            indices = _trailIndexBuffer;
-        }
         public VertexSection FillVertexArrayNonAlloc(Vector2[] trailingPoints, Func<float, Color> colorFunc, Func<float, float> widthFunc, Vector2 offset)
         {
             const float coord1 = 0;
@@ -420,6 +372,14 @@ namespace Stellamod.Core.Utilities
             GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
             graphicsDevice.DrawUserIndexedPrimitives<VertexPositionColorTexture>(
               PrimitiveType.TriangleList, _trailVertexBuffer, 0, section.vertexCount, _trailIndexBuffer, 0, section.primitiveCount);
+
+        }
+
+        public void DrawCachedPrimitives()
+        {
+            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+            graphicsDevice.DrawUserIndexedPrimitives<VertexPositionColorTexture>(
+              PrimitiveType.TriangleList, _trailVertexBuffer, 0, _index, _trailIndexBuffer, 0, _index / 2);
 
         }
     }

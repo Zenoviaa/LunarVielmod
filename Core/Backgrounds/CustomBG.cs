@@ -17,6 +17,7 @@ namespace Stellamod.Core.Backgrounds
         public bool NoSurfaceLight;
         public float ParallaxYOffset;
         public bool NoParallaxY;
+        public float ParallaxYFactor;
         public Color DrawColor;
         public bool IgnorePaletteShader;
         public float LocalParallaxSpeed=1f;

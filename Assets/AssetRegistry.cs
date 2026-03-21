@@ -44,6 +44,7 @@ namespace Stellamod.Assets
             private static string Path => "Stellamod/Assets/Sounds/";
             public static class LeviathanEel
             {
+                public static SoundStyle Electrify = new SoundStyle($"{Path}LeviathanEel/Electrify");
                 public static SoundStyle SandFade = new SoundStyle($"{Path}LeviathanEel/SandFade");
                 public static SoundStyle SandDash = new SoundStyle($"{Path}LeviathanEel/SandDash");
                 public static SoundStyle EarthRumble = new SoundStyle($"{Path}LeviathanEel/EarthRumble");

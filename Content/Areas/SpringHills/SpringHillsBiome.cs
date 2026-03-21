@@ -11,7 +11,7 @@ namespace Stellamod.Content.Areas.SpringHills
         public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<NoBackgroundStyle>();
         public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
         // Select Music
-        public override SceneEffectPriority Priority => SceneEffectPriority.Environment;
+        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
         public override int Music => -1;
         public override bool IsBiomeActive(Player player) => BiomeTileCounts.InForest;
 

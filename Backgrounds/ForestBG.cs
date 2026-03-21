@@ -7,13 +7,14 @@ namespace Stellamod.Backgrounds;
 
 public class ForestBG : CustomBG
 {
+    public CustomBGLayer BleedLayer;
     public CustomBGLayer BackLayer;
     public CustomBGLayer MidLayer;
     public CustomBGLayer FrontLayer;
 
     public float FarParallax => 0.08f;
     public float MidParallax => 0.11f;
-    public float CloseParallax => 0.20f;
+    public float CloseParallax => 0.13f;
 
     private void AddFarLayer()
     {
@@ -49,21 +50,26 @@ public class ForestBG : CustomBG
         AddFarLayer();
         AddMidLayer();
         AddCloseLayer();
+
+        BleedLayer = new CustomBGLayer();
+        BleedLayer.SetTexture("Assets/Textures/Backgrounds/ForestUnderground");
+        BleedLayer.Parallax = CloseParallax;
+        BleedLayer.DrawOffset = new Vector2(0, BleedLayer.Texture.Size().Y * DrawScale * 2);
+        AddLayer(BleedLayer);
     }
 
     public override bool IsActive()
     {
+        FrontLayer.Parallax = CloseParallax;
         DrawScale = 1f;
         DrawOffset = new Vector2(0, 620);
-        BackLayer.Parallax = FarParallax;
-        MidLayer.Parallax = MidParallax;
-        FrontLayer.Parallax = CloseParallax;
-        FrontLayer.DrawScale = 1f;
-
+        ParallaxYFactor = 0.35f;
         /*
         NoSurfaceOffset = true;
         DrawScale = 1;
       */
-        return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneForest;
+
+        bool isActive = Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneForest || Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneSpringHills;
+        return isActive && !Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia && !Main.LocalPlayer.ZoneJungle;
     }
 }

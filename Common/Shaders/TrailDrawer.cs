@@ -117,6 +117,31 @@ namespace Stellamod.Common.Shaders
             trailVertexCache.DrawPrimitives(section, shader);
         }
 
+        public static void ClearPrimitives()
+        {
+            TrailVertexHelper trailVertexCache = ModContent.GetInstance<TrailVertexHelper>();
+            trailVertexCache.Clear();
+        }
+
+        public static void PreparePrimitives(Vector2[] oldPos,
+            Func<float, Color> colorFunc,
+            Func<float, float> widthFunc,
+            Vector2? offset = null)
+        {
+            TrailVertexHelper trailVertexCache = ModContent.GetInstance<TrailVertexHelper>();
+            Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
+            float numPoints = oldPos.Length * 2;
+            Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
+            VertexSection section = trailVertexCache.FillVertexArrayNonAlloc(trailingPoints, colorFunc, widthFunc, trailOffset);
+        }
+
+        public static void DrawCached(BaseShader shader)
+        {
+            shader.Apply();
+            ApplyPasses(shader.Effect);
+            ModContent.GetInstance<TrailVertexHelper>().DrawCachedPrimitives();
+        }
+
         public static void Draw(SpriteBatch spriteBatch,
             Vector2[] oldPos,
             float[] oldRot,

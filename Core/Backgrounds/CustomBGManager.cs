@@ -171,7 +171,7 @@ namespace Stellamod.Core.Backgrounds
             }
 
             int diffY = (int)(worldSurfaceY - Main.screenPosition.Y);
-            int parallaxY = (int)(diffY * -0.4f);
+            int parallaxY = (int)(diffY * -0.4f * bg.ParallaxYFactor);
 
             if (bg.NoParallaxY)
                 parallaxY = 0;
