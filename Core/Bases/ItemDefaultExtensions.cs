@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.DungeonGeneration;
-using Stellamod.Common.MagicCauldron;
+﻿using Stellamod.Common.MagicCauldron;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Common.WeaponTypes;
 using Stellamod.Content.Bar.Drinks;
@@ -34,7 +32,7 @@ namespace Stellamod.Core.Bases
         public static void DefaultToDrink(this Item item, int buffType)
         {
             item.GetGlobalItem<PermamentFoodGlobalItem>().isDrink = true;
-            item.DefaultToFood(22, 22, buffType, 2,  true);
+            item.DefaultToFood(22, 22, buffType, 2, true);
             item.width = 28;
             item.height = 28;
             item.consumable = true;
@@ -167,7 +165,7 @@ namespace Stellamod.Core.Bases
         {
             RuneGlobalItem globalItem = item.GetGlobalItem<RuneGlobalItem>();
             globalItem.isRune = true;
-        //    item.damage = 18;
+            //    item.damage = 18;
             item.DamageType = DamageClass.Summon;
             item.noUseGraphic = true;
             item.noMelee = true;

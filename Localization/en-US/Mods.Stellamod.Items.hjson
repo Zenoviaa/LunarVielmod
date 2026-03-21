@@ -30,6 +30,8 @@ Common: {
 	GenericDamage: " generic damage"
 	Lantern: Lantern Light Pet
 	LunarStrength: "{0} strength"
+	PermanentFoodOwn: "{1} from eating {0}!"
+	PermanentFoodNotOwn: You have not eaten {0}
 	NoMount: Your mount withers away...
 	LanternHelp:
 		'''
@@ -10402,12 +10404,12 @@ Chard: {
 
 DeepseaBerry: {
 	DisplayName: Deepsea Berry
-	Tooltip: Gives you +1 inventory slot
+	Tooltip: +1 inventory slot
 }
 
 EdibleCrystal: {
 	DisplayName: Edible Crystal
-	Tooltip: Gives you +2 defense
+	Tooltip: +2 defense
 }
 
 LastDrink: {
@@ -10417,12 +10419,12 @@ LastDrink: {
 
 LavishedJelly: {
 	DisplayName: Lavished Jelly
-	Tooltip: Gives you +10 max mana
+	Tooltip: +10 max mana
 }
 
 MysteriousGrapes: {
 	DisplayName: Mysterious Grapes
-	Tooltip: Gives you +1% damage
+	Tooltip: +1% damage
 }
 
 Noir: {
@@ -10437,7 +10439,7 @@ Port: {
 
 RedBerries: {
 	DisplayName: Red Berries
-	Tooltip: Gives you +10 health
+	Tooltip: +10 maximum health
 }
 
 Ries: {
@@ -10447,12 +10449,12 @@ Ries: {
 
 RottenChunk: {
 	DisplayName: Rotten Chunk
-	Tooltip: Increases movement speed by 5%
+	Tooltip: +5% movement speed
 }
 
 Shrimp: {
 	DisplayName: Shrimp
-	Tooltip: Increases stamina by 1
+	Tooltip: +1 stamina
 }
 
 VinhoVerde: {
@@ -10468,4 +10470,9 @@ Zin: {
 Rose: {
 	DisplayName: Rose
 	Tooltip: Increases damage by 10%
+}
+
+PermanentBuffTracker: {
+	DisplayName: Permanent Buff Tracker
+	Tooltip: ""
 }

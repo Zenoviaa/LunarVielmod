@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.ArmorRework;
+﻿using Stellamod.Common;
+using Stellamod.Common.ArmorRework;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
 using Stellamod.Helpers;
@@ -329,7 +330,11 @@ public class LastDrinkPlayer : ModPlayer
         if (!Player.HasBuff<LastDrinkBuff>())
             return;
         if (_activeBuffs == null)
+        {
+            Reroll();
             return;
+        }
+     
         for(int i = 0; i < _activeBuffs.Length; i++)
         {
             int buff = _activeBuffs[i];
@@ -351,6 +356,7 @@ public enum FoodType : byte
     LavishedJelly,
     Shrimp
 }
+
 
 public class PermamentFoodGlobalItem : GlobalItem
 {
@@ -446,9 +452,41 @@ public class Shrimp : ModItem
         Item.DefaultToPermanentFood(FoodType.Shrimp);
     }
 }
+public class PermanentBuffTracker : ModItem
+{
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Item.rare = ItemRarityID.Orange;
+    }
+
+    public override void ModifyTooltips(List<TooltipLine> tooltips)
+    {
+        base.ModifyTooltips(tooltips);
+        Color darkColor = Color.Lerp(Color.White, Color.Black, 0.8f);
+        foreach(Item foodItem in ItemHelper.PermanentFoods)
+        {
+            bool isActive = Main.LocalPlayer.GetModPlayer<PermanentFoodsPlayer>().IsFoodActive(foodItem.GetGlobalItem<PermamentFoodGlobalItem>().permanentFoodType);
+            string tooltipText = LangText.Common("PermanentFoodOwn", foodItem.Name, LangText.Item(foodItem.ModItem, "Tooltip"));
+            Color color = Color.White;
+            if (!isActive)
+            {
+                color = darkColor;
+            }
+
+
+
+
+            TooltipLine line = new TooltipLine(Mod, $"FoodTooltip{foodItem.Name}", tooltipText);
+            line.OverrideColor = color;
+            tooltips.Add(line);
+        }
+    }
+}
 public class PermanentFoodsPlayer : ModPlayer
 {
     public bool[] foods = new bool[Enum.GetNames<FoodType>().Length];
+
     public bool IsFoodActive(FoodType foodType)
     {
         int type = (int)foodType;
@@ -568,6 +606,7 @@ public class DrinkShopSystem : ModSystem
             pool[rand] = -1;
         }
 
+        itemIds.Add(ModContent.ItemType<PermanentBuffTracker>());
         var items = new List<Item>();
         foreach (int itemId in itemIds)
         {

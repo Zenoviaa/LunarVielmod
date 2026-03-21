@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.SummonerSystem;
 using Stellamod.Common.XixianFlaskSystem;
+using Stellamod.Content.Bar.Drinks;
 using Stellamod.Content.Items.MoonlightMagic;
 using System.Collections.Generic;
 using Terraria;
@@ -16,6 +17,7 @@ namespace Stellamod.Common
         public static Item[] Insources { get; private set; }
         public static BaseEnchantment[] Enchantments { get; private set; }
         public static BaseEnchantment[] SpecialEnchantments { get; private set; }
+        public static Item[] PermanentFoods { get; private set; }
         public override void OnModUnload()
         {
             base.OnModUnload();
@@ -35,6 +37,7 @@ namespace Stellamod.Common
             var insourceCollection = new List<Item>();
             var enchantmentCollection = new List<BaseEnchantment>();
             var specialEnchantmentCollection = new List<BaseEnchantment>();
+            var permanentFoodCollection = new List<Item>();
             IEnumerable<ModItem> modItemCollection = ModContent.GetContent<ModItem>();
             foreach (var modItem in modItemCollection)
             {
@@ -51,6 +54,13 @@ namespace Stellamod.Common
                         Item itemClone = new Item(modItem.Item.type);
                         //The template instance does not have all the global items and whatnot applied to them
                         minionCollection.Add(itemClone);
+                    }
+                }
+                if(modItem.Item.TryGetGlobalItem(out PermamentFoodGlobalItem permamentFoodGlobalItem))
+                {
+                    if (permamentFoodGlobalItem.isPermanentFood)
+                    {
+                        permanentFoodCollection.Add(modItem.Item);
                     }
                 }
                 if (modItem is InsourceItem)
@@ -71,6 +81,7 @@ namespace Stellamod.Common
             BellMinions = minionCollection.ToArray();
             Enchantments = enchantmentCollection.ToArray();
             SpecialEnchantments = specialEnchantmentCollection.ToArray();
+            PermanentFoods = permanentFoodCollection.ToArray();
         }
     }
 }
