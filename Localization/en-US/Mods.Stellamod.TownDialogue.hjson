@@ -376,6 +376,73 @@ EFearDialogue: {
 
 BaseDialogue.Line0: ""
 
+BulbtrifierHiDialogue: {
+	DisplayName: Hi?
+	Line0:
+		'''
+		[PORTRAIT=Bulbtrifier]
+		Hi, do you care to get anything from this shop? The name is Bulbtrifier and we always have new and fresh selections!
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Bulbtrifier]
+		Afterall, I make the best food in the entire world! Even Zui has eaten here before...
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Bulbtrifier]
+		Grab a bite, or hell, get some drinks too.
+		'''
+}
+
+BulbtrifierWhoDialogue: {
+	DisplayName: Who is that lady at the top?
+	Line0:
+		'''
+		[PORTRAIT=Bulbtrifier]
+		I am not so sure, she kind of joined along for the ride, but she hasn't left and she keeps telling me about how her sister is a succubus.
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Bulbtrifier]
+		You could say I pulled a baddie...
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Bulbtrifier]
+		Well I did, I'm the best cook afterall.
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Bulbtrifier]
+		I need to kick her out, but she is like an immovable object.
+		'''
+}
+
+BulbtrifierHowMuchDialogue: {
+	DisplayName: How much do you make?
+	Line0:
+		'''
+		[PORTRAIT=Bulbtrifier]
+		A bit of a rude question...
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Bulbtrifier]
+		But if you ask, I make plenty of money! I just might need a little bit of help...
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Bulbtrifier]
+		I may join that witch academy Zui posts about everywhere, it's so renowned...
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Bulbtrifier]
+		I'm sure to get some money there!
+		'''
+}
+
 ListAloneDialogue: {
 	DisplayName: ""
 	Line0: ""

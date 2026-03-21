@@ -10,6 +10,8 @@ Common: {
 	Greatsword: Greatsword Weapon Type
 	Safunai: Safunai Weapon Type
 	Orb: Orb Weapon Type
+	PermanentFoodHelp: This buff is permanent, persisting through death and any trial you may face!
+	DrinkHelp: This buff lasts until you die!
 	Juggler: Juggler Weapon Type
 	JugglerHelp:
 		'''
@@ -10381,4 +10383,89 @@ MoonskerRobe: {
 WhiteGrassBlock: {
 	DisplayName: White Grass Block
 	Tooltip: ""
+}
+
+Blanc: {
+	DisplayName: Blanc
+	Tooltip: Decerases bow charge time by 20%
+}
+
+Cab: {
+	DisplayName: Cab
+	Tooltip: Gives you +10 defense
+}
+
+Chard: {
+	DisplayName: Chard
+	Tooltip: Gives you +2 summons
+}
+
+DeepseaBerry: {
+	DisplayName: Deepsea Berry
+	Tooltip: Gives you +1 inventory slot
+}
+
+EdibleCrystal: {
+	DisplayName: Edible Crystal
+	Tooltip: Gives you +2 defense
+}
+
+LastDrink: {
+	DisplayName: Last Drink
+	Tooltip: Decreases max life by 30%, but gives you 3 random buffs until you die
+}
+
+LavishedJelly: {
+	DisplayName: Lavished Jelly
+	Tooltip: Gives you +10 max mana
+}
+
+MysteriousGrapes: {
+	DisplayName: Mysterious Grapes
+	Tooltip: Gives you +1% damage
+}
+
+Noir: {
+	DisplayName: Noir
+	Tooltip: Reduces damage taken by 10%
+}
+
+Port: {
+	DisplayName: Port
+	Tooltip: Decreases wand charge time by 20%
+}
+
+RedBerries: {
+	DisplayName: Red Berries
+	Tooltip: Gives you +10 health
+}
+
+Ries: {
+	DisplayName: Ries
+	Tooltip: Increases max ammo capacity by 5
+}
+
+RottenChunk: {
+	DisplayName: Rotten Chunk
+	Tooltip: Increases movement speed by 5%
+}
+
+Shrimp: {
+	DisplayName: Shrimp
+	Tooltip: Increases stamina by 1
+}
+
+VinhoVerde: {
+	DisplayName: Vinho Verde
+	Tooltip: Increases melee attack speed by 20%
+}
+
+Zin: {
+	DisplayName: Zin
+	Tooltip: Increases max health by 10%
+}
+
+Rose: {
+	DisplayName: Rose
+	Tooltip: Increases damage by 10%
 }

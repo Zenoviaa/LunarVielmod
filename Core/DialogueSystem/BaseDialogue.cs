@@ -2,21 +2,38 @@
 using Stellamod.UI.Dialogue;
 using Stellamod.UI.DialogueTowning;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.DialogueSystem
 {
+    public class Speaking : ModBuff
+    {
+
+    }
+
+    public class DialogueCutscenePlayer : ModPlayer
+    {
+        public override bool CanUseItem(Item item)
+        {
+            return base.CanUseItem(item) && !Player.HasBuff<Speaking>();
+        }
+    }
+
     [Autoload(Side = ModSide.Client)]
     public class DialogueSystemV2 : ModSystem
     {
         private DialogueActor _dialogueActor;
         private bool _hasCompleted;
+        public bool inDialogue => _dialogueActor != null;
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
             if (_dialogueActor == null)
                 return;
-            if(Main.mouseLeft && Main.mouseLeftRelease)
+            Main.LocalPlayer.AddBuff(ModContent.BuffType<Speaking>(), 2);
+
+            if (Main.mouseLeft && Main.mouseLeftRelease)
             {
                 if (_dialogueActor.IsFinished() && !_hasCompleted)
                 {

@@ -11,6 +11,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.UI.DialogueTowning
 {
@@ -29,6 +30,7 @@ namespace Stellamod.UI.DialogueTowning
         private Animation _animation;
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
+        private VeilTownNPC _oldSpeakingNPC;
         private Vector2 _talkWorld;
 
         private Vector2 StartDrawOffset => new Vector2(-200, 0);
@@ -74,6 +76,12 @@ namespace Stellamod.UI.DialogueTowning
 
             if (WhosTalking == townNPC.Type)
                 return;
+            OpenDialogue(townNPC);
+        }
+
+        public void OpenDialogue(VeilTownNPC townNPC)
+        {
+            _oldSpeakingNPC = townNPC;
             SoundEngine.PlaySound(SoundID.Chat);
             string text = string.Empty;
             string portrait = "FenixPortrait";
@@ -110,7 +118,6 @@ namespace Stellamod.UI.DialogueTowning
             _talkWorld = Main.LocalPlayer.position;
             WhosTalking = townNPC.NPC.type;
         }
-
         public void ChatWith(Quest quest)
         {
             string text = string.Empty;
@@ -156,6 +163,31 @@ namespace Stellamod.UI.DialogueTowning
 
         public void RefreshTalkOptions()
         {
+            string text = string.Empty;
+            string portrait = "FenixPortrait";
+            float timeBetweenTexts = 0.05f;
+            SoundStyle? talkingSound = null;
+
+            //Create buttons and open dialogue
+            var townNPC = _oldSpeakingNPC;
+            List<Tuple<string, Action>> buttons = new List<Tuple<string, Action>>();
+            townNPC.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
+
+            //Some goofballs you can only interact with no dialogue
+            if (townNPC.OnlyInteract)
+                return;
+
+            //Check if quest giver
+            if (townNPC.HasQuestAvailable())
+            {
+                buttons.Add(new Tuple<string, Action>("Quest", townNPC.GiveQuest));
+            }
+            buttons.Add(new Tuple<string, Action>("Close", townNPC.CloseTownDialogue));
+            foreach (var pair in buttons)
+            {
+                dialogueTowningUIState.dialogueTownButtonsUI.AddButton(pair.Item1, pair.Item2);
+            }
+
             OpenTalkOptions(_oldDialogues);
         }
         public void ClearButtons()
@@ -220,9 +252,11 @@ namespace Stellamod.UI.DialogueTowning
             float progress = _dialogueTimer / Duration;
             float easedProgress = Easing.OutExpo(progress);
             dialogueTowningUIState.dialogueTownUI.Alpha = easedProgress;
-            dialogueTowningUIState.dialogueTownButtonsUI.Alpha = easedProgress;
+            dialogueTowningUIState.dialogueTownButtonsUI.alpha = easedProgress;
+            dialogueTowningUIState.talkingOptionsUI.Alpha = easedProgress;
+
             dialogueTowningUIState.dialogueTownUI.Offset = Vector2.Lerp(StartDrawOffset, EndDrawOffset, easedProgress);
-            dialogueTowningUIState.dialogueTownButtonsUI.Offset = dialogueTowningUIState.dialogueTownUI.Offset;
+            dialogueTowningUIState.dialogueTownButtonsUI.offset = dialogueTowningUIState.dialogueTownUI.Offset;
         }
 
         private void Update_Close(GameTime gameTime)
@@ -241,9 +275,11 @@ namespace Stellamod.UI.DialogueTowning
             float progress = _dialogueTimer / Duration;
             float easedProgress = Easing.InOutSine(progress);
             dialogueTowningUIState.dialogueTownUI.Alpha = easedProgress;
-            dialogueTowningUIState.dialogueTownButtonsUI.Alpha = easedProgress;
+            dialogueTowningUIState.dialogueTownButtonsUI.alpha = easedProgress;
+            dialogueTowningUIState.talkingOptionsUI.Alpha = easedProgress;
+
             dialogueTowningUIState.dialogueTownUI.Offset = Vector2.Lerp(StartDrawOffset, EndDrawOffset, easedProgress);
-            dialogueTowningUIState.dialogueTownButtonsUI.Offset = dialogueTowningUIState.dialogueTownUI.Offset;
+            dialogueTowningUIState.dialogueTownButtonsUI.offset = dialogueTowningUIState.dialogueTownUI.Offset;
         }
 
         public void OpenUI()

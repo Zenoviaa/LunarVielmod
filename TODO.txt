@@ -1,3 +1,29 @@
+
+
+
+
+
+
+
+
+
+
+Background Shader put backgrounds all on one quad, very simple shader, just make a bunch of texture samplers
+
+Refactor the particle system to be a system instead of individual particles, this will be a lot faster to compute, since we'd just be messing with data
+	I'm thinking the new system would have an IParticleData interface which justh as a few basic things like Position, Velocity, Color, Scale
+	Extra data would just be in the custom struct that you use for the system
+	Then we have an abstraction for each particle pool so like something like, the only thing is we have to update so many spots to refer to the struct instead
+		public abstract class ParticleSystem<BaseParticleSystem, IParticleData> : BaseParticleSystem
+	The SpawnParticle function will instead return a reference to the particle data struct
+		so like this - public static ref IParticleData Spawn();
+
+	Also, make a particle atlas
+
+Readd the lavas back in
+
+-------------
+
 KEY: 
 	// = Coded but not tested/tuned
 	# = Tested but needs approval

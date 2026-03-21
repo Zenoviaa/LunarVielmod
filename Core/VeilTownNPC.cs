@@ -25,6 +25,7 @@ namespace Stellamod.Core
         public bool SpawnAtPoint { get; set; }
         public bool OnlyInteract { get; set; }
         public bool NoSpecialInteract { get; set; }
+        public bool breathe;
         public Vector2 DrawOffset { get; set; }
         public virtual string QuestMarkTexture => "Stellamod/Common/QuestSystem/QuestMark";
 
@@ -44,14 +45,17 @@ namespace Stellamod.Core
 
             string texturePath = Texture;
             Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
-            Vector2 drawPos = NPC.Center - Main.screenPosition;
+            Vector2 drawPos = NPC.Bottom - Main.screenPosition;
             float yDiff = MathF.Abs(NPC.frame.Size().Y - NPC.Size.Y);
-            drawPos.Y -= yDiff/2;
             drawPos += DrawOffset;
 
-            Vector2 drawOrigin = NPC.frame.Size() / 2f;
+            Vector2 drawOrigin = new Vector2(NPC.frame.Width * 0.5f, NPC.frame.Height);
             float drawRotation = NPC.rotation;
-            float drawScale = NPC.scale;
+            Vector2 drawScale = NPC.scale * Vector2.One;
+            if (breathe)
+            {
+                drawScale = Vector2.Lerp(drawScale, new Vector2(1.1f, 0.9f), ExtraMath.Osc(0f, 1f));
+            }
             SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
 
@@ -74,14 +78,17 @@ namespace Stellamod.Core
                 return PreDraw(spriteBatch, screenPos, drawColor);
             string texturePath = Texture;
             Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
-            Vector2 drawPos = NPC.Center - Main.screenPosition;
+            Vector2 drawPos = NPC.Bottom - Main.screenPosition;
             float yDiff = MathF.Abs(NPC.frame.Size().Y - NPC.Size.Y);
-            drawPos.Y -= yDiff/2;
             drawPos += DrawOffset;
 
-            Vector2 drawOrigin = NPC.frame.Size() / 2f;
+            Vector2 drawOrigin = new Vector2(NPC.frame.Width * 0.5f, NPC.frame.Height);
             float drawRotation = NPC.rotation;
-            float drawScale = NPC.scale;
+            Vector2 drawScale = NPC.scale * Vector2.One;
+            if (breathe)
+            {
+                drawScale = Vector2.Lerp(drawScale, new Vector2(1.1f, 0.9f), ExtraMath.Osc(0f, 1f));
+            }
             SpriteEffects spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             float outlineOffset = 2;

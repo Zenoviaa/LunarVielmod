@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.DungeonGeneration;
 using Stellamod.Common.MagicCauldron;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Common.WeaponTypes;
+using Stellamod.Content.Bar.Drinks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,6 +12,39 @@ namespace Stellamod.Core.Bases
 {
     public static class ItemDefaultExtensions
     {
+        public static void DefaultToPermanentFood(this Item item, FoodType foodType)
+        {
+            item.GetGlobalItem<PermamentFoodGlobalItem>().permanentFoodType = foodType;
+            item.DefaultToFood(22, 22, BuffID.WellFed, 60 * 60);
+            item.width = 28;
+            item.height = 28;
+            item.UseSound = SoundID.Item3;
+            item.useAnimation = ItemUseStyleID.EatFood;
+            item.consumable = true;
+            item.rare = ItemRarityID.Orange;
+            item.shopSpecialCurrency = Stellamod.MedalCurrencyID;
+            item.shopCustomPrice = 100;
+        }
+
+        public static void DefaultToDrink<T>(this Item item) where T : ModBuff
+        {
+            DefaultToDrink(item, ModContent.BuffType<T>());
+        }
+
+        public static void DefaultToDrink(this Item item, int buffType)
+        {
+            item.GetGlobalItem<PermamentFoodGlobalItem>().isDrink = true;
+            item.DefaultToFood(22, 22, buffType, 2,  true);
+            item.width = 28;
+            item.height = 28;
+            item.consumable = true;
+            item.buffTime = 2;
+            item.buffType = buffType;
+            item.shopSpecialCurrency = Stellamod.MedalCurrencyID;
+            item.shopCustomPrice = 20;
+            item.rare = ItemRarityID.Orange;
+        }
+
         public static void DefaultToSafunai(this Item item)
         {
             SafunaiGlobalItem globalItem = item.GetGlobalItem<SafunaiGlobalItem>();

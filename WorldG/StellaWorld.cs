@@ -108,6 +108,7 @@ public class StellaWorld : ModSystem
     public Point MarshLocation { get; private set; }
     public Point AlcadLocation { get; private set; }
     public Point GothiviaSpawnOffset => new Point(246, -99);
+    public Point BublbtrifierSpawnOffset => new Point(246, -99);
 
     private void DisableGenTask(List<GenPass> tasks, string passName)
     {
@@ -9262,10 +9263,12 @@ public class StellaWorld : ModSystem
     public override void SaveWorldData(TagCompound tag)
     {
         tag["MarshLocation"] = MarshLocation;
+        tag["FableHillLocation"] = FableHillStartLocation;
     }
 
     public override void LoadWorldData(TagCompound tag)
     {
         MarshLocation = tag.Get<Point>("MarshLocation");
+        FableHillStartLocation = tag.Get<Point>("FableHillLocation");
     }
 }

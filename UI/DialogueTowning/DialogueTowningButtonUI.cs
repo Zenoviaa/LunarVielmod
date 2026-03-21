@@ -13,15 +13,19 @@ namespace Stellamod.UI.DialogueTowning
 {
     public class DialogueTowningButtonUI : UIPanel
     {
-        private Color _targetColor;
         private float _timer;
+        private float _spriteAlpha;
+        public DialogueTowningButtonUI()
+        {
+            realText = string.Empty;
+            UIText = new UIText("This is placeholder text", 0.5f, true);
+            UIText.Height.Pixels = 44;
+            UIText.Width.Pixels = 214;
+        }
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Text = new UIText("This is placeholder text", 0.5f, true);
-            Text.Height.Pixels = 44;
-            Text.Width.Pixels = 214;
-            Append(Text);
+            Append(UIText);
 
             Width.Pixels = 214;
             Height.Pixels = 44;
@@ -31,15 +35,15 @@ namespace Stellamod.UI.DialogueTowning
             OnMouseOver += OnMouseHover;
         }
 
-        public UIText Text { get; set; }
-        public string RealText { get; set; }
-        public Action OnClickEvent { get; set; }
-        public float Alpha { get; set; }
+        public readonly UIText UIText;
+        public string realText;
+        public Action onClickEvent;
+        public float alpha;
         private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
             SoundStyle soundStyle = SoundID.MenuTick;
             SoundEngine.PlaySound(soundStyle);
-            OnClickEvent?.Invoke();
+            onClickEvent?.Invoke();
         }
 
         private void OnMouseHover(UIMouseEvent evt, UIElement listeningElement)
@@ -53,9 +57,9 @@ namespace Stellamod.UI.DialogueTowning
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if (Text == null)
+            if (UIText == null)
                 return;
-            Text.SetText(RealText);
+            UIText.SetText(realText);
             if (IsMouseHovering)
             {
                 _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -73,8 +77,9 @@ namespace Stellamod.UI.DialogueTowning
                 }
             }
             Color textColor = Color.Lerp(Color.White, Color.Yellow, _timer / 0.12f);
-            Text.TextColor = textColor * Alpha;
-            Text.Top.Pixels = 5;
+            _spriteAlpha = MathHelper.Lerp(_spriteAlpha, alpha, (float)gameTime.ElapsedGameTime.TotalSeconds * 32);
+            UIText.TextColor = textColor * _spriteAlpha;
+            UIText.Top.Pixels = 5;
 
             bool contains = ContainsPoint(Main.MouseScreen);
             if (contains && !PlayerInput.IgnoreMouseInterface)
@@ -100,7 +105,7 @@ namespace Stellamod.UI.DialogueTowning
 
 
             spriteBatch.Draw(textureToDraw, point.ToVector2(), null,
-                drawColor * Alpha, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                drawColor * _spriteAlpha, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
         }
     }
 }

@@ -96,6 +96,61 @@ public static class TileUtilities
     }
 }
 
+
+public class PrismaticElectricBolt : ModProjectile
+{
+    private Vector2 _initialVelocity;
+    private float _randRadians;
+    private ref float Timer => ref Projectile.ai[0];
+    public override string Texture => TextureRegistry.EmptyTexture;
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 24;
+        Projectile.height = 24;
+        Projectile.hostile = true;
+        Projectile.timeLeft = 180;
+        Projectile.penetrate = -1;
+        Projectile.extraUpdates = 1;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if(Timer == 1)
+        {
+            _initialVelocity = Projectile.velocity;
+        }
+
+
+        if(Timer % 30 == 0)
+        {
+            if (this.OwnedByLocalClient())
+            {
+                float radians = MathHelper.ToRadians(10);
+                _randRadians = Main.rand.NextFloat(-radians, radians);
+                Projectile.velocity = _initialVelocity.RotatedBy(_randRadians);
+                Projectile.netUpdate = true;
+            }
+        }
+    }
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.WriteVector2(_initialVelocity);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _initialVelocity = reader.ReadVector2();
+    }
+
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+    }
+}
 public class SinElectricShock : ModProjectile
 {
     private Vector2[] _shockPos;

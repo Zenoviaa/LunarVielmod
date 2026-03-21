@@ -6,82 +6,79 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI.Elements;
 
-namespace Stellamod.UI.DialogueTowning
+namespace Stellamod.UI.DialogueTowning;
+
+public class DialogueTowningButtonGroupUI : UIPanel
 {
-    public class DialogueTowningButtonGroupUI : UIPanel
+    private int _index;
+    private DialogueTowningButtonUI[] _buttons;
+    private UIGrid _buttonsGrid;
+    public int RelativeLeft => Main.screenWidth / 2;
+    public int RelativeTop => Main.screenHeight - 380;
+
+    public Vector2 offset;
+    public float alpha;
+    public override void OnInitialize()
     {
-        private List<DialogueTowningButtonUI> _buttons;
-        private UIGrid _buttonsGrid;
-        public int RelativeLeft => Main.screenWidth / 2;
-        public int RelativeTop => Main.screenHeight - 380;
-        public Vector2 DrawPos => new Vector2(Left.Pixels, Top.Pixels);
+        base.OnInitialize();
+        Width.Pixels = 428 * 3;
+        Height.Pixels = 128;
+        Left.Pixels = RelativeLeft;
+        Top.Pixels = RelativeTop;
+        BackgroundColor = Color.Transparent;
+        BorderColor = Color.Transparent;
 
-        public Vector2 Offset { get; set; }
-        public float Alpha { get; set; }
+        _buttonsGrid = new UIGrid();
+        _buttonsGrid.Width.Set(0, 1f);
+        _buttonsGrid.Height.Set(0, 1f);
+        _buttonsGrid.HAlign = 0.5f;
+        _buttonsGrid.ListPadding = 2f;
 
-        public override void OnInitialize()
+        _buttons = new DialogueTowningButtonUI[4];
+        for (int i = 0; i < _buttons.Length; i++)
         {
-            base.OnInitialize();
-            Width.Pixels = 428 * 3;
-            Height.Pixels = 128;
-            Left.Pixels = RelativeLeft;
-            Top.Pixels = RelativeTop;
-            BackgroundColor = Color.Transparent;
-            BorderColor = Color.Transparent;
-
-            _buttonsGrid = new UIGrid();
-            _buttonsGrid.Width.Set(0, 1f);
-            _buttonsGrid.Height.Set(0, 1f);
-            _buttonsGrid.HAlign = 0.5f;
-            _buttonsGrid.ListPadding = 2f;
-            Append(_buttonsGrid);
+            _buttons[i] = new DialogueTowningButtonUI();
+            _buttonsGrid.Add(_buttons[i]);
         }
+        Append(_buttonsGrid);
+    }
 
-        public override void Recalculate()
+    public void ClearButtons()
+    {
+        _buttonsGrid.Clear();
+        _index = 0;
+        for(int i =0; i < _buttons.Length; i++)
         {
-            if (_buttonsGrid != null)
-            {
-                _buttonsGrid.Recalculate();
-            }
-
-            base.Recalculate();
+            _buttons[i].realText = string.Empty;
+            _buttons[i].onClickEvent = null;
         }
+    }
 
-        public void ClearButtons()
+    public void AddButton(string text, Action btn)
+    {
+        DialogueTowningButtonUI button = _buttons[_index];
+        button.onClickEvent = btn;
+        button.realText = LangText.TownDialogue(text);
+        button.alpha = 0;
+
+        _buttons[_index++] = button;
+        _buttonsGrid.Add(button);
+        _buttonsGrid.Recalculate();
+    }
+
+    public override void Update(GameTime gameTime)
+    {
+        Width.Pixels = 214 * (_buttonsGrid.Count) + 32;
+        Height.Pixels = 100;
+        base.Update(gameTime);
+        //Constantly lock the UI in the position regardless of resolution changes
+        Left.Pixels = RelativeLeft - Width.Pixels / 2;
+        Top.Pixels = RelativeTop;
+        Left.Pixels += offset.X;
+        Top.Pixels += offset.Y;
+        foreach (var btn in _buttons)
         {
-            _buttons = new List<DialogueTowningButtonUI>();
-            _buttonsGrid.Clear();
-            _buttonsGrid.Recalculate();
-        }
-
-        public void AddButton(string text, Action btn)
-        {
-            DialogueTowningButtonUI button = new DialogueTowningButtonUI();
-            button.OnClickEvent = btn;
-            button.RealText = LangText.TownDialogue(text);
-            _buttonsGrid.Add(button);
-            _buttons.Add(button);
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            Width.Pixels = 214 * (_buttonsGrid.Count) + 32;
-
-            Height.Pixels = 100;
-            base.Update(gameTime);
-            //Constantly lock the UI in the position regardless of resolution changes
-            Left.Pixels = RelativeLeft - Width.Pixels / 2;
-            Top.Pixels = RelativeTop;
-            Left.Pixels += Offset.X;
-            Top.Pixels += Offset.Y;
-            if(_buttons != null)
-            {
-                foreach (var btn in _buttons)
-                {
-                    btn.Alpha = Alpha;
-                }
-            }
-
+            btn.alpha = alpha;
         }
     }
 }

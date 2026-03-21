@@ -1017,3 +1017,58 @@ HuntrianVenom: {
 	DisplayName: Huntrian Venom
 	Description: Mods.Stellamod.Buffs.HuntrianVenom.Description
 }
+
+BlancBuff: {
+	DisplayName: Blanc
+	Description: Mods.Stellamod.Buffs.BlancBuff.Description
+}
+
+CabBuff: {
+	DisplayName: Cab
+	Description: Increases defense by 10
+}
+
+ChardBuff: {
+	DisplayName: Chard
+	Description: Increases minion slots by 2
+}
+
+LastDrinkBuff: {
+	DisplayName: Last Drink
+	Description: You have 3 random buffs!
+}
+
+NoirBuff: {
+	DisplayName: Noir
+	Description: Increases your endurance by 10%
+}
+
+PortBuff: {
+	DisplayName: Port
+	Description: Decreases wand charge time by 20%
+}
+
+RiesBuff: {
+	DisplayName: Ries
+	Description: Increases max ammo by 5
+}
+
+RoseBuff: {
+	DisplayName: Rose
+	Description: Increases damage by 10%
+}
+
+VinhoVerdeBuff: {
+	DisplayName: Vinho Verde
+	Description: Increases melee attack speed by 20%
+}
+
+ZinBuff: {
+	DisplayName: Zin
+	Description: Increases max life by 10%
+}
+
+Speaking: {
+	DisplayName: Speaking
+	Description: Mods.Stellamod.Buffs.Speaking.Description
+}

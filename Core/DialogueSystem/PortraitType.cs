@@ -79,6 +79,7 @@ namespace Stellamod.Core.DialogueSystem
         Minerva,
         List,
         E,
-        EreshDark
+        EreshDark,
+        Bulbtrifier
     }
 }

@@ -1,9 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.Areas.Shop.AccShop;
+﻿using Stellamod.Content.Bar.Drinks;
 using Stellamod.Content.Dialogue;
 using Stellamod.Core;
 using Stellamod.Helpers;
-using Stellamod.Items.Insources;
+using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -12,20 +11,17 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.IL_Actions.NPCs;
 
 namespace Stellamod.NPCs.Town;
 
-public class List : VeilTownNPC
+public class Bulbtrifier : VeilTownNPC
 {
-    public int NumberOfTimesTalkedTo = 0;
     public const string ShopName = "Shop";
-    public const string ShopName2 = "New Shop";
     public override void SetStaticDefaults()
     {
         // DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
         // DisplayName.SetDefault("Example Person");
-        Main.npcFrameCount[Type] = 30; // The amount of frames the NPC has
+        Main.npcFrameCount[Type] = 1; // The amount of frames the NPC has
 
         NPCID.Sets.ActsLikeTownNPC[Type] = true;
 
@@ -43,20 +39,17 @@ public class List : VeilTownNPC
                           // If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
         };
 
-
         NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-
-        // Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
-
     }
 
     public override void SetDefaults()
     {
         // Sets NPC to be a Town NPC
+        breathe = true;
         NPC.friendly = true; // NPC Will not attack player
         NPC.width = 38;
-        NPC.height = 50;
-        NPC.aiStyle = 0;
+        NPC.height = 38;
+        NPC.aiStyle = -1;
         NPC.damage = 90;
         NPC.defense = 42;
         NPC.lifeMax = 200;
@@ -67,6 +60,7 @@ public class List : VeilTownNPC
         SpawnAtPoint = true;
         HasTownDialogue = true;
     }
+
     public override void SetChatButtons(ref string button, ref string button2)
     { // What the chat buttons are when you open up the chat UI
         button2 = Language.GetTextValue("LegacyInterface.28");
@@ -83,8 +77,10 @@ public class List : VeilTownNPC
 
     public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
     {
-        spawner.structureToSpawnIn = "Structures/ListsHouse";
-        spawner.spawnTileOffset = new Point(10, -5);
+        spawner.isGlobal = true;
+        StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
+        Point spawnPoint = stellaWorld.FableHillStartLocation + new Point(344, -140); ;
+        spawner.spawnTileOffset = spawnPoint;
     }
 
     public override void FindFrame(int frameHeight)
@@ -116,10 +112,11 @@ public class List : VeilTownNPC
 				new FlavorTextBestiaryInfoElement(LangText.Bestiary(this, "Rysa", "2"))
         });
     }
+
     public override List<string> SetNPCNameList()
     {
         return new List<string>() {
-            "Rysa",
+            "Bulbtrifier",
         };
     }
 
@@ -130,7 +127,7 @@ public class List : VeilTownNPC
         buttons.Add(new Tuple<string, Action>("Talk", Talk));
         buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
 
-        portrait = "ListPortrait";
+        portrait = "BulbtrifierPortrait";
         timeBetweenTexts = 0.015f;
         talkingSound = SoundID.Item1;
 
@@ -142,16 +139,15 @@ public class List : VeilTownNPC
     {
         base.Talk();
         OpenTalkOptions(
-            ModContent.GetInstance<ListUmDialogue>(),
-            ModContent.GetInstance<ListWhyHereDialogue>(),
-            ModContent.GetInstance<ListZuiDialogue>(),
-            ModContent.GetInstance<ListAloneDialogue>());
+            ModContent.GetInstance<BulbtrifierHiDialogue>(),
+            ModContent.GetInstance<BulbtrifierWhoDialogue>(),
+            ModContent.GetInstance<BulbtrifierHowMuchDialogue>());
     }
 
     public override void IdleChat(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound)
     {
         base.IdleChat(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound);
-        portrait = "ListPortrait";
+        portrait = "BulbtrifierPortrait";
         timeBetweenTexts = 0.015f;
         talkingSound = SoundID.Item1;
 
@@ -159,39 +155,25 @@ public class List : VeilTownNPC
         text = "ZuiIdleChat1";
     }
 
+    public override void ModifyActiveShop(string shopName, Item[] items)
+    {
+        base.ModifyActiveShop(shopName, items);
+        int index = 0;
+        for(int i = 0; i < items.Length; i++)
+        {
+            items[i] = new Item();
+            items[i].TurnToAir();
+        }
+
+        foreach (Item item in DrinkShopSystem.items)
+        {
+            items[index++] = item;
+        }
+    }
+
     public override void AddShops()
     {
-        var npcShop = new NPCShop(Type, ShopName)
-        .Add(new Item(ModContent.ItemType<DesertMap>())
-        {
-            shopCustomPrice = 20,
-            shopSpecialCurrency = Stellamod.MedalCurrencyID
-        })
-        .Add(new Item(ItemID.SandBoots)
-        {
-            shopCustomPrice = 20,
-            shopSpecialCurrency = Stellamod.MedalCurrencyID
-        })
-        .Add(new Item(ModContent.ItemType<GreenCarpet>())
-        {
-            shopCustomPrice = 20,
-            shopSpecialCurrency = Stellamod.MedalCurrencyID
-        })
-        .Add(new Item(ModContent.ItemType<WindingInsource>())
-        {
-            shopCustomPrice = 20,
-            shopSpecialCurrency = Stellamod.MedalCurrencyID
-        })
-        .Add(new Item(ModContent.ItemType<PaperPaws>())
-        {
-            shopCustomPrice = 20,
-            shopSpecialCurrency = Stellamod.MedalCurrencyID
-        })
-        .Add(new Item(ModContent.ItemType<TravelersBackpack>())
-        {
-            shopCustomPrice = 20,
-            shopSpecialCurrency = Stellamod.MedalCurrencyID
-        });
+        var npcShop = new NPCShop(Type, ShopName);
         npcShop.Register(); // Name of this shop t
     }
 }

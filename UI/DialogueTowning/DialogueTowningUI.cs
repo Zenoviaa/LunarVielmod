@@ -76,9 +76,8 @@ namespace Stellamod.UI.DialogueTowning
                 var btn = _buttons[y];
                 btn.Top.Pixels = y * 48;
                 btn.Alpha = y < _index ? 1 : 0;
+                btn.Alpha *= Alpha;
             }
-
-            Alpha = 1f;
         }
     }
     public class TalkingOptionButtonUI : UIPanel
@@ -120,7 +119,7 @@ namespace Stellamod.UI.DialogueTowning
         public float Alpha { get; set; }
         private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
-            if (Alpha == 0)
+            if (_alpha < 0.8f)
                 return;
 
             SoundStyle soundStyle = SoundID.MenuTick;
@@ -292,7 +291,7 @@ namespace Stellamod.UI.DialogueTowning
             _text.Left.Pixels = 180 + Offset.X;
             _text.Top.Pixels = 16 + Offset.Y;
             _text.TextColor = Color.White * Alpha;
-
+        
             switch (_state)
             {
                 case DialogueBoxState.Speaking:
@@ -406,12 +405,13 @@ namespace Stellamod.UI.DialogueTowning
             Rectangle openRectangle = new Rectangle(0, 0, openWidth, texture.Height);
 
             int closeWidth = (int)((texture.Width - openWidth) * _scale);
-            closeWidth += 200;
+            closeWidth += (int)(376 * (1f-_scale));
             Rectangle closeRectangle = new Rectangle(texture.Width - closeWidth, 0, closeWidth, texture.Height);
 
 
             Vector2 edgeDrawPos = drawPos;
-            edgeDrawPos.X += 16;
+           // edgeDrawPos.X += 16;
+            edgeDrawPos.X += openRectangle.Width;
             spriteBatch.Draw(texture, edgeDrawPos, closeRectangle, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             spriteBatch.Draw(texture, drawPos, openRectangle, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
            

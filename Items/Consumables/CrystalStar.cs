@@ -21,6 +21,8 @@ namespace Stellamod.Items.Consumables
             Item.useTime = 16;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.consumable = true;
+            Item.shopSpecialCurrency = Stellamod.MedalCurrencyID;
+            Item.shopCustomPrice = 10;
         }
 
         public override bool? UseItem(Player player)
