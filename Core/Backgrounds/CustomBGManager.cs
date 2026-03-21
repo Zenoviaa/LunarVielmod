@@ -230,7 +230,7 @@ namespace Stellamod.Core.Backgrounds
             BackgroundParallaxShader backgroundShader = BackgroundParallaxShader.Instance;
             backgroundShader.Parallax = new Vector2(parallaxX * 0.001f, parallaxY);
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred,
+            spriteBatch.Begin(SpriteSortMode.Immediate,
                 BlendState.AlphaBlend,
                 SamplerState.PointClamp,
                 DepthStencilState.None,

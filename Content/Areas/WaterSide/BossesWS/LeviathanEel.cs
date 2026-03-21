@@ -1,11 +1,15 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Content.Gores;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.IO;
+using System.Threading;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -89,6 +93,38 @@ public static class TileUtilities
         return Point.Zero;
     }
 }
+
+public class SinElectricShock : ModProjectile
+{
+    public override string Texture => TextureRegistry.EmptyTexture;
+    private ref float Timer => ref Projectile.ai[0];
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 128;
+        Projectile.height = 128;
+        Projectile.hostile = true;
+        Projectile.tileCollide = false;
+        Projectile.penetrate = -1;
+        Projectile.timeLeft = 120;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+    }
+
+    private void DrawPixelatedShocks(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+
+    }
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedShocks);
+        return false;
+    }
+}
 public class LeviathanEel : ScarletBoss,
     IDrawOutlines
 {
@@ -101,17 +137,19 @@ public class LeviathanEel : ScarletBoss,
 
     private Vector2 _facingDirection;
     private Vector2 _arenaCenter;
+    private Vector2 _teleportPosition;
+    private Vector2 _dashDirection;
+    private Vector2 _dustPosition;
 
-    //Sound Effects
-    private SoundStyle _sandDashHideAwaySound;
-    private SoundStyle _sandDashWarningSound;
-    private SoundStyle _sandDashRushSound;
-    private SoundStyle _sandDashEndingSound;
-    private SoundStyle _sandSpiralDashSound;
+
 
     private Color _outlineColor;
     private Color _targetOutlineColor;
     private bool _contactDamage;
+    private bool _effectZappy;
+    private bool _effectWaterTrail;
+    private bool _effectInvisible;
+    private bool _effectMirage;
     private enum AIState
     {
         //First let's break this down, and get all the states that we need
@@ -279,15 +317,26 @@ public class LeviathanEel : ScarletBoss,
         }
     }
 
+    private AIState _attackToTest;
     private EelSegment[] _segments;
     public int SegmentCount => 50;
+
+    private float IdleTime => 480;
 
     private float SandDashHideAwayTime => 100;
     private float SandDashStartWarningTime => 120;
     private float SandDashEndWarningTime => 30;
-    private float SandDashCount => 5;
+    private float SandDashCount => 8;
     private float SandDashRushTime => 30;
 
+
+    //Sin Electric Attack
+    private float SinElectricHideAwayTime => 100;
+
+    private float SinElectricComeInTime => 100;
+    private float SinElectricShockTime => 120;
+    private int SinElectricDamage => 40;
+    private float SinElectricGoOutTime => 60;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -300,26 +349,34 @@ public class LeviathanEel : ScarletBoss,
     {
         base.SetDefaults();
         _segments = new EelSegment[SegmentCount];
+    
         NPC.width = 64;
         NPC.height = 64;
-        NPC.lifeMax = 10000;
+        NPC.lifeMax = 12000;
         NPC.defense = 18;
         NPC.damage = 90;
         NPC.noTileCollide = true;
         NPC.noGravity = true;
         NPC.knockBackResist = 0f;
+
+        NPC.npcSlots = 30f;
+
+        Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/LeviathanEel");
+        NPC.HitSound = SoundID.NPCHit1 with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
+      //  NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
     }
 
 
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
+        writer.WriteVector2(_teleportPosition);
 
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
-
+        _teleportPosition = reader.ReadVector2();
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -345,6 +402,8 @@ public class LeviathanEel : ScarletBoss,
     public override void AI()
     {
         base.AI();
+        //Testing Attacks
+        _attackToTest = AIState.SandDashHideAway; 
         if (_arenaCenter == Vector2.Zero)
             _arenaCenter = MyTarget.Center;
         for (int i = 0; i < _segments.Length; i++)
@@ -354,7 +413,18 @@ public class LeviathanEel : ScarletBoss,
             eelSegment.position -= Vector2.UnitX * 64 * i;
         }
 
+        _effectZappy = false;
+        _effectWaterTrail = false;
+        _effectInvisible = false;
+        _effectMirage = false;
         _contactDamage = false;
+
+        if(_teleportPosition != Vector2.Zero)
+        {
+            NPC.Center = _teleportPosition;
+            _teleportPosition = Vector2.Zero;
+        }
+
         _targetOutlineColor = Color.Transparent;
         switch (State)
         {
@@ -382,6 +452,106 @@ public class LeviathanEel : ScarletBoss,
                 AI_SandSpiralDash();
                 break;
 
+            case AIState.SinElectric_HideAway:
+                AI_SinElectricHideAway();
+                break;
+            case AIState.SinElectric_ComeIn:
+                AI_SinElectricComeIn();
+                break;
+            case AIState.SinElectric_Shock:
+                AI_SinElectricShock();
+                break;
+            case AIState.SinElectric_GoOut:
+                AI_SinElectricGoOut();
+                break;
+            case AIState.SinElectric_End:
+                AI_SinElectricEnd();
+                break;
+
+            case AIState.SpiralSinElectricBolt_HideAway:
+                AI_SpiralSinElectricBoltHideAway();
+                break;
+            case AIState.SpiralSinElectricBolt_MoveAround:
+                AI_SpiralSinElectricBoltMoveAround();
+                break;
+            case AIState.SpiralSinElectricBolt_ChargeUp:
+                AI_SpiralSinElectricBoltChargeUp();
+                break;
+            case AIState.SpiralSinElectricBolt_Shoot:
+                AI_SpiralSinElectricBoltShoot();
+                break;
+            case AIState.SpiralSinElectricBolt_End:
+                AI_SpiralSinElectricBoltEnd();
+                break;
+
+            case AIState.SuckingBlast_HideAway:
+                AI_SuckingBlastHideAway();
+                break;
+            case AIState.SuckingBlast_PokeOut:
+                AI_SuckingBlastPokeOut();
+                break;
+            case AIState.SuckingBlast_Suck:
+                AI_SuckingBlastSuck();
+                break;
+            case AIState.SuckingBlast_ChargeUp:
+                AI_SuckingBlastChargeUp();
+                break;
+            case AIState.SuckingBlast_LightningZap:
+                AI_SuckingBlastLightningZap();
+                break;
+            case AIState.SuckingBlast_REALLYSuck:
+                AI_SuckingBlastReallySuck();
+                break;
+
+            case AIState.Phase2Transition_WaterDrain:
+                AI_Phase2TransitionWaterDrain();
+                break;
+            case AIState.Phase2Transition_Yell:
+                AI_Phase2TransitionYell();
+                break;
+
+            case AIState.ElectricDive_HideAway:
+                AI_ElectricDiveHideAway();
+                break;
+            case AIState.ElectricDive_Shocking:
+                AI_ElectricDiveShocking();
+                break;
+            case AIState.ElectricDive_End:
+                AI_ElectricDiveEnd();
+                break;
+
+            case AIState.PlatformSmash_HideAway:
+                AI_PlatformSmashHideAway();
+                break;
+            case AIState.PlatformSmash_Dash:
+                AI_PlatformSmashDash();
+                break;
+            case AIState.PlatformSmash_End:
+                AI_PlatformSmashEnd();
+                break;
+
+            case AIState.PlatformBubble_HideAway:
+                AI_PlatformBubbleHideAway();
+                break;
+            case AIState.PlatformBubble_Rush:
+                AI_PlatformBubbleRush();
+                break;
+            case AIState.PlatformBubble_End:
+                AI_PlatformBubbleEnd();
+                break;
+
+            case AIState.ToxicBubble_HideAway:
+                AI_ToxicBubbleHideAway();
+                break;
+            case AIState.ToxicBubble_Ready:
+                AI_ToxicBubbleReady();
+                break;
+            case AIState.ToxicBubble_Breath:
+                AI_ToxicBubbleBreath();
+                break;
+            case AIState.ToxicBubble_End:
+                AI_ToxicBubbleEnd();
+                break;
         }
         _outlineColor = Color.Lerp(_outlineColor, _targetOutlineColor, 0.3f);
         //Set the facing the direction
@@ -389,6 +559,271 @@ public class LeviathanEel : ScarletBoss,
         NPC.rotation = facingRotation;
     }
 
+    private void Teleport(Vector2 teleportPosition)
+    {
+        if (!MultiplayerHelper.IsHost)
+            return;
+
+        _teleportPosition = teleportPosition;
+        NPC.netUpdate = true;
+    }
+
+    #region Toxic Bubble
+
+    private void AI_ToxicBubbleHideAway()
+    {
+
+    }
+
+    private void AI_ToxicBubbleReady()
+    {
+
+    }
+
+    private void AI_ToxicBubbleBreath()
+    {
+
+    }
+
+    private void AI_ToxicBubbleEnd()
+    {
+
+    }
+    #endregion
+
+    #region Platform Bubble
+    private void AI_PlatformBubbleHideAway()
+    {
+
+    }
+
+    private void AI_PlatformBubbleRush()
+    {
+
+    }
+
+    private void AI_PlatformBubbleEnd()
+    {
+
+    }
+    #endregion
+
+    #region Platform Smash
+    private void AI_PlatformSmashHideAway()
+    {
+
+    }
+
+    private void AI_PlatformSmashDash()
+    {
+
+    }
+
+    private void AI_PlatformSmashEnd()
+    {
+
+    }
+    #endregion
+
+    #region Electric Dive
+    private void AI_ElectricDiveHideAway()
+    {
+
+    }
+
+    private void AI_ElectricDiveShocking()
+    {
+
+    }
+
+    private void AI_ElectricDiveEnd()
+    {
+
+    }
+    #endregion
+
+    #region Phase 2 Transition
+    private void AI_Phase2TransitionWaterDrain()
+    {
+
+    }
+
+    private void AI_Phase2TransitionYell()
+    {
+
+    }
+    #endregion
+
+    #region Sucking Blast
+    private void AI_SuckingBlastHideAway()
+    {
+
+    }
+
+    private void AI_SuckingBlastPokeOut()
+    {
+
+
+    }
+
+    private void AI_SuckingBlastSuck()
+    {
+
+    }
+
+    private void AI_SuckingBlastChargeUp()
+    {
+
+    }
+
+    private void AI_SuckingBlastLightningZap()
+    {
+
+    }
+
+    private void AI_SuckingBlastReallySuck()
+    {
+
+    }
+    #endregion
+
+    #region Spiral Sin Electric Bolt
+    private void AI_SpiralSinElectricBoltHideAway()
+    {
+
+    }
+
+    private void AI_SpiralSinElectricBoltMoveAround()
+    {
+
+    }
+
+    private void AI_SpiralSinElectricBoltChargeUp()
+    {
+
+    }
+    private void AI_SpiralSinElectricBoltShoot()
+    {
+
+    }
+
+    private void AI_SpiralSinElectricBoltEnd()
+    {
+
+    }
+    #endregion
+
+    #region Sin Electric
+    private void AI_SinElectricHideAway()
+    {
+        Timer++;
+        if(Timer == 1)
+        {
+            NPC.TargetClosest();
+        }
+
+        Vector2 targetVelocity = -Vector2.UnitY * 3;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.3f);
+
+        Vector2 targetFacingDirection = NPC.velocity.SafeNormalize(Vector2.Zero);
+        _facingDirection = Vector2.Lerp(_facingDirection, targetFacingDirection, 0.3f);
+        _targetOutlineColor = Color.Yellow;
+        if(Timer >= 60)
+        {
+            _effectInvisible = true;
+        }
+
+        if(Timer >= SinElectricHideAwayTime)
+        {
+            SwitchState(AIState.SinElectric_ComeIn);
+        }
+    }
+
+    private void AI_SinElectricComeIn()
+    {
+        Timer++;
+        if (Timer == 1)
+        {
+            NPC.TargetClosest();
+            Teleport(MyTarget.Center - Vector2.UnitX * 1200);
+        }
+
+        _effectMirage = true;
+        Vector2 targetVelocity = Vector2.UnitX * 4;
+        targetVelocity.Y += MathF.Sin(Timer * 0.2f) * 2;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.3f);
+
+        _facingDirection = Vector2.Lerp(_facingDirection, NPC.velocity.SafeNormalize(Vector2.Zero), 0.3f);
+        _targetOutlineColor = Color.Yellow;
+        if (Timer >= SinElectricComeInTime)
+        {
+            SwitchState(AIState.SinElectric_Shock);
+        }
+    }
+
+    private void AI_SinElectricShock()
+    {
+        Timer++;
+        if(Timer == 1)
+        {
+            NPC.TargetClosest();
+        }
+
+
+        NPC.velocity *= 0.8f;
+        if(Timer == 30)
+        {
+            FXUtil.ShakeCamera(MyTarget.Center, 1024, 3);
+            for (int i = 0; i < _segments.Length; i += 4)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    //Spawn electric fields around the body
+                    Projectile.NewProjectile(SourceFromThis, _segments[i].position, Vector2.Zero,
+                        ModContent.ProjectileType<SinElectricShock>(), SinElectricDamage, 1, Main.myPlayer);
+                }    
+            }
+        }
+
+        _targetOutlineColor = Color.Red;
+        if (Timer >= SinElectricShockTime)
+        {
+            SwitchState(AIState.SinElectric_GoOut);
+        }
+    }
+
+    private void AI_SinElectricGoOut()
+    {
+        Timer++;
+        Timer++;
+        if (Timer == 1)
+        {
+            NPC.TargetClosest();
+        }
+
+        Vector2 targetVelocity = -Vector2.UnitY * 3;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.3f);
+
+        Vector2 targetFacingDirection = NPC.velocity.SafeNormalize(Vector2.Zero);
+        _facingDirection = Vector2.Lerp(_facingDirection, targetFacingDirection, 0.3f);
+        _targetOutlineColor = Color.Yellow;
+        if (Timer >= 60)
+        {
+            _effectInvisible = true;
+        }
+
+        if (Timer >= SinElectricGoOutTime)
+        {
+            SwitchState(AIState.Idle);
+        }
+    }
+
+    private void AI_SinElectricEnd()
+    {
+
+    }
+
+    #endregion
     #region Mirage Visuals
     private void GoMirage()
     {
@@ -414,22 +849,21 @@ public class LeviathanEel : ScarletBoss,
         if(Timer == 1)
         {
             //Play the sound
-            SoundEngine.PlaySound(_sandDashHideAwaySound, NPC.position);
             NPC.TargetClosest();
         }
 
         //Slowly face down and go down for a bit
         float time = SandDashHideAwayTime;
         float ease = EasingFunction.QuadraticBump(Timer / time);
-        float downSpeed = MathHelper.Lerp(0, 8, ease);
+        float downSpeed = MathHelper.Lerp(0, 25, ease);
         Vector2 targetMovementVelocity = Vector2.UnitY * downSpeed;
         NPC.velocity = Vector2.Lerp(NPC.velocity, targetMovementVelocity, 0.3f);
         _facingDirection = Vector2.Lerp(_facingDirection, NPC.velocity.SafeNormalize(Vector2.Zero), 0.3f);
 
         //Have segments go into mirage stage for a bit
-        if(Timer == 20)
+        if(Timer >= 20 && Timer < 60)
         {
-            GoMirage();
+            _effectMirage = true;
         }
 
         if(Timer % 5 == 0 && Timer < 60)
@@ -439,10 +873,9 @@ public class LeviathanEel : ScarletBoss,
             p.Scale *= 0.33f;
         }
 
-        //Eventually turn invisible
-        if (Timer == 60)
+        if(Timer >= 60)
         {
-            GoInvisible();
+            _effectInvisible = true;
         }
 
         if(Timer >= time)
@@ -456,28 +889,54 @@ public class LeviathanEel : ScarletBoss,
         Timer++;
         if(Timer == 1)
         {
-            SoundEngine.PlaySound(_sandDashWarningSound, NPC.position);
-            GoInvisible();
+            SoundStyle earthQuake = AssetRegistry.Sounds.LeviathanEel.EarthRumble;
+            earthQuake.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(earthQuake, MyTarget.position);
             NPC.TargetClosest();
         }
 
-        ShakeModSystem.Shake = 3;
+        _effectInvisible = true;
+        ShakeModSystem.Shake = 2;
         //Dust clouds appear above or below you, snapping to the nearest tile, this is where bro will dash from
         //Alright, we have a steam particle we can use for that
-        Vector2 positionToDashTo = MyTarget.Center + new Vector2(0, 182);
-        Point point = positionToDashTo.ToPoint();
+        Vector2 positionToDashTo = MyTarget.Center + new Vector2(0, -182) + Vector2.UnitX * MyTarget.velocity.X * 64;
+        Point point = positionToDashTo.ToTileCoordinates();
         Point tileToComeFrom = TileUtilities.FallToSolidTile(point);
-        Vector2 dustCenter = tileToComeFrom.ToWorldCoordinates();
+       _dustPosition = tileToComeFrom.ToWorldCoordinates();
         if(Timer % 5 == 0)
         {
-            Vector2 positionToSpawnDustFrom = dustCenter;
-            positionToSpawnDustFrom += Main.rand.NextVector2Circular(196, 16);
-            ThickSmokeParticle.Spawn(positionToSpawnDustFrom, -Vector2.UnitY, Color.SandyBrown);
+            Vector2 positionToSpawnDustFrom = _dustPosition;
+            positionToSpawnDustFrom += Main.rand.NextVector2Circular(64, 16);
+            var sp = SmokeParticle.Spawn(positionToSpawnDustFrom, -Vector2.UnitY, Color.SandyBrown);
+            sp.initialColor = Color.SandyBrown * 0.65f;
+         
+        }
+        if (Timer % 5 == 0)
+        {
+            Vector2 positionToSpawnDustFrom = _dustPosition;
+            positionToSpawnDustFrom += Main.rand.NextVector2Circular(64, 16);
+            DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+            spawnParams.scaleRange *= 0.5f;
+            spawnParams.outerColor = Color.SandyBrown;
+            Vector2 dustVelocity = -Vector2.UnitY * 8;
+            if (AttackCycle == SandDashCount - 1)
+            {
+                spawnParams.scaleRange *= 2f;
+                dustVelocity *= 2f;
+            }
+
+
+            var sp = DustParticle.Spawn(positionToSpawnDustFrom, dustVelocity, spawnParams);
+            sp.noTileCollide = true;
+          //  sp.initialColor = Color.SandyBrown * 0.65f;
+
         }
 
 
         float sandDashProgress = (AttackCycle+1) / SandDashCount;
-        float warningTime = MathHelper.Lerp(SandDashStartWarningTime, SandDashEndWarningTime, sandDashProgress);
+        float ease = EasingFunction.OutExpo(sandDashProgress);
+        float warningTime = MathHelper.Lerp(SandDashStartWarningTime, SandDashEndWarningTime, ease);
+        warningTime *= AttackCycle == SandDashCount - 1 ? 2f : 1f;
         if(Timer >= warningTime)
         {
             SwitchState(AIState.SandDash);
@@ -489,20 +948,63 @@ public class LeviathanEel : ScarletBoss,
         Timer++;
         if (Timer == 1)
         {
-            SoundEngine.PlaySound(_sandDashRushSound, NPC.position);
-            GoVisible();
-            NPC.Center = MyTarget.Center + Vector2.UnitY * 1500;
+            FXUtil.ShakeCamera(MyTarget.position, 1024, 8);
+            SoundStyle sandDash = AssetRegistry.Sounds.LeviathanEel.SandDash;
+            sandDash.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(sandDash, MyTarget.position);
+            Teleport(_dustPosition + Vector2.UnitY * 1000);
+         
         }
 
-        Vector2 dashVelocity = -Vector2.UnitY * 30;
+        if(Timer == 15)
+        {
+            int[] gores = AutoGoreLoader.FindGores("GrayRock");
+
+            Vector2 pos = _dustPosition;
+            foreach (int g in gores)
+            {
+                Gore.NewGore(NPC.GetSource_FromThis(),
+                   _dustPosition - new Vector2(0, 32) + Main.rand.NextVector2Circular(64, 16),
+                    -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
+            }
+
+            var p = Particle<ThickSmokeParticle>.Spawn(_dustPosition, Vector2.Zero, Color.DarkGray);
+
+        }
+
+        if (Timer % 5 == 0)
+        {
+            Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BreatheBubble);
+            var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 2, newColor: Color.Red);
+            p.Scale *= 0.33f;
+        }
+
+        Vector2 dashVelocity = -Vector2.UnitY * 45;
         _facingDirection = Vector2.Lerp(_facingDirection, NPC.velocity.SafeNormalize(Vector2.Zero), 0.3f);
         NPC.velocity = Vector2.Lerp(NPC.velocity, dashVelocity, 0.3f);
 
+        _effectWaterTrail = true;
         _contactDamage = true;
         _targetOutlineColor = Color.Red;
-        if(Timer >= SandDashRushTime)
+
+
+        float timeMult = 1f;
+        if(AttackCycle == SandDashCount - 1)
         {
-            SwitchState(AIState.SandDashEnd);
+            timeMult *= 0.66f;
+        }
+        if(Timer >= SandDashRushTime * timeMult)
+        {
+            AttackCycle++;
+            if (AttackCycle < SandDashCount)
+            {
+                SwitchState(AIState.SandDashEnd);
+            }
+            else
+            {
+                SwitchState(AIState.SandSpiralDash);
+            }
+         
         }
     }
 
@@ -511,21 +1013,15 @@ public class LeviathanEel : ScarletBoss,
         Timer++;
         if(Timer == 1)
         {
-            SoundEngine.PlaySound(_sandDashEndingSound, NPC.position);
+            SoundStyle sandFade = AssetRegistry.Sounds.LeviathanEel.SandFade;
+            sandFade.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(sandFade, MyTarget.position);
         }
 
         NPC.velocity *= 0.8f;
         if(Timer >= 5)
         {
-            AttackCycle++;
-            if(AttackCycle < SandDashCount)
-            {
-                SwitchState(AIState.SandDash_Warning);
-            }
-            else
-            {
-                SwitchState(AIState.SandSpiralDash);
-            }
+            SwitchState(AIState.SandDash_Warning);
         }
     }
 
@@ -534,9 +1030,53 @@ public class LeviathanEel : ScarletBoss,
         Timer++;
         if(Timer == 1)
         {
-            SoundEngine.PlaySound(_sandSpiralDashSound, NPC.position);
             NPC.TargetClosest();
         }
+
+        _targetOutlineColor = Color.Red;
+        _contactDamage = true;
+
+
+        //For this attack, he'll spin around a bit and then dash at you again
+        if(Timer < 30)
+        {
+            NPC.velocity = NPC.velocity.RotatedBy(0.06f);
+            _facingDirection = NPC.velocity.SafeNormalize(Vector2.Zero);
+
+            _dashDirection = (MyTarget.Center - NPC.Center);
+            _dashDirection = _dashDirection.SafeNormalize(Vector2.Zero);
+        } 
+        else if (Timer < 60)
+        {
+            if(Timer == 31)
+            {
+                FXUtil.ShakeCamera(MyTarget.position, 1024, 8);
+                SoundStyle sandDash = AssetRegistry.Sounds.LeviathanEel.SandDash;
+                sandDash.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(sandDash, MyTarget.position);
+            }
+
+
+            float dashSpeed = 45;
+            Vector2 targetDashVelocity = _dashDirection * dashSpeed;
+            NPC.velocity = Vector2.Lerp(NPC.velocity, targetDashVelocity, 0.3f);
+            _facingDirection = NPC.velocity.SafeNormalize(Vector2.Zero);
+        }
+        else
+        {
+            if (Timer % 5 == 0)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BreatheBubble);
+                var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 2, newColor: Color.Red);
+                p.Scale *= 0.33f;
+            }
+
+            if (Timer >= 90)
+            {
+                SwitchState(AIState.Idle);
+            }
+        }
+        //  SwitchState(AIState.Idle);
     }
 
     #endregion
@@ -587,7 +1127,12 @@ public class LeviathanEel : ScarletBoss,
     {
         if (MultiplayerHelper.IsHost)
         {
-
+            AIState pattern = PatternManager.NextPattern();
+            SwitchState(pattern);
+            if(_attackToTest != AIState.SpawnIntro)
+            {
+                SwitchState(_attackToTest);
+            }
         }
     }
 
@@ -600,24 +1145,25 @@ public class LeviathanEel : ScarletBoss,
             NPC.TargetClosest();
             _arenaCenter = MyTarget.Center - new Vector2(0, 128);
         }
-
+        OvalTimer++;
         //For this movement we'll just have him moving in an oval
         //But he should have a lot of different movement types
         //First lets make that oval shape
         Vector2 pointOnOval = GetNextPointToTrack(OvalTimer);
-        if (HasCrossedPoint(NPC.Center, pointOnOval))
-        {
-            OvalTimer++;
-        }
+
 
         Vector2 vectorToOvalPoint = pointOnOval - NPC.Center;
         vectorToOvalPoint = vectorToOvalPoint.SafeNormalize(Vector2.Zero);
 
         Vector2 targetVelocity = vectorToOvalPoint;
-        float movementSpeed = 3;
+        float movementSpeed = MathHelper.SmoothStep(3f, 10f, EasingFunction.InOutSine(OvalTimer / 120f));
         targetVelocity *= movementSpeed;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.3f);
+        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.15f);
         _facingDirection = Vector2.Lerp(_facingDirection, NPC.velocity.SafeNormalize(Vector2.Zero), 0.2f);
+        if(Timer >= IdleTime)
+        {
+            ChooseAttack();
+        }
     }
 
     public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
