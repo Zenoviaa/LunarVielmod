@@ -89,7 +89,7 @@ namespace Stellamod.Backgrounds
         {
             NoSurfaceOffset = true;
             DrawScale = 1;
-            DrawOffset = new Vector2(0, -520);
+            DrawOffset = Vector2.Zero;
             return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneWorldsEnd;
         }
     }

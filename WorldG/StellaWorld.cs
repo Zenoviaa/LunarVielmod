@@ -2788,7 +2788,7 @@ public class StellaWorld : ModSystem
     private void WorldGenMistyDungeonHill(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "A Mysterious Hill...";
-        Console.WriteLine($"Fable Far Edge {FableFarEdgeLocation}");
+
         //Calculate the starting location
         Point startHillTile = FableFarEdgeLocation;
         startHillTile.X += 150;

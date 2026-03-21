@@ -13,7 +13,7 @@ namespace Stellamod.Content.Areas.SpringHills
         // Select Music
         public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
         public override int Music => -1;
-        public override bool IsBiomeActive(Player player) => BiomeTileCounts.InForest;
+        public override bool IsBiomeActive(Player player) => BiomeTileCounts.InForest && player.ZoneOverworldHeight;
 
 
         public override void OnEnter(Player player)

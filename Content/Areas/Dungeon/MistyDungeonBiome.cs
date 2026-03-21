@@ -34,7 +34,7 @@ namespace Stellamod.Content.Areas.Dungeon
         {
             bool inMistyDungeon = BiomeTileCounts.InMistyDungeon;
             Point point = player.position.ToTileCoordinates();
-            bool lowEnough = (double)point.Y > Main.worldSurface + 48;
+            bool lowEnough = (double)point.Y > Main.worldSurface + 16;
             return inMistyDungeon && lowEnough;
         } 
         public override string BestiaryIcon => base.BestiaryIcon;

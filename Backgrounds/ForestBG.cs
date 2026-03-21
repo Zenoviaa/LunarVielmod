@@ -62,14 +62,20 @@ public class ForestBG : CustomBG
     {
         FrontLayer.Parallax = CloseParallax;
         DrawScale = 1f;
-        DrawOffset = new Vector2(0, 620);
+        DrawOffset = new Vector2(0, 400);
         ParallaxYFactor = 0.35f;
         /*
         NoSurfaceOffset = true;
         DrawScale = 1;
       */
 
-        bool isActive = Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneForest || Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneSpringHills;
-        return isActive && !Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia && !Main.LocalPlayer.ZoneJungle;
+        BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
+        bool isActive = biomePlayer.ZoneForest || biomePlayer.ZoneSpringHills;
+        return isActive && !Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia && !Main.LocalPlayer.ZoneJungle 
+            && !biomePlayer.ZoneWorldsEnd
+            && !biomePlayer.ZoneMistyDungeon 
+            && !biomePlayer.ZonePunkerTown 
+            && !biomePlayer.ZoneMoonspiralTower 
+            && !biomePlayer.ZoneDesertTown;
     }
 }

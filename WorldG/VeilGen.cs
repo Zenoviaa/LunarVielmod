@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Content;
 using ReLogic.Utilities;
+using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.PunkerTown.TilesPT;
 using Stellamod.Helpers;
 using Stellamod.Items.Ores;
@@ -8,6 +9,7 @@ using Stellamod.Projectiles.Swords.Altride;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Veil;
+using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;
 using System;
 using System.Collections.Generic;
@@ -165,10 +167,81 @@ public class VeilGenTester : ModItem
     public override bool? UseItem(Player player)
     {
         Vector2 mouseWorld = Main.MouseWorld;
-        int tileX = (int)Main.MouseWorld.X / 16;
-        int tileY = (int)Main.MouseWorld.Y / 16;
         Point startTile = mouseWorld.ToTileCoordinates();
-        VeilGen.GenerateCavernousCave1(new Vector2(startTile.X, startTile.Y), Vector2.UnitX, 16, 150);
+        Room[] prefabs = DungeonSaveUtility.ReadDungeonPrefabsFromFiles();
+        Room[] map = Dungeonizer.Generate(prefabs, Main.rand);
+        int[] tileBlend = new int[]
+        {
+            TileID.RubyGemspark
+        };
+
+
+        Point topLeft = Point.Zero;
+        Point bottomRight = Point.Zero;
+        for (int r = 0; r < map.Length; r++)
+        {
+            Room room = map[r];
+            if (topLeft.X > room.bounds.Left)
+                topLeft.X = room.bounds.Left;
+            if (topLeft.Y > room.bounds.Top)
+                topLeft.Y = room.bounds.Top;
+
+            if (bottomRight.X < room.bounds.Right)
+                bottomRight.X = room.bounds.Right;
+            if (bottomRight.Y < room.bounds.Bottom)
+                bottomRight.Y = room.bounds.Bottom;
+        }
+        Rectangle rectangle = new Rectangle(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y);
+        
+            Point point = startTile;
+            Point vectorToOrigin = (point - rectangle.Top().ToPoint());
+            rectangle.Location += vectorToOrigin;
+
+            //Just a failsafe
+            while (rectangle.Right().X >= Main.maxTilesX)
+                rectangle.Location -= new Point(32, 0);
+
+            int width = rectangle.Width;
+            width -= 150;
+            int height = rectangle.Height;
+
+
+            //So we're just gonna start from index 1 to skip it
+            for (int r = 1; r < map.Length; r++)
+        {
+            Room room = map[r];
+            int padding = 10;
+            Rectangle roomRectangle = Structurizer.ReadRectangle(room.prefab);
+            int outlineWidth = roomRectangle.Width + padding;
+            int outlineHeight = roomRectangle.Height + padding;
+
+            //This hsould give us an outline of bricks, I think
+            Point topLeftRoom = room.bounds.TopLeft().ToPoint() + new Point(-padding / 2, -padding / 2);
+            Point offset = rectangle.Top().ToPoint();
+            offset.Y -= outlineHeight;
+            topLeftRoom += offset;
+            WorldUtils.Gen(topLeftRoom, new Shapes.Rectangle(outlineWidth, outlineHeight),
+               Actions.Chain(
+                    new Actions.ClearWall(),
+                    new Actions.SetTile((ushort)ModContent.TileType<MothlightBrick>()))
+               );
+        }
+
+        for (int r = 0; r < map.Length; r++)
+        {
+            Room room = map[r];
+            Point bottomLeft = room.bounds.BottomLeft().ToPoint();
+            Point offset = rectangle.Top().ToPoint();
+
+            int tileX = offset.X;
+            int tileY = offset.Y;
+
+            bottomLeft.X += tileX;
+            bottomLeft.Y += tileY;
+            bottomLeft.Y -= map[0].bounds.Height;
+            Structurizer.ReadStruct(bottomLeft, room.prefab, tileBlend);
+            Structurizer.ProtectStructure(bottomLeft, room.prefab);
+        }
         return true;
     }
 

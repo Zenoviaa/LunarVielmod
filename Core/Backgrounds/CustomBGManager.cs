@@ -165,10 +165,11 @@ namespace Stellamod.Core.Backgrounds
             int height = (int)bgLayer.Texture.Size().Y;
 
             int worldSurfaceY = bg.GetParallaxYStartHeight();
+            /*
             if (!bg.NoSurfaceOffset)
             {
                 worldSurfaceY -= 1100;
-            }
+            }*/
 
             int diffY = (int)(worldSurfaceY - Main.screenPosition.Y);
             int parallaxY = (int)(diffY * -0.4f * bg.ParallaxYFactor);

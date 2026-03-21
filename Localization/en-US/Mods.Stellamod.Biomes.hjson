@@ -199,6 +199,6 @@ IceBackgroundRemove: {
 }
 
 ForestBiome: {
-	DisplayName: Forest Biome
-	TownNPCDialogueName: the Forest Biome
+	DisplayName: Rocky Forest
+	TownNPCDialogueName: the Rocky Forest
 }

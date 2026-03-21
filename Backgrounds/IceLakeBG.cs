@@ -124,16 +124,17 @@ namespace Stellamod.Backgrounds
             base.SetDrawDefaults();
             DrawScale = 1.5f;
             LocalParallaxSpeed = 1 / 1.5f;
-            vanillaLayer.Parallax = 0.05f;
-            backLayer.Parallax = 0.08f;
+  
             backLayer.DrawScale = 1f / 1.5f;
             vanillaLayer.DrawScale = 1f / 1.5f;
 
             backLayer.DrawOffset = new Vector2(0, 500);
             vanillaLayer.DrawOffset = new Vector2(0, 500);
 
-            back2Layer.DrawScale = 1f;
-            back2Layer.Parallax = 0.09f;
+
+            vanillaLayer.Parallax = 0.04f;
+            backLayer.Parallax = 0.06f;
+            back2Layer.Parallax = 0.075f;
             midLayer.Parallax = 0.09f;
             frontLayer.Parallax = 0.12f;
             front2Layer.Parallax = 0.18f;
@@ -141,7 +142,7 @@ namespace Stellamod.Backgrounds
             frontLayer.DrawOffset = front2Layer.DrawOffset = new Vector2(0, 0);
             bleedLayer.DrawOffset = new Vector2(0, 1590);
             bleedLayer.Parallax = front2Layer.Parallax;
-            DrawOffset = new Vector2(0, 0);
+            DrawOffset = new Vector2(0, 280);
         }
 
         public override bool IsActive()

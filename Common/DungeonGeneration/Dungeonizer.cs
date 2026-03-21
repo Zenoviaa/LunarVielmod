@@ -492,7 +492,7 @@ namespace Stellamod.Common.DungeonGeneration
 
             //Ok, so first let's 
 
-            int roomCount = 100;
+            int roomCount = 150;
             int snakeLength = 60;
             List<Room> map = new List<Room>();
             List<bool> canHorizontalFromt = new List<bool>();
@@ -534,6 +534,7 @@ namespace Stellamod.Common.DungeonGeneration
             Room currentRoom = startingRoom;
 
             int fails = 0;
+            int tunnelDown = 0;
             for (int i = 0; i < maxAttempts; i++)
             {
                 //Once we hit the max room count... yeah
@@ -630,12 +631,18 @@ namespace Stellamod.Common.DungeonGeneration
                             directionCounter = 0;
                             direction = 1;
                         }
+     
                     }
                     else if (direction == 1)
                     {
                         canHorizontalFromt.Add(false);
                         directionCounter++;
-                        if (directionCounter >= 3)
+                
+                        if(tunnelDown < 20)
+                        {
+                            tunnelDown++;
+                        }
+                        else if (directionCounter >= 3)
                         {
                             directionCounter = 0;
                             direction = 0;

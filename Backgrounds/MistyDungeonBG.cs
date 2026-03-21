@@ -75,10 +75,7 @@ namespace Stellamod.Backgrounds
 
         public override bool IsActive()
         {
-            if (Main.myPlayer == -1)
-                return false;
-            if (!Main.PlayerLoaded)
-                return false;
+            LocalParallaxSpeed = 0.1f;
             return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMistyDungeon;
         }
     }
