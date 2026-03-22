@@ -40,7 +40,7 @@ namespace Stellamod.Visual.Particles
 
 
             fadeIn++;
-            if (fadeIn > 180 || Scale < 0.1f)
+            if (fadeIn > 180 || Scale < 0.05f)
                 active = false;
 
             //Bouncing

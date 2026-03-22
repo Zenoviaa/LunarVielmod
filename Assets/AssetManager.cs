@@ -25,6 +25,7 @@ namespace Stellamod.Assets
             public static Asset<Texture2D> MagicCircle;
             public static Asset<Texture2D> MagicCircle2;
             public static Asset<Texture2D> MagicBloodCircle;
+            public static Asset<Texture2D> MagicCircleVampiricVine;
             public static Asset<Texture2D> EmptyGradient;
             public static Asset<Texture2D> AuroraGradient;
             public static Asset<Texture2D> AuroraBackGradient;
@@ -58,6 +59,7 @@ namespace Stellamod.Assets
             GlowMask.MagicCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MagicCircle1");
             GlowMask.MagicCircle2 = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MagicCircle2");
             GlowMask.MagicBloodCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MagicBloodCircle");
+            GlowMask.MagicCircleVampiricVine = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MagicCircleVampiricVine");
             GlowMask.SpiralVortex2 = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/SpiralVortex2");
             GlowMask.EmptyGradient = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/EmptyGradient");
             GlowMask.AuroraGradient = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/AuroraGradient");
@@ -89,6 +91,7 @@ namespace Stellamod.Assets
             GlowMask.MagicCircle = null;
             GlowMask.MagicCircle2 = null;
             GlowMask.MagicBloodCircle = null;
+            GlowMask.MagicCircleVampiricVine = null;
             GlowMask.EmptyGradient = null;
             GlowMask.ShootingStarGlint = null;
             GlowMask.ShootingStarTrail = null;

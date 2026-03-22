@@ -18,6 +18,9 @@ namespace Stellamod.Core.Bases
         public Vector2 burstVelocity;
         public Asset<Texture2D> magicCircleTextureAsset;
         public Color magicCircleColor;
+
+        public Asset<Texture2D> magicBigCircleTextureAsset;
+        public Color magicBigCircleColor;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -25,6 +28,14 @@ namespace Stellamod.Core.Bases
             usingStamina = false;
             magicCircleTextureAsset = null;
             magicCircleColor = Color.White;
+            magicBigCircleTextureAsset = null;
+            magicBigCircleColor = Color.White;
+
+            if (Player.HeldItem.ModItem is not BaseCrossbowItem crossbowItem)
+                return;
+            MagicCircle magicCircle = crossbowItem.GetMagicCircle();
+            magicBigCircleTextureAsset = magicCircle.textureAsset;
+            magicBigCircleColor = magicCircle.color;
         }
         public override void PostUpdateEquips()
         {

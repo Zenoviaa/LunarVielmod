@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using ReLogic.Content;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
@@ -12,12 +13,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases;
 
+public struct MagicCircle
+{
+    public Asset<Texture2D> textureAsset;
+    public Color color;
+}
 public abstract class BaseCrossbowItem : ModItem,
     IStaminaAttack
 {
     public int staminaCost = 2;
     public int staminaProjectileShoot;
-
     public string BasicEffectLocalizedText
     {
         get
@@ -38,8 +43,8 @@ public abstract class BaseCrossbowItem : ModItem,
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        this.GetLocalization(nameof(BasicEffectLocalizedText), () => "");
-        this.GetLocalization(nameof(StaminaEffectLocalizedText), () => "No Effect");
+        this.GetLocalization("BasicSlash", () => "");
+        this.GetLocalization("StaminaSlash", () => "No Effect");
     }
 
     public override void SetDefaults()
@@ -60,6 +65,11 @@ public abstract class BaseCrossbowItem : ModItem,
         Item.noUseGraphic = true;
         Item.noMelee = true;
         Item.consumable = false;
+    }
+
+    public virtual MagicCircle GetMagicCircle()
+    {
+        return default;
     }
 
     public override bool AltFunctionUse(Player player)

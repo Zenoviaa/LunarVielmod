@@ -337,14 +337,25 @@ namespace Stellamod.Core.Bases
         private void DrawPixelatedRings(GraphicsDevice graphicsDevice)
         {
             float ease = EasingFunction.InOutSine(_magicRingTimer / AimTime);
-            Vector2 ring1Scale = Vector2.Lerp(Vector2.Zero, Vector2.One * new Vector2(1, 0.35f), ease);
-
+            Vector2 ring1Scale = new Vector2(45, 90);
             float perspectiveRotation = Main.GlobalTimeWrappedHourly * 8;
-            DrawRingInner(ring1Scale, Color.White, Vector2.Lerp(Vector2.Zero, Projectile.velocity.SafeNormalize(Vector2.Zero) * 48, ease), perspectiveRotation);
-        
+            CrossbowPlayer crossbowPlayer = Owner.GetModPlayer<CrossbowPlayer>();
+            Asset<Texture2D> magicCircleTextureAsset = crossbowPlayer.magicCircleTextureAsset;
+            if(magicCircleTextureAsset != null)
+            {
+                DrawRingInner(magicCircleTextureAsset, crossbowPlayer.magicCircleColor, ring1Scale, Color.White, Vector2.Lerp(Vector2.Zero, Projectile.velocity.SafeNormalize(Vector2.Zero) * 48, ease), perspectiveRotation);
+
+            }
+
+            Asset<Texture2D> bigMagicCircleTextureAsset = crossbowPlayer.magicBigCircleTextureAsset;
+            if(bigMagicCircleTextureAsset != null)
+            {
+                DrawRingInner(bigMagicCircleTextureAsset, crossbowPlayer.magicBigCircleColor, ring1Scale * 2, Color.White, 
+                    Vector2.Lerp(Vector2.Zero, Projectile.velocity.SafeNormalize(Vector2.Zero) * 64, ease), perspectiveRotation);
+            }
         }
 
-        private void DrawRingInner(Vector2 size, Color color, Vector2 velocity, float perspectiveRotation)
+        private void DrawRingInner(Asset<Texture2D> magicCircleTextureAsset, Color magicCircleColor, Vector2 size, Color color, Vector2 velocity, float perspectiveRotation)
         {
             MagicCircleShader magicCircleShader = MagicCircleShader.Instance;
 
@@ -357,15 +368,15 @@ namespace Stellamod.Core.Bases
             magicCircleShader.TilingOffset = tilingOffset;
 
             CrossbowPlayer crossbowPlayer = Owner.GetModPlayer<CrossbowPlayer>();
-            magicCircleShader.RingTexture = crossbowPlayer.magicCircleTextureAsset;
+            magicCircleShader.RingTexture = magicCircleTextureAsset;
 
             Color targetColor = crossbowPlayer.magicCircleColor;
 
             float ease = EasingFunction.InOutSine(_magicRingTimer / AimTime);
-            Color auraColor = Color.Lerp(Color.Black, targetColor, ease * 0.5f);
+            Color auraColor = Color.Lerp(Color.Black, magicCircleColor, ease * 0.5f);
             auraColor = auraColor.MultiplyRGB(color);
 
-            float radius = MathHelper.Lerp(45, 90, ease);
+            float radius = MathHelper.Lerp(size.X, size.Y, ease);
             radius *= MathHelper.SmoothStep(1f, 0f, EasingFunction.OutCirc(_magicRingShootTimer / FireTime));
             velocity *= MathHelper.SmoothStep(1f, 2f, EasingFunction.OutCirc(_magicRingShootTimer / FireTime));
             TexturedQuad.CalculatePerspectiveCenterVertices(Projectile.Center + velocity, radius, radius, velocity.ToRotation(), perspectiveRotation);
@@ -465,7 +476,7 @@ namespace Stellamod.Core.Bases
             var crossbowPlayer = Owner.GetModPlayer<CrossbowPlayer>();
             if (crossbowPlayer.magicCircleTextureAsset != null)
             {
-                PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedRings);
+
                 Texture2D glow = AssetManager.GlowMask.SimpleGlowCircle.Value;
                 Vector2 drawOrigin = glow.Size() / 2f;
                 SpriteBatch spriteBatch = Main.spriteBatch;
@@ -482,7 +493,7 @@ namespace Stellamod.Core.Bases
                 scale *= MathHelper.SmoothStep(1f, 0f, EasingFunction.OutCirc(_magicRingShootTimer / FireTime));
                 spriteBatch.Draw(glow, drawCenter, null, glowColor, Projectile.velocity.ToRotation(), drawOrigin, scale, SpriteEffects.None, 0);
             }
-
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedRings);
             DrawAimingLines(ref lightColor);
             DrawSprite(ref lightColor);
             if (State == AIState.Take_Aim || State == AIState.Aim)

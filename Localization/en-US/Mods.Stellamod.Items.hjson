@@ -5270,6 +5270,8 @@ VampiricVine: {
 		Getting some bitches finally?
 		Randomly will shoot out vampire arrows that will heal you in a shot array!
 		'''
+	BasicSlash: Shoots a spread of 3 arrows!
+	StaminaSlash: Shoots a double spread of fast blood arrows that heal you upon impact!
 }
 
 WindmillShuriken: {

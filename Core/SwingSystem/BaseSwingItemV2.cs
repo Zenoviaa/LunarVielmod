@@ -76,8 +76,8 @@ namespace Stellamod.Core.SwingSystem
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            this.GetLocalization(nameof(BasicEffectLocalizedText), () => "No Effect");
-            this.GetLocalization(nameof(StaminaEffectLocalizedText), () => "No Effect");
+            this.GetLocalization("BasicSlash", () => "");
+            this.GetLocalization("StaminaSlash", () => "No Effect");
         }
 
         //Sealing the set defaults that are common across all things so we don't accidentally override
