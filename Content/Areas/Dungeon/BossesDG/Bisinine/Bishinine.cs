@@ -138,7 +138,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private int RisingScytheDamage => 40;
         private int GrimmSpikesDamage => 60;
         private int MagicMissileDamage => 60;
-        private int CometDamage => 70;
+        private int CometDamage => 50;
         private int BellBalancingBounceDamage => 60;
         private int BouncingScytheDamage => 25;
         private int BaseballDamage => 25;

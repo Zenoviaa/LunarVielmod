@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Bar.Drinks;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -351,7 +352,6 @@ namespace Stellamod.Common.DungeonGeneration
             return GetDoorway(inverse);
         }
     }
-
     public static class Dungeonizer
     {
         private static Door GetInverseDoor(Door doorToInverse)
@@ -369,7 +369,34 @@ namespace Stellamod.Common.DungeonGeneration
                     return Door.Up;
             }
         }
-
+        private static Room GetRandomRoomWithDoors(Room[] prefabs, UnifiedRandom random, DoorsFlag doorsFlag)
+        {
+            Room[] pool = prefabs.Where(x => x.doorsFlag.HasFlag(doorsFlag)).ToArray();
+            Room room = pool[random.Next(0, pool.Length)];
+            return room;
+        }
+        private static Room GetRandomRoomWithDoors(Room[][] prefabs, UnifiedRandom random, Door doorToInverse)
+        {
+            Door doorToLookFor = GetInverseDoor(doorToInverse);
+            int index = 0;
+            switch (doorToLookFor)
+            {
+                case Door.Left:
+                    index = 0;
+                    break;
+                case Door.Right:
+                    index = 1;
+                    break;
+                case Door.Up:
+                    index = 2;
+                    break;
+                case Door.Down:
+                    index = 3;
+                    break;
+            }
+            Room[] rooms = prefabs[index];
+            return GetRandomRoom(rooms, random);
+        }
         private static Room GetRandomRoomWithOppositeDoor(Room[][] prefabs, UnifiedRandom random, Door doorToInverse)
         {
             Door doorToLookFor = GetInverseDoor(doorToInverse);
@@ -469,6 +496,119 @@ namespace Stellamod.Common.DungeonGeneration
             roomLookup[3] = downDoorsList.ToArray();
             return roomLookup;
         }
+
+        public static Room[] GenerateFromChart(Room[] prefabs, DungeonChart chart, UnifiedRandom random)
+        {
+
+
+            //Before we do anything lets create a lookup table of rooms that have doors
+            //That'll make the room hunt easier
+            Room startingRoom = prefabs[0];
+            for (int i = 0; i < prefabs.Length; i++)
+            {
+                Room room = prefabs[i];
+                if (room.roomType == RoomType.Start)
+                {
+                    startingRoom = room.Clone();
+                    break;
+                }
+            }
+            Room bossRoom = prefabs[0];
+            for (int i = 0; i < prefabs.Length; i++)
+            {
+                Room room = prefabs[i];
+                if (room.roomType == RoomType.Boss)
+                {
+                    bossRoom = room.Clone();
+                    break;
+                }
+            }
+
+            Room previousRoom = startingRoom;
+            Room currentRoom = startingRoom;
+
+
+            bool[] isPlaced = new bool[chart.Vertices.Length];
+            Room[] instancedRooms = new Room[chart.Vertices.Length];
+            for(int i = 0; i < instancedRooms.Length; i++)
+            {
+                Point vertex = chart.Vertices[i];
+                Point left = vertex + new Point(-1, 0);
+                Point right = vertex + new Point(1, 0);
+                Point up = vertex + new Point(0, -1);
+                Point down = vertex + new Point(0, 1);
+                DoorsFlag reqDoors = DoorsFlag.None;
+                if (chart.VerticeHashSet.Contains(left))
+                    reqDoors |= DoorsFlag.Left;
+                if (chart.VerticeHashSet.Contains(right))
+                    reqDoors |= DoorsFlag.Right;
+                if (chart.VerticeHashSet.Contains(up))
+                    reqDoors |= DoorsFlag.Up;
+                if (chart.VerticeHashSet.Contains(down))
+                    reqDoors |= DoorsFlag.Down;
+  
+                Room prefab = GetRandomRoomWithDoors(prefabs, random, reqDoors);
+                if(prefab.roomType == RoomType.Boss)
+                {
+                    i--;
+                    continue;
+                }
+                if (prefab.roomType == RoomType.Start)
+                {
+                    i--;
+                    continue;
+                }
+
+
+                instancedRooms[i] = prefab.Clone();
+            }
+            instancedRooms[0] = startingRoom;
+            instancedRooms[instancedRooms.Length - 1] = bossRoom;
+            isPlaced[0] = true;
+            void ConnectRoom(int start, int end)
+            {
+                Point startNode = chart.Vertices[start];
+                Point endNode = chart.Vertices[end];
+
+                //ALGORITHM
+                //Take the start node
+                //Take the end node
+                //Choose a direction and move the end node in that direction until it isn't overlapping with anything (if it's not placed)
+                //Set room
+
+                if (!isPlaced[end])
+                {
+                    Point dir = endNode - startNode;
+                    Door door = Door.Left;
+                    if(dir.X == 1)
+                    {
+                        door = Door.Right;
+                    } else if (dir.X == -1)
+                    {
+                        door = Door.Left;
+                    } else if (dir.Y == -1)
+                    {
+                        door = Door.Up;
+                    } else if (dir.Y == 1)
+                    {
+                        door = Door.Down;
+                    }
+
+                    int index = instancedRooms[start].GetDoorway(door);
+                    ref Doorway doorWay = ref instancedRooms[start].doors[index];
+                    instancedRooms[end].MoveTo(instancedRooms[start], ref doorWay);
+                    instancedRooms[end].ConnectTo(instancedRooms[start], ref doorWay);
+                    isPlaced[end]= true;
+                }
+            }
+
+            //DO BFS Search and connect rooms to each other
+            DungeonChartTraversal.DoBFS(chart.Edges, chart.Vertices.Length,
+                new bool[chart.Vertices.Length], ConnectRoom);
+            //Place boss room
+            return instancedRooms;
+        }
+
         //So how do we want to generate the dungeon?
         public static Room[] Generate(Room[] prefabs, UnifiedRandom random)
         {
@@ -496,7 +636,7 @@ namespace Stellamod.Common.DungeonGeneration
             int snakeLength = 60;
             List<Room> map = new List<Room>();
             List<bool> canHorizontalFromt = new List<bool>();
-
+            List<bool> closed = new List<bool>();
             Room startingRoom = prefabs[0];
          
             for (int i = 0; i < prefabs.Length; i++)
@@ -535,6 +675,7 @@ namespace Stellamod.Common.DungeonGeneration
 
             int fails = 0;
             int tunnelDown = 0;
+            int index = 0;
             for (int i = 0; i < maxAttempts; i++)
             {
                 //Once we hit the max room count... yeah
@@ -546,15 +687,21 @@ namespace Stellamod.Common.DungeonGeneration
       
                 if (map.Count < snakeLength)
                 {
-                    if (currentRoom.connectionCount >= 3 || fails >= 10)
+                    bool failedTooMuch = fails >= 10;
+                    if (currentRoom.connectionCount >= 3 || failedTooMuch || (closed.Count > index && closed[index]))
                     {
                         fails = 0;
-                        int index = random.Next(0, map.Count);
+                        if (failedTooMuch)
+                        {
+                            direction = direction == 0 ? 1 : 0;
+                        }
+                        index = random.Next(0, map.Count);
                         Room randomRoom = map[index];
                         currentRoom = randomRoom;
                         continue;
                     }
 
+               
                     int doorWayIndex = 0;
                     if(direction == 1 && !currentRoom.HasAvailableDoorway(Door.Down))
                     {
@@ -640,6 +787,7 @@ namespace Stellamod.Common.DungeonGeneration
                 
                         if(tunnelDown < 20)
                         {
+                            closed.Add(true);
                             tunnelDown++;
                         }
                         else if (directionCounter >= 3)
@@ -653,7 +801,7 @@ namespace Stellamod.Common.DungeonGeneration
                 else
                 {
                     //Done drawing a snake, so we just expand the floors
-                    int index = random.Next(0, map.Count);
+                    index = random.Next(0, map.Count);
                     Room randomRoom = map[index];
                     currentRoom = randomRoom;
                     if (!canHorizontalFromt[index])

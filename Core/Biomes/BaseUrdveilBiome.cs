@@ -8,6 +8,7 @@ namespace Stellamod.Core.Biomes
    
     public abstract class BaseUrdveilBiome : ModBiome
     {
+        private string _lastCard;
         public override void OnEnter(Player player)
         {
             base.OnEnter(player);
@@ -15,6 +16,10 @@ namespace Stellamod.Core.Biomes
             {
                 return;
             }
+            if (!string.IsNullOrEmpty(_lastCard) && _lastCard == DisplayName.Value)
+                return;
+
+            _lastCard = DisplayName.Value;
             TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
             uiSystem.OpenUI(DisplayName.Value, 7);
             uiSystem.titleUIState.titleCardUI.LineTexture = ModContent.Request<Texture2D>(TitleCardUISystem.RootTexturePath + "UnderlineBiome");

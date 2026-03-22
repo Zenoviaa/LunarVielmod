@@ -813,7 +813,13 @@ public class StellaWorld : ModSystem
     {
         progress.Message = "Mistying the Dungeon";
         Room[] prefabs = DungeonSaveUtility.ReadDungeonPrefabsFromFiles();
-        Room[] map = Dungeonizer.Generate(prefabs, Main.rand);
+
+
+        int dungeonLayoutCount = 1;
+        string path = $"MistyDungeon_{Main.rand.Next(dungeonLayoutCount) + 1}";
+        GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab(path);
+        DungeonChart chart = DungeonChart.FromPrefab(prefab);
+        Room[] map = Dungeonizer.GenerateFromChart(prefabs, chart, Main.rand);
         int[] tileBlend = new int[]
         {
             TileID.RubyGemspark

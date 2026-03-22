@@ -83,7 +83,7 @@ namespace Stellamod.Helpers
                 }
                 Point point = new Point(bottomLeft.X + xOffset, bottomLeft.Y - yOffset);
                 triggerManager.PlaceTrigger(point, trigger);
-                DebugHelper.NewTextOnlyInTesting("Construct Trigger " + trigger);
+               // DebugHelper.NewTextOnlyInTesting("Construct Trigger " + trigger);
 
                 Dust.QuickBox(new Vector2(point.X, point.Y) * 16, new Vector2(point.X + 1, point.Y + 1) * 16, 2, Color.Red, null);
             }

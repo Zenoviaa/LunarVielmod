@@ -169,7 +169,9 @@ public class VeilGenTester : ModItem
         Vector2 mouseWorld = Main.MouseWorld;
         Point startTile = mouseWorld.ToTileCoordinates();
         Room[] prefabs = DungeonSaveUtility.ReadDungeonPrefabsFromFiles();
-        Room[] map = Dungeonizer.Generate(prefabs, Main.rand);
+        GenerationPrefab generationPrefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("MistyDungeon_1");
+        DungeonChart chart = DungeonChart.FromPrefab(generationPrefab);
+        Room[] map = Dungeonizer.GenerateFromChart(prefabs, chart, Main.rand);
         int[] tileBlend = new int[]
         {
             TileID.RubyGemspark

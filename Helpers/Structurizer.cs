@@ -54,6 +54,7 @@ namespace Stellamod.Helpers
         {
 
             structures ??= GenVars.structures;
+            structures ??= new StructureMap();
             Rectangle rectangle = ReadRectangle(path);
             location.Y -= rectangle.Height;
             rectangle.Location = location;

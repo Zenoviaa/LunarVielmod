@@ -73,7 +73,7 @@ namespace Stellamod.Helpers
                 int yOffset = element.Get<int>("_y");
                 string type = element.Get<string>("_type");
                 ModTileEntity template = ModContent.Find<ModTileEntity>(Mod.Name + "/" + type);
-                DebugHelper.NewTextOnlyInTesting("Construct Tile Entity " + template.Name);
+            //    DebugHelper.NewTextOnlyInTesting("Construct Tile Entity " + template.Name);
 
                 Point16 point = new Point16(bottomLeft.X + xOffset, bottomLeft.Y - yOffset);
                 Dust.QuickBox(new Vector2(point.X, point.Y) * 16, new Vector2(point.X + 1, point.Y + 1) * 16, 2, Color.Red, null);

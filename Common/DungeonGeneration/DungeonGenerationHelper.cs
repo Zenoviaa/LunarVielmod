@@ -327,7 +327,7 @@ namespace Stellamod.Common.DungeonGeneration
                 int xOffset = element.Get<int>("_x");
                 int yOffset = element.Get<int>("_y");
                 Door door = element.Get<Door>("_door");
-                DebugHelper.NewTextOnlyInTesting("Construct Door Entity " + door.ToString());
+                //DebugHelper.NewTextOnlyInTesting("Construct Door Entity " + door.ToString());
 
                 Point point = new Point(bottomLeft.X + xOffset, bottomLeft.Y - yOffset);
                 PlaceDoorInWorld(point, door);

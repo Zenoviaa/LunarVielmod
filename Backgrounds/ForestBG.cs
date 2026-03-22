@@ -76,6 +76,7 @@ public class ForestBG : CustomBG
             && !biomePlayer.ZoneMistyDungeon 
             && !biomePlayer.ZonePunkerTown 
             && !biomePlayer.ZoneMoonspiralTower 
-            && !biomePlayer.ZoneDesertTown;
+            && !biomePlayer.ZoneDesertTown
+            && !Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneFable;
     }
 }
