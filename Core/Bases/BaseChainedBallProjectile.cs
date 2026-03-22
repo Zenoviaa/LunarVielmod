@@ -303,6 +303,7 @@ namespace Stellamod.Core.Bases
             base.ModifyHitNPC(target, ref modifiers);
             if (Vector2.Distance(Projectile.Center, target.Center) < Projectile.Size.Length() * 2f)
             {
+                OnTipper(target, ref modifiers);
                 //Double damage modifier
                 modifiers.FinalDamage *= TipDamageMultiplier;
             }
@@ -313,6 +314,10 @@ namespace Stellamod.Core.Bases
             }
         }
 
+        public virtual void OnTipper(NPC target, ref NPC.HitModifiers modifiers)
+        {
+
+        }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             //Bounce code

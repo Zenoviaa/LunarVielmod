@@ -10599,3 +10599,8 @@ MoonChakrams: {
 	DisplayName: Moon Chakrams
 	Tooltip: ""
 }
+
+HypnotizingBall: {
+	DisplayName: Hypnotizing Ball
+	Tooltip: When striking an enemy, a hypnotic aura bursts out from them! It has a chance to confuse enemies
+}
