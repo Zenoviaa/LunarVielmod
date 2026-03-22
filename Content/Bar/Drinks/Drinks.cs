@@ -370,7 +370,7 @@ public class PermamentFoodGlobalItem : GlobalItem
         {
             player.GetModPlayer<PermanentFoodsPlayer>().foods[(int)permanentFoodType] = true;
         }
-        return true;
+        return base.UseItem(item, player);
     }
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
