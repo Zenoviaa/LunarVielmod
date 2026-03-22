@@ -42,6 +42,7 @@ namespace Stellamod.Core.SwingSystem
         public int comboResetTime = 120;
         public int staminaProjectileShoot;
         public int staminaCost = 2;
+        public float staminaDamageMultiplier;
 
 
         public MeleeWeaponType meleeWeaponType;
@@ -84,6 +85,7 @@ namespace Stellamod.Core.SwingSystem
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 10;
             comboResetTime = 120;
+            staminaDamageMultiplier = 1;
             SetDefaults2();
         }
 
@@ -109,6 +111,7 @@ namespace Stellamod.Core.SwingSystem
             if (type == -1)
                 return;
 
+            int staminaDamage = (int)(damage * staminaDamageMultiplier);
             //Only do the swinging initialization if it is a swing projectile lol
             var proj = ModContent.GetModProjectile(type);
             if (proj is BaseSwingProjectileV2)
@@ -118,13 +121,13 @@ namespace Stellamod.Core.SwingSystem
                 int combo = comboPlayer.StaminaComboCounter;
                 int dir = comboPlayer.ComboDirection;
 
-                Projectile.NewProjectile(source, position, velocity, type, damage, knockback,
+                Projectile.NewProjectile(source, position, velocity, type, staminaDamage, knockback,
                     player.whoAmI, ai1: dir, ai2: combo);
                 comboPlayer.IncreaseCombo();
             }
             else
             {
-                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity, type, staminaDamage, knockback, player.whoAmI);
             }
         }
 

@@ -10,6 +10,7 @@ using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -120,6 +121,17 @@ namespace Stellamod.Core.SwingSystem
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
+            if (_hasInitialized)
+            {
+                //Return arrays
+                ArrayPool<Vector2>.Shared.Return(swingTrailCache);
+                ArrayPool<Vector2>.Shared.Return(bigSwingTrailCache);
+                ArrayPool<Vector2>.Shared.Return(afterImageCache);
+                ArrayPool<float>.Shared.Return(swingRotationCache);
+                ArrayPool<float>.Shared.Return(oldTime);
+            }
+
+
             if ((ComboIndex+1) >= _swings.Count)
             {
                 SwingPlayerV2 swingPlayer = Owner.GetModPlayer<SwingPlayerV2>();
@@ -131,11 +143,15 @@ namespace Stellamod.Core.SwingSystem
             if (!_hasInitialized)
             {
                 _swings = new List<ISwing>();
-                swingTrailCache = new Vector2[200];
-                bigSwingTrailCache = new Vector2[200];
-                afterImageCache = new Vector2[16];
-                swingRotationCache = new float[16];
-                oldTime = new float[200];
+
+                //Rent arrays so we're not constantly allocating new ones
+                int cacheLength = 100;
+                int afterImageCacheLength = 16;
+                swingTrailCache = ArrayPool<Vector2>.Shared.Rent(cacheLength);
+                bigSwingTrailCache = ArrayPool<Vector2>.Shared.Rent(cacheLength);
+                afterImageCache = ArrayPool<Vector2>.Shared.Rent(afterImageCacheLength);
+                swingRotationCache = ArrayPool<float>.Shared.Rent(afterImageCacheLength);
+                oldTime = ArrayPool<float>.Shared.Rent(cacheLength);
                 DefineCombo();
 
                 ISwing swing = GetSwing();

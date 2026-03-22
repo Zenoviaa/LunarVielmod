@@ -102,6 +102,19 @@ namespace Stellamod.Content
             return Type; // no 'lower' tier to go to, so return the type of this rarity.
         }
     }
+    public class MinersGoldRarity : ModRarity
+    {
+        public override Color RarityColor => Color.Gold;
+        public override int GetPrefixedRarity(int offset, float valueMult)
+        {
+            if (offset > 0)
+            { // If the offset is 1 or 2 (a positive modifier).
+              //    return ModContent.RarityType<ExampleHigherTierModRarity>(); // Make the rarity of items that have this rarity with a positive modifier the higher tier one.
+            }
+
+            return Type; // no 'lower' tier to go to, so return the type of this rarity.
+        }
+    }
     public class TerrorFragmentRarity : ModRarity
     {
         public override Color RarityColor => new Color(255, 99, 99);
@@ -182,6 +195,7 @@ namespace Stellamod.Content
             return Type; // no 'lower' tier to go to, so return the type of this rarity.
         }
     }
+
     public class IllurineScaleRarity : ModRarity
     {
         public override Color RarityColor => new Color(53, 171, 213);

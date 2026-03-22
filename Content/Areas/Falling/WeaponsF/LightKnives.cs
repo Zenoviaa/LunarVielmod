@@ -26,6 +26,7 @@ public class LightKnives : BaseSwingItemV2
         Item.shoot = ModContent.ProjectileType<LightKnivesSlash>();
         staminaProjectileShoot = ModContent.ProjectileType<LightKnivesDash>();
         meleeWeaponType = MeleeWeaponType.Knives;
+        staminaDamageMultiplier = 2;
     }
 
     public override void AddRecipes()
@@ -202,6 +203,10 @@ public class LightKnivesSlash : BaseSwingProjectileV2
     {
         return Color.Lerp(Color.White, Color.Black, completionRatio);
     }
+    private Color GetTrailColor2(float completionRatio)
+    {
+        return Color.Lerp(Color.White, Color.Black, completionRatio) * 0.15f;
+    }
 
     private float GetTrailWidth(float completionRatio)
     {
@@ -224,12 +229,28 @@ public class LightKnivesSlash : BaseSwingProjectileV2
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedSwingTrail);
     }
 
+    public override void DrawSwingTrail2(ref Color lightColor, Vector2[] swingTrailCache)
+    {
+        base.DrawSwingTrail2(ref lightColor, swingTrailCache);
+        void DrawPixelatedSwingTrail(GraphicsDevice gDevice)
+        {
+            var shader = RichLaserShader.Instance;
+            shader.LaserColor = Color.Lerp(Color.LightGoldenrodYellow, Color.Goldenrod, ExtraMath.Osc(0f, 1f, speed: 8, offset: 2));
+            shader.InnerColor = Color.Lerp(Color.LightGoldenrodYellow, Color.Goldenrod, ExtraMath.Osc(0f, 1f, speed: 8));
+            shader.OuterColor = Color.Red;
+            shader.LaserTexture = AssetManager.LaserTextures.TexturedLaser;
+            shader.BloomTexture = AssetManager.LaserTextures.Lightning2;
+            TrailDrawer.Draw(Main.spriteBatch, swingTrailCache, GetTrailColor2, GetTrailWidth, shader);
+        }
+        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedSwingTrail);
+
+    }
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
         Vector2 shootVelocity = Main.rand.NextVector2CircularEdge(8, 8);
 
-        int damage = (int)(Projectile.damage * 0.3f);
+        int damage = (int)(Projectile.damage );
         Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, shootVelocity,
             ModContent.ProjectileType<LightSpasm>(), damage, Projectile.knockBack, Projectile.owner, ai1: 1);
     }

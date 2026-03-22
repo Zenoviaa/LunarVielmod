@@ -99,9 +99,16 @@ namespace Stellamod.Common.WeaponTypes
         public override void UpdateDead()
         {
             base.UpdateDead();
-            CombatTool combatTool = SelectedTool.GetGlobalItem<CombatTool>();
-            combatTool.ammoCount = combatTool.maxAmmoCount;
-            carryingCapacity = 1;
+            if (SelectedTool == null)
+                return;
+
+            if (SelectedTool.TryGetGlobalItem<CombatTool>(out CombatTool combatTool))
+            {
+                combatTool.ammoCount = combatTool.maxAmmoCount;
+                carryingCapacity = 1;
+            }
+            ;
+   
         }
         public override void PostItemCheck()
         {

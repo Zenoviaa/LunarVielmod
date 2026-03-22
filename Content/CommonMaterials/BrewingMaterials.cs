@@ -9,6 +9,16 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.CommonMaterials
 {
+    public class MinersGold : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 26;
+            Item.height = 34;
+            Item.rare = ModContent.RarityType<IllurineScaleRarity>();
+            Item.maxStack = Item.CommonMaxStack;
+        }
+    }
     public class IllurineScale : ModItem
     {
         public override void SetDefaults()

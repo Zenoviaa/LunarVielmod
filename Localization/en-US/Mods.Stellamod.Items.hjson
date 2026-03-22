@@ -8562,7 +8562,7 @@ Pearling: {
 }
 
 LightKnives: {
-	Tooltip: "Swings at the speed of light!"
+	Tooltip: Swings at the speed of light!
 	DisplayName: Light Knives
 	BasicSlash: When striking an enemy, release very quick lightning bolts out from the blade
 	StaminaSlash: Throws forth a lightning dash, when it strikes an enemy, they spaz out with electric bolts
@@ -10476,5 +10476,17 @@ Rose: {
 
 PermanentBuffTracker: {
 	DisplayName: Permanent Buff Tracker
+	Tooltip: ""
+}
+
+TrueHammer: {
+	BasicSlash: No Effect
+	StaminaSlash: No Effect
+	DisplayName: True Hammer
+	Tooltip: ""
+}
+
+MinersGold: {
+	DisplayName: Miners Gold
 	Tooltip: ""
 }
