@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Magic;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -56,12 +56,21 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
                     for (float f = 0; f < 16; f++)
                     {
                         Vector2 vel = (f / 16f * MathHelper.ToRadians(360)).ToRotationVector2() * -4;
-                        Dust.NewDustPerfect(target.Center - vel * 16, ModContent.DustType<GlowDust>(), vel, 0, Color.Red, 1f).noGravity = true;
+                        SparkleParticle sp = SparkleParticle.Spawn(target.Center - vel * 16, vel, Scale: 0.25f);
+                        sp.innerColor = Color.Red;
+                        sp.gravity = 0;
+                        sp.noTileCollide = true;
                     }
                 }
 
                 if (hitCount >= 3)
                 {
+                    for (float f = 0; f < 32; f++)
+                    {
+                        Vector2 vel = -Vector2.UnitY * 8 * Main.rand.NextFloat(0.2f, 1f);
+                        Dust.NewDustPerfect(target.Center + Main.rand.NextVector2Circular(32, 32), DustID.RedTorch, vel, Scale: 1.5f, newColor: Color.Red);
+
+                    }
                     for (int i = 0; i < 7; i++)
                     {
                         Dust.NewDustPerfect(target.Center, ModContent.DustType<SmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, default, 1f).noGravity = true;
