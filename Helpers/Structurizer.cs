@@ -381,6 +381,9 @@ namespace Stellamod.Helpers
             int endX = startX + rectangle.Width;
             int startY = rectangle.Location.Y;
             int endY = rectangle.Location.Y + rectangle.Height;
+            
+            //Some fluff to get rid of trees
+            startY -= 16;
             for (int x = startX; x < endX; x++)
             {
                 for (int y = startY; y < endY; y++)
@@ -391,8 +394,7 @@ namespace Stellamod.Helpers
                     Tile tile = Main.tile[x, y];
                     if (TileID.Sets.IsATreeTrunk[tile.TileType])
                     {
-                      
-                        WorldGen.KillTile(x, y, noItem: true);
+                        tile.ClearEverything();
                     }
                 }
             }

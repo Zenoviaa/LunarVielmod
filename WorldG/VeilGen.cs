@@ -76,6 +76,32 @@ public class GenerationPrefab : IDisposable
     }
 
 
+    private void PasteEraseInner(in int originX, in int originY)
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                int tileX = originX + x;
+                int tileY = originY + y;
+                if (!WorldGen.InWorld(tileX, tileY))
+                    continue;
+
+                Color c = Sample(x, y);
+                if (c.R > 125)
+                {
+                    Tile t = Main.tile[tileX, tileY];
+                    t.ClearEverything();
+                }
+            }
+        }
+    }
+    public void PasteErase(int originX, int originY, Point pixelOrigin)
+    {
+        originX -= pixelOrigin.X;
+        originY -= pixelOrigin.Y;
+        PasteEraseInner(originX, originY);
+    }
     public void PasteErase(int originX, int originY, PrefabPlacementType placementType)
     {
         switch (placementType)
@@ -91,23 +117,7 @@ public class GenerationPrefab : IDisposable
                 break;
         }
 
-        for(int x = 0; x < Width; x++)
-        {
-            for(int y = 0; y < Height; y++)
-            {
-                int tileX = originX + x;
-                int tileY = originY + y;
-                if (!WorldGen.InWorld(tileX, tileY))
-                    continue;
-
-                Color c = Sample(x, y);
-                if(c.R > 125)
-                {
-                    Tile t = Main.tile[tileX, tileY];
-                    t.ClearEverything();
-                }
-            }
-        }
+        PasteEraseInner(originX, originY);
     }
 }
 

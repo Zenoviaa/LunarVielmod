@@ -28,6 +28,7 @@ namespace Stellamod.Content.Biomes
         public bool ZoneWorldsEnd;
         public bool ZoneMoonspiralTower;
         public bool ZoneForest;
+        public bool ZoneJunkyard;
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();

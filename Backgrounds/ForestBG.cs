@@ -71,12 +71,6 @@ public class ForestBG : CustomBG
 
         BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
         bool isActive = biomePlayer.ZoneForest || biomePlayer.ZoneSpringHills;
-        return isActive && !Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia && !Main.LocalPlayer.ZoneJungle 
-            && !biomePlayer.ZoneWorldsEnd
-            && !biomePlayer.ZoneMistyDungeon 
-            && !biomePlayer.ZonePunkerTown 
-            && !biomePlayer.ZoneMoonspiralTower 
-            && !biomePlayer.ZoneDesertTown
-            && !Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneFable;
+        return isActive;
     }
 }

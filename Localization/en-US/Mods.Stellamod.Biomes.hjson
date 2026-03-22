@@ -202,3 +202,8 @@ ForestBiome: {
 	DisplayName: Rocky Forest
 	TownNPCDialogueName: the Rocky Forest
 }
+
+JunkyardBiome: {
+	DisplayName: Junkyard Biome
+	TownNPCDialogueName: the Junkyard Biome
+}

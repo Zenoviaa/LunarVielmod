@@ -1,4 +1,6 @@
-﻿using Stellamod.Content.Biomes;
+﻿using Stellamod.Assets.Biomes;
+using Stellamod.Content.Areas.Dungeon;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.Biomes;
 using Terraria;
 using Terraria.Graphics.Capture;
@@ -13,7 +15,36 @@ namespace Stellamod.Content.Areas.SpringHills
         // Select Music
         public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
         public override int Music => -1;
-        public override bool IsBiomeActive(Player player) => BiomeTileCounts.InForest && player.ZoneOverworldHeight;
+        public override bool IsBiomeActive(Player player)
+        {
+            bool isaActive = BiomeTileCounts.InForest && player.ZoneOverworldHeight;
+            if (!isaActive)
+                return false;
+            if (player.ZoneDesert)
+                return false;
+            if (player.ZoneJungle)
+                return false;
+            if (player.ZoneSnow)
+                return false;
+            if (player.ZoneBeach)
+                return false;
+            if (player.ZoneCorrupt)
+                return false;
+            if (player.ZoneCrimson)
+                return false;
+            if (player.ZoneDungeon)
+                return false;
+            if (player.InModBiome<FableBiome>())
+                return false;
+            if (player.InModBiome<AlcadziaBiome>())
+                return false;
+            if (player.InModBiome<MistyDungeonBiome>())
+                return false;
+            if (player.InModBiome<IlluriaBiome>())
+                return false;
+
+            return true;
+        }
 
 
         public override void OnEnter(Player player)
@@ -41,7 +72,12 @@ namespace Stellamod.Content.Areas.SpringHills
 
         }
 
-        public override bool IsBiomeActive(Player player) => BiomeTileCounts.InSpringHills;
+        public override bool IsBiomeActive(Player player)
+        {
+            if (!BiomeTileCounts.InSpringHills)
+                return false;
+            return !player.ZoneDesert;
+        }
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => base.BackgroundPath;
         public override Color? BackgroundColor => base.BackgroundColor;

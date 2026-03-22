@@ -1,4 +1,5 @@
 ﻿
+using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.TilesSH;
 using Stellamod.Content.Areas.WorldsEnd.TilesWE;
 using Stellamod.Tiles;
@@ -125,8 +126,12 @@ namespace Stellamod
         public static bool InMoonspiralTower => ModContent.GetInstance<BiomeTileCounts>().MoonspiralTowerCount >= 50;
         public int ForestCount;
         public static bool InForest => ModContent.GetInstance<BiomeTileCounts>().ForestCount >= 25;
+
+        public int JunkyardCount;
+        public static bool InJunkyard => ModContent.GetInstance<BiomeTileCounts>().JunkyardCount >= 25;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
+            JunkyardCount = tileCounts[ModContent.TileType<JunkyTile>()];
             ForestCount = tileCounts[TileID.Grass];
             MoonspiralTowerCount = tileCounts[ModContent.TileType<CathediteTile>()];
             WorldsEndCount = tileCounts[ModContent.TileType<WhiteGrass>()];

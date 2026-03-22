@@ -6,6 +6,7 @@ using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Content.Areas.Collosseum.TilesCL;
 using Stellamod.Content.Areas.Collosseum.WeaponsCL;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
+using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.TilesSH;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
@@ -361,6 +362,7 @@ public class StellaWorld : ModSystem
         passWriter.SetInsertionIndex("Jungle");
         passWriter.NextPass(new MarshJungleMudPass());
         passWriter.NextPass(new PassLegacy("Jungle Surface Caves", WorldGenJungleSurfaceCaves));
+        passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
         passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
 
         //Set desert location
@@ -381,6 +383,51 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Stone Golem Cave", WorldGenStoneGolemCave));
         passWriter.NextPass(new PassLegacy("Grassing Caves", WorldGenGrassPass));
     }
+    
+    private void WorldGenJunkyardCaves(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Junkyard Caves";
+        int caveOriginX = MarshLocation.X;
+        caveOriginX -= 350;
+
+        int caveOriginY = MarshLocation.Y;
+        caveOriginY -= 35;
+
+        int width = 500;
+
+        int left = caveOriginX - width / 2;
+        int right = caveOriginX + width / 2;
+        int bottom = caveOriginY + 1800;
+        int tileType = ModContent.TileType<JunkyTile>();
+        for (int y = caveOriginY; y < bottom; y++)
+        {
+
+            for(int x = left; x < right; x++)
+            {
+                float ratio = (float)(x - left) / (float)(right - left);
+                float ease = EasingFunction.QuadraticBump(ratio);
+                int denom = (int)MathHelper.Lerp(1, 8, ease);
+                if (Main.rand.NextBool(denom))
+                    continue;
+                if(caveOriginY > bottom - 25)
+                {
+                    float heightRatio = (float)(caveOriginY - (bottom - 25)) / 25f;
+                    int heightDenom = (int)MathHelper.Lerp(1, 16, heightRatio);
+                    if (!Main.rand.NextBool(heightDenom))
+                        continue;
+                }
+                Tile tile = Main.tile[x, y];
+                if (tile.HasTile)
+                {
+                    WorldGen.PlaceTile(x, y, tileType, forced: true);
+                }
+            }
+        }
+
+        GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("Junkyard");
+        prefab.PasteErase(caveOriginX, caveOriginY, PrefabPlacementType.FromTopCenter);
+    }
+
     private void WorldGenJungleSurfaceCaves(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Jungle Surface Caves";
@@ -816,10 +863,10 @@ public class StellaWorld : ModSystem
 
 
         int dungeonLayoutCount = 1;
-        string path = $"MistyDungeon_{Main.rand.Next(dungeonLayoutCount) + 1}";
+        string path = $"MistyDungeon_{WorldGen.genRand.Next(dungeonLayoutCount) + 1}";
         GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab(path);
         DungeonChart chart = DungeonChart.FromPrefab(prefab);
-        Room[] map = Dungeonizer.GenerateFromChart(prefabs, chart, Main.rand);
+        Room[] map = Dungeonizer.GenerateFromChart(prefabs, chart, WorldGen.genRand);
         int[] tileBlend = new int[]
         {
             TileID.RubyGemspark
@@ -1023,7 +1070,7 @@ public class StellaWorld : ModSystem
         progress.Message = "Locking Snow Biome Location";
         Point marshSpot = new Point();
         marshSpot.Y = (int)(Main.worldSurface - 2000);
-        marshSpot.X = 1550;
+        marshSpot.X = 1850;
         marshSpot = FallToSolidTile(marshSpot.X, marshSpot.Y);
         marshSpot.Y += 25;
         MarshLocation = marshSpot;
@@ -3415,6 +3462,17 @@ public class StellaWorld : ModSystem
 
             placed = true;
         }
+
+
+        Point gilatineHousePoint = new Point();
+        gilatineHousePoint = FableFarEdgeLocation;
+        gilatineHousePoint.X += 800;
+        gilatineHousePoint.Y -= 300;
+        gilatineHousePoint = FallToSolidTile(gilatineHousePoint.X, gilatineHousePoint.Y);
+
+        GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("GilatineCave");
+        prefab.PasteErase(gilatineHousePoint.X, gilatineHousePoint.Y, new Point(55, 0));
+        progress.Message = "I'm Racist.";
     }
 
     private void WorldGenStoneGolemCave(GenerationProgress progress, GameConfiguration configuration)

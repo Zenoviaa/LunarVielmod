@@ -8,7 +8,7 @@ namespace Stellamod.Core.Biomes
    
     public abstract class BaseUrdveilBiome : ModBiome
     {
-        private string _lastCard;
+        private static string _lastCard;
         public override void OnEnter(Player player)
         {
             base.OnEnter(player);
