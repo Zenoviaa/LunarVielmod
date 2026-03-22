@@ -77,7 +77,7 @@ public class HypnotizingAura : ModProjectile
         base.OnHitNPC(target, hit, damageDone);
         if (Main.rand.NextBool(6))
         {
-            target.AddBuff(BuffID.Confused, 120);
+            target.AddBuff(BuffID.ShadowFlame, 30);
         }
     }
 
