@@ -262,7 +262,12 @@ namespace Stellamod.Core.SwingSystem
                 if (time - 0.3f < 0)
                     return;
             }
-
+            //Set Offset, now we can take this and offset it more in the projectile
+            float trailOffset = TrailOffset;
+            if (swingProjectile.trailOffsetOverride.HasValue)
+            {
+                trailOffset = swingProjectile.trailOffsetOverride.Value;
+            }
             //Alright, calculating trail points
             //The points will be offset by the position matrix
             //So we just calculate the local points here
@@ -303,8 +308,8 @@ namespace Stellamod.Core.SwingSystem
                     xOffset *= centerTrailOffset;
                     yOffset *= centerTrailOffset;
                 }
-                //Set Offset, now we can take this and offset it more in the projectile
-                Vector2 offset = new Vector2(xOffset * TrailOffset , yOffset * TrailOffset );
+ 
+                Vector2 offset = new Vector2(xOffset * trailOffset, yOffset * trailOffset);
                 trailCache[t] = offset.RotatedBy(targetRotation);
 
 

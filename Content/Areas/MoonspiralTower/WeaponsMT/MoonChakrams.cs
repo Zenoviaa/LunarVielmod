@@ -7,62 +7,53 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
+using Stellamod.Items.Materials;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS;
+namespace Stellamod.Content.Areas.MoonspiralTower.WeaponsMT;
 
-public class FlamelashChakrams : BaseSwingItemV2
+
+public class MoonChakrams : BaseSwingItemV2
 {
     public override void SetDefaults2()
     {
         base.SetDefaults2();
-        Item.damage = 6;
+        Item.damage = 14;
         Item.DamageType = DamageClass.Summon;
-        Item.shoot = ModContent.ProjectileType<FlamelashChakramsSlash>();
+        Item.shoot = ModContent.ProjectileType<MoonChakramsSlash>();
     }
     public override void AddRecipes()
     {
         base.AddRecipes();
-        this.RegisterBrew<Cinderscrap, BlankSafunai>();
+        this.RegisterBrew<PearlescentScrap, BlankSafunai>();
     }
 }
 
-public class FlamelashChakramsSlash : BaseSwingProjectileV2
+public class MoonChakramsSlash : BaseSwingProjectileV2
 {
     private bool _hit;
     private bool _spawnedClone;
     public override void DefineCombo()
     {
         base.DefineCombo();
+        trailOffsetOverride = 1;
         ComboBuilder comboBuilder = new ComboBuilder();
-
-        //Ok for chakrams uhh
-        //1. spin around once
-        comboBuilder.AddChakramSpin();
-
-        //2. spin around twice
-        comboBuilder.AddChakramSpin();
-
-        comboBuilder.AddChakramSpin();
-
-        //2. spin around twice
-        comboBuilder.AddChakramSpin();
-
-        //3. throw one forward
-        comboBuilder.AddChakramThrow(throwDistance: 322);
-        comboBuilder.AddChakramSpin();
-        comboBuilder.AddChakramSpin2(duration: 42, hitCount: 3, swingDegrees: 720);
-
+        comboBuilder.AddChakramSpin2(duration: 24, xSwingRadius: 96, ySwingRadius: 96, hitCount: 3, swingDegrees: 720);
+        comboBuilder.AddChakramSpin2(duration: 24, xSwingRadius: 96, ySwingRadius: 96, hitCount: 3, swingDegrees: 720);
+        comboBuilder.AddChakramUppercut(duration: 24, xSwingRadius: 96, hitCount: 3, swingDegrees: 135);
+        comboBuilder.AddChakramThrow(throwDistance: 128);
         comboBuilder.AddToProjectile(this);
 
 
         BlackFireShader blackFireShader = new BlackFireShader();
         blackFireShader.SetDefaults();
+        blackFireShader.InnerColor = Color.White;
+        blackFireShader.OuterColor = Color.Aquamarine;
+        blackFireShader.BackColor = Color.DarkBlue;
 
         SlashTrailer devilsPeak = new SlashTrailer
         {
@@ -73,7 +64,7 @@ public class FlamelashChakramsSlash : BaseSwingProjectileV2
             },
             TrailColorFunction = (interpolant) =>
             {
-                Color lerp1 = Color.Lerp(Color.OrangeRed, Color.RosyBrown, interpolant);
+                Color lerp1 = Color.Lerp(Color.Blue, Color.Aquamarine, interpolant);
                 return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
             }
         };
@@ -97,13 +88,13 @@ public class FlamelashChakramsSlash : BaseSwingProjectileV2
         {
             DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
             {
-                innerColor = Color.OrangeRed,
-                outerColor = Color.Red,
+                innerColor = Color.White,
+                outerColor = Color.Aquamarine,
                 scaleRange = new Vector2(0.4f, 0.6f)
             };
             DustParticle.Spawn(Projectile.Center, Vector2.Zero, spawnParams);
         }
-        glowColor = Color.Lerp(Color.Transparent, Color.Red * 0.5f, EasingFunction.QuadraticBump(Interpolant));
+        glowColor = Color.Lerp(Color.Transparent, Color.White * 0.5f, EasingFunction.QuadraticBump(Interpolant));
         growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));
 
     }
@@ -122,9 +113,9 @@ public class FlamelashChakramsSlash : BaseSwingProjectileV2
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
                 var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                 FXUtil.GlowFragmentParticle(position, pVelocity,
-                    innerColor: Color.Yellow,
-                    outerColor: Color.Orange,
-                    fadeToColor: Color.Red,
+                    innerColor: Color.White,
+                    outerColor: Color.Cyan,
+                    fadeToColor: Color.DarkBlue,
                     distortOut: true);
 
 
@@ -140,12 +131,15 @@ public class FlamelashChakramsSlash : BaseSwingProjectileV2
             for (float f = 0; f < 8; f++)
             {
                 Vector2 vel = Main.rand.NextVector2Circular(4, 4);
-                LegacyParticle.NewParticle<EmberParticle>(Owner.Center, vel);
+                EmberParticle ep = LegacyParticle.NewParticle<EmberParticle>(Owner.Center, vel);
+                ep.innerColor = Color.White;
+                ep.outerColor = Color.Cyan;
+                ep.fadeToColor = Color.DarkBlue;
             }
 
         }
 
-        target.AddBuff(BuffID.OnFire, 120);
+        target.AddBuff(BuffID.Frostburn, 120);
     }
 
     public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)

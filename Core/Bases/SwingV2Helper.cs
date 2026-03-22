@@ -85,6 +85,21 @@ namespace Stellamod.Core.Bases
             });
             return this;
         }
+        public ComboBuilder AddChakramUppercut(float duration = 30, float xSwingRadius = 128, float ySwingRadius = 64, float swingDegrees = 45, int hitCount = 2)
+        {
+            _swings.Add(new OvalSwing
+            {
+                Duration = duration,
+                XSwingRadius = xSwingRadius,
+                YSwingRadius = ySwingRadius,
+                SwingDegrees = swingDegrees,
+                HitCount = hitCount,
+
+                Easing = EasingFunction.QuadraticBump,
+                Sound = SwordSlash1,
+            });
+            return this;
+        }
 
         public ComboBuilder AddChakramThrow(float duration = 24, float throwDistance = 180)
         {

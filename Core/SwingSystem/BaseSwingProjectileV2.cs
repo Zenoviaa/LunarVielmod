@@ -61,6 +61,7 @@ namespace Stellamod.Core.SwingSystem
         public bool drawCentered;
         public bool isChildProjectile;
         public float bigSwingTrailOffset;
+        public float? trailOffsetOverride;
         public const int EXTRA_UPDATE_COUNT = 7;
 
         //Default to the item sprite of the texture, we can just predraw if we need to change it
@@ -278,17 +279,26 @@ namespace Stellamod.Core.SwingSystem
             Matrix translationMatrix = Matrix.CreateTranslation(new Vector3(Owner.Center.X, Owner.Center.Y, 0));
             //Now we transform the points
             //Calculating points locally and then translating it is a bit simpler.
+
             for (int t = 0; t < swingTrailCache.Length; t++)
             {
-                swingTrailCache[t] = Vector2.Transform(swingTrailCache[t], translationMatrix);
+                ref Vector2 point = ref swingTrailCache[t];
+                point = Vector2.Transform(point, translationMatrix);
             }
 
-            Vector2 bigO = Projectile.velocity.SafeNormalize(Vector2.Zero) * bigSwingTrailOffset;
+
+
+
+            Vector2 normal = Projectile.velocity.SafeNormalize(Vector2.Zero);
+            Vector2 bigO = normal * bigSwingTrailOffset;
+
+
             for (int t = 0; t < bigSwingTrailCache.Length; t++)
             {
                 ref Vector2 point = ref bigSwingTrailCache[t];
                 point = Vector2.Transform(point, translationMatrix);
                 point += bigO;
+
             }
         }
 

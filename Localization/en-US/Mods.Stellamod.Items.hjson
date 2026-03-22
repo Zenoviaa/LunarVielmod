@@ -10592,3 +10592,10 @@ MinersGold: {
 	DisplayName: Miners Gold
 	Tooltip: ""
 }
+
+MoonChakrams: {
+	BasicSlash: ""
+	StaminaSlash: No Effect
+	DisplayName: Moon Chakrams
+	Tooltip: ""
+}
