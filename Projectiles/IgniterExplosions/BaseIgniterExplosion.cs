@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.IgnitersNPowders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.IgniterExplosions
@@ -63,6 +66,17 @@ namespace Stellamod.Projectiles.IgniterExplosions
             {
                 Start();
                 _start = true;
+
+                Player owner = Main.player[Projectile.owner];
+                IgniterPlayer igniterPlayer = owner.GetModPlayer<IgniterPlayer>();
+                if (igniterPlayer.hasLifesteal)
+                {
+                    owner.Heal(1);
+                    if (this.OwnedByLocalClient())
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ProjectileID.VampireHeal, 16, 0, Projectile.owner);
+                    }
+                }
             }
 
             AI_Animate();

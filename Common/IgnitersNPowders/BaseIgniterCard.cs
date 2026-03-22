@@ -19,11 +19,13 @@ namespace Stellamod.Common.IgnitersNPowders
     {
         public float extenderBonus;
         public float igniterDamageBonus;
+        public bool hasLifesteal;
         public override void ResetEffects()
         {
             base.ResetEffects();
             extenderBonus = 0f;
             igniterDamageBonus = 0f;
+            hasLifesteal = false;
         }
     }
     public class IgniterTooltipDraw : GlobalItem
