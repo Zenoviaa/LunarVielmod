@@ -1,53 +1,62 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.Bases;
+﻿using Stellamod.Core.Bases;
 using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.SwingSystem
 {
-    public class SwingExpandableTooltip : AbstractExpandingTooltip
+    public interface IStaminaAttack
+    {
+        public string BasicEffectLocalizedText { get; }
+        public string StaminaEffectLocalizedText { get; }
+        public int StaminaCost { get; }
+    }
+    public class StaminaAttackExpandableTooltip : AbstractExpandingTooltip
     {
         public override void ModifyExpandableTooltips(Item item, List<TooltipLine> lines)
         {
             if (item.ModItem == null)
                 return;
-
+            TooltipLine line;
             if (item.ModItem is BaseSwingItemV2 swingItem)
             {
-                TooltipLine line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType" + swingItem.meleeWeaponType.ToString()));
+                line = new TooltipLine(Mod, "WeaponType", LangText.Common("WeaponType" + swingItem.meleeWeaponType.ToString()));
                 line.OverrideColor = Color.GreenYellow;
                 lines.Add(line);
 
-                line = new TooltipLine(Mod, "BasicSlash", swingItem.BasicSlash);
+
+            }
+            if (item.ModItem is IStaminaAttack staminaAttack)
+            {
+                line = new TooltipLine(Mod, "BasicSlash", staminaAttack.BasicEffectLocalizedText);
                 lines.Add(line);
 
-                line = new TooltipLine(Mod, "StaminaSlash", swingItem.StaminaSlash);
+                line = new TooltipLine(Mod, "StaminaSlash", staminaAttack.StaminaEffectLocalizedText);
                 lines.Add(line);
 
-                line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost", swingItem.staminaCost.ToString()));
+                line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost",
+                    staminaAttack.StaminaCost.ToString()));
                 line.OverrideColor = Color.Goldenrod;
                 lines.Add(line);
             }
         }
     }
-    public abstract class BaseSwingItemV2 : ModItem
+    public abstract class BaseSwingItemV2 : ModItem,
+        IStaminaAttack
     {
         public int comboResetTime = 120;
         public int staminaProjectileShoot;
         public int staminaCost = 2;
         public float staminaDamageMultiplier;
 
-
         public MeleeWeaponType meleeWeaponType;
 
-        public string BasicSlash
+        public string BasicEffectLocalizedText
         {
             get
             {
@@ -55,19 +64,20 @@ namespace Stellamod.Core.SwingSystem
             }
         }
 
-        public string StaminaSlash
+        public string StaminaEffectLocalizedText
         {
             get
             {
                 return LangText.Common("StaminaSlash", LangText.Item(this, "StaminaSlash"));
             }
         }
+        public int StaminaCost => staminaCost;
 
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            this.GetLocalization(nameof(BasicSlash), () => "No Effect");
-            this.GetLocalization(nameof(StaminaSlash), () => "No Effect");
+            this.GetLocalization(nameof(BasicEffectLocalizedText), () => "No Effect");
+            this.GetLocalization(nameof(StaminaEffectLocalizedText), () => "No Effect");
         }
 
         //Sealing the set defaults that are common across all things so we don't accidentally override

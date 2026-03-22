@@ -1255,6 +1255,8 @@ Auroran: {
 	Tooltip: Divergency Inspired!
 	BasicSlash: Sends a weak frost shockwave through the air
 	StaminaSlash: Creates an auroran winter storm!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 EnergizedNail: {
@@ -1448,6 +1450,8 @@ MorrowSalface: {
 	Tooltip: An enchanted bow used to snipe enemies from afar!
 	BasicSlash: Converts woden arrows into blazing fast dagger arrows!
 	StaminaSlash: Shoots a barrage of piercingly-fast enchanted sword arrows!
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 SteamedNail: {
@@ -1563,6 +1567,8 @@ BurningAngel: {
 	Tooltip: Made from heavy fabled metal!
 	BasicSlash: ""
 	StaminaSlash: Throws a controllable axe!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 GovheilBoreI: {
@@ -2690,6 +2696,8 @@ AssassinsSlash: {
 	WeaponType: Sword Weapon Type
 	BasicSlash: No special effect
 	StaminaSlash: Hit enemies are later striked by a barrage of slashes!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 CinderBraker: {
@@ -2698,6 +2706,8 @@ CinderBraker: {
 	WeaponType: Sword Weapon Type
 	BasicSlash: The final swing in the combo will cause enemies to combust!
 	StaminaSlash: Unleashes a wave of volcanic eruptions!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 EventHorizon: {
@@ -2705,6 +2715,8 @@ EventHorizon: {
 	Tooltip: A very small fragment of a singularity's power lies within this blade...
 	BasicSlash: Slashing creates rifts in the air doing continuous damage
 	StaminaSlash: Holds the sword above you creating a small singularity that does huge amounts of damage if something is inside of it before it explodes
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 FrostBringer: {
@@ -2712,6 +2724,8 @@ FrostBringer: {
 	Tooltip: Damage reduces the farther you are away from the target
 	BasicSlash: No Effect
 	StaminaSlash: No Effect
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 IrradiatedGreatBlade: {
@@ -2744,6 +2758,8 @@ SkyrageShasher: {
 	Tooltip: Pew pew pew
 	BasicSlash: Spins around quickly two times and fires a laser at the end of its combo!
 	StaminaSlash: Fires a powerful beam
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 GladiatorSpear: {
@@ -2756,6 +2772,8 @@ Infernis: {
 	Tooltip: Flamin' hot!
 	StaminaSlash: Throws a spear that eventually falls down and violent explodes
 	BasicSlash: ""
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 StalkersTallon: {
@@ -2790,6 +2808,8 @@ WoodenSaber: {
 	Tooltip: ""
 	StaminaSlash: Swings the two knives around you very quickly, hitting multiple times!
 	BasicSlash: No Effect
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 X3107: {
@@ -2802,6 +2822,8 @@ ArchariliteEnergyShot: {
 	Tooltip: ""
 	BasicSlash: ""
 	StaminaSlash: Shoots a spread of 3 super-powered arrows, great for burst damage!
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 AssassinsDischarge: {
@@ -2825,8 +2847,10 @@ BrokenWrath: {
 CloudBow: {
 	DisplayName: Cloud Bow
 	Tooltip: ""
-	BasicSlash: Shoots a spread of 3 arrows
+	BasicSlash: Shoots a spread of 3 arrows and 3 small clouds!
 	StaminaSlash: Shoots a powerful cloud arrow that makes enemies rise into the sky!
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 Crysalizer: {
@@ -2879,6 +2903,8 @@ JackoShot: {
 	Tooltip: Pumpkin bow
 	BasicSlash: ""
 	StaminaSlash: Shoots an pumpkin arrow that explodes into 3 homing flames!
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 JellyBow: {
@@ -2886,6 +2912,8 @@ JellyBow: {
 	Tooltip: So is it sticky or slippery?
 	BasicSlash: ""
 	StaminaSlash: Shoots an exploding jelly shot
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 LAZER: {
@@ -2921,6 +2949,8 @@ TheRedSkull: {
 		Another skull emoji.
 		'''
 	StaminaSlash: Fires a quick burst of 3 arrows
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 Tociflare: {
@@ -2951,6 +2981,8 @@ WingedFury: {
 		Shoots out a barrage of sun feathers into the sky...
 		After a short time, the feathers slow down and aggressively home into nearby enemies!
 		'''
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 ArncharRemote: {
@@ -3079,6 +3111,8 @@ LightSpand: {
 	Tooltip: Burning lights of Gothivia's Light
 	BasicSlash: No special effect
 	StaminaSlash: Throws out a barrage of exploding sparks!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 MoonMothStaff: {
@@ -3101,6 +3135,8 @@ HeatGlider: {
 	Tooltip: Oh burn baby burn :)
 	StaminaSlash: Shoots a powerful, piercing, and ricocheting solar arrow!
 	BasicSlash: ""
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 JPost: {
@@ -3180,6 +3216,8 @@ GintzlsSteed: {
 	Tooltip: I don't know how they are shooting arrows with no arms..
 	BasicSlash: ""
 	StaminaSlash: Fires a long burst of 7 arrows!
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 Gallasis: {
@@ -3325,6 +3363,8 @@ HolmbergScythe: {
 	Tooltip: Rip the universe in half!
 	StaminaSlash: Summons a barrage of homing scythes!
 	BasicSlash: ""
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 Alcarish: {
@@ -3525,6 +3565,8 @@ Galvinie: {
 	Tooltip: Your mouse isn't gonna like this
 	BasicSlash: Wooden arrows are converted into lightning fast golden arrows
 	StaminaSlash: Shoots a quick burst of 3 arrows
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 TheBurningRod: {
@@ -4051,6 +4093,8 @@ Starvast: {
 	Tooltip: Summons stars that orbit around you and seek out enemies!
 	BasicSlash: Hit enemies erupt with a star that homes towards enemies
 	StaminaSlash: Summons a flurry of stars!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 SawtoothNecklace: {
@@ -4097,6 +4141,8 @@ MooningSlicer: {
 	DisplayName: Mooning Slicer
 	BasicSlash: No special effect
 	StaminaSlash: Summons a barrage of frozen magical swords!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 EverneanSlicer: {
@@ -4202,6 +4248,8 @@ InkingSpire: {
 	Tooltip: A painter's blade
 	BasicSlash: Increased range
 	StaminaSlash: Dash through your enemies with invulnerability!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 PieceOfArt: {
@@ -4355,6 +4403,8 @@ Ripper: {
 	Tooltip: Summons a storm of swords towards your cursor!
 	BasicSlash: No Effect
 	StaminaSlash: No Effect
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 XScissor: {
@@ -4593,6 +4643,8 @@ DevilsPeak: {
 	Tooltip: This is peak fiction
 	BasicSlash: Burns enemies
 	StaminaSlash: Throws out a super charged slash, that'll cause a massive volcanic roar upon impact!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 ClockworkCity: {
@@ -4663,6 +4715,8 @@ ScytheOfSouls: {
 	Tooltip: Use these vengeful souls at will, they are quite quirky!
 	BasicSlash: No Effect
 	StaminaSlash: No Effect
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 BubbleBlasher: {
@@ -5570,6 +5624,8 @@ VeroshotBow: {
 	Tooltip: Firepower!
 	BasicSlash: Shoots a spread of 4 hellfire arrows in addition to the regular arrow
 	StaminaSlash: Shoots a napalm arrow that drops behind little flaming sparks!
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 AzaleanChestplate: {
@@ -5607,6 +5663,8 @@ IyxTheInfamous: {
 	Tooltip: From the fallen warriors of the cinder, to the magical entropy of the world, this weapon was lost long ago.
 	BasicSlash: The final hit in the combo increases your attack speed for a short time
 	StaminaSlash: Does a very fast and furious long combo!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 PoisonedAngel: {
@@ -6380,6 +6438,8 @@ MushroomGreatbow: {
 	DisplayName: Mushroom Bow
 	BasicSlash: ""
 	StaminaSlash: Shoots a quick burst of 5 arrows
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 Hookarama: {
@@ -6691,6 +6751,8 @@ Sirius: {
 	Tooltip: Niivi's wrath~
 	BasicSlash: ""
 	StaminaSlash: Throws a spear that lodges into targets and then violently explodes!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 Iknoctstein: {
@@ -6814,6 +6876,8 @@ Cryal: {
 	Tooltip: Frosty~
 	BasicSlash: Shoots two arrows at once!
 	StaminaSlash: Shoots a frosty comet that slows down and explodes into frozen fish
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 MahoganyStorm: {
@@ -7162,6 +7226,8 @@ IcelockLongbow: {
 	Tooltip: Shoots more arrows with each shot, eventually firing off a powerful star!
 	BasicSlash: ""
 	StaminaSlash: No Effect
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 Chillrend: {
@@ -7169,6 +7235,8 @@ Chillrend: {
 	Tooltip: Chillin'
 	BasicSlash: ""
 	StaminaSlash: Throws the sword and creates an icey vortex!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 ManifestedCommitment: {
@@ -7260,6 +7328,8 @@ Volcant: {
 	DisplayName: Volcant
 	BasicSlash: ""
 	StaminaSlash: Spins the sword into a blazing inferno! It sends out fireballs all around you!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 SmallVeilPottery: {
@@ -8566,6 +8636,8 @@ LightKnives: {
 	DisplayName: Light Knives
 	BasicSlash: When striking an enemy, release very quick lightning bolts out from the blade
 	StaminaSlash: Throws forth a lightning dash, when it strikes an enemy, they spaz out with electric bolts
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 RuneSmasher: {
@@ -8618,6 +8690,8 @@ WarriorsGrace: {
 	Tooltip: ""
 	BasicSlash: ""
 	StaminaSlash: Does a furry of small slashes!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 IronBall: {
@@ -9000,6 +9074,8 @@ IronBow: {
 	Tooltip: ""
 	BasicSlash: ""
 	StaminaSlash: Shoots a quick burst of 3 arrows
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 HangingSpringPotFlowerItem: {
@@ -9202,6 +9278,8 @@ Hypnotizer: {
 	Tooltip: It's so pretty I'm almost hypnotized. Maybe that's not a bad thing...
 	BasicSlash: No effect!
 	StaminaSlash: Shoots a volley of arrows that explode!
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 TwilightTome: {
@@ -9354,6 +9432,8 @@ HypnoticScythe: {
 	StaminaSlash: Summons 2 moths and temporarily increases your attack speed!
 	DisplayName: Hypnotic Scythe
 	Tooltip: ""
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 SpringTabletDashItem: {
@@ -9486,6 +9566,8 @@ DualSpoons: {
 	StaminaSlash: Throws two bouncing spoons!
 	DisplayName: Dual Spoons
 	Tooltip: ""
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 BoxOfLeaves: {
@@ -9498,6 +9580,8 @@ IvynBow: {
 	StaminaSlash: Shoots a compressed burst of many leaves!
 	DisplayName: Ivyn Bow
 	Tooltip: Leafy
+	BasicEffectLocalizedText: ""
+	StaminaEffectLocalizedText: No Effect
 }
 
 IvynAxe: {
@@ -9505,6 +9589,8 @@ IvynAxe: {
 	StaminaSlash: Smash into an enemy to make them erupt with a giant ivythorn root!
 	DisplayName: Ivyn Axe
 	Tooltip: ""
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 IvynSpear: {
@@ -9512,6 +9598,8 @@ IvynSpear: {
 	StaminaSlash: Throws a quick, high damaging spear
 	DisplayName: Ivyn Spear
 	Tooltip: ""
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 SolMothWand: {
@@ -9885,6 +9973,8 @@ PharaohsBlade: {
 	StaminaSlash: Creates a larger and more powerful dustnado that consumes mana to stay alive!
 	DisplayName: Pharaoh's Blade
 	Tooltip: I'm a Pharaoh now!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 ZuisGiftedWand: {
@@ -10030,6 +10120,8 @@ IcySwirl: {
 	StaminaSlash: Fans forward a damaging [c/5FCDE4:icy mist], hitting enemies multiple times!
 	DisplayName: Icy Swirl
 	Tooltip: Swirly Bwirly
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 RadiantNectar: {
@@ -10314,6 +10406,8 @@ StopSignSword: {
 	Tooltip: Stop!
 	BasicSlash: Spins around a bit more than a regular sword
 	StaminaSlash: Throws the sword like a boomerang!
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 FlamelashChakrams: {
@@ -10321,6 +10415,8 @@ FlamelashChakrams: {
 	StaminaSlash: No Effect
 	DisplayName: Flamelash Dualrangs
 	Tooltip: ""
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 ArncharBallBuster: {
@@ -10342,6 +10438,8 @@ FirebirdScythe: {
 		'''
 	DisplayName: Firebird Scythe
 	Tooltip: ""
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 MaskingWallBlock: {
@@ -10484,6 +10582,8 @@ TrueHammer: {
 	StaminaSlash: Throws a barrage of bouncing hammers
 	DisplayName: True Hammer
 	Tooltip: Just like a hammer bro...
+	BasicEffectLocalizedText: No Effect
+	StaminaEffectLocalizedText: No Effect
 }
 
 MinersGold: {
