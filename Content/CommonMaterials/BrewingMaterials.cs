@@ -15,7 +15,7 @@ namespace Stellamod.Content.CommonMaterials
         {
             Item.width = 26;
             Item.height = 34;
-            Item.rare = ModContent.RarityType<IllurineScaleRarity>();
+            Item.rare = ModContent.RarityType<MinersGoldRarity>();
             Item.maxStack = Item.CommonMaxStack;
         }
     }

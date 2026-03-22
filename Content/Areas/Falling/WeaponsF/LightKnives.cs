@@ -192,6 +192,7 @@ public class LightKnivesSlash : BaseSwingProjectileV2
         outlineColor = Color.DarkGoldenrod;
         glowAfterImageColor = Color.Goldenrod * 0.1f;
         hitStopTime = 0;
+        bigSwingTrailOffset = -32;
   //      hitStopTime = EXTRA_UPDATE_COUNT * 2;
     }
 
@@ -212,7 +213,10 @@ public class LightKnivesSlash : BaseSwingProjectileV2
     {
         return MathHelper.SmoothStep(12, 0, completionRatio) * EasingFunction.QuadraticBump(Interpolant) * EasingFunction.QuadraticBump(completionRatio);
     }
-
+    private float GetTrailWidth2(float completionRatio)
+    {
+        return MathHelper.SmoothStep(64, 0, completionRatio) * EasingFunction.QuadraticBump(Interpolant) * EasingFunction.QuadraticBump(completionRatio);
+    }
     public override void RenderSwingTrail(ref Color lightColor, Vector2[] points)
     {
         base.RenderSwingTrail(ref lightColor, points);
@@ -235,12 +239,12 @@ public class LightKnivesSlash : BaseSwingProjectileV2
         void DrawPixelatedSwingTrail(GraphicsDevice gDevice)
         {
             var shader = RichLaserShader.Instance;
-            shader.LaserColor = Color.Lerp(Color.LightGoldenrodYellow, Color.Goldenrod, ExtraMath.Osc(0f, 1f, speed: 8, offset: 2));
-            shader.InnerColor = Color.Lerp(Color.LightGoldenrodYellow, Color.Goldenrod, ExtraMath.Osc(0f, 1f, speed: 8));
-            shader.OuterColor = Color.Red;
+            shader.LaserColor = Color.Lerp(Color.LightGoldenrodYellow, Color.Goldenrod, ExtraMath.Osc(0f, 1f, speed: 8, offset: 2)) * 0.15f;
+            shader.InnerColor = Color.Lerp(Color.LightGoldenrodYellow, Color.Goldenrod, ExtraMath.Osc(0f, 1f, speed: 8)) * 0.15f;
+            shader.OuterColor = Color.Red * 0.15f;
             shader.LaserTexture = AssetManager.LaserTextures.TexturedLaser;
             shader.BloomTexture = AssetManager.LaserTextures.Lightning2;
-            TrailDrawer.Draw(Main.spriteBatch, swingTrailCache, GetTrailColor2, GetTrailWidth, shader);
+            TrailDrawer.Draw(Main.spriteBatch, swingTrailCache, GetTrailColor2, GetTrailWidth2, shader);
         }
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedSwingTrail);
 

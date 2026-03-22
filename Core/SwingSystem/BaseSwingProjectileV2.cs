@@ -35,7 +35,13 @@ namespace Stellamod.Core.SwingSystem
 
         public float HitstopTimer;
         public int ComboCount => _swings.Count;
-
+        public float ComboProgress
+        {
+            get
+            {
+                return (float)(ComboIndex + 1) / (float)ComboCount;
+            }
+        }
         public float Interpolant { get; private set; }
         public Vector2[] afterImageCache;
         public Vector2[] swingTrailCache;
@@ -54,6 +60,7 @@ namespace Stellamod.Core.SwingSystem
         public Color glowAfterImageColor;
         public bool drawCentered;
         public bool isChildProjectile;
+        public float bigSwingTrailOffset;
         public const int EXTRA_UPDATE_COUNT = 7;
 
         //Default to the item sprite of the texture, we can just predraw if we need to change it
@@ -275,9 +282,13 @@ namespace Stellamod.Core.SwingSystem
             {
                 swingTrailCache[t] = Vector2.Transform(swingTrailCache[t], translationMatrix);
             }
+
+            Vector2 bigO = Projectile.velocity.SafeNormalize(Vector2.Zero) * bigSwingTrailOffset;
             for (int t = 0; t < bigSwingTrailCache.Length; t++)
             {
-                bigSwingTrailCache[t] = Vector2.Transform(bigSwingTrailCache[t], translationMatrix);
+                ref Vector2 point = ref bigSwingTrailCache[t];
+                point = Vector2.Transform(point, translationMatrix);
+                point += bigO;
             }
         }
 

@@ -10480,10 +10480,10 @@ PermanentBuffTracker: {
 }
 
 TrueHammer: {
-	BasicSlash: No Effect
-	StaminaSlash: No Effect
+	BasicSlash: When striking an enemy, they explode! The explosion gets bigger with each hit...
+	StaminaSlash: Throws a barrage of bouncing hammers
 	DisplayName: True Hammer
-	Tooltip: ""
+	Tooltip: Just like a hammer bro...
 }
 
 MinersGold: {

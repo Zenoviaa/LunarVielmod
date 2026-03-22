@@ -1774,3 +1774,7 @@ PrismaticElectricBolt.DisplayName: Prismatic Electric Bolt
 LightKnivesDash.DisplayName: Light Knives Dash
 LightKnivesSlash.DisplayName: Light Knives Slash
 LightSpasm.DisplayName: Light Spasm
+ThrowTrueHammer.DisplayName: Throw True Hammer
+TrueHammerBoom.DisplayName: True Hammer Boom
+TrueHammerSlash.DisplayName: True Hammer Slash
+TrueHammerStaminaSlash.DisplayName: True Hammer Stamina Slash
