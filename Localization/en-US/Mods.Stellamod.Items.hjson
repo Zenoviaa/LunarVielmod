@@ -8562,8 +8562,10 @@ Pearling: {
 }
 
 LightKnives: {
-	Tooltip: ""
+	Tooltip: "Swings at the speed of light!"
 	DisplayName: Light Knives
+	BasicSlash: When striking an enemy, release very quick lightning bolts out from the blade
+	StaminaSlash: Throws forth a lightning dash, when it strikes an enemy, they spaz out with electric bolts
 }
 
 RuneSmasher: {
