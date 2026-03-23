@@ -130,6 +130,7 @@ public class ThePollinatorProj : BaseChainedBallProjectile
         Projectile.height = 52;
         //Just having this here in case
         //Iron Ball is just gonna use default stuff htough
+        zeroVelocity = true;
 
         //Variables
         //Easing

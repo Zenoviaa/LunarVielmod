@@ -50,6 +50,7 @@ namespace Stellamod.Core.Bases
         protected float trailStartOffset;
         protected float glowDistanceOffset;
         protected float glowRotationSpeed;
+        protected bool zeroVelocity;
 
         protected float TipDamageMultiplier;
 
@@ -134,7 +135,8 @@ namespace Stellamod.Core.Bases
                         StartSling();
                     }
 
-                    Projectile.velocity = Vector2.Zero;
+                    if(zeroVelocity)
+                        Projectile.velocity = Vector2.Zero;
                     Projectile.tileCollide = false;
                     AI_Sling();
                     break;
