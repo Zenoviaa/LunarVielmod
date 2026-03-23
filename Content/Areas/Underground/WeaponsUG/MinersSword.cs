@@ -207,9 +207,7 @@ public class ThrowRock : ModProjectile
         base.OnHitNPC(target, hit, damageDone);
         HitstopTimer = 10;
         Vector2 forwardVelocity = (target.Center - Projectile.Center);
-        ThrustParticle thrustParticle = ThrustParticle.Spawn(Projectile.Center, forwardVelocity, Color.White);
-        thrustParticle.innerColor = Color.White;
-        thrustParticle.bloomColor = Color.DarkGray;
+      
         ShakeModSystem.Shake = 2;
 
         SoundStyle smashSound = Main.rand.NextBool(2) ? SoundRegistry.HammerHit1 : SoundRegistry.HammerHit2;

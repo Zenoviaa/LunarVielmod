@@ -40,6 +40,13 @@ namespace Stellamod.Helpers
             Vector2 control1 = new Vector2(0.8f, -0.4f);
             Vector2 control2 = new Vector2(0.5f, 1f);
             return EasingFunction.BezierEase(t, control1, control2);
+        }; 
+        public static readonly Easer Anticipation3= delegate (float t)
+        {
+            t = Clamp(t);
+            Vector2 control1 = new Vector2(0.164f, -0.392f);
+            Vector2 control2 = new Vector2(0, 0.92f);
+            return EasingFunction.BezierEase(t, control1, control2);
         };
 
         public static float Clamp(float t)

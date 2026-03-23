@@ -139,6 +139,43 @@ namespace Stellamod.Core.Bases
             });
             return this;
         }
+        public ComboBuilder AddCleaverThrowLikeGreatsword ()
+        {
+            SoundStyle spearSlash2 = SoundRegistry.SpearSlash2;
+
+            spearSlash2.PitchVariance = 0.25f;
+            _swings.Add(new OvalSwing
+            {
+                Duration = 36,
+                XSwingRadius = 1,
+                YSwingRadius = 1,
+                SwingDegrees = 720,
+                SpinThrowDistance = 18,
+                SpinDegrees = 1,
+                AlwaysShowTrail = true,
+                Easing = (float lerpValue) => lerpValue,
+                Sound = spearSlash2,
+                HitCount = 2
+            });
+            return this;
+        }
+        public ComboBuilder AddCleaverSwordSlash(float duration = 45, float xSwingRadius = 1, float ySwingRadius = 1, float swingDegrees = 720, int hitCount = 1)
+        {
+            _swings.Add(new OvalSwing
+            {
+                Duration = duration,
+                XSwingRadius = xSwingRadius,
+                YSwingRadius = ySwingRadius,
+                SwingDegrees = swingDegrees,
+                SpinThrowDistance = 0,
+                SpinDegrees = 1,
+                AlwaysShowTrail = true,
+                Easing = EasingFunction.InOutExpo7,
+                Sound = LightSpin,
+                HitCount = 2
+            });
+            return this;
+        }
         public ComboBuilder AddSwordSlash1(float duration = 18, float xSwingRadius = 80, float ySwingRadius = 48, float swingDegrees = 270, int hitCount = 1)
         {
             _swings.Add(new OvalSwing
@@ -148,7 +185,7 @@ namespace Stellamod.Core.Bases
                 YSwingRadius = ySwingRadius,
                 SwingDegrees = swingDegrees,
                 HitCount = hitCount,
-                Easing = EasingFunction.InOutExpo7,
+                Easing = EasingFunction.InOutExpo,
                 Sound = SwordSlash1,
             });
             return this;
@@ -163,7 +200,7 @@ namespace Stellamod.Core.Bases
                 YSwingRadius = ySwingRadius,
                 SwingDegrees = swingDegrees,
                 HitCount = hitCount,
-                Easing = EasingFunction.InOutExpo7,
+                Easing = EasingFunction.InOutExpo,
                 Sound = SwordSlash2,
             });
             return this;
@@ -735,45 +772,57 @@ namespace Stellamod.Core.Bases
 
             SoundStyle swingSound3 = AssetRegistry.Sounds.Melee.SwordSpin1;
             swingSound3.PitchVariance = 0.5f;
+            swingSound3.Volume = 0.5f;
 
+
+            SoundStyle swingSoundAlt1 = AssetRegistry.Sounds.Melee.SwordSwing2;
+            swingSoundAlt1.PitchVariance = 0.25f;
+
+            SoundStyle swingSoundAlt2 = AssetRegistry.Sounds.Melee.SwordSwing3;
+            swingSoundAlt2.PitchVariance = 0.25f;
+
+
+            int style = 1;
+            SoundStyle s1 = style == 0 ? swingSound1 : swingSoundAlt1;
+            SoundStyle s2 = style == 0 ? swingSound2 : swingSoundAlt2;
             swings.Add(new OvalSwing
             {
-                Duration = 18,
-                XSwingRadius = 80,
+                Duration = 40,
+                XSwingRadius = 88,
                 YSwingRadius = 48,
-                SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo7,
-                Sound = swingSound1,
+                SwingDegrees = 480,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1,
             });
 
             swings.Add(new OvalSwing
             {
-                Duration = 18,
-                XSwingRadius = 80,
+                Duration = 40,
+                XSwingRadius = 88,
                 YSwingRadius = 48,
-                SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo7,
-                Sound = swingSound2
+                SwingDegrees = 480,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2
             });
 
             swings.Add(new OvalSwing
             {
-                Duration = 18,
+                Duration = 30,
                 XSwingRadius = 80,
                 YSwingRadius = 48,
                 SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo7,
-                Sound = swingSound1
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1
             });
 
             swings.Add(new OvalSwing
             {
-                Duration = 18,
+                Duration = 30,
                 XSwingRadius = 80,
                 YSwingRadius = 48,
                 SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo7,
-                Sound = swingSound2
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2
             });
 
             swings.Add(new OvalSwing
@@ -782,8 +831,8 @@ namespace Stellamod.Core.Bases
                 XSwingRadius = 80,
                 YSwingRadius = 48,
                 SwingDegrees = 270,
-                Easing = EasingFunction.InOutExpo7,
-                Sound = swingSound1
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1
             });
 
             swings.Add(new OvalSwing
@@ -792,7 +841,7 @@ namespace Stellamod.Core.Bases
                 XSwingRadius = 100,
                 YSwingRadius = 40,
                 SwingDegrees = 540,
-                Easing = EasingFunction.InOutExpo7,
+                Easing = EasingFunction.InOutExpo,
                 Sound = swingSound3
             });
         }

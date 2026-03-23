@@ -2,6 +2,7 @@
 using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
+using Stellamod.Visual.Explosions;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -139,6 +140,7 @@ namespace Stellamod.Core.SwingSystem
             {
                 Projectile.NewProjectile(source, position, velocity, type, staminaDamage, knockback, player.whoAmI);
             }
+            Projectile.NewProjectile(source, player.Center, Vector2.Zero, ModContent.ProjectileType<BasicStaminaExplosion>(), damage, knockback);
         }
 
         public override bool AltFunctionUse(Player player)

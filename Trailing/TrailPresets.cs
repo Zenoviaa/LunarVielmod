@@ -235,10 +235,10 @@ namespace Stellamod.Trailing
         {
             Shader = new SlashEffect()
             {
-                BaseColor = Color.LightBlue,
+                BaseColor = Color.LightGreen,
                 HighlightColor = Color.White,
-                RimHighlightColor = Color.Purple,
-                WindColor = Color.Blue,
+                RimHighlightColor = Color.LightPink,
+                WindColor = Color.SkyBlue,
                 BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
                 WindTexture = TrailRegistry.CrystalTrail.Value
             },
@@ -249,7 +249,7 @@ namespace Stellamod.Trailing
             TrailColorFunction = (float interpolant) =>
             {
                 Color lerp1 = Color.Lerp(Color.LightCyan, Color.Purple, interpolant);
-                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+                return Color.Lerp(Color.Transparent, lerp1, interpolant);
             }
 
         };

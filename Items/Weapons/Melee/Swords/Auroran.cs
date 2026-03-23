@@ -42,6 +42,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             base.DefineCombo();
             SwingV2Helper.AddSwordSwingStyle(this);
             Trailer = TrailPresets.Auroran;
+            useAfterImage = true;
         }
 
         public override void AI()

@@ -55,18 +55,19 @@ public class CleanestCleaverSlash : BaseSwingProjectileV2
         base.DefineCombo();
         ComboBuilder comboBuilder = new ComboBuilder();
         comboBuilder
-            .AddSpinningSwordSlash(duration: 24, xSwingRadius: 64, ySwingRadius: 64, swingDegrees: 720, hitCount: 2)
-            .AddSpinningSwordSlash(duration: 24, xSwingRadius: 64, ySwingRadius: 64, swingDegrees: 720, hitCount: 2)
-            .AddSpinningSwordSlash(duration: 24, xSwingRadius: 64, ySwingRadius: 64, swingDegrees: 720, hitCount: 2)
-            .AddSpinningSwordSlash(duration: 24, xSwingRadius: 64, ySwingRadius: 64, swingDegrees: 720, hitCount: 2)
-            .AddChakramThrow();
+            .AddCleaverSwordSlash(duration: 36, xSwingRadius: 64, ySwingRadius: 64, swingDegrees: 135, hitCount: 2)
+            .AddCleaverSwordSlash(duration: 24, xSwingRadius: 64, ySwingRadius: 64, swingDegrees: 135, hitCount: 2)
+            .AddCleaverSwordSlash(duration: 12, xSwingRadius: 64, ySwingRadius: 64, swingDegrees: 135, hitCount: 2)
+            .AddCleaverSwordSlash(duration: 12, xSwingRadius: 64, ySwingRadius: 64, swingDegrees: 135, hitCount: 2)
+            .AddCleaverThrowLikeGreatsword();
         comboBuilder.AddToProjectile(this);
         useAfterImage = true;
     }
 
     private float DefaultWidthFunction(float completionRatio)
     {
-        return MathHelper.Lerp(0, 64, completionRatio) * EasingFunction.QuadraticBump(completionRatio);
+        float width = IsFinishingSwing() ? 0.25f : 1f;
+        return MathHelper.Lerp(0, 64, completionRatio) * width;
     }
 
     private Color DefaultColorFunction(float p)
@@ -77,11 +78,11 @@ public class CleanestCleaverSlash : BaseSwingProjectileV2
 
     public override void RenderSwingTrail(ref Color lightColor, Vector2[] points)
     {
-        base.RenderSwingTrail(ref lightColor, points);
+ //       base.RenderSwingTrail(ref lightColor, points);
         var shader = BlackFireShader.Instance;
-        shader.InnerColor = Color.White * 0.15f;
-        shader.OuterColor = Color.Silver * 0.15f;
-        shader.BackColor = Color.Black * 0.15f;
+        shader.InnerColor = Color.White ;
+        shader.OuterColor = Color.Silver ;
+        shader.BackColor = Color.Black ;
         TrailDrawer.Draw(Main.spriteBatch, points, Projectile.oldRot, DefaultColorFunction, DefaultWidthFunction, shader);
     }
 

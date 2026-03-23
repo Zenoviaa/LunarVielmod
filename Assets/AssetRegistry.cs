@@ -42,6 +42,7 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+
             public static class LeviathanEel
             {
                 public static SoundStyle Electrify = new SoundStyle($"{Path}LeviathanEel/Electrify");
@@ -298,6 +299,16 @@ namespace Stellamod.Assets
 
             public static class Melee
             {
+                public static SoundStyle SwordHit1 = new SoundStyle($"{Path}Melee/SwordHit1");
+                public static SoundStyle SwordHit2 = new SoundStyle($"{Path}Melee/SwordHit2");
+                public static SoundStyle SwordHit3 = new SoundStyle($"{Path}Melee/SwordHit3");
+                public static SoundStyle SwordHit4 = new SoundStyle($"{Path}Melee/SwordHit4");
+                public static SoundStyle SwordSwing1 = new SoundStyle($"{Path}Melee/SwordSwing1");
+                public static SoundStyle SwordSwing2 = new SoundStyle($"{Path}Melee/SwordSwing2");
+                public static SoundStyle SwordSwing3 = new SoundStyle($"{Path}Melee/SwordSwing3");
+                public static SoundStyle SwordSwing4 = new SoundStyle($"{Path}Melee/SwordSwing4");
+                public static SoundStyle SwordSwing5 = new SoundStyle($"{Path}Melee/SwordSwing5");
+
                 public static SoundStyle ScytheBigSlash = new SoundStyle($"{Path}Melee/ScytheBigSlash");
                 public static SoundStyle ScytheBladeSlash1 = new SoundStyle($"{Path}Melee/ScytheBladeSlash1");
                 public static SoundStyle ScytheHit1 = new SoundStyle($"{Path}Melee/ScytheHit1");

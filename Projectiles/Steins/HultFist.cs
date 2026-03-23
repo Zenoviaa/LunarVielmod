@@ -224,12 +224,12 @@ namespace Stellamod.Projectiles.Steins
                 }
                 for (int i = 0; i < 12; i++)
                 {
-                    var sp = SparkleParticle.Spawn(target.Center + Main.rand.NextVector2Circular(128, 128), Vector2.Zero);
+                    var sp = SparkleParticle.Spawn(target.Center + Main.rand.NextVector2CircularEdge(128, 128), Vector2.Zero);
                     Color color = new Color(Main.rand.Next(0, 255), Main.rand.Next(0, 255), Main.rand.Next(0, 255));
                     sp.innerColor = color;
                     sp.outerColor = Color.Lerp(color, Color.Black, 0.5f);
                     sp.flickering = true;
-                    sp.Scale *= 0.5f;
+                    sp.Scale *= 0.75f;
                     sp.Velocity = (sp.Center - target.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.5f, 1.5f);
                     sp.gravity = 0;
                     sp.noTileCollide = true;
@@ -249,11 +249,15 @@ namespace Stellamod.Projectiles.Steins
    //     public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
-            return 124 * MathHelper.SmoothStep(1f, 0f, Timer / (float)SwingTime) * EasingFunction.QuadraticBump(completionRatio);
+            return 124 * MathHelper.SmoothStep(1f, 0f, Timer / (float)SwingTime);
         }
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Transparent, Color.White, completionRatio) * 0.7f;
+            float inRatio = completionRatio / 0.3f;
+            inRatio = EasingFunction.InOutSine(inRatio);
+            float outRatio = (1f - completionRatio) / 0.3f;
+            outRatio = EasingFunction.InOutSine(outRatio);
+            return Color.White * inRatio * outRatio;
         }
 
 
