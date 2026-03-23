@@ -13,6 +13,7 @@ namespace Stellamod.Visual.Particles
         public int FrameWidth = 128;
         public int FrameHeight = 128;
         public int MaxFrameCount = 1;
+        public bool expand;
         public override void OnSpawn()
         {
             Rotation = Main.rand.NextFloat(0, 3.14f);
@@ -20,13 +21,22 @@ namespace Stellamod.Visual.Particles
             Scale = Main.rand.NextFloat(0.65f, 2);
             color = Color.White;
             Rotation = Main.rand.NextFloat(0f, MathHelper.TwoPi);
+            expand = false;
         }
 
         public override void Update()
         {
             Velocity.Y -= 0.05f;
             Velocity *= 0.9f;
-            Scale *= 0.98f;
+            if (expand)
+            {
+                Scale *= 1.01f;
+            }
+            else
+            {
+                Scale *= 0.98f;
+            }
+ 
             color *= 0.99f;
             fadeIn++;
             if (fadeIn > 180)
@@ -36,7 +46,7 @@ namespace Stellamod.Visual.Particles
         {
             Vector2 centerPos = Center - Main.screenPosition;
             var textureAsset = GetTexture();
-            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, color * 0.5f, Rotation, Frame.Size() / 2f, Scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, Color.Lerp(color, Color.Black, 0.85f), Rotation, Frame.Size() / 2f, Scale, SpriteEffects.None, 0);
         }
     }
 }

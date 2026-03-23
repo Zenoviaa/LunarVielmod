@@ -10611,3 +10611,10 @@ HypnotizingBall: {
 	DisplayName: Hypnotizing Ball
 	Tooltip: When striking an enemy with the tip, a hypnotic aura bursts out from them! It has a chance to inflict enemies with shadowflame
 }
+
+BeastClaw: {
+	BasicSlash: Creates a vortex that pulls in enemies to your claws...
+	StaminaSlash: Creates a gust of wind around you that sucks in enemies violently!
+	DisplayName: Beast Claw
+	Tooltip: "Beast of the sand..."
+}

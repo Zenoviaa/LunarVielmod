@@ -19,7 +19,7 @@ namespace Stellamod.Visual.Particles
         public bool fast;
         public override void OnSpawn()
         {
-            gravity = 0.1f;
+            gravity = 0.05f;
             innerColor = Color.White;
             outerColor = Color.Red;
             Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
@@ -34,7 +34,7 @@ namespace Stellamod.Visual.Particles
             Scale *= 0.97f;
             if (fast)
                 Scale *= 0.98f;
-            color *= 0.99f;
+            color = Color.Lerp(color, Color.Black, 0.01f);
 
             float stretchInterp = Velocity.Length() / 5f;
             stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);
