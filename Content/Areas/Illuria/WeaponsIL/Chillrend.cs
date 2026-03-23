@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
@@ -24,7 +25,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 144;
+            Item.damage = 232;
             Item.shoot = ModContent.ProjectileType<ChillrendSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<ChillrendStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Greatsword;
@@ -271,6 +272,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             set => Projectile.ai[0] = value;
         }
 
+        private Player Owner => Main.player[Projectile.owner];
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 512;
@@ -285,7 +287,24 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         public override void AI()
         {
             Timer++;
-            Projectile.rotation += 0.05f;
+            if(Timer % 2 == 0)
+            {
+                Vector2 pos = Projectile.Center;
+                pos += Main.rand.NextVector2CircularEdge(80, 80);
+                Vector2 vel = (Owner.Center - pos).SafeNormalize(Vector2.Zero);
+                float rot = vel.ToRotation();
+                rot += MathHelper.PiOver2;
+                vel = rot.ToRotationVector2() * 16;
+                DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                spawnParams.innerColor = Color.LightSkyBlue;
+                DustParticle dp = DustParticle.Spawn(pos, vel, spawnParams);
+                dp.fast = true;
+                dp.noTileCollide = true;
+                dp.gravity = 0;
+                dp.Scale *= 0.5f;
+            }
+            Projectile.rotation += 0.2f;
+            Projectile.Center = Owner.Center;
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
@@ -309,30 +328,26 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 
         public override Color? GetAlpha(Color lightColor)
         {
-            return new Color(
-                Color.LightCyan.R,
-                Color.LightCyan.G,
-                Color.LightCyan.B, 0) * (1f - Projectile.alpha / 50f);
+            return base.GetAlpha(lightColor);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
             //Draw the texture
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
-            Vector2 drawSize = texture.Size();
-            Vector2 drawOrigin = drawSize / 2;
-
-            float scale = 2f;
-            float progress = Timer / 60;
-            float easedProgress = Easing.InOutExpo(progress);
-            scale *= easedProgress;
-
-            Color drawColor = (Color)GetAlpha(lightColor);
-            drawColor *= Easing.SpikeInOutCirc((1 - progress)) * 0.3f;
+            Texture2D texture = AssetManager.GlowMask.SpiralVortex2.Value;
+            SpritebatchDrawer vortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
+            vortexDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.QuadraticBump(Timer / 60f)) * 0.2f;
+            vortexDrawer.color.A = 0;
+            vortexDrawer.rotation = Projectile.rotation;
+            vortexDrawer.scale = Vector2.One * EasingFunction.QuadraticBump(Timer / 60f) * 2;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Draw(texture, drawPosition, null, drawColor, Projectile.rotation,
-                drawOrigin, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(vortexDrawer);
+
+            vortexDrawer.color = Color.Lerp(Color.Black, Color.LightSkyBlue, EasingFunction.QuadraticBump(Timer / 60f)) * 0.2f;
+            vortexDrawer.color.A = 0;
+            vortexDrawer.rotation = Projectile.rotation  + Main.GlobalTimeWrappedHourly * 2f;
+            vortexDrawer.scale *= 1.5f;
+            spriteBatch.Draw(vortexDrawer);
             return false;
         }
     }
