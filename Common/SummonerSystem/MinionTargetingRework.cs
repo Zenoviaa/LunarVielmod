@@ -127,6 +127,7 @@ namespace Stellamod.Common.SummonerSystem
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
+
             if (Main.gameMenu)
                 return;
 
@@ -134,6 +135,7 @@ namespace Stellamod.Common.SummonerSystem
                 return;
 
             Main.player[CharmPlayerIndex] = (Player)Main.LocalPlayer.Clone();
+            Main.player[CharmPlayerIndex].active = false;
             _init = true;
         }
 

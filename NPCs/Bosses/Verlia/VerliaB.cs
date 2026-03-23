@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.MoonspiralTower.WeaponsMT;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Verlia;
@@ -8,7 +9,6 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Quest.Merena;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Melee;
-using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
