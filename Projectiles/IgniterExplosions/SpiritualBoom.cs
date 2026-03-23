@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -58,6 +59,16 @@ namespace Stellamod.Projectiles.IgniterExplosions
         }
 
 
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(target, hit, damageDone);
+            target.AddBuff(ModContent.BuffType<Charm>(), 120);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            return base.PreDraw(ref lightColor);
+        }
     }
 
 }

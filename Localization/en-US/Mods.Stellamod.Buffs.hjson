@@ -1072,3 +1072,8 @@ Speaking: {
 	DisplayName: Speaking
 	Description: Mods.Stellamod.Buffs.Speaking.Description
 }
+
+Charm: {
+	DisplayName: Charm
+	Description: Mods.Stellamod.Buffs.Charm.Description
+}

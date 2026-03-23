@@ -5071,7 +5071,12 @@ Ragsaw: {
 
 SpiritCapsule: {
 	DisplayName: Spirit Capsule
-	Tooltip: Somehow you've trapped every soul inside this..
+	Tooltip:
+		'''
+		Somehow you've trapped every soul inside this...
+		Permanently inflicts charm on struck enemies, making them attack their friends and hurt themselves!
+		This does not work on bosses
+		'''
 }
 
 Stonen: {

@@ -424,7 +424,10 @@ namespace Stellamod.Common.WeaponTypes
             foreach (var item in items)
             {
                 if (item.Item.GetGlobalItem<CombatTool>().isCombatTool)
-                    itemList.Add(item.Item);
+                {
+                    itemList.Add(new Item(item.Item.type));
+                }
+                   
             }
            
             _view = new(itemList.ToArray());
@@ -864,9 +867,7 @@ namespace Stellamod.Common.WeaponTypes
             CombatToolPlayer combatToolPlayer = Main.LocalPlayer.GetModPlayer<CombatToolPlayer>();
             if (!combatToolPlayer.HasUnlocked(HoveringItem))
                 return;
-
-            CombatTool combatTool = combatToolPlayer.SelectedTool.GetGlobalItem<CombatTool>();
-
+ 
             combatToolPlayer.SelectedTool = HoveringItem;
             combatToolPlayer.SelectedTool.GetGlobalItem<CombatTool>().ammoCount = (int)((float)combatToolPlayer.carryingCapacity * (float)combatToolPlayer.SelectedTool.GetGlobalItem<CombatTool>().maxAmmoCount);
         }

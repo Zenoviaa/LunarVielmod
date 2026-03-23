@@ -114,7 +114,46 @@ namespace Stellamod.Common.SummonerSystem
             return false;
         }
     }
+    public struct DummyPlayer
+    {
+        public Player player;
+        public Vector2 originalPosition;
+        public int playerIndex;
+    }
+    public class DummyPlayerHelper : ModSystem
+    {
+        private bool _init;
+        public static int CharmPlayerIndex => 254;
+        public override void PostUpdateEverything()
+        {
+            base.PostUpdateEverything();
+            if (Main.gameMenu)
+                return;
 
+            if (_init)
+                return;
+
+            Main.player[CharmPlayerIndex] = (Player)Main.LocalPlayer.Clone();
+            _init = true;
+        }
+
+        public static DummyPlayer RequestDummyPlayer()
+        {
+            Main.player[CharmPlayerIndex].active = true;
+            return new DummyPlayer
+            {
+                player = Main.player[CharmPlayerIndex],
+                originalPosition = Main.player[CharmPlayerIndex].position,
+                playerIndex = CharmPlayerIndex
+            };
+        }
+
+        public static void ReturnDummyPlayer(DummyPlayer dummyPlayer)
+        {
+            Main.player[dummyPlayer.playerIndex].active = false;
+            Main.player[dummyPlayer.playerIndex].position = Vector2.Zero;
+        }
+    }
     public class MinionTargetingRework : ModSystem
     {
         //This should only run on the server btw?
@@ -122,6 +161,9 @@ namespace Stellamod.Common.SummonerSystem
         private Player[] _playerArrClone = new Player[256];
         private Queue<Player> _fakePlayerQueue = new Queue<Player>();
         private bool[] _needsFixing = new bool[256];
+
+
+
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -160,7 +202,7 @@ namespace Stellamod.Common.SummonerSystem
 
             //Starting from index 20 just so it doesn't conflict with most multiplayer playthroughs by default
             //But in the case it does I think it's fine?
-            _playerIndex = 20;
+            _playerIndex = 21;
             foreach (var proj in Main.ActiveProjectiles)
             {
                 if (proj.ModProjectile is ITargetable targetable)

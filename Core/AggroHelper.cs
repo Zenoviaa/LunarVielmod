@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.ZTileSystem;
+﻿using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
+using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,9 @@ namespace Stellamod.Core
 
         private void TargetClosestBetter(On_NPC.orig_TargetClosest orig, NPC self, bool faceTarget)
         {
+            if (self.HasBuff<Charm>())
+                return;
+
             self.TargetClosestByAggro();
             if(faceTarget && self.HasValidTarget)
             {

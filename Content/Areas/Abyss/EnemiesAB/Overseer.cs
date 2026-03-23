@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Animations;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;
@@ -152,6 +153,7 @@ public class Overseer : ModNPC,
     public override void AI()
     {
         base.AI();
+
         _targetOutlineColor = Color.Transparent;
         _contactDamage = false;
         switch (State)
@@ -172,6 +174,7 @@ public class Overseer : ModNPC,
                 AI_Swipe();
                 break;
         }
+
         float stepSpeed = 1;
         Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref stepSpeed, ref NPC.gfxOffY);
         _breathingScale = Vector2.Lerp(Vector2.One, new Vector2(1.05f, 0.95f), ExtraMath.Osc(0f, 1f));

@@ -15,11 +15,13 @@ using Stellamod.Trailing;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Illuria.WeaponsIL
 {
+
     public class Chillrend : BaseSwingItemV2
     {
         public override void SetDefaults2()
@@ -45,6 +47,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         public override void DefineCombo()
         {
             base.DefineCombo();
+
             SwingV2Helper.AddGreatswordSwingStyle(this);
             BlackFireShader blackFireShader = new BlackFireShader();
             blackFireShader.SetDefaults();
