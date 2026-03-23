@@ -32,25 +32,26 @@ namespace Stellamod.Core.Bases
             set => Projectile.ai[0] = (float)value;
         }
 
-        private ref float Timer => ref Projectile.ai[1];
-        private ref float Dir => ref Projectile.ai[2];
-        private Player Owner => Main.player[Projectile.owner];
 
-        protected float DragDistance { get; set; }
-        protected float SwingRange { get; set; }
-        protected float OvalRotOffset { get; set; }
-        protected float SwingXRadius { get; set; }
-        protected float SwingYRadius { get; set; }
-        protected Vector2 StartPosition { get; set; }
-        protected Func<float, float> Easer { get; set; }
-        protected float UnEasedLerpValue { get; set; }
-        protected float SmoothedLerpValue { get; set; }
-        protected float BaseSwingTime { get; set; }
-        protected float TrailStartOffset { get; set; }
-        protected float GlowDistanceOffset { get; set; }
-        protected float GlowRotationSpeed { get; set; }
+        protected ref float Timer => ref Projectile.ai[1];
+        protected ref float Dir => ref Projectile.ai[2];
+        protected Player Owner => Main.player[Projectile.owner];
+        public virtual float MaxThrowDistance { get; }
+        protected float dragDistance;
+        protected float swingRange;
+        protected float ovalRotOffset;
+        protected float swingXRadius;
+        protected float swingYRadius;
+        protected Vector2 startPosition;
+        protected Func<float, float> easer;
+        protected float unEasedLerpValue;
+        protected float smoothedLerpValue;
+        protected float baseSwingTime;
+        protected float trailStartOffset;
+        protected float glowDistanceOffset;
+        protected float glowRotationSpeed;
 
-        protected float TipDamageMultiplier { get; set; }
+        protected float TipDamageMultiplier;
 
         protected float ExtraUpdateMult => 8;
         protected Texture2D ChainTexture
@@ -88,20 +89,19 @@ namespace Stellamod.Core.Bases
 
 
             //Other Variables
-            Easer = (float lerpValue) => Easing.InOutExpo(lerpValue, 7);
-            DragDistance = 126;
-            SwingRange = MathHelper.ToRadians(360);
-            OvalRotOffset = MathHelper.ToRadians(-90);
-            SwingXRadius = 512;
-            SwingYRadius = 80;
-            TrailStartOffset = 0.15f;
-            UnEasedLerpValue = 0f;
-            SmoothedLerpValue = 0f;
-            BaseSwingTime = 48;
-            GlowDistanceOffset = 0;
-            GlowRotationSpeed = 0.005f;
+            easer = (float lerpValue) => Easing.InOutExpo(lerpValue, 7);
+            dragDistance = 126;
+            swingRange = MathHelper.ToRadians(360);
+            ovalRotOffset = MathHelper.ToRadians(-90);
+            swingXRadius = 512;
+            swingYRadius = 80;
+            trailStartOffset = 0.15f;
+            unEasedLerpValue = 0f;
+            smoothedLerpValue = 0f;
+            baseSwingTime = 48;
+            glowDistanceOffset = 0;
+            glowRotationSpeed = 0.005f;
             TipDamageMultiplier = 2;
-
 
             SoundStyle soundStyle = SoundRegistry.BallSwing;
             soundStyle.PitchVariance = 0.15f;
@@ -129,16 +129,34 @@ namespace Stellamod.Core.Bases
                     AI_Dragging();
                     break;
                 case AIState.Sling:
+                    if(Timer == 1)
+                    {
+                        StartSling();
+                    }
+
+                    Projectile.velocity = Vector2.Zero;
+                    Projectile.tileCollide = false;
                     AI_Sling();
                     break;
             }
         }
-
+        protected Vector2 GetSwingTarget()
+        {
+            Vector2 targetMouseWorld = Main.MouseWorld;
+            float maxThrowDistance = MaxThrowDistance;
+            float distance = Vector2.Distance(Owner.Center, targetMouseWorld);
+            if (distance < maxThrowDistance)
+                return targetMouseWorld;
+            else
+            {
+                return Owner.Center + (Owner.Center.DirectionTo(Main.MouseWorld) * maxThrowDistance);
+            }
+        }
         private float GetSwingTime()
         {
-            float distProgress = _swingXRadius / SwingXRadius;
+            float distProgress = _swingXRadius / swingXRadius;
 
-            float swingTime = BaseSwingTime * ExtraUpdateMult * MathHelper.Lerp(0.5f, 1f, distProgress);
+            float swingTime = baseSwingTime * ExtraUpdateMult * MathHelper.Lerp(0.5f, 1f, distProgress);
             return (int)(swingTime / Owner.GetAttackSpeed(Projectile.DamageType));
         }
 
@@ -161,14 +179,14 @@ namespace Stellamod.Core.Bases
             }
 
 
-            UnEasedLerpValue = 0f;
-            SmoothedLerpValue = 0f;
+            unEasedLerpValue = 0f;
+            smoothedLerpValue = 0f;
 
             Projectile.velocity.Y += 0.01f;
             Vector2 posToCheckFrom = Projectile.Center;
             Projectile.tileCollide = Collision.CanHitLine(posToCheckFrom, 1, 1, Owner.position, 1, 1);
             float distanceToOwner = Vector2.Distance(Projectile.Center, Owner.Center);
-            if (distanceToOwner > DragDistance)
+            if (distanceToOwner > dragDistance)
             {
                 //Get yanked to the player
                 Vector2 targetWorld = Owner.Center;
@@ -189,6 +207,7 @@ namespace Stellamod.Core.Bases
             Projectile.rotation += Projectile.velocity.X * 0.02f;
             if (Main.myPlayer == Projectile.owner && Main.mouseLeft)
             {
+            
                 SwitchState(AIState.Sling);
             }
         }
@@ -198,14 +217,23 @@ namespace Stellamod.Core.Bases
 
         }
 
-        private void AI_Sling()
+        public virtual void StartSling()
+        {
+
+        }
+        public void LetGo()
+        {
+            State = AIState.Dragging;
+        }
+        public virtual void AI_Sling()
         {
             Timer++;
             if (Timer == 1)
             {
+            
                 _playedSwingSound = false;
                 _playedBounceSound = false;
-                _swingXRadius = MathHelper.Min(Vector2.Distance(Main.MouseWorld, Owner.Center), SwingXRadius);
+                _swingXRadius = MathHelper.Min(Vector2.Distance(Main.MouseWorld, Owner.Center), swingXRadius);
                 SetSlingDefaults();
                 if (Projectile.owner == Main.myPlayer && Timer == 1)
                 {
@@ -218,15 +246,14 @@ namespace Stellamod.Core.Bases
             float lerpValue = Timer / GetSwingTime();
             float swingProgress = lerpValue;
 
-            Projectile.tileCollide = false;
             //Reusing the Oval Slinging Code for this
             Vector2 targetVelocity = Vector2.Zero;
 
             float targetRotation = Projectile.velocity.ToRotation();
 
-            UnEasedLerpValue = lerpValue;
-            swingProgress = Easer(swingProgress);
-            SmoothedLerpValue = swingProgress;
+            unEasedLerpValue = lerpValue;
+            swingProgress = easer(swingProgress);
+            smoothedLerpValue = swingProgress;
 
             //Swinging Sound
             if (!_playedSwingSound && swingProgress >= SwingSoundProgress && SwingSound != null)
@@ -241,13 +268,13 @@ namespace Stellamod.Core.Bases
             float yOffset;
             if (dir2 == -1)
             {
-                xOffset = _swingXRadius * MathF.Sin(swingProgress * SwingRange + SwingRange + OvalRotOffset);
-                yOffset = SwingYRadius * MathF.Cos(swingProgress * SwingRange + SwingRange + OvalRotOffset);
+                xOffset = _swingXRadius * MathF.Sin(swingProgress * swingRange + swingRange + ovalRotOffset);
+                yOffset = swingYRadius * MathF.Cos(swingProgress * swingRange + swingRange + ovalRotOffset);
             }
             else
             {
-                xOffset = _swingXRadius * MathF.Sin((1f - swingProgress) * SwingRange + SwingRange + OvalRotOffset);
-                yOffset = SwingYRadius * MathF.Cos((1f - swingProgress) * SwingRange + SwingRange + OvalRotOffset);
+                xOffset = _swingXRadius * MathF.Sin((1f - swingProgress) * swingRange + swingRange + ovalRotOffset);
+                yOffset = swingYRadius * MathF.Cos((1f - swingProgress) * swingRange + swingRange + ovalRotOffset);
             }
 
             Projectile.Center = Owner.Center + new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
@@ -260,15 +287,15 @@ namespace Stellamod.Core.Bases
                 float progressOnTrail = i / l;
 
                 //Calculate starting lerp value
-                float startTrailLerpValue = MathHelper.Clamp(lerpValue - TrailStartOffset, 0, 1);
+                float startTrailLerpValue = MathHelper.Clamp(lerpValue - trailStartOffset, 0, 1);
                 float startTrailProgress = startTrailLerpValue;
-                startTrailProgress = Easer(startTrailLerpValue);
+                startTrailProgress = easer(startTrailLerpValue);
 
 
                 //Calculate ending lerp value
                 float endTrailLerpValue = lerpValue;
                 float endTrailProgress = endTrailLerpValue;
-                endTrailProgress = Easer(endTrailLerpValue);
+                endTrailProgress = easer(endTrailLerpValue);
 
                 //Lerp in between points
                 float smoothedTrailProgress = MathHelper.Lerp(startTrailProgress, endTrailProgress, progressOnTrail);
@@ -276,13 +303,13 @@ namespace Stellamod.Core.Bases
                 float yOffset2;
                 if (dir2 == -1)
                 {
-                    xOffset2 = _swingXRadius * MathF.Sin(smoothedTrailProgress * SwingRange + SwingRange + OvalRotOffset);
-                    yOffset2 = SwingYRadius * MathF.Cos(smoothedTrailProgress * SwingRange + SwingRange + OvalRotOffset);
+                    xOffset2 = _swingXRadius * MathF.Sin(smoothedTrailProgress * swingRange + swingRange + ovalRotOffset);
+                    yOffset2 = swingYRadius * MathF.Cos(smoothedTrailProgress * swingRange + swingRange + ovalRotOffset);
                 }
                 else
                 {
-                    xOffset2 = _swingXRadius * MathF.Sin((1f - smoothedTrailProgress) * SwingRange + SwingRange + OvalRotOffset);
-                    yOffset2 = SwingYRadius * MathF.Cos((1f - smoothedTrailProgress) * SwingRange + SwingRange + OvalRotOffset);
+                    xOffset2 = _swingXRadius * MathF.Sin((1f - smoothedTrailProgress) * swingRange + swingRange + ovalRotOffset);
+                    yOffset2 = swingYRadius * MathF.Cos((1f - smoothedTrailProgress) * swingRange + swingRange + ovalRotOffset);
                 }
 
 
@@ -291,7 +318,7 @@ namespace Stellamod.Core.Bases
             }
             _slashPos = points;
 
-            if (UnEasedLerpValue >= 1f)
+            if (unEasedLerpValue >= 1f)
             {
                 Dir = -Dir;
                 SwitchState(AIState.Dragging);
@@ -361,7 +388,7 @@ namespace Stellamod.Core.Bases
 
 
             Vector2 drawOrigin = closeYourBalls.Size() / 2f;
-            Color drawColor = Color.Lerp(Color.Transparent, Color.White, Easing.SpikeOutCirc(UnEasedLerpValue));
+            Color drawColor = Color.Lerp(Color.Transparent, Color.White, Easing.SpikeOutCirc(unEasedLerpValue));
             drawColor.A = 0;
             float drawScale = Projectile.scale;
             float drawRotation = Projectile.rotation;
@@ -441,7 +468,7 @@ namespace Stellamod.Core.Bases
             controlPoints.Add(Owner.Center);
 
             Vector2 controlPoint1 = Vector2.Lerp(Owner.Center, Projectile.Center, 0.25f);
-            controlPoint1.Y += MathHelper.Lerp(64, 0, Easing.SpikeInOutBounce(UnEasedLerpValue));
+            controlPoint1.Y += MathHelper.Lerp(64, 0, Easing.SpikeInOutBounce(unEasedLerpValue));
             controlPoints.Add(controlPoint1);
             controlPoints.Add(Projectile.Center);
 

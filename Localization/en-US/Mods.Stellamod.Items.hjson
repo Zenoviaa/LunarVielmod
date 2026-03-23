@@ -6342,9 +6342,7 @@ ThePollinator: {
 	DisplayName: The Pollinator
 	Tooltip:
 		'''
-		{$CoreItemTooltip.SummonTagDamage}
-		{$CoreItemTooltip.Whips}
-		Pollinates enemies, which slows them down greatly
+		Pollinates enemies, which slows them down greatly!
 		Radiating with the power of Zui's flowers
 		'''
 }

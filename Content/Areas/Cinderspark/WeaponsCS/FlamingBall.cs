@@ -41,29 +41,29 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
             //Variables
             //Easing
-            Easer = (float lerpValue) => Easing.InOutExpo(lerpValue, 7);
+            easer = (float lerpValue) => Easing.InOutExpo(lerpValue, 7);
 
             //How far it drags behind you
-            DragDistance = 126;
+            dragDistance = 126;
 
             //Swing Range (IT USES OVAL SWING)
-            SwingRange = MathHelper.ToRadians(360);
+            swingRange = MathHelper.ToRadians(360);
 
             //Offst for theoval swing
-            OvalRotOffset = MathHelper.ToRadians(-90);
+            ovalRotOffset = MathHelper.ToRadians(-90);
 
             //Max X Swing Radius
-            SwingXRadius = 512;
+            swingXRadius = 512;
 
             //Y Swing  Radius
-            SwingYRadius = 80;
+            swingYRadius = 80;
 
             //How long it takes to swing
-            BaseSwingTime = 48;
+            baseSwingTime = 48;
 
             //Glowing stuff
-            GlowDistanceOffset = 4;
-            GlowRotationSpeed = 0.005f;
+            glowDistanceOffset = 4;
+            glowRotationSpeed = 0.005f;
 
             //Damage multiplier for hitting the tip
             TipDamageMultiplier = 2;
@@ -106,7 +106,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         private float GetTrailWidth(float completionRatio)
         {
-            return MathHelper.Lerp(0, 32, completionRatio) * EasingFunction.QuadraticBump(UnEasedLerpValue);
+            return MathHelper.Lerp(0, 32, completionRatio) * EasingFunction.QuadraticBump(unEasedLerpValue);
         }
 
         private Color GetTrailColor(float p)
