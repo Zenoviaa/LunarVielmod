@@ -19,6 +19,7 @@ namespace Stellamod.Visual.Particles
         public bool fast;
         public bool flickering;
         public bool easeInFade;
+        public bool noTileCollide;
         public override void OnSpawn()
         {
             gravity = 0.2f;
@@ -42,6 +43,9 @@ namespace Stellamod.Visual.Particles
             fadeIn++;
             if (fadeIn > 180 || Scale < 0.05f)
                 active = false;
+
+            if (noTileCollide)
+                return;
 
             //Bouncing
             Vector2 collisionVelocity = Collision.TileCollision(Center, Velocity, 2, 2);

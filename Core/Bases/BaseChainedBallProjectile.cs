@@ -375,34 +375,22 @@ namespace Stellamod.Core.Bases
 
         protected virtual void DrawSlashTrail(ref Color lightColor, Vector2[] slashPos)
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            var shader = SimpleTrailShader.Instance;
-
-            //Main trailing texture
-            shader.TrailingTexture = TrailRegistry.GlowTrail;
-
-            //Blends with the main texture
-            shader.SecondaryTrailingTexture = TrailRegistry.GlowTrail;
-
-            //Used for blending the trail colors
-            //Set it to any noise texture
-            shader.TertiaryTrailingTexture = TrailRegistry.CrystalTrail;
-            shader.PrimaryColor = Color.White;
-            shader.SecondaryColor = Color.LightGray;
-            shader.BlendState = BlendState.Additive;
-            shader.Speed = 25;
-            TrailDrawer.Draw(spriteBatch, slashPos, Projectile.oldRot, DefaultColorFunction, DefaultWidthFunction, shader,
+            var shader = BlackFireShader.Instance;
+            shader.InnerColor = Color.White * 0.15f;
+            shader.OuterColor = Color.DarkGray * 0.15f;
+            shader.BackColor = Color.Black * 0.15f;
+            TrailDrawer.Draw(Main.spriteBatch, slashPos, Projectile.oldRot, DefaultColorFunction, DefaultWidthFunction, shader,
                 offset: Projectile.Size / 2f);
         }
 
         private float DefaultWidthFunction(float completionRatio)
         {
-            return MathHelper.Lerp(0, 64, completionRatio) * Easing.SpikeOutCirc(UnEasedLerpValue);
+            return MathHelper.Lerp(0, 64, completionRatio) * EasingFunction.QuadraticBump(completionRatio);
         }
 
         private Color DefaultColorFunction(float p)
         {
-            Color trailColor = Color.Lerp(Color.White, Color.LightBlue, p);
+            Color trailColor = Color.Lerp(Color.White, Color.LightBlue, p) * EasingFunction.QuadraticBump(p);
             return trailColor;
         }
 
