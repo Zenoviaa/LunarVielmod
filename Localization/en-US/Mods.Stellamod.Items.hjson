@@ -6231,12 +6231,13 @@ BlankSafunai: {
 
 Hultinstein: {
 	DisplayName: Hultinstein
-	Tooltip:
+	Tooltip: A brawling experience!
+	BasicSlash: Unleash a barrage of fists to pummel your target
+	StaminaSlash:
 		'''
-		A brawling experience!
 		Tap to your cursor to dash into some damn high damage! 
 		Hitting enemies will give you bonus damage with words and immunity for reward! 
-		Hitting an enemy will make next hit use faster! Missing will make it an extra long wait.
+		Hitting an enemy will recover all of your stamina back, so don't mist!
 		The better the glove the more words!
 		1 Word!
 		'''
@@ -7538,7 +7539,9 @@ GraveShaper: {
 
 CleanestCleaver: {
 	DisplayName: Cleanest Cleaver
-	Tooltip: ""
+	Tooltip: You're chopped!
+	BasicSlash: Spins around several times and then throws the blade!
+	StaminaSlash: Throws a spinning cleaver that pierces through enemies and gets bloody!
 }
 
 GothiviaIyxBag: {
@@ -10616,5 +10619,43 @@ BeastClaw: {
 	BasicSlash: Creates a vortex that pulls in enemies to your claws...
 	StaminaSlash: Creates a gust of wind around you that sucks in enemies violently!
 	DisplayName: Beast Claw
-	Tooltip: "Beast of the sand..."
+	Tooltip: Beast of the sand...
+}
+
+PointingFingers: {
+	BasicSlash: ""
+	StaminaSlash: No Effect
+	DisplayName: Pointing Fingers
+	Tooltip: I'm pointing at youu...
+}
+
+SkeweredAxe: {
+	BasicSlash: ""
+	StaminaSlash: Powers up your axe! All attacks will deal double damage and explode enemies with blood!
+	DisplayName: Skewered Axe
+	Tooltip: ""
+}
+
+MinersSword: {
+	BasicSlash: Spins around a bit more than your usual sword
+	StaminaSlash: Throws a quick barrage of rocks!
+	DisplayName: Miner's Sword
+	Tooltip: ""
+}
+
+ReavestingScythe: {
+	BasicSlash: ""
+	StaminaSlash: Spins the scythe around, creating a gust that pushes back enemies!
+	DisplayName: Reavesting Scythe
+	Tooltip: Time to harvest!
+}
+
+BuriedWand: {
+	DisplayName: Buried Wand
+	Tooltip: ""
+}
+
+RingShotgun: {
+	DisplayName: Ring Shotgun
+	Tooltip: Shoots a shotgun blast of exploding rings!
 }

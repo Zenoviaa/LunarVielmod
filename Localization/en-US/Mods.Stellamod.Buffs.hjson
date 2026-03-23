@@ -1077,3 +1077,8 @@ Charm: {
 	DisplayName: Charm
 	Description: Mods.Stellamod.Buffs.Charm.Description
 }
+
+SkeweredAxesFury: {
+	DisplayName: Skewered Axes Fury
+	Description: Mods.Stellamod.Buffs.SkeweredAxesFury.Description
+}

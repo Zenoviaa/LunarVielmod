@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using System;
@@ -36,6 +37,37 @@ public static class PixelPrimitiveCircleFactory
             blackFireShader.InnerColor = Color.White;
             blackFireShader.OuterColor = Color.Aquamarine;
             blackFireShader.BackColor = Color.DarkBlue;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
+        }
+        PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
+        circle.circleParams.minRadius = 0;
+        circle.circleParams.maxRadius = 100;
+        circle.circleParams.time = 45;
+        circle.renderPixelPrimitivesFunction = RenderPrimitives;
+        circle.position = position;
+        ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
+    }
+    public static void CreateClockworkBoom(Vector2 position)
+    {
+        void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
+        {
+            float GetTrailWidthFunction(float interpolant)
+            {
+                return MathHelper.SmoothStep(64, 0, completionRatio);
+            }
+            ;
+            Color GetTrailColorFunction(float interpolant)
+            {
+                Color lerp1 = Color.Lerp(Color.White, Color.Turquoise, ExtraMath.Osc(0.5f, 1f, speed: 8));
+                lerp1 = Color.Lerp(lerp1, Color.DarkTurquoise, completionRatio);
+                return lerp1;
+            }
+            ;
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            blackFireShader.InnerColor = Color.White;
+            blackFireShader.OuterColor = Color.Turquoise;
+            blackFireShader.BackColor = Color.DarkTurquoise;
+            blackFireShader.PrimaryTexture2 = AssetManager.LaserTextures.Lightning2;
             TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
         }
         PixelPrimitiveCircle circle = new PixelPrimitiveCircle();

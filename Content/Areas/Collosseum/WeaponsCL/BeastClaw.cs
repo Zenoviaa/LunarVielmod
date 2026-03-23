@@ -23,7 +23,7 @@ public class BeastClaw : BaseSwingItemV2
     public override void SetDefaults2()
     {
         base.SetDefaults2();
-        Item.damage = 12;
+        Item.damage = 6;
         Item.shoot = ModContent.ProjectileType<BeastClawSlash>();
         staminaProjectileShoot = ModContent.ProjectileType<BeastClawStaminaSlash>();
         meleeWeaponType = MeleeWeaponType.Knives;

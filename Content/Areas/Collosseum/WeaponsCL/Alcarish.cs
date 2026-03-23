@@ -1,12 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Ores;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -32,15 +31,15 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             Item.noUseGraphic = true;
             Item.channel = true;
             Item.autoReuse = true;
-            Item.damage = 12;
-            Item.rare = ItemRarityID.Blue;
+            Item.damage = 17;
             Item.value = 10000;
         }
 
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankSafunai>(),
+            this.RegisterBrew(
+                mold: ModContent.ItemType<BlankSafunai>(),
                 material: ModContent.ItemType<GintzlMetal>());
         }
     }
@@ -90,16 +89,50 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                 SoundStyle explosionSound = AssetRegistry.Sounds.Melee.MorrowExp;
                 explosionSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(explosionSound, target.position);
-                for (int i = 0; i < 7; i++)
+
+                for (int i = 0; i < 4; i++)
                 {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.White, 1f).noGravity = true;
-                }
-                for (int i = 0; i < 7; i++)
-                {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightGray, 1f).noGravity = true;
+                    Vector2 velocity = Main.rand.NextVector2Circular(12, 12);
+                    DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                    spawnParams.outerColor = Color.DarkGray;
+                    spawnParams.scaleRange *= 0.5f;
+                    spawnParams.innerColor = Color.White;
+                    DustParticle.Spawn(target.Center, velocity, spawnParams);
                 }
 
-
+                var tp = ThrustParticle.Spawn(target.Center, -Vector2.UnitY, Scale: 0.5f);
+                tp.bloomColor = Color.White;
+                for (int i = 0; i < 16; i++)
+                {
+                    Vector2 pos = target.Bottom;
+                    pos += Main.rand.NextVector2Circular(32, 32);
+                    Vector2 vel = -Vector2.UnitY * Main.rand.NextFloat(5f, 10f);
+                    var d = Dust.NewDustPerfect(pos, DustID.Cloud, vel, Scale: 0.66f);
+                    d.noGravity = true;
+                }
+                for (int i = 0; i < 8; i++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(12, 12);
+                    DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                    spawnParams.outerColor = Color.DarkGray;
+                    spawnParams.scaleRange *= 0.5f;
+                    spawnParams.innerColor = Color.White;
+                    DustParticle.Spawn(target.Center, velocity, spawnParams);
+                }
+                for (float i = 0; i < 4; i++)
+                {
+                    float progress = i / 4f;
+                    float rot = progress * MathHelper.ToRadians(360);
+                    rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                    Vector2 offset = rot.ToRotationVector2() * 24;
+                    var particle = FXUtil.GlowCircleLongBoom(target.Center,
+                        innerColor: Color.White,
+                        glowColor: Color.Gray,
+                        outerGlowColor: Color.DarkGray,
+                        baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                        duration: Main.rand.NextFloat(15, 25));
+                    particle.Rotation = rot + MathHelper.ToRadians(45);
+                }
                 FXUtil.ShakeCamera(target.Center, 1024, 32);
                 FXUtil.GlowCircleBoom(target.Center,
                     innerColor: Color.White,
@@ -112,18 +145,31 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
             }
             else
             {
+                for (int i = 0; i < 2; i++)
+                {
+                    Vector2 velocity = Main.rand.NextVector2Circular(12, 12);
+                    DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                    spawnParams.outerColor = Color.DarkGray;
+                    spawnParams.scaleRange *= 0.25f;
+                    spawnParams.innerColor = Color.White;
+                    DustParticle.Spawn(target.Center, velocity, spawnParams);
+                }
                 FXUtil.GlowCircleBoom(target.Center,
                    innerColor: Color.White,
                    glowColor: Color.Black,
                    outerGlowColor: Color.Black, duration: 25, baseSize: 0.12f);
 
+                var fx2 = FXUtil.GlowCircleBoom(target.Center,
+                   innerColor: Color.White,
+                   glowColor: Color.Black,
+                   outerGlowColor: Color.Black, duration: 25, baseSize: 0.12f);
+                fx2.Scale *= 1.5f;
+                fx2.InnerColor *= 0.5f;
+                fx2.OuterGlowColor *= 0.5f;
+                fx2.GlowColor *= 0.5f;
                 SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger;
                 hitSound.PitchVariance = 0.2f;
                 SoundEngine.PlaySound(hitSound, target.position);
-                for (int i = 0; i < 2; i++)
-                {
-                    Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.White, 0.5f).noGravity = true;
-                }
             }
         }
     }

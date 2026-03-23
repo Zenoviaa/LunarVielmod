@@ -1,10 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
+using Stellamod.Core.Pixelation;
+using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
+using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Projectiles.IgniterExplosions.Stein;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using System;
+
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -15,6 +22,7 @@ namespace Stellamod.Projectiles.Steins
 {
     public class HultFist : ModProjectile
     {
+        private Vector2 _originalPosition;
         public static bool swung = false;
         public int SwingTime = 60;
         public float holdOffset = 0f;
@@ -30,6 +38,8 @@ namespace Stellamod.Projectiles.Steins
         {
             Projectile.damage = 10;
             Projectile.timeLeft = SwingTime;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
@@ -51,6 +61,11 @@ namespace Stellamod.Projectiles.Steins
         }
         public override void AI()
         {
+            Timer++;
+            if(Timer == 1)
+            {
+                _originalPosition = Projectile.Center;
+            }
             Vector3 RGB = new Vector3(1.45f, 2.55f, 0.94f);
             float multiplier = 1;
             float max = 2.25f;
@@ -64,8 +79,7 @@ namespace Stellamod.Projectiles.Steins
             {
                 multiplier = 1.5f;
             }
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 10000;
+
             AttachToPlayer();
         }
         bool Beans = false;
@@ -113,21 +127,13 @@ namespace Stellamod.Projectiles.Steins
             }
 
 
-            if (timer > 25)
+            
+            if (timer == 25)
             {
-                if (!bounced)
-                {
-                    player.itemTime = 165;
-                    player.itemAnimation = 165;
-                }
-                if (bounced)
-                {
-                    player.itemTime = 80;
-                    player.itemAnimation = 80;
-                }
-                Projectile.Kill();
+                player.itemTime = 40;
+                player.itemAnimation = 40;
             }
-
+            
 
 
             //Projectile.netUpdate = true;
@@ -157,7 +163,7 @@ namespace Stellamod.Projectiles.Steins
             if (!bounced)
             {
 
-
+                player.GetModPlayer<DashPlayer>().DashCount += 3;
                 player.velocity = Projectile.DirectionTo(oldMouseWorld) * -10f;
                 bounced = true;
 
@@ -204,65 +210,50 @@ namespace Stellamod.Projectiles.Steins
 
 
 
+                target.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Hulthit1>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
-                switch (Main.rand.Next(2))
+
+                for (int i = 0; i < 26; i++)
                 {
-                    case 0:
-                        target.SimpleStrikeNPC(Projectile.damage * 5, 1, crit: false, Projectile.knockBack);
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Hulthit1>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-
-
-                        for (int i = 0; i < 26; i++)
-                        {
-                            Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.Pink, 1f).noGravity = true;
-                        }
-                        for (int i = 0; i < 20; i++)
-                        {
-                            Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.DeepPink, 1f).noGravity = true;
-                        }
-
-
-
-                        break;
-
-                    case 1:
-                        target.SimpleStrikeNPC(Projectile.damage * 15, 1, crit: false, Projectile.knockBack);
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Hulthit2>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
-                        for (int i = 0; i < 26; i++)
-                        {
-                            Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), 0, Color.White, 1f).noGravity = true;
-                        }
-                        for (int i = 0; i < 20; i++)
-                        {
-                            Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.IndianRed, 1f).noGravity = true;
-                        }
-                        break;
+                    DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                    spawnParams.outerColor = Color.DarkGray;
+                    spawnParams.scaleRange *= 0.5f;
+                    DustParticle.Spawn(target.Center, (Vector2.One * Main.rand.Next(1, 9)).RotatedByRandom(MathHelper.TwoPi), spawnParams);
 
                 }
-
-                target.SimpleStrikeNPC(Projectile.damage * 4, 1, crit: false, 1);
-                Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(base.Projectile.Center, 512f, 32f);
-
-
-                if (target.lifeMax <= 1000)
+                for (int i = 0; i < 12; i++)
                 {
-                    if (target.life < target.lifeMax / 2)
-                    {
-                        target.SimpleStrikeNPC(99999, 1, crit: false, 1);
-                    }
+                    var sp = SparkleParticle.Spawn(target.Center + Main.rand.NextVector2Circular(128, 128), Vector2.Zero);
+                    Color color = new Color(Main.rand.Next(0, 255), Main.rand.Next(0, 255), Main.rand.Next(0, 255));
+                    sp.innerColor = color;
+                    sp.outerColor = Color.Lerp(color, Color.Black, 0.5f);
+                    sp.flickering = true;
+                    sp.Scale *= 0.5f;
+                    sp.Velocity = (sp.Center - target.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.5f, 1.5f);
+                    sp.gravity = 0;
+                    sp.noTileCollide = true;
                 }
+                for (int i = 0; i < 20; i++)
+                {
+                    Dust.NewDustPerfect(target.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(MathHelper.TwoPi), 0, Color.DeepPink, 1f).noGravity = true;
+                }
+
+
+
+                target.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, 1);
+                FXUtil.ShakeCamera(Projectile.Center, 512, 16);
             }
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
+   //     public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
-            float baseWidth = Projectile.scale * Projectile.width * 0.5f;
-            return MathHelper.SmoothStep(baseWidth, 1.5f, completionRatio);
+            return 124 * MathHelper.SmoothStep(1f, 0f, Timer / (float)SwingTime) * EasingFunction.QuadraticBump(completionRatio);
         }
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Turquoise, Color.Transparent, completionRatio) * 0.7f;
+            return Color.Lerp(Color.Transparent, Color.White, completionRatio) * 0.7f;
         }
 
 
@@ -270,8 +261,27 @@ namespace Stellamod.Projectiles.Steins
         public TrailRenderer SwordSlash2;
         public TrailRenderer SwordSlash3;
         public TrailRenderer SwordSlash4;
+        private void DrawPixelatedTrails(GraphicsDevice gDevice)
+        {
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            Vector2[] array = new Vector2[64];
+            for(int i = 0; i < array.Length; i++)
+            {
+                float ratio = (float)i / (float)array.Length;
+                ref Vector2 point = ref array[i];
+                point = Vector2.Lerp(_originalPosition, Projectile.Center, ratio);
+            }
+            blackFireShader.InnerColor = Color.White;
+            blackFireShader.OuterColor = Color.LightGray;
+            blackFireShader.BackColor = Color.DarkGray;
+            blackFireShader.PrimaryTexture2 = TrailRegistry.LightningTrail;
+            TrailDrawer.Draw(Main.spriteBatch, array, ColorFunction, WidthFunction, blackFireShader);
+        }
+
         public override bool PreDraw(ref Color lightColor)
         {
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrails);
+            /*
             Main.spriteBatch.End();
 
             var TrailTex = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/MetalTrail").Value;
@@ -338,6 +348,7 @@ namespace Stellamod.Projectiles.Steins
             Main.spriteBatch.End();
 
             Main.spriteBatch.Begin();
+            */
 
 
             return false;
