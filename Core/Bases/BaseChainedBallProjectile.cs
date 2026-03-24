@@ -330,7 +330,7 @@ namespace Stellamod.Core.Bases
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             base.ModifyHitNPC(target, ref modifiers);
-            if (Vector2.Distance(Projectile.Center, target.Center) < Projectile.Size.Length() * 2f)
+            if (Vector2.Distance(Projectile.Center, target.Center) <= 128)
             {
                 OnTipper(target, ref modifiers);
                 //Double damage modifier

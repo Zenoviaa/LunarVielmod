@@ -959,6 +959,7 @@ namespace Stellamod.Common.ArmorRework
         //I believe net update is called after on spawn automatically
         //and penetrate will be synced
         //so this should work
+        //TODO: verify that's real
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
             base.OnSpawn(projectile, source);
@@ -968,6 +969,11 @@ namespace Stellamod.Common.ArmorRework
             {
                 projectile.penetrate += armorStatsPlayer.rangedPiercing;
                 projectile.maxPenetrate += armorStatsPlayer.rangedPiercing;
+                if (armorStatsPlayer.rangedPiercing > 0)
+                {
+                    projectile.usesLocalNPCImmunity = true;
+                    projectile.localNPCHitCooldown = -1;
+                }
             }
         }
     }

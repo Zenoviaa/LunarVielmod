@@ -19,7 +19,7 @@ public class Hultinstein : BaseSwingItemV2
     public override void SetDefaults2()
     {
         base.SetDefaults2();
-        Item.damage = 13;
+        Item.damage = 7;
         Item.useTime = 8;
         Item.useAnimation = 8;
         Item.shoot = ModContent.ProjectileType<HultinsteinBarrage>();

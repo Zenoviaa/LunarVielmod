@@ -305,6 +305,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
                 DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
                 fallSystem.inSpace = true;
+                fallSystem.noProjTileCollide = true;
                 RoyalCapitalStars stars = ModContent.GetInstance<RoyalCapitalStars>();
                 stars.inStarField = true;
             }

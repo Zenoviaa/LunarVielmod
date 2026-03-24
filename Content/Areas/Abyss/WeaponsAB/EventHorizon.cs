@@ -28,7 +28,7 @@ namespace Stellamod.Content.Areas.Abyss.WeaponsAB
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 16;
+            Item.damage = 28;
             Item.knockBack = 4;
             Item.shoot = ModContent.ProjectileType<EventHorizonSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<EventHorizonStaminaSlash>();

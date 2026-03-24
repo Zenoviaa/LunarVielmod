@@ -42,7 +42,7 @@ namespace Stellamod.Core.Particles
             {
                 _lastIndex++;
                 _lastIndex = _lastIndex % _pool.Length;
-                T particle = _pool[i];
+                T particle = _pool[_lastIndex];
                 if (!particle.active)
                     return particle;
             }

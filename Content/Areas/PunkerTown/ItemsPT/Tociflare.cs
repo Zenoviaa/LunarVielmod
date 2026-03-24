@@ -37,7 +37,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             Item.UseSound = guh;
 
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 24;
+            Item.damage = 44;
             Item.knockBack = 4;
             Item.noMelee = true;
 

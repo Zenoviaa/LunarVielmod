@@ -1,12 +1,13 @@
 ﻿using Stellamod.Common.Shaders;
+using Stellamod.Core.Foggy;
 using Stellamod.Helpers;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Drawing;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.UI.ModBrowser;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
@@ -30,6 +31,9 @@ namespace Stellamod.Core.LunarLightingSystem
     {
         public int PostProcessPriority => 15;
 
+        private static Dictionary<Point, Fog> _fogIndex = new();
+        private static List<Fog> _fogsToRemove = new();
+        public static bool renderFog;
         private static Color _backLightColor;
         private static Vector2 _previousScreenSize;
         private static RenderTarget2D _accumulatedLightRT;
@@ -149,9 +153,114 @@ namespace Stellamod.Core.LunarLightingSystem
 
             //PreviewLightMaps();
             DrawAccumulatedLightMapToScreen();
-         //   DrawSoftGlows();
+            RenderFog();
+            //   DrawSoftGlows();
+        }
+        public override void PostUpdateWorld()
+        {
+            base.PostUpdateWorld();
+            UpdateFog();
+
         }
 
+        public Fog SetupFog(Point position, Action<Fog> createFogFunc)
+        {
+            if (_fogIndex.ContainsKey(position))
+                return _fogIndex[position];
+            else
+            {
+                Fog fog = new Fog();
+                fog.tilePosition = position;
+                fog.position = new Vector2(position.X * 16, position.Y * 16);
+                createFogFunc?.Invoke(fog);
+                _fogIndex.Add(position, fog);
+                return fog;
+            }
+        }
+
+        private void UpdateFog()
+        {
+            foreach (var kvp in _fogIndex)
+            {
+                Fog fog = kvp.Value;
+                fog.Update();
+                float dist = Vector2.Distance(fog.position, Main.LocalPlayer.position);
+                if (dist > 2000)
+                {
+                    _fogsToRemove.Add(fog);
+                }
+            }
+
+            for (int i = 0; i < _fogsToRemove.Count; i++)
+            {
+                Fog fog = _fogsToRemove[i];
+                _fogIndex.Remove(fog.tilePosition);
+            }
+            _fogsToRemove.Clear();
+        }
+
+        private static void RenderFog()
+        {
+            DomainExpansionManager domainExpansionManager = ModContent.GetInstance<DomainExpansionManager>();
+            if (domainExpansionManager.inSpace)
+                return;
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (_fogIndex.Count <= 0)
+                return;
+
+            var texture = TextureRegistry.Clouds6;
+            //Apply Fog Shader
+            var fogShader = FogShader.Instance;
+            fogShader.FogTexture = texture;
+            fogShader.ProgressPower = 0.75f;
+            fogShader.EdgePower = 1f;
+            fogShader.Speed = 1f;
+            fogShader.Apply();
+            var currentTexture = texture;
+            var blendState = BlendState.AlphaBlend;
+            BaseShader currentShader = fogShader;
+
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                currentShader.Effect, Main.GameViewMatrix.TransformationMatrix);
+
+            foreach (var kvp in _fogIndex)
+            {
+                var fog = kvp.Value;
+                if (config.FocusMode && fog.disableWithFocus)
+                    continue;
+
+                BaseShader newShader = null;
+                if (fog.shaderFunc != null)
+                {
+                    newShader = fog.shaderFunc();
+                }
+
+                if (blendState != fog.blendState || newShader != currentShader)
+                {
+                    currentTexture = fog.texture;
+                    currentShader = newShader;
+                    blendState = fog.blendState;
+
+                    Effect effect = null;
+                    if (currentShader != null)
+                        effect = currentShader.Effect;
+                    spriteBatch.End();
+                    spriteBatch.Begin(SpriteSortMode.Immediate, blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                        effect, Main.GameViewMatrix.TransformationMatrix);
+                }
+
+                Vector2 center = fog.position - Main.screenPosition;
+                Vector2 scale = Vector2.One * fog.scale;
+                Vector2 origin = fog.texture.Size() / 2;
+                spriteBatch.Draw(currentTexture.Value, center, null, fog.color, fog.rotation, origin, scale, SpriteEffects.None, 0f);
+            }
+
+            spriteBatch.End();
+        
+        }
         private static void DrawAtlasToScreen()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -322,7 +431,7 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 BackLightColor = Color.White * 0.8f;
             }
-            if(Main.LocalPlayer.ZoneSnow && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight)
+            if (Main.LocalPlayer.ZoneSnow && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight)
             {
                 Color color1 = Color.Lerp(Color.LightGreen, Color.LightPink, ExtraMath.Osc(0f, 1f, speed: 0.4f));
                 Color color2 = Color.Lerp(Color.Cyan, color1, ExtraMath.Osc(0f, 1f, offset: 1, speed: 0.4f));

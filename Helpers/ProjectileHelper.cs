@@ -57,7 +57,7 @@ namespace Stellamod.Helpers
         }
         public static float PerformBeamHitscan(Projectile projectile, float maxBeamLength, int numSamplePoints = 3)
         {
-            if (ModContent.GetInstance<DomainExpansionManager>().inSpace)
+            if (ModContent.GetInstance<DomainExpansionManager>().noProjTileCollide)
                 return maxBeamLength;
             // By default, the hitscan interpolation starts at the Projectile's center.
             // If the host Prism is fully charged, the interpolation starts at the Prism's center instead.

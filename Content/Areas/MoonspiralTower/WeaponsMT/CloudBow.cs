@@ -39,8 +39,9 @@ public class CloudBow : BaseCrossbowItem
         {
             var EntitySource = player.GetSource_FromThis();
             Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
-            Projectile.NewProjectile(EntitySource, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y,
+            Projectile crossShot = Projectile.NewProjectileDirect(EntitySource, position, perturbedSpeed,
                 shootParams.projToShoot, (int)bowDamage, Item.knockBack, player.whoAmI);
+            crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
         }
         for (int i = 0; i < 3; i++)
         {

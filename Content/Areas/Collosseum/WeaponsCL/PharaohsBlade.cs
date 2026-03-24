@@ -29,7 +29,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 11;
+            Item.damage = 22;
             Item.shoot = ModContent.ProjectileType<PharaohsBladeSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<PharaohsBladeStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Sword;

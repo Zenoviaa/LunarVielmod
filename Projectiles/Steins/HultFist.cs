@@ -211,7 +211,7 @@ namespace Stellamod.Projectiles.Steins
 
 
                 target.SimpleStrikeNPC(Projectile.damage * 2, 1, crit: false, Projectile.knockBack);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Hulthit1>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.position.X, player.position.Y, 0, 0, ModContent.ProjectileType<Hulthit1>(), Projectile.damage, 0f, Projectile.owner, 0f, 0f);
 
 
                 for (int i = 0; i < 26; i++)

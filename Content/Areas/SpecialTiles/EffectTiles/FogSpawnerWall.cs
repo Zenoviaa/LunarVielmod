@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Foggy;
+using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.ToolsSystem;
 using Stellamod.Helpers;
 using Terraria;
@@ -49,7 +50,7 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
 
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
-            FogSystem fogSystem = ModContent.GetInstance<FogSystem>();
+            LunarLightingRenderer fogSystem = ModContent.GetInstance<LunarLightingRenderer>();
             Point point = new Point(i, j);
             Fog fog = fogSystem.SetupFog(point, FogCreateFunction);
             fog.updateFunc = FogUpdateFunction;

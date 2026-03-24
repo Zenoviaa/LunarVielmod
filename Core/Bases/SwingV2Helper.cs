@@ -3,6 +3,7 @@ using Stellamod.Assets;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.Audio;
 
 namespace Stellamod.Core.Bases
@@ -766,6 +767,7 @@ namespace Stellamod.Core.Bases
         {
             SoundStyle swingSound1 = AssetRegistry.Sounds.Melee.NormalSwordSlash1;
             swingSound1.PitchVariance = 0.25f;
+            swingSound1.Volume = 0.25f;
 
             SoundStyle swingSound2 = AssetRegistry.Sounds.Melee.NormalSwordSlash2;
             swingSound2.PitchVariance = 0.25f;
@@ -782,7 +784,7 @@ namespace Stellamod.Core.Bases
             swingSoundAlt2.PitchVariance = 0.25f;
 
 
-            int style = 1;
+            int style = 0;
             SoundStyle s1 = style == 0 ? swingSound1 : swingSoundAlt1;
             SoundStyle s2 = style == 0 ? swingSound2 : swingSoundAlt2;
             swings.Add(new OvalSwing

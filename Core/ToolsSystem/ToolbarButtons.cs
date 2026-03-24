@@ -1,4 +1,4 @@
-﻿using Stellamod.Core.Foggy;
+﻿using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.StructureSelector;
 using Stellamod.Core.UI;
 using Stellamod.Helpers;
@@ -20,8 +20,7 @@ namespace Stellamod.Core.ToolsSystem
         public override void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
             base.OnButtonClick(evt, listeningElement);
-            FogSystem fogSystem = ModContent.GetInstance<FogSystem>();
-            fogSystem.doDraws = !fogSystem.doDraws;
+            LunarLightingRenderer.renderFog = !LunarLightingRenderer.renderFog;
         }
     }
     public class HitboxButton : BaseToolbarButton

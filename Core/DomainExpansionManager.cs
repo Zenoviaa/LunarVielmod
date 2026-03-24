@@ -32,7 +32,7 @@ namespace Stellamod.Core
         {
             base.SetDefaults(entity);
             DomainExpansionManager domainExpansionManager = ModContent.GetInstance<DomainExpansionManager>();
-            if (domainExpansionManager.inSpace)
+            if (domainExpansionManager.noProjTileCollide)
             {
                 entity.tileCollide = false;
             }
@@ -47,12 +47,29 @@ namespace Stellamod.Core
         public bool noWings;
         public bool hoveringPlatform;
         public float hoverPlatformY;
+        public bool noProjTileCollide;
         public override void OnModLoad()
         {
             base.OnModLoad();
          
             On_Player.SlopingCollision += HoverPlatformCollisionCheck;
+            On_Collision.TileCollision += HoverPlatformTileCollision;
             On_Collision.WetCollision += DisableWetCollisions;
+        }
+
+        private Vector2 HoverPlatformTileCollision(On_Collision.orig_TileCollision orig, 
+            Vector2 Position, Vector2 Velocity, int Width, int Height, bool fallThrough, bool fall2, int gravDir)
+        {
+            if (hoveringPlatform)
+            {
+                if (Position.Y > hoverPlatformY)
+                    return Vector2.Zero;
+                return orig(Position, Velocity, Width, Height, fallThrough, fall2, gravDir);
+            }
+            else
+            {
+                return orig(Position, Velocity, Width, Height, fallThrough, fall2, gravDir);
+            }
         }
 
         private bool DisableWetCollisions(On_Collision.orig_WetCollision orig, Vector2 Position, int Width, int Height)
@@ -66,6 +83,7 @@ namespace Stellamod.Core
         public override void OnModUnload()
         {
             base.OnModUnload();
+            On_Collision.TileCollision -= HoverPlatformTileCollision;
             On_Collision.WetCollision -= DisableWetCollisions;
             On_Player.SlopingCollision -= HoverPlatformCollisionCheck;
         }
@@ -75,7 +93,7 @@ namespace Stellamod.Core
         
             orig(self, fallThrough, ignorePlats);
         }
-
+ 
         private void HoverPlatformCollisionCheck(On_Player.orig_SlopingCollision orig, Player self, bool fallThrough, bool ignorePlats)
         {
        
@@ -145,6 +163,7 @@ namespace Stellamod.Core
             inSpace = false;
             noWings = false;
             hoveringPlatform = false;
+            noProjTileCollide = false;
         }
     }
 }

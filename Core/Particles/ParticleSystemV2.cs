@@ -46,87 +46,42 @@ namespace Stellamod.Core.Particles
             UpdateParticle();
         }
 
+        private static void UpdateParticleList(IEnumerable<BaseParticle> particles)
+        {
+            foreach(BaseParticle particle in particles)
+            {
+                if (particle == null)
+                    continue;
+                if (!particle.active)
+                    continue;
+
+                particle.Update();
+                particle.Center += particle.Velocity;
+                if (particle.parent != null)
+                {
+                    Vector2 parentMovement = particle.parent.position - particle.parent.oldPosition;
+                    particle.Center += parentMovement;
+                    particle.hasParent = true;
+                }
+
+                bool shouldKill = particle.hasParent && !particle.parent.active;
+                shouldKill |= particle.Scale < 0.001f;
+                shouldKill |= particle.fadeIn > 1000;
+                if (shouldKill)
+                {
+                    particle.active = false;
+                }
+            }
+
+        }
         public static void UpdateParticle()
         {
             if (Main.netMode == NetmodeID.Server)
                 return;
 
-            for (int i = 0; i < AdditiveParticles.Count; i++)
-            {
-                BaseParticle particle = AdditiveParticles[i];
-
-                if (particle == null)
-                    continue;
-
-                particle.Update();
-                particle.Center += particle.Velocity;
-                if (particle.parent != null)
-                {
-                    Vector2 parentMovement = particle.parent.position - particle.parent.oldPosition;
-                    particle.Center += parentMovement;
-                    particle.hasParent = true;
-                }
-                if (particle.hasParent && !particle.parent.active)
-                    particle.active = false;
-
-                if (particle.Scale < 0.001f)
-                    particle.active = false;
-
-                if (particle.fadeIn > 1000)
-                    particle.active = false;
-            }
-
-
-            for (int i = 0; i < AlphaBlendedParticles.Count; i++)
-            {
-                BaseParticle particle = AlphaBlendedParticles[i];
-
-                if (particle == null)
-                    continue;
-
-                particle.Update();
-                particle.Center += particle.Velocity;
-                if (particle.parent != null)
-                {
-                    Vector2 parentMovement = particle.parent.position - particle.parent.oldPosition;
-                    particle.Center += parentMovement;
-                    particle.hasParent = true;
-                }
-                if (particle.hasParent && !particle.parent.active)
-                    particle.active = false;
-
-                if (particle.Scale < 0.001f)
-                    particle.active = false;
-
-                if (particle.fadeIn > 1000)
-                    particle.active = false;
-            }
-
-
-            for (int i = 0; i < UIParticles.Count; i++)
-            {
-                BaseParticle particle = UIParticles[i];
-
-                if (particle == null)
-                    continue;
-
-                particle.Update();
-                particle.Center += particle.Velocity;
-                if (particle.parent != null)
-                {
-                    Vector2 parentMovement = particle.parent.position - particle.parent.oldPosition;
-                    particle.Center += parentMovement;
-                    particle.hasParent = true;
-                }
-                if (particle.hasParent && !particle.parent.active)
-                    particle.active = false;
-
-                if (particle.Scale < 0.001f)
-                    particle.active = false;
-
-                if (particle.fadeIn > 1000)
-                    particle.active = false;
-            }
+            UpdateParticleList(AdditiveParticles);
+            UpdateParticleList(AlphaBlendedParticles);
+            UpdateParticleList(UIParticles);
 
             AdditiveParticles.RemoveAll(p => p == null || !p.active);
             AlphaBlendedParticles.RemoveAll(p => p == null || !p.active);
