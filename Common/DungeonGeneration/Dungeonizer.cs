@@ -528,8 +528,8 @@ namespace Stellamod.Common.DungeonGeneration
             Room currentRoom = startingRoom;
 
 
-            bool[] isPlaced = new bool[chart.Vertices.Length];
-            Room[] instancedRooms = new Room[chart.Vertices.Length];
+            bool[] isPlaced = new bool[chart.Vertices.Count];
+            Room[] instancedRooms = new Room[chart.Vertices.Count];
             for(int i = 0; i < instancedRooms.Length; i++)
             {
                 Point vertex = chart.Vertices[i];
@@ -603,8 +603,8 @@ namespace Stellamod.Common.DungeonGeneration
             }
 
             //DO BFS Search and connect rooms to each other
-            DungeonChartTraversal.DoBFS(chart.Edges, chart.Vertices.Length,
-                new bool[chart.Vertices.Length], ConnectRoom);
+            DungeonChartTraversal.DoBFS(chart.Edges, chart.Vertices.Count,
+                new bool[chart.Vertices.Count], ConnectRoom);
             //Place boss room
             return instancedRooms;
         }
