@@ -118,6 +118,7 @@ public class DungeonChart
             vertices[i] = vertex;
         }
 
+        //bruh
         DungeonChart chart = new DungeonChart(vertices.ToArray());
         for(int i = 0; i < vertices.Count; i++)
         {
