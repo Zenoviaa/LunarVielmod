@@ -66,21 +66,13 @@ public static class DungeonChartTraversal
 
 public class DungeonChart
 {
-    public readonly Point[] Vertices;
+    public readonly List<Point> Vertices;
     public readonly Vector2[,] Edges;
     public readonly HashSet<Point> Corridors;
     public readonly HashSet<Point> VerticeHashSet;
-    public DungeonChart(int roomCount)
-    {
-        Vertices = new Point[roomCount];
-        Edges = new Vector2[roomCount, roomCount];
-        Corridors = new HashSet<Point>();
-        VerticeHashSet = new HashSet<Point>();
-    }
-
     public DungeonChart(Point[] vertices)
     {
-        Vertices = vertices;
+        Vertices = new List<Point>(vertices);
         Edges = new Vector2[vertices.Length, vertices.Length];
         Corridors = new HashSet<Point>();
         VerticeHashSet = new HashSet<Point>();
