@@ -160,10 +160,6 @@ public class SunLightManager : ModSystem
         br2.Position = new Vector3(xy1.X, xy2.Y, 0);
         br2.Color = ShadowColor;
 
-        tr1.Position += new Vector3(ShadowDirection, 0);
-        br2.Position += new Vector3(ShadowDirection, 0);
-
-
         //0, 1, 2
         ShadowVertices[vertexIndex] = tl1;
         ShadowVertices[vertexIndex + 1] = tr1;
