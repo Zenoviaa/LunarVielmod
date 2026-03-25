@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects.Trails;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
@@ -42,16 +43,14 @@ public class DeadRomanceGreatBlade : ModProjectile
     private float _ratio;
     private float _bladeRatio;
     private float _rotationChargeOffset;
-    private float _swingLerp;
     public float _swordBeamLength;
     private bool _swordBeamedSound;
     private float _oldRot;
-
-
-    public float trailWidthInterp;
-    public float chargeUpTime => 90  * fixer;
-    public float holdBackTime => 90 * fixer;
-    public float swingTime => 56 * fixer;
+    private float _traveledRotation;
+    private float _trailWidthLerp;
+    public float chargeUpTime => 120  * fixer;
+    public float holdBackTime => 120 * fixer;
+    public float swingTime => 64 * fixer;
     public float holdOffset => 90;
     public float fixer => Projectile.extraUpdates + 1;
     private SlashTrailer _wideTrailer;
@@ -97,7 +96,7 @@ public class DeadRomanceGreatBlade : ModProjectile
     {
         float GetTrailWidth(float interpolant)
         {
-            return EasingFunction.QuadraticBump(interpolant) * 100 * trailWidthInterp;
+            return EasingFunction.QuadraticBump(interpolant) * 100 * _trailWidthLerp;
         }
         Color GetTrailColor(float interpolant)
         {
@@ -256,7 +255,7 @@ public class DeadRomanceGreatBlade : ModProjectile
         Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(135));
     }
 
-    private float _traveledRotation;
+
     private void AI_Swing()
     {
         Projectile.friendly = true;
@@ -282,7 +281,7 @@ public class DeadRomanceGreatBlade : ModProjectile
         }
         float Interpolant = Timer / swingTime;
         Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
-        trailWidthInterp = EasingFunction.QuadraticBump(Interpolant);
+        _trailWidthLerp = EasingFunction.QuadraticBump(Interpolant);
         _ovalSwing.SetDirection((int)SwingDirection);
         _ovalSwing.UpdateSwing(Interpolant, Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero), out Vector2 swingOffset);
 
@@ -379,7 +378,7 @@ public class DeadRomanceGreatBlade : ModProjectile
 
         ShakeModSystem.Shake = MathHelper.Lerp(1f, 4f, ratio);
         float dir = -Owner.direction;
-     float inc = dir * 0.01f * MathHelper.Lerp(1f, 0f, ratio) * 1f / fixer;
+     float inc = dir * 0.02f * MathHelper.Lerp(1f, 0f, ratio) * 1f / fixer;
         _rotationChargeOffset += inc;
         Projectile.Center = Owner.Center + _rotationalVelocity.SafeNormalize(Vector2.Zero).RotatedBy(_rotationChargeOffset) * holdOffset;
         Projectile.rotation += inc;
@@ -407,13 +406,15 @@ public class DeadRomanceGreatBlade : ModProjectile
         Vector2 targetVelocity = new Vector2(-1 * SwingDirection, -1);
         float time = chargeUpTime;
         _ratio = Timer / time;
-        _bladeRatio = Timer / (time * 0.5f);
+        _bladeRatio = Timer / time;
+
+        _ratio = MathHelper.Clamp(_ratio, 0f, 1f);
+        _bladeRatio = MathHelper.Clamp(_bladeRatio, 0f, 1f);
         float ease = EasingFunction.InOutExpo(_ratio);
-        float radians = MathHelper.Lerp(0f, -MathHelper.PiOver4, ease);
-        _rotationalVelocity = initialVelocity.RotatedBy(radians);
+        _rotationalVelocity = initialVelocity;
         Projectile.Center = Owner.Center + _rotationalVelocity.SafeNormalize(Vector2.Zero) * holdOffset * EasingFunction.InOutSine(_bladeRatio);
         Projectile.rotation = _rotationalVelocity.ToRotation() + MathHelper.PiOver4;
-        if(Timer >= chargeUpTime)
+        if(Timer >= chargeUpTime + (30 * fixer))
         {
             SwitchState(AIState.HoldBack);
         }
@@ -436,7 +437,7 @@ public class DeadRomanceGreatBlade : ModProjectile
         }
 
         float ease = EasingFunction.InOutSine(_bladeRatio);
-        Vector2 growScale = Vector2.Lerp(new Vector2(1f, 0f), Vector2.One, ease);
+        Vector2 growScale = Vector2.Lerp(new Vector2(0f, 1f), Vector2.One, ease);
         GlowingSwordMaskShader shader = GlowingSwordMaskShader.Instance;
         shader.TrailTexture = TrailRegistry.BeamTrail;
         shader.Distortion = 0.04f;
@@ -449,7 +450,7 @@ public class DeadRomanceGreatBlade : ModProjectile
         glowSwordSprite.blackIsTransparency = true;
         glowSwordSprite.color = Color.White;
         glowSwordSprite.scale = new Vector2(2f, 1f) * growScale;
-        glowSwordSprite.worldPosition += (Projectile.rotation-MathHelper.PiOver4).ToRotationVector2() * 200;
+        glowSwordSprite.worldPosition += (Projectile.rotation-MathHelper.PiOver4).ToRotationVector2() * 200 * _bladeRatio;
        
         if(_swingTrailCache != null)
         {
@@ -473,7 +474,7 @@ public class DeadRomanceGreatBlade : ModProjectile
 
         glowSwordSprite.rotation = rotation - MathHelper.PiOver4;
         glowSwordSprite.worldPosition = Projectile.Center;
-        glowSwordSprite.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 200;
+        glowSwordSprite.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 200 * _bladeRatio;
 
         spriteBatch.Draw(glowSwordSprite);
 
@@ -489,17 +490,17 @@ public class DeadRomanceGreatBlade : ModProjectile
     {
         SpriteBatch spriteBath = Main.spriteBatch;
         SpritebatchDrawer glowBallDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
-        glowBallDrawer.scale = new Vector2(0.75f, 0.2f);
+        glowBallDrawer.scale = new Vector2(0.75f, 0.2f) * _bladeRatio; ;
         glowBallDrawer.rotation = Projectile.rotation + MathHelper.PiOver4;
         glowBallDrawer.color = Color.Goldenrod;
         glowBallDrawer.color *= 0.5f;
         glowBallDrawer.color.A = 0;
-        glowBallDrawer.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 64;
+        glowBallDrawer.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 64 * _bladeRatio; ;
         spriteBath.Draw(glowBallDrawer);
 
 
 
-        glowBallDrawer.scale = new Vector2(0.66f, 0.2f);
+        glowBallDrawer.scale = new Vector2(0.66f, 0.2f) * _bladeRatio; ;
         //glowBallDrawer.rotation = Projectile.rotation;
         glowBallDrawer.color = Color.White;
         glowBallDrawer.color *= 0.5f;
@@ -552,10 +553,10 @@ public class DeadRomanceGreatBlade : ModProjectile
         SpritebatchDrawer bloomSprite = 
             SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         bloomSprite.rotation = Projectile.rotation;
-        bloomSprite.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 180;
+        bloomSprite.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 180 * _bladeRatio; ;
         bloomSprite.blackIsTransparency = true;
         bloomSprite.color = Color.Goldenrod;
-        bloomSprite.scale = new Vector2(2f, 0.5f);
+        bloomSprite.scale = new Vector2(2f, 0.5f) * _bladeRatio; ;
         bloomSprite.rotation -= MathHelper.PiOver4;
         spriteBatch.Draw(bloomSprite);
     }
@@ -589,7 +590,7 @@ public class DeadRomanceGreatBlade : ModProjectile
         float Interpolant = Timer / swingTime;
         Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
         float f = MathHelper.SmoothStep(0, 1, w) * MathHelper.SmoothStep(1, 0, w);
-        return f * 666 * MathHelper.Lerp(1, 0, EasingFunction.InExpo(Interpolant)) * trailWidthInterp;
+        return f * 666 * MathHelper.Lerp(1, 0, EasingFunction.InExpo(Interpolant)) * _trailWidthLerp;
     }
 
     public override bool PreDraw(ref Color lightColor)
@@ -612,6 +613,38 @@ public class DeadRomanceGreatBlade : ModProjectile
             target.DelBuff(target.FindBuffIndex(ModContent.BuffType<HeavenlyMark>()));
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<Smite>(), 
                 Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: target.whoAmI);
+
+            var donut = LegacyParticle.NewParticle<GlowDonutParticle>(target.Center, Vector2.Zero, Color.Red);
+            donut.Scale *= 2f;
+            donut.fadeToColor = Color.Goldenrod;
+            donut.noStretch = true;
+
+            donut = LegacyParticle.NewParticle<GlowDonutParticle>(target.Center, Vector2.Zero, Color.Red);
+            donut.Scale *= 0.5f;
+            donut.fadeToColor = Color.Goldenrod;
+            donut.noStretch = true;
+
+            for(float f = 0; f < 12; f++)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(24, 24);
+                Vector2 pos = target.Center;
+                SparkleParticle sp = SparkleParticle.Spawn(pos, vel, Scale: 1f);
+                sp.outerColor = Color.Goldenrod;
+                sp.noTileCollide = true;
+            }
+            for (float f = 0; f < 12; f++)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(24, 24);
+                Vector2 pos = target.Center;
+                DustParticle sp = DustParticle.Spawn(pos, vel, Scale: 1f);
+                sp.outerColor = Color.Goldenrod;
+                sp.noTileCollide = true;
+            }
+
+            SoundStyle hitSound = AssetRegistry.Sounds.Melee.ExcaliburHeavenlyExplosions;
+            hitSound.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(hitSound, target.Center);
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
         }
     }
     public override void OnKill(int timeLeft)
