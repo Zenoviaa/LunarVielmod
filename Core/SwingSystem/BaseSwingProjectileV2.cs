@@ -1,15 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
-using Stellamod.Visual.Particles;
-using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
@@ -62,6 +57,7 @@ namespace Stellamod.Core.SwingSystem
         public bool isChildProjectile;
         public float bigSwingTrailOffset;
         public float? trailOffsetOverride;
+        public float swordRotation;
         public const int EXTRA_UPDATE_COUNT = 7;
 
         //Default to the item sprite of the texture, we can just predraw if we need to change it
@@ -138,13 +134,6 @@ namespace Stellamod.Core.SwingSystem
                 ArrayPool<float>.Shared.Return(swingRotationCache);
                 ArrayPool<float>.Shared.Return(oldTime);
             }
-
-
-            if ((ComboIndex+1) >= _swings.Count)
-            {
-                SwingPlayerV2 swingPlayer = Owner.GetModPlayer<SwingPlayerV2>();
-                swingPlayer.ResetCombo();
-            }
         }
         private void AI_Initialize()
         {
@@ -184,7 +173,7 @@ namespace Stellamod.Core.SwingSystem
                 return _swings[ComboIndex];
             }
 
-            Main.NewText($"Somehow doing the deafult swing");
+            //Main.NewText($"Somehow doing the deafult swing");
             return _swings[0];
         }
 
@@ -206,7 +195,7 @@ namespace Stellamod.Core.SwingSystem
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-  
+
             //Check if the sword is colliding, this does a line check instead of terraria default box.
             Texture2D texture = GetTexture();
             float length = texture.Width / 2 + texture.Height / 2;
@@ -218,17 +207,19 @@ namespace Stellamod.Core.SwingSystem
             Vector2 start = Projectile.Center - rotation.ToRotationVector2() * length;
             Vector2 end = Projectile.Center + rotation.ToRotationVector2() * length;
             float collisionPoint = 0f;
-            bool check =  Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 16, ref collisionPoint);
+            bool check = Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 16, ref collisionPoint);
             return check;
         }
 
         public override void AI()
         {
             base.AI();
-     
+          
+
             //We want to initalize like this for better MP compatibility, using a timer might not always be seen on all clients
             AI_Initialize();
-            if(bounceTimer > 0)
+            Owner.GetModPlayer<SwingPlayerV2>().MaxCombo = _swings.Count;
+            if (bounceTimer > 0)
             {
                 Timer--;
                 bounceTimer--;
@@ -240,7 +231,7 @@ namespace Stellamod.Core.SwingSystem
             ISwing swing = GetSwing();
 
             //Now we need to calculate the time/interpolant for this swinging
-            if(swingTime == 0)
+            if (swingTime == 0)
             {
                 float duration = swing.GetDuration(1f / Owner.GetTotalAttackSpeed(Projectile.DamageType));
                 swingTime = GetSwingTime(duration);
@@ -253,7 +244,7 @@ namespace Stellamod.Core.SwingSystem
                 oldTime[i] = oldTime[i - 1];
             }
             oldTime[0] = Interpolant;
-            if(_fade < 1f)
+            if (_fade < 1f)
             {
                 _fade += 0.1f;
             }
@@ -305,20 +296,25 @@ namespace Stellamod.Core.SwingSystem
         private void AI_OrientHand()
         {
 
-            float rotation = Projectile.rotation;
-            Owner.ChangeDir(Projectile.direction);
-            Projectile.spriteDirection = Owner.direction;
-            if (Main.myPlayer == Projectile.owner)
+
+            if (Timer < swingTime - 8)
             {
-                Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+                float rotation = Projectile.rotation;
+                Owner.ChangeDir(Projectile.direction);
+                Projectile.spriteDirection = Owner.direction;
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+                }
+
+                Owner.itemRotation = rotation * Owner.direction;
+                Owner.itemTime = 2;
+                Owner.itemAnimation = 2;
+                // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
+                Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(135));// set arm position (90 degree offset since arm starts lowered)
             }
 
-            Owner.itemRotation = rotation * Owner.direction;
-            Owner.itemTime = 2;
-            Owner.itemAnimation = 2;
 
-            // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
-            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(135));// set arm position (90 degree offset since arm starts lowered)
         }
 
         public virtual void PrepareTrailShader()
@@ -346,7 +342,7 @@ namespace Stellamod.Core.SwingSystem
             if (useAfterImage)
                 DrawAfterImage(ref lightColor, OldCenterPos);
 
-          
+
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedSwingTrails, DrawLayer.OverNPCs);
             DrawSwordBeam(ref lightColor);
             DrawSwordSprite(ref lightColor);
@@ -395,7 +391,7 @@ namespace Stellamod.Core.SwingSystem
                 ComboPlayer comboPlayer = Owner.GetModPlayer<ComboPlayer>();
                 int combo = (int)(ComboIndex + 1);
                 int dir = comboPlayer.ComboDirection;
-                var p =Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity,
+                var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity,
                     Type, Projectile.damage, Projectile.knockBack,
                                Owner.whoAmI, ai2: combo, ai1: dir);
                 BaseSwingProjectileV2 swingProj = p.ModProjectile as BaseSwingProjectileV2;
@@ -448,7 +444,7 @@ namespace Stellamod.Core.SwingSystem
             float worldDistance = distance / 2f;
             return worldDistance;
         }
-        private Texture2D GetTexture()
+        public virtual Texture2D GetTexture()
         {
             Texture2D texture = TextureAssets.Item[Owner.HeldItem.type].Value;
             return texture;
@@ -460,7 +456,7 @@ namespace Stellamod.Core.SwingSystem
                 return;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-           // spriteBatch.Restart(blendState: BlendState.Additive);
+            // spriteBatch.Restart(blendState: BlendState.Additive);
             for (int a = 0; a < afterImageCache.Length; a++)
             {
                 float interpolant = a;
@@ -474,15 +470,24 @@ namespace Stellamod.Core.SwingSystem
                 Vector2 origin = sourceRectangle.Size() / 2f;
                 Color drawColor = GetAfterImageColor(interpolant);
                 drawColor *= EasingFunction.QuadraticBump(interpolant);
-                drawColor.A = 0;
                 drawColor *= 0.5f;
                 float drawScale = 1.15f + growScale;
                 Vector2 position = afterImageCache[a];
                 float drawRotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
+
+
+                SpriteEffects spriteEffects = SpriteEffects.None;
+                if (SwingDirection == 1)
+                {
+                    spriteEffects = SpriteEffects.FlipVertically;
+                    drawRotation -= MathHelper.PiOver2;
+                }
+
+
                 spriteBatch.Draw(texture,
                   position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-                    sourceRectangle, drawColor, drawRotation, origin, drawScale, SpriteEffects.None, 0); // drawing the sword itself
+                    sourceRectangle, drawColor, drawRotation, origin, drawScale, spriteEffects, 0); // drawing the sword itself
             }
             //     spriteBatch.RestartDefaults();
         }
@@ -550,6 +555,17 @@ namespace Stellamod.Core.SwingSystem
             float drawScale = 1 + growScale;
 
 
+            float rotation = Projectile.rotation;
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            if (SwingDirection == 1)
+            {
+                spriteEffects = SpriteEffects.FlipVertically;
+                rotation -= MathHelper.PiOver2;
+            }
+
+            swordRotation = rotation;
+
+
             Vector2 drawPosition = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
             if (outlineColor.A > 0)
             {
@@ -558,35 +574,36 @@ namespace Stellamod.Core.SwingSystem
                 spriteBatch.Restart(effect: whiteShader.Effect);
                 spriteBatch.Draw(texture,
                     drawPosition + Vector2.UnitX * 2,
-                    sourceRectangle, drawOutlineColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+                    sourceRectangle, drawOutlineColor, rotation, origin, drawScale, spriteEffects, 0);
                 spriteBatch.Draw(texture,
                     drawPosition + Vector2.UnitX * -2,
-                    sourceRectangle, drawOutlineColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+                    sourceRectangle, drawOutlineColor, rotation, origin, drawScale, spriteEffects, 0);
 
                 spriteBatch.Draw(texture,
                     drawPosition + Vector2.UnitY * 2,
-                    sourceRectangle, drawOutlineColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+                    sourceRectangle, drawOutlineColor, rotation, origin, drawScale, spriteEffects, 0);
                 spriteBatch.Draw(texture,
                     drawPosition + Vector2.UnitY * -2,
-                    sourceRectangle, drawOutlineColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+                    sourceRectangle, drawOutlineColor, rotation, origin, drawScale, spriteEffects, 0);
                 spriteBatch.RestartDefaults();
             }
 
             spriteBatch.Draw(texture, drawPosition,
-                sourceRectangle, drawColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
-
+                sourceRectangle, drawColor, rotation, origin, drawScale, spriteEffects, 0);
+            PostDrawSword(drawPosition,
+                sourceRectangle, drawColor, rotation, origin, drawScale * Vector2.One, spriteEffects, 0);
             if (glowColor.A > 0)
             {
-                spriteBatch.Restart(blendState: BlendState.Additive);
-                spriteBatch.Draw(texture,
-                      Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-                      sourceRectangle, glowColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+                Color colorToGlowWith = glowColor;
+                colorToGlowWith.A = 0;
+                for (int i = 0; i < 2; i++)
+                {
+                    spriteBatch.Draw(texture,
+                          Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+                          sourceRectangle, glowColor, rotation, origin, drawScale, spriteEffects, 0);
 
-                spriteBatch.Draw(texture,
-                  Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-                  sourceRectangle, glowColor, Projectile.rotation, origin, drawScale, SpriteEffects.None, 0);
+                }
 
-                spriteBatch.RestartDefaults();
             }
 
             //gonna try something
@@ -597,7 +614,7 @@ namespace Stellamod.Core.SwingSystem
             glowingColor *= 0.5f;
             glowingColor *= EasingFunction.QuadraticBump(Interpolant);
             glowingColor.A = 0;
-            float rotation = Projectile.rotation - MathHelper.PiOver2;
+            float rotation = rotation - MathHelper.PiOver2;
 
             Vector2 center = Vector2.Lerp(Projectile.Center, Owner.Center, 0.5f);
             Vector2 slashPosition = center - Main.screenPosition;
@@ -606,6 +623,10 @@ namespace Stellamod.Core.SwingSystem
             */
         }
 
+        public virtual void PostDrawSword(Vector2 position, Rectangle srcRect, Color drawColor, float rotation, Vector2 origin, Vector2 drawScale, SpriteEffects spriteEffect, float layerDepth)
+        {
+
+        }
         public virtual void DrawSwordBeam(ref Color lightColor)
         {
             if (swordBeamLength <= 0)
@@ -621,7 +642,7 @@ namespace Stellamod.Core.SwingSystem
             Vector2 drawPos = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
             float rotationOffset = MathHelper.ToRadians(45);
             drawPos += offset;
-  
+
             Color drawColor = Color.White.MultiplyRGB(lightColor) * 0.2f;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -670,7 +691,7 @@ namespace Stellamod.Core.SwingSystem
             }
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
             float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y, speedXa * 0, speedYa * 0, 
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y, speedXa * 0, speedYa * 0,
                 ModContent.ProjectileType<BaseHitEffect>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
 
 

@@ -112,9 +112,13 @@ namespace Stellamod.Core.SwingSystem
 
             int combo = comboPlayer.ComboCounter;
             int dir = comboPlayer.ComboDirection;
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback,
+            Projectile p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback,
                 player.whoAmI, ai1: dir, ai2: combo);
-            comboPlayer.IncreaseCombo();
+            if(p.ModProjectile is BaseSwingProjectileV2 swingV2)
+            {
+                comboPlayer.IncreaseCombo();
+            }
+       
         }
 
         public virtual void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -132,9 +136,12 @@ namespace Stellamod.Core.SwingSystem
                 int combo = comboPlayer.StaminaComboCounter;
                 int dir = comboPlayer.ComboDirection;
 
-                Projectile.NewProjectile(source, position, velocity, type, staminaDamage, knockback,
+                Projectile p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback,
                     player.whoAmI, ai1: dir, ai2: combo);
-                comboPlayer.IncreaseCombo();
+                if (p.ModProjectile is BaseSwingProjectileV2 swingV2)
+                {
+                    comboPlayer.IncreaseCombo();
+                }
             }
             else
             {

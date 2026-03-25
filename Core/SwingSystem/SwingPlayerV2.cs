@@ -1,4 +1,5 @@
-﻿using Terraria.ModLoader;
+﻿using Stellamod.Content.Special;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace Stellamod.Core.SwingSystem
@@ -15,6 +16,8 @@ namespace Stellamod.Core.SwingSystem
         public bool InfiniteStamina;
         public bool unlockedFlask;
         public bool useStaminaThisFrame;
+        public int MaxCombo;
+        public int OldHeldItem;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -27,13 +30,27 @@ namespace Stellamod.Core.SwingSystem
             base.UpdateDead();
             Stamina = MaxStamina;
         }
+        public override void PreUpdate()
+        {
+            base.PreUpdate();
+            if(MaxCombo > 0)
+                ComboCounter %= MaxCombo;
+
+        }
 
         public override void PostUpdate()
         {
             base.PostUpdate();
+            if(OldHeldItem != Player.HeldItem.type)
+            {
+                ComboCounter = 0;
+                OldHeldItem = Player.HeldItem.type;
+            }
+           
             _comboWaitTimer++;
             if (_comboWaitTimer >= ComboWaitTime)
             {
+                Player.GetModPlayer<DeadRomancePlayer>().attackSpeedStacks = 0;
                 ResetCombo();
             }
         }
@@ -62,7 +79,13 @@ namespace Stellamod.Core.SwingSystem
         {
             _comboWaitTimer = 0;
             ComboCounter++;
+    
             ComboDirection = -ComboDirection;
+        }
+        public void IncreaseCombo(int maxCombo)
+        {
+            IncreaseCombo();
+            ComboCounter %= maxCombo;
         }
 
         public void IncreaseStaminaCombo(int maxStaminaCombo)
@@ -78,9 +101,11 @@ namespace Stellamod.Core.SwingSystem
 
         public void ResetCombo()
         {
+            ComboDirection = 1;
             StaminaComboCounter = 0;
             ComboCounter = 0;
             _comboWaitTimer = 0;
+
         }
         public bool HasUnlockedFlask()
         {

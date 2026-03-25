@@ -89,6 +89,7 @@ namespace Stellamod.Visual.Particles
         public float dampening;
         public bool fast;
         public bool noTileCollide;
+        public bool superFast;
 
         public static DustParticle Spawn(Vector2 position, Vector2 velocity, DustParticleSpawnParams? spawnParams = null)
         {
@@ -120,6 +121,11 @@ namespace Stellamod.Visual.Particles
             Scale *= 0.97f;
             if (fast)
                 Scale *= 0.98f;
+            if (superFast)
+            {
+                Velocity *= 0.9f;
+                Scale *= 0.94f;
+            }
             color *= 0.99f;
 
             float stretchInterp = Velocity.Length() / 5f;

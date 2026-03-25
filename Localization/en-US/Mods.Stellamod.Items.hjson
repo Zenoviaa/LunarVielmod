@@ -10659,3 +10659,10 @@ RingShotgun: {
 	DisplayName: Ring Shotgun
 	Tooltip: Shoots a shotgun blast of exploding rings!
 }
+
+DeadRomancesExcalibur: {
+	BasicSlash: ""
+	StaminaSlash: No Effect
+	DisplayName: Dead Romances Excalibur
+	Tooltip: ""
+}

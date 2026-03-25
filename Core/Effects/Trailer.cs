@@ -27,6 +27,7 @@ namespace Stellamod.Core.Effects
         public IShader Shader { get; set; }
         public ITrailer.GetTrailWidth TrailWidthFunction { get; set; }
         public ITrailer.GetTrailColor TrailColorFunction { get; set; }
+        public bool invert;
 
         public void SetTrailingValues(float interpolant)
         {
@@ -54,6 +55,12 @@ namespace Stellamod.Core.Effects
                 float uvMultiplier = 1;
                 float coord1 = 0;
                 float coord2 = 1;
+
+                if (invert)
+                {
+                    coord1 = 1;
+                    coord2 = 0;
+                }
                 vertices.Add(new VertexPositionColorTexture(new Vector3(pos1 + off1, 0f), col1, new Vector2((uv + uvAdd) * uvMultiplier, coord1)));
                 vertices.Add(new VertexPositionColorTexture(new Vector3(pos1 - off1, 0f), col1, new Vector2((uv + uvAdd) * uvMultiplier, coord2)));
                 vertices.Add(new VertexPositionColorTexture(new Vector3(pos2 + off2, 0f), col2, new Vector2((uv2 + uvAdd) * uvMultiplier, coord1)));

@@ -299,6 +299,13 @@ namespace Stellamod.Assets
 
             public static class Melee
             {
+                public static SoundStyle ExcaliburStartHit1 = new SoundStyle($"{Path}Melee/ExcaliburStartHit1");
+                public static SoundStyle ExcaliburStartHit2 = new SoundStyle($"{Path}Melee/ExcaliburStartHit2");
+                public static SoundStyle ExcaliburStartSlash1 = new SoundStyle($"{Path}Melee/ExcaliburStartSlash1");
+                public static SoundStyle ExcaliburStartSlash2 = new SoundStyle($"{Path}Melee/ExcaliburStartSlash2");
+                public static SoundStyle ExcaliburStartSlash3 = new SoundStyle($"{Path}Melee/ExcaliburStartSlash3");
+                public static SoundStyle ExcaliburStartSlash4 = new SoundStyle($"{Path}Melee/ExcaliburStartSlash4");
+
                 public static SoundStyle SwordHit1 = new SoundStyle($"{Path}Melee/SwordHit1");
                 public static SoundStyle SwordHit2 = new SoundStyle($"{Path}Melee/SwordHit2");
                 public static SoundStyle SwordHit3 = new SoundStyle($"{Path}Melee/SwordHit3");

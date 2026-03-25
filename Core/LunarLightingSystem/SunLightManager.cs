@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.Shaders;
+using System.Threading;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -115,7 +116,7 @@ public class SunLightManager : ModSystem
 
         GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
 
-
+        
         graphicsDevice.RasterizerState.CullMode = CullMode.None;
         graphicsDevice.BlendState = BlendState.AlphaBlend;
         graphicsDevice.DrawUserIndexedPrimitives(

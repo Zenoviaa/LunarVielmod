@@ -15,6 +15,9 @@ namespace Stellamod.Assets
 
         public class GlowMask
         {
+            public static Asset<Texture2D> StarFlare1;
+            public static Asset<Texture2D> StarFlare2;
+            public static Asset<Texture2D> StarFlare3;
             public static Asset<Texture2D> WhiteSquare;
             public static Asset<Texture2D> SpiralVortex;
             public static Asset<Texture2D> SpiralVortex2;
@@ -50,6 +53,9 @@ namespace Stellamod.Assets
         public override void OnModLoad()
         {
             base.OnModLoad();
+            //GlowMask.StarFlare1 = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Star1");
+          //  GlowMask.StarFlare2 = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Star2");
+        //    GlowMask.StarFlare3 = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Star3");
             GlowMask.WhiteSquare = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/WhiteSquare");
             GlowMask.SpiralVortex = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/SpiralVortex");
             GlowMask.SimpleGlowCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/SimpleGlowCircle");
@@ -81,6 +87,9 @@ namespace Stellamod.Assets
         {
             base.OnModUnload();
             //Set to null otherwise we'll have a memory leak
+            GlowMask.StarFlare1 = null;
+            GlowMask.StarFlare2 = null;
+            GlowMask.StarFlare3 = null;
             GlowMask.SpiralVortex2 = null;
             GlowMask.WhiteSquare = null;
             GlowMask.SpiralVortex = null;
