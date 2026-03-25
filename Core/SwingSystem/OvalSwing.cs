@@ -151,6 +151,7 @@ namespace Stellamod.Core.SwingSystem
             float xOffset;
             float yOffset;
             float radOffset = _swingRadians;
+       
             float targetRotation = velocity.ToRotation();
             CalculateXY(easedInterpolant, velocity, out xOffset, out yOffset);
 
@@ -324,6 +325,70 @@ namespace Stellamod.Core.SwingSystem
 
 
 
+            }
+
+
+        }
+
+
+        public void CalculateTrailingPointsExtended(float time, Vector2 velocity, ref Vector2[] trailCache, float trailOffset = 1f, float trailCenterMult=1f)
+        {
+            if (!AlwaysShowTrail)
+            {
+                if (time - 0.3f < 0)
+                    return;
+            }
+
+            //Alright, calculating trail points
+            //The points will be offset by the position matrix
+            //So we just calculate the local points here
+            float length = (float)trailCache.Length;
+            for (int t = 0; t < length; t++)
+            {
+                //Lerp between the points
+                float progressOnTrail = t / length;
+
+                //Calculate starting lerp value
+                float startTrailLerpValue = MathHelper.Clamp(time - 0.3f, 0, 1);
+                float startTrailProgress = startTrailLerpValue;
+                startTrailProgress = Easing(startTrailLerpValue);
+
+
+                //Calculate ending lerp value
+                float endTrailLerpValue = time;
+                float endTrailProgress = endTrailLerpValue;
+                endTrailProgress = Easing(endTrailLerpValue);
+
+                //Smoothing lerp in between points
+                float interpolant = MathHelper.SmoothStep(startTrailProgress, endTrailProgress, progressOnTrail);
+
+                float xOffset;
+                float yOffset;
+
+                float radOffset = _swingRadians / 2;
+                float targetRotation = velocity.ToRotation();
+
+                if (ThrowRadius > 0)
+                {
+                    _throw = MathHelper.Lerp(0f, ThrowRadius + ThrowTrailOffset, EasingFunction.QuadraticBump(MathHelper.SmoothStep(startTrailLerpValue, endTrailLerpValue, progressOnTrail)));
+                }
+                CalculateXY(interpolant, velocity, out xOffset, out yOffset);
+                float centerTrailOffset = trailCenterMult;
+                if (SpinThrowDistance > 0)
+                {
+                    xOffset *= centerTrailOffset;
+                    yOffset *= centerTrailOffset;
+                }
+
+                Vector2 offset = new Vector2(xOffset * trailOffset, yOffset * trailOffset);
+                trailCache[t] = offset.RotatedBy(targetRotation);
+
+
+                Vector2 offset2 = offset;
+                offset2 *= 2;
+  
+                Vector2 throwOffset = Vector2.Lerp(Vector2.Zero, velocity * SpinThrowDistance, EasingFunction.QuadraticBump(time));
+                trailCache[t] += throwOffset;
             }
         }
     }

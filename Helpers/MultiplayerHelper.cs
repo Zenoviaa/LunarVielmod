@@ -3,6 +3,7 @@ using Stellamod.Common.DungeonGeneration;
 using Stellamod.Common.Players;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
+using Stellamod.Content.Special.DeadRomancesExcalibur;
 using Stellamod.Core;
 using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.SilkSystem;
@@ -64,6 +65,9 @@ namespace Stellamod
             byte player;
             switch (id)
             {
+                case MessageType.RomanceDodge:
+                    DeadRomancePlayer.HandleExampleDodgeMessage(reader, whoAmI);
+                    break;
                 case MessageType.Dodge:
                     VixylPlayer.HandleExampleDodgeMessage(reader, whoAmI);
                     break;

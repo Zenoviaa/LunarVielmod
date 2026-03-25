@@ -1082,3 +1082,13 @@ SkeweredAxesFury: {
 	DisplayName: Skewered Axes Fury
 	Description: Mods.Stellamod.Buffs.SkeweredAxesFury.Description
 }
+
+HeavenlyMark: {
+	DisplayName: Heavenly Mark
+	Description: Mods.Stellamod.Buffs.HeavenlyMark.Description
+}
+
+HeavenlyImpact: {
+	DisplayName: Heavenly Impact
+	Description: Mods.Stellamod.Buffs.HeavenlyImpact.Description
+}

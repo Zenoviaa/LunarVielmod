@@ -18,6 +18,20 @@ public static class DrawUtilities
     public delegate Color GetTrailColor(float completionRatio);
     public delegate float GetTrailWidth(float completionRatio);
 
+    public static Vector2 RandomPositionInNPCRect(this NPC npc)
+    {
+        Vector2 pos = new Vector2();
+        pos.X = Main.rand.Next(0, npc.width);
+        pos.Y = Main.rand.Next(0, npc.height);
+        pos += npc.position;
+        return pos;
+    }
+
+    public static SpritebatchDrawer GetDrawer(this Asset<Texture2D> textureAsset, Vector2 worldPosition)
+    {
+        return SpritebatchDrawer.FromTextureAsset(textureAsset, worldPosition);
+    }
+
     public static void Draw(this SpriteBatch spriteBatch, SpritebatchDrawer drawer)
     {
         if (drawer.blackIsTransparency)
@@ -119,6 +133,19 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width, texture.Height) * normalizedOrigin;
         }
     }
+    public void RightCenterOrigin()
+    {
+        Vector2 normalizedOrigin = new Vector2(1f, 0.5f);
+        if (sourceRect.HasValue)
+        {
+            Rectangle rectangle = sourceRect.Value;
+            drawOrigin = new Vector2(rectangle.Width, rectangle.Height) * normalizedOrigin;
+        }
+        else
+        {
+            drawOrigin = new Vector2(texture.Width, texture.Height) * normalizedOrigin;
+        }
+    }
     public void BottomCenterOrigin()
     {
         if (sourceRect.HasValue)
@@ -144,6 +171,20 @@ public struct SpritebatchDrawer
         spritebatchDrawer.scale = Vector2.One;
         return spritebatchDrawer;
     }
+    public static SpritebatchDrawer FromTextureAsset(Texture2D textureAsset, Vector2 worldPosition)
+    {
+        SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();
+        spritebatchDrawer.texture = textureAsset;
+        spritebatchDrawer.worldPosition = worldPosition;
+        spritebatchDrawer.sourceRect = null;
+        spritebatchDrawer.color = Color.White.MultiplyRGB(Lighting.GetColor(worldPosition.ToTileCoordinates()));
+        spritebatchDrawer.rotation = 0;
+        spritebatchDrawer.drawOrigin = textureAsset.Size() * 0.5f;
+        spritebatchDrawer.spriteEffects = SpriteEffects.None;
+        spritebatchDrawer.scale = Vector2.One;
+        return spritebatchDrawer;
+    }
+
 
     public static SpritebatchDrawer FromProjectile(Projectile projectile)
     {

@@ -1,0 +1,625 @@
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Core.Effects.Trails;
+using Stellamod.Core.Pixelation;
+using Stellamod.Core.SwingSystem;
+using Stellamod.Helpers;
+using Stellamod.Trails;
+using Stellamod.UI.Systems;
+using Stellamod.Visual.Particles;
+using System;
+using System.Buffers;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ModLoader;
+
+namespace Stellamod.Content.Special.DeadRomancesExcalibur;
+
+public class DeadRomanceGreatBlade : ModProjectile
+{
+    private enum AIState
+    {
+        ChargeUp,
+        HoldBack,
+        Swing
+    }
+    public override string Texture => TextureRegistry.EmptyTexture;
+
+    private ref float Timer => ref Projectile.ai[0];
+    private ref float SwingDirection => ref Projectile.ai[1];
+    private AIState State
+    {
+        get => (AIState)Projectile.ai[2];
+        set => Projectile.ai[2] = (float)value;
+    }
+    private Player Owner => Main.player[Projectile.owner];
+    private Vector2[] _swingTrailCache;
+    private Vector2 _rotationalVelocity;
+    private Vector2 _startProjectileCenter;
+    private float _startProjectileRotation;
+
+    private OvalSwing _ovalSwing;
+    private float _ratio;
+    private float _bladeRatio;
+    private float _rotationChargeOffset;
+    private float _swingLerp;
+    public float _swordBeamLength;
+    private bool _swordBeamedSound;
+    private float _oldRot;
+
+
+    public float trailWidthInterp;
+    public float chargeUpTime => 90  * fixer;
+    public float holdBackTime => 90 * fixer;
+    public float swingTime => 56 * fixer;
+    public float holdOffset => 90;
+    public float fixer => Projectile.extraUpdates + 1;
+    private SlashTrailer _wideTrailer;
+    private SlashTrailer _auraTrailer;
+    private float _flashTimer;
+
+
+    public float flashRatio => _flashTimer / 120f;
+    public SlashTrailer BuildBladeSlashesTrailer()
+    {
+        float GetTrailWidth(float interpolant)
+        {
+            return EasingFunction.QuadraticBump(interpolant) * 48 ;
+        }
+        Color GetTrailColor(float interpolant)
+        {
+            float ratio = _flashTimer / 120f;
+            ratio = 1f - ratio;
+            Color lerp1 = Color.Lerp(Color.White, Color.DarkGray, interpolant);
+            Color lerp2 = Color.Lerp(Color.Transparent, lerp1, interpolant);
+            return Color.Lerp(lerp2, Color.Black, 0.75f * ratio);
+        }
+        SlashEffect slashEffect = new SlashEffect();
+        slashEffect.BaseColor = Color.White;
+        slashEffect.HighlightColor = Color.White;
+        slashEffect.RimHighlightColor = Color.DarkRed;
+        slashEffect.WindColor = Color.SkyBlue;
+        slashEffect.BlendState = BlendState.Additive;
+        slashEffect.WindTexture = TrailRegistry.CausticTrail.Value;
+
+        SlashTrailer bladeSlashes = new SlashTrailer();
+        bladeSlashes.Shader = slashEffect;
+        bladeSlashes.TrailWidthFunction = GetTrailWidth;
+        bladeSlashes.TrailColorFunction = GetTrailColor;
+        return bladeSlashes;
+    }
+
+    /// <summary>
+    /// The large faint trail on this sword
+    /// </summary>
+    /// <returns></returns>
+    public SlashTrailer BuildBladeSlashesWideTrailer()
+    {
+        float GetTrailWidth(float interpolant)
+        {
+            return EasingFunction.QuadraticBump(interpolant) * 100 * trailWidthInterp;
+        }
+        Color GetTrailColor(float interpolant)
+        {
+            float ratio = _flashTimer / 120f;
+            return Color.Lerp(Color.White, Color.Transparent, interpolant);
+        }
+        SlashEffect slashEffect = new SlashEffect();
+        slashEffect.BaseColor = Color.White;
+        slashEffect.HighlightColor = Color.White;
+        slashEffect.RimHighlightColor = Color.DarkRed;
+        slashEffect.WindColor = Color.SkyBlue;
+        slashEffect.BlendState = BlendState.Additive;
+        slashEffect.WindTexture = TrailRegistry.CausticTrail.Value;
+
+        SlashTrailer bladeSlashes = new SlashTrailer();
+        bladeSlashes.Shader = slashEffect;
+        bladeSlashes.TrailWidthFunction = GetTrailWidth;
+        bladeSlashes.TrailColorFunction = GetTrailColor;
+        bladeSlashes.invert = true;
+        return bladeSlashes;
+    }
+
+    public SlashTrailer BuildAuraTrailer()
+    {
+        float GetTrailWidth(float interpolant)
+        {
+            return EasingFunction.QuadraticBump(interpolant) * 128;
+        }
+        Color GetTrailColor(float interpolant)
+        {
+            float ratio = _flashTimer / 120f;
+            Color lerp1 = Color.Lerp(Color.White, Color.Goldenrod, interpolant);
+            return Color.Lerp(Color.Transparent, lerp1, interpolant) * ratio;
+        }
+        BlackFireShader blackFireShader = new BlackFireShader();
+        blackFireShader.SetDefaults();
+        blackFireShader.InnerColor = Color.Black;
+        blackFireShader.OuterEmiteColor = Color.Black;
+        blackFireShader.OuterColor = Color.Goldenrod;
+
+        SlashTrailer slashTrailer = new SlashTrailer();
+        slashTrailer.Shader = blackFireShader;
+        slashTrailer.TrailWidthFunction = GetTrailWidth;
+        slashTrailer.TrailColorFunction = GetTrailColor;
+        return slashTrailer;
+    }
+
+    public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+    {
+
+        //Check if the sword is colliding, this does a line check instead of terraria default box.
+        float length = _swordBeamLength;
+        float rotation = Projectile.rotation;
+        rotation -= MathHelper.PiOver4;
+        Vector2 start = Projectile.Center - rotation.ToRotationVector2() * length;
+        Vector2 end = Projectile.Center + rotation.ToRotationVector2() * length;
+        float collisionPoint = 0f;
+        bool check = Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 16, ref collisionPoint);
+        return check;
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 16;
+        Projectile.height = 16;
+        Projectile.timeLeft = 6000;
+        Projectile.tileCollide = false;
+        Projectile.penetrate = -1;
+        Projectile.ignoreWater = true;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = -1;
+        Projectile.extraUpdates = 8;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        _wideTrailer ??= BuildBladeSlashesWideTrailer();
+        _auraTrailer ??= BuildAuraTrailer();
+        _swordBeamLength = 256;
+        int denom = 8 * (Projectile.extraUpdates + 1);
+        if (Timer % denom == 0)
+        {
+            Vector2 startPos = Projectile.Center;
+            Vector2 endPos = startPos + _rotationalVelocity * 300;
+            Vector2 spawnPos = Vector2.Lerp(startPos, endPos, Main.rand.NextFloat(0f, 1f));
+        
+            var sp = SirestiasSparkleParticle.Spawn(spawnPos + Main.rand.NextVector2Circular(80, 80), Vector2.Zero);
+            sp.fast = true;
+            sp.noTileCollide = true;
+            sp.gravity = 0;
+        }
+        if(Timer % denom == 0)
+        {
+            Vector2 spawnPos = Projectile.Center;
+            SirestiasSmokeParticle sp = SirestiasSmokeParticle.SpawnInAlphaLayer(spawnPos, Vector2.Zero);
+            sp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Blue, 0.15f), Color.Black, Main.rand.NextFloat(0f, 1f));
+            sp.gravity = 0;
+            sp.noTileCollide = true;
+            sp.Scale *= 0.8f;
+            sp.offsetRot = Main.rand.NextFloat(0f, MathHelper.TwoPi);
+
+
+            Vector2 spawnPos2 = Projectile.Center + _rotationalVelocity * 300f;
+            Vector2 spawnVelocity = spawnPos2 - spawnPos;
+            spawnVelocity = spawnVelocity.SafeNormalize(Vector2.Zero);
+            spawnVelocity *= 24;
+
+            if (Main.rand.NextBool(2 * (Projectile.extraUpdates + 1)))
+            {
+                Color color = new Color(41, 43, 66);
+                var sp2 = SirestiasSmokeParticle2.SpawnInAlphaLayer(spawnPos + Main.rand.NextVector2Circular(32, 32), spawnVelocity * 0.02f);
+                sp2.color = Color.Lerp(color, Color.White, 0.25f);
+                sp2.gravity = 0;
+                sp2.noTileCollide = true;
+                sp2.Scale *= 1;
+                sp2.stretchScale2 = new Vector2(1f, 0.5f);
+                sp2.offsetRot = 0;
+                sp2.noRot = true;
+            }
+
+        }
+
+
+        switch (State)
+        {
+            case AIState.ChargeUp:
+                AI_ChargeUp();
+                break;
+            case AIState.HoldBack:
+                AI_HoldBack();
+                break;
+            case AIState.Swing:
+                AI_Swing();
+                break;
+        }
+
+        AI_OrientPlayer();
+    }
+
+    private void AI_OrientPlayer()
+    {
+        float rotation = Projectile.rotation;
+        Owner.ChangeDir(Projectile.direction);
+        Projectile.spriteDirection = Owner.direction;
+        if (Main.myPlayer == Projectile.owner)
+        {
+            Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+        }
+
+        Owner.itemRotation = rotation * Owner.direction;
+        Owner.itemTime = 2;
+        Owner.itemAnimation = 2;
+        // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
+        Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(135));
+    }
+
+    private float _traveledRotation;
+    private void AI_Swing()
+    {
+        Projectile.friendly = true;
+        if(_ovalSwing == null)
+        {
+            _swingTrailCache = ArrayPool<Vector2>.Shared.Rent(200);
+            _ovalSwing = new OvalSwing
+            {
+                Duration = swingTime,
+                XSwingRadius = 140,
+                YSwingRadius = 115,
+                SwingDegrees = 270,
+                Easing = EasingFunction.InOutExpo
+            };
+        }
+
+
+        Timer++;
+        if(Timer == 1)
+        {
+            _startProjectileCenter = Projectile.Center;
+            _startProjectileRotation = Projectile.rotation;
+        }
+        float Interpolant = Timer / swingTime;
+        Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
+        trailWidthInterp = EasingFunction.QuadraticBump(Interpolant);
+        _ovalSwing.SetDirection((int)SwingDirection);
+        _ovalSwing.UpdateSwing(Interpolant, Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero), out Vector2 swingOffset);
+
+        Vector2 targetProjCenter = Owner.Center + swingOffset;
+        float targetProjRot = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
+
+
+        float easeInStart = EasingFunction.OutExpo(Interpolant);
+        Vector2 adjustedProjCenter = Vector2.Lerp(_startProjectileCenter, targetProjCenter, easeInStart);
+        float adjustedProjRot = Utils.AngleLerp(_startProjectileRotation, targetProjRot, easeInStart);
+        Projectile.Center = adjustedProjCenter;
+        Projectile.rotation = adjustedProjRot;
+
+        _flashTimer = 120f;
+        _ovalSwing.CalculateTrailingPointsExtended(Interpolant, Projectile.velocity.SafeNormalize(Vector2.Zero), ref _swingTrailCache, 
+            trailOffset: 2.5f);
+        Matrix translationMatrix = Matrix.CreateTranslation(new Vector3(Owner.Center.X, Owner.Center.Y, 0));
+        //Now we transform the points
+        //Calculating points locally and then translating it is a bit simpler.
+
+        for (int t = 0; t < _swingTrailCache.Length; t++)
+        {
+            ref Vector2 point = ref _swingTrailCache[t];
+            point = Vector2.Transform(point, translationMatrix);
+        }
+
+
+        _traveledRotation += MathF.Abs(Projectile.rotation - _oldRot);
+        _oldRot = Projectile.rotation;
+        if (_traveledRotation > 0.1f)
+        {
+            _traveledRotation = 0f;
+            int index = (int)(Interpolant * _swingTrailCache.Length) % _swingTrailCache.Length;
+            Vector2 spawnPos = _swingTrailCache[index];
+            SirestiasSmokeParticle sp = SirestiasSmokeParticle.SpawnInAlphaLayer(spawnPos, Vector2.Zero);
+            sp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Blue, 0.15f), Color.Black, Main.rand.NextFloat(0f, 1f));
+            sp.gravity = 0;
+            sp.noTileCollide = true;
+            sp.Scale *= 1.6f;
+            sp.offsetRot = Main.rand.NextFloat(0f, MathHelper.TwoPi);
+
+            index = (int)(Interpolant * _swingTrailCache.Length) % _swingTrailCache.Length;
+            int nextIndex = index + 4;
+            nextIndex %= _swingTrailCache.Length;
+
+            spawnPos = _swingTrailCache[index];
+            Vector2 spawnPos2 = _swingTrailCache[nextIndex];
+            Vector2 spawnVelocity = spawnPos2 - spawnPos;
+            spawnVelocity = spawnVelocity.SafeNormalize(Vector2.Zero);
+            spawnVelocity *= 24;
+
+            if (Main.rand.NextBool(2))
+            {
+                Color color = new Color(41, 43, 66);
+                var sp2 = SirestiasSmokeParticle2.SpawnInAlphaLayer(spawnPos + Main.rand.NextVector2Circular(32, 32), spawnVelocity * 0.02f);
+                sp2.color = Color.Lerp(color, Color.White, 0.25f);
+                sp2.gravity = 0;
+                sp2.noTileCollide = true;
+                sp2.Scale *= 1.4f;
+                sp2.stretchScale2 = new Vector2(1f, 0.5f);
+                sp2.offsetRot = 0;
+                sp2.noRot = true;
+            }
+
+
+            int denom = (int)MathHelper.Lerp(12, 4, flashRatio);
+            if (Main.rand.NextBool(denom))
+            {
+
+
+                DustParticle dp = DustParticle.Spawn(spawnPos, spawnVelocity);
+                dp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Red, 0.1f), Color.Black, Main.rand.NextFloat(0f, 1f));
+                dp.gravity = 0;
+                dp.noTileCollide = true;
+                dp.fast = true;
+                dp.superFast = true;
+            }
+
+        }
+
+
+        if (Timer >= swingTime)
+        {
+            Projectile.Kill();
+        }
+    }
+
+    private void AI_HoldBack()
+    {
+        Timer++;
+
+        float time = holdBackTime;
+        float ratio = Timer / time;
+
+        ShakeModSystem.Shake = MathHelper.Lerp(1f, 4f, ratio);
+        float dir = -Owner.direction;
+     float inc = dir * 0.01f * MathHelper.Lerp(1f, 0f, ratio) * 1f / fixer;
+        _rotationChargeOffset += inc;
+        Projectile.Center = Owner.Center + _rotationalVelocity.SafeNormalize(Vector2.Zero).RotatedBy(_rotationChargeOffset) * holdOffset;
+        Projectile.rotation += inc;
+
+
+        float denom = 54 * fixer;
+        if(Timer >= holdBackTime -denom && !_swordBeamedSound)
+        {
+            _swordBeamedSound = true;
+            SoundStyle sound = AssetRegistry.Sounds.Melee.ExcaliburHeavenlyStrike;
+            sound.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(sound, Projectile.position);
+        }
+        if(Timer >= holdBackTime)
+        {
+            SwitchState(AIState.Swing);
+        }
+    }
+
+
+    private void AI_ChargeUp()
+    {
+        Timer++;
+        Vector2 initialVelocity = -Vector2.UnitY;
+        Vector2 targetVelocity = new Vector2(-1 * SwingDirection, -1);
+        float time = chargeUpTime;
+        _ratio = Timer / time;
+        _bladeRatio = Timer / (time * 0.5f);
+        float ease = EasingFunction.InOutExpo(_ratio);
+        float radians = MathHelper.Lerp(0f, -MathHelper.PiOver4, ease);
+        _rotationalVelocity = initialVelocity.RotatedBy(radians);
+        Projectile.Center = Owner.Center + _rotationalVelocity.SafeNormalize(Vector2.Zero) * holdOffset * EasingFunction.InOutSine(_bladeRatio);
+        Projectile.rotation = _rotationalVelocity.ToRotation() + MathHelper.PiOver4;
+        if(Timer >= chargeUpTime)
+        {
+            SwitchState(AIState.HoldBack);
+        }
+    }
+    private void SwitchState(AIState state)
+    {
+        State = state;
+        Timer = 0;
+        Projectile.netUpdate = true;
+    }
+
+    private void DrawPixelatedGlowSword(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        float rotation = Projectile.rotation;
+        SpriteEffects spriteEffects = SpriteEffects.None;
+        if (SwingDirection == 1)
+        {
+            spriteEffects = SpriteEffects.FlipVertically;
+            rotation -= MathHelper.PiOver2;
+        }
+
+        float ease = EasingFunction.InOutSine(_bladeRatio);
+        Vector2 growScale = Vector2.Lerp(new Vector2(1f, 0f), Vector2.One, ease);
+        GlowingSwordMaskShader shader = GlowingSwordMaskShader.Instance;
+        shader.TrailTexture = TrailRegistry.BeamTrail;
+        shader.Distortion = 0.04f;
+        shader.DistortionTexture = TrailRegistry.DirnTrail;
+        shader.Time = Main.GlobalTimeWrappedHourly * 16;
+        shader.Bloom = 0.3f;
+        spriteBatch.Restart(effect: shader.Effect);
+        SpritebatchDrawer glowSwordSprite = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.RomanceGlowSword, Projectile.Center);
+        glowSwordSprite.rotation = rotation - MathHelper.PiOver4;
+        glowSwordSprite.blackIsTransparency = true;
+        glowSwordSprite.color = Color.White;
+        glowSwordSprite.scale = new Vector2(2f, 1f) * growScale;
+        glowSwordSprite.worldPosition += (Projectile.rotation-MathHelper.PiOver4).ToRotationVector2() * 200;
+       
+        if(_swingTrailCache != null)
+        {
+            for (int i = 0; i < _swingTrailCache.Length; i += 20)
+            {
+                //   float oldRot = Projectile.oldRot[i];
+                Vector2 pos = _swingTrailCache[i];
+
+                glowSwordSprite.worldPosition = pos;
+                float r = (pos - Owner.Center).ToRotation();
+                glowSwordSprite.rotation = r;
+                float ratio = (float)i / (float)_swingTrailCache.Length;
+                ratio = 1f - ratio;
+                glowSwordSprite.color =
+                    Color.Lerp(Color.White, Color.Goldenrod, ratio) * MathHelper.SmoothStep(1f, 0f, ratio) * 0.05f;
+                glowSwordSprite.scale = Vector2.Lerp(Vector2.One, Vector2.Zero, ratio) * new Vector2(2f, 1f) * growScale;
+                spriteBatch.Draw(glowSwordSprite);
+            }
+        }
+        glowSwordSprite.scale = new Vector2(2f, 1f) * growScale;
+
+        glowSwordSprite.rotation = rotation - MathHelper.PiOver4;
+        glowSwordSprite.worldPosition = Projectile.Center;
+        glowSwordSprite.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 200;
+
+        spriteBatch.Draw(glowSwordSprite);
+
+//        glowSwordSprite.worldPosition += Vector2.UnitY.RotatedBy(Main.GlobalTimeWrappedHourly * 4) * 12;
+        glowSwordSprite.color = Color.Goldenrod;
+        glowSwordSprite.scale *= 1.2f;
+        glowSwordSprite.color *= 0.5f;
+        spriteBatch.Draw(glowSwordSprite);
+        spriteBatch.RestartDefaults();
+
+    }
+    private void DrawGlowSwordSprite(ref Color lightColor)
+    {
+        SpriteBatch spriteBath = Main.spriteBatch;
+        SpritebatchDrawer glowBallDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+        glowBallDrawer.scale = new Vector2(0.75f, 0.2f);
+        glowBallDrawer.rotation = Projectile.rotation + MathHelper.PiOver4;
+        glowBallDrawer.color = Color.Goldenrod;
+        glowBallDrawer.color *= 0.5f;
+        glowBallDrawer.color.A = 0;
+        glowBallDrawer.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 64;
+        spriteBath.Draw(glowBallDrawer);
+
+
+
+        glowBallDrawer.scale = new Vector2(0.66f, 0.2f);
+        //glowBallDrawer.rotation = Projectile.rotation;
+        glowBallDrawer.color = Color.White;
+        glowBallDrawer.color *= 0.5f;
+        glowBallDrawer.color.A = 0;
+        spriteBath.Draw(glowBallDrawer);
+
+
+        /*
+        glowBallDrawer.LeftCenterOrigin();
+        glowBallDrawer.scale = new Vector2(2f, 0.2f);
+        glowBallDrawer.worldPosition -= _rotationalVelocity * 249;
+        glowBallDrawer.rotation -= MathHelper.PiOver2;
+        glowBallDrawer.color = Color.White;
+        glowBallDrawer.color.A = 0;
+        spriteBath.Draw(glowBallDrawer);*/
+    }
+    
+    private void DrawSwordSprite(ref Color lightColor)
+    {
+        float rotation = Projectile.rotation;
+        SpriteEffects spriteEffects = SpriteEffects.None;
+        if (SwingDirection == 1)
+        {
+            spriteEffects = SpriteEffects.FlipVertically;
+            rotation -= MathHelper.PiOver2;
+        }
+
+        SpriteBatch spriteBatch = Main.spriteBatch;
+
+        Texture2D texture = ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture + "_Ascended").Value;
+        int frameHeight = texture.Height / Main.projFrames[Projectile.type];
+        int startY = frameHeight * Projectile.frame;
+
+        Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
+        Vector2 origin = sourceRectangle.Size() / 2f;
+        Color drawColor = Projectile.GetAlpha(lightColor);
+
+   
+        float drawScale = 1;
+
+
+
+        float swordRotation = rotation;
+
+
+        Vector2 drawPosition = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
+
+        spriteBatch.Draw(texture, drawPosition,
+            sourceRectangle, drawColor, rotation, origin, drawScale, spriteEffects, 0);
+        SpritebatchDrawer bloomSprite = 
+            SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+        bloomSprite.rotation = Projectile.rotation;
+        bloomSprite.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 180;
+        bloomSprite.blackIsTransparency = true;
+        bloomSprite.color = Color.Goldenrod;
+        bloomSprite.scale = new Vector2(2f, 0.5f);
+        bloomSprite.rotation -= MathHelper.PiOver4;
+        spriteBatch.Draw(bloomSprite);
+    }
+
+    private void DrawSlashTrail(GraphicsDevice gDevice)
+    {
+        Color lightColor = Color.White;
+        if (_auraTrailer == null || _wideTrailer == null)
+            return;
+
+        //   _auraTrailer.DrawTrail(ref lightColor, _swingTrailCache);
+        //    _wideTrailer.DrawTrail(ref lightColor, _swingTrailCache);
+        RichLaserShader laserShader = RichLaserShader.Instance;
+        laserShader.OuterColor = Color.Goldenrod;
+        laserShader.InnerColor = Color.LightGoldenrodYellow;
+        laserShader.LaserColor = Color.Lerp(Color.White, Color.Gold, ExtraMath.Osc(0f, 1f, speed: 8) * 0.5f);
+        laserShader.LaserTexture = TrailRegistry.BeamTrail;
+        laserShader.BloomTexture = TrailRegistry.FlamingTrail;
+        laserShader.Time = Main.GlobalTimeWrappedHourly * -64;
+        TrailDrawer.Draw(Main.spriteBatch, _swingTrailCache, GetSlashTrailColor, GetSlashTrailWidth, laserShader);
+        _wideTrailer.DrawTrail(ref lightColor, _swingTrailCache);
+    }
+
+    private Color GetSlashTrailColor(float w)
+    {
+        return Color.Lerp(Color.White, Color.Goldenrod, w) ;
+    }
+    
+    private float GetSlashTrailWidth(float w)
+    {
+        float Interpolant = Timer / swingTime;
+        Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
+        float f = MathHelper.SmoothStep(0, 1, w) * MathHelper.SmoothStep(1, 0, w);
+        return f * 666 * MathHelper.Lerp(1, 0, EasingFunction.InExpo(Interpolant)) * trailWidthInterp;
+    }
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+        //   PixelationManager.QueuePrimitivesDrawAction(DrawGlowSwordPixelPrims);
+        if(_swingTrailCache != null)
+            PixelationManager.QueuePrimitivesDrawAction(DrawSlashTrail);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedGlowSword);
+        DrawGlowSwordSprite(ref lightColor);
+        DrawSwordSprite(ref lightColor);
+        return false;
+    }
+
+
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+        if (target.HasBuff<HeavenlyMark>())
+        {
+            target.DelBuff(target.FindBuffIndex(ModContent.BuffType<HeavenlyMark>()));
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<Smite>(), 
+                Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: target.whoAmI);
+        }
+    }
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+        if(_swingTrailCache != null)
+        {
+            ArrayPool<Vector2>.Shared.Return(_swingTrailCache);
+        }
+    }
+}

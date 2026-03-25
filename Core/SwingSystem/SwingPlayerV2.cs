@@ -1,4 +1,4 @@
-﻿using Stellamod.Content.Special;
+﻿using Stellamod.Content.Special.DeadRomancesExcalibur;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
