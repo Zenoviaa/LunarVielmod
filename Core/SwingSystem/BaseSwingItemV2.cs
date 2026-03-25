@@ -121,6 +121,7 @@ namespace Stellamod.Core.SwingSystem
        
         }
 
+
         public virtual void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (type == -1)
