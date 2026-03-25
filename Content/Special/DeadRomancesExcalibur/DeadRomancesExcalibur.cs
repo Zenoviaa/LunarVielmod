@@ -22,6 +22,12 @@ public class DeadRomancesExcalibur : BaseSwingItemV2
     public override void ShootSwing(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
         DeadRomancePlayer romancePlayer = player.GetModPlayer<DeadRomancePlayer>();
+        if (player.HasBuff<HeavenlyLove>())
+        {
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<DeadRomanceAscendedDash>(),
+                damage, knockback, player.whoAmI);
+            return;
+        }
         if (romancePlayer.useGreatBlade)
         {
             Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<DeadRomanceGreatBlade>(),
@@ -32,5 +38,16 @@ public class DeadRomancesExcalibur : BaseSwingItemV2
         {
             base.ShootSwing(player, source, position, velocity, type, damage, knockback);
         }
+    }
+
+    public override void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+    {
+        if (player.HasBuff<HeavenlyLove>() || true)
+        {
+            type = ModContent.ProjectileType<DeadRomancesExcaliburParrySlash>();
+        }
+
+        base.ShootSwingStamina(player, source, position, velocity, type, damage, knockback);
+
     }
 }

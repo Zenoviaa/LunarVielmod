@@ -15,6 +15,8 @@ namespace Stellamod.Content.Special.DeadRomancesExcalibur;
 
 public class DeadRomanceParryBuster : ModProjectile
 {
+
+    private bool _noHoming;
     private ref float Timer => ref Projectile.ai[0];
     private int Target
     {
@@ -47,16 +49,21 @@ public class DeadRomanceParryBuster : ModProjectile
         Timer++;
         if (Target != -1)
         {
-            NPC target = Main.npc[Target];
-            if (!target.active)
-                Target = -1;
-            Vector2 targetVelocity = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-            float speed = MathHelper.Lerp(0.2f, 8f, EasingFunction.InOutExpo(Timer / 60f));
-            targetVelocity *= speed;
-            Vector2 lerpedVelocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.2f);
-            Projectile.velocity = lerpedVelocity;
-        }
+            if (!_noHoming)
+            {
+                NPC target = Main.npc[Target];
+                if (!target.active)
+                    Target = -1;
+                Vector2 targetVelocity = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+                float speed = MathHelper.Lerp(0.2f, 24, EasingFunction.InOutExpo(Timer / 60f));
+                targetVelocity *= speed;
+                Vector2 lerpedVelocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.2f);
+                Projectile.velocity = lerpedVelocity;
+            }
 
+        }
+        if (Projectile.velocity.Length() < 25f)
+            Projectile.velocity *= 1.05f;
         Projectile.rotation = Projectile.velocity.ToRotation();
     }
 
@@ -67,6 +74,9 @@ public class DeadRomanceParryBuster : ModProjectile
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
+        _noHoming = true;
+        SoundStyle busted = AssetRegistry.Sounds.Melee.ExcaliburHitBuster;
+        SoundEngine.PlaySound(busted, target.Center);
     }
 
     private void DrawPixelatedAura(SpriteBatch sb, Vector2 sp)
@@ -98,11 +108,10 @@ public class DeadRomanceParryBuster : ModProjectile
         shader.Bloom = 0.3f;
         sb.Restart(effect: shader.Effect);
         SpritebatchDrawer glowSwordSprite = SpritebatchDrawer.FromProjectile(Projectile);
-        glowSwordSprite.rotation = rotation - MathHelper.PiOver4;
+        glowSwordSprite.rotation = rotation;
         glowSwordSprite.blackIsTransparency = true;
         glowSwordSprite.color = Color.White;
         glowSwordSprite.scale = new Vector2(1f, 1f);
-        glowSwordSprite.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 200;
         sb.Draw(glowSwordSprite);
 
         //        glowSwordSprite.worldPosition += Vector2.UnitY.RotatedBy(Main.GlobalTimeWrappedHourly * 4) * 12;

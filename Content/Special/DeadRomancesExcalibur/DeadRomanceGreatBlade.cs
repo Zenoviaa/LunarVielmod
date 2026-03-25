@@ -258,7 +258,11 @@ public class DeadRomanceGreatBlade : ModProjectile
 
     private void AI_Swing()
     {
-        Projectile.friendly = true;
+        if(Timer > swingTime * 0.35f)
+        {
+            Projectile.friendly = true;
+        }
+       
         if(_ovalSwing == null)
         {
             _swingTrailCache = ArrayPool<Vector2>.Shared.Rent(200);
@@ -267,7 +271,7 @@ public class DeadRomanceGreatBlade : ModProjectile
                 Duration = swingTime,
                 XSwingRadius = 140,
                 YSwingRadius = 115,
-                SwingDegrees = 270,
+                SwingDegrees = 355,
                 Easing = EasingFunction.InOutExpo
             };
         }
@@ -410,6 +414,7 @@ public class DeadRomanceGreatBlade : ModProjectile
 
         _ratio = MathHelper.Clamp(_ratio, 0f, 1f);
         _bladeRatio = MathHelper.Clamp(_bladeRatio, 0f, 1f);
+        _bladeRatio = EasingFunction.InOutSine(_bladeRatio);
         float ease = EasingFunction.InOutExpo(_ratio);
         _rotationalVelocity = initialVelocity;
         Projectile.Center = Owner.Center + _rotationalVelocity.SafeNormalize(Vector2.Zero) * holdOffset * EasingFunction.InOutSine(_bladeRatio);

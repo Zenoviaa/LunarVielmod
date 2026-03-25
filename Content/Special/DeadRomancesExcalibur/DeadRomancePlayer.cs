@@ -1,9 +1,6 @@
-﻿using ReLogic.Content;
-using Stellamod.Assets;
-using Stellamod.Buffs;
+﻿using Stellamod.Assets;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Melee;
-using Stellamod.Projectiles.Slashers.Vixyl;
+using Stellamod.Items.Accessories.Players;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -23,17 +20,50 @@ public class DeadRomancePlayer : ModPlayer
     public float parryCooldown;
     public float parryStacks;
     public bool hitParry;
+    public Vector2? dashVelocity;
     public float swingRatio => attackSpeedStacks / 20f;
+    public int punishNPCIndex;
     public override void ResetEffects()
     {
         base.ResetEffects();
     }
 
+    public override bool FreeDodge(Player.HurtInfo info)
+    {
+        if (Player.HasBuff<HeavenlyLove>())
+            return true;
+
+        punishNPCIndex = info.DamageSource.SourceNPCIndex;
+        return base.FreeDodge(info);
+    }
+    public override void PreUpdateMovement()
+    {
+        base.PreUpdateMovement();
+        if (dashVelocity.HasValue)
+        {
+            Vector2 dv = (Vector2)dashVelocity.Value;
+            Player.velocity = dv;
+            dashVelocity = null;
+        }
+    }
     public override void PostUpdateEquips()
     {
         base.PostUpdateEquips();
         if (hitResetTimer > 0)
             hitResetTimer--;
+
+        if (Player.HasBuff<HeavenlyLove>())
+        {
+            for (int i = 0; i < Main.musicFade.Length; i++)
+            {
+                Main.musicFade[i] = 0;
+            }
+        }
+
+        if(parryStacks >= 5)
+        {
+            Ascend();
+        }
         if (parryTimer > 0)
         {
             parryTimer--;
@@ -54,6 +84,12 @@ public class DeadRomancePlayer : ModPlayer
         if (attackSpeedStacks >= 20)
             attackSpeedStacks = 20;
         Player.GetAttackSpeed(DamageClass.Melee) += MathHelper.Lerp(0f, 2f, attackSpeedStacks / 20f);
+    }
+    public void Ascend()
+    {
+        SoundEngine.PlaySound(AssetRegistry.Sounds.Melee.ExcaliburAscended);
+        Player.AddBuff(ModContent.BuffType<HeavenlyLove>(), 15 * 60);
+        parryStacks = 0;
     }
 
     public void StartParry()
@@ -78,6 +114,8 @@ public class DeadRomancePlayer : ModPlayer
             return;
         for (int i = 0; i < maxNumBlades; i++)
         {
+            if (i >= parryStacks)
+                break;
             float ratio = (float)i / (float)maxNumBlades;
             float radians = ratio * MathHelper.TwoPi;
             radians += Main.GlobalTimeWrappedHourly * 0.5f;
@@ -99,8 +137,7 @@ public class DeadRomancePlayer : ModPlayer
                 swordDrawer.scale = Vector2.One * 0.3f;
                 sb.Draw(swordDrawer);
             }
-            if (i >= parryStacks)
-                break;
+ 
         }
     }
 
@@ -136,6 +173,7 @@ public class DeadRomancePlayer : ModPlayer
         hitParry = true;
         parryTimer = 0;
         parryStacks++;
+        Player.GetModPlayer<DashPlayer>().DashCount++;
         Player.SetImmuneTimeForAllTypes(60);
         if (Player.whoAmI != Main.myPlayer)
         {
@@ -144,7 +182,8 @@ public class DeadRomancePlayer : ModPlayer
 
         Vector2 velocity = Player.Center.DirectionTo(Main.MouseWorld);
         Projectile.NewProjectile(Player.GetSource_FromThis(),
-            Player.Center, velocity, ModContent.ProjectileType<DeadRomanceParryingBlade>(), Player.HeldItem.damage * 5, Player.HeldItem.knockBack, Player.whoAmI);
+            Player.Center, velocity, ModContent.ProjectileType<DeadRomancesExcaliburParrySlash>(),
+            Player.HeldItem.damage * 5, Player.HeldItem.knockBack, Player.whoAmI, ai1: 1);
         if (Main.netMode != NetmodeID.SinglePlayer)
         {
             SendExampleDodgeMessage(Player.whoAmI);

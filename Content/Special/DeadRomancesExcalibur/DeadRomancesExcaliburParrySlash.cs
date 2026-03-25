@@ -27,7 +27,7 @@ public class DeadRomancesExcaliburParrySlash : BaseSwingProjectileV2
     {
         float GetTrailWidth(float interpolant)
         {
-            float w = ComboIndex > 1 ? 0.35f : 1f;
+            float w = 0.35f;
             return EasingFunction.QuadraticBump(interpolant) * 48 * w;
         }
         Color GetTrailColor(float interpolant)
@@ -62,7 +62,7 @@ public class DeadRomancesExcaliburParrySlash : BaseSwingProjectileV2
     {
         float GetTrailWidth(float interpolant)
         {
-            float w = ComboIndex > 1 ? 0.35f : 1f;
+            float w = 0.35f;
             return EasingFunction.QuadraticBump(interpolant) * 64 * w;
         }
         Color GetTrailColor(float interpolant)
@@ -91,7 +91,7 @@ public class DeadRomancesExcaliburParrySlash : BaseSwingProjectileV2
     {
         float GetTrailWidth(float interpolant)
         {
-            float w = ComboIndex > 1 ? 0.35f : 1f;
+            float w = 0.35f;
             return EasingFunction.QuadraticBump(interpolant) * 128 * w;
         }
         Color GetTrailColor(float interpolant)
@@ -164,8 +164,9 @@ public class DeadRomancesExcaliburParrySlash : BaseSwingProjectileV2
 
         if(this.OwnedByLocalClient() && !_rudeBuster && Interpolant > 0.3f)
         {
+            int npcPunsih = Owner.GetModPlayer<DeadRomancePlayer>().punishNPCIndex;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity,
-                ModContent.ProjectileType<DeadRomanceParryBuster>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                ModContent.ProjectileType<DeadRomanceParryBuster>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: npcPunsih);
             _rudeBuster = true;
         }
 

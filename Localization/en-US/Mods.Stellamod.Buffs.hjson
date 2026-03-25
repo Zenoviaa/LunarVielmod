@@ -1092,3 +1092,8 @@ HeavenlyImpact: {
 	DisplayName: Heavenly Impact
 	Description: Mods.Stellamod.Buffs.HeavenlyImpact.Description
 }
+
+HeavenlyLove: {
+	DisplayName: Heavenly Love
+	Description: Mods.Stellamod.Buffs.HeavenlyLove.Description
+}

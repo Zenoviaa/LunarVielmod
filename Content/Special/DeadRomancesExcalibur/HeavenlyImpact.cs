@@ -38,7 +38,7 @@ public class HeavenlyImpact : ModBuff
         if (Main.rand.NextBool(24))
         {
             Vector2 spawnPos = npc.RandomPositionInNPCRect();
-            var sp = SirestiasSmokeParticle.Spawn(spawnPos, Vector2.Zero, Scale: 0.5f);
+            var sp = SirestiasSmokeParticle.SpawnInAlphaLayer(spawnPos, Vector2.Zero, Scale: 0.5f);
             sp.noTileCollide = true;
             sp.Scale *= 0.5f;
             sp.Velocity += Vector2.UnitY * -3;
