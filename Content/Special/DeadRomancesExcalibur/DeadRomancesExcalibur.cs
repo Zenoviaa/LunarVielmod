@@ -15,10 +15,11 @@ public class DeadRomancesExcalibur : BaseSwingItemV2
         Item.damage = 10;
         Item.shoot = ModContent.ProjectileType<DeadRomancesExcaliburSlash>();
         staminaProjectileShoot = ModContent.ProjectileType<DeadRomanceParryingBlade>();
-        staminaCost = 1;
+        staminaCost = 2;
         staminaDamageMultiplier = 2;
         comboResetTime = 60;
         meleeWeaponType = MeleeWeaponType.Greatsword;
+        
     }
     public override void ShootSwing(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
@@ -37,7 +38,7 @@ public class DeadRomancesExcalibur : BaseSwingItemV2
         if (player.HasBuff<HeavenlyLove>())
         {
             type = ModContent.ProjectileType<DeadRomancesExcaliburParrySlash>();
-            player.GetModPlayer<DashPlayer>().DashCount++;
+            player.GetModPlayer<DashPlayer>().DashCount+=2;
         }
 
         base.ShootSwingStamina(player, source, position, velocity, type, damage, knockback);

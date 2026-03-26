@@ -33,22 +33,22 @@ public class DeadRomanceAscendedDash : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 64;
-        Projectile.height = 64;
+        Projectile.width = 128;
+        Projectile.height = 128;
         Projectile.friendly = true;
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
         Projectile.timeLeft = 120;
-        Projectile.extraUpdates = 6;
+        Projectile.extraUpdates = 16;
     }
 
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
-        Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center + Vector2.UnitY * -500, Vector2.UnitY, 
-            ModContent.ProjectileType<DeadRomanceAscendedCrashBlade>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai0: target.whoAmI);
+        Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center + Vector2.UnitY * -900, Vector2.UnitY, 
+            ModContent.ProjectileType<DeadRomanceAscendedCrashBlade>(), Projectile.damage * 5, Projectile.knockBack, Projectile.owner, ai0: target.whoAmI);
     }
     public override void AI()
     {
@@ -161,8 +161,8 @@ public class DeadRomanceAscendedDash : ModProjectile
         }
 
         Owner.itemRotation = rotation * Owner.direction;
-        Owner.itemTime = 2;
-        Owner.itemAnimation = 2;
+        Owner.itemTime = 20;
+        Owner.itemAnimation = 20;
         // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
         Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(135));
     }

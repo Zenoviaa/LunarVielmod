@@ -187,7 +187,7 @@ public class DeadRomancePlayer : ModPlayer
         hitParry = true;
         parryTimer = 0;
         parryStacks++;
-        Player.GetModPlayer<DashPlayer>().DashCount++;
+        Player.GetModPlayer<DashPlayer>().DashCount+=2;
         Player.SetImmuneTimeForAllTypes(60);
         if (Player.whoAmI != Main.myPlayer)
         {

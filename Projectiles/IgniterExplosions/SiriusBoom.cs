@@ -19,13 +19,14 @@ namespace Stellamod.Projectiles.IgniterExplosions
         public override void SetDefaults()
         {
             Projectile.hostile = false;
-            Projectile.friendly = true;
+            Projectile.friendly = false;
             Projectile.width = 129;
             Projectile.height = 129;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 30;
             Projectile.scale = 1f;
             Projectile.tileCollide = false;
+            
         }
 
         public float Timer

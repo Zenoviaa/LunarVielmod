@@ -4,8 +4,10 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -29,10 +31,11 @@ public class DeadRomanceParryBuster : ModProjectile
         set => Projectile.ai[1] = value;
     }
     private bool Bouncy => Projectile.ai[2] > 0;
-
+    private float _targetScale;
     public bool reflect;
     public float hitstopTimer;
     public float reflectCount;
+    public float hitCount;
     public float killTimer;
     public bool kill;
     public Vector2 squishScale;
@@ -80,7 +83,9 @@ public class DeadRomanceParryBuster : ModProjectile
         Projectile.timeLeft = 360;
         Projectile.light = 0.78f;
         Projectile.friendly = true;
+
     }
+
 
     public override void AI()
     {
@@ -93,7 +98,10 @@ public class DeadRomanceParryBuster : ModProjectile
         }
         else
         {
-            squishScale = Vector2.One;
+            float scaleMult = MathHelper.Lerp(1f, 1.75f, reflectCount / 5f);
+            scaleMult *= MathHelper.Lerp(1f, 1.75f, hitCount / 5f);
+            _targetScale = MathHelper.Lerp(_targetScale, scaleMult, 0.1f);
+            squishScale = Vector2.One * _targetScale;
         }
         float speedMult = MathHelper.Lerp(1f, 2f, reflectCount / 5f);
       
@@ -153,8 +161,10 @@ public class DeadRomanceParryBuster : ModProjectile
             }
             if (reflect)
             {
+                PlayGrowSound();
                 killTimer = 0;
                 reflectCount++;
+                hitstopTimer = hitstopTime;
                 _homeToOwner = false;
                 _noHoming = false;
                 reflect = false;
@@ -186,6 +196,18 @@ public class DeadRomanceParryBuster : ModProjectile
         base.OnKill(timeLeft);
     }
 
+    private void PlayGrowSound()
+    {
+        SoundStyle growSound = AssetRegistry.Sounds.Melee.ExcaliburSwordBigger;
+        growSound.Pitch = MathHelper.Lerp(0f, 0.8f, reflectCount / 5f);
+        SoundEngine.PlaySound(growSound, Projectile.Center);
+    }
+    public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+    {
+        base.ModifyHitNPC(target, ref modifiers);
+        modifiers.FinalDamage *= MathHelper.Lerp(1f, 4f, reflectCount / 5f);
+    }
+
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
@@ -196,6 +218,11 @@ public class DeadRomanceParryBuster : ModProjectile
             _homeToOwner = true;
             Target = target.whoAmI;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 12);
+            hitCount++;
+            Projectile.NewProjectile(Projectile.GetSource_FromAI(), target.Center, Vector2.Zero,
+             ModContent.ProjectileType<HolyBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+
+            PlayGrowSound();
         }
         else
         {
@@ -309,6 +336,12 @@ public class DeadRomanceParryingBlade : ModProjectile
         Projectile.tileCollide = false;
         Projectile.ignoreWater = true;
         Projectile.light = 0.78f;
+        Projectile.hide = true;
+    }
+    public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+    {
+        base.DrawBehind(index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
+        overPlayers.Add(index);
     }
 
     public override void AI()
@@ -322,6 +355,16 @@ public class DeadRomanceParryingBlade : ModProjectile
             SoundStyle parrySound = AssetRegistry.Sounds.Melee.ExcaliburParry;
             parrySound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(parrySound, Projectile.position);
+
+            for(int i = 0; i < 8; i++)
+            {
+                Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
+                var sp = SparkleParticle.Spawn(Projectile.Center, velocity);
+                sp.outerColor = Color.Goldenrod;
+                sp.Scale *= 0.6f;
+                sp.noTileCollide = true;
+                sp.gravity = 0;
+            }
         }
 
         Projectile.Center = Owner.Center;
@@ -339,6 +382,15 @@ public class DeadRomanceParryingBlade : ModProjectile
             parryDrawer.rotation += MathHelper.TwoPi + MathHelper.ToRadians(180);
         }
         Main.spriteBatch.Draw(parryDrawer);
+
+
+        float ratio = (float)Projectile.timeLeft / 24f;
+        for(int i = 0; i< 8; i++)
+        {
+            parryDrawer.color = Color.White * ratio;
+            parryDrawer.color.A = 0;
+            Main.spriteBatch.Draw(parryDrawer);
+        }
         return false;
     }
     private void AI_OrientPlayer()
