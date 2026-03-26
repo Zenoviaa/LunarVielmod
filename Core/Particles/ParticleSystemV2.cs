@@ -74,6 +74,7 @@ namespace Stellamod.Core.Particles
             }
 
         }
+        private bool _drawBehind;
         public static void UpdateParticle()
         {
             if (Main.netMode == NetmodeID.Server)
@@ -91,6 +92,7 @@ namespace Stellamod.Core.Particles
         private void DrawMainParticles(On_Main.orig_DrawDust orig, Main self)
         {
             orig(self);
+            PixelationManager.QueueSpritebatchDrawAction(DrawAlphaPixelParticlesBehind, DrawLayer.BehindNPCsWithOutline);
             PixelationManager.QueueSpritebatchDrawAction(DrawAlphaPixelParticles, DrawLayer.OverNPCsWithOutline);
             PixelationManager.QueueSpritebatchDrawAction(DrawPixelParticles, DrawLayer.OverNPCsAdditive);
         }
@@ -102,6 +104,8 @@ namespace Stellamod.Core.Particles
             {
                 var particle = AlphaBlendedParticles[i];
                 if (particle == null || !particle.active)
+                    continue;
+                if (particle.behindLayer && !_drawBehind)
                     continue;
 
                 if (!ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
@@ -121,6 +125,12 @@ namespace Stellamod.Core.Particles
                 }
                 particle.Draw(spriteBatch);
             }
+        }
+        private void DrawAlphaPixelParticlesBehind(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            _drawBehind = true;
+            RenderAlphaParticles(spriteBatch);
+            _drawBehind = false;
         }
 
         private void DrawAlphaPixelParticles(SpriteBatch spriteBatch, Vector2 screenPos)

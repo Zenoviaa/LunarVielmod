@@ -128,7 +128,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
         sp.noTileCollide = true;
         sp.Scale *= 0.4f * Projectile.scale;
         sp.offsetRot = Main.rand.NextFloat(0f, MathHelper.TwoPi);
-
+        sp.behindLayer = true;
         spawnPos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
         Vector2 spawnPos2 = Projectile.Center + Main.rand.NextVector2Circular(32, 32); ;
         Vector2 spawnVelocity = spawnPos2 - spawnPos;
@@ -147,6 +147,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
             sp2.stretchScale2 = new Vector2(1f, 0.5f);
             sp2.offsetRot = 0;
             sp2.noRot = true;
+            sp2.behindLayer = true;
         }
         if(State == AIState.Fall)
         {

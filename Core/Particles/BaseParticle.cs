@@ -46,7 +46,7 @@ namespace Stellamod.Core.Particles
         public Entity parent;
         public bool hasParent;
         public bool drawInUI;
-
+        public bool behindLayer;
         public override void Unload()
         {
             base.Unload();
