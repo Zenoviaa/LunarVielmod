@@ -2,25 +2,18 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Common.WeaponTypes;
-using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
-using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
 
 namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 {
@@ -51,13 +44,13 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             //and the last point is close to the starting point
             Vector2 lastMovement = shapePoints[1] - shapePoints[0];
             lastMovement = lastMovement.SafeNormalize(Vector2.Zero);
-            for(int n = 2; n < shapePoints.Length; n++)
+            for (int n = 2; n < shapePoints.Length; n++)
             {
                 Vector2 prevPoint = shapePoints[n - 1];
                 Vector2 point = shapePoints[n];
                 Vector2 movement = (point - prevPoint).SafeNormalize(Vector2.Zero);
                 float dp = Vector2.Dot(lastMovement, movement);
-                if(dp < 0.75f)
+                if (dp < 0.75f)
                 {
                     return false;
                 }

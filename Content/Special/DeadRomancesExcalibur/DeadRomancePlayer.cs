@@ -1,7 +1,9 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
+using Stellamod.Visual.Particles;
 using System.IO;
+using System.Runtime.Intrinsics.X86;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -59,9 +61,31 @@ public class DeadRomancePlayer : ModPlayer
             {
                 Main.musicFade[i] = 0;
             }
+
+            if (Main.rand.NextBool(4))
+            {
+                Vector2 center = Player.Center;
+                Rectangle screenRect = new Rectangle();
+                screenRect.X = (int)center.X - Main.screenWidth / 2;
+                screenRect.Y = (int)center.Y - Main.screenHeight / 2;
+                screenRect.Width = Main.screenWidth;
+                screenRect.Height = Main.screenHeight;
+                Vector2 pos = new Vector2();
+                pos.X = Main.rand.Next(screenRect.Left, screenRect.Right);
+                pos.Y = Main.rand.Next(screenRect.Top, screenRect.Bottom);
+                var sp = SparkleParticle.Spawn(pos, Vector2.Zero, Scale: 0.5f);
+                sp.outerColor = Color.Goldenrod;
+                sp.gravity = 0;
+            }
+
+            if(Main.netMode != NetmodeID.Server)
+            {
+                ScreenShaderSystem tint = ModContent.GetInstance<ScreenShaderSystem>();
+                tint.TintScreen(Color.Goldenrod, 0.2f, 15);
+            }
         }
 
-        if(parryStacks >= 5)
+        if (parryStacks >= 5)
         {
             Ascend();
         }

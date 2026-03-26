@@ -1,8 +1,8 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
-using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent.UI.ResourceSets;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -35,7 +35,7 @@ namespace Stellamod.Core.Particles
 
             AlphaBlendedParticles.Clear();
             AlphaBlendedParticles = null;
-
+ 
             UIParticles.Clear();
             UIParticles = null;
         }
@@ -48,7 +48,7 @@ namespace Stellamod.Core.Particles
 
         private static void UpdateParticleList(IEnumerable<BaseParticle> particles)
         {
-            foreach(BaseParticle particle in particles)
+            foreach (BaseParticle particle in particles)
             {
                 if (particle == null)
                     continue;

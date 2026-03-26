@@ -1,6 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 
 namespace Stellamod.Core.Particles
@@ -9,12 +7,12 @@ namespace Stellamod.Core.Particles
     /// Base class for a particle, the generic parameter should just be the type of the particle, since it will automatically pre-initialize a pool for you
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class Particle<T> : BaseParticle 
+    public abstract class Particle<T> : BaseParticle
         where T : BaseParticle, new()
     {
         private static int _lastIndex;
         private static T[] _pool;
-        public const int Max_Particle_Count = 250;
+        public const int Max_Particle_Count = 300;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -29,7 +27,7 @@ namespace Stellamod.Core.Particles
         private static void InitializePool()
         {
             _pool = new T[Max_Particle_Count];
-            for(int i = 0; i < Max_Particle_Count; i++)
+            for (int i = 0; i < Max_Particle_Count; i++)
             {
                 _pool[i] = new T();
             }
@@ -38,7 +36,7 @@ namespace Stellamod.Core.Particles
         private static T GetParticle()
         {
             int oldest = _lastIndex;
-            for(int i = 0; i < Max_Particle_Count; i++)
+            for (int i = 0; i < Max_Particle_Count; i++)
             {
                 _lastIndex++;
                 _lastIndex = _lastIndex % _pool.Length;
@@ -72,7 +70,7 @@ namespace Stellamod.Core.Particles
             particle.Center = position;
             particle.Velocity = velocity;
             particle.Scale = Scale;
-         
+
             particle.OnSpawn();
             ParticleSystemV2.AddParticle(particle);
             return particle;

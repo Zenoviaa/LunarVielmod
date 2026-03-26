@@ -48,7 +48,7 @@ public class DeadRomanceAscendedDash : ModProjectile
     {
         base.OnHitNPC(target, hit, damageDone);
         Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center + Vector2.UnitY * -900, Vector2.UnitY, 
-            ModContent.ProjectileType<DeadRomanceAscendedCrashBlade>(), Projectile.damage * 5, Projectile.knockBack, Projectile.owner, ai0: target.whoAmI);
+            ModContent.ProjectileType<DeadRomanceAscendedCrashBlade>(), Projectile.damage * 3, Projectile.knockBack, Projectile.owner, ai0: target.whoAmI);
     }
     public override void AI()
     {
