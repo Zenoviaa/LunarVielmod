@@ -1,5 +1,6 @@
 ﻿using Stellamod.Core.Bases;
 using Stellamod.Core.SwingSystem;
+using Stellamod.Items.Accessories.Players;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -28,23 +29,15 @@ public class DeadRomancesExcalibur : BaseSwingItemV2
                 damage, knockback, player.whoAmI);
             return;
         }
-        if (romancePlayer.useGreatBlade)
-        {
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<DeadRomanceGreatBlade>(),
-                damage, knockback, player.whoAmI, ai1: -1);
-            romancePlayer.ConsumeGreatBlade();
-        }
-        else
-        {
-            base.ShootSwing(player, source, position, velocity, type, damage, knockback);
-        }
+        base.ShootSwing(player, source, position, velocity, type, damage, knockback);
     }
 
     public override void ShootSwingStamina(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
-        if (player.HasBuff<HeavenlyLove>() || true)
+        if (player.HasBuff<HeavenlyLove>())
         {
             type = ModContent.ProjectileType<DeadRomancesExcaliburParrySlash>();
+            player.GetModPlayer<DashPlayer>().DashCount++;
         }
 
         base.ShootSwingStamina(player, source, position, velocity, type, damage, knockback);

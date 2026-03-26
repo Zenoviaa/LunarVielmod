@@ -194,15 +194,3 @@ public class DeadRomanceAscendedDash : ModProjectile
         return false;
     }
 }
-
-public class HeavenlyLove : ModBuff
-{
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-    }
-    public override void Update(Player player, ref int buffIndex)
-    {
-        base.Update(player, ref buffIndex);
-    }
-}

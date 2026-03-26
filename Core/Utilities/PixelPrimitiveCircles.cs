@@ -28,14 +28,14 @@ public static class PixelPrimitiveCircleFactory
             ;
             Color GetTrailColorFunction(float interpolant)
             {
-                Color lerp1 = Color.Lerp(Color.White, Color.Goldenrod, ExtraMath.Osc(0.5f, 1f, speed: 8));
+                Color lerp1 = Color.Lerp(Color.White, Color.LightGoldenrodYellow, ExtraMath.Osc(0.5f, 1f, speed: 8));
                 lerp1 = Color.Lerp(lerp1, Color.DarkGoldenrod, completionRatio);
                 return lerp1;
             }
             ;
             BlackFireShader blackFireShader = BlackFireShader.Instance;
             blackFireShader.InnerColor = Color.White;
-            blackFireShader.OuterColor = Color.Goldenrod;
+            blackFireShader.OuterColor = Color.LightGoldenrodYellow;
             blackFireShader.BackColor = Color.DarkGoldenrod;
             TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
         }

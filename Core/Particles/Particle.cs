@@ -14,7 +14,7 @@ namespace Stellamod.Core.Particles
     {
         private static int _lastIndex;
         private static T[] _pool;
-        public const int Max_Particle_Count = 150;
+        public const int Max_Particle_Count = 250;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

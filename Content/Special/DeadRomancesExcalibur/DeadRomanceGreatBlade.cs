@@ -1,4 +1,6 @@
-﻿using Stellamod.Assets;
+﻿using Mono.Cecil;
+using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
@@ -7,12 +9,15 @@ using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
+using Stellamod.Visual.Explosions;
 using Stellamod.Visual.Particles;
 using System;
 using System.Buffers;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.Content.Special.DeadRomancesExcalibur;
 
@@ -37,6 +42,8 @@ public class DeadRomanceGreatBlade : ModProjectile
     private Vector2[] _swingTrailCache;
     private Vector2 _rotationalVelocity;
     private Vector2 _startProjectileCenter;
+    private Vector2 _initialVelocity;
+    private Vector2 _initialOffset;
     private float _startProjectileRotation;
 
     private OvalSwing _ovalSwing;
@@ -48,14 +55,21 @@ public class DeadRomanceGreatBlade : ModProjectile
     private float _oldRot;
     private float _traveledRotation;
     private float _trailWidthLerp;
+    private int _stage;
+    private float _growTimer;
+    private float _nextGrowPoint;
+
     public float chargeUpTime => 120  * fixer;
     public float holdBackTime => 120 * fixer;
     public float swingTime => 64 * fixer;
-    public float holdOffset => 90;
+    public float holdOffset => _initialOffset.Length();
+    public float swordOffset => _initialOffset.Length();
     public float fixer => Projectile.extraUpdates + 1;
+    public float growUpTime => 30 * fixer;
     private SlashTrailer _wideTrailer;
     private SlashTrailer _auraTrailer;
     private float _flashTimer;
+
 
 
     public float flashRatio => _flashTimer / 120f;
@@ -98,15 +112,17 @@ public class DeadRomanceGreatBlade : ModProjectile
         {
             return EasingFunction.QuadraticBump(interpolant) * 100 * _trailWidthLerp;
         }
+
         Color GetTrailColor(float interpolant)
         {
             float ratio = _flashTimer / 120f;
-            return Color.Lerp(Color.White, Color.Transparent, interpolant);
+            return Color.Lerp(Color.White, Color.Transparent, interpolant) * 0.3f;
         }
+
         SlashEffect slashEffect = new SlashEffect();
         slashEffect.BaseColor = Color.White;
         slashEffect.HighlightColor = Color.White;
-        slashEffect.RimHighlightColor = Color.DarkRed;
+        slashEffect.RimHighlightColor = Color.DarkGoldenrod;
         slashEffect.WindColor = Color.SkyBlue;
         slashEffect.BlendState = BlendState.Additive;
         slashEffect.WindTexture = TrailRegistry.CausticTrail.Value;
@@ -178,6 +194,12 @@ public class DeadRomanceGreatBlade : ModProjectile
         _wideTrailer ??= BuildBladeSlashesWideTrailer();
         _auraTrailer ??= BuildAuraTrailer();
         _swordBeamLength = 256;
+
+        if(_growTimer < growUpTime)
+        {
+            _growTimer++;
+        }
+
         int denom = 8 * (Projectile.extraUpdates + 1);
         if (Timer % denom == 0)
         {
@@ -190,6 +212,7 @@ public class DeadRomanceGreatBlade : ModProjectile
             sp.noTileCollide = true;
             sp.gravity = 0;
         }
+
         if(Timer % denom == 0)
         {
             Vector2 spawnPos = Projectile.Center;
@@ -277,11 +300,16 @@ public class DeadRomanceGreatBlade : ModProjectile
         }
 
 
+        if(_growTimer < growUpTime)
+        {
+            _growTimer++;
+        }
         Timer++;
         if(Timer == 1)
         {
             _startProjectileCenter = Projectile.Center;
             _startProjectileRotation = Projectile.rotation;
+
         }
         float Interpolant = Timer / swingTime;
         Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
@@ -301,7 +329,7 @@ public class DeadRomanceGreatBlade : ModProjectile
 
         _flashTimer = 120f;
         _ovalSwing.CalculateTrailingPointsExtended(Interpolant, Projectile.velocity.SafeNormalize(Vector2.Zero), ref _swingTrailCache, 
-            trailOffset: 2.5f);
+            trailOffset: 2.6f);
         Matrix translationMatrix = Matrix.CreateTranslation(new Vector3(Owner.Center.X, Owner.Center.Y, 0));
         //Now we transform the points
         //Calculating points locally and then translating it is a bit simpler.
@@ -375,14 +403,22 @@ public class DeadRomanceGreatBlade : ModProjectile
 
     private void AI_HoldBack()
     {
+   
         Timer++;
 
         float time = holdBackTime;
         float ratio = Timer / time;
-
+        if (ratio >= 0.2f && _stage == 0)
+        {
+            GrowUp();
+        }
+        else if (ratio >= 0.7f && _stage == 1)
+        {
+            GrowUp();
+        }
         ShakeModSystem.Shake = MathHelper.Lerp(1f, 4f, ratio);
         float dir = -Owner.direction;
-     float inc = dir * 0.02f * MathHelper.Lerp(1f, 0f, ratio) * 1f / fixer;
+        float inc = dir * 0.02f * MathHelper.Lerp(1f, 0f, ratio) * 1f / fixer;
         _rotationChargeOffset += inc;
         Projectile.Center = Owner.Center + _rotationalVelocity.SafeNormalize(Vector2.Zero).RotatedBy(_rotationChargeOffset) * holdOffset;
         Projectile.rotation += inc;
@@ -406,7 +442,14 @@ public class DeadRomanceGreatBlade : ModProjectile
     private void AI_ChargeUp()
     {
         Timer++;
-        Vector2 initialVelocity = -Vector2.UnitY;
+        if(Timer == 1)
+        {
+            _initialOffset = Projectile.Center - Owner.Center;
+            SoundStyle sound = AssetRegistry.Sounds.Melee.ExcaliburSwordBigger;
+            SoundEngine.PlaySound(sound, Projectile.position);
+        }
+        Vector2 initialVelocity = Projectile.Center - Owner.Center;
+        initialVelocity = initialVelocity.SafeNormalize(Vector2.Zero);
         Vector2 targetVelocity = new Vector2(-1 * SwingDirection, -1);
         float time = chargeUpTime;
         _ratio = Timer / time;
@@ -414,10 +457,19 @@ public class DeadRomanceGreatBlade : ModProjectile
 
         _ratio = MathHelper.Clamp(_ratio, 0f, 1f);
         _bladeRatio = MathHelper.Clamp(_bladeRatio, 0f, 1f);
+
+
+
         _bladeRatio = EasingFunction.InOutSine(_bladeRatio);
         float ease = EasingFunction.InOutExpo(_ratio);
         _rotationalVelocity = initialVelocity;
-        Projectile.Center = Owner.Center + _rotationalVelocity.SafeNormalize(Vector2.Zero) * holdOffset * EasingFunction.InOutSine(_bladeRatio);
+
+        float dir = -Owner.direction;
+        _initialOffset = _initialOffset.RotatedBy(dir * MathHelper.ToRadians(0.5f * MathHelper.Lerp(0.1f, 0.01f, EasingFunction.OutExpo(_bladeRatio))));
+        float mult = MathHelper.Lerp(1f, 2f, EasingFunction.QuadraticBump(_bladeRatio / 0.85f));
+        Vector2 originalCenter = Owner.Center + _initialOffset * mult;
+        //    Projectile.Center = Owner.Center + _rotationalVelocity.SafeNormalize(Vector2.Zero) * holdOffset * EasingFunction.InOutSine(_bladeRatio);
+        Projectile.Center = originalCenter;
         Projectile.rotation = _rotationalVelocity.ToRotation() + MathHelper.PiOver4;
         if(Timer >= chargeUpTime + (30 * fixer))
         {
@@ -431,6 +483,46 @@ public class DeadRomanceGreatBlade : ModProjectile
         Projectile.netUpdate = true;
     }
 
+    private void GrowUp()
+    {
+        _stage++;
+        _growTimer = 0;
+        SoundStyle sound = AssetRegistry.Sounds.Melee.ExcaliburSwordBigger;
+        SoundEngine.PlaySound(sound, Projectile.position);
+
+        var donut = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+        //   donut.Scale *= Projectile.scale;
+        donut.Scale *= 3;
+        donut.fadeToColor = Color.Goldenrod;
+        donut.shrink = true;
+        donut.noStretch = true;
+
+        for(float f =0; f < 8f; f++)
+        {
+            Vector2 offset = Main.rand.NextVector2Circular(64, 64);
+            Vector2 spawnPos = Projectile.Center + offset;
+            Vector2 velocity = (Projectile.Center - spawnPos) * 0.2f;
+            var fx = FXUtil.GlowStretch(spawnPos, velocity);
+            fx.OuterGlowColor = Color.Goldenrod;
+        }
+        if (Main.netMode == NetmodeID.Server)
+            return;
+
+        ModContent.GetInstance<ScreenShaderSystem>().TintScreen(Color.Goldenrod, 0.25f, 15);
+    }
+    private Asset<Texture2D> GetGlowSwordTexture()
+    {
+        switch (_stage)
+        {
+            default:
+            case 0:
+                return AssetManager.GlowMask.RomanceGlowSwordSmall;
+            case 1:
+                return AssetManager.GlowMask.RomanceGlowSwordMedium;
+            case 2:
+                return AssetManager.GlowMask.RomanceGlowSword;
+        }
+    }
     private void DrawPixelatedGlowSword(SpriteBatch spriteBatch, Vector2 screenPos)
     {
         float rotation = Projectile.rotation;
@@ -443,19 +535,24 @@ public class DeadRomanceGreatBlade : ModProjectile
 
         float ease = EasingFunction.InOutSine(_bladeRatio);
         Vector2 growScale = Vector2.Lerp(new Vector2(0f, 1f), Vector2.One, ease);
+        float ease2 = EasingFunction.QuadraticBump(_growTimer / growUpTime);
+        growScale *= Vector2.Lerp(Vector2.One, Vector2.One * 1.2f, ease2);
         GlowingSwordMaskShader shader = GlowingSwordMaskShader.Instance;
         shader.TrailTexture = TrailRegistry.BeamTrail;
         shader.Distortion = 0.04f;
         shader.DistortionTexture = TrailRegistry.DirnTrail;
         shader.Time = Main.GlobalTimeWrappedHourly * 16;
         shader.Bloom = 0.3f;
+        shader.Tiling = Vector2.One * 2;
         spriteBatch.Restart(effect: shader.Effect);
-        SpritebatchDrawer glowSwordSprite = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.RomanceGlowSword, Projectile.Center);
+
+        Asset<Texture2D> glowSwordTextureAsset = GetGlowSwordTexture();
+        SpritebatchDrawer glowSwordSprite = SpritebatchDrawer.FromTextureAsset(glowSwordTextureAsset, Projectile.Center);
         glowSwordSprite.rotation = rotation - MathHelper.PiOver4;
         glowSwordSprite.blackIsTransparency = true;
         glowSwordSprite.color = Color.White;
-        glowSwordSprite.scale = new Vector2(2f, 1f) * growScale;
-        glowSwordSprite.worldPosition += (Projectile.rotation-MathHelper.PiOver4).ToRotationVector2() * 200 * _bladeRatio;
+        glowSwordSprite.scale = growScale;
+        glowSwordSprite.worldPosition += (Projectile.rotation-MathHelper.PiOver4).ToRotationVector2() * swordOffset * _bladeRatio;
        
         if(_swingTrailCache != null)
         {
@@ -475,12 +572,11 @@ public class DeadRomanceGreatBlade : ModProjectile
                 spriteBatch.Draw(glowSwordSprite);
             }
         }
-        glowSwordSprite.scale = new Vector2(2f, 1f) * growScale;
 
+        glowSwordSprite.scale =  growScale;
         glowSwordSprite.rotation = rotation - MathHelper.PiOver4;
         glowSwordSprite.worldPosition = Projectile.Center;
-        glowSwordSprite.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 200 * _bladeRatio;
-
+        glowSwordSprite.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * swordOffset * _bladeRatio;
         spriteBatch.Draw(glowSwordSprite);
 
 //        glowSwordSprite.worldPosition += Vector2.UnitY.RotatedBy(Main.GlobalTimeWrappedHourly * 4) * 12;
@@ -494,18 +590,22 @@ public class DeadRomanceGreatBlade : ModProjectile
     private void DrawGlowSwordSprite(ref Color lightColor)
     {
         SpriteBatch spriteBath = Main.spriteBatch;
+
+        float ease2 = EasingFunction.QuadraticBump(_growTimer / growUpTime);
+        Vector2 scale = Vector2.Lerp(Vector2.One, Vector2.One * 1.2f, ease2);
+
         SpritebatchDrawer glowBallDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
-        glowBallDrawer.scale = new Vector2(0.75f, 0.2f) * _bladeRatio; ;
+        glowBallDrawer.scale = new Vector2(0.75f, 0.2f) * _bladeRatio * scale; ;
         glowBallDrawer.rotation = Projectile.rotation + MathHelper.PiOver4;
         glowBallDrawer.color = Color.Goldenrod;
         glowBallDrawer.color *= 0.5f;
         glowBallDrawer.color.A = 0;
-        glowBallDrawer.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 64 * _bladeRatio; ;
+        glowBallDrawer.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2()  * _bladeRatio; ;
         spriteBath.Draw(glowBallDrawer);
 
 
 
-        glowBallDrawer.scale = new Vector2(0.66f, 0.2f) * _bladeRatio; ;
+        glowBallDrawer.scale = new Vector2(0.66f, 0.2f) * _bladeRatio * scale; ;
         //glowBallDrawer.rotation = Projectile.rotation;
         glowBallDrawer.color = Color.White;
         glowBallDrawer.color *= 0.5f;
@@ -534,7 +634,6 @@ public class DeadRomanceGreatBlade : ModProjectile
         }
 
         SpriteBatch spriteBatch = Main.spriteBatch;
-
         Texture2D texture = ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture + "_Ascended").Value;
         int frameHeight = texture.Height / Main.projFrames[Projectile.type];
         int startY = frameHeight * Projectile.frame;
@@ -543,22 +642,18 @@ public class DeadRomanceGreatBlade : ModProjectile
         Vector2 origin = sourceRectangle.Size() / 2f;
         Color drawColor = Projectile.GetAlpha(lightColor);
 
-   
-        float drawScale = 1;
 
-
-
+        Vector2 drawScale = Vector2.One;
         float swordRotation = rotation;
 
-
         Vector2 drawPosition = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
-
         spriteBatch.Draw(texture, drawPosition,
             sourceRectangle, drawColor, rotation, origin, drawScale, spriteEffects, 0);
+
         SpritebatchDrawer bloomSprite = 
             SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
         bloomSprite.rotation = Projectile.rotation;
-        bloomSprite.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 180 * _bladeRatio; ;
+        bloomSprite.worldPosition += (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 90 * _bladeRatio; ;
         bloomSprite.blackIsTransparency = true;
         bloomSprite.color = Color.Goldenrod;
         bloomSprite.scale = new Vector2(2f, 0.5f) * _bladeRatio; ;
@@ -579,7 +674,7 @@ public class DeadRomanceGreatBlade : ModProjectile
         laserShader.InnerColor = Color.LightGoldenrodYellow;
         laserShader.LaserColor = Color.Lerp(Color.White, Color.Gold, ExtraMath.Osc(0f, 1f, speed: 8) * 0.5f);
         laserShader.LaserTexture = TrailRegistry.BeamTrail;
-        laserShader.BloomTexture = TrailRegistry.FlamingTrail;
+        laserShader.BloomTexture = TrailRegistry.BeamTrail;
         laserShader.Time = Main.GlobalTimeWrappedHourly * -64;
         TrailDrawer.Draw(Main.spriteBatch, _swingTrailCache, GetSlashTrailColor, GetSlashTrailWidth, laserShader);
         _wideTrailer.DrawTrail(ref lightColor, _swingTrailCache);
@@ -594,8 +689,7 @@ public class DeadRomanceGreatBlade : ModProjectile
     {
         float Interpolant = Timer / swingTime;
         Interpolant = MathHelper.Clamp(Interpolant, 0f, 1f);
-        float f = MathHelper.SmoothStep(0, 1, w) * MathHelper.SmoothStep(1, 0, w);
-        return f * 666 * MathHelper.Lerp(1, 0, EasingFunction.InExpo(Interpolant)) * _trailWidthLerp;
+        return  252 * MathHelper.Lerp(0, 1, EasingFunction.InOutSine(w)) * _trailWidthLerp;
     }
 
     public override bool PreDraw(ref Color lightColor)
@@ -650,6 +744,27 @@ public class DeadRomanceGreatBlade : ModProjectile
             hitSound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(hitSound, target.Center);
             FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
+                ModContent.ProjectileType<HeavenlyCrashBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+
+            var boom = FXUtil.GlowCircleBoom(target.Center, Color.White, Color.Goldenrod, Color.DarkGoldenrod);
+            boom.Scale *= 2;
+            for (float f = 0f; f < 8f; f++)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(16, 16);
+                Vector2 pos = target.Center;
+                var ds = DustParticle.Spawn(pos, vel);
+                ds.noTileCollide = true;
+                ds.outerColor = Color.Yellow;
+            }
+            for (float f = 0; f < 4f; f++)
+            {
+                Vector2 pos = target.Center + Main.rand.NextVector2Circular(64, 64);
+                Vector2 velocity = (pos - target.Center).SafeNormalize(Vector2.Zero) * 32;
+                var fx = FXUtil.GlowStretch(pos, velocity);
+                fx.OuterGlowColor = Color.Goldenrod;
+            }
+
         }
     }
     public override void OnKill(int timeLeft)

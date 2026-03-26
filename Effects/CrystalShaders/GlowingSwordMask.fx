@@ -48,6 +48,7 @@ float Distortion;
 float3 InnerColor;
 float3 OuterColor;
 float Bloom;
+float2 Tiling;
 float QuadraticBump(float t)
 {
     const float factor = 4;
@@ -58,7 +59,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     float2 uv = coords;
     float2 noiseSampleCoords = uv + float2(Time * -0.05, 0.0);
     noiseSampleCoords = frac(noiseSampleCoords);
-    float noiseSample = tex2D(DistortionTextureSampler, noiseSampleCoords).r;
+    float noiseSample = tex2D(DistortionTextureSampler, noiseSampleCoords * Tiling).r;
     float noiseRadians = noiseSample * 3.14;
     float2 distortionOffset = float2(cos(noiseRadians), sin(noiseRadians)) * Distortion;
     
@@ -74,7 +75,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     float ySample = uv.x < 0.5 ? lerp(0.0, 0.5, n) : lerp(1.0, 0.5, n);
     float2 trailTextureCoords = float2(Time * -0.05, ySample);
     trailTextureCoords = frac(trailTextureCoords);
-    float trailSample = tex2D(TrailTextureSampler, trailTextureCoords).r;
+    float trailSample = tex2D(TrailTextureSampler, trailTextureCoords * Tiling).r;
     float colorInterp = QuadraticBump(uv.y);
     float3 glowColor = lerp(OuterColor, InnerColor, colorInterp);
     float4 finalColor = float4(glowColor * trailSample, 1.0) * sampleColor;

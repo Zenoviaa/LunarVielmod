@@ -148,7 +148,7 @@ namespace Stellamod.Core.SwingSystem
             {
                 Projectile.NewProjectile(source, position, velocity, type, staminaDamage, knockback, player.whoAmI);
             }
-            Projectile.NewProjectile(source, player.Center, Vector2.Zero, ModContent.ProjectileType<BasicStaminaExplosion>(), damage, knockback);
+            Projectile.NewProjectile(source, player.Center, Vector2.Zero, ModContent.ProjectileType<BasicStaminaExplosion>(), damage, knockback, player.whoAmI);
         }
 
         public override bool AltFunctionUse(Player player)

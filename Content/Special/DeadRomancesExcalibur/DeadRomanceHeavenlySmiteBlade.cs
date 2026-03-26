@@ -77,19 +77,6 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
             _scale = Projectile.scale = Main.rand.NextFloat(0.5f, 1f);
         }
 
-        if (Target != -1)
-        {
-            NPC targetNPC = Main.npc[Target];
-            if (targetNPC.active)
-            {
-                _targetCenter = targetNPC.Center;
-            }
-            else
-            {
-                Target = -1;
-            }
-        }
-
         int denom = 16 * (Projectile.extraUpdates+1);
         if (Timer % denom == 0)
         {
@@ -195,11 +182,10 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
             Dust.NewDustPerfect(Projectile.Center, DustID.GoldFlame, Scale: 0.5f);
         }
 
-        Vector2 targetVelocity = Projectile.DirectionTo(_targetCenter);
         float interp = EasingFunction.InOutExpo(Timer / 60f);
         float speed = MathHelper.Lerp(0.2f, 8, interp);
         Projectile.extraUpdates = (int)MathHelper.Lerp(0, 4, interp);
-        Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity * speed, 0.2f);
+        Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.velocity.SafeNormalize(Vector2.Zero) * speed, 0.2f);
         Projectile.rotation = Projectile.velocity.ToRotation();
         _lineRot = Projectile.rotation;
         _lineRotLerp = interp;

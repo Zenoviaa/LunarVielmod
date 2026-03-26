@@ -40,15 +40,18 @@ public class Smite : ModProjectile
         }
             
         Timer++;
-        if(Timer % 6 == 0)
+        if(Timer % 5 == 0)
         {
             if (this.OwnedByLocalClient())
             {
-                Vector2 spawnPos = _smitePosition + new Vector2(0, -Main.rand.Next(250, 500));
+                Vector2 spawnPos = _smitePosition + new Vector2(0, -Main.rand.Next(250, 400));
                 spawnPos.X += Main.rand.NextFloat(-500, 500);
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), spawnPos, Vector2.Zero, 
+
+                Vector2 velocity = Vector2.UnitY;
+                velocity = velocity.RotatedByRandom(MathHelper.ToRadians(45));
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), spawnPos, velocity, 
                     ModContent.ProjectileType<DeadRomanceHeavenlySmiteBlade>(), Projectile.damage, Projectile.knockBack, 
-                    Projectile.owner, ai0: Target);
+                    Projectile.owner);
             }
         }
     }

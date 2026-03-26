@@ -30,7 +30,7 @@ public class GlowingSwordMaskShader : BaseShader
     private EffectParameter _trailTextureParam;
     private EffectParameter _distortionTextureParam;
     private EffectParameter _distortionParam;
-
+    private EffectParameter _tilingParam;
     public float Bloom
     {
         set
@@ -56,6 +56,15 @@ public class GlowingSwordMaskShader : BaseShader
             _outerColorParam.SetValue(value.ToVector3());
         }
     }
+    public Vector2 Tiling
+    {
+        set
+        {
+            _tilingParam ??= Effect.Parameters["Tiling"];
+            _tilingParam.SetValue(value);
+        }
+    }
+
 
     public float Time
     {

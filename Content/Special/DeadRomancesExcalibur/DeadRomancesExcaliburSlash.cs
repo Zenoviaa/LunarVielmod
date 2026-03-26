@@ -1,4 +1,5 @@
-﻿using Stellamod.Assets;
+﻿using Mono.Cecil;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.SwingSystem;
@@ -9,6 +10,7 @@ using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.Content.Special.DeadRomancesExcalibur;
 
@@ -275,7 +277,7 @@ public class DeadRomancesExcaliburSlash : BaseSwingProjectileV2
         base.OnHitNPC(target, hit, damageDone);
         DeadRomancePlayer romancePlayer = Owner.GetModPlayer<DeadRomancePlayer>();
         romancePlayer.attackSpeedStacks++;
-        if(romancePlayer.attackSpeedStacks >= 21)
+        if(romancePlayer.attackSpeedStacks >= 29)
         {
             romancePlayer.useGreatBlade = true;
             target.AddBuff(ModContent.BuffType<HeavenlyMark>(), 60 * 60);
@@ -290,9 +292,22 @@ public class DeadRomancesExcaliburSlash : BaseSwingProjectileV2
         cp.fast = true;
         _flashTimer = 120;
     }
+
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        DeadRomancePlayer romancePlayer = Owner.GetModPlayer<DeadRomancePlayer>();
+        if (!romancePlayer.useGreatBlade)
+            return;
+        if (ComboIndex > 1)
+            return;
+        if (SwingDirection != 1)
+            return;
+
+
+        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ModContent.ProjectileType<DeadRomanceGreatBlade>(),
+              Projectile.damage * 2, Projectile.knockBack, Projectile.owner, ai1: -1);
+        romancePlayer.ConsumeGreatBlade();
     }
     public override void DrawSwordBeam(ref Color lightColor)
     {

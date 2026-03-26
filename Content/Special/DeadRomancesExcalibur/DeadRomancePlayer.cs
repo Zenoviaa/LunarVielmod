@@ -20,6 +20,7 @@ public class DeadRomancePlayer : ModPlayer
     public float parryCooldown;
     public float parryStacks;
     public bool hitParry;
+    public bool successfulReflect;
     public Vector2? dashVelocity;
     public float swingRatio => attackSpeedStacks / 20f;
     public int punishNPCIndex;
@@ -81,9 +82,12 @@ public class DeadRomancePlayer : ModPlayer
             attackSpeedStacks = 0;
         }
 
-        if (attackSpeedStacks >= 20)
-            attackSpeedStacks = 20;
-        Player.GetAttackSpeed(DamageClass.Melee) += MathHelper.Lerp(0f, 2f, attackSpeedStacks / 20f);
+        if (attackSpeedStacks >= 28)
+            attackSpeedStacks = 28;
+
+        float lerp = attackSpeedStacks / 20f;
+        lerp = MathHelper.Clamp(lerp, 0f, 1f);
+        Player.GetAttackSpeed(DamageClass.Melee) += MathHelper.Lerp(0f, 2f, lerp);
     }
     public void Ascend()
     {
@@ -109,7 +113,17 @@ public class DeadRomancePlayer : ModPlayer
         if (drawInfo.shadow != 0f)
             return;
         int maxNumBlades = 5;
-
+        SpriteBatch sb = Main.spriteBatch;
+        if (Player.HasBuff<HeavenlyLove>())
+        {
+            var haloTexture = ModContent.GetInstance<HeavenlyLove>().SigilTextureAsset;
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(haloTexture, Player.Center);
+            drawer.worldPosition += Vector2.UnitY * -64;
+            drawer.blackIsTransparency = true;
+            drawer.color = Color.Goldenrod;
+            drawer.worldPosition.Y += ExtraMath.Osc(0f, -4f);
+            sb.Draw(drawer);
+        }
         if (parryStacks <= 0)
             return;
         for (int i = 0; i < maxNumBlades; i++)
@@ -122,7 +136,7 @@ public class DeadRomancePlayer : ModPlayer
             Vector2 drawCenter = radians.ToRotationVector2() * 32 + drawInfo.drawPlayer.Center;
             for (int j = 0; j < 4; j++)
             {
-                SpriteBatch sb = Main.spriteBatch;
+
                 float ratio2 = (float)j / (float)4f;
                 float radians2 = ratio2 * MathHelper.TwoPi;
                 radians2 += Main.GlobalTimeWrappedHourly * 2f;

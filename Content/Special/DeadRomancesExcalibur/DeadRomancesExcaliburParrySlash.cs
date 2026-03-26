@@ -20,6 +20,7 @@ public class DeadRomancesExcaliburParrySlash : BaseSwingProjectileV2
     private SlashTrailer _auraTrailer;
     private float _flashTimer;
     private bool _rudeBuster;
+    private bool _dontMakeRudeBuster;
 
 
     public float flashRatio => _flashTimer / 120f;
@@ -161,12 +162,37 @@ public class DeadRomancesExcaliburParrySlash : BaseSwingProjectileV2
         {
             _flashTimer--;
         }
+        if(Timer == 1)
+        {
+            _flashTimer = 120;
+        }
 
-        if(this.OwnedByLocalClient() && !_rudeBuster && Interpolant > 0.3f)
+        int busterType = ModContent.ProjectileType<DeadRomanceParryBuster>();
+        foreach (var proj in Main.ActiveProjectiles)
+        {
+            if (proj.owner != Projectile.owner)
+                continue;
+            if (proj.type != busterType)
+                continue;
+            DeadRomanceParryBuster buster = proj.ModProjectile as DeadRomanceParryBuster;
+            float dist = Vector2.Distance(Owner.Center, buster.Projectile.Center);
+            if(dist < 64)
+            {
+                buster.reflect = true;
+                proj.netUpdate = true;
+            }
+        }
+
+        bool hasAnyBusters = Owner.ownedProjectileCounts[busterType] > 0;
+        if (hasAnyBusters)
+            _dontMakeRudeBuster = true;
+        if(this.OwnedByLocalClient() && !_rudeBuster && Interpolant > 0.3f && !_dontMakeRudeBuster)
         {
             int npcPunsih = Owner.GetModPlayer<DeadRomancePlayer>().punishNPCIndex;
+         
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity,
-                ModContent.ProjectileType<DeadRomanceParryBuster>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: npcPunsih);
+                ModContent.ProjectileType<DeadRomanceParryBuster>(), Projectile.damage, Projectile.knockBack, Projectile.owner,
+                ai1: npcPunsih);
             _rudeBuster = true;
         }
 

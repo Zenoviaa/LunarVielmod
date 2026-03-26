@@ -56,6 +56,7 @@ public class DeadRomanceBusterSmiteBlade : ModProjectile
         Projectile.timeLeft = 180;
         Projectile.extraUpdates = 2;
         Projectile.light = 2f;
+        Projectile.tileCollide = false;
     }
 
     public override void AI()
@@ -80,6 +81,16 @@ public class DeadRomanceBusterSmiteBlade : ModProjectile
         }
 
         int denom = 16 * (Projectile.extraUpdates+1);
+        int denom2 = 32 * (Projectile.extraUpdates + 1);
+        if (Timer % denom2 == 0)
+        {
+            SirestiasSmokeParticle sp = SirestiasSmokeParticle.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(32, 32), Vector2.Zero);
+            sp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Blue, 0.15f), Color.Black, Main.rand.NextFloat(0f, 1f));
+            sp.gravity = 0;
+            sp.noTileCollide = true;
+            sp.Scale *= 0.8f;
+            sp.offsetRot = Main.rand.NextFloat(0f, MathHelper.TwoPi);
+        }
         if (Timer % denom == 0)
         {
             Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
@@ -105,40 +116,14 @@ public class DeadRomanceBusterSmiteBlade : ModProjectile
             }
         }
 
-        Projectile.velocity = Projectile.velocity.RotatedBy(0.05f);
-        Projectile.scale *= 0.98f;
-        SmokeParticles();
+        Projectile.velocity = Projectile.velocity.RotatedBy(0.015f);
+        Projectile.rotation = Projectile.velocity.ToRotation();
+
+     //   SmokeParticles();
     }
 
     private void SmokeParticles()
     {
-        Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
-        SirestiasSmokeParticle sp = SirestiasSmokeParticle.SpawnInAlphaLayer(spawnPos, Vector2.Zero);
-        sp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Blue, 0.15f), Color.Black, Main.rand.NextFloat(0f, 1f));
-        sp.gravity = 0;
-        sp.noTileCollide = true;
-        sp.Scale *= 0.4f * Projectile.scale;
-        sp.offsetRot = Main.rand.NextFloat(0f, MathHelper.TwoPi);
-
-        spawnPos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
-        Vector2 spawnPos2 = Projectile.Center + Main.rand.NextVector2Circular(32, 32); ;
-        Vector2 spawnVelocity = spawnPos2 - spawnPos;
-        spawnVelocity = spawnVelocity.SafeNormalize(Vector2.Zero);
-        spawnVelocity *= 24;
-
-        int denom = 2 * (Projectile.extraUpdates + 1);
-        if (Main.rand.NextBool(denom))
-        {
-            Color color = new Color(41, 43, 66);
-            var sp2 = SirestiasSmokeParticle2.SpawnInAlphaLayer(spawnPos + Main.rand.NextVector2Circular(32, 32), spawnVelocity * 0.02f);
-            sp2.color = Color.Lerp(color, Color.White, 0.25f);
-            sp2.gravity = 0;
-            sp2.noTileCollide = true;
-            sp2.Scale *= 0.66f * Projectile.scale;
-            sp2.stretchScale2 = new Vector2(1f, 0.5f);
-            sp2.offsetRot = 0;
-            sp2.noRot = true;
-        }
 
     }
 
@@ -173,15 +158,8 @@ public class DeadRomanceBusterSmiteBlade : ModProjectile
         drawer.color = Color.LightGoldenrodYellow;
         drawer.color.A = 0;
 
-        SpritebatchDrawer bloomLineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.ShootingStarTrail, Projectile.Center);
-        bloomLineDrawer.rotation = _lineRot;
-        bloomLineDrawer.scale = new Vector2(16, 1);
-        bloomLineDrawer.color = Color.Goldenrod;
-        bloomLineDrawer.color *= MathHelper.Lerp(0f, 1f, _lineRotLerp);
-        bloomLineDrawer.color.A = 0;
-        bloomLineDrawer.RightCenterOrigin();
-        bloomLineDrawer.worldPosition += _lineRot.ToRotationVector2() * 128 * MathHelper.Lerp(1f, 0f, _lineRotLerp);
-        spriteBatch.Draw(bloomLineDrawer);
+        drawer.worldPosition = Projectile.Center;
+        drawer.rotation = Projectile.rotation;
         spriteBatch.Draw(drawer);
     }
 
