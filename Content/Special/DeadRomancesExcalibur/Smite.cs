@@ -44,8 +44,8 @@ public class Smite : ModProjectile
         {
             if (this.OwnedByLocalClient())
             {
-                Vector2 spawnPos = _smitePosition + new Vector2(0, -Main.rand.Next(250, 400));
-                spawnPos.X += Main.rand.NextFloat(-500, 500);
+                Vector2 spawnPos = _smitePosition + new Vector2(0, -Main.rand.Next(600, 800));
+                spawnPos.X += Main.rand.NextFloat(-25, 25);
 
                 Vector2 velocity = Vector2.UnitY;
                 velocity = velocity.RotatedByRandom(MathHelper.ToRadians(45));

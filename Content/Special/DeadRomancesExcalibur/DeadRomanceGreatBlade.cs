@@ -420,7 +420,12 @@ public class DeadRomanceGreatBlade : ModProjectile
         float dir = -Owner.direction;
         float inc = dir * 0.02f * MathHelper.Lerp(1f, 0f, ratio) * 1f / fixer;
         _rotationChargeOffset += inc;
-        Projectile.Center = Owner.Center + _rotationalVelocity.SafeNormalize(Vector2.Zero).RotatedBy(_rotationChargeOffset) * holdOffset;
+
+
+        Vector2 vel = _rotationalVelocity;
+        float mult = MathHelper.Lerp(1f, 1.2f, EasingFunction.QuadraticBump(_growTimer / growUpTime));
+       
+        Projectile.Center = Owner.Center + vel.SafeNormalize(Vector2.Zero).RotatedBy(_rotationChargeOffset) * mult * holdOffset;
         Projectile.rotation += inc;
 
 
@@ -466,8 +471,8 @@ public class DeadRomanceGreatBlade : ModProjectile
 
         float dir = -Owner.direction;
         _initialOffset = _initialOffset.RotatedBy(dir * MathHelper.ToRadians(0.5f * MathHelper.Lerp(0.1f, 0.01f, EasingFunction.OutExpo(_bladeRatio))));
-        float mult = MathHelper.Lerp(1f, 2f, EasingFunction.QuadraticBump(_bladeRatio / 0.85f));
-        Vector2 originalCenter = Owner.Center + _initialOffset * mult;
+
+        Vector2 originalCenter = Owner.Center + _initialOffset ;
         //    Projectile.Center = Owner.Center + _rotationalVelocity.SafeNormalize(Vector2.Zero) * holdOffset * EasingFunction.InOutSine(_bladeRatio);
         Projectile.Center = originalCenter;
         Projectile.rotation = _rotationalVelocity.ToRotation() + MathHelper.PiOver4;

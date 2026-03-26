@@ -160,6 +160,7 @@ public class DeadRomanceBusterSmiteBlade : ModProjectile
 
         drawer.worldPosition = Projectile.Center;
         drawer.rotation = Projectile.rotation;
+        drawer.scale = new Vector2(0.5f, 1f);
         spriteBatch.Draw(drawer);
     }
 
