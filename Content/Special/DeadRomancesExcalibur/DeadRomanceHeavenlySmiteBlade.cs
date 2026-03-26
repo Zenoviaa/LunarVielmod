@@ -95,16 +95,13 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
         denom = 8 * (Projectile.extraUpdates + 1);
         if (Timer % denom == 0)
         {
-            for (int i = 0; i < 2; i++)
-            {
-                Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
-                SirestiasSparkleParticle sp = SirestiasSparkleParticle.Spawn(spawnPos, Vector2.Zero);
-                sp.gravity = 0;
-                sp.noTileCollide = true;
-                sp.Scale *= 0.1f * Projectile.scale;
-                sp.fast = true;
-                sp.outerColor = Color.Yellow;
-            }
+            Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
+            SirestiasSparkleParticle sp = SirestiasSparkleParticle.Spawn(spawnPos, Vector2.Zero);
+            sp.gravity = 0;
+            sp.noTileCollide = true;
+            sp.Scale *= 0.1f * Projectile.scale;
+            sp.fast = true;
+            sp.outerColor = Color.Yellow;
         }
 
 
@@ -138,6 +135,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
         int denom = 2 * (Projectile.extraUpdates + 1);
         if (Main.rand.NextBool(denom))
         {
+            /*
             Color color = new Color(41, 43, 66);
             var sp2 = SirestiasSmokeParticle2.SpawnInAlphaLayer(spawnPos + Main.rand.NextVector2Circular(32, 32), spawnVelocity * 0.02f);
             sp2.color = Color.Lerp(color, Color.White, 0.25f);
@@ -147,11 +145,11 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
             sp2.stretchScale2 = new Vector2(1f, 0.5f);
             sp2.offsetRot = 0;
             sp2.noRot = true;
-            sp2.behindLayer = true;
+            sp2.behindLayer = true;*/
         }
         if(State == AIState.Fall)
         {
-            denom = 12 * (Projectile.extraUpdates + 1);
+            denom = 18 * (Projectile.extraUpdates + 1);
             if (Main.rand.NextBool(denom))
             {
                 DustParticle dp = DustParticle.Spawn(spawnPos, spawnVelocity);
@@ -177,7 +175,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
             FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGoldenrodYellow, Color.DarkGoldenrod);
         }
 
-        SmokeParticles();
+      //  SmokeParticles();
         float speed = 15;
         Projectile.extraUpdates = 4;
         Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.velocity.SafeNormalize(Vector2.Zero) * speed, 0.2f);
@@ -190,17 +188,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
         Timer++;
         if(Timer == 1)
         {
-            int[] gores = AutoGoreLoader.FindGores("GrayRock");
-            foreach (int g in gores)
-            {
-                if (Main.rand.NextBool(3))
-                {
-                    Gore.NewGore(Projectile.GetSource_FromThis(),
-    Projectile.Center,
-    -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
-                }
 
-            }
             var boom = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Goldenrod, Color.DarkGoldenrod);
             boom.Scale *= 0.3f;
 
@@ -224,9 +212,10 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
                 zap.Rotation = Main.rand.NextFloat(0f, 3f);
             }
 
-            for (float f = 0f; f < 2f; f++)
+            for (float f = 0f; f < 3; f++)
             {
                 Vector2 vel = Main.rand.NextVector2Circular(16, 16);
+                vel.Y -= 8;
                 Vector2 pos = Projectile.Center;
                 var ds = DustParticle.Spawn(pos, vel);
                 ds.noTileCollide = true;

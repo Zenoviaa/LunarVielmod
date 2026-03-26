@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
@@ -71,14 +72,14 @@ namespace Stellamod.Projectiles.IgniterExplosions
                 _frameTick = 0;
                 if (++_frameCounter >= 30)
                 {
-                    _frameCounter = 0;
+                    //_frameCounter = 0;
                 }
             }
             return true;
         }
 
 
-        public override bool PreDraw(ref Color lightColor)
+        private void DrawNiiviBoom(SpriteBatch sb, Vector2 screenPos)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
@@ -95,6 +96,10 @@ namespace Stellamod.Projectiles.IgniterExplosions
             spriteBatch.Draw(texture, drawPosition,
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
                 glowColor, 0f, origin, 4f, SpriteEffects.None, 0f);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawNiiviBoom, DrawLayer.OverPlayers);
             return false;
         }
     }

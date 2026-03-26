@@ -304,9 +304,8 @@ public class DeadRomancesExcaliburSlash : BaseSwingProjectileV2
         if (SwingDirection != 1)
             return;
 
-
         Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ModContent.ProjectileType<DeadRomanceGreatBlade>(),
-              Projectile.damage * 2, Projectile.knockBack, Projectile.owner, ai1: -1);
+              Projectile.damage * 5, Projectile.knockBack, Projectile.owner, ai1: -1);
         romancePlayer.ConsumeGreatBlade();
     }
     public override void DrawSwordBeam(ref Color lightColor)

@@ -25,6 +25,10 @@ namespace Stellamod.Assets
             }
             public static class Trails
             {
+                public static Asset<Texture2D> BasicSlash_Thin1 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Thin1");
+                public static Asset<Texture2D> BasicSlash_Thin2 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Thin2");
+                public static Asset<Texture2D> BasicSlash_Thin3 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Thin3");
+                public static Asset<Texture2D> BasicSlash_Thin4 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Thin4");
                 public static Asset<Texture2D> BasicSlash_Wide1 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide1");
                 public static Asset<Texture2D> BasicSlash_Wide2 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide2");
                 public static Asset<Texture2D> BasicSlash_Wide3 = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Trails/BasicSlash_Wide3");

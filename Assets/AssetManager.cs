@@ -41,6 +41,7 @@ namespace Stellamod.Assets
  
         public class LaserTextures
         {
+            public static Asset<Texture2D> HeavenlySlashTrail;
             public static Asset<Texture2D> TexturedLaser;
             public static Asset<Texture2D> TexturedLaser2;
             public static Asset<Texture2D> SnowflakeLaser;
@@ -84,6 +85,7 @@ namespace Stellamod.Assets
             LaserTextures.Lightning = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Lightning");
             LaserTextures.Lightning2 = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Lightning2");
             LaserTextures.PetalNoise = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/PetalNoise");
+            LaserTextures.HeavenlySlashTrail = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/HeavenlySlashTrail");
 
             Noise.Whirly = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Whirly");
 
@@ -122,6 +124,7 @@ namespace Stellamod.Assets
             LaserTextures.Lightning = null;
             LaserTextures.Lightning2 = null;
             LaserTextures.PetalNoise = null;
+            LaserTextures.HeavenlySlashTrail = null;
 
             Noise.Whirly = null;
             Noise.AuroraRays = null;
