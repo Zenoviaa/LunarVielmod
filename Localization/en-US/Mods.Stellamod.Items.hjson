@@ -10666,3 +10666,8 @@ DeadRomancesExcalibur: {
 	DisplayName: Dead Romances Excalibur
 	Tooltip: ""
 }
+
+MusicalHarmonise: {
+	DisplayName: Musical Harmonise
+	Tooltip: ""
+}

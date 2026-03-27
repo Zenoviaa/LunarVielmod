@@ -131,4 +131,13 @@ namespace Stellamod.Content.CommonMaterials
             Item.rare = ModContent.RarityType<FallenEyesRarity>();
         }
     }
+    public class MusicalHarmonise : ModItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.maxStack = Item.CommonMaxStack;
+            Item.rare = ModContent.RarityType<MusicalHarmoniseRarity>();
+        }
+    }
 }
