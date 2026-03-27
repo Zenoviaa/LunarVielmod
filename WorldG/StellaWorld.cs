@@ -10,6 +10,7 @@ using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.TilesSH;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
+using Stellamod.Content.Areas.WaterSide.TilesWS;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Content.Areas.WorldsEnd.TilesWE;
 using Stellamod.Content.CommonMaterials;
@@ -108,6 +109,7 @@ public class StellaWorld : ModSystem
     public Point ManorLocation { get; private set; }
     public Point MarshLocation { get; private set; }
     public Point AlcadLocation { get; private set; }
+    public Point CoralwaysLocation { get; private set; }
     public Point GothiviaSpawnOffset => new Point(246, -99);
     public Point BublbtrifierSpawnOffset => new Point(246, -99);
 
@@ -325,6 +327,7 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Tree Caves", TreeCavesPass));
         passWriter.NextPass(new PassLegacy("Cavernous Caves", CavernousCavesPass));
 
+
         passWriter.SetInsertionIndex("Shimmer");
         passWriter.NextPass(new PassLegacy("Fake Shimmer", WorldGenShimmerSpot));
 
@@ -364,6 +367,7 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Jungle Surface Caves", WorldGenJungleSurfaceCaves));
         passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
         passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
+        passWriter.NextPass(new PassLegacy("Runica Waterside Underwater", WorldGenRunicaUnderwaterCaves));
 
         //Set desert location
         passWriter.SetInsertionIndex("Full Desert");
@@ -383,7 +387,144 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Stone Golem Cave", WorldGenStoneGolemCave));
         passWriter.NextPass(new PassLegacy("Grassing Caves", WorldGenGrassPass));
     }
-    
+
+
+    private void WorldGenRunicaUnderwaterCaves(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Runica Caves";
+        var rand = WorldGen.genRand;
+        int caveOriginX = GenVars.snowOriginRight + 250;
+        int caveOriginY = (int)Main.worldSurface - 100;
+
+        Point point = new Point(caveOriginX, caveOriginY);
+        caveOriginY = FallToSolidTile(point).Y;
+
+        int width = 500;
+        int left = caveOriginX - width / 2;
+        int right = caveOriginX + width / 2;
+        int bottom = caveOriginY + 1800;
+
+        int deepSeaTile = ModContent.TileType<DeepSeaTile>();
+        int pinkSandTile = ModContent.TileType<PinkSandTile>();
+        int reefTile = ModContent.TileType<ReefTile>();
+
+        //Set the pink sand
+        for (int y = caveOriginY; y < bottom; y++)
+        {
+
+            for (int x = left; x < right && x < Main.maxTilesX; x++)
+            {
+                float ratio = (float)(x - left) / (float)(right - left);
+                float ease = EasingFunction.QuadraticBump(ratio);
+                int denom = (int)MathHelper.Lerp(1, 8, ease);
+                if (Main.rand.NextBool(denom))
+                    continue;
+                if (caveOriginY > bottom - 25)
+                {
+                    float heightRatio = (float)(caveOriginY - (bottom - 25)) / 25f;
+                    int heightDenom = (int)MathHelper.Lerp(1, 16, heightRatio);
+                    if (!Main.rand.NextBool(heightDenom))
+                        continue;
+                }
+                Tile tile = Main.tile[x, y];
+                if (tile.HasTile)
+                {
+                    WorldGen.PlaceTile(x, y, pinkSandTile, forced: true);
+                }
+            }
+        }
+
+        void ScatterBlotch(int numBlotches, int t)
+        {
+            int attempts = 0;
+            int n = 0;
+            while (n < numBlotches)
+            {
+                attempts++;
+                if (attempts > 1000000)
+                {
+                    Console.WriteLine("Failed to generate enough blotches");
+                    break;
+                }
+                int randY = rand.Next(caveOriginY, bottom);
+                int randX = rand.Next(left, right);
+                if (randX >= Main.maxTilesX)
+                    continue;
+
+                Tile tile = Main.tile[randX, randY];
+                if (!tile.HasTile)
+                    continue;
+                if (tile.TileType != pinkSandTile)
+                    continue;
+
+                //We have a spot
+                float strength = rand.NextFloat(8, 16);
+                int steps = rand.Next(10, 20);
+                WorldGen.OreRunner(randX, randY, strength, steps, (ushort)t);
+                n++;
+            }
+        }
+
+        for (int y = caveOriginY; y < bottom; y++)
+        {
+
+            for (int x = left; x < right && x < Main.maxTilesX; x++)
+            {
+                float ratio = (float)(x - left) / (float)(right - left);
+                float ease = EasingFunction.QuadraticBump(ratio);
+                int denom = (int)MathHelper.Lerp(1, 8, ease);
+                if (Main.rand.NextBool(denom))
+                    continue;
+                if (caveOriginY > bottom - 25)
+                {
+                    float heightRatio = (float)(caveOriginY - (bottom - 25)) / 25f;
+                    int heightDenom = (int)MathHelper.Lerp(1, 16, heightRatio);
+                    if (!Main.rand.NextBool(heightDenom))
+                        continue;
+                }
+                Tile tile = Main.tile[x, y];
+                if (tile.HasTile)
+                {
+                    WorldGen.PlaceTile(x, y, pinkSandTile, forced: true);
+                }
+            }
+        }
+
+        //Set random reef blocks
+
+        ScatterBlotch(200, reefTile);
+        ScatterBlotch(200, deepSeaTile);
+        ScatterBlotch(500, TileID.ReefBlock);
+        CoralwaysLocation = new Point(caveOriginX - 150, caveOriginY);
+        GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("HarmonicCoralways");
+        prefab.PasteErase(caveOriginX, caveOriginY, PrefabPlacementType.FromTopCenter);
+
+        for (int y = caveOriginY; y < bottom; y++)
+        {
+            for (int x = left; x < right; x++)
+            {
+                WorldGen.PlaceLiquid(x, y, (byte)LiquidID.Water, byte.MaxValue);
+            }
+        }
+
+
+        for (int y = caveOriginY; y < bottom; y++)
+        {
+            for (int x = left; x < right; x++)
+            {
+                WorldGen.PlaceLiquid(x, y, (byte)LiquidID.Water, byte.MaxValue);
+            }
+        }
+
+        //Just throw a big ass circle of water at the top to fill the empty space
+        Point centerPoint = new Point(caveOriginX, caveOriginY);
+        WorldUtils.Gen(centerPoint, new Shapes.Circle(10, 10), 
+            Actions.Chain(new GenAction[]
+        {
+            new Actions.SetLiquid(LiquidID.Water)
+        }));
+    }
+
     private void WorldGenJunkyardCaves(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Junkyard Caves";
@@ -2396,7 +2537,8 @@ public class StellaWorld : ModSystem
         var genRand = WorldGen.genRand;
         //High Tree Caves
         int worldsEndEdge = 3300;
-        for (int x = worldsEndEdge; x < Main.maxTilesX; x++)
+        int maxX = (int)(Main.maxTilesX * 0.8f);
+        for (int x = worldsEndEdge; x < maxX; x++)
         {
             int caveMakerSteps = 32;
             for (int j = 0; j < caveMakerSteps; j++)
@@ -7114,168 +7256,101 @@ public class StellaWorld : ModSystem
         Rectangle rectangle = StructureLoader.ReadRectangle("Struct/Overworld/Illuria");
         progress.Message = "Niivi protecting the cities above.";
 
-
-
-
-
-        bool placed = false;
-        int attempts = 0;
-        while (!placed && attempts++ < 10000000)
+        Point Loc = new Point(GenVars.snowOriginRight - 150, (int)Main.worldSurface - 350);
+        rectangle.Location = Loc;
+        Structurizer.ProtectStructure(Loc, "Struct/Overworld/Illuria");
+        int[] ChestIndexs = Structurizer.ReadStruct(Loc, "Struct/Overworld/Illuria");
+        NPCs.Town.AlcadSpawnSystem.IlluriaTile = Loc;
+        foreach (int chestIndex in ChestIndexs)
         {
-            // Select a place in the first 6th of the world, avoiding the oceans
-            int smx = WorldGen.genRand.Next((Main.maxTilesX) - (Main.maxTilesX / 15), (Main.maxTilesX - 250)); // from 50 since there's a unaccessible area at the world's borders
-                                                                                                               // 50% of choosing the last 6th of the world
-                                                                                                               // Choose which side of the world to be on randomly
-            ///if (WorldGen.genRand.NextBool())
-            ///{
-            ///	towerX = Main.maxTilesX - towerX;
-            ///}
+            var chest = Main.chest[chestIndex];
+            var itemsToAdd = new List<(int type, int stack)>();
+            // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+            int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+                Tuple.Create(ModContent.ItemType<AlcadizScrap>(), 0.5),
+                //  Tuple.Create(ModContent.ItemType<LostScrap>(), 0.1),
+                Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
+            );
 
-            //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-            int smy = ((int)(Main.worldSurface - 200));
-
-            // We go down until we hit a solid tile or go under the world's surface
-            while (!WorldGen.SolidTile(smx, smy) && smy <= Main.worldSurface)
+            if (specialItem != ItemID.None)
             {
-                smy++;
+                itemsToAdd.Add((specialItem, 1));
+            }
+            // Using a switch statement and a random choice to add sets of items.
+            switch (Main.rand.Next(6))
+            {
+                case 0:
+                    itemsToAdd.Add((ModContent.ItemType<LittleWand>(), Main.rand.Next(1, 1)));
+                    itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+                    itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(5, 20)));
+                    ;
+                    itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
+                    itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
+                    itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
+                    break;
+                case 1:
+                    itemsToAdd.Add((ModContent.ItemType<AlcaricQuiver>(), Main.rand.Next(1, 1)));
+                    itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+                    itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+                    itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+
+                    itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
+                    itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+                    itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
+                    break;
+                case 2:
+                    itemsToAdd.Add((ModContent.ItemType<BlackRose>(), Main.rand.Next(1, 1)));
+                    itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+                    itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
+                    itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
+                    itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
+                    itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+                    break;
+                case 3:
+                    //    itemsToAdd.Add((ModContent.ItemType<FloweredInsource>(), Main.rand.Next(1, 1)));
+                    //   itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
+                    itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+                    itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
+                    itemsToAdd.Add((ModContent.ItemType<AlcadizScrap>(), Main.rand.Next(5, 20)));
+                    itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
+                    itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
+
+                    break;
+                case 4:
+                    itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
+                    itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
+                    itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
+                    itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
+                    itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
+                    itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
+                    itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
+                    break;
+
+                case 5:
+                    itemsToAdd.Add((ItemID.FuneralHat, Main.rand.Next(1, 1)));
+                    itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
+                    itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
+                    itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
+                    itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
+                    itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
+                    break;
+
+
             }
 
-            // If we went under the world's surface, try again
-            if (smy > Main.worldSurface - 20)
+            // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+            int chestItemIndex = 0;
+            foreach (var itemToAdd in itemsToAdd)
             {
-                continue;
+                Item item = new Item();
+                item.SetDefaults(itemToAdd.type);
+                item.stack = itemToAdd.stack;
+                chest.item[chestItemIndex] = item;
+                chestItemIndex++;
+                if (chestItemIndex >= 40)
+                    break; // Make sure not to exceed the capacity of the chest
             }
-            Tile tile = Main.tile[smx, smy];
-            // If the type of the tile we are placing the tower on doesn't match what we want, try again
-            if ((tile.TileType == TileID.Grass))
-            {
-                continue;
-            }
-
-            int smxx = smx;
-            int smyy = smy - 20;
-            // place the Rogue
-            //	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-            //Main.npc[num].homeTileX = -1;
-            //	Main.npc[num].homeTileY = -1;
-            //	Main.npc[num].direction = 1;
-            //	Main.npc[num].homeless = true;
-
-
-
-            for (int da = 0; da < 1; da++)
-            {
-                Point Loc = new Point(smx - 270, smyy - 70);
-
-                rectangle.Location = Loc;
-                // NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
-                Structurizer.ProtectStructure(Loc, "Struct/Overworld/Illuria");
-                int[] ChestIndexs = Structurizer.ReadStruct(Loc, "Struct/Overworld/Illuria");
-                NPCs.Town.AlcadSpawnSystem.IlluriaTile = Loc;
-                foreach (int chestIndex in ChestIndexs)
-                {
-                    var chest = Main.chest[chestIndex];
-                    // etc
-
-                    // itemsToAdd will hold type and stack data for each item we want to add to the chest
-                    var itemsToAdd = new List<(int type, int stack)>();
-
-                    // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-                    int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-                        Tuple.Create(ModContent.ItemType<AlcadizScrap>(), 0.5),
-                        //  Tuple.Create(ModContent.ItemType<LostScrap>(), 0.1),
-                        Tuple.Create(ModContent.ItemType<GildedBag1>(), 0.4)
-
-                    // Choose no item with a high weight of 7.
-                    );
-                    if (specialItem != ItemID.None)
-                    {
-                        itemsToAdd.Add((specialItem, 1));
-                    }
-                    // Using a switch statement and a random choice to add sets of items.
-                    switch (Main.rand.Next(6))
-                    {
-                        case 0:
-                            itemsToAdd.Add((ModContent.ItemType<LittleWand>(), Main.rand.Next(1, 1)));
-                            itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-                            itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(5, 20)));
-                            ;
-                            itemsToAdd.Add((ItemID.ArcheryPotion, Main.rand.Next(1, 7)));
-                            itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 7)));
-                            itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 7)));
-                            break;
-                        case 1:
-                            itemsToAdd.Add((ModContent.ItemType<AlcaricQuiver>(), Main.rand.Next(1, 1)));
-                            itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-                            itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-                            itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-
-                            itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-                            itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-                            itemsToAdd.Add((ItemID.InfernoPotion, Main.rand.Next(1, 7)));
-                            break;
-                        case 2:
-                            itemsToAdd.Add((ModContent.ItemType<BlackRose>(), Main.rand.Next(1, 1)));
-                            itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-                            itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
-                            itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-                            itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-                            itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-                            break;
-                        case 3:
-                            //    itemsToAdd.Add((ModContent.ItemType<FloweredInsource>(), Main.rand.Next(1, 1)));
-                            //   itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(10, 15)));
-                            itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-                            itemsToAdd.Add((ItemID.Bomb, Main.rand.Next(3, 7)));
-                            itemsToAdd.Add((ModContent.ItemType<AlcadizScrap>(), Main.rand.Next(5, 20)));
-                            itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-                            itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 7)));
-
-                            break;
-                        case 4:
-                            itemsToAdd.Add((ModContent.ItemType<Gambit>(), Main.rand.Next(1, 4)));
-                            itemsToAdd.Add((ModContent.ItemType<VerianOre>(), Main.rand.Next(9, 15)));
-                            itemsToAdd.Add((ItemID.Dynamite, Main.rand.Next(1, 3)));
-                            itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
-                            itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-                            itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-                            itemsToAdd.Add((ItemID.WrathPotion, Main.rand.Next(1, 7)));
-                            break;
-
-                        case 5:
-                            itemsToAdd.Add((ItemID.FuneralHat, Main.rand.Next(1, 1)));
-                            itemsToAdd.Add((ItemID.Moonglow, Main.rand.Next(2, 5)));
-                            itemsToAdd.Add((ModContent.ItemType<CarianWood>(), Main.rand.Next(20, 30)));
-                            itemsToAdd.Add((ModContent.ItemType<AlcaricMush>(), Main.rand.Next(2, 30)));
-                            itemsToAdd.Add((ItemID.ObsidianSkinPotion, Main.rand.Next(1, 7)));
-                            itemsToAdd.Add((ItemID.LifeforcePotion, Main.rand.Next(1, 7)));
-                            break;
-
-
-                    }
-
-                    // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-                    int chestItemIndex = 0;
-                    foreach (var itemToAdd in itemsToAdd)
-                    {
-                        Item item = new Item();
-                        item.SetDefaults(itemToAdd.type);
-                        item.stack = itemToAdd.stack;
-                        chest.item[chestItemIndex] = item;
-                        chestItemIndex++;
-                        if (chestItemIndex >= 40)
-                            break; // Make sure not to exceed the capacity of the chest
-                    }
-                }
-            }
-
-            placed = true;
-
-
-
-
-        }
+        }     
     }
 
     private void WorldGenWorshipingTowers(GenerationProgress progress, GameConfiguration configuration)
@@ -9314,6 +9389,8 @@ public class StellaWorld : ModSystem
         base.NetSend(writer);
         writer.Write(MarshLocation.X);
         writer.Write(MarshLocation.Y);
+        writer.Write(CoralwaysLocation.X);
+        writer.Write(CoralwaysLocation.Y);
     }
     public override void NetReceive(BinaryReader reader)
     {
@@ -9322,17 +9399,24 @@ public class StellaWorld : ModSystem
         marshLocation.X = reader.ReadInt32();
         marshLocation.Y = reader.ReadInt32();
         MarshLocation = marshLocation;
+
+        Point coralwaysLocation = new Point();
+        coralwaysLocation.X = reader.ReadInt32();
+        coralwaysLocation.Y = reader.ReadInt32();
+        CoralwaysLocation = coralwaysLocation;
     }
 
     public override void SaveWorldData(TagCompound tag)
     {
         tag["MarshLocation"] = MarshLocation;
         tag["FableHillLocation"] = FableHillStartLocation;
+        tag["CoralwaysLocation"] = CoralwaysLocation;
     }
 
     public override void LoadWorldData(TagCompound tag)
     {
         MarshLocation = tag.Get<Point>("MarshLocation");
         FableHillStartLocation = tag.Get<Point>("FableHillLocation");
+        CoralwaysLocation = tag.Get<Point>("CoralwaysLocation");
     }
 }

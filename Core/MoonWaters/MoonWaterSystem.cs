@@ -46,7 +46,7 @@ namespace Stellamod.Core.MoonWaters
         }
         public override bool IsActive(Player player)
         {
-            return player.ZoneBeach;
+            return player.ZoneBeach || player.GetModPlayer<BiomePlayer>().ZoneHarmonicCoralways;
         }
         public override void ModifyPixelWater(ref PixelWater pixelWater)
         {
@@ -347,7 +347,7 @@ namespace Stellamod.Core.MoonWaters
                 return;
             if (Main.gameMenu)
                 return;
-
+       
             if (layer == RenderLayers.ForegroundWater)
             {
                 //This is called right before the front water gets drawn

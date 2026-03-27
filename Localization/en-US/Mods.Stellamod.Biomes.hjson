@@ -207,3 +207,8 @@ JunkyardBiome: {
 	DisplayName: Junkyard Biome
 	TownNPCDialogueName: the Junkyard Biome
 }
+
+HarmonicCoralwaysBiome: {
+	DisplayName: Harmonic Coralways Biome
+	TownNPCDialogueName: the Harmonic Coralways Biome
+}

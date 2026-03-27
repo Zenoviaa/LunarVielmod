@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Content.Special.DeadRomancesExcalibur;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
 using Terraria;
@@ -146,6 +147,7 @@ public class GoldenAuroraEffectRenderer : ModSystem
         Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         Color drawColor = Color.Goldenrod;
         drawColor *= alpha * 0.7f;
+        drawColor *= ExtraMath.Osc(0.5f, 1f, speed: 2);
         //shader.Time = 0;
         sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, shader.Effect);
         sb.Draw(textureAsset.Value, drawRect, drawColor);

@@ -20,4 +20,5 @@ namespace Stellamod.Assets.Biomes
             b = 1f;
         }
     }
+
 }

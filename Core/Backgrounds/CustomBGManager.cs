@@ -160,7 +160,13 @@ namespace Stellamod.Core.Backgrounds
             Color drawColor = Main.ColorOfTheSkies * drawAlpha;
             if (bg.NoSurfaceLight)
                 drawColor = Color.White * drawAlpha;
-            float parallaxX = Main.screenPosition.X * bgLayer.Parallax * bg.LocalParallaxSpeed;
+
+            Vector2 defaultParallax = new Vector2();
+            defaultParallax.X = Main.screenPosition.X * bgLayer.Parallax * bg.LocalParallaxSpeed;
+            defaultParallax.Y = Main.screenPosition.Y * bgLayer.Parallax * bg.LocalParallaxSpeed;
+            if (!bg.parallaxInBothWays)
+                defaultParallax.Y *= 0;
+
             int width = (int)bgLayer.Texture.Size().X;
             int height = (int)bgLayer.Texture.Size().Y;
 
@@ -196,7 +202,9 @@ namespace Stellamod.Core.Backgrounds
             } 
             else
             {
-                BeginParallaxLayer(spriteBatch, parallaxX, parallaxY);
+
+                float combinedParallaxY = parallaxY + defaultParallax.Y * 0.001f;
+                BeginParallaxLayer(spriteBatch, defaultParallax.X, combinedParallaxY);
             }
             spriteBatch.Draw(
                 bgLayer.Texture.Value,
