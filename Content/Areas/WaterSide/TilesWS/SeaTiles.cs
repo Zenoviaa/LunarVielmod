@@ -27,7 +27,7 @@ public class PinkSandTile : ModTile
 {
     public override void SetStaticDefaults()
     {
-        TileID.Sets.CanBeClearedDuringOreRunner[Type] = true;
+     
         Main.tileSolid[Type] = true;
         Main.tileMerge[Type][Type] = true;
         Main.tileBlockLight[Type] = true;
@@ -42,6 +42,7 @@ public class ReefTile : ModTile
 {
     public override void SetStaticDefaults()
     {
+        TileID.Sets.CanBeClearedDuringOreRunner[Type] = true;
         Main.tileSolid[Type] = true;
         Main.tileMerge[Type][Type] = true;
         Main.tileBlockLight[Type] = true;

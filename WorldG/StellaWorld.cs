@@ -458,7 +458,7 @@ public class StellaWorld : ModSystem
                 Tile tile = Main.tile[randX, randY];
                 if (!tile.HasTile)
                     continue;
-                if (tile.TileType != pinkSandTile)
+                if (tile.TileType != reefTile)
                     continue;
 
                 //We have a spot
@@ -488,7 +488,7 @@ public class StellaWorld : ModSystem
                 Tile tile = Main.tile[randX, randY];
                 if (!tile.HasTile)
                     continue;
-                if (tile.TileType != pinkSandTile)
+                if (tile.TileType != reefTile)
                     continue;
                 if (!WorldGen.TileIsExposedToAir(randX, randY))
                     continue;
@@ -587,7 +587,7 @@ public class StellaWorld : ModSystem
                 Tile tile = Main.tile[x, y];
                 if (tile.HasTile)
                 {
-                    int tileToPlace = pinkSandTile;
+                    int tileToPlace = reefTile;
                     if (y > bottom - 400)
                         tileToPlace = ModContent.TileType<SeavathanBrick>();
                     WorldGen.PlaceTile(x, y, tileToPlace, forced: true);
@@ -601,7 +601,7 @@ public class StellaWorld : ModSystem
 
         //Set random reef blocks
         ScatterBlotchEdges(200, TileID.ShellPile);
-        ScatterBlotch(3500, reefTile);
+        ScatterBlotch(3500, pinkSandTile);
         ScatterBlotch(3500, deepSeaTile);
         ScatterBlotch(500, TileID.ReefBlock);
         ScatterBlotch(1500, TileID.Coralstone);
