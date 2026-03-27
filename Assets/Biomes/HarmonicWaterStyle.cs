@@ -16,8 +16,8 @@ public class HarmonicWaterStyle : ModWaterStyle
 
     public override void LightColorMultiplier(ref float r, ref float g, ref float b)
     {
-        r = 0.8f;
-        g = 0.8f;
+        r = 0.5f;
+        g = 0.5f;
         b = 1f;
     }
 }

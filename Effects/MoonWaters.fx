@@ -307,8 +307,8 @@ float4 CombinePS(VertexShaderOutput input) : COLOR
     
     //Let's just multiply for now
     //if this works it'll create a funny effect where there's no water 
-    return fancyWaterColor * baseWaterColor.a * (1.0 - lavaMult) + baseWaterColor * lavaMult;
-
+    float4 finalColor = fancyWaterColor * baseWaterColor.a * (1.0 - lavaMult) + baseWaterColor * lavaMult;
+    return finalColor * input.Color;
 }
 
 technique SpriteDrawing

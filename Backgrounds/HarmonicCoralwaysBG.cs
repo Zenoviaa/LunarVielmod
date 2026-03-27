@@ -52,8 +52,9 @@ public class HarmonicCoralwaysBG : CustomBG
 
     public override bool IsActive()
     {
-     //   Main.LocalPlayer.ZoneDesert = false; Main.LocalPlayer.ZoneUndergroundDesert = false;
+        //   Main.LocalPlayer.ZoneDesert = false; Main.LocalPlayer.ZoneUndergroundDesert = false;
 
+        NoSurfaceLight = true;
         parallaxInBothWays = true;
         NoSurfaceOffset = true;
         DrawScale = 1;

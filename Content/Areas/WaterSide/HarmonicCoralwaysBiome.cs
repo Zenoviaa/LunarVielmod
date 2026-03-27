@@ -9,6 +9,24 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WaterSide;
 
+public class HarmonicCoralwaysTileGlow : GlobalTile
+{
+    public override void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
+    {
+        base.ModifyLight(i, j, type, ref r, ref g, ref b);
+        var biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
+        if (!biomePlayer.ZoneHarmonicCoralways)
+            return;
+
+        Tile tile = Main.tile[i, j];
+        if(WorldGen.TileIsExposedToAir(i, j))
+        {
+            r = 0.5f;
+            g =0.51f;
+            b = 1;
+        }
+    }
+}
 public class HarmonicCoralwaysBiome : ModBiome,
     IBackLightModifier
 {
@@ -34,7 +52,9 @@ public class HarmonicCoralwaysBiome : ModBiome,
     public override bool IsBiomeActive(Player player)
     {
         StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
-        Rectangle biomeRect = new Rectangle(stellaWorld.CoralwaysLocation.X, stellaWorld.CoralwaysLocation.Y, 1000, 1800);
+
+        int heightOffset = 100;
+        Rectangle biomeRect = new Rectangle(stellaWorld.CoralwaysLocation.X, stellaWorld.CoralwaysLocation.Y + heightOffset, 1000, 1800 - heightOffset);
         return biomeRect.Contains(player.Center.ToTileCoordinates());
     }
 

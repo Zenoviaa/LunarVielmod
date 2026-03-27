@@ -1,14 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Content.Biomes;
-using Stellamod.Core.Foreground;
-using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
-using Stellamod.Core.Waters;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,12 +40,34 @@ namespace Stellamod.Core.MoonWaters
         }
         public override bool IsActive(Player player)
         {
-            return player.ZoneBeach || player.GetModPlayer<BiomePlayer>().ZoneHarmonicCoralways;
+            return player.ZoneBeach;
         }
         public override void ModifyPixelWater(ref PixelWater pixelWater)
         {
             base.ModifyPixelWater(ref pixelWater);
             pixelWater.NoLighting = true;
+        }
+    }
+    public class CoralwaysWaterStyle : PixelWaterStyle
+    {
+
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            priority = 2;
+        }
+
+        public override bool IsActive(Player player)
+        {
+            return player.GetModPlayer<BiomePlayer>().ZoneHarmonicCoralways;
+        }
+        public override void ModifyPixelWater(ref PixelWater pixelWater)
+        {
+            base.ModifyPixelWater(ref pixelWater);
+            pixelWater.NoLighting = true;
+            pixelWater.Vibrant = true;
+            pixelWater.EndGradientColor = Color.Lerp(Color.Aqua, Color.Black, 0.05f);
+            pixelWater.IgnoreSkyColor = true;
         }
     }
 
@@ -75,7 +91,7 @@ namespace Stellamod.Core.MoonWaters
             pixelWater.BackgroundColor = Color.DarkGreen;
             pixelWater.CausticsColor = Color.Yellow * 0.75f;
             pixelWater.CausticsTexture = AssetRegistry.Textures.Noise.Clouds3;
-            pixelWater.TilingMultiplier = Vector2.One ;
+            pixelWater.TilingMultiplier = Vector2.One;
 
             if (_inMarsh)
             {
@@ -190,13 +206,15 @@ namespace Stellamod.Core.MoonWaters
         public Asset<Texture2D> NoiseTexture;
         public Asset<Texture2D> CausticsTexture;
         public bool NoLighting;
+        public bool Vibrant;
+        public bool IgnoreSkyColor;
     }
 
     public class PixelWaterStyleComparer : IComparer<PixelWaterStyle>
     {
         public int Compare(PixelWaterStyle x, PixelWaterStyle y)
         {
-           return y.priority.CompareTo(x.priority);
+            return y.priority.CompareTo(x.priority);
         }
     }
 
@@ -209,6 +227,7 @@ namespace Stellamod.Core.MoonWaters
             public float height;
         }
 
+        private ManagedRenderTarget _waterRT;
         private ManagedRenderTarget _waterHeightMapRT;
         private ManagedRenderTarget _waterTextureRT;
         private ManagedRenderTarget _waterTextureRTSwap;
@@ -228,7 +247,7 @@ namespace Stellamod.Core.MoonWaters
         private Rectangle _drawLocation;
         private Texture2D _perlinNoise;
         private Texture2D _waterNoise1;
-
+        private bool _allowDraw;
 
         //This will give us a cool pixelation effect
         public int DownSamples => 2;
@@ -239,7 +258,17 @@ namespace Stellamod.Core.MoonWaters
             On_Main.DrawDust += CopyScreenTarget;
             On_OverlayManager.Draw += ApplyWaterShader;
             On_Main.Draw += DrawToScreen;
+            On_Main.DrawWaters += StopDrawWater;
         }
+
+        private void StopDrawWater(On_Main.orig_DrawWaters orig, Main self, bool isBackground)
+        {
+            if (!_allowDraw)
+                return;
+
+            orig(self, isBackground);
+        }
+
         public override void Unload()
         {
             base.Unload();
@@ -247,6 +276,7 @@ namespace Stellamod.Core.MoonWaters
             On_Main.DrawDust -= CopyScreenTarget;
             On_OverlayManager.Draw -= ApplyWaterShader;
             On_Main.Draw -= DrawToScreen;
+            On_Main.DrawWaters -= StopDrawWater;
             _pixelWaterStyles = null;
             _heightsToDraw.Clear();
         }
@@ -257,7 +287,7 @@ namespace Stellamod.Core.MoonWaters
             if (Main.gameMenu)
                 return;
 
-          //  DrawWaterBaseToScreen();
+            //  DrawWaterBaseToScreen();
         }
 
         public override void OnModLoad()
@@ -283,6 +313,7 @@ namespace Stellamod.Core.MoonWaters
         }
         private void InitializeRenderTargets()
         {
+            _waterRT = ManagedRenderTarget.New(GetWaterTargetSize);
             _reflectionRT = ManagedRenderTarget.New(GetWaterTargetSize, DownSamples);
             _waterTextureRT = ManagedRenderTarget.New(GetWaterTargetSize, DownSamples);
             _waterTextureRTSwap = ManagedRenderTarget.New(GetWaterTargetSize, DownSamples);
@@ -292,7 +323,7 @@ namespace Stellamod.Core.MoonWaters
         }
         private PixelWaterStyle GetActivePixelWaterStyle()
         {
-            for(int i = 0; i < _pixelWaterStyles.Length; i++)
+            for (int i = 0; i < _pixelWaterStyles.Length; i++)
             {
                 PixelWaterStyle pixelWaterStyle = _pixelWaterStyles[i];
                 if (pixelWaterStyle.IsActive(Main.LocalPlayer))
@@ -347,7 +378,7 @@ namespace Stellamod.Core.MoonWaters
                 return;
             if (Main.gameMenu)
                 return;
-       
+
             if (layer == RenderLayers.ForegroundWater)
             {
                 //This is called right before the front water gets drawn
@@ -359,7 +390,10 @@ namespace Stellamod.Core.MoonWaters
                 spriteBatch.End();
 
                 CopyScreenTargetToSwap();
+
+                _allowDraw = true;
                 CopyWaterTarget();
+                //    _allowDraw = false;
                 CopySwapToScreenTarget();
 
                 _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombineRTDrawing"];
@@ -374,7 +408,8 @@ namespace Stellamod.Core.MoonWaters
                 spriteBatch.Draw(Main.waterTarget, pos, Color.White);
                 spriteBatch.End();
 
-  
+
+
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
                 //DrawWaterBaseToScreen();
             }
@@ -507,7 +542,7 @@ namespace Stellamod.Core.MoonWaters
             _waterEffect.Parameters["time"].SetValue(_time);
             _waterEffect.Parameters["levels"].SetValue(18);
             _waterEffect.Parameters["distortion"].SetValue(0.05f);
-  //          ApplyScreenOffset();
+            //          ApplyScreenOffset();
 
             Vector2 stretchScale = new Vector2(1, 0.5f);
             GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
@@ -518,7 +553,11 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
 
             Color baseColor = _pixelWater.BackgroundColor * 0.75f;
-            baseColor = baseColor.MultiplyRGB(Main.ColorOfTheSkies);
+
+            if (!_pixelWater.IgnoreSkyColor)
+            {
+                baseColor = baseColor.MultiplyRGB(Main.ColorOfTheSkies);
+            }
             spriteBatch.Draw(_waterNoise1, _drawLocation, null, baseColor);
             spriteBatch.End();
 
@@ -528,7 +567,7 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.End();
 
 
-  
+
             graphicsDevice.SetRenderTarget(_waterTextureRT);
             graphicsDevice.Clear(Color.Transparent);
 
@@ -550,7 +589,7 @@ namespace Stellamod.Core.MoonWaters
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["GradientDrawing"];
             _waterEffect.Parameters["startGradient"].SetValue(_pixelWater.StartGradientColor.ToVector3());
             _waterEffect.Parameters["endGradient"].SetValue(_pixelWater.EndGradientColor.ToVector3());
-          //  ApplyScreenOffset();
+            //  ApplyScreenOffset();
             //Draw gradient
             graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
             graphicsDevice.Clear(Color.Transparent);
@@ -575,7 +614,7 @@ namespace Stellamod.Core.MoonWaters
             spriteBatch.End();
 
             graphicsDevice.SetRenderTarget(_waterTextureRTSwap);
-    
+
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["WrapDrawing"];
             ApplyScreenOffset(scale: 2);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
@@ -683,11 +722,12 @@ namespace Stellamod.Core.MoonWaters
             _pixelWater.SetDefaults();
             _activePixelWaterStyle = GetActivePixelWaterStyle();
             _activePixelWaterStyle.ModifyPixelWater(ref _pixelWater);
-       
+
         }
 
         private void RenderIntoWaterTextureTarget()
         {
+            //  Main.NewText(_activePixelWaterStyle.Name);
             LoadAssets();
             _drawLocation = new Rectangle(0, 0, _waterTextureRT.Width, _waterTextureRT.Height);
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -700,8 +740,8 @@ namespace Stellamod.Core.MoonWaters
 
             DrawWaterGradient(spriteBatch);
             DrawWaterCaustics(spriteBatch);
-          //  DrawWaterSparkle(spriteBatch);
-             DrawWaterFoam(spriteBatch);
+            //  DrawWaterSparkle(spriteBatch);
+            DrawWaterFoam(spriteBatch);
             DrawReflection(spriteBatch);
             // 
             DrawPosterization(spriteBatch);
@@ -760,7 +800,7 @@ namespace Stellamod.Core.MoonWaters
         {
             if (_waterEffect == null)
                 return;
-           
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
             RenderTargetBinding[] binding = new RenderTargetBinding[]
@@ -771,6 +811,7 @@ namespace Stellamod.Core.MoonWaters
             graphicsDevice.SetRenderTargets(binding);
             graphicsDevice.Clear(Color.Transparent);
             Texture2D heightTile = TextureAssets.BlackTile.Value;
+
 
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["HeightDrawing"];
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, _waterEffect);
@@ -813,7 +854,7 @@ namespace Stellamod.Core.MoonWaters
         {
             //This is just for testing purposes to make sure the texture looks the way we want it to
 
-          //  Main.graphics.GraphicsDevice.Clear(Color.Transparent);
+            //  Main.graphics.GraphicsDevice.Clear(Color.Transparent);
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             spriteBatch.Draw(_waterTextureRT, Vector2.Zero, null, Color.White * 0.5f, 0f, Vector2.Zero, 2, SpriteEffects.None, 0f);

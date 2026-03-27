@@ -22,6 +22,7 @@ namespace Stellamod.Core.Backgrounds
         public Color DrawColor;
         public bool IgnorePaletteShader;
         public float LocalParallaxSpeed=1f;
+        public bool ignoreSkyColor;
         public override void Unload()
         {
             base.Unload();

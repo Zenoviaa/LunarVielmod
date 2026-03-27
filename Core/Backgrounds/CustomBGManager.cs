@@ -158,6 +158,10 @@ namespace Stellamod.Core.Backgrounds
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             Color drawColor = Main.ColorOfTheSkies * drawAlpha;
+            if (bg.ignoreSkyColor)
+            {
+                drawColor = Color.White * drawAlpha;
+            }
             if (bg.NoSurfaceLight)
                 drawColor = Color.White * drawAlpha;
 

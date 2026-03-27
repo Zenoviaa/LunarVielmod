@@ -389,6 +389,36 @@ public class StellaWorld : ModSystem
     }
 
 
+    public class PaintWall : GenAction
+    {
+        private byte _type;
+        private bool _neighbors;
+
+        public PaintWall(byte type, bool neighbors = true)
+        {
+            _type = type;
+            _neighbors = neighbors;
+        }
+
+        public override bool Apply(Point origin, int x, int y, params object[] args)
+        {
+            ref Tilemap tm = ref GenBase._tiles;
+            Tile tile = tm[x, y];
+            tile.WallColor = _type;
+            WorldGen.SquareWallFrame(x, y);
+            if (_neighbors)
+            {
+                WorldGen.SquareWallFrame(x + 1, y);
+                WorldGen.SquareWallFrame(x - 1, y);
+                WorldGen.SquareWallFrame(x, y - 1);
+                WorldGen.SquareWallFrame(x, y + 1);
+            }
+
+            return UnitApply(origin, x, y, args);
+        }
+    }
+
+
     private void WorldGenRunicaUnderwaterCaves(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Runica Caves";
@@ -407,32 +437,6 @@ public class StellaWorld : ModSystem
         int deepSeaTile = ModContent.TileType<DeepSeaTile>();
         int pinkSandTile = ModContent.TileType<PinkSandTile>();
         int reefTile = ModContent.TileType<ReefTile>();
-
-        //Set the pink sand
-        for (int y = caveOriginY; y < bottom; y++)
-        {
-
-            for (int x = left; x < right && x < Main.maxTilesX; x++)
-            {
-                float ratio = (float)(x - left) / (float)(right - left);
-                float ease = EasingFunction.QuadraticBump(ratio);
-                int denom = (int)MathHelper.Lerp(1, 8, ease);
-                if (Main.rand.NextBool(denom))
-                    continue;
-                if (caveOriginY > bottom - 25)
-                {
-                    float heightRatio = (float)(caveOriginY - (bottom - 25)) / 25f;
-                    int heightDenom = (int)MathHelper.Lerp(1, 16, heightRatio);
-                    if (!Main.rand.NextBool(heightDenom))
-                        continue;
-                }
-                Tile tile = Main.tile[x, y];
-                if (tile.HasTile)
-                {
-                    WorldGen.PlaceTile(x, y, pinkSandTile, forced: true);
-                }
-            }
-        }
 
         void ScatterBlotch(int numBlotches, int t)
         {
@@ -458,9 +462,102 @@ public class StellaWorld : ModSystem
                     continue;
 
                 //We have a spot
+                float strength = rand.NextFloat(4, 8);
+                int steps = rand.Next(5, 10);
+                WorldGen.OreRunner(randX, randY, strength, steps, (ushort)t);
+                n++;
+            }
+        }
+        void ScatterBlotchEdges(int numBlotches, int t)
+        {
+            int attempts = 0;
+            int n = 0;
+            while (n < numBlotches)
+            {
+                attempts++;
+                if (attempts > 1000000)
+                {
+                    Console.WriteLine("Failed to generate enough blotches");
+                    break;
+                }
+                int randY = rand.Next(caveOriginY, bottom);
+                int randX = rand.Next(left, right);
+                if (randX >= Main.maxTilesX)
+                    continue;
+
+                Tile tile = Main.tile[randX, randY];
+                if (!tile.HasTile)
+                    continue;
+                if (tile.TileType != pinkSandTile)
+                    continue;
+                if (!WorldGen.TileIsExposedToAir(randX, randY))
+                    continue;
+                //We have a spot
                 float strength = rand.NextFloat(8, 16);
                 int steps = rand.Next(10, 20);
                 WorldGen.OreRunner(randX, randY, strength, steps, (ushort)t);
+                n++;
+            }
+        }
+
+        void ScatterBlotchWallEdges(int numBlotches, params ushort[] wallIDs)
+        {
+            int attempts = 0;
+            int n = 0;
+            while (n < numBlotches)
+            {
+                attempts++;
+                if (attempts > 1000000)
+                {
+                    Console.WriteLine("Failed to generate enough blotches");
+                    break;
+                }
+                int randY = rand.Next(caveOriginY, bottom);
+                int randX = rand.Next(left, right);
+                if (randX >= Main.maxTilesX)
+                    continue;
+
+                Tile tile = Main.tile[randX, randY];
+                if (!tile.HasTile)
+                    continue;
+                if (tile.TileType != pinkSandTile)
+                    continue;
+                if (!WorldGen.TileIsExposedToAir(randX, randY))
+                    continue;
+
+                Point point = new Point(randX, randY);
+                int steps = rand.Next(1, 4);
+                Vector2 baseDirection = -Vector2.UnitY;
+                int caveWidth = 3;
+
+                byte paint = PaintID.TealPaint;
+                switch (rand.Next(4))
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        paint = PaintID.SkyBluePaint;
+                        break;
+                    case 2:
+                        paint = PaintID.PinkPaint;
+                        break;
+                    case 3:
+                        paint = PaintID.RedPaint;
+                        break;
+                }
+                for (int s = 0; s < steps; s++)
+                {
+                    if (point.X - caveWidth > 0 && point.X + caveWidth < Main.maxTilesX && point.Y + caveWidth < Main.maxTilesY && point.Y - caveWidth > 0)
+                    {
+                        ushort wallId = wallIDs[rand.Next(wallIDs.Length)];
+                        WorldUtils.Gen(point, new Shapes.Circle(caveWidth, caveWidth),
+                            Actions.Chain(
+                                new Actions.PlaceWall(wallId),
+                                new PaintWall(paint)));
+                    }
+
+                    point += (baseDirection * caveWidth).RotatedByRandom(MathHelper.ToRadians(30)).ToPoint();
+                }
                 n++;
             }
         }
@@ -472,9 +569,14 @@ public class StellaWorld : ModSystem
             {
                 float ratio = (float)(x - left) / (float)(right - left);
                 float ease = EasingFunction.QuadraticBump(ratio);
-                int denom = (int)MathHelper.Lerp(1, 8, ease);
-                if (Main.rand.NextBool(denom))
-                    continue;
+
+                if(ease < 0.5f)
+                {
+                    int denom = (int)MathHelper.Lerp(1, 8, ease);
+                    if (Main.rand.NextBool(denom))
+                        continue;
+                }
+       
                 if (caveOriginY > bottom - 25)
                 {
                     float heightRatio = (float)(caveOriginY - (bottom - 25)) / 25f;
@@ -485,19 +587,27 @@ public class StellaWorld : ModSystem
                 Tile tile = Main.tile[x, y];
                 if (tile.HasTile)
                 {
-                    WorldGen.PlaceTile(x, y, pinkSandTile, forced: true);
+                    int tileToPlace = pinkSandTile;
+                    if (y > bottom - 400)
+                        tileToPlace = ModContent.TileType<SeavathanBrick>();
+                    WorldGen.PlaceTile(x, y, tileToPlace, forced: true);
                 }
             }
         }
 
-        //Set random reef blocks
-
-        ScatterBlotch(200, reefTile);
-        ScatterBlotch(200, deepSeaTile);
-        ScatterBlotch(500, TileID.ReefBlock);
         CoralwaysLocation = new Point(caveOriginX - 150, caveOriginY);
         GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("HarmonicCoralways");
         prefab.PasteErase(caveOriginX, caveOriginY, PrefabPlacementType.FromTopCenter);
+
+        //Set random reef blocks
+        ScatterBlotchEdges(200, TileID.ShellPile);
+        ScatterBlotch(3500, reefTile);
+        ScatterBlotch(3500, deepSeaTile);
+        ScatterBlotch(500, TileID.ReefBlock);
+        ScatterBlotch(1500, TileID.Coralstone);
+        ScatterBlotchWallEdges(5000, WallID.PoopWall, WallID.PoopWall, WallID.PoopWall, WallID.HardenedSandEcho, WallID.SandstoneEcho);
+
+
 
         for (int y = caveOriginY; y < bottom; y++)
         {
