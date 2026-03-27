@@ -1,25 +1,26 @@
 ﻿using Stellamod.Content.Areas.PunkerTown;
-using Stellamod.Content.Biomes;
-using Stellamod.Core.NPCHelpers;
-using System;
+using Stellamod.Content.Areas.WaterSide;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common
 {
+    /// <summary>
+    /// Classifies all of our NPCs, keep track of where they spawn and weights
+    /// </summary>
     public class SpawnSets : ModSystem
     {
         public override void SetupContent()
         {
+            HarmonicEnemy = new List<int>();
             MarshEnemy = new List<int>();
             ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
             base.SetupContent();
 
         }
+
+        public static List<int> HarmonicEnemy;
         public static List<int> MarshEnemy;
         public static float[] ModifiedWeights;
     }
@@ -32,6 +33,11 @@ namespace Stellamod.Common
             SpawnSets.MarshEnemy.Add(npc.Type);
         }
 
+        public static void AddToHarmonicCoralways(this ModNPC npc)
+        {
+            SpawnSets.HarmonicEnemy.Add(npc.Type);
+        }
+
         public static void ModifySpawnWeight(this ModNPC npc, float multiplier)
         {
             SpawnSets.ModifiedWeights[npc.Type] = multiplier;
@@ -40,21 +46,31 @@ namespace Stellamod.Common
 
     public class NPCSpawnHelper : GlobalNPC
     {
+
+        private void AddEnemiesFromSpawnSet(List<int> set, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
+        {
+            for (int i = 0; i < set.Count; i++)
+            {
+                int enemyType = set[i];
+                float totalWeight = 1f;
+                float weight = totalWeight / (float)set.Count;
+
+                //If we want to make an enemy rarer we'd do it here
+                weight *= SpawnSets.ModifiedWeights[enemyType];
+                pool.TryAdd(enemyType, weight);
+            }
+        }
+
         public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {
             base.EditSpawnPool(pool, spawnInfo);
             if (spawnInfo.Player.InModBiome<BiomeMarsh>())
             {
-                for (int i = 0; i < SpawnSets.MarshEnemy.Count; i++)
-                {
-                    int marshEnemyType = SpawnSets.MarshEnemy[i];
-                    float totalWeight = 1f;
-                    float weight = totalWeight / (float)SpawnSets.MarshEnemy.Count;
-
-                    //If we want to make an enemy rarer we'd do it here
-                    weight *= SpawnSets.ModifiedWeights[marshEnemyType];
-                    pool.TryAdd(marshEnemyType, weight);
-                }
+                AddEnemiesFromSpawnSet(SpawnSets.MarshEnemy, pool, spawnInfo);
+            }
+            if (spawnInfo.Player.InModBiome<HarmonicCoralwaysBiome>())
+            {
+                AddEnemiesFromSpawnSet(SpawnSets.HarmonicEnemy, pool, spawnInfo);
             }
         }
     }

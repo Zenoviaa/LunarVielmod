@@ -25,7 +25,7 @@ public class HarmonicCoralwaysTileGlow : GlobalTile
         {
             r = 0.5f;
             g = 0.51f;
-            b = 1;
+            b = 0.8f;
         }
     }
 }

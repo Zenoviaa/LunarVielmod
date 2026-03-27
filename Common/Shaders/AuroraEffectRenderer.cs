@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -92,7 +93,10 @@ public class AuroraEffectRenderer : ModSystem
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();
-        if (Main.LocalPlayer.ZoneSnow && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight)
+
+        bool isActive = Main.LocalPlayer.ZoneSnow && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight;
+        isActive |= Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneHarmonicCoralways;
+        if (isActive)
         {
             _activeTimer++;
             if (Main.rand.NextBool(5))
