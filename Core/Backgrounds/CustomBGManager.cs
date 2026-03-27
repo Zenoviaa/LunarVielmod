@@ -52,6 +52,7 @@ namespace Stellamod.Core.Backgrounds
         private Shader _currentShader;
         public List<CustomBG> Backgrounds = new List<CustomBG>();
         public bool onScreen;
+        public Color? darkenBGColor;
         public static bool drawingCustomBG;
         public override void OnModLoad()
         {
@@ -80,6 +81,7 @@ namespace Stellamod.Core.Backgrounds
             {
                 
                 DrawLoop();
+                darkenBGColor = null;
             }
             orig(self, spriteBatch, layer, beginSpriteBatch);
 
@@ -164,10 +166,15 @@ namespace Stellamod.Core.Backgrounds
             }
             if (bg.NoSurfaceLight)
                 drawColor = Color.White * drawAlpha;
+            if (darkenBGColor.HasValue)
+            {
+                drawColor = drawColor.MultiplyRGB(darkenBGColor.Value);
+            }
 
             Vector2 defaultParallax = new Vector2();
             defaultParallax.X = Main.screenPosition.X * bgLayer.Parallax * bg.LocalParallaxSpeed;
             defaultParallax.Y = Main.screenPosition.Y * bgLayer.Parallax * bg.LocalParallaxSpeed;
+            defaultParallax += bgLayer.ParallaxOffset;
             if (!bg.parallaxInBothWays)
                 defaultParallax.Y *= 0;
 

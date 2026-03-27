@@ -53,7 +53,7 @@ public class HarmonicCoralwaysBG : CustomBG
     public override bool IsActive()
     {
         //   Main.LocalPlayer.ZoneDesert = false; Main.LocalPlayer.ZoneUndergroundDesert = false;
-
+        BackLayer.ParallaxOffset = new Vector2(750, 0);
         NoSurfaceLight = true;
         parallaxInBothWays = true;
         NoSurfaceOffset = true;

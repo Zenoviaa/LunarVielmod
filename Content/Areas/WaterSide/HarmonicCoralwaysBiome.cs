@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets.Biomes;
 using Stellamod.Content.Biomes;
+using Stellamod.Core.Backgrounds;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.WorldG;
 using Terraria;
@@ -17,12 +18,13 @@ public class HarmonicCoralwaysTileGlow : GlobalTile
         var biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
         if (!biomePlayer.ZoneHarmonicCoralways)
             return;
-
+        if (biomePlayer.ZoneDeepBelowCoralways)
+            return;
         Tile tile = Main.tile[i, j];
         if(WorldGen.TileIsExposedToAir(i, j))
         {
             r = 0.5f;
-            g =0.51f;
+            g = 0.51f;
             b = 1;
         }
     }
@@ -40,7 +42,15 @@ public class HarmonicCoralwaysBiome : ModBiome,
     {
         get
         {
-            return MusicLoader.GetMusicSlot(Mod, "Assets/Music/HarmonicCoralways");
+            Player localPlayer = Main.LocalPlayer;
+            if (IsDeepBelow)
+            {
+                return MusicLoader.GetMusicSlot(Mod, "Assets/Music/SongsDeepBelow");
+            } 
+            else
+            {
+                return MusicLoader.GetMusicSlot(Mod, "Assets/Music/HarmonicCoralways");
+            }
         }
     }
 
@@ -49,10 +59,16 @@ public class HarmonicCoralwaysBiome : ModBiome,
     public override string BackgroundPath => base.BackgroundPath;
     public override Color? BackgroundColor => base.BackgroundColor;
     public override ModWaterStyle WaterStyle => ModContent.GetInstance<HarmonicWaterStyle>();
+    public bool IsDeepBelow
+    {
+        get
+        {
+            return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneDeepBelowCoralways;
+        }
+    }
     public override bool IsBiomeActive(Player player)
     {
         StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
-
         int heightOffset = 100;
         Rectangle biomeRect = new Rectangle(stellaWorld.CoralwaysLocation.X, stellaWorld.CoralwaysLocation.Y + heightOffset, 1000, 1800 - heightOffset);
         return biomeRect.Contains(player.Center.ToTileCoordinates());
@@ -60,6 +76,12 @@ public class HarmonicCoralwaysBiome : ModBiome,
 
     public void ModifyBackLight(ref Color backLightColor)
     {
+        if (IsDeepBelow)
+        {
+            //backLightColor = Color.Lerp(backLightColor, Color.White, 0.3f);
+            ModContent.GetInstance<CustomBGManager>().darkenBGColor = Color.Lerp(Color.White, Color.Black, 0.25f);
+            return;
+        }
         backLightColor = Color.Lerp(backLightColor, Color.White, 0.9f);
     }
 

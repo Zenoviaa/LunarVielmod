@@ -350,6 +350,7 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("HillsnFable", WorldGenFabiliaRuin));
         passWriter.NextPass(new PassLegacy("World Gen Rysa House", WorldGenRysaHouse));
         passWriter.NextPass(new PassLegacy("MistyDungeon", GenerateMistyDungeon));
+        passWriter.NextPass(new PassLegacy("Runica Waterside Underwater", WorldGenRunicaUnderwaterCaves));
 
         passWriter.SetInsertionIndex("Generate Ice Biome");
         passWriter.NextPass(new ReworkedVanillaIceBiomePass());
@@ -367,7 +368,7 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Jungle Surface Caves", WorldGenJungleSurfaceCaves));
         passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
         passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
-        passWriter.NextPass(new PassLegacy("Runica Waterside Underwater", WorldGenRunicaUnderwaterCaves));
+  
 
         //Set desert location
         passWriter.SetInsertionIndex("Full Desert");
@@ -438,6 +439,7 @@ public class StellaWorld : ModSystem
         int pinkSandTile = ModContent.TileType<PinkSandTile>();
         int reefTile = ModContent.TileType<ReefTile>();
 
+
         void ScatterBlotch(int numBlotches, int t)
         {
             int attempts = 0;
@@ -458,7 +460,7 @@ public class StellaWorld : ModSystem
                 Tile tile = Main.tile[randX, randY];
                 if (!tile.HasTile)
                     continue;
-                if (tile.TileType != reefTile)
+                if (tile.TileType != deepSeaTile)
                     continue;
 
                 //We have a spot
@@ -519,8 +521,6 @@ public class StellaWorld : ModSystem
 
                 Tile tile = Main.tile[randX, randY];
                 if (!tile.HasTile)
-                    continue;
-                if (tile.TileType != pinkSandTile)
                     continue;
                 if (!WorldGen.TileIsExposedToAir(randX, randY))
                     continue;
@@ -587,7 +587,7 @@ public class StellaWorld : ModSystem
                 Tile tile = Main.tile[x, y];
                 if (tile.HasTile)
                 {
-                    int tileToPlace = reefTile;
+                    int tileToPlace = deepSeaTile;
                     if (y > bottom - 400)
                         tileToPlace = ModContent.TileType<SeavathanBrick>();
                     WorldGen.PlaceTile(x, y, tileToPlace, forced: true);
@@ -602,10 +602,10 @@ public class StellaWorld : ModSystem
         //Set random reef blocks
         ScatterBlotchEdges(200, TileID.ShellPile);
         ScatterBlotch(3500, pinkSandTile);
-        ScatterBlotch(3500, deepSeaTile);
+        ScatterBlotch(3500, reefTile);
         ScatterBlotch(500, TileID.ReefBlock);
         ScatterBlotch(1500, TileID.Coralstone);
-        ScatterBlotchWallEdges(5000, WallID.PoopWall, WallID.PoopWall, WallID.PoopWall, WallID.HardenedSandEcho, WallID.SandstoneEcho);
+        ScatterBlotchWallEdges(15000, WallID.PoopWall, WallID.PoopWall, WallID.PoopWall, WallID.HardenedSandEcho, WallID.SandstoneEcho);
 
 
 

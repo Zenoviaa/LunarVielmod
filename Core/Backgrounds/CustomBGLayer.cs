@@ -19,6 +19,7 @@ namespace Stellamod.Core.Backgrounds
         public float DrawScale;
         public BlendState BlendState;
         public Shader Shader;
+        public Vector2 ParallaxOffset;
         public void SetTexture(string texturePath)
         {
             Texture = ModContent.Request<Texture2D>("Stellamod/" + texturePath, AssetRequestMode.ImmediateLoad);

@@ -4,6 +4,7 @@ using Stellamod.Content.Gores.Foreground;
 using Stellamod.Core.Foreground;
 using Stellamod.Core.Utilities;
 using Stellamod.Visual.Particles;
+using Stellamod.WorldG;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
@@ -30,6 +31,17 @@ namespace Stellamod.Content.Biomes
         public bool ZoneForest;
         public bool ZoneJunkyard;
         public bool ZoneHarmonicCoralways;
+        public bool ZoneDeepBelowCoralways
+        {
+            get
+            {
+                Player localPlayer = Player;
+                StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
+                int heightOffset = 100;
+                Rectangle biomeRect = new Rectangle(stellaWorld.CoralwaysLocation.X, stellaWorld.CoralwaysLocation.Y + heightOffset, 1000, 1800 - heightOffset);
+                return localPlayer.Center.ToTileCoordinates().Y > biomeRect.Bottom - 400;
+            }
+        }
         public override void PostUpdateMiscEffects()
         {
             base.PostUpdateMiscEffects();
