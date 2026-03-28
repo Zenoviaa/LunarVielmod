@@ -225,6 +225,6 @@ public abstract class AbstractHarmonicFish : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         base.ModifyNPCLoot(npcLoot);
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MusicalHarmonise>(), minimumDropped: 2, maximumDropped: 4));
+      //  npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MusicalHarmonise>(), minimumDropped: 2, maximumDropped: 4));
     }
 }
