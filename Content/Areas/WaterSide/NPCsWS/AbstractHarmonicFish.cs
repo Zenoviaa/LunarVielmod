@@ -4,6 +4,7 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -86,6 +87,7 @@ public abstract class AbstractHarmonicFish : ModNPC
 
     public float idleTime;
     public float swimTime;
+    public float fishScale;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -115,6 +117,18 @@ public abstract class AbstractHarmonicFish : ModNPC
     {
 
     }
+    
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.Write(fishScale);
+    }
+
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        fishScale = reader.ReadSingle();
+    }
 
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -125,6 +139,15 @@ public abstract class AbstractHarmonicFish : ModNPC
     public override void AI()
     {
         base.AI();
+        if(fishScale == 0)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                fishScale = Main.rand.NextFloat(0.5f, 1.25f);
+                NPC.netUpdate = true;
+            }
+       
+        }
         if (Main.rand.NextBool(16))
         {
             var d = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BubbleBlock);
@@ -207,6 +230,7 @@ public abstract class AbstractHarmonicFish : ModNPC
     private void Draw(SpriteBatch sb)
     {
         SpritebatchDrawer drawer = SpritebatchDrawer.FromNPC(NPC);
+        drawer.scale *= fishScale;
         sb.Draw(drawer);
     }
 

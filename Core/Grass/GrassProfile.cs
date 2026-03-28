@@ -23,6 +23,7 @@ namespace Stellamod.Core.Grass
         public int maxExtraBladesPerPatch;
         public int minBladesPerPatch;
         public Color grassColor;
+        public bool dontRenderPrimGrasses;
         protected sealed override void Register()
         {
             ModTypeLookup<GrassProfile>.Register(this);
@@ -101,7 +102,8 @@ namespace Stellamod.Core.Grass
                 grassRenderer.AddGrass(this, GrassTextureAsset, GetFrame(frame), Color.White, position, -Vector2.UnitY);
       
             }
-            grassRenderer.AddGrassPatch(grassColor, worldPosition, -Vector2.UnitY, 100, 2, num);
+            if(!dontRenderPrimGrasses)
+                grassRenderer.AddGrassPatch(grassColor, worldPosition, -Vector2.UnitY, 100, 2, num);
 
 
             /*

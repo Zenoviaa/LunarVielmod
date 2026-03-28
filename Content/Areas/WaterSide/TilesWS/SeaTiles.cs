@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stellamod.Common;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,6 +9,8 @@ public class DeepSeaTile : ModTile
 {
     public override void SetStaticDefaults()
     {
+        TileSets.RegisterGrassyTile<CoralwayGrass>(Type);
+
         TileID.Sets.CanBeClearedDuringOreRunner[Type] = true;
         Main.tileSolid[Type] = true;
         Main.tileMerge[Type][Type] = true;
@@ -21,6 +19,7 @@ public class DeepSeaTile : ModTile
         Main.tileLighted[Type] = true;
         Main.tileBlockLight[Type] = true;
         AddMapEntry(Color.LightSeaGreen);
+
     }
 }
 
@@ -28,7 +27,7 @@ public class PinkSandTile : ModTile
 {
     public override void SetStaticDefaults()
     {
-     
+
         Main.tileSolid[Type] = true;
         Main.tileMerge[Type][Type] = true;
         Main.tileBlockLight[Type] = true;

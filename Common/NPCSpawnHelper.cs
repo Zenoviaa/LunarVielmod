@@ -1,6 +1,7 @@
 ﻿using Stellamod.Content.Areas.PunkerTown;
 using Stellamod.Content.Areas.WaterSide;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -70,6 +71,7 @@ namespace Stellamod.Common
             }
             if (spawnInfo.Player.InModBiome<HarmonicCoralwaysBiome>())
             {
+              
                 AddEnemiesFromSpawnSet(SpawnSets.HarmonicEnemy, pool, spawnInfo);
             }
         }

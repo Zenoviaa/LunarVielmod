@@ -72,3 +72,10 @@ public class YellerFish : AbstractHarmonicFish
     }
 }
 
+public class Dory : AbstractHarmonicFish
+{
+    public override void SetDefaults2()
+    {
+        base.SetDefaults2();
+    }
+}

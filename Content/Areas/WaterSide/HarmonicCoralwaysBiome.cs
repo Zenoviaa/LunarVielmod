@@ -10,6 +10,18 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WaterSide;
 
+public class HarmonicCoralwaysSpawnRates : GlobalNPC
+{
+    public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+    {
+        base.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
+        if (player.InModBiome<HarmonicCoralwaysBiome>())
+        {
+            spawnRate = (int)(spawnRate * 0.05f);
+            maxSpawns *= (int)(maxSpawns * 2f);
+        }
+    }
+}
 public class HarmonicCoralwaysTileGlow : GlobalTile
 {
     public override void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)

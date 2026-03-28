@@ -17,6 +17,7 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.SilkSystem;
+using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.AlcadChests;
@@ -608,6 +609,44 @@ public class StellaWorld : ModSystem
         ScatterBlotchWallEdges(15000, WallID.PoopWall, WallID.PoopWall, WallID.PoopWall, WallID.HardenedSandEcho, WallID.SandstoneEcho);
 
 
+        ZTileMap tileMap = ModContent.GetInstance<ZTileMap>();
+        var items = new ZTile[]
+        {
+            ModContent.GetInstance<RedCoralMedium>(),
+            ModContent.GetInstance<BlueCoralLarge>(),
+            ModContent.GetInstance<PinkCoralLarge>()
+        };
+
+ 
+        for (int y = caveOriginY; y < bottom; y++)
+        {
+
+            for (int x = left; x < right && x < Main.maxTilesX; x++)
+            {
+                if (!WorldGen.TileIsExposedToAir(x, y))
+                    continue;
+                Tile mainTile = Main.tile[x, y];
+                if (!mainTile.HasTile)
+                    continue;
+
+                if (!rand.NextBool(7))
+                    continue;
+
+                ZTile tile = items[rand.Next(items.Length)];
+                var templateData = ModContent.GetInstance<ZTileLoader>().InstanceTileData(tile);
+                DecorationBuilder.frame = 0;
+
+                ZTileInstanceData instanceData = templateData;
+                instanceData.scale = 1;
+                instanceData.rotation = 0;
+                instanceData.frameNumber = 0;
+                instanceData.flipX = false;
+                instanceData.value = 0;
+
+                Vector2 position = new Point(x, y + 1).ToWorldCoordinates();
+                tileMap.CreateTile(ZRenderLayer.InFrontOfWalls, position, 0, instanceData);
+            }
+        }
 
         for (int y = caveOriginY; y < bottom; y++)
         {
