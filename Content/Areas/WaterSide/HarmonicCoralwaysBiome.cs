@@ -17,7 +17,7 @@ public class HarmonicCoralwaysSpawnRates : GlobalNPC
         base.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
         if (player.InModBiome<HarmonicCoralwaysBiome>())
         {
-            spawnRate = (int)(spawnRate * 0.05f);
+            spawnRate = (int)(spawnRate * 0.06f);
             maxSpawns *= (int)(maxSpawns * 2f);
         }
     }

@@ -71,8 +71,14 @@ namespace Stellamod.Common
             }
             if (spawnInfo.Player.InModBiome<HarmonicCoralwaysBiome>())
             {
-              
+                pool.Clear();
                 AddEnemiesFromSpawnSet(SpawnSets.HarmonicEnemy, pool, spawnInfo);
+                pool.TryAdd(NPCID.Piranha, 0.1f);
+                pool.TryAdd(NPCID.Shark, 0.1f);
+                pool.TryAdd(NPCID.BlueJellyfish, 0.1f);
+                pool.TryAdd(NPCID.PinkJellyfish, 0.1f);
+                pool.TryAdd(NPCID.Squid, 0.1f);
+                pool.TryAdd(NPCID.Crab, 0.1f);
             }
         }
     }
