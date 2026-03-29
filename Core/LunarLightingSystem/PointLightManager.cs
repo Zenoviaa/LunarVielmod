@@ -1,12 +1,6 @@
-﻿
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Threading;
+﻿using ReLogic.Threading;
 using Stellamod.Common.Shaders;
-using Stellamod.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
 using Terraria.Graphics.Light;
@@ -48,17 +42,17 @@ namespace Stellamod.Core.LunarLightingSystem
             ScissorRasterizer.ScissorTestEnable = true;
             ShadowColor = Color.Black * 0.3f;
 
-          //  On_Lighting.AddLight_int_int_float_float_float += AddTilePointLight;
-          //  On_Lighting.AddLight_int_int_int_float += AddTorchPointLight;
-          //  On_Lighting.AddLight_Vector2_int += AddTorchPointLight;
+            //  On_Lighting.AddLight_int_int_float_float_float += AddTilePointLight;
+            //  On_Lighting.AddLight_int_int_int_float += AddTorchPointLight;
+            //  On_Lighting.AddLight_Vector2_int += AddTorchPointLight;
         }
         public override void OnModUnload()
         {
             base.OnModUnload();
 
-         //   On_Lighting.AddLight_int_int_float_float_float -= AddTilePointLight;
-         //   On_Lighting.AddLight_int_int_int_float -= AddTorchPointLight;
-        //    On_Lighting.AddLight_Vector2_int -= AddTorchPointLight;
+            //   On_Lighting.AddLight_int_int_float_float_float -= AddTilePointLight;
+            //   On_Lighting.AddLight_int_int_int_float -= AddTorchPointLight;
+            //    On_Lighting.AddLight_Vector2_int -= AddTorchPointLight;
         }
 
         public override void ClearWorld()
@@ -76,13 +70,13 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public static int AddPointLight(PointLightData pointLightData)
         {
-            for(int i = 0; i < MAX_POINT_LIGHTS; i++)
+            for (int i = 0; i < MAX_POINT_LIGHTS; i++)
             {
                 if (LightStates[i] == PointLightState.INACTIVE)
                 {
                     PointLights[i] = pointLightData;
                     LightStates[i] = PointLightState.NEEDS_UPDATING;
-                    
+
                     return i;
                 }
             }
@@ -109,12 +103,12 @@ namespace Stellamod.Core.LunarLightingSystem
             int pointLightSize = POINT_LIGHT_TEXTURE_SIZE / POINT_LIGHT_DOWN_SAMPLES;
             int numLightsPer = MAX_ATLAS_SIZE / pointLightSize;
 
-            for(int i = 0; i < MAX_POINT_LIGHTS; i++)
+            for (int i = 0; i < MAX_POINT_LIGHTS; i++)
             {
                 ShadowVertices[i] = new VertexPositionColor[POINT_LIGHT_MAX_SHADOW_VERTEX_COUNT];
                 LightAtlasRectangles[i] = new Rectangle(x * pointLightSize, y * pointLightSize, pointLightSize, pointLightSize);
                 y++;
-                if(y >= numLightsPer)
+                if (y >= numLightsPer)
                 {
                     y = 0;
                     x++;
@@ -144,7 +138,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private static void FindPointLightSourcesFromTiles()
         {
- 
+
             Vector2 cameraCenterWorld = Main.Camera.Center;
             Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
             Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
@@ -172,7 +166,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
                     Vector3 color;
                     tileScanner.GetTileLight(x, y, out color);
-                 
+
                     float luminosity = (color.X + color.Y + color.Z) / 3f;
                     if (luminosity < 0.2f)
                         continue;
@@ -182,7 +176,7 @@ namespace Stellamod.Core.LunarLightingSystem
                     if (EmittingTiles[lightTilePoint.X, lightTilePoint.Y])
                         continue;
 
-                 //   Main.NewText(luminosity);
+                    //   Main.NewText(luminosity);
                     Vector2 position = lightTilePoint.ToWorldCoordinates();
                     Color lightColor = new Color(color);
                     lightColor.A = 1;
@@ -274,12 +268,13 @@ namespace Stellamod.Core.LunarLightingSystem
             FindPointLightSourcesFromTiles();
 
             //Since we're using a data oriented structure this is now thread safe! We wouldn't have been able to do that before
-            FastParallel.For(0, MAX_POINT_LIGHTS, delegate (int start, int end, object context) {
+            FastParallel.For(0, MAX_POINT_LIGHTS, delegate (int start, int end, object context)
+            {
                 for (int j = start; j < end; j++)
                 {
                     ProcessLight(j);
                 }
-            }); 
+            });
         }
 
         public static Matrix CreateLightViewMatrix(Vector2 position, float radius)
@@ -324,7 +319,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             if (primitiveCount <= 0)
                 return;
-           
+
             graphicsDevice.BlendState = BlendState.AlphaBlend;
 
             var shadowShader = TileShadowShader.Instance;
@@ -339,7 +334,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             }
         }
-        
+
         private static void RenderLight(int index)
         {
             RenderLight(index, TrailDrawer.WorldViewPoint2);
@@ -377,7 +372,7 @@ namespace Stellamod.Core.LunarLightingSystem
             BakeLightToRenderTarget(index);
 
             graphicsDevice.SetRenderTarget(lightMapAtlasRenderTarget);
-         
+
 
             Rectangle destinationRect = LightAtlasRectangles[index];
             Vector2 location = destinationRect.Location.ToVector2();
@@ -390,7 +385,7 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.Draw(pointLightRenderTarget, location, null, Color.White, 0, Vector2.Zero, 1 / (float)POINT_LIGHT_DOWN_SAMPLES, SpriteEffects.None, 0);
             spriteBatch.End();
 
-          
+
             spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, null, ScissorRasterizer, PointLightSoftenShader.Instance.Effect, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(pointLightRenderTarget, destinationRect, null, Color.White);
             spriteBatch.End();
@@ -401,7 +396,7 @@ namespace Stellamod.Core.LunarLightingSystem
             LightStates[index] = PointLightState.ACTIVE;
         }
 
-  
+
         private static bool IsEmittingLight(int i, int j)
         {
             Tile tile = Main.tile[i, j];
@@ -410,7 +405,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public static void ProcessLight(int index)
         {
-            
+
             ref PointLightData data = ref PointLights[index];
             ref PointLightState state = ref LightStates[index];
 
@@ -428,13 +423,13 @@ namespace Stellamod.Core.LunarLightingSystem
 
                     break;
                 case PointLightState.NEEDS_UPDATING:
-            
+
                     CastLight(index);
                     CastShadow(index);
                     state = PointLightState.NEEDS_BAKING;
                     break;
                 case PointLightState.NEEDS_BAKING:
-         
+
                     break;
                 case PointLightState.CUSTOM:
                     CastLight(index);
@@ -483,10 +478,10 @@ namespace Stellamod.Core.LunarLightingSystem
             if (primIndex >= POINT_LIGHT_MAX_SHADOW_VERTEX_COUNT)
                 return;
             ref VertexPositionColor[] vertices = ref ShadowVertices[index];
- 
 
-                //For the shadow color I want to take the inverse of the pointlight color and then lerp it towards black a bit       
-                
+
+            //For the shadow color I want to take the inverse of the pointlight color and then lerp it towards black a bit       
+
             VertexPositionColor tl1 = new VertexPositionColor(new Vector3(xy1, 0), ShadowColor);
             VertexPositionColor tr1 = new VertexPositionColor(new Vector3(xy1, 1), ShadowColor);
             VertexPositionColor br1 = new VertexPositionColor(new Vector3(xy2, 0), ShadowColor);

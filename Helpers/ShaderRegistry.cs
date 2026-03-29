@@ -84,11 +84,6 @@ namespace Stellamod.Helpers
         public static void LoadShaders()
         {
             ScreenShaders = new List<string>();
-            if (!Main.dedServ)
-            {
-                Filters.Scene["Stellamod:VeilSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
-                SkyManager.Instance["Stellamod:VeilSky"] = new AuroranSky();
-            }
 
             Ref<Effect> BasicTrailRef = new(Assets.Request<Effect>("Effects/Primitives/BasicTrailShader", AssetRequestMode.ImmediateLoad).Value);
             Ref<Effect> LightningTrailRef = new(Assets.Request<Effect>("Effects/Primitives/LightningTrailShader", AssetRequestMode.ImmediateLoad).Value);

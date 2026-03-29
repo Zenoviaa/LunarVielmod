@@ -104,7 +104,7 @@ public class HarmonicCoralwaysBiome : ModBiome,
         if (Main.netMode == NetmodeID.Server)
             return;
 
-        LunarLightingRenderer.AddBackLight(this);
+        ModContent.GetInstance<LunarLightingRenderer>().AddBackLight(this);
     }
     public override void OnLeave(Player player)
     {
@@ -113,6 +113,6 @@ public class HarmonicCoralwaysBiome : ModBiome,
         if (Main.netMode == NetmodeID.Server)
             return;
 
-        LunarLightingRenderer.RemoveBackLight(this);
+        ModContent.GetInstance<LunarLightingRenderer>().RemoveBackLight(this);
     }
 }

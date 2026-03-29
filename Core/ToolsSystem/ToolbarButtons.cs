@@ -20,7 +20,8 @@ namespace Stellamod.Core.ToolsSystem
         public override void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
             base.OnButtonClick(evt, listeningElement);
-            LunarLightingRenderer.renderFog = !LunarLightingRenderer.renderFog;
+            LunarLightingRenderer renderer = ModContent.GetInstance<LunarLightingRenderer>();
+            renderer.renderFog = !renderer.renderFog;
         }
     }
     public class HitboxButton : BaseToolbarButton
