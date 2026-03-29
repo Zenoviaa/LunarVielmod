@@ -27,6 +27,8 @@ namespace Stellamod.Core
 
         private void TargetClosestBetter(On_NPC.orig_TargetClosest orig, NPC self, bool faceTarget)
         {
+            //Charm debuff has it's own system for determining what to attack (other npcs)
+            //So we can just return here if they are charmed
             if (self.HasBuff<Charm>())
                 return;
 
@@ -50,7 +52,7 @@ namespace Stellamod.Core
         public override void OnModLoad()
         {
             base.OnModLoad();
-            aggro = new int[256];
+            aggro = new int[Main.player.Length];
         }
         public override void PreUpdateEntities()
         {
@@ -68,7 +70,6 @@ namespace Stellamod.Core
                     }
 
                     _reseedTimer = 0;
-                  //  Main.NewText($"NEW SEED {seed}");
                 }
             }
 
@@ -91,8 +92,14 @@ namespace Stellamod.Core
             _aggroRandom.SetSeed(aggroSystem.seed);
 
             int totalWeight = 0;
-            List<Point> weights = new List<Point>();
+            int count = 0;
+            foreach (var player in Main.ActivePlayers)
+            {
+                count++;
+            }
 
+            Span<Point> weights = stackalloc Point[count];
+            int j = 0;
             foreach (var player in Main.ActivePlayers)
             {
                 float distance = Vector2.Distance(player.Center, npc.Center);
@@ -105,26 +112,23 @@ namespace Stellamod.Core
                 int adjustedAggro = 100 + localAggro;
                 int playerAggro = Math.Max(1, adjustedAggro);
 
-
                 Point aggro = new Point(playerAggro, player.whoAmI);
-                weights.Add(aggro);
+                weights[j++] = aggro;
                 totalWeight += playerAggro;
             }
 
-            if (weights.Count <= 0)
+            if (j <= 0)
                 return;
 
             int currentWeight = 0;
             int randWeight = _aggroRandom.Next(0, totalWeight);
-            for (int i = 0; i < weights.Count; i++)
+            for (int i = 0; i < count; i++)
             {
                 Point weight = weights[i];
                 currentWeight += weight.X;
                 if (randWeight <= currentWeight)
                 {
-                    //We found our target :)
                     npc.target = weight.Y;
-               //     Main.NewText($"{npc.FullName} Target ${Main.player[npc.target].name}");
                     break;
                 }
             }

@@ -11,10 +11,10 @@ namespace Stellamod.Core.Palettes
     [Autoload(Side = ModSide.Client)]
     public class PaletteHelper : ModSystem
     {
-        private static Dictionary<string, Texture3D> _colorAtlas;
-        public override void OnModLoad()
+        private Dictionary<string, Texture3D> _colorAtlas;
+        public override void Load()
         {
-            base.OnModLoad();
+            base.Load();
             LoadPalettes();
         }
 
@@ -23,23 +23,23 @@ namespace Stellamod.Core.Palettes
             base.Unload();
             if (_colorAtlas == null)
                 return;
-            Main.QueueMainThreadAction(() =>
-            {
-                foreach (var kvp in _colorAtlas)
-                {
-                    kvp.Value?.Dispose();
-                }
-                _colorAtlas = null;
-            });
-
+            Main.QueueMainThreadAction(DisposeColorSpectrumTextures);
         }
 
+        private void DisposeColorSpectrumTextures()
+        {
+            foreach (var kvp in _colorAtlas)
+            {
+                kvp.Value?.Dispose();
+            }
+            _colorAtlas = null;
+        }
         public static Texture3D GetColorSpectrum(string path)
         {
-            return _colorAtlas[path];
+            return ModContent.GetInstance<PaletteHelper>()._colorAtlas[path];
         }
 
-        public static void LoadPalettes()
+        public void LoadPalettes()
         {
             _colorAtlas = new Dictionary<string, Texture3D>();
             Mod mod = Stellamod.Instance;
@@ -47,20 +47,16 @@ namespace Stellamod.Core.Palettes
             {
                 if (file.Contains(".pal"))
                 {
-                
                     Main.QueueMainThreadAction(() =>
                     {
                         using (var stream = mod.GetFileStream(file))
                         {
                             string fileName = new FileInfo(file).Name; ;
-
                             Vector3[] palette = ReadPaletteVector3(stream);
                             Texture3D colorSpectrum = CreateColorSpectrumTexture(palette);
-
                             _colorAtlas.Add(fileName, colorSpectrum);
                         }
                     });
-
                 }
             }
         }

@@ -328,6 +328,7 @@ namespace Stellamod.Core.Utilities
                 graphicsDevice.SamplerStates[0] = shader.SamplerState;
             }
 
+            
             graphicsDevice.DrawUserIndexedPrimitives<VertexPositionColorTexture>(
               PrimitiveType.TriangleList, _trailVertexBuffer, 0, section.vertexCount, _trailIndexBuffer, 0, section.primitiveCount);
 

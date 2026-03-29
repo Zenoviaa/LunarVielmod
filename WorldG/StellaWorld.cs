@@ -340,18 +340,16 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Other stones", WorldGenDarkstone));
         passWriter.NextPass(new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
         passWriter.NextPass(new PassLegacy("World Gen Illuria", WorldGenIlluria));
-
         passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
         passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
-
         passWriter.NextPass(new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
-
         passWriter.NextPass(new PassLegacy("World Gen Hills and Veizal House", WorldGenHillsAndVeizal));
 
         passWriter.NextPass(new PassLegacy("HillsnFable", WorldGenFabiliaRuin));
         passWriter.NextPass(new PassLegacy("World Gen Rysa House", WorldGenRysaHouse));
         passWriter.NextPass(new PassLegacy("MistyDungeon", GenerateMistyDungeon));
         passWriter.NextPass(new PassLegacy("Runica Waterside Underwater", WorldGenRunicaUnderwaterCaves));
+        passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
 
         passWriter.SetInsertionIndex("Generate Ice Biome");
         passWriter.NextPass(new ReworkedVanillaIceBiomePass());
@@ -367,7 +365,7 @@ public class StellaWorld : ModSystem
         passWriter.SetInsertionIndex("Jungle");
         passWriter.NextPass(new MarshJungleMudPass());
         passWriter.NextPass(new PassLegacy("Jungle Surface Caves", WorldGenJungleSurfaceCaves));
-        passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
+
         passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
   
 
@@ -697,8 +695,12 @@ public class StellaWorld : ModSystem
                 float ratio = (float)(x - left) / (float)(right - left);
                 float ease = EasingFunction.QuadraticBump(ratio);
                 int denom = (int)MathHelper.Lerp(1, 8, ease);
-                if (Main.rand.NextBool(denom))
-                    continue;
+                if(ease < 0.5f)
+                {
+                    if (Main.rand.NextBool(denom))
+                        continue;
+                }
+              
                 if(caveOriginY > bottom - 25)
                 {
                     float heightRatio = (float)(caveOriginY - (bottom - 25)) / 25f;
