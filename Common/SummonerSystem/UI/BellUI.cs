@@ -71,6 +71,11 @@ namespace Stellamod.Common.SummonerSystem.UI
             Orient();
         }
 
+        public override void OnActivate()
+        {
+            base.OnActivate();
+            Main.playerInventory = true;
+        }
         public void UpdateSlots()
         {
             while (_slots.Count < Main.LocalPlayer.maxMinions)
@@ -84,6 +89,7 @@ namespace Stellamod.Common.SummonerSystem.UI
 
         private void Orient()
         {
+     
             _backButton.Left.Pixels = Width.Pixels / 2 - _backButton.Width.Pixels / 2;
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft + 100;
@@ -116,6 +122,9 @@ namespace Stellamod.Common.SummonerSystem.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            if (!Main.playerInventory)
+                Close();
             UpdateSlots();
             Orient();
         }
