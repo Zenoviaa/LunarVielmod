@@ -74,8 +74,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
             Timer++;
             if(Timer == 1)
             {
-                SoundStyle cheer = AssetRegistry.Sounds.Collosseum.GintzeCheer;
-                SoundEngine.PlaySound(cheer);
+                ColosseumWaveManager.Cheer();
                 _spawnPoint = NPC.Center;
             }
             NPC.Center = _spawnPoint;

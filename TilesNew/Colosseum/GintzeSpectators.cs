@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Tiles;
 using Terraria;
 using Terraria.ModLoader;
@@ -75,6 +76,21 @@ namespace Stellamod.TilesNew.Colosseum
         {
             base.SetStaticDefaults();
             StructureColor = Color.Gray;
+        }
+
+        public override void Update(int i, int j)
+        {
+            base.Update(i, j);
+            gintzeHopping = ColosseumWaveManager.cheerTimer > 0;
+            if (gintzeHopping)
+            {
+                gintzeHoppingTimer++;
+            }
+            else
+            {
+                gintzeHoppingTimer--;
+            }
+            gintzeHoppingTimer = MathHelper.Clamp(gintzeHoppingTimer, 0f, 30f);
         }
 
         public override SpriteEffects GetSpriteEffects(int i, int j)

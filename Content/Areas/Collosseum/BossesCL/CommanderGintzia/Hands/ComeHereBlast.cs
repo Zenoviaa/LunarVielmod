@@ -147,10 +147,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             //This just applis the shader changes
 
             //Main Fill
-            Rectangle r = _blowRect;
-            r.X -= (int)Main.screenPosition.X;
-            r.Y -= (int)Main.screenPosition.Y;
-            Primitives2D.DrawRectangle(Main.spriteBatch, r, Color.Red);
             TrailDrawer.Draw(Main.spriteBatch,_oldSwingPos, Projectile.oldRot, StripColors, StripWidth, shader);
             return false;
         }

@@ -11,6 +11,7 @@ using Stellamod.Items.Ores;
 using Stellamod.NPCs;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -34,6 +35,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
         private int _maxWave;
         private bool _shouldDie;
         public static bool goAwayGintzia;
+        public static float cheerTimer;
         public static Vector2 GongSpawnWorld
         {
             get
@@ -47,6 +49,13 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
                 Vector2 gongSpawnWorld = colosseumCenterTile.ToWorldCoordinates();
                 return gongSpawnWorld;
             }
+        }
+
+        public static void Cheer()
+        {
+            cheerTimer = 30f;
+            SoundStyle cheer = AssetRegistry.Sounds.Collosseum.GintzeCheer;
+            SoundEngine.PlaySound(cheer);
         }
         public override void SetStaticDefaults()
         {
@@ -104,6 +113,11 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
         public override void AI()
         {
             base.AI();
+            if(cheerTimer > 0)
+            {
+                cheerTimer--;
+            }
+
             if (_shouldDie)
             {
                 NPC.active = false;

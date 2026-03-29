@@ -17,6 +17,7 @@ using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
 using Stellamod.Content.Armors.Ravaging;
 using Stellamod.Helpers;
+using Stellamod.Items.Consumables;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.BossPages
@@ -121,7 +122,10 @@ namespace Stellamod.Content.BossPages
             bossNPC = ModContent.GetInstance<CommanderGintzia>();
             progression = 7;
             flag = DownedBossFlag.Commander_Gintzia;
+            AddReward<VoidKey>();
         }
+    
+        
     }
 
     public class JiitasPage : BossPage

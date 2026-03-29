@@ -3,6 +3,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Placeable;
@@ -599,7 +600,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
         private int GetHand(int index)
         {
-            return _comeHereIndex;
             switch (index)
             {
                 default:
@@ -857,38 +857,33 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         private void AI_GiveKey()
         {
             Timer++;
+            if(Timer == 1)
+            {
+                _originalVelocity = NPC.velocity;
+            }
 
+            RetargetCameraModifier.ReTargetPosition = NPC.Center;
             Vector2 colosseumWorld = ColosseumWaveManager.GongSpawnWorld;
-
-            Vector2 velocity = (colosseumWorld - NPC.Center).SafeNormalize(Vector2.Zero);
-            float distance = Vector2.Distance(NPC.Center, colosseumWorld);
-            float maxSpeed = 6;
-            if (distance < maxSpeed)
-            {
-                velocity *= distance;
-            }
-            else
-            {
-                velocity *= maxSpeed;
-            }
-
-
-            NPC.rotation = NPC.velocity.X * 0.025f;
-
             if (Timer < 150)
             {
-                NPC.velocity = Vector2.Lerp(NPC.velocity, velocity, 0.3f);
-                NPC.velocity.Y += MathF.Sin(Timer * 0.2f) * 0.1f;
+                float ratio = Timer / GoTargetTime;
+                float easing = EasingFunction.InOutCirc(ratio);
+                float easing2 = EasingFunction.QuadraticBump(ratio);
+                Vector2 targetCenter = colosseumWorld + new Vector2(0, -64);
+                targetCenter.Y += MathUtil.Osc(0f, -8f, speed: 1);
+                targetCenter.Y += MathHelper.Lerp(0f, 6f, easing2);
+
+                Vector2 targetVelocity = (targetCenter - NPC.Center);
+                Vector2 easedVelocity = Vector2.Lerp(_originalVelocity, targetVelocity, easing);
+                NPC.velocity = easedVelocity;
+                NPC.direction = Target.Center.X > NPC.Center.X ? 1 : -1;
+                //I want a fast but eased in movement to the follow center position
+                float targetRotation = NPC.velocity.X * 0.025f;
+                NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
             }
 
             if (Timer == 150)
             {
-                if (MultiplayerHelper.IsHost)
-                {
-                    int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
-                        ModContent.ItemType<VoidKey>(), Main.rand.Next(1, 1));
-                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
-                }
                 if (MultiplayerHelper.IsHost)
                 {
                     int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
@@ -907,7 +902,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
             if (Timer == 240)
             {
-                NPC.SetEventFlagCleared(ref DownedBossSystem.downedCommanderGintziaBoss, -1);
+                DownedBossTracker.ClearFlag(DownedBossFlag.Commander_Gintzia);
                 ColosseumWaveManager.ColosseumEnemyKilled();
             }
             if (Timer == 241)

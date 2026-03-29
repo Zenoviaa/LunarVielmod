@@ -191,6 +191,8 @@ namespace Stellamod.Tiles
         public Action HoverFunc { get; set; }
         public Action ClickFunc { get; set; }
         public float Rotation { get; private set; }
+        public bool gintzeHopping;
+        public float gintzeHoppingTimer;
         public bool AdditiveDraw { get; set; }
         public static bool drawBig;
         public override void SetStaticDefaults()
@@ -288,6 +290,12 @@ namespace Stellamod.Tiles
             }
 
             Vector2 drawPos = new Vector2(i, j) * 16;
+
+            if (gintzeHopping)
+            {
+                drawPos.Y += ExtraMath.Osc(0f, -8f, speed: 3, offset: i) * gintzeHoppingTimer / 30f;
+            }
+
             Vector2 drawOrigin = new Vector2(drawFrame.Width / 2, drawFrame.Height);
             switch (Origin)
             {
