@@ -104,7 +104,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
         private void AI_Hover()
         {
-            NPC.Center = Vector2.Lerp(NPC.Center, Parent.Center + Vector2.UnitY * 48, 0.5f);
+            NPC.Center = Parent.Center + Vector2.UnitY * 48;
             NPC.rotation = Parent.rotation;
         }
 

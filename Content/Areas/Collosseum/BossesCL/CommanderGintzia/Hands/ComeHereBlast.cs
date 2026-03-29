@@ -4,9 +4,11 @@ using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Shaders;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
@@ -20,7 +22,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             if (blowVelocity.HasValue)
             {
                 Vector2 targetVelocity = blowVelocity.Value;
-                Player.velocity = Vector2.Lerp(Player.velocity, targetVelocity, 0.5f);
+                //    Player.velocity = Vector2.Lerp(Player.velocity, targetVelocity, 0.5f);
+                Player.velocity.X = MathHelper.Lerp(Player.velocity.X, targetVelocity.X, 0.5f);
                 blowVelocity = null;
             }
         }
@@ -33,8 +36,15 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
         {
             get => Projectile.ai[1] == 1;
         }
+        private Rectangle _blowRect;
 
         public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 1500;
+        }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -89,14 +99,24 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
                 _oldSwingPos[i] = pos;
             }
 
-            Vector2 bottomLeft = Projectile.Center + new Vector2(0, Projectile.width);
+            Vector2 p1 = Projectile.Center - new Vector2(0, Projectile.width / 2);
+            Vector2 p2 = Projectile.Center + new Vector2(Projectile.velocity.X, Projectile.width / 2);
 
-            Rectangle blowRect = new Rectangle((int)bottomLeft.X, (int)bottomLeft.Y, 
-                (int)Projectile.velocity.X, (int)Projectile.width);
+            Vector2 topLeft = new Vector2();
+            topLeft.X = MathF.Min(p1.X, p2.X);
+            topLeft.Y = MathF.Min(p1.Y, p2.Y);
+
+            Vector2 bottomRight = new Vector2();
+            bottomRight.X = MathF.Max(p1.X, p2.X);
+            bottomRight.Y = MathF.Max(p1.Y, p2.Y);
+            float width = bottomRight.X - topLeft.X;
+            float height = bottomRight.Y - topLeft.Y;
+            _blowRect = new Rectangle((int)topLeft.X, (int)topLeft.Y, 
+                (int)width, (int)height);
 
             foreach (var player in Main.ActivePlayers)
             {
-                if (Colliding(blowRect, player.getRect()).Value)
+                if (_blowRect.Intersects(player.getRect()))
                 {
 
                     Vector2 blowVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
@@ -127,7 +147,11 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             //This just applis the shader changes
 
             //Main Fill
-            TrailDrawer.Draw(Main.spriteBatch,_oldSwingPos, Projectile.oldRot, StripColors, StripWidth, shader, offset: Projectile.Size / 2);
+            Rectangle r = _blowRect;
+            r.X -= (int)Main.screenPosition.X;
+            r.Y -= (int)Main.screenPosition.Y;
+            Primitives2D.DrawRectangle(Main.spriteBatch, r, Color.Red);
+            TrailDrawer.Draw(Main.spriteBatch,_oldSwingPos, Projectile.oldRot, StripColors, StripWidth, shader);
             return false;
         }
         private Color StripColors(float progressOnStrip)

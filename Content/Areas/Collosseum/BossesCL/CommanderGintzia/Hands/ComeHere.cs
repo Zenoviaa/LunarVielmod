@@ -85,7 +85,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
 
 
                 float rotation = (Target.Center - NPC.Center).ToRotation();
-                NPC.rotation = MathHelper.Lerp(NPC.rotation, rotation, 0.1f);
+                NPC.rotation = Utils.AngleLerp(NPC.rotation, rotation, 0.1f);
             }
 
 
@@ -131,7 +131,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
             glowColor *= 0.5f;
             glowColor.A = 0;
             Vector2 drawPos = NPC.Center - Main.screenPosition;
-            spriteBatch.Draw(texture, drawPos, null, glowColor, NPC.rotation, texture.Size() / 2, NPC.scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos, null, glowColor, NPC.rotation + Main.GlobalTimeWrappedHourly * 0.05f, texture.Size() / 2, NPC.scale * 0.5f, SpriteEffects.None, 0);
             return base.PreDraw(spriteBatch, screenPos, drawColor);
         }
     }

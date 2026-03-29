@@ -57,7 +57,7 @@ public class HarmonicCoralwaysBG : CustomBG
         NoSurfaceLight = true;
         parallaxInBothWays = true;
         NoSurfaceOffset = true;
-        DrawScale = 1;
+        DrawScale = 1.2f;
         DrawOffset = new Vector2(0, 100);
         return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneHarmonicCoralways;
     }

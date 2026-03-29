@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core;
@@ -26,11 +27,13 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         private int _openHandIndex;
         private int _scissorHandIndex;
         private int _evilCarpetIndex;
-        private float _hoverTimer;
         private enum AIState
         {
             Spawn,
             Idle,
+            GoHome,
+            HomeIdle,
+            GoTarget,
             Summon_Hands,
             Summon_Hands_V2,
             Slam,
@@ -43,14 +46,30 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         }
 
         private Vector2 FollowCenter;
-
+        private Vector2 _originalVelocity;
+        private Vector2 _home;
+        private PatternManager<int> _patternManageBackingField;
+        private PatternManager<int> PatternManager
+        {
+            get
+            {
+                _patternManageBackingField ??= new PatternManager<int>(
+                    new Tuple<int, float>(0, 1.0f),
+                    new Tuple<int, float>(1, 1.0f),
+                    new Tuple<int, float>(2, 1.0f),
+                    new Tuple<int, float>(3, 1.0f),
+                    new Tuple<int, float>(4, 1.0f),
+                    new Tuple<int, float>(5, 1.0f),
+                    new Tuple<int, float>(6, 1.0f));
+                return _patternManageBackingField;
+            }
+        }
         private ref float Timer => ref NPC.ai[0];
         private AIState State
         {
             get => (AIState)NPC.ai[1];
             set => NPC.ai[1] = (float)value;
         }
-
         private ref float AttackCycle => ref NPC.ai[2];
         private ref float AccelTimer => ref NPC.ai[3];
         private Player Target => Main.player[NPC.target];
@@ -59,6 +78,10 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
         private float TransitionColorProgress;
         private int ShockwaveDamage => 40;
+        private float GoHomeTime => 150f;
+        private float GoTargetTime => 140f;
+        private float HomeIdleTime => 15f;
+        private float SummonHandsTime => 300f;
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
@@ -72,6 +95,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             writer.Write(_evilCarpetIndex);
             writer.WriteVector2(FollowCenter);
             writer.Write(Phase2Transition);
+            writer.WriteVector2(_originalVelocity);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -87,12 +111,15 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             _evilCarpetIndex = reader.ReadInt32();
             FollowCenter = reader.ReadVector2();
             Phase2Transition = reader.ReadBoolean();
+            _originalVelocity = reader.ReadVector2();
         }
 
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
             Main.npcFrameCount[Type] = 30;
+            NPCID.Sets.TrailCacheLength[Type] = 16;
+            NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
         }
@@ -103,8 +130,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             NPC.width = 128;
             NPC.height = 128;
             NPC.damage = 14;
-            NPC.defense = 10;
-            NPC.lifeMax = 2500;
+            NPC.defense = 11;
+            NPC.lifeMax = 3100;
             NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f };
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f };
             NPC.knockBackResist = 0f;
@@ -186,8 +213,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
             _windStorm ??= new WindStorm(3);
             _windStorm?.Update(NPC.Center);
-            if(!NPC.HasValidTarget)
-                NPC.TargetClosest();
+            if (!NPC.HasValidTarget)
+                NPC.TargetClosest(false);
             if (!NPC.HasValidTarget && State != AIState.Despawn)
             {
                 SwitchState(AIState.Despawn);
@@ -196,10 +223,12 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             {
                 Main.windSpeedTarget = -200f * 0.01f;
             }
+
+
             NPC.spriteDirection = NPC.direction;
             if (FollowCenter == Vector2.Zero)
                 FollowCenter = NPC.Center;
-            FollowTarget();
+
             switch (State)
             {
                 case AIState.Spawn:
@@ -207,6 +236,15 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                     break;
                 case AIState.Idle:
                     AI_Idle();
+                    break;
+                case AIState.GoHome:
+                    AI_GoHome();
+                    break;
+                case AIState.HomeIdle:
+                    AI_HomeIdle();
+                    break;
+                case AIState.GoTarget:
+                    AI_GoTarget();
                     break;
                 case AIState.Summon_Hands:
                     AI_SummonHands();
@@ -252,7 +290,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         {
             TargetOutlineColor = Color.Yellow;
             NPC npc = Main.npc[npcIndex];
-            npc.ai[1] = 2;
+            npc.ai[1] = 7;
             npc.netUpdate = true;
         }
         private void TransitionHand(int npcIndex)
@@ -297,12 +335,12 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                 {
                     case 0:
                         soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GintzSummon");
-                        soundStyle.PitchVariance = 0.1f;
+                        soundStyle.PitchVariance = 0.3f;
                         SoundEngine.PlaySound(soundStyle, NPC.position);
                         break;
                     case 1:
                         soundStyle = new SoundStyle("Stellamod/Assets/Sounds/GintzSummon2");
-                        soundStyle.PitchVariance = 0.1f;
+                        soundStyle.PitchVariance = 0.3f;
                         SoundEngine.PlaySound(soundStyle, NPC.position);
                         break;
                 }
@@ -393,101 +431,192 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                 PlaySound();
             }
 
-            if(Timer == 200)
+            if (Timer == 200)
             {
                 ShowNamePlate();
             }
 
             if (Timer >= 210)
             {
-               
+
                 SwitchState(AIState.Idle);
             }
         }
 
-        private void FollowTarget()
+        private void AI_GoHome()
         {
-            Vector2 targetCenter = FollowCenter + new Vector2(0, -64);
-            Vector2 velToPlayer = targetCenter - NPC.Center;
-            velToPlayer = velToPlayer.SafeNormalize(Vector2.Zero);
-
-            //Home to this point
-            AccelTimer++;
-            float speedInterpolant = AccelTimer / 60f;
-
-            float easedSpeed = EasingFunction.InOutSine(speedInterpolant);
-            float maxSpeed = MathHelper.Lerp(0f, 3f, speedInterpolant);
-            Vector2 targetVelocity = velToPlayer;
-            float distance = Vector2.Distance(NPC.Center, targetCenter);
-            if (distance < 120)
+            Timer++;
+            if (Timer == 1)
             {
-                targetVelocity *= distance;
-                NPC.velocity *= 0.98f;
+                GruntSound();
+                TransitionEffect();
+                _originalVelocity = NPC.velocity;
+                NPC.TargetClosest(false);
+            }
 
-                float targetX = (MathF.Sin(AccelTimer * 0.1f) * 0.5f / 0.5f);
-                float targetY = (MathF.Sin(AccelTimer * 0.2f) * 0.5f / 0.5f);
+            _home = ColosseumWaveManager.GongSpawnWorld;
+            _home.Y -= 64;
 
-                _hoverTimer++;
-                float hovertime = 90;
-                if (_hoverTimer >= hovertime)
-                    _hoverTimer = hovertime;
-                float interp = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(_hoverTimer / hovertime));
-                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, targetX, interp);
-                NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.X, targetY, interp);
+            float ratio = Timer / GoHomeTime;
+            float easing = EasingFunction.InOutExpo(ratio);
+            float easing2 = EasingFunction.QuadraticBump(ratio);
+            Vector2 targetCenter = _home + new Vector2(0, -64);
+            targetCenter.Y += MathUtil.Osc(0f, -8f, speed: 1);
+            targetCenter.Y += MathHelper.Lerp(0f, 6f, easing2);
+
+            Vector2 targetVelocity = (targetCenter - NPC.Center);
+            Vector2 easedVelocity = Vector2.Lerp(_originalVelocity, targetVelocity, easing);
+            NPC.velocity = easedVelocity;
+            NPC.direction = Target.Center.X > NPC.Center.X ? 1 : -1;
+            //I want a fast but eased in movement to the follow center position
+            float targetRotation = NPC.velocity.X * 0.025f;
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
+            if (Timer >= GoHomeTime)
+            {
+                SwitchState(AIState.HomeIdle);
+            }
+        }
+
+        private void AI_HomeIdle()
+        {
+            Timer++;
+            NPC.velocity = NPC.velocity.RotatedBy(0.05f);
+            if (Timer >= HomeIdleTime)
+            {
+                SwitchState(AIState.GoTarget);
+            }
+        }
+
+        private void GruntSound()
+        {
+            SoundStyle gruntSound;
+            switch (Main.rand.Next(3))
+            {
+                default:
+                case 0:
+                    gruntSound = AssetRegistry.Sounds.Collosseum.GintzeGrunt1;
+                    break;
+                case 1:
+                    gruntSound = AssetRegistry.Sounds.Collosseum.GintzeGrunt3;
+                    break;
+                case 2:
+                    gruntSound = AssetRegistry.Sounds.Collosseum.GintzeGrunt4;
+                    break;
+            }
+
+            SoundEngine.PlaySound(gruntSound, NPC.position);
+        }
+        private void AI_GoTarget()
+        {
+            Timer++;
+            if (Timer == 1)
+            {
+                GruntSound();
+                SoundStyle chargeSound = AssetRegistry.Sounds.SanguineSingularity.SanguineCharge;
+                chargeSound.Volume = 0.5f;
+                chargeSound.Pitch = 0.5f;
+                chargeSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(chargeSound, NPC.position);
+                FollowCenter = Target.Center;
+                _originalVelocity = NPC.velocity;
+                NPC.TargetClosest(false);
+            }
+            float ratio = Timer / GoTargetTime;
+            float easing = EasingFunction.InOutCirc(ratio);
+            float easing2 = EasingFunction.QuadraticBump(ratio);
+            Vector2 targetCenter = FollowCenter + new Vector2(0, -64);
+            targetCenter.Y += MathUtil.Osc(0f, -8f, speed: 1);
+            targetCenter.Y += MathHelper.Lerp(0f, 6f, easing2);
+
+            Vector2 targetVelocity = (targetCenter - NPC.Center);
+            Vector2 easedVelocity = Vector2.Lerp(_originalVelocity, targetVelocity, easing);
+            NPC.velocity = easedVelocity;
+            NPC.direction = Target.Center.X > NPC.Center.X ? 1 : -1;
+            //I want a fast but eased in movement to the follow center position
+            float targetRotation = NPC.velocity.X * 0.025f;
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
+            if (Timer >= GoTargetTime)
+            {
+                ChooseAttack();
+            }
+        }
+
+        private void HoverMovement()
+        {
+            NPC.velocity.X *= 0.94f;
+            NPC.velocity.X += ExtraMath.Osc(-0.1f, 0.1f);
+            NPC.velocity.Y *= 0.8f;
+            float targetRotation = NPC.velocity.X * 0.025f;
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
+            NPC.direction = Target.Center.X > NPC.Center.X ? 1 : -1;
+        }
+        private void ChooseAttack()
+        {
+            if (InPhase2 && !Phase2Transition)
+            {
+                SwitchState(AIState.Phase_2_Transition);
+                Phase2Transition = true;
             }
             else
             {
-                _hoverTimer --;
-                if (_hoverTimer <= 0)
-                    _hoverTimer = 0;
-                targetVelocity *= maxSpeed;
-                NPC.velocity = targetVelocity;
-                NPC.velocity.Y += MathF.Sin(Timer * 0.1f) * 1;
+                if (InPhase2)
+                {
+                    if (MultiplayerHelper.IsHost)
+                    {
+                        if (Main.rand.NextBool(7))
+                        {
+                            SwitchState(AIState.Slam);
+                        }
+                        else
+                        {
+                            SwitchState(AIState.Summon_Hands_V2);
+                        }
+                    }
+                }
+                else
+                {
+                    SwitchState(AIState.Summon_Hands);
+                }
             }
-
-            float targetRotation = NPC.velocity.X * 0.025f;
-            NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
         }
-
         private void AI_Idle()
         {
+            AttackCycle = 0;
             TargetOutlineColor = Color.Transparent;
             Timer++;
             if (Timer == 1)
             {
                 AccelTimer = 0;
                 FollowCenter = Target.Center;
-                NPC.TargetClosest();
+                NPC.TargetClosest(false);
             }
-     
+            HoverMovement();
             if (Timer >= 200)
             {
-                if (InPhase2 && !Phase2Transition)
-                {
-                    SwitchState(AIState.Phase_2_Transition);
-                    Phase2Transition = true;
-                }
-                else
-                {
-                    if (InPhase2)
-                    {
-                        if (MultiplayerHelper.IsHost)
-                        {
-                            if (Main.rand.NextBool(7))
-                            {
-                                SwitchState(AIState.Slam);
-                            }
-                            else
-                            {
-                                SwitchState(AIState.Summon_Hands_V2);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        SwitchState(AIState.Summon_Hands);
-                    }
-                }
+                SwitchState(AIState.GoHome);
+            }
+        }
+
+        private int GetHand(int index)
+        {
+            return _comeHereIndex;
+            switch (index)
+            {
+                default:
+                case 0:
+                    return _fistIndex;
+                case 1:
+                    return _openHandIndex;
+                case 2:
+                    return _comeHereIndex;
+                case 3:
+                    return _fingerGunIndex;
+                case 4:
+                    return _okHandIndex;
+                case 5:
+                    return _scissorHandIndex;
+                case 6:
+                    return _handShakeIndex;
             }
         }
 
@@ -499,56 +628,25 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             {
                 if (MultiplayerHelper.IsHost)
                 {
-                    switch (AttackCycle)
-                    {
-                        case 0:
-                            if (Main.rand.NextBool(2))
-                            {
-                                SummonHand(_fistIndex);
-                            }
-                            else
-                            {
-                                SummonHand(_openHandIndex);
-                            }
-
-                            break;
-                        case 1:
-                            if (Main.rand.NextBool(2))
-                            {
-                                SummonHand(_comeHereIndex);
-                            }
-                            else
-                            {
-                                SummonHand(_fingerGunIndex);
-                            }
-
-                            break;
-                        case 2:
-                            if (Main.rand.NextBool(2))
-                            {
-                                SummonHand(_okHandIndex);
-                            }
-                            else
-                            {
-                                SummonHand(_scissorHandIndex);
-                            }
-                            break;
-                        case 3:
-                            SummonHand(_handShakeIndex);
-                            break;
-                    }
-                    AttackCycle++;
-                    if (AttackCycle >= 4)
-                    {
-                        AttackCycle = 0;
-                    }
+                    int index = PatternManager.NextPattern();
+                    int handIndex = GetHand(index);
+                    SummonHand(handIndex);
                 }
-
             }
-
-            if (Timer >= 360)
+            HoverMovement();
+            if (Timer >= SummonHandsTime)
             {
-                SwitchState(AIState.Idle);
+               
+                if(AttackCycle >= 2)
+                {
+                    SwitchState(AIState.Idle);
+                }
+                else
+                {
+                    SwitchState(AIState.GoTarget);
+                }
+             
+                AttackCycle++;
             }
         }
 
@@ -559,57 +657,15 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             {
                 if (MultiplayerHelper.IsHost)
                 {
-                    switch (AttackCycle)
+                    for (int i = 0; i < 2; i++)
                     {
-                        case 0:
-                            SummonHand(_fistIndex);
-                            if (Main.rand.NextBool(2))
-                            {
-                                SummonHand(_fingerGunIndex);
-                            }
-                            else
-                            {
-                                SummonHand(_openHandIndex);
-                            }
-
-                            break;
-                        case 1:
-                            SummonHand(_fingerGunIndex);
-                            if (Main.rand.NextBool(2))
-                            {
-                                SummonHand(_comeHereIndex);
-                            }
-                            else
-                            {
-                                SummonHand(_okHandIndex);
-                            }
-
-                            break;
-                        case 2:
-                            SummonHand(_scissorHandIndex);
-                            if (Main.rand.NextBool(2))
-                            {
-                                SummonHand(_handShakeIndex);
-                            }
-                            else
-                            {
-                                SummonHand(_fistIndex);
-                            }
-                            break;
-                        case 3:
-                            SummonHand(_handShakeIndex);
-                            SummonHand(_fingerGunIndex);
-                            break;
-                    }
-                    AttackCycle++;
-                    if (AttackCycle >= 4)
-                    {
-                        AttackCycle = 0;
+                        int index = PatternManager.NextPattern();
+                        int handIndex = GetHand(index);
+                        SummonHand(handIndex);
                     }
                 }
-
             }
-
+            HoverMovement();
             if (Timer >= 360)
             {
                 SwitchState(AIState.Idle);
@@ -720,18 +776,22 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             }
         }
 
+        private void TransitionEffect()
+        {
+            TransitionHand(_fistIndex);
+            TransitionHand(_okHandIndex);
+            TransitionHand(_comeHereIndex);
+            TransitionHand(_fingerGunIndex);
+            TransitionHand(_handShakeIndex);
+            TransitionHand(_openHandIndex);
+            TransitionHand(_scissorHandIndex);
+        }
         private void AI_Phase2Transition()
         {
             Timer++;
             if (Timer == 1)
             {
-                TransitionHand(_fistIndex);
-                TransitionHand(_okHandIndex);
-                TransitionHand(_comeHereIndex);
-                TransitionHand(_fingerGunIndex);
-                TransitionHand(_handShakeIndex);
-                TransitionHand(_openHandIndex);
-                TransitionHand(_scissorHandIndex);
+                TransitionEffect();
             }
 
             if (Timer % 10 == 0)
@@ -742,13 +802,13 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                 Dust.NewDustPerfect(dustSpawnPos, DustID.GemDiamond, dustVelocity);
             }
 
-            NPC.velocity.X *= 0.94f;
-            NPC.velocity.Y *= 0.94f;
+            NPC.velocity.X *= 0.8f;
+            NPC.velocity.Y *= 0.8f;
             NPC.velocity.Y += MathF.Sin(Timer * 0.2f) * 0.1f;
             NPC.rotation *= 0.94f;
 
             float progress = Timer / 180f;
-            float easedProgress = Easing.SpikeOutCirc(progress);
+            float easedProgress = EasingFunction.QuadraticBump(progress);
             TransitionColorProgress = easedProgress;
             if (Timer % 16 == 0)
             {
@@ -863,7 +923,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             {
                 NPC.velocity.Y -= 0.1f;
             }
-            if(Timer >= 60)
+            if (Timer >= 60)
             {
                 NPC.active = false;
             }

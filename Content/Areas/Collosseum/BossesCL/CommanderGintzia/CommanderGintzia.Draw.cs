@@ -102,16 +102,24 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
             float drawRotation = NPC.rotation;
             float drawScale = NPC.scale;
             SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+            for (int i = 0; i < NPC.oldPos.Length; i++)
+            {
+                Vector2 pos = NPC.oldPos[i];
+                SpritebatchDrawer trailDrawer = SpritebatchDrawer.FromNPC(NPC);
+                trailDrawer.worldPosition = pos + NPC.Size * 0.5f;
+                trailDrawer.worldPosition.X += ExtraMath.Osc(-6f, 6f, offset: i);
+                float ratio = (float)i / (float)NPC.oldPos.Length;
+                trailDrawer.color = Color.Lerp(Color.White, Color.Transparent, ratio) * 0.2f;
+                spriteBatch.Draw(trailDrawer);
+            }
             spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
+
 
             if (TransitionColorProgress > 0)
             {
-                spriteBatch.Restart(blendState: BlendState.Additive);
-                for (int i = 0; i < 2; i++)
-                {
-                    spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor * TransitionColorProgress, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
-                }
-                spriteBatch.RestartDefaults();
+                drawColor.A = 0;
+                spriteBatch.Draw(texture, drawPos, NPC.frame, drawColor * TransitionColorProgress, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
             }
             _windStorm?.Draw();
             return false;

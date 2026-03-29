@@ -108,6 +108,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
         public override void AI()
         {
             base.AI();
+
             switch (State)
             {
                 case AIState.Idle:
@@ -144,7 +145,10 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
                 float distanceToTarget = Vector2.Distance(NPC.Center, target.Center);
                 NPC.dontTakeDamage = Timer < 120 || distanceToTarget > 500;
             }
+            if (NPC.AnyDanger())
+                NPC.dontTakeDamage = true;
 
+               
             Vector2 targetVelocity = new Vector2(0f, MathF.Sin(Timer * 0.002f) * 0.1f);
             NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
             NPC.scale = EasingFunction.InOutSine(Timer / 120f);

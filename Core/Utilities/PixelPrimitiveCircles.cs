@@ -1,7 +1,9 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
@@ -9,14 +11,54 @@ using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Utilities;
+
 public struct PixelPrimitiveCircleParams
 {
     public float time;
     public float minRadius;
     public float maxRadius;
 }
+
 public static class PixelPrimitiveCircleFactory
 {
+    public static void CreateClosingGustCircle(Vector2 position)
+    {
+        void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
+        {
+            Color StripColors(float progressOnStrip)
+            {
+                //  return Color.Lerp(Color.LightGoldenrodYellow, Color.White, Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
+                return Color.Lerp(Color.LightGray, Color.Transparent, completionRatio) * 0.5f;
+            }
+
+            float StripWidth(float progressOnStrip)
+            {
+                float baseWidth = 4;
+                return MathHelper.SmoothStep(baseWidth, baseWidth, progressOnStrip);
+            }
+
+            var shader = MagicRadianceShader.Instance;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
+            shader.NoiseTexture = TrailRegistry.CloudsSmall;
+            shader.OutlineTexture = TrailRegistry.DottedTrailOutline;
+            shader.PrimaryColor = Color.Lerp(Color.White, Color.LightGray, 0.5f);
+            shader.NoiseColor = Color.LightGray;
+            shader.OutlineColor = Color.Transparent;
+            shader.BlendState = BlendState.Additive;
+            shader.SamplerState = SamplerState.PointWrap;
+            shader.Speed = 5.2f;
+            shader.Distortion = 0.15f;
+            shader.Power = 0.25f;
+            TrailDrawer.Draw(Main.spriteBatch, points, StripColors, StripWidth, shader);
+        }
+        PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
+        circle.circleParams.minRadius = 100;
+        circle.circleParams.maxRadius = 0;
+        circle.circleParams.time = 45;
+        circle.renderPixelPrimitivesFunction = RenderPrimitives;
+        circle.position = position;
+        ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
+    }
     public static void CreateHeavenlyBoom(Vector2 position)
     {
         void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
@@ -179,7 +221,7 @@ public class PixelPrimitiveCircle
         float maxRadians = MathHelper.ToRadians(362);
         for (int f = 0; f < points.Length; f++)
         {
-            float ratio = (float)(f ) / (float)(points.Length-1);
+            float ratio = (float)(f) / (float)(points.Length - 1);
             ref Vector2 point = ref points[f];
 
             float radians = ratio * maxRadians;

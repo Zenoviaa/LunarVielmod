@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
@@ -46,6 +45,17 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+            public static class Collosseum
+            {
+                public static SoundStyle GintzeCheer => new SoundStyle($"{Path}Collosseum/GintzeCheer");
+                public static SoundStyle GintzeGasp => new SoundStyle($"{Path}Collosseum/GintzeGasp");
+                public static SoundStyle GintzeGrunt1 => new SoundStyle($"{Path}Collosseum/GintzeGrunt1");
+                public static SoundStyle GintzeGrunt2 => new SoundStyle($"{Path}Collosseum/GintzeGrunt2");
+                public static SoundStyle GintzeGrunt3 => new SoundStyle($"{Path}Collosseum/GintzeGrunt3");
+                public static SoundStyle GintzeGrunt4 => new SoundStyle($"{Path}Collosseum/GintzeGrunt4");
+                public static SoundStyle GintzeGrunt5 => new SoundStyle($"{Path}Collosseum/GintzeGrunt5");
+                public static SoundStyle GintzeHandSummon => new SoundStyle($"{Path}Collosseum/GintzeHandSummon");
+            }
 
             public static class LeviathanEel
             {
@@ -303,7 +313,7 @@ namespace Stellamod.Assets
 
             public static class Melee
             {
-            
+
                 public static SoundStyle ExcaliburSwordBigger = new SoundStyle($"{Path}Melee/WeaponSwordbigger");
                 public static SoundStyle ExcaliburSwordCrashFall = new SoundStyle($"{Path}Melee/ExcaliburSwordCrashFall");
                 public static SoundStyle ExcaliburHitBuster = new SoundStyle($"{Path}Melee/ExcaliburHitBuster");

@@ -1,10 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Helpers;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,7 +17,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event
         private Vector2 OriginalCenter;
         private ref float Timer => ref Projectile.ai[0];
         private ref float DeathTimer => ref Projectile.ai[1];
-        private float DeathProgress;
+
         private bool Die;
         private float Length;
 
@@ -56,7 +58,10 @@ namespace Stellamod.Content.Areas.Collosseum.Event
             if (Timer == 1)
             {
                 OriginalCenter = Projectile.Center;
+                SoundStyle gasp = AssetRegistry.Sounds.Collosseum.GintzeGasp;
+                SoundEngine.PlaySound(gasp);
             }
+
             float leftLength = ProjectileHelper.PerformBeamHitscan(OriginalCenter, -Vector2.UnitX, 2400);
             Projectile.Left = OriginalCenter + new Vector2(-leftLength, 0) + new Vector2(8, 0);
             Length = ProjectileHelper.PerformBeamHitscan(Projectile.Left, Vector2.UnitX, 2400);

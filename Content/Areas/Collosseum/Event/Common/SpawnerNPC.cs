@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Core.NPCHelpers;
 using Stellamod.Helpers;
 using Terraria;
@@ -73,6 +74,8 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
             Timer++;
             if(Timer == 1)
             {
+                SoundStyle cheer = AssetRegistry.Sounds.Collosseum.GintzeCheer;
+                SoundEngine.PlaySound(cheer);
                 _spawnPoint = NPC.Center;
             }
             NPC.Center = _spawnPoint;
