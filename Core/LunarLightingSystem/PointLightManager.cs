@@ -64,7 +64,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             base.PostUpdateDusts();
             Update();
-
+            ShadowColor = Color.Black * 0.5f;
         }
 
 
@@ -321,6 +321,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 return;
 
             graphicsDevice.BlendState = BlendState.AlphaBlend;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
 
             var shadowShader = TileShadowShader.Instance;
             shadowShader.TransformMatrix = matrix;
@@ -379,8 +380,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             Rectangle oldScissor = graphicsDevice.ScissorRectangle;
             graphicsDevice.ScissorRectangle = destinationRect;
-
-
+ 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, ScissorRasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(pointLightRenderTarget, location, null, Color.White, 0, Vector2.Zero, 1 / (float)POINT_LIGHT_DOWN_SAMPLES, SpriteEffects.None, 0);
             spriteBatch.End();
