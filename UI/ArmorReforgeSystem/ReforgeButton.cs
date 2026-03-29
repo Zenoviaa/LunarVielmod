@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
@@ -12,7 +10,6 @@ namespace Stellamod.UI.ArmorReforgeSystem
     public class ReforgeButton : UIPanel
     {
         public event Action<int> OnEmptyMouseover;
-        private readonly float _scale = 1f;
         public ReforgeButton()
         {
             float scale = 1f;
