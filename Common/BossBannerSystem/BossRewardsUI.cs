@@ -96,9 +96,23 @@ namespace Stellamod.Common.BossBannerSystem
             for (int i = 0; i < rewards.Count; i++)
             {
                 Item reward = rewards[i];
-                float distanceBetween = 32;
+                float distanceBetween = 36;
                 Vector2 drawPosition = topLeft + new Vector2(distanceBetween * i, 0);
                 ItemSlot.DrawItemIcon(reward, _rewardContext, spriteBatch, drawPosition, 1, 32, Color.White);
+                Vector2 mousePos = Main.MouseScreen;
+
+
+                Point topLeftRec = new Point((int)drawPosition.X, (int)drawPosition.Y);
+                topLeftRec.X -= 16;
+                topLeftRec.Y -= 16;
+                Rectangle rec = new Rectangle(topLeftRec.X, topLeftRec.Y, 32, 32);
+
+                //Primitives2D.DrawRectangle(Main.spriteBatch, rec, Color.Red);
+                if (rec.Contains(mousePos.ToPoint()))
+                {
+                    Main.HoverItem = new Item(reward.type);
+                    Main.hoverItemName = reward.Name;
+                }
             }
         }
     }

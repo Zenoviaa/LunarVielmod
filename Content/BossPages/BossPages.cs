@@ -12,12 +12,16 @@ using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime;
 using Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER;
+using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
 using Stellamod.Content.Armors.Ravaging;
+using Stellamod.Content.Currencies;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
+using Stellamod.Items.Insources;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.BossPages
@@ -71,9 +75,18 @@ namespace Stellamod.Content.BossPages
             bossNPC = ModContent.GetInstance<WoodlandRavager>();
             progression = 3;
             flag = DownedBossFlag.Woodland_Ravager;
+
+            AddReward<DragonShard>(stack: 1);
+            AddReward<RuinMedal>(stack: 10);
+            AddReward<BeastRage>();
             AddReward<RavagingHelmet>();
             AddReward<RavagingChestplate>();
             AddReward<RavagingLegs>();
+
+            AddMasterModeReward<DragonShard>(stack: 1);
+            AddMasterModeReward<GlisteningPearl>(stack: 3);
+
+            AddNoHitReward<BeastInsource>();
         }
     }
 
@@ -110,6 +123,7 @@ namespace Stellamod.Content.BossPages
             bossNPC = ModContent.GetInstance<Gustbeak>();
             progression = 6;
             flag = DownedBossFlag.Gustbeak;
+            AddReward<DragonShard>(stack: 2);
         }
     }
 

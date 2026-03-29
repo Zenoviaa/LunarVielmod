@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.ArmorRework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -19,6 +20,7 @@ namespace Stellamod.Common.XixianFlaskSystem
         public int insourceTime;
         public bool unlockedFlask;
         public float insourceSecondsBonusPerInsource;
+        public static event Action<Player> OnProc;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -112,6 +114,7 @@ namespace Stellamod.Common.XixianFlaskSystem
             
             Player.AddBuff(ModContent.BuffType<CannotUseFlask>(), insourceTime);
             Player.AddBuff(BuffID.PotionSickness, insourceTime);
+            OnProc?.Invoke(Player);
         }
 
         public bool HasUnlocked(Item item)

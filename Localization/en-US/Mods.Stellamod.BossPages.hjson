@@ -23,24 +23,21 @@ DaedusPage: {
 }
 
 EliteCommanderPage: {
-	DisplayName: Who???
-	WhereToFind: In Your Mom
-	Lore: Birthed by your mom
+	DisplayName: Elite Commander, Illuria’s best soldiers
+	WhereToFind: In the Gintze Colosseum
+	Lore: "After the crumbling of the Illuria, he was a man who sought a life of glory following Ginztia, his commander, and lived in harmony along the newfound village in the desert, participating in the ceremony of the colosseum.  "
 }
 
 GintziaPage: {
 	DisplayName: Gintzia, Warmonger and Warstarter
 	WhereToFind: In the Gintze Colosseum
-	Lore:
-		'''
-		One of the 5 Illurian Royals of the Old Order, along with Ashoti D Gon, Verlia Iyx, Ordin Crimson, and Jeanne E Styr. He was in charge of leading the personal combat sector of the Illurian army during the Lustrous war. He fought for glory, and when Ereshkigal came around, he instantly found enjoyment in her fighting style and techniques and found to be good friends. Gintzia was always a gifted child, and needed attention from higher ups to praise him, Siegfried gave no words, but Ereshkigal gave him all he needed to be happy, and started to follow her and be her personal guard along with Styr and Ashoti, they would always be at her side. Eventually when she was attacked by Daedus, Gintzia came up with a plan to ravage, and secretly destroy the traitor being Daedus, and came and attacked Daedus along with the witch village as he found comfort there. He did this with no mention to the rest of the Illuria. It was frozen to a crisp, and during this time Zui was going on her adventures and when she got back, she saw her hurt camp and claimed war against the Illuria. After the war was finished, Zui and Ginztia mutually agreed to never attack each other again, and started trade after the war. Realizing picking a fight with each other will only lead to despair, the army and most of the Illurian’s residents took place under Ginztia in the desert, where they built their village. Gintzia, after all, was an Illurian Royal and has some form of contact to Ereshkigal to this day; nobody knows how but he keeps one of her most prized pieces of research behind a key and he uses it as a lure for newcomers into his domain as he seeks battle but can no longer find it with his enemies. 
-		'''
+	Lore: "One of the 5 Illurian Royals of the Old Order, along with Ashoti D Gon, Verlia Iyx, Ordin Crimson, and Jeanne E Styr. He was in charge of leading the personal combat sector of the Illurian army during the Lustrous war. He fought for glory, and when Ereshkigal came around, he instantly found enjoyment in her fighting style and techniques and found to be good friends. Gintzia was always a gifted child, and needed attention from higher ups to praise him, Siegfried gave no words, but Ereshkigal gave him all he needed to be happy, and started to follow her and be her personal guard along with Styr and Ashoti, they would always be at her side. Eventually when she was attacked by Daedus, Gintzia came up with a plan to ravage, and secretly destroy the traitor being Daedus, and came and attacked Daedus along with the witch village as he found comfort there. He did this with no mention to the rest of the Illuria. It was frozen to a crisp, and during this time Zui was going on her adventures and when she got back, she saw her hurt camp and claimed war against the Illuria. After the war was finished, Zui and Ginztia mutually agreed to never attack each other again, and started trade after the war. Realizing picking a fight with each other will only lead to despair, the army and most of the Illurian’s residents took place under Ginztia in the desert, where they built their village. Gintzia, after all, was an Illurian Royal and has some form of contact to Ereshkigal to this day; nobody knows how but he keeps one of her most prized pieces of research behind a key and he uses it as a lure for newcomers into his domain as he seeks battle but can no longer find it with his enemies. "
 }
 
 GustbeakPage: {
-	DisplayName: Who???
-	WhereToFind: In Your Mom
-	Lore: Birthed by your mom
+	DisplayName: Gustbeak, The captured
+	WhereToFind: In the Gintze Colosseum
+	Lore: A small dragon captured by the Illuria during a great dragon hunt, where royals and higher ups would hunt dragons in order to have them as pets. It was common to tame wild animals, but dragons were seen as the most prestigious, having an outlook similar to a God. Gustbeak was one of many who were captured, except was very stubborn and didn’t want to be tamed, as Gustbeak was given to Ginztia, and he wasn’t exactly the best person to be around. Gustbeak would despise him and in return, Ginztia would beat and hurt the dragon until it could barely function anymore, it shrank in size, and after Ginztia moved to his new nation, Gustbeak was treated even worse. Gustbeak is still a trapped dragon and bound by wind, but wishes for its freedom once more from a raging baby almost.
 }
 
 JackPage: {

@@ -10671,3 +10671,13 @@ MusicalHarmonise: {
 	DisplayName: Musical Harmonise
 	Tooltip: ""
 }
+
+BeastRage: {
+	DisplayName: Beast Rage
+	Tooltip: When you use your insource, gain 20% increased attack speed, damage, and regenerating stamina for a brief moment!
+}
+
+BeastInsource: {
+	DisplayName: Beast Insource
+	Tooltip: Increases your damage by 10% until you get hit
+}

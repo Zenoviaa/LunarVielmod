@@ -1097,3 +1097,13 @@ HeavenlyLove: {
 	DisplayName: Heavenly Love
 	Description: Mods.Stellamod.Buffs.HeavenlyLove.Description
 }
+
+RagingBeast: {
+	DisplayName: Raging Beast
+	Description: I'M MAD NOW! OFFENSE UP!
+}
+
+BeastInsourceBuff: {
+	DisplayName: Beast Insource Buff
+	Description: I'm a lil' angry, +10% damage until you get hit!
+}

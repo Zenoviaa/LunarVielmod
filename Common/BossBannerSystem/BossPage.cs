@@ -121,20 +121,30 @@ namespace Stellamod.Common.BossBannerSystem
             this.GetLocalization(nameof(Lore), () => "Birthed by your mom");
         }
 
-        public void AddReward<T>() where T : ModItem
+        public void AddReward<T>(int stack = 1) where T : ModItem
         {
-            Rewards.Add(ModContent.GetInstance<T>().Item);
+            Item item = ModContent.GetInstance<T>().Item;
+            Item clone = item.Clone();
+            clone.stack=stack;
+            Rewards.Add(clone);
         }
 
-        public void AddReward(Item item)
+        public void AddMasterModeReward<T>(int stack = 1) where T : ModItem
         {
-            Rewards.Add(item);
+            Item item = ModContent.GetInstance<T>().Item;
+            Item clone = item.Clone();
+            clone.stack = stack;
+            MasterModeRewards.Add(clone);
         }
 
-        public void AddNoHitReward(Item item)
+        public void AddNoHitReward<T>(int stack = 1) where T : ModItem
         {
-            NoHitRewards.Add(item);
+            Item item = ModContent.GetInstance<T>().Item;
+            Item clone = item.Clone();
+            clone.stack = stack;
+            NoHitRewards.Add(clone);
         }
+
 
         public bool IsHidden()
         {

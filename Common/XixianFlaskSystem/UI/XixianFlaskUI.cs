@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.UI;
 using Stellamod.Common.XixianFlaskSystem;
+using Stellamod.Core.Tooltips;
+using Stellamod.Core.Utilities;
 using Stellamod.UI;
 using System.Collections.Generic;
 using Terraria;
@@ -12,28 +15,26 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
 {
     public class XixianFlaskUI : UIPanel
     {
-        private UIGrid _grid;
-
+        private CommonBackButton _backButton;
         private UIPanel _panel;
         private UIImage _circleImage;
         private UIImage _flaskImage;
-        private XButton _xButton;
+        private UIScrollbar _scrollbar;
         private InsourceInventoryMenu _inventoryMenu;
         private List<InsourceSlot> _slots;
 
         public const int width = 700;
-        public const int height = 250;
+        public const int height = 450;
 
-        public int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2);
-        public int RelativeTop => Main.screenHeight / 2 - (int)(Height.Pixels / 2);
-
+        public int RelativeLeft => Main.screenWidth / 2 - (int)(Width.Pixels / 2) - 64;
+        public int RelativeTop => Main.screenHeight / 2 - (int)(Height.Pixels / 2) - 64;
         public XixianFlaskUI()
         {
-            _xButton = new XButton(Close);
-            _grid = new UIGrid();
+            _backButton = new CommonBackButton(Close);
             _panel = new UIPanel();
             _slots = new List<InsourceSlot>();
-            _inventoryMenu = new InsourceInventoryMenu();
+            _scrollbar = new FancyScrollbar();
+            _inventoryMenu = new InsourceInventoryMenu(_scrollbar);
             _circleImage = new UIImage(
                 ModContent.Request<Texture2D>(XixianFlaskUISystem.RootTexturePath + "InsourcePanel"));
             _flaskImage = new UIImage(
@@ -60,8 +61,21 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
 
             _inventoryMenu.Left.Set(0, 0.5f);
             Append(_inventoryMenu);
-            Append(_xButton);
+
+            _backButton.Top.Set(-64, 1f);
+            _backButton.Left.Pixels = Width.Pixels / 2 - _backButton.Width.Pixels / 2;
+            Append(_backButton);
+
+            _scrollbar.Left.Set(-32, 1f);
+            _scrollbar.Top.Set(12, 0f);
+            Append(_scrollbar);
             Orient();
+        }
+
+        public override void OnActivate()
+        {
+            base.OnActivate();
+            Main.playerInventory = true;
         }
 
         public bool NeedsRecalculate()
@@ -72,7 +86,6 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
 
         public void CalculateSlots()
         {
-            _inventoryMenu.SetInsources();
             FlaskPlayer flaskPlayer = Main.LocalPlayer.GetModPlayer<FlaskPlayer>();
             foreach (var slot in _slots)
             {
@@ -91,6 +104,10 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            if (!Main.playerInventory)
+            {
+                Close();
+            }
             if (NeedsRecalculate())
             {
                 CalculateSlots();
@@ -100,9 +117,10 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
         }
         private void Orient()
         {
-            Width.Pixels = width;
-            Height.Pixels = height;
-
+            _inventoryMenu.Left.Set(-154, 1f);
+            Width.Pixels = 550;
+            Height.Pixels = 500;
+            _backButton.Left.Pixels = Width.Pixels / 2 - _backButton.Width.Pixels / 2;
             //Constantly lock the UI in the position regardless of resolution changes
             Left.Pixels = RelativeLeft + 100;
             Top.Pixels = RelativeTop;
@@ -129,5 +147,15 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
             XixianFlaskUISystem xi = ModContent.GetInstance<XixianFlaskUISystem>();
             xi.CloseUI();
         }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            Vector2 position = GetDimensions().ToRectangle().TopLeft();
+            Rectangle rectangle = ExpandableTooltip.GetBGRectangle((int)position.X, (int)position.Y, (int)Width.Pixels, (int)Height.Pixels);
+            Utils.DrawInvBG(spriteBatch, rectangle, new Color(23, 25, 81, 255) * 0.925f);
+            this.QuickMouseInteraction();
+        }
+
     }
 }
