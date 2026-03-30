@@ -902,7 +902,7 @@ public class StellaWorld : ModSystem
         for (int a = 0; a < maxAttemptCount; a++)
         {
             // Select a place in the first 6th of the world, avoiding the oceans
-            int x = (int)MathHelper.Lerp(VeizalHillStartLcoation.X, VeizalHillEndLocation.X, 0.8f);
+            int x = (int)MathHelper.Lerp(VeizalHillStartLcoation.X, VeizalHillEndLocation.X, 0.7f);
             int y = (int)(Main.worldSurface - 500);
             Point tileToPlaceOn = FallToSolidTile(x, y);
             int cathedralY = tileToPlaceOn.Y;
