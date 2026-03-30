@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.HealthbarSystem;
 using Stellamod.Content.Areas.SpecialTiles.EffectTiles;
 using Stellamod.Core.TitleSystem;
+using Stellamod.Helpers;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -18,6 +19,15 @@ namespace Stellamod.Core
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {
             DifficultyChanges.ApplyDifficultyAndScaling(NPC, numPlayers);
+        }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            base.OnSpawn(source);
+            foreach(var player in Main.ActivePlayers)
+            {
+                player.AddBuff(ModContent.BuffType<Flawless>(), 2);
+            }
         }
 
         public override void SetDefaults()

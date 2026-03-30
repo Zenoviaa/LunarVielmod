@@ -131,7 +131,7 @@ namespace Stellamod.Common.BossBannerSystem
         }
         public bool CanClaimNoHitRewards()
         {
-            return DownedBossTracker.IsNoHit(flag) && Main.masterMode;
+            return DownedBossTracker.IsNoHit(flag);
         }
 
         public void AddReward<T>(int stack = 1) where T : ModItem

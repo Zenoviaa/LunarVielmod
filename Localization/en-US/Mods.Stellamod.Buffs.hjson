@@ -1107,3 +1107,8 @@ BeastInsourceBuff: {
 	DisplayName: Beast Insource Buff
 	Description: I'm a lil' angry, +10% damage until you get hit!
 }
+
+Flawless: {
+	DisplayName: Flawless
+	Description: Mods.Stellamod.Buffs.Flawless.Description
+}

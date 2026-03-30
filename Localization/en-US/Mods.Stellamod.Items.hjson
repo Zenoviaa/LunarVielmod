@@ -20,6 +20,7 @@ Common: {
 		After it bounces, click it again midair to ricochet back again
 		Keep the combo going to gain a damage multiplier!
 		'''
+	NoHit: No Damage Taken! A Flawless Victory!
 	Resisted: Resisted!
 	Claim: Claim!!
 	AlreadyClaimed: Already Claimed

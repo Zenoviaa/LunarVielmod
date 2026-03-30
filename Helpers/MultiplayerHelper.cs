@@ -65,6 +65,9 @@ namespace Stellamod
             byte player;
             switch (id)
             {
+                case MessageType.BossDowned:
+                    DownedBossRewardPlayer.HandleBossDownedMessage(reader, whoAmI);
+                    break;
                 case MessageType.RomanceDodge:
                     DeadRomancePlayer.HandleExampleDodgeMessage(reader, whoAmI);
                     break;

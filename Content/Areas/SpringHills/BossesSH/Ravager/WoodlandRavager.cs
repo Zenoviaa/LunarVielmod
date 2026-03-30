@@ -3,8 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
+using Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager.Projectiles;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -32,7 +34,8 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             Turn,
             Fall,
             Crash,
-            Despawn
+            Despawn,
+            Death
         }
         private Vector2 _scale;
         private Vector2 _crashPoint;
@@ -304,9 +307,60 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
                 case AIState.Despawn:
                     AI_Despawn();
                     break;
+                case AIState.Death:
+                    AI_Death();
+                    break;
             }
         }
 
+        private void AI_Death()
+        {
+            Timer++;
+            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            if (Timer == 1)
+            {
+                SoundStyle roarSound = AssetRegistry.Sounds.Ravager.RavagerRoar;
+                roarSound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(roarSound, NPC.position);
+            }
+            if (Timer % 10 == 0)
+            {
+                FXUtil.ShakeCamera(NPC.position, 1024, 24);
+                LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+            }
+            NPC.velocity.X *= 0.9f;
+            if (Timer >= 120)
+            {
+                MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+                myPlayer.ShakeAtPosition(NPC.position, 6000, 128);
+                for (int i = 0; i < 16; i++)
+                {
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(),
+                        (Vector2.One * Main.rand.Next(5, 15)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
+                }
+
+                for (float f = 0; f < 12; f++)
+                {
+                    Vector2 v = Main.rand.NextVector2Circular(128, 128);
+                    FXUtil.GlowStretch(NPC.Center, v);
+                }
+
+                if(Main.netMode != NetmodeID.Server)
+                {
+                    int headGore = Mod.Find<ModGore>($"{Name}_Gore_Head").Type;
+                    int legGore = Mod.Find<ModGore>($"{Name}_Gore_Butt").Type;
+
+                    // Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore, 1f);
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+                }
+
+                FXUtil.ShakeCamera(NPC.position, 1024, 8);
+                ShakeModSystem.Shake = 8;
+                //Death Effect here
+                NPC.Kill();
+            }
+        }
         private void AI_Despawn()
         {
             Timer++;
@@ -752,6 +806,22 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             if (Timer >= 120)
             {
                 SwitchState(AIState.Charge);
+            }
+        }
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+
+            if (NPC.life <= 0 && State != AIState.Death)
+            {
+                NPC.life = 1;
+                SwitchState(AIState.Death);
+            }
+
+
+            if (NPC.life <= 0)
+            {
+                NPC.life = 1;
             }
         }
 

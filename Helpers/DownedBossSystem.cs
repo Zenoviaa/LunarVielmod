@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using Stellamod.Core.ZTileSystem;
+using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -25,25 +27,87 @@ namespace Stellamod.Helpers
         StoneGolem=15
     }
 
+    public class Flawless : ModBuff
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            BuffID.Sets.TimeLeftDoesNotDecrease[Type] = true;
+        }
+    }
+
     public class DownedBossRewardPlayer : ModPlayer
     {
         public bool[] claimedRegularRewards = new bool[64];
         public bool[] claimedMasterRewards = new bool[64];
         public bool[] claimedNoHit = new bool[64];
+        public bool[] hasNoHit = new bool[64];
+        private void InitializeIfNeeded()
+        {
+            claimedRegularRewards ??= new bool[64];
+            claimedMasterRewards ??= new bool[64];
+            claimedNoHit ??= new bool[64];
+            hasNoHit ??= new bool[64];
+        }
+        public void ResetFlags()
+        {
+            InitializeIfNeeded();
+            for (int i = 0; i < claimedNoHit.Length; i++)
+            {
+                claimedMasterRewards[i] = false;
+                claimedNoHit[i] = false;
+                claimedRegularRewards[i] = false;
+                hasNoHit[i] = false;
+            }
+        }
+
+
+        public override void PostHurt(Player.HurtInfo info)
+        {
+            base.PostHurt(info);
+            Player.ClearBuff(ModContent.BuffType<Flawless>());
+        }
+
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);
             tag["claimedRegularRewards"] = claimedRegularRewards;
             tag["claimedMasterRewards"] = claimedMasterRewards;
             tag["claimedNoHit"] = claimedNoHit;
+            tag["hasNoHit"] = hasNoHit;
 
         }
+
+
         public override void LoadData(TagCompound tag)
         {
             base.LoadData(tag);
             claimedRegularRewards = tag.Get<bool[]>("claimedRegularRewards");
             claimedMasterRewards = tag.Get<bool[]>("claimedMasterRewards");
             claimedNoHit = tag.Get<bool[]>("claimedNoHit");
+            hasNoHit = tag.Get<bool[]>("hasNoHit");
+
+            InitializeIfNeeded();
+
+        }
+
+        public static void HandleBossDownedMessage(BinaryReader reader, int whoAmI)
+        {
+            int flag = reader.ReadInt32();
+            DisplayNoHit(flag);
+        }
+
+        public static void DisplayNoHit(int flag)
+        {
+            DownedBossRewardPlayer rwardPlayer = Main.LocalPlayer.GetModPlayer<DownedBossRewardPlayer>();
+            if (rwardPlayer.Player.HasBuff(ModContent.BuffType<Flawless>()))
+            {
+                rwardPlayer.hasNoHit[flag] = true;
+                string text = LangText.Common("NoHit");
+                int c = CombatText.NewText(rwardPlayer.Player.getRect(), Color.White, text, true);
+                Main.combatText[c].lifeTime *= 3;
+                rwardPlayer.Player.ClearBuff(ModContent.BuffType<Flawless>());
+            }
         }
     }
 
@@ -80,7 +144,7 @@ namespace Stellamod.Helpers
         }
         public static bool IsNoHit(DownedBossFlag flag)
         {
-            return IsNoHit((int)flag);
+            return Main.LocalPlayer.GetModPlayer<DownedBossRewardPlayer>().hasNoHit[(int)flag];
         }
 
         public static bool IsDowned(int id)
@@ -99,6 +163,16 @@ namespace Stellamod.Helpers
         public static void ClearFlag(int id)
         {
             NPC.SetEventFlagCleared(ref downedBossFlags[id], -1);
+            if (Main.netMode != NetmodeID.SinglePlayer)
+            {
+                int clientToIgnore = Main.LocalPlayer.whoAmI;
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), 
+                    (byte)MessageType.BossDowned, id).Send(ignoreClient: clientToIgnore);
+            }
+            else
+            {
+                DownedBossRewardPlayer.DisplayNoHit(id);
+            }
         }
 
         public override void NetSend(BinaryWriter writer)
