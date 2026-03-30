@@ -48,6 +48,9 @@ namespace Stellamod.Helpers
             claimedMasterRewards ??= new bool[64];
             claimedNoHit ??= new bool[64];
             hasNoHit ??= new bool[64];
+
+            if(hasNoHit.Length < 64)
+                hasNoHit = new bool[64];
         }
         public void ResetFlags()
         {
