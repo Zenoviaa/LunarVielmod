@@ -21,6 +21,10 @@ Common: {
 		Keep the combo going to gain a damage multiplier!
 		'''
 	Resisted: Resisted!
+	Claim: Claim!!
+	AlreadyClaimed: Already Claimed
+	NotClaimed: Not Claimed
+	NotBeaten: Undefeated
 	CanSwapped: Can be changed to{0}!
 	TypeSwapped: Damage Type Swapped!
 	PowderDamage: Increases igniter card damage by {0}%!

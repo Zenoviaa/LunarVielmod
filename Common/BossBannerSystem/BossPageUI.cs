@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Common.UI;
 using Stellamod.Helpers;
 using Stellamod.UI;
 using Stellamod.UI.CollectionSystem;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -15,6 +17,7 @@ namespace Stellamod.Common.BossBannerSystem
     /// </summary>
     public class BossPageUI : RightPageUI
     {
+        private CommonClaimButton _claimButton;
         private UIText _pageText;
         private UIText _displayNameText;
         private UIPanel _panel;
@@ -28,6 +31,7 @@ namespace Stellamod.Common.BossBannerSystem
         private BossRewardsButtonUI _bossRewardsButton;
         public BossPageUI()
         {
+            _claimButton = new CommonClaimButton(ClaimRewards);
             _pageText = new UIText("Find Your Mom");
             _displayNameText = new UIText("Your Mom");
             _glassUI = new BossFindButtonUI(this);
@@ -59,14 +63,10 @@ namespace Stellamod.Common.BossBannerSystem
             _displayNameText.IsWrapped = true;
             _displayNameText.ShadowColor = Color.Black;
 
-
             _pageText.Height.Pixels = 32;
             _pageText.Width.Pixels = Width.Pixels;
             _pageText.IsWrapped = true;
             _pageText.ShadowColor = Color.Black;
-
-
-
 
             _panel.Append(_displayNameText);
             _panel.Append(_bossLoreUI);
@@ -76,14 +76,12 @@ namespace Stellamod.Common.BossBannerSystem
             _panel.Append(_bossStarsUI);
             _panel.Append(_bossRewardsButton);
 
-
             _panel.Width.Pixels = Width.Pixels;
             _panel.Height.Pixels = Height.Pixels;
             _panel.BackgroundColor = Color.Transparent;
             _panel.BorderColor = Color.Transparent;
             Append(_panel);
 
-      
             _scrollbar.Width.Set(20, 0);
             _scrollbar.Height.Set(150, 0);
             _scrollbar.Left.Set(0, 0.98f);
@@ -101,6 +99,7 @@ namespace Stellamod.Common.BossBannerSystem
             _uiList.Add(_pageText);
             _uiList.SetScrollbar(_scrollbar);
             Append(_uiList);
+            Append(_claimButton);
         }
 
         public void SetBossPage(BossPage bossPage)
@@ -120,6 +119,38 @@ namespace Stellamod.Common.BossBannerSystem
             }
         }
 
+        private void UpdateClaimButton()
+        {
+            _claimButton.Left.Pixels = Width.Pixels / 2 - _claimButton.Width.Pixels / 2 - 32;
+            _claimButton.Top.Pixels = Height.Pixels - _claimButton.Height.Pixels - 100;
+
+            _claimButton.alreadyClaimed = false;
+            _claimButton.notBeaten = true;
+            _claimButton.canClaim = false;
+            _claimButton.notClaimed = false;
+
+
+            //idk why im confusing myself with this, this should be so simple.
+            if (HasAlreadyClaimed())
+            {
+                _claimButton.alreadyClaimed = true;
+            }
+
+            if (CanClaimRewards())
+            {
+                _claimButton.notBeaten = false;
+            }
+
+            if (!_claimButton.notBeaten && !HasAlreadyClaimed())
+            {
+                _claimButton.canClaim = true;
+            }
+
+
+            if (Page != 2)
+                _claimButton.Top.Pixels = 99999;
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -128,6 +159,7 @@ namespace Stellamod.Common.BossBannerSystem
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
 
+            UpdateClaimButton();
 
             _bossPhotoUI.Top.Pixels = 32;
             _bossPhotoUI.Left.Pixels = 0;
@@ -147,12 +179,6 @@ namespace Stellamod.Common.BossBannerSystem
             //rewards
             _bossRewardsUI.Top.Pixels = 380;
             _bossRewardsUI.Left.Pixels = 16;
-
-            if (Page == 2)
-            {
-
-             
-            }
     
             float listHeight = _uiList.GetTotalHeight();
             _pageText.Height.Pixels = 32;
@@ -172,7 +198,6 @@ namespace Stellamod.Common.BossBannerSystem
         public void ToggleLocationWindow(UIMouseEvent evt, UIElement listeningElement)
         {
             _pageText.SetText(BossPage.WhereToFind);
-
             Page = 0;
         }
 
@@ -187,7 +212,63 @@ namespace Stellamod.Common.BossBannerSystem
             Page = 1;
         }
 
-        internal void CycleRewardsType(UIMouseEvent evt, UIElement listeningElement)
+
+        public bool HasAlreadyClaimed()
+        {
+            DownedBossRewardPlayer rewardPlayer = Main.LocalPlayer.GetModPlayer<DownedBossRewardPlayer>();
+            int flag = (int)BossPage.flag;
+            switch (RewardType)
+            {
+                default:
+                case BossPageRewardType.Rewards:
+                    return rewardPlayer.claimedRegularRewards[flag];
+                case BossPageRewardType.MasterModeRewards:
+                    return rewardPlayer.claimedMasterRewards[flag];
+                case BossPageRewardType.NoHitRewards:
+                    return rewardPlayer.claimedNoHit[flag];
+            }
+        }
+        public bool CanClaimRewards()
+        {
+            int flag = (int)BossPage.flag;
+            switch (RewardType)
+            {
+                default:
+                case BossPageRewardType.Rewards:
+                    return BossPage.CanClaimRewards();
+                case BossPageRewardType.MasterModeRewards:
+                    return BossPage.CanClaimMasterRewards();
+                case BossPageRewardType.NoHitRewards:
+                    return BossPage.CanClaimNoHitRewards();
+            }
+        }
+        public void ClaimRewards()
+        {
+            if (!CanClaimRewards())
+                return;
+            if (HasAlreadyClaimed())
+                return;
+
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Harv1"));
+            DownedBossRewardPlayer rewardPlayer = Main.LocalPlayer.GetModPlayer<DownedBossRewardPlayer>();
+            int flag = (int)BossPage.flag;
+            switch (RewardType)
+            {
+                case BossPageRewardType.Rewards:
+                    BossPage.Grant(BossPage.Rewards);
+                    rewardPlayer.claimedRegularRewards[flag] = true;
+                    break;
+                case BossPageRewardType.MasterModeRewards:
+                    BossPage.Grant(BossPage.MasterModeRewards);
+                    rewardPlayer.claimedMasterRewards[flag] = true;
+                    break;
+                case BossPageRewardType.NoHitRewards:
+                    BossPage.Grant(BossPage.NoHitRewards);
+                    rewardPlayer.claimedNoHit[flag] = true;
+                    break;
+            }
+        }
+        public void CycleRewardsType(UIMouseEvent evt, UIElement listeningElement)
         {
             if (string.IsNullOrEmpty(_pageText.Text))
             {

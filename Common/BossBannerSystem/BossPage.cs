@@ -121,6 +121,19 @@ namespace Stellamod.Common.BossBannerSystem
             this.GetLocalization(nameof(Lore), () => "Birthed by your mom");
         }
 
+        public bool CanClaimRewards()
+        {
+            return DownedBossTracker.IsDowned(flag);
+        }
+        public bool CanClaimMasterRewards()
+        {
+            return DownedBossTracker.IsDowned(flag) && Main.masterMode;
+        }
+        public bool CanClaimNoHitRewards()
+        {
+            return DownedBossTracker.IsNoHit(flag) && Main.masterMode;
+        }
+
         public void AddReward<T>(int stack = 1) where T : ModItem
         {
             Item item = ModContent.GetInstance<T>().Item;
@@ -145,6 +158,13 @@ namespace Stellamod.Common.BossBannerSystem
             NoHitRewards.Add(clone);
         }
 
+        public void Grant(List<Item> rewards)
+        {
+            foreach(Item item in rewards)
+            {
+                Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), item.type, item.stack);
+            }
+        }
 
         public bool IsHidden()
         {

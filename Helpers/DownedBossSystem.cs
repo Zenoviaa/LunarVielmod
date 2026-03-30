@@ -25,6 +25,28 @@ namespace Stellamod.Helpers
         StoneGolem=15
     }
 
+    public class DownedBossRewardPlayer : ModPlayer
+    {
+        public bool[] claimedRegularRewards = new bool[64];
+        public bool[] claimedMasterRewards = new bool[64];
+        public bool[] claimedNoHit = new bool[64];
+        public override void SaveData(TagCompound tag)
+        {
+            base.SaveData(tag);
+            tag["claimedRegularRewards"] = claimedRegularRewards;
+            tag["claimedMasterRewards"] = claimedMasterRewards;
+            tag["claimedNoHit"] = claimedNoHit;
+
+        }
+        public override void LoadData(TagCompound tag)
+        {
+            base.LoadData(tag);
+            claimedRegularRewards = tag.Get<bool[]>("claimedRegularRewards");
+            claimedMasterRewards = tag.Get<bool[]>("claimedMasterRewards");
+            claimedNoHit = tag.Get<bool[]>("claimedNoHit");
+        }
+    }
+
     public class DownedBossTracker : ModSystem
     {
         public static bool[] downedBossFlags = new bool[64];
@@ -56,8 +78,16 @@ namespace Stellamod.Helpers
         {
             return IsDowned((int)flag);
         }
+        public static bool IsNoHit(DownedBossFlag flag)
+        {
+            return IsNoHit((int)flag);
+        }
 
         public static bool IsDowned(int id)
+        {
+            return downedBossFlags[id];
+        }
+        public static bool IsNoHit(int id)
         {
             return downedBossFlags[id];
         }

@@ -75,6 +75,7 @@ namespace Stellamod.Content.BossPages
             bossNPC = ModContent.GetInstance<WoodlandRavager>();
             progression = 3;
             flag = DownedBossFlag.Woodland_Ravager;
+            StarRanking = 2;
 
             AddReward<DragonShard>(stack: 1);
             AddReward<RuinMedal>(stack: 10);
