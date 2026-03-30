@@ -362,12 +362,14 @@ namespace Stellamod.Helpers
                 Structurizer.SaveStruct(structurePath, BottomLeft, TopRight);
                 TriggerStructurizer.SaveStruct(structurePath, BottomLeft, TopRight);
                 TileEntityStructurizer.SaveStruct(structurePath, BottomLeft, TopRight);
+                ZTileStructurizer.SaveStruct(structurePath, BottomLeft, TopRight);
             }
             else
             {
                 Structurizer.SaveStruct(fileName, BottomLeft, TopRight);
                 TriggerStructurizer.SaveStruct(fileName, BottomLeft, TopRight);
                 TileEntityStructurizer.SaveStruct(fileName, BottomLeft, TopRight);
+                ZTileStructurizer.SaveStruct(fileName, BottomLeft, TopRight);
             }
         
             SoundEngine.PlaySound(SoundID.AchievementComplete);

@@ -57,6 +57,7 @@ namespace Stellamod.Core.ToolsSystem
         {
             base.OnButtonClick(evt, listeningElement);
             DownedBossSystem.ResetFlags();
+            DownedBossTracker.ResetFlags();
             Main.NewText("Reset Boss Flags");
             SoundEngine.PlaySound(SoundID.AchievementComplete);
         }

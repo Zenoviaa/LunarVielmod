@@ -10686,3 +10686,8 @@ BeastInsource: {
 	DisplayName: Beast Insource
 	Tooltip: Increases your damage by 10% until you get hit
 }
+
+RavagerBarrierBlockItem: {
+	Tooltip: ""
+	DisplayName: Ravager Barrier Block Item
+}

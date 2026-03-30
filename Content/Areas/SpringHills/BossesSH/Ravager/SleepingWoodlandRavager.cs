@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
+using Stellamod.Core;
 using Stellamod.Core.Particles;
+using Stellamod.Core.TriggersSystem.Triggers;
+using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ID;
@@ -9,7 +12,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
 {
-    public class SleepingWoodlandRavager : ModNPC
+    public class SleepingWoodlandRavager : ModNPC,
+        INPCSpawnCondition
     {
         private Vector2 _squishScale;
         private bool _angry;
@@ -37,6 +41,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             NPC.value = Item.buyPrice(silver: 50);
             NPC.knockBackResist = 0f;
             NPC.noGravity = false;
+            NPC.aiStyle = -1;
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -83,6 +88,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
         {
             base.HitEffect(hit);
             _angry = true;
+        }
+
+        public bool CanSpawn()
+        {
+            return !DownedBossTracker.IsDowned(DownedBossFlag.Woodland_Ravager) && !NPC.AnyNPCs(ModContent.NPCType<WoodlandRavager>());
         }
     }
 }

@@ -102,6 +102,9 @@ namespace Stellamod.Helpers
             if (!filePath.Contains(FileExtension))
                 filePath += FileExtension;
             string savedPath = Main.SavePath + "/ModSources/" + Mod.Name + "/" + filePath;
+            if (!File.Exists(savedPath))
+                return;
+
             using var stream = File.Open(savedPath, FileMode.Open);
             ReadStruct(stream, BottomLeft);
         }

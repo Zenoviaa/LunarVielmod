@@ -38,6 +38,7 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
+using Stellamod.NPCs;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
@@ -350,6 +351,7 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("MistyDungeon", GenerateMistyDungeon));
         passWriter.NextPass(new PassLegacy("Runica Waterside Underwater", WorldGenRunicaUnderwaterCaves));
         passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
+        passWriter.NextPass(new PassLegacy("Marsh Housing", WorldGenMarshHousing));
 
         passWriter.SetInsertionIndex("Generate Ice Biome");
         passWriter.NextPass(new ReworkedVanillaIceBiomePass());
@@ -418,6 +420,80 @@ public class StellaWorld : ModSystem
         }
     }
 
+    private void WorldGenMarshHousing(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Placing Marshy Outposts";
+        PatternManager<int> houses = new PatternManager<int>(
+            new Tuple<int, float>(0, 1.0f),
+            new Tuple<int, float>(1, 1.0f),
+            new Tuple<int, float>(2, 1.0f),
+            new Tuple<int, float>(3, 1.0f));
+
+        string GetStruturePath(int index)
+        {
+            return $"Structures/MarshOutpost{index+1}";
+        }
+
+        //Place ravager first
+        string ravagerArena = "Structures/RavagerArena";
+        Point ravagerPlacementPoint = MarshLocation;
+        ravagerPlacementPoint.X += 550;
+        ravagerPlacementPoint.Y -= 500;
+        ravagerPlacementPoint = FallToSolidTile(ravagerPlacementPoint);
+        Structurizer.ProtectStructure(ravagerPlacementPoint, ravagerArena);
+
+        int[] tileBlend = new int[]
+{
+            TileID.RubyGemspark
+};
+        Structurizer.ReadStruct(ravagerPlacementPoint, ravagerArena, tileBlend);
+
+        int numHouses = 5;
+        for(int i = 0; i < numHouses; i++)
+        {
+            int houseIndex = houses.NextPattern();
+            string structure = GetStruturePath(houseIndex);
+
+            for(int a = 0; a < 100000; a++)
+            {
+                Point houseFallingPoint = MarshLocation;
+                houseFallingPoint.Y -= 1000;
+
+                int dir = Main.rand.NextBool(2) ? 1 : -1;
+
+                //Need to avoid the center point
+                houseFallingPoint.X = GenVars.jungleOriginX + Main.rand.Next(200, 500) * dir;
+                houseFallingPoint = FallToSolidTile(houseFallingPoint);
+
+                if (!Structurizer.TryPlaceAndProtectStructure(houseFallingPoint, structure))
+                    continue;
+                int[] chestIndices = Structurizer.ReadStruct(houseFallingPoint, structure, tileBlend);
+                Rectangle structureRectangle = Structurizer.ReadRectangle(structure);
+                structureRectangle.Location = houseFallingPoint;
+                for (int beamX = structureRectangle.Location.X;
+                    beamX < structureRectangle.Location.X + structureRectangle.Width; beamX += 4)
+                {
+                    //Place beams
+                    int beamY = structureRectangle.Location.Y;
+                    Tile tile = Main.tile[beamX, beamY];
+                    int solidCount = 0;
+                    while (solidCount < 5)
+                    {
+                        if (!WorldGen.SolidTile(beamX, beamY))
+                        {
+                            WorldGen.PlaceTile(beamX, beamY, TileID.BorealBeam);
+                        }
+                        else
+                        {
+                            solidCount++;
+                        }
+                        beamY++;
+                    }
+                }
+                break;
+            }
+        }
+    }
 
     private void WorldGenRunicaUnderwaterCaves(GenerationProgress progress, GameConfiguration configuration)
     {

@@ -27,11 +27,18 @@ namespace Stellamod.Helpers
         public static string SelectedStructure = string.Empty;
         public static Rectangle ReadRectangle(string Path)
         {
-            string path = Path;
-            if (!path.Contains(".str"))
-                path += ".str";
-            using var stream = Mod.GetFileStream(path);
-            return ReadRectangle(stream);
+            try
+            {
+                string path = Path;
+                if (!path.Contains(".str"))
+                    path += ".str";
+                using var stream = Mod.GetFileStream(path);
+                return ReadRectangle(stream);
+            } catch(KeyNotFoundException ex)
+            {
+                return Rectangle.Empty;
+            }
+
         }
 
         public static int[] DefaultTileBlend = new int[] { TileID.RubyGemspark };
@@ -383,7 +390,7 @@ namespace Stellamod.Helpers
             int endY = rectangle.Location.Y + rectangle.Height;
             
             //Some fluff to get rid of trees
-            startY -= 16;
+            startY -= 32;
             for (int x = startX; x < endX; x++)
             {
                 for (int y = startY; y < endY; y++)
@@ -415,6 +422,7 @@ namespace Stellamod.Helpers
 
             TriggerStructurizer.ReadStruct(Path, BottomLeft);
             TileEntityStructurizer.ReadStruct(Path, BottomLeft);
+            ZTileStructurizer.ReadStruct(Path, BottomLeft);
             DungeonGenerationHelper.ReadStruct(Path, BottomLeft);
             return indices;
 
@@ -487,6 +495,7 @@ namespace Stellamod.Helpers
         {
             //string Path = Main.SavePath + "/" + "ModSources" + "/" + Mod.Name + "/" + "SavedStruct.str";
             string savePath = Main.SavePath + $"/ModSources/{Mod.Name}/Structures/{fileName}.str";
+        
             using (var stream = File.Open(savePath, FileMode.Create))
             {
                 using var writer = new BinaryWriter(stream);

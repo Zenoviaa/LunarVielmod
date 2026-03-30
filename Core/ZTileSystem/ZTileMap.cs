@@ -339,6 +339,8 @@ public class ZTileMap : ModSystem
 {
     private ZTileRenderLayer[] _renderLayers;
     public const int Chunk_Size = 64;
+
+
     public override void OnModLoad()
     {
         base.OnModLoad();
@@ -400,6 +402,80 @@ public class ZTileMap : ModSystem
         tag["zTileData"] = tileDataList;
     }
 
+    public void SaveTileData(TagCompound tag, Rectangle worldBounds, Point bottomLeft)
+    {
+        List<List<ZTileSaveData>> tileDataList = new List<List<ZTileSaveData>>();
+        for (int i = 0; i < _renderLayers.Length; i++)
+        {
+            var layer = _renderLayers[i];
+            TileScene[] scenes = layer.GetScenes();
+            List<ZTileSaveData> saveData = new List<ZTileSaveData>();
+            for (int j = 0; j < scenes.Length; j++)
+            {
+                TileScene scene = scenes[j];
+                foreach (KeyValuePair<ZTilePosition, ZTileInstanceData> tilePair in scene)
+                {
+                    if (!worldBounds.Contains(new Point(tilePair.Key.x, tilePair.Key.y)))
+                        continue;
+
+
+
+                    int xOffset = tilePair.Key.x - bottomLeft.X;
+                    int yOffset = bottomLeft.Y - tilePair.Key.y;
+                    ZTileSaveData tileSaveData = new ZTileSaveData();
+                    tileSaveData.x = xOffset;
+                    tileSaveData.y = yOffset;
+                    tileSaveData.z = tilePair.Key.z;
+                    tileSaveData.scale = tilePair.Value.scale;
+                    tileSaveData.flipX = tilePair.Value.flipX;
+                    tileSaveData.frameNumber = tilePair.Value.frameNumber;
+                    tileSaveData.rotation = (int)tilePair.Value.rotation;
+                    tileSaveData.type = tilePair.Value.type;
+                    tileSaveData.value = tilePair.Value.value;
+                    saveData.Add(tileSaveData);
+                }
+
+            }
+            tileDataList.Add(saveData);
+        }
+        
+        if (tileDataList.Count <= 0)
+            return;
+
+        tag["zTileData"] = tileDataList;
+    }
+
+    public void LoadTileData(TagCompound tag, Point bottomLeft)
+    {
+        List<List<ZTileSaveData>> tileDataList = tag.Get<List<List<ZTileSaveData>>>("zTileData");
+        for (int i = 0; i < tileDataList.Count; i++)
+        {
+            ZTileRenderLayer layer = _renderLayers[i];
+            List<ZTileSaveData> tileSaveDataList = tileDataList[i];
+            for (int j = 0; j < tileSaveDataList.Count; j++)
+            {
+                ZTileSaveData saveData = tileSaveDataList[j];
+                ZTilePosition zTilePosition = new ZTilePosition();
+
+                int x = bottomLeft.X + saveData.x;
+                int y = bottomLeft.Y - saveData.y;
+
+
+                zTilePosition.x = x;
+                zTilePosition.y = y;
+                zTilePosition.z = saveData.z;
+
+                ZTileInstanceData instanceData = new ZTileInstanceData();
+                instanceData.type = saveData.type;
+                instanceData.rotation = (Rotation)saveData.rotation;
+                instanceData.frameNumber = (ushort)saveData.frameNumber;
+                instanceData.scale = saveData.scale;
+                instanceData.flipX = saveData.flipX;
+                instanceData.value = saveData.value;
+                layer.Add(zTilePosition, instanceData);
+            }
+        }
+    }
     public override void LoadWorldData(TagCompound tag)
     {
         base.LoadWorldData(tag);

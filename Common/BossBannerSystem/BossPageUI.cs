@@ -192,6 +192,7 @@ namespace Stellamod.Common.BossBannerSystem
             {
                 _scrollbar.Top.Set(0, 0.6f);
             }
+    
         }
 
 
