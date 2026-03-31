@@ -22,6 +22,7 @@ namespace Stellamod.Visual.Particles
         public bool noTileCollide;
         public override void OnSpawn()
         {
+            dampening = 0;
             gravity = 0.2f;
             innerColor = Color.White;
             outerColor = Color.Red;
