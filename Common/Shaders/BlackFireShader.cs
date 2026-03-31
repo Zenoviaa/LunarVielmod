@@ -18,6 +18,7 @@ namespace Stellamod.Common.Shaders
         private EffectParameter _outerEmitColorParam;
         private EffectParameter _tilingParam;
         private EffectParameter _matrixParam;
+        private EffectParameter _bloomTextureParam;
         private EffectParameter _primaryTextureParam2;
         private EffectParameter _primaryTextureParam;
         private EffectParameter _noiseTextureParam;
@@ -63,7 +64,14 @@ namespace Stellamod.Common.Shaders
                 _primaryTextureParam2.SetValue(value.Value);
             }
         }
-
+        public Asset<Texture2D> BloomTexture
+        {
+            set
+            {
+                _bloomTextureParam ??= Effect.Parameters["bloomTexture"];
+                _bloomTextureParam.SetValue(value.Value);
+            }
+        }
         public Asset<Texture2D> NoiseTexture
         {
             set
@@ -159,14 +167,17 @@ namespace Stellamod.Common.Shaders
             InnerColor = Color.Yellow;
             OuterColor = Color.Red;
 
-         //   InnerEmitColor = Color.Yellow;
-           // OuterEmiteColor = Color.Red;
+            //   InnerEmitColor = Color.Yellow;
+            // OuterEmiteColor = Color.Red;
+            InnerEmitColor = Color.Black;
+            OuterEmiteColor = Color.Black;
             BackColor = Color.DarkRed;
             BlendState = BlendState.Additive;
             Distortion = 0.1f;
 
             PrimaryTexture = TrailRegistry.Beamlight;
             PrimaryTexture2 = TrailRegistry.SmallWhispyTrail;
+            BloomTexture = TrailRegistry.VortexTrail;
             NoiseTexture = TrailRegistry.WhispyTrail;
             DistortionTexture = AssetRegistry.Textures.Noise.Perlin;
             Time = Main.GlobalTimeWrappedHourly * 8;

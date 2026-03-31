@@ -13,6 +13,7 @@ using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -114,35 +115,57 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
     {
         private bool _hit;
         private bool _playedSound;
+        private float _traveledRotation;
+        private float _oldRot;
         public override void DefineCombo()
         {
             base.DefineCombo();
             SwingV2Helper.AddSwordSwingStyle(this);
             BlackFireShader blackFireShader = new BlackFireShader();
             blackFireShader.SetDefaults();
-
+            blackFireShader.InnerEmitColor = Color.Yellow * 0.2f; 
+            blackFireShader.OuterEmiteColor = Color.Red;
             SlashTrailer devilsPeak = new SlashTrailer
             {
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return EasingFunction.QuadraticBump(interpolant) * 80 ;
+                    return MathHelper.SmoothStep(24, 64, interpolant);
                 },
                 TrailColorFunction = (interpolant) =>
                 {
-                    Color lerp1 = Color.Lerp(Color.OrangeRed, Color.RosyBrown, interpolant);
-                    return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+                    return Color.Lerp(Color.White, Color.Transparent, EasingFunction.InExpo(interpolant));
                 }
 
             };
 
+            outlineColor = Color.Yellow;
+
+            //Bloom
+            useBloom = true;
+            bloom.innerBloomColor = Color.OrangeRed;
+            bloom.outerBloomColor = Color.Red;
+            bloom.bloomWidthFunction = GetBloomWidth;
+            bloom.bloomColorFunction = GetBloomColor;
+
+            additive = true;
             Trailer = devilsPeak;
             useAfterImage = true;
+        }
+
+        private float GetBloomWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(24, 64, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+        }
+        private Color GetBloomColor(float ratio)
+        {
+            return Color.Lerp(Color.Red * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
         }
 
         public override void AI()
         {
             base.AI();
+            bloomScale = MathHelper.Lerp(0.12f, 0f, EasingFunction.InExpo(Interpolant));
             glowColor = Color.Lerp(Color.Transparent, Color.Red * 0.5f, EasingFunction.QuadraticBump(Interpolant));
             growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));
             if (Owner.HasBuff<FireFury>())
@@ -158,6 +181,52 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                     SoundEngine.PlaySound(fireSound, Projectile.position);
                     _playedSound = true;
                 }
+            }
+
+
+            _traveledRotation += MathF.Abs(Projectile.rotation - _oldRot);
+            _oldRot = Projectile.rotation;
+            if (Timer % 16 == 0)
+            {
+                int index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
+                Vector2 spawnPos = swingTrailCache[index];
+                var p = LegacyParticle.NewParticle<EmberParticle>(spawnPos, Main.rand.NextVector2Circular(1, 1));
+               
+            }
+
+            if (_traveledRotation > 0.1f)
+            {
+                _traveledRotation = 0f;
+                int index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
+                Vector2 spawnPos = swingTrailCache[index];
+
+                index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
+                int nextIndex = index + 4;
+                nextIndex %= swingTrailCache.Length;
+
+                spawnPos = swingTrailCache[index];
+                Vector2 spawnPos2 = swingTrailCache[nextIndex];
+                Vector2 spawnVelocity = spawnPos2 - spawnPos;
+                spawnVelocity = spawnVelocity.SafeNormalize(Vector2.Zero);
+                spawnVelocity *= 24;
+
+
+
+   
+                if (Main.rand.NextBool(12))
+                {
+
+
+                    DustParticle dp = DustParticle.Spawn(spawnPos, spawnVelocity);
+                    dp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Red, 0.1f), Color.Black, Main.rand.NextFloat(0f, 1f));
+                    dp.innerColor = Color.Goldenrod;
+                    dp.outerColor = Color.Red;
+                    dp.gravity = 0;
+                    dp.noTileCollide = true;
+                    dp.fast = true;
+                    dp.superFast = true;
+                }
+
             }
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -253,25 +322,37 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return EasingFunction.QuadraticBump(interpolant) * 254 * MathHelper.Lerp(1f, 0.0f, EasingFunction.InOutSine(Interpolant));
+                    return MathHelper.SmoothStep(128, 200, interpolant) * MathHelper.Lerp(1f, 0.0f, EasingFunction.InOutSine(Interpolant));
                 },
                 TrailColorFunction = (interpolant) =>
                 {
-                    Color lerp1 = Color.Lerp(Color.OrangeRed, Color.RosyBrown, interpolant);
-                    return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+                    return Color.Lerp(Color.White, Color.Transparent, EasingFunction.InExpo(interpolant));
                 }
 
             };
-
+            outlineColor = Color.Yellow;
+            useBloom = true;
+            bloom.innerBloomColor = Color.OrangeRed;
+            bloom.outerBloomColor = Color.Red;
+            bloom.bloomWidthFunction = GetBloomWidth;
+            bloom.bloomColorFunction = GetBloomColor;
+            additive = true;
             Trailer = devilsPeak;
             useAfterImage = true;
             hitStopTime = EXTRA_UPDATE_COUNT * 4;
+        }
+        private float GetBloomWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(24, 64, ratio) * 1.5f;
+        }
+        private Color GetBloomColor(float ratio)
+        {
+            return Color.Lerp(Color.Red * 0.9f, Color.Transparent, EasingFunction.InExpo(ratio));
         }
 
         public override void AI()
         {
             base.AI();
-
             glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.QuadraticBump(Interpolant));
             growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));
         }

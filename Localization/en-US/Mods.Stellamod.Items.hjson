@@ -10692,3 +10692,8 @@ RavagerBarrierBlockItem: {
 	Tooltip: ""
 	DisplayName: Ravager Barrier Block Item
 }
+
+WoodlandRavagerRelicItem: {
+	DisplayName: Woodland Ravager Relic
+	Tooltip: ""
+}

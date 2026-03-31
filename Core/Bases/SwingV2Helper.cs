@@ -792,7 +792,7 @@ namespace Stellamod.Core.Bases
                 Duration = 40,
                 XSwingRadius = 88,
                 YSwingRadius = 48,
-                SwingDegrees = 480,
+                SwingDegrees = 270,
                 Easing = EasingFunction.InOutExpo,
                 Sound = s1,
             });
@@ -802,7 +802,7 @@ namespace Stellamod.Core.Bases
                 Duration = 40,
                 XSwingRadius = 88,
                 YSwingRadius = 48,
-                SwingDegrees = 480,
+                SwingDegrees = 270,
                 Easing = EasingFunction.InOutExpo,
                 Sound = s2
             });
@@ -832,14 +832,42 @@ namespace Stellamod.Core.Bases
                 Duration = 24,
                 XSwingRadius = 80,
                 YSwingRadius = 48,
-                SwingDegrees = 270,
+                SwingDegrees = 235,
                 Easing = EasingFunction.InOutExpo,
                 Sound = s1
+            });
+            
+            swings.Add(new OvalSwing
+            {
+                Duration = 24,
+                XSwingRadius = 80,
+                YSwingRadius = 48,
+                SwingDegrees = 235,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2
             });
 
             swings.Add(new OvalSwing
             {
-                Duration = 40,
+                Duration = 20,
+                XSwingRadius = 80,
+                YSwingRadius = 48,
+                SwingDegrees = 200,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s1
+            });
+            swings.Add(new OvalSwing
+            {
+                Duration = 20,
+                XSwingRadius = 80,
+                YSwingRadius = 48,
+                SwingDegrees = 200,
+                Easing = EasingFunction.InOutExpo,
+                Sound = s2
+            });
+            swings.Add(new OvalSwing
+            {
+                Duration = 60,
                 XSwingRadius = 100,
                 YSwingRadius = 40,
                 SwingDegrees = 540,

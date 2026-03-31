@@ -146,19 +146,4 @@ namespace Stellamod.Tiles.Furniture
             }
         }
     }
-
-    // If you want to make more relics but do not go the optional way, you can use inheritance to avoid using duplicate code:
-    // Your tile code would then inherit from the MinionBossRelic class (which you should make abstract) and should look like this:
-    /*
-	public class MyBossRelic : MinionBossRelic
-	{
-		public override string RelicTextureName => "ExampleMod/Content/Tiles/Furniture/MyBossRelic";
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Placeable.Furniture.MyBossRelic>());
-		}
-	}
-	*/
-
-    // Your item code would then just use the MyBossRelic tile type, and keep placeStyle on 0
-    // The textures for MyBossRelic item/tile have to be supplied separately
 }

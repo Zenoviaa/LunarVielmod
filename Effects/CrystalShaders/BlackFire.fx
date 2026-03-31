@@ -33,6 +33,16 @@ sampler2D primaryTex2 = sampler_state
     AddressU = wrap;
     AddressV = clamp;
 };
+texture bloomTexture;
+sampler2D bloomTex = sampler_state
+{
+    texture = <bloomTexture>;
+    magfilter = LINEAR;
+    minfilter = LINEAR;
+    mipfilter = LINEAR;
+    AddressU = wrap;
+    AddressV = clamp;
+};
 
 
 texture noiseTexture;
@@ -111,17 +121,22 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float3 fireColor = lerp(outerColor, innerColor, noise);
     fireColor = lerp(fireColor, backColor, fade);
     
+    
+        
+    float mask = tex2D(primaryTex, distortedCoords + float2(time * -0.025, 0.0));
+    float mask2 = tex2D(primaryTex2, distortedCoords + float2(time * -0.025, 0.0));
+    float mask3 = tex2D(bloomTex, distortedCoords + float2(time * -0.025, 0.0));
+    
+    
     float n3 = tex2D(noiseTex, (distortedCoords + float2(time * -0.10, 0.0)) * tiling);
     float3 flareColor = lerp(outerColor, innerColor, pow(n3, 0.5));
     float3 emitColor = lerp(outerEmitColor, innerEmitColor, QuadraticBump(distortedCoords.y));
+    float4 bloomColor = float4(emitColor, mask3);
+
+    float4 trailColor1 = float4(saturate(fireColor + flareColor), mask);
     
-    
-    float mask = tex2D(primaryTex, distortedCoords + float2(time * -0.025, 0.0));
-    float4 trailColor1 = float4(saturate(fireColor + flareColor), mask) * input.Color;
-    
-    float mask2 = tex2D(primaryTex2, distortedCoords + float2(time * -0.025, 0.0));
-    float4 trailColor2 = float4(lerp(outerColor, innerColor, mask2), mask2) * input.Color;
-    return saturate(trailColor1 + trailColor2);
+    float4 trailColor2 = float4(lerp(outerColor, innerColor, mask2), mask2);
+    return saturate(trailColor1 + trailColor2 + bloomColor) * input.Color;
 }
 
 technique Technique1

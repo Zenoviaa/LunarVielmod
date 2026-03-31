@@ -19,6 +19,7 @@ using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
 using Stellamod.Content.Armors.Ravaging;
 using Stellamod.Content.Currencies;
 using Stellamod.Content.Items.Materials;
+using Stellamod.Content.Relics;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Insources;
@@ -84,6 +85,7 @@ namespace Stellamod.Content.BossPages
             AddReward<RavagingChestplate>();
             AddReward<RavagingLegs>();
 
+            AddMasterModeReward<WoodlandRavagerRelicItem>(stack: 1);
             AddMasterModeReward<DragonShard>(stack: 1);
             AddMasterModeReward<GlisteningPearl>(stack: 3);
 

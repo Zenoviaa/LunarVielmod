@@ -3,11 +3,14 @@ using Microsoft.Xna.Framework;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
+using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles;
 using Stellamod.Trailing;
+using Stellamod.Visual.Particles;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -37,20 +40,42 @@ namespace Stellamod.Items.Weapons.Melee.Swords
 
     public class AuroranSlash : BaseSwingProjectileV2
     {
+        private float _oldRot;
+        private float _traveledRotation;
         public bool Hit;
         public bool AuroraProj1;
         public override void DefineCombo()
         {
             base.DefineCombo();
             SwingV2Helper.AddSwordSwingStyle(this);
-            Trailer = TrailPresets.Auroran;
+            var swingTrailer = TrailPresets.Auroran;
+            swingTrailer.invert = ComboIndex % 2 != 0;
+            Trailer = swingTrailer;
+
+            useBloom = true;
+            bloom.innerBloomColor = Color.White;
+            bloom.outerBloomColor = Color.SkyBlue;
+            bloom.bloomWidthFunction = GetBloomWidth;
+            bloom.bloomColorFunction = GetBloomColor;
+
+            additive = true;
             useAfterImage = true;
 
+        }
+        private float GetBloomWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(4, 64, ratio) * 1.15f * MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Interpolant));
+        }
+        private Color GetBloomColor(float ratio)
+        {
+            Color blue = Color.Lerp(Color.Lerp(Color.LightSkyBlue, Color.Blue, 0.5f), Color.Blue, ExtraMath.Osc(0f, 1f, speed: 4));
+            return Color.Lerp(blue * 0.9f, Color.Violet, ratio);
         }
 
         public override void AI()
         {
             base.AI();
+            bloomScale = MathHelper.Lerp(0.08f, 0f, EasingFunction.InExpo(Interpolant));
             if (!AuroraProj1 && Interpolant > 0.5f)
             {
                 if (Main.myPlayer == Projectile.owner && ComboIndex == ComboCount - 1)
@@ -59,6 +84,55 @@ namespace Stellamod.Items.Weapons.Melee.Swords
                         ModContent.ProjectileType<Aurora>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
                 }
                 AuroraProj1 = true;
+            }
+
+            if (Timer % 16 == 0)
+            {
+                int index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
+                Vector2 spawnPos = swingTrailCache[index];
+                SparkleParticle dp = SparkleParticle.Spawn(spawnPos, Vector2.Zero, Scale: 0.3f);
+                dp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Red, 0.1f), Color.Black, Main.rand.NextFloat(0f, 1f));
+                dp.innerColor = Color.White;
+                dp.outerColor = Color.Blue;
+                dp.gravity = 0;
+                dp.noTileCollide = true;
+                dp.fast = true;
+            }
+
+            _traveledRotation += MathF.Abs(Projectile.rotation - _oldRot);
+            _oldRot = Projectile.rotation;
+            if (_traveledRotation > 0.1f)
+            {
+                _traveledRotation = 0f;
+                int index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
+                Vector2 spawnPos = swingTrailCache[index];
+
+                index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
+                int nextIndex = index + 4;
+                nextIndex %= swingTrailCache.Length;
+
+                spawnPos = swingTrailCache[index];
+                Vector2 spawnPos2 = swingTrailCache[nextIndex];
+                Vector2 spawnVelocity = spawnPos2 - spawnPos;
+                spawnVelocity = spawnVelocity.SafeNormalize(Vector2.Zero);
+                spawnVelocity *= 24;
+
+
+                if (Main.rand.NextBool(12))
+                {
+
+
+                    DustParticle dp = DustParticle.Spawn(spawnPos, spawnVelocity);
+                    dp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Red, 0.1f), Color.Black, Main.rand.NextFloat(0f, 1f));
+                    dp.innerColor = Color.LightSkyBlue;
+                    dp.outerColor = Color.Violet;
+                    dp.gravity = 0;
+                    dp.noTileCollide = true;
+                    dp.fast = true;
+                    dp.superFast = true;
+                }
+
+
             }
         }
 
@@ -95,7 +169,17 @@ namespace Stellamod.Items.Weapons.Melee.Swords
         {
             base.DefineCombo();
             useAfterImage = true;
-            Trailer = TrailPresets.Auroran;
+            var swingTrailer = TrailPresets.Auroran;
+            swingTrailer.invert = ComboIndex % 2 != 0;
+            Trailer = swingTrailer;
+
+            bloomScale = 0.08f;
+            useBloom = true;
+            bloom.innerBloomColor = Color.White;
+            bloom.outerBloomColor = Color.SkyBlue;
+            bloom.bloomWidthFunction = GetBloomWidth;
+            bloom.bloomColorFunction = GetBloomColor;
+            additive = true;
             SoundStyle swingSound1 = SoundRegistry.HeavySwordSlash1;
             swingSound1.PitchVariance = 0.5f;
             Add(new OvalSwing
@@ -118,6 +202,16 @@ namespace Stellamod.Items.Weapons.Melee.Swords
                 Sound = swingSound1,
             });
         }
+        private float GetBloomWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(4, 64, ratio) * 1.15f * MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Interpolant));
+        }
+        private Color GetBloomColor(float ratio)
+        {
+            Color blue = Color.Lerp(Color.Lerp(Color.LightSkyBlue, Color.Blue, 0.5f), Color.Blue, ExtraMath.Osc(0f, 1f, speed: 4));
+            return Color.Lerp(blue * 0.9f, Color.Violet, ratio);
+        }
+
 
         private bool _thrust;
         public float thrustSpeed = 5;
@@ -125,7 +219,7 @@ namespace Stellamod.Items.Weapons.Melee.Swords
         public override void AI()
         {
             base.AI();
-
+            bloomScale = MathHelper.Lerp(0.12f, 0f, EasingFunction.InExpo(Interpolant));
             Vector2 swingDirection = Projectile.velocity.SafeNormalize(Vector2.Zero);
             if (Interpolant > 0.5f && !AuroraProj2)
             {
