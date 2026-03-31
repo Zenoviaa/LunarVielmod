@@ -1,18 +1,17 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Stellamod.Common.GunSystem;
+using Stellamod.Common.Shaders;
+using Stellamod.Common.Shaders.MagicTrails;
+using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Projectiles;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Stellamod.Common.Shaders;
-using Stellamod.Common.Shaders.MagicTrails;
-using Stellamod.Common.GunSystem;
 
 namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
 {
@@ -22,7 +21,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 54;
+            Item.damage = 108;
             Item.width = 94;
             Item.height = 36;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -48,12 +47,12 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
         }
 
         public override bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {            
+        {
             //Funny Recoil
             float recoilStrength = 10;
             Vector2 targetVelocity = -velocity.SafeNormalize(Vector2.Zero) * recoilStrength;
             player.velocity = VectorHelper.VelocityUpTo(player.velocity, targetVelocity);
-           type = ModContent.ProjectileType<FireflyBomb>();
+            type = ModContent.ProjectileType<FireflyBomb>();
             //Funny Screenshake
             Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(player.Center, 1024f, 32f);
             int numProjectiles = Main.rand.Next(8, 12);
@@ -87,13 +86,16 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Starexplosion"), player.position);
             return base.GunShot(player, source, position, velocity, type, damage, knockback);
         }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<RadiantNectar, BaseGun>();
+        }
     }
 
     public class FireflyBomb : ModProjectile
     {
-        public Vector3 HuntrianColorXyz;
-        public float HuntrianColorOffset;
-        public float Timer;
         public override void SetStaticDefaults()
         {
             // Total count animation frames
@@ -110,18 +112,19 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
             Projectile.friendly = true;
             Projectile.ignoreWater = true;
             Projectile.light = 0.5f;
-            Projectile.penetrate = 2;
-            Projectile.usesIDStaticNPCImmunity = true;
-            Projectile.idStaticNPCHitCooldown = 8;
+            Projectile.penetrate = 1;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 8;
             Projectile.timeLeft = 180;
+            Projectile.extraUpdates = 1;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            if(Projectile.velocity.X != oldVelocity.X)
+            if (Projectile.velocity.X != oldVelocity.X)
                 Projectile.velocity.X = -oldVelocity.X;
-            if(Projectile.velocity.Y != oldVelocity.Y)
-                Projectile.velocity.Y = -oldVelocity.Y; 
+            if (Projectile.velocity.Y != oldVelocity.Y)
+                Projectile.velocity.Y = -oldVelocity.Y;
             return false;
         }
 
@@ -170,7 +173,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
             return MathHelper.Lerp(circleWidth, trailWidth, EasingFunction.OutExpo(completionRatio));
         }
 
-        public override bool PreDraw(ref Color lightColor)
+        private void RenderPixelatedTrail(GraphicsDevice gDevice)
         {
             var shader = MagicNormalShader.Instance;
             shader.PrimaryTexture = TrailRegistry.GlowTrail;
@@ -182,49 +185,44 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
             //This just applis the shader changes
             TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, Projectile.oldRot, ColorFunction, WidthFunction, shader, offset: Projectile.Size / 2);
 
+        }
 
+        public override bool PreDraw(ref Color lightColor)
+        {
+            PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedTrail);
             Texture2D texture = TextureRegistry.DimLight.Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
             Color glowColor = Color.Yellow;
             glowColor.A = 0;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            spriteBatch.Draw(texture, drawPos, null, glowColor, 0, texture.Size() / 2, 1, SpriteEffects.None, 0);
-            spriteBatch.Draw(texture, drawPos, null, glowColor, 0, texture.Size() / 2, 0.5f, SpriteEffects.None, 0);
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(TextureRegistry.DimLight, Projectile.Center);
+            glowDrawer.blackIsTransparency = true;
+            glowDrawer.worldPosition = Projectile.Center;
+            spriteBatch.Draw(glowDrawer);
 
-            glowColor = Color.White;
-            glowColor.A = 0;
-            spriteBatch.Draw(texture, drawPos, null, glowColor, 0, texture.Size() / 2, 0.25f, SpriteEffects.None, 0);
+
             return base.PreDraw(ref lightColor);
         }
 
         public override void AI()
         {
             base.AI();
-            Projectile.ai[0] += 1f;
-
-            HuntrianColorXyz = DrawHelper.HuntrianColorOscillate(
-                new Vector3(85, 45, 15),
-                new Vector3(15, 60, 60),
-                new Vector3(3, 3, 3), HuntrianColorOffset);
-
-            Timer++;
-            if (Timer <= 2)
+            if (Main.rand.NextBool(16))
             {
-                HuntrianColorOffset = Main.rand.NextFloat(-1f, 1f);
+                SparkleParticle sp = SparkleParticle.Spawn(Projectile.Center, Vector2.Zero, Color.Goldenrod, Scale: 0.5f);
+                sp.outerColor = Color.Goldenrod;
+                sp.gravity = 0;
+                sp.fast = true;
+                sp.noTileCollide = true;
             }
-
             SummonHelper.SearchForTargets(Main.player[Projectile.owner], Projectile,
                 out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-            if (foundTarget && distanceFromTarget < 384)
+            if (foundTarget && distanceFromTarget < 555)
             {
-                AI_Movement(targetCenter, 15);
+                AI_Movement(targetCenter, 20);
             }
 
             Projectile.velocity *= 0.98f;
-
-            //Despawn after 3 seconds.
-            if (Projectile.ai[0] >= 180f)
-                Projectile.Kill();
         }
 
         public override void OnKill(int timeLeft)
