@@ -589,7 +589,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         public override void SetDefaults()
         {
             //  base.SetDefaults();
-            Item.damage = 100;
+            Item.damage = 150;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 56;
             Item.height = 56;
