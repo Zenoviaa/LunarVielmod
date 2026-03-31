@@ -50,6 +50,7 @@ public abstract class AbstractRelicItem<ItemClass, TileClass> : ModItem
 
 public class RelicSummon : ModProjectile
 {
+    private bool _hasSummoned;
     public override string Texture => TextureRegistry.EmptyTexture;
     private ref float Timer => ref Projectile.ai[0];
     private float Time => 165;
@@ -90,8 +91,9 @@ public class RelicSummon : ModProjectile
             gp.OuterGlowColor = Color.Red;
         }
 
-        if(Timer >= Time)
+        if(Timer >= Time && !_hasSummoned)
         {
+            _hasSummoned = true;
             if (this.OwnedByLocalClient())
             {
                 if (Main.netMode == NetmodeID.MultiplayerClient)
