@@ -47,16 +47,20 @@ namespace Stellamod.Common.BossBannerSystem
             Asset<Texture2D> bossIcon = _bossPage.RequestBossIcon();
             float drawScale = 0.75f;
             Color drawColor = _bossPage.IsHidden() ? Color.Black : Color.White;
+            if (_bossPage.HasUnclaimedRewards())
+            {
+                UIHelper.QuickOutline(spriteBatch, bossIcon.Value, topLeft, Main.DiscoColor, drawScale);
+            }
+
             if (IsMouseHovering)
             {
                 UIHelper.QuickOutline(spriteBatch, bossIcon.Value, topLeft, Color.Yellow, drawScale);
             }
-
-
+    
             Width.Pixels = bossIcon.Width() * drawScale;
             Height.Pixels = bossIcon.Height() * drawScale;
             spriteBatch.Draw(bossIcon.Value, topLeft, null, drawColor, 0, Vector2.Zero, drawScale, SpriteEffects.None, 0);
- 
+          
         }
     }
 }

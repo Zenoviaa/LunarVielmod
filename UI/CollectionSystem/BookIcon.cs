@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.BossBannerSystem;
+using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.GameInput;
@@ -64,6 +66,13 @@ namespace Stellamod.UI.CollectionSystem
             Rectangle rect = new Rectangle(point.X, point.Y, textureToDraw.Width, textureToDraw.Height);
             rect.Location += new Point(0, (int)VectorHelper.Osc(-8f, 8f, 1f));
             float rotation = 0;
+
+            if (BossPage.HasAnyUnclaimedRewards(Main.LocalPlayer))
+            {
+
+                spriteBatch.Draw(ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}BookIconSelected").Value, rect, null, Main.DiscoColor, rotation, Vector2.Zero, SpriteEffects.None, 0);
+            }
+
             spriteBatch.Draw(textureToDraw, rect, null, drawColor, rotation, Vector2.Zero, SpriteEffects.None, 0);
         }
     }

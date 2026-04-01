@@ -88,6 +88,10 @@ namespace Stellamod.Common.BossBannerSystem
         {
             return RequestTexture("Scroll");
         }
+        public static Asset<Texture2D> RequestRecordTexture()
+        {
+            return RequestTexture("Record");
+        }
 
         public static Asset<Texture2D> RequestStarTexture()
         {

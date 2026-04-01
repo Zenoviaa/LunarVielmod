@@ -8,6 +8,7 @@
         FountainOfMagic = 3,
         IllurianTroupe = 4,
         ColosseumOfProtection = 5,
-        MechanizedRevivals = 6
+        MechanizedRevivals = 6,
+        Miniboss=7
     }
 }

@@ -15,7 +15,7 @@ namespace Stellamod.Helpers
         public const int width = 480;
         public const int height = 155;
 
-        public static int BookLeftPageX => Main.screenWidth / 2 - width / 2 - 64;
+        public static int BookLeftPageX => Main.screenWidth / 2 - width / 2 - 100;
         public static int BookLeftPageY => Main.screenHeight / 2 - height / 2 - 196;
  
 
@@ -107,15 +107,12 @@ namespace Stellamod.Helpers
             RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
       
             SamplerState anisotropicClamp = SamplerState.AnisotropicClamp;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, anisotropicClamp, DepthStencilState.None, Main.Rasterizer, null, Main.UIScaleMatrix);
+            outlineColor.A = 0;
             spriteBatch.Draw(texture, drawPosition + h, null, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, drawPosition - h, null, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, drawPosition + v, null, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, drawPosition - v, null, outlineColor, 0f, default, scale, SpriteEffects.None, 0f);
 
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
 
 
         }

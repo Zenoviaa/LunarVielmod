@@ -106,6 +106,11 @@ namespace Stellamod.Common.BossBannerSystem
             {
                 drawColor = Color.Black;
             }
+
+            if (_parent.BossPage.HasUnclaimedRewards())
+            {
+                UIHelper.QuickOutline(spriteBatch, BossIconTextureAsset.Value, topLeft, Main.DiscoColor, 1);
+            }
             spriteBatch.Draw(BossIconTextureAsset.Value, topLeft, null, drawColor, 0f, default, 1, SpriteEffects.None, 0f);
 
         }

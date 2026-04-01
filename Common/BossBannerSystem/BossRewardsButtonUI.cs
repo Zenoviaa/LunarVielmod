@@ -45,6 +45,11 @@ public class BossRewardsButtonUI : UIPanel
             UIHelper.QuickOutline(spriteBatch, glassTexture.Value, frame, drawPosition, Color.White);
 
         }
+        if (_parent.BossPage.HasUnclaimedRewards())
+        {
+            UIHelper.QuickOutline(spriteBatch, glassTexture.Value, frame, drawPosition, Main.DiscoColor);
+            UIHelper.QuickOutline(spriteBatch, glassTexture.Value, frame, drawPosition, Main.DiscoColor);
+        }
         if (IsMouseHovering)
         {
             UIHelper.QuickOutline(spriteBatch, glassTexture.Value, frame, drawPosition, Color.Yellow);

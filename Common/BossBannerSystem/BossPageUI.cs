@@ -1,10 +1,58 @@
-﻿using Stellamod.UI;
+﻿using ReLogic.Content;
+using Stellamod.Helpers;
+using Stellamod.UI;
+using System;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
 namespace Stellamod.Common.BossBannerSystem;
 
+public class BossRecordButtonUI : UIPanel
+{
+    private readonly BossPageUI _parent;
+    public BossRecordButtonUI(BossPageUI parent)
+    {
+        _parent = parent;
+    }
+    public override void OnInitialize()
+    {
+        base.OnInitialize();
+        Width.Pixels = 32;
+        Height.Pixels = 32;
+        OnLeftClick += _parent.PlayBossMusic;
+    }
+
+    protected override void DrawSelf(SpriteBatch spriteBatch)
+    {
+        base.DrawSelf(spriteBatch);
+        BackgroundColor = Color.Transparent;
+        BorderColor = Color.Transparent;
+        Asset<Texture2D> glassTexture = BossBanner.RequestRecordTexture();
+        Rectangle rectangle = UIHelper.MouseInterfaceInteraction(this);
+        Vector2 drawPosition = rectangle.TopLeft();
+        drawPosition.Y += ExtraMath.Osc(0f, 2f);
+
+        Color drawColor = _parent.Page == 1 ? Color.White : Color.DarkGray;
+        bool isHidden = _parent.BossPage.IsHidden();
+        if (isHidden)
+        {
+            drawColor = Color.Black;
+        }
+
+
+        if (IsMouseHovering)
+        {
+            UIHelper.QuickOutline(spriteBatch, glassTexture, drawPosition, Color.Yellow);
+        }
+        if (_parent.playMusic && _parent.musicSlot == _parent.BossPage.bossNPC.Music)
+        {
+            UIHelper.QuickOutline(spriteBatch, glassTexture, drawPosition, Main.DiscoColor);
+        }
+
+        spriteBatch.Draw(glassTexture.Value, drawPosition, null, drawColor, 0f, default, 1, SpriteEffects.None, 0f);
+    }
+}
 /// <summary>
 /// Opens a window that shows all information about the boss
 /// </summary>
@@ -22,7 +70,7 @@ public class BossPageUI : RightPageUI
     private BossRewardsGroupUI _generalRewardsUI;
     private BossRewardsGroupUI _masterRewardsUI;
     private BossRewardsGroupUI _noHitRewardsUI;
-
+    private BossRecordButtonUI _bossRecordButton;
     private BossStarsUI _bossStarsUI;
     private BossRewardsButtonUI _bossRewardsButton;
     public BossPageUI()
@@ -32,7 +80,7 @@ public class BossPageUI : RightPageUI
         _glassUI = new BossFindButtonUI(this);
         _bossLoreUI = new BossLoreButtonUI(this);
         _bossPhotoUI = new BossPhotoUI(this);
-
+        _bossRecordButton = new BossRecordButtonUI(this);
         _generalRewardsUI = new BossRewardsGroupUI(this, BossPageRewardType.Rewards);
         _masterRewardsUI = new BossRewardsGroupUI(this, BossPageRewardType.MasterModeRewards);
         _noHitRewardsUI = new BossRewardsGroupUI(this, BossPageRewardType.NoHitRewards);
@@ -47,6 +95,8 @@ public class BossPageUI : RightPageUI
 
     public BossPage BossPage { get; private set; }
     public int Page { get; private set; }
+    public bool playMusic;
+    public int musicSlot;
     public override void OnInitialize()
     {
         base.OnInitialize();
@@ -74,6 +124,7 @@ public class BossPageUI : RightPageUI
         _panel.Append(_generalRewardsUI);
         _panel.Append(_bossStarsUI);
         _panel.Append(_bossRewardsButton);
+        _panel.Append(_bossRecordButton);
 
         _panel.Width.Pixels = Width.Pixels;
         _panel.Height.Pixels = Height.Pixels;
@@ -102,6 +153,13 @@ public class BossPageUI : RightPageUI
         Append(_generalRewardsUI);
         Append(_masterRewardsUI);
         Append(_noHitRewardsUI);
+    }
+
+    public override void OnDeactivate()
+    {
+        base.OnDeactivate();
+        playMusic = false;
+        musicSlot = 0;
     }
 
     public void SetBossPage(BossPage bossPage)
@@ -136,6 +194,9 @@ public class BossPageUI : RightPageUI
         Left.Pixels = RelativeLeft;
         Top.Pixels = RelativeTop;
 
+        _bossRecordButton.Left.Set(-16, 1f);
+        _bossRecordButton.Top.Set(0, 0.1f);
+
         _bossPhotoUI.Top.Pixels = 32;
         _bossPhotoUI.Left.Pixels = 0;
 
@@ -152,7 +213,7 @@ public class BossPageUI : RightPageUI
         _bossStarsUI.Top.Pixels = 48;
 
         //rewards
-        int padding = 54;
+        int padding = 64;
 
         _generalRewardsUI.Top.Pixels = 280;
         if(Page != 2)
@@ -164,21 +225,28 @@ public class BossPageUI : RightPageUI
         _masterRewardsUI.Top.Pixels = _generalRewardsUI.Top.Pixels + padding;
         _masterRewardsUI.Left.Pixels = _generalRewardsUI.Left.Pixels;
 
-
+        _scrollbar.Height.Set(200, 0);
+        _pageText.PaddingTop = 8;
+        _uiList.Height.Pixels = 200;
         _noHitRewardsUI.Top.Pixels = _masterRewardsUI.Top.Pixels + padding;
         _noHitRewardsUI.Left.Pixels = _masterRewardsUI.Left.Pixels;
 
         float listHeight = _uiList.GetTotalHeight();
-        _pageText.Height.Pixels = 32;
-        _pageText.Top.Pixels = 0;
 
-        if (listHeight < _uiList.Height.Pixels)
+        _scrollbar.Left.Set(0, 1f);
+        if (listHeight < _uiList.Height.Pixels || Page != 1)
         {
             _scrollbar.Top.Set(500000, 0f);
         }
         else
         {
             _scrollbar.Top.Set(0, 0.6f);
+        }
+
+        if (playMusic)
+        {
+            
+            Main.musicBox2 = musicSlot;
         }
     }
 
@@ -203,5 +271,11 @@ public class BossPageUI : RightPageUI
     {
         _pageText.SetText(string.Empty);
         Page = 2;
+    }
+
+    public void PlayBossMusic(UIMouseEvent evt, UIElement listeningElement)
+    {
+        playMusic = !playMusic;
+        musicSlot = BossPage.bossNPC.Music;
     }
 }

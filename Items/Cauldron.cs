@@ -2,6 +2,7 @@
 using MonoMod.Cil;
 using Stellamod.Buffs;
 using Stellamod.Common.QuestSystem;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Quests.ZuiQuest;
 using Stellamod.Items.Ores;
 using System;
@@ -85,7 +86,7 @@ namespace Stellamod.Items
     {
         public static CauldronBrew RegisterBrew<Material, Mold>(this ModItem result, float weight = 1.0f, int yield = 1)
             where Material : ModItem
-            where Mold : ModItem
+            where Mold : SirestiasMold
         {
             Cauldron cauldron = ModContent.GetInstance<Cauldron>();
             int materialType = ModContent.ItemType<Material>();
@@ -96,6 +97,7 @@ namespace Stellamod.Items
             Cauldron.MaterialRarity[result.Type] = ItemLoader.GetItem(materialType).Item.rare;
             return cauldron.AddBrew(result.Item.type, moldType, materialType, 10, weight, yield);
         }
+
         public static CauldronBrew RegisterBrew(this ModItem result, int mold, int material, float weight = 1.0f, int yield = 1)
         {
             Cauldron cauldron = ModContent.GetInstance<Cauldron>();

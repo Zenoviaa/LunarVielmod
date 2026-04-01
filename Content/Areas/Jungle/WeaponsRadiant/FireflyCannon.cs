@@ -90,7 +90,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew<RadiantNectar, BaseGun>();
+            this.RegisterBrew<RadiantNectar, BlankGun>();
         }
     }
 

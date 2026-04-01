@@ -57,7 +57,7 @@ namespace Stellamod.UI.CollectionSystem
             Top.Pixels = RelativeTop;
 
             questTab.Left.Pixels = 252;
-            questTab.Top.Pixels = 420;
+            questTab.Top.Pixels = 464;
 
             int o = 64;
             loreTab.Left.Pixels = questTab.Left.Pixels + o;

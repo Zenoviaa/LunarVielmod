@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.BossBannerSystem;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.ModLoader;
@@ -22,6 +23,7 @@ namespace Stellamod.UI.CollectionSystem
             OnMouseOver += OnMouseHover;
         }
 
+        public bool rainbowOutline;
         protected abstract void Trigger(CollectionBookUISystem uiSystem);
         private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -66,6 +68,10 @@ namespace Stellamod.UI.CollectionSystem
             CollectionBookUISystem uiSystem = ModContent.GetInstance<CollectionBookUISystem>();
             rect.Location += uiSystem.collectionBookUI.bookUI.book.Offset.ToPoint();
             float rotation = 0;
+            if (rainbowOutline)
+            {
+                spriteBatch.Draw(ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}{TextureAsset}Selected").Value, rect, null, Main.DiscoColor, rotation, Vector2.Zero, SpriteEffects.None, 0);
+            }
             spriteBatch.Draw(textureToDraw, rect, null, drawColor, rotation, Vector2.Zero, SpriteEffects.None, 0);
         }
     }
@@ -90,6 +96,11 @@ namespace Stellamod.UI.CollectionSystem
         protected override void Trigger(CollectionBookUISystem uiSystem)
         {
             uiSystem.OpenBossBannersTabUI();
+        }
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            rainbowOutline = BossPage.HasAnyUnclaimedRewards(Main.LocalPlayer);
+            base.DrawSelf(spriteBatch);
         }
     }
 

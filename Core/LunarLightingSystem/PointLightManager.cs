@@ -243,8 +243,7 @@ namespace Stellamod.Core.LunarLightingSystem
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.BeamingLights)
                 return;
-
-
+       
             //The last index in the array is reserved for the player light and needs to update every frame
             //So it'll update first, and will always be active, it should never bake, it's a special light
 

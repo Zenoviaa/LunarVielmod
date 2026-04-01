@@ -67,7 +67,7 @@ namespace Stellamod.UI.CollectionSystem
                         t.MoldNeeded.SetDefaults(0);
                     }
 
-                    t.MoldNeeded = cauldron.FindMold(Item);
+                    t.MoldNeeded = cauldron.FindMold(new Item(Item.type));
                     Main.hoverItemName = "Testing Testing 123";
                     Main.HoverItem = t.Item;
                 }

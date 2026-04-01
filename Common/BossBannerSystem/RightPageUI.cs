@@ -12,10 +12,10 @@ namespace Stellamod.Common.BossBannerSystem
         public const int height = 155;
 
         public int RelativeLeft => Main.screenWidth / 2 - width / 2 + 280;
-        public int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
+        public int RelativeTop => Main.screenHeight / 2 - height / 2 - 232;
         public int GetPageWidth()
         {
-            return 300;
+            return 320;
         }
 
         public int GetPageHeight()

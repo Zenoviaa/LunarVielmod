@@ -11,6 +11,9 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
+
+    //TODO: Rewrite this and try implementing Radiance Cascades instead, might be really cool
+    //I'll make a prototype elsewhere first though
     public class LightingPreDrawEdit : GlobalTile
     {
         public static bool DontRenderPreDraw;
@@ -269,7 +272,7 @@ namespace Stellamod.Core.LunarLightingSystem
             SimpleBlurShader simpleBlurShader = SimpleBlurShader.Instance;
             simpleBlurShader.TexelSize = texelSize;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, simpleBlurShader.Effect);
+            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendState.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, simpleBlurShader.Effect);
             spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             spriteBatch.End();
         }
@@ -430,7 +433,8 @@ namespace Stellamod.Core.LunarLightingSystem
 
             _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
             SunColor = Color.Lerp(SunColor, Main.ColorOfTheSkies, 0.1f);
-
+   
+            //SunColor = Color.Black;
         }
 
         public void AddBackLight(IBackLightModifier backLightModifier)
@@ -493,7 +497,10 @@ namespace Stellamod.Core.LunarLightingSystem
             //Render Sun
             SunLightManager.RenderSunLight();
 
-
+            /*
+            LightingV2 lightingV2 = ModContent.GetInstance<LightingV2>();
+            lightingV2.RenderLightSources();*/
+            
             var effect = PointLightSoftenShader.Instance.Effect;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
@@ -521,7 +528,7 @@ namespace Stellamod.Core.LunarLightingSystem
             }
 
             spriteBatch.End();
-
+            
             //Render the Player PointLight
             int playerLightIndex = PointLightManager.MAX_POINT_LIGHTS - 1;
             PointLightManager.RenderLight(playerLightIndex, _pointLightRT, _accumulatedLightRT);

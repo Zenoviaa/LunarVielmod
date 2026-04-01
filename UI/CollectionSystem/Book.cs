@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
+﻿using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameInput;
@@ -12,8 +10,6 @@ namespace Stellamod.UI.CollectionSystem
     public class Book : UIElement
     {
         private readonly int _context;
-        private readonly float _scale;
-
         private int timer = 0;
         private int _frame;
         private float _closeTimer;
@@ -29,18 +25,17 @@ namespace Stellamod.UI.CollectionSystem
         }
 
         private State _state;
-
-        public Book(float scale = 1f)
+        private float Scale => 2f;
+        public Book()
         {
-            _scale = scale;
             _state = State.Closed;
             _closeTimer = 1f;
             Offset = Vector2.UnitY * -768;
             var asset = ModContent.Request<Texture2D>(
                 $"{CollectionBookUISystem.RootTexturePath}Book", ReLogic.Content.AssetRequestMode.ImmediateLoad);
             var rect = asset.Value.GetFrame(0, 10);
-            Width.Set(rect.Size().X * scale * 1.75f, 0f);
-            Height.Set(rect.Size().Y * scale * 1.75f, 0f);
+            Width.Set(rect.Size().X * Scale, 0f);
+            Height.Set(rect.Size().Y * Scale, 0f);
         }
 
         public bool IsOpen()
@@ -133,8 +128,6 @@ namespace Stellamod.UI.CollectionSystem
         }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            float oldScale = Main.inventoryScale;
-            Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
 
             bool contains = ContainsPoint(Main.MouseScreen);
@@ -155,8 +148,8 @@ namespace Stellamod.UI.CollectionSystem
             Vector2 centerPos = pos + drawOrigin;
 
             centerPos += Offset;
-            spriteBatch.Draw(texture, centerPos, texture.GetFrame(_frame, totalFrameCount: 10), Color.White, 0f, drawOrigin, _scale * 1.75f, SpriteEffects.None, 0f);
-            Main.inventoryScale = oldScale;
+            spriteBatch.Draw(texture, centerPos, texture.GetFrame(_frame, totalFrameCount: 10), Color.White, 0f, drawOrigin, Scale, SpriteEffects.None, 0f);
+
         }
 
         public void Toggle()

@@ -1,6 +1,8 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.BossBannerSystem;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager;
+using Stellamod.Content.BossPages;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
@@ -164,7 +166,7 @@ public class RelicSummon : ModProjectile
 
 public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
     where ItemType : ModItem
-    where BossType : ModNPC
+    where BossType : BossPage
 {
     public override string Texture => this.GetTypeDirectoryWithSlash() + "RelicPedestal";
     public Asset<Texture2D> RelicTextureAsset;
@@ -279,7 +281,8 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
         }
         Vector2 worldPos = pointToClickFrom.ToWorldCoordinates(48, -32);
 
-        Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), worldPos, Vector2.Zero, ModContent.ProjectileType<RelicSummon>(), 1, 1, Main.LocalPlayer.whoAmI, ai1: ModContent.NPCType<BossType>());
+        int bossType = ModContent.GetInstance<BossType>().bossNPC.Type;
+        Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), worldPos, Vector2.Zero, ModContent.ProjectileType<RelicSummon>(), 1, 1, Main.LocalPlayer.whoAmI, ai1: bossType);
         return true;
     }
 
@@ -341,6 +344,19 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
         {
             spriteBatch.Draw(texture, drawPos + (TwoPi * num5).ToRotationVector2() * (6f + offset * 2f), null, effectColor, 0f, origin, 1f, effects, 0f);
         }
+
+        if (!ModContent.RequestIfExists<Texture2D>
+            (this.GetTypeDirectoryWithSlash() + "StarRank" +
+            ModContent.GetInstance<BossType>().StarRanking, out var starRankTextureAsset))
+            return;
+
+        drawPos.Y -= texture.Height;
+        origin = starRankTextureAsset.Value.Size() * 0.5f;
+        spriteBatch.Draw(starRankTextureAsset.Value, drawPos, null, color, 0f, origin, 1f, effects, 0f);
+        for (float num5 = 0f; num5 < 1f; num5 += 355f / (678f * (float)Math.PI))
+        {
+            spriteBatch.Draw(starRankTextureAsset.Value, drawPos + (TwoPi * num5).ToRotationVector2() * (6f + offset * 2f), null, effectColor, 0f, origin, 1f, effects, 0f);
+        }
     }
 
     public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
@@ -368,7 +384,7 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
 }
 
 public class WoodlandRavagerRelic :
-    AbstractRelicTile<WoodlandRavagerRelicItem, WoodlandRavager>
+    AbstractRelicTile<WoodlandRavagerRelicItem, WoodlandRavagerPage>
 {
 
 }

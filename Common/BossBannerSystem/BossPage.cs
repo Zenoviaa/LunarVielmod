@@ -133,7 +133,44 @@ namespace Stellamod.Common.BossBannerSystem
         {
             return DownedBossTracker.IsNoHit(flag);
         }
+        public bool HasUnclaimedRewards()
+        {
+            bool regularRewards = CanClaimRewards();
+            bool masterRewards = CanClaimMasterRewards();
+            bool noHitRewards = CanClaimNoHitRewards();
+            DownedBossRewardPlayer rewardPlayer = Main.LocalPlayer.GetModPlayer<DownedBossRewardPlayer>();
+            int type = (int)flag;
+            if (regularRewards && !rewardPlayer.claimedRegularRewards[type])
+                return true;
+            if (masterRewards && !rewardPlayer.claimedMasterRewards[type])
+                return true;
+            if (noHitRewards && !rewardPlayer.claimedNoHit[type])
+                return true;
 
+            return false;
+        }
+
+        public static bool HasAnyUnclaimedRewards(Player player)
+        {
+            DownedBossRewardPlayer rewardPlayer = player.GetModPlayer<DownedBossRewardPlayer>();
+            int length = Enum.GetNames<DownedBossFlag>().Length;
+            for(int flag = 0; flag < length; flag++)
+            {
+                bool regularRewards = DownedBossTracker.IsDowned(flag);
+                bool masterRewards = DownedBossTracker.IsDowned(flag) && Main.masterMode;
+                bool noHitRewards = DownedBossTracker.IsNoHit(flag);
+         
+
+                if (regularRewards && !rewardPlayer.claimedRegularRewards[flag])
+                    return true;
+                if (masterRewards && !rewardPlayer.claimedMasterRewards[flag])
+                    return true;
+                if (noHitRewards && !rewardPlayer.claimedNoHit[flag])
+                    return true;
+
+            }
+            return false;
+        }
         public void AddReward<T>(int stack = 1) where T : ModItem
         {
             Item item = ModContent.GetInstance<T>().Item;

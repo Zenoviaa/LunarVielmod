@@ -16,7 +16,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
         public const int width = 480;
         public const int height = 155;
 
-        public int RelativeLeft => Main.screenWidth / 2 - width / 2 - 64;
+        public int RelativeLeft => Main.screenWidth / 2 - width / 2 - 80;
         public int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
         public float Glow { get; set; }
         public override void OnInitialize()

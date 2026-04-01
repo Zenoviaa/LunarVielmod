@@ -94,6 +94,7 @@ public class SunLightManager : ModSystem
     public static void RenderSunLight()
     {
 
+        
         Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Circle").Value;
         Vector2 drawOrigin = texture.Size() / 2f;
         SpriteBatch spriteBatch = Main.spriteBatch;
@@ -101,7 +102,9 @@ public class SunLightManager : ModSystem
         for (int i = 0; i < 3; i++)
             spriteBatch.Draw(texture, Vector2.Zero + new Vector2(Main.screenWidth, Main.screenHeight) / 2f, null, SunColor, 0, drawOrigin, 40, SpriteEffects.None, 0);
         spriteBatch.End();
+        
 
+        GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
 
         //shadows
         var config = ModContent.GetInstance<LunarVeilClientConfig>();
@@ -114,14 +117,12 @@ public class SunLightManager : ModSystem
         var shader = TileShadowShader.Instance;
         shader.ApplyPasses();
 
-        GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
 
-        
-        graphicsDevice.RasterizerState.CullMode = CullMode.None;
+        graphicsDevice.RasterizerState = RasterizerState.CullNone;
         graphicsDevice.BlendState = BlendState.AlphaBlend;
         graphicsDevice.DrawUserIndexedPrimitives(
           PrimitiveType.TriangleList, ShadowVertices, 0, _primitiveIndex, ShadowIndexBuffer, 0, _primitiveIndex / 2);
-        graphicsDevice.RasterizerState.CullMode = CullMode.CullCounterClockwiseFace;
+        graphicsDevice.RasterizerState = Main.Rasterizer;
     }
 
     private static bool IsFull()
