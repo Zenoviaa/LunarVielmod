@@ -939,6 +939,8 @@ namespace Stellamod.Common.ArmorRework
         {
             int start = 3;
             int end = 9;
+            if (Main.masterMode)
+                end -= 1;
             if (slot >= start && slot <= end)
             {
                 int accessoryNumber = slot - start;

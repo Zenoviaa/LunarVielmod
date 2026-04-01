@@ -1110,5 +1110,5 @@ BeastInsourceBuff: {
 
 Flawless: {
 	DisplayName: Flawless
-	Description: Mods.Stellamod.Buffs.Flawless.Description
+	Description: You haven't taken a hit yet!
 }

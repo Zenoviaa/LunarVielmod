@@ -130,7 +130,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 Shader = blackFireShader,
                 TrailWidthFunction = (interpolant) =>
                 {
-                    return MathHelper.SmoothStep(24, 64, interpolant);
+                    return MathHelper.SmoothStep(8, 64, interpolant);
                 },
                 TrailColorFunction = (interpolant) =>
                 {
@@ -155,7 +155,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
 
         private float GetBloomWidth(float ratio)
         {
-            return MathHelper.SmoothStep(24, 64, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+            return MathHelper.SmoothStep(8, 64, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
         }
         private Color GetBloomColor(float ratio)
         {
