@@ -265,6 +265,13 @@ namespace Stellamod.Core.Grass
             float noiseSample = _noise.GetNoise(blade.position.X + _noiseTimer, 0) * 0.5f + 0.5f;
             float bladeOsc = ExtraMath.Osc(0f, 1f, 0f, blade.position.X) * 0.3f;
             Color bottomColor = Color.Lerp(color, Color.Black, bladeOsc + noiseSample * 0.4f);
+
+
+            Point tile = blade.position.ToTileCoordinates();
+            Color lightColor = Lighting.GetColor(tile);
+            bottomColor = bottomColor.MultiplyRGB(lightColor);
+            topColor = topColor.MultiplyRGB(lightColor);
+
             bottomLeft.Color = bottomColor;
             bottomRight.Color = bottomColor;
             top.Color = topColor;
@@ -336,7 +343,7 @@ namespace Stellamod.Core.Grass
         private void RenderGrassesBack(SpriteBatch spriteBatch, Vector2 screenPos)
         {
             _multiplyColor = Color.Lerp(Color.White, Color.Black, 0.6f);
-            _backOffset = new Vector2(24, 2);
+            _backOffset = new Vector2(24, 4);
             RenderGrassInner(spriteBatch, screenPos);
 
         }
@@ -366,7 +373,7 @@ namespace Stellamod.Core.Grass
                 grassPosition.X = MathF.Floor(grassPosition.X / 16) * 16;
                 grassPosition.Y = MathF.Floor(grassPosition.Y / 16) * 16;
                 Vector2 drawPosition = grassPosition - screenPos + _backOffset;
-                drawPosition.Y += 2;
+                drawPosition.Y += 8;
     
                 float rotation = grass.offsetDirection.ToRotation() + MathHelper.PiOver2;
 

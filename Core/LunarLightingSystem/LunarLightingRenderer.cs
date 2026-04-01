@@ -1,13 +1,19 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Foggy;
+using Stellamod.Core.MoonWaters;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
+using Terraria.Graphics.Light;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Stellamod.Tiles.SpecialDecorativeWall;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
@@ -48,6 +54,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private RenderTarget2D _tileShadowMap;
         private RenderTarget2D _tileBlurRT;
         private RenderTarget2D _tileSunShadowRT;
+        private ManagedRenderTarget _tileLightRT;
 
         private List<ILightEmitter> _emitters;
         private List<IBackLightModifier> _backLightModifiers;
@@ -64,6 +71,7 @@ namespace Stellamod.Core.LunarLightingSystem
             On_Main.CheckMonoliths += RenderToLightMaps;
             On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
         }
+    
 
         public override void Unload()
         {
@@ -81,11 +89,56 @@ namespace Stellamod.Core.LunarLightingSystem
                 return !domainExpansionManager.inSpace;
             }
         }
+        private void RenderTileLight()
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
+            graphicsDevice.SetRenderTarget(_tileLightRT);
+            graphicsDevice.Clear(Color.Transparent);
+            Texture2D heightTile = TextureAssets.BlackTile.Value;
+;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
+
+            Vector2 cameraCenterWorld = Main.Camera.Center;
+            Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+            Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
+
+            const float range = 256;
+            cameraTopLeft -= new Vector2(range);
+            cameraBottomRight += new Vector2(range);
+
+            Point topLeftTile = cameraTopLeft.ToTileCoordinates();
+            Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
+
+            LightingEngine lightingEngine = typeof(Lighting).GetField("_activeEngine", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null) as LightingEngine;
+            TileLightScanner tileScanner = typeof(LightingEngine).GetField("_tileScanner", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as TileLightScanner;
+            LightMap lightMap = typeof(LightingEngine).GetField("_activeLightMap", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as LightMap;
+
+            int numTilesProducingLight = 0;
+            for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
+            {
+                for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
+                {
+                    Point lightTilePoint = new Point(x, y);
+                    Vector3 lightColor;
+                    tileScanner.GetTileLight(x, y, out lightColor);
+                    Vector2 position = lightTilePoint.ToWorldCoordinates();
+                    Color drawColor = new Color(lightColor.X, lightColor.Y, lightColor.Z, 1f);
+                    spriteBatch.Draw(heightTile, position - Main.screenPosition, drawColor);
+                }
+            }
+
+       
+            spriteBatch.End();
+            graphicsDevice.SetRenderTarget(null);
+        }
+
         private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
         {
-
+           // Player.solidLightDecay = 1f;
             if (IsActive && _isLoaded)
             {
+          //      RenderTileLight();
                 RenderLightsV2();
                 if (DrawSunShadows2())
                 {
@@ -122,6 +175,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void OnModLoad()
         {
             base.OnModLoad();
+            _tileLightRT = ManagedRenderTarget.New();
             PostProcessingRenderer.AddPass(this);
         }
 
@@ -275,6 +329,11 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendState.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, simpleBlurShader.Effect);
             spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             spriteBatch.End();
+            /*
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, simpleBlurShader.Effect);
+            spriteBatch.Draw(_tileLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.End();
+            */
         }
 
 
@@ -497,14 +556,18 @@ namespace Stellamod.Core.LunarLightingSystem
             //Render Sun
             SunLightManager.RenderSunLight();
 
+
+            //Wait why not just like
+            //paste the tile light here wait
+
             /*
             LightingV2 lightingV2 = ModContent.GetInstance<LightingV2>();
             lightingV2.RenderLightSources();*/
-            
+
             var effect = PointLightSoftenShader.Instance.Effect;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-
+         //   spriteBatch.Draw(_tileLightRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            
             for (int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
             {
                 //These lights won't be iterated over/drawn
@@ -526,7 +589,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 for (int k = 0; k < 1; k++)
                     spriteBatch.Draw(_tempLightMapAtlasRT, position - Main.screenPosition, atlasRectangle, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
             }
-
+            
             spriteBatch.End();
             
             //Render the Player PointLight

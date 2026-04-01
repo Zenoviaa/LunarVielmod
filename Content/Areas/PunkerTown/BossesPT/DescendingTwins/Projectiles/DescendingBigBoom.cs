@@ -27,6 +27,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 15;
+            Projectile.light = 1.5f;
         }
         public override void AI()
         {

@@ -64,7 +64,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             base.PostUpdateDusts();
             Update();
-            ShadowColor = Color.Black * 0.5f;
+            ShadowColor = Color.Black * 0.45f;
         }
 
 

@@ -41,26 +41,46 @@ namespace Stellamod.Core.Utilities
     {
         private Vector2[,] _velocityGrid;
         private Vector2[,] _decayingVelocityGrid;
+        private int _width;
+        private int _height;
         public override void ClearWorld()
         {
             base.ClearWorld();
-            _velocityGrid = new Vector2[Main.maxTilesX, Main.maxTilesY];
-            _decayingVelocityGrid = new Vector2[Main.maxTilesX, Main.maxTilesY];
+            _width = (int)(Main.screenWidth * 1.5f);
+            _height = (int)(Main.screenHeight * 1.5f);
+            _width /= 16;
+            _height /= 16;
+            _velocityGrid = new Vector2[_width, _height];
+            _decayingVelocityGrid = new Vector2[_width, _height];
         }
 
+        private Point GetTileInScreenSpace(Vector2 worldPosition)
+        {
+            Point worldTile = worldPosition.ToTileCoordinates();
+            Point topLeft = Main.screenPosition.ToTileCoordinates();
+            worldTile -= topLeft;
+           
+            return worldTile;
+        }
         private void ClearGrid()
         {
             //We're only going to update the velocities for what's on screen, for optimization concerns
-
-            int width = (int)(Main.screenWidth * 1.5f);
-            int height = (int)(Main.screenHeight * 1.5f);
-            Point startTile = (Main.Camera.Center - new Vector2(width / 2, width / 2f)).ToTileCoordinates();
+            for(int i = 0; i < _width; i++)
+            {
+                for(int j = 0; j < _height; j++)
+                {
+                    _velocityGrid[i, j] = Vector2.Zero;
+                    _decayingVelocityGrid[i, j] *= 0.7f;
+                }
+            }
+            /*
+            Point startTile = (Main.Camera.Center - new Vector2(_width / 2, _height / 2f)).ToTileCoordinates();
             if (startTile.X < 0)
                 startTile.X = 0;
             if (startTile.Y < 0)
                 startTile.Y = 0;
 
-            Point endTile = (Main.Camera.Center + new Vector2(width / 2, width / 2f)).ToTileCoordinates();
+            Point endTile = (Main.Camera.Center + new Vector2(_width / 2, _height / 2f)).ToTileCoordinates();
             if (endTile.X >= Main.maxTilesX)
                 endTile.X = Main.maxTilesX - 1;
             if(endTile.Y  >= Main.maxTilesY)
@@ -72,17 +92,19 @@ namespace Stellamod.Core.Utilities
                     _velocityGrid[x, y] = Vector2.Zero;
                     _decayingVelocityGrid[x, y] *= 0.9f;
                 }
-            }
+            }*/
         }
 
         public void AddVelocity(Vector2 worldPosition, Vector2 velocity)
         {
             //Convert this to tile space
-            Point tile = worldPosition.ToTileCoordinates();
-            if (tile.X < 0 || tile.X >= Main.maxTilesX)
+            Point tile = GetTileInScreenSpace(worldPosition);
+           // Main.NewText(tile);
+            if (tile.X < 0 || tile.X >= _width)
                 return;
-            if (tile.Y < 0 || tile.Y >= Main.maxTilesY)
+            if (tile.Y < 0 || tile.Y >=_height)
                 return;
+
             _velocityGrid[tile.X, tile.Y] += velocity;
             _decayingVelocityGrid[tile.X, tile.Y] += velocity;
         }
@@ -90,40 +112,22 @@ namespace Stellamod.Core.Utilities
         public Vector2 GetVelocity(Vector2 worldPosition)
         {
             //Convert this to screenspace
-            Point tile = worldPosition.ToTileCoordinates();
-            if (tile.X < 0 || tile.X >= Main.maxTilesX)
+            Point tile = GetTileInScreenSpace(worldPosition);
+
+
+            if (tile.X < 0 || tile.X >= _width)
                 return Vector2.Zero;
-            if (tile.Y < 0 || tile.Y >= Main.maxTilesY)
+            if (tile.Y < 0 || tile.Y >= _height)
                 return Vector2.Zero;
             return _velocityGrid[tile.X, tile.Y];
         }
-        public Vector2 GetVelocity(int tileX, int tileY)
-        {
 
-            if (tileX < 0 || tileX >= Main.maxTilesX)
-                return Vector2.Zero;
-            if (tileY < 0 || tileY >= Main.maxTilesY)
-                return Vector2.Zero;
-
-            return _velocityGrid[tileX, tileY];
-        }
-
-        public Vector2 GetDecayingVelocity(Vector2 worldPosition)
-        {
-            //Convert this to screenspace
-            Point tile = worldPosition.ToTileCoordinates();
-            if (tile.X < 0 || tile.X >= Main.maxTilesX)
-                return Vector2.Zero;
-            if (tile.Y < 0 || tile.Y >= Main.maxTilesY)
-                return Vector2.Zero;
-            return _decayingVelocityGrid[tile.X, tile.Y];
-        }
 
         public Vector2 GetDecayingVelocity(int tileX, int tileY)
         {
-            if (tileX < 0 || tileX >= Main.maxTilesX)
+            if (tileX < 0 || tileX >= _width)
                 return Vector2.Zero;
-            if (tileY < 0 || tileY >= Main.maxTilesY)
+            if (tileY < 0 || tileY >= _height)
                 return Vector2.Zero;
             return _decayingVelocityGrid[tileX, tileY];
         }
@@ -132,7 +136,10 @@ namespace Stellamod.Core.Utilities
         {
             //Convert this to screenspace
 
-            Point tile = worldPosition.ToTileCoordinates();
+            Point tile = GetTileInScreenSpace(worldPosition);
+
+
+
             width /= 16;
             height /= 16;
 
