@@ -80,11 +80,15 @@ public static class PixelPrimitiveCircleFactory
             blackFireShader.OuterColor = Color.LightGoldenrodYellow;
             blackFireShader.BackColor = Color.DarkGoldenrod;
             TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
+            BloomTrailShader bloomTrail = BloomTrailShader.Instance;
+            bloomTrail.InnerColor = Color.Goldenrod;
+            bloomTrail.OuterColor = Color.DarkGoldenrod;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, bloomTrail);
         }
         PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
         circle.circleParams.minRadius = 0;
         circle.circleParams.maxRadius = 100;
-        circle.circleParams.time = 45;
+        circle.circleParams.time = 25;
         circle.renderPixelPrimitivesFunction = RenderPrimitives;
         circle.position = position;
         ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);

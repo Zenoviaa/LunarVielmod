@@ -6810,6 +6810,8 @@ Friedstein: {
 		4 Words!
 		'''
 	DisplayName: Friedstein
+	BasicSlash: ""
+	StaminaSlash: No Effect
 }
 
 ManifestedLove: {

@@ -47,10 +47,12 @@ namespace Stellamod.Common.BossBannerSystem
             Color darkColor = Color.Lerp(Color.White, Color.Black, 0.8f);
             Texture2D zuiGlow = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
             Vector2 zuiDrawOrigin = zuiGlow.Size() / 2f;
-            for (int i = 0; i < 9; i++)
+            int numStars = 9;
+            for (int i = numStars - 1; i >= 0 ; i--)
             {
-                float distanceBetween = 16;
+                float distanceBetween = 10;
                 Vector2 drawPosition = topLeft + new Vector2(distanceBetween * i, 0);
+                
                 bool isLit = i < _bossPage.StarRanking;
                 Color drawColor = isLit ? Color.White : darkColor;
                 if (isLit)
