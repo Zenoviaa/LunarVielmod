@@ -45,7 +45,7 @@ namespace Stellamod.Common.BossBannerSystem
             Rectangle rectangle = UIHelper.MouseInterfaceInteraction(this);
             Vector2 topLeft = rectangle.TopLeft();
             Asset<Texture2D> bossIcon = _bossPage.RequestBossIcon();
-            float drawScale = 0.75f;
+            float drawScale = 0.5f;
             Color drawColor = _bossPage.IsHidden() ? Color.Black : Color.White;
             if (_bossPage.HasUnclaimedRewards())
             {

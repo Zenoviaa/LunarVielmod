@@ -275,7 +275,27 @@ public class BossPageUI : RightPageUI
 
     public void PlayBossMusic(UIMouseEvent evt, UIElement listeningElement)
     {
-        playMusic = !playMusic;
-        musicSlot = BossPage.bossNPC.Music;
+        if (!BossPage.CanClaimRewards())
+            return;
+
+
+        if (playMusic)
+        {
+            if(musicSlot != BossPage.bossNPC.Music)
+            {
+                musicSlot = BossPage.bossNPC.Music;
+            }
+            else
+            {
+                playMusic = false;
+            }
+        }
+        else
+        {
+            playMusic = !playMusic;
+            musicSlot = BossPage.bossNPC.Music;
+        }
+
+        
     }
 }

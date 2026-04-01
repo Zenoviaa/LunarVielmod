@@ -37,7 +37,10 @@ MechanizedRevivals: {
 	DisplayName: Mechanized Revivals
 	Description: ""
 }
-
+Miniboss: {
+	DisplayName: Miniboss
+	Description: ""
+}
 WhereHelp: Find Them!
 TreasureHelp: Rewards!
 LoreHelp: Lore
