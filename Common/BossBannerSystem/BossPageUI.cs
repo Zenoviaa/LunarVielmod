@@ -124,6 +124,8 @@ public class BossPageUI : RightPageUI
         {
             _displayNameText.SetText(bossPage.DisplayName, 1.35f, false);
         }
+        _pageText.SetText(BossPage.WhereToFind);
+        Page = 0;
     }
 
     public override void Update(GameTime gameTime)

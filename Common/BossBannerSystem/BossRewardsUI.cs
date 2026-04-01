@@ -312,7 +312,7 @@ public class BossRewardsUI : UIPanel
         List<Item> rewards = _bossPage.GetRewards(_rewardsToShow);
         if (rewards.Count == 0)
         {
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 6; i++)
             {
                 var ivythorn = ModContent.GetInstance<Ivythorn>();
                 rewards.Add(ivythorn.Item);
@@ -323,7 +323,30 @@ public class BossRewardsUI : UIPanel
             Item reward = rewards[i];
             float distanceBetween = 36;
             Vector2 drawPosition = topLeft + new Vector2(distanceBetween * i, 0);
-            ItemSlot.DrawItemIcon(reward, _rewardContext, spriteBatch, drawPosition, 1, 32, Color.White);
+            Color drawColor = Color.White;
+            switch (_rewardsToShow)
+            {
+                case BossPageRewardType.Rewards:
+                    if (!_bossPage.CanClaimRewards())
+                    {
+                        drawColor = Color.Black;
+                    }
+                    break;
+                case BossPageRewardType.MasterModeRewards:
+                    if (!_bossPage.CanClaimMasterRewards())
+                    {
+                        drawColor = Color.Black;
+                    }
+                    break;
+                case BossPageRewardType.NoHitRewards:
+                    if (!_bossPage.CanClaimNoHitRewards())
+                    {
+                        drawColor = Color.Black;
+                    }
+                    break;
+            }
+
+            ItemSlot.DrawItemIcon(reward, _rewardContext, spriteBatch, drawPosition, 1, 32, drawColor);
             Vector2 mousePos = Main.MouseScreen;
 
 
