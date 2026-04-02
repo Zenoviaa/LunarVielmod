@@ -25,6 +25,7 @@ namespace Stellamod.Common
             Insources = null;
             Enchantments = null;
             SpecialEnchantments = null;
+            PermanentFoods = null;
         }
 
         public override void PostAddRecipes()

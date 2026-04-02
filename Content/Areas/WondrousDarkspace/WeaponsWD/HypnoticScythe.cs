@@ -1,22 +1,18 @@
-﻿using Stellamod.Core.Bases;
-using Stellamod.Core.SwingSystem;
-using Stellamod.Items.Materials;
-using Stellamod.Items;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Stellamod.Helpers;
-using Stellamod.Projectiles.Swords;
-using Stellamod.Trailing;
-using Terraria.Audio;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Stellamod.Assets;
-using Terraria.ID;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
+using Stellamod.Core.Effects.Trails;
+using Stellamod.Core.SwingSystem;
+using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Trails;
+using Stellamod.Visual.Particles;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 {
@@ -25,6 +21,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
         public override void SetDefaults2()
         {
             base.SetDefaults2();
+            Item.damage = 14;
             Item.shoot = ModContent.ProjectileType<HypnoticScytheSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<HypnoticScytheStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Scythe;
@@ -43,19 +40,83 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
         {
             base.DefineCombo();
             SwingV2Helper.AddScytheSwingStyle(this);
-            Trailer = TrailPresets.HypnoticScythe;
+            BlackFireShader blackFireShader = new BlackFireShader();
+            blackFireShader.SetDefaults();
+            blackFireShader.InnerColor = Color.LightBlue;
+            blackFireShader.OuterColor = Color.DarkBlue;
+            blackFireShader.InnerEmitColor = Color.LightBlue * 0.2f;
+            blackFireShader.OuterEmiteColor = Color.Purple;
+            blackFireShader.BloomTexture = TrailRegistry.StarTrail;
+            //blackFireShader.PrimaryTexture2 = TrailRegistry.StarTrail;
+            SlashTrailer devilsPeak = new SlashTrailer
+            {
+                Shader = blackFireShader,
+                TrailWidthFunction = (interpolant) =>
+                {
+                    return MathHelper.SmoothStep(8, 32, interpolant) * EasingFunction.QuadraticBump(Interpolant);
+                },
+                TrailColorFunction = (interpolant) =>
+                {
+                    return Color.Lerp(Color.DeepSkyBlue, Color.White, interpolant) * EasingFunction.QuadraticBump(Interpolant);
+                }
+
+            };
+
+         //   outlineColor = Color.Yellow;
+
+            //Bloom
+            useBloom = true;
+            bloom.innerBloomColor = Color.LightBlue;
+            bloom.outerBloomColor = Color.Purple;
+            bloom.bloomWidthFunction = GetBloomWidth;
+            bloom.bloomColorFunction = GetBloomColor;
+            outlineColor = Color.White;
+            additive = true;
+            Trailer = devilsPeak;
+            useAfterImage = true;
+        }
+        private float GetBloomWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(8, 36, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+        }
+        private Color GetBloomColor(float ratio)
+        {
+            return Color.Lerp(Color.Purple * 0.9f, Color.Lerp(Color.DeepSkyBlue, Color.Violet, ExtraMath.Osc(0f, 1f, speed: 24)), ratio);
+        }
+        public override void AI()
+        {
+            base.AI();
+
+            if (Timer % 16 == 0)
+            {
+                int index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
+                Vector2 spawnPos = swingTrailCache[index];
+                SparkleParticle dp = SparkleParticle.Spawn(spawnPos, Vector2.Zero, Scale: 0.3f);
+                dp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Red, 0.1f), Color.Black, Main.rand.NextFloat(0f, 1f));
+                dp.innerColor = Color.White;
+                dp.outerColor = Color.Blue;
+                dp.gravity = 0;
+                dp.noTileCollide = true;
+                dp.fast = true;
+            }
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-
+            float damage = Projectile.damage * 0.3f;
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
+                ModContent.ProjectileType<HypnotizingAura>(), (int)damage, Projectile.knockBack, Projectile.owner);
         }
 
+        public override void RenderSwingTrail(ref Color lightColor, Vector2[] points)
+        {
+            base.RenderSwingTrail(ref lightColor, points);
+        }
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             base.ModifyHitNPC(target, ref modifiers);
-            if(ComboIndex == ComboCount - 1)
+            if (ComboIndex == ComboCount - 1)
             {
                 modifiers.FinalDamage *= 2;
             }
@@ -76,7 +137,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
                     scytheHit = AssetRegistry.Sounds.Melee.ScytheHit2;
                     break;
             }
-          
+
             scytheHit.PitchVariance = 0.5f;
             SoundEngine.PlaySound(scytheHit, Projectile.position);
         }
@@ -95,8 +156,8 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
                 Duration = 64,
                 Easing = EasingFunction.InOutExpo,
                 OverrideVelocity = -Vector2.UnitY,
-                ThrowDistance=128,
-                Sound = chargeSound,    
+                ThrowDistance = 128,
+                Sound = chargeSound,
             });
 
         }
@@ -147,9 +208,14 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
                     Vector2 vel = Main.rand.NextVector2Circular(8, 8);
                     Dust.NewDustPerfect(Projectile.Center, DustID.GemAmethyst, vel, Scale: 0.2f);
                 }
-     
+
                 _grantedBuff = true;
             }
+        }
+
+        public override void RenderSwingTrail(ref Color lightColor, Vector2[] points)
+        {
+            base.RenderSwingTrail(ref lightColor, points);
         }
     }
 

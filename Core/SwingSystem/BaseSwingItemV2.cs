@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.Bases;
+﻿using Stellamod.Common.GunSystem;
+using Stellamod.Core.Bases;
 using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
@@ -43,6 +44,20 @@ namespace Stellamod.Core.SwingSystem
                 line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost",
                     staminaAttack.StaminaCost.ToString()));
                 line.OverrideColor = Color.Goldenrod;
+                lines.Add(line);
+            }
+
+            if(item.ModItem is BaseGun gun)
+            {
+                line = new TooltipLine(Mod, "Gun", Helpers.LangText.Common("WeaponTypeGun"))
+                {
+                    OverrideColor = Color.LightGreen
+                };
+                lines.Add(line);
+                line = new TooltipLine(Mod, "GunHelp", LangText.Common("GunHelp"))
+                {
+                    OverrideColor = Color.White
+                };
                 lines.Add(line);
             }
         }

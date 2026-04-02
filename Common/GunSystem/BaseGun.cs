@@ -6,6 +6,7 @@ using Stellamod.Buffs;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Gores;
 using Stellamod.Helpers;
@@ -162,6 +163,13 @@ namespace Stellamod.Common.GunSystem
         {
             base.ModifyTooltips(tooltips);
             var line = new TooltipLine(Mod, "", "");
+            line = new TooltipLine(Mod, "AmmoCapacity", LangText.Common("MagazineHelp", GetMaxAmmo(Main.LocalPlayer)))
+            {
+                OverrideColor = Color.White
+            };
+            tooltips.Add(line);
+            /*
+            var line = new TooltipLine(Mod, "", "");
             Keys keys = Keys.LeftShift;
             bool isExpanded = Main.keyState.IsKeyDown(keys);
             line = new TooltipLine(Mod, "Gun", Helpers.LangText.Common("WeaponTypeGun"))
@@ -188,7 +196,7 @@ namespace Stellamod.Common.GunSystem
             {
                 OverrideColor = Color.White
             };
-            tooltips.Add(line);
+            tooltips.Add(line);*/
         }
 
         public override bool CanUseItem(Player player)

@@ -80,7 +80,7 @@ namespace Stellamod.Core.Bases
                 SpinThrowDistance = 0,
                 SpinDegrees = 32,
                 AlwaysShowTrail = true,
-                Easing = (float lerpValue) => lerpValue,
+                Easing = (float lerpValue) => EasingFunction.InOutExpo7(lerpValue),
                 Sound = LightSpin,
                 HitCount = 2
             });
@@ -96,7 +96,7 @@ namespace Stellamod.Core.Bases
                 SwingDegrees = swingDegrees,
                 HitCount = hitCount,
 
-                Easing = EasingFunction.QuadraticBump,
+                Easing = EasingFunction.InOutExpo7,
                 Sound = SwordSlash1,
             });
             return this;

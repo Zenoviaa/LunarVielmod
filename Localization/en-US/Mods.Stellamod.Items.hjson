@@ -10699,3 +10699,10 @@ WoodlandRavagerRelicItem: {
 	DisplayName: Woodland Ravager Relic
 	Tooltip: ""
 }
+
+HypnotizingChakrams: {
+	BasicSlash: Inflicts shadowflame and confusion!
+	StaminaSlash: No Effect
+	DisplayName: Hypnotizing Chakrams
+	Tooltip: ""
+}
