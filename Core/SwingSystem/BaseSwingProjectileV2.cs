@@ -456,7 +456,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         {
             ComboPlayer comboPlayer = Owner.GetModPlayer<ComboPlayer>();
             int combo = (int)(ComboIndex);
-            int dir = -comboPlayer.ComboDirection;
+            int dir = -(int)SwingDirection;
             var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity,
                 Type, Projectile.damage, Projectile.knockBack,
                            Owner.whoAmI, ai2: combo, ai1: dir);

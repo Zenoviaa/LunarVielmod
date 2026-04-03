@@ -1,0 +1,498 @@
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
+using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
+using Stellamod.Core.SwingSystem;
+using Stellamod.Helpers;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using Stellamod.Trailing;
+using Stellamod.Visual.Particles;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+
+namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
+
+public class XScissor : BaseSwingItemV2
+{
+    public override void SetDefaults2()
+    {
+        base.SetDefaults2();
+        Item.damage = 15;
+        Item.shoot = ModContent.ProjectileType<XScissorSlash>();
+        staminaProjectileShoot = ModContent.ProjectileType<XScissorStaminaSlash>();
+        meleeWeaponType = MeleeWeaponType.Dualsword;
+        staminaDamageMultiplier=2;
+    }
+
+    public override void AddRecipes()
+    {
+        base.AddRecipes();
+        this.RegisterBrew<
+            HypnotizedSoul,
+            BlankSword>();
+    }
+}
+
+public class XScissorMiniSlash : ModProjectile
+{
+    private Vector2[] RiftPoints = new Vector2[32];
+    private ref float Timer => ref Projectile.ai[0];
+    private ref float RandScale => ref Projectile.ai[1];
+    private bool IsLong => Projectile.ai[2] == 1;
+    private float Interpolant;
+    public override string Texture => TextureRegistry.EmptyTexture;
+    private float Time => 40;
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 64;
+        Projectile.height = 64;
+        Projectile.penetrate = -1;
+        Projectile.usesIDStaticNPCImmunity = true;
+        Projectile.tileCollide = false;
+        Projectile.ignoreWater = true;
+        Projectile.idStaticNPCHitCooldown = 30;
+        Projectile.timeLeft = (int)Time;
+        Projectile.friendly = true;
+    }
+    public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+    {
+        Vector2 startCenter = Projectile.Center - Projectile.velocity * 64;
+        Vector2 endCenter = Projectile.Center;
+        Vector2 center = Vector2.Lerp(startCenter, endCenter, EasingFunction.OutExpo(Timer / 30f));
+        Vector2 start = center - Projectile.velocity * 16 * RandScale;
+        Vector2 end = center + Projectile.velocity * 16 * RandScale;
+        float collisionPoint = 0f;
+        return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 12, ref collisionPoint);
+    }
+
+    public override bool ShouldUpdatePosition()
+    {
+        return false;
+    }
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if (Timer == 1)
+        {
+            if (IsLong)
+            {
+                Projectile.timeLeft += 180;
+            }
+            if (this.OwnedByLocalClient())
+            {
+                RandScale = Main.rand.NextFloat(0.5f, 1f);
+            }
+        }
+        if (Timer % 9 == 0)
+        {
+            DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, Projectile.velocity.RotatedByRandom(4f) * Main.rand.NextFloat(0.1f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+            dp.innerColor = Color.Black;
+            dp.outerColor = Color.Pink;
+        }
+        Interpolant = EasingFunction.InExpo(Timer / Time);
+        if (IsLong)
+        {
+            Interpolant = EasingFunction.InExpo(Timer / 260f);
+            Projectile.velocity = Projectile.velocity.RotatedBy(0.005f);
+        }
+    }
+
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+    }
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+        PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedTrails, DrawLayer.OverNPCs);
+        return false;
+    }
+
+    private Color GetTrailColor(float completionRatio)
+    {
+        return Color.White;
+    }
+    private Color GetTrailColor2(float completionRatio)
+    {
+        return Color.White;
+    }
+    private float GetTrailWidth(float completionRatio)
+    {
+        float baseWidth = EasingFunction.QuadraticBump(completionRatio) * 8;
+        float outScale = MathHelper.Lerp(1f, 0f, Interpolant);
+        float inScale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 15f));
+        return baseWidth * outScale * inScale;
+    }
+    private float GetTrailWidth2(float completionRatio)
+    {
+        return GetTrailWidth(completionRatio) * 0.3f;
+    }
+
+    private void RenderPixelatedTrails(GraphicsDevice graphicsDevice)
+    {
+        float numPoints = 32;
+
+        float length = 16;
+        if (IsLong)
+            length *= 0.5f;
+        Vector2 startCenter = Projectile.Center - Projectile.velocity * 64;
+        Vector2 endCenter = Projectile.Center;
+        Vector2 center = Vector2.Lerp(startCenter, endCenter, EasingFunction.OutExpo(Timer / 30f));
+        Vector2 start = center - Projectile.velocity * length * RandScale;
+        Vector2 end = center + Projectile.velocity * length * RandScale;
+        for (int n = 0; n < numPoints; n++)
+        {
+            ref Vector2 point = ref RiftPoints[n];
+            float ratio = (float)n / numPoints;
+            point = Vector2.Lerp(start, end, ratio);
+            point += Main.rand.NextVector2Circular(2, 2);
+        }
+
+        var shader = RichLaserShader.Instance;
+        shader.LaserColor = Color.White;
+        Color innerColor = Color.Lerp(Color.Violet, Color.Pink, 0.75f);
+        shader.InnerColor = innerColor;
+        shader.OuterColor = Color.Purple;
+        if (Timer < 15)
+        {
+            shader.OuterColor = Color.Lerp(Color.White, Color.Purple, EasingFunction.InOutSine(Timer / 15f));
+            shader.InnerColor = Color.Lerp(Color.White, innerColor, EasingFunction.InOutSine(Timer / 15f));
+            shader.LaserColor = Color.Lerp(Color.White, Color.Black, EasingFunction.InOutSine(Timer / 15f));
+        }
+        TrailDrawer.Draw(Main.spriteBatch, RiftPoints, GetTrailColor, GetTrailWidth, shader);
+
+
+    }
+}
+
+public class XScissorSlash : BaseSwingProjectileV2
+{
+    private bool _hit;
+    private bool _spawnedClone;
+    private bool _spawnedCut;
+    public override void DefineCombo()
+    {
+        base.DefineCombo();
+        //trailOffsetOverride = 1;
+        ComboBuilder comboBuilder = new ComboBuilder();
+        if (SwingDirection == 1)
+            comboBuilder.AddSwordSlash1(duration: 30, xSwingRadius: 129, ySwingRadius: 32, hitCount: 1, swingDegrees: 210);
+        else
+            comboBuilder.AddSwordSlash1(duration: 30, xSwingRadius: 100, ySwingRadius: 46, hitCount: 1, swingDegrees: 210);
+
+        if (SwingDirection == 1)
+            comboBuilder.AddSwordSlash2(duration: 28, xSwingRadius: 154, ySwingRadius: 46, hitCount: 1, swingDegrees: 175);
+        else
+            comboBuilder.AddSwordSlash2(duration: 28, xSwingRadius: 122, ySwingRadius: 32, hitCount: 1, swingDegrees: 175);
+
+        if (SwingDirection == 1)
+            comboBuilder.AddSwordSlash1(duration: 26, xSwingRadius: 129, ySwingRadius: 32, hitCount: 1, swingDegrees: 210);
+        else
+            comboBuilder.AddSwordSlash1(duration: 26, xSwingRadius: 100, ySwingRadius: 46, hitCount: 1, swingDegrees: 210);
+
+        if (SwingDirection == 1)
+            comboBuilder.AddSwordSlash2(duration: 24, xSwingRadius: 154, ySwingRadius: 46, hitCount: 1, swingDegrees: 175);
+        else
+            comboBuilder.AddSwordSlash2(duration: 24, xSwingRadius: 122, ySwingRadius: 32, hitCount: 1, swingDegrees: 175);
+
+        comboBuilder.AddChakramUppercut(duration: 21, xSwingRadius: 96, hitCount: 1, swingDegrees: 199);
+        comboBuilder.AddSwordSlash3(duration: 48, xSwingRadius: 129, ySwingRadius: 48, hitCount: 1, swingDegress: 276);
+        comboBuilder.AddToProjectile(this);
+
+
+        //   outlineColor = Color.Yellow;
+        Trailer = TrailPresets.XScissor;
+        //Bloom
+        useBloom = true;
+        bloom.innerBloomColor = Color.LightBlue;
+        bloom.outerBloomColor = Color.Purple;
+        bloom.bloomWidthFunction = GetBloomWidth;
+        bloom.bloomColorFunction = GetBloomColor;
+
+        additive = true;
+        useAfterImage = true;
+    }
+
+    private float GetBloomWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(4, 8, ratio) * 4f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+    }
+
+    private Color GetBloomColor(float ratio)
+    {
+        return Color.Lerp(Color.Purple * 0.9f, Color.Lerp(Color.DeepSkyBlue, Color.Violet, ExtraMath.Osc(0f, 1f, speed: 24)), ratio);
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        if (Timer % 32 == 0)
+        {
+            int index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
+            Vector2 spawnPos = swingTrailCache[index];
+            SparkleParticle dp = SparkleParticle.Spawn(spawnPos, Vector2.Zero, Scale: 0.3f);
+            dp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Red, 0.1f), Color.Black, Main.rand.NextFloat(0f, 1f));
+            dp.innerColor = Color.White;
+            dp.outerColor = Color.Blue;
+            dp.gravity = 0;
+            dp.noTileCollide = true;
+            dp.fast = true;
+        }
+
+        float spawnTime = IsFinishingSwing() ? 0.1f : 0.25f;
+        if (!_spawnedClone && Interpolant > spawnTime)
+        {
+          
+            MirrorProjectile();
+            _spawnedClone = true;
+        }
+
+        if (!_spawnedCut && Interpolant > 0.4f)
+        {
+            if (IsFinishingSwing())
+            {
+                if (this.OwnedByLocalClient())
+                {
+                    Vector2 vel = -Vector2.UnitY;
+                    vel = vel.RotatedBy(MathHelper.PiOver4 * SwingDirection);
+                    vel *= 15;
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Owner.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 128, vel,
+                        ModContent.ProjectileType<XScissorMiniSlash>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+                Owner.velocity += Projectile.velocity * 0.1f;
+            }
+            _spawnedCut = true;
+        }
+        if (Main.rand.NextBool(100))
+        {
+            DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+            {
+                innerColor = Color.White,
+                outerColor = Color.Aquamarine,
+                scaleRange = new Vector2(0.4f, 0.6f)
+            };
+            DustParticle.Spawn(Projectile.Center, Vector2.Zero, spawnParams);
+        }
+        glowColor = Color.Lerp(Color.Transparent, Color.White * 0.5f, EasingFunction.QuadraticBump(Interpolant));
+        growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));
+
+    }
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+        if (!_hit)
+        {
+            FXUtil.ShakeCamera(target.Center, 1024, 4);
+            Vector2 position = target.Center;
+            Vector2 lvelocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 4;
+            for (float f = 0; f < 4; f++)
+            {
+                Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                pVelocity *= Main.rand.NextFloat(0.5f, 2f);
+                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                FXUtil.GlowFragmentParticle(position, pVelocity,
+                    innerColor: Color.White,
+                    outerColor: Color.Cyan,
+                    fadeToColor: Color.DarkBlue,
+                    distortOut: true);
+            }
+            _hit = true;
+        }
+
+        if (ComboIndex == ComboCount - 1)
+        {
+            SoundStyle fireSound = AssetRegistry.Sounds.Magic.RadiantCast1;
+            fireSound.PitchVariance = 0.2f;
+            SoundEngine.PlaySound(fireSound, Projectile.position);
+            for (float f = 0; f < 8; f++)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(4, 4);
+                EmberParticle ep = LegacyParticle.NewParticle<EmberParticle>(Owner.Center, vel);
+                ep.innerColor = Color.White;
+                ep.outerColor = Color.Cyan;
+                ep.fadeToColor = Color.DarkBlue;
+            }
+
+        }
+        target.AddBuff(BuffID.Confused, 15);
+        target.AddBuff(BuffID.ShadowFlame, 15);
+    }
+
+    public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+    {
+        base.ModifyHitNPC(target, ref modifiers);
+        SoundStyle spearHit = SoundRegistry.SpearHit1;
+        spearHit.PitchVariance = 0.5f;
+        SoundEngine.PlaySound(spearHit, Projectile.position);
+        if (IsFinishingSwing())
+        {
+            DamageHelper.PercentIncreasedamage(ref modifiers, 0.5f);
+        }
+    }
+}
+
+
+public class XScissorStaminaSlash : BaseSwingProjectileV2
+{
+    private bool _hit;
+    private bool _spawnedClone;
+    private bool _spawnedCut;
+    public override void DefineCombo()
+    {
+        base.DefineCombo();
+        trailOffsetOverride = 1;
+        ComboBuilder comboBuilder = new ComboBuilder();
+        comboBuilder.AddSwordSlash2(duration: 40, xSwingRadius: 129, ySwingRadius: 48, hitCount: 1, swingDegrees: 276);
+        comboBuilder.AddToProjectile(this);
+
+
+        //   outlineColor = Color.Yellow;
+        Trailer = TrailPresets.XScissor;
+        //Bloom
+        useBloom = true;
+        bloom.innerBloomColor = Color.LightBlue;
+        bloom.outerBloomColor = Color.Purple;
+        bloom.bloomWidthFunction = GetBloomWidth;
+        bloom.bloomColorFunction = GetBloomColor;
+
+        additive = true;
+        useAfterImage = true;
+    }
+
+    private float GetBloomWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(4, 8, ratio) * 4f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant));
+    }
+
+    private Color GetBloomColor(float ratio)
+    {
+        return Color.Lerp(Color.Purple * 0.9f, Color.Lerp(Color.DeepSkyBlue, Color.Violet, ExtraMath.Osc(0f, 1f, speed: 24)), ratio);
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        if (Timer % 32 == 0)
+        {
+            int index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
+            Vector2 spawnPos = swingTrailCache[index];
+            SparkleParticle dp = SparkleParticle.Spawn(spawnPos, Vector2.Zero, Scale: 0.3f);
+            dp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Red, 0.1f), Color.Black, Main.rand.NextFloat(0f, 1f));
+            dp.innerColor = Color.White;
+            dp.outerColor = Color.Blue;
+            dp.gravity = 0;
+            dp.noTileCollide = true;
+            dp.fast = true;
+        }
+        if (!_spawnedClone && Interpolant > 0.1f)
+        {
+            MirrorProjectile();
+            _spawnedClone = true;
+        }
+        if (!_spawnedCut && Interpolant > 0.4f)
+        {
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+            string slash = $"Stellamod/Assets/Sounds/AssassinsSlashProj{Main.rand.Next(2, 5)}";
+            SoundStyle sound = new SoundStyle(slash);
+            sound.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(sound, Projectile.position);
+
+            Vector2 pos = Owner.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 128;
+            if (IsFinishingSwing())
+            {
+                if (this.OwnedByLocalClient())
+                {
+                    Vector2 vel = -Vector2.UnitY;
+                    vel = vel.RotatedBy(MathHelper.PiOver4 * SwingDirection);
+                    vel *= 15;
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), pos, vel,
+                        ModContent.ProjectileType<XScissorMiniSlash>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai2: 1);
+                }
+                Owner.velocity += Projectile.velocity * 0.1f;
+                for (float f = 0; f < 8; f++)
+                {
+                    Vector2 vel = Vector2.One.RotateRandom(MathHelper.TwoPi) * Main.rand.NextFloat(6, 12f);
+                    DustParticle dp = DustParticle.Spawn(pos, vel);
+                    dp.outerColor = Color.Pink;
+                    dp.Scale = Main.rand.NextFloat(0.6f, 1f);
+                }
+            }
+
+    
+            _spawnedCut = true;
+        }
+        if (Main.rand.NextBool(100))
+        {
+            DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+            {
+                innerColor = Color.White,
+                outerColor = Color.Aquamarine,
+                scaleRange = new Vector2(0.4f, 0.6f)
+            };
+            DustParticle.Spawn(Projectile.Center, Vector2.Zero, spawnParams);
+        }
+        glowColor = Color.Lerp(Color.Transparent, Color.White * 0.5f, EasingFunction.QuadraticBump(Interpolant));
+        growScale = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuadraticBump(Interpolant));
+
+    }
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+        if (!_hit)
+        {
+            FXUtil.ShakeCamera(target.Center, 1024, 4);
+            Vector2 position = target.Center;
+            Vector2 lvelocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * 4;
+            for (float f = 0; f < 4; f++)
+            {
+                Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                pVelocity *= Main.rand.NextFloat(0.5f, 2f);
+                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
+                FXUtil.GlowFragmentParticle(position, pVelocity,
+                    innerColor: Color.White,
+                    outerColor: Color.Cyan,
+                    fadeToColor: Color.DarkBlue,
+                    distortOut: true);
+            }
+            _hit = true;
+        }
+
+        if (ComboIndex == ComboCount - 1)
+        {
+            SoundStyle fireSound = AssetRegistry.Sounds.Magic.RadiantCast1;
+            fireSound.PitchVariance = 0.2f;
+            SoundEngine.PlaySound(fireSound, Projectile.position);
+            for (float f = 0; f < 8; f++)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(4, 4);
+                EmberParticle ep = LegacyParticle.NewParticle<EmberParticle>(Owner.Center, vel);
+                ep.innerColor = Color.White;
+                ep.outerColor = Color.Cyan;
+                ep.fadeToColor = Color.DarkBlue;
+            }
+
+        }
+        target.AddBuff(BuffID.Confused, 15);
+        target.AddBuff(BuffID.ShadowFlame, 15);
+    }
+
+    public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+    {
+        base.ModifyHitNPC(target, ref modifiers);
+        SoundStyle spearHit = SoundRegistry.SpearHit1;
+        spearHit.PitchVariance = 0.5f;
+        SoundEngine.PlaySound(spearHit, Projectile.position);
+        if (IsFinishingSwing())
+        {
+            DamageHelper.PercentIncreasedamage(ref modifiers, 0.5f);
+        }
+    }
+}

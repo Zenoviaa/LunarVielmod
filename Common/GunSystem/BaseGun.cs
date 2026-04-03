@@ -168,35 +168,6 @@ namespace Stellamod.Common.GunSystem
                 OverrideColor = Color.White
             };
             tooltips.Add(line);
-            /*
-            var line = new TooltipLine(Mod, "", "");
-            Keys keys = Keys.LeftShift;
-            bool isExpanded = Main.keyState.IsKeyDown(keys);
-            line = new TooltipLine(Mod, "Gun", Helpers.LangText.Common("WeaponTypeGun"))
-            {
-                OverrideColor = Color.LightGreen
-            };
-            tooltips.Add(line);
-            if (!isExpanded)
-            {
-                line = new TooltipLine(Mod, "ExpandTooltipHelp", LangText.Common("ExpandTooltipHelp", "Left Shift"));
-                line.OverrideColor = Color.Lerp(Color.White, Color.Black, 0.7f);
-                tooltips.Add(line);
-            }
-            else
-            {
-                line = new TooltipLine(Mod, "GunHelp", LangText.Common("GunHelp"))
-                {
-                    OverrideColor = Color.White
-                };
-                tooltips.Add(line);
-            }
-
-            line = new TooltipLine(Mod, "AmmoCapacity", LangText.Common("MagazineHelp", GetMaxAmmo(Main.LocalPlayer)))
-            {
-                OverrideColor = Color.White
-            };
-            tooltips.Add(line);*/
         }
 
         public override bool CanUseItem(Player player)
@@ -413,6 +384,7 @@ namespace Stellamod.Common.GunSystem
                             SoundStyle gunReloadSound = AssetRegistry.Sounds.Gun.GunReload;
                             gunReloadSound.PitchVariance = 0.2f;
                             gunReloadSound.Pitch = MathHelper.Lerp(0f, 1f, successfulReloads / numberOfReloadsNeeded);
+                            gunReloadSound.Volume = 0.4f;
                             SoundEngine.PlaySound(gunReloadSound);
 
                             int combatText = CombatText.NewText(Player.getRect(), Color.White, $"{successfulReloads} / {numberOfReloadsNeeded}", true);

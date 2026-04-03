@@ -253,6 +253,28 @@ namespace Stellamod.Trailing
             }
 
         };
+        public static SlashTrailer XScissor => new SlashTrailer
+        {
+            Shader = new SlashEffect()
+            {
+                BaseColor = Color.LightGreen,
+                HighlightColor = Color.White,
+                RimHighlightColor = Color.LightPink,
+                WindColor = Color.SkyBlue,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                WindTexture = TrailRegistry.CrystalTrail.Value
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return MathHelper.SmoothStep(16, 0, interpolant);
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                Color lerp1 = Color.Lerp(Color.LightCyan, Color.Purple, interpolant);
+                return Color.Lerp(Color.Transparent, lerp1, interpolant);
+            }
+
+        };
 
         public static SlashTrailer LightSpand => new SlashTrailer
         {

@@ -78,6 +78,7 @@ Common: {
 	WeaponTypeGreatsword: Greatsword Weapon Type
 	WeaponTypeSpear: Spear Weapon Type
 	WeaponTypeHammer: Hammer Weapon Type
+	WeaponTypeDualsword: Dual Sword Weapon Type
 	InsourceTime: "{0} seconds added to your flask cooldown"
 	XixianFlaskLock: This item is LOCKED, continue exploring and you may find it.
 	StaminaFlaskLock: This item is LOCKED, continue exploring and you may find it.
@@ -4415,7 +4416,9 @@ Ripper: {
 
 XScissor: {
 	DisplayName: X-Scissor
-	Tooltip: Summons a cross-shaped rift that unleashes various horrors from the void
+	Tooltip: Two for the price of one!
+	BasicSlash: The finishing move does a quick X-slash
+	StaminaSlash: Creates a power lingering X-slash
 }
 
 LittleScissor: {

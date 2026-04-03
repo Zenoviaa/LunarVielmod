@@ -1,9 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
+﻿using Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD;
 using Stellamod.Content.Armors.ForestCore;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.Summons.Minions;
-using Stellamod.Projectiles.Summons.Sentries;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -181,8 +179,6 @@ namespace Stellamod.Buffs.Minions
     public class AlcadWandMinionBuff : MinionBuff<AlcadWandMinionProj> { }
 
     public class JacksonPollockMinionBuff : MinionBuff<JacksonPollockMinionProj> { }
-
-    public class XScissorMinionBuff : MinionBuff<XScissorMinionProj> { }
 
     public class SerpentMinionBuff : MinionBuff<SerpentMinionProj> { }
 

@@ -51,6 +51,7 @@ public class Shredder : BaseGun
     {
         SoundStyle shootSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_CloudBolt");
         shootSound.PitchVariance = 0.3f;
+        shootSound.Volume = 0.3f;
         SoundEngine.PlaySound(shootSound, player.position);
         //Funny Screenshake
         FXUtil.ShakeCamera(player.position, 4, 8);
