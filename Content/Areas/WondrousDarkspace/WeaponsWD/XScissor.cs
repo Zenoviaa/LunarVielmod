@@ -29,7 +29,7 @@ public class XScissor : BaseSwingItemV2
         Item.shoot = ModContent.ProjectileType<XScissorSlash>();
         staminaProjectileShoot = ModContent.ProjectileType<XScissorStaminaSlash>();
         meleeWeaponType = MeleeWeaponType.Dualsword;
-        staminaDamageMultiplier=2;
+        staminaDamageMultiplier=3;
     }
 
     public override void AddRecipes()
