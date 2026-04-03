@@ -5105,7 +5105,9 @@ MagicalAxe: {
 
 WaterSong: {
 	DisplayName: Flowing Song
-	Tooltip: Turn wooden arrows into icey bolts!
+	Tooltip: Feel the water...
+	BasicSlash: "Shoots out three arrows and a watery stream that flows around you with each draw!"
+	StaminaSlash: Shoots out a fast piercing water stream that follows your cursor, and commands your streams to attack as well!
 }
 
 Dulahaun: {
