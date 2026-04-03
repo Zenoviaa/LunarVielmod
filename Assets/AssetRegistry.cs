@@ -313,6 +313,7 @@ namespace Stellamod.Assets
 
             public static class Melee
             {
+                public static SoundStyle CrosshatchCut = new SoundStyle($"{Path}Melee/Crosshatchcut");
 
                 public static SoundStyle ExcaliburSwordBigger = new SoundStyle($"{Path}Melee/WeaponSwordbigger");
                 public static SoundStyle ExcaliburSwordCrashFall = new SoundStyle($"{Path}Melee/ExcaliburSwordCrashFall");

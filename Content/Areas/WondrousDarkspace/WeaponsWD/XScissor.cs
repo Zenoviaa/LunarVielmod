@@ -9,7 +9,9 @@ using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Trailing;
+using Stellamod.Trails;
 using Stellamod.Visual.Particles;
+using System.Threading;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -39,6 +41,149 @@ public class XScissor : BaseSwingItemV2
     }
 }
 
+public class XScissorCut : ModProjectile
+{
+    private float _scale;
+    private ref float Timer => ref Projectile.ai[0];
+    private float Time => 80;
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        Main.projFrames[Type] = 7;
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 128;
+        Projectile.height = 128;
+        Projectile.penetrate = -1;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.tileCollide = false;
+        Projectile.ignoreWater = true;
+        Projectile.localNPCHitCooldown = (int)(Time / 2);
+        Projectile.timeLeft = (int)Time;
+        Projectile.friendly = true;
+    }
+    public override bool ShouldUpdatePosition()
+    {
+        return false;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if(Timer == 1)
+        {
+            _scale = 1f;
+            SoundStyle curveSound = AssetRegistry.Sounds.Melee.CrosshatchCut;
+            curveSound.PitchVariance = 0.3f;
+            curveSound.Volume = 0.5f;
+            SoundEngine.PlaySound(curveSound, Projectile.position);
+            for (float f = 0; f < 10; f++)
+            {
+                Vector2 vel = Vector2.UnitX.RotatedBy(MathHelper.TwoPi);
+                vel *= Main.rand.NextFloat(10, 15);
+                DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, vel, Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                dp.innerColor = Color.White;
+                dp.outerColor = Color.Pink;
+            }
+            for (float f = 0; f < 2; f++)
+            {
+                float direction = MathHelper.Lerp(-1f, 1f, (f + 1) / 2f);
+                var fx = FXUtil.GlowStretch(Projectile.Center, Vector2.UnitY.RotatedBy(MathHelper.PiOver4) * direction * 16);
+                fx.VectorScale.X *= 16;
+            }
+
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 16);
+            if (MultiplayerHelper.IsHost)
+            {
+                ModContent.GetInstance<ScreenShaderSystem>().TintScreen(Color.White, 0.2f, 15);
+            }
+        }
+
+        if(Timer % 8 == 0 && Timer < 15)
+        {
+            for (float f = 0; f < 2; f++)
+            {
+                float direction = MathHelper.Lerp(-1f, 1f, (f + 1) / 2f);
+                Vector2 vel = Vector2.UnitY.RotatedBy(MathHelper.PiOver4) * direction * 16;
+                vel = vel.RotatedByRandom(MathHelper.ToRadians(55));
+                var fx = FXUtil.GlowStretch(Projectile.Center, vel);
+                fx.VectorScale.X *= 16;
+            }
+        }
+        Projectile.rotation = Projectile.velocity.ToRotation();
+        Projectile.frameCounter++;
+        float frameSpeed = 5;
+        if (Projectile.frame == 2)
+            frameSpeed = 20;
+        else if (Projectile.frame > 2)
+        {
+            frameSpeed = 3;
+        }
+         
+        if (Projectile.frameCounter >= frameSpeed)
+        {
+            Projectile.frameCounter = 0;
+            Projectile.frame++;
+
+            if (Projectile.frame >= Main.projFrames[Projectile.type])
+            {
+                Projectile.Kill();
+            }
+        }
+    }
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+    }
+
+    private void DrawPixelated(SpriteBatch sb, Vector2 sp)
+    {
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
+        Vector2 offset = Vector2.Zero;
+        offset = Vector2.Lerp(new Vector2(1, -1) * 32, Vector2.Zero, EasingFunction.OutExpo(Timer / Time));
+        float alpha = EasingFunction.OutExpo(Timer / 30f);
+
+        drawer.worldPosition += offset;
+        drawer.color = Color.White;
+        drawer.color = Color.Lerp(drawer.color, Color.Black, EasingFunction.InOutSine(Timer / Time)) * alpha;
+        drawer.color.A = 0;
+        drawer.scale = Vector2.Lerp(Vector2.One, Vector2.Zero, EasingFunction.InExpo(Timer / Time)) * 0.65f * _scale;
+        Main.spriteBatch.Draw(drawer);
+
+
+        drawer.color = Color.Lerp(Color.Pink, Color.LightPink, ExtraMath.Osc(0f, 1f, speed: 16));
+        drawer.color = Color.Lerp(drawer.color, Color.Black, EasingFunction.InOutSine(Timer / Time) * 3) * alpha;
+        drawer.color.A = 0;
+        drawer.scale *= 1.5f;
+        Main.spriteBatch.Draw(drawer);
+
+
+        drawer.color = Color.Lerp(Color.Purple, Color.MediumPurple, ExtraMath.Osc(0f, 1f, speed: 16));
+        drawer.color = Color.Lerp(drawer.color, Color.Black, EasingFunction.InOutSine(Timer / Time) * 3) * alpha;
+        drawer.color.A = 0;
+        drawer.scale *= 1.1f;
+        Main.spriteBatch.Draw(drawer);
+
+        drawer.color = Color.White;
+        drawer.color = Color.Lerp(drawer.color, Color.Black, EasingFunction.InOutSine(Timer / Time)) * alpha * EasingFunction.QuadraticBump(Timer / 15);
+        drawer.color.A = 0;
+        drawer.scale = Vector2.Lerp(Vector2.One, Vector2.Zero, EasingFunction.InExpo(Timer / Time)) * 0.65f * _scale;
+        drawer.scale *= 2f;
+        Main.spriteBatch.Draw(drawer);
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelated, DrawLayer.OverNPCs);
+        return false;
+    }
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+    }
+}
 public class XScissorMiniSlash : ModProjectile
 {
     private Vector2[] RiftPoints = new Vector2[32];
@@ -84,7 +229,20 @@ public class XScissorMiniSlash : ModProjectile
         {
             if (IsLong)
             {
-                Projectile.timeLeft += 180;
+                for(float f = 0; f < 10; f++)
+                {
+                    Vector2 vel = Vector2.UnitX.RotatedBy(MathHelper.TwoPi);
+                    vel *= Main.rand.NextFloat(10, 15);
+                    DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, vel, Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                    dp.innerColor = Color.White;
+                    dp.outerColor = Color.Pink;
+                }
+                FXUtil.ShakeCamera(Projectile.Center, 1024, 16);
+                if (MultiplayerHelper.IsHost)
+                {
+                    ModContent.GetInstance<ScreenShaderSystem>().TintScreen(Color.White, 0.2f, 15);
+                }
+                Projectile.timeLeft += 60;
             }
             if (this.OwnedByLocalClient())
             {
@@ -93,7 +251,7 @@ public class XScissorMiniSlash : ModProjectile
         }
         if (Timer % 9 == 0)
         {
-            DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, Projectile.velocity.RotatedByRandom(4f) * Main.rand.NextFloat(0.1f, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+            DustParticle dp = Particle<DustParticle>.Spawn(Projectile.Center, Projectile.velocity.RotatedByRandom(4f) * Main.rand.NextFloat(0.1f, 0.5f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
             dp.innerColor = Color.Black;
             dp.outerColor = Color.Pink;
         }
@@ -101,7 +259,6 @@ public class XScissorMiniSlash : ModProjectile
         if (IsLong)
         {
             Interpolant = EasingFunction.InExpo(Timer / 260f);
-            Projectile.velocity = Projectile.velocity.RotatedBy(0.005f);
         }
     }
 
@@ -127,13 +284,16 @@ public class XScissorMiniSlash : ModProjectile
     private float GetTrailWidth(float completionRatio)
     {
         float baseWidth = EasingFunction.QuadraticBump(completionRatio) * 8;
-        float outScale = MathHelper.Lerp(1f, 0f, Interpolant);
+        if (IsLong)
+            baseWidth *= 3;
+        float outScale = (float)Projectile.timeLeft / 30f;
+        outScale = EasingFunction.InOutSine(outScale);
         float inScale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 15f));
         return baseWidth * outScale * inScale;
     }
     private float GetTrailWidth2(float completionRatio)
     {
-        return GetTrailWidth(completionRatio) * 0.3f;
+        return GetTrailWidth(completionRatio) * 1.2f;
     }
 
     private void RenderPixelatedTrails(GraphicsDevice graphicsDevice)
@@ -168,6 +328,14 @@ public class XScissorMiniSlash : ModProjectile
             shader.LaserColor = Color.Lerp(Color.White, Color.Black, EasingFunction.InOutSine(Timer / 15f));
         }
         TrailDrawer.Draw(Main.spriteBatch, RiftPoints, GetTrailColor, GetTrailWidth, shader);
+
+
+        if (IsLong)
+            return;
+        BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
+        bloomTrailShader.InnerColor = Color.White;
+        bloomTrailShader.OuterColor = Color.Purple;
+        TrailDrawer.Draw(Main.spriteBatch, RiftPoints, GetTrailColor, GetTrailWidth2, bloomTrailShader);
 
 
     }
@@ -397,24 +565,21 @@ public class XScissorStaminaSlash : BaseSwingProjectileV2
             MirrorProjectile();
             _spawnedClone = true;
         }
-        if (!_spawnedCut && Interpolant > 0.4f)
+        if (!_spawnedCut && Interpolant > 0.4f && !isChildProjectile)
         {
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
             string slash = $"Stellamod/Assets/Sounds/AssassinsSlashProj{Main.rand.Next(2, 5)}";
             SoundStyle sound = new SoundStyle(slash);
             sound.PitchVariance = 0.3f;
-            SoundEngine.PlaySound(sound, Projectile.position);
+         //   SoundEngine.PlaySound(sound, Projectile.position);
 
             Vector2 pos = Owner.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 128;
             if (IsFinishingSwing())
             {
                 if (this.OwnedByLocalClient())
                 {
-                    Vector2 vel = -Vector2.UnitY;
-                    vel = vel.RotatedBy(MathHelper.PiOver4 * SwingDirection);
-                    vel *= 15;
-                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), pos, vel,
-                        ModContent.ProjectileType<XScissorMiniSlash>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai2: 1);
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), pos, Projectile.velocity.SafeNormalize(Vector2.Zero),
+                        ModContent.ProjectileType<XScissorCut>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner, ai2: 1);
                 }
                 Owner.velocity += Projectile.velocity * 0.1f;
                 for (float f = 0; f < 8; f++)
