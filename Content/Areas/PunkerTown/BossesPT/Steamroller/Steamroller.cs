@@ -10,15 +10,9 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
-using System.Collections.Generic;
-
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -66,18 +60,18 @@ public class RedX : ModProjectile
         Projectile.penetrate = -1;
         Projectile.timeLeft = 90;
     }
-    
+
     public override void AI()
     {
         base.AI();
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             SoundStyle warningSound = AssetRegistry.Sounds.SteamPunking.MechSawRevUp;
             warningSound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(warningSound, Projectile.position);
             float numDust = 8;
-            for(float n = 0; n < numDust; n++)
+            for (float n = 0; n < numDust; n++)
             {
                 float radians = (n / numDust) * MathHelper.TwoPi;
                 Vector2 offset = radians.ToRotationVector2();
@@ -113,7 +107,7 @@ public class RedX : ModProjectile
         Main.spriteBatch.Draw(drawer);
         Main.spriteBatch.Draw(glowDrawer);
 
-        Vector2 offset = Vector2.Lerp( Vector2.Zero, -Vector2.UnitX * 64, easeOut);
+        Vector2 offset = Vector2.Lerp(Vector2.Zero, -Vector2.UnitX * 64, easeOut);
         SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.GradientPillar, Projectile.Center + offset);
         lineDrawer.color = Color.Yellow * 0.65f * easeIn * easeOut;
         lineDrawer.color.A = 0;
@@ -154,7 +148,7 @@ public class Chain
     public void Resolve()
     {
 
-        for(int i = points.Length-1; i >= 1; i--)
+        for (int i = points.Length - 1; i >= 1; i--)
         {
             ref Vector2 p2 = ref points[i - 1];
             ref Vector2 p1 = ref points[i];
@@ -176,7 +170,7 @@ public class Chain
                     p2.X += offsetX;
                     p2.Y += offsetY;
                 }
-      
+
             }
         }
     }
@@ -215,7 +209,7 @@ public class FlyingSoilSystem : ModSystem
     public override void PostUpdateDusts()
     {
         base.PostUpdateDusts();
-        for(int i = 0; i < _soils.Length; i++)
+        for (int i = 0; i < _soils.Length; i++)
         {
             ref Soil soil = ref _soils[i];
             if (!soil.active)
@@ -225,7 +219,7 @@ public class FlyingSoilSystem : ModSystem
             soil.position += soil.velocity;
             soil.rotation += soil.direction * 0.05f;
             soil.velocity.Y += 0.25f;
-            if(soil.timer > 90)
+            if (soil.timer > 90)
             {
                 soil.active = false;
             }
@@ -239,7 +233,7 @@ public class FlyingSoilSystem : ModSystem
             point.Y++;
         Tile tile = Main.tile[point];
 
-        for(int i = 0; i < _soils.Length; i++)
+        for (int i = 0; i < _soils.Length; i++)
         {
             _soilIndex++;
             _soilIndex %= _soils.Length;
@@ -259,7 +253,7 @@ public class FlyingSoilSystem : ModSystem
         soil.rotation = Main.rand.NextFloat(MathHelper.TwoPi);
         soil.tileType = tile.TileType;
     }
-    private void DrawSoil(SpriteBatch sb , Vector2 screenPos)
+    private void DrawSoil(SpriteBatch sb, Vector2 screenPos)
     {
         for (int i = 0; i < _soils.Length; i++)
         {
@@ -279,7 +273,7 @@ public class FlyingSoilSystem : ModSystem
             Vector2 topRight = center + x - y;
             Vector2 bottomLeft = center - x + y;
             Vector2 bottomRight = center + x + y;
-   
+
             Vector2 origin = Vector2.One * 8;
             Asset<Texture2D> texture = TextureAssets.Tile[soil.tileType];
             SpritebatchDrawer topLeftDrawer = SpritebatchDrawer.FromTextureAsset(texture, topLeft);
@@ -340,7 +334,7 @@ public class Bedrock : ModProjectile
     {
         base.AI();
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             Projectile.scale = Main.rand.NextFloat(0.7f, 1f);
         }
@@ -366,7 +360,7 @@ public class Bedrock : ModProjectile
         SoundStyle deathSound = AssetRegistry.Sounds.Melee.HammerSmash2;
         deathSound.PitchVariance = 0.3f;
         SoundEngine.PlaySound(deathSound, Projectile.position);
-        for(int i = 0; i < 6; i++)
+        for (int i = 0; i < 6; i++)
         {
             Vector2 spawnPosition = Projectile.Center;
             spawnPosition.X += Main.rand.NextFloat(-64, 64);
@@ -409,55 +403,267 @@ public class Bedrock : ModProjectile
 public class SteamrollerBoom : ModProjectile
 {
     public override string Texture => TextureRegistry.EmptyTexture;
+    private ref float Timer => ref Projectile.ai[0];
+    private bool Bigger => Projectile.ai[1] == 1;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-
     }
+
     public override void SetDefaults()
     {
         base.SetDefaults();
+        Projectile.width = 64;
+        Projectile.height = 64;
+        Projectile.hostile = true;
+        Projectile.penetrate = -1;
+        Projectile.tileCollide = false;
+        Projectile.timeLeft = 15;
     }
+
     public override void AI()
     {
         base.AI();
+        Timer++;
+        if (Timer == 1)
+        {
+            SoundStyle deathSound = AssetRegistry.Sounds.Melee.HammerSmash2;
+            deathSound.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(deathSound, Projectile.position);
+            for (int i = 0; i < 6; i++)
+            {
+                Vector2 spawnPosition = Projectile.Center;
+                spawnPosition.X += Main.rand.NextFloat(-64, 64);
+                spawnPosition.Y += Main.rand.NextFloat(-64, 64);
+
+                Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
+                ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
+                if (Main.rand.NextBool(1))
+                {
+                    spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
+                    Point point = Projectile.Center.ToTileCoordinates();
+                    while (!WorldGen.SolidTile(point))
+                        point.Y++;
+
+                    int d = WorldGen.KillTile_MakeTileDust(point.X, point.Y, Framing.GetTileSafely(point));
+                    Dust dust = Main.dust[d];
+                    dust.position += Main.rand.NextVector2Circular(32, 32);
+                    dust.velocity = spawnVelocity;
+                    dust.noLightEmittence = true;
+                }
+                spawnPosition = Projectile.Center;
+                spawnPosition.X += Main.rand.NextFloat(-64, 64);
+                spawnPosition.Y += Main.rand.NextFloat(-64, 64);
+
+                spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
+                float spawnScale = Main.rand.NextFloat(0.75f, 1f);
+                Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
+            }
+
+            SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger2;
+            hitSound.PitchVariance = 0.2f;
+            SoundEngine.PlaySound(hitSound, Projectile.position);
+
+            var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.Yellow, Color.Red, Color.DarkRed);
+            if (Bigger)
+                fx.Scale *= 1.75f;
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
+            for (int i = 0; i < 9; i++)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(16, 16);
+                var dp = DustParticle.Spawn(Projectile.Center, vel);
+                dp.fast = true;
+                dp.Scale *= 0.4f;
+            }
+
+            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
+
+            for (float f = 0; f < 4; f++)
+            {
+                Particle<DustParticle>.Spawn(Projectile.Center, Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(6, 8f), Scale: Main.rand.NextFloat(0.5f, 1f));
+            }
+
+            for (float f = 0; f < 4; f++)
+            {
+                var smoke = Particle<SmokeParticle>.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(1, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                smoke.initialColor = Color.DarkGray;
+            }
+        }
     }
+
     public override bool PreDraw(ref Color lightColor)
     {
-        return base.PreDraw(ref lightColor);
+        return false;
     }
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+
     }
 }
+
+public class FallingSteamrollerPart : ModProjectile
+{
+    private Vector2 _startPosition;
+    private ref float Timer => ref Projectile.ai[0];
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        ProjectileID.Sets.TrailCacheLength[Type] = 16;
+        ProjectileID.Sets.TrailingMode[Type] = 2;
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 64;
+        Projectile.height = 64;
+        Projectile.tileCollide = true;
+        Projectile.timeLeft = 240;
+        Projectile.hostile = true;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if(Timer == 1)
+        {
+            Projectile.velocity.Y = 13;
+            _startPosition = Projectile.Center;
+            if (this.OwnedByLocalClient())
+            {
+                Projectile.velocity.X = Main.rand.NextFloat(-3f, 3f);
+                Projectile.netUpdate = true;
+            }
+        }
+        Projectile.velocity.Y += 0.5f;
+        Projectile.rotation += 0.05f;
+        Projectile.rotation += Projectile.velocity.Length() * 0.01f;
+    }
+    private Color DashTrailColorFunction(float completionRatio)
+    {
+        return Color.Lerp(Color.White, Color.Transparent, completionRatio);
+    }
+
+    private float DashTrailWidthFunction(float completionRatio)
+    {
+        return MathHelper.SmoothStep(64, 64, completionRatio);
+    }
+
+    private void RenderPixelatedDashTrail(GraphicsDevice gDevice)
+    {
+        BasicLaserShader laserShader = BasicLaserShader.Instance;
+        laserShader.LaserTexture = AssetManager.LaserTextures.SplittingTrail;
+        laserShader.InnerColor = Color.Yellow;
+        laserShader.OuterColor = Color.Lerp(Color.Yellow, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16));
+        TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, DashTrailColorFunction, DashTrailWidthFunction, laserShader, Projectile.Size * 0.5f);
+    }
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.GradientPillar, _startPosition);
+        lineDrawer.scale = new Vector2(0.025f, 6f);
+        lineDrawer.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+        lineDrawer.BottomCenterOrigin();
+        lineDrawer.color = Color.Lerp(Color.Black, Color.Yellow, EasingFunction.QuadraticBump(Timer / 40f));
+        lineDrawer.color.A = 0;
+
+        Main.spriteBatch.Draw(lineDrawer);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        Main.spriteBatch.Draw(sbDrawer);
+        PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedDashTrail);
+
+        return false;
+    }
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+        if (this.OwnedByLocalClient())
+        {
+            Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, 
+                ModContent.ProjectileType<SteamrollerBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
+        }
+    }
+}
+
 public class SteamrollerBomb : ModProjectile
 {
     private Asset<Texture2D> _glowTextureAsset;
+    private ref float Timer => ref Projectile.ai[0];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
         ProjectileID.Sets.TrailCacheLength[Type] = 32;
         ProjectileID.Sets.TrailingMode[Type] = 2;
     }
+
     public override void SetDefaults()
     {
         base.SetDefaults();
+        Projectile.width = 16;
+        Projectile.height = 16;
+        Projectile.hostile = true;
+        Projectile.timeLeft = 90;
+        Projectile.light = 1.5f;
+
     }
+
     public override void AI()
     {
         base.AI();
+        Timer++;
+        if (Timer == 1)
+        {
+   
+            FXUtil.GlowCircleBoom(Projectile.Center, Color.Yellow, Color.Orange, Color.Red);
+            for (float f = 0; f < 4; f++)
+            {
+                Vector2 fireVelocity = Projectile.velocity;
+                fireVelocity = fireVelocity.RotatedByRandom(MathHelper.ToRadians(65));
+                fireVelocity *= Main.rand.NextFloat(0.4f, 0.7f);
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), Scale: 0.5f, Velocity: fireVelocity, newColor: Color.Yellow);
+            }
+        }
+        if (Timer % 12 == 0)
+        {
+            Vector2 dustVelocity = -Projectile.velocity;
+            var dp = DustParticle.Spawn(Projectile.Center, dustVelocity);
+            dp.innerColor = Color.Yellow;
+            dp.outerColor = Color.DarkRed;
+            dp.Scale *= 0.75f;
+        }
+
+        Projectile.velocity.Y += 0.5f;
+        Projectile.rotation += Projectile.velocity.Length() * 0.02f;
     }
+
     public override bool PreDraw(ref Color lightColor)
     {
         _glowTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Glow");
-        return base.PreDraw(ref lightColor);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        Main.spriteBatch.Draw(sbDrawer);
+
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(_glowTextureAsset, Projectile.Center);
+        glowDrawer.color = Color.Lerp(Color.Black, Color.Red, ExtraMath.Osc(0f, 1f, speed: 12, offset: Projectile.whoAmI));
+        glowDrawer.color.A = 0;
+        Main.spriteBatch.Draw(glowDrawer);
+
+
+        return false;
     }
+
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        if (this.OwnedByLocalClient())
+        {
+            Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero,
+                ModContent.ProjectileType<SteamrollerBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+        }
     }
 }
+
 public class Steamroller : ScarletBoss,
     IDrawOutlines
 {
@@ -475,7 +681,7 @@ public class Steamroller : ScarletBoss,
             Animator.extraUpdates = _index * 4;
             glowColor = Color.Black;
         }
- 
+
         public Animator _animator;
         public Animator Animator
         {
@@ -496,7 +702,7 @@ public class Steamroller : ScarletBoss,
                     var cannotShoot = new SpriteAnimation(18, 28, isLooping: false);
                     _animator.AddAnimation(Anim_CannonShoot, cannotShoot);
 
-                    var cannonIde = new SpriteAnimation(28, 29, isLooping: true);
+                    var cannonIde = new SpriteAnimation(28, 28, isLooping: true);
                     _animator.AddAnimation(Anim_CannonIdle, cannonIde);
                 }
 
@@ -517,6 +723,8 @@ public class Steamroller : ScarletBoss,
         public Asset<Texture2D> steamrollerGlowSegmentTextureAsset;
         public Color glowColor;
         public bool paused;
+        public bool needsFiring;
+        public float firingTimer;
         public void Update()
         {
             switch (animationState)
@@ -541,25 +749,48 @@ public class Steamroller : ScarletBoss,
                 return;
             Animator.Update();
         }
-  
+
         private void AI_SpinSlow()
         {
+            firingTimer = 0;
             Animator.PlayAnimation(Anim_SpinSlow);
         }
         private void AI_SpinFast()
         {
+            firingTimer = 0;
             Animator.PlayAnimation(Anim_SpinFast);
         }
         private void AI_CannonComeOut()
         {
+            firingTimer = 0;
             Animator.PlayAnimation(Anim_CannonComeOut);
+            if (Animator.IsFinished())
+            {
+                animationState = SteamrollerAnimationState.Cannon_Idle;
+            }
         }
         private void AI_CannonShoot()
         {
+
+            firingTimer++;
+            if (firingTimer == 1)
+            {
+                needsFiring = false;
+            }
             Animator.PlayAnimation(Anim_CannonShoot);
+            if (firingTimer == 45)
+            {
+                needsFiring = true;
+            }
+            if (Animator.IsFinished())
+            {
+
+                animationState = SteamrollerAnimationState.Cannon_Idle;
+            }
         }
         private void AI_CannonIdle()
         {
+            firingTimer = 0;
             Animator.PlayAnimation(Anim_CannonIdle);
         }
 
@@ -612,25 +843,39 @@ public class Steamroller : ScarletBoss,
         DungDefenderRock_End,
 
         Phase_Transition,
+        Phase_TransitionRise,
+        Phase_TransitionFall,
 
         Cannon_Start,
         Cannon_Fire,
+        Cannon_Barrage,
         Cannon_End,
 
         HeadPop_Start,
         HeadPop_Drill,
+        HeadPop_Spin,
         HeadPop_Fall,
+        HeadPop_End,
 
         MeteorJump_Start,
         MeteorJump_Fall,
         MeteorJump_Repair
     }
 
+    private enum AttackVariant
+    {
+        None,
+        Snagret,
+        Dung,
+        Fall
+    }
+
+    private bool _fromMeteorRain;
+    private bool _phase2;
     private bool _quickDrill;
     private bool _driller2;
-    private bool _xDrillSnagretVariant;
-    private bool _xDrillDungVariant;
-    private bool _xDrillFallVariant;
+    private bool _freezeBodyMovement;
+    private AttackVariant _variant;
     private bool _renderDashTrail;
     private float _dashTrailTimer;
     private float _dashTrailAlpha;
@@ -648,7 +893,7 @@ public class Steamroller : ScarletBoss,
     {
         get
         {
-            if(_animator == null)
+            if (_animator == null)
             {
                 _animator = new Animator();
                 var idle = new SpriteAnimation(0, 3, isLooping: true);
@@ -657,7 +902,7 @@ public class Steamroller : ScarletBoss,
                 var running = new SpriteAnimation(4, 11, isLooping: true, frameSpeed: 0.35f);
                 _animator.AddAnimation(Anim_SpinFast, running);
             }
- 
+
             return _animator;
         }
     }
@@ -667,7 +912,7 @@ public class Steamroller : ScarletBoss,
     {
         get
         {
-            if(_steamrollerSegments == null)
+            if (_steamrollerSegments == null)
             {
                 _steamrollerSegments = new SteamrollerSegment[16];
                 for (int i = 0; i < _steamrollerSegments.Length; i++)
@@ -677,7 +922,7 @@ public class Steamroller : ScarletBoss,
                 }
 
             }
-   
+
 
             return _steamrollerSegments;
         }
@@ -687,9 +932,9 @@ public class Steamroller : ScarletBoss,
     {
         get
         {
-            if(_chain == null)
+            if (_chain == null)
             {
-  
+
                 _chain = new Chain(NPC.Center, 80, 16);
             }
             return _chain;
@@ -702,7 +947,7 @@ public class Steamroller : ScarletBoss,
     {
         get
         {
-            if(_patternManager == null)
+            if (_patternManager == null)
             {
                 _patternManager = new PatternManager<AIState>(
                     new Tuple<AIState, float>(AIState.X_Drill_Start, 1.0f),
@@ -715,6 +960,7 @@ public class Steamroller : ScarletBoss,
             return _patternManager;
         }
     }
+
     private ref float Timer => ref NPC.ai[0];
     private AIState State
     {
@@ -723,12 +969,16 @@ public class Steamroller : ScarletBoss,
     }
 
     private ref float AttackCycle => ref NPC.ai[2];
+    private bool IsSmall => NPC.ai[3] == 1;
     //Damage Values
+    private int FallingSteamrollerDamage => 40;
     private int BedrockDamage => 32;
+    private int SteamrollerBombDamage => 40;
     private float IdleTime => 120;
     private float XDrillWarningTime => 60;
     private float DrillTime = 160;
     private float DungDefenderWarningTime => 90;
+
     public Vector2 GetSegmentPosition(int verletIndex)
     {
         if (verletIndex < 0)
@@ -801,8 +1051,17 @@ public class Steamroller : ScarletBoss,
             SteamRollerSegments[i].paused = false;
         }
 
-        _xDrillDungVariant = false;
-        _xDrillFallVariant = false;
+        if (IsSmall)
+        {
+            if (NPC.life > NPC.lifeMax * 0.5f)
+            {
+                NPC.life = (int)(NPC.lifeMax * 0.5f) - 1;
+            }
+            _phase2 = true;
+        }
+
+        _freezeBodyMovement = false;
+        _variant = AttackVariant.None;
         _renderDashTrail = false;
         _contactDamage = false;
         _targetOutlineColor = Color.Transparent;
@@ -829,15 +1088,15 @@ public class Steamroller : ScarletBoss,
                 break;
 
             case AIState.DuneJump_Start:
-                _xDrillFallVariant = true;
+                _variant = AttackVariant.Fall;
                 AI_XDrillStart();
                 break;
             case AIState.DuneJump_Rise:
-                _xDrillFallVariant = true;
+                _variant = AttackVariant.Fall;
                 AI_XDrillRise();
                 break;
             case AIState.DuneJump_Fall:
-                _xDrillFallVariant = true;
+                _variant = AttackVariant.Fall;
                 AI_XDrillFall();
                 break;
 
@@ -848,20 +1107,20 @@ public class Steamroller : ScarletBoss,
                 AI_DungDefenderRockBlast();
                 break;
             case AIState.DungDefenderRock_End:
-                _xDrillDungVariant = true;
+                _variant = AttackVariant.Dung;
                 AI_XDrillFall();
                 break;
 
             case AIState.Snagret_PopStart:
-                _xDrillSnagretVariant = true;
+                _variant = AttackVariant.Snagret;
                 AI_XDrillStart();
                 break;
             case AIState.Snagret_PopRise:
-                _xDrillSnagretVariant = true;
+                _variant = AttackVariant.Snagret;
                 AI_XDrillRise();
                 break;
             case AIState.Snagret_PopFallNStuckk:
-                _xDrillSnagretVariant = true;
+                _variant = AttackVariant.Snagret;
                 AI_XDrillFall();
                 break;
 
@@ -870,6 +1129,9 @@ public class Steamroller : ScarletBoss,
                 break;
             case AIState.Cannon_Fire:
                 AI_CannonFire();
+                break;
+            case AIState.Cannon_Barrage:
+                AI_CannonBarrage();
                 break;
             case AIState.Cannon_End:
                 AI_CannonEnd();
@@ -881,8 +1143,14 @@ public class Steamroller : ScarletBoss,
             case AIState.HeadPop_Fall:
                 AI_HeadPopFall();
                 break;
+            case AIState.HeadPop_Spin:
+                AI_HeadPopSpin();
+                break;
             case AIState.HeadPop_Drill:
                 AI_HeadPopDrill();
+                break;
+            case AIState.HeadPop_End:
+                AI_HeadPopEnd();
                 break;
 
             case AIState.MeteorJump_Start:
@@ -893,6 +1161,16 @@ public class Steamroller : ScarletBoss,
                 break;
             case AIState.MeteorJump_Repair:
                 AI_MeteorJumpEnd();
+                break;
+
+            case AIState.Phase_Transition:
+                AI_PhaseTransition();
+                break;
+            case AIState.Phase_TransitionRise:
+                AI_PhaseTransitionRise();
+                break;
+            case AIState.Phase_TransitionFall:
+                AI_PhaseTransitionFall();
                 break;
         }
         for (int i = 0; i < SteamRollerSegments.Length; i++)
@@ -910,60 +1188,702 @@ public class Steamroller : ScarletBoss,
     {
         base.PostAI();
 
+        if (_freezeBodyMovement)
+            return;
+
         Chain.points[0] = NPC.Center;
         Chain.pinned[0] = true;
         for (int i = 0; i < 32; i++)
         {
             Chain.Resolve();
+        }
+
+    }
+
+    private void AI_PhaseTransition()
+    {
+        Timer++;
+        if (Timer == 1)
+        {
+            NPC.TargetClosest();
+        }
+        if (Timer == 1)
+        {
+            _startVelocity = NPC.velocity;
+            NPC.TargetClosest();
+            _targetPosition = MyTarget.Bottom;
+            if (_variant == AttackVariant.Snagret)
+            {
+                _targetPosition.X += MyTarget.direction * 128;
+            }
+        }
+
+        //X Appears on the ground
+        if (Timer == 1 && MultiplayerHelper.IsHost)
+        {
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), MyTarget.Bottom, Vector2.Zero,
+                ModContent.ProjectileType<RedX>(), 1, 1, Main.myPlayer);
+        }
+
+        //Ease in to the start position for the attack
+        float ratio = Timer / XDrillWarningTime;
+        float ease = EasingFunction.InOutSine(ratio);
+        Vector2 startPosition = _targetPosition + new Vector2(0, 1000);
+        Vector2 targetVelocity = (startPosition - NPC.Center);
+        Vector2 interpVelocity = Vector2.Lerp(_startVelocity, targetVelocity, ease);
+        NPC.velocity = interpVelocity;
+        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+
+        _targetOutlineColor = Color.Yellow;
+        if (Timer >= XDrillWarningTime)
+        {
+            SwitchState(AIState.Phase_TransitionRise);
+        }
+    }
+
+    private void AI_PhaseTransitionRise()
+    {
+        Timer++;
+        if (Timer == 1)
+        {
+            NPC.TargetClosest();
+        }
+
+        Animator.PlayAnimation(Anim_SpinFast);
+
+        _renderDashTrail = true;
+        _contactDamage = true;
+        _targetOutlineColor = Color.Red;
+        Vector2 shootVelocity = -Vector2.UnitY * 45;
+        NPC.velocity = shootVelocity;
+        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+        ShakeModSystem.Shake = 3;
+        if (Timer > 200 || NPC.Center.Y < MyTarget.Bottom.Y)
+        {
+            SwitchState(AIState.Phase_TransitionRise);
+        }
+    }
+
+    private void AI_PhaseTransitionFall()
+    {
+        Timer++;
+        if (Timer == 1)
+        {
+            float dir = NPC.Center.X < MyTarget.Center.X ? 1 : -1;
+            _jumpSpeed = dir;
+            _jumpSpeed *= 21;
+            if (MultiplayerHelper.IsHost)
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    Vector2 spawnPosition = NPC.Center;
+                    spawnPosition.X += Main.rand.NextFloat(-64, 64);
+                    spawnPosition.Y += Main.rand.NextFloat(-64, 64);
+
+                    Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-12, -17);
+                    spawnVelocity.X = dir * Main.rand.NextFloat(2f, 15f);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), spawnPosition, spawnVelocity,
+                        ModContent.ProjectileType<Bedrock>(), BedrockDamage, 1, Main.myPlayer);
+                }
+
+            }
+
+            _currentSpeed = NPC.velocity.X;
+            _crashed = false;
+
+            GroundImpact();
+
+            SoundStyle smash = AssetRegistry.Sounds.Melee.HammerSmash3;
+            smash.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(smash, NPC.position);
+
+            SoundStyle steaming = AssetRegistry.Sounds.SteamPunking.MechSteaming;
+            steaming.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(steaming, NPC.position);
+
+            SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
+            mechMove.PitchVariance = 0.3f;
+            //    SoundEngine.PlaySound(mechMove, NPC.position);
+
 
         }
-    
+
+        _targetOutlineColor = Color.Red;
+        _contactDamage = true;
+        _renderDashTrail = true;
+        Vector2 targetPos = Vector2.Lerp(MyTarget.Center, NPC.Center, 0.35f);
+
+
+        if(Timer == 60)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                NPC.NewNPC(NPC.GetSource_FromAI(),(int)NPC.Center.X, (int)NPC.Center.Y, NPC.type, ai3: 1);
+            }
+            NPC.ai[3] = 1;
+            _phase2 = true;
+        }
+
+        if (Timer < 70)
+            RetargetCameraModifier.ReTargetPosition = targetPos;
+
+        for (int i = 0; i < _steamrollerSegments.Length; i++)
+        {
+            var segment = _steamrollerSegments[i];
+            segment.glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.InOutSine(Timer / 60f)) * ExtraMath.Osc(0f, 1f, speed: 10, offset: i);
+        }
+
+        if (NPC.velocity.Y < 0)
+            NPC.velocity.Y *= 0.97f;
+        if (NPC.velocity.Y < 25)
+            NPC.velocity.Y += 0.5f;
+
+        if (NPC.velocity.Y > 12)
+        {
+            Animator.PlayAnimation(Anim_SpinFast);
+            NPC.velocity.Y *= 1.1f;
+
+        }
+        else
+        {
+            Animator.PlayAnimation(Anim_SpinSlow);
+        }
+
+        if (NPC.velocity.Y > 50)
+            NPC.velocity.Y = 50;
+        float xDirectionToTarget = NPC.Center.X < MyTarget.Center.X ? 1 : -1;
+        float dist = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
+        float xSpeed = xDirectionToTarget * dist * 0.25f;
+
+        NPC.velocity.X = MathHelper.Lerp(_currentSpeed, _jumpSpeed, EasingFunction.InOutSine(Timer / 25f));
+        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+
+
+
+
+        Vector2 bottom = NPC.Bottom + Vector2.UnitY * 64;
+        Point tilePoint = bottom.ToTileCoordinates();
+        if (WorldGen.InWorld(tilePoint.X, tilePoint.Y) && Timer > 20)
+        {
+            Tile tile = Main.tile[tilePoint];
+            if (WorldGen.SolidTile(tile) && !_crashed)
+            {
+                _crashed = true;
+                SoundStyle smash2 = AssetRegistry.Sounds.Melee.HammerSmash2;
+                smash2.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(smash2, NPC.position);
+
+                FXUtil.ShakeCamera(NPC.Center, 1024, 24);
+                SwitchState(AIState.Driller);
+
+            }
+        }
+
+        MakeSteamParticlesRandomlyAtSegments();
     }
+
+
     private void AI_MeteorJumpStart()
     {
+        Timer++;
+        if (Timer == 1)
+        {
+            _startVelocity = NPC.velocity;
+            NPC.TargetClosest();
+            _targetPosition = MyTarget.Bottom;
+        }
 
+        //X Appears on the ground
+        if (Timer == 1 && MultiplayerHelper.IsHost)
+        {
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), MyTarget.Bottom, Vector2.Zero,
+                ModContent.ProjectileType<RedX>(), 1, 1, Main.myPlayer);
+        }
+
+        //Ease in to the start position for the attack
+        float ratio = Timer / XDrillWarningTime;
+        float ease = EasingFunction.InOutSine(ratio);
+        Vector2 startPosition = _targetPosition + new Vector2(0, 1000);
+        Vector2 targetVelocity = (startPosition - NPC.Center);
+        Vector2 interpVelocity = Vector2.Lerp(_startVelocity, targetVelocity, ease);
+        NPC.velocity = interpVelocity;
+        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+        _targetOutlineColor = Color.Yellow;
+        if (Timer >= XDrillWarningTime)
+        {
+            SwitchState(AIState.MeteorJump_Fall);
+        }
     }
 
     private void AI_MeteorJumpFall()
     {
+        Animator.PlayAnimation(Anim_SpinFast);
+        Timer++;
+        if (Timer == 1)
+        {
+            _crashed = false;
+            for (int i = 0; i < Chain.points.Length; i++)
+            {
+                Chain.points[i] = NPC.Center;
+            }
+        }
 
+
+        _renderDashTrail = true;
+        _contactDamage = true;
+        _targetOutlineColor = Color.Red;
+        Vector2 shootVelocity = -Vector2.UnitY * 45;
+        NPC.velocity = shootVelocity;
+        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+        ShakeModSystem.Shake = 3;
+        if (Timer > 200 || NPC.Center.Y < MyTarget.Bottom.Y)
+        {
+            SwitchState(AIState.MeteorJump_Repair);
+        }
     }
 
 
     private void AI_MeteorJumpEnd()
     {
+        Timer++;
+        if (Timer == 1)
+        {
+            GroundImpact();
+            SoundStyle smash = AssetRegistry.Sounds.Melee.HammerSmash3;
+            smash.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(smash, NPC.position);
 
+            SoundStyle steaming = AssetRegistry.Sounds.SteamPunking.MechSteaming;
+            steaming.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(steaming, NPC.position);
+
+            SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
+            mechMove.PitchVariance = 0.3f;
+        }
+
+        Vector2 targetPos = Vector2.Lerp(MyTarget.Center, MyTarget.Center + new Vector2(0, -500), 0.35f);
+        RetargetCameraModifier.ReTargetPosition = targetPos;
+        if (Timer > 60)
+        {
+            NPC.velocity *= 0.9f;
+        }
+        
+        if(Timer > 60 && AttackCycle < 16)
+        {
+            if(Timer % 10 == 0)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Vector2 fallPosition =  Vector2.Lerp(-Vector2.UnitX, Vector2.UnitX, Main.rand.NextFloat(0f, 1f)) * 500 + MyTarget.Center;
+                    fallPosition.Y -= 1000;
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), fallPosition, Vector2.UnitY, 
+                        ModContent.ProjectileType<FallingSteamrollerPart>(), FallingSteamrollerDamage, 1, Main.myPlayer);
+                }
+                AttackCycle++;
+            }
+        } else if (AttackCycle >= 16)
+        {
+            _fromMeteorRain = true;
+            SwitchState(AIState.HeadPop_Spin);
+        }
     }
 
+    #region Head Pop Drill Spin Attack
     private void AI_HeadPopStart()
     {
+        Timer++;
+        if (Timer == 1)
+        {
+            _startVelocity = NPC.velocity;
+            NPC.TargetClosest();
+            _targetPosition = MyTarget.Bottom;
+        }
+
+        //X Appears on the ground
+        if (Timer == 1 && MultiplayerHelper.IsHost)
+        {
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), MyTarget.Bottom, Vector2.Zero,
+                ModContent.ProjectileType<RedX>(), 1, 1, Main.myPlayer);
+        }
+
+        //Ease in to the start position for the attack
+        float ratio = Timer / XDrillWarningTime;
+        float ease = EasingFunction.InOutSine(ratio);
+        Vector2 startPosition = _targetPosition + new Vector2(0, 1000);
+        Vector2 targetVelocity = (startPosition - NPC.Center);
+        Vector2 interpVelocity = Vector2.Lerp(_startVelocity, targetVelocity, ease);
+        NPC.velocity = interpVelocity;
+        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+
+        _targetOutlineColor = Color.Yellow;
+        if (Timer >= XDrillWarningTime)
+        {
+            SwitchState(AIState.HeadPop_Drill);
+        }
+    }
+    private void AI_HeadPopDrill()
+    {
+        Animator.PlayAnimation(Anim_SpinFast);
+        Timer++;
+        if (Timer == 1)
+        {
+            _crashed = false;
+            WarpSegments();
+        }
+
+        _renderDashTrail = true;
+        _contactDamage = true;
+        _targetOutlineColor = Color.Red;
+        Vector2 shootVelocity = -Vector2.UnitY * 45;
+        NPC.velocity = shootVelocity;
+        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+        ShakeModSystem.Shake = 3;
+        if (Timer > 200 || NPC.Center.Y < MyTarget.Bottom.Y)
+        {
+            SwitchState(AIState.HeadPop_Spin);
+        }
+    }
+    private void AI_HeadPopSpin()
+    {
+        Timer++;
+        if (Timer == 1)
+        {
+
+            GroundImpact();
+
+            SoundStyle smash = AssetRegistry.Sounds.Melee.HammerSmash3;
+            smash.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(smash, NPC.position);
+
+            SoundStyle steaming = AssetRegistry.Sounds.SteamPunking.MechSteaming;
+            steaming.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(steaming, NPC.position);
+
+            SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
+            mechMove.PitchVariance = 0.3f;
+        }
+
+        _targetOutlineColor = Color.Red;
+        _contactDamage = true;
+        _renderDashTrail = true;
+        _freezeBodyMovement = true;
+        Vector2 bodyVel = Vector2.Lerp(-Vector2.UnitY * 15, Vector2.Zero, EasingFunction.InExpo(Timer / 60f));
+        for (int i = 0; i < Chain.points.Length; i++)
+        {
+            ref Vector2 point = ref Chain.points[i];
+            point += bodyVel;
+        }
+
+        if (!_fromMeteorRain)
+        {
+            Vector2 targetPos = Vector2.Lerp(MyTarget.Center, NPC.Center, 0.35f);
+
+
+            if (Timer < 70)
+                RetargetCameraModifier.ReTargetPosition = targetPos;
+
+
+        }
+
+        for (int i = 0; i < _steamrollerSegments.Length; i++)
+        {
+            var segment = _steamrollerSegments[i];
+            segment.glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.InOutSine(Timer / 60f)) * ExtraMath.Osc(0f, 1f, speed: 10, offset: i);
+        }
+
+        if (NPC.velocity.Y < 0)
+            NPC.velocity.Y *= 0.97f;
+        if (NPC.velocity.Y < 25)
+            NPC.velocity.Y += 0.5f;
+
+        if (NPC.velocity.Y > 12)
+        {
+            Animator.PlayAnimation(Anim_SpinFast);
+            NPC.velocity.Y *= 1.1f;
+
+        }
+        else
+        {
+            Animator.PlayAnimation(Anim_SpinSlow);
+        }
+
+        if (NPC.velocity.Y > 50)
+            NPC.velocity.Y = 50;
+        float xDirectionToTarget = NPC.Center.X < MyTarget.Center.X ? 1 : -1;
+        float dist = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
+        float xSpeed = xDirectionToTarget * dist * 0.25f;
+
+        if (_variant == AttackVariant.Dung)
+        {
+            NPC.velocity.X *= 0.9f;
+        }
+        else if (_variant == AttackVariant.Fall)
+            NPC.velocity.X = MathHelper.Lerp(_currentSpeed, _jumpSpeed, EasingFunction.InOutSine(Timer / 25f));
+        else if (Timer < 45)
+            NPC.velocity.X = MathHelper.Lerp(_currentSpeed, xSpeed, EasingFunction.InOutSine(Timer / 60f));
+
+        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+        Vector2 bottom = NPC.Bottom + Vector2.UnitY * 64;
+        Point tilePoint = bottom.ToTileCoordinates();
+        if (WorldGen.InWorld(tilePoint.X, tilePoint.Y) && Timer > 20)
+        {
+            Tile tile = Main.tile[tilePoint];
+            if (WorldGen.SolidTile(tile) && !_crashed)
+            {
+                _crashed = true;
+                SoundStyle smash2 = AssetRegistry.Sounds.Melee.HammerSmash2;
+                smash2.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(smash2, NPC.position);
+
+                FXUtil.ShakeCamera(NPC.Center, 1024, 24);
+                SwitchState(AIState.HeadPop_Fall);
+            }
+        }
+
 
     }
 
     private void AI_HeadPopFall()
     {
+        Animator.PlayAnimation(Anim_SpinFast);
+        Timer++;
 
+        if (Timer == 1)
+        {
+            _targetPosition = Vector2.UnitX * ((MyTarget.Center.X > NPC.Center.X) ? 1 : -1);
+            NPC.TargetClosest();
+        }
+        Vector2 bottom = NPC.Top - Vector2.UnitY * 64;
+        Point point = bottom.ToTileCoordinates();
+        while (!WorldGen.SolidTile(point))
+            point.Y++;
+        bottom = point.ToWorldCoordinates();
+
+        _targetOutlineColor = Color.Red;
+        _contactDamage = true;
+        _renderDashTrail = true;
+
+        ShakeModSystem.Shake = 3;
+        Vector2 velToTarget = _targetPosition;
+        float ratio = Timer / 60f;
+        float ease = Easing.InExpo(ratio);
+        float speed = MathHelper.Lerp(1, 24, ease);
+        velToTarget *= speed;
+        NPC.velocity = velToTarget;
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, Vector2.UnitY.ToRotation() + MathHelper.PiOver2, 0.1f);
+        if (Main.rand.NextBool(3))
+        {
+            Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
+            int d = WorldGen.KillTile_MakeTileDust(point.X, point.Y, Framing.GetTileSafely(point));
+            Dust dust = Main.dust[d];
+            dust.velocity = spawnVelocity;
+            dust.noLightEmittence = true;
+        }
+        if (Main.rand.NextBool(4))
+        {
+            Vector2 vel = -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(80));
+            vel *= Main.rand.NextFloat(8f, 25);
+            var spawnParams = DustParticleSpawnParams.Default;
+
+            spawnParams.outerColor = Color.Red;
+            var dp = DustParticle.Spawn(bottom, vel, spawnParams);
+            dp.fast = true;
+
+            vel = -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(80));
+            vel *= Main.rand.NextFloat(1, 2);
+
+            var sp = SmokeParticle.Spawn(bottom, vel);
+            sp.initialColor = Color.Brown * 0.5f;
+            sp.fadeToColor = Color.Transparent;
+        }
+        if (Main.rand.NextBool(6))
+        {
+            Vector2 spawnPosition = bottom;
+            spawnPosition.X += Main.rand.NextFloat(-64, 64);
+            spawnPosition.Y += Main.rand.NextFloat(-64, 64);
+
+            Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
+            ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
+        }
+        Vector2 bodyVel = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 15, EasingFunction.InExpo(Timer / 60f));
+        for (int i = 0; i < Chain.points.Length; i++)
+        {
+            ref Vector2 p = ref Chain.points[i];
+            p += bodyVel;
+        }
+        if (Timer >= 180)
+        {
+            SwitchState(AIState.HeadPop_End);
+        }
+        _freezeBodyMovement = true;
     }
 
-    private void AI_HeadPopDrill()
+    private void AI_HeadPopEnd()
     {
+        Timer++;
 
+        NPC.velocity.Y += 0.5f;
+        NPC.velocity.Y *= 1.1f;
+        if (NPC.velocity.Y > 50)
+            NPC.velocity.Y = 50;
+
+        if (Timer >= 90)
+        {
+            SwitchState(AIState.IdleDrill);
+        }
+        _freezeBodyMovement = true;
+    }
+    #endregion
+
+    private void WarpSegments()
+    {
+        for (int i = 0; i < Chain.points.Length; i++)
+        {
+            Chain.points[i] = NPC.Center + Vector2.UnitY * i * 5;
+        }
     }
 
+    #region Cannon
     private void AI_CannonStart()
     {
+        Timer++;
+        if (Timer == 1)
+        {
+            _startVelocity = NPC.velocity;
+            NPC.TargetClosest();
+            _targetPosition = MyTarget.Bottom;
+        }
 
+        //X Appears on the ground
+        if (Timer == 1 && MultiplayerHelper.IsHost)
+        {
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), MyTarget.Bottom, Vector2.Zero,
+                ModContent.ProjectileType<RedX>(), 1, 1, Main.myPlayer);
+        }
+
+        //Ease in to the start position for the attack
+        float ratio = Timer / XDrillWarningTime;
+        float ease = EasingFunction.InOutSine(ratio);
+        Vector2 startPosition = _targetPosition + new Vector2(0, 1000);
+        Vector2 targetVelocity = (startPosition - NPC.Center);
+        Vector2 interpVelocity = Vector2.Lerp(_startVelocity, targetVelocity, ease);
+        NPC.velocity = interpVelocity;
+        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+
+        _targetOutlineColor = Color.Yellow;
+        if (Timer >= XDrillWarningTime)
+        {
+            SwitchState(AIState.Cannon_Fire);
+        }
     }
 
     private void AI_CannonFire()
     {
+        Animator.PlayAnimation(Anim_SpinFast);
+        Timer++;
+        if (Timer == 1)
+        {
+            _crashed = false;
+            WarpSegments();
+        }
 
+        for (int i = 0; i < SteamRollerSegments.Length; i++)
+        {
+            SteamRollerSegments[i].animationState = SteamrollerSegment.SteamrollerAnimationState.Cannon_ComeOut;
+        }
+
+        _renderDashTrail = true;
+        _contactDamage = true;
+        _targetOutlineColor = Color.Red;
+        Vector2 shootVelocity = -Vector2.UnitY * 45;
+        NPC.velocity = shootVelocity;
+        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+        ShakeModSystem.Shake = 3;
+        if (Timer > 200 || NPC.Center.Y < MyTarget.Bottom.Y)
+        {
+            SwitchState(AIState.Cannon_Barrage);
+        }
+    }
+
+    private void AI_CannonBarrage()
+    {
+        Animator.PlayAnimation(Anim_SpinFast);
+        Timer++;
+        if (Timer == 1)
+        {
+
+            GroundImpact();
+
+            SoundStyle smash = AssetRegistry.Sounds.Melee.HammerSmash3;
+            smash.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(smash, NPC.position);
+
+            SoundStyle steaming = AssetRegistry.Sounds.SteamPunking.MechSteaming;
+            steaming.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(steaming, NPC.position);
+
+            SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
+            mechMove.PitchVariance = 0.3f;
+        }
+
+        NPC.velocity *= 0.9f;
+        _targetOutlineColor = Color.Red;
+        for (int i = 0; i < SteamRollerSegments.Length; i++)
+        {
+            var segment = SteamRollerSegments[i];
+            if (segment.needsFiring)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Vector2 posToFireFrom = Chain.points[i];
+                    Vector2 fireDirection = Vector2.UnitX * (Main.rand.NextBool(2) ? 1 : -1);
+                    Vector2 fireVelocity = fireDirection * 15;
+                    posToFireFrom += fireDirection * 50;
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), posToFireFrom, fireVelocity, ModContent.ProjectileType<SteamrollerBomb>(), SteamrollerBombDamage, 1, Main.myPlayer);
+                }
+                segment.needsFiring = false;
+            }
+        }
+        if (Timer % 15 == 0)
+        {
+            int index = (int)AttackCycle;
+            index %= 6;
+            SteamrollerSegment nextSegment = SteamRollerSegments[index + 1];
+            nextSegment.animationState = SteamrollerSegment.SteamrollerAnimationState.Cannon_Shoot;
+            if (AttackCycle < SteamRollerSegments.Length)
+            {
+                AttackCycle++;
+            }
+            else
+            {
+                SwitchState(AIState.Cannon_End);
+            }
+        }
     }
 
     private void AI_CannonEnd()
     {
-
+        Animator.PlayAnimation(Anim_SpinSlow);
+        Timer++;
+        NPC.velocity.Y += 0.125f;
+        NPC.velocity.Y *= 1.025f;
+        if (NPC.velocity.Y > 50)
+        {
+            NPC.velocity.Y = 50;
+        }
+        for (int i = 0; i < Chain.points.Length; i++)
+        {
+            ref Vector2 p = ref Chain.points[i];
+            p += NPC.velocity;
+        }
+        if (Timer >= 90)
+        {
+            SwitchState(AIState.IdleDrill);
+        }
     }
+    #endregion
+
+    #region Dung Defender
     private void DungDefenderRocks()
     {
         Vector2 bottom = _targetPosition - Vector2.UnitY * 64;
@@ -1018,11 +1938,11 @@ public class Steamroller : ScarletBoss,
         Timer++;
         if (Timer == 1)
         {
-   
+
             NPC.TargetClosest();
 
         }
-        if(Timer < DungDefenderWarningTime - 30)
+        if (Timer < DungDefenderWarningTime - 30)
         {
             _startVelocity = NPC.velocity;
             _targetPosition = MyTarget.Bottom;
@@ -1085,9 +2005,10 @@ public class Steamroller : ScarletBoss,
     {
 
     }
+    #endregion
     private void MakeSteamParticlesRandomlyAtSegments()
     {
-        for(int i = 0; i < Chain.points.Length; i++)
+        for (int i = 0; i < Chain.points.Length; i++)
         {
             Vector2 point = Chain.points[i];
             if (Main.rand.NextBool(150))
@@ -1116,7 +2037,11 @@ public class Steamroller : ScarletBoss,
         if (MultiplayerHelper.IsHost)
         {
             SwitchState(PatternManager.NextPattern());
-            SwitchState(AIState.DungDefenderRock_Start);
+            if(!_phase2 && NPC.life < NPC.lifeMax * 0.5f)
+            {
+                SwitchState(AIState.Phase_Transition);
+            }
+            SwitchState(AIState.MeteorJump_Start);
         }
     }
 
@@ -1129,6 +2054,7 @@ public class Steamroller : ScarletBoss,
     private void AI_IdleDrill()
     {
         AttackCycle = 0;
+        _fromMeteorRain = false;
         _quickDrill = false;
         _driller2 = false;
         for (int i = 0; i < SteamRollerSegments.Length; i++)
@@ -1138,7 +2064,7 @@ public class Steamroller : ScarletBoss,
         }
         Animator.PlayAnimation(Anim_SpinSlow);
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             _currentSpeed = NPC.velocity.Length();
             NPC.TargetClosest();
@@ -1157,7 +2083,7 @@ public class Steamroller : ScarletBoss,
             speed = distToTarget;
         NPC.velocity = vel * speed;
         NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
-        if(Timer >= IdleTime)
+        if (Timer >= IdleTime)
         {
             ChooseAttack();
         }
@@ -1166,7 +2092,7 @@ public class Steamroller : ScarletBoss,
     private void AI_Driller()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             SoundStyle sound = AssetRegistry.Sounds.SteamPunking.SteamrollerDig;
             sound.PitchVariance = 0.3f;
@@ -1175,7 +2101,7 @@ public class Steamroller : ScarletBoss,
         ShakeModSystem.Shake = 4;
         float ratio = Timer / 30f;
         float ease = EasingFunction.QuadraticBump(ratio);
-        _squishScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.9f), ease );
+        _squishScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.9f), ease);
 
         Vector2 bottom = NPC.Top - Vector2.UnitY * 64;
         Point point = bottom.ToTileCoordinates();
@@ -1187,7 +2113,7 @@ public class Steamroller : ScarletBoss,
             Vector2 vel = -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(80));
             vel *= Main.rand.NextFloat(8f, 25);
             var spawnParams = DustParticleSpawnParams.Default;
-    
+
             spawnParams.outerColor = Color.Red;
             var dp = DustParticle.Spawn(bottom, vel, spawnParams);
             dp.fast = true;
@@ -1228,7 +2154,7 @@ public class Steamroller : ScarletBoss,
             int d = WorldGen.KillTile_MakeTileDust(point.X, point.Y, Framing.GetTileSafely(point));
             Dust dust = Main.dust[d];
             dust.velocity = spawnVelocity;
-            dust.noLightEmittence = true;   
+            dust.noLightEmittence = true;
         }
 
         if (Main.rand.NextBool(6))
@@ -1240,7 +2166,7 @@ public class Steamroller : ScarletBoss,
             Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
             ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
         }
-        for(int i = 0; i < SteamRollerSegments.Length; i++)
+        for (int i = 0; i < SteamRollerSegments.Length; i++)
         {
             SteamRollerSegments[i].paused = true;
         }
@@ -1258,7 +2184,7 @@ public class Steamroller : ScarletBoss,
 
                     Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-15, -25);
                     spawnVelocity.X = Main.rand.NextFloat(-15, 15);
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), spawnPosition, spawnVelocity, 
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), spawnPosition, spawnVelocity,
                         ModContent.ProjectileType<Bedrock>(), BedrockDamage, 1, Main.myPlayer);
                 }
             }
@@ -1291,8 +2217,8 @@ public class Steamroller : ScarletBoss,
             {
                 AttackCycle++;
                 SwitchState(AIState.DungDefenderRock_Start);
-            } 
-            else if(Timer > dt + 60)
+            }
+            else if (Timer > dt + 60)
             {
                 SwitchState(AIState.IdleDrill);
 
@@ -1305,21 +2231,21 @@ public class Steamroller : ScarletBoss,
     private void AI_XDrillStart()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             _startVelocity = NPC.velocity;
             NPC.TargetClosest();
             _targetPosition = MyTarget.Bottom;
-            if (_xDrillSnagretVariant)
+            if (_variant == AttackVariant.Snagret)
             {
                 _targetPosition.X += MyTarget.direction * 128;
             }
         }
 
         //X Appears on the ground
-        if(Timer == 1 && MultiplayerHelper.IsHost)
+        if (Timer == 1 && MultiplayerHelper.IsHost)
         {
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), MyTarget.Bottom, Vector2.Zero, 
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), MyTarget.Bottom, Vector2.Zero,
                 ModContent.ProjectileType<RedX>(), 1, 1, Main.myPlayer);
         }
 
@@ -1335,11 +2261,11 @@ public class Steamroller : ScarletBoss,
         _targetOutlineColor = Color.Yellow;
         if (Timer >= XDrillWarningTime)
         {
-            if (_xDrillSnagretVariant)
+            if (_variant == AttackVariant.Snagret)
             {
                 SwitchState(AIState.Snagret_PopRise);
             }
-            else if (_xDrillFallVariant)
+            else if (_variant == AttackVariant.Fall)
             {
                 SwitchState(AIState.DuneJump_Rise);
             }
@@ -1424,7 +2350,7 @@ public class Steamroller : ScarletBoss,
 
         }
 
-        for(float f = 0; f < 16; f++)
+        for (float f = 0; f < 16; f++)
         {
             Vector2 vel = -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(80));
             vel *= Main.rand.NextFloat(8f, 50);
@@ -1440,7 +2366,7 @@ public class Steamroller : ScarletBoss,
     {
         Animator.PlayAnimation(Anim_SpinFast);
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             _crashed = false;
             for (int i = 0; i < Chain.points.Length; i++)
@@ -1456,23 +2382,23 @@ public class Steamroller : ScarletBoss,
         NPC.velocity = shootVelocity;
         NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
         ShakeModSystem.Shake = 3;
-        if(Timer > 200 || NPC.Center.Y < MyTarget.Bottom.Y)
+        if (Timer > 200 || NPC.Center.Y < MyTarget.Bottom.Y)
         {
-            if (_xDrillDungVariant)
+            switch (_variant)
             {
-                SwitchState(AIState.X_Drill_Fall);
-            }
-            else if (_xDrillSnagretVariant)
-            {
-                SwitchState(AIState.Snagret_PopFallNStuckk);
-            }
-            else if (_xDrillFallVariant)
-            {
-                SwitchState(AIState.DuneJump_Fall);
-            }
-            else
-            {
-                SwitchState(AIState.X_Drill_Fall);
+                default:
+                    SwitchState(AIState.X_Drill_Fall);
+                    break;
+                case AttackVariant.Dung:
+                    SwitchState(AIState.X_Drill_Fall);
+                    break;
+                case AttackVariant.Snagret:
+                    SwitchState(AIState.Snagret_PopFallNStuckk);
+                    break;
+                case AttackVariant.Fall:
+                    SwitchState(AIState.DuneJump_Fall);
+                    break;
+
             }
         }
     }
@@ -1482,14 +2408,14 @@ public class Steamroller : ScarletBoss,
         Timer++;
         if (Timer == 1)
         {
-            if (_xDrillFallVariant)
+            if (_variant == AttackVariant.Fall)
             {
                 float dir = NPC.Center.X < MyTarget.Center.X ? 1 : -1;
                 _jumpSpeed = dir;
                 _jumpSpeed *= 21;
                 if (MultiplayerHelper.IsHost)
                 {
-                    for(int i = 0; i < 6; i++)
+                    for (int i = 0; i < 6; i++)
                     {
                         Vector2 spawnPosition = NPC.Center;
                         spawnPosition.X += Main.rand.NextFloat(-64, 64);
@@ -1518,7 +2444,7 @@ public class Steamroller : ScarletBoss,
 
             SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
             mechMove.PitchVariance = 0.3f;
-        //    SoundEngine.PlaySound(mechMove, NPC.position);
+            //    SoundEngine.PlaySound(mechMove, NPC.position);
 
 
         }
@@ -1529,16 +2455,16 @@ public class Steamroller : ScarletBoss,
         Vector2 targetPos = Vector2.Lerp(MyTarget.Center, NPC.Center, 0.35f);
 
 
-        if(Timer < 70)
+        if (Timer < 70)
             RetargetCameraModifier.ReTargetPosition = targetPos;
 
-        for(int i = 0; i < _steamrollerSegments.Length; i++)
+        for (int i = 0; i < _steamrollerSegments.Length; i++)
         {
             var segment = _steamrollerSegments[i];
             segment.glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.InOutSine(Timer / 60f)) * ExtraMath.Osc(0f, 1f, speed: 10, offset: i);
         }
 
-        if (_xDrillDungVariant)
+        if (_variant == AttackVariant.Dung)
         {
             if (NPC.velocity.Y < 0)
                 NPC.velocity.Y *= 0.9f;
@@ -1562,12 +2488,12 @@ public class Steamroller : ScarletBoss,
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
 
         }
-        else if (_xDrillSnagretVariant)
+        else if (_variant == AttackVariant.Snagret)
         {
             if (NPC.velocity.Y < -0.5f)
             {
                 NPC.velocity.Y *= 0.9f;
-               // NPC.velocity.X = MathF.Sin(Timer * 0.04f) * 8;
+                // NPC.velocity.X = MathF.Sin(Timer * 0.04f) * 8;
             }
             else
             {
@@ -1602,11 +2528,11 @@ public class Steamroller : ScarletBoss,
             float dist = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
             float xSpeed = xDirectionToTarget * dist * 0.25f;
 
-            if (_xDrillDungVariant)
+            if (_variant == AttackVariant.Dung)
             {
                 NPC.velocity.X *= 0.9f;
             }
-            else if (_xDrillFallVariant)
+            else if (_variant == AttackVariant.Fall)
                 NPC.velocity.X = MathHelper.Lerp(_currentSpeed, _jumpSpeed, EasingFunction.InOutSine(Timer / 25f));
             else if (Timer < 45)
                 NPC.velocity.X = MathHelper.Lerp(_currentSpeed, xSpeed, EasingFunction.InOutSine(Timer / 60f));
@@ -1629,18 +2555,18 @@ public class Steamroller : ScarletBoss,
                 SoundEngine.PlaySound(smash2, NPC.position);
 
                 FXUtil.ShakeCamera(NPC.Center, 1024, 24);
-                if (_xDrillSnagretVariant)
+                if (_variant == AttackVariant.Snagret)
                 {
                     _driller2 = true;
                 }
-                if (_xDrillDungVariant)
+                if (_variant == AttackVariant.Dung)
                 {
                     _quickDrill = true;
                 }
-           
+
                 SwitchState(AIState.Driller);
 
-            }           
+            }
         }
 
         MakeSteamParticlesRandomlyAtSegments();
@@ -1712,7 +2638,7 @@ public class Steamroller : ScarletBoss,
         spriteBatch.RestartDefaults();
 
         Draw(spriteBatch, screenPos, drawColor);
-        for (int i = 1; i < _steamrollerSegments.Length-1; i++)
+        for (int i = 1; i < _steamrollerSegments.Length - 1; i++)
         {
             SteamrollerSegment segment = _steamrollerSegments[i];
             Vector2 pos = Chain.points[i];
@@ -1720,7 +2646,7 @@ public class Steamroller : ScarletBoss,
             Color lightingColor = Lighting.GetColor(pos.ToTileCoordinates());
             segment.Draw(spriteBatch, pos, nextPos, drawColor);
         }
- 
+
         return false;
     }
 
