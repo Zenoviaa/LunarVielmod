@@ -1,5 +1,4 @@
-﻿using Stellamod.Core.ZTileSystem;
-using System.IO;
+﻿using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,21 +9,22 @@ namespace Stellamod.Helpers
     public enum DownedBossFlag : byte
     {
         Woodland_Ravager = 0,
-        Minerva=1,
-        Jack=2,
-        Daedus=3,
-        Verlian_Singularity=4,
-        Skullrunner=5,
-        Commander_Gintzia=6,
-        EliteCommander=7,
-        Gustbeak=8,
-        StarBomber=9,
-        Bishinine=10,
-        Jiitas=11,
-        SanguineSingularity=12,
-        PunkerPrime=13,
-        CrumblingTowerOfIlluria=14,
-        StoneGolem=15
+        Minerva = 1,
+        Jack = 2,
+        Daedus = 3,
+        Verlian_Singularity = 4,
+        Skullrunner = 5,
+        Commander_Gintzia = 6,
+        EliteCommander = 7,
+        Gustbeak = 8,
+        StarBomber = 9,
+        Bishinine = 10,
+        Jiitas = 11,
+        SanguineSingularity = 12,
+        PunkerPrime = 13,
+        CrumblingTowerOfIlluria = 14,
+        StoneGolem = 15,
+        Steamroller = 16
     }
 
     public class Flawless : ModBuff
@@ -49,7 +49,7 @@ namespace Stellamod.Helpers
             claimedNoHit ??= new bool[64];
             hasNoHit ??= new bool[64];
 
-            if(hasNoHit.Length < 64)
+            if (hasNoHit.Length < 64)
                 hasNoHit = new bool[64];
         }
         public void ResetFlags()
@@ -119,12 +119,12 @@ namespace Stellamod.Helpers
         public static bool[] downedBossFlags = new bool[64];
         public static void ResetFlags()
         {
-            for(int i = 0; i < downedBossFlags.Length; i++)
+            for (int i = 0; i < downedBossFlags.Length; i++)
             {
                 downedBossFlags[i] = false;
             }
         }
-        
+
         public override void ClearWorld()
         {
             base.ClearWorld();
@@ -169,7 +169,7 @@ namespace Stellamod.Helpers
             if (Main.netMode != NetmodeID.SinglePlayer)
             {
                 int clientToIgnore = Main.LocalPlayer.whoAmI;
-                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), 
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(),
                     (byte)MessageType.BossDowned, id).Send(ignoreClient: clientToIgnore);
             }
             else
@@ -183,7 +183,7 @@ namespace Stellamod.Helpers
             base.NetSend(writer);
             int numBytes = downedBossFlags.Length / 8;
             int j = 0;
-            for(int i = 0; i < numBytes; i++)
+            for (int i = 0; i < numBytes; i++)
             {
                 BitsByte b = new BitsByte
                 {
@@ -450,7 +450,7 @@ namespace Stellamod.Helpers
                 [5] = downedIrradiaBoss,
                 [6] = downedRekBoss,
                 [7] = downedCommanderGintziaBoss
-            }); 
+            });
             writer.Write(new BitsByte
             {
                 [0] = downedBishinineBoss,
