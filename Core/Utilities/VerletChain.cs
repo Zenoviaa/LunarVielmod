@@ -134,6 +134,7 @@ namespace Stellamod.Core.Utilities
 
                     p2.position.X += offsetX;
                     p2.position.Y += offsetY;
+
                 }
 
             }

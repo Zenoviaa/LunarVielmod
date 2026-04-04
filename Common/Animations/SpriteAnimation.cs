@@ -13,6 +13,7 @@ namespace Stellamod.Common.Animations
             _animations = new Dictionary<string, SpriteAnimation>();
         }
 
+        public float extraUpdates;
         public void AddAnimation(string name, SpriteAnimation animation)
         {
             _animations.Add(name, animation);
@@ -34,6 +35,8 @@ namespace Stellamod.Common.Animations
                 _currentAnimation.isPlaying = false;
             _currentAnimation = animation;
             _currentAnimation.Start();
+            for (int i = 0; i < extraUpdates; i++)
+                _currentAnimation?.Update();
         }
 
         public void Stop()

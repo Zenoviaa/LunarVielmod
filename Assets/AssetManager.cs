@@ -15,6 +15,7 @@ namespace Stellamod.Assets
 
         public class GlowMask
         {
+    
             public static Asset<Texture2D> RomanceGlowSwordMedium;
             public static Asset<Texture2D> RomanceGlowSwordSmall;
             public static Asset<Texture2D> RomanceGlowSword;
@@ -41,6 +42,7 @@ namespace Stellamod.Assets
  
         public class LaserTextures
         {
+            public static Asset<Texture2D> SplittingTrail;
             public static Asset<Texture2D> Bloom;
             public static Asset<Texture2D> HeavenlySlashTrail;
             public static Asset<Texture2D> TexturedLaser;
@@ -88,7 +90,7 @@ namespace Stellamod.Assets
             LaserTextures.PetalNoise = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/PetalNoise");
             LaserTextures.HeavenlySlashTrail = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/HeavenlySlashTrail");
             LaserTextures.Bloom = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Bloom");
-
+            LaserTextures.SplittingTrail = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/SplittingTrail");
             Noise.Whirly = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Whirly");
 
             Noise.AuroraRays = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/AuroraRays");
@@ -128,6 +130,7 @@ namespace Stellamod.Assets
             LaserTextures.PetalNoise = null;
             LaserTextures.HeavenlySlashTrail = null;
             LaserTextures.Bloom = null;
+            LaserTextures.SplittingTrail = null;
 
     Noise.Whirly = null;
             Noise.AuroraRays = null;
