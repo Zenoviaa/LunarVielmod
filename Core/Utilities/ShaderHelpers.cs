@@ -41,6 +41,34 @@ namespace Stellamod.Core.Utilities
             _tilingParam.SetValue(new Vector2(2f, 8f));
         }
     }
+    public class SuperShockwave : ScreenShader
+    {
+        private EffectParameter _interpParam;
+        private EffectParameter _epicenterParam;
+        private EffectParameter _strengthParam;
+        private EffectParameter _radiusParam;
+        public float strength = 32f;
+        public float radius;
+        public Vector2 epicenter;
+        public float interp;
+        public override void ApplyEffect(ScreenShaderData screenShaderData)
+        {
+            base.ApplyEffect(screenShaderData);
+            Effect effect = screenShaderData.Shader;
+            _radiusParam ??= effect.Parameters["radius"];
+            _strengthParam ??= effect.Parameters["strength"];
+            _epicenterParam ??= effect.Parameters["epicenter"];
+            _interpParam ??= effect.Parameters["interp"];
+
+            _radiusParam.SetValue(radius);
+            _strengthParam.SetValue(strength);
+            _epicenterParam.SetValue(epicenter);
+            _interpParam.SetValue(interp);
+
+            effect.Parameters["uScreenResolution"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
+            screenShaderData.UseOpacity(strength);
+        }
+    }
 
     public class DarkSmear : ScreenShader
     {

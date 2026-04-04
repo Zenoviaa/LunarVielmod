@@ -772,10 +772,10 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                             Vector2 velocity = Vector2.UnitX;
                             velocity *= 4;
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
-                                ModContent.ProjectileType<SuperShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                                ModContent.ProjectileType<StarSuperShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
                             velocity = -velocity;
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
-                                ModContent.ProjectileType<SuperShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                                ModContent.ProjectileType<StarSuperShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
                         }
 
                         //Stomp happens, so the code would be here
