@@ -70,6 +70,7 @@ public class RedX : ModProjectile
         {
             SoundStyle warningSound = AssetRegistry.Sounds.SteamPunking.MechSawRevUp;
             warningSound.PitchVariance = 0.3f;
+            warningSound.Volume = 0.3f;
             SoundEngine.PlaySound(warningSound, Projectile.position);
             float numDust = 8;
             for (float n = 0; n < numDust; n++)
@@ -1139,6 +1140,7 @@ public class Steamroller : ScarletBoss,
         _renderDashTrail = false;
         _contactDamage = false;
         _targetOutlineColor = Color.Transparent;
+      //  Main.NewText(State);
         switch (State)
         {
             case AIState.SpawnDrill:
@@ -1387,6 +1389,7 @@ public class Steamroller : ScarletBoss,
 
             SoundStyle steaming = AssetRegistry.Sounds.SteamPunking.MechSteaming;
             steaming.PitchVariance = 0.3f;
+            steaming.Volume = 0.5f;
             SoundEngine.PlaySound(steaming, NPC.position);
 
             SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
@@ -1545,6 +1548,7 @@ public class Steamroller : ScarletBoss,
 
             SoundStyle steaming = AssetRegistry.Sounds.SteamPunking.MechSteaming;
             steaming.PitchVariance = 0.3f;
+            steaming.Volume = 0.5f;
             SoundEngine.PlaySound(steaming, NPC.position);
 
             SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
@@ -1574,7 +1578,7 @@ public class Steamroller : ScarletBoss,
         } else if (AttackCycle >= 16)
         {
             _fromMeteorRain = true;
-            Teleport(MyTarget.Center + new Vector2(0, -750));
+            Teleport(MyTarget.Center + new Vector2(MyTarget.direction * 500, -750));
             SwitchState(AIState.HeadPop_Spin);
         }
     }
@@ -1641,7 +1645,7 @@ public class Steamroller : ScarletBoss,
         Timer++;
         if (Timer == 1)
         {
-
+            _currentSpeed = NPC.velocity.Length();
             GroundImpact();
 
             SoundStyle smash = AssetRegistry.Sounds.Melee.HammerSmash3;
@@ -1650,6 +1654,7 @@ public class Steamroller : ScarletBoss,
 
             SoundStyle steaming = AssetRegistry.Sounds.SteamPunking.MechSteaming;
             steaming.PitchVariance = 0.3f;
+            steaming.Volume = 0.5f;
             SoundEngine.PlaySound(steaming, NPC.position);
 
             SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
@@ -1702,15 +1707,7 @@ public class Steamroller : ScarletBoss,
         float dist = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
         float xSpeed = xDirectionToTarget * dist * 0.25f;
 
-        if (_variant == AttackVariant.Dung)
-        {
-            NPC.velocity.X *= 0.9f;
-        }
-        else if (_variant == AttackVariant.Fall)
-            NPC.velocity.X = MathHelper.Lerp(_currentSpeed, _jumpSpeed, EasingFunction.InOutSine(Timer / 25f));
-        else if (Timer < 45)
-            NPC.velocity.X = MathHelper.Lerp(_currentSpeed, xSpeed, EasingFunction.InOutSine(Timer / 60f));
-
+        NPC.velocity.X = MathHelper.Lerp(_currentSpeed, xSpeed, EasingFunction.InOutSine(Timer / 60f));
         NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
         Vector2 bottom = NPC.Bottom + Vector2.UnitY * 64;
         Point tilePoint = bottom.ToTileCoordinates();
@@ -1901,6 +1898,7 @@ public class Steamroller : ScarletBoss,
 
             SoundStyle steaming = AssetRegistry.Sounds.SteamPunking.MechSteaming;
             steaming.PitchVariance = 0.3f;
+            steaming.Volume = 0.5f;
             SoundEngine.PlaySound(steaming, NPC.position);
 
             SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
@@ -1963,7 +1961,7 @@ public class Steamroller : ScarletBoss,
                 if (MultiplayerHelper.IsHost)
                 {
                     Vector2 posToFireFrom = Chain.points[i];
-                    Vector2 fireDirection = Vector2.UnitX * (Main.rand.NextBool(2) ? 1 : -1);
+                    Vector2 fireDirection = Vector2.UnitX * (MyTarget.Center.X > NPC.Center.X ? 1 : -1);
                     Vector2 fireVelocity = fireDirection * 15;
                     posToFireFrom += fireDirection * 50;
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), posToFireFrom, fireVelocity, ModContent.ProjectileType<SteamrollerBomb>(), SteamrollerBombDamage, 1, Main.myPlayer);
@@ -2195,6 +2193,8 @@ public class Steamroller : ScarletBoss,
         _fromMeteorRain = false;
         _quickDrill = false;
         _driller2 = false;
+
+
         for (int i = 0; i < SteamRollerSegments.Length; i++)
         {
             var segment = SteamRollerSegments[i];
@@ -2209,7 +2209,6 @@ public class Steamroller : ScarletBoss,
         }
 
         Vector2 undergroundPosition = MyTarget.Center + new Vector2(0, 1500);
-        undergroundPosition += Vector2.UnitY.RotatedBy(Main.GlobalTimeWrappedHourly * 5) * 100;
         Vector2 vel = (undergroundPosition - NPC.Center).SafeNormalize(Vector2.Zero);
 
         float ratio = Timer / 90f;
@@ -2581,6 +2580,7 @@ public class Steamroller : ScarletBoss,
 
             SoundStyle steaming = AssetRegistry.Sounds.SteamPunking.MechSteaming;
             steaming.PitchVariance = 0.3f;
+            steaming.Volume = 0.5f;
             SoundEngine.PlaySound(steaming, NPC.position);
         }
 
