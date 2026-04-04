@@ -68,6 +68,8 @@ namespace Stellamod.Common.SummonerSystem
                 return;
             NPC npc = Main.npc[_npcWhoAmI];
             npc.Center = Projectile.Center;
+            if(isGuardian)
+                npc.ai[1]+=2;
             npc.AddBuff(ModContent.BuffType<SpectralMinion>(), 2);
             if (!npc.active)
             {

@@ -46,6 +46,12 @@ namespace Stellamod.Common.Animations
             _currentAnimation?.Update();
         }
 
+        public int GetFrame()
+        {
+            if (_currentAnimation == null)
+                return 0;
+            return _currentAnimation.GetFrame();
+        }
         public int GetFrameY(int frameHeight)
         {
             if (_currentAnimation == null)
@@ -156,7 +162,10 @@ namespace Stellamod.Common.Animations
             }
 
         }
-
+        public int GetFrame()
+        {
+            return _frame;
+        }
         public int GetFrameY(int frameHeight)
         {
             return frameHeight * _frame;

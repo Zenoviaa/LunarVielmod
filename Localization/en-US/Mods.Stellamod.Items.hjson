@@ -10711,3 +10711,8 @@ HypnotizingChakrams: {
 	DisplayName: Hypnotizing Chakrams
 	Tooltip: ""
 }
+
+MinersStorm: {
+	DisplayName: Miners Storm
+	Tooltip: ""
+}
