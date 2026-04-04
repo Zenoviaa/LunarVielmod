@@ -1578,7 +1578,7 @@ public class Steamroller : ScarletBoss,
         } else if (AttackCycle >= 16)
         {
             _fromMeteorRain = true;
-            Teleport(MyTarget.Center + new Vector2(MyTarget.direction * 500, -750));
+            Teleport(MyTarget.Center + new Vector2(MyTarget.direction * 1500, -750));
             SwitchState(AIState.HeadPop_Spin);
         }
     }
