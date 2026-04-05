@@ -244,6 +244,8 @@ public class Steamroller : ScarletBoss,
     private bool _crashed;
     private bool _contactDamage;
     private bool _spawnedSmall;
+    private bool _isMainWorm;
+    private float _delayTimer;
     private AttackVariant _variant;
 
     private float _dashTrailTimer;
@@ -338,11 +340,12 @@ public class Steamroller : ScarletBoss,
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
     }
+    private AIState _nextAttackToDo;
 
     private ref float AttackCycle => ref NPC.ai[2];
     private bool IsSmall => NPC.ai[3] == 1;
     //Damage Values
-    private int FallingSteamrollerDamage => 40;
+    private int FallingSteamrollerDamage => 27;
     private int BedrockDamage => 43;
     private int SteamrollerBombDamage => 40;
     private int ShockwaveDamage => 48;
@@ -415,7 +418,7 @@ public class Steamroller : ScarletBoss,
         NPC.height = 128;
         NPC.damage = 180;
         NPC.defense = 28;
-        NPC.lifeMax = 5000;
+        NPC.lifeMax = 12000;
 
         NPC.value = Item.buyPrice(gold: 5);
         NPC.knockBackResist = 0f;
@@ -478,6 +481,11 @@ public class Steamroller : ScarletBoss,
             _phase2 = true;
         }
 
+        if (NPC.life <= 1 && !_isDying)
+        {
+            NPC.life = 1;
+            SwitchState(AIState.Death_Start);
+        }
 
         //Sync Health between copies
         foreach (var npc in Main.ActiveNPCs)
@@ -486,13 +494,13 @@ public class Steamroller : ScarletBoss,
                 continue;
             if (npc.life > NPC.life)
                 npc.life = NPC.life;
-        }
-
-
-        if (IsSmall && !_spawnedSmall)
-        {
-            SwitchState(AIState.X_Drill_Rise);
-            _spawnedSmall = true;
+            if (_isMainWorm)
+            {
+                if(npc.ModNPC is Steamroller babySteamroller)
+                {
+                    babySteamroller._nextAttackToDo = _nextAttackToDo;
+                }
+            }
         }
 
         _pauseAnimation = false;
@@ -501,7 +509,7 @@ public class Steamroller : ScarletBoss,
         _renderDashTrail = false;
         _contactDamage = false;
         _targetOutlineColor = Color.Transparent;
-        //  Main.NewText(State);
+  
         switch (State)
         {
             case AIState.SpawnDrill:
@@ -763,27 +771,33 @@ public class Steamroller : ScarletBoss,
         _targetOutlineColor = Color.Red;
         _contactDamage = true;
         _renderDashTrail = true;
-        Vector2 targetPos = Vector2.Lerp(MyTarget.Center, NPC.Center, 0.35f);
-
+        if(_isMainWorm)
+        {
+            Vector2 targetPos = Vector2.Lerp(MyTarget.Center, NPC.Center, 0.35f);
+            if (Timer < 70)
+                RetargetCameraModifier.ReTargetPosition = targetPos;
+        }
 
         if (Timer == 60)
         {
-            if (MultiplayerHelper.IsHost)
+            if (MultiplayerHelper.IsHost && _isMainWorm)
             {
-                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, NPC.type, ai3: 1);
+                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, NPC.type, 
+                    ai0: 0, ai1: (int)AIState.Phase_TransitionFall, ai3: 1);
             }
             NPC.ai[3] = 1;
-            _phase2 = true;
         }
 
-        if (Timer < 70)
-            RetargetCameraModifier.ReTargetPosition = targetPos;
+        _phase2 = true;
 
         for (int i = 0; i < _steamrollerSegments.Length; i++)
         {
             var segment = _steamrollerSegments[i];
             segment.glowColor = Color.Lerp(Color.Transparent, Color.Red, EasingFunction.InOutSine(Timer / 60f)) * ExtraMath.Osc(0f, 1f, speed: 10, offset: i);
         }
+
+
+
 
         if (NPC.velocity.Y < 0)
             NPC.velocity.Y *= 0.97f;
@@ -809,9 +823,6 @@ public class Steamroller : ScarletBoss,
 
         NPC.velocity.X = MathHelper.Lerp(_currentSpeed, _jumpSpeed, EasingFunction.InOutSine(Timer / 25f));
         NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
-
-
-
 
         Vector2 bottom = NPC.Bottom + Vector2.UnitY * 64;
         Point tilePoint = bottom.ToTileCoordinates();
@@ -932,7 +943,10 @@ public class Steamroller : ScarletBoss,
             NPC.velocity *= 0.9f;
         }
 
-        if (Timer > 60 && AttackCycle < 16)
+        int count = 16;
+        if (IsSmall)
+            count /= 2;
+        if (Timer > 60 && AttackCycle < count)
         {
             if (Timer % 10 == 0)
             {
@@ -946,7 +960,7 @@ public class Steamroller : ScarletBoss,
                 AttackCycle++;
             }
         }
-        else if (AttackCycle >= 16)
+        else if (AttackCycle >= count)
         {
             _fromMeteorRain = true;
             Teleport(MyTarget.Center + new Vector2(MyTarget.direction * 1500, -750));
@@ -1620,20 +1634,29 @@ public class Steamroller : ScarletBoss,
 
     private void ChooseAttack()
     {
+  
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(PatternManager.NextPattern());
+            if (!_isMainWorm)
+            {
+                SwitchState(_nextAttackToDo);
+                return;
+            }
+
+            _nextAttackToDo = PatternManager.NextPattern();
+            SwitchState(_nextAttackToDo);
             if (!_phase2 && NPC.life < NPC.lifeMax * 0.5f)
             {
                 SwitchState(AIState.Phase_Transition);
             }
-            SwitchState(AIState.X_Drill_Start);
+      //      SwitchState(AIState.X_Drill_Start);
         }
     }
 
     #region Idle States
     private void AI_SpawnDrill()
     {
+        _isMainWorm = true;
         ShowNamePlate();
         SwitchState(AIState.IdleDrill);
     }
@@ -1644,7 +1667,12 @@ public class Steamroller : ScarletBoss,
         _fromMeteorRain = false;
         _quickDrill = false;
         _driller2 = false;
-
+        if (!_isMainWorm && _delayTimer < 60)
+        {
+            NPC.velocity *= 0;
+            _delayTimer++;
+            return;
+        }
 
         for (int i = 0; i < SteamRollerSegments.Length; i++)
         {
@@ -2236,7 +2264,10 @@ public class Steamroller : ScarletBoss,
 
 
         Draw(spriteBatch, screenPos, drawColor);
-        for (int i = 1; i < _steamrollerSegments.Length - 1; i++)
+        int segmentsToDraw = _steamrollerSegments.Length - 1;
+        if (IsSmall)
+            segmentsToDraw /= 2;
+        for (int i = 1; i < segmentsToDraw; i++)
         {
             SteamrollerSegment segment = _steamrollerSegments[i];
             Vector2 pos = Chain.points[i];
@@ -2259,11 +2290,6 @@ public class Steamroller : ScarletBoss,
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
-        if (NPC.life <= 0 && !_isDying)
-        {
-            NPC.life = 1;
-            SwitchState(AIState.Death_Start);
-        }
 
         if (NPC.life <= 0)
         {
