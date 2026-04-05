@@ -56,7 +56,7 @@ namespace Stellamod.Core.Utilities
         private void Resize()
         {
             Semaphore.WaitOne();
-            Console.WriteLine("Resize RT");
+
             Point screenSize = _resizeFunction();
             Point newSize = new Point(screenSize.X / _downSamples, screenSize.Y / _downSamples);
             _renderTarget.Release();
@@ -170,7 +170,10 @@ namespace Stellamod.Core.Utilities
             //Wait a little bit before resizing render targets after getting in game
             //This is just to avoid a few issues
             if (Main.gameMenu)
+            {
                 _resizeTimer = 0;
+                return;
+            }
             else
             {
                 _resizeTimer++;

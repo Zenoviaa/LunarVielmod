@@ -1817,7 +1817,7 @@ public class Steamroller : ScarletBoss,
         }
 
         MakeSteamParticlesRandomlyAtSegments();
-
+        float dt = DrillTime;
         if (_driller2)
         {
             if (MultiplayerHelper.IsHost && Timer < dt)
@@ -1836,7 +1836,7 @@ public class Steamroller : ScarletBoss,
         }
 
 
-        float dt = DrillTime;
+    
         if (_quickDrill)
             dt *= 0.2f;
         if (Timer < dt)

@@ -101,8 +101,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         /// <returns></returns>
         public Vector2 CalculateParticlePosition(float time, int index)
         {
-            const float revolutionTime = 100f;
-
             //Calculate the rotation offset for this particle
             const float maxRadiansOffset = MathHelper.TwoPi;
 
