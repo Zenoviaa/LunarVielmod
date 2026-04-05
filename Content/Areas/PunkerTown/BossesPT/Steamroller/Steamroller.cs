@@ -184,6 +184,7 @@ public class Steamroller : ScarletBoss,
         SpawnDrill,
         IdleDrill,
         Driller,
+        Despawn,
 
         Death_Start,
         Death_Rise,
@@ -481,6 +482,15 @@ public class Steamroller : ScarletBoss,
             _phase2 = true;
         }
 
+        if (!NPC.HasValidTarget)
+        {
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget && State != AIState.Despawn)
+            {
+                SwitchState(AIState.Despawn);
+            }
+        }
+
         if (NPC.life <= 1 && !_isDying)
         {
             NPC.life = 1;
@@ -520,6 +530,9 @@ public class Steamroller : ScarletBoss,
                 break;
             case AIState.Driller:
                 AI_Driller();
+                break;
+            case AIState.Despawn:
+                AI_Despawn();
                 break;
 
             case AIState.Death_Start:
@@ -655,6 +668,21 @@ public class Steamroller : ScarletBoss,
         {
             Chain.Resolve();
         }
+    }
+
+    private void AI_Despawn()
+    {
+        Timer++;
+        if (NPC.velocity.Y < 0)
+            NPC.velocity.Y *= 0.94f;
+        else
+        {
+            NPC.velocity.Y += 0.2f;
+            NPC.velocity.Y *= 1.025f;
+        }
+        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+        if (Timer >= 120)
+            NPC.active = false;
     }
 
     #region Phase Shift
@@ -1112,8 +1140,6 @@ public class Steamroller : ScarletBoss,
                 SwitchState(AIState.HeadPop_Fall);
             }
         }
-
-
     }
 
     private void AI_HeadPopFall()
@@ -1316,7 +1342,7 @@ public class Steamroller : ScarletBoss,
             {
                 FXUtil.ShakeCamera(NPC.Center, 1024, 8);
                 ShakeModSystem.Shake = 5;
-                for (int i = 0; i < SteamRollerSegments.Length; i++)
+                for (int i = 0; i < SteamRollerSegments.Length / 2; i++)
                 {
                     var steamRollerSegment = SteamRollerSegments[i];
                     int headGore = Mod.Find<ModGore>($"{Name}_Gore_Body_0").Type;
@@ -1367,7 +1393,8 @@ public class Steamroller : ScarletBoss,
 
                         Vector2 fireVelocity = forwardVector2 * 15;
                         posToFireFrom += forwardVector2 * 50;
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), posToFireFrom, fireVelocity, ModContent.ProjectileType<SteamrollerBomb>(), SteamrollerBombDamage, 1, Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), posToFireFrom, fireVelocity, 
+                            ModContent.ProjectileType<SteamrollerBomb>(), SteamrollerBombDamage, 1, Main.myPlayer);
                     }
 
                 }
@@ -1451,13 +1478,14 @@ public class Steamroller : ScarletBoss,
                 float spawnScale = Main.rand.NextFloat(0.75f, 1f);
                 Particle<ThickSmokeParticle>.Spawn(spawnPosition, spawnVelocity, color: Color.DarkGray, Scale: spawnScale);
             }
-
         }
+
         if (Main.rand.NextBool(3))
         {
             Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
             Dust.NewDustPerfect(bottom + Main.rand.NextVector2Circular(64, 64), DustID.Dirt, spawnVelocity, Scale: 2);
         }
+
         if (Main.rand.NextBool(6))
         {
             Vector2 spawnPosition = bottom;
