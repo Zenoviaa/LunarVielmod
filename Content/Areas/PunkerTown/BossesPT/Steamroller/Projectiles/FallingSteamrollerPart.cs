@@ -22,8 +22,8 @@ public class FallingSteamrollerPart : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 64;
-        Projectile.height = 64;
+        Projectile.width = 50;
+        Projectile.height = 50;
         Projectile.tileCollide = true;
         Projectile.timeLeft = 240;
         Projectile.hostile = true;

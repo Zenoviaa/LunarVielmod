@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.HealthbarSystem;
+﻿using Stellamod.Common.HealthbarSystem;
 using Stellamod.Content.Areas.SpecialTiles.EffectTiles;
 using Stellamod.Core.TitleSystem;
 using Stellamod.Helpers;
@@ -24,7 +22,8 @@ namespace Stellamod.Core
         public override void OnSpawn(IEntitySource source)
         {
             base.OnSpawn(source);
-            foreach(var player in Main.ActivePlayers)
+
+            foreach (var player in Main.ActivePlayers)
             {
                 player.AddBuff(ModContent.BuffType<Flawless>(), 2);
             }
@@ -38,7 +37,7 @@ namespace Stellamod.Core
         }
         public override void SendExtraAI(BinaryWriter writer)
         {
-            
+
             base.SendExtraAI(writer);
             writer.WriteVector2(_arenaCenter);
         }
@@ -64,7 +63,7 @@ namespace Stellamod.Core
         public override void AI()
         {
             base.AI();
-            if(_arenaCenter == Vector2.Zero)
+            if (_arenaCenter == Vector2.Zero)
             {
                 _arenaCenter = NPC.Center;
                 NPC.netUpdate = true;

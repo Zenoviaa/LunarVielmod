@@ -36,7 +36,7 @@ public class Bedrock : ModProjectile
             Projectile.frame = Main.rand.Next(3);
             Projectile.scale = Main.rand.NextFloat(0.7f, 1f);
         }
-        if (Timer > 20)
+        if (Timer > 15)
             Projectile.tileCollide = true;
         Projectile.velocity.Y += 0.25f;
         Projectile.rotation -= 0.05f;

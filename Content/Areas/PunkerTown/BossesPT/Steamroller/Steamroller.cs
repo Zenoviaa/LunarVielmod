@@ -973,7 +973,7 @@ public class Steamroller : ScarletBoss,
 
         int count = 16;
         if (IsSmall)
-            count /= 2;
+            count /= 4;
         if (Timer > 60 && AttackCycle < count)
         {
             if (Timer % 10 == 0)
@@ -1501,17 +1501,14 @@ public class Steamroller : ScarletBoss,
         Timer++;
         if (Timer == 1)
         {
-
             NPC.TargetClosest();
-
         }
+
         if (Timer < DungDefenderWarningTime - 30)
         {
             _startVelocity = NPC.velocity;
             _targetPosition = MyTarget.Bottom;
         }
-
-
 
         //Ease in to the start position for the attack
         float ratio = Timer / DungDefenderWarningTime;
@@ -1534,9 +1531,7 @@ public class Steamroller : ScarletBoss,
             {
                 SwitchState(AIState.DungDefenderRock_Blast);
             }
-
         }
-
     }
     private void AI_DungDefenderRockBlast()
     {
@@ -1581,15 +1576,14 @@ public class Steamroller : ScarletBoss,
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), spawnPosition, spawnVelocity,
                         ModContent.ProjectileType<Bedrock>(), BedrockDamage, 1, Main.myPlayer);
                 }
-
             }
 
             GroundImpact();
-
             SoundStyle smash = AssetRegistry.Sounds.Melee.HammerSmash3;
             smash.PitchVariance = 0.3f;
             SoundEngine.PlaySound(smash, NPC.position);
         }
+
         if (NPC.velocity.Y < 0)
         {
             NPC.velocity.Y += 0.125f;
@@ -1598,8 +1592,6 @@ public class Steamroller : ScarletBoss,
         else
         {
             NPC.velocity.Y += 0.5f;
-
-
             if (NPC.velocity.Y > 25)
             {
                 NPC.velocity.Y = 25;
@@ -1611,6 +1603,7 @@ public class Steamroller : ScarletBoss,
             ref Vector2 p = ref Chain.points[i];
             p += NPC.velocity;
         }
+
         if (Timer >= 45)
         {
             AttackCycle++;
@@ -1646,6 +1639,7 @@ public class Steamroller : ScarletBoss,
                 zap.outerColor = Color.Lerp(zap.innerColor, Color.Black, 0.5f);
                 zap.fadeToColor = Color.Lerp(zap.outerColor, Color.Black, 0.5f);
             }
+
             if (Main.rand.NextBool(150))
             {
                 Vector2 spawnPosition = point;
@@ -1662,7 +1656,6 @@ public class Steamroller : ScarletBoss,
 
     private void ChooseAttack()
     {
-  
         if (MultiplayerHelper.IsHost)
         {
             if (!_isMainWorm)
@@ -1677,7 +1670,6 @@ public class Steamroller : ScarletBoss,
             {
                 SwitchState(AIState.Phase_Transition);
             }
-      //      SwitchState(AIState.X_Drill_Start);
         }
     }
 
@@ -1706,7 +1698,7 @@ public class Steamroller : ScarletBoss,
         {
             var segment = SteamRollerSegments[i];
             segment.glowColor = Color.Black;
-            segment.animationState = SteamrollerSegment.SteamrollerAnimationState.Spin_Slow; ;
+            segment.animationState = SteamrollerSegment.SteamrollerAnimationState.Spin_Slow; 
         }
         Animator.PlayAnimation(Anim_SpinSlow);
         Timer++;
@@ -1749,6 +1741,7 @@ public class Steamroller : ScarletBoss,
             sound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(sound, NPC.position);
         }
+
         ShakeModSystem.Shake = 4;
         float ratio = Timer / 30f;
         float ease = EasingFunction.QuadraticBump(ratio);
@@ -1817,6 +1810,7 @@ public class Steamroller : ScarletBoss,
             Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
             ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
         }
+
         for (int i = 0; i < SteamRollerSegments.Length; i++)
         {
             SteamRollerSegments[i].paused = true;
@@ -1826,7 +1820,7 @@ public class Steamroller : ScarletBoss,
 
         if (_driller2)
         {
-            if (MultiplayerHelper.IsHost)
+            if (MultiplayerHelper.IsHost && Timer < dt)
             {
                 if (Timer % 10 == 0)
                 {
@@ -1931,7 +1925,6 @@ public class Steamroller : ScarletBoss,
 
     private void GroundImpact()
     {
-
         int[] gores = AutoGoreLoader.FindGores("GrayRock");
         foreach (int g in gores)
         {
@@ -2047,7 +2040,6 @@ public class Steamroller : ScarletBoss,
                 case AttackVariant.Fall:
                     SwitchState(AIState.DuneJump_Fall);
                     break;
-
             }
         }
     }
@@ -2080,7 +2072,6 @@ public class Steamroller : ScarletBoss,
             }
             _currentSpeed = NPC.velocity.X;
             _crashed = false;
-
             GroundImpact();
 
             SoundStyle smash = AssetRegistry.Sounds.Melee.HammerSmash3;
