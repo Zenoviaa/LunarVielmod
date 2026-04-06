@@ -7,6 +7,7 @@ using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
+using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
@@ -65,10 +66,10 @@ public class PunkerBoom : ModProjectile
                     vel *= 7;
                     vel.Y -= 1;
                     Vector2 offset = Projectile.Center + vel;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), offset, vel, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), offset, vel, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
                 }
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Vector2.UnitX * 6, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.UnitX * 6, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Vector2.UnitX * 6, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.UnitX * 6, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
             }
 
             PixelPrimitiveCircleFactory.CreatePunkerBoom(Projectile.Center);
@@ -227,8 +228,10 @@ public class PunkerPrime : ScarletBoss,
     private bool[] _disabledArms;
     private bool _showNamePlate;
     private bool _phaseTransition;
-
-
+    private Color _spotlightColor;
+    private Color _targetSpotlightColor;
+    private float _glowAlpha;
+    private float _targetGlowAlpha;
     private float _upDown;
     private float _rotOffset;
     private Vector2 _upDownOffset;
@@ -418,6 +421,8 @@ public class PunkerPrime : ScarletBoss,
         }
 
 
+        _targetGlowAlpha = 0;
+        _targetSpotlightColor = Color.Transparent;
         ManageMetronome();
         MoveSlightlyTowardMe();
         Lighting.AddLight(NPC.Center, TorchID.Red);
@@ -471,6 +476,8 @@ public class PunkerPrime : ScarletBoss,
                 break;
         }
 
+        _glowAlpha = MathHelper.Lerp(_glowAlpha, _targetGlowAlpha, 0.1f);
+        _spotlightColor = Color.Lerp(_spotlightColor, _targetSpotlightColor, 0.1f);
     }
 
     private bool CanUseArm(int armIndex)
@@ -654,6 +661,9 @@ public class PunkerPrime : ScarletBoss,
         Timer++;
         if(Timer == 1)
         {
+            SoundStyle cheering = AssetRegistry.Sounds.Collosseum.GintzeCheer;
+
+            SoundEngine.PlaySound(cheering);
             if (MultiplayerHelper.IsHost)
             {
                 for (int i = 0; i < _arms.Length; i++)
@@ -671,11 +681,27 @@ public class PunkerPrime : ScarletBoss,
             }
         }
 
+        if(Timer % 30 == 0)
+        {
+            int gore1 = GoreHelper.TypeFallingLeafWhite;
+            int gore2 = GoreHelper.TypeFallingLeafRed;
+            for (int i = 0; i < 7; i++)
+            {
+                Vector2 pos = NPC.Center;
+                pos += Main.rand.NextVector2Circular(256, 256);
+                Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                Gore.NewGore(NPC.GetSource_FromThis(), pos, velocity, gore1);
 
+                velocity = velocity.RotatedByRandom(MathHelper.TwoPi);
+                Gore.NewGore(NPC.GetSource_FromThis(), pos, velocity, gore2);
+            }
+        }
+
+        _targetSpotlightColor = Color.White * 0.5f;
         NPC.velocity.X = ExtraMath.Osc(-4f, 4f, speed: 3);
         NPC.velocity.Y *= 0.95f;
         NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.01f);
-    
+        RetargetCameraModifier.ReTargetPosition = NPC.Center;
         if(Timer >= 160)
         {
             SwitchState(AIState.Emote_Laugh);
@@ -1007,6 +1033,7 @@ public class PunkerPrime : ScarletBoss,
             {
                 SwitchState(AIState.Flurry);
             }
+            //SwitchState(AIState.Crash_Start);
         }
     }
 
@@ -1033,6 +1060,7 @@ public class PunkerPrime : ScarletBoss,
                 var d = Dust.NewDustPerfect(NPC.Top, ModContent.DustType<TSmokeDust>(), Scale: Main.rand.NextFloat(0.5f, 1.2f));
             }
         }
+        _targetGlowAlpha = 1;
         SpecialTimer++;
         _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 1f, 0.1f);
         Chase();
@@ -1263,6 +1291,32 @@ public class PunkerPrime : ScarletBoss,
         }
         DrawBodyAfterImage(spriteBatch, screenPos);
         DrawBodySprite(spriteBatch, screenPos, drawColor);
+
+        //oh yeah spot light
+        if(_spotlightColor != Color.Transparent)
+        {
+            float height = -250;
+            Vector2 startPos = NPC.Center + new Vector2(-250, height);
+            Vector2 endPos = NPC.Center;
+            float rotat = (endPos - startPos).ToRotation();
+            SpritebatchDrawer spotlightDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.Spotlight, startPos);
+            spotlightDrawer.LeftCenterOrigin();
+            spotlightDrawer.rotation = rotat;
+            spotlightDrawer.color = _spotlightColor;
+            spotlightDrawer.color.A = 0;
+            spotlightDrawer.scale *= 2;
+            spriteBatch.Draw(spotlightDrawer);
+
+            startPos = NPC.Center + new Vector2(250, height);
+            rotat = (endPos - startPos).ToRotation();
+            spotlightDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.Spotlight, startPos);
+            spotlightDrawer.LeftCenterOrigin();
+            spotlightDrawer.rotation = rotat;
+            spotlightDrawer.color = _spotlightColor;
+            spotlightDrawer.color.A = 0;
+            spotlightDrawer.scale *= 2;
+            spriteBatch.Draw(spotlightDrawer);
+        }
         return false;
     }
 
@@ -1294,6 +1348,11 @@ public class PunkerPrime : ScarletBoss,
         Vector2 drawOrigin = frame.Size() / 2f;
         drawCenter += _draw.shakeOffset;
         spriteBatch.Draw(texture, drawCenter + _upDownOffset, frame, color, NPC.rotation + _rotOffset, drawOrigin, _draw.scale, SpriteEffects.None, 0);
+
+        Texture2D glowMask = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
+        Color glowColor = Color.Lerp(Color.Black, Color.Red, ExtraMath.Osc(0f, 1f, speed: 2)) * _glowAlpha;
+        spriteBatch.Draw(glowMask, drawCenter + _upDownOffset, frame, glowColor, NPC.rotation + _rotOffset, drawOrigin, _draw.scale, SpriteEffects.None, 0);
+
     }
 
 

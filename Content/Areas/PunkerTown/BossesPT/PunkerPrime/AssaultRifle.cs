@@ -52,6 +52,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                     DustParticle.Spawn(Projectile.Center, fireVelocity, spawnParams);
                 }
             }
+            if (Projectile.ai[1] == 1 && Timer > 50)
+                Projectile.velocity.Y += 0.15f;
             Projectile.velocity *= 1.01f;
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
