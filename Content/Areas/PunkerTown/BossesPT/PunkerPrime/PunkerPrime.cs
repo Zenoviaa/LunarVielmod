@@ -964,6 +964,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SoundEngine.PlaySound(mechSteaming, NPC.position);
                 _phaseTransition = true;
             }
+
+
             ManageMetronome();
             MoveSlightlyTowardMe();
             Lighting.AddLight(NPC.Center, TorchID.Red);
@@ -1119,8 +1121,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
                 if (MultiplayerHelper.IsHost)
                 {
+                    int shouldDrop = InPhase2 ? 2 : 0;
                     Projectile.NewProjectile(SourceFromThis, NPC.Bottom, Vector2.Zero,
-                        ModContent.ProjectileType<PrimeMegaSaw>(), PrimeSawbladeDamage, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                        ModContent.ProjectileType<PrimeMegaSaw>(), PrimeSawbladeDamage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: shouldDrop);
                 }
             }
 
@@ -1164,8 +1167,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SpawnSteamParticle();
             }
 
+
             float endTime = 240;
-            Vector2 velToTarget = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+
+            Vector2 targetPos = MyTarget.Center;
+            if (Timer > endTime / 120 && InPhase2)
+            {
+                targetPos.Y -= 128;
+            }
+
+            Vector2 velToTarget = (targetPos - NPC.Center).SafeNormalize(Vector2.Zero);
             velToTarget *= 8f;
             NPC.velocity = Vector2.Lerp(NPC.velocity, velToTarget, 0.1f);
             _draw.shakeOffset = Main.rand.NextVector2Circular(2, 2);
@@ -1295,7 +1306,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             _draw.afterImageStrength *= 0.5f;
             _animationToPlay = Anim_Idle;
-    
+            SpecialTimer++;
 
             //Steampunker prime is just going to hover around and above you most of the time for the most part
             //If you get far from him he'll track you, but otherwise he's mostly stationary and doesn't move too much
@@ -1312,8 +1323,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SuperchargeTimer++;
             }
 
-            SpecialTimer++;
-
+   
             //Starts slow and gets faster over time
             float idleTime = 240;
             if (Timer % 15 == 0)
@@ -1378,7 +1388,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                     var d = Dust.NewDustPerfect(NPC.Top, ModContent.DustType<TSmokeDust>(), Scale: Main.rand.NextFloat(0.5f, 1.2f));
                 }
             }
-
+            SpecialTimer++;
             _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 1f, 0.1f);
             Chase();
             NPC.velocity *= 0.94f;
@@ -1472,15 +1482,61 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             _draw.outlineColor = Color.Lerp(Color.Transparent, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 12f));
             if (Timer >= deathTime)
             {
+                FXUtil.ShakeCamera(NPC.position, 1024, 8);
+                ShakeModSystem.Shake = 16;
+
+                var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.Yellow, Color.Red, Color.DarkRed);
+                fx.Scale *= 4;
+                FXUtil.ShakeCamera(NPC.Center, 1024, 8);
+                ShakeModSystem.Shake = 5;
+                if(Main.netMode != NetmodeID.Server)
+                {
+                    int[] gores = new int[]
+                    {
+                         Mod.Find<ModGore>($"{Name}_Gore_0").Type,
+                         Mod.Find<ModGore>($"{Name}_Gore_1").Type,
+                         Mod.Find<ModGore>($"{Name}_Gore_2").Type,
+                         Mod.Find<ModGore>($"{Name}_Gore_3").Type,
+                    };
+                    for (int i = 0; i < gores.Length; i++)
+                    {
+                        var gore = gores[i];
+
+                        // Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+                        Vector2 position = NPC.Center;
+           
+                        for (float f = 0; f < 7; f++)
+                        {
+                            Vector2 vel = Main.rand.NextVector2Circular(8, 8);
+                            var spawnParams = DustParticleSpawnParams.Default;
+                            spawnParams.innerColor = Color.Yellow;
+                            Vector2 pos2 = position + Main.rand.NextVector2Circular(32, 32);
+                            DustParticle.Spawn(pos2, vel, spawnParams);
+                        }
+
+                        Vector2 vel2 = Main.rand.NextVector2Circular(8, 8);
+                        vel2 += NPC.velocity;
+                        vel2.Y -= 8;
+                        Gore.NewGore(NPC.GetSource_Death(), position, vel2, gore, 1f);
+                    }
+                }
+
+                SoundStyle kaboom = new SoundStyle("Stellamod/Assets/Sounds/RekShockwave");
+                SoundEngine.PlaySound(kaboom, NPC.position);
+                if (Main.netMode != NetmodeID.Server)
+                    ModContent.GetInstance<ScreenShaderSystem>().TintScreen(Color.Red, 0.2f, 15);
+
                 for (int i = 0; i < 16; i++)
                 {
                     Dust.NewDustPerfect(NPC.Center, ModContent.DustType<TSmokeDust>(),
                         (Vector2.One * Main.rand.Next(5, 15)).RotatedByRandom(19.0), 0, Color.DarkGray, 1f).noGravity = true;
                 }
+
                 for (float f = 0; f < 12; f++)
                 {
                     Vector2 v = Main.rand.NextVector2Circular(128, 128);
-                    FXUtil.GlowStretch(NPC.Center, v);
+                    var fx2 = FXUtil.GlowStretch(NPC.Center, v);
+                    fx2.OuterGlowColor = Color.Red;
                 }
 
                 float numDust = 32;
@@ -1491,14 +1547,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                         newColor: Color.Red,
                         Scale: Main.rand.NextFloat(0.5f, 1.5f));
                 }
-                SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/GlocketRouncher");
-                explosionSound.Pitch = -0.5f;
-                SoundEngine.PlaySound(explosionSound, NPC.position);
-                FXUtil.ShakeCamera(NPC.position, 1024, 8);
-                var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Yellow, Color.Red);
-                boom.Scale *= 3f;
-                ShakeModSystem.Shake = 16;
-                var p = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Red, Color.Black);
+      
                 NPC.Kill();
             }
         }
