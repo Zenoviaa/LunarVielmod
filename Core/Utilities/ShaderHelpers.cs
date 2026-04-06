@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Content.Biomes;
+﻿using Stellamod.Assets;
 using Stellamod.Helpers;
 using System.Linq;
 using Terraria;
@@ -258,7 +255,7 @@ namespace Stellamod.Core.Utilities
                 if (screenShader.alpha > 0)
                 {
                     screenShader.UpdateEffect();
-                
+
                     screenShader.alpha -= 0.02f;
                 }
                 screenShader.ManageScreenShader(Main.LocalPlayer);

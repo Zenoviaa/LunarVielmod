@@ -107,8 +107,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
             headDrawer.scale *= 0.3f;
-            headDrawer.scale.Y *= 0.45f;
-            headDrawer.scale.X *= 2;
+            headDrawer.scale.Y *= 0.15f;
+            headDrawer.scale.X *= 1;
             headDrawer.rotation = Projectile.rotation;
             headDrawer.color = Color.Red;
             headDrawer.color.A = 0;

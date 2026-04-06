@@ -1,14 +1,13 @@
-﻿using ReLogic.Content;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Animations;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Gores;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
@@ -36,491 +35,141 @@ public struct PunkerPrimeDraw
         afterImageStrength = 0f;
     }
 }
-
-//On top of that we need to make the custom draw code for the armrs
-//We're just going to do this with forward kinematics since the arms don't need to be super precisely reaching for something, just coming out of the body really
-//So let's make a simple system
-public class PunkerPrimeArmPart
+public class PunkerBoom : ModProjectile
 {
-    public PunkerPrimeArmPart(PunkerPrimeArmPart parent, Texture2D texture, float initialAngle)
-    {
-        this.parent = parent;
-        this.texture = texture;
-        this.drawOrigin = new Vector2(0f, texture.Height / 2f);
-        this.angle = initialAngle;
-        this.length = texture.Width;
-        this.color = Color.White;
-    }
-    public PunkerPrimeArmPart parent;
-    public Texture2D texture;
-    public Vector2 drawOrigin;
-    public Vector2 rootPosition;
-    public Vector2 endPosition;
-    public float angle;
-    public float length;
-    public Color color;
-
-    public void Update()
-    {
-        if (parent != null)
-        {
-            rootPosition = parent.endPosition;
-        }
-        endPosition = rootPosition + angle.ToRotationVector2() * length;
-    }
-
-    public void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        Vector2 drawPosition = rootPosition - screenPos;
-        Color finalColor = color.MultiplyRGB(drawColor);
-        Vector2 drawScale = Vector2.One;
-        spriteBatch.Draw(texture, drawPosition, null, finalColor, angle, drawOrigin, drawScale, SpriteEffects.None, 0);
-    }
-}
-
-//ALright so now we need to think about punker prime's arms
-//The arms are able to operate individually of the boss
-//The easiest way to do this is to make separate NPCs for each of them
-//So we should probably have a base NPC for PunkerPrime's arms
-
-public abstract class PunkerPrimeArm : ModNPC,
-    IDrawOutlines
-{
-    protected float _flashAlpha;
-    protected Color _outlineColor;
-    protected Color TargetOutlineColor;
-    protected PunkerPrimeArmPart[] _segmentsBackingField;
-
-    protected PunkerPrimeArmPart[] Segments
-    {
-        get
-        {
-            if (_segmentsBackingField == null)
-            {
-                Texture2D[] armTextures = RequestArmTextures();
-                _segmentsBackingField = new PunkerPrimeArmPart[armTextures.Length];
-
-                for (int a = 0; a < armTextures.Length; a++)
-                {
-                    PunkerPrimeArmPart parent = a == 0 ? null : _segmentsBackingField[a - 1];
-                    PunkerPrimeArmPart armPart = new PunkerPrimeArmPart(parent, armTextures[a], 0);
-                    _segmentsBackingField[a] = armPart;
-                }
-            }
-
-            return _segmentsBackingField;
-        }
-    }
-
-    private VerletChain _vchain;
-    protected VerletChain VChain
-    {
-        get
-        {
-            if (_vchain == null)
-            {
-                _vchain = new VerletChain(NPC.Center, NPC.Center + Vector2.UnitY * 360, 20);
-            }
-            return _vchain;
-        }
-    }
-    public bool isAttacking;
-    public float superChargeTimer;
-    public float afterImageStrength;
-    public Color telegraphLineColor;
-    public float heldLightningScale;
-    protected bool DoAttack
-    {
-        get => NPC.ai[0] == 1;
-        set => NPC.ai[0] = value ? 1 : 0;
-    }
-
-    protected NPC Parent
-    {
-        get => Main.npc[(int)NPC.ai[1]];
-        set => NPC.ai[1] = value.whoAmI;
-    }
-
-    protected ref float Timer => ref NPC.ai[2];
-    protected Player Target => Main.player[NPC.target];
-    protected Texture2D RequestSubTexture(string spriteName)
-    {
-        string texturePath = ModContent.GetInstance<PunkerPrime>().Texture;
-        string subTexturePath = texturePath + "_" + spriteName;
-        Texture2D texture = ModContent.Request<Texture2D>(subTexturePath, AssetRequestMode.ImmediateLoad).Value;
-        return texture;
-    }
-
-    protected Texture2D[] RequestArmTextures()
-    {
-        Texture2D[] textures = new Texture2D[4];
-        textures[0] = RequestSubTexture("Shoulder");
-        textures[1] = RequestSubTexture("Arm");
-        textures[2] = RequestSubTexture("Elbow");
-        textures[3] = RequestSubTexture("ForeArm");
-        return textures;
-    }
-
-    protected Vector2 GetGunHoldCenter()
-    {
-        return Segments[Segments.Length - 1].endPosition;
-    }
-
-    public override void SendExtraAI(BinaryWriter writer)
-    {
-        base.SendExtraAI(writer);
-        writer.Write(isAttacking);
-        writer.Write(superChargeTimer);
-    }
-    public override void ReceiveExtraAI(BinaryReader reader)
-    {
-        base.ReceiveExtraAI(reader);
-        isAttacking = reader.ReadBoolean();
-        superChargeTimer = reader.ReadSingle();
-    }
-
-
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-        Main.npcFrameCount[NPC.type] = 1;
-        NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
-        NPCID.Sets.BossBestiaryPriority.Add(Type);
-        NPCID.Sets.TrailCacheLength[NPC.type] = 16;
-        NPCID.Sets.TrailingMode[Type] = 3;
-    }
+    private ref float Timer => ref Projectile.ai[0];
+    public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetDefaults()
     {
         base.SetDefaults();
-        NPC.width = 32;
-        NPC.height = 32;
-        NPC.damage = 100;
-        NPC.defense = 14;
-        NPC.lifeMax = 6000;
-
-        NPC.value = Item.buyPrice(gold: 5);
-        NPC.knockBackResist = 0f;
-        NPC.noGravity = true;
-        NPC.noTileCollide = true;
-        NPC.npcSlots = 30f;
-
-        NPC.dontTakeDamage = true;
-        NPC.dontCountMe = true;
-        NPC.dontTakeDamageFromHostiles = true;
+        Projectile.width = 256;
+        Projectile.height = 256;
+        Projectile.hostile = true;
+        Projectile.tileCollide = false;
+        Projectile.penetrate = -1;
+        Projectile.ignoreWater = true;
+        Projectile.timeLeft = 12;
     }
-
-    public override bool CheckActive()
-    {
-        return false;
-    }
-
-    //Sealing this just so don't accidentally override it, we don't want to remove the base functionailty
-    public sealed override void AI()
+    public override void AI()
     {
         base.AI();
-
-        if (!Parent.active)
-            NPC.active = false;
-
-
-        float s = 4;
-        Vector2 rootPosition = Parent.Center + Vector2.UnitY * 150;
-        Vector2 targetPosition = rootPosition + Vector2.UnitY * 200;
-        targetPosition.X += ExtraMath.Osc(-200, 200, speed: s, offset: NPC.whoAmI * 4);
-        targetPosition.Y += ExtraMath.Osc(-50, 0, speed: 2, offset: NPC.whoAmI * 4);
-        VChain.noTileCollide = true;
-        VChain.points[0].pinned = true;
-        VChain.points[0].position = Parent.Center;
-        VChain.points[VChain.points.Length - 1].pinned = true;
-        VChain.points[VChain.points.Length - 1].position = GetGunHoldCenter();
-        VChain.gravity = 0;
-        VChain.Update();
-        //Arm.IK(rootPosition, targetPosition);
-
-        ArmAI();
-        if (superChargeTimer > 0)
+        Timer++;
+        if(Timer == 1)
         {
-            if (superChargeTimer % 2 == 0)
+            if (this.OwnedByLocalClient())
             {
-                ArmAI();
+                for(float f = 0; f < 7; f++)
+                {
+                    float ratio = (f + 1) / 7;
+                    Vector2 vel = Vector2.Lerp(-Vector2.UnitX, Vector2.UnitX, ratio);
+                    vel *= 7;
+                    vel.Y -= 1;
+                    Vector2 offset = Projectile.Center + vel;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), offset, vel, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                }
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Vector2.UnitX * 6, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.UnitX * 6, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
 
-            superChargeTimer--;
-        }
-        _flashAlpha *= 0.92f;
-        _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
-        for (int i = 0; i < Segments.Length; i++)
-        {
-            PunkerPrimeArmPart segment = Segments[i];
-            segment.Update();
-        }
-        if (isAttacking)
-        {
-            if (Main.rand.NextBool(16))
+            PixelPrimitiveCircleFactory.CreatePunkerBoom(Projectile.Center);
+            SoundStyle smash = AssetRegistry.Sounds.Melee.HammerSmash3;
+            smash.PitchVariance = 0.3f;
+            SoundEngine.PlaySound(smash, Projectile.position);
+
+            SoundStyle steaming = AssetRegistry.Sounds.SteamPunking.MechSteaming;
+            steaming.PitchVariance = 0.3f;
+            steaming.Volume = 0.5f;
+            SoundEngine.PlaySound(steaming, Projectile.position);
+
+            int[] gores = AutoGoreLoader.FindGores("GrayRock");
+            foreach (int g in gores)
             {
-                Vector2 gunHoldCenter = GetGunHoldCenter();
-                Vector2 spawnPos = gunHoldCenter;
-                spawnPos += Main.rand.NextVector2Circular(8, 8);
-                var zapParticle = LegacyParticle.NewParticle<SparkParticle>(spawnPos, Main.rand.NextVector2Circular(4, 4), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
-                zapParticle.innerColor = Color.White;
-                zapParticle.outerColor = Color.Red;
-                zapParticle.fadeToColor = Color.Yellow;
+                Gore.NewGore(Projectile.GetSource_FromThis(),
+                    Projectile.Center,
+                    -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
             }
 
+            var p = Particle<ThickSmokeParticle>.Spawn(Projectile.Bottom, Vector2.Zero, Color.DarkGray);
 
-        }
-        Lighting.AddLight(NPC.Center, TorchID.Red);
-    }
-
-
-    public virtual void ArmAI()
-    {
-
-    }
-    public void SuperchargeAttack()
-    {
-        DoAttack = true;
-        superChargeTimer = 300;
-        NPC.netUpdate = true;
-        SoundStyle superCharge = AssetRegistry.Sounds.SteamPunking.MechSupercharge;
-        superCharge.PitchVariance = 0.3f;
-        SoundEngine.PlaySound(superCharge, NPC.position);
-    }
-
-
-    public void Attack()
-    {
-        DoAttack = true;
-        NPC.netUpdate = true;
-    }
-
-    protected void SetRootToParentCenter()
-    {
-
-
-        Segments[0].rootPosition = Parent.Bottom;
-    }
-    protected void AimGunTowardTarget()
-    {
-        Vector2 holdCenter = GetGunHoldCenter();
-        Vector2 targetVelocity = (holdCenter - NPC.Center);
-        NPC.velocity = Vector2.Lerp(Vector2.Zero, targetVelocity, EasingFunction.InOutSine(Timer / 60f));
-
-        float targetAngle = Segments[Segments.Length - 1].angle;
-        NPC.rotation = Utils.AngleLerp(NPC.rotation, targetAngle, 0.1f);
-    }
-
-    protected void CreateMuzzleFlash()
-    {
-        _flashAlpha = 1f;
-        var bigPart = FXUtil.GlowCircleBoom(GetGunHoldCenter(), Color.White, Color.Red, Color.DarkRed);
-        var littlePart = FXUtil.GlowCircleBoom(GetGunHoldCenter(), Color.White, Color.Red, Color.DarkRed);
-        littlePart.Scale *= 0.6f;
-
-        float numParticles = 4;
-        for (float n = 0; n < numParticles; n++)
-        {
-            Vector2 fireVelocity = NPC.rotation.ToRotationVector2() * 5f;
-            fireVelocity *= Main.rand.NextFloat(0.5f, 1f);
-            Dust.NewDustPerfect(NPC.Center, ModContent.DustType<GlowDust>(), fireVelocity, Scale: Main.rand.NextFloat(0.5f, 1f));
-        }
-    }
-
-    private void DrawTelegraphLine(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        Texture2D bloomLineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
-        Vector2 drawOrigin = new Vector2(bloomLineTexture.Width / 2f, 0f);
-        Vector2 drawCenter = NPC.Center - screenPos;
-        Vector2 scale = Vector2.One;
-        scale.X = 0.35f;
-        scale.Y = 2;
-
-        Color color = telegraphLineColor;
-        color.A = 0;
-        color *= 0.35f;
-        float rotation = NPC.rotation - MathHelper.ToRadians(90);
-        spriteBatch.Draw(bloomLineTexture, drawCenter, null, color, rotation, drawOrigin, scale, SpriteEffects.None, 0);
-    }
-
-    private void DrawTentacleArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        var texture2 = RequestSubTexture("ArmSmallGlow");
-        var texture = RequestSubTexture("ArmSmall");
-        for (int i = 0; i < VChain.points.Length - 1; i++)
-        {
-
-            var point = VChain.points[i];
-            Vector2 drawPosition = point.position - Main.screenPosition;
-            Vector2 drawOrigin = new Vector2(0f, texture.Height / 2f);
-            Vector2 drawScale = Vector2.One;
-            drawScale.Y *= 0.2f;
-            drawScale.X *= 0.45f;
-            var nextPoint = VChain.points[i + 1];
-            float angle = (nextPoint.position - point.position).ToRotation();
-            spriteBatch.Draw(texture, drawPosition, null, drawColor, angle, drawOrigin, drawScale, SpriteEffects.None, 0);
-            if (isAttacking)
+            var sear = LegacyParticle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
+            sear.innerColor = Color.Gray;
+            sear.outerColor = Color.Blue;
+            sear.fadeToColor = Color.Black;
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+            ShakeModSystem.Shake = 2;
+            for (float f = 0; f < 4f; f++)
             {
-                Color glowColor = Color.Yellow;
-                glowColor *= ExtraMath.Osc(0f, 0.5f, speed: 8, offset: i * 4);
-                glowColor.A = 0;
-                spriteBatch.Draw(texture2, drawPosition, null, glowColor, angle, drawOrigin, drawScale, SpriteEffects.None, 0);
+                Vector2 pos = Projectile.Center;
+                pos += Main.rand.NextVector2Circular(80, 80);
+                var zap = LegacyParticle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(10) * Main.rand.NextFloat(2, 15));
+                zap.innerColor = Color.Gray;
+                zap.outerColor = Color.Red;
+                zap.fadeToColor = Color.Black;
+                zap.Scale *= Main.rand.NextFloat(0f, 0.5f);
+                zap.Rotation = Main.rand.NextFloat(0f, 3f);
+            }
+
+            SoundStyle smashSound;
+            smashSound = AssetRegistry.Sounds.Bishinine.Comet2;
+            foreach (int g in gores)
+            {
+                Gore.NewGore(Projectile.GetSource_FromThis(),
+                    Projectile.Center,
+                    -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
+            }
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 64);
+
+            var p3 = FXUtil.GlowCircleBoom(Projectile.Center,
+               innerColor: Color.Gray,
+               glowColor: Color.Red,
+               outerGlowColor: Color.DarkRed, duration: 15, baseSize: .09f);
+            p3.Scale *= 7;
+
+            smashSound.PitchVariance = 0.2f;
+            SoundEngine.PlaySound(smashSound, Projectile.position);
+
+
+            var part = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+            part.fadeToColor = Color.Black;
+            part.outerColor = Color.Gray;
+            part.noStretch = true;
+            part.shrink = true;
+
+            var part2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+            part2.fadeToColor = Color.Black;
+            part2.outerColor = Color.Gray;
+            part2.noStretch = true;
+            part2.color *= 0.5f;
+            for (float f = 0; f < 5; f++)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(16, 16);
+                vel.Y -= 10;
+                var d = Dust.NewDustPerfect(Projectile.Center,
+                    ModContent.DustType<GlowSparkleDust>(), newColor: Color.Gray, Scale: Main.rand.NextFloat(0f, 2f), Velocity: vel);
+            }
+
+            for (float f = 0; f < 16; f++)
+            {
+                Vector2 vel = -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(80));
+                vel *= Main.rand.NextFloat(8f, 50);
+                var spawnParams = DustParticleSpawnParams.Default;
+                spawnParams.scaleRange *= 2f;
+                spawnParams.outerColor = Color.Red;
+                DustParticle.Spawn(Projectile.Center, vel, spawnParams);
             }
         }
     }
-
-    public void DrawPowerCord(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        DrawTentacleArm(spriteBatch, screenPos, drawColor);
-    }
-
-    public void DrawArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        for (int i = 0; i < Segments.Length; i++)
-        {
-
-            PunkerPrimeArmPart segment = Segments[i];
-            segment.Draw(spriteBatch, screenPos, drawColor);
-        }
-    }
-
-    private void DrawGunAfterImage(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-        Rectangle frame = NPC.frame;
-        Vector2 drawOrigin = frame.Size() / 2f;
-        Vector2 drawScale = Vector2.One;
-        float length = NPCID.Sets.TrailCacheLength[Type];
-        for (int i = 0; i < length; i++)
-        {
-            float f = i;
-            float completionRatio = f / length;
-            Vector2 oldPosition = NPC.oldPos[i];
-            Vector2 oldCenter = oldPosition + NPC.Size / 2f - screenPos;
-            Color color = Color.Red;
-            color *= 0.1f;
-            color *= afterImageStrength;
-            color *= MathHelper.SmoothStep(1f, 0f, completionRatio);
-            spriteBatch.Draw(texture, oldCenter, frame, color, NPC.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-        }
-    }
-    private Color ColorFunction(float completionRatio)
-    {
-        return Color.Lerp(Color.Transparent, Color.Gray, EasingFunction.QuadraticBump(completionRatio)) * heldLightningScale * 0.35f;
-    }
-
-    private float WidthFunction(float completionRatio)
-    {
-        return 8 * heldLightningScale;
-    }
-    private void DrawHeldLightning(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        if (heldLightningScale <= 0.02f)
-            return;
-
-        List<Vector2> conjureLightningPositions = new List<Vector2>();
-        float numPoints = 32;
-        for (float n = 0; n < numPoints; n++)
-        {
-            float completionRatio = n / numPoints;
-            Vector2 position = Vector2.Lerp(GetGunHoldCenter(), NPC.Center, completionRatio);
-            conjureLightningPositions.Add(position);
-        }
-
-        BlackFireShader shader = BlackFireShader.Instance;
-        shader.PrimaryTexture = TrailRegistry.LightningTrail2;
-        shader.PrimaryTexture2 = TrailRegistry.LightningTrail;
-        shader.InnerColor = Color.White;
-        shader.OuterColor = Color.Red;
-        shader.Distortion = 0.2f;
-        shader.Time = Main.GlobalTimeWrappedHourly * 16;
-        TrailDrawer.Draw(spriteBatch, conjureLightningPositions.ToArray(), ColorFunction, WidthFunction, shader);
-
-
-    }
-    public void DrawGun(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-        Vector2 drawPosition = NPC.Center - screenPos;
-
-
-        Color baseColor = isAttacking ? Color.White : Color.Lerp(Color.White, Color.Black, 0.8f);
-        Color finalColor = baseColor.MultiplyRGB(drawColor);
-        Vector2 drawScale = Vector2.One;
-        Vector2 drawOrigin = NPC.frame.Size() / 2f;
-        spriteBatch.Draw(texture, drawPosition, NPC.frame, finalColor, NPC.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-
-        Color glowColor = Color.Red;
-        glowColor.A = 0;
-        glowColor *= _flashAlpha;
-        spriteBatch.Draw(texture, drawPosition, NPC.frame, glowColor, NPC.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-    }
-
-    public void DrawGunEffects(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        DrawHeldLightning(spriteBatch, screenPos, drawColor);
-        DrawTelegraphLine(spriteBatch, screenPos, drawColor);
-        DrawGunAfterImage(spriteBatch, screenPos, drawColor);
-    }
-
-    public void DrawGunArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        if (superChargeTimer > 0f)
-        {
-            DrawSuperchargedArm(spriteBatch, screenPos, drawColor);
-        }
-        else
-        {
-            DrawArm(spriteBatch, screenPos, drawColor);
-        }
-    }
-
-    //Drawing is handled by parent npc for proper layering
-    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    public override bool PreDraw(ref Color lightColor)
     {
         return false;
     }
-
-    private void DrawSuperchargedArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    public override void OnKill(int timeLeft)
     {
-        for (int i = 0; i < Segments.Length; i++)
-        {
-            PunkerPrimeArmPart segment = Segments[i];
-            Color finalColor = Color.Red;
-            finalColor = Color.Lerp(finalColor, drawColor, ExtraMath.Osc(0f, 1f, speed: 32f));
-            segment.Draw(spriteBatch, screenPos, finalColor);
-        }
+        base.OnKill(timeLeft);
     }
-    public void DrawGlowBall(SpriteBatch spriteBatch, Vector2 screen, Color drawColor)
+    public override void OnHitPlayer(Player target, Player.HurtInfo info)
     {
-        if (heldLightningScale <= 0.02f)
-            return;
-        Texture2D glowballTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_56").Value;
-        Vector2 drawCenter = GetGunHoldCenter() - Main.screenPosition;
-        Vector2 drawOrigin = glowballTexture.Size() / 2f;
-        Color glowColor = Color.Lerp(Color.Red, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 16));
-        glowColor.A = 0;
-        glowColor *= ExtraMath.Osc(0.5f, 1f, speed: 64);
-        spriteBatch.Draw(glowballTexture, drawCenter, null, glowColor, 0, drawOrigin, heldLightningScale * 0.35f * ExtraMath.Osc(0.9f, 1f, speed: 64), SpriteEffects.None, 0);
-    }
-
-
-    public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
-    {
-        if (_outlineColor == Color.Transparent)
-            return;
-
-        float outlineOffset = 2;
-        Vector2 h = Vector2.UnitX * outlineOffset;
-        Vector2 v = Vector2.UnitY * outlineOffset;
-        DrawArm(spriteBatch, screenPos + h, _outlineColor);
-        DrawArm(spriteBatch, screenPos - h, _outlineColor);
-        DrawArm(spriteBatch, screenPos + v, _outlineColor);
-        DrawArm(spriteBatch, screenPos - v, _outlineColor);
-
-        DrawGun(spriteBatch, screenPos + h, _outlineColor);
-        DrawGun(spriteBatch, screenPos - h, _outlineColor);
-        DrawGun(spriteBatch, screenPos + v, _outlineColor);
-        DrawGun(spriteBatch, screenPos - v, _outlineColor);
+        base.OnHitPlayer(target, info);
     }
 }
 public class PunkerPrime : ScarletBoss,
@@ -536,9 +185,16 @@ public class PunkerPrime : ScarletBoss,
         Death,
         Warning_Prepare_Attacks,
         SummonArms,
+
         Special_Start,
         Special_Loop,
-        Special_End
+        Special_End,
+
+        Crash_Start,
+        Crash_Smash,
+        Crash_Rise,
+        Emote_Start,
+        Emote_Laugh
     }
     private const string Anim_Bouncing_Fast = "bouncefast";
     private const string Anim_Bouncing_Slow = "bounceslow";
@@ -571,12 +227,12 @@ public class PunkerPrime : ScarletBoss,
     private bool[] _disabledArms;
     private bool _showNamePlate;
     private bool _phaseTransition;
-    private float _flurryTimer;
+
 
     private float _upDown;
     private float _rotOffset;
     private Vector2 _upDownOffset;
-    private Vector2 _bounceOffset;
+    private Vector2 _originalVelocity;
     private string _animationToPlay = string.Empty;
     private Queue<int> _armQueueBacking;
     private Queue<int> ArmQueue
@@ -613,6 +269,7 @@ public class PunkerPrime : ScarletBoss,
             return _metronome;
         }
     }
+    private float _attackCycle;
     private ref float Timer => ref NPC.ai[0];
 
     private PunkerPrimeArm[] _arms;
@@ -632,13 +289,15 @@ public class PunkerPrime : ScarletBoss,
 
     private ref float SuperchargeTimer => ref NPC.ai[2];
     private ref float SpecialTimer => ref NPC.ai[3];
-    private int PrimeSawbladeDamage => 30;
+    private int PrimeSawbladeDamage => 45;
+    private int PunkerBoomDamage => 70;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
         writer.WriteVector2(_teleportPosition);
         writer.WriteVector2(_hoverCenter);
         writer.WriteVector2(_startCenter);
+        writer.WriteVector2(_originalVelocity);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -646,6 +305,7 @@ public class PunkerPrime : ScarletBoss,
         _teleportPosition = reader.ReadVector2();
         _hoverCenter = reader.ReadVector2();
         _startCenter = reader.ReadVector2();
+        _originalVelocity = reader.ReadVector2();
     }
 
     public override void SetStaticDefaults()
@@ -793,6 +453,22 @@ public class PunkerPrime : ScarletBoss,
             case AIState.Special_End:
                 AI_SpecialEnd();
                 break;
+
+            case AIState.Crash_Start:
+                AI_CrashStart();
+                break;
+            case AIState.Crash_Smash:
+                AI_CrashSmash();
+                break;
+            case AIState.Crash_Rise:
+                AI_CrashRise();
+                break;
+            case AIState.Emote_Start:
+                AI_EmoteStart();
+                break;
+            case AIState.Emote_Laugh:
+                AI_EmoteLaugh();
+                break;
         }
 
     }
@@ -870,6 +546,167 @@ public class PunkerPrime : ScarletBoss,
         {
             NPC.TargetClosest();
         }
+    }
+
+
+    private void AI_CrashStart()
+    {
+        _animationToPlay = Anim_Idle;
+        Timer++;
+        if(Timer == 1)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                _boomBoxNPC.ai[3] = 1;
+                _boomBoxNPC.netUpdate = true;
+            }
+            NPC.TargetClosest();
+            _originalVelocity = NPC.velocity;
+        }
+
+        float revTime = 100;
+        float ratio = Timer / revTime;
+        float ease = EasingFunction.InOutSine(ratio);
+        Vector2 targetPosition = MyTarget.Center + new Vector2(0, -500);
+        Vector2 targetVelocity = targetPosition - NPC.Center;
+        Vector2 easedVelocity = Vector2.Lerp(_originalVelocity, targetVelocity, ease);
+
+        NPC.velocity = easedVelocity;
+        NPC.rotation = NPC.velocity.X * 0.025f;
+        NPC.rotation += MathHelper.SmoothStep(0, MathHelper.TwoPi, EasingFunction.InOutExpo(ratio));
+        TargetOutlineColor = Color.Yellow;
+        if(Timer >= revTime)
+        {
+            SwitchState(AIState.Crash_Smash);
+        }
+    }
+
+    private void AI_CrashSmash()
+    {
+        _animationToPlay = Anim_Bouncing_Fast;
+        Timer++;
+        if(Timer == 1)
+        {
+            NPC.TargetClosest();
+        }
+
+        if (Timer % 5 == 0)
+        {
+            var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Bottom, -NPC.velocity);
+            p2.Scale *= 0.5f;
+        }
+
+        if (Timer % 10 == 0)
+        {
+            Vector2 velocity = -Vector2.UnitY;
+            velocity *= Main.rand.NextFloat(5f, 10f);
+            velocity = velocity.RotatedByRandom(MathHelper.ToRadians(60));
+            
+            DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+            spawnParams.outerColor = Color.Red;
+            var d = DustParticle.Spawn(NPC.Bottom, velocity, spawnParams);
+            d.noTileCollide = true;
+        }
+
+        NPC.noTileCollide = false;
+        NPC.velocity.X *= 0.8f;
+        NPC.velocity.Y += 0.1f;
+        if(NPC.velocity.Y > 0)
+            NPC.velocity.Y *= 1.05f;
+        if (NPC.velocity.Y > 35)
+            NPC.velocity.Y = 35;
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.01f);
+        if (NPC.collideY && NPC.Bottom.Y > MyTarget.Top.Y)
+        {
+            SwitchState(AIState.Crash_Rise);
+        }
+    }
+
+    private void AI_CrashRise()
+    {
+        _animationToPlay = Anim_Bouncing_Slow;
+        Timer++;
+        if(Timer == 1)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero, ModContent.ProjectileType<PunkerBoom>(), PunkerBoomDamage, 1, Main.myPlayer);
+            }
+            NPC.TargetClosest();         
+        }
+
+        if(NPC.velocity.Y > 0)
+            NPC.velocity.Y *= 0.8f;
+        else
+        {
+            NPC.velocity.Y -= 0.05f;
+            NPC.velocity.Y *= 1.05f;
+            if(NPC.velocity.Y < -10)
+            {
+                SwitchState(AIState.Emote_Start);
+            }
+        }
+    }
+
+    private void AI_EmoteStart()
+    {
+        _animationToPlay = Anim_Bouncing_Fast;
+        Timer++;
+        if(Timer == 1)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                for (int i = 0; i < _arms.Length; i++)
+                {
+                    if(i < 4)
+                    {
+                        _arms[i].dabinState = PunkerPrimeArm.DabState.DabLeft_Bent;
+                    }
+                    else
+                    {
+                        _arms[i].dabinState = PunkerPrimeArm.DabState.DabLeft_Straight;
+                    }
+                    _arms[i].NPC.netUpdate = true;
+                }
+            }
+        }
+
+
+        NPC.velocity.X = ExtraMath.Osc(-4f, 4f, speed: 3);
+        NPC.velocity.Y *= 0.95f;
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.01f);
+    
+        if(Timer >= 160)
+        {
+            SwitchState(AIState.Emote_Laugh);
+        }
+    }
+
+    private void AI_EmoteLaugh()
+    {
+        _animationToPlay = Anim_Bouncing_Fast;
+        Timer++;
+        if (Timer == 1)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                for (int i = 0; i < _arms.Length; i++)
+                {
+                    _arms[i].dabTimer = 0;
+                    _arms[i].dabinState = PunkerPrimeArm.DabState.DabEnd;
+                    _arms[i].NPC.netUpdate = true;
+                }
+            }
+        }
+
+        NPC.velocity.X = ExtraMath.Osc(-4f, 4f, speed: 3);
+        NPC.velocity.Y *= 0.95f;
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.01f);
+        if(Timer >= 80)
+        {
+            SwitchState(AIState.Idle);
+        }
+        
     }
 
     private void AI_Special()
@@ -1108,6 +945,14 @@ public class PunkerPrime : ScarletBoss,
         Timer++;
         if (Timer == 1)
         {
+            if (MultiplayerHelper.IsHost)
+            {
+                for(int i = 0; i < _arms.Length; i++)
+                {
+                    _arms[i].dabinState = PunkerPrimeArm.DabState.None;
+                    _arms[i].NPC.netUpdate = true;
+                }
+            }
             NPC.TargetClosest();
         }
         if (InPhase2)
@@ -1147,13 +992,21 @@ public class PunkerPrime : ScarletBoss,
             if (SpecialTimer >= 1000)
             {
                 SpecialTimer = 0f;
-                SwitchState(AIState.Special_Start);
+                _attackCycle++;
+                if(_attackCycle % 2 == 0)
+                {
+                    SwitchState(AIState.Special_Start);
+                }
+                else
+                {
+                    SwitchState(AIState.Crash_Start);
+                }
+         
             }
             else
             {
                 SwitchState(AIState.Flurry);
             }
-
         }
     }
 
