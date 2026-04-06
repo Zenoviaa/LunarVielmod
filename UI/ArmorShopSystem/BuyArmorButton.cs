@@ -12,7 +12,7 @@ namespace Stellamod.UI.ArmorShopSystem
 {
     public class BuyArmorButton : UIPanel
     {
-        public event Action<int> OnEmptyMouseover;
+        
         private readonly float _scale = 1f;
         public BuyArmorButton()
         {

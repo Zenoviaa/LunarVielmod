@@ -52,7 +52,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event
 
         public override void SetDefaults()
         {
-            NPC.aiStyle = 0;
+            NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
             NPC.noGravity = true;
             NPC.noTileCollide = false;
             NPC.lifeMax = 120;

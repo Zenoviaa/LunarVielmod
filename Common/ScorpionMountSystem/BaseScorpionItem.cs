@@ -36,7 +36,7 @@ namespace Stellamod.Common.ScorpionMountSystem
                     for (int i = 0; i < GetLeftHandedCount(); i++)
                     {
                         Item air = new Item();
-                        air.SetDefaults(0);
+                        air.SetDefaults(ItemID.None);
                         _leftHandedGuns.Add(air);
                     }
                 }
@@ -59,7 +59,7 @@ namespace Stellamod.Common.ScorpionMountSystem
                     for (int i = 0; i < GetRightHandedCount(); i++)
                     {
                         Item air = new Item();
-                        air.SetDefaults(0);
+                        air.SetDefaults(ItemID.None);
                         _rightHandedGuns.Add(air);
                     }
                 }

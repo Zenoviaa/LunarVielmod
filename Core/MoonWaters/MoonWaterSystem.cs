@@ -96,10 +96,10 @@ namespace Stellamod.Core.MoonWaters
             if (_inMarsh)
             {
                 float lerp = 0.8f;
-                pixelWater.StartGradientColor = Color.Lerp(pixelWater.StartGradientColor, Color.LightSkyBlue, 0.8f);
-                pixelWater.EndGradientColor = Color.Lerp(pixelWater.EndGradientColor, Color.LightSkyBlue, 0.8f);
-                pixelWater.BackgroundColor = Color.Lerp(pixelWater.BackgroundColor, Color.LightSkyBlue, 0.8f);
-                pixelWater.CausticsColor = Color.Lerp(pixelWater.CausticsColor, Color.LightSkyBlue, 0.8f);
+                pixelWater.StartGradientColor = Color.Lerp(pixelWater.StartGradientColor, Color.LightSkyBlue, lerp);
+                pixelWater.EndGradientColor = Color.Lerp(pixelWater.EndGradientColor, Color.LightSkyBlue, lerp);
+                pixelWater.BackgroundColor = Color.Lerp(pixelWater.BackgroundColor, Color.LightSkyBlue, lerp);
+                pixelWater.CausticsColor = Color.Lerp(pixelWater.CausticsColor, Color.LightSkyBlue, lerp);
             }
         }
     }

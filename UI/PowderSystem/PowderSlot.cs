@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.IgnitersNPowders;
 using Terraria;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -27,7 +28,7 @@ namespace Stellamod.UI.PowderSystem
             Height.Set(asset.Height() * scale, 0f);
 
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
             Item = _card.Powders[_index].Clone();
         }
 

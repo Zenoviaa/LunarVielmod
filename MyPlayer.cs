@@ -64,8 +64,7 @@ namespace Stellamod
         public bool ZoneFable = false;
         public bool ReflectionS;
 
-        private Vector2 RandomOrig;
-        private Vector2 RandomOrig2;
+
         private Vector2 RandomOrig3;
         public int GoldenRingCooldown = 0;
         public int GoldenSparkleCooldown = 0;

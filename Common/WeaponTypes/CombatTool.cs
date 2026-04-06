@@ -37,7 +37,7 @@ namespace Stellamod.Common.WeaponTypes
                 if(_selectedToolBackingField == null)
                 {
                     _selectedToolBackingField = new Item();
-                    _selectedToolBackingField.SetDefaults(0);
+                    _selectedToolBackingField.SetDefaults(ItemID.None);
                 }
 
                 return _selectedToolBackingField;
@@ -842,7 +842,7 @@ namespace Stellamod.Common.WeaponTypes
             //Set up the items we're going to iterate over
             Items = items;
             HoveringItem = new Item();
-            HoveringItem.SetDefaults(0);
+            HoveringItem.SetDefaults(ItemID.None);
 
             //Setup mouse interactions
             OnLeftClick += SpawnItem;

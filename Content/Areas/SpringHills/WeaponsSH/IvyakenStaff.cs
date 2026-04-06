@@ -32,7 +32,6 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 
     public class IvyakenMinionProj : AbstractBellSummon
     {
-        Player Owner => Main.player[Projectile.owner];
         ref float Timer => ref Projectile.ai[0];
         public override void SetStaticDefaults()
         {

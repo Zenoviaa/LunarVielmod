@@ -1,11 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.MoonWaters;
-using Stellamod.Core.ScreenSystems;
-using Terraria;
-using Terraria.Graphics.Effects;
-using Terraria.ModLoader;
-
+﻿
+/*
 namespace Stellamod.Core.Waters
 {
     public enum WaterStyle : byte
@@ -201,3 +195,4 @@ namespace Stellamod.Core.Waters
         }
     }
 }
+*/

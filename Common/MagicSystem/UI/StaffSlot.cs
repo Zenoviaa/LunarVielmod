@@ -1,10 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -23,7 +22,7 @@ namespace Stellamod.Common.MagicSystem.UI
             _scale = scale;
 
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
 
 
             string texturePath = GetEnchantmentCardTexturePath();
@@ -58,15 +57,16 @@ namespace Stellamod.Common.MagicSystem.UI
         public void SetContext(StaffEditingContext ctx)
         {
             _ctx = ctx;
-            if(_ctx.staffToEdit.Item.type == ModContent.ItemType<NoStaff>())
+            if (_ctx.staffToEdit.Item.type == ModContent.ItemType<NoStaff>())
             {
                 Item = new Item();
-                Item.SetDefaults(0);
-            } else
+                Item.SetDefaults(ItemID.None);
+            }
+            else
             {
                 Item = _ctx.staffToEdit.Item;
             }
-        
+
         }
 
         public void ReturnItem()

@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Buffs;
+﻿using Stellamod.Buffs;
 using Stellamod.Buffs.Whipfx;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -46,7 +43,6 @@ namespace Stellamod.Projectiles.Summons.Orbs
         Vector2 SwingStart;
         Vector2 SwingTarget;
         Vector2 SwingVelocity;
-        int DustTimer;
         int ComboCounter2;
 
         public override void SendExtraAI(BinaryWriter writer)

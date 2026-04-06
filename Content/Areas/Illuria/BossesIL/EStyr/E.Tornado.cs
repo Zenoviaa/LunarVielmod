@@ -30,8 +30,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
          IDrawBlackStar,
          IDrawOutlines
     {
-        private float _telegraphLineRot;
-        private float _telegraphLineAlpha;
         private ref float Timer => ref Projectile.ai[0];
         private enum AIState
         {
@@ -155,7 +153,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override bool PreDraw(ref Color lightColor)
         {
             DrawAfterImages(Main.spriteBatch);
-            DrawHelper.DrawBloomLine(Main.spriteBatch, Projectile.Center, Color.White, _telegraphLineRot, _telegraphLineAlpha * 0.2f);
             BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }
@@ -315,8 +312,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         IDrawBlackStar,
         IDrawOutlines
     {
-        private float _telegraphLineRot;
-        private float _telegraphLineAlpha;
         private ref float Timer => ref Projectile.ai[0];
         private enum AIState
         {
@@ -328,7 +323,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             get => (AIState)Projectile.ai[1];
             set => Projectile.ai[1] = (float)value;
         }
-        private ref float ShouldFall => ref Projectile.ai[2];
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -391,7 +385,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Timer++;
             if (Timer == 1)
             {
-                ShouldFall = 1;
+
 
             }
 
@@ -420,7 +414,6 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         public override bool PreDraw(ref Color lightColor)
         {
             DrawAfterImages(Main.spriteBatch);
-            DrawHelper.DrawBloomLine(Main.spriteBatch, Projectile.Center, Color.White, _telegraphLineRot, _telegraphLineAlpha * 0.2f);
             BlackStarRenderer.QueueBlackStarDraw(this);
             return false;
         }

@@ -11,7 +11,7 @@ namespace Stellamod.UI.CauldronSystem
 {
     public class CauldronPot : UIPanel
     {
-        public event Action<int> OnEmptyMouseover;
+        
         private readonly float _scale = 1f;
         public CauldronPot()
         {

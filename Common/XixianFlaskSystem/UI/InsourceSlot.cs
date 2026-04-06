@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Stellamod.Common.XixianFlaskSystem;
 using Terraria;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -24,7 +25,7 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
             _slot = slot;
 
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
             Item = Main.LocalPlayer.GetModPlayer<FlaskPlayer>().GetInsourceAtIndex(slot);
             _slotTextureAsset = ModContent.Request<Texture2D>(
                 $"{XixianFlaskUISystem.RootTexturePath}InsourceSlot", ReLogic.Content.AssetRequestMode.ImmediateLoad);

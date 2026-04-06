@@ -7,6 +7,7 @@ using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -27,7 +28,7 @@ namespace Stellamod.Common.MagicSystem.UI
 
             //Set to Air
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
 
             string texturePath = GetType().DirectoryHere() + "/ElementSlot";
             ElementSlotAsset = ModContent.Request<Texture2D>(texturePath, ReLogic.Content.AssetRequestMode.ImmediateLoad);

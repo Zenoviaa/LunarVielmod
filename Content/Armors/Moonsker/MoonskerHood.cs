@@ -211,7 +211,6 @@ namespace Stellamod.Content.Armors.Moonsker
 
     public class MoonskerMoon : ModProjectile
     {
-        private bool _killMe;
         private Player Owner => Main.player[Projectile.owner];
         private ref float Timer => ref Projectile.ai[0];
         private ref float ScaleTimer => ref Projectile.ai[1];
@@ -231,7 +230,7 @@ namespace Stellamod.Content.Armors.Moonsker
         private void CastMoonBlast(Player player, AdvancedMagicProjectile projectile)
         {
 
-            _killMe = true;
+
         }
 
         public override void AI()

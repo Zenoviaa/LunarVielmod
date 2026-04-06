@@ -114,7 +114,6 @@ namespace Stellamod.Core.LunarLightingSystem
             TileLightScanner tileScanner = typeof(LightingEngine).GetField("_tileScanner", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as TileLightScanner;
             LightMap lightMap = typeof(LightingEngine).GetField("_activeLightMap", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as LightMap;
 
-            int numTilesProducingLight = 0;
             for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
             {
                 for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)

@@ -689,7 +689,6 @@ namespace Stellamod.Items.Weapons.Melee.Longswords
             Projectile.spriteDirection = Projectile.direction;
         }
 
-        Vector2 BombOffset;
         public override void OnKill(int timeLeft)
         {
             SoundStyle spearHit = SoundRegistry.FireHit1;

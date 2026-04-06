@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
@@ -303,7 +301,6 @@ namespace Stellamod.Items.Weapons.Melee.Swords
             Projectile.localNPCHitCooldown = 10000;
         }
 
-        private bool _thrust;
         public float thrustSpeed = 5;
         public float stabRange;
         public override void AI()

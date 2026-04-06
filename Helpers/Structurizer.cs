@@ -330,7 +330,7 @@ namespace Stellamod.Helpers
                 t.IsWallInvisible = reader.ReadBoolean();
                 t.IsWallFullbright = reader.ReadBoolean();
 
-                if (makeOld && t.WallType == 0 && t.LiquidAmount <= 0)
+                if (makeOld && t.WallType == WallID.None && t.LiquidAmount <= 0)
                 {
                     t.LiquidType = oldLiquidType;
                     t.LiquidAmount = oldLiquidAmount;

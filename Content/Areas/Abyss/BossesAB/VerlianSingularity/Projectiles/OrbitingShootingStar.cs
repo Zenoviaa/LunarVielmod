@@ -94,27 +94,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
         #region Draw Code
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            return;
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            float outlineOffset = 2;
-            Vector2 left = drawPos + Vector2.UnitX * -outlineOffset;
-            Vector2 right = drawPos + Vector2.UnitX * outlineOffset;
-            Vector2 up = drawPos + Vector2.UnitY * -outlineOffset;
-            Vector2 down = drawPos + Vector2.UnitY * outlineOffset;
-            Color drawColor = _outlineColor;
-            drawColor.A = 0;
 
-            SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            Rectangle drawFrame = Projectile.Frame();
-            Vector2 drawOrigin = drawFrame.Size() / 2;
-            float scale = Projectile.scale * _scale;
-            float rotation = Projectile.rotation;
-
-            spriteBatch.Draw(texture, left, drawFrame, drawColor, rotation, drawOrigin, scale, spriteEffects, 0);
-            spriteBatch.Draw(texture, right, drawFrame, drawColor, rotation, drawOrigin, scale, spriteEffects, 0);
-            spriteBatch.Draw(texture, up, drawFrame, drawColor, rotation, drawOrigin, scale, spriteEffects, 0);
-            spriteBatch.Draw(texture, down, drawFrame, drawColor, rotation, drawOrigin, scale, spriteEffects, 0);
         }
 
         private Color ColorFunction(float completionRatio)

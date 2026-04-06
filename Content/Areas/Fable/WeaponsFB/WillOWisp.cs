@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.SummonerSystem;
+﻿using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Helpers;
@@ -41,7 +39,6 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         private Vector2[] _oldPlayerPos;
         private ref float Timer => ref Projectile.ai[0];
         private ref float WispIndex => ref Projectile.ai[1];
-        private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
         {
             _index = 0;

@@ -5,6 +5,7 @@ using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -26,7 +27,7 @@ namespace Stellamod.Common.SummonerSystem.UI
 
 
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
             _slotTextureAsset = ModContent.Request<Texture2D>(
                 this.GetType().DirectoryHere() + "/GuardianSlot", ReLogic.Content.AssetRequestMode.ImmediateLoad);
 
@@ -105,7 +106,7 @@ namespace Stellamod.Common.SummonerSystem.UI
             _slot = slot;
 
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
             _slotTextureAsset = ModContent.Request<Texture2D>(
                 this.GetType().DirectoryHere() + "/BellSlot", ReLogic.Content.AssetRequestMode.ImmediateLoad);
 

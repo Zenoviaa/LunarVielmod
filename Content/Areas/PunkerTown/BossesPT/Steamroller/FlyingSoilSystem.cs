@@ -10,14 +10,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
 [Autoload(Side = ModSide.Client)]
 public class FlyingSoilSystem : ModSystem
 {
-    private struct SoilBlock
-    {
-        public int topLeftVariant;
-        public int topRightVariant;
-        public int bottomLeftVariant;
-        public int bottomRightVariant;
-    }
-
     private struct Soil
     {
         public Vector2 position;

@@ -77,7 +77,7 @@ namespace Stellamod.Common.IgnitersNPowders
                 while (_powders.Count < GetPowderSlotCount())
                 {
                     Item item = new Item();
-                    item.SetDefaults(0);
+                    Item.SetDefaults(ItemID.None);
                     _powders.Add(item);
                 }
 

@@ -450,10 +450,8 @@ namespace Stellamod.Common.GunSystem
         public override void AI()
         {
             base.AI();
-            bool isUsing = false;
             if (Owner.HeldItem.ModItem is BaseGun && (Owner.channel || Owner.controlUseItem))
             {
-                isUsing = true;
                 Projectile.timeLeft = 120;
             }
 

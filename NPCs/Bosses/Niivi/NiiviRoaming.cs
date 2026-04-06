@@ -203,6 +203,10 @@ namespace Stellamod.NPCs.Bosses.Niivi
             }
         }
 
+        private Vector2 GetNiiviSpawnWorld()
+        {
+            return new Vector2(3000);
+        }
         private void AI_Sleeping()
         {
             if (Main.dayTime)
@@ -217,7 +221,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
                 StartSegmentDirection = -Vector2.UnitX;
 
                 //Go sleep
-                Vector2 sleepPos = AlcadSpawnSystem.NiiviSpawnWorld + new Vector2(0, 164);
+                Vector2 sleepPos = GetNiiviSpawnWorld() + new Vector2(0, 164);
                 NPC.Center = Vector2.Lerp(NPC.Center, sleepPos, 0.01f);
                 NPC.velocity = Vector2.Zero;
 
@@ -284,7 +288,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
         private void AIRoaming_FlyAroundTree()
         {
             float orbitDistance = 2000;
-            Vector2 home = AlcadSpawnSystem.NiiviSpawnWorld + new Vector2(0, 1024);
+            Vector2 home = GetNiiviSpawnWorld() + new Vector2(0, 1024);
             Vector2 direction = home.DirectionTo(NPC.Center);
             direction = direction.RotatedBy(MathHelper.TwoPi / 2000);
             Vector2 targetCenter = home + direction * orbitDistance;
@@ -312,7 +316,7 @@ namespace Stellamod.NPCs.Bosses.Niivi
 
         private void AI_Roaming_GoHome()
         {
-            Vector2 home = AlcadSpawnSystem.NiiviSpawnWorld;
+            Vector2 home = GetNiiviSpawnWorld();
             Vector2 directionToHome = NPC.Center.DirectionTo(home);
             float distanceToHome = Vector2.Distance(NPC.Center, home);
 

@@ -1,7 +1,5 @@
 ﻿global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Backgrounds;
 using Stellamod.Common.Shaders;
@@ -32,7 +30,7 @@ namespace Stellamod
     {
         public Stellamod()
         {
-        
+
         }
 
         // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
@@ -69,7 +67,7 @@ namespace Stellamod
         public override void Load()
         {
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         //   Instance = this;
+            //   Instance = this;
             if (Main.netMode != NetmodeID.Server)
             {
                 ShaderLoader.LoadShaders(this);
@@ -230,7 +228,7 @@ namespace Stellamod
             }
             On_UIWorldListItem.DrawSelf += DrawWorldIconHook;
 
-           // Instance = this;
+            // Instance = this;
         }
 
 

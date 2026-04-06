@@ -25,7 +25,9 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            Main.projFrames[Type] = 3;
+            Main.projFrames[Type] = 5;
+            ProjectileID.Sets.TrailCacheLength[Type] = 16;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
         }
 
         public override void SetDefaults()
@@ -63,6 +65,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Firework_Red);
             }
 
+
             if (Timer % 10 == 0)
             {
                 Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2Circular(64, 64);
@@ -87,8 +90,18 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             float scale = inScale * outScale;
             Projectile.scale = scale;
             Projectile.Center = Parent.Bottom;
-            Projectile.rotation += MathHelper.Lerp(0f, 0.05f, EasingFunction.Anticipation(Timer / 30f));
+    
             DrawHelper.AnimateTopToBottom(Projectile, 2);
+            if (Timer < 25)
+            {
+                Projectile.frame = 0;
+                Projectile.rotation += MathHelper.Lerp(0f, 0.05f, EasingFunction.Anticipation(Timer / 30f));
+            }
+            else
+            {
+                if (Projectile.frame == 0)
+                    Projectile.frame = 1;
+            }
         }
 
         private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

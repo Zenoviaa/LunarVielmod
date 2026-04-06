@@ -192,7 +192,8 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak.Projectiles
         {
             return base.StripWidth(progressOnStrip) * 0.66f;
         }
-        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+
+        public new void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             this.OutlineNoRestart(Color.Red, ref lightColor, _scale);
         }

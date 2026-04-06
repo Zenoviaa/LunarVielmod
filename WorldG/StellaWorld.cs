@@ -3319,8 +3319,6 @@ public class StellaWorld : ModSystem
     private void WorldGenFabiliaRuin(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Daedus is Reading Books...";
-
-        NPCs.Town.AlcadSpawnSystem.FableTile = FableLocation;
         Structurizer.PlaceAndProtect(new StructurePlacementParams
         {
             tile = FableLocation,
@@ -3522,12 +3520,6 @@ public class StellaWorld : ModSystem
                 //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                 string path = "Struct/Underground/Manor";//
 
-
-
-
-
-
-                NPCs.Town.AlcadSpawnSystem.OrdinTile = Loc;
                 int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path, tileBlend);
                 ManorLocation = Loc;
                 StructureLoader.ProtectStructure(Loc, path);
@@ -4330,7 +4322,6 @@ public class StellaWorld : ModSystem
 
                 int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
                 StructureLoader.ProtectStructure(Loc, path);
-                NPCs.Town.AlcadSpawnSystem.DaedenTile = Loc;
                 foreach (int chestIndex in ChestIndexs)
                 {
                     var chest = Main.chest[chestIndex];
@@ -4928,9 +4919,6 @@ public class StellaWorld : ModSystem
                     Point Loc = new Point(smx, smy + 5);
                     rectangle.Location = Loc;
                     StructureLoader.ReadStruct(Loc, "Struct/Acid/GiaHouse");
-                    NPCs.Town.AlcadSpawnSystem.GiaTile = Loc;
-
-
 
 
                 }
@@ -5002,10 +4990,6 @@ public class StellaWorld : ModSystem
                     Point Loc = new Point(smx, smy + 5);
                     rectangle.Location = Loc;
                     StructureLoader.ReadStruct(Loc, "Struct/Acid/GiaHouse");
-                    NPCs.Town.AlcadSpawnSystem.GiaTile = Loc;
-
-
-
 
                 }
 
@@ -5183,8 +5167,6 @@ public class StellaWorld : ModSystem
                 pointToPlaceOn.X -= rectangle.Width / 2;
                 int[] ChestIndexs = StructureLoader.ReadStruct(pointToPlaceOn, path, tileBlend);
                 rectangle.Location = pointL;
-                NPCs.Town.AlcadSpawnSystem.IrrTile = pointL;
-                NPCs.Town.AlcadSpawnSystem.GothTile = pointL;
                 StructureLoader.ProtectStructure(pointL, path);
                 foreach (int chestIndex in ChestIndexs)
                 {
@@ -7175,9 +7157,6 @@ public class StellaWorld : ModSystem
 
 
                 Point Loc = new Point(smx, smy + 343);
-                NPCs.Town.AlcadSpawnSystem.LiberatTile = Loc;
-                //
-
 
                 for (int daa = 0; daa < 1; daa++)
                 {
@@ -7281,12 +7260,6 @@ public class StellaWorld : ModSystem
             for (int da = 0; da < 1; da++)
             {
 
-
-
-
-
-                NPCs.Town.AlcadSpawnSystem.LiberatTile = pointLil;
-                NPCs.Town.AlcadSpawnSystem.JhoviaTile = pointLil;
                 ShapeData shapeData = new ShapeData();
 
                 StructureLoader.ReadStruct(pointLil, "Struct/Underground/Catacombz", tileBlend);
@@ -7360,7 +7333,6 @@ public class StellaWorld : ModSystem
         {
             Point Loc = RoyalCapitalLocation; 
             rectangle.Location = Loc;
-            NPCs.Town.AlcadSpawnSystem.AlcadTile = Loc;
             AlcadLocation = Loc;
             Structurizer.ProtectStructure(Loc, "Structures/RoyalCapital");
             var tileBlend = new int[]
@@ -7487,7 +7459,6 @@ public class StellaWorld : ModSystem
         rectangle.Location = Loc;
         Structurizer.ProtectStructure(Loc, "Struct/Overworld/Illuria");
         int[] ChestIndexs = Structurizer.ReadStruct(Loc, "Struct/Overworld/Illuria");
-        NPCs.Town.AlcadSpawnSystem.IlluriaTile = Loc;
         foreach (int chestIndex in ChestIndexs)
         {
             var chest = Main.chest[chestIndex];
@@ -9331,7 +9302,6 @@ public class StellaWorld : ModSystem
 
                 int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
                 StructureLoader.ProtectStructure(Loc, path);
-                NPCs.Town.AlcadSpawnSystem.MechanicsTownTile = Loc;
                 foreach (int chestIndex in ChestIndexs)
                 {
                     var chest = Main.chest[chestIndex];
@@ -9511,7 +9481,6 @@ public class StellaWorld : ModSystem
                 if (!StructureLoader.TryPlaceAndProtectStructure(Loc, "Struct/Ice/VeldrisHouse"))
                     continue;
                 int[] ChestIndexs = StructureLoader.ReadStruct(Loc, "Struct/Ice/VeldrisHouse");
-                NPCs.Town.AlcadSpawnSystem.VelTile = Loc;
                 Chest c = Main.chest[ChestIndexs[0]];
 
                 foreach (int chestIndex in ChestIndexs)

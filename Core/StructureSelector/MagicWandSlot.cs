@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.UI;
 
 namespace Stellamod.Core.StructureSelector
@@ -20,7 +21,7 @@ namespace Stellamod.Core.StructureSelector
 
             //Set to Air
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
 
             var inventoryBack9 = TextureAssets.InventoryBack9;
             Width.Set(inventoryBack9.Width() * scale, 0f);

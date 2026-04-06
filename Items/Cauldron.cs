@@ -183,20 +183,19 @@ namespace Stellamod.Items
                     return ModContent.GetModItem(brew.material).Item;
             }
             Item r = new Item();
-            r.SetDefaults(0);
+            r.SetDefaults(ItemID.None);
             return r;
         }
         public Item FindMold(Item item)
         {
- 
-  
+            //TODO: optimize this to O(1) lookup time by making an array
             foreach (var brew in _brews)
             {
                 if (brew.result == item.type)
                     return ModContent.GetModItem(brew.mold).Item;
             }
             Item r = new Item();
-            r.SetDefaults(0);
+            r.SetDefaults(ItemID.None);
             return r;
         }
 

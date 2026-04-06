@@ -13,7 +13,7 @@ namespace Stellamod.Core.TriggersSystem
     public class NPCSelectButton : UIPanel
     {
         private readonly Action<ModNPC> _changeFunc;
-        public event Action<int> OnEmptyMouseover;
+        
         private readonly float _scale = 1f;
         public NPCSelectButton(string pointName, Action<ModNPC> changeFunc)
         {

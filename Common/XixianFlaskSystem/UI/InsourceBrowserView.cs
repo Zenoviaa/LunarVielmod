@@ -4,157 +4,157 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
 
-namespace Stellamod.Common.XixianFlaskSystem.UI
+namespace Stellamod.Common.XixianFlaskSystem.UI;
+
+public class InsourceBrowserView : UIPanel
 {
-    public class InsourceBrowserView : UIPanel
+    private float _scale;
+    private int _context;
+    //Basically, instead of ceratgin 6800 slots or whatever
+    //We have a single view that takes an array of items
+    //Uses that to calculate draw offsets for each item and draws them
+    public InsourceBrowserView()
     {
-        private float _scale;
-        private int _context;
-        //Basically, instead of ceratgin 6800 slots or whatever
-        //We have a single view that takes an array of items
-        //Uses that to calculate draw offsets for each item and draws them
-        public InsourceBrowserView()
+        Items = new Item[1];
+        Items[0] = new Item();
+        Items[0].SetDefaults(ItemID.None);
+        _scale = 1f;
+        _context = ItemSlot.Context.BankItem;
+        ElementsPerRow = 9;
+
+        //Set up the items we're going to iterate over
+        HoveringItem = new Item();
+        HoveringItem.SetDefaults(ItemID.None);
+
+        //Setup mouse interactions
+        OnLeftClick += SpawnItem;
+
+        //Setup drawing
+        string texturePath = this.GetType().DirectoryHere() + "/InsourceSlot";
+        SlotTextureAsset = ModContent.Request<Texture2D>(texturePath, AssetRequestMode.AsyncLoad);
+        Width.Set(32, 0f);
+        Height.Set(32, 0f);
+    }
+
+    public Item[] Items;
+    public Item HoveringItem;
+    public Asset<Texture2D> SlotTextureAsset;
+    public float ViewPosition;
+    public int ElementsPerRow;
+
+    public void SetCollection(Item[] items)
+    {
+        Items = items;
+    }
+
+    private void SpawnItem(UIMouseEvent evt, UIElement listeningElement)
+    {
+        Main.mouseItem = HoveringItem.Clone();
+    }
+
+    protected override void DrawSelf(SpriteBatch spriteBatch)
+    {
+        float oldScale = Main.inventoryScale;
+        Main.inventoryScale = _scale;
+        Rectangle rectangle = GetDimensions().ToRectangle();
+        if (IsMouseHovering && !PlayerInput.IgnoreMouseInterface)
         {
-            Items = new Item[1];
-            Items[0] = new Item();
-            Items[0].SetDefaults(0);
-            _scale = 1f;
-            _context = ItemSlot.Context.BankItem;
-            ElementsPerRow = 9;
-
-            //Set up the items we're going to iterate over
-            HoveringItem = new Item();
-            HoveringItem.SetDefaults(0);
-
-            //Setup mouse interactions
-            OnLeftClick += SpawnItem;
-
-            //Setup drawing
-            string texturePath = this.GetType().DirectoryHere() + "/InsourceSlot";
-            SlotTextureAsset = ModContent.Request<Texture2D>(texturePath, AssetRequestMode.AsyncLoad);
-            Width.Set(32, 0f);
-            Height.Set(32, 0f);
+            Main.LocalPlayer.mouseInterface = true;
         }
 
-        public Item[] Items;
-        public Item HoveringItem;
-        public Asset<Texture2D> SlotTextureAsset;
-        public float ViewPosition;
-        public int ElementsPerRow;
-
-        public void SetCollection(Item[] items)
+        if (IsMouseHovering)
         {
-            Items = items;
+            Main.HoverItem = HoveringItem;
+            Main.hoverItemName = HoveringItem.HoverName;
         }
 
-        private void SpawnItem(UIMouseEvent evt, UIElement listeningElement)
-        {
-            Main.mouseItem = HoveringItem.Clone();
-        }
+        Vector2 topLeft = rectangle.TopLeft();
+        float availableWidth = GetInnerDimensions().Width;
+        float listPadding = 16;
+        Rectangle outerDimensions = new Rectangle(0, 0, 32, 32);
+        Point mousePoint = Main.MouseScreen.ToPoint();
+        string filter = string.Empty;
+        bool useFilter = !string.IsNullOrEmpty(filter);
 
-        protected override void DrawSelf(SpriteBatch spriteBatch)
+        //We're basically just reusing the grid code here lol
+        //There's currently 9 items per row
+        //To optimize this, we can calculate the placement of an element with some simple math based on its index
+        //Instead of using left and top variables
+        //So let's do that
+
+
+        //We only want to draw the items that are actually in view
+        //So we should calculate a starting inde
+
+
+        //Define our width variables
+
+        Item[] itemArr = Items;
+        int elementsPerRow = ElementsPerRow;
+        float elementWidth = outerDimensions.Width;
+        float viewWidth = availableWidth;
+        float elementHeight = outerDimensions.Height;
+
+        //Calculate the maximum height of the grid
+        int itemRows = (itemArr.Length / elementsPerRow);
+        float maximumHeight = itemRows * (elementHeight + listPadding);
+        Height.Pixels = maximumHeight + 32;
+
+
+        Texture2D slotTexture = SlotTextureAsset.Value;
+        Color drawColor = Color.Lerp(Color.White, Color.Black, 0.75f);
+        float drawScale = 1.2f;
+        Vector2 drawOrigin = slotTexture.Size() / 2;
+
+        //The view position is the y offset of the scrollbar
+        //So to figure out where to start from
+        //We just divide the offset by 
+        //Caculate a starting and ending index for which items to draw
+        int numRowsDownward = (int)(ViewPosition / (elementHeight + listPadding));
+        int startIndex = numRowsDownward * elementsPerRow;
+        int endIndex = startIndex + elementsPerRow * 6;
+
+
+        //Now we're only loading the items that are in view! Yippee! Optimization!
+        for (int i = startIndex; i < endIndex && i < itemArr.Length; i++)
         {
-            float oldScale = Main.inventoryScale;
-            Main.inventoryScale = _scale;
-            Rectangle rectangle = GetDimensions().ToRectangle();
-            if (IsMouseHovering && !PlayerInput.IgnoreMouseInterface)
+            Item item = itemArr[i];
+
+            //Remmeber 9 elements per row
+            //We can use the modulus operator to get this to keep looping, since all elements are the same size
+            float leftOffset = i % elementsPerRow * (elementWidth + listPadding);
+            float topOffset = i / elementsPerRow * (elementHeight + listPadding);
+
+            //Enchantment Card
+            Vector2 tl = topLeft;
+            tl.X += leftOffset;
+            tl.Y += topOffset;
+            Vector2 centerPos = tl + new Vector2(16);
+
+            Vector2 iconCenterPos = tl + slotTexture.Size() / 2;
+            spriteBatch.Draw(slotTexture, centerPos, null, drawColor, 0f, drawOrigin, _scale, SpriteEffects.None, 0f);
+            ItemSlot.DrawItemIcon(item, _context, spriteBatch, centerPos, drawScale, 32, Color.White);
+            if (HoveringItem.stack > 1)
             {
-                Main.LocalPlayer.mouseInterface = true;
+                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, item.stack.ToString(),
+                    centerPos + new Vector2(0, 2) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
             }
 
-            if (IsMouseHovering)
+            //Check if hovering for tooltip
+            Rectangle hoverRectangle = new Rectangle((int)tl.X, (int)tl.Y, 32, 32);
+            if (hoverRectangle.Contains(mousePoint))
             {
-                Main.HoverItem = HoveringItem;
-                Main.hoverItemName = HoveringItem.HoverName;
+                HoveringItem = item;
+                Main.HoverItem = new Item(item.type);
+                Main.hoverItemName = item.HoverName;
             }
-
-            Vector2 topLeft = rectangle.TopLeft();
-            float availableWidth = GetInnerDimensions().Width;
-            float listPadding = 16;
-            Rectangle outerDimensions = new Rectangle(0, 0, 32, 32);
-            Point mousePoint = Main.MouseScreen.ToPoint();
-            string filter = string.Empty;
-            bool useFilter = !string.IsNullOrEmpty(filter);
-
-            //We're basically just reusing the grid code here lol
-            //There's currently 9 items per row
-            //To optimize this, we can calculate the placement of an element with some simple math based on its index
-            //Instead of using left and top variables
-            //So let's do that
-
-
-            //We only want to draw the items that are actually in view
-            //So we should calculate a starting inde
-
-
-            //Define our width variables
-
-            Item[] itemArr = Items;
-            int elementsPerRow = ElementsPerRow;
-            float elementWidth = outerDimensions.Width;
-            float viewWidth = availableWidth;
-            float elementHeight = outerDimensions.Height;
-
-            //Calculate the maximum height of the grid
-            int itemRows = (itemArr.Length / elementsPerRow);
-            float maximumHeight = itemRows * (elementHeight + listPadding);
-            Height.Pixels = maximumHeight + 32;
-
-
-            Texture2D slotTexture = SlotTextureAsset.Value;
-            Color drawColor = Color.Lerp(Color.White, Color.Black, 0.75f);
-            float drawScale = 1.2f;
-            Vector2 drawOrigin = slotTexture.Size() / 2;
-
-            //The view position is the y offset of the scrollbar
-            //So to figure out where to start from
-            //We just divide the offset by 
-            //Caculate a starting and ending index for which items to draw
-            int numRowsDownward = (int)(ViewPosition / (elementHeight + listPadding));
-            int startIndex = numRowsDownward * elementsPerRow;
-            int endIndex = startIndex + elementsPerRow * 6;
-
-
-            //Now we're only loading the items that are in view! Yippee! Optimization!
-            for (int i = startIndex; i < endIndex && i < itemArr.Length; i++)
-            {
-                Item item = itemArr[i];
-
-                //Remmeber 9 elements per row
-                //We can use the modulus operator to get this to keep looping, since all elements are the same size
-                float leftOffset = i % elementsPerRow * (elementWidth + listPadding);
-                float topOffset = i / elementsPerRow * (elementHeight + listPadding);
-
-                //Enchantment Card
-                Vector2 tl = topLeft;
-                tl.X += leftOffset;
-                tl.Y += topOffset;
-                Vector2 centerPos = tl + new Vector2(16);
-
-                Vector2 iconCenterPos = tl + slotTexture.Size() / 2;
-                spriteBatch.Draw(slotTexture, centerPos, null, drawColor, 0f, drawOrigin, _scale, SpriteEffects.None, 0f);
-                ItemSlot.DrawItemIcon(item, _context, spriteBatch, centerPos, drawScale, 32, Color.White);
-                if (HoveringItem.stack > 1)
-                {
-                    ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, item.stack.ToString(),
-                        centerPos + new Vector2(0, 2) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
-                }
-
-                //Check if hovering for tooltip
-                Rectangle hoverRectangle = new Rectangle((int)tl.X, (int)tl.Y, 32, 32);
-                if (hoverRectangle.Contains(mousePoint))
-                {
-                    HoveringItem = item;
-                    Main.HoverItem = new Item(item.type);
-                    Main.hoverItemName = item.HoverName;
-                }
-            }
-
-            Main.inventoryScale = oldScale;
         }
+
+        Main.inventoryScale = oldScale;
     }
 }

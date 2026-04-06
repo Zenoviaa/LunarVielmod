@@ -150,7 +150,7 @@ namespace Stellamod.Common.XixianFlaskSystem
             while (insources.Count <= index)
             {
                 Item emptyItem = new Item();
-                emptyItem.SetDefaults(0);
+                emptyItem.SetDefaults(ItemID.None);
                 insources.Add(emptyItem);
             }
             insources[index] = item;
@@ -164,7 +164,7 @@ namespace Stellamod.Common.XixianFlaskSystem
                 return insources[index];
             }
             Item air = new Item(0);
-            air.SetDefaults(0);
+            air.SetDefaults(ItemID.None);
             return air;
         }
 

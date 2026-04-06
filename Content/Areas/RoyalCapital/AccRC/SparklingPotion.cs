@@ -101,8 +101,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.AccRC
             Vector2 velocityTo = targetPosition - Projectile.Center;
 
             NPC nearest = NPCHelper.FindClosestNPC(targetPosition, 384);
-
-            float interp = 0;
             float time = 90f;
             if(nearest != null)
             {

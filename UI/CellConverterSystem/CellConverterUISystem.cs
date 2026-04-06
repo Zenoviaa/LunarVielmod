@@ -3,6 +3,7 @@ using Stellamod.Items;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -84,7 +85,7 @@ namespace Stellamod.UI.CellConverterSystem
             {
                 Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), mold, mold.stack);
                 converterUIState.converterUI.convertSlot.Item = new Item();
-                converterUIState.converterUI.convertSlot.Item.SetDefaults(0);
+                converterUIState.converterUI.convertSlot.Item.SetDefaults(ItemID.None);
             }
             _userInterface.SetState(null);
         }

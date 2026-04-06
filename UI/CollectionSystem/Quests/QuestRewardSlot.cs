@@ -1,8 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.QuestSystem;
+﻿using Stellamod.Common.QuestSystem;
 using Terraria;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -18,7 +17,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
             _context = context;
             _scale = scale;
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
 
             var value = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}CollectionTabSlot",
                 ReLogic.Content.AssetRequestMode.ImmediateLoad);
@@ -85,7 +84,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
             for (int i = 0; i < 8f; i++)
             {
                 Color glowColor = Color.White * Glow;
-                float progress = (float)i / 8f;
+                float progress = i / 8f;
                 float rot = progress * MathHelper.TwoPi;
                 Vector2 offset = rot.ToRotationVector2() * 8 * Glow;
                 ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos + offset, _scale, 32, glowColor);

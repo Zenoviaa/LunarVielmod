@@ -1,9 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
-using Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
@@ -42,7 +39,6 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
         private bool _isDangerous;
         private bool _isWarning;
         private bool _spawned;
-        private bool _showNamePlate;
         private int _frame;
         private ref float Timer => ref NPC.ai[0];
         private AIState State
@@ -260,7 +256,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
-                if(!NPC.HasValidTarget && State != AIState.Despawn)
+                if (!NPC.HasValidTarget && State != AIState.Despawn)
                 {
                     SwitchState(AIState.Despawn);
                 }
@@ -345,7 +341,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
                     FXUtil.GlowStretch(NPC.Center, v);
                 }
 
-                if(Main.netMode != NetmodeID.Server)
+                if (Main.netMode != NetmodeID.Server)
                 {
                     int headGore = Mod.Find<ModGore>($"{Name}_Gore_Head").Type;
                     int legGore = Mod.Find<ModGore>($"{Name}_Gore_Butt").Type;
@@ -364,7 +360,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
         private void AI_Despawn()
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 SoundStyle soundStyle = AssetRegistry.Sounds.Ravager.RavagerAngry;
                 soundStyle.PitchVariance = 0.2f;
@@ -375,7 +371,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.01f);
             NPC.noTileCollide = true;
             NPC.noGravity = false;
-            if(Timer >= 100)
+            if (Timer >= 100)
             {
                 NPC.active = false;
             }
@@ -560,7 +556,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             _isWarning = false;
             _scale = Vector2.One;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 NPC.TargetClosest();
             }
@@ -593,7 +589,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             _scale = Vector2.Lerp(new Vector2(1.1f, 0.95f), Vector2.One, EasingFunction.InOutSine(Timer / 45f));
             NPC.spriteDirection = -NPC.direction;
             NPC.velocity.X *= 0.9f;
- 
+
             if (NPC.HasValidTarget)
             {
                 if (Timer >= IdleMadTime)

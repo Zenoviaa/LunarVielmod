@@ -1,17 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
-using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
-using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Swords;
 using Stellamod.Trailing;
-using Stellamod.Trails;
-using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -178,7 +172,6 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             ref float ai_Counter = ref Projectile.ai[0];
             if (ai_Counter == 0 && Main.myPlayer == Projectile.owner)
             {
-                float radius = 384;
                 Player owner = Main.player[Projectile.owner];
                 _targetCenter = owner.Center + Main.rand.NextVector2Circular(128, 128);
                 _targetCenter -= Vector2.UnitY * 256;
@@ -186,21 +179,21 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             }
 
             ai_Counter++;
-            if(Spawner == 0 && ai_Counter % 16 == 0)
+            if (Spawner == 0 && ai_Counter % 16 == 0)
             {
                 if (AttackNum < 7)
                 {
-                    if(Main.myPlayer == Projectile.owner)
+                    if (Main.myPlayer == Projectile.owner)
                     {
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Vector2.UnitY, Type, 
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Vector2.UnitY, Type,
                             Projectile.damage, Projectile.knockBack, Projectile.owner, ai2: 1);
                     }
-                  
+
                     AttackNum++;
                 }
             }
 
-      
+
 
             if (ai_Counter >= Fire)
             {

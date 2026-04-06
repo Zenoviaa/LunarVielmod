@@ -13,7 +13,7 @@ namespace Stellamod.UI.CollectionSystem.Quests
     public class QuestRewardButton : UIPanel
     {
         private UIText _text;
-        public event Action<int> OnEmptyMouseover;
+        
         private readonly float _scale = 1f;
         public QuestRewardButton()
         {

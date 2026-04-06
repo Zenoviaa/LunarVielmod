@@ -45,8 +45,6 @@ namespace Stellamod.Projectiles.Magic
             set => Projectile.ai[0] = value;
         }
         public float Timer2;
-        bool Moved;
-
         public override void OnKill(int timeLeft)
         {
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);

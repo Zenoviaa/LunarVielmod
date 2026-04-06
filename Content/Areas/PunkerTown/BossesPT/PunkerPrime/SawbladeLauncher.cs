@@ -165,7 +165,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             NPC.velocity *= 0.1f;
 
-            int fireTime = 70;
+            int fireTime = 15;
             int fireCount = 3;
 
             AimGunTowardTarget();
@@ -187,7 +187,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 if (MultiplayerHelper.IsHost)
                 {
                     Vector2 fireVelocity = NPC.rotation.ToRotationVector2();
-                    fireVelocity *= 12;
+                    fireVelocity *= 9;
                     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, fireVelocity,
                         ModContent.ProjectileType<PrimeSawblade>(), SawbladeDamage, 1, Main.myPlayer);
                 }

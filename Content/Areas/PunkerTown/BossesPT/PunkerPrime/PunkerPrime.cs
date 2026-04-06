@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.Animations;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
@@ -19,6 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -270,6 +272,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         protected void SetRootToParentCenter()
         {
+ 
+
             Segments[0].rootPosition = Parent.Bottom;
         }
         protected void AimGunTowardTarget()
@@ -462,6 +466,204 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         }
     }
 
+    public class Metronome
+    {
+        public Metronome(float bpm)
+        {
+            this.bpm = bpm;
+        }
+        public float bpm;
+        public bool beatHit;
+        public float beatCounter;
+        public float localBeatCounter;
+        public float beatTimer;
+
+        public void Update()
+        {
+            float beatsPerTick = 150f / 60f / 60f;
+            beatTimer += beatsPerTick;
+
+            beatHit = false;
+            while (beatTimer >= 1f)
+            {
+                beatTimer -= 1f;
+                beatCounter++;
+                localBeatCounter++;
+                beatHit = true;
+            }
+        }
+    }
+    public class Boombox : ModNPC
+    {
+        private enum AIState
+        {
+            IdleFollow,
+            Warn
+        }
+        private ref float Timer => ref NPC.ai[0];
+        private AIState State
+        {
+            get => (AIState)NPC.ai[1];
+            set => NPC.ai[1] = (float)value;
+        }
+
+        private Metronome _metronome;
+        private Metronome Metronome
+        {
+            get
+            {
+                _metronome ??= new Metronome(150);
+                return _metronome;
+            }
+        }
+        private NPC Parent => Main.npc[(int)NPC.ai[2]];
+        private bool ShouldWarn => NPC.ai[3] == 1;
+        private float _upDown;
+        private Vector2 _upDownOffset;
+        private Vector2 _bounceOffset;
+        private float _rotOffset;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            Main.npcFrameCount[NPC.type] = 1;
+            NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+            NPCID.Sets.TrailCacheLength[NPC.type] = 16;
+            NPCID.Sets.TrailingMode[Type] = 3;
+        }
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return false;
+        }
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            NPC.width = 32;
+            NPC.height = 32;
+            NPC.damage = 100;
+            NPC.defense = 14;
+            NPC.lifeMax = 6000;
+
+            NPC.value = Item.buyPrice(gold: 5);
+            NPC.knockBackResist = 0f;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            NPC.npcSlots = 30f;
+
+            NPC.dontTakeDamage = true;
+            NPC.dontCountMe = true;
+            NPC.dontTakeDamageFromHostiles = true;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            if (!Parent.active)
+            {
+                NPC.active = false;
+            }
+
+            Metronome.Update();
+            if (_upDown == 0)
+                _upDown = 1;
+            if (Metronome.beatHit)
+            {
+                _upDown *= -1;
+            }
+            _rotOffset = MathHelper.Lerp(_rotOffset, 0.5f * _upDown, 0.2f);
+            _upDownOffset = Vector2.Lerp(_upDownOffset, Vector2.UnitY * _upDown * 8, 0.2f);
+            switch (State)
+            {
+                case AIState.IdleFollow:
+                    AI_IdleFollow();
+                    break;
+                case AIState.Warn:
+                    AI_Warn();
+                    break;
+            }
+        }
+
+
+
+        private void SwitchState(AIState state)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Timer = 0;
+                State = state;
+                NPC.netUpdate = true;
+            }
+        }
+        private void AI_IdleFollow()
+        {
+            Timer++;
+            Chase();
+            if (ShouldWarn)
+            {
+                SwitchState(AIState.Warn);
+            }
+        }
+
+        private void Chase()
+        {
+            //Crazy movement code
+            Vector2 targetPosition = Parent.Center;
+            targetPosition.Y -= 8;
+            Vector2 velocityToPlayer = (targetPosition - NPC.Center);
+            velocityToPlayer = velocityToPlayer.SafeNormalize(Vector2.Zero);
+            float dist = Vector2.Distance(NPC.Center, targetPosition);
+            if (dist <= 0)
+                dist = 1;
+
+            float interp = dist / 384;
+            interp = EasingFunction.InOutSine(interp);
+            float speed = MathHelper.Lerp(6, 20, interp);
+
+            float xDist = MathF.Abs(targetPosition.X - NPC.Center.X);
+            if (xDist < 256)
+                velocityToPlayer.Y -= 0.5f;
+
+            if (dist < speed)
+                speed = dist;
+            velocityToPlayer *= speed;
+            velocityToPlayer *= ExtraMath.Osc(0.5f, 1f, speed: 2);
+            velocityToPlayer.Y += ExtraMath.Osc(-5, 5, speed: 2);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToPlayer, 0.02f);
+            NPC.rotation = NPC.velocity.X * 0.02f + ExtraMath.Osc(-0.05f, 0.05f, speed: 2);
+        }
+
+        private void AI_Warn()
+        {
+            Timer++;
+            NPC.velocity *= 0.9f;
+            if(Timer == 2)
+            {
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<Kabloowie>(), 1, 1, Main.myPlayer);
+                }
+            }
+            _bounceOffset = Vector2.Lerp(Vector2.UnitY * -64, Vector2.UnitY * 64, ExtraMath.Osc(0f, 1f, speed: 4)) * MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / 60f));
+            NPC.ai[3] = 0;
+            if(Timer >= 60)
+            {
+                SwitchState(AIState.IdleFollow);
+            }
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromNPC(NPC);
+            Vector2 offset = _upDownOffset;
+            offset.Y += ExtraMath.Osc(-8f, 8f, 8f);
+            offset += _bounceOffset;
+            drawer.worldPosition += offset;
+            drawer.rotation += _rotOffset;
+            spriteBatch.Draw(drawer);
+            return false;
+        }
+    }
     public class PunkerPrime : ScarletBoss,
         IDrawOutlines
     {
@@ -471,15 +673,38 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Spawn,
             Despawn,
             Idle,
+            Flurry,
             Death,
-
-            RePosition,
+            Warning_Prepare_Attacks,
             SummonArms,
             Special_Start,
             Special_Loop,
             Special_End
         }
+        private const string Anim_Bouncing_Fast = "bouncefast";
+        private const string Anim_Bouncing_Slow = "bounceslow";
+        private const string Anim_Idle = "idle";
+        private Animator _animator;
+        private Animator Animator
+        {
+            get
+            {
+                if (_animator == null)
+                {
+                    _animator = new Animator();
+                    var bounceFast = new SpriteAnimation(0, 9, isLooping: true, frameSpeed: 0.4f);
+                    _animator.AddAnimation(Anim_Bouncing_Fast, bounceFast);
 
+                    var running = new SpriteAnimation(11, 15, isLooping: true, frameSpeed: 0.1f);
+                    _animator.AddAnimation(Anim_Bouncing_Slow, running);
+
+                    var idle = new SpriteAnimation(10, 10, isLooping: true, frameSpeed: 0.35f);
+                    _animator.AddAnimation(Anim_Idle, idle);
+                }
+
+                return _animator;
+            }
+        }
         private PunkerPrimeDraw _draw;
         private Vector2 _startCenter;
         private Vector2 _hoverCenter;
@@ -487,6 +712,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         private bool[] _disabledArms;
         private bool _showNamePlate;
         private bool _phaseTransition;
+        private float _flurryTimer;
+
+        private float _upDown;
+        private float _rotOffset;
+        private Vector2 _upDownOffset;
+        private Vector2 _bounceOffset;
+        private string _animationToPlay = string.Empty;
         private Queue<int> _armQueueBacking;
         private Queue<int> ArmQueue
         {
@@ -513,10 +745,19 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 return _armQueueBacking;
             }
         }
-
+        private Metronome _metronome;
+        private Metronome Metronome
+        {
+            get
+            {
+                _metronome ??= new Metronome(150);
+                return _metronome;
+            }
+        }
         private ref float Timer => ref NPC.ai[0];
 
         private PunkerPrimeArm[] _arms;
+        private NPC _boomBoxNPC;
         private ref PunkerPrimeArm Chainsaw1 => ref _arms[0];
         private ref PunkerPrimeArm Chainsaw2 => ref _arms[1];
         private ref PunkerPrimeArm Drill => ref _arms[2];
@@ -551,7 +792,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            Main.npcFrameCount[NPC.type] = 1;
+            Main.npcFrameCount[Type] = 16;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
             NPCID.Sets.TrailCacheLength[NPC.type] = 16;
@@ -580,14 +821,35 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         }
 
+        public override void FindFrame(int frameHeight)
+        {
+            base.FindFrame(frameHeight);
+            Animator.Update();
+            NPC.frame.Y = Animator.GetFrameY(frameHeight);
+        }
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             return base.CanHitPlayer(target, ref cooldownSlot) && false;
         }
 
+        private void ManageMetronome()
+        {
+            Metronome.Update();
+            if (_upDown == 0)
+                _upDown = 1;
+            if (Metronome.beatHit)
+            {
+                if(!string.IsNullOrEmpty(_animationToPlay))
+                    Animator.PlayAnimation(_animationToPlay);
+                _upDown *= -1;
+            }
+            _rotOffset = MathHelper.Lerp(_rotOffset, 0.1f * _upDown, 0.2f);
+            _upDownOffset = Vector2.Lerp(_upDownOffset, Vector2.UnitY * _upDown * 8, 0.2f);
+        }
         public override void AI()
         {
             base.AI();
+       
             _draw.outlineColor = Color.Lerp(_draw.outlineColor, TargetOutlineColor, 0.1f);
             if (!NPC.HasValidTarget)
             {
@@ -597,8 +859,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                     SwitchState(AIState.Despawn);
                 }
             }
-
-
 
             if (_teleportPosition != Vector2.Zero)
             {
@@ -637,6 +897,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SoundEngine.PlaySound(mechSteaming, NPC.position);
                 _phaseTransition = true;
             }
+            ManageMetronome();
             MoveSlightlyTowardMe();
             Lighting.AddLight(NPC.Center, TorchID.Red);
             switch (State)
@@ -650,14 +911,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 case AIState.Idle:
                     AI_Idle();
                     break;
+                case AIState.Flurry:
+                    AI_Flurry();
+                    break;
                 case AIState.Death:
                     AI_Death();
                     break;
-                case AIState.RePosition:
-                    AI_RePosition();
-                    break;
                 case AIState.SummonArms:
                     AI_SummonArms();
+                    break;
+                case AIState.Warning_Prepare_Attacks:
+                    AI_WarningPrepareAttacks();
                     break;
                 case AIState.Special_Start:
                     AI_Special();
@@ -709,8 +973,42 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 }
             }
 
- 
-            SwitchState(AIState.Idle);
+            SwitchState(AIState.Flurry);
+        }
+
+        private void SummonArm()
+        {
+            int armToSummon = ArmQueue.Dequeue();
+
+            //Just recall this function until you get to an arm that you can summon
+            if (!CanUseArm(armToSummon))
+            {
+                AI_SummonArms();
+                return;
+            }
+            if (MultiplayerHelper.IsHost)
+            {
+                PunkerPrimeArm arm = _arms[armToSummon];
+
+                if (InPhase2 && SuperchargeTimer > 600)
+                {
+                    SuperchargeTimer = 0f;
+                    arm.SuperchargeAttack();
+                }
+                else
+                {
+                    arm.Attack();
+                }
+            }
+        }
+
+        private void AI_WarningPrepareAttacks()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
         }
 
         private void AI_Special()
@@ -920,11 +1218,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             _arms[5] = SummonArm<AssaultRifle>();
             _arms[6] = SummonArm<LaserRifle>();
             _arms[7] = SummonArm<ElectroFieldLauncher>();
+
+            int x = (int)NPC.Center.X;
+            int y = (int)NPC.Center.Y;
+            _boomBoxNPC = NPC.NewNPCDirect(SourceFromThis, x, y, ModContent.NPCType<Boombox>(), ai2: NPC.whoAmI);
         }
 
         private void AI_Idle()
         {
             _draw.afterImageStrength *= 0.5f;
+            _animationToPlay = Anim_Idle;
+    
 
             //Steampunker prime is just going to hover around and above you most of the time for the most part
             //If you get far from him he'll track you, but otherwise he's mostly stationary and doesn't move too much
@@ -944,16 +1248,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             SpecialTimer++;
 
             //Starts slow and gets faster over time
-            float fightRatio = (float)NPC.life / (float)NPC.lifeMax;
-            float idleTime = MathHelper.Lerp(60f, 180, fightRatio);
-   
-            float yDistance = MathF.Abs(MyTarget.Center.Y - NPC.Center.Y);
-            float xDistance = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
-            float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
-            if (distanceToTarget > 800 || yDistance < 150)
-            {
-                SwitchState(AIState.RePosition);
-            }
+            float idleTime = 240;
             if (Timer % 15 == 0)
             {
                 SpawnSteamParticle();
@@ -962,65 +1257,103 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                     var d = Dust.NewDustPerfect(NPC.Top, ModContent.DustType<TSmokeDust>(), Scale: Main.rand.NextFloat(0.5f, 1.2f));
                 }
             }
-            _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 0f, 0.1f);
 
+            _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 0f, 0.1f);
             if (!_showNamePlate)
             {
                 ShowNamePlate();
                 _showNamePlate = true;
             }
-            TargetOutlineColor = Color.Transparent;
-            Vector2 hoverVelocity = Vector2.Zero;
-            hoverVelocity.Y = MathF.Sin(Timer * 0.125f) * 0.5f;
-   
-            if(xDistance > 200)
-            {
-                float xSpeed = FacingDirectionToTarget * 3f;
-                hoverVelocity.X = xSpeed;
-            }
-           
+            Chase(speedMult: 0.25f);
 
-          
-            if(yDistance > 300)
+            if(Timer > idleTime / 2)
             {
-                hoverVelocity.Y += MathF.Sign(MyTarget.Center.Y - NPC.Center.Y);
+                _animationToPlay = Anim_Bouncing_Slow;
             }
-            NPC.noGravity = true;
-            NPC.velocity = hoverVelocity;
+
+            TargetOutlineColor = Color.Transparent;
             NPC.rotation = NPC.velocity.X * 0.02f;
             if (Timer >= idleTime)
             {
-                ChooseAttack();
+                if (SpecialTimer >= 1000)
+                {
+                    SpecialTimer = 0f;
+                    SwitchState(AIState.Special_Start);
+                }
+                else
+                {
+                    SwitchState(AIState.Flurry);
+                }
+
             }
         }
-        private void AI_RePosition()
+
+        private void AI_Flurry()
         {
             Timer++;
+            _animationToPlay = Anim_Bouncing_Fast;
             if (Timer == 1)
             {
-                NPC.TargetClosest();
-                _startCenter = NPC.Center;
-                _hoverCenter = MyTarget.Center + new Vector2(0, -250);
+                if (MultiplayerHelper.IsHost)
+                {
+                    _boomBoxNPC.ai[3] = 1;
+                    _boomBoxNPC.netUpdate = true;
+                }
 
-                SoundStyle mechMove = AssetRegistry.Sounds.SteamPunking.MechMove;
-                mechMove.PitchVariance = 0.2f;
-                SoundEngine.PlaySound(mechMove, NPC.position);
+                NPC.TargetClosest();
             }
 
+            if (Timer % 15 == 0)
+            {
+                SpawnSteamParticle();
+                if (Main.rand.NextBool(3))
+                {
+                    var d = Dust.NewDustPerfect(NPC.Top, ModContent.DustType<TSmokeDust>(), Scale: Main.rand.NextFloat(0.5f, 1.2f));
+                }
+            }
 
-            TargetOutlineColor = Color.Transparent;
             _draw.afterImageStrength = MathHelper.Lerp(_draw.afterImageStrength, 1f, 0.1f);
-            float repositionTime = 60f;
-            float completionRatio = Timer / repositionTime;
-            float ease = EasingFunction.Anticipation2(completionRatio);
-            Vector2 positionToMoveTo = Vector2.Lerp(_startCenter, _hoverCenter, ease);
-            Vector2 velocity = (positionToMoveTo - NPC.Center);
-            NPC.velocity = velocity;
-            NPC.rotation = NPC.velocity.X * 0.025f;
-            if (Timer >= repositionTime)
+            Chase();
+            NPC.velocity *= 0.94f;
+            TargetOutlineColor = Color.Transparent;
+            NPC.rotation = NPC.velocity.X * 0.02f;
+            if(Timer > 100 && Timer % 90 == 0 && Timer < 400)
+            {
+                SummonArm();
+            }
+
+            if(Timer >= 500)
             {
                 SwitchState(AIState.Idle);
             }
+        }
+
+        private void Chase(float speedMult = 1f)
+        {
+            //Crazy movement code
+            Vector2 targetPosition = MyTarget.Center;
+            targetPosition.Y -= 128;
+            Vector2 velocityToPlayer = (targetPosition - NPC.Center);
+            velocityToPlayer = velocityToPlayer.SafeNormalize(Vector2.Zero);
+            float dist = Vector2.Distance(NPC.Center, targetPosition);
+            if (dist <= 0)
+                dist = 1;
+
+            float interp = dist / 384;
+            interp = EasingFunction.InOutSine(interp);
+            float speed = MathHelper.Lerp(6, 20, interp);
+            speed *= speedMult;
+
+            float xDist = MathF.Abs(targetPosition.X - NPC.Center.X);
+            if (xDist < 256)
+                velocityToPlayer.Y -= 0.5f;
+
+            if (dist < speed)
+                speed = dist;
+            velocityToPlayer *= speed;
+            velocityToPlayer *= ExtraMath.Osc(0.5f, 1f, speed: 2);
+            velocityToPlayer.Y += ExtraMath.Osc(-5, 5, speed: 2);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToPlayer, 0.04f);
         }
 
         private void ChooseAttack()
@@ -1138,13 +1471,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             DrawBodyAfterImage(spriteBatch, screenPos);
             DrawBodySprite(spriteBatch, screenPos, drawColor);
-            DrawGlowSprite(spriteBatch, screenPos, Color.Red * ExtraMath.Osc(0.1f, 0.25f));
             return false;
         }
 
         private void DrawBodyAfterImage(SpriteBatch spriteBatch, Vector2 screenPos)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Texture2D texture = TextureAssets.Npc[Type].Value;
             Rectangle frame = NPC.frame;
             Vector2 drawOrigin = frame.Size() / 2f;
             float length = NPCID.Sets.TrailCacheLength[Type];
@@ -1164,22 +1496,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         private void DrawBodySprite(SpriteBatch spriteBatch, Vector2 screenPos, Color color)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+            Texture2D texture = TextureAssets.Npc[Type].Value;
             Rectangle frame = NPC.frame;
             Vector2 drawCenter = NPC.Center - screenPos;
             Vector2 drawOrigin = frame.Size() / 2f;
             drawCenter += _draw.shakeOffset;
-            spriteBatch.Draw(texture, drawCenter, frame, color, NPC.rotation, drawOrigin, _draw.scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawCenter + _upDownOffset, frame, color, NPC.rotation + _rotOffset, drawOrigin, _draw.scale, SpriteEffects.None, 0);
         }
-        private void DrawGlowSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color color)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
-            Rectangle frame = NPC.frame;
-            Vector2 drawCenter = NPC.Center - screenPos;
-            Vector2 drawOrigin = frame.Size() / 2f;
-            drawCenter += _draw.shakeOffset;
-            spriteBatch.Draw(texture, drawCenter, frame, color, NPC.rotation, drawOrigin, _draw.scale * ExtraMath.Osc(1f, 1.25f), SpriteEffects.None, 0);
-        }
+
 
         public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {

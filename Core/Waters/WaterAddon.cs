@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.LoadingSystems;
 
+/*
 namespace Stellamod.Core.Waters
 {
     public abstract class WaterAddon : IOrderedLoadable
@@ -28,3 +29,4 @@ namespace Stellamod.Core.Waters
         public void Unload() { }
     }
 }
+*/

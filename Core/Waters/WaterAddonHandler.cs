@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil.Cil;
+﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Stellamod.Core.LoadingSystems;
 using System;
@@ -8,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 
+/*
 namespace Stellamod.Core.Waters
 {
     class WaterAddonHandler : HookGroup
@@ -22,7 +21,7 @@ namespace Stellamod.Core.Waters
         {
             WaterPlayer.PostUpdateEvent += UpdateActiveAddon;
             IL_Main.DoDraw += AddWaterShader;
-      
+
             //IL.Terraria.Main.DrawTiles += SwapBlockTexture;//TODO: Figure out where this logic moved in vanilla
         }
 
@@ -103,3 +102,4 @@ namespace Stellamod.Core.Waters
         }
     }
 }
+*/

@@ -22,7 +22,7 @@ namespace Stellamod.Common.SummonerSystem.UI
             _context = ItemSlot.Context.BankItem;
             OnLeftClick += On_LeftClick;
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
 
             string texturePath = GetType().DirectoryHere() + "/BellSlot";
             BackgroundTexture = ModContent.Request<Texture2D>(texturePath, ReLogic.Content.AssetRequestMode.ImmediateLoad);

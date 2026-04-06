@@ -20,6 +20,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 {
     public class AssaultBullet : ScarletProjectile
     {
+        private ref float Timer => ref Projectile.ai[0];
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetDefaults()
         {
@@ -35,12 +36,40 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         public override void AI()
         {
             base.AI();
+            Timer++;
+            if(Timer == 1)
+            {
+                FXUtil.GlowCircleBoom(Projectile.Center, Color.Red, Color.DarkRed, Color.Black);
+                for(float f = 0; f < 4; f++)
+                {
+                    Vector2 fireVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
+                    fireVelocity = fireVelocity.RotatedByRandom(MathHelper.ToRadians(60));
+                    fireVelocity *= Main.rand.NextFloat(3f, 8f);
+
+                    DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                    spawnParams.outerColor = Color.Red;
+                    spawnParams.scaleRange *= 0.5f;
+                    DustParticle.Spawn(Projectile.Center, fireVelocity, spawnParams);
+                }
+            }
             Projectile.velocity *= 1.01f;
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
+
+        private Color GetTrailColor(float completionRatio)
+        {
+            float osc = MathF.Sin(Main.GlobalTimeWrappedHourly * 4 + completionRatio * 8) * 0.5f + 0.5f;
+            return Color.Lerp(Color.White, Color.Red, osc);
+        }
+
+        private float GetTrailWidth(float completionRatio)
+        {
+            return MathHelper.SmoothStep(8, 2, completionRatio);
+        }
         public override bool PreDraw(ref Color lightColor)
         {
+            PixelationManager.QueueSpritebatchDrawAction(DrawHead);
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
             return false;
         }
@@ -64,17 +93,33 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
         public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
-            var shader = MagicNormalShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.GlowTrail;
-            shader.NoiseTexture = TrailRegistry.SpikyTrail1;
-            shader.BlendState = BlendState.Additive;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Speed = 0.5f;
-            shader.Repeats = 1f;
+            var shader = RichLaserShader.Instance;
+            shader.LaserColor = Color.White;
+            shader.InnerColor = Color.Red;
+            shader.OuterColor = Color.DarkRed;
+            shader.LaserTexture = AssetManager.LaserTextures.TexturedLaser;
+            shader.BloomTexture = AssetManager.LaserTextures.TexturedLaser2;
             //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, ColorFunction, WidthFunction, shader);
+            TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, GetTrailColor, GetTrailWidth, shader);
         }
 
+        private void DrawHead(SpriteBatch sb, Vector2 screenPos)
+        {
+            SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+            headDrawer.scale *= 0.3f;
+            headDrawer.scale.Y *= 0.45f;
+            headDrawer.scale.X *= 2;
+            headDrawer.rotation = Projectile.rotation;
+            headDrawer.color = Color.Red;
+            headDrawer.color.A = 0;
+            sb.Draw(headDrawer);
+
+            headDrawer.color = Color.White;
+            headDrawer.color.A = 0;
+            headDrawer.scale *= 0.75f;
+            sb.Draw(headDrawer);
+
+        }
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
@@ -84,6 +129,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
                 Dust.NewDustPerfect(Projectile.Center, 
                     ModContent.DustType<GlowDust>(), velocity, newColor: Color.Yellow, Scale: Main.rand.NextFloat(0.5f, 2f));
+            }
+            for (float f = 0; f < 4; f++)
+            {
+                Vector2 fireVelocity = -Projectile.oldVelocity.SafeNormalize(Vector2.Zero);
+                fireVelocity = fireVelocity.RotatedByRandom(MathHelper.ToRadians(60));
+                fireVelocity *= Main.rand.NextFloat(3f, 8f);
+
+                DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                spawnParams.outerColor = Color.Red;
+                spawnParams.scaleRange *= 0.5f;
+                DustParticle.Spawn(Projectile.Center, fireVelocity, spawnParams);
             }
         }
     }
@@ -213,7 +269,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             float targetRotation = targetFireVelocity.ToRotation();
             NPC.rotation = targetRotation;
 
-            if (Timer >= 60f)
+            if (Timer >= revTime)
             {
                 SwitchState(AIState.Shoot);
             }
@@ -243,8 +299,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             NPC.velocity *= 0.1f;
 
-            int fireTime = 35;
-            int fireCount = 12;
+            int fireTime = 15;
+            int fireCount = 6;
 
             AimGunTowardTarget();
             float fullFireTime = (fireTime * fireCount);

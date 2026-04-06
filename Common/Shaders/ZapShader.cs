@@ -1,11 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace Stellamod.Common.Shaders
+﻿namespace Stellamod.Common.Shaders
 {
     public class ZapShader : BaseShader
     {
-        private EffectParameter _timeParam;
         private EffectParameter _innerColorParam;
         private EffectParameter _outerColorParam;
         private EffectParameter _powerParam;

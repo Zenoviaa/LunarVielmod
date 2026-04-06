@@ -184,7 +184,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
                 HitCount = 6
             });
         }
-        private bool _thrust;
+
         public float thrustSpeed = 5;
         public float stabRange;
 

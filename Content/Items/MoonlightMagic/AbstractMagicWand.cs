@@ -66,7 +66,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         private void SetWandDefaults()
         {
             primaryElement = new Item();
-            primaryElement.SetDefaults(0);
+            primaryElement.SetDefaults(ItemID.None);
             normalEnchantments = new List<Item>();
             timedEnchantments = new List<Item>();
             normalSlotCount = 3;
@@ -339,7 +339,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             base.RightClick(player);
             ModContent.GetInstance<MagicUISystem>().OpenUI(Item.Clone().ModItem as AbstractMagicWand);
-            Item.SetDefaults(0); 
+            Item.SetDefaults(ItemID.None); 
         }
 
         public void SetElement(Item item)
@@ -375,7 +375,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 return item;
             }
             Item airItem2 = new Item();
-            airItem2.SetDefaults(0);
+            airItem2.SetDefaults(ItemID.None);
             return airItem2;
         }
 

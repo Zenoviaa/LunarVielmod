@@ -11,7 +11,7 @@ namespace Stellamod.UI.CellConverterSystem
 {
     public class ConverterCrystal : UIPanel
     {
-        public event Action<int> OnEmptyMouseover;
+        
         private readonly float _scale = 1f;
         public ConverterCrystal()
         {

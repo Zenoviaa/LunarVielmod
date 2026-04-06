@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
+﻿using Stellamod.Helpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,7 +24,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
         // Current state's timer
         public float timer;
         public int PrevAtack;
-        float DaedusDrug = 4;
         // AI counter
         public int counter;
 
@@ -41,20 +38,17 @@ namespace Stellamod.NPCs.Bosses.Fenix
             NPC.value = 0f;
             NPC.timeLeft = 450;
             NPC.knockBackResist = .0f;
-            NPC.aiStyle = 85;
+            NPC.aiStyle = NPCAIStyleID.StarCell;
             AIType = NPCID.StardustCellBig;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
         }
 
-
-        int invisibilityTimer;
-
-
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(255, 255, 255, 0) * (1f - NPC.alpha / 80f);
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             // Since the NPC sprite naturally faces left, we want to flip it when its X velocity is positive
@@ -100,9 +94,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
         }
         public float Shooting = 0f;
 
-
-
-        int bee = 220;
         int bee2 = 600;
         public int rippleCount = 20;
         public int rippleSize = 5;
@@ -114,8 +105,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
             timer++;
             NPC.spriteDirection = NPC.direction;
             Shooting++;
-
-            invisibilityTimer++;
 
 
             NPC.rotation -= 0.3f;
@@ -162,17 +151,11 @@ namespace Stellamod.NPCs.Bosses.Fenix
                 case ActionState.Wait:
                     counter++;
                     Wait();
-
-
-
-
                     break;
 
                 case ActionState.Speed:
                     counter++;
                     Speed();
-
-
                     break;
 
 
@@ -182,18 +165,12 @@ namespace Stellamod.NPCs.Bosses.Fenix
             }
         }
 
-
-
-
         public void Wait()
         {
             timer++;
 
             if (timer > 50)
             {
-
-
-
 
 
             }
@@ -214,8 +191,6 @@ namespace Stellamod.NPCs.Bosses.Fenix
         public void Speed()
         {
             timer++;
-
-
             if (timer > 50)
             {
 
@@ -232,18 +207,11 @@ namespace Stellamod.NPCs.Bosses.Fenix
             {
                 State = ActionState.Wait;
                 timer = 0;
-
-
                 if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
                 {
                     Terraria.Graphics.Effects.Filters.Scene["Shockwave"].Deactivate();
                 }
             }
-
         }
-
-
-
-
     }
 }

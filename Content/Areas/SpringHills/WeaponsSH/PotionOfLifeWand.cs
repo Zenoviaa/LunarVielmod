@@ -37,8 +37,6 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
     public class LifeWandMinionProj : AbstractBellSummon
     {
         private ref float Heart => ref Projectile.ai[0];
-        private Player Owner => Main.player[Projectile.owner];
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Spragald");

@@ -610,10 +610,8 @@ public class DeadRomanceGreatBlade : ModProjectile
     private void DrawPixelatedGlowSword(SpriteBatch spriteBatch, Vector2 screenPos)
     {
         float rotation = Projectile.rotation;
-        SpriteEffects spriteEffects = SpriteEffects.None;
         if (SwingDirection == 1)
         {
-            spriteEffects = SpriteEffects.FlipVertically;
             rotation -= MathHelper.PiOver2;
         }
 

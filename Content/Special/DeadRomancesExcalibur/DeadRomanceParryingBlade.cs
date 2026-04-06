@@ -90,7 +90,7 @@ public class DeadRomanceParryBuster : ModProjectile
     public override void AI()
     {
         base.AI();
-        if(hitstopTimer > 0)
+        if (hitstopTimer > 0)
         {
             hitstopTimer--;
             float ease = EasingFunction.InOutSine(hitstopTimer / hitstopTime);
@@ -104,9 +104,9 @@ public class DeadRomanceParryBuster : ModProjectile
             squishScale = Vector2.One * _targetScale;
         }
         float speedMult = MathHelper.Lerp(1f, 2f, reflectCount / 5f);
-      
+
         Timer++;
-        if(Timer % 8 == 0)
+        if (Timer % 8 == 0)
         {
             SirestiasSmokeParticle sp = SirestiasSmokeParticle.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(32, 32), Vector2.Zero);
             sp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Blue, 0.15f), Color.Black, Main.rand.NextFloat(0f, 1f));
@@ -151,10 +151,10 @@ public class DeadRomanceParryBuster : ModProjectile
             DeadRomancePlayer romancePlayer = Owner.GetModPlayer<DeadRomancePlayer>();
 
             float dist = Vector2.Distance(Owner.Center, Projectile.Center);
-            if(dist < 64)
+            if (dist < 64)
             {
                 killTimer++;
-                if(killTimer > 14)
+                if (killTimer > 14)
                 {
                     kill = true;
                 }
@@ -232,7 +232,7 @@ public class DeadRomanceParryBuster : ModProjectile
             Projectile.Kill();
         }
 
-        if(reflectCount >= 5)
+        if (reflectCount >= 5)
         {
             reflectCount = 0;
             for (float f = 0; f < 8; f++)
@@ -240,7 +240,7 @@ public class DeadRomanceParryBuster : ModProjectile
                 float ratio = f / 8f;
                 float radians = ratio * MathHelper.TwoPi;
                 Vector2 vel = radians.ToRotationVector2() * 8;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, vel, 
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, vel,
                     ModContent.ProjectileType<DeadRomanceBusterSmiteBlade>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
             Projectile.NewProjectile(Projectile.GetSource_FromAI(), target.Center, Vector2.Zero,
@@ -250,7 +250,7 @@ public class DeadRomanceParryBuster : ModProjectile
 
         var boom = FXUtil.GlowCircleBoom(target.Center, Color.White, Color.Goldenrod, Color.DarkGoldenrod);
         boom.Scale *= 2;
-        for(float f = 0f; f < 8f; f++)
+        for (float f = 0f; f < 8f; f++)
         {
             Vector2 vel = Main.rand.NextVector2Circular(16, 16);
             Vector2 pos = target.Center;
@@ -258,7 +258,7 @@ public class DeadRomanceParryBuster : ModProjectile
             ds.noTileCollide = true;
             ds.outerColor = Color.Yellow;
         }
-        for(float f = 0; f < 4f; f++)
+        for (float f = 0; f < 4f; f++)
         {
             Vector2 pos = target.Center + Main.rand.NextVector2Circular(64, 64);
             Vector2 velocity = (pos - target.Center).SafeNormalize(Vector2.Zero) * 32;
@@ -274,8 +274,6 @@ public class DeadRomanceParryBuster : ModProjectile
     private void DrawPixelatedAura(SpriteBatch sb, Vector2 sp)
     {
         float rotation = Projectile.rotation;
-        SpriteEffects spriteEffects = SpriteEffects.None;
-
         SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
         for (int i = 0; i < Projectile.oldPos.Length; i++)
         {
@@ -356,7 +354,7 @@ public class DeadRomanceParryingBlade : ModProjectile
             parrySound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(parrySound, Projectile.position);
 
-            for(int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 Vector2 velocity = Main.rand.NextVector2Circular(16, 16);
                 var sp = SparkleParticle.Spawn(Projectile.Center, velocity);
@@ -377,7 +375,7 @@ public class DeadRomanceParryingBlade : ModProjectile
         SpritebatchDrawer parryDrawer = SpritebatchDrawer.FromTextureAsset(projTexture, Projectile.Center);
         parryDrawer.rotation = MathHelper.ToRadians(90);
         parryDrawer.spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None; ;
-        if(Projectile.spriteDirection == -1)
+        if (Projectile.spriteDirection == -1)
         {
             parryDrawer.rotation += MathHelper.TwoPi + MathHelper.ToRadians(180);
         }
@@ -385,7 +383,7 @@ public class DeadRomanceParryingBlade : ModProjectile
 
 
         float ratio = (float)Projectile.timeLeft / 24f;
-        for(int i = 0; i< 8; i++)
+        for (int i = 0; i < 8; i++)
         {
             parryDrawer.color = Color.White * ratio;
             parryDrawer.color.A = 0;

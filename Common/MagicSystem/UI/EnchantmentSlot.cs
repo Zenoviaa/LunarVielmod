@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Items.MoonlightMagic;
@@ -8,6 +6,7 @@ using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -30,7 +29,7 @@ namespace Stellamod.Common.MagicSystem.UI
             _isTimedSlot = isTimedSlot;
 
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
 
             string texturePath = GetEnchantmentCardTexturePath();
             EnchantmentCardAsset = ModContent.Request<Texture2D>(texturePath, ReLogic.Content.AssetRequestMode.ImmediateLoad);
@@ -113,9 +112,9 @@ namespace Stellamod.Common.MagicSystem.UI
 
             BaseEnchantment enchantment = Item.ModItem as BaseEnchantment;
             bool isSynergy = false;
-            if(enchantment != null)
+            if (enchantment != null)
             {
-                if(_ctx.staffToEdit != null)
+                if (_ctx.staffToEdit != null)
                 {
                     BaseElement element = _ctx.staffToEdit.GetElement().ModItem as BaseElement;
                     isSynergy = element.IsSynergizingWith(enchantment.GetElementType());
@@ -175,7 +174,7 @@ namespace Stellamod.Common.MagicSystem.UI
             Vector2 iconCenterPos = rectangle.TopLeft() + cardTexture.Size() / 2;
             spriteBatch.Draw(slotTexture, iconCenterPos, null, color2, 0f, drawOrigin, _scale, SpriteEffects.None, 0f);
             ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale * 2, 32, Color.White);
-           // spriteBatch.Restart(blendState: BlendState.Additive);
+            // spriteBatch.Restart(blendState: BlendState.Additive);
 
             if (!Item.IsAir)
             {

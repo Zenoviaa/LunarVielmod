@@ -4,6 +4,7 @@ using Stellamod.Common.ScorpionMountSystem;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Terraria;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -30,7 +31,7 @@ namespace Stellamod.UI.GunHolsterSystem
             Width.Set(asset.Width() * scale, 0f);
             Height.Set(asset.Height() * scale, 0f);
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
         }
 
         public int scorpionIndex = -1;

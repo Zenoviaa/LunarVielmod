@@ -223,7 +223,6 @@ public class MinersStormSummon : AbstractBellSummon
 
     private ref float AttackCycle => ref Projectile.ai[2];
 
-    private bool _throwSpread;
     private const string Anim_Idle = "idle";
     private const string Anim_Throw = "throw";
     private const string Anim_Hurt = "hurt";

@@ -75,13 +75,18 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 float f = i;
                 float completionRatio = f / numPoints;
-                LaserPoints[i] = Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity, completionRatio);
+                LaserPoints[i] = Vector2.Lerp(Projectile.Center, 
+                    Projectile.Center + Projectile.velocity * 2, completionRatio);
             }
             if (Timer % 5 == 0)
             {
                 Vector2 dustVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 dustVelocity = dustVelocity.RotatedByRandom(0.5f);
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlowDust>(), dustVelocity, newColor: Color.Red, Scale: Main.rand.NextFloat(0.5f, 2f));
+
+                dustVelocity = dustVelocity.RotatedByRandom(0.5f);
+                dustVelocity *= Main.rand.NextFloat(3f, 6f);
+                DustParticle.Spawn(Projectile.Center, dustVelocity);
             }
             Projectile.Center = Parent.Center;
         }
@@ -98,26 +103,42 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             float inScale = EasingFunction.InOutSine(Timer / 30f);
             float outScale = EasingFunction.InOutSine((float)(((float)Projectile.timeLeft) / 30f));
-            return 32 * inScale * outScale;
+            return 48 * inScale * outScale * 
+                MathHelper.Lerp(0.5f, 1f, EasingFunction.InOutSine(completionRatio / 0.2f))
+                * ExtraMath.Osc(0.5f, 1f, speed: 16);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
+            PixelationManager.QueueSpritebatchDrawAction(DrawHead);
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelated);
             return false;
         }
 
+
+        private void DrawHead(SpriteBatch sb, Vector2 screenpos)
+        {
+            float s = ExtraMath.Osc(0.85f, 1f, speed: 32);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
+            drawer.color = Color.Red;
+            drawer.color.A = 0;
+            drawer.scale *= 0.25f * s;
+            sb.Draw(drawer);
+
+            drawer.color = Color.White;
+            drawer.color.A = 0;
+            drawer.scale *= 0.45f * s;
+            sb.Draw(drawer);
+        }
         public void DrawPixelated(GraphicsDevice graphicsDevice)
         {
-            var shader = BasicLaserShader.Instance;
-            shader.LaserTexture = TrailRegistry.BeamTrail;
-            shader.BlendState = BlendState.AlphaBlend;
-            shader.SamplerState = SamplerState.PointWrap;
-            shader.Time = Main.GlobalTimeWrappedHourly * 32;
-            shader.InnerColor = Color.White;
-            shader.OuterColor = Color.Red;
+            RichLaserShader laserShader = RichLaserShader.Instance;
+            laserShader.LaserColor = Color.White;
+            laserShader.OuterColor = Color.Lerp(Color.Blue, Color.Red, ExtraMath.Osc(0f, 1f, speed: 32));
+            laserShader.BloomTexture = TrailRegistry.BeamTrail;
+            laserShader.LaserTexture = TrailRegistry.SmallWhispyTrail;
             //This just applis the shader changes
-            TrailDrawer.Draw(Main.spriteBatch, LaserPoints, ColorFunction, WidthFunction, shader);
+            TrailDrawer.Draw(Main.spriteBatch, LaserPoints, ColorFunction, WidthFunction, laserShader);
         }
     }
     public class LaserRifle : PunkerPrimeArm
@@ -282,8 +303,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
 
             int targetDirection = Target.Center.X > NPC.Center.X ? 1 : -1;
-            NPC.velocity.Y = MathHelper.Lerp(1, -2, EasingFunction.Anticipation(Timer / 30f));
-            NPC.velocity.X = MathHelper.Lerp(5 * -targetDirection, -5 * -targetDirection, EasingFunction.Anticipation(Timer / 30f));
+
+            float targetY = MathHelper.Lerp(1, -2, EasingFunction.Anticipation(Timer / 30f));
+            float targetX = MathHelper.Lerp(5 * -targetDirection, -5 * -targetDirection, EasingFunction.Anticipation(Timer / 30f));
+            Vector2 target = new Vector2(targetX, targetY);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, target, 0.05f);
 
             Vector2 targetFireVelocity = Vector2.UnitY * 1000;
             float targetRotation = targetFireVelocity.ToRotation();

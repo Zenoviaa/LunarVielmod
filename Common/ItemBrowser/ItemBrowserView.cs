@@ -9,6 +9,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -36,7 +37,7 @@ namespace Stellamod.Common.ItemBrowser
             //Set up the items we're going to iterate over
             Items = items;
             HoveringItem = new Item();
-            HoveringItem.SetDefaults(0);
+            HoveringItem.SetDefaults(ItemID.None);
 
             //Setup mouse interactions
             OnLeftClick += SpawnItem;

@@ -12,7 +12,7 @@ namespace Stellamod.UI.CollectionSystem
 {
     public class BookIcon : UIElement
     {
-        public event Action<int> OnEmptyMouseover;
+        
         private readonly float _scale = 1f;
         public BookIcon()
         {

@@ -70,7 +70,6 @@ public class HarmonicFishRenderer : ModSystem
 
 public abstract class AbstractHarmonicFish : ModNPC
 {
-    private bool _contactDamage;
     private enum AIState
     {
         Idle,
@@ -133,7 +132,7 @@ public abstract class AbstractHarmonicFish : ModNPC
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
-        return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
+        return base.CanHitPlayer(target, ref cooldownSlot);
     }
 
     public override void AI()

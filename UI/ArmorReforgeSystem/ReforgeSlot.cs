@@ -4,6 +4,7 @@ using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -19,7 +20,7 @@ namespace Stellamod.UI.ArmorReforgeSystem
         public Item Item;
         public Func<Item, bool> ValidItemFunc;
 
-        public event Action<int> OnEmptyMouseover;
+        
 
         private int timer = 0;
 
@@ -28,7 +29,7 @@ namespace Stellamod.UI.ArmorReforgeSystem
             _context = context;
             _scale = scale;
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
 
             var asset = ModContent.Request<Texture2D>(
                 $"{ReforgeUISystem.RootTexturePath}ReforgeSlot", ReLogic.Content.AssetRequestMode.ImmediateLoad);

@@ -1,11 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+
+/*
+ * 
+ * using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.ScreenSystems;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
-
 namespace Stellamod.Core.Waters
 {
     public class LavaAddon : WaterAddon
@@ -14,8 +17,6 @@ namespace Stellamod.Core.Waters
         {
             get
             {
-                return false;
-          
                 LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
 
                 //Don't show if not in underworld
@@ -113,3 +114,4 @@ namespace Stellamod.Core.Waters
         }
     }
 }
+*/

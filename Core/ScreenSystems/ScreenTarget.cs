@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 
+/*
 namespace Stellamod.Core.ScreenSystems
 {
     public partial class ScreenTarget
@@ -58,3 +59,4 @@ namespace Stellamod.Core.ScreenSystems
         }
     }
 }
+*/

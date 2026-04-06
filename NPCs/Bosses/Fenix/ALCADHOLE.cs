@@ -28,7 +28,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
         // Current state's timer
         public float timer;
         public int PrevAtack;
-        float DaedusDrug = 4;
+
         // AI counter
         public int counter;
 

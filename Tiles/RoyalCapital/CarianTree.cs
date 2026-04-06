@@ -31,8 +31,9 @@ namespace Stellamod.Tiles.RoyalCapital
             return ModContent.TileType<CarianTreeSapling>();
         }
 
-        public override void SetTreeFoliageSettings(Tile tile, ref int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight)
+        public override void SetTreeFoliageSettings(int i, int j, Tile tile, int xoffset, ref int treeFrame, int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight)
         {
+            base.SetTreeFoliageSettings(i, j, tile, xoffset, ref treeFrame, floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
             topTextureFrameWidth = 142;
             topTextureFrameHeight = 114;
             xoffset = 62;

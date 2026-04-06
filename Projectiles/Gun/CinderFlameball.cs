@@ -41,7 +41,6 @@ namespace Stellamod.Projectiles.Gun
 
         private void Visuals()
         {
-            float radius = 1 / 6f;
             if (Main.rand.NextBool(12))
             {
                 DustParticleSpawnParams spawnParams = new DustParticleSpawnParams

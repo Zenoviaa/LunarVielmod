@@ -37,7 +37,7 @@ namespace Stellamod.Common.XixianFlaskSystem
                 if (item == Item)
                 {
                     player.inventory[i] = new Item();
-                    player.inventory[i].SetDefaults(0);
+                    player.inventory[i].SetDefaults(ItemID.None);
                     PopupText.NewText(PopupTextContext.SonarAlert, Item, 1, longText: true);
                     break;
                 }

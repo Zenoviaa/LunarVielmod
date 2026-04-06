@@ -8,6 +8,7 @@ using System.Threading;
 using Terraria;
 using Terraria.ModLoader;
 
+/*
 namespace Stellamod.Core.ScreenSystems
 {
     public partial class ScreenTarget
@@ -152,3 +153,4 @@ namespace Stellamod.Core.ScreenSystems
         }
     }
 }
+*/

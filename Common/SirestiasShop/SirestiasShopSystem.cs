@@ -77,7 +77,7 @@ namespace Stellamod.Common.SirestiasShop
             _context = ItemSlot.Context.ShopItem;
             Items = new Item[0];
             HoveringItem = new Item();
-            HoveringItem.SetDefaults(0);
+            HoveringItem.SetDefaults(ItemID.None);
             string texturePath = this.GetType().DirectoryHere() + "/ShopItemSlot";
             SlotTextureAsset = ModContent.Request<Texture2D>(texturePath, AssetRequestMode.ImmediateLoad);
 

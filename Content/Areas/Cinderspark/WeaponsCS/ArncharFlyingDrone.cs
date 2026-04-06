@@ -50,7 +50,6 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             set => Projectile.ai[1] = (float)value;
         }
         private ref float IdleTimer => ref Projectile.ai[2];
-        private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Arnchar Drone");

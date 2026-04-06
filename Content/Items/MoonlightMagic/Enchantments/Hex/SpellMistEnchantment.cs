@@ -1,47 +1,41 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Items.MoonlightMagic.Elements;
+﻿using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex
+namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Hex;
+
+public class SpellMistEnchantment : BaseEnchantment
 {
-    public class SpellMistEnchantment : BaseEnchantment
+    public override void AI()
     {
-        private float Countertimer;
+        base.AI();
+
+        //Count up
+        Projectile.tileCollide = false;
+    }
 
 
-        public override void AI()
-        {
-            base.AI();
+    public override float GetStaffManaModifier()
+    {
+        return 0.2f;
+    }
 
-            //Count up
-            Projectile.tileCollide = false;
-        }
-
-
-        public override float GetStaffManaModifier()
-        {
-            return 0.2f;
-        }
-
-        public override int GetElementType()
-        {
-            return ModContent.ItemType<HexElement>();
-        }
+    public override int GetElementType()
+    {
+        return ModContent.ItemType<HexElement>();
+    }
 
 
-        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
+    public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+    {
 
-            return true;
-        }
+        return true;
+    }
 
-        public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-            base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-            DrawHelper.DrawGlowInInventory(item, spriteBatch, position, Color.LightPink);
-        }
+    public override void SpecialInventoryDraw(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+    {
+        base.SpecialInventoryDraw(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+        DrawHelper.DrawGlowInInventory(item, spriteBatch, position, Color.LightPink);
     }
 }

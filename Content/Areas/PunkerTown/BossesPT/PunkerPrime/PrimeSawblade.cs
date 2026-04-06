@@ -5,6 +5,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -39,7 +40,20 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             base.AI();
             Timer++;
-
+            if(Timer == 1)
+            {
+                var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Red, Color.Black);
+                fx.Scale *= 2;
+                for(float f = 0; f < 4; f++)
+                {
+                    Vector2 dustVel = Projectile.velocity.SafeNormalize(Vector2.Zero).RotatedByRandom(1f);
+                    dustVel *= Main.rand.NextFloat(3f, 6f);
+                    DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                    spawnParams.innerColor = Color.Red;
+                    spawnParams.outerColor = Color.DarkRed;
+                    DustParticle.Spawn(Projectile.Center, dustVel, spawnParams);
+                }
+            }
             if(Timer < 30)
             {
                 Projectile.velocity *= 0.995f;
@@ -72,7 +86,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             if (Timer >= 60 && Timer < 150 && closest != null)
             {
                 float distToTarget = Vector2.Distance(Projectile.Center, closest.Center);
-                float degreesToRotate = MathHelper.Lerp(1f, 4f, distToTarget / 1000f);
+                float degreesToRotate = MathHelper.Lerp(1f, 2.5f, distToTarget / 1000f);
                 Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile, closest.Center, degreesToRotate);
                 Projectile.velocity = homingVelocity;
             }

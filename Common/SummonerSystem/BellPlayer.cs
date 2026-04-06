@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -51,7 +52,7 @@ namespace Stellamod.Common.SummonerSystem
                 if (_guardian == null)
                 {
                     _guardian = new Item();
-                    _guardian.SetDefaults(0);
+                    _guardian.SetDefaults(ItemID.None);
                 }
                 return _guardian;
    
@@ -69,6 +70,7 @@ namespace Stellamod.Common.SummonerSystem
         public float standDamageBonus;
         public float incomingDamageMultiplier;
        
+        
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -232,7 +234,7 @@ namespace Stellamod.Common.SummonerSystem
             while (minions.Count <= index)
             {
                 Item emptyItem = new Item();
-                emptyItem.SetDefaults(0);
+                emptyItem.SetDefaults(ItemID.None);
                 minions.Add(emptyItem);
             }
             minions[index] = item;
@@ -246,7 +248,7 @@ namespace Stellamod.Common.SummonerSystem
                 return minions[index];
             }
             Item air = new Item(0);
-            air.SetDefaults(0);
+            air.SetDefaults(ItemID.None);
             return air;
         }
 

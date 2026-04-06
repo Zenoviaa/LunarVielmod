@@ -8,6 +8,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -26,7 +27,7 @@ namespace Stellamod.Common.MagicSystem.UI
             OnLeftClick += On_LeftClick;
             
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
 
             string texturePath = GetType().DirectoryHere() + "/EnchantmentSlot";
             BackgroundTexture = ModContent.Request<Texture2D>(texturePath, ReLogic.Content.AssetRequestMode.ImmediateLoad);
@@ -54,7 +55,7 @@ namespace Stellamod.Common.MagicSystem.UI
                 Player player = Main.LocalPlayer;
                 player.QuickSpawnItem(new EntitySource_DropAsItem(player), Main.mouseItem);
                 Main.mouseItem = new Item();
-                Main.mouseItem.SetDefaults(0);
+                Main.mouseItem.SetDefaults(ItemID.None);
             }
             AdvancedMagicPlayer magicPlayer = Main.LocalPlayer.GetModPlayer<AdvancedMagicPlayer>();
             if (!magicPlayer.IsUnlocked(Item))

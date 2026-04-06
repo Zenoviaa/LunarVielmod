@@ -91,6 +91,7 @@ namespace Stellamod.Assets
 
             public static class SteamPunking
             {
+                public static SoundStyle ReadyAttack = new SoundStyle($"{Path}SteamPunking/ReadyAttack");
                 public static SoundStyle Steamrollerheadingdown = new SoundStyle($"{Path}SteamPunking/Steamrollerheadingdown");
                 public static SoundStyle SteamrollerDig = new SoundStyle($"{Path}SteamPunking/SteamrollerDig");
                 public static SoundStyle SteamingDeathStart = new SoundStyle($"{Path}SteamPunking/SteamingDeathStart");

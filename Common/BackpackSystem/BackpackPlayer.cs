@@ -11,6 +11,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI.Elements;
@@ -203,7 +204,7 @@ namespace Stellamod.Common.BackpackSystem
             _index = index;
 
             Item = new Item();
-            Item.SetDefaults(0);
+            Item.SetDefaults(ItemID.None);
             BackpackPlayer backpackPlayer = Main.LocalPlayer.GetModPlayer<BackpackPlayer>();
             Item = backpackPlayer.GetItem(_index);
 
@@ -285,7 +286,7 @@ namespace Stellamod.Common.BackpackSystem
                 while(_backpackItems.Count < MaxCapacity)
                 {
                     Item item = new Item();
-                    item.SetDefaults(0);
+                    item.SetDefaults(ItemID.None);
                     _backpackItems.Add(item);
                 }
               
