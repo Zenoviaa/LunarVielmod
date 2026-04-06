@@ -8,7 +8,9 @@ using Stellamod.Common.Animations;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
+using Stellamod.Core.InverseKinematics;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -21,8 +23,11 @@ using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Animations;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Stellamod.Assets.AssetRegistry;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 {
@@ -116,6 +121,18 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             }
         }
 
+        private VerletChain _vchain;
+        protected VerletChain VChain
+        {
+            get
+            {
+                if (_vchain == null)
+                {
+                    _vchain = new VerletChain(NPC.Center, NPC.Center + Vector2.UnitY * 360, 20);
+                }
+                return _vchain;
+            }
+        }
         public bool isAttacking;
         public float superChargeTimer;
         public float afterImageStrength;
@@ -213,6 +230,22 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
             if (!Parent.active)
                 NPC.active = false;
+
+
+            float s = 4;
+            Vector2 rootPosition = Parent.Center + Vector2.UnitY * 150;
+            Vector2 targetPosition = rootPosition + Vector2.UnitY * 200;
+            targetPosition.X += ExtraMath.Osc(-200, 200, speed: s, offset: NPC.whoAmI *4);
+            targetPosition.Y += ExtraMath.Osc(-50, 0, speed: 2, offset: NPC.whoAmI*4);
+            VChain.noTileCollide = true;
+            VChain.points[0].pinned = true;
+            VChain.points[0].position = Parent.Center;
+            VChain.points[VChain.points.Length-1].pinned = true;
+            VChain.points[VChain.points.Length - 1].position = GetGunHoldCenter();
+            VChain.gravity = 0;
+            VChain.Update();
+            //Arm.IK(rootPosition, targetPosition);
+
             ArmAI();
             if(superChargeTimer > 0)
             {
@@ -318,10 +351,42 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             spriteBatch.Draw(bloomLineTexture, drawCenter, null, color, rotation, drawOrigin, scale, SpriteEffects.None, 0);
         }
 
-        private void DrawArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        private void DrawTentacleArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            var texture2 = RequestSubTexture("ArmSmallGlow");
+            var texture = RequestSubTexture("ArmSmall");
+            for (int i = 0; i < VChain.points.Length - 1; i++)
+            {
+
+                var point = VChain.points[i];
+                Vector2 drawPosition = point.position - Main.screenPosition;
+                Vector2 drawOrigin = new Vector2(0f, texture.Height / 2f);
+                Vector2 drawScale = Vector2.One;
+                drawScale.Y *= 0.2f;
+                drawScale.X *= 0.45f;
+                var nextPoint = VChain.points[i + 1];
+                float angle = (nextPoint.position - point.position).ToRotation();
+                spriteBatch.Draw(texture, drawPosition, null, drawColor, angle, drawOrigin, drawScale, SpriteEffects.None, 0);
+                if (isAttacking)
+                {
+                    Color glowColor = Color.Yellow;
+                    glowColor *= ExtraMath.Osc(0f, 0.5f, speed: 8, offset: i * 4);
+                    glowColor.A = 0;
+                    spriteBatch.Draw(texture2, drawPosition, null, glowColor, angle, drawOrigin, drawScale, SpriteEffects.None, 0);
+                }
+            }
+        }
+
+        public void DrawPowerCord(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            DrawTentacleArm(spriteBatch, screenPos, drawColor);
+        }
+
+        public void DrawArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             for (int i = 0; i < Segments.Length; i++)
             {
+
                 PunkerPrimeArmPart segment = Segments[i];
                 segment.Draw(spriteBatch, screenPos, drawColor);
             }
@@ -381,13 +446,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
            
         }
-        private void DrawGun(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        public void DrawGun(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Vector2 drawPosition = NPC.Center - screenPos;
 
 
-            Color baseColor = isAttacking ? Color.White : Color.Lerp(Color.White, Color.Black, 0.6f);
+            Color baseColor = isAttacking ? Color.White : Color.Lerp(Color.White, Color.Black, 0.8f);
             Color finalColor = baseColor.MultiplyRGB(drawColor);
             Vector2 drawScale = Vector2.One;
             Vector2 drawOrigin = NPC.frame.Size() / 2f;
@@ -398,13 +463,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             glowColor *= _flashAlpha;
             spriteBatch.Draw(texture, drawPosition, NPC.frame, glowColor, NPC.rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
         }
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+
+        public void DrawGunEffects(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             DrawHeldLightning(spriteBatch, screenPos, drawColor);
             DrawTelegraphLine(spriteBatch, screenPos, drawColor);
             DrawGunAfterImage(spriteBatch, screenPos, drawColor);
-            
-            if(superChargeTimer > 0f)
+        }
+
+        public void DrawGunArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (superChargeTimer > 0f)
             {
                 DrawSuperchargedArm(spriteBatch, screenPos, drawColor);
             }
@@ -412,12 +481,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             {
                 DrawArm(spriteBatch, screenPos, drawColor);
             }
-              
-            
-            
-            DrawGun(spriteBatch, screenPos, drawColor);
+        }
 
-            DrawGlowBall(spriteBatch, screenPos, drawColor);
+        //Drawing is handled by parent npc for proper layering
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
             return false;
         }
 
@@ -431,7 +499,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 segment.Draw(spriteBatch, screenPos, finalColor);
             }
         }
-        private void DrawGlowBall(SpriteBatch spriteBatch, Vector2 screen, Color drawColor)
+        public void DrawGlowBall(SpriteBatch spriteBatch, Vector2 screen, Color drawColor)
         {
             if (heldLightningScale <= 0.02f)
                 return;
@@ -457,7 +525,6 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             DrawArm(spriteBatch, screenPos - h, _outlineColor);
             DrawArm(spriteBatch, screenPos + v, _outlineColor);
             DrawArm(spriteBatch, screenPos - v, _outlineColor);
-
 
             DrawGun(spriteBatch, screenPos + h, _outlineColor);
             DrawGun(spriteBatch, screenPos - h, _outlineColor);
@@ -1469,6 +1536,37 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (_arms == null)
+                return false;
+
+            for(int i = 0; i < _arms.Length; i++)
+            {
+                var arm = _arms[i];
+                arm.DrawPowerCord(spriteBatch, screenPos, drawColor);
+            }
+
+            for (int i = 0; i < _arms.Length; i++)
+            {
+                var arm = _arms[i];
+                arm.DrawGunArm(spriteBatch, screenPos, drawColor);
+            }
+
+            for (int i = 0; i < _arms.Length; i++)
+            {
+                var arm = _arms[i];
+                arm.DrawGunEffects(spriteBatch, screenPos, drawColor);
+            }
+
+            for (int i = 0; i < _arms.Length; i++)
+            {
+                var arm = _arms[i];
+                arm.DrawGun(spriteBatch, screenPos, drawColor);
+            }
+            for (int i = 0; i < _arms.Length; i++)
+            {
+                var arm = _arms[i];
+                arm.DrawGlowBall(spriteBatch, screenPos, drawColor);
+            }
             DrawBodyAfterImage(spriteBatch, screenPos);
             DrawBodySprite(spriteBatch, screenPos, drawColor);
             return false;

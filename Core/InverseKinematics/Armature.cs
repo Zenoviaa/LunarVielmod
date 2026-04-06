@@ -16,6 +16,17 @@ namespace Stellamod.Core.InverseKinematics
                 segments[i] = new Segment(segments[i - 1], 158, 0);
             }
         }
+        public Armature(int numSegments, int segmentLength)
+        {
+            segments = new Segment[numSegments];
+            Vector2 pos = new Vector2(300, 300);
+            segments[0] = new Segment(pos, segmentLength, 0);
+            for (int i = 1; i < segments.Length; i++)
+            {
+                segments[i] = new Segment(segments[i - 1], segmentLength, 0);
+                segments[i].SetA(pos + new Vector2(0, i * 10));
+            }
+        }
         public Vector2 oldTargetPosition;
         public float timer;
 
@@ -94,7 +105,16 @@ namespace Stellamod.Core.InverseKinematics
                 segments[i].Draw(spriteBatch);
             }
         }
+        public void Draw(SpriteBatch spriteBatch, Texture2D texture, Color drawColor)
+        {
+            for (int i = 0; i < segments.Length; i++)
+            {
 
+                var segment = segments[i];
+                Draw(spriteBatch, texture, segment.a, segment.angle, drawColor);
+            }
+
+        }
         public void DrawLikeLeg(SpriteBatch spriteBatch, Texture2D[] textures, Color drawColor)
         {
             Texture2D thighTexture = textures[0];

@@ -54,8 +54,8 @@ public class ElectroField : ModProjectile
         base.SetDefaults();
         _shockPos = new Vector2[32];
         _sparkPos = new Vector2[32];
-        Projectile.width = 32;
-        Projectile.height = 32;
+        Projectile.width = 64;
+        Projectile.height = 64;
         Projectile.hostile = true;
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
@@ -102,7 +102,7 @@ public class ElectroField : ModProjectile
             radius *= inScale * outScale;
             offset.X += MathF.Sin(radians) * radius;
             offset.Y += MathF.Cos(radians) * radius;
-            offset = Vector2.Lerp(offset, Vector2.Zero, (MathF.Sin(Timer * 0.5f + i) + 0.5f) * 0.1f);
+            offset = Vector2.Lerp(offset, Vector2.Zero, (MathF.Sin(Timer * 1f + i) + 0.5f) * 0.03f);
             offset += Main.rand.NextVector2Circular(6, 6);
             position = Projectile.Center + offset;
 
