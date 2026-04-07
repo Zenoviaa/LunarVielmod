@@ -7,17 +7,15 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime;
 //So let's make a simple system
 public class PunkerPrimeArmPart
 {
-    public PunkerPrimeArmPart(PunkerPrimeArmPart parent, Texture2D texture, float initialAngle)
+    public PunkerPrimeArmPart(PunkerPrimeArmPart parent, Vector2 size, float initialAngle)
     {
         this.parent = parent;
-        this.texture = texture;
-        this.drawOrigin = new Vector2(0f, texture.Height / 2f);
+        this.drawOrigin = new Vector2(0f, size.Y / 2f);
         this.angle = initialAngle;
-        this.length = texture.Width;
+        this.length = size.X;
         this.color = Color.White;
     }
     public PunkerPrimeArmPart parent;
-    public Texture2D texture;
     public Vector2 drawOrigin;
     public Vector2 rootPosition;
     public Vector2 endPosition;
@@ -34,7 +32,7 @@ public class PunkerPrimeArmPart
         endPosition = rootPosition + angle.ToRotationVector2() * length;
     }
 
-    public void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    public void Draw(SpriteBatch spriteBatch, Texture2D texture, Vector2 screenPos, Color drawColor)
     {
         Vector2 drawPosition = rootPosition - screenPos;
         Color finalColor = color.MultiplyRGB(drawColor);

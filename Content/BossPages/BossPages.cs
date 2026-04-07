@@ -10,7 +10,9 @@ using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
 using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar;
 using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
 using Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER;
 using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva;
@@ -225,8 +227,40 @@ namespace Stellamod.Content.BossPages
             bossNPC = ModContent.GetInstance<PunkerPrime>();
             progression = 15; 
             flag = DownedBossFlag.PunkerPrime;
+
+            StarRanking = 4;
+            AddMasterModeReward<PunkerPrimeRelicItem>(stack: 1);
         }
     }
+    public class DescendingTwinsPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.MechanizedRevivals;
+            bossNPC = ModContent.GetInstance<DescendingTwins>();
+            progression = 16;
+            flag = DownedBossFlag.DescendingTwins;
+
+            StarRanking = 5;
+            AddMasterModeReward<DescendingTwinsRelicItem>(stack: 1);
+        }
+    }
+    public class SteamrollerPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.MechanizedRevivals;
+            bossNPC = ModContent.GetInstance<Steamroller>();
+            progression = 17;
+            flag = DownedBossFlag.Steamroller;
+
+            StarRanking = 6;
+            AddMasterModeReward<SteamrollerRelicItem>(stack: 1);
+        }
+    }
+
 
     public class TowerOfIlluriaPage : BossPage
     {

@@ -9014,6 +9014,11 @@ HealthInsource: {
 	DisplayName: Health Insource
 }
 
+HeartPumperInsource: {
+	Tooltip: Heals 150 points of health
+	DisplayName: Heart Pumper Insource
+}
+
 InsourceUnlocker: {
 	Tooltip: ""
 	DisplayName: Insource Unlocker
@@ -10714,5 +10719,20 @@ HypnotizingChakrams: {
 
 MinersStorm: {
 	DisplayName: Miners Storm
+	Tooltip: ""
+}
+
+DescendingTwinsRelicItem: {
+	DisplayName: Descending Twins Relic
+	Tooltip: ""
+}
+
+PunkerPrimeRelicItem: {
+	DisplayName: Punker Prime Relic
+	Tooltip: ""
+}
+
+SteamrollerRelicItem: {
+	DisplayName: Steamroller Relic
 	Tooltip: ""
 }

@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.XixianFlaskSystem;
+using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Particles;
+using Stellamod.Items.Materials;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
@@ -36,6 +39,12 @@ namespace Stellamod.Items.Insources
         {
             base.UseInsource(flaskPlayer);
             flaskPlayer.Player.AddBuff(ModContent.BuffType<ManaRegeneratingInsourceBuff>(), 60 * 5);
+        }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<WinterbornShard, BlankBrooch>();
         }
     }
 }

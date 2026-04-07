@@ -1,5 +1,7 @@
 ﻿using Stellamod.Common.XixianFlaskSystem;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
+using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -48,6 +50,11 @@ namespace Stellamod.Items.Insources
             BerserkingInsourcePlayer berserkingPlayer = player.GetModPlayer<BerserkingInsourcePlayer>();
             berserkingPlayer.stacks++;
             player.AddBuff(ModContent.BuffType<BerserkingInsourceBuff>(), 300);
+        }
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew<AlcadizScrap, BlankBrooch>();
         }
     }
 }

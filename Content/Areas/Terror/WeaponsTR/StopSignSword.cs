@@ -269,6 +269,9 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+            if (Main.dedServ)
+                return;
+
             Main.QueueMainThreadAction(() =>
             {
                 GradientTexture2 = DrawHelper.CreateGradient(Color.Black, Color.Red, Color.White);
@@ -280,6 +283,9 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
         public override void Unload()
         {
             base.Unload();
+            if (Main.dedServ)
+                return;
+
             Main.QueueMainThreadAction(() =>
             {
                 GradientTexture?.Dispose();

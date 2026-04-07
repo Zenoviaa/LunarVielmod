@@ -346,16 +346,17 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
         }
 
         if (!ModContent.RequestIfExists<Texture2D>
-            (this.GetTypeDirectoryWithSlash() + "StarRank" +
-            ModContent.GetInstance<BossType>().StarRanking, out var starRankTextureAsset))
+            (this.GetTypeDirectoryWithSlash() + "StarRank", out var starRankTextureAsset))
             return;
 
+        Rectangle frame = new Rectangle(0, 0, 64, 50);
+        frame.Y = (ModContent.GetInstance<BossType>().StarRanking-1) * frame.Height;
         drawPos.Y -= texture.Height;
-        origin = starRankTextureAsset.Value.Size() * 0.5f;
-        spriteBatch.Draw(starRankTextureAsset.Value, drawPos, null, color, 0f, origin, 1f, effects, 0f);
+        origin = frame.Size() * 0.5f;
+        spriteBatch.Draw(starRankTextureAsset.Value, drawPos, frame, color, 0f, origin, 1f, effects, 0f);
         for (float num5 = 0f; num5 < 1f; num5 += 355f / (678f * (float)Math.PI))
         {
-            spriteBatch.Draw(starRankTextureAsset.Value, drawPos + (TwoPi * num5).ToRotationVector2() * (6f + offset * 2f), null, effectColor, 0f, origin, 1f, effects, 0f);
+            spriteBatch.Draw(starRankTextureAsset.Value, drawPos + (TwoPi * num5).ToRotationVector2() * (6f + offset * 2f), frame, effectColor, 0f, origin, 1f, effects, 0f);
         }
     }
 
@@ -383,6 +384,8 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
     }
 }
 
+
+//Woodland Ravager
 public class WoodlandRavagerRelic :
     AbstractRelicTile<WoodlandRavagerRelicItem, WoodlandRavagerPage>
 {
@@ -391,6 +394,45 @@ public class WoodlandRavagerRelic :
 
 public class WoodlandRavagerRelicItem :
     AbstractRelicItem<WoodlandRavagerRelicItem, WoodlandRavagerRelic>
+{
+
+}
+
+//Punker Prime
+public class PunkerPrimeRelic :
+    AbstractRelicTile<PunkerPrimeRelicItem, PunkerPrimePage>
+{
+
+}
+
+public class PunkerPrimeRelicItem :
+    AbstractRelicItem<PunkerPrimeRelicItem, PunkerPrimeRelic>
+{
+
+}
+
+//Descending Twins
+public class DescendingTwinsRelic :
+    AbstractRelicTile<DescendingTwinsRelicItem, DescendingTwinsPage>
+{
+
+}
+
+public class DescendingTwinsRelicItem :
+    AbstractRelicItem<DescendingTwinsRelicItem, DescendingTwinsRelic>
+{
+
+}
+
+//Steamroller
+public class SteamrollerRelic :
+    AbstractRelicTile<SteamrollerRelicItem, SteamrollerPage>
+{
+
+}
+
+public class SteamrollerRelicItem :
+    AbstractRelicItem<SteamrollerRelicItem, SteamrollerRelic>
 {
 
 }

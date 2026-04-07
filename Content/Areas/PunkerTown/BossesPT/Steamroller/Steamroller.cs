@@ -415,6 +415,7 @@ public class Steamroller : ScarletBoss,
         base.SetDefaults();
 
         _squishScale = Vector2.One;
+
         NPC.width = 128;
         NPC.height = 128;
         NPC.damage = 180;
@@ -1195,7 +1196,7 @@ public class Steamroller : ScarletBoss,
             sp.initialColor = Color.Brown * 0.5f;
             sp.fadeToColor = Color.Transparent;
         }
-        if (Main.rand.NextBool(6))
+        if (Main.rand.NextBool(6) && Main.netMode != NetmodeID.Server)
         {
             Vector2 spawnPosition = bottom;
             spawnPosition.X += Main.rand.NextFloat(-64, 64);
@@ -1486,7 +1487,7 @@ public class Steamroller : ScarletBoss,
             Dust.NewDustPerfect(bottom + Main.rand.NextVector2Circular(64, 64), DustID.Dirt, spawnVelocity, Scale: 2);
         }
 
-        if (Main.rand.NextBool(6))
+        if (Main.rand.NextBool(6) && Main.netMode != NetmodeID.Server)
         {
             Vector2 spawnPosition = bottom;
             spawnPosition.X += Main.rand.NextFloat(-64, 64);
@@ -1801,7 +1802,7 @@ public class Steamroller : ScarletBoss,
             dust.noLightEmittence = true;
         }
 
-        if (Main.rand.NextBool(6))
+        if (Main.rand.NextBool(6) && Main.netMode != NetmodeID.Server)
         {
             Vector2 spawnPosition = bottom;
             spawnPosition.X += Main.rand.NextFloat(-64, 64);

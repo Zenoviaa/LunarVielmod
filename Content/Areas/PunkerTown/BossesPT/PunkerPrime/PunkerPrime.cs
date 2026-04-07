@@ -226,6 +226,17 @@ public class PunkerPrime : ScarletBoss,
     private Vector2 _hoverCenter;
     private Color TargetOutlineColor;
     private bool[] _disabledArms;
+    private bool[] DisabledArms
+    {
+        get
+        {
+            if( _disabledArms == null)
+            {
+                _disabledArms = new bool[8];
+            }
+            return _disabledArms;
+        }
+    }
     private bool _showNamePlate;
     private bool _phaseTransition;
     private Color _spotlightColor;
@@ -482,7 +493,7 @@ public class PunkerPrime : ScarletBoss,
 
     private bool CanUseArm(int armIndex)
     {
-        return !_disabledArms[armIndex];
+        return !DisabledArms[armIndex];
     }
 
     private void MoveSlightlyTowardMe()
@@ -880,7 +891,7 @@ public class PunkerPrime : ScarletBoss,
         }
 
         TargetOutlineColor = Color.Transparent;
-        RetargetCameraModifier.ReTargetPosition = NPC.Center;
+        MoveSlightlyTowardMe();
 
         float time = 120f;
         float completionRatio = Timer / time;
@@ -925,6 +936,24 @@ public class PunkerPrime : ScarletBoss,
         return attackingArmCount < 2;
     }
 
+    private void InitializeArmsIfDead()
+    {
+        if(_arms == null)
+        {
+            _arms = new PunkerPrimeArm[8];
+            int index = 0;
+            foreach(var npc in Main.ActiveNPCs)
+            {
+                if (npc.ModNPC == null)
+                    continue;
+                if (npc.ModNPC is not PunkerPrimeArm arm)
+                    continue;
+                if (npc.ai[1] != NPC.whoAmI)
+                    continue;
+                _arms[index++] = arm;
+            }
+        }
+    }
     private T SummonArm<T>() where T : PunkerPrimeArm
     {
         T t = ModContent.GetInstance<T>();
@@ -938,11 +967,11 @@ public class PunkerPrime : ScarletBoss,
 
     private void SummonArms()
     {
+
         if (!MultiplayerHelper.IsHost)
             return;
 
         _arms = new PunkerPrimeArm[8];
-        _disabledArms = new bool[8];
         _arms[0] = SummonArm<Chainsaw>();
         _arms[1] = SummonArm<Chainsaw2>();
         _arms[2] = SummonArm<Drill>();
@@ -1259,7 +1288,15 @@ public class PunkerPrime : ScarletBoss,
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         if (_arms == null)
+        {
+            InitializeArmsIfDead();
             return false;
+        }
+        for (int i = 0; i < _arms.Length; i++)
+        {
+            var arm = _arms[i];
+            arm.ForwardIK();
+        }
 
         for (int i = 0; i < _arms.Length; i++)
         {

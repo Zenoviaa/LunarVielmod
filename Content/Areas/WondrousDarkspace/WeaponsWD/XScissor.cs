@@ -521,18 +521,19 @@ public class XScissorStaminaSlash : BaseSwingProjectileV2
         comboBuilder.AddSwordSlash2(duration: 40, xSwingRadius: 129, ySwingRadius: 48, hitCount: 1, swingDegrees: 276);
         comboBuilder.AddToProjectile(this);
 
-
         //   outlineColor = Color.Yellow;
-        Trailer = TrailPresets.XScissor;
-        //Bloom
-        useBloom = true;
-        bloom.innerBloomColor = Color.LightBlue;
-        bloom.outerBloomColor = Color.Purple;
-        bloom.bloomWidthFunction = GetBloomWidth;
-        bloom.bloomColorFunction = GetBloomColor;
-
-        additive = true;
-        useAfterImage = true;
+        if(Main.netMode != NetmodeID.Server)
+        {
+            Trailer = TrailPresets.XScissor;
+            //Bloom
+            useBloom = true;
+            bloom.innerBloomColor = Color.LightBlue;
+            bloom.outerBloomColor = Color.Purple;
+            bloom.bloomWidthFunction = GetBloomWidth;
+            bloom.bloomColorFunction = GetBloomColor;
+            additive = true;
+            useAfterImage = true;
+        }
     }
 
     private float GetBloomWidth(float ratio)

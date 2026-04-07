@@ -99,3 +99,15 @@ WoodlandRavagerPage: {
 	WhereToFind: In the Ghetsis Marsh
 	Lore: A monster of the wild, raised by Gothivia, who grew many times the size of normal and lives long with eternal memory of the nature around them. A monster of great renown and cares for the environment. One of the oldest living creatures to exist and cares a lot about sleeping.
 }
+
+DescendingTwinsPage: {
+	DisplayName: Who???
+	WhereToFind: In Your Mom
+	Lore: Birthed by your mom
+}
+
+SteamrollerPage: {
+	DisplayName: Who???
+	WhereToFind: In Your Mom
+	Lore: Birthed by your mom
+}

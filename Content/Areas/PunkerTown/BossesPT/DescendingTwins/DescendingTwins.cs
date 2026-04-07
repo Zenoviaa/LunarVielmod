@@ -679,5 +679,11 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 }
             }
         }
+
+        public override void OnKill()
+        {
+            base.OnKill();
+            DownedBossTracker.ClearFlag(DownedBossFlag.DescendingTwins);
+        }
     }
 }

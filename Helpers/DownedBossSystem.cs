@@ -24,7 +24,8 @@ namespace Stellamod.Helpers
         PunkerPrime = 13,
         CrumblingTowerOfIlluria = 14,
         StoneGolem = 15,
-        Steamroller = 16
+        Steamroller = 16,
+        DescendingTwins=17,
     }
 
     public class Flawless : ModBuff

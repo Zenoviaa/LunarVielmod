@@ -46,13 +46,19 @@ public abstract class PunkerPrimeArm : ModNPC,
         {
             if (_segmentsBackingField == null)
             {
-                Texture2D[] armTextures = RequestArmTextures();
-                _segmentsBackingField = new PunkerPrimeArmPart[armTextures.Length];
+                Vector2[] _segmentSizes = new Vector2[4]
+                {
+                    new Vector2(56, 34),
+                    new Vector2(134, 24),
+                    new Vector2(16, 16),
+                    new Vector2(106, 28),
+                };
 
-                for (int a = 0; a < armTextures.Length; a++)
+                _segmentsBackingField = new PunkerPrimeArmPart[4];
+                for (int a = 0; a < _segmentsBackingField.Length; a++)
                 {
                     PunkerPrimeArmPart parent = a == 0 ? null : _segmentsBackingField[a - 1];
-                    PunkerPrimeArmPart armPart = new PunkerPrimeArmPart(parent, armTextures[a], 0);
+                    PunkerPrimeArmPart armPart = new PunkerPrimeArmPart(parent, _segmentSizes[a], 0);
                     _segmentsBackingField[a] = armPart;
                 }
             }
@@ -97,6 +103,7 @@ public abstract class PunkerPrimeArm : ModNPC,
     public DabState dabinState;
     public float dabTimer;
     protected Player Target => Main.player[NPC.target];
+    private Texture2D[] _armTextures;
     protected Texture2D RequestSubTexture(string spriteName)
     {
         string texturePath = ModContent.GetInstance<PunkerPrime>().Texture;
@@ -329,11 +336,6 @@ public abstract class PunkerPrimeArm : ModNPC,
 
         _flashAlpha *= 0.92f;
         _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
-        for (int i = 0; i < Segments.Length; i++)
-        {
-            PunkerPrimeArmPart segment = Segments[i];
-            segment.Update();
-        }
 
         if (isAttacking)
         {
@@ -451,13 +453,25 @@ public abstract class PunkerPrimeArm : ModNPC,
         DrawTentacleArm(spriteBatch, screenPos, drawColor);
     }
 
-    public void DrawArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    public  void ForwardIK()
     {
+        Segments[0].rootPosition = Parent.Bottom;
         for (int i = 0; i < Segments.Length; i++)
         {
-
             PunkerPrimeArmPart segment = Segments[i];
-            segment.Draw(spriteBatch, screenPos, drawColor);
+            segment.Update();
+        }
+
+    }
+    public void DrawArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+     
+        if (_armTextures == null)
+            _armTextures = RequestArmTextures();
+        for (int i = 0; i < Segments.Length; i++)
+        {
+            PunkerPrimeArmPart segment = Segments[i];
+            segment.Draw(spriteBatch, _armTextures[i], screenPos, drawColor);
         }
     }
 
@@ -557,12 +571,14 @@ public abstract class PunkerPrimeArm : ModNPC,
 
     private void DrawSuperchargedArm(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        if (_armTextures == null)
+            _armTextures = RequestArmTextures();
         for (int i = 0; i < Segments.Length; i++)
         {
             PunkerPrimeArmPart segment = Segments[i];
             Color finalColor = Color.Red;
             finalColor = Color.Lerp(finalColor, drawColor, ExtraMath.Osc(0f, 1f, speed: 32f));
-            segment.Draw(spriteBatch, screenPos, finalColor);
+            segment.Draw(spriteBatch, _armTextures[i], screenPos, finalColor);
         }
     }
     public void DrawGlowBall(SpriteBatch spriteBatch, Vector2 screen, Color drawColor)
@@ -583,7 +599,7 @@ public abstract class PunkerPrimeArm : ModNPC,
     {
         if (_outlineColor == Color.Transparent)
             return;
-
+        ForwardIK();
         float outlineOffset = 2;
         Vector2 h = Vector2.UnitX * outlineOffset;
         Vector2 v = Vector2.UnitY * outlineOffset;

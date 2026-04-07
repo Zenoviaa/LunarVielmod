@@ -65,7 +65,8 @@ public class Bedrock : ModProjectile
             spawnPosition.Y += Main.rand.NextFloat(-64, 64);
 
             Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
-            ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
+            if(Main.netMode != NetmodeID.Server)
+                ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
             if (Main.rand.NextBool(1))
             {
                 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
