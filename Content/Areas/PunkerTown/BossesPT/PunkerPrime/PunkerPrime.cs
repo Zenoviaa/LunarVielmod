@@ -340,7 +340,7 @@ public class PunkerPrime : ScarletBoss,
         NPC.height = 128;
         NPC.damage = 100;
         NPC.defense = 28;
-        NPC.lifeMax = 18000;
+        NPC.lifeMax = 24000;
 
         NPC.value = Item.buyPrice(gold: 5);
         NPC.knockBackResist = 0f;

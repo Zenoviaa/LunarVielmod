@@ -123,10 +123,17 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
             Timer++;
             if(Timer == 1)
             {
+
                 SoundStyle revUpSound = AssetRegistry.Sounds.SteamPunking.MechSawRevLoop;
                 revUpSound.Pitch = 0.5f;
                 SoundEngine.PlaySound(revUpSound, Projectile.position);
             }
+
+            if(Timer % 2 == 0)
+            {
+                Projectile.timeLeft++;
+            }
+
             Projectile.tileCollide = true;
             Projectile.velocity.Y += 0.5f;
 

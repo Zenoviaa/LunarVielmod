@@ -56,6 +56,7 @@ public class WiggleDiggle : BaseGun
 
     public override bool GunShot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
+        type = ModContent.ProjectileType<WiggleDiggleProj>();
         SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/ConfettiShot1");
         soundStyle.PitchVariance = 0.3f;
         soundStyle.Volume = 0.8f;

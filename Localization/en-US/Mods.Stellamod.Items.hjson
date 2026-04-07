@@ -3558,7 +3558,7 @@ GreekLantern: {
 }
 
 LanternOfAFallen: {
-	DisplayName: Lantern Of A Fallen
+	DisplayName: Fallen Artifact
 	Tooltip: A great tool for clearing out one enemy.
 }
 
@@ -9060,7 +9060,7 @@ StrengthInsource: {
 }
 
 ManaRegeneratingInsource: {
-	Tooltip: Greatly increased mana regeneration for 5 seconds!
+	Tooltip: Greatly increased mana regeneration for 3 seconds!
 	DisplayName: Mana Regenerating Insource
 }
 

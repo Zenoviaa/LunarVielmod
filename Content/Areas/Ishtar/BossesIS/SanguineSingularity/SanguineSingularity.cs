@@ -296,6 +296,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             fallSystem.inSpace = true;
             fallSystem.hoveringPlatform = true;
             fallSystem.hoverPlatformY = 16000;
+            fallSystem.noProjTileCollide = true;
             if (Main.netMode == NetmodeID.Server)
                 return;
             _blackTimer++;

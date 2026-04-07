@@ -67,7 +67,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             _backLightModifiers = new List<IBackLightModifier>();
             _emitters = new List<ILightEmitter>();
-
+            
             On_Main.CheckMonoliths += RenderToLightMaps;
             On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
         }

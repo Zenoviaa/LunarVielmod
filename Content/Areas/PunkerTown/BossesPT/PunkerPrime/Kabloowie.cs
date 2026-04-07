@@ -56,7 +56,7 @@ public class Kabloowie : ModProjectile
         SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
         drawer.sourceRect = frame;
         drawer.drawOrigin = frame.Size() * 0.5f;
-        drawer.scale *= 2;
+        drawer.scale *= 1.5f;
         Main.spriteBatch.Draw(drawer);
         return false;
     }

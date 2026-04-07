@@ -4,6 +4,7 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Particles;
 using Stellamod.Items.Materials;
+using Stellamod.Items.Ores;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
@@ -38,13 +39,13 @@ namespace Stellamod.Items.Insources
         public override void UseInsource(FlaskPlayer flaskPlayer)
         {
             base.UseInsource(flaskPlayer);
-            flaskPlayer.Player.AddBuff(ModContent.BuffType<ManaRegeneratingInsourceBuff>(), 60 * 5);
+            flaskPlayer.Player.AddBuff(ModContent.BuffType<ManaRegeneratingInsourceBuff>(), 60 * 3);
         }
 
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew<WinterbornShard, BlankBrooch>();
+            this.RegisterBrew<GintzlMetal, BlankBrooch>();
         }
     }
 }
