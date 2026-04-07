@@ -2,6 +2,7 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,6 +13,18 @@ public class FallingSteamrollerPart : ModProjectile
 {
     private Vector2 _startPosition;
     private ref float Timer => ref Projectile.ai[0];
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.WriteVector2(_startPosition);
+    }
+
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _startPosition = reader.ReadVector2();
+    }
+
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
