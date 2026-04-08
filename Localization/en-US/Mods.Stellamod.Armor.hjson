@@ -1,3 +1,10 @@
+ElagentHead: {
+	Log: Act I Insource armor
+	Type: Resource
+	Lore: Simple crafted armor gifted from the mistress in the sky, the harpy’s siren as they say. As elegant as can be and it is said the armor protects people from misfortune with its allusive feathers.
+	SetBonus: When you drink your Xixian Flask, gain temporary immunity for 3 seconds with floating feathers around you to protect you.
+}
+
 VerlMask: {
 	Log: Act I Mage Artifact armor
 	Type: Magic

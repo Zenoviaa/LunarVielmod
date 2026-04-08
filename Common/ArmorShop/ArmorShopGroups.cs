@@ -1,6 +1,7 @@
 ﻿using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Astrasilk;
 using Stellamod.Content.Armors.Celestia;
+using Stellamod.Content.Armors.Elegant;
 using Stellamod.Content.Armors.ForestCore;
 using Stellamod.Content.Armors.HeavyMetal;
 using Stellamod.Content.Armors.Huntrian;
@@ -20,7 +21,6 @@ using Stellamod.Items.Armors.Appretience;
 using Stellamod.Items.Armors.Artisan;
 using Stellamod.Items.Armors.Daeden;
 using Stellamod.Items.Armors.Ducanblitz;
-using Stellamod.Items.Armors.Elagent;
 using Stellamod.Items.Armors.Eldritchian;
 using Stellamod.Items.Armors.Flower;
 using Stellamod.Items.Armors.Garbage;
