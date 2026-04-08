@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -20,7 +21,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public float chargeDamageBonus;
         public float chargeDamagePenalty;
         public bool overchargingVisual;
-
+        public bool hasMiniWand;
+        public Item miniWand;
         public static event Action<Item> OnPickupMagicItem;
 
         public override void ResetEffects()
@@ -29,6 +31,20 @@ namespace Stellamod.Content.Items.MoonlightMagic
             chargeTimeBonus = 0f;
             chargeDamagePenalty = 0f;
             overchargingVisual = false;
+            hasMiniWand = false;
+        }
+
+        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if(hasMiniWand && item.ModItem is AbstractMagicWand)
+            {
+                var wandProj = Projectile.NewProjectileDirect(source, position, velocity, miniWand.shoot, damage, knockback, Player.whoAmI);
+                if(wandProj.ModProjectile is AdvancedMagicStaffHold subWand)
+                {
+                    subWand.castMiniWand = true;
+                }
+            }
+            return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
 
         public void ResetChargeEffects()
@@ -89,6 +105,14 @@ namespace Stellamod.Content.Items.MoonlightMagic
         {
             base.SaveData(tag);
             tag["enchantments"] = Backpack;
+            
+            if(miniWand == null)
+            {
+                miniWand = new Item(0);
+                miniWand.SetDefaults(0);
+            }
+
+            tag["miniwand"] = ItemIO.Save(miniWand);
         }
 
         public override void LoadData(TagCompound tag)
@@ -97,6 +121,12 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Backpack.Clear();
             Backpack = tag.Get<List<Item>>("enchantments");
             ManageMagicItems();
+            miniWand = tag.Get<Item>("miniwand");
+            if(miniWand == null)
+            {
+                miniWand = new Item(0);
+                miniWand.SetDefaults(0);
+            }
         }
     }
 }

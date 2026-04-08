@@ -63,7 +63,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
                 {
                     int elementType = enchantment.GetElementType();
                     BaseElement element = ModContent.GetModItem(elementType) as BaseElement;
-                    if (element.DrawTextShader(spriteBatch, item, line, ref yOffset))
+
+                    if (element != null && element.DrawTextShader(spriteBatch, item, line, ref yOffset))
                     {
                         return false;
                     }

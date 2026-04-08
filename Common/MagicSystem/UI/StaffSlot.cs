@@ -81,6 +81,7 @@ namespace Stellamod.Common.MagicSystem.UI
         {
             if (Valid(Main.mouseItem))
             {
+                /*
                 //Handles all the click and hover actions based on the context
                 ItemSlot.Handle(ref Item, _context);
                 //So when we switch a staff we need to create a new editing context.
@@ -97,7 +98,7 @@ namespace Stellamod.Common.MagicSystem.UI
                     {
                         magicUISystem.OpenUI(staff);
                     }
-                }
+                }*/
             }
         }
 

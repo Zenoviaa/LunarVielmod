@@ -10649,3 +10649,13 @@ VeldrinLegs: {
 	DisplayName: Veldrin Legs
 	Tooltip: ""
 }
+
+GovheilQueenThighs: {
+	DisplayName: Govheil Queen Thighs
+	Tooltip: ""
+}
+
+SubWand: {
+	DisplayName: Sub Wand
+	Tooltip: ""
+}

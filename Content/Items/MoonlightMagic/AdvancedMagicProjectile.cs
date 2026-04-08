@@ -14,6 +14,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace Stellamod.Content.Items.MoonlightMagic
 {
@@ -77,6 +78,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public float coasterTime;
         public bool orb;
         public int hitboxSize;
+        public Item wand;
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             int size = (int)(Size + hitboxSize);
@@ -110,12 +112,14 @@ namespace Stellamod.Content.Items.MoonlightMagic
             base.SendExtraAI(writer);
             writer.Write(_netID);
             writer.Write(_bounceCooldownTimer);
+            ItemIO.Send(wand, writer);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             _netID = reader.ReadInt32();
             _bounceCooldownTimer = reader.ReadSingle();
+            wand = ItemIO.Receive(reader);
         }
 
         public void ReplaceEnchantment(BaseEnchantment enchantmentPrefab, int index)
@@ -308,9 +312,9 @@ namespace Stellamod.Content.Items.MoonlightMagic
             if (GlobalTimer == 1)
             {
                 originalVelocity = Projectile.velocity;
-                if (!Owner.HeldItem.IsAir && Owner.HeldItem.ModItem != null)
+                if (wand != null && wand.ModItem != null)
                 {
-                    AbstractMagicWand staff = Owner.HeldItem.ModItem as AbstractMagicWand;
+                    AbstractMagicWand staff = wand.ModItem as AbstractMagicWand;
                     TrailLength = staff.TrailLength;
                     Size = staff.Size;
                     SetMoonlightDefaults(staff);

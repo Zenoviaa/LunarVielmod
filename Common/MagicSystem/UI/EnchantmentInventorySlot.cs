@@ -130,7 +130,7 @@ namespace Stellamod.Common.MagicSystem.UI
                 int compareElement = GetElementType().CompareTo(slot.GetElementType());
                 if (compareElement == 0)
                 {
-                    return Item.ModItem.DisplayName.Value.CompareTo(slot.Item.ModItem.DisplayName.Value);
+                    return Item.Name.CompareTo(slot.Item.Name);
                 }
                 return compareElement;
             }

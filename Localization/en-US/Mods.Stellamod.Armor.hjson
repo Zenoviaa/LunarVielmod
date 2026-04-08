@@ -1,3 +1,10 @@
+GovheilMask: {
+	Log: Act II Mage Wand armor
+	Type: Magic
+	Lore: An armor modeled off of one of the best mages in Illuria, Govhista. She was born in the Ghetsis, and moved to Illuria to fight for glory using her cloning style. Eventually she was lost to time after dying in the Lustrous war and this armor is a single thing to remember her by.
+	SetBonus: When you charge a wand, gain a smaller wand caster that casts another spell in a different magic, you can customize this wand too!
+}
+
 AlcaliteMask: {
 	Type: Defensive
 	Lore: An armor worn by those who devote themselves to the great dragon Niivi, it is said that you’ll receive her blessing and become protected by her magic.

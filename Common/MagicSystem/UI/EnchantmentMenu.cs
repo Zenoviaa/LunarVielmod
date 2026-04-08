@@ -1,7 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.UI;
 using System;
@@ -126,7 +125,7 @@ namespace Stellamod.Common.MagicSystem.UI
             base.OnDeactivate();
             if (!Main.gameMenu)
             {
-                _staffSlot.ReturnItem();
+                //   _staffSlot.ReturnItem();
                 SoundEngine.PlaySound(SoundID.MenuClose);
             }
         }
@@ -164,8 +163,7 @@ namespace Stellamod.Common.MagicSystem.UI
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
-
-
+           // bool mouseInteract = this.QuickMouseInteraction();
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             Vector2 ratioPos = new Vector2(config.EnchantmentMenuX, config.EnchantmentMenuY);
             if (ratioPos.X < 0f || ratioPos.X > 100f)

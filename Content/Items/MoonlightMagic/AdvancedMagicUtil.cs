@@ -1,8 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Core.Bases;
-using Stellamod.Core.SwingSystem;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Items.MoonlightMagic
@@ -17,10 +13,12 @@ namespace Stellamod.Content.Items.MoonlightMagic
             Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * speed;
             Projectile p = Projectile.NewProjectileDirect(
                                 sourceProjectile.GetSource_FromThis(), firePosition, velocity,
-                                ModContent.ProjectileType<AdvancedMagicProjectile>(), sourceProjectile.damage, sourceProjectile.knockBack, sourceProjectile.owner, 
+                                ModContent.ProjectileType<AdvancedMagicProjectile>(), sourceProjectile.damage, sourceProjectile.knockBack, sourceProjectile.owner,
                                 ai1: charge);
             p.netUpdate = true;
-            return p.ModProjectile as AdvancedMagicProjectile;
+            AdvancedMagicProjectile magicProj = p.ModProjectile as AdvancedMagicProjectile;
+            magicProj.wand = item.Item;
+            return magicProj;
         }
 
 
@@ -38,6 +36,7 @@ namespace Stellamod.Content.Items.MoonlightMagic
             moonlightMagicProjectile.Size = size;
             moonlightMagicProjectile.IsClone = true;
             moonlightMagicProjectile.SetMoonlightDefaults(sourceProjectile);
+            moonlightMagicProjectile.wand = sourceProjectile.wand;
         }
     }
 }

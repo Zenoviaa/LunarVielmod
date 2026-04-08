@@ -95,7 +95,7 @@ namespace Stellamod.Common.MagicSystem.UI
             _panel.Height.Pixels = _grid.GetTotalHeight() + 32;
             float progress = _panel.Height.Pixels / Height.Pixels;
             progress = MathHelper.Clamp(progress, 0f, 1f);
-            _scrollbar.Height.Set(Height.Pixels * progress, 0);
+            _scrollbar.Height.Set((Height.Pixels - 64) * progress, 0);
          
             //Hacky way to get invisible scrollbar when there's no need for it
             if (_panel.Height.Pixels < Height.Pixels)
@@ -104,7 +104,7 @@ namespace Stellamod.Common.MagicSystem.UI
             }
             else
             {
-                _scrollbar.Top.Set(0, 0f);
+                _scrollbar.Top.Set(0, 0.2f);
             }
         }
     }

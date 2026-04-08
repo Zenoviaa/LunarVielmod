@@ -338,8 +338,8 @@ namespace Stellamod.Content.Items.MoonlightMagic
         public override void RightClick(Player player)
         {
             base.RightClick(player);
-            ModContent.GetInstance<MagicUISystem>().OpenUI(Item.Clone().ModItem as AbstractMagicWand);
-            Item.SetDefaults(ItemID.None); 
+            AbstractMagicWand wand = Item.ModItem as AbstractMagicWand;
+            ModContent.GetInstance<MagicUISystem>().OpenUI(wand);
         }
 
         public void SetElement(Item item)
@@ -349,8 +349,12 @@ namespace Stellamod.Content.Items.MoonlightMagic
 
         public Item GetElement()
         {
-            if (primaryElement.IsAir)
-                return ModContent.GetInstance<BasicElement>().Item;
+            if (primaryElement == null || primaryElement.IsAir || primaryElement.type == 0)
+            {
+                Item item = new Item(ModContent.ItemType<BasicElement>());
+                return item;
+            }
+                
             return primaryElement;
         }
 
