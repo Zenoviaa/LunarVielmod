@@ -2,7 +2,6 @@
 using Stellamod.Content.Armors.Veldrin;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.PicturePerfect;
-using Stellamod.Items.Armors.Artisan;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Paint;
 using Terraria;
