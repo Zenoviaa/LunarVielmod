@@ -1,3 +1,16 @@
+VerlMask: {
+	Log: Act I Mage Artifact armor
+	Type: Magic
+	Lore: An armor made in honor of a great craftswoman and a great swordswoman, Verlia. She can no longer be found today, as she was executed by Ereshkigal herself after trial for murder.
+	SetBonus: You have a raining magic swords rain down when you hit attacks with manaspheres, doing double damage of the held manasphere!
+}
+
+VeldrinHead: {
+	Type: Ranged
+	Lore: A defense against the cold, this armor was made by Veldris and his brother for fighting cold 
+	SetBonus: Ranged attacks can now inflict “Mild Curse,” (1/25) which makes them stop their ai and lose themselves for a few seconds (doesn’t work on bosses), also immune to freezing in ice water and frozen debuff.
+}
+
 MoonskerHood: {
 	Type: Magic
 	Lore: One said that this armor is of Ereshkigal’s most loyal worshippers, it whispers in your ear, speaking with sounds, and sometimes moths fly out. The armor is filled with power and spirits… I guess this is where she likes to hide some of her moths...

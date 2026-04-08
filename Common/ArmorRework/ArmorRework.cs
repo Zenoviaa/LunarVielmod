@@ -1372,7 +1372,7 @@ namespace Stellamod.Common.ArmorRework
 
 
             Player.GetDamage(DamageClass.Melee) += meleeDamage;
-            Player.GetArmorPenetration(DamageClass.Melee) += meleeArmorPenetration;
+            Player.GetArmorPenetration(DamageClass.Generic) += meleeArmorPenetration;
             AggroSystem aggroSystem = ModContent.GetInstance<AggroSystem>();
             aggroSystem.aggro[Player.whoAmI] += meleeAggressiveness;
 
