@@ -259,7 +259,7 @@ public class SubWand : AbstractMagicWand
         Item.useAnimation = 36;
         Size = 8;
         TrailLength = 16;
-        normalSlotCount = 3;
+        normalSlotCount = 2;
         timedSlotCount = 1;
     }
 }
@@ -324,7 +324,7 @@ public class GovheilBreastplate : ModItem
         var stats = player.GetStats();
         stats.wandCastTime += 0.5f;
         stats.defenseBonus += 8;
-        stats.accessorySlots += 2;
+        stats.accessorySlots += 1;
     }
 }
 
@@ -348,6 +348,6 @@ public class GovheilQueenThighs : ModItem
     {
         var stats = player.GetStats();
         stats.defenseBonus += 4;
-        stats.accessorySlots += 2;
+        stats.accessorySlots += 1;
     }
 }

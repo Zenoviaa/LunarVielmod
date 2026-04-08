@@ -62,9 +62,7 @@ public class VeldrinPlayer : ModPlayer
         base.OnHitNPC(target, hit, damageDone);
         if (!hasSetBonus)
             return;
-        if (hit.DamageType != DamageClass.Ranged)
-            return;
-        if (!Main.rand.NextBool(25))
+        if (!Main.rand.NextBool(15))
             return;
         if (target.boss)
             return;

@@ -140,10 +140,15 @@ public class RadianthalGlobalProjectile : GlobalProjectile
     public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(projectile, target, hit, damageDone);
+        RadianthalPlayer player = Main.player[projectile.owner].GetModPlayer<RadianthalPlayer>();
+        if (player.hasSetBonus)
+        {
+            player.stacks++;
+        }
+
         if (!hasHitSomething)
         {
-            RadianthalPlayer player = Main.player[projectile.owner].GetModPlayer<RadianthalPlayer>();
-            player.stacks++;
+
             if(player.stacks >= 3)
             {
                 FXUtil.ShakeCamera(target.Center, 1024, 8);
@@ -187,7 +192,7 @@ public class RadianthalPlayer : ModPlayer
             stacks = 0;
             return;
         }
-        float maxAttackSpeedPenalty = -0.8f;
+        float maxAttackSpeedPenalty = -0.5f;
         float maxDamageBonus = 2;
         float lerp = stacks / 10f;
         lerp = MathHelper.Clamp(lerp, 0f, 1f);

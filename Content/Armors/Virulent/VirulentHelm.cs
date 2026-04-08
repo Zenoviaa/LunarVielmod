@@ -171,7 +171,7 @@ public class VirulentTurret : ModProjectile
             if (Projectile.spriteDirection == -1)
                 targetRotation += MathHelper.Pi;
             Timer++;
-            if (Timer >= 15)
+            if (Timer >= 7)
             {
                 _fireOffset = -fireDirection * 32;
                 Vector2 firePoint = Projectile.Center + fireDirection * 24;
@@ -304,7 +304,7 @@ standing still gives you an acid aura that stays where you were when you leave T
         if (Player.whoAmI == Main.myPlayer && Player.ownedProjectileCounts[ModContent.ProjectileType<VirulentTurret>()] < 1)
         {
             Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
-                ModContent.ProjectileType<VirulentTurret>(), 24, 4, Player.whoAmI);
+                ModContent.ProjectileType<VirulentTurret>(), 19, 4, Player.whoAmI);
         }
     }
 }

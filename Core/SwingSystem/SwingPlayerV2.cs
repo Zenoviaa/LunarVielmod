@@ -24,7 +24,7 @@ namespace Stellamod.Core.SwingSystem
         {
             base.ResetEffects();
             isSwinging = false;
-            comboWaitTime = 65;
+            comboWaitTime = 120;
             MaxStamina = 3;
             useStaminaThisFrame = false;
         }

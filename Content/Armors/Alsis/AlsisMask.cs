@@ -147,7 +147,7 @@ public class AlsisGlobalProjectile : GlobalProjectile
         AlsisPlayer alsisPlayer = player.GetModPlayer<AlsisPlayer>();
         if (!isEnchanted && alsisPlayer.hasSetBonus && projectile.friendly)
         {
-            int manaCost = projectile.arrow ? 20 : 5;
+            int manaCost = projectile.arrow ? 20 : 10;
             if(alsisPlayer.hasSetBonus && !alsisPlayer.exhausted && player.CheckMana(manaCost, true))
             {
                 if(player.manaRegenDelay < 140)
@@ -205,12 +205,22 @@ public class AlsisPlayer : ModPlayer
     public override void PostUpdateEquips()
     {
         base.PostUpdateEquips();
+        alphaTimer = MathHelper.Clamp(alphaTimer, 0f, 1f);
         if (!hasSetBonus)
+        {
+            alphaTimer -= 0.05f;
+   
             return;
+        }
+           
 
         if(!Player.CheckMana(20, pay: false))
         {
             exhausted = true;
+        }
+        if (exhausted)
+        {
+            Player.GetDamage(DamageClass.Generic) -= 0.3f;
         }
 
         if (exhausted)
@@ -233,7 +243,7 @@ public class AlsisPlayer : ModPlayer
                 _frame = 0;
             frameTimer = 0;
         }
-        alphaTimer = MathHelper.Clamp(alphaTimer, 0f, 1f);
+
         CrossbowPlayer crossbowPlayer = Player.GetModPlayer<CrossbowPlayer>();
         crossbowPlayer.magicCircleColor = Color.Violet;
         crossbowPlayer.magicCircleTextureAsset = AssetManager.GlowMask.AlsisMagicCircle;
@@ -245,7 +255,8 @@ public class AlsisPlayer : ModPlayer
         base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
         if (drawInfo.shadow != 0f)
             return;
-
+        if (alphaTimer <= 0)
+            return;
         _masteryMagicTextureAsset ??= ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "MasteryofMagic");
         int frameCount = 55;
         SpriteBatch sb = Main.spriteBatch;
