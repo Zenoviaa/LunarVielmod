@@ -63,7 +63,7 @@ ScrappyHead: {
 GovheilHelmet: {
 	Log: Act II Melee armor
 	Type: Melee
-	Lore: Simple crafted armor gifted from the mistress in the sky, the harpy’s siren as they say. As elegant as can be and it is said the armor protects people from misfortune with its allusive feathers.
+	Lore: An armor modeled off of one of the best warriors in Illuria, Govhintin. He was born in the Ghetsis, and moved to Illuria to fight for glory using his double-cut style. He married a woman named Govhista and changed his name to match hers, they both died in battle.
 	SetBonus: While an enemy is targeting you, every other player takes 75% reduced damage, while you do 10% more melee damage as well as having a king crown over you.
 }
 
