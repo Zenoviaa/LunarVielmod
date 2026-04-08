@@ -1,7 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Armors.Veldrin;
 using Stellamod.Core;
 using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
@@ -216,7 +215,7 @@ public class ScrappyTurret : ModProjectile
                         outerColor = Color.Red,
                         scaleRange = new Vector2(0.3f, 1f)
                     };
-                    var dp = DustParticle.Spawn(firePoint, (fireDirection*8).RotatedByRandom(0.3f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+                    var dp = DustParticle.Spawn(firePoint, (fireDirection * 8).RotatedByRandom(0.3f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
                     dp.dampening = 0.1f;
                 }
 
@@ -224,11 +223,11 @@ public class ScrappyTurret : ModProjectile
                 {
                     RandOffset = Main.rand.NextFloat(-10, 10f);
                     Projectile.netUpdate = true;
-                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), firePoint, fireDirection * 8, 
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), firePoint, fireDirection * 8,
                         ModContent.ProjectileType<ScrappyBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
 
-             
+
                 Timer = 0;
             }
         }
@@ -240,7 +239,7 @@ public class ScrappyTurret : ModProjectile
         }
 
         OffsetTimer++;
-        if(OffsetTimer == 1)
+        if (OffsetTimer == 1)
         {
             if (this.OwnedByLocalClient())
             {

@@ -1,3 +1,11 @@
+ScrappyHead: {
+	Log: Act II Minion armor
+	Type: Summon
+	Lore: It’s crafted from trash, I don't know what you expected, some type of epic journey about a piece of trash? You disgust me... Almost as much as this armor does...
+	SetBonus: Summons a few little laser flying turrets that shoot your enemies with high accuracy! Pew Pew pew.
+}
+
+
 GovheilHelmet: {
 	Log: Act II Melee armor
 	Type: Melee
