@@ -78,11 +78,15 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
         spriteBatch.Draw(tileTextureAsset.Value, iconCenterPos, frame, Color.White, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, 0);
     }
 
-    private float GetLeafSway(float offset, float magnitude, float speed)
+    public float GetLeafSway(float offset, float magnitude, float speed)
     {
         return (float)Math.Sin(Main.GameUpdateCount * speed + offset) * magnitude;
     }
 
+    public virtual void Update(Vector2 worldPosition)
+    {
+
+    }
     public void Draw(SpriteBatch spriteBatch, Vector2 screenPos, ZTileDrawParams drawParams)
     {
         //TODO: index array instead of modcontent.request
