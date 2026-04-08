@@ -20,6 +20,7 @@ Common: {
 		After it bounces, click it again midair to ricochet back again
 		Keep the combo going to gain a damage multiplier!
 		'''
+	MildCurse: Cursed!
 	NoHit: No Damage Taken! A Flawless Victory!
 	Resisted: Resisted!
 	Claim: Claim!!
@@ -342,12 +343,7 @@ SetBonus: {
 		Enemies will be attacked by your power of music!
 		Every few seconds you'll gain a major increase to Magic and Ranged damage!
 		'''
-	VerlMask:
-		'''
-		Auto gain the abilities of a Magic Quiver and +5% Ranged damage
-		Enemies will be attacked by your power of music!
-		Every few seconds you'll gain a major increase to Ranged and Magic damage!
-		'''
+	VerlMask: ""
 	VextinMask:
 		'''
 		Gain the accessory effects of desert boots!
@@ -667,48 +663,23 @@ AstolfoSkirt: {
 }
 
 VerlBreastplate: {
-	DisplayName: Verl Breastplate
-	Tooltip:
-		'''
-		Shines with a blooming moon
-		+4% Ranged and Magic Damage!
-		+3 Penetration 
-		+3 Critical Strike Chance!
-		+5 Max Life
-		'''
+	DisplayName: Verlian Breastplate
+	Tooltip: ""
 }
 
 VerlHat: {
 	DisplayName: Verl Hat
-	Tooltip:
-		'''
-		You feel prettier dont you?
-		+7% Magic Damage!
-		+Fast mana regeneration!
-		+40 Max Mana
-		+5 Max Life
-		'''
+	Tooltip: ""
 }
 
 VerlLeggings: {
-	DisplayName: Verl Leggings
-	Tooltip:
-		'''
-		Look at them thighs go!
-		+7% Magic and Ranged Damage!
-		+Increased Movement speed by 5%
-		'''
+	DisplayName: Verlian Leggings
+	Tooltip: ""
 }
 
 VerlMask: {
-	DisplayName: Verl Mask
-	Tooltip:
-		'''
-		You feel prettier dont you?
-		+7% Ranged Damage!
-		+15 Critical Strike Chance!
-		+20 Max Life
-		'''
+	DisplayName: Verlian Mask
+	Tooltip: ""
 }
 
 VextinBoots: {
@@ -2285,22 +2256,17 @@ AstrasilkLegs: {
 
 ElagentBody: {
 	DisplayName: Elegant Coat
-	Tooltip: +1 Minion
+	Tooltip: ""
 }
 
 ElagentHead: {
 	DisplayName: Elegant Crown
-	Tooltip: +20% Minion Damage
+	Tooltip: ""
 }
 
 ElagentLegs: {
 	DisplayName: Elegant Leggings
-	Tooltip:
-		'''
-		+10% Summon Damage
-		+2 Minions
-		Increased movement speed
-		'''
+	Tooltip: ""
 }
 
 ForestCoreBody: {
@@ -10734,5 +10700,35 @@ PunkerPrimeRelicItem: {
 
 SteamrollerRelicItem: {
 	DisplayName: Steamroller Relic
+	Tooltip: ""
+}
+
+FishyBody: {
+	DisplayName: Fishy Body
+	Tooltip: ""
+}
+
+FishyHead: {
+	DisplayName: Fishy Head
+	Tooltip: ""
+}
+
+FishyLegs: {
+	DisplayName: Fishy Legs
+	Tooltip: ""
+}
+
+VeldrinBody: {
+	DisplayName: Veldrin Body
+	Tooltip: ""
+}
+
+VeldrinHead: {
+	DisplayName: Veldrin Head
+	Tooltip: ""
+}
+
+VeldrinLegs: {
+	DisplayName: Veldrin Legs
 	Tooltip: ""
 }

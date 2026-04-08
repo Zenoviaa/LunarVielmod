@@ -11,7 +11,6 @@ using Stellamod.Items.Armors.Alsis;
 using Stellamod.Items.Armors.Artisan;
 using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Govheil;
-using Stellamod.Items.Armors.Verl;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
@@ -984,7 +983,7 @@ namespace Stellamod
                 for (int j = 0; j < 1; j++)
                 {
                     Vector2 speed = Main.rand.NextVector2Circular(0.1f, 1f);
-                 //   Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<Noti>(), 120, 1f, Player.whoAmI);
+                    //   Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 3, ModContent.ProjectileType<Noti>(), 120, 1f, Player.whoAmI);
                 }
 
 

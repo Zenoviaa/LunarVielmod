@@ -9,6 +9,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common;
 
 public class CoinSpawnerNPC : ModNPC
 {
+    private Vector2 _pos;
     private bool _playedSoun;
     private ref float Timer => ref NPC.ai[0];
     private ref float CoinsToSpawn => ref NPC.ai[1];
@@ -28,6 +29,9 @@ public class CoinSpawnerNPC : ModNPC
         NPC.defense = 100;
         NPC.noTileCollide = true;
         NPC.noGravity = true;
+        NPC.dontCountMe = true;
+        NPC.dontTakeDamage = true;
+        NPC.dontTakeDamageFromHostiles = true;
     }
 
     public override bool CheckActive()
@@ -43,7 +47,12 @@ public class CoinSpawnerNPC : ModNPC
             ColosseumWaveManager.Cheer();
             _playedSoun = true;
         }
+        NPC.velocity = Vector2.Zero;
         Timer++;
+        if(Timer == 1)
+        {
+            _pos = NPC.Center;
+        }
         if (Timer >= 2)
         {
             Timer = 0;

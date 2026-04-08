@@ -207,7 +207,7 @@ public struct SpritebatchDrawer
         spritebatchDrawer.color = Color.White.MultiplyRGB(Lighting.GetColor(projectile.position.ToTileCoordinates()));
         spritebatchDrawer.rotation = projectile.rotation;
         spritebatchDrawer.drawOrigin = spritebatchDrawer.sourceRect.Value.Size() * 0.5f;
-        spritebatchDrawer.spriteEffects = SpriteEffects.None;
+        spritebatchDrawer.spriteEffects = projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         spritebatchDrawer.scale = Vector2.One * projectile.scale;
         return spritebatchDrawer;
     }

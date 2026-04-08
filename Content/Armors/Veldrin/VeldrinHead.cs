@@ -2,6 +2,7 @@
 using Stellamod.Content.Armors.ShadeWraith;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ public class MildCurse : ModBuff
     public override void Update(NPC npc, ref int buffIndex)
     {
         base.Update(npc, ref buffIndex);
+        npc.velocity *= 0.8f;
         if (Main.rand.NextBool(3))
         {
             SmokeParticle sp = Particle<SmokeParticle>.Spawn(npc.position + new Vector2(Main.rand.Next(0, npc.width), 
@@ -73,12 +75,19 @@ public class VeldrinPlayer : ModPlayer
         if (target.boss)
             return;
 
-        for(float d = 0; d < 12; d++)
+        for (float d = 0; d < 12; d++)
         {
-            Vector2 vel = (d / 12f).ToRotationVector2();
+            Vector2 vel = (d / 12f * MathHelper.TwoPi).ToRotationVector2();
             vel *= Main.rand.NextFloat(3f, 6f);
             Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), vel, newColor: Color.DarkGoldenrod);
         }
+
+        CombatText.NewText(target.getRect(), Color.LightGoldenrodYellow, LangText.Common("MildCurse"), dramatic: true);
+
+
+        var fx = FXUtil.GlowStretch(target.Center, new Vector2(-1, 1));
+        fx.VectorScale.X *= 3;
+        FXUtil.ShakeCamera(target.Center, 1024, 8);
 
         SoundStyle inflictSound = new SoundStyle("Stellamod/Assets/Sounds/GhostExcalibur1");
         inflictSound.PitchVariance = 0.3f;

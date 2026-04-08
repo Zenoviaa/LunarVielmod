@@ -28,6 +28,7 @@ public class VerlSword : ModProjectile
         Projectile.friendly = true;
         Projectile.timeLeft = 180;
         Projectile.light = 1.5f;
+        Projectile.extraUpdates = 1;
     }
 
     public override void AI()
@@ -43,15 +44,22 @@ public class VerlSword : ModProjectile
             Projectile.scale = 0.001f;
         }
 
+        if (Projectile.Top.Y < Main.player[Projectile.owner].Bottom.Y)
+            Projectile.tileCollide = false;
+        else
+            Projectile.tileCollide = true;
+
         if (Timer % 12 == 0)
         {
             var ds = DustParticle.Spawn(Projectile.Center, -Projectile.velocity * 0.2f);
-            ds.outerColor = Color.White;
-            ds.Scale *= 0.75f;
+            ds.outerColor = Color.BlueViolet;
+            ds.Scale *= 0.5f;
+            ds.gravity = 0;
         }
 
         Projectile.scale = MathHelper.Lerp(Projectile.scale, ScaleVariance, 0.1f);
-        Projectile.velocity *= 1.01f;
+        if(Projectile.velocity.Length() < 15)
+            Projectile.velocity *= 1.1f;
         Projectile.rotation = Projectile.velocity.ToRotation();
     }
 
@@ -62,18 +70,23 @@ public class VerlSword : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
+        if (Timer <= 1)
+            return false;
         SpritebatchDrawer afDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        afDrawer.scale.Y *= 0.5f;
         for (int i = 0; i < Projectile.oldPos.Length; i++)
         {
             Vector2 pos = Projectile.oldPos[i] + Projectile.Size * 0.5f;
             afDrawer.worldPosition = pos;
-            afDrawer.color = Color.Lerp(Color.White, Color.Transparent, i / (float)Projectile.oldPos.Length) * 0.3f;
+            afDrawer.color = Color.Lerp(Color.BlueViolet, Color.Transparent, i / (float)Projectile.oldPos.Length) * 0.3f;
             afDrawer.color.A = 0;
             Main.spriteBatch.Draw(afDrawer);
         }
 
         SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
+        drawer.color = Color.Lerp(Color.White, Color.Blue, ExtraMath.Osc(0f, 1f, speed: 16));
         drawer.color.A = 0;
+        drawer.scale.Y *= 0.5f;
         Main.spriteBatch.Draw(drawer);
         return false;
         //return base.PreDraw(ref lightColor);
@@ -82,7 +95,7 @@ public class VerlSword : ModProjectile
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-        float numDust = 4;
+        float numDust = 2;
         for (float n = 0; n < numDust; n++)
         {
             var ds = DustParticle.Spawn(Projectile.Center, Projectile.oldVelocity.RotatedByRandom(
@@ -119,7 +132,9 @@ public class VerlPlayer : ModPlayer
 
         //Rain swords here
         Vector2 spawnPos = target.Center + new Vector2(0, -500);
-        Projectile.NewProjectile(proj.GetSource_FromThis(), spawnPos, Vector2.UnitY,
+        spawnPos += Main.rand.NextVector2Circular(80, 80);
+        Vector2 vel = (target.Center - spawnPos).SafeNormalize(Vector2.Zero) * 8;
+        Projectile.NewProjectile(proj.GetSource_FromThis(), spawnPos, vel,
             ModContent.ProjectileType<VerlSword>(), proj.damage, 1, Player.whoAmI);
     }
 

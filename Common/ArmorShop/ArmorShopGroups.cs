@@ -2,6 +2,7 @@
 using Stellamod.Content.Armors.Astrasilk;
 using Stellamod.Content.Armors.Celestia;
 using Stellamod.Content.Armors.Elegant;
+using Stellamod.Content.Armors.Fishy;
 using Stellamod.Content.Armors.ForestCore;
 using Stellamod.Content.Armors.HeavyMetal;
 using Stellamod.Content.Armors.Huntrian;
@@ -153,6 +154,14 @@ namespace Stellamod.Common.ArmorShop
             hunt.SetMaterial(ItemID.Stinger);
             hunt.Register();
 
+
+            ArmorShopSet fishy = new ArmorShopSet();
+            fishy.AddHead(ModContent.ItemType<FishyHead>());
+            fishy.AddBody(ModContent.ItemType<FishyBody>());
+            fishy.AddLegs(ModContent.ItemType<FishyLegs>());
+            fishy.SetMaterial(ModContent.ItemType<MusicalHarmonise>());
+            fishy.Register();
+
             //---------- Late Prehm
 
             //LVoid armor done
@@ -166,7 +175,6 @@ namespace Stellamod.Common.ArmorShop
 
             //Verl done
             ArmorShopSet Verl = new ArmorShopSet();
-            Verl.AddHead(ModContent.ItemType<VerlHat>());
             Verl.AddHead(ModContent.ItemType<VerlMask>());
             Verl.AddBody(ModContent.ItemType<VerlBreastplate>());
             Verl.AddLegs(ModContent.ItemType<VerlLeggings>());

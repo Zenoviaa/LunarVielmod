@@ -1112,3 +1112,13 @@ Flawless: {
 	DisplayName: Flawless
 	Description: You haven't taken a hit yet!
 }
+
+Elegant: {
+	DisplayName: Elegant
+	Description: Mods.Stellamod.Buffs.Elegant.Description
+}
+
+MildCurse: {
+	DisplayName: Mild Curse
+	Description: Mods.Stellamod.Buffs.MildCurse.Description
+}

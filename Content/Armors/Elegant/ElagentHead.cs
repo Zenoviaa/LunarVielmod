@@ -101,8 +101,8 @@ namespace Stellamod.Content.Armors.Elegant
 
                 Texture2D texture = _featherTextureAsset.Value;
                 SpritebatchDrawer swordDrawer = SpritebatchDrawer.FromTextureAsset(texture, drawCenter);
-                float rads = MathHelper.ToRadians(3);
-                float osc = ExtraMath.Osc(0f, 1f, offset: j);
+              //  float rads = MathHelper.ToRadians(3);
+              
                 swordDrawer.rotation = (drawCenter - drawInfo.drawPlayer.Center).ToRotation() + MathHelper.PiOver2;
                 swordDrawer.color = Color.White * alphaTimer;
                 sb.Draw(swordDrawer);
@@ -190,7 +190,6 @@ namespace Stellamod.Content.Armors.Elegant
             Item.height = 22;
             Item.value = 10000;
             Item.rare = ItemRarityID.Orange;
-            Item.defense = 3;
         }
 
         public override void UpdateEquip(Player player)
