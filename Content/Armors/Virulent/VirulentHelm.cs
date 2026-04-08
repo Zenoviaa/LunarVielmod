@@ -7,7 +7,6 @@ using Stellamod.Core;
 using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Armors.AcidArmour;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
