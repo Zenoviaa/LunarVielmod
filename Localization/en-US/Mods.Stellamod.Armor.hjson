@@ -1,3 +1,9 @@
+AlcaliteMask: {
+	Type: Defensive
+	Lore: An armor worn by those who devote themselves to the great dragon Niivi, it is said that you’ll receive her blessing and become protected by her magic.
+	SetBonus: If an attack would’ve killed you, you instead enter a cocoon-like state where you are immune to all damage for 7 seconds, and you cannot attack or move, but have a lot of life regeneration, usually restoring you to about 60% health. After shattering, have 5% more damage and orbiting stars!
+}
+
 ArtisanMask: {
 	Log: Act II Crit armor
 	Type: Crit

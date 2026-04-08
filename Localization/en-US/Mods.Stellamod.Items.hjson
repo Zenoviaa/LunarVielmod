@@ -200,11 +200,7 @@ SetBonus: {
 	AcidMask: Stand still to emit a toxic aura!
 	AcidRobe: Stand still to emit a toxic aura!
 	AcidVisor: Stand still to emit a toxic aura!
-	AlcaliteMask:
-		'''
-		+1 max minions
-		The stars of Illuria protect you!
-		'''
+	AlcaliteMask: ""
 	AlsisMask:
 		'''
 		You are a true mage...
@@ -4141,10 +4137,7 @@ ArtisanBreastplate: {
 
 ArtisanMask: {
 	DisplayName: Artisan Mask
-	Tooltip:
-		'''
-		You also look hot am I right?
-		'''
+	Tooltip: You also look hot am I right?
 }
 
 ArtisanThighs: {
@@ -6742,30 +6735,17 @@ IllurianLoveLocket: {
 
 AlcaliteMask: {
 	DisplayName: Alcalite Mask
-	Tooltip:
-		'''
-		8% increased magic and summon damage
-		+1 max minions
-		'''
+	Tooltip: ""
 }
 
 AlcaliteRobe: {
 	DisplayName: Alcalite Robe
-	Tooltip:
-		'''
-		12% increased magic and summon damage
-		+2 max minions
-		'''
+	Tooltip: ""
 }
 
 AlcaliteTrunks: {
 	DisplayName: Alcalite Trunks
-	Tooltip:
-		'''
-		Increases movement speed and acceleration
-		4% increased magic and summon damage
-		+1 max minions
-		'''
+	Tooltip: ""
 }
 
 IlluriteDrill: {

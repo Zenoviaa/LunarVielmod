@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Magic
+namespace Stellamod.Content.Armors.Alcalite
 {
     public class IlluriaStarGlow : ModProjectile
     {

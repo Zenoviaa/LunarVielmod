@@ -1,19 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-using Stellamod.Helpers;
+﻿using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Projectiles.Magic
+namespace Stellamod.Content.Armors.Alcalite
 {
     public abstract class IlluriaStarProj : ModProjectile
     {
         const float Lifetime = 180;
         public virtual Color StarColor { get; }
-
 
         ref float Timer => ref Projectile.ai[0];
         ref float OrbitDistance => ref Projectile.ai[1];
@@ -65,9 +62,13 @@ namespace Stellamod.Projectiles.Magic
 
         public override void AI()
         {
-            if (Projectile.timeLeft == Lifetime / 2)
+            if (Timer % 16 == 0)
             {
-                Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
+                DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                spawnParams.scaleRange *= 0.5f;
+                spawnParams.gravity = 0;
+                spawnParams.outerColor = StarColor;
+                DustParticle ds = DustParticle.Spawn(Projectile.Center, Vector2.Zero, spawnParams);
             }
 
             if (Projectile.timeLeft > Lifetime / 2)
@@ -98,6 +99,11 @@ namespace Stellamod.Projectiles.Magic
 
         private void Orbit()
         {
+            if (Timer == 0)
+            {
+                Projectile.scale = 0.0001f;
+            }
+            Projectile.scale = MathHelper.Lerp(Projectile.scale, 1f, 0.2f);
             Timer++;
             if (Timer == 1 && Main.myPlayer == Projectile.owner)
             {
@@ -105,6 +111,7 @@ namespace Stellamod.Projectiles.Magic
                 OrbitOffset = Main.rand.NextFloat(0, MathHelper.TwoPi);
                 Projectile.netUpdate = true;
             }
+
 
             Player owner = Main.player[Projectile.owner];
             Vector2 startOrbit = Vector2.UnitY.RotatedBy(OrbitOffset);
@@ -156,9 +163,16 @@ namespace Stellamod.Projectiles.Magic
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 4; i++)
+            for (float f = 0; f < 4; f++)
             {
-                Vector2 speed = Main.rand.NextVector2CircularEdge(4f, 4f);
+                Vector2 fireVelocity = -Projectile.oldVelocity.SafeNormalize(Vector2.Zero);
+                fireVelocity = fireVelocity.RotatedByRandom(MathHelper.ToRadians(60));
+                fireVelocity *= Main.rand.NextFloat(3f, 8f);
+
+                DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                spawnParams.outerColor = StarColor;
+                spawnParams.scaleRange *= 0.5f;
+                DustParticle.Spawn(Projectile.Center, fireVelocity, spawnParams);
             }
         }
     }
