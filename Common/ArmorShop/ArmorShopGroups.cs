@@ -1,4 +1,5 @@
 ﻿using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
+using Stellamod.Content.Armors.Artisan;
 using Stellamod.Content.Armors.Astrasilk;
 using Stellamod.Content.Armors.Celestia;
 using Stellamod.Content.Armors.Elegant;
@@ -21,7 +22,6 @@ using Stellamod.Content.Armors.Winterborn;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Items.Armors.Appretience;
-using Stellamod.Items.Armors.Artisan;
 using Stellamod.Items.Armors.Daeden;
 using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Eldritchian;

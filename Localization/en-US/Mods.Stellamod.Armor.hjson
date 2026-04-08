@@ -1,3 +1,10 @@
+ArtisanMask: {
+	Log: Act II Crit armor
+	Type: Crit
+	Lore: Every little while you’ll get a counter that when it hits 0, you gain 100% critical strike chance for a few seconds. With picture perfect on your weapons also receive a buff during this time
+	SetBonus: An armor gifted from the one and the only Gerisda, she paints far off in Runica Waterside, but she also gave her painter set as she’s retired from fighting! Now it’s passed down to you...
+}
+
 VirulentHelm: {
 	Log: Act II Ranged armor
 	Type: Ranged

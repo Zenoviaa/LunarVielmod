@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Armors.Artisan;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Paint;
@@ -56,11 +57,11 @@ namespace Stellamod.Items.Weapons.Mage
 
             int dir = AttackCounter;
 
-            Projectile.NewProjectile(source, position, velocity, type, damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj2>(), (damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2) * 2, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj3>(), (damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2), knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj4>(), (damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2) * 2, knockback, player.whoAmI, 1, dir);
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj5>(), (damage + player.GetModPlayer<MyPlayer>().PPPaintDMG2) * 3, knockback, player.whoAmI, 1, dir);
+            Projectile.NewProjectile(source, position, velocity, type, damage + player.GetModPlayer<ArtisanPlayer>().PPPaintDMG2, knockback, player.whoAmI, 1, dir);
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj2>(), (damage + player.GetModPlayer<ArtisanPlayer>().PPPaintDMG2) * 2, knockback, player.whoAmI, 1, dir);
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj3>(), (damage + player.GetModPlayer<ArtisanPlayer>().PPPaintDMG2), knockback, player.whoAmI, 1, dir);
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj4>(), (damage + player.GetModPlayer<ArtisanPlayer>().PPPaintDMG2) * 2, knockback, player.whoAmI, 1, dir);
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<POAProj5>(), (damage + player.GetModPlayer<ArtisanPlayer>().PPPaintDMG2) * 3, knockback, player.whoAmI, 1, dir);
             return false;
         }
         public override void AddRecipes()

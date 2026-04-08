@@ -80,26 +80,8 @@ namespace Stellamod
         public bool MasteryMagic;
         public int MasteryMagicBCooldown = 0;
 
-        public bool ThreeTwoOneSmile;
-        public int ThreeTwoOneSmileBCooldown = 1440;
-        public int PaintdropBCooldown = 3;
 
 
-
-        //--------------------------------------- Picture perfect stuff
-        public int PPDefense = 0;
-        public int PPDMG = 0;
-        public float PPPaintDMG = 0;
-        public int PPPaintDMG2 = 0;
-        public bool PPPaintI = false;
-        public bool PPPaintII = false;
-        public bool PPPaintIII = false;
-        public float PPSpeed = 0;
-        public int PPCrit = 0;
-        public int PPPaintTime = 0;
-        public int PPFrameTime = 0;
-        public bool Cameraaa = false;
-        public float CameraaaTime;
         //----------------------------------------- Pikmin stuff
 
         public int OnionDamage = 0;
@@ -542,7 +524,7 @@ namespace Stellamod
             FCArmor = false;
             ClamsPearl = false;
             HMArmor = false;
-            Cameraaa = false;
+
             DetonationRune = false;
             CorsageRune = false;
             StealthRune = false;
@@ -562,18 +544,6 @@ namespace Stellamod
                 SwordComboR--;
             }
 
-            PPDefense = 0;
-            PPDMG = 0;
-            PPPaintDMG = 0;
-            PPPaintDMG2 = 0;
-            PPPaintI = false;
-            PPPaintII = false;
-            PPPaintIII = false;
-            PPSpeed = 0;
-            PPCrit = 0;
-            PPPaintTime = 0;
-            PPFrameTime = 0;
-            Cameraaa = false;
 
             Onion1 = false;
             Onion2 = false;
@@ -756,8 +726,7 @@ namespace Stellamod
             {
                 HMArmorTime = 0;
                 HMArmor = false;
-                CameraaaTime = 0;
-                Cameraaa = false;
+     
                 Dead = false;
 
             }
@@ -904,26 +873,6 @@ namespace Stellamod
             }
 
 
-
-            if (Cameraaa)
-            {
-                CameraaaTime++;
-                if (CameraaaTime <= 1)
-                {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Vomit3"), player.position);
-                    var EntitySource = Player.GetSource_FromThis();
-
-                    Projectile.NewProjectile(EntitySource, player.Center.X, player.Center.Y, 0, 0, ModContent.ProjectileType<SmileForCamera>(), Player.HeldItem.damage * 0, 1, Player.whoAmI, 0, 0);
-
-                    player.AddBuff(ModContent.BuffType<CameraMinBuff>(), 99999);
-                }
-
-            }
-            else
-            {
-                player.ClearBuff(ModContent.BuffType<CameraMinBuff>());
-                CameraaaTime = 0;
-            }
 
 
 
@@ -1095,71 +1044,7 @@ namespace Stellamod
 
             }
 
-            #region 321smile
-
-
-            if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 180)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Three"));
-                for (int j = 0; j < 5; j++)
-                {
-                    Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint2>(), 25, 1f, Player.whoAmI);
-                }
-
-
-            }
-
-            if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 120)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Two"));
-                for (int j = 0; j < 5; j++)
-                {
-                    Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint3>(), 25, 1f, Player.whoAmI);
-                }
-
-
-            }
-
-            if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 60)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/One"));
-                for (int j = 0; j < 5; j++)
-                {
-                    Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint2>(), 25, 1f, Player.whoAmI);
-                }
-
-
-            }
-
-            if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown == 0)
-            {
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/zero"));
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Binding_Abyss_Spawn"));
-                for (int j = 0; j < 5; j++)
-                {
-                    Vector2 speed = Main.rand.NextVector2Circular(1f, 1f);
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed * 5, ModContent.ProjectileType<Paint3>(), 25, 1f, Player.whoAmI);
-
-
-                }
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity, ModContent.ProjectileType<Artbar>(), 0, 1f, Player.whoAmI);
-                ThreeTwoOneSmileBCooldown = 1720 + PPPaintTime;
-            }
-
-            if (ThreeTwoOneSmile && PaintdropBCooldown == 0)
-            {
-                RandomOrig3 = new Vector2(-15, (Main.rand.NextFloat(0f, 20f)));
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + RandomOrig3, Player.velocity * 0f,
-                    ModContent.ProjectileType<Meatball4>(), 0, 1f, Player.whoAmI);
-
-                PaintdropBCooldown = 25;
-            }
-
-
-            #endregion
+        
 
 
             if (Boots)
@@ -1764,28 +1649,6 @@ namespace Stellamod
                 Player.GetDamage(DamageClass.Generic) += 250 / 1500f;
             }
 
-
-            if (ThreeTwoOneSmile && ThreeTwoOneSmileBCooldown > 1480)
-            {
-                Player.GetDamage(DamageClass.Generic) += PPPaintDMG;
-                Player.GetCritChance(DamageClass.Generic) = 100f;
-
-
-                if (PPPaintI)
-                {
-                    PPPaintDMG2 = 15;
-                }
-
-                if (PPPaintI && PPPaintII)
-                {
-                    PPPaintDMG2 = 50;
-                }
-
-                if (PPPaintI && PPPaintII && PPPaintIII)
-                {
-                    PPPaintDMG2 = 150;
-                }
-            }
 
             if (GovheilC && GovheilBCooldown > 300)
             {

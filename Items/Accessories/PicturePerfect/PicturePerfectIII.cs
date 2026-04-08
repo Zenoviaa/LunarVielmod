@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Stellamod.Content.Armors.Artisan;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -31,18 +32,18 @@ namespace Stellamod.Items.Accessories.PicturePerfect
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
 
-            Main.LocalPlayer.GetModPlayer<MyPlayer>().Cameraaa = true;
-            player.GetModPlayer<MyPlayer>().PPDMG = 20;
-            player.GetModPlayer<MyPlayer>().PPDefense = 25;
-            player.GetModPlayer<MyPlayer>().PPCrit = 15;
-            player.GetModPlayer<MyPlayer>().PPSpeed = 1f;
-            player.GetModPlayer<MyPlayer>().PPPaintI = true;
-            player.GetModPlayer<MyPlayer>().PPPaintII = true;
-            player.GetModPlayer<MyPlayer>().PPPaintIII = true;
-            player.GetModPlayer<MyPlayer>().PPPaintDMG = 1.75f;
-            player.GetModPlayer<MyPlayer>().PPPaintDMG2 = 50;
-            player.GetModPlayer<MyPlayer>().PPPaintTime = 240;
-            player.GetModPlayer<MyPlayer>().PPFrameTime = 8;
+            Main.LocalPlayer.GetModPlayer<ArtisanPlayer>().Cameraaa = true;
+            player.GetModPlayer<ArtisanPlayer>().PPDMG = 20;
+            player.GetModPlayer<ArtisanPlayer>().PPDefense = 25;
+            player.GetModPlayer<ArtisanPlayer>().PPCrit = 15;
+            player.GetModPlayer<ArtisanPlayer>().PPSpeed = 1f;
+            player.GetModPlayer<ArtisanPlayer>().PPPaintI = true;
+            player.GetModPlayer<ArtisanPlayer>().PPPaintII = true;
+            player.GetModPlayer<ArtisanPlayer>().PPPaintIII = true;
+            player.GetModPlayer<ArtisanPlayer>().PPPaintDMG = 1.75f;
+            player.GetModPlayer<ArtisanPlayer>().PPPaintDMG2 = 50;
+            player.GetModPlayer<ArtisanPlayer>().PPPaintTime = 240;
+            player.GetModPlayer<ArtisanPlayer>().PPFrameTime = 8;
         }
 
 

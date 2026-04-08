@@ -4135,9 +4135,6 @@ ArtisanBreastplate: {
 	Tooltip:
 		'''
 		Woa, dont forget to cover yourself up, don't want paint on your skin right?
-		+5% Damage
-		+5% Critical Strike Chance
-		+15 Health
 		Great for working in the arts :)
 		'''
 }
@@ -4146,10 +4143,6 @@ ArtisanMask: {
 	DisplayName: Artisan Mask
 	Tooltip:
 		'''
-		Jamming out while making sprites and art is one of the most fun activities ever.
-		+5% Damage
-		+5% Critical Strike Chance
-		+15 Health
 		You also look hot am I right?
 		'''
 }
@@ -4159,9 +4152,6 @@ ArtisanThighs: {
 	Tooltip:
 		'''
 		Shawty you better hide those thighs, someone is coming for you :(
-		+20% Increased Movement speed
-		+5% Damage
-		+15 Health
 		Skating on paint like splatoon!
 		'''
 }

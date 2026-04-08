@@ -34,25 +34,12 @@ namespace Stellamod.Projectiles
         public override void AI()
         {
 
-            Vector3 RGB = new(2.55f, 2.55f, 0.94f);
-            // The multiplication here wasn't doing anything
-            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
             Timer++;
             Player player = Main.player[Projectile.owner];
             if (player.noItems || player.CCed || player.dead || !player.active)
                 Projectile.Kill();
 
-            Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-            if (Main.myPlayer == Projectile.owner)
-            {
-                player.ChangeDir(Projectile.direction);
-                SwordRotation = (Main.MouseWorld - player.Center).ToRotation();
-                Projectile.netUpdate = true;
-            }
-
-            Projectile.velocity = SwordRotation.ToRotationVector2();
-            Projectile.Center = playerCenter + Projectile.velocity * 1f;// customization of the hitbox position			
-
+            Projectile.Center = Main.player[Projectile.owner].Center;
         }
 
         public override bool PreAI()
@@ -71,8 +58,12 @@ namespace Stellamod.Projectiles
 
 
 
-            int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, ModContent.DustType<PaintBlob2>(), 0f, 0f);
-            Main.dust[dust].scale = 1f;
+            if (Main.rand.NextBool(8))
+            {
+                int dust = Dust.NewDust(Projectile.position + Projectile.velocity, Projectile.width, Projectile.height, ModContent.DustType<PaintBlob2>(), 0f, 0f);
+                Main.dust[dust].scale = 1f;
+            }
+ 
             return true;
         }
 

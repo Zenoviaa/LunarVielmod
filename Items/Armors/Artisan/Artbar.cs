@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
+using Stellamod.Content.Armors.Artisan;
 using Stellamod.Dusts;
 using Terraria;
 using Terraria.ID;
@@ -106,7 +107,7 @@ namespace Stellamod.Items.Armors.Artisan
             // So it will lean slightly towards the direction it's moving
             Player player = Main.player[Projectile.owner];
             // This is a simple "loop through all frames from top to bottom" animation
-            int frameSpeed = 6 + player.GetModPlayer<MyPlayer>().PPFrameTime;
+            int frameSpeed = 6 + player.GetModPlayer<ArtisanPlayer>().PPFrameTime;
 
             Projectile.frameCounter++;
 
