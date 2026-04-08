@@ -106,7 +106,6 @@ namespace Stellamod.NPCs.Town
             NPC.Happiness
                 .SetBiomeAffection<ForestBiome>(AffectionLevel.Like) // Example Person prefers the forest.
                 .SetBiomeAffection<SnowBiome>(AffectionLevel.Dislike) // Example Person dislikes the snow.
-                .SetBiomeAffection<AcidBiome>(AffectionLevel.Love) // Example Person likes the Example Surface Biome
                 .SetNPCAffection(NPCID.Dryad, AffectionLevel.Love) // Loves living near the dryad.
                 .SetNPCAffection(NPCID.Guide, AffectionLevel.Like) // Likes living near the guide.
                 .SetNPCAffection(NPCID.Merchant, AffectionLevel.Dislike) // Dislikes living near the merchant.
