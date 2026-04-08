@@ -54,6 +54,20 @@ namespace Stellamod
         public override void Unload()
         {
             base.Unload();
+            _SizeSmallTexture = null;
+            _SizeMediumTexture = null;
+            _SizeLargeTexture = null;
+            _EvilRandomTexture = null;
+            _EvilCorruptionTexture = null;
+            _EvilCrimsonTexture = null;
+            _BunnyMasterTexture = null;
+            _BunnyExpertTexture = null;
+            _BunnyNormalTexture = null;
+            _BunnyCreativeTexture = null;
+            _BorderTexture = null;
+            _BackgroundNormalTexture = null;
+            _BackgroundExpertTexture = null;
+            _BackgroundMasterTexture = null;
             On_UIWorldCreationPreview.DrawSelf -= DrawWorldPreviewUI;
         }
 

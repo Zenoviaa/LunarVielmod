@@ -29,8 +29,6 @@ namespace Stellamod.Common.Shaders
             }
         }
 
-
-        public int Type { get; set; }
         public MiscShaderData Data => GameShaders.Misc[$"LunarVeil:{EffectPath}"];
         public Effect Effect => Data.Shader;
         public BlendState BlendState { get; set; } = BlendState.Additive;

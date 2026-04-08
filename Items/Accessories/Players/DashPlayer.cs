@@ -211,7 +211,7 @@ namespace Stellamod.Items.Accessories.Players
         public override void PreUpdateMovement()
         {
             // if the player can use our dash, has double tapped in a direction, and our dash isn't currently on cooldown
-            if (CanUseDash() && (LunarVeilKeybinds.DashKeybind.JustPressed || DoubleTapped) && DashDir != -1 && DashDelay == 0 && DashCount > 0 && Main.myPlayer == Player.whoAmI)
+            if (Main.myPlayer == Player.whoAmI && CanUseDash() && (LunarVeilKeybinds.DashKeybind.JustPressed || DoubleTapped) && DashDir != -1 && DashDelay == 0 && DashCount > 0)
             {
                 float dashVelocity = DashVelocity;
                 dashVelocity *= (1.0f + DashRegenerationBonus);

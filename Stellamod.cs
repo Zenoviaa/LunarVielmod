@@ -79,14 +79,10 @@ namespace Stellamod
                 DragonShardCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<DragonShard>(), 999L, "Dragon Shard"));
 
                 //----------------------------------------------- Shaders
-
-                Filters.Scene["Stellamod:Aurelus"] = new Filter(new AbyssScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.0f, 1f).UseOpacity(0.375f), EffectPriority.Medium);
-                Filters.Scene["Stellamod:AuroreanStars"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(1.3f, 0.2f, 0.2f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Illuria"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Marsh"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, 0f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
 
-
-                Ref<Effect> screenRef = new Ref<Effect>(ModContent.Request<Effect>("Stellamod/Effects/Shockwave", AssetRequestMode.ImmediateLoad).Value); // The path to the compiled shader file.
+                Asset<Effect> screenRef = ModContent.Request<Effect>("Stellamod/Effects/Shockwave"); // The path to the compiled shader file.
                 Filters.Scene["Shockwave"] = new Filter(new ScreenShaderData(screenRef, "Shockwave"), EffectPriority.VeryHigh);
                 Filters.Scene["Shockwave"].Load();
 
@@ -98,8 +94,7 @@ namespace Stellamod
                 SkyManager.Instance["Stellamod:WorldsEndSky"] = new WorldsEndSky();
                 SkyManager.Instance["Stellamod:WorldsEndSky"].Load();
 
-
-                Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
+                Asset<Effect> GenericLaserShader = Assets.Request<Effect>("Effects/LaserShader");
                 GameShaders.Misc["Stellamod:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");
             }
 

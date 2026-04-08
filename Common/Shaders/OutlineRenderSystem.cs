@@ -1,16 +1,42 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.Utilities;
-using System;
+﻿using Stellamod.Core.Utilities;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.GameContent.TextureAssets;
 
 namespace Stellamod.Common.Shaders
 {
+
+    public class NPCOutlineDrawer : GlobalNPC
+    {
+        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            OutlineRenderSystem renderSystem = ModContent.GetInstance<OutlineRenderSystem>();
+            if (renderSystem.canDrawNPCOutlines)
+            {
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone,
+                    SpriteWhiteShader.Instance.Effect, Main.GameViewMatrix.TransformationMatrix);
+
+                foreach (NPC otherNPC in Main.ActiveNPCs)
+                {
+                    if (otherNPC.ModNPC is IDrawOutlines outlines)
+                    {
+                        Point tile = npc.position.ToTileCoordinates();
+                        Color lightColor = Lighting.GetColor(tile.X, tile.Y);
+                        outlines.DrawOutlines(spriteBatch, Main.screenPosition, lightColor);
+                    }
+                }
+
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone,
+                    null, Main.GameViewMatrix.TransformationMatrix);
+                renderSystem.canDrawNPCOutlines = false;
+            }
+            return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
+        }
+    }
 
     [Autoload(Side = ModSide.Client)]
     public class OutlineRenderSystem : ModSystem
@@ -19,6 +45,7 @@ namespace Stellamod.Common.Shaders
         private List<Color> _lightColors;
         private ManagedRenderTarget _playerOutlineRenderRT;
         private Vector2 _previousScreenSize;
+        public bool canDrawNPCOutlines;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -40,6 +67,11 @@ namespace Stellamod.Common.Shaders
             _lightColors = null;
         }
 
+        public override void PreUpdateNPCs()
+        {
+            base.PreUpdateNPCs();
+            canDrawNPCOutlines = true;
+        }
         private void DrawToPlayerOutlineRT(On_Main.orig_CheckMonoliths orig)
         {
             if (OutlineAnyPlayers() && Main.netMode != NetmodeID.Server && !Main.gameMenu)
@@ -115,22 +147,12 @@ namespace Stellamod.Common.Shaders
         }
         private void DrawOutlines(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
-  
+
             _outlinesToDraw ??= new List<IDrawOutlines>();
             _lightColors ??= new List<Color>();
 
             _outlinesToDraw.Clear();
             _lightColors.Clear();
-            foreach (var npc in Main.ActiveNPCs)
-            {
-                if (npc.ModNPC is IDrawOutlines drawOutline)
-                {
-                    _outlinesToDraw.Add(drawOutline);
-                    Point tile = npc.position.ToTileCoordinates();
-                    Color lightColor = Lighting.GetColor(tile.X, tile.Y);
-                    _lightColors.Add(lightColor);
-                }
-            }
 
             foreach (var projectile in Main.ActiveProjectiles)
             {
@@ -161,7 +183,6 @@ namespace Stellamod.Common.Shaders
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone,
          null, Main.GameViewMatrix.TransformationMatrix);
-
             }
 
             orig(self, behindTiles);
