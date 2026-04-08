@@ -16,10 +16,10 @@ using Stellamod.Content.Armors.Staffigy;
 using Stellamod.Content.Armors.Terric;
 using Stellamod.Content.Armors.Verlian;
 using Stellamod.Content.Armors.Vextin;
+using Stellamod.Content.Armors.Virulent;
 using Stellamod.Content.Armors.Winterborn;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
-using Stellamod.Items.Armors.AcidArmour;
 using Stellamod.Items.Armors.Appretience;
 using Stellamod.Items.Armors.Artisan;
 using Stellamod.Items.Armors.Daeden;
@@ -200,7 +200,7 @@ namespace Stellamod.Common.ArmorShop
             Vir.AddHead(ModContent.ItemType<VirulentHelm>());
             Vir.AddBody(ModContent.ItemType<VirulentArmor>());
             Vir.AddLegs(ModContent.ItemType<VirulentLegs>());
-            Vir.SetMaterial(ModContent.ItemType<VirulentPlating>());
+            Vir.SetMaterial(ModContent.ItemType<MechanizedSoul>());
             Vir.Register();
 
 

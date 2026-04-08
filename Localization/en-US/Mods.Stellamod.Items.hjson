@@ -7943,21 +7943,17 @@ GintzelShield: {
 }
 
 VirulentHelm: {
-	Tooltip:
-		'''
-		5% increased damage
-		8% increased critical strike chance
-		'''
+	Tooltip: ""
 	DisplayName: Virulent Helm
 }
 
 VirulentArmor: {
-	Tooltip: Slightly increased life regeneration
+	Tooltip: ""
 	DisplayName: Virulent Armor
 }
 
 VirulentLegs: {
-	Tooltip: Slightly increased movement speed and acceleration
+	Tooltip: ""
 	DisplayName: Virulent Leg
 }
 

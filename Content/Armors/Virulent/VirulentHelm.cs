@@ -1,10 +1,13 @@
-﻿using Stellamod.Assets;
+using Stellamod.Assets;
+using Stellamod.Buffs;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Armors.Scrappy;
 using Stellamod.Core;
 using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
+using Stellamod.Items.Armors.AcidArmour;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -12,31 +15,9 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Armors.Scrappy;
+namespace Stellamod.Content.Armors.Virulent;
 
-public class ScrappyPlayer : ModPlayer
-{
-    public bool hasSetBonus;
-    public override void ResetEffects()
-    {
-        hasSetBonus = false;
-    }
-    public override void PostUpdateEquips()
-    {
-        base.PostUpdateEquips();
-        if (!hasSetBonus)
-            return;
-        if (Main.myPlayer != Player.whoAmI)
-            return;
-
-        if (Player.ownedProjectileCounts[ModContent.ProjectileType<ScrappyTurret>()] < 3)
-        {
-            Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
-                ModContent.ProjectileType<ScrappyTurret>(), 40, 4, Player.whoAmI);
-        }
-    }
-}
-public class ScrappyBullet : ScarletProjectile
+public class VirulentBullet : ScarletProjectile
 {
     private ref float Timer => ref Projectile.ai[0];
     public override string Texture => TextureRegistry.EmptyTexture;
@@ -61,15 +42,15 @@ public class ScrappyBullet : ScarletProjectile
             shootSound.Volume = 0.005f;
             SoundEngine.PlaySound(shootSound, Projectile.position);
 
-            FXUtil.GlowCircleBoom(Projectile.Center, Color.Red, Color.DarkRed, Color.Black);
-            for (float f = 0; f < 4; f++)
+            FXUtil.GlowCircleBoom(Projectile.Center, Color.Green, Color.DarkGreen, Color.Black);
+            for (float f = 0; f < 1; f++)
             {
                 Vector2 fireVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
                 fireVelocity = fireVelocity.RotatedByRandom(MathHelper.ToRadians(60));
                 fireVelocity *= Main.rand.NextFloat(3f, 8f);
 
                 DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
-                spawnParams.outerColor = Color.Red;
+                spawnParams.outerColor = Color.Green;
                 spawnParams.scaleRange *= 0.5f;
                 DustParticle.Spawn(Projectile.Center, fireVelocity, spawnParams);
             }
@@ -84,12 +65,12 @@ public class ScrappyBullet : ScarletProjectile
     private Color GetTrailColor(float completionRatio)
     {
         float osc = MathF.Sin(Main.GlobalTimeWrappedHourly * 4 + completionRatio * 8) * 0.5f + 0.5f;
-        return Color.Lerp(Color.White, Color.Red, osc);
+        return Color.Lerp(Color.White, Color.Green, osc);
     }
 
     private float GetTrailWidth(float completionRatio)
     {
-        return MathHelper.SmoothStep(5, 3, completionRatio);
+        return MathHelper.SmoothStep(3, 2, completionRatio);
     }
     public override bool PreDraw(ref Color lightColor)
     {
@@ -102,8 +83,8 @@ public class ScrappyBullet : ScarletProjectile
     {
         var shader = RichLaserShader.Instance;
         shader.LaserColor = Color.White;
-        shader.InnerColor = Color.Red;
-        shader.OuterColor = Color.DarkRed;
+        shader.InnerColor = Color.Green;
+        shader.OuterColor = Color.DarkGreen;
         shader.LaserTexture = AssetManager.LaserTextures.TexturedLaser;
         shader.BloomTexture = AssetManager.LaserTextures.TexturedLaser2;
         //This just applis the shader changes
@@ -117,7 +98,7 @@ public class ScrappyBullet : ScarletProjectile
         headDrawer.scale.Y *= 0.15f;
         headDrawer.scale.X *= 1;
         headDrawer.rotation = Projectile.rotation;
-        headDrawer.color = Color.Red;
+        headDrawer.color = Color.Green;
         headDrawer.color.A = 0;
         sb.Draw(headDrawer);
 
@@ -135,24 +116,25 @@ public class ScrappyBullet : ScarletProjectile
         {
             Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
             Dust.NewDustPerfect(Projectile.Center,
-                ModContent.DustType<GlowDust>(), velocity, newColor: Color.Red, Scale: Main.rand.NextFloat(0.5f, 2f));
+                ModContent.DustType<GlowDust>(), velocity, newColor: Color.Green, Scale: Main.rand.NextFloat(0.5f, 2f));
         }
-        for (float f = 0; f < 4; f++)
+        for (float f = 0; f < 2; f++)
         {
             Vector2 fireVelocity = -Projectile.oldVelocity.SafeNormalize(Vector2.Zero);
             fireVelocity = fireVelocity.RotatedByRandom(MathHelper.ToRadians(60));
             fireVelocity *= Main.rand.NextFloat(3f, 8f);
 
             DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
-            spawnParams.outerColor = Color.Red;
+            spawnParams.outerColor = Color.Green;
             spawnParams.scaleRange *= 0.5f;
             DustParticle.Spawn(Projectile.Center, fireVelocity, spawnParams);
         }
     }
 }
 
-public class ScrappyTurret : ModProjectile
+public class VirulentTurret : ModProjectile
 {
+    private Vector2 _fireOffset;
     private Player Owner => Main.player[Projectile.owner];
     private ref float Timer => ref Projectile.ai[0];
     private ref float RandOffset => ref Projectile.ai[1];
@@ -177,7 +159,7 @@ public class ScrappyTurret : ModProjectile
     public override void AI()
     {
         base.AI();
-        if (Owner.GetModPlayer<ScrappyPlayer>().hasSetBonus)
+        if (Owner.GetModPlayer<AcidPlayer>().hasSetBonus)
             Projectile.timeLeft = 3;
 
         float targetRotation = Projectile.velocity.X * 0.02f;
@@ -190,20 +172,16 @@ public class ScrappyTurret : ModProjectile
             if (Projectile.spriteDirection == -1)
                 targetRotation += MathHelper.Pi;
             Timer++;
-            if (Timer >= 65 + RandOffset)
+            if (Timer >= 15)
             {
-
+                _fireOffset = -fireDirection * 32;
                 Vector2 firePoint = Projectile.Center + fireDirection * 24;
                 var p = FXUtil.GlowCircleBoom(firePoint, Color.Yellow, Color.Red, Color.Black);
                 p.Scale *= 0.5f;
 
-                var sp = SmokeParticle.SpawnInAlphaLayer(firePoint, fireDirection * 8, Color.DarkGray);
-                sp.initialColor = Color.Lerp(Color.Red, Color.Black, 0.6f);
-                sp.fast = true;
-
                 MuzzleFlashParticle flashParticle = MuzzleFlashParticle.Spawn(firePoint, fireDirection, Color.Red);
                 flashParticle.innerColor = Color.Yellow;
-                flashParticle.bloomColor = Color.Red;
+                flashParticle.bloomColor = Color.Green;
                 flashParticle.Scale *= 0.25f;
 
                 for (float f = 0; f < 4; f++)
@@ -212,7 +190,7 @@ public class ScrappyTurret : ModProjectile
                     {
                         gravity = 0f,
                         innerColor = Color.Yellow,
-                        outerColor = Color.Red,
+                        outerColor = Color.Green,
                         scaleRange = new Vector2(0.3f, 1f)
                     };
                     var dp = DustParticle.Spawn(firePoint, (fireDirection * 8).RotatedByRandom(0.3f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
@@ -224,7 +202,7 @@ public class ScrappyTurret : ModProjectile
                     RandOffset = Main.rand.NextFloat(-10, 10f);
                     Projectile.netUpdate = true;
                     Projectile.NewProjectile(Projectile.GetSource_FromAI(), firePoint, fireDirection * 8,
-                        ModContent.ProjectileType<ScrappyBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                        ModContent.ProjectileType<VirulentBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
 
 
@@ -238,6 +216,7 @@ public class ScrappyTurret : ModProjectile
                 Timer = 0;
         }
 
+        _fireOffset *= 0.8f;
         OffsetTimer++;
         if (OffsetTimer == 1)
         {
@@ -251,9 +230,8 @@ public class ScrappyTurret : ModProjectile
         Projectile.spriteDirection = Projectile.velocity.X > 0 ? 1 : -1;
         Projectile.rotation = Utils.AngleLerp(Projectile.rotation, targetRotation, 0.3f);
 
-        int index = SummonHelper.GetProjectileIndex(Projectile);
-        Vector2 targetPosition = Owner.Center + new Vector2(0, -16 + RandOffset).RotatedBy(OffsetTimer * 0.2f);
-        targetPosition += new Vector2(0, 128).RotatedBy(index * 0.3f);
+        Vector2 targetPosition = Owner.Center + new Vector2(0, -16 + RandOffset);
+        targetPosition += new Vector2(0, 128);
         targetPosition.Y -= 200;
         Vector2 velocityToPlayer = (targetPosition - Projectile.Center);
         velocityToPlayer = velocityToPlayer.SafeNormalize(Vector2.Zero);
@@ -263,98 +241,146 @@ public class ScrappyTurret : ModProjectile
 
         float interp = dist / 384;
         interp = EasingFunction.InOutSine(interp);
-        float speed = MathHelper.Lerp(6, 20, interp);
+        float speed = MathHelper.Lerp(6, 50, interp);
 
         if (dist < speed)
             speed = dist;
         velocityToPlayer *= speed;
-        Projectile.velocity = Vector2.Lerp(Projectile.velocity, velocityToPlayer, 0.04f);
+        Projectile.velocity = velocityToPlayer;
     }
 
     public override bool PreDraw(ref Color lightColor)
     {
-        return base.PreDraw(ref lightColor);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
+        drawer.worldPosition += _fireOffset;
+        Main.spriteBatch.Draw(drawer);
+        return false;
+        //return base.PreDraw(ref lightColor);
+    }
+}
+
+public class AcidPlayer : ModPlayer
+{
+    /*
+     * Immunity to acid water contamination, 
+standing still gives you an acid aura that stays where you were when you leave The aura will deal damage to enemies for a certain amount of time
+    */
+
+    private int _acidTimer;
+    public bool hasSetBonus;
+
+    public override void ResetEffects()
+    {
+        hasSetBonus = false;
     }
 
+    public override void PostUpdateEquips()
+    {
+        if (!hasSetBonus)
+            return;
+
+        //Immunity to contamination
+        Player.ClearBuff(ModContent.BuffType<AcidFlame>());
+        Player.ClearBuff(ModContent.BuffType<Irradiation>());
+
+        //Standing still for the acid aura
+        if (Player.velocity == Vector2.Zero
+            && Player.ownedProjectileCounts[ModContent.ProjectileType<AcidAuraProj>()] == 0)
+        {
+            _acidTimer++;
+        }
+        else
+        {
+            _acidTimer = 0;
+        }
+
+        if (_acidTimer >= 30 && Player.whoAmI == Main.myPlayer)
+        {
+            int damage = 18;
+            Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+                ModContent.ProjectileType<AcidAuraProj>(), damage, 1, Player.whoAmI);
+            _acidTimer = 0;
+        }
+
+        if (Player.whoAmI == Main.myPlayer && Player.ownedProjectileCounts[ModContent.ProjectileType<VirulentTurret>()] < 1)
+        {
+            Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero,
+                ModContent.ProjectileType<VirulentTurret>(), 24, 4, Player.whoAmI);
+        }
+    }
 }
 
 [AutoloadEquip(EquipType.Head)]
-public class ScrappyHead : ModItem
+public class VirulentHelm : ModItem
 {
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        ArmorSetSystem.RegisterArmorSet<ScrappyHead, ScrappyBody, ScrappyLegs>();
+        ArmorSetSystem.RegisterArmorSet<VirulentHelm, VirulentArmor, VirulentLegs>();
     }
 
     public override void SetDefaults()
     {
-        Item.width = 26; // Width of the item
-        Item.height = 22; // Height of the item
-        Item.value = Item.sellPrice(gold: 5); // How many coins the item is worth
-        Item.rare = ItemRarityID.Lime; // The rarity of the item
+        Item.width = 40;
+        Item.height = 30;
+        Item.value = 10000;
+        Item.rare = ItemRarityID.Blue;
     }
 
     public override void UpdateEquip(Player player)
     {
         var stats = player.GetStats();
-        stats.accessorySlots += 1;
-        stats.insourceTimeFlatBonus += 4;
-        stats.defenseBonus += 2;
+        stats.rangedGunAmmoAmountPct += 1;
+        stats.defenseBonus += 5;
+        stats.accessorySlots++;
     }
 
     public override bool IsArmorSet(Item head, Item body, Item legs)
     {
-        return body.type == ModContent.ItemType<ScrappyBody>()
-            && legs.type == ModContent.ItemType<ScrappyLegs>();
+        return body.type == ModContent.ItemType<VirulentArmor>() && legs.type == ModContent.ItemType<VirulentLegs>();
     }
 
     public override void UpdateArmorSet(Player player)
     {
-        player.GetModPlayer<ScrappyPlayer>().hasSetBonus = true;
-
+        player.GetModPlayer<AcidPlayer>().hasSetBonus = true;
     }
 }
-
 
 [AutoloadEquip(EquipType.Body)]
-public class ScrappyBody : ModItem
+public class VirulentArmor : ModItem
 {
     public override void SetDefaults()
     {
-        Item.width = 34; // Width of the item
-        Item.height = 20; // Height of the item
-        Item.value = Item.sellPrice(gold: 6); // How many coins the item is worth
-        Item.rare = ItemRarityID.Lime; // The rarity of the item
-
+        Item.width = 28;
+        Item.height = 22;
+        Item.value = 80000;
+        Item.rare = ItemRarityID.Blue;
     }
 
     public override void UpdateEquip(Player player)
     {
         var stats = player.GetStats();
-        stats.mainSummonDamage += 0.1f;
-        stats.defenseBonus += 6;
-        stats.summonDamage += 0.4f;
+        stats.rangedDamage += 0.25f;
+        stats.defenseBonus += 9;
+        stats.accessorySlots += 2;
     }
-
-
 }
+
 [AutoloadEquip(EquipType.Legs)]
-public class ScrappyLegs : ModItem
+public class VirulentLegs : ModItem
 {
     public override void SetDefaults()
     {
-        Item.width = 22; // Width of the item
-        Item.height = 12; // Height of the item
-        Item.value = Item.sellPrice(gold: 5);
-        Item.rare = ItemRarityID.Lime;
+        Item.width = 28;
+        Item.height = 22;
+        Item.value = 10000;
+        Item.rare = ItemRarityID.Blue;
     }
 
     public override void UpdateEquip(Player player)
     {
         var stats = player.GetStats();
-        stats.minionSummonHealth += 1;
-        stats.defenseBonus += 2;
+        stats.defenseBonus += 6;
         stats.accessorySlots += 1;
     }
 }
