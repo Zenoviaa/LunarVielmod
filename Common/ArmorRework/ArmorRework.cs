@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -996,6 +997,105 @@ namespace Stellamod.Common.ArmorRework
 
     }
 
+    public class ManaReworkSystem : ModSystem
+    {
+        public override void Load()
+        {
+            base.Load();
+            On_Player.UpdateManaRegen += ManaRework;
+        }
+
+
+        public override void Unload()
+        {
+            base.Unload();
+            On_Player.UpdateManaRegen -= ManaRework;
+        }
+        private void ManaRework(On_Player.orig_UpdateManaRegen orig, Player self)
+        {
+            if (self.nebulaLevelMana > 0)
+            {
+                int num = 6;
+                self.nebulaManaCounter += self.nebulaLevelMana;
+                if (self.nebulaManaCounter >= num)
+                {
+                    self.nebulaManaCounter -= num;
+                    self.statMana++;
+                    if (self.statMana >= self.statManaMax2)
+                        self.statMana = self.statManaMax2;
+                }
+            }
+            else
+            {
+                self.nebulaManaCounter = 0;
+            }
+
+            if (self.manaRegenDelay > 0f)
+            {
+                self.manaRegenDelay -= 1f;
+                self.manaRegenDelay -= self.manaRegenDelayBonus;
+            }
+     
+            /*
+            if (manaRegenBuff && manaRegenDelay > 20f)
+                manaRegenDelay = 20f;
+            */
+            if (self.manaRegenDelay <= 0f)
+            {
+                self.manaRegenDelay = 0f;
+                self.manaRegen = 30 + self.manaRegenBonus;
+                /*
+                self.manaRegen = statManaMax2 / 3 + 1 + manaRegenBonus;
+
+                if (IsStandingStillForSpecialEffects || grappling[0] >= 0 || manaRegenBuff)
+                  manaRegen += statManaMax2 / 3;
+
+                if (usedArcaneCrystal)
+                    manaRegen += statManaMax2 / 50;
+           
+                float num2 = (float)statMana / (float)statManaMax2 * 0.8f + 0.2f;
+             
+                if (manaRegenBuff)
+                    num2 = 1f;
+           
+                self.manaRegen = (int)((double)((float)self.manaRegen * num2) * 1.15);*/
+            }
+            else
+            {
+                self.manaRegen = 0;
+            }
+
+            self.manaRegenCount += self.manaRegen;
+            while (self.manaRegenCount >= 120)
+            {
+                bool flag = false;
+                self.manaRegenCount -= 120;
+                if (self.statMana < self.statManaMax2)
+                {
+                    self.statMana++;
+                    flag = true;
+                }
+
+                if (self.statMana < self.statManaMax2)
+                    continue;
+
+                if (self.whoAmI == Main.myPlayer && flag)
+                {
+                    SoundEngine.PlaySound(SoundID.MaxMana);
+                    for (int i = 0; i < 5; i++)
+                    {
+                        int num3 = Dust.NewDust(self.position, self.width, self.height, 45, 0f, 0f, 255, default(Color), (float)Main.rand.Next(20, 26) * 0.1f);
+                        Main.dust[num3].noLight = true;
+                        Main.dust[num3].noGravity = true;
+                        Main.dust[num3].velocity *= 0.5f;
+                    }
+                }
+
+                self.statMana = self.statManaMax2;
+            }
+        }
+
+    }
     public class ArmorStatsPlayer : ModPlayer
     {
         //Textures

@@ -6,7 +6,6 @@ using Stellamod.Core.ToolsSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Runes;
-using Stellamod.Items.Armors.Alsis;
 using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Consumables;
@@ -952,18 +951,6 @@ namespace Stellamod
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * 0f, ModContent.ProjectileType<LightBomb>(), 30, 1f, Player.whoAmI);
 
             }
-
-
-            if (MasteryMagic && MasteryMagicBCooldown <= 0)
-            {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Player.velocity * -1f, ModContent.ProjectileType<MasteryofMagic>(), 0, 1f, Player.whoAmI);
-
-                Player.AddBuff(ModContent.BuffType<MasteryMagic>(), 1000);
-                MasteryMagicBCooldown = 1000;
-            }
-
-
-
 
 
 

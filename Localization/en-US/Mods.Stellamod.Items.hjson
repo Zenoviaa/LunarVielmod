@@ -3853,31 +3853,17 @@ DarkWhip: {
 
 AlsisChestplate: {
 	DisplayName: Alsis Chestplate
-	Tooltip:
-		'''
-		-25 Health
-		+5% Magic Critical Strike Chance
-		-5% Magic Damage
-		'''
+	Tooltip: ""
 }
 
 AlsisGreaves: {
 	DisplayName: Alsis Greaves
-	Tooltip:
-		'''
-		-10 Health
-		Supa Speed
-		'''
+	Tooltip: ""
 }
 
 AlsisMask: {
 	DisplayName: Alsis Mask
-	Tooltip:
-		'''
-		-10 Health
-		+1% Magic Critical Strike Chance
-		-5% Magic Damage
-		'''
+	Tooltip: ""
 }
 
 WickofSorcery: {

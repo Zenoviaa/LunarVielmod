@@ -83,6 +83,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
             Projectile.maxPenetrate = 1;
+            Projectile.arrow = true;
         }
 
         public override void AI()

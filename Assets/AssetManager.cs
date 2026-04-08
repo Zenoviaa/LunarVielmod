@@ -29,6 +29,7 @@ namespace Stellamod.Assets
             public static Asset<Texture2D> GradientPillar;
             public static Asset<Texture2D> MuzzleFlash;
             public static Asset<Texture2D> Shine;
+            public static Asset<Texture2D> AlsisMagicCircle;
             public static Asset<Texture2D> MagicCircle;
             public static Asset<Texture2D> MagicCircle2;
             public static Asset<Texture2D> MagicBloodCircle;
@@ -73,6 +74,7 @@ namespace Stellamod.Assets
             GlowMask.GradientPillar = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/GradientPillar");
             GlowMask.MuzzleFlash = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MuzzleFlash");
             GlowMask.Shine = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Shine");
+            GlowMask.AlsisMagicCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/AlsisMagicCircle");
             GlowMask.MagicCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MagicCircle1");
             GlowMask.MagicCircle2 = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MagicCircle2");
             GlowMask.MagicBloodCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/MagicBloodCircle");
@@ -100,6 +102,7 @@ namespace Stellamod.Assets
         {
             base.OnModUnload();
             //Set to null otherwise we'll have a memory leak
+            GlowMask.AlsisMagicCircle = null;
             GlowMask.Spotlight = null;
             GlowMask.RomanceGlowSwordMedium = null;
             GlowMask.RomanceGlowSwordSmall = null;

@@ -343,6 +343,7 @@ namespace Stellamod.Core.Bases
             Asset<Texture2D> magicCircleTextureAsset = crossbowPlayer.magicCircleTextureAsset;
             if(magicCircleTextureAsset != null)
             {
+                ring1Scale *= crossbowPlayer.magicCircleScale;
                 DrawRingInner(magicCircleTextureAsset, crossbowPlayer.magicCircleColor, ring1Scale, Color.White, Vector2.Lerp(Vector2.Zero, Projectile.velocity.SafeNormalize(Vector2.Zero) * 48, ease), perspectiveRotation);
 
             }

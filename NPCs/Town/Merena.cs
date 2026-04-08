@@ -1,6 +1,6 @@
-﻿using Stellamod.Core;
+﻿using Stellamod.Content.Armors.Alsis;
+using Stellamod.Core;
 using Stellamod.Helpers;
-using Stellamod.Items.Armors.Alsis;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Weapons.Mage;
 using System.Collections.Generic;

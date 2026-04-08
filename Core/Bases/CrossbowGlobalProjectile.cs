@@ -51,6 +51,7 @@ namespace Stellamod.Core.Bases
             if (!CrossbowShot)
                 return;
 
+            projectile.arrow = true;
             Player owner = Main.player[projectile.owner];
             LeatherPlayer leatherPlayer = owner.GetModPlayer<LeatherPlayer>();
      

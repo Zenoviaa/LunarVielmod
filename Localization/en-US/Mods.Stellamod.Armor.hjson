@@ -1,3 +1,10 @@
+AlsisMask: {
+	Log: Act III Ranged armor
+	Type: Ranged
+	Lore: Verlia personally made this armor for Fenix as a gift for her 21st birthday before Verlia got put to trial, it was never given and it was sold by the army to Zui for money.
+	SetBonus: As long as you have mana, each of your bow and bullets now have magic over them, bullets use 5 mana, while arrows use 20 mana, until your mana bar drains, your shots 3x damage and explode! When you run out of mana, you must return to full to regain this ability
+}
+
 HarpyHead: {
 	Log: Act II Resource armor
 	Type: Resource
