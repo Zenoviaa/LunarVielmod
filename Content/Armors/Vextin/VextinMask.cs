@@ -175,7 +175,7 @@ namespace Stellamod.Content.Armors.Vextin
             ArmorStatsPlayer stats = player.GetModPlayer<ArmorStatsPlayer>();
             stats.defenseBonus += 6;
             stats.accessorySlots += 1;
-            stats.generalEndurance += 0.09f;
+            stats.enemyEndurance += 0.25f;
         }
     }
 
