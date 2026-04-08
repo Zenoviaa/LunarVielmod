@@ -1,3 +1,10 @@
+RadianthalHead: {
+	Log: Act II Melee stacking armor
+	Type: Melee
+	Lore: Heavenly almost, this armor was requested by Zui for some of her front-lining mages for battle in her academy. Made from the radiant nectar, this armor is drenched in magic.
+	SetBonus: As you hit an enemy with a melee attack, your next attack will become slower by 10%, but gain an additional +20% damage each hit, this stacking wears off when you miss. Each hit also explodes with radiant glow when it starts stacking
+}
+
 GovheilMask: {
 	Log: Act II Mage Wand armor
 	Type: Magic

@@ -10659,3 +10659,18 @@ SubWand: {
 	DisplayName: Sub Wand
 	Tooltip: ""
 }
+
+RadianthalBody: {
+	DisplayName: Radianthal Body
+	Tooltip: ""
+}
+
+RadianthalHead: {
+	DisplayName: Radianthal Head
+	Tooltip: ""
+}
+
+RadianthalLegs: {
+	DisplayName: Radianthal Legs
+	Tooltip: ""
+}
