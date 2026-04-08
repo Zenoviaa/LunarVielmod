@@ -250,12 +250,12 @@ public class VeliozaPlayer : ModPlayer
         shader.Time = time;
         shader.Tiling = Vector2.One * 0.1f;
         spriteBatch.Restart(effect: shader.Effect);
-        for (float f = 0; f < 4; f++)
+        for (float f = 0; f < 8; f++)
         {
             Color glowColor = Color.Lerp(drawColor, drawColor2, (f + 1) / 3f);
          //   glowColor *= 0.4f;
             glowColor.A = 0;
-            float rotOffset = (f / 4f) * MathHelper.TwoPi;
+            float rotOffset = (f / 8) * MathHelper.TwoPi;
             rotOffset += Main.GlobalTimeWrappedHourly * 0.4f;
             spriteBatch.Draw(texture, drawCenter, null, glowColor, rotOffset + 0.5f, drawOrigin,
                 new Vector2(0.8f, 1f) * 0.25f * 0.75f * scale, SpriteEffects.None, 0);
