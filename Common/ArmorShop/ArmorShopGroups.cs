@@ -236,8 +236,8 @@ namespace Stellamod.Common.ArmorShop
             ArmorShopSet Gov2 = new ArmorShopSet();
             Gov2.AddHead(ModContent.ItemType<GovheilMask>());
             Gov2.AddBody(ModContent.ItemType<GovheilBreastplate>());
-            Gov2.AddLegs(ModContent.ItemType<GovheilThighs>());
-            Gov2.SetMaterial(ItemID.HallowedBar);
+            Gov2.AddLegs(ModContent.ItemType<GovheilQueenThighs>());
+            Gov2.SetMaterial(ModContent.ItemType<MarshScrap>());
             Gov2.Register();
 
 
