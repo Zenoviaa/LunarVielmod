@@ -1,14 +1,8 @@
 ﻿using Stellamod.Common.ArmorRework;
-using Stellamod.Content.Armors.ShadeWraith;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
@@ -40,7 +34,7 @@ public class MildCurse : ModBuff
         npc.velocity *= 0.8f;
         if (Main.rand.NextBool(3))
         {
-            SmokeParticle sp = Particle<SmokeParticle>.Spawn(npc.position + new Vector2(Main.rand.Next(0, npc.width), 
+            SmokeParticle sp = Particle<SmokeParticle>.Spawn(npc.position + new Vector2(Main.rand.Next(0, npc.width),
                 Main.rand.Next(0, npc.height)), -Vector2.UnitY, Color.Gold, Main.rand.NextFloat(0.9f, 1.5f));
             sp.initialColor = Color.Lerp(Color.DarkGoldenrod, Color.Violet, Main.rand.NextFloat(0f, 1f)) * 0.4f;
             sp.expand = true;
@@ -55,7 +49,7 @@ public class MildCurse : ModBuff
     }
 }
 
-public class VeldrinPlayer : ModPlayer 
+public class VeldrinPlayer : ModPlayer
 {
     public bool hasSetBonus;
     public override void ResetEffects()
@@ -154,7 +148,7 @@ public class VeldrinBody : ModItem
         stats.defenseBonus += 5;
         stats.rangedDamage += 0.2f;
         stats.stamina += 2;
-        stats.accessorySlots+=2;
+        stats.accessorySlots += 2;
     }
 }
 [AutoloadEquip(EquipType.Legs)]

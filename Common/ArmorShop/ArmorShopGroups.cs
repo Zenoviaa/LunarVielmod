@@ -4,6 +4,7 @@ using Stellamod.Content.Armors.Celestia;
 using Stellamod.Content.Armors.Elegant;
 using Stellamod.Content.Armors.Fishy;
 using Stellamod.Content.Armors.ForestCore;
+using Stellamod.Content.Armors.GovheilKing;
 using Stellamod.Content.Armors.HeavyMetal;
 using Stellamod.Content.Armors.Huntrian;
 using Stellamod.Content.Armors.Leather;
@@ -227,7 +228,7 @@ namespace Stellamod.Common.ArmorShop
             Gov1.AddHead(ModContent.ItemType<GovheilHelmet>());
             Gov1.AddBody(ModContent.ItemType<GovheilChainplate>());
             Gov1.AddLegs(ModContent.ItemType<GovheilThighs>());
-            Gov1.SetMaterial(ItemID.HallowedBar);
+            Gov1.SetMaterial(ModContent.ItemType<MarshScrap>());
             Gov1.Register();
 
 

@@ -53,6 +53,7 @@ namespace Stellamod.Content.Armors.Elegant
         {
             base.Unload();
             FlaskPlayer.OnProc -= ApplyImmunity;
+            _featherTextureAsset = null;
         }
 
         public override void PostUpdateEquips()

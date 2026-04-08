@@ -1,4 +1,5 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Content.Armors.GovheilKing;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
