@@ -1,3 +1,10 @@
+VeliozaHead: {
+	Log: Act II Life armor
+	Type: Life/Movement
+	Lore: Armor made to represent the ever-so-attained form of a perfect body; a true warrior that can identify the art of the human physique decorated in the highest of fashion of one' s self. Sanguimi represents this perfectly.
+	SetBonus: An aura appears around your character, and when something gets within it, you start draining their life. Attacking something in this circle also increases your attack speed each hit, and if nothing is in the circle, you slow down at a constant rate back to normal
+}
+
 RadianthalHead: {
 	Log: Act II Melee stacking armor
 	Type: Melee

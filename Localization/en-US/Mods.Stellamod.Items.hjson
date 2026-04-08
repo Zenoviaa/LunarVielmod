@@ -10674,3 +10674,18 @@ RadianthalLegs: {
 	DisplayName: Radianthal Legs
 	Tooltip: ""
 }
+
+VeliozaBody: {
+	DisplayName: Velioza Body
+	Tooltip: ""
+}
+
+VeliozaHead: {
+	DisplayName: Velioza Head
+	Tooltip: ""
+}
+
+VeliozaLegs: {
+	DisplayName: Velioza Legs
+	Tooltip: ""
+}

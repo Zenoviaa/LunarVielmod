@@ -24,7 +24,7 @@ namespace Stellamod.Core.SwingSystem
         {
             base.ResetEffects();
             isSwinging = false;
-            comboWaitTime = 30;
+            comboWaitTime = 65;
             MaxStamina = 3;
             useStaminaThisFrame = false;
         }
@@ -51,7 +51,7 @@ namespace Stellamod.Core.SwingSystem
                 OldHeldItem = Player.HeldItem.type;
             }
 
-            if (isSwinging)
+            if (Player.itemTime <= 0)
             {
                 _comboWaitTimer = 0;
                 return;
@@ -62,6 +62,7 @@ namespace Stellamod.Core.SwingSystem
             {
                 Player.GetModPlayer<DeadRomancePlayer>().attackSpeedStacks = 0;
                 ResetCombo();
+                //Main.NewText("Reset");
             }
         }
         public void ResetProgress()

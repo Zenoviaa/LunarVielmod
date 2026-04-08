@@ -1127,3 +1127,8 @@ GovheilProtection: {
 	DisplayName: Govheil Protection
 	Description: Mods.Stellamod.Buffs.GovheilProtection.Description
 }
+
+VeliozaLifeDrain: {
+	DisplayName: Velioza Life Drain
+	Description: Mods.Stellamod.Buffs.VeliozaLifeDrain.Description
+}
