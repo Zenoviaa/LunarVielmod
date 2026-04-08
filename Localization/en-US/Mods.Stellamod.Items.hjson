@@ -10689,3 +10689,18 @@ VeliozaLegs: {
 	DisplayName: Velioza Legs
 	Tooltip: ""
 }
+
+HarpyBody: {
+	DisplayName: Harpy Body
+	Tooltip: ""
+}
+
+HarpyHead: {
+	DisplayName: Harpy Head
+	Tooltip: ""
+}
+
+HarpyLegs: {
+	DisplayName: Harpy Legs
+	Tooltip: ""
+}

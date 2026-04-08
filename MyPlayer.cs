@@ -5,10 +5,8 @@ using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Core.ToolsSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.PicturePerfect;
 using Stellamod.Items.Accessories.Runes;
 using Stellamod.Items.Armors.Alsis;
-using Stellamod.Items.Armors.Artisan;
 using Stellamod.Items.Armors.Ducanblitz;
 using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Consumables;
@@ -16,8 +14,6 @@ using Stellamod.Items.Special.Sirestias;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.Fenix;
 using Stellamod.NPCs.Bosses.Verlia;
-using Stellamod.Projectiles;
-using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Swords;
 using System.Collections.Generic;
 using Terraria;
@@ -726,7 +722,7 @@ namespace Stellamod
             {
                 HMArmorTime = 0;
                 HMArmor = false;
-     
+
                 Dead = false;
 
             }
@@ -1044,7 +1040,7 @@ namespace Stellamod
 
             }
 
-        
+
 
 
             if (Boots)

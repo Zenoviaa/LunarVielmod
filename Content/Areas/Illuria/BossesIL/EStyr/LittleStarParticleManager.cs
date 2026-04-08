@@ -85,6 +85,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         public readonly int ParticleCount;
         public readonly int TrailLength;
+        public bool wideOnly;
         public float xOvalRadius;
         public float yOvalRadius;
         public Vector3 rotationAxis;
@@ -117,6 +118,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (index > ParticleCount / 2)
             {
                 x *= 3;
+                if (wideOnly)
+                    x *= 4;
             }
             if (index < ParticleCount / 32)
             {
@@ -129,6 +132,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (topOnly)
                 maxY *=0.5f;
             float yRadius = ExtraMath.Osc(-150f, 0f, 1, off) + ExtraMath.Osc(minY, maxY, 0f, offset: off);
+
             yRadius *= scale;
             Vector3 initialPosition = new Vector3(xRadius, yRadius / 2f, yRadius);
 

@@ -9,9 +9,12 @@
 		<Platforms>AnyCPU;x64;x86</Platforms>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Folder Include="Items\Armors\Huntrian\" />
-	  <Folder Include="Items\Armors\Scrappy\" />
-	  <Folder Include="Items\Armors\Staffigy\" />
+	  <AdditionalFiles Remove="Items\Armors\Huntrian\**" />
+	  <Compile Remove="Items\Armors\Huntrian\**" />
+	  <EmbeddedResource Remove="Items\Armors\Huntrian\**" />
+	  <None Remove="Items\Armors\Huntrian\**" />
+	</ItemGroup>
+	<ItemGroup>
 	  <Folder Include="Items\Weapons\Melee\Knives\" />
 	  <Folder Include="Items\Weapons\Ranged\Balls\" />
 	  <Folder Include="Projectiles\Summons\Sentries\" />

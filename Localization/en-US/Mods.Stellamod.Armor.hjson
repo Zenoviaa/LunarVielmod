@@ -1,3 +1,10 @@
+HarpyHead: {
+	Log: Act II Resource armor
+	Type: Resource
+	Lore: Indeed someone who flies around all the time, never thinks to not fly...
+	SetBonus: Flying creates a tornado that repels enemies and makes them slower as they reach you, as well as projectiles, your flying acceleration and flight time are increased by 45%.
+}
+
 VeliozaHead: {
 	Log: Act II Life armor
 	Type: Life/Movement
