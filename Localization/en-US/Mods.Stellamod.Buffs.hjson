@@ -1122,3 +1122,8 @@ MildCurse: {
 	DisplayName: Mild Curse
 	Description: Mods.Stellamod.Buffs.MildCurse.Description
 }
+
+GovheilProtection: {
+	DisplayName: Govheil Protection
+	Description: Mods.Stellamod.Buffs.GovheilProtection.Description
+}

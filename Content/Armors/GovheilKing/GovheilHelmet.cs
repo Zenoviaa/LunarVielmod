@@ -79,6 +79,9 @@ public class GovheilKingPlayer : ModPlayer
         base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
         if (drawInfo.shadow != 0f)
             return;
+        if (!hasSetBonus)
+            return;
+
 
         _crownTextureAsset ??= ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "GovheilCrown");
         Vector2 drawCenter = drawInfo.drawPlayer.Center + new Vector2(0, -64) + Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 4, ExtraMath.Osc(0f, 1f));

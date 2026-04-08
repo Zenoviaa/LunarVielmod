@@ -263,13 +263,7 @@ SetBonus: {
 		Grants immunity to knockback!
 		+2 Summons
 		'''
-	GovheilHelmet:
-		'''
-		Enemies are less likely to target you!
-		Govheil blades will come to defend you!
-		Every few seconds you'll gain a major increase to Magic and Summon damage
-		+2 Summons!
-		'''
+	GovheilHelmet: ""
 	GovheilMask:
 		'''
 		Enemies are less likely to target you!
@@ -1684,56 +1678,27 @@ AuroranSeeker: {
 
 GovheilMask: {
 	DisplayName: Govheil Mask
-	Tooltip:
-		'''
-		8% Increased Magic and Summon damage!
-		+10 Mana
-		+12% Crit strike change
-		I've heard rumors that the flower gives a special affection bonus..
-		'''
+	Tooltip: ""
 }
 
 GovheilHelmet: {
-	Tooltip:
-		'''
-		12% Increased Ranged and Melee damage!
-		Autoswing capabilities
-		+10% Crit strike change
-		You wanna be cool huh?
-		'''
+	Tooltip: ""
 	DisplayName: Govheil Helmet
 }
 
 GovheilChainplate: {
-	Tooltip:
-		'''
-		12% Increased Ranged and Melee damage!
-		+50 Life
-		Gain effects of a magic quiver!
-		'''
+	Tooltip: ""
 	DisplayName: Govheil Chainplate
 }
 
 GovheilBreastplate: {
-	Tooltip:
-		'''
-		6% Increased Magic and Summon damage!
-		+50 Mana
-		+10 Life!
-		+1 Summon
-		'''
+	Tooltip: ""
 	DisplayName: Govheil Breastplate
 }
 
 GovheilThighs: {
 	DisplayName: Govheil Thighs
-	Tooltip:
-		'''
-		7% Increased Movement speed
-		+5% Damage
-		+10 Armor Penetration
-		Mega thicc!
-		'''
+	Tooltip: ""
 }
 
 XexterianLeggings: {
@@ -5861,31 +5826,17 @@ FocusingCrystal: {
 
 ScrappyLegs: {
 	DisplayName: Scrappy Legs
-	Tooltip:
-		'''
-		Increased movement speed
-		Increases max minions by 1
-		'''
+	Tooltip: ""
 }
 
 ScrappyHead: {
-	DisplayName: Scrappy Head
-	Tooltip:
-		'''
-		8% increased summon and magic damage
-		4% increased damage reduction
-		Increases max minions by 1
-		'''
+	DisplayName: Scrappy Visor
+	Tooltip: ""
 }
 
 ScrappyBody: {
-	DisplayName: Scrappy Body
-	Tooltip:
-		'''
-		10% increased summon and magic damage
-		8% increased damage reduction
-		Increases max minions by 2
-		'''
+	DisplayName: Scrappy Vest
+	Tooltip: ""
 }
 
 MagiciansCodeHat: {

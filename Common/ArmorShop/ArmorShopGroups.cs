@@ -10,6 +10,7 @@ using Stellamod.Content.Armors.Huntrian;
 using Stellamod.Content.Armors.Leather;
 using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Content.Armors.LunarianVoid;
+using Stellamod.Content.Armors.Scrappy;
 using Stellamod.Content.Armors.ShadeWraith;
 using Stellamod.Content.Armors.Staffigy;
 using Stellamod.Content.Armors.Terric;
@@ -29,7 +30,6 @@ using Stellamod.Items.Armors.Garbage;
 using Stellamod.Items.Armors.Govheil;
 using Stellamod.Items.Armors.Illurian;
 using Stellamod.Items.Armors.Jianxin;
-using Stellamod.Items.Armors.Scrappy;
 using Stellamod.Items.Armors.Ulven;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;
@@ -220,7 +220,7 @@ namespace Stellamod.Common.ArmorShop
             SCP.AddHead(ModContent.ItemType<ScrappyHead>());
             SCP.AddBody(ModContent.ItemType<ScrappyBody>());
             SCP.AddLegs(ModContent.ItemType<ScrappyLegs>());
-            SCP.SetMaterial(ItemID.HallowedBar);
+            SCP.SetMaterial(ModContent.ItemType<MechanizedSoul>());
             SCP.Register();
 
             //Govheil done
@@ -294,14 +294,6 @@ namespace Stellamod.Common.ArmorShop
             rad1.AddLegs(ModContent.ItemType<FlowerPants>());
             rad1.SetMaterial(ModContent.ItemType<RadianuiBar>());
             rad1.Register();
-
-            //radianui2
-            ArmorShopSet rad2 = new ArmorShopSet();
-            rad2.AddHead(ModContent.ItemType<GarbageMask>());
-            rad2.AddBody(ModContent.ItemType<GarbageChestplate>());
-            rad2.AddLegs(ModContent.ItemType<GarbagePants>());
-            rad2.SetMaterial(ModContent.ItemType<RadianuiBar>());
-            rad2.Register();
 
             //---------- Post ml
 
