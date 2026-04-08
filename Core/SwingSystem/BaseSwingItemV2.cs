@@ -65,7 +65,6 @@ namespace Stellamod.Core.SwingSystem
     public abstract class BaseSwingItemV2 : ModItem,
         IStaminaAttack
     {
-        public int comboResetTime = 120;
         public int staminaProjectileShoot;
         public int staminaCost = 2;
         public float staminaDamageMultiplier;
@@ -110,7 +109,6 @@ namespace Stellamod.Core.SwingSystem
             Item.knockBack = 6;
             Item.rare = ItemRarityID.Blue;
             Item.shootSpeed = 10;
-            comboResetTime = 120;
             staminaDamageMultiplier = 1;
             SetDefaults2();
         }
@@ -123,8 +121,6 @@ namespace Stellamod.Core.SwingSystem
         public virtual void ShootSwing(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
-            comboPlayer.ComboWaitTime = comboResetTime;
-
             int combo = comboPlayer.ComboCounter;
             int dir = comboPlayer.ComboDirection;
             Projectile p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback,
@@ -179,7 +175,6 @@ namespace Stellamod.Core.SwingSystem
             {
                 if (dashPlayer.CanConsume(staminaCost))
                 {
-                    comboPlayer.ComboWaitTime = comboResetTime;
                     dashPlayer.Consume(staminaCost);
                     ShootSwingStamina(player, source, position, velocity, staminaProjectileShoot, damage, knockback);
                 }

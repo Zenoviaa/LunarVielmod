@@ -6,7 +6,6 @@ using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.UI.ResourceSets;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Special.DeadRomancesExcalibur;
@@ -21,13 +20,12 @@ public class DeadRomancesExcalibur : BaseSwingItemV2
         staminaProjectileShoot = ModContent.ProjectileType<DeadRomanceParryingBlade>();
         staminaCost = 2;
         staminaDamageMultiplier = 2;
-        comboResetTime = 60;
         meleeWeaponType = MeleeWeaponType.Greatsword;
 
     }
     public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
     {
-        
+
         if (Main.LocalPlayer.HasBuff<HeavenlyLove>())
         {
             Asset<Texture2D> glowingSwordTextureAsset = ModContent.Request<Texture2D>(Texture + "_Ascended");

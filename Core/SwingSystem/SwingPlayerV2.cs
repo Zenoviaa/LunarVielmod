@@ -1,4 +1,5 @@
 ﻿using Stellamod.Content.Special.DeadRomancesExcalibur;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -8,7 +9,7 @@ namespace Stellamod.Core.SwingSystem
     {
         private int _comboWaitTimer;
         public int ComboCounter;
-        public int ComboWaitTime;
+        public int comboWaitTime;
         public int ComboDirection = 1;
         public int Stamina;
         public int StaminaComboCounter;
@@ -18,9 +19,12 @@ namespace Stellamod.Core.SwingSystem
         public bool useStaminaThisFrame;
         public int MaxCombo;
         public int OldHeldItem;
+        public bool isSwinging;
         public override void ResetEffects()
         {
             base.ResetEffects();
+            isSwinging = false;
+            comboWaitTime = 30;
             MaxStamina = 3;
             useStaminaThisFrame = false;
         }
@@ -46,9 +50,15 @@ namespace Stellamod.Core.SwingSystem
                 ComboCounter = 0;
                 OldHeldItem = Player.HeldItem.type;
             }
-           
+
+            if (isSwinging)
+            {
+                _comboWaitTimer = 0;
+                return;
+            }
+
             _comboWaitTimer++;
-            if (_comboWaitTimer >= ComboWaitTime)
+            if (_comboWaitTimer >= comboWaitTime)
             {
                 Player.GetModPlayer<DeadRomancePlayer>().attackSpeedStacks = 0;
                 ResetCombo();

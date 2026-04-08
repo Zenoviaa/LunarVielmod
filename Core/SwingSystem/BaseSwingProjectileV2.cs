@@ -337,6 +337,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
         }
 
+        Owner.GetModPlayer<SwingPlayerV2>().isSwinging = true;
         Owner.itemRotation = rotation * Owner.direction;
         Owner.itemTime = 2;
         Owner.itemAnimation = 2;
