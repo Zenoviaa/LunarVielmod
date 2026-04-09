@@ -108,6 +108,28 @@ public abstract class BaseCrossbowItem : ModItem,
             player.whoAmI);
     }
 
+    public void BowShot(Player player, EntitySource_ItemUse_WithAmmo source,
+        ShootParams shootParams)
+    {
+        CrossbowPlayer crossbowPlayer = player.GetModPlayer<CrossbowPlayer>();
+        if (crossbowPlayer.countShots)
+        {
+            crossbowPlayer.shotCount++;
+            if(crossbowPlayer.shotCount % 3 == 0)
+            {
+                shootParams.damage *= 5;
+                shootParams.velocity *= 1.5f;
+                shootParams.speed *= 1.5f;
+                crossbowPlayer.gothinEnchant++;
+            } else
+            {
+   
+            }
+        }
+
+        ShootBow(player, source, shootParams);
+    }
+
     public virtual void ShootBow(Player player, EntitySource_ItemUse_WithAmmo source,
         ShootParams shootParams)
     {

@@ -246,14 +246,15 @@ namespace Stellamod.Core.Bases
                     };
                     var source = new Terraria.DataStructures.EntitySource_ItemUse_WithAmmo(Owner, Owner.HeldItem, usedAmmoItemId);
                  
+                
                     if (IsUsingStamina())
                     {
                         cb.StaminaShootBow(Owner, source, @params);
-                    } else
-                    {
-                        cb.ShootBow(Owner, source, @params);
                     }
-            
+                    else
+                    {
+                        cb.BowShot(Owner, source, @params);
+                    }
                 }
             }
 

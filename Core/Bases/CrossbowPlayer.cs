@@ -12,6 +12,9 @@ namespace Stellamod.Core.Bases
         public bool takeAim;
         public bool usingStamina;
 
+        public bool countShots;
+        public float shotCount;
+        public int gothinEnchant;
         public int burstCount;
         public float burstRate;
         public float burstChargeStrength;
@@ -105,6 +108,10 @@ namespace Stellamod.Core.Bases
         public override void PostUpdate()
         {
             base.PostUpdate();
+            if (!countShots)
+            {
+                shotCount = 0;
+            }
         }
     }
 }

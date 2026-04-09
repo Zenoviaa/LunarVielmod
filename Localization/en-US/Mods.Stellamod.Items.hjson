@@ -10705,3 +10705,23 @@ CandlelightLegs: {
 	DisplayName: Candlelight Legs
 	Tooltip: ""
 }
+
+GothinMask: {
+	DisplayName: Gothin Mask
+	Tooltip: ""
+}
+
+GothinPants: {
+	DisplayName: Gothin Pants
+	Tooltip: ""
+}
+
+GothinRobe: {
+	DisplayName: Gothin Robe
+	Tooltip: ""
+}
+
+SpidersSilk: {
+	DisplayName: Spiders Silk
+	Tooltip: ""
+}

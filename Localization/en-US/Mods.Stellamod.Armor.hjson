@@ -1,3 +1,10 @@
+GothinMask: {
+	Log: Act III Ranged armor
+	Type: Ranged
+	Lore: She quite likes that bow I think… Why not make it into something useful why don’t we?
+	SetBonus: Every 3 shots on a bow, you charge a super big arrow of magic into your bow and shoot it out with great intensity, doing 5x the amount of damage as your bow generally does
+}
+
 CandlelightHood: {
 	Log: Act II Resource armor
 	Type: Resource

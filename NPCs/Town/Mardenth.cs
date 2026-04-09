@@ -1,20 +1,14 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
+﻿using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Items.Armors.Mardenths;
 using Stellamod.Items.Weapons.Mage;
 using Stellamod.Items.Weapons.Thrown;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Personalities;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
@@ -151,7 +145,7 @@ namespace Stellamod.NPCs.Town
             });
         }
 
-       
+
 
         public override List<string> SetNPCNameList()
         {
@@ -163,7 +157,7 @@ namespace Stellamod.NPCs.Town
 
 
 
-   
+
 
         public override void AddShops()
         {
@@ -173,9 +167,6 @@ namespace Stellamod.NPCs.Town
 
 
             .Add<TheMarksman>(Condition.DownedEyeOfCthulhu)
-            .Add<MardenthMask>(CustomConditions.PostDaedus)
-            .Add<MardenthRobe>(CustomConditions.PostDaedus)
-            .Add<MardenthPants>(CustomConditions.PostDaedus)
             .Add(new Item(ModContent.ItemType<Plate>()) { shopCustomPrice = Item.buyPrice(silver: 1) })
             .Add(new Item(ItemID.GravediggerShovel) { shopCustomPrice = Item.buyPrice(gold: 5) })
                 ;
