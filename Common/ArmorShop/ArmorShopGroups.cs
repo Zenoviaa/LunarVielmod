@@ -1,6 +1,7 @@
 ﻿using Stellamod.Content.Areas.WondrousDarkspace.ArmorWD;
 using Stellamod.Content.Armors.Artisan;
 using Stellamod.Content.Armors.Astrasilk;
+using Stellamod.Content.Armors.Candlelight;
 using Stellamod.Content.Armors.Celestia;
 using Stellamod.Content.Armors.Elegant;
 using Stellamod.Content.Armors.Fishy;
@@ -242,8 +243,14 @@ namespace Stellamod.Common.ArmorShop
 
 
             //---------- Chlorophyte
-
+            ArmorShopSet silk = new ArmorShopSet();
+            silk.AddHead(ModContent.ItemType<CandlelightHood>());
+            silk.AddBody(ModContent.ItemType<CandlelightBody>());
+            silk.AddLegs(ModContent.ItemType<CandlelightLegs>());
+            silk.SetMaterial(ModContent.ItemType<SpidersSilk>());
+            silk.Register();
             //Daeden
+            /*
             ArmorShopSet dae = new ArmorShopSet();
             dae.AddHead(ModContent.ItemType<DaedenMask>());
             dae.AddBody(ModContent.ItemType<DaedenChestplate>());
@@ -294,7 +301,7 @@ namespace Stellamod.Common.ArmorShop
             rad1.AddLegs(ModContent.ItemType<FlowerPants>());
             rad1.SetMaterial(ModContent.ItemType<RadianuiBar>());
             rad1.Register();
-
+            */
             //---------- Post ml
 
 

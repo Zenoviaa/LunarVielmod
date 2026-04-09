@@ -1,3 +1,10 @@
+CandlelightHood: {
+	Log: Act II Resource armor
+	Type: Resource
+	Lore: Little sparks appear everywhere underneath, these candles represent the peacefulness Ereshkigal has in her home in the ishtar, Dkalin has seen Ereshkigal turn her moths she keeps so dearly into the flames that keep the candles lit forever.
+	SetBonus: You hold a candle above your head, which can protect you from a few hits per life, each hit, the candle whittles down for 5 hits until it’s gone, also provides a great light. Once the candle is gone however you take 25% increased damage.
+}
+
 AlsisMask: {
 	Log: Act III Ranged armor
 	Type: Ranged

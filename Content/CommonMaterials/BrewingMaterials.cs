@@ -140,4 +140,16 @@ namespace Stellamod.Content.CommonMaterials
             Item.rare = ModContent.RarityType<MusicalHarmoniseRarity>();
         }
     }
+
+
+    public class SpidersSilk : ModItem
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Item.maxStack = Item.CommonMaxStack;
+            Item.rare = 
+                ModContent.RarityType<SpidersSilkRarity>();
+        }
+    }
 }

@@ -15,7 +15,6 @@
 	  <None Remove="Items\Armors\Huntrian\**" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Items\Armors\Alsis\" />
 	  <Folder Include="Items\Weapons\Melee\Knives\" />
 	  <Folder Include="Items\Weapons\Ranged\Balls\" />
 	  <Folder Include="Projectiles\Summons\Sentries\" />

@@ -10690,3 +10690,18 @@ HarpyLegs: {
 	DisplayName: Harpy Legs
 	Tooltip: ""
 }
+
+CandlelightBody: {
+	DisplayName: Candlelight Body
+	Tooltip: ""
+}
+
+CandlelightHood: {
+	DisplayName: Candlelight Hood
+	Tooltip: ""
+}
+
+CandlelightLegs: {
+	DisplayName: Candlelight Legs
+	Tooltip: ""
+}
