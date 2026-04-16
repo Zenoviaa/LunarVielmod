@@ -1,29 +1,26 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 
-namespace Stellamod.Common.Shaders
+namespace Stellamod.Common.Shaders;
+
+public class MagicCircleShader : CrystalShader<MagicCircleShader>
 {
-    public class MagicCircleShader : CrystalShader<MagicCircleShader>
+    private EffectParameter _tilingOffsetParam;
+    private EffectParameter _textureParam;
+    public Vector4 TilingOffset
     {
-        private EffectParameter _tilingOffsetParam;
-        private EffectParameter _textureParam;
-        public Vector4 TilingOffset
+        set
         {
-            set
-            {
-                _tilingOffsetParam ??= Effect.Parameters["tilingOffset"];
-                _tilingOffsetParam.SetValue(value);
-            }
+            _tilingOffsetParam ??= Effect.Parameters["tilingOffset"];
+            _tilingOffsetParam.SetValue(value);
         }
+    }
 
-        public Asset<Texture2D> RingTexture
+    public Asset<Texture2D> RingTexture
+    {
+        set
         {
-            set
-            {
-                _textureParam ??= Effect.Parameters["spriteTexture"];
-                _textureParam.SetValue(value.Value);
-            }
+            _textureParam ??= Effect.Parameters["spriteTexture"];
+            _textureParam.SetValue(value.Value);
         }
     }
 }

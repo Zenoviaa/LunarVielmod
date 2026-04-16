@@ -10725,3 +10725,12 @@ SpidersSilk: {
 	DisplayName: Spiders Silk
 	Tooltip: ""
 }
+
+WintershardArtifact: {
+	DisplayName: Wintershard Artifact
+	Tooltip:
+		'''
+		Hold to charge a powerful ice clump and explode it into tracking ice shards!
+		Right click after summoning shards to command them to orbit you!
+		'''
+}

@@ -52,4 +52,34 @@ namespace Stellamod.Common.Shaders
             OscStrength = 0.2f;
         }
     }
+    public class RadialShearShader : BaseShader
+    {
+        private EffectParameter _timeParam;
+        private static RadialShearShader _instance;
+        public static RadialShearShader Instance
+        {
+            get
+            {
+                _instance ??= new();
+                _instance.SetDefaults();
+                return _instance;
+            }
+        }
+
+
+        public float Time
+        {
+            set
+            {
+                _timeParam ??= Effect.Parameters["time"];
+                _timeParam.SetValue(value);
+            }
+        }
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Time = 0;
+        }
+    }
 }

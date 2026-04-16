@@ -166,7 +166,73 @@ namespace Stellamod.Core.Utilities
             vertices[2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), Color.White, new Vector2(0, 1));
             vertices[3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), Color.White, new Vector2(1, 1));
         }
+        public void CalculateCenterVertices2(Vector2 center, float length, float width, Matrix transformMatrix)
+        {
+            Vector2 topLeftOffset = new Vector2(-length / 2f, -width / 2f);
+            Vector2 bottomLeftOffset = new Vector2(-length / 2f, width / 2f);
+            Vector2 topRightOffset = topLeftOffset + new Vector2(length, -width / 2f);
+            Vector2 bottomRightOffset = bottomLeftOffset + new Vector2(length, width / 2f);
 
+            topLeftOffset = Vector2.Transform(topLeftOffset, transformMatrix);
+            bottomLeftOffset = Vector2.Transform(bottomLeftOffset, transformMatrix);
+            topRightOffset = Vector2.Transform(topRightOffset, transformMatrix);
+            bottomRightOffset = Vector2.Transform(bottomRightOffset, transformMatrix);
+
+            Vector2 topLeft = center + topLeftOffset;
+            Vector2 bottomLeft = center + bottomLeftOffset;
+            Vector2 topRight = center + topRightOffset;
+            Vector2 bottomRight = center + bottomRightOffset;
+
+
+            //Rotate around the center pivot
+
+
+
+            vertices[0] = new VertexPositionColorTexture(new Vector3(topLeft, 0), Color.White, new Vector2(0, 0));
+            vertices[1] = new VertexPositionColorTexture(new Vector3(topRight, 0), Color.White, new Vector2(1, 0));
+
+            vertices[2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), Color.White, new Vector2(0, 1));
+            vertices[3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), Color.White, new Vector2(1, 1));
+        }
+
+        public void Transform(Vector2 center, float length, float width, Matrix transformMatrix, float rotation = 0)
+        {
+            Vector3 topLeftOffset = new Vector3(-1, -1, 0);
+            Vector3 bottomLeftOffset = new Vector3(-1, 1, 0);
+            Vector3 topRightOffset = new Vector3(1, -1, 0);
+            Vector3 bottomRightOffset = new Vector3(1, 1, 0);
+
+
+            topLeftOffset = Vector3.Transform(topLeftOffset, transformMatrix);
+            bottomLeftOffset = Vector3.Transform(bottomLeftOffset, transformMatrix);
+            topRightOffset = Vector3.Transform(topRightOffset, transformMatrix);
+            bottomRightOffset = Vector3.Transform(bottomRightOffset, transformMatrix);
+
+
+            float halfLength = length * 0.5f;
+            float halfWidth = width * 0.5f;
+
+            Vector2 halfSize = new Vector2(halfLength, halfWidth);
+
+
+            Vector2 tl = new Vector2(topLeftOffset.X, topLeftOffset.Y).RotatedBy(rotation);
+            Vector2 bl = new Vector2(bottomLeftOffset.X, bottomLeftOffset.Y).RotatedBy(rotation);
+            Vector2 tr = new Vector2(topRightOffset.X, topRightOffset.Y).RotatedBy(rotation);
+            Vector2 br = new Vector2(bottomRightOffset.X, bottomRightOffset.Y).RotatedBy(rotation);
+
+
+            Vector2 topLeft = center + tl * halfSize;
+            Vector2 bottomLeft = center + bl * halfSize;
+            Vector2 topRight = center + tr * halfSize;
+            Vector2 bottomRight = center + br * halfSize;
+
+
+            vertices[0] = new VertexPositionColorTexture(new Vector3(topLeft, 0), Color.White, new Vector2(0, 0));
+            vertices[1] = new VertexPositionColorTexture(new Vector3(topRight, 0), Color.White, new Vector2(1, 0));
+
+            vertices[2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), Color.White, new Vector2(0, 1));
+            vertices[3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), Color.White, new Vector2(1, 1));
+        }
         public void CalculateVertices(Vector2 position, Vector2 direction, float length, float width)
         {            //Triangle 1
 
