@@ -2,6 +2,7 @@
 using Stellamod.Core.Foggy;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -41,12 +42,15 @@ public class BarrierBlockSystem : ModSystem
         Vector2 nearest = Vector2.Zero;
         float nearestDistance = 9999f;
         bool success = false;
+
+        topLeftTile.X = Math.Clamp(topLeftTile.X, 0, Main.maxTilesX - 1);
+        bottomRightTile.X = Math.Clamp(bottomRightTile.X, 0, Main.maxTilesX - 1);
+        topLeftTile.Y = Math.Clamp(topLeftTile.Y, 0, Main.maxTilesY - 1);
+        bottomRightTile.Y = Math.Clamp(bottomRightTile.Y, 0, Main.maxTilesY - 1);
         for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
         {
             for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
             {
-                if (!WorldGen.InWorld(x, y))
-                    continue;
                 Tile tile = Main.tile[x, y];
                 if (tile.TileType != ModContent.TileType<BossBarrierBlock>())
                     continue;

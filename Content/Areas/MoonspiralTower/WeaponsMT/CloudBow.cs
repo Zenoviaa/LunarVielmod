@@ -41,7 +41,7 @@ public class CloudBow : BaseCrossbowItem
             Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
             Projectile crossShot = Projectile.NewProjectileDirect(EntitySource, position, perturbedSpeed,
                 shootParams.projToShoot, (int)bowDamage, Item.knockBack, player.whoAmI);
-            crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
+            crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().isCrossbowShot = true;
         }
         for (int i = 0; i < 3; i++)
         {
@@ -64,7 +64,7 @@ public class CloudBow : BaseCrossbowItem
         float bowDamage = shootParams.damage * shootParams.chargeStrength;
         Projectile crossShot = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity,
            ModContent.ProjectileType<CloudArrow>(), (int)bowDamage, shootParams.knockBack, player.whoAmI, ai0: shootParams.projToShoot);
-        crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
+        crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().isCrossbowShot = true;
     }
 
     public override void AddRecipes()

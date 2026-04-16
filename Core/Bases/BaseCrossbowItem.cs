@@ -141,7 +141,7 @@ public abstract class BaseCrossbowItem : ModItem,
         float bowDamage = shootParams.damage * shootParams.chargeStrength;
         Projectile crossShot = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity,
             shootParams.projToShoot, (int)bowDamage, shootParams.knockBack, player.whoAmI, ai0: shootParams.projToShoot);
-        crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
+        crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().isCrossbowShot = true;
     }
 
     public virtual void StaminaShootBow(Player player, EntitySource_ItemUse_WithAmmo source,

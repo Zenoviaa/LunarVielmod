@@ -56,7 +56,7 @@ namespace Stellamod.Content.Areas.Riverside.WeaponsRS
             {
                 Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
                 var crossshot = Projectile.NewProjectileDirect(source, position, perturbedSpeed, shootParams.projToShoot, damage, knockback, player.whoAmI);
-                crossshot.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
+                crossshot.GetGlobalProjectile<CrossbowGlobalProjectile>().isCrossbowShot = true;
             }
             Projectile.NewProjectile(source, shootParams.position, shootParams.fireVelocity * 6, ModContent.ProjectileType<Waterway>(), shootParams.damage, shootParams.knockBack, player.whoAmI, ai1: 1);
         }

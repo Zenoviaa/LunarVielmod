@@ -391,13 +391,16 @@ namespace Stellamod.Helpers
             
             //Some fluff to get rid of trees
             startY -= 32;
+
+            startX = Math.Clamp(startX, 0, Main.maxTilesX - 1);
+            endX = Math.Clamp(endX, 0, Main.maxTilesX - 1);
+            startY = Math.Clamp(startY, 0, Main.maxTilesY - 1);
+            endY = Math.Clamp(endY, 0, Main.maxTilesY - 1);
+
             for (int x = startX; x < endX; x++)
             {
                 for (int y = startY; y < endY; y++)
                 {
-                    if (!WorldGen.InWorld(x, y))
-                        continue;
-
                     Tile tile = Main.tile[x, y];
                     if (TileID.Sets.IsATreeTrunk[tile.TileType])
                     {

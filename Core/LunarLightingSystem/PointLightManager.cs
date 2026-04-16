@@ -532,13 +532,15 @@ namespace Stellamod.Core.LunarLightingSystem
             int endTileX = bottomRightTIle.X;
             int endTileY = bottomRightTIle.Y;
 
+            startTileX = Math.Clamp(startTileX, 0, Main.maxTilesX - 1);
+            endTileX = Math.Clamp(endTileX, 0, Main.maxTilesX - 1);
+            startTileY = Math.Clamp(startTileY, 0, Main.maxTilesY - 1);
+            endTileY = Math.Clamp(endTileY, 0, Main.maxTilesY - 1);
+
             for (int x = startTileX; x < endTileX; x++)
             {
                 for (int y = startTileY; y < endTileY; y++)
                 {
-                    //If a tile is outside of the world just ignore it, otherwise we'll get an error
-                    if (!WorldGen.InWorld(x, y))
-                        continue;
                     Tile tile = Main.tile[x, y];
                     if (!tile.HasTile)
                         continue;

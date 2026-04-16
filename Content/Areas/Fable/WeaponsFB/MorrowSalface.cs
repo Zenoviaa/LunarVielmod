@@ -42,7 +42,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             float bowDamage = shootParams.damage * shootParams.chargeStrength;
             Projectile crossShot = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity,
                 shootParams.projToShoot, (int)bowDamage, shootParams.knockBack, player.whoAmI, ai0: shootParams.projToShoot);
-            crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
+            crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().isCrossbowShot = true;
         }
 
         public override void StaminaShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)

@@ -1,15 +1,14 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.Armors.Leather;
-using Stellamod.Core.Effects;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
-using System;
 using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -21,48 +20,45 @@ namespace Stellamod.Core.Bases
     public class CrossbowGlobalProjectile : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
-        public bool Initialized;
-        public bool CrossbowShot;
-        public Vector2[] CrossbowOldPos;
-        public ITrailer Trailer;
+        public bool isCrossbowShotInitialized;
+        public bool isCrossbowShot;
         public override void SendExtraAI(Projectile projectile, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             base.SendExtraAI(projectile, bitWriter, binaryWriter);
-            binaryWriter.Write(CrossbowShot);
+            binaryWriter.Write(isCrossbowShot);
         }
 
         public override void ReceiveExtraAI(Projectile projectile, BitReader bitReader, BinaryReader binaryReader)
         {
             base.ReceiveExtraAI(projectile, bitReader, binaryReader);
-            CrossbowShot = binaryReader.ReadBoolean();
+            isCrossbowShot = binaryReader.ReadBoolean();
         }
 
         public override void SetDefaults(Projectile entity)
         {
             base.SetDefaults(entity);
-            Initialized = false;
-            CrossbowShot = false;
-            CrossbowOldPos = null;
+            isCrossbowShotInitialized = false;
+            isCrossbowShot = false;
         }
 
         public override void PostAI(Projectile projectile)
         {
             base.PostAI(projectile);
-            if (!CrossbowShot)
+            if (!isCrossbowShot)
                 return;
 
             projectile.arrow = true;
             Player owner = Main.player[projectile.owner];
             LeatherPlayer leatherPlayer = owner.GetModPlayer<LeatherPlayer>();
-     
-            if (!Initialized)
+            if (!isCrossbowShotInitialized)
             {
-                CrossbowOldPos = new Vector2[16];
-
+                if (ProjectileID.Sets.TrailCacheLength[projectile.type] <= 0)
+                {
+                    ProjectileID.Sets.TrailCacheLength[projectile.type] = 16;
+                }
+                ProjectileID.Sets.TrailingMode[projectile.type] = 2;
                 projectile.extraUpdates += 1;
                 projectile.ArmorPenetration += 10;
-
-
                 if (leatherPlayer.hasLeatherSetBonus)
                 {
                     ShockOvalSpawnParams spawnParams = new ShockOvalSpawnParams
@@ -79,8 +75,9 @@ namespace Stellamod.Core.Bases
                     sp.Scale *= 0.6f;
                 }
 
-                Initialized = true;
+                isCrossbowShotInitialized = true;
             }
+
             if (leatherPlayer.hasLeatherSetBonus)
             {
                 projectile.position += projectile.velocity * 0.25f;
@@ -88,16 +85,8 @@ namespace Stellamod.Core.Bases
 
             if (projectile.velocity.Length() < 15)
                 projectile.velocity *= 1.5f;
-            for (int i = CrossbowOldPos.Length - 1; i > 0; i--)
-            {
-                CrossbowOldPos[i] = CrossbowOldPos[i - 1];
-            }
-            if (CrossbowOldPos.Length > 0)
-                CrossbowOldPos[0] = projectile.position;
-
-            // projectile.velocity.Y -= 0.075f;
-
         }
+
         private Color ColorFunction(float completionRatio)
         {
             return Color.Lerp(Color.White, Color.LightBlue, completionRatio) * MathHelper.SmoothStep(1f, 0f, completionRatio) * EasingFunction.QuadraticBump(completionRatio);
@@ -107,10 +96,10 @@ namespace Stellamod.Core.Bases
         {
             return MathHelper.SmoothStep(10, 0, completionRatio);
         }
+
         protected virtual void DrawSlashTrail(Projectile projectile, ref Color lightColor)
         {
-            Trailer?.DrawTrail(ref lightColor, CrossbowOldPos);
-            if (CrossbowOldPos == null)
+            if (!isCrossbowShot)
                 return;
 
             //This looks goofy but I needed a ref to the projectile
@@ -124,7 +113,8 @@ namespace Stellamod.Core.Bases
                 shader.Speed = 0.5f;
                 shader.Repeats = 4f;
                 //This just applis the shader changes
-                TrailDrawer.Draw(Main.spriteBatch, CrossbowOldPos, projectile.oldRot, ColorFunction, WidthFunction, shader, offset: projectile.Size / 2);
+                TrailDrawer.Draw(Main.spriteBatch, projectile.oldPos, projectile.oldRot, ColorFunction, WidthFunction, shader, 
+                    offset: projectile.Size / 2);
             }
             PixelationManager.QueuePrimitivesDrawAction(DrawPixelation, DrawLayer.OverNPCsWithOutline);
         }
@@ -132,7 +122,7 @@ namespace Stellamod.Core.Bases
 
         public override bool PreDraw(Projectile projectile, ref Color lightColor)
         {
-            if (CrossbowShot)
+            if (isCrossbowShot)
             {
                 //Draw trailing stuff and afterimage stuff here
                 DrawSlashTrail(projectile, ref lightColor);
@@ -143,7 +133,7 @@ namespace Stellamod.Core.Bases
 
         public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
         {
-            if (!CrossbowShot)
+            if (!isCrossbowShot)
                 return base.OnTileCollide(projectile, oldVelocity);
 
             bool shouldKill = base.OnTileCollide(projectile, oldVelocity);
@@ -166,7 +156,7 @@ namespace Stellamod.Core.Bases
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(projectile, target, hit, damageDone);
-            if (!CrossbowShot)
+            if (!isCrossbowShot)
             {
                 return;
             }
@@ -175,7 +165,7 @@ namespace Stellamod.Core.Bases
             {
                 Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.position, projectile.velocity,
                     ModContent.ProjectileType<CrossbowLodgedArrow>(), projectile.damage, projectile.knockBack, projectile.owner,
-    ai1: projectile.type, ai2: target.whoAmI);
+                    ai1: projectile.type, ai2: target.whoAmI);
 
                 float size = 0.12f + Main.rand.NextFloat(-0.04f, 0.04f);
                 if (hit.Crit)
@@ -194,8 +184,6 @@ namespace Stellamod.Core.Bases
                     glowColor: Color.Black,
                     outerGlowColor: Color.Black, duration: 25, baseSize: Main.rand.NextFloat(0.07f, 0.12f));
             }
-
-
         }
     }
 }

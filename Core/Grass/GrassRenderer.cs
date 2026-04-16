@@ -130,23 +130,24 @@ namespace Stellamod.Core.Grass
             Vector2 halfScreenSize = new Vector2(Main.screenWidth + fluff, Main.screenHeight + fluff) * 0.5f;
             Point startTile = (Main.Camera.Center-halfScreenSize).ToTileCoordinates();
             Point endTile = (Main.Camera.Center + halfScreenSize).ToTileCoordinates();
+
+            startTile.X = Math.Clamp(startTile.X, 0, Main.maxTilesX - 1);
+            endTile.X = Math.Clamp(endTile.X, 0, Main.maxTilesX - 1);
+            startTile.Y = Math.Clamp(startTile.Y, 0, Main.maxTilesY - 1);
+            endTile.Y = Math.Clamp(endTile.Y, 0, Main.maxTilesY - 1);
+
             for (int y = startTile.Y; y < endTile.Y; y++)
             {
                 for (int x = startTile.X; x < endTile.X; x++)
                 {
                     if (y == 0)
                         continue;
-                    if (!WorldGen.InWorld(x, y))
-                        continue;
-
                     Tile tile = Main.tile[x, y];
                     Tile tileAbove = Main.tile[x, y - 1];
                     if (tileAbove.HasTile)
                         continue;
 
-
-                    float i = x;
-            
+                    float i = x;   
                     if(_noise.GetNoise(i, 0) > -0.95f)
                     {
                         if (tile.HasTile && TileSets.GetGrassProfile(tile.TileType, out GrassProfile profile))
@@ -155,7 +156,6 @@ namespace Stellamod.Core.Grass
                             profileToUse.Grow(x, y);
                         }
                     }
-
                 }
             }
     

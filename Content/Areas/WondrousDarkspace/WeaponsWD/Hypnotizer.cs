@@ -60,7 +60,7 @@ public class Hypnotizer : BaseCrossbowItem
         {
             Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))) * .4f; // This defines the projectile roatation and speed. .4f == projectile speed
             var crossShot = Projectile.NewProjectileDirect(source, position, perturbedSpeed, shootParams.projToShoot, damage, knockback, player.whoAmI);
-            crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
+            crossShot.GetGlobalProjectile<CrossbowGlobalProjectile>().isCrossbowShot = true;
         }
     }
 

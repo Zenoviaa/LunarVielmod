@@ -39,10 +39,10 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             float bowDamage = shootParams.damage * shootParams.chargeStrength;
             Projectile crossShot1 = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity.RotatedBy(-0.06f),
                 shootParams.projToShoot, (int)bowDamage, shootParams.knockBack, player.whoAmI, ai0: shootParams.projToShoot);
-            crossShot1.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
+            crossShot1.GetGlobalProjectile<CrossbowGlobalProjectile>().isCrossbowShot = true;
             Projectile crossShot2 = Projectile.NewProjectileDirect(source, shootParams.position, fireVelocity.RotatedBy(0.06f),
                 shootParams.projToShoot, (int)bowDamage, shootParams.knockBack, player.whoAmI, ai0: shootParams.projToShoot);
-            crossShot2.GetGlobalProjectile<CrossbowGlobalProjectile>().CrossbowShot = true;
+            crossShot2.GetGlobalProjectile<CrossbowGlobalProjectile>().isCrossbowShot = true;
         }
         public override void StaminaShootBow(Player player, EntitySource_ItemUse_WithAmmo source, ShootParams shootParams)
         {
