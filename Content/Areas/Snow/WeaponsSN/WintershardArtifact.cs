@@ -445,8 +445,9 @@ public class WintershardClump : ModProjectile
 
     private void EnclosingCircle()
     {
+        /*
         if(Main.netMode != NetmodeID.Server)
-            ModContent.GetInstance<ScreenShaderSystem>().TintScreen(Color.LightSkyBlue, 0.02f, 15);
+            ModContent.GetInstance<ScreenShaderSystem>().TintScreen(Color.LightSkyBlue, 0.02f, 15);*/
         SoundStyle growSound;
         int index = (int)State;
         index -= 1;

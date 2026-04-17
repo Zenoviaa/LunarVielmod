@@ -10734,3 +10734,8 @@ WintershardArtifact: {
 		Right click after summoning shards to command them to orbit you!
 		'''
 }
+
+IceCrashArtifact: {
+	DisplayName: Ice Crash Artifact
+	Tooltip: "Summons 2 GIANT ice cubes around your cursor to crash into each other!"
+}
