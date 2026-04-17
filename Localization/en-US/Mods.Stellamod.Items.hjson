@@ -10742,5 +10742,5 @@ IceCrashArtifact: {
 
 MagicMoonbladeArtifact: {
 	DisplayName: Magic Moonblade Artifact
-	Tooltip: "Summons an ethereal blade that tracks your cursor and slashes"
+	Tooltip: Summons an ethereal blade that tracks your cursor and slashes
 }
