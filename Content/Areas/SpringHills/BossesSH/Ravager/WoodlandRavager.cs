@@ -80,7 +80,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             NPC.height = 48;
             NPC.damage = 80;
             NPC.defense = 0;
-            NPC.lifeMax = 2800;
+            NPC.lifeMax = 5000;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = Item.buyPrice(silver: 50);
             NPC.knockBackResist = 0f;
