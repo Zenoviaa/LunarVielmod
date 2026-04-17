@@ -203,10 +203,10 @@ public class WintershardArtifact : ModItem
         base.SetDefaults();
         Item.DefaultToArtifact();
         Item.width = 16;
-        Item.headSlot = 16;
+        Item.height = 16;
         Item.channel = true;
         Item.autoReuse = false;
-        Item.mana = 25;
+        Item.mana = 52;
         Item.useAnimation = Item.useTime = 24;
         Item.useStyle = ItemUseStyleID.Shoot;
         Item.knockBack = 2;

@@ -34,7 +34,7 @@ public class IceCrashArtifact : ModItem
         Item.damage = 18;
         Item.width = 16;
         Item.height = 16;
-        Item.mana = 25;
+        Item.mana = 7;
         Item.useAnimation = Item.useTime = 24;
         Item.useStyle = ItemUseStyleID.Shoot;
         Item.knockBack = 2;
@@ -126,7 +126,7 @@ public class IceCrashCubeShard : ModProjectile
         {
             _initialPosition = Projectile.Center;
             Frame = Main.rand.Next(4);
-            Scale = Main.rand.NextFloat(0.5f, 1f);
+            Scale = Main.rand.NextFloat(0.35f, 0.75f);
             Projectile.netUpdate = true;
         }
 
@@ -236,7 +236,7 @@ public class IceCrashBoom : ModProjectile
                 for(float f = 0; f < 4f; f++)
                 {
                     Vector2 upVelocity = -Vector2.UnitY;
-                    upVelocity *= Main.rand.NextFloat(15f, 25f);
+                    upVelocity *= Main.rand.NextFloat(7, 15);
                     upVelocity = upVelocity.RotatedByRandom(MathHelper.ToRadians(75));
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, upVelocity, 
                         ModContent.ProjectileType<IceCrashCubeShard>(), (int)(Projectile.damage * 0.3f), Projectile.knockBack, Projectile.owner);
@@ -410,7 +410,7 @@ public class IceCrashCube : ModProjectile
             SoundEngine.PlaySound(growSound, Projectile.position);
             if (this.OwnedByLocalClient())
             {
-                Scale = Main.rand.NextFloat(0.5f, 1f);
+                Scale = Main.rand.NextFloat(0.45f, 0.75f);
                 Projectile.netUpdate = true;
             }
             _initialPosition = Projectile.Center;
@@ -572,5 +572,6 @@ public class IceCrashCube : ModProjectile
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
+
     }
 }

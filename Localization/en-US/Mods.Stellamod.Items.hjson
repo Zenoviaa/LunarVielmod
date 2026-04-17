@@ -10739,3 +10739,8 @@ IceCrashArtifact: {
 	DisplayName: Ice Crash Artifact
 	Tooltip: Summons 2 GIANT ice cubes around your cursor to crash into each other!
 }
+
+MagicMoonbladeArtifact: {
+	DisplayName: Magic Moonblade Artifact
+	Tooltip: "Summons an ethereal blade that tracks your cursor and slashes"
+}
