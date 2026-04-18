@@ -22,6 +22,7 @@ using Stellamod.Content.Armors.Ravaging;
 using Stellamod.Content.Currencies;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Content.Relics;
+using Stellamod.Content.Vanity.IllurianGeneralHat;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Insources;
@@ -203,6 +204,7 @@ namespace Stellamod.Content.BossPages
             bossNPC = ModContent.GetInstance<Bishinine>();
             progression = 13;
             flag = DownedBossFlag.Bishinine;
+            AddNoHitReward<IllurianGeneralHat>();
         }
     }
 
