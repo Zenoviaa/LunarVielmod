@@ -48,6 +48,7 @@ public struct AnimationFramer
 public class FurnaceBackground : UIPanel
 {
     private Asset<Texture2D> _backgroundTextureAsset;
+    private Asset<Texture2D> _backgroundGlowTextureAsset;
     private Asset<Texture2D> _furnaceTextureAsset;
     private Asset<Texture2D> _furnaceBurningTextureAsset;
     private Asset<Texture2D> _furnaceBurningAmbientTextureAsset;
@@ -57,6 +58,7 @@ public class FurnaceBackground : UIPanel
     public FurnaceBackground() : base()
     {
         _backgroundTextureAsset = ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "UpgradeBackground");
+        _backgroundGlowTextureAsset = ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "UpgradeBackground_Glow");
         _furnaceTextureAsset = ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "Furnace");
         _furnaceBurningTextureAsset = ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "Furnace_Burning");
         _furnaceBurningAmbientTextureAsset = ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "Furnace_BackBurning");
@@ -114,5 +116,10 @@ public class FurnaceBackground : UIPanel
         Rectangle frame = _furnaceBurningTextureAsset.Value.GetFrame(_burningAnimationFrame.frame, 6, 10);
         Vector2 origin = new Vector2(frame.Width * 0.5f, frame.Height);
         spriteBatch.Draw(_furnaceBurningTextureAsset.Value, bottomMiddleDrawPosition - Vector2.UnitY * 48 + Vector2.UnitX * 16, frame, fireDrawColor, 0f, origin, 2f, SpriteEffects.None, 0f);
+
+
+        Color glow = Color.Lerp(Color.Black, Color.Yellow, WeaponUpgradeUISystem.ForgeGlow);
+        glow.A = 0;
+        spriteBatch.Draw(_backgroundGlowTextureAsset.Value, rectangle.TopLeft(), null, glow, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
     }
 }

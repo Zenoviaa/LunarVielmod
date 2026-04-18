@@ -2,6 +2,7 @@
 using ReLogic.Content;
 using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Core;
+using Stellamod.Core.DialogueSystem;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -472,5 +473,6 @@ public class Gilatine : VeilTownNPC
         Main.playerInventory = true;
         WeaponUpgradeUISystem uiSystem = ModContent.GetInstance<WeaponUpgradeUISystem>();
         uiSystem.OpenUI();
+        CloseTownDialogue();
     }
 }

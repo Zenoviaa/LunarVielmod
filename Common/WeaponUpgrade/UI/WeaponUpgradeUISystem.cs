@@ -18,7 +18,7 @@ namespace Stellamod.Common.WeaponUpgrade.UI
         private float _inRatio;
         private float _inTimer;
         private bool _isClosing;
-        private UIScaler _uiScaler;
+
         private Vector2 _worldPos;
         private GameTime _lastUpdateUiGameTime;
         private UserInterface _userInterface;
@@ -63,6 +63,7 @@ namespace Stellamod.Common.WeaponUpgrade.UI
             }
         }
         private Item ItemToUpgrade => reforgeUIState.ui.reforgeSlot.Item;
+        public static float ForgeGlow;
         public float easeInTime => 60f;
         public override int uiSlot => Slot_MajorUI;
         public override void OnModLoad()
@@ -75,6 +76,7 @@ namespace Stellamod.Common.WeaponUpgrade.UI
 
         public override void UpdateUI(GameTime gameTime)
         {
+            ForgeGlow = MathHelper.Lerp(ForgeGlow, 0f, (float)gameTime.ElapsedGameTime.TotalSeconds * 3);
             if (_isClosing)
             {
                 _inTimer--;
@@ -159,6 +161,12 @@ namespace Stellamod.Common.WeaponUpgrade.UI
 
         public void CloseUI()
         {
+            if (!ItemToUpgrade.IsAir)
+            {
+                Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), ItemToUpgrade);
+                ItemToUpgrade.TurnToAir();
+            }
+
             _userInterface.SetState(null);
         }
         public override void PreSaveAndQuit()
@@ -188,15 +196,20 @@ namespace Stellamod.Common.WeaponUpgrade.UI
                             Vector2 pivot = new Vector2();
                             pivot.X = reforgeUIState.ui.RelativeLeft;
                             pivot.Y = reforgeUIState.ui.RelativeTop;
-                            _uiScaler.adjustedOffset =pivot + new Vector2(reforgeUIState.ui.Width.Pixels, reforgeUIState.ui.Height.Pixels) * 0.5f;
-                            _uiScaler.adjustedUIScale = Vector2.One * EasingFunction.OutExpo(_inRatio);
+                            UIScaler uiScaler;
+                            uiScaler.scalePivot = pivot + new Vector2(reforgeUIState.ui.Width.Pixels, reforgeUIState.ui.Height.Pixels) * 0.5f;
+
+                            Easer easer = _isClosing ? EasingFunction.InOutSine : EasingFunction.OutExpo;
+                            uiScaler.adjustedUIScale = Vector2.One * easer(_inRatio);
                             Main.spriteBatch.End();
                             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
-                                _uiScaler.UIScaleMatrix2());
+                                uiScaler.UIScaleMatrix());
+                            
                             _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
-                            Main.spriteBatch.End();
-                            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer);
 
+                            Main.spriteBatch.End();
+                            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, 
+                                Main.UIScaleMatrix);
                         }
                         return true;
                     },
@@ -207,17 +220,18 @@ namespace Stellamod.Common.WeaponUpgrade.UI
 }
 
 
+
 /// <summary>
 /// Creates a scale and offset for UI to create cool animations :) 
 /// </summary>
 public struct UIScaler
 {
     public Vector2 adjustedUIScale;
-    public Vector2 adjustedOffset;
+    public Vector2 scalePivot;
     public UIScaler()
     {
         adjustedUIScale = Vector2.One;
-        adjustedOffset = Vector2.Zero;
+        scalePivot = Vector2.Zero;
     }
 
     public Matrix UIScaleMatrix()
@@ -225,30 +239,7 @@ public struct UIScaler
         Vector2 uiScale = Vector2.One * Main.UIScale;
         uiScale *= adjustedUIScale;
         Matrix scaleMatrix = Matrix.CreateScale(uiScale.X, uiScale.X, 1f);
-        Vector2 offset = new Vector2();
-
-        float adjustedScreenWidth = Main.screenWidth * Main.UIScale;
-        float adjustedScreenHeight = Main.screenHeight * Main.UIScale;
-        offset.X = adjustedScreenWidth * 0.5f;
-        offset.Y = adjustedScreenHeight * 0.5f;
-
-        offset.X *= MathF.Abs( adjustedUIScale.X-1f);
-        offset.Y *= MathF.Abs(adjustedUIScale.Y-1f);
-
-        if (adjustedUIScale.X > 1)
-            offset.X *= -1f;
-        if (adjustedUIScale.Y > 1)
-            offset.Y *= -1f;
-        Matrix translationMatrix = Matrix.CreateTranslation(offset.X, offset.Y, 0f);
-        scaleMatrix *= translationMatrix;
-        return scaleMatrix;
-    }
-    public Matrix UIScaleMatrix2()
-    {
-        Vector2 uiScale = Vector2.One * Main.UIScale;
-        uiScale *= adjustedUIScale;
-        Matrix scaleMatrix = Matrix.CreateScale(uiScale.X, uiScale.X, 1f);
-        Vector2 offset = adjustedOffset;
+        Vector2 offset = scalePivot;
         Matrix translationMatrix = Matrix.CreateTranslation(-offset.X, -offset.Y, 0f);
         Matrix finalMatrix = translationMatrix * scaleMatrix * Matrix.CreateTranslation(offset.X, offset.Y, 0f);
         return finalMatrix;
