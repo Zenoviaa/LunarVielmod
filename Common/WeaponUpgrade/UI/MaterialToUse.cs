@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Core.Utilities;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.Elements;
@@ -38,7 +39,7 @@ namespace Stellamod.Common.WeaponUpgrade.UI
         {
             base.OnInitialize();
             _text = new UIText("0");
-            _text.Left.Pixels = 0;
+            _text.Left.Pixels = 32;
             _text.Top.Pixels = 32;
             _text.Width.Pixels = Width.Pixels;
             _text.Height.Pixels = Height.Pixels;
@@ -58,26 +59,19 @@ namespace Stellamod.Common.WeaponUpgrade.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Left.Set(0, 0.7f);
-            Top.Set(0, 0.2f);
             UpdateUI();
         }
+
 
         /// <summary>
         /// Update the text UI of the weapon upgrade system
         /// </summary>
         private void UpdateUI()
         {
+            //Unsure if there's a bettery way to do this but....
+            //I'lll atleast make a helper method
             WeaponUpgradeUISystem weaponUpgradeSystem = ModContent.GetInstance<WeaponUpgradeUISystem>();
-            Player player = Main.LocalPlayer;
-            CustomCurrencyManager.TryGetCurrencySystem(Stellamod.DragonShardCurrencyID, out CustomCurrencySystem system);
-            bool overflowing = false;
-            long num = system.CountCurrency(out overflowing, player.inventory);
-            long num2 = system.CountCurrency(out overflowing, player.bank.item);
-            long num3 = system.CountCurrency(out overflowing, player.bank2.item);
-            long num4 = system.CountCurrency(out overflowing, player.bank3.item);
-            long num5 = system.CountCurrency(out overflowing, player.bank4.item);
-            long num6 = num + num2 + num3 + num4 + num5;
+            long num6 = PlayerHelper.CountCurrencyInAllBanks(Main.LocalPlayer, Stellamod.DragonShardCurrencyID);
             _text.SetText(num6.ToString());
 
             int requiredAmount = weaponUpgradeSystem.RequiredAmount;
@@ -93,19 +87,16 @@ namespace Stellamod.Common.WeaponUpgrade.UI
             //Draw the background texture
             Rectangle rectangle = GetDimensions().ToRectangle();
             Texture2D background = _materialBoxTextureAsset.Value;
-            spriteBatch.Draw(background, rectangle, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+            Vector2 pos = rectangle.TopLeft();
+            spriteBatch.Draw(background,pos, null, Color.White, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, 0);
 
             //Draw the required material texture
             WeaponUpgradeUISystem system = ModContent.GetInstance<WeaponUpgradeUISystem>();
             Asset<Texture2D> textureAsset = system.RequiredMaterialTexture;
             Texture2D textureToDraw = textureAsset.Value;
-            CalculatedStyle dimensions = GetDimensions();
-            Point point = new Point((int)dimensions.X, (int)dimensions.Y);
-            Rectangle rect2 = new Rectangle(
-                point.X + rectangle.Width / 2 - textureToDraw.Width / 2,
-                point.Y - rectangle.Height, textureToDraw.Width, textureToDraw.Height);
+        
 
-            spriteBatch.Draw(textureToDraw, rect2, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureToDraw, pos + rectangle.Width * Vector2.UnitX * 2, null, Color.White, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, 0);
         }
     }
 }

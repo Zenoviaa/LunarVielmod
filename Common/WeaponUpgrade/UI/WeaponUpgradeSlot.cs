@@ -68,7 +68,25 @@ public class WeaponUpgradeSlot : UIElement
         Vector2 centerPos = pos + rectangle.Size() / 2f;
         spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, color2, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
 
-        ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos + new Vector2(0, 3), _scale, 32, Color.White);
+        float scale = 1.25f;
+        Vector2 drawPos = centerPos + new Vector2(0, 3);
+
+        /*
+        for (float f = 0; f <= MathHelper.TwoPi; f += MathHelper.PiOver2)
+        {
+            Vector2 offset = f.ToRotationVector2();
+            offset *= _scale * scale;
+            Vector2 outlineDrawPos = drawPos + offset;
+            Color outlineColor = Color.White;
+            outlineColor.A = 0;
+            for(int i = 0; i < 2; i++)
+                ItemSlot.DrawItemIcon(Item, _context, spriteBatch, outlineDrawPos, _scale * scale, 32 * scale, outlineColor);
+        }
+
+        */
+        ItemSlot.DrawItemIcon(Item, _context, spriteBatch, drawPos, _scale * scale, 32 * scale, Color.White);
+
+
         if (Item.stack > 1)
             ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, Item.stack.ToString(),
                 centerPos + new Vector2(10f, 26f) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
