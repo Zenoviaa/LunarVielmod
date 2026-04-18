@@ -10529,7 +10529,7 @@ MinersSword: {
 	BasicSlash: Spins around a bit more than your usual sword
 	StaminaSlash: Throws a quick barrage of rocks!
 	DisplayName: Miner's Sword
-	Tooltip: "So we're back in the mines..."
+	Tooltip: So we're back in the mines...
 }
 
 ReavestingScythe: {

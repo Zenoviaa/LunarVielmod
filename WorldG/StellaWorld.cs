@@ -1294,6 +1294,7 @@ public class StellaWorld : ModSystem
             GenVars.dungeonX = point.X;
             GenVars.dungeonY = point.Y;
 
+            /*
             //Spawn old man
             Point oldManPoint = point;
             oldManPoint.X += 10;
@@ -1305,7 +1306,7 @@ public class StellaWorld : ModSystem
             Main.npc[num297].homeTileY = oldManPoint.Y;
             Main.npc[num297].direction = 1;
             Main.npc[num297].homeless = true;
-
+            */
 
             //The first room is the starting room, we don't want to outline that one
             //So we're just gonna start from index 1 to skip it

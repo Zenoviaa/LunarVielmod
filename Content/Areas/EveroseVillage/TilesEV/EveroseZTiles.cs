@@ -9,6 +9,15 @@ public class GreenBush1 : ZTile
         base.SetStaticDefaults();
         frameCount = 1;
         drawOrigin = TileDrawOrigin.BottomUp;
+
+        //idk
+        windSwayOffset = 0f;
+
+        //The max it can sway
+        windSwayMagnitude = 0.2f;
+
+        //How fast it sways
+        windSwaySpeed = 0.02f;
     }
 
 
@@ -26,6 +35,15 @@ public class GreenBush2 : ZTile
         base.SetStaticDefaults();
         frameCount = 1;
         drawOrigin = TileDrawOrigin.BottomUp;
+
+        //idk
+        windSwayOffset = 0f;
+
+        //The max it can sway
+        windSwayMagnitude = 0.2f;
+
+        //How fast it sways
+        windSwaySpeed = 0.02f;
     }
 
 
@@ -106,6 +124,15 @@ public class RedRoses1 : ZTile
         base.SetStaticDefaults();
         frameCount = 1;
         drawOrigin = TileDrawOrigin.BottomUp;
+
+        //idk
+        windSwayOffset = 0f;
+
+        //The max it can sway
+        windSwayMagnitude = 0.2f;
+
+        //How fast it sways
+        windSwaySpeed = 0.02f;
     }
 
 
@@ -122,6 +149,15 @@ public class RedRoses2 : ZTile
         base.SetStaticDefaults();
         frameCount = 1;
         drawOrigin = TileDrawOrigin.BottomUp;
+
+        //idk
+        windSwayOffset = 0f;
+
+        //The max it can sway
+        windSwayMagnitude = 0.2f;
+
+        //How fast it sways
+        windSwaySpeed = 0.02f;
     }
 
 
@@ -138,6 +174,15 @@ public class RedRoses3 : ZTile
         base.SetStaticDefaults();
         frameCount = 1;
         drawOrigin = TileDrawOrigin.BottomUp;
+
+        //idk
+        windSwayOffset = 0f;
+
+        //The max it can sway
+        windSwayMagnitude = 0.2f;
+
+        //How fast it sways
+        windSwaySpeed = 0.02f;
     }
 
 
@@ -154,6 +199,15 @@ public class RedRoses4 : ZTile
         base.SetStaticDefaults();
         frameCount = 1;
         drawOrigin = TileDrawOrigin.BottomUp;
+
+        //idk
+        windSwayOffset = 0f;
+
+        //The max it can sway
+        windSwayMagnitude = 0.2f;
+
+        //How fast it sways
+        windSwaySpeed = 0.02f;
     }
 
 

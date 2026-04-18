@@ -227,10 +227,10 @@ namespace Stellamod.Core.WallBackgroundSystem
                 spriteBatch.End();
             }
 
-            /*
+            
             spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Multiply);
             spriteBatch.Draw(_wallMaskRenderTarget, Vector2.Zero, null, Color.White);
-            spriteBatch.End();*/
+            spriteBatch.End();
 
         }
         public static void QueueDraw(Point tilePoint)

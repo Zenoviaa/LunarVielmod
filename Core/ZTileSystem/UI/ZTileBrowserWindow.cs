@@ -105,6 +105,8 @@ public class ZTileBrowserWindow : UIPanel
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
+        _scrollbar.Left.Set(0, 0.98f);
+        _scrollbar.Top.Set(0, 0.1f);
         //Constantly lock the UI in the position regardless of resolution changes
         _inventoryMenu.SetSearchFilter(SearchFilter);
         SetPos();

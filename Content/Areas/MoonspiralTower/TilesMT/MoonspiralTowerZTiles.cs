@@ -169,6 +169,15 @@ namespace Stellamod.Content.Areas.MoonspiralTower.TilesMT
             frameCount = 1;
         }
     }
+    public class MoonCrystal : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            drawOrigin = TileDrawOrigin.BottomUp;
+            frameCount = 1;
+        }
+    }
 
     public class StainedGlassPane : ZTile
     {
