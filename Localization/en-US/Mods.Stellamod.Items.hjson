@@ -10529,7 +10529,7 @@ MinersSword: {
 	BasicSlash: Spins around a bit more than your usual sword
 	StaminaSlash: Throws a quick barrage of rocks!
 	DisplayName: Miner's Sword
-	Tooltip: ""
+	Tooltip: "So we're back in the mines..."
 }
 
 ReavestingScythe: {
@@ -10664,12 +10664,12 @@ RadianthalLegs: {
 }
 
 VeliozaBody: {
-	DisplayName: Velioza Body
+	DisplayName: Velioza Robe
 	Tooltip: ""
 }
 
 VeliozaHead: {
-	DisplayName: Velioza Head
+	DisplayName: Velioza Hat
 	Tooltip: ""
 }
 
@@ -10745,4 +10745,24 @@ IceCrashArtifact: {
 MagicMoonbladeArtifact: {
 	DisplayName: Magic Moonblade Artifact
 	Tooltip: Summons an ethereal blade that tracks your cursor and slashes
+}
+
+IllurianGeneralHat: {
+	Tooltip: ""
+	DisplayName: Illurian General Hat
+}
+
+AcademyOutfitHead: {
+	DisplayName: Academy Hat
+	Tooltip: ""
+}
+
+AcademyOutfitLegs: {
+	DisplayName: Academy Legs
+	Tooltip: ""
+}
+
+AcademyOutfitRobe: {
+	DisplayName: Academy Robe
+	Tooltip: ""
 }

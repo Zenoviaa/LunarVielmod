@@ -134,7 +134,7 @@ namespace Stellamod.Core.Bases
                 SpinThrowDistance = 0,
                 SpinDegrees = 1,
                 AlwaysShowTrail = true,
-                Easing = (float lerpValue) => lerpValue,
+                Easing = (float lerpValue) => EasingFunction.InOutExpo(lerpValue),
                 Sound = LightSpin,
                 HitCount = 2
             });

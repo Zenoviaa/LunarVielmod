@@ -165,6 +165,11 @@ public class VeliozaPlayer : ModPlayer
 
         foreach (var npc in Main.ActiveNPCs)
         {
+            if (npc.friendly)
+                continue;
+            if (npc.townNPC)
+                continue;
+
             float dist = Vector2.Distance(Player.Center, npc.Center);
             if (dist <= suckDryDistance)
             {

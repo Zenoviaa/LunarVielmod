@@ -11,6 +11,7 @@ public class IllurianGeneralHat : ModItem
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
+        ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
     }
 
     public override void SetDefaults()

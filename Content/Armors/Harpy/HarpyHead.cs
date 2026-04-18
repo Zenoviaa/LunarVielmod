@@ -187,6 +187,7 @@ public class HarpyHead : ModItem
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
+        ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
         ArmorSetSystem.RegisterArmorSet<HarpyHead, HarpyBody, HarpyLegs>();
     }
 

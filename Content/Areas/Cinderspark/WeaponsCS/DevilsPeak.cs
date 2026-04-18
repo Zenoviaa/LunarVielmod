@@ -109,19 +109,7 @@ public class DevilsPeakSlash : BaseSwingProjectileV2
         useAfterImage = true;
         glowAfterImageColor = Color.Red;
     }
-    private void SetupTrailer()
-    {
-        BlackFireShader blackFireShader = new BlackFireShader();
-        blackFireShader.SetDefaults();
-        blackFireShader.InnerEmitColor = Color.Yellow * 0.2f;
-        blackFireShader.OuterEmiteColor = Color.Red;
 
-        SlashTrailer devilsPeak = new SlashTrailer();
-        devilsPeak.Shader = blackFireShader;
-        devilsPeak.TrailWidthFunction = GetTrailWidthFunction;
-        devilsPeak.TrailColorFunction = GetTrailColorFunction;
-        Trailer = devilsPeak;
-    }
     private float GetTrailWidthFunction(float ratio)
     {
         return MathHelper.SmoothStep(8, 64, ratio) * 1.5f * MathHelper.SmoothStep(1f, 0f, EasingFunction.InExpo(Interpolant)) * MathF.Sin(ratio * 8);
