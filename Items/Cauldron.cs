@@ -4,15 +4,19 @@ using Stellamod.Buffs;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Quests.ZuiQuest;
+using Stellamod.Core.ZTileSystem;
+using Stellamod.Helpers;
 using Stellamod.Items.Ores;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
+using static Stellamod.WorldG.StructureManager.Snapshot;
 
 namespace Stellamod.Items
 {
@@ -121,16 +125,6 @@ namespace Stellamod.Items
         public static bool[] IsBrewingMold = ItemID.Sets.Factory.CreateBoolSet();
         private Queue<StoredBrewingMaterial> _results;
         private List<StoredBrewingMaterial> _brewingMaterials;
-        private List<StoredBrewingMaterial> BrewingMaterials
-        {
-
-            get
-            {
-                _brewingMaterials ??= new List<StoredBrewingMaterial>();
-                return _brewingMaterials;
-            }
-        }
-
         public List<StoredBrewingMaterial> InsideCauldron
         {
             get
@@ -148,20 +142,11 @@ namespace Stellamod.Items
                 return _results;
             }
         }
+
         private List<CauldronBrew> _brews = new List<CauldronBrew>()
         {
 
         };
-
-        public CauldronBrew InkBrew
-        {
-            get
-            {
-                CauldronBrew brew = new CauldronBrew();
-                brew.result = ModContent.ItemType<KaleidoscopicInk>();
-                return brew;
-            }
-        }
 
         public CauldronBrew NothingBrew
         {
@@ -175,6 +160,7 @@ namespace Stellamod.Items
   
         public static event Action<CauldronBrew> OnBrew;
         public CauldronBrew JustCrafted { get; set; }
+        public bool IsDirty;
         public override void OnModUnload()
         {
             base.OnModUnload();
@@ -377,10 +363,6 @@ namespace Stellamod.Items
                 {
                     result = NothingBrew;
                 }
-                else if (inkFailed && Main.hardMode)
-                {
-                    result = InkBrew;
-                }
 
                 if (!getNothingFailed)
                 {
@@ -457,10 +439,6 @@ namespace Stellamod.Items
                 {
                     result = NothingBrew;
                 }
-                else if (inkFailed && Main.hardMode)
-                {
-                    result = InkBrew;
-                }
 
                 if (!getNothingFailed)
                 {
@@ -502,7 +480,8 @@ namespace Stellamod.Items
                 };
                 _brewingMaterials.Add(sbm);
             }
-
+            IsDirty = true;
+            SendSyncPacket();
             /*
             if (CanMix())
             {
@@ -560,11 +539,50 @@ namespace Stellamod.Items
                 Results.Enqueue(sbm);
             }
             _brewingMaterials.Clear();
+            SendSyncPacket();
         }
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
             JustCrafted = null;
         }
+    
+        public void SendSyncPacket()
+        {
+            if (Main.netMode != NetmodeID.SinglePlayer)
+            {
+                int clientToIgnore = Main.LocalPlayer.whoAmI;
+                int length = _brewingMaterials.Count;
+                object[] data = new object[length * 2 + 1];
+                int index = 0;
+                data[index++] = length;
+                for(int i = 0; i < length; i++)
+                {
+                    data[index++] = _brewingMaterials[i].item;
+                    data[index++] = _brewingMaterials[i].stack;
+                }
+                Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.CauldronSync, data)
+                    .Send(ignoreClient: clientToIgnore);
+            }
+        }
+
+        public void HandleSyncPacket(BinaryReader reader)
+        {
+            int length = reader.ReadInt32();
+            List<StoredBrewingMaterial> materials = new List<StoredBrewingMaterial>();
+            for (int i = 0; i < length; i++)
+            {
+                int item = reader.ReadInt32();
+                int stack = reader.ReadInt32();
+                StoredBrewingMaterial material = new StoredBrewingMaterial
+                {
+                    item = item,
+                    stack = stack
+                };
+                materials.Add(material);
+            }
+            _brewingMaterials = materials;
+        }
     }
+
 }

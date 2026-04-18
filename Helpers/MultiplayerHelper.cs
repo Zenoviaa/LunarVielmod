@@ -9,6 +9,7 @@ using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.SilkSystem;
 using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
+using Stellamod.Items;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS;
@@ -268,6 +269,14 @@ namespace Stellamod
                         int seed = reader.ReadInt32();
                         AggroSystem aggroSystem = ModContent.GetInstance<AggroSystem>();
                         aggroSystem.seed = seed;
+                    }
+                    break;
+
+                case MessageType.CauldronSync:
+                    {
+                        Cauldron cauldron = ModContent.GetInstance<Cauldron>();
+         
+                        cauldron.HandleSyncPacket(reader);
                     }
                     break;
             }

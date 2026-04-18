@@ -31,6 +31,7 @@
         RecoilPlayerSync,
         RomanceDodge,
         BossDowned,
+        CauldronSync
     }
 
     public enum DialogueType : byte

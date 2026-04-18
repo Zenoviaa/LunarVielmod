@@ -7,13 +7,16 @@ using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 using Terraria.UI.Chat;
 using XPT.Core.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
+using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Content.Areas.SpringHills.NPCsSH;
 
@@ -121,11 +124,22 @@ public class MagicWitchCauldron : VeilTownNPC
             }
         }
 
+        if(NeedsMixing > 0)
+        {
+            NeedsMixing--;
+        }
+
+        if(NeedsMixing <= 0)
+        {
+            _brewingMaterials = Cauldron.InsideCauldron.ToList();
+        }
 
         if(NPC.HasBuff(BuffID.OnFire) && Cauldron.CanMix() && MultiplayerHelper.IsHost)
         {
+            NeedsMixing = 60;
             Cauldron.MixDaCauldron();
             NPC.DelBuff(NPC.FindBuffIndex(BuffID.OnFire));
+            NPC.netUpdate = true;
         }
 
         if(Cauldron.Results.Count > 0 && CraftTimer <= 0)
@@ -173,6 +187,7 @@ public class MagicWitchCauldron : VeilTownNPC
             Timer--;
         }
     }
+
     public override void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
     {
       //  base.DrawOutlines(spriteBatch, screenPos, lightColor);
@@ -180,16 +195,15 @@ public class MagicWitchCauldron : VeilTownNPC
             return;
         _drawOutlines = false;
         float o = 2;
+
+        //I should just make an outline RT
+        //I'll do that later
         DrawCauldron(spriteBatch, -Vector2.UnitX * o);
         DrawCauldron(spriteBatch, Vector2.UnitX * o);
         DrawCauldron(spriteBatch, Vector2.UnitY * o);
         DrawCauldron(spriteBatch, -Vector2.UnitY * o);
     }
 
-    private void DrawMagicCircles(SpriteBatch spriteBatch)
-    {
-
-    }
     private void DrawCauldron(SpriteBatch spriteBatch, Vector2 offset)
     {
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromNPC(NPC);
@@ -221,11 +235,15 @@ public class MagicWitchCauldron : VeilTownNPC
 
         }
     }
+
+    //There's probably a way better way to code this
+    //But this isn't really performance critical
+    //so it's whatever
     private List<float> _oldAlpha;
     private List<Vector2> _oldPositions;
-    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    private List<StoredBrewingMaterial> _brewingMaterials;
+    private void InitializeOldArrs()
     {
-
         _oldAlpha ??= new List<float>();
         if (_oldAlpha.Count < 8)
         {
@@ -236,7 +254,7 @@ public class MagicWitchCauldron : VeilTownNPC
         }
 
         _oldPositions ??= new List<Vector2>();
-        if(_oldPositions.Count < 8)
+        if (_oldPositions.Count < 8)
         {
             for (int i = 0; i < 8; i++)
             {
@@ -244,13 +262,12 @@ public class MagicWitchCauldron : VeilTownNPC
             }
         }
 
-
         int alphaIndex = 0;
-        for(int i = 0; i < _oldAlpha.Count; i++)
+        for (int i = 0; i < _oldAlpha.Count; i++)
         {
-            if(Cauldron.InsideCauldron.Count > i)
+            if (_brewingMaterials.Count > i && NeedsMixing <= 0)
             {
-                if (!Cauldron.IsMaterial(Cauldron.InsideCauldron[i].item))
+                if (!Cauldron.IsMaterial(_brewingMaterials[i].item))
                 {
                     continue;
                 }
@@ -264,11 +281,16 @@ public class MagicWitchCauldron : VeilTownNPC
                 float lerp = MathHelper.Lerp(_oldAlpha[alphaIndex], targetAlpha, 0.1f);
                 _oldAlpha[alphaIndex] = lerp;
             }
-          
 
-           
             alphaIndex++;
         }
+    }
+
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        if (_brewingMaterials == null)
+            return false;
+        InitializeOldArrs();
         DrawCauldron(spriteBatch, Vector2.Zero);
 
 
@@ -277,18 +299,19 @@ public class MagicWitchCauldron : VeilTownNPC
         Vector2 origin = godrayTexture.Size() * 0.5f;
         Vector2 godrayScale = new Vector2(0.35f, 2f);
 
+        float godrayOffset = 150;
         SpritebatchDrawer sbDrawer2 = SpritebatchDrawer.FromTextureAsset(godrayTexture, NPC.Center);
-        sbDrawer2.color = Color.Gold * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1);
+        sbDrawer2.color = Color.White * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1);
         sbDrawer2.color.A = 0;
         sbDrawer2.rotation -= MathHelper.ToRadians(25);
             sbDrawer2.scale *= godrayScale;
-        sbDrawer2.worldPosition.Y -= 100;
+        sbDrawer2.worldPosition.Y -= godrayOffset;
         Main.spriteBatch.Draw(sbDrawer2);
 
-        sbDrawer2.color = Color.Gold * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1, offset: 1);
+        sbDrawer2.color = Color.White * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1, offset: 1);
         sbDrawer2.color.A = 0;
         sbDrawer2.worldPosition += Vector2.UnitY.RotatedBy(Main.GlobalTimeWrappedHourly * 1) * 64;
-        sbDrawer2.worldPosition.Y -= 100;
+        sbDrawer2.worldPosition.Y -= godrayOffset;
         Main.spriteBatch.Draw(sbDrawer2);
         float scale = 1f;
         Vector2 offset = new Vector2();
@@ -296,13 +319,13 @@ public class MagicWitchCauldron : VeilTownNPC
         float moldIndex = 0;
         float index = 0;
         float count = 0;
-        foreach (var sbm in Cauldron.InsideCauldron)
+        foreach (var sbm in _brewingMaterials)
         {
             if (Cauldron.IsMaterial(sbm.item))
                 count++;
         }
            
-        foreach (var sbm in Cauldron.InsideCauldron)
+        foreach (var sbm in _brewingMaterials)
         {
             Vector2 pos = NPC.Center;
             pos.Y += ExtraMath.Osc(0f, 4f, speed: 2, offset: index);
@@ -338,6 +361,11 @@ public class MagicWitchCauldron : VeilTownNPC
             float alpha = _oldAlpha[(int)index];
 
             Vector2 targetCirclePos = interpPos;
+
+            //For the brew animation
+            if (NeedsMixing > 0)
+                targetCirclePos = NPC.Center;
+
             Vector2 lerp = Vector2.Lerp(_oldPositions[(int)index], targetCirclePos, 0.1f);
             _oldPositions[(int)index] = lerp;
             Vector2 circleCenterPos = lerp;
@@ -354,7 +382,7 @@ public class MagicWitchCauldron : VeilTownNPC
 
 
             SpritebatchDrawer magicCircleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.MagicCircle, circleCenterPos);
-            magicCircleDrawer.color = glowingColor * 0.5f * alpha;
+            magicCircleDrawer.color = glowingColor * 0.8f * alpha;
             magicCircleDrawer.color.A = 0;
             magicCircleDrawer.rotation = Main.GlobalTimeWrappedHourly * 0.5f;
             magicCircleDrawer.scale *= 0.5f;
@@ -362,9 +390,16 @@ public class MagicWitchCauldron : VeilTownNPC
 
             Vector2 drawPos = circleCenterPos ;
        
+       
+
+            /*
             SpritebatchDrawer iconDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Item[sbm.item], drawPos);
+
             iconDrawer.color *= alpha;
             Main.spriteBatch.Draw(iconDrawer);
+            */
+            ItemSlot.DrawItemIcon(modItem.Item, 0, spriteBatch, drawPos - screenPos, 1f, 32, Color.White * alpha);
+
 
             SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, drawPos);
             glowDrawer.color = glowingColor * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 2, offset: index) * alpha;
@@ -373,9 +408,11 @@ public class MagicWitchCauldron : VeilTownNPC
             Main.spriteBatch.Draw(glowDrawer);
             if(sbm.stack >= 10)
             {
-                iconDrawer.color *= ExtraMath.Osc(0.5f, 1f, speed: 18) * alpha;
-                iconDrawer.color.A = 0;
-                Main.spriteBatch.Draw(iconDrawer);
+                Color g = Color.White;
+                g *= ExtraMath.Osc(0.5f, 1f, speed: 18) * alpha;
+                g.A = 0;
+                ItemSlot.DrawItemIcon(modItem.Item, 0, spriteBatch, drawPos - screenPos, 1f, 32, g);
+
             }
 
 
@@ -396,7 +433,7 @@ public class MagicWitchCauldron : VeilTownNPC
             string text = $"x{sbm.stack} {modItem.DisplayName.Value}";
             Vector2 size = FontAssets.ItemStack.Value.MeasureString(text);
             ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text,
-                circleCenterPos - screenPos + new Vector2(0, 32), Color.White, 0f, size * 0.5f, new Vector2(scale), -1, scale);
+                circleCenterPos - screenPos + new Vector2(0, 32), Color.White * alpha, 0f, size * 0.5f, new Vector2(scale), -1, scale);
             offset.Y -= 24;
             index++;
         }
