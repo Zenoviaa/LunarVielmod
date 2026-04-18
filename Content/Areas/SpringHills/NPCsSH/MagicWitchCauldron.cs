@@ -1,4 +1,6 @@
-﻿using Stellamod.Common.Shaders;
+﻿using ReLogic.Content;
+using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
@@ -18,6 +20,7 @@ public class MagicWitchCauldron : ModNPC
     private int _frame;
     private ref float Timer => ref NPC.ai[0];
     private ref float CraftTimer => ref NPC.ai[1];
+    private ref float ItemType => ref NPC.ai[2];
     private float DrinkEaseTime => 45;
     private float CraftEaseTime => 20;
     private Cauldron Cauldron => ModContent.GetInstance<Cauldron>();
@@ -113,6 +116,8 @@ public class MagicWitchCauldron : ModNPC
                 Main.item[itemIndex].shimmered = true;
                 Main.item[itemIndex].velocity = -Vector2.UnitY * 15;
                 Main.item[itemIndex].velocity = Main.item[itemIndex].velocity.RotatedByRandom(MathHelper.ToRadians(65));
+                ItemType = result;
+                NPC.netUpdate = true;
                 NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
             }
             Spew();
@@ -121,6 +126,12 @@ public class MagicWitchCauldron : ModNPC
             SoundEngine.PlaySound(soundStyle, NPC.position);
         }
 
+        if(ItemType != 0)
+        {
+            Item item = new Item((int)ItemType);
+            CombatText.NewText(NPC.getRect(), Color.White, item.Name, false);
+            ItemType = 0;
+        }
         if (CraftTimer > 0)
         {
             CraftTimer--;
@@ -162,7 +173,23 @@ public class MagicWitchCauldron : ModNPC
         }
 
         //Godrays here
+        Asset<Texture2D> godrayTexture = AssetManager.GlowMask.SimpleGlowCircle;
+        Vector2 origin = godrayTexture.Size() * 0.5f;
+        Vector2 godrayScale = new Vector2(0.35f, 2f);
 
+        SpritebatchDrawer sbDrawer2 = SpritebatchDrawer.FromTextureAsset(godrayTexture, NPC.Center);
+        sbDrawer2.color = Color.Gold * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1);
+        sbDrawer2.color.A = 0;
+        sbDrawer2.rotation -= MathHelper.ToRadians(25);
+            sbDrawer2.scale *= godrayScale;
+        sbDrawer2.worldPosition.Y -= 100;
+        Main.spriteBatch.Draw(sbDrawer2);
+
+        sbDrawer2.color = Color.Gold * 0.2f * ExtraMath.Osc(0f, 1f, speed: 1, offset: 1);
+        sbDrawer2.color.A = 0;
+        sbDrawer2.worldPosition += Vector2.UnitY.RotatedBy(Main.GlobalTimeWrappedHourly * 1) * 64;
+        sbDrawer2.worldPosition.Y -= 100;
+        Main.spriteBatch.Draw(sbDrawer2);
         float scale = 1f;
         Vector2 offset = new Vector2();
         offset.Y -= 96;
