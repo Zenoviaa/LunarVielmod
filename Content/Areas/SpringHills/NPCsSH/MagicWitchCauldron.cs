@@ -13,6 +13,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
+using XPT.Core.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
 
 namespace Stellamod.Content.Areas.SpringHills.NPCsSH;
 
@@ -220,9 +221,19 @@ public class MagicWitchCauldron : VeilTownNPC
 
         }
     }
+    private List<float> _oldAlpha;
     private List<Vector2> _oldPositions;
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+
+        _oldAlpha ??= new List<float>();
+        if (_oldAlpha.Count < 8)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                _oldAlpha.Add(0);
+            }
+        }
 
         _oldPositions ??= new List<Vector2>();
         if(_oldPositions.Count < 8)
@@ -232,7 +243,32 @@ public class MagicWitchCauldron : VeilTownNPC
                 _oldPositions.Add(NPC.Center);
             }
         }
- 
+
+
+        int alphaIndex = 0;
+        for(int i = 0; i < _oldAlpha.Count; i++)
+        {
+            if(Cauldron.InsideCauldron.Count > i)
+            {
+                if (!Cauldron.IsMaterial(Cauldron.InsideCauldron[i].item))
+                {
+                    continue;
+                }
+                float targetAlpha = 1f;
+                float lerp = MathHelper.Lerp(_oldAlpha[alphaIndex], targetAlpha, 0.1f);
+                _oldAlpha[alphaIndex] = lerp;
+            }
+            else
+            {
+                float targetAlpha = 0f;
+                float lerp = MathHelper.Lerp(_oldAlpha[alphaIndex], targetAlpha, 0.1f);
+                _oldAlpha[alphaIndex] = lerp;
+            }
+          
+
+           
+            alphaIndex++;
+        }
         DrawCauldron(spriteBatch, Vector2.Zero);
 
 
@@ -298,6 +334,9 @@ public class MagicWitchCauldron : VeilTownNPC
             {
                 interpPos = Vector2.Lerp(left, right, 0.5f);
             }
+
+            float alpha = _oldAlpha[(int)index];
+
             Vector2 targetCirclePos = interpPos;
             Vector2 lerp = Vector2.Lerp(_oldPositions[(int)index], targetCirclePos, 0.1f);
             _oldPositions[(int)index] = lerp;
@@ -308,14 +347,14 @@ public class MagicWitchCauldron : VeilTownNPC
             Color glowingColor = Color.Lerp(Color.Lerp(Color.Black, rarityColor, 0.5f), rarityColor, glowProgress);
 
             SpritebatchDrawer darknessDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), circleCenterPos);
-            darknessDrawer.color = Color.Black;
+            darknessDrawer.color = Color.Black * alpha;
             darknessDrawer.rotation = 0;
             darknessDrawer.scale *= 1.6f;
             Main.spriteBatch.Draw(darknessDrawer);
 
 
             SpritebatchDrawer magicCircleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.MagicCircle, circleCenterPos);
-            magicCircleDrawer.color = glowingColor * 0.5f;
+            magicCircleDrawer.color = glowingColor * 0.5f * alpha;
             magicCircleDrawer.color.A = 0;
             magicCircleDrawer.rotation = Main.GlobalTimeWrappedHourly * 0.5f;
             magicCircleDrawer.scale *= 0.5f;
@@ -324,17 +363,17 @@ public class MagicWitchCauldron : VeilTownNPC
             Vector2 drawPos = circleCenterPos ;
        
             SpritebatchDrawer iconDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Item[sbm.item], drawPos);
-
+            iconDrawer.color *= alpha;
             Main.spriteBatch.Draw(iconDrawer);
 
             SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, drawPos);
-            glowDrawer.color = glowingColor * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 2, offset: index);
+            glowDrawer.color = glowingColor * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 2, offset: index) * alpha;
             glowDrawer.color.A = 0;
             glowDrawer.scale *= 0.3f;
             Main.spriteBatch.Draw(glowDrawer);
             if(sbm.stack >= 10)
             {
-                iconDrawer.color *= ExtraMath.Osc(0.5f, 1f, speed: 18);
+                iconDrawer.color *= ExtraMath.Osc(0.5f, 1f, speed: 18) * alpha;
                 iconDrawer.color.A = 0;
                 Main.spriteBatch.Draw(iconDrawer);
             }
