@@ -2,6 +2,7 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using System;
@@ -21,6 +22,46 @@ public struct PixelPrimitiveCircleParams
 
 public static class PixelPrimitiveCircleFactory
 {
+    public static void CreateFlamingCircle(Vector2 position)
+    {
+        void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
+        {
+            Color StripColors(float progressOnStrip)
+            {
+                //  return Color.Lerp(Color.LightGoldenrodYellow, Color.White, Utils.GetLerpValue(0f, 0.7f, progressOnStrip, clamped: true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip));
+                return Color.Lerp(Color.White, Color.Transparent, EasingFunction.InOutSine(completionRatio));
+            }
+
+            float StripWidth(float progressOnStrip)
+            {
+                float baseWidth = 64;
+                return MathHelper.SmoothStep(baseWidth, baseWidth, progressOnStrip) * MathHelper.Lerp(1f, 0.5f, EasingFunction.InOutSine(completionRatio));
+            }
+            float StripWidth2(float progressOnStrip)
+            {
+                return StripWidth(completionRatio) * 2f;
+            }
+
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            blackFireShader.SetDefaults();
+            blackFireShader.InnerEmitColor = Color.Yellow * 0.2f;
+            blackFireShader.OuterEmiteColor = Color.Red;
+            TrailDrawer.Draw(Main.spriteBatch, points, StripColors, StripWidth, blackFireShader);
+
+            BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
+            bloomTrailShader.InnerColor = Color.OrangeRed;
+            bloomTrailShader.OuterColor = Color.Red;
+            TrailDrawer.Draw(Main.spriteBatch, points, StripColors, StripWidth2, bloomTrailShader);
+        }
+        PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
+        circle.circleParams.minRadius = 8;
+        circle.circleParams.maxRadius = 64;
+        circle.circleParams.time = 25;
+        circle.renderPixelPrimitivesFunction = RenderPrimitives;
+        circle.position = position;
+    
+        ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
+    }
     public static void CreateClosingGustCircle(Vector2 position)
     {
         void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
