@@ -1,162 +1,158 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Steamworks;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Terraria;
 
-namespace Stellamod.Visual.Particles
+namespace Stellamod.Visual.Particles;
+
+
+
+public class FlameSparksParticle : Particle<FlameSparksParticle>
 {
-
-
-    public class FlameSparksParticle : Particle<FlameSparksParticle>
+    public int FrameWidth = 128;
+    public int FrameHeight = 128;
+    public int MaxFrameCount = 1;
+    public float gravity;
+    public Vector2 stretchScale;
+    public float dampening;
+    public bool fast;
+    public override void OnSpawn()
     {
-        public int FrameWidth = 128;
-        public int FrameHeight = 128;
-        public int MaxFrameCount = 1;
-        public float gravity;
-        public Vector2 stretchScale;
-        public float dampening;
-        public bool fast;
-        public override void OnSpawn()
-        {
-            gravity = 0.2f;
-            Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
+        gravity = 0.2f;
+        Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
         //    customShader = DustShader.Instance;
-        }
-
-        public override void Update()
-        {
-            Velocity.Y += gravity;
-            Velocity *= 1.0f - dampening;
-            Rotation = Velocity.ToRotation();
-            Scale *= 0.97f;
-            if (fast)
-                Scale *= 0.98f;
-            color *= 0.99f;
-
-            float stretchInterp = Velocity.Length() / 5f;
-            stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);
-            stretchScale.Y = 1f;
-            fadeIn++;
-            if (fadeIn > 180 || Scale < 0.1f)
-                active = false;
-
-            //Bouncing
-            Vector2 collisionVelocity = Collision.TileCollision(Center, Velocity, 2, 2);
-            if (Velocity.X != collisionVelocity.X)
-                Velocity.X = -collisionVelocity.X;
-            if (Velocity.Y != collisionVelocity.Y)
-                Velocity.Y = -collisionVelocity.Y;
-
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            Vector2 centerPos = Center - Main.screenPosition;
-            var textureAsset = GetTexture();
-
-            Color drawColor = color;
-            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, drawColor, Rotation + MathHelper.PiOver2, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
-        }
     }
 
-    public struct DustParticleSpawnParams
+    public override void Update()
     {
-        public DustParticleSpawnParams()
-        {
-            innerColor = Color.White;
-            outerColor = Color.Yellow;
-            scaleRange = new Vector2(0.5f, 2f);
-            gravity = 0.2f;
-        }
-        public Color innerColor;
-        public Color outerColor;
-        public Vector2 scaleRange;
-        public float gravity;
-        public static DustParticleSpawnParams Default = new DustParticleSpawnParams();
+        Velocity.Y += gravity;
+        Velocity *= 1.0f - dampening;
+        Rotation = Velocity.ToRotation();
+        Scale *= 0.97f;
+        if (fast)
+            Scale *= 0.98f;
+        color *= 0.99f;
+
+        float stretchInterp = Velocity.Length() / 5f;
+        stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);
+        stretchScale.Y = 1f;
+        fadeIn++;
+        if (fadeIn > 180 || Scale < 0.1f)
+            active = false;
+
+        //Bouncing
+        Vector2 collisionVelocity = Collision.TileCollision(Center, Velocity, 2, 2);
+        if (Velocity.X != collisionVelocity.X)
+            Velocity.X = -collisionVelocity.X;
+        if (Velocity.Y != collisionVelocity.Y)
+            Velocity.Y = -collisionVelocity.Y;
+
     }
 
-    public class DustParticle : Particle<DustParticle>
+    public override void Draw(SpriteBatch spriteBatch)
     {
-        public int FrameWidth = 64;
-        public int FrameHeight = 64;
-        public int MaxFrameCount = 3;
-        public float gravity;
-        public Color innerColor;
-        public Color outerColor;
-        public Vector2 stretchScale;
-        public float dampening;
-        public bool fast;
-        public bool noTileCollide;
-        public bool superFast;
+        Vector2 centerPos = Center - Main.screenPosition;
+        var textureAsset = GetTexture();
 
-        public static DustParticle Spawn(Vector2 position, Vector2 velocity, DustParticleSpawnParams? spawnParams = null)
+        Color drawColor = color;
+        spriteBatch.Draw(textureAsset.Value, centerPos, Frame, drawColor, Rotation + MathHelper.PiOver2, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
+    }
+}
+
+public struct DustParticleSpawnParams
+{
+    public DustParticleSpawnParams()
+    {
+        innerColor = Color.White;
+        outerColor = Color.Yellow;
+        scaleRange = new Vector2(0.5f, 2f);
+        gravity = 0.2f;
+    }
+    public Color innerColor;
+    public Color outerColor;
+    public Vector2 scaleRange;
+    public float gravity;
+    public static DustParticleSpawnParams Default = new DustParticleSpawnParams();
+}
+
+public class DustParticle : Particle<DustParticle>
+{
+    public int FrameWidth = 64;
+    public int FrameHeight = 64;
+    public int MaxFrameCount = 3;
+    public float gravity;
+    public Color innerColor;
+    public Color outerColor;
+    public Vector2 stretchScale;
+    public float dampening;
+    public bool fast;
+    public bool noTileCollide;
+    public bool superFast;
+
+    public static DustParticle Spawn(Vector2 position, Vector2 velocity, DustParticleSpawnParams? spawnParams = null)
+    {
+        if (!spawnParams.HasValue)
+            spawnParams = new DustParticleSpawnParams();
+        DustParticleSpawnParams settings = spawnParams.Value;
+        float scale = Main.rand.NextFloat(settings.scaleRange.X, settings.scaleRange.Y);
+        DustParticle dp = Spawn(position, velocity, Color.White, scale);
+        dp.innerColor = settings.innerColor;
+        dp.outerColor = settings.outerColor;
+        dp.gravity = settings.gravity;
+        return dp;
+    }
+
+    public override void OnSpawn()
+    {
+        gravity = 0.2f;
+        innerColor = Color.White;
+        outerColor = Color.Red;
+        Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
+        customShader = DustShader.Instance;
+    }
+
+    public override void Update()
+    {
+        Velocity.Y += gravity;
+        Velocity *= 1.0f - dampening;
+        Rotation = Velocity.ToRotation();
+        Scale *= 0.97f;
+        if (fast)
+            Scale *= 0.98f;
+        if (superFast)
         {
-            if (!spawnParams.HasValue)
-                spawnParams = new DustParticleSpawnParams();
-            DustParticleSpawnParams settings = spawnParams.Value;
-            float scale = Main.rand.NextFloat(settings.scaleRange.X, settings.scaleRange.Y);
-            DustParticle dp = Spawn(position, velocity, Color.White, scale);
-            dp.innerColor = settings.innerColor;
-            dp.outerColor = settings.outerColor;
-            dp.gravity = settings.gravity;
-            return dp;
+            Velocity *= 0.9f;
+            Scale *= 0.94f;
         }
+        color *= 0.99f;
 
-        public override void OnSpawn()
-        {
-            gravity = 0.2f;
-            innerColor = Color.White;
-            outerColor = Color.Red;
-            Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
-            customShader = DustShader.Instance;
-        }
+        float stretchInterp = Velocity.Length() / 5f;
+        stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);
+        stretchScale.Y = 1f;
+        fadeIn++;
+        if (fadeIn > 180 || Scale < 0.1f)
+            active = false;
 
-        public override void Update()
-        {
-            Velocity.Y += gravity;
-            Velocity *= 1.0f - dampening;
-            Rotation = Velocity.ToRotation();
-            Scale *= 0.97f;
-            if (fast)
-                Scale *= 0.98f;
-            if (superFast)
-            {
-                Velocity *= 0.9f;
-                Scale *= 0.94f;
-            }
-            color *= 0.99f;
+        //Bouncing
+        if (noTileCollide)
+            return;
 
-            float stretchInterp = Velocity.Length() / 5f;
-            stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);
-            stretchScale.Y = 1f;
-            fadeIn++;
-            if (fadeIn > 180 || Scale < 0.1f)
-                active = false;
+        Vector2 collisionVelocity = Collision.TileCollision(Center, Velocity, 2, 2);
+        if (Velocity.X != collisionVelocity.X)
+            Velocity.X = -collisionVelocity.X;
+        if (Velocity.Y != collisionVelocity.Y)
+            Velocity.Y = -collisionVelocity.Y;
 
-            //Bouncing
-            if (noTileCollide)
-                return;
+    }
 
-            Vector2 collisionVelocity = Collision.TileCollision(Center, Velocity, 2, 2);
-            if (Velocity.X != collisionVelocity.X)
-                Velocity.X = -collisionVelocity.X;
-            if (Velocity.Y != collisionVelocity.Y)
-                Velocity.Y = -collisionVelocity.Y;
- 
-        }
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+        Vector2 centerPos = DrawPosition;
+        DustShader shader = DustShader.Instance;
+        shader.InnerColor = innerColor;
+        shader.OuterColor = outerColor;
+        shader.Apply();
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            Vector2 centerPos =DrawPosition;
-            DustShader shader = DustShader.Instance;
-            shader.InnerColor = innerColor;
-            shader.OuterColor = outerColor;
-            shader.Apply();
-
-            var textureAsset = GetTexture();
-            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, Color.White, Rotation, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
-        }
+        var textureAsset = GetTexture();
+        spriteBatch.Draw(textureAsset.Value, centerPos, Frame, Color.White, Rotation, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
     }
 }

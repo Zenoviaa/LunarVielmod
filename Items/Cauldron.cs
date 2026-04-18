@@ -109,11 +109,44 @@ namespace Stellamod.Items
         }
     }
 
+    public struct StoredBrewingMaterial
+    {
+        public int item;
+        public int stack;
+    }
     public class Cauldron : ModSystem
     {
         public static int[] MaterialRarity = ItemID.Sets.Factory.CreateIntSet(0);
         public static bool[] IsBrewingMaterial = ItemID.Sets.Factory.CreateBoolSet();
         public static bool[] IsBrewingMold = ItemID.Sets.Factory.CreateBoolSet();
+        private Queue<int> _results;
+        private List<StoredBrewingMaterial> _brewingMaterials;
+        private List<StoredBrewingMaterial> BrewingMaterials
+        {
+
+            get
+            {
+                _brewingMaterials ??= new List<StoredBrewingMaterial>();
+                return _brewingMaterials;
+            }
+        }
+
+        public List<StoredBrewingMaterial> InsideCauldron
+        {
+            get
+            {
+                _brewingMaterials ??= new List<StoredBrewingMaterial>();
+                return _brewingMaterials;
+            }
+        }
+        public Queue<int> Results
+        {
+            get
+            {
+                _results ??= new Queue<int>();
+                return _results;
+            }
+        }
         private List<CauldronBrew> _brews = new List<CauldronBrew>()
         {
 
@@ -362,7 +395,166 @@ namespace Stellamod.Items
             JustCrafted = result;
             return result;
         }
+        public CauldronBrew Mix(Item mold, Item material)
+        {
+            //Get all possible crafts
+            List<CauldronBrew> possibleBrews;
+            if (mold.IsAir)
+            {
+                //No mold, get something random
+                possibleBrews = GetPossibleBrews(material.type, material.stack);
+            }
+            else
+            {
+                List<int> moldTypes = new List<int>();
+                moldTypes.Add(mold.type);
+                possibleBrews = GetPossibleBrews(moldTypes, material.type, material.stack);
+            }
 
+            if (possibleBrews.Count == 0)
+            {
+                OnBrew?.Invoke(NothingBrew);
+                return NothingBrew;
+            }
+
+            CauldronPlayer cauldronPlayer = Main.LocalPlayer.GetModPlayer<CauldronPlayer>();
+            WeightedRandom<CauldronBrew> random = new WeightedRandom<CauldronBrew>(Main.rand.Next(0, int.MaxValue));
+            for (int i = 0; i < possibleBrews.Count; i++)
+            {
+                int itemResult = possibleBrews[i].result;
+                if (cauldronPlayer.HasMadeItem(itemResult) && cauldronPlayer.CrystalStarCount > 0)
+                    continue;
+                random.Add(possibleBrews[i], possibleBrews[i].weight);
+            }
+
+            bool consumeStar = true;
+            if (random.elements.Count == 0)
+            {
+                consumeStar = false;
+                for (int i = 0; i < possibleBrews.Count; i++)
+                {
+                    int itemResult = possibleBrews[i].result;
+                    random.Add(possibleBrews[i], possibleBrews[i].weight);
+                }
+            }
+
+
+            //Get the result
+            CauldronBrew result = random;
+            int starCount = cauldronPlayer.CrystalStarCount;
+            if (cauldronPlayer.CrystalStarCount > 0 && consumeStar)
+            {
+                cauldronPlayer.Make(ModContent.GetModItem(result.result).Item);
+                cauldronPlayer.CrystalStarCount -= 1;
+            }
+            else
+            {
+                bool getNothingFailed = Main.rand.NextFloat(0, 100) <= cauldronPlayer.NothingFailChance;
+                bool inkFailed = Main.rand.NextFloat(0, 100) <= cauldronPlayer.InkFailChance;
+
+                if (getNothingFailed)
+                {
+                    result = NothingBrew;
+                }
+                else if (inkFailed && Main.hardMode)
+                {
+                    result = InkBrew;
+                }
+
+                if (!getNothingFailed)
+                {
+                    cauldronPlayer.Make(ModContent.GetModItem(result.result).Item);
+                }
+            }
+
+            //Crafting Quest
+            QuestPlayer questPlayer = Main.LocalPlayer.GetModPlayer<QuestPlayer>();
+            var starterQuest = ModContent.GetInstance<CraftAtCauldron>();
+            questPlayer.CompleteQuest(starterQuest);
+
+            JustCrafted = result;
+            return result;
+        }
+
+        public void AddToBrew(int item, int stack)
+        {
+            bool found = false;
+            for(int i = 0; i < _brewingMaterials.Count; i++)
+            {
+                StoredBrewingMaterial sbm = _brewingMaterials[i];
+                if(sbm.item == item)
+                {
+                    sbm.stack += stack;
+                    _brewingMaterials[i] = sbm;
+                    found = true;
+                    break;
+                }
+              
+            }
+
+            if (!found)
+            {
+                StoredBrewingMaterial sbm = new StoredBrewingMaterial
+                {
+                    item = item,
+                    stack = stack
+                };
+                _brewingMaterials.Add(sbm);
+            }
+
+            if (CanMix())
+            {
+                GetResultsFromMixture();
+            }
+        }
+        public bool CanMix()
+        {
+            for (int i = 0; i < _brewingMaterials.Count; i++)
+            {
+                StoredBrewingMaterial sbm = _brewingMaterials[i];
+                if (IsMaterial(sbm.item) && sbm.stack >= 10)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void GetResultsFromMixture()
+        {
+            Queue<Item> moldWith = new Queue<Item>();
+            Queue<Item> brewWith = new Queue<Item>();
+            for(int i = 0; i < _brewingMaterials.Count; i++)
+            {
+                StoredBrewingMaterial sbm = _brewingMaterials[i];
+                while(IsMaterial(sbm.item) && sbm.stack >= 10)
+                {
+                    brewWith.Enqueue(new Item(sbm.item, sbm.stack));
+                    sbm.stack -= 10;
+                }
+                while (IsMold(sbm.item) && sbm.stack >= 1)
+                {
+                    moldWith.Enqueue(new Item(sbm.item));
+                    sbm.stack -= 1;
+                }
+                _brewingMaterials[i] = sbm;
+            }
+
+            Item air = new Item(0);
+            air.TurnToAir();
+            while(brewWith.Count > 0)
+            {
+                Item mold = air; 
+                if(moldWith.Count > 0)
+                {
+                    mold = moldWith.Dequeue();
+                }
+                Item material = brewWith.Dequeue();
+                CauldronBrew result = Mix(mold, material);
+                Results.Enqueue(result.result);
+            }
+            _brewingMaterials.RemoveAll(x => x.stack <= 0);
+        }
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();

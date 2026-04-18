@@ -1,6 +1,6 @@
 Common: {
 	ForgeHelp: Use [c/FFA500:Dragon Shards] to permanently upgrade your weapon! You gain [c/FFA500:25% more damage] everytime you upgrade! Dragon Shards are scarce though, so spend them wisely!
-	ForgeChange: "Next upgrade: {0} to [c/FFA500:{1}]"
+	ForgeChange: Next upgrade: {0} to [c/FFA500:{1}]
 	SimpleBrooch: Simple Brooch!
 	RadiantBrooch: Radiant Brooch!
 	RadiantBackpack: You need an Radiant Brooches Backpack for this!

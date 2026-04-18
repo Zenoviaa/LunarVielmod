@@ -25,21 +25,6 @@ namespace Stellamod.Content.Areas.SpecialTiles.EffectTiles
             FrameCount = 1;
 
             Origin = DrawOrigin.BottomUp;
-            ClickFunc = UseDoor;
-            HoverFunc = HoverOver;
-        }
-
-        private void HoverOver()
-        {
-            Player player = Main.LocalPlayer;
-            player.cursorItemIconID = -1;
-            player.cursorItemIconText = LangText.Misc("UrdveilDoor");
-            player.cursorItemIconEnabled = true;
-        }
-
-        private void UseDoor()
-        {
-            SoundEngine.PlaySound(SoundID.AchievementComplete);
         }
     }
 }
