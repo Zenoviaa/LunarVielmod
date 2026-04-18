@@ -312,7 +312,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
         private void AI_Death()
         {
             Timer++;
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            CameraTargetSystem.AddTarget(NPC.Center);
             if (Timer == 1)
             {
                 SoundStyle roarSound = AssetRegistry.Sounds.Ravager.RavagerRoar;

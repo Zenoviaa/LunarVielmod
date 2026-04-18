@@ -388,7 +388,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             }
 
             if(Timer < 60)
-                RetargetCameraModifier.ReTargetPosition = NPC.Center;
+                CameraTargetSystem.AddTarget(NPC.Center);
             NPC.rotation += NPC.direction * 0.05f;
             NPC.noTileCollide = true;
             NPC.velocity.X *= 0.91f;

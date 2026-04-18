@@ -420,7 +420,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             }
 
             TargetOutlineColor = Color.Yellow;
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            CameraTargetSystem.AddTarget(NPC.Center);
             NPC.noGravity = false;
             NPC.noTileCollide = false;
             NPC.velocity.X = 0;
@@ -1074,7 +1074,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             Hover();
             NPC.noGravity = true;
             NPC.noTileCollide = false;
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            CameraTargetSystem.AddTarget(NPC.Center);
             if (Timer >= 100)
             {
                 SwitchState(AIState.Idle);
@@ -1204,7 +1204,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 stretch.VectorScale.X *= Main.rand.NextFloat(0.5f, 1f);
             }
 
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            CameraTargetSystem.AddTarget(NPC.Center);
             ShakeModSystem.Shake = 4;
             NPC.noTileCollide = true;
             NPC.noGravity = true;

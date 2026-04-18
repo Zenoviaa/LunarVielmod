@@ -862,7 +862,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                 _originalVelocity = NPC.velocity;
             }
 
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            CameraTargetSystem.AddTarget(NPC.Center);
             Vector2 colosseumWorld = ColosseumWaveManager.GongSpawnWorld;
             if (Timer < 150)
             {

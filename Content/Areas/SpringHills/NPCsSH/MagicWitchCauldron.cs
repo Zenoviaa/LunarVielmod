@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
@@ -15,12 +16,13 @@ using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Content.Areas.SpringHills.NPCsSH;
 
-public class MagicWitchCauldron : ModNPC
+public class MagicWitchCauldron : VeilTownNPC
 {
     private int _frame;
     private ref float Timer => ref NPC.ai[0];
     private ref float CraftTimer => ref NPC.ai[1];
     private ref float ItemType => ref NPC.ai[2];
+    private ref float NeedsMixing => ref NPC.ai[3];
     private float DrinkEaseTime => 45;
     private float CraftEaseTime => 20;
     private Cauldron Cauldron => ModContent.GetInstance<Cauldron>();
@@ -28,19 +30,29 @@ public class MagicWitchCauldron : ModNPC
     {
         base.SetStaticDefaults();
         Main.npcFrameCount[Type] = 60;
+        NPCID.Sets.ActsLikeTownNPC[Type] = true;
+        NPCID.Sets.SpawnsWithCustomName[Type] = true;
+        NPCID.Sets.NoTownNPCHappiness[Type] = true;
+        NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+        {
+            Velocity = 1f,
+            Direction = 1
+        };
+
+        NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
     }
     public override void SetDefaults()
     {
         base.SetDefaults();
         NPC.width = 80;
-        NPC.height = 48;
+        NPC.height = 80;
         NPC.friendly = true;
         NPC.lifeMax = 20;
         NPC.defense = 1;
         NPC.damage = 1;
         NPC.dontTakeDamage = true;
         NPC.dontTakeDamageFromHostiles = true;
-        NPC.townNPC = true;
+        //NPC.townNPC = true;
     }
     public override void FindFrame(int frameHeight)
     {
@@ -84,39 +96,49 @@ public class MagicWitchCauldron : ModNPC
             bp.gravity = 0;
         }
 
-        Rectangle npcRect = NPC.getRect();
-        foreach (Item item in Main.ActiveItems)
+        if(CraftTimer <= 0 && Timer <= 0)
         {
-            Rectangle itemRect = item.getRect();
-            if (!npcRect.Intersects(itemRect))
-                continue;
+            Rectangle npcRect = NPC.getRect();
+            foreach (Item item in Main.ActiveItems)
+            {
+                Rectangle itemRect = item.getRect();
+                if (!npcRect.Intersects(itemRect))
+                    continue;
 
-            if (!Cauldron.IsMaterial(item.type) && !Cauldron.IsMold(item.type))
-                continue;
+                if (!Cauldron.IsMaterial(item.type) && !Cauldron.IsMold(item.type))
+                    continue;
 
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/CauldronCraft");
-            soundStyle.PitchVariance = 0.15f;
-            SoundEngine.PlaySound(soundStyle, NPC.position);
+                SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/CauldronCraft");
+                soundStyle.PitchVariance = 0.15f;
+                SoundEngine.PlaySound(soundStyle, NPC.position);
 
-            Spew();
-            Timer = DrinkEaseTime;
-            Cauldron.AddToBrew(item.type, item.stack);
-            item.active = false;
+                Spew();
+                Timer = DrinkEaseTime;
+                Cauldron.AddToBrew(item.type, item.stack);
+                item.active = false;
+            }
+        }
+
+
+        if(NPC.HasBuff(BuffID.OnFire) && Cauldron.CanMix())
+        {
+            Cauldron.MixDaCauldron();
+            NPC.DelBuff(NPC.FindBuffIndex(BuffID.OnFire));
         }
 
         if(Cauldron.Results.Count > 0 && CraftTimer <= 0)
         {
             Timer = 0;
             CraftTimer = CraftEaseTime;
-            int result = Cauldron.Results.Dequeue();
+            var result = Cauldron.Results.Dequeue();
             if (MultiplayerHelper.IsHost)
             {
                 int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
-                    result, Main.rand.Next(1, 1));
+                    result.item, result.stack);
                 Main.item[itemIndex].shimmered = true;
                 Main.item[itemIndex].velocity = -Vector2.UnitY * 15;
                 Main.item[itemIndex].velocity = Main.item[itemIndex].velocity.RotatedByRandom(MathHelper.ToRadians(65));
-                ItemType = result;
+                ItemType = result.item;
                 NPC.netUpdate = true;
                 NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
             }
@@ -126,11 +148,18 @@ public class MagicWitchCauldron : ModNPC
             SoundEngine.PlaySound(soundStyle, NPC.position);
         }
 
-        if(ItemType != 0)
+        if(ItemType != -1)
         {
             Item item = new Item((int)ItemType);
-            CombatText.NewText(NPC.getRect(), Color.White, item.Name, false);
-            ItemType = 0;
+            string get = item.Name;
+            Color color = Color.White;
+            if (item.IsAir || item.type == 0)
+            {
+                color = Color.DarkGray;
+                get = "...........";
+            }
+            CombatText.NewText(NPC.getRect(), color, get, false);
+            ItemType = -1;
         }
         if (CraftTimer > 0)
         {
@@ -142,10 +171,24 @@ public class MagicWitchCauldron : ModNPC
             Timer--;
         }
     }
-    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    public override void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+    {
+      //  base.DrawOutlines(spriteBatch, screenPos, lightColor);
+        if (!_drawOutlines)
+            return;
+        _drawOutlines = false;
+        float o = 2;
+        DrawCauldron(spriteBatch, -Vector2.UnitX * o);
+        DrawCauldron(spriteBatch, Vector2.UnitX * o);
+        DrawCauldron(spriteBatch, Vector2.UnitY * o);
+        DrawCauldron(spriteBatch, -Vector2.UnitY * o);
+    }
+
+    private void DrawCauldron(SpriteBatch spriteBatch, Vector2 offset)
     {
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromNPC(NPC);
         sbDrawer.worldPosition.Y += ExtraMath.Osc(0f, 4f, speed: 1);
+        sbDrawer.worldPosition.Y -= 40;
 
         float range = MathHelper.ToRadians(2);
         float radians = MathHelper.Lerp(-range, range, ExtraMath.Osc(0f, 1f, speed: 2));
@@ -156,13 +199,13 @@ public class MagicWitchCauldron : ModNPC
         float ease2 = EasingFunction.QuadraticBump(CraftTimer / CraftEaseTime);
         Vector2 drinkScale = Vector2.Lerp(Vector2.One, new Vector2(0.75f, 1.25f), MathHelper.Clamp(ease + ease2, 0f, 1f));
         sbDrawer.scale *= drinkScale;
-
+        sbDrawer.worldPosition += offset;
         sbDrawer.BottomCenterOrigin();
         sbDrawer.drawOrigin.Y -= 32;
         spriteBatch.Draw(sbDrawer);
 
         //Flash
-        if(Timer > 0 || CraftTimer > 0)
+        if (Timer > 0 || CraftTimer > 0)
         {
             SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
             spriteBatch.Restart(effect: whiteShader.Effect);
@@ -171,6 +214,12 @@ public class MagicWitchCauldron : ModNPC
             spriteBatch.RestartDefaults();
 
         }
+    }
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+
+        DrawCauldron(spriteBatch, Vector2.Zero);
+
 
         //Godrays here
         Asset<Texture2D> godrayTexture = AssetManager.GlowMask.SimpleGlowCircle;
@@ -193,17 +242,104 @@ public class MagicWitchCauldron : ModNPC
         float scale = 1f;
         Vector2 offset = new Vector2();
         offset.Y -= 96;
-        int index = 0;
-        foreach(var sbm in Cauldron.InsideCauldron)
+        float index = 0;
+        float count = 0;
+        foreach (var sbm in Cauldron.InsideCauldron)
+        {
+            if (Cauldron.IsMaterial(sbm.item))
+                count++;
+        }
+           
+        foreach (var sbm in Cauldron.InsideCauldron)
         {
             Vector2 pos = NPC.Center;
             pos.Y += ExtraMath.Osc(0f, 4f, speed: 2, offset: index);
             ModItem modItem = ModContent.GetModItem(sbm.item);
-            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, $"x{sbm.stack} {modItem.DisplayName.Value}",
-                pos - screenPos + offset, Color.White, 0f, Vector2.Zero, new Vector2(scale), -1, scale);
+            pos.Y -= 128;
+            if (!Cauldron.IsMaterial(sbm.item))
+            {
+                pos.Y += 64;
+                SpritebatchDrawer moldDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Item[sbm.item], pos);
+
+                Main.spriteBatch.Draw(moldDrawer);
+                continue;
+            }
+
+ 
+            float circleRange = MathHelper.Lerp(25, 350, count / 5f) ;
+    
+
+            Vector2 left = pos + Vector2.UnitX * -circleRange;
+            Vector2 right = pos + Vector2.UnitX * circleRange;
+
+            float c = count - 1;
+            if (c <= 0)
+                c = 1;
+            Vector2 interpPos = Vector2.Lerp(left, right, index / c);
+
+            if(count == 1)
+            {
+                interpPos = Vector2.Lerp(left, right, 0.5f);
+            }
+            Vector2 circleCenterPos = interpPos;
+
+            float glowProgress = sbm.stack / 10f;
+            Color rarityColor = RarityLoader.GetRarity(modItem.Item.rare).RarityColor;
+            Color glowingColor = Color.Lerp(Color.Lerp(Color.Black, rarityColor, 0.5f), rarityColor, glowProgress);
+            SpritebatchDrawer magicCircleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.MagicCircle, circleCenterPos);
+            magicCircleDrawer.color = glowingColor * 0.5f;
+            magicCircleDrawer.color.A = 0;
+            magicCircleDrawer.rotation = Main.GlobalTimeWrappedHourly * 0.5f;
+            magicCircleDrawer.scale *= 0.5f;
+            Main.spriteBatch.Draw(magicCircleDrawer);
+
+            Vector2 drawPos = circleCenterPos ;
+       
+            SpritebatchDrawer iconDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Item[sbm.item], drawPos);
+
+            Main.spriteBatch.Draw(iconDrawer);
+
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, drawPos);
+            glowDrawer.color = glowingColor * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 2, offset: index);
+            glowDrawer.color.A = 0;
+            glowDrawer.scale *= 0.3f;
+            Main.spriteBatch.Draw(glowDrawer);
+            if(sbm.stack >= 10)
+            {
+                iconDrawer.color *= ExtraMath.Osc(0.5f, 1f, speed: 18);
+                iconDrawer.color.A = 0;
+                Main.spriteBatch.Draw(iconDrawer);
+            }
+
+
+
+            /*
+            for (float i = 0; i < sbm.stack; i++)
+            {
+                float ratio = i / 10f;
+                float circleRadians = ratio * MathHelper.TwoPi;
+                Vector2 circleOffset = circleRadians.ToRotationVector2();
+                circleOffset *= 64;
+                Vector2 drawPos = circleCenterPos + circleOffset;
+                SpritebatchDrawer iconDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Item[sbm.item], drawPos);
+                Main.spriteBatch.Draw(iconDrawer);
+            }
+            */
+
+            string text = $"x{sbm.stack} {modItem.DisplayName.Value}";
+            Vector2 size = FontAssets.ItemStack.Value.MeasureString(text);
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text,
+                circleCenterPos - screenPos + new Vector2(0, 32), Color.White, 0f, size * 0.5f, new Vector2(scale), -1, scale);
             offset.Y -= 24;
+            index++;
         }
         return false;
+    }
+    public override void Interact()
+    {
+        //        base.Interact();
+        //Hacky way to do netcode lol
+        NPC.AddBuff(BuffID.OnFire, 60);
     }
     public override void OnKill()
     {

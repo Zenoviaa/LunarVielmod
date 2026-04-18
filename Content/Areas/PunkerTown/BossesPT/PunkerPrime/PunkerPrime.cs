@@ -712,7 +712,7 @@ public class PunkerPrime : ScarletBoss,
         NPC.velocity.X = ExtraMath.Osc(-4f, 4f, speed: 3);
         NPC.velocity.Y *= 0.95f;
         NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.01f);
-        RetargetCameraModifier.ReTargetPosition = NPC.Center;
+        CameraTargetSystem.AddTarget(NPC.Center);
         if(Timer >= 160)
         {
             SwitchState(AIState.Emote_Laugh);

@@ -121,12 +121,16 @@ namespace Stellamod.Core
             }
             if (Main.mouseRight && Main.mouseRightRelease && mouseIntersects )
             {
-                DialogueTowningUISystem towningUISystem = ModContent.GetInstance<DialogueTowningUISystem>();
-                towningUISystem.Interact(this);
+                Interact();
             }
             return false;
         }
 
+        public virtual void Interact()
+        {
+            DialogueTowningUISystem towningUISystem = ModContent.GetInstance<DialogueTowningUISystem>();
+            towningUISystem.Interact(this);
+        }
 
         public virtual void OpenTownDialogue(
             ref string text,

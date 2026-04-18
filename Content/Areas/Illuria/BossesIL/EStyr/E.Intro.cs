@@ -29,7 +29,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.velocity = hoverVelocity;
 
             //First we make the camera move to him
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            CameraTargetSystem.AddTarget(NPC.Center);
 
             //Face away the player
             NPC.direction = TargetDirection;
@@ -243,7 +243,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             ShakeModSystem.Shake = 8;
 
             //Keep the camera on the boss
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            CameraTargetSystem.AddTarget(NPC.Center);
             NPC.velocity = Vector2.Zero;
 
             //Set the black sea shader active
@@ -291,7 +291,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float ease = EasingFunction.InOutExpo(completionRatio);
             DomainExpansion domainExpansion = ScreenShader.GetInstance<DomainExpansion>();
             domainExpansion.radius = MathHelper.Lerp(2f, 0f, ease);
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            CameraTargetSystem.AddTarget(NPC.Center);
 
             //Face away the player
             NPC.direction = TargetDirection;

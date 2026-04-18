@@ -338,7 +338,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
             if (_inRiver)
             {
-                RetargetCameraModifier.ReTargetPosition = _boxCenter;
+                CameraTargetSystem.AddTarget(_boxCenter);
             }
             if(InPhase2 && !_doneSpecial)
             {

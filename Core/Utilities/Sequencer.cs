@@ -155,7 +155,7 @@ namespace Stellamod.Core.Utilities
             progress = MathHelper.Clamp(progress, 0f, 1f);
 
             Vector2 interpolatedValue = Vector2.Lerp(_cameraStartPos, overrideValue, progress);
-            RetargetCameraModifier.ReTargetPosition = interpolatedValue;
+            CameraTargetSystem.AddTarget(interpolatedValue);
         }
 
         private void ManageTintColor()

@@ -1209,7 +1209,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             //Slowly hover upwards I think that'd be cool
             if (NPC.velocity.Y < -1f)
                 NPC.velocity.Y -= 0.1f;
-            RetargetCameraModifier.ReTargetPosition = NPC.Center;
+            CameraTargetSystem.AddTarget(NPC.Center);
             TargetOutlineColor = Color.Yellow;
 
 

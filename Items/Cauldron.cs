@@ -119,7 +119,7 @@ namespace Stellamod.Items
         public static int[] MaterialRarity = ItemID.Sets.Factory.CreateIntSet(0);
         public static bool[] IsBrewingMaterial = ItemID.Sets.Factory.CreateBoolSet();
         public static bool[] IsBrewingMold = ItemID.Sets.Factory.CreateBoolSet();
-        private Queue<int> _results;
+        private Queue<StoredBrewingMaterial> _results;
         private List<StoredBrewingMaterial> _brewingMaterials;
         private List<StoredBrewingMaterial> BrewingMaterials
         {
@@ -139,11 +139,12 @@ namespace Stellamod.Items
                 return _brewingMaterials;
             }
         }
-        public Queue<int> Results
+
+        public Queue<StoredBrewingMaterial> Results
         {
             get
             {
-                _results ??= new Queue<int>();
+                _results ??= new Queue<StoredBrewingMaterial>();
                 return _results;
             }
         }
@@ -167,7 +168,7 @@ namespace Stellamod.Items
             get
             {
                 CauldronBrew brew = new CauldronBrew();
-                brew.result = -1;
+                brew.result = 0;
                 return brew;
             }
         }
@@ -502,25 +503,18 @@ namespace Stellamod.Items
                 _brewingMaterials.Add(sbm);
             }
 
+            /*
             if (CanMix())
             {
                 GetResultsFromMixture();
-            }
+            }*/
         }
         public bool CanMix()
         {
-            for (int i = 0; i < _brewingMaterials.Count; i++)
-            {
-                StoredBrewingMaterial sbm = _brewingMaterials[i];
-                if (IsMaterial(sbm.item) && sbm.stack >= 10)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return _brewingMaterials.Count > 0;
         }
 
-        public void GetResultsFromMixture()
+        public void MixDaCauldron()
         {
             Queue<Item> moldWith = new Queue<Item>();
             Queue<Item> brewWith = new Queue<Item>();
@@ -551,9 +545,20 @@ namespace Stellamod.Items
                 }
                 Item material = brewWith.Dequeue();
                 CauldronBrew result = Mix(mold, material);
-                Results.Enqueue(result.result);
+                StoredBrewingMaterial brew = new StoredBrewingMaterial
+                {
+                    item = result.result,
+                    stack = 1
+                };
+                Results.Enqueue(brew);
             }
-            _brewingMaterials.RemoveAll(x => x.stack <= 0);
+
+            for (int i = 0; i < _brewingMaterials.Count; i++)
+            {
+                StoredBrewingMaterial sbm = _brewingMaterials[i];
+                Results.Enqueue(sbm);
+            }
+            _brewingMaterials.Clear();
         }
         public override void PostUpdateEverything()
         {

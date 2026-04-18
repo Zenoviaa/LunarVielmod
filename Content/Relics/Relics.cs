@@ -75,7 +75,7 @@ public class RelicSummon : ModProjectile
             SoundEngine.PlaySound(summonSound, Projectile.position);
         }
         ShakeModSystem.Shake = 3;
-        RetargetCameraModifier.ReTargetPosition = Projectile.Center;
+        CameraTargetSystem.AddTarget(Projectile.Center);
         if(Timer % 8 == 0)
         {
             Vector2 pos = Projectile.Center + Vector2.One.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(100, 250);

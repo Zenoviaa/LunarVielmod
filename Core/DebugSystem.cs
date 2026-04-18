@@ -31,7 +31,7 @@ namespace Stellamod.Core
  
             if (_lock)
             {
-                RetargetCameraModifier.ReTargetPosition = _lockPosition;
+                CameraTargetSystem.AddTarget(_lockPosition);
             }
         }
     }

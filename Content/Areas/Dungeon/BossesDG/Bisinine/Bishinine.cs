@@ -847,6 +847,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         #region Signature Comet Fall
         private void AI_CometJumpStartup()
         {
+            NPC.noGravity = true;
             foreach (var proj in Main.ActiveProjectiles)
             {
                 if (proj.type == ModContent.ProjectileType<BellBaseball>())
@@ -911,10 +912,20 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             _afterImageTime = MathHelper.Lerp(0f, 0.5f, EasingFunction.InOutSine(Timer / 30f));
             NPC.direction = TargetDirection;
 
+            float targetY = MyTarget.Center.Y - 252;
+            if(NPC.Center.Y > targetY)
+            {
+                NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, -5, 0.05f);
+            }
+            else
+            {
+                NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, 2, 0.05f);
+            }
+
             if(Timer >= 64)
             {
                 NPC.velocity.X += MathF.Sin(Timer * 0.1f) * 0.2f;
-                NPC.velocity.Y = MathF.Cos(Timer * 0.2f) * 0.4f;
+        
                 float xDistance = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
                 if(xDistance > 64)
                 {
@@ -1696,6 +1707,9 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             NPC.rotation = NPC.velocity.X * 0.2f;
             NPC.noGravity = false;
             NPC.noTileCollide = NPC.Bottom.Y < MyTarget.Top.Y;
+            if (NPC.noTileCollide)
+                return;
+
             float timeToWait = InPhase2 ? 95 : 60;
             if (Timer >= timeToWait)
             {
@@ -1734,10 +1748,6 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
         private void AI_Death()
         {
- 
-
-
-
 
             TargetOutlineColor = Color.Transparent;
             Timer++;
@@ -1818,7 +1828,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
 
             if(Timer <= 180)
             {
-                RetargetCameraModifier.ReTargetPosition = NPC.Center;
+                CameraTargetSystem.AddTarget(NPC.Center);
             }
             if(Timer >= 150 && Timer % 5 == 0)
             {

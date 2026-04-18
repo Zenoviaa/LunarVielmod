@@ -777,7 +777,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             //Fade the screen to black
             ShakeModSystem.Shake = 8;
             Vector2 boxPosition = GetBoxPosition();
-            RetargetCameraModifier.ReTargetPosition = Vector2.Lerp(Main.LocalPlayer.Center, boxPosition, completionRatio);
+            CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, boxPosition, completionRatio));
             //  FullTint.SetColor(Color.Black, completionRatio);
             NPC.velocity *= 0.9f;
             if (Timer >= fadeTime)
@@ -809,7 +809,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
 
             Vector2 boxPosition = GetBoxPosition();
-            RetargetCameraModifier.ReTargetPosition = boxPosition;
+            CameraTargetSystem.AddTarget(boxPosition);
 
             NPC.velocity *= 0.9f;
             if (Timer >= 30)

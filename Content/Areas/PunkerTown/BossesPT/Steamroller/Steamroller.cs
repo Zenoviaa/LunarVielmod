@@ -84,8 +84,20 @@ public class Steamroller : ScarletBoss,
         public bool paused;
         public bool needsFiring;
         public float firingTimer;
+        public bool isDying;
+        public float dyingTimer;
+        public float dyingRot;
         public void Update()
         {
+            if (isDying)
+            {
+                dyingTimer++;
+                if(dyingTimer % 4 == 0)
+                {
+                    float radians = MathHelper.ToRadians(15);
+                    dyingRot = Main.rand.NextFloat(-radians, radians);
+                }
+            }
             switch (animationState)
             {
                 case SteamrollerAnimationState.Spin_Slow:
@@ -164,7 +176,7 @@ public class Steamroller : ScarletBoss,
             int frameHeight = 148;
             drawer.sourceRect = new Rectangle(0, Animator.GetFrameY(frameHeight), steamrollerSegmentTextureAsset.Width(), frameHeight);
             drawer.drawOrigin = new Vector2(drawer.sourceRect.Value.Width, drawer.sourceRect.Value.Height) * 0.5f;
-            drawer.rotation = rotation;
+            drawer.rotation = rotation + dyingRot;
             drawer.color = drawColor;
             sb.Draw(drawer);
 
@@ -804,7 +816,7 @@ public class Steamroller : ScarletBoss,
         {
             Vector2 targetPos = Vector2.Lerp(MyTarget.Center, NPC.Center, 0.35f);
             if (Timer < 70)
-                RetargetCameraModifier.ReTargetPosition = targetPos;
+                CameraTargetSystem.AddTarget(targetPos);
         }
 
         if (Timer == 60)
@@ -966,7 +978,7 @@ public class Steamroller : ScarletBoss,
         }
 
         Vector2 targetPos = Vector2.Lerp(MyTarget.Center, MyTarget.Center + new Vector2(0, -500), 0.35f);
-        RetargetCameraModifier.ReTargetPosition = targetPos;
+        CameraTargetSystem.AddTarget(targetPos);
         if (Timer > 60)
         {
             NPC.velocity *= 0.9f;
@@ -1090,7 +1102,7 @@ public class Steamroller : ScarletBoss,
         {
             Vector2 targetPos = Vector2.Lerp(MyTarget.Center, NPC.Center, 0.35f);
             if (Timer < 70)
-                RetargetCameraModifier.ReTargetPosition = targetPos;
+                CameraTargetSystem.AddTarget(targetPos);
         }
 
         for (int i = 0; i < _steamrollerSegments.Length; i++)
@@ -1307,6 +1319,12 @@ public class Steamroller : ScarletBoss,
         {
             _currentSpeed = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
             GroundImpact();
+            if (_isDying)
+            {
+                SoundStyle steamingSound = AssetRegistry.Sounds.SteamPunking.SteamingDeathStart;
+                steamingSound.PitchVariance = 0.3f;
+                SoundEngine.PlaySound(steamingSound, NPC.position);
+            }
 
             SoundStyle smash = AssetRegistry.Sounds.Melee.HammerSmash3;
             smash.PitchVariance = 0.3f;
@@ -1328,7 +1346,7 @@ public class Steamroller : ScarletBoss,
 
         }
         NPC.velocity *= 0.95f;
-
+        float deathTime = 250;
         //This state gets reused for the death animation
         if (_isDying)
         {
@@ -1338,8 +1356,11 @@ public class Steamroller : ScarletBoss,
                 steamRollerSegment.glowColor = Color.Lerp(Color.Transparent, Color.Red, ExtraMath.Osc(0f, 1f, speed: 32));
             }
 
+            float ease = EasingFunction.InOutSine(Timer / deathTime);
+            float segmentLength = MathHelper.Lerp(80, 35, ease);
+            Chain.segmentLength = segmentLength;
 
-            if (Timer >= 360)
+            if (Timer >= deathTime)
             {
                 FXUtil.ShakeCamera(NPC.Center, 1024, 8);
                 ShakeModSystem.Shake = 5;
@@ -1442,8 +1463,14 @@ public class Steamroller : ScarletBoss,
     {
         Vector2 bottom = _targetPosition - Vector2.UnitY * 64;
         Point point = bottom.ToTileCoordinates();
-        while (!WorldGen.SolidTile(point))
-            point.Y++;
+        for(int i = 0; i < 1000; i++)
+        {
+            if (WorldGen.SolidTile(point))
+                break;
+            else
+                point.Y++;
+        }
+  
         bottom = point.ToWorldCoordinates();
         if (Main.rand.NextBool(4))
         {
@@ -1503,6 +1530,7 @@ public class Steamroller : ScarletBoss,
         if (Timer == 1)
         {
             NPC.TargetClosest();
+            //Teleport(MyTarget.Bottom + new Vector2(0, 1000));
         }
 
         if (Timer < DungDefenderWarningTime - 30)
@@ -1510,6 +1538,27 @@ public class Steamroller : ScarletBoss,
             _startVelocity = NPC.velocity;
             _targetPosition = MyTarget.Bottom;
         }
+
+
+        if (NPC.velocity.Y < 0)
+        {
+            NPC.velocity.Y += 0.125f;
+            NPC.velocity.Y *= 0.65f;
+        }
+        else
+        {
+            NPC.velocity.Y += 0.5f;
+            if (NPC.velocity.Y > 25)
+            {
+                NPC.velocity.Y = 25;
+            }
+        }
+        for (int i = 0; i < Chain.points.Length; i++)
+        {
+            ref Vector2 p = ref Chain.points[i];
+            p += NPC.velocity;
+        }
+        /*
 
         //Ease in to the start position for the attack
         float ratio = Timer / DungDefenderWarningTime;
@@ -1519,6 +1568,8 @@ public class Steamroller : ScarletBoss,
         Vector2 interpVelocity = Vector2.Lerp(_startVelocity, targetVelocity, ease);
         NPC.velocity = interpVelocity;
         NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+
+    */
         DungDefenderRocks();
         _targetOutlineColor = Color.Yellow;
 
@@ -1541,6 +1592,7 @@ public class Steamroller : ScarletBoss,
         if (Timer == 1)
         {
             _crashed = false;
+            Teleport(_targetPosition + new Vector2(0, 400));
             WarpSegments();
         }
 
@@ -1666,6 +1718,7 @@ public class Steamroller : ScarletBoss,
             }
 
             _nextAttackToDo = PatternManager.NextPattern();
+       //     _nextAttackToDo = AIState.DungDefenderRock_Start;
             SwitchState(_nextAttackToDo);
             if (!_phase2 && NPC.life < NPC.lifeMax * 0.5f)
             {
@@ -1709,6 +1762,25 @@ public class Steamroller : ScarletBoss,
             NPC.TargetClosest();
         }
 
+        if (NPC.velocity.Y < 0)
+        {
+            NPC.velocity.Y += 0.125f;
+            NPC.velocity.Y *= 0.65f;
+        }
+        else
+        {
+            NPC.velocity.Y += 0.5f;
+            if (NPC.velocity.Y > 25)
+            {
+                NPC.velocity.Y = 25;
+            }
+        }
+        for (int i = 0; i < Chain.points.Length; i++)
+        {
+            ref Vector2 p = ref Chain.points[i];
+            p += NPC.velocity;
+        }
+        /*
         Vector2 undergroundPosition = MyTarget.Center + new Vector2(0, 1500);
         Vector2 vel = (undergroundPosition - NPC.Center).SafeNormalize(Vector2.Zero);
 
@@ -1720,7 +1792,7 @@ public class Steamroller : ScarletBoss,
         if (speed < distToTarget)
             speed = distToTarget;
         NPC.velocity = vel * speed;
-        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+        NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;*/
         if (Timer >= IdleTime)
         {
             ChooseAttack();
@@ -2090,7 +2162,7 @@ public class Steamroller : ScarletBoss,
         _renderDashTrail = true;
         Vector2 targetPos = Vector2.Lerp(MyTarget.Center, NPC.Center, 0.35f);
         if (Timer < 70)
-            RetargetCameraModifier.ReTargetPosition = targetPos;
+            CameraTargetSystem.AddTarget(targetPos);
 
         for (int i = 0; i < _steamrollerSegments.Length; i++)
         {
@@ -2290,6 +2362,7 @@ public class Steamroller : ScarletBoss,
         for (int i = 1; i < segmentsToDraw; i++)
         {
             SteamrollerSegment segment = _steamrollerSegments[i];
+            segment.isDying = _isDying;
             Vector2 pos = Chain.points[i];
             Vector2 nextPos = Chain.points[i + 1];
             Color lightingColor = Lighting.GetColor(pos.ToTileCoordinates());
