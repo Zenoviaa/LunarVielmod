@@ -516,7 +516,7 @@ namespace Stellamod.Items
 
         public void MixDaCauldron()
         {
-            Queue<Item> moldWith = new Queue<Item>();
+            List<Item> moldWith = new List<Item>();
             Queue<Item> brewWith = new Queue<Item>();
             for(int i = 0; i < _brewingMaterials.Count; i++)
             {
@@ -528,7 +528,7 @@ namespace Stellamod.Items
                 }
                 while (IsMold(sbm.item) && sbm.stack >= 1)
                 {
-                    moldWith.Enqueue(new Item(sbm.item));
+                    moldWith.Add(new Item(sbm.item));
                     sbm.stack -= 1;
                 }
                 _brewingMaterials[i] = sbm;
@@ -538,11 +538,9 @@ namespace Stellamod.Items
             air.TurnToAir();
             while(brewWith.Count > 0)
             {
-                Item mold = air; 
-                if(moldWith.Count > 0)
-                {
-                    mold = moldWith.Dequeue();
-                }
+                Item mold = air;
+                if (moldWith.Count > 0)
+                    mold = moldWith[Main.rand.Next(moldWith.Count)];
                 Item material = brewWith.Dequeue();
                 CauldronBrew result = Mix(mold, material);
                 StoredBrewingMaterial brew = new StoredBrewingMaterial
@@ -556,6 +554,9 @@ namespace Stellamod.Items
             for (int i = 0; i < _brewingMaterials.Count; i++)
             {
                 StoredBrewingMaterial sbm = _brewingMaterials[i];
+                if (IsMold(sbm.item))
+                    continue;
+
                 Results.Enqueue(sbm);
             }
             _brewingMaterials.Clear();

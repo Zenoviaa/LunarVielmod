@@ -6,13 +6,13 @@ using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Visual.Particles;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace Stellamod.Content.Areas.SpringHills.NPCsSH;
 
@@ -114,13 +114,14 @@ public class MagicWitchCauldron : VeilTownNPC
 
                 Spew();
                 Timer = DrinkEaseTime;
-                Cauldron.AddToBrew(item.type, item.stack);
+                if(MultiplayerHelper.IsHost)
+                    Cauldron.AddToBrew(item.type, item.stack);
                 item.active = false;
             }
         }
 
 
-        if(NPC.HasBuff(BuffID.OnFire) && Cauldron.CanMix())
+        if(NPC.HasBuff(BuffID.OnFire) && Cauldron.CanMix() && MultiplayerHelper.IsHost)
         {
             Cauldron.MixDaCauldron();
             NPC.DelBuff(NPC.FindBuffIndex(BuffID.OnFire));
@@ -184,6 +185,10 @@ public class MagicWitchCauldron : VeilTownNPC
         DrawCauldron(spriteBatch, -Vector2.UnitY * o);
     }
 
+    private void DrawMagicCircles(SpriteBatch spriteBatch)
+    {
+
+    }
     private void DrawCauldron(SpriteBatch spriteBatch, Vector2 offset)
     {
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromNPC(NPC);
@@ -215,9 +220,19 @@ public class MagicWitchCauldron : VeilTownNPC
 
         }
     }
+    private List<Vector2> _oldPositions;
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
 
+        _oldPositions ??= new List<Vector2>();
+        if(_oldPositions.Count < 8)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                _oldPositions.Add(NPC.Center);
+            }
+        }
+ 
         DrawCauldron(spriteBatch, Vector2.Zero);
 
 
@@ -242,6 +257,7 @@ public class MagicWitchCauldron : VeilTownNPC
         float scale = 1f;
         Vector2 offset = new Vector2();
         offset.Y -= 96;
+        float moldIndex = 0;
         float index = 0;
         float count = 0;
         foreach (var sbm in Cauldron.InsideCauldron)
@@ -259,9 +275,10 @@ public class MagicWitchCauldron : VeilTownNPC
             if (!Cauldron.IsMaterial(sbm.item))
             {
                 pos.Y += 64;
+                pos.X += ExtraMath.Osc(-16, 16, speed: 2, moldIndex);
                 SpritebatchDrawer moldDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Item[sbm.item], pos);
-
                 Main.spriteBatch.Draw(moldDrawer);
+                moldIndex++;
                 continue;
             }
 
@@ -281,11 +298,22 @@ public class MagicWitchCauldron : VeilTownNPC
             {
                 interpPos = Vector2.Lerp(left, right, 0.5f);
             }
-            Vector2 circleCenterPos = interpPos;
+            Vector2 targetCirclePos = interpPos;
+            Vector2 lerp = Vector2.Lerp(_oldPositions[(int)index], targetCirclePos, 0.1f);
+            _oldPositions[(int)index] = lerp;
+            Vector2 circleCenterPos = lerp;
 
             float glowProgress = sbm.stack / 10f;
             Color rarityColor = RarityLoader.GetRarity(modItem.Item.rare).RarityColor;
             Color glowingColor = Color.Lerp(Color.Lerp(Color.Black, rarityColor, 0.5f), rarityColor, glowProgress);
+
+            SpritebatchDrawer darknessDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), circleCenterPos);
+            darknessDrawer.color = Color.Black;
+            darknessDrawer.rotation = 0;
+            darknessDrawer.scale *= 1.6f;
+            Main.spriteBatch.Draw(darknessDrawer);
+
+
             SpritebatchDrawer magicCircleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.MagicCircle, circleCenterPos);
             magicCircleDrawer.color = glowingColor * 0.5f;
             magicCircleDrawer.color.A = 0;
