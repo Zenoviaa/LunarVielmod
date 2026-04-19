@@ -1,14 +1,155 @@
-﻿using Stellamod.Common.UI;
+﻿using Stellamod.Assets;
+using Stellamod.Common.UI;
+using Stellamod.Core.ZTileSystem;
 using Stellamod.UI;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.UI;
 
 namespace Stellamod.Common.WaypointSystem;
+
+public enum OrganWaypoint : byte
+{
+    WitchTown = 0,
+    Marsh = 1,
+    Desert = 2,
+    Moonspiral = 3
+}
+
+public class OrganWaypointTracker : ModSystem
+{
+    public bool[] locations;
+    public override void Load()
+    {
+        base.Load();
+        locations = new bool[20];
+    }
+    public override void Unload()
+    {
+        base.Unload();
+        locations = null;
+    }
+
+    public ref bool GetWaypoint(OrganWaypoint waypoint)
+    {
+        int index = (int)waypoint;
+        return ref locations[index];    
+    }
+    
+    public void ActivateWaypoint(OrganWaypoint waypoint)
+    {
+        int index = (int)waypoint;
+        locations[index] = true;
+        SoundStyle activateSound = AssetRegistry.Sounds.Waypoint.WaypointActivate;
+        SoundEngine.PlaySound(activateSound);
+    }
+
+    public void ResetWaypoints()
+    {
+        for(int i = 0; i < locations.Length; i++)
+        {
+            locations[i] = false;
+        }
+    }
+
+    public override void NetSend(BinaryWriter writer)
+    {
+        base.NetSend(writer);
+        int length = locations.Length;
+        writer.Write(length);
+        for(int i = 0; i < length; i++)
+        {
+            writer.Write(locations[i]);
+        }
+    }
+
+    public override void NetReceive(BinaryReader reader)
+    {
+        base.NetReceive(reader);
+        int length = reader.ReadInt32();    
+        for(int i = 0; i < length; i++)
+        {
+            locations[i] = reader.ReadBoolean();
+        }
+    }
+    public override void SaveWorldData(TagCompound tag)
+    {
+        base.SaveWorldData(tag);
+        tag["locations"] = locations;
+    }
+    public override void LoadWorldData(TagCompound tag)
+    {
+        base.LoadWorldData(tag);
+        bool[] savedLocations = tag.Get<bool[]>("locations");
+        if (savedLocations != null)
+        {
+            locations = savedLocations;
+        }
+    }
+}
+public abstract class OrganZTile : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        interactable = true;
+    }
+    public virtual bool IsActivated()
+    {
+        return true;
+    }
+
+    public override void RightClick()
+    {
+        base.RightClick();
+        //   Main.NewText("yay");
+        WaypointSystem wayPointSystem = ModContent.GetInstance<WaypointSystem>();
+        wayPointSystem.ToggleUI();
+    }
+    public override (int, int) GetBounds()
+    {
+        return base.GetBounds();
+    }
+}
+
+public class MoonSpiralTowerOrgan : OrganZTile
+{
+    public override (int, int) GetBounds()
+    {
+        return (146, 162);
+    }
+}
+
+public class MarshOrgan : OrganZTile
+{
+    public override (int, int) GetBounds()
+    {
+        return (146, 162);
+    }
+}
+
+public class WitchTownOrgan : OrganZTile
+{
+    public override (int, int) GetBounds()
+    {
+        return (146, 162);
+    }
+}
+
+public class DesertOrgan : OrganZTile
+{
+    public override (int, int) GetBounds()
+    {
+        return (146, 162);
+    }
+}
+
 
 public class WaypointUI : UIPanel
 {
@@ -93,16 +234,6 @@ public class WaypointSystem : BaseUISystem
         {
             _userInterface.Update(gameTime);
         }
-
-        //Placeholder debug code, remove this later.
-        if (Main.playerInventory && _userInterface.CurrentState == null)
-        {
-            OpenUI();
-        }
-        else if (!Main.playerInventory && _userInterface.CurrentState != null)
-        {
-            CloseUI();
-        }
     }
 
     public override void CloseThis()
@@ -121,7 +252,7 @@ public class WaypointSystem : BaseUISystem
         }
         else
         {
-            SoundStyle soundStyle = SoundID.MenuOpen;
+            SoundStyle soundStyle = AssetRegistry.Sounds.Waypoint.OpenWaypointSection;
             SoundEngine.PlaySound(soundStyle);
             OpenUI();
         }

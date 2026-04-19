@@ -74,7 +74,7 @@ float value(float2 uv)
     return final / 3.0f;
 }
 */
-float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
+float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
     float time = uTime;
     float noise1 = tex2D(uImage1, coords * 4 + float2(time * -0.03, 0.0) + uImageOffset);
@@ -83,7 +83,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
     float noise = (noise1 + noise2 + noise3) * 0.4;
     
     float4 color = tex2D(uImage1, coords) * noise;
-    return float4(color.r, color.g, color.b, 0.0);
+    return float4(color.r, color.g, color.b, 1.0) * sampleColor;
 }
 
 technique Technique1

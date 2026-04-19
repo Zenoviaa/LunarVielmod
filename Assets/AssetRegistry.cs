@@ -45,6 +45,12 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+            public static class Waypoint
+            {
+                public static SoundStyle OpenWaypointSection => new SoundStyle($"{Path}Waypoint/OpenWaypointSection");
+                public static SoundStyle WaypointActivate => new SoundStyle($"{Path}Waypoint/WaypointActivate");
+            }
+
             public static class Collosseum
             {
                 public static SoundStyle GintzeCheer => new SoundStyle($"{Path}Collosseum/GintzeCheer");

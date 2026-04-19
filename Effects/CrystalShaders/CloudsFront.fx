@@ -22,7 +22,7 @@ float2 uZoom;
 
 float uColorMapSection;
 
-float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
+float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
     float time = uTime;
     float noise1 = tex2D(uImage1, coords * 4 + float2(time * -0.3, 0.0) + uImageOffset);
@@ -34,7 +34,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
     float2 dist = coords - float2(0.5f, 0.0f);
     float magnitude = length(dist);
     
-    float4 finalColor = float4(color.r, color.g, color.b, 0.0);
+    float4 finalColor = float4(color.r, color.g, color.b, 1.0) * sampleColor;
     return lerp(float4(0.0, 0.0, 0.0, 0.0), finalColor, pow(abs(magnitude), 4.0));
 }
 

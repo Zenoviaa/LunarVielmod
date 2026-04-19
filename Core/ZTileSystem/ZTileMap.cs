@@ -202,6 +202,39 @@ public class TileScene : IEnumerable
                 tileData = tileData,
                 lightColor = Lighting.GetColor(tilePosition.x, tilePosition.y)
             };
+
+            if (tile.interactable)
+            {
+                (int width, int height) = tile.GetBounds();
+                (float topLeftX, float topLeftY) = (0, 0);
+
+
+                Vector2 worldCoordinates = new Point(tilePosition.x, tilePosition.y).ToWorldCoordinates();
+                topLeftX = worldCoordinates.X;
+                topLeftY = worldCoordinates.Y;
+
+                //TODO: take into account draw origin
+                topLeftX -= width / 2;
+                topLeftY -= height;
+
+                topLeftX -= Main.screenPosition.X;
+                topLeftY -= Main.screenPosition.Y;
+                Rectangle selectionBoundary = new Rectangle((int)topLeftX, (int)topLeftY, width, height);
+
+                Vector2 mouseWorld = Main.MouseScreen;
+                if(selectionBoundary.Contains((int)mouseWorld.X, (int)mouseWorld.Y))
+                {
+                   if(Main.mouseRight && Main.mouseRightRelease)
+                    {
+                        tile.RightClick();
+                        Main.mouseRightRelease = false;
+                    }
+                    tile.DrawOutline(spriteBatch, screenPos, drawParams);
+                }
+                //Primitives2D.DrawRectangle(spriteBatch, selectionBoundary, Color.Red);
+
+                //TODO: check if mouse intersects and whatnot
+            }
             tile.Draw(spriteBatch, screenPos, drawParams);
         }
     }
