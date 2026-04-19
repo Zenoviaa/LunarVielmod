@@ -1,10 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Content.Dialogue;
+﻿using Stellamod.Content.Dialogue;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.TriggersSystem.Triggers;
 using Stellamod.Helpers;
-using Stellamod.UI.CauldronSystem;
 using System;
 using System.Collections.Generic;
 using Terraria;
