@@ -13,8 +13,11 @@ namespace Stellamod.Visual.Particles
         public Vector2 stretchScale;
         public float dampening;
         public bool fast;
+        public bool longBubble;
         public override void OnSpawn()
         {
+            longBubble = false;
+            fast = false;
             gravity = 0.2f;
             Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
             //    customShader = DustShader.Instance;
@@ -25,10 +28,22 @@ namespace Stellamod.Visual.Particles
             Velocity.Y += gravity;
             Velocity *= 1.0f - dampening;
             Rotation = Velocity.ToRotation();
-            Scale *= 0.99f;
-            if (fast)
-                Scale *= 0.98f;
-            color *= 0.99f;
+            if(longBubble)
+            {
+                Scale *= 0.999f;
+                if (fast)
+                    Scale *= 0.989f;
+                color *= 0.999f;
+
+            }
+            else
+            {
+                Scale *= 0.99f;
+                if (fast)
+                    Scale *= 0.98f;
+                color *= 0.99f;
+
+            }
 
             float stretchInterp = Velocity.Length() / 5f;
             stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);

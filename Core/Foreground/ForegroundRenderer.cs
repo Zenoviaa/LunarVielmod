@@ -61,7 +61,7 @@ namespace Stellamod.Core.Foreground
         private bool _drawForeground;
         private ForegroundLayer[] _layers;
 
-        public int PostProcessPriority => 20;
+        public int PostProcessPriority => 4;
 
         public override void OnModLoad()
         {

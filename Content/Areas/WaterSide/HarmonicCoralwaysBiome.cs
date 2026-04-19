@@ -2,6 +2,7 @@
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Backgrounds;
 using Stellamod.Core.LunarLightingSystem;
+using Stellamod.Visual.Particles;
 using Stellamod.WorldG;
 using Terraria;
 using Terraria.Graphics.Capture;
@@ -10,6 +11,30 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WaterSide;
 
+public class HarmonicCoralwaysEffects : ModPlayer
+{
+    public override void PostUpdateMiscEffects()
+    {
+        base.PostUpdateMiscEffects();
+        if (Main.myPlayer != Player.whoAmI)
+            return;
+
+        BiomePlayer biomePlayer = Player.GetModPlayer<BiomePlayer>();
+        if (!biomePlayer.ZoneHarmonicCoralways)
+            return;
+
+        if (!Main.rand.NextBool(100))
+            return;
+
+        Rectangle spawnRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+        Vector2 pos = new Vector2();
+        pos.X = Main.rand.NextFloat(Main.screenPosition.X, Main.screenPosition.X + Main.screenWidth);
+        pos.Y = Main.rand.NextFloat(Main.screenPosition.Y, Main.screenPosition.Y + Main.screenHeight);
+        var bp = BubbleParticle.Spawn(pos, -Vector2.UnitY, Scale: Main.rand.NextFloat(0.4f, 0.8f));
+        bp.gravity = 0;
+        bp.longBubble = true;
+    }
+}
 public class HarmonicCoralwaysSpawnRates : GlobalNPC
 {
     public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
