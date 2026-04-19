@@ -32,6 +32,13 @@ public class AuroraEffectRenderer : ModSystem
 
     private void DrawAurora(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
     {
+        if (Main.gameMenu)
+        {
+
+            orig(self, spriteBatch, layer, beginSpriteBatch);
+            return;
+        }
+        RenderLayers targetLayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower ? RenderLayers.ForegroundWater : RenderLayers.Background;
         if (layer == RenderLayers.Background)
         {
             if (!Main.gameMenu && _activeTimer > 0)
@@ -96,6 +103,7 @@ public class AuroraEffectRenderer : ModSystem
 
         bool isActive = Main.LocalPlayer.ZoneSnow && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight;
         isActive |= Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneHarmonicCoralways;
+        isActive |= Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower;
         if (isActive)
         {
             _activeTimer++;

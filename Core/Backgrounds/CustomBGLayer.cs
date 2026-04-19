@@ -18,7 +18,7 @@ namespace Stellamod.Core.Backgrounds
         public Vector2 DrawOffset;
         public float DrawScale;
         public BlendState BlendState;
-        public Shader Shader;
+        public IShader Shader;
         public Vector2 ParallaxOffset;
         public void SetTexture(string texturePath)
         {

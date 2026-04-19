@@ -10766,3 +10766,38 @@ AcademyOutfitRobe: {
 	DisplayName: Academy Robe
 	Tooltip: ""
 }
+
+MagicPaintBucket: {
+	DisplayName: Magic Paint Bucket
+	Tooltip: Fills enclosed spaces with tiles
+}
+
+TheMagicHand: {
+	DisplayName: The Magic Hand
+	Tooltip: Allows you to place tiles in space!
+}
+
+HornedLadyDemonOutfitBody: {
+	DisplayName: Horned Lady Demon Outfit Body
+	Tooltip: ""
+}
+
+HornedLadyDemonOutfitHead: {
+	DisplayName: Horned Lady Demon Outfit Head
+	Tooltip: ""
+}
+
+HornedLadyOutfitBody: {
+	DisplayName: Horned Lady Outfit Body
+	Tooltip: ""
+}
+
+HornedLadyOutfitHead: {
+	DisplayName: Horned Lady Outfit Head
+	Tooltip: ""
+}
+
+HornedLadyOutfitLegs: {
+	DisplayName: Horned Lady Outfit Legs
+	Tooltip: ""
+}

@@ -86,6 +86,7 @@ public class VeliozaHatDrawLayer : PlayerDrawLayer
     public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.ProjectileOverArm);
     protected override void Draw(ref PlayerDrawSet drawInfo)
     {
+
         var position = drawInfo.Center - Main.screenPosition;
         position = new Vector2((int)position.X, (int)position.Y);
         position.Y -= 16;

@@ -72,7 +72,7 @@ namespace Stellamod.Common.Shaders
             }
         }
 
-        public void ApplyToEffect()
+        public virtual void ApplyToEffect()
         {
         
         }

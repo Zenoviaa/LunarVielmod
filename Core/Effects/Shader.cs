@@ -6,6 +6,7 @@ namespace Stellamod.Core.Effects
 {
     public interface IShader
     {
+        public Effect Effect { get; }
         void ModifyGraphicsDevice(GraphicsDevice device);
         void ApplyPasses();
         void ApplyToEffect();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Biomes;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -12,12 +13,17 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
+            GlobalLum = 0.3f;
             if (Main.LocalPlayer.ZoneUnderworldHeight)
             {
                 GlobalLum = 0.7f;
             }
+            if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower)
+            {
+                GlobalLum = 0.5f;
+            }
             GlobalLightStrength = MathHelper.Lerp(GlobalLightStrength, GlobalLum, 0.1f);
-            GlobalLum = 0.3f;
+  
         }
     }
 

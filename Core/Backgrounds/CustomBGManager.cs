@@ -49,7 +49,7 @@ namespace Stellamod.Core.Backgrounds
     }
     public class CustomBGManager : ModSystem
     {
-        private Shader _currentShader;
+        private IShader _currentShader;
         public List<CustomBG> Backgrounds = new List<CustomBG>();
         public bool onScreen;
         public Color? darkenBGColor;
@@ -209,7 +209,7 @@ namespace Stellamod.Core.Backgrounds
 
             if (bgLayer.Shader != null)
             {
-                BeginGradientLayer(spriteBatch, bgLayer);
+                BeginEffectLayer(spriteBatch, bgLayer);
             } 
             else
             {
@@ -230,7 +230,7 @@ namespace Stellamod.Core.Backgrounds
             );
         }
 
-        private void BeginGradientLayer(SpriteBatch spriteBatch, CustomBGLayer bgLayer)
+        private void BeginEffectLayer(SpriteBatch spriteBatch, CustomBGLayer bgLayer)
         {
             Effect effect = bgLayer.Shader == null ? null : bgLayer.Shader.Effect;
             spriteBatch.End();
