@@ -146,7 +146,7 @@ namespace Stellamod.Core.Foreground
                         float cameraY = (Main.Camera.Center.Y);
                         float xParallax = (cameraX * parallax.X);
                         float yParallax = (cameraY * parallax.Y);
-                        parallaxParameter.SetValue(new Vector2(xParallax, yParallax) * -0.0005f);
+                        parallaxParameter.SetValue(new Vector2(xParallax, yParallax) * 0.0005f);
                     }
                 }
                 if (layer.fade > 0)

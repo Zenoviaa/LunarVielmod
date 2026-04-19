@@ -29,8 +29,8 @@ public class MagicalFish : ForegroundLayer
         base.SetLayering(ref zLayer, ref parallax);
         
         shader = HologramShader;
-        HologramShader.NoiseTexture = AssetManager.Noise.AuroraRays.Value;
-        HologramShader.Time = Main.GlobalTimeWrappedHourly * 1;
+        HologramShader.NoiseTexture = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/MuzzleFlash").Value;
+        HologramShader.Time = Main.GlobalTimeWrappedHourly * 2;
         parallax.X = 1.2f;
         parallax.Y = 1.2f;
     }
