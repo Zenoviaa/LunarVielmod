@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Common.Players;
+using Stellamod.Common.WaypointSystem;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Special.DeadRomancesExcalibur;
@@ -277,6 +278,11 @@ namespace Stellamod
                         Cauldron cauldron = ModContent.GetInstance<Cauldron>();
          
                         cauldron.HandleSyncPacket(reader);
+                    }
+                    break;
+                case MessageType.WaypointActivate:
+                    {
+                        ModContent.GetInstance<OrganWaypointTracker>().HandleWaypointActivatePacket(reader);
                     }
                     break;
             }

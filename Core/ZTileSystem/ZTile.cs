@@ -95,7 +95,7 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
     {
 
     }
-    public void Draw(SpriteBatch spriteBatch, Vector2 screenPos, ZTileDrawParams drawParams)
+    public virtual void Draw(SpriteBatch spriteBatch, Vector2 screenPos, ZTileDrawParams drawParams)
     {
         _tileTextureAsset ??= ModContent.Request<Texture2D>(Texture);
         //Calculate frame;
@@ -213,7 +213,7 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
         //We'll make 255 be black
        // Color valueColor = Color.Lerp(Color.White, Color.Black, (float)drawParams.tileData.value / 255f);
         Color drawColor = Color.White;
-        drawColor *= (int)ExtraMath.Osc(0f, 3f, speed: 6);
+        drawColor *= (int)ExtraMath.Osc(0f, 3f, speed: 12);
         float drawRotation;
         switch (drawParams.tileData.rotation)
         {
@@ -282,7 +282,7 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
     /// <summary>
     /// If interactable is set to true, you can right click the tile
     /// </summary>
-    public virtual void RightClick()
+    public virtual void RightClick(Point tilePoint)
     {
 
     }

@@ -114,7 +114,7 @@ namespace Stellamod.Core.Skies
 
         private void DrawBackClouds(SpriteBatch spriteBatch)
         {
-            Main.DefaultSamplerState = SamplerState.PointClamp;
+
 
             var texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds3");
             var cloudTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/ColorMap");

@@ -37,10 +37,13 @@ public class MagicalFish : ForegroundLayer
         shader = HologramShader;
         _glowMask ??= ModContent.Request<Texture2D>(Texture + "_GlowMask");
         HologramShader.NoiseTexture = _glowMask.Value;
-        HologramShader.Time = new Vector2(Main.GlobalTimeWrappedHourly * 0.08f, 0);
-        
-        parallax.X = 1.2f;
-        parallax.Y = 1.2f;
+
+        Vector2 right = Vector2.UnitX;
+        right = right.RotatedBy(MathHelper.ToRadians(24));
+        HologramShader.Time = right * Main.GlobalTimeWrappedHourly * -0.08f;//new Vector2(Main.GlobalTimeWrappedHourly * -0.08f);
+
+        parallax.X = 1.5f;
+        parallax.Y = 1.5f;
     }
 }
 

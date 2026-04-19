@@ -31,7 +31,8 @@
         RecoilPlayerSync,
         RomanceDodge,
         BossDowned,
-        CauldronSync
+        CauldronSync,
+        WaypointActivate
     }
 
     public enum DialogueType : byte

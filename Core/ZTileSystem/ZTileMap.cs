@@ -226,7 +226,7 @@ public class TileScene : IEnumerable
                 {
                    if(Main.mouseRight && Main.mouseRightRelease)
                     {
-                        tile.RightClick();
+                        tile.RightClick(new Point(tilePosition.x, tilePosition.y));
                         Main.mouseRightRelease = false;
                     }
                     tile.DrawOutline(spriteBatch, screenPos, drawParams);

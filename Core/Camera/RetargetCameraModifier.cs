@@ -19,10 +19,17 @@ namespace Stellamod.Core.Camera
             base.Load();
             TargetPositions = new List<Vector2>();
         }
+
+        public override void PreUpdateProjectiles()
+        {
+            base.PreUpdateProjectiles();
+            TargetPositions.Clear();
+        }
+
         public override void PreUpdateNPCs()
         {
             base.PreUpdateNPCs();
-            TargetPositions.Clear();
+  
         }
         public override void PostUpdateNPCs()
         {
@@ -33,6 +40,10 @@ namespace Stellamod.Core.Camera
                 if(reTargetTimer > 0)
                 {
                     reTargetTimer--;
+                    if(reTargetTimer <= 0)
+                    {
+                        reTargetPosition = Main.LocalPlayer.Center;
+                    }
                 }
                 return;
             }
