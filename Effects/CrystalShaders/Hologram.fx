@@ -35,6 +35,15 @@ sampler2D noiseTex = sampler_state
 
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
+    //
+    /*
+    float4x4 translationMatrix = float4x4(
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        1, 1, 1, 1 //First three values here are position 
+    );*/
+    
     //All we have to do is sample the white to black of the texture, using that as an interpolant for the colors
     //Then using the time we can oscillate and add some glow with power?
     float2 offsetCoords = coords + uImageOffset;
