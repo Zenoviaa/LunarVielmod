@@ -20,6 +20,7 @@ float uSaturation;
 float4 uSourceRect;
 float2 uZoom;
 
+float2 time;
 float2 noiseTextureSize;
 texture noiseTexture;
 sampler2D noiseTex = sampler_state
@@ -42,7 +43,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     float2 normalCoords = float2(frac(offsetCoords.x), frac(offsetCoords.y));
     float4 backgroundColor = tex2D(uImage0, normalCoords) * sampleColor;
  
-    float2 alphaCoords = coords + float2(uTime * -0.05, 0.0);
+    float2 alphaCoords = normalCoords + time;
     alphaCoords = frac(alphaCoords);
     float alpha = tex2D(noiseTex, alphaCoords).r;
     backgroundColor *= alpha;

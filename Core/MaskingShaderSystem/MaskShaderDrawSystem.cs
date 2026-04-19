@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.WallBackgroundSystem;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -62,6 +63,9 @@ namespace Stellamod.Core.MaskingShaderSystem
         {
             int width = Main.screenWidth;
             int height = Main.screenHeight;
+
+          
+
             _preMaskDrawRenderTarget ??= new RenderTarget2D(Main.instance.GraphicsDevice, width, height);
             _maskRenderTarget ??= new RenderTarget2D(Main.instance.GraphicsDevice, width, height);
             //     Console.WriteLine(Draws.Count);

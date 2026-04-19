@@ -92,11 +92,52 @@ namespace Stellamod.Core.WallBackgroundSystem
             _maskedWallBackgrounds = ModContent.GetContent<MaskedWallBackground>().ToArray();
             On_Main.DoDraw_WallsTilesNPCs += DrawWalls;
         }
+        private void QueueDraws()
+        {
+            int width = Main.screenWidth;
+            int height = Main.screenHeight;
+
+            int padding = 32;
+ 
+
+            Point topLeftTile = Main.screenPosition.ToTileCoordinates();
+            topLeftTile += new Point(-padding / 2, -padding / 2);
+            int tileWidth = width / 16;
+            int tileHeight = height / 16;
+
+            tileWidth += padding;
+            tileHeight += padding;
+            Point bottomRight = topLeftTile + new Point(tileWidth, tileHeight);
+
+            //Clamp world bounds
+            topLeftTile.X = (int)MathHelper.Clamp(topLeftTile.X, 0, Main.maxTilesX - 1);
+            topLeftTile.Y = (int)MathHelper.Clamp(topLeftTile.Y, 0, Main.maxTilesY - 1);
+            bottomRight.X = (int)MathHelper.Clamp(bottomRight.X, 0, Main.maxTilesX - 1);
+            bottomRight.Y = (int)MathHelper.Clamp(bottomRight.Y, 0, Main.maxTilesY - 1);
+            int wallType = ModContent.WallType<MaskingWall>();
+            for (int x = topLeftTile.X; x < bottomRight.X; x++)
+            {
+                for (int y = topLeftTile.Y; y < bottomRight.Y; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    if (tile.WallType != wallType)
+                        continue;
+
+                    QueueDraw(new Point(x, y));
+                }
+            }
+
+        }
         private void DrawWalls(On_Main.orig_DoDraw_WallsTilesNPCs orig, Main self)
         {
+
             _renderTimer--;
             if (_renderTimer > 0 && _activeMaskedWallBackground != null)
+            {
+                QueueDraws();
                 DrawMaskedBG();
+            }
+              
             orig(self);
         }
 
@@ -149,23 +190,6 @@ namespace Stellamod.Core.WallBackgroundSystem
             SelectActiveMaskedWallBackground();
             if (_activeMaskedWallBackground == null)
                 return;
-
-
-            //No need to render if there's no draws
-            Point topLeft = (Main.Camera.Center - new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.5f)).ToTileCoordinates();
-
-            int tileWidth = Main.screenWidth / 16;
-            int tileHeight = Main.screenHeight / 16;
-            Point bottoMRight = new Point(topLeft.X + tileWidth, topLeft.Y + tileHeight);
-            for(int x = topLeft.X; x < bottoMRight.X; x++)
-            {
-                for(int y = topLeft.Y; y < bottoMRight.Y; y++)
-                {
-                    Tile tile = Framing.GetTileSafely(x, y);
-                    if (tile.WallType == ModContent.WallType<MaskingWall>())
-                        _drawQueue.Enqueue(new Point(x, y));
-                }
-            }
 
             RenderMask();
             _renderTimer = 64;

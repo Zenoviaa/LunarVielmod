@@ -6,7 +6,7 @@ namespace Stellamod.Core.WallBackgroundSystem
     {
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
-            MaskedWallRenderer.QueueDraw(new Point(i, j));
+           // MaskedWallRenderer.QueueDraw(new Point(i, j));
             return false;
         }
     }
