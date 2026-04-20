@@ -13,6 +13,7 @@ using Stellamod.Content.Armors.Huntrian;
 using Stellamod.Content.Armors.Leather;
 using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Content.Armors.LunarianVoid;
+using Stellamod.Content.Armors.Sanctorous;
 using Stellamod.Content.Armors.Scrappy;
 using Stellamod.Content.Armors.ShadeWraith;
 using Stellamod.Content.Armors.Staffigy;
@@ -304,22 +305,32 @@ namespace Stellamod.Common.ArmorShop
             */
             //---------- Post ml
 
+            ArmorShopSet sanc = new ArmorShopSet();
+            sanc.AddHead(ModContent.ItemType<SanctorousHead>());
+            sanc.AddBody(ModContent.ItemType<SanctorousBody>());
+            sanc.AddLegs(ModContent.ItemType<SanctorousLegs>());
+            sanc.SetMaterial(ModContent.ItemType<FallenEyes>());
+            sanc.Register();
+
 
             //Eldrit
+            /*
             ArmorShopSet eldritch = new ArmorShopSet();
             eldritch.AddHead(ModContent.ItemType<EldritchianHood>());
             eldritch.AddBody(ModContent.ItemType<EldritchianCloak>());
             eldritch.AddLegs(ModContent.ItemType<EldritchianLegs>());
             eldritch.SetMaterial(ItemID.LunarBar);
             eldritch.Register();
-
+            */
             //Ducanbltize done 
+
+            /*
             ArmorShopSet ducan = new ArmorShopSet();
             ducan.AddHead(ModContent.ItemType<DucanblitzCap>());
             ducan.AddBody(ModContent.ItemType<DucanblitzBreastplate>());
             ducan.AddLegs(ModContent.ItemType<DucanblitzThighs>());
             ducan.SetMaterial(ItemID.LunarBar);
-            ducan.Register();
+            ducan.Register();*/
 
             //Jianxin
             ArmorShopSet JianxinSet = new ArmorShopSet();

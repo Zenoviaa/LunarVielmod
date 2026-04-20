@@ -9,6 +9,7 @@ using Stellamod.Common.UI;
 using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner;
 using Stellamod.Content.Areas.SpringHills.NPCsSH;
+using Stellamod.Content.Armors.Sanctorous;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Utilities;
 using Stellamod.Core.ZTileSystem;
@@ -1164,6 +1165,10 @@ public class WaypointSystem : BaseUISystem
 
     public override void UpdateUI(GameTime gameTime)
     {
+        if(Main.LocalPlayer.GetModPlayer<SanctorousPlayer>().hasSetBonus && LunarVeilKeybinds.AbilityKeybind.JustPressed)
+        {
+            ToggleUI();
+        }
         _lastUpdateUiGameTime = gameTime;
         if (_userInterface.CurrentState != null)
         {

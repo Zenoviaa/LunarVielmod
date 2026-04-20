@@ -5,6 +5,7 @@ using Stellamod.Common.QuestSystem;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.ZTileSystem;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -117,8 +118,20 @@ namespace Stellamod.Helpers
         }
         public static string Armor(ModItem item, string key)
         {
-            return Language.GetTextValue($"Mods.Stellamod.Armor.{item.Name}." + key);
+            string value = Language.GetTextValue($"Mods.Stellamod.Armor.{item.Name}." + key);
+
+            List<string> assignedKeys = LunarVeilKeybinds.AbilityKeybind.GetAssignedKeys();
+            if(assignedKeys.Count > 0)
+            {
+                value = value.Replace("[ABILITY]", assignedKeys[0]);
+            } else
+            {
+                value = value.Replace("[ABILITY]",LangText.Common("Unbound"));
+            }
+            
+            return value;
         }
+
         public static string Armor(string key, params object[] args)
         {
             return Language.GetTextValue($"Mods.Stellamod.Armor." + key, args);

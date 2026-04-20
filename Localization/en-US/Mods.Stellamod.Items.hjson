@@ -1,4 +1,5 @@
 Common: {
+	Unbound: "[UNBOUND]"
 	WitchTown: Witch Town
 	Marsh: Ghetsis' Marsh
 	Desert: Gintze's Desert
@@ -10815,5 +10816,20 @@ HornedLadyOutfitHead: {
 
 HornedLadyOutfitLegs: {
 	DisplayName: Horned Lady Outfit Legs
+	Tooltip: ""
+}
+
+SanctorousBody: {
+	DisplayName: Sanctorous Body
+	Tooltip: ""
+}
+
+SanctorousHead: {
+	DisplayName: Sanctorous Head
+	Tooltip: ""
+}
+
+SanctorousLegs: {
+	DisplayName: Sanctorous Legs
 	Tooltip: ""
 }

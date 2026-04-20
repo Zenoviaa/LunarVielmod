@@ -1,7 +1,14 @@
+SanctorousHead: {
+	Log: Act III Resource armor
+	Type: Resource
+	Lore: The eyes of the fallen stare at you from above, you see everything, you know what will happen, and the armor calls to you as if a 1000 souls came begging to your knees to be worn, you hear the souls slain by dragons and yet you are unphased, the wearer of dragons.
+	SetBonus: Allows you to call your waypoint dragon from any point of the map by pressing [ABILITY] to open up your waypoint map, using an insource allows you to be invincible for 2 seconds after drinking it.
+}
+
 GothinMask: {
 	Log: Act III Ranged armor
 	Type: Ranged
-	Lore: She quite likes that bow I think… Why not make it into something useful why don’t we?
+	Lore: She quite likes that bow I think... Why not make it into something useful why don’t we?
 	SetBonus: Every 3 shots on a bow, you charge a super big arrow of magic into your bow and shoot it out with great intensity, doing 5x the amount of damage as your bow generally does
 }
 

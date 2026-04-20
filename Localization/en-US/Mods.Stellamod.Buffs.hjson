@@ -1132,3 +1132,8 @@ VeliozaLifeDrain: {
 	DisplayName: Velioza Life Drain
 	Description: Mods.Stellamod.Buffs.VeliozaLifeDrain.Description
 }
+
+Sanctorous: {
+	DisplayName: Sanctorous
+	Description: Mods.Stellamod.Buffs.Sanctorous.Description
+}

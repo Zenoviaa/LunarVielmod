@@ -4,6 +4,7 @@ namespace Stellamod
 {
     public class LunarVeilKeybinds : ModSystem
     {
+        public static ModKeybind AbilityKeybind { get; private set; }
         public static ModKeybind FlaskKeybind { get; private set; }
         public static ModKeybind DashKeybind { get; private set; }
         public static ModKeybind QuestKeybind { get; private set; }
@@ -21,6 +22,7 @@ namespace Stellamod
         public override void Load()
         {
             // Register keybinds            
+            AbilityKeybind = KeybindLoader.RegisterKeybind(Mod, "Armor Ability", "J");
             DashKeybind = KeybindLoader.RegisterKeybind(Mod, "Dash", "F");
             QuestKeybind = KeybindLoader.RegisterKeybind(Mod, "Open Questbook", "Q");
             FlaskKeybind = KeybindLoader.RegisterKeybind(Mod, "Use Xixian Flask", "G");
@@ -43,6 +45,7 @@ namespace Stellamod
         public override void Unload()
         {
             base.Unload();
+            AbilityKeybind = null;
             DashKeybind = null;
             QuestKeybind = null;
             FlaskKeybind = null;
