@@ -200,6 +200,9 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         private void DrawMainShader(Vector2[] oldPos)
         {
             BlackFireShader blackFireShader = BlackFireShader.Instance;
+            blackFireShader.InnerEmitColor = Color.Yellow;
+            blackFireShader.OuterEmiteColor = Color.Red;
+
             TrailDrawer.Draw(Main.spriteBatch, oldPos, null, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
 
             var shader = RichLaserShader.Instance;

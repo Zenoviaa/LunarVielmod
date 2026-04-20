@@ -2706,7 +2706,7 @@ ScarecrowSaber: {
 }
 
 SkyrageShasher: {
-	DisplayName: Skyrage Shasher
+	DisplayName: Skyrage Slasher
 	Tooltip: Pew pew pew
 	BasicSlash: Spins around quickly two times and fires a laser at the end of its combo!
 	StaminaSlash: Fires a powerful beam
