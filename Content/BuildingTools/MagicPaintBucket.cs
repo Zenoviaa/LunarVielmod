@@ -145,8 +145,70 @@ public static class MagicTileUtility
         if (!visited.Contains(down))
             FloodFill_InnerRecursive(visited, down, tileType, wallType);
     }
+
+    public static int CountLoops(Point tilePoint, int tileType = -1, int wallType = -1)
+    {
+        var visited = new HashSet<Point>();
+        var path = new Stack<Point>();
+        path.Push(tilePoint);
+        int loops = 0;
+        while (path.Count > 0)
+        {
+            Point next = path.Pop();
+            Point left = next + new Point(1, 0);
+            Point right = next + new Point(-1, 0);
+            Point up = next + new Point(0, -1);
+            Point down = next + new Point(0, 1);
+
+            loops++;
+            if (loops > 100000)
+                break;
+            if (next.X < 0 || next.X > Main.maxTilesX || next.Y < 0 || next.Y > Main.maxTilesY)
+            {
+                continue;
+            }
+
+            Tile tile = Main.tile[next];
+            if (WorldGen.SolidTile(next))
+            {
+                continue;
+            }
+
+            
+
+            if (!visited.Contains(left))
+            {
+                path.Push(left);
+                visited.Add(left);
+            }
+            if (!visited.Contains(right))
+            {
+                path.Push(right);
+                visited.Add(right);
+            }
+            if (!visited.Contains(up))
+            {
+                path.Push(up);
+                visited.Add(up);
+            }
+            if (!visited.Contains(down))
+            {
+                path.Push(down);
+                visited.Add(down);
+            }
+        }
+        return loops;
+        //     FloodFill_Inner(visited, tilePoint, tileType, wallType);
+    }
     public static void FloodFill(Point tilePoint, int tileType = -1, int wallType = -1)
     {
+        int loops = CountLoops(tilePoint, tileType, wallType);
+        if(loops > 100000)
+        {
+            Vector2 pos = tilePoint.ToWorldCoordinates();
+            CombatText.NewText(new Rectangle((int)pos.X, (int)pos.Y, 16, 16), Color.Red, "....", true);
+            return;
+        }    
         var visited = new HashSet<Point>();
         var path = new Stack<Point>();
         path.Push(tilePoint);
@@ -173,11 +235,11 @@ public static class MagicTileUtility
 
             if (tileType != -1)
             {
-                WorldGen.PlaceTile(next.X, next.Y, tileType);
+                WorldGen.PlaceTile(next.X, next.Y, tileType, true);
             }
             if (wallType != -1)
             {
-                WorldGen.PlaceWall(next.X, next.Y, wallType);
+                WorldGen.PlaceWall(next.X, next.Y, wallType, true);
             }
 
             if (!visited.Contains(left))
