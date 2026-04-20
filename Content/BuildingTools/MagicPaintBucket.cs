@@ -213,9 +213,11 @@ public static class MagicTileUtility
         var path = new Stack<Point>();
         path.Push(tilePoint);
 
+        Point topLeft = tilePoint, bottomRight = tilePoint;
         while(path.Count > 0)
         {
             Point next = path.Pop();
+
             Point left = next + new Point(1, 0);
             Point right = next + new Point(-1, 0);
             Point up = next + new Point(0, -1);
@@ -226,6 +228,15 @@ public static class MagicTileUtility
             {
                 continue;
             }
+            
+            if (next.X < topLeft.X)
+                topLeft.X = next.X;
+            if (next.Y < topLeft.Y)
+                topLeft.Y = next.Y;
+            if (next.X > bottomRight.X)
+                bottomRight.X = next.X;
+            if (next.Y > bottomRight.Y)
+                bottomRight.Y = next.Y;
 
             Tile tile = Main.tile[next];
             if (WorldGen.SolidTile(next))
@@ -263,6 +274,12 @@ public static class MagicTileUtility
                 visited.Add(down);
             }
         }
+
+        if (Main.netMode == NetmodeID.SinglePlayer)
+            return;
+        int width = bottomRight.X - topLeft.X;
+        int height = bottomRight.Y - topLeft.Y;
+        NetMessage.SendTileSquare(-1, topLeft.X, topLeft.Y, width, height);
    //     FloodFill_Inner(visited, tilePoint, tileType, wallType);
     }
 }
