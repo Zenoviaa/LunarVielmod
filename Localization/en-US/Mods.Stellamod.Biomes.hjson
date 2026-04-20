@@ -189,8 +189,8 @@ WorldsEndBiome: {
 }
 
 MoonspiralTowerBiome: {
-	DisplayName: Moonspiral Tower Biome
-	TownNPCDialogueName: the Moonspiral Tower Biome
+	DisplayName: Moonspiral Tower
+	TownNPCDialogueName: the Moonspiral Tower
 }
 
 IceBackgroundRemove: {

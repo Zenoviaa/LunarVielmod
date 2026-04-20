@@ -40,10 +40,11 @@ namespace Stellamod.Core.Camera
                 if(reTargetTimer > 0)
                 {
                     reTargetTimer--;
-                    if(reTargetTimer <= 0)
-                    {
-                        reTargetPosition = Main.LocalPlayer.Center;
-                    }
+        
+                }
+                if (reTargetTimer <= 0)
+                {
+                    reTargetPosition = Main.LocalPlayer.Center;
                 }
                 return;
             }

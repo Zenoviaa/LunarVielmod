@@ -117,6 +117,7 @@ public class IceCrashCubeShard : ModProjectile
         Projectile.penetrate = -1;
         Projectile.usesIDStaticNPCImmunity = true;
         Projectile.idStaticNPCHitCooldown = 24;
+        Projectile.ignoreWater = true;
     }
     public override void AI()
     {
@@ -384,6 +385,7 @@ public class IceCrashCube : ModProjectile
         Projectile.tileCollide = false;
         Projectile.light = 0.78f;
         Projectile.scale = 0.001f;
+        Projectile.ignoreWater = true;
     }
 
     public override void AI()

@@ -1,4 +1,20 @@
 Common: {
+	WitchTown: Witch Town
+	Marsh: Ghetsis' Marsh
+	Desert: Gintze's Desert
+	Moonspiral: Moonspiral Tower
+	ApocalypseTower: Apocalypse Tower
+	BloodySanctum: Bloody Sanctum
+	Dragonhome: Dragonhome
+	Hallowrooms: Hallowrooms
+	Ishtar: Ishtar
+	Platform: Edge Of The Moon
+	RunicaWaterside: Runica Waterside
+	WonderousDarkspace: Wondrous Darkspace
+	WorldsEnd: World's End
+	MistyDungeon: Misty Dungeon
+	WaypointTitle: Lands of Lunar Veil
+	WaypointHelp: Placeholder
 	ForgeHelp: Use [c/FFA500:Dragon Shards] to permanently upgrade your weapon! You gain [c/FFA500:25% more damage] everytime you upgrade! Dragon Shards are scarce though, so spend them wisely!
 	ForgeChange: Next upgrade: {0} to [c/FFA500:{1}]
 	SimpleBrooch: Simple Brooch!
