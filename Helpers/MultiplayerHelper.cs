@@ -94,6 +94,20 @@ namespace Stellamod
 
                     }
                     break;
+                case MessageType.SpawnNPC:
+                    if(Main.netMode == NetmodeID.Server)
+                    {
+                        int npc = reader.ReadInt32();
+                        int x = reader.ReadInt32();
+                        int y = reader.ReadInt32();
+                        int type = reader.ReadInt32();
+                        float ai0 = reader.ReadSingle();
+                        float ai1 = reader.ReadSingle();
+                        float ai2 = reader.ReadSingle();
+                        float ai3 = reader.ReadSingle();
+                        NPC.NewNPC(new EntitySource_Misc("Dragon"), x, y, type, ai0: ai0, ai1: ai1, ai2: ai2, ai3: ai3);
+                    }
+                    break;
                 case MessageType.CompleteMerenaQuest:
                     var questType = (MerenaQuestSystem.QuestType)reader.ReadByte();
                     MerenaQuestSystem.HandleCompleteQuest(questType);

@@ -155,6 +155,22 @@ public class TileScene : IEnumerable
         _tiles = new Dictionary<ZTilePosition, ZTileInstanceData>();
     }
 
+    public bool FindTile(ushort type, out ZTilePosition instanceData)
+    {
+        foreach(var kvp in _tiles)
+        {
+            if (kvp.Value.type == type)
+            {
+                instanceData = kvp.Key;
+                return true;
+            }
+               
+        }
+        instanceData = default;
+        return false;
+        //return default;
+    }
+
     public void AddorSet(ZTilePosition tilePosition, ZTileInstanceData tileData)
     {
         if (_tiles.ContainsKey(tilePosition))
@@ -269,6 +285,18 @@ public class ZTileRenderLayer
         _tileScenes = new Dictionary<Point, TileScene>();
     }
 
+    public bool FindTile(ushort type, out ZTilePosition instanceData)
+    {
+        foreach (var value in _tileScenes.Values)
+        {
+            if(value.FindTile(type, out instanceData))
+            {
+                return true;
+            }
+        }
+        instanceData = default;
+        return false;
+    }
     /// <summary>
     /// Adds a z tile to the render layer
     /// </summary>
@@ -373,6 +401,17 @@ public class ZTileMap : ModSystem
     private ZTileRenderLayer[] _renderLayers;
     public const int Chunk_Size = 64;
 
+    public ZTilePosition Find(ushort type) 
+    {
+        foreach (ZTileRenderLayer layer in _renderLayers)
+        {
+            if (layer.FindTile(type, out ZTilePosition instanceData))
+            {
+                return instanceData;
+            }
+        }
+        return default;
+    }
 
     public override void OnModLoad()
     {

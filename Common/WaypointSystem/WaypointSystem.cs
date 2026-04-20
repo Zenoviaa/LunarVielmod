@@ -1,9 +1,14 @@
 ﻿using Microsoft.Xna.Framework.Input;
+using MonoMod.Core.Utils;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.BlackSystem;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.SirestiasShop;
 using Stellamod.Common.UI;
+using Stellamod.Common.WeaponUpgrade.UI;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner;
+using Stellamod.Content.Areas.SpringHills.NPCsSH;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Utilities;
 using Stellamod.Core.ZTileSystem;
@@ -19,11 +24,13 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.UI.Chat;
+using static Stellamod.WorldG.StructureManager.Snapshot;
 
 namespace Stellamod.Common.WaypointSystem;
 
@@ -45,6 +52,498 @@ public enum OrganWaypoint : byte
     MistyDungeon = 13
 }
 
+public class OrganDragon : ModNPC
+{
+    private enum AIState
+    {
+        SwoopDown,
+        Pickup,
+        SwoopUp,
+        SwoopOut,
+                
+    }
+    private float _mountTimer;
+    private ref float Timer => ref NPC.ai[0];
+    private int PlayerToTravel => (int)NPC.ai[1];
+    private AIState State
+    {
+        get => (AIState)NPC.ai[2];
+        set => NPC.ai[2] = (float)value;
+    }
+    private ref float TeleportTarget => ref NPC.ai[3];
+
+    private bool _initialized;
+    private AnimationFramer _framer;
+    private DragonRig _rig;
+    private Asset<Texture2D> _headTextureAsset;
+    private Asset<Texture2D>[] _bodyTextureAssets;
+    private Asset<Texture2D>[] _frontLegTextureAssets;
+    private Asset<Texture2D>[] _backLegTextureAssets;
+    private Asset<Texture2D>[] _wingTextureAssets;
+
+    private DragonSegment _headSegment;
+    private DragonSegment[] _bodySegments;
+    private Vector2 _teleportPosition;
+    private void LoadTextureAssets()
+    {
+        if (_initialized)
+            return;
+        _headTextureAsset = ModContent.Request<Texture2D>(Texture);
+        _bodyTextureAssets = new Asset<Texture2D>[8];
+        for (int i = 0; i < _bodyTextureAssets.Length; i++)
+        {
+            _bodyTextureAssets[i] = ModContent.Request<Texture2D>(Texture + "_Body_" + i);
+        }
+        _frontLegTextureAssets = new Asset<Texture2D>[2];
+        for (int i = 0; i < _frontLegTextureAssets.Length; i++)
+        {
+            _frontLegTextureAssets[i] = ModContent.Request<Texture2D>(Texture + "_FrontLeg_" + i);
+        }
+        _wingTextureAssets = new Asset<Texture2D>[1];
+        for (int i = 0; i < _wingTextureAssets.Length; i++)
+        {
+            _wingTextureAssets[i] = ModContent.Request<Texture2D>(Texture + "_Wing_" + i);
+        }
+        _initialized = true;
+    }
+
+    private void SetupRig()
+    {
+        _rig = new DragonRig();
+
+        //Setup head
+        _headSegment = new DragonSegment(segmentLength: 48);
+        _rig.AddSegment(_headSegment);
+        _rig.root = _headSegment;
+
+        //Setup body
+        _bodySegments = new DragonSegment[8];
+        int[] bodyWidths = new int[8];
+        bodyWidths[0] = 30;
+        bodyWidths[1] = 20;
+        bodyWidths[2] = 20;
+        bodyWidths[3] = 20;
+        bodyWidths[4] = 20;
+        bodyWidths[5] = 20;
+        bodyWidths[6] = 20;
+        bodyWidths[7] = 20;
+        for (int i = 0; i < _bodySegments.Length; i++)
+        {
+            DragonSegment bodySegment = new DragonSegment(segmentLength: bodyWidths[i]);
+            if (i == 0)
+            {
+                bodySegment.parent = _headSegment;
+            }
+            else
+            {
+                bodySegment.parent = _bodySegments[i - 1];
+            }
+            _rig.AddSegment(bodySegment);
+            _bodySegments[i] = bodySegment;
+        }
+
+        //_frontLegSegments
+    }
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.WriteVector2(_teleportPosition);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _teleportPosition = reader.ReadVector2();
+    }
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        SetupRig();
+        NPC.friendly = true; // NPC Will not attack player
+        NPC.width = 32;
+        NPC.height = 32;
+        NPC.aiStyle = 0;
+        NPC.damage = 90;
+        NPC.defense = 42;
+        NPC.lifeMax = 200;
+        NPC.HitSound = SoundID.NPCHit1;
+        NPC.DeathSound = SoundID.NPCDeath1;
+        NPC.knockBackResist = 0.5f;
+        NPC.dontTakeDamageFromHostiles = true;
+        NPC.dontCountMe = true;
+        NPC.dontTakeDamage = true;
+        NPC.noGravity = true;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        if (_teleportPosition != Vector2.Zero)
+        {
+            NPC.position.X = _teleportPosition.X;
+            NPC.position.Y = _teleportPosition.Y;
+            _teleportPosition = Vector2.Zero;
+        }
+
+        switch (State)
+        {
+            case AIState.SwoopDown:
+                AI_SwoopDown();
+                break;
+            case AIState.Pickup:
+                AI_Pickup();
+                break;
+            case AIState.SwoopUp:
+                AI_SwoopUp();
+                break;
+            case AIState.SwoopOut:
+                AI_SwoopOut();
+                break;
+        }
+        _framer.maxFrame = 120;
+        _framer.frameSpeed = 1;
+        _framer.UpdateTick();
+    }
+
+    private void SwitchState(AIState state)
+    {
+        if (MultiplayerHelper.IsHost)
+        {
+            Timer = 0;
+            State = state;
+            NPC.netUpdate = true;
+        }
+    }
+
+
+
+    private void AI_SwoopDown()
+    {
+        Timer++;
+        if(Timer == 1)
+        {
+        
+            NPC.TargetClosest();
+        }
+
+        Player target = Main.player[PlayerToTravel];
+        Vector2 targetPosition = target.Center;
+        Vector2 targetVelocity = targetPosition - NPC.Center;
+        targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
+        float speed = 10;
+        float distanceToTarget = Vector2.Distance(NPC.Center, targetPosition);
+        if (distanceToTarget < speed)
+            speed = distanceToTarget;
+        speed *= MathHelper.Lerp(0.2f, 1f, EasingFunction.InOutSine(distanceToTarget / 384f));
+        targetVelocity *= speed;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.2f);
+
+        _headSegment.angle = (-Vector2.UnitX).ToRotation();
+        float range = MathHelper.ToRadians(3);
+        for(int i = 1; i < _bodySegments.Length; i++)
+        {
+            _bodySegments[i].angle = _bodySegments[i - 1].angle - MathHelper.ToRadians(3) + MathHelper.Lerp(-range, range, ExtraMath.Osc(0f, 1f, offset: i));
+        }
+        if (distanceToTarget <= 8)
+        {
+            SwitchState(AIState.Pickup);
+        }
+    }
+
+    private void MountPlayer()
+    {
+        _mountTimer++;
+        Player target = Main.player[PlayerToTravel];
+        SkullrunnerThrowModPlayer throwModPlayer = target.GetModPlayer<SkullrunnerThrowModPlayer>();
+        Vector2 mountPosition = NPC.Center;
+        mountPosition.X -= 64;
+        mountPosition.Y -= 32;
+        throwModPlayer.targetSuckPosition = Vector2.Lerp(target.Center, mountPosition, EasingFunction.InOutSine(_mountTimer / 30f));
+    }
+
+    private void AI_Pickup()
+    {
+        Timer++;
+        if(Timer < 30)
+        {
+            NPC.velocity *= 0.9f;
+        }
+
+        if (Timer > 30)
+        {
+            MountPlayer();
+        }
+
+        if(Timer >= 90)
+        {
+            SwitchState(AIState.SwoopUp);
+        }
+    }
+
+    private Point FindTargetTile()
+    {
+        int targetTileType = (int)TeleportTarget;
+        ZTileMap zTileMap = ModContent.GetInstance<ZTileMap>();
+        var tilePosition = zTileMap.Find((ushort)targetTileType);
+        return new Point(tilePosition.x, tilePosition.y);
+    }
+
+    private void AI_SwoopUp()
+    {
+        Timer++;
+        if(Timer < 55)
+            MountPlayer();
+        if(NPC.velocity.Y > -15)
+            NPC.velocity.Y -= 1;
+
+        float alpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 50f));
+        FullTint.SetColor(Color.Black, alpha);
+        if(Timer == 55)
+        {
+
+            Point targetTile = FindTargetTile();
+            Vector2 worldCoordinates = targetTile.ToWorldCoordinates();
+
+            if (MultiplayerHelper.IsHost)
+            {
+                _teleportPosition = worldCoordinates;
+                NPC.netUpdate = true;
+            }
+
+            Player player = Main.player[(int)PlayerToTravel];          
+            player.Teleport(worldCoordinates, TeleportationStyleID.DebugTeleport);
+            if (Main.netMode != NetmodeID.SinglePlayer)
+                NetMessage.SendData(MessageID.TeleportEntity, -1, -1, null, 0, player.whoAmI, worldCoordinates.X, worldCoordinates.Y, 1);
+        }
+
+        if(Timer >= 60f)
+        {
+            SwitchState(AIState.SwoopOut);
+        }
+    }
+
+    private void AI_SwoopOut()
+    {
+        Timer++;
+        if(Timer < 15)
+        {
+            NPC.velocity *= 0.8f;
+            MountPlayer();
+        }
+        else
+        {
+            if(NPC.velocity.Y > -15)
+                NPC.velocity.Y -= 1;
+            if(Timer > 90f)
+            {
+                NPC.active = false;
+            }
+        }
+    }
+    private void ResolveKinematics()
+    {
+        _rig.ResolveFK(NPC.Center);
+    }
+
+    private Vector2 Breathe(float offset)
+    {
+        Vector2 breathScale = Vector2.Lerp(Vector2.One * 1f, Vector2.One * 1.1f, ExtraMath.Osc(0f, 1f, speed: 2, offset: offset));
+        return breathScale;
+    }
+
+    private float WingBreathe(float offset)
+    {
+        float range = MathHelper.ToRadians(5);
+        float radians = MathHelper.Lerp(-range, range, ExtraMath.Osc(0f, 1f, speed: 1, offset: offset));
+        return radians;
+    }
+
+    private float _headAngle;
+    private void DrawSegments(SpriteBatch spriteBatch, Vector2 offset)
+    {
+        //BACK WING
+
+        
+        SpritebatchDrawer backWingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAssets[0], _bodySegments[0].a);
+        backWingDrawer.drawOrigin = new Vector2(150, 72);
+        backWingDrawer.rotation = _bodySegments[0].totalAngle - MathHelper.Pi;
+        backWingDrawer.sourceRect = _wingTextureAssets[0].Value.GetFrame(_framer.frame, 10, 12);
+        float wingAngle2 = MathHelper.WrapAngle(backWingDrawer.rotation + MathHelper.PiOver2);
+        if (wingAngle2 < 0)
+        {
+            backWingDrawer.spriteEffects = SpriteEffects.FlipVertically;
+            backWingDrawer.drawOrigin = new Vector2(backWingDrawer.drawOrigin.X, _wingTextureAssets[0].Height() - backWingDrawer.drawOrigin.Y);
+        }
+        backWingDrawer.scale = Breathe(0) * 2;
+        backWingDrawer.rotation += WingBreathe(0);
+        backWingDrawer.worldPosition += offset;
+        backWingDrawer.color = backWingDrawer.color.MultiplyRGB(Color.Lerp(Color.White, Color.Black, 0.5f));
+        spriteBatch.Draw(backWingDrawer);
+        
+        //BACK LEG BACK
+
+        /*
+        SpritebatchDrawer backLegDrawerBack = SpritebatchDrawer.FromTextureAsset(_backLegTextureAssets[1], _bodySegments[2].a);
+        backLegDrawerBack.rotation = _bodySegments[2].totalAngle - MathHelper.Pi;
+        backLegDrawerBack.drawOrigin = Vector2.Zero;
+
+        float backLegAngle = MathHelper.WrapAngle(backLegDrawerBack.rotation + MathHelper.PiOver2);
+        if (backLegAngle < 0)
+        {
+            backLegDrawerBack.spriteEffects = SpriteEffects.FlipVertically;
+            backLegDrawerBack.drawOrigin = new Vector2(0, _backLegTextureAssets[1].Height() - 0);
+        }
+        backLegDrawerBack.scale = Breathe(1);
+        backLegDrawerBack.worldPosition += offset;
+        spriteBatch.Draw(backLegDrawerBack);
+        */
+
+        //BACK LEG FRONT
+        SpritebatchDrawer frontLegDrawerBack = SpritebatchDrawer.FromTextureAsset(_frontLegTextureAssets[1], _bodySegments[0].a);
+        frontLegDrawerBack.drawOrigin = Vector2.Zero;
+        frontLegDrawerBack.rotation = _bodySegments[0].totalAngle - MathHelper.Pi;
+        float frontLegAngle = MathHelper.WrapAngle(frontLegDrawerBack.rotation + MathHelper.PiOver2);
+        if (frontLegAngle < 0)
+        {
+            frontLegDrawerBack.spriteEffects = SpriteEffects.FlipVertically;
+            frontLegDrawerBack.drawOrigin = new Vector2(0, _frontLegTextureAssets[1].Height() - 0);
+        }
+        frontLegDrawerBack.scale = Breathe(1);
+        frontLegDrawerBack.worldPosition += offset;
+        spriteBatch.Draw(frontLegDrawerBack);
+
+        //BODY
+        for (int i = _bodyTextureAssets.Length - 1; i >= 0; i--)
+        {
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_bodyTextureAssets[i], _bodySegments[i].a);
+            float bodyAngle = _bodySegments[i].totalAngle;
+            drawer.rotation = bodyAngle;
+            float dir = 1;
+            if (i == _bodyTextureAssets.Length - 1)
+            {
+                drawer.drawOrigin = new Vector2(_bodyTextureAssets[i].Width(), 0);
+            }
+
+            bodyAngle = MathHelper.WrapAngle(bodyAngle + MathHelper.PiOver2);
+            if (bodyAngle < 0)
+            {
+                dir = -1;
+                drawer.spriteEffects = SpriteEffects.FlipVertically;
+                drawer.drawOrigin = new Vector2(drawer.drawOrigin.X, _bodyTextureAssets[i].Height() - drawer.drawOrigin.Y);
+            }
+            if (i == _bodyTextureAssets.Length - 1)
+            {
+                drawer.rotation -= MathHelper.ToRadians(65 * dir);
+                //         drawer.scale *= 4;
+            }
+            drawer.scale = Breathe(2 + i);
+            drawer.worldPosition += offset;
+            spriteBatch.Draw(drawer);
+        }
+
+
+        //HEAD
+        SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureAsset(_headTextureAsset, _headSegment.b);
+        float drawAngle = MathHelper.Pi + _headSegment.angle;
+
+        drawAngle = MathHelper.WrapAngle(drawAngle);
+
+
+        Player player = Main.player[NPC.target];
+        Vector2 lookVectory = player.Center - NPC.Center;
+        lookVectory = lookVectory.SafeNormalize(Vector2.Zero);
+
+        Vector2 forwardVectory = (_headSegment.a - _headSegment.b).SafeNormalize(Vector2.Zero);
+        float dp = Vector2.Dot(forwardVectory, lookVectory);
+        if (dp > 0.25f)
+        {
+            float lookAngle = lookVectory.ToRotation();
+            _headAngle = Utils.AngleLerp(_headAngle, lookAngle, 0.1f);
+
+        }
+        else
+        {
+            _headAngle = Utils.AngleLerp(_headAngle, drawAngle, 0.1f);
+        }
+
+        headDrawer.rotation = _headAngle;
+        headDrawer.LeftCenterOrigin();
+        headDrawer.drawOrigin.X += 48;
+
+        drawAngle = MathHelper.WrapAngle(drawAngle + MathHelper.PiOver2);
+        if (drawAngle < 0)
+        {
+            headDrawer.spriteEffects = SpriteEffects.FlipVertically;
+            headDrawer.drawOrigin = new Vector2(headDrawer.drawOrigin.X, _headTextureAsset.Height() - headDrawer.drawOrigin.Y);
+        }
+
+        headDrawer.worldPosition += offset;
+        headDrawer.scale = Breathe(6);
+        spriteBatch.Draw(headDrawer);
+
+        
+        //BACK LEG
+        SpritebatchDrawer backLegDrawerFront = SpritebatchDrawer.FromTextureAsset(_frontLegTextureAssets[0], _bodySegments[2].a);
+        backLegDrawerFront.drawOrigin = Vector2.Zero;
+        backLegDrawerFront.rotation = _bodySegments[2].totalAngle - MathHelper.Pi + MathHelper.PiOver2;
+        backLegDrawerFront.rotation -= MathHelper.ToRadians(25);
+        //backLegDrawerFront.scale *= 4;
+        float backDLegAngle = MathHelper.WrapAngle(_bodySegments[3].totalAngle - MathHelper.Pi + MathHelper.PiOver2);
+        if (backDLegAngle < 0)
+        {
+            backLegDrawerFront.rotation += MathHelper.Pi;
+            backLegDrawerFront.spriteEffects = SpriteEffects.FlipVertically;
+            backLegDrawerFront.drawOrigin = new Vector2(0, _backLegTextureAssets[0].Height() - 0);
+        }
+        backLegDrawerFront.scale = Breathe(5);
+        backLegDrawerFront.worldPosition += offset;
+        spriteBatch.Draw(backLegDrawerFront);
+        
+        //FRONT LEG
+        SpritebatchDrawer frontLegDrawerFront = SpritebatchDrawer.FromTextureAsset(_frontLegTextureAssets[0], _bodySegments[0].a);
+        frontLegDrawerFront.drawOrigin = Vector2.Zero;
+        frontLegDrawerFront.rotation = _bodySegments[0].totalAngle - MathHelper.Pi + MathHelper.PiOver2;
+        float frontDLegAngle = MathHelper.WrapAngle(_bodySegments[0].totalAngle - MathHelper.Pi + MathHelper.PiOver2);
+        if (frontDLegAngle < 0)
+        {
+            frontLegDrawerFront.rotation += MathHelper.Pi;
+            frontLegDrawerFront.spriteEffects = SpriteEffects.FlipVertically;
+            frontLegDrawerFront.drawOrigin = new Vector2(0, _frontLegTextureAssets[0].Height() - 0);
+        }
+        frontLegDrawerFront.scale = Breathe(5);
+        frontLegDrawerFront.worldPosition += offset;
+        spriteBatch.Draw(frontLegDrawerFront);
+
+
+        //FRONT WING
+        SpritebatchDrawer frontWingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAssets[0], _bodySegments[2].a);
+        frontWingDrawer.drawOrigin = new Vector2(150, 72);
+        frontWingDrawer.rotation = _bodySegments[2].totalAngle - MathHelper.Pi;
+        frontWingDrawer.scale = Breathe(5) * 2;
+        frontWingDrawer.sourceRect = _wingTextureAssets[0].Value.GetFrame(_framer.frame, 10, 12);
+        float wingAngle = MathHelper.WrapAngle(frontWingDrawer.rotation + MathHelper.PiOver2);
+        if (wingAngle < 0)
+        {
+            frontWingDrawer.spriteEffects = SpriteEffects.FlipVertically;
+            frontWingDrawer.drawOrigin = new Vector2(114, _wingTextureAssets[0].Height() - 84);
+        }
+        frontWingDrawer.rotation += WingBreathe(0);
+        frontWingDrawer.worldPosition += offset;
+        spriteBatch.Draw(frontWingDrawer);
+    }
+
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        LoadTextureAssets();
+        ResolveKinematics();
+        DrawSegments(spriteBatch, Vector2.Zero);
+        return false;
+    }
+
+}
 public class OrganWave : ModProjectile
 {
     private float Time => 120;
@@ -272,108 +771,6 @@ public class OrganWaypointTracker : ModSystem
         }
     }
 }
-public abstract class OrganZTile : ZTile
-{
-    protected OrganWaypointTracker WaypointTracker => ModContent.GetInstance<OrganWaypointTracker>();
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-        interactable = true;
-    }
-
-    public virtual OrganWaypoint GetWaypoint()
-    {
-        return OrganWaypoint.Desert;
-    }
-
-    public virtual bool IsActivated()
-    {
-        return WaypointTracker.GetWaypoint(GetWaypoint());
-    }
-
-    public override void Draw(SpriteBatch spriteBatch, Vector2 screenPos, ZTileDrawParams drawParams)
-    {
-        if (!IsActivated())
-        {
-            drawParams.tileData.value += 175;
-        }
-        drawParams.tileData.value += (byte)WaypointTracker.darknessAnimation;
-
-        base.Draw(spriteBatch, screenPos, drawParams);
-    }
-
-    public override void RightClick(Point tilePoint)
-    {
-        base.RightClick(tilePoint);
-        OrganWaypoint waypoint = GetWaypoint();
-        if (!WaypointTracker.GetWaypoint(waypoint))
-        {
-            Vector2 worldCoordinates = tilePoint.ToWorldCoordinates();
-            worldCoordinates.Y -= 64;
-            WaypointTracker.ActivateWaypoint(waypoint, worldCoordinates);
-            return;
-        }
-
-        WaypointSystem wayPointSystem = ModContent.GetInstance<WaypointSystem>();
-        wayPointSystem.ToggleUI();
-    }
-    public override (int, int) GetBounds()
-    {
-        return base.GetBounds();
-    }
-}
-
-public class MoonSpiralTowerOrgan : OrganZTile
-{
-    public override OrganWaypoint GetWaypoint()
-    {
-        return OrganWaypoint.Moonspiral;
-    }
-
-    public override (int, int) GetBounds()
-    {
-        return (178, 162);
-    }
-}
-
-public class MarshOrgan : OrganZTile
-{
-    public override OrganWaypoint GetWaypoint()
-    {
-        return OrganWaypoint.Marsh;
-    }
-
-    public override (int, int) GetBounds()
-    {
-        return (168, 162);
-    }
-}
-
-public class WitchTownOrgan : OrganZTile
-{
-    public override OrganWaypoint GetWaypoint()
-    {
-        return OrganWaypoint.WitchTown;
-    }
-
-    public override (int, int) GetBounds()
-    {
-        return (146, 162);
-    }
-}
-
-public class DesertOrgan : OrganZTile
-{
-    public override OrganWaypoint GetWaypoint()
-    {
-        return OrganWaypoint.Desert;
-    }
-
-    public override (int, int) GetBounds()
-    {
-        return (146, 162);
-    }
-}
 
 public class WaypointButtonsUI : UIPanel
 {
@@ -443,6 +840,42 @@ public class WaypointButtonsUI : UIPanel
         Height.Pixels = 272 * 2;
     }
 
+   private ushort GetTileType(OrganWaypoint waypoint)
+    {
+        ZTileMap zTileMap = ModContent.GetInstance<ZTileMap>();
+        switch (waypoint)
+        {
+            default:
+            case OrganWaypoint.WitchTown:
+                return ModContent.GetInstance<WitchTownOrgan>().type; 
+        }
+    }
+
+    private void SummonDragon(OrganWaypoint waypoint)
+    {
+        int x = (int)Main.LocalPlayer.Center.X;
+        int y = (int)Main.LocalPlayer.Center.Y;
+        int npcType = ModContent.NPCType<OrganDragon>();
+        y -= 1500;
+
+        if (Main.netMode == NetmodeID.SinglePlayer)
+        {
+            NPC.NewNPC(Main.LocalPlayer.GetSource_FromThis(), x, y, ModContent.NPCType<OrganDragon>(), ai1: Main.LocalPlayer.whoAmI, ai3: (float)GetTileType(waypoint));
+            return;
+        }
+
+        //Need to spawn it from the server
+        int clientToIgnore = Main.LocalPlayer.whoAmI;
+        Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.SpawnNPC,
+            Main.LocalPlayer.whoAmI,
+            x,
+            y,
+            npcType,
+            (float)0,
+            (float)Main.LocalPlayer.whoAmI,
+            (float)0,
+            (float)GetTileType(waypoint)).Send(ignoreClient: clientToIgnore);
+    }
     private void PreviewPopup(SpriteBatch spriteBatch, WaypointButton waypointButton, Vector2 position)
     {
 
@@ -499,6 +932,9 @@ public class WaypointButtonsUI : UIPanel
         {
             if (Main.mouseLeft && Main.mouseLeftRelease)
             {
+                SummonDragon(waypointButton.WaypointType);
+
+                ModContent.GetInstance<WaypointSystem>().CloseUI();
                 //    Main.NewText("Click");
                 Main.mouseLeftRelease = false;
             }

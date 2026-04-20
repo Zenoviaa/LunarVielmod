@@ -32,7 +32,8 @@
         RomanceDodge,
         BossDowned,
         CauldronSync,
-        WaypointActivate
+        WaypointActivate,
+        SpawnNPC
     }
 
     public enum DialogueType : byte
