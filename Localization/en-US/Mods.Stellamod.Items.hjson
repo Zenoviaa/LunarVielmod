@@ -10833,3 +10833,13 @@ SanctorousLegs: {
 	DisplayName: Sanctorous Legs
 	Tooltip: ""
 }
+
+Mailloader: {
+	DisplayName: Mailloader
+	Tooltip: 
+		'''
+		Shoots an exploding package on the first shot of every magazine, and then pelts enemies with letters!
+		'You got mail!'
+		'''
+	
+}

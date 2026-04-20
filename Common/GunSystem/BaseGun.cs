@@ -120,6 +120,7 @@ namespace Stellamod.Common.GunSystem
     public abstract class BaseGun : ModItem
     {
         public int remainingAmmo = 6;
+        public Vector2 muzzleOrigin;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -219,15 +220,57 @@ namespace Stellamod.Common.GunSystem
         {
             GunCasingEffects(player, source, position, velocity, type, damage, knockback);
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 muzzlePosition = player.MountedCenter + velocity.SafeNormalize(Vector2.Zero) * texture.Width / 2;
+
+            Vector2? holdOutOffset = HoldoutOffset();
+            Vector2 offset = holdOutOffset.HasValue ? holdOutOffset.Value : Vector2.Zero;
+            offset = offset.RotatedBy(velocity.ToRotation());
+
+            Vector2 muzzleOffset = muzzleOrigin;
+            muzzleOffset -= new Vector2(texture.Width, texture.Height) * 0.5f;
+            muzzleOffset = muzzleOffset.RotatedBy(velocity.ToRotation());
+
+            SpriteEffects spriteEffects = player.direction == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            if (player.direction == -1)
+                spriteEffects |= SpriteEffects.FlipVertically;
+
+            /*
+            if (spriteEffects.HasFlag(SpriteEffects.FlipVertically))
+            {
+                muzzleOffset = new Vector2(muzzleOffset.X, texture.Height - muzzleOffset.Y);
+            }
+            
+            if (spriteEffects.HasFlag(SpriteEffects.FlipHorizontally))
+            {
+                muzzleOffset = new Vector2(texture.Width - muzzleOffset.X, muzzleOffset.Y);
+            }*/
+
+            Vector2 muzzlePosition = player.MountedCenter - new Vector2(0, 7) + offset + muzzleOffset;// + muzzleOffset;
+
+            //ctor2 muzzlePosition = player.MountedCenter + velocity.SafeNormalize(Vector2.Zero) * texture.Width / 2;
             ShootEffects(muzzlePosition, velocity);
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<GunHold>()] > 0)
+            {
+                foreach(var proj in Main.ActiveProjectiles)
+                {
+                    if (proj.owner != player.whoAmI)
+                        continue;
+                    if(proj.type != ModContent.ProjectileType<GunHold>())
+                    {
+                        continue;
+                    }
+                    proj.ai[0] = 0;
+                    proj.ai[2] = 1;
+                    proj.netUpdate = true;
+                    break;
+                }
+            }
             return ShootProjectile(player, source, position, velocity, type, damage, knockback);
         }
 
         public void BasicMuzzleFlash(Vector2 position, Vector2 velocity, Color innerColor, Color outerColor)
         {
             var p = FXUtil.GlowCircleBoom(position, innerColor, outerColor, Color.Black);
-            p.Scale *= 0.5f;
+            p.Scale *= Main.rand.NextFloat(0.4f, 0.65f);
 
             var sp = SmokeParticle.SpawnInAlphaLayer(position, velocity * 0.2f, Color.DarkGray);
             sp.initialColor = Color.Lerp(Color.Red, Color.Black, 0.6f);
@@ -236,8 +279,13 @@ namespace Stellamod.Common.GunSystem
             MuzzleFlashParticle flashParticle = MuzzleFlashParticle.Spawn(position, velocity, innerColor);
             flashParticle.innerColor = innerColor;
             flashParticle.bloomColor = outerColor;
-            flashParticle.Scale *= 0.25f;
+            flashParticle.Scale *= Main.rand.NextFloat(0.15f, 0.3f);
 
+
+            FaintSmokeParticle faintSmoke = FaintSmokeParticle.SpawnInAlphaLayer(position, velocity, Scale: Main.rand.NextFloat(0.2f, 0.4f));
+            faintSmoke.color = Color.Lerp(Color.Lerp(Color.Orange, Color.Red, Main.rand.NextFloat(0f, 1f)), Color.Black, 0.7f);
+            faintSmoke.fadeToColor = Color.DarkGray;
+            faintSmoke.Scale = Main.rand.NextFloat(0.15f, 0.3f);
             for (float f = 0; f < 4; f++)
             {
                 DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
@@ -414,7 +462,9 @@ namespace Stellamod.Common.GunSystem
 
     public class GunHold : ModProjectile
     {
+        private float _oldItemTime;
         private float _startRotation;
+        private Vector2 _recoilOffset;
         public override string Texture => TextureRegistry.EmptyTexture;
         private enum AIState
         {
@@ -431,6 +481,7 @@ namespace Stellamod.Common.GunSystem
             get => (AIState)Projectile.ai[2];
             set => Projectile.ai[2] = (float)value;
         }
+        private Vector2 HoldDirection => HoldRotation.ToRotationVector2();
         private Player Owner => Main.player[Projectile.owner];
         private GunHoldPlayer GunHoldPlayer => Owner.GetModPlayer<GunHoldPlayer>(); 
         public override void SetDefaults()
@@ -468,7 +519,7 @@ namespace Stellamod.Common.GunSystem
                 Vector2? holdOutOffset = Owner.HeldItem.ModItem.HoldoutOffset();
                 Vector2 offset = holdOutOffset.HasValue ? holdOutOffset.Value : Vector2.Zero;
                 offset = offset.RotatedBy(HoldRotation);
-                Projectile.Center = Owner.MountedCenter - new Vector2(0, 7) + offset;
+                Projectile.Center = Owner.MountedCenter - new Vector2(0, 7) + offset + _recoilOffset;
                 Projectile.rotation = HoldRotation;
             }
   
@@ -542,7 +593,23 @@ namespace Stellamod.Common.GunSystem
         }
         private void AI_Shoot()
         {
+            Timer++;
+            if(Timer == 1)
+            {
+                _startRotation = Projectile.rotation;
+            }
+            float recoilTime = 10f;
+            float ratio = Timer / recoilTime;
+            float ease = EasingFunction.QuadraticBump(ratio);
+            float shootRadians = MathHelper.ToRadians(-5);
+            float offset = MathHelper.Lerp(0f, shootRadians, ease);
+            Projectile.rotation = _startRotation + offset;
 
+            _recoilOffset = Vector2.Lerp(-HoldDirection * 8, Vector2.Zero, EasingFunction.InOutSine(ratio));
+            if(Timer >= recoilTime)
+            {
+                SwitchState(AIState.Hold);
+            }
         }
 
         public override bool PreDraw(ref Color lightColor)

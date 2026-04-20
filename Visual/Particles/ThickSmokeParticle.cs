@@ -57,8 +57,10 @@ namespace Stellamod.Visual.Particles
         public bool expand;
         public Color fadeToColor;
         public float alpha;
+        public bool noShrink;
         public override void OnSpawn()
         {
+            noShrink = false;
             alpha = 1f;
             Rotation = Main.rand.NextFloat(0, 3.14f);
             Frame = new Rectangle(0, 0, FrameWidth, FrameHeight);
@@ -72,14 +74,18 @@ namespace Stellamod.Visual.Particles
         {
             Velocity.Y -= 0.05f;
             Velocity *= 0.9f;
-            if (expand)
+            if (!noShrink)
             {
-                Scale *= 1.01f;
+                if (expand)
+                {
+                    Scale *= 1.01f;
+                }
+                else
+                {
+                    Scale *= 0.96f;
+                }
             }
-            else
-            {
-                Scale *= 0.96f;
-            }
+         
 
             alpha *= 0.98f;
             fadeIn++;
