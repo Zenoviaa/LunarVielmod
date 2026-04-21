@@ -10836,10 +10836,14 @@ SanctorousLegs: {
 
 Mailloader: {
 	DisplayName: Mailloader
-	Tooltip: 
+	Tooltip:
 		'''
 		Shoots an exploding package on the first shot of every magazine, and then pelts enemies with letters!
 		'You got mail!'
 		'''
-	
+}
+
+SwarmerArtifact: {
+	DisplayName: Swarmer Artifact
+	Tooltip: "Summons mini swarmers from underground that burst up and latch onto enemies!"
 }

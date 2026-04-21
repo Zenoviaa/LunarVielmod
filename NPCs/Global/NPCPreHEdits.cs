@@ -269,22 +269,6 @@ namespace Stellamod.NPCs.Global
                 npcLoot.Add(ItemDropRule.Common(ItemID.SandBoots, 25, 1, 1));
                 npcLoot.Add(ItemDropRule.Common(ItemID.Sandgun, 40, 1, 1));
             }
-            if (npc.type == NPCID.Vulture)
-            {
-
-
-
-
-            }
-
-            if (npc.type == NPCID.FlyingAntlion)
-            {
-
-
-
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SwarmerStaff>(), 10, 1, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
-
-            }
 
             //------------------------------------------------------------------------ OVERWORLD + RAI
             if (npc.type == NPCID.Zombie)

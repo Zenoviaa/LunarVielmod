@@ -32,8 +32,8 @@ public class Mailloader : BaseGun
         Item.DamageType = DamageClass.Ranged;
         Item.width = 40;
         Item.height = 40;
-        Item.useTime = 16;
-        Item.useAnimation = 16;
+        Item.useTime = Item.useAnimation = 24;
+
         Item.useStyle = ItemUseStyleID.Shoot;
         Item.knockBack = 6;
         Item.value = Item.sellPrice(0, 0, 20, 0);
@@ -186,6 +186,15 @@ public class Letterbomb : ModProjectile
     }
     public override bool OnTileCollide(Vector2 oldVelocity)
     {
+        if (!Bounced)
+        {
+            if (Projectile.velocity.Y != oldVelocity.Y)
+                Projectile.velocity.Y = -oldVelocity.Y;
+            if (Projectile.velocity.X != oldVelocity.X)
+                Projectile.velocity.X = -oldVelocity.X;
+            Bounced = true;
+            return false;
+        }
         return base.OnTileCollide(oldVelocity);
     }
 }
@@ -320,6 +329,7 @@ public class Mailboom : ModProjectile
     }
     public override bool OnTileCollide(Vector2 oldVelocity)
     {
+        
         return base.OnTileCollide(oldVelocity);
     }
 }
