@@ -33,7 +33,7 @@ public class ButterflyArtifact : ModItem
         Item.mana = 20;
         Item.useAnimation = Item.useTime = 32;
         Item.useStyle = ItemUseStyleID.Shoot;
-        Item.UseSound = SoundID.Item43 with { PitchVariance = 0.4f, Volume = 0.3f };
+        Item.UseSound = SoundID.Item43 with { PitchVariance = 0.4f, Volume = 0.1f };
         Item.knockBack = 2;
         Item.shoot = ModContent.ProjectileType<MagicalButterfly>();
         Item.shootSpeed = 12;
@@ -78,8 +78,10 @@ public class ButterflyArtifact : ModItem
             Projectile.NewProjectile(source, bposition, velocity * Main.rand.NextFloat(0.6f, 1f), type, damage, knockback, player.whoAmI);
         }
 
-        Projectile.NewProjectile(source, player.Center, velocity, ModContent.ProjectileType<StaffWaveHold>(), damage, knockback, player.whoAmI,
+        var p = Projectile.NewProjectileDirect(source, player.Center, velocity, 
+            ModContent.ProjectileType<StaffWaveHold>(), damage, knockback, player.whoAmI,
             ai2: _dir);
+        (p.ModProjectile as StaffWaveHold).MagicCircleStyle = 1;
         return false;
     }
 

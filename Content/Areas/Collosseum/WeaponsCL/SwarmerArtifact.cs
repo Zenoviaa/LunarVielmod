@@ -5,6 +5,7 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Gores;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
+using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Ores;
@@ -105,12 +106,28 @@ public class SwarmerArtifact : ModItem
 
 public class StaffWaveHold : ModProjectile
 {
+    private Vector2 _holdDirection;
     private Vector2 _thrustOffset;
+    private MagicCircleRenderer _magicCircleRenderer;
     public override string Texture => TextureRegistry.EmptyTexture;
     private ref float Timer => ref Projectile.ai[0];
     private ref float SwingTime => ref Projectile.ai[1];
     private ref float SwingDir => ref Projectile.ai[2];
+
+    public int MagicCircleStyle;
     private Player Owner => Main.player[Projectile.owner];
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.WriteVector2(_holdDirection);
+        writer.Write(MagicCircleStyle);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _holdDirection = reader.ReadVector2();
+        MagicCircleStyle = reader.ReadInt32();
+    }
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -155,7 +172,7 @@ public class StaffWaveHold : ModProjectile
         if (this.OwnedByLocalClient())
         {
             Projectile.velocity = (Main.MouseWorld - Owner.Center).SafeNormalize(Vector2.Zero);
-  
+            _holdDirection = Projectile.velocity;
             Projectile.netUpdate = true;
         }
 
@@ -181,6 +198,33 @@ public class StaffWaveHold : ModProjectile
             Projectile.Kill();
         }
     }
+    private void DrawPixelatedRings(GraphicsDevice gDevice)
+    {
+
+        _magicCircleRenderer ??= new MagicCircleRenderer(AssetManager.GlowMask.ButterflyCircle);
+        float qb = EasingFunction.QuadraticBump(Timer / SwingTime);
+        Vector2 pos = Owner.MountedCenter + _holdDirection * 64 * MathHelper.Lerp(0.75f, 1f, qb);
+        Vector2 velociy = _holdDirection;
+
+
+
+        Color glowColor = Color.Lerp(Color.Black, Color.Pink, qb);
+        _magicCircleRenderer.DrawRing(pos, velociy, 0, 1, glowColor, Main.GlobalTimeWrappedHourly * 3);
+    }
+
+    private void DrawButterflyCircle()
+    {
+        float qb = EasingFunction.QuadraticBump(Timer / SwingTime);
+        Vector2 pos = Owner.MountedCenter + _holdDirection * 64 * MathHelper.Lerp(0.75f, 1f, qb);
+        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, pos);
+        bloomDrawer.color = Color.Lerp(Color.Black, Color.Violet, qb) * 0.6f;
+        bloomDrawer.color.A = 0;
+        bloomDrawer.scale *= 0.3f;
+        bloomDrawer.scale.X *= 0.5f;
+        bloomDrawer.rotation = _holdDirection.ToRotation();
+        Main.spriteBatch.Draw(bloomDrawer);
+        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedRings, DrawLayer.OverNPCs);
+    }
     public override bool PreDraw(ref Color lightColor)
     {
         if (Timer < 2)
@@ -190,6 +234,14 @@ public class StaffWaveHold : ModProjectile
         sbDrawer.worldPosition += _thrustOffset;
         sbDrawer.scale = Vector2.One *  Projectile.scale;
         Main.spriteBatch.Draw(sbDrawer);
+
+        switch (MagicCircleStyle)
+        {
+            case 1:
+                DrawButterflyCircle();
+                break;
+        }
+
         return false;
     }
     public override void OnKill(int timeLeft)

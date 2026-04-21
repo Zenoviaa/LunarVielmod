@@ -10855,5 +10855,5 @@ FallingMushroomArtifact: {
 
 ButterflyArtifact: {
 	DisplayName: Butterfly Artifact
-	Tooltip: "Casts a swarm of magical pink butterflies!"
+	Tooltip: Casts a swarm of magical pink butterflies!
 }
