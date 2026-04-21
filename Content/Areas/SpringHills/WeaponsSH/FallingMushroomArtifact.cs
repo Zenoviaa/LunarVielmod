@@ -9,13 +9,8 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Ores;
 using Stellamod.Visual.Particles;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -90,13 +85,15 @@ public class FallingMushroomCloud : ModProjectile
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
         Projectile.timeLeft = 30;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = -1;
     }
 
     public override void AI()
     {
         base.AI();
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             int rand = Main.rand.Next(4) + 1;
             string fungalFlace = $"Stellamod/Assets/Sounds/FungalFlaceBall{rand}";
@@ -130,7 +127,7 @@ public class FallingMushroomCloud : ModProjectile
     private void DrawPixelatedSmog(SpriteBatch sb, Vector2 screenPos)
     {
         RadialShearShader radialSheer = RadialShearShader.Instance;
-        radialSheer.Time = EasingFunction.InExpo((Timer / 30f) *1.4f);
+        radialSheer.Time = EasingFunction.InExpo((Timer / 30f) * 1.4f);
         sb.Restart(effect: radialSheer.Effect);
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
         float ratio = Timer / 30f;
@@ -210,7 +207,7 @@ public class FallingMushroom : ModProjectile
     private void AI_ThrowOut()
     {
         Timer++;
-        if(Timer % 8 == 0)
+        if (Timer % 8 == 0)
         {
             Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<GlowDust>(), newColor: Color.OrangeRed, Scale: Main.rand.NextFloat(0.8f, 1.2f));
         }
@@ -236,7 +233,7 @@ public class FallingMushroom : ModProjectile
             Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Grass, newColor: Color.OrangeRed, Scale: Main.rand.NextFloat(0.8f, 1.2f));
         }
 
-        if(Timer % 16 == 0)
+        if (Timer % 16 == 0)
         {
             Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
             var fs = FaintSmokeParticle.SpawnInAlphaLayer(pos, Vector2.Zero);
@@ -251,7 +248,7 @@ public class FallingMushroom : ModProjectile
         float targetX = MathF.Sin(Timer * 0.1f) * 1f;
         Projectile.velocity.X = MathHelper.Lerp(Projectile.velocity.X, targetX, 0.1f);
 
-        float outScale = (float)Projectile.timeLeft / 60f;
+        float outScale = Projectile.timeLeft / 60f;
         float easedOutScale = EasingFunction.InOutSine(outScale);
         Projectile.scale = easedOutScale;
     }
@@ -270,7 +267,7 @@ public class FallingMushroom : ModProjectile
             SpritebatchDrawer afDrawer = SpritebatchDrawer.FromProjectile(Projectile);
             afDrawer.worldPosition = Projectile.oldPos[i] + Projectile.Size * 0.5f;
             afDrawer.rotation = Projectile.oldRot[i];
-            afDrawer.color = Color.Lerp(Color.OrangeRed, Color.Transparent, (float)i / (float)Projectile.oldPos.Length) * 0.3f;
+            afDrawer.color = Color.Lerp(Color.OrangeRed, Color.Transparent, i / (float)Projectile.oldPos.Length) * 0.3f;
             Main.spriteBatch.Draw(afDrawer);
         }
 
@@ -295,7 +292,7 @@ public class FallingMushroom : ModProjectile
         base.OnKill(timeLeft);
         if (this.OwnedByLocalClient())
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<FallingMushroomCloud>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
     }

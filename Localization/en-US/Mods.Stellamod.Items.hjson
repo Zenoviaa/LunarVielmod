@@ -10850,5 +10850,10 @@ SwarmerArtifact: {
 
 FallingMushroomArtifact: {
 	DisplayName: Falling Mushroom Artifact
-	Tooltip: "Casts mini mushrooms that fly up, fall, and then explode!"
+	Tooltip: Casts mini mushrooms that fly up, fall, and then explode!
+}
+
+ButterflyArtifact: {
+	DisplayName: Butterfly Artifact
+	Tooltip: "Casts a swarm of magical pink butterflies!"
 }
