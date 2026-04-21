@@ -14,13 +14,14 @@ namespace Stellamod.Common
     {
         public override void SetupContent()
         {
+            SpringEnemy = new List<int>();
             HarmonicEnemy = new List<int>();
             MarshEnemy = new List<int>();
             ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
             base.SetupContent();
 
         }
-
+        public static List<int> SpringEnemy;
         public static List<int> HarmonicEnemy;
         public static List<int> MarshEnemy;
         public static float[] ModifiedWeights;
@@ -29,6 +30,11 @@ namespace Stellamod.Common
     public static class NPCSpawnExtensions
     {
         //Wrapper functions for this functionality just incase we want to change how this works
+        public static void AddToSpringHills(this ModNPC npc)
+        {
+            SpawnSets.SpringEnemy.Add(npc.Type);
+        }
+
         public static void AddToMarsh(this ModNPC npc)
         {
             SpawnSets.MarshEnemy.Add(npc.Type);
@@ -65,6 +71,11 @@ namespace Stellamod.Common
         public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {
             base.EditSpawnPool(pool, spawnInfo);
+            if (spawnInfo.Player.ZoneForest || spawnInfo.Player.ZonePurity)
+            {
+                AddEnemiesFromSpawnSet(SpawnSets.SpringEnemy, pool, spawnInfo);
+            }
+
             if (spawnInfo.Player.InModBiome<BiomeMarsh>())
             {
                 AddEnemiesFromSpawnSet(SpawnSets.MarshEnemy, pool, spawnInfo);

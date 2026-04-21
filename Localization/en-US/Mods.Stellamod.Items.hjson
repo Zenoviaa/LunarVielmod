@@ -10845,5 +10845,10 @@ Mailloader: {
 
 SwarmerArtifact: {
 	DisplayName: Swarmer Artifact
-	Tooltip: "Summons mini swarmers from underground that burst up and latch onto enemies!"
+	Tooltip: Summons mini swarmers from underground that burst up and latch onto enemies!
+}
+
+FallingMushroomArtifact: {
+	DisplayName: Falling Mushroom Artifact
+	Tooltip: "Casts mini mushrooms that fly up, fall, and then explode!"
 }
