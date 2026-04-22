@@ -10857,3 +10857,8 @@ ButterflyArtifact: {
 	DisplayName: Butterfly Artifact
 	Tooltip: Casts a swarm of magical pink butterflies!
 }
+
+FlyingLeavesTome: {
+	DisplayName: Flying Leaves Tome
+	Tooltip: Unleash a barrage of leaves...
+}

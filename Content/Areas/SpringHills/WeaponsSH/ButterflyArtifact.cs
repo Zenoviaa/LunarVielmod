@@ -11,6 +11,7 @@ using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -27,7 +28,7 @@ public class ButterflyArtifact : ModItem
     {
         base.SetDefaults();
         Item.DefaultToArtifact();
-        Item.damage = 7;
+        Item.damage = 14;
         Item.width = 16;
         Item.height = 16;
         Item.mana = 20;
@@ -100,6 +101,17 @@ public class MagicalButterfly : ModProjectile
     private Asset<Texture2D> _outlineTextureAsset;
     private Asset<Texture2D> _whiteTextureAsset;
     private ref float Timer => ref Projectile.ai[0];
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.WriteVector2(_initialVelocity);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _initialVelocity = reader.ReadVector2();
+    }
+
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -150,7 +162,7 @@ public class MagicalButterfly : ModProjectile
             Dust.NewDustPerfect(Projectile.Center, DustID.GemAmethyst, Scale: 0.5f);
         }
 
-        if (Timer >= 30)
+        if (Timer >= 90)
         {
             Projectile.tileCollide = true;
         }

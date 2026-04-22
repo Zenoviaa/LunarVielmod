@@ -26,7 +26,7 @@ public class FallingMushroomArtifact : ModItem
     {
         base.SetDefaults();
         Item.DefaultToArtifact();
-        Item.damage = 4;
+        Item.damage = 8;
         Item.width = 16;
         Item.height = 16;
         Item.mana = 14;

@@ -8,6 +8,7 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -27,7 +28,7 @@ namespace Stellamod.Core.Bases
         {
             get
             {
-                if(Owner.HeldItem.ModItem is AbstractMagicTome tome)
+                if (Owner.HeldItem.ModItem is AbstractMagicTome tome)
                 {
                     _heldTome = tome;
                 }
@@ -101,6 +102,7 @@ namespace Stellamod.Core.Bases
             // The Prism immediately stops functioning if the player is Cursed (player.noItems) or "Crowd Controlled", e.g. the Frozen debuff.
             // player.channel indicates whether the player is still holding down the mouse button to use the item.
             bool stillInUse = manaIsAvailable && !player.noItems && !player.CCed && player.controlUseItem;
+            stillInUse &= HeldTome != null && Owner.HeldItem.type == HeldTome.Type;
             if (!stillInUse)
             {
                 DeathTimer++;
@@ -124,7 +126,8 @@ namespace Stellamod.Core.Bases
             //player.itemAnimation = 2;
 
             // If you do not multiply by Projectile.direction, the player's hand will point the wrong direction while facing left.
-            player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
+          //  player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
+
         }
         private void AI_MoveTowardsCursor()
         {
@@ -156,7 +159,7 @@ namespace Stellamod.Core.Bases
             if (Owner.HeldItem.ModItem == null)
                 return;
 
-            Texture2D closeYourTomeTyrant = ModContent.Request<Texture2D>(Owner.HeldItem.ModItem.Texture).Value;
+            Texture2D closeYourTomeTyrant = TextureAssets.Item[HeldTome.Type].Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
 
             //Calculate Drawing Vars
@@ -164,13 +167,28 @@ namespace Stellamod.Core.Bases
             //We can add cool oscillation here
             drawPos.Y += MathHelper.Lerp(-2, 2, MathUtil.Osc(0f, 1f, speed: 3));
 
-
             Vector2 drawOrigin = closeYourTomeTyrant.Size() / 2f;
             Color drawColor = Color.White.MultiplyRGB(lightColor);
             float drawScale = Projectile.scale;
             float drawRotation = Projectile.rotation;
             SpriteEffects drawEffects = Projectile.Center.X < Owner.Center.X ? SpriteEffects.FlipVertically : SpriteEffects.None;
             float layerDepth = 0;
+
+            SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+            spriteBatch.Restart(effect: whiteShader.Effect);
+
+            Color lighterOutliner = Color.Lerp(HeldTome.GetTomeHintColor(), Color.White, 0.75f);
+            Color darkerOutliner = Color.Lerp(HeldTome.GetTomeHintColor(), Color.White, 0.45f);
+            Color outlinerColor = Color.Lerp(lighterOutliner, darkerOutliner, ExtraMath.Osc(0f, 1f, speed: 6));
+            for (float f = 0; f <= MathHelper.TwoPi; f += MathHelper.TwoPi / 4f)
+            {
+                Vector2 offset = f.ToRotationVector2();
+                offset *= 2;
+          
+                spriteBatch.Draw(closeYourTomeTyrant, drawPos + offset, null, outlinerColor, drawRotation, drawOrigin, drawScale, drawEffects, layerDepth);
+            }
+
+            spriteBatch.RestartDefaults();
             //Actually draw it
             spriteBatch.Draw(closeYourTomeTyrant, drawPos, null, drawColor, drawRotation, drawOrigin, drawScale, drawEffects, layerDepth);
         }
@@ -213,12 +231,11 @@ namespace Stellamod.Core.Bases
             }
 
 
-            Asset<Texture2D> magicCircleTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/PentagramP2");
-
+            Asset<Texture2D> magicCircleTextureAsset = HeldTome.GetMagicCircleTexture();
             Color manaCircleColor = drawColor;
             float manaCapacity = (float)Owner.statMana / (float)Owner.statManaMax2;
             manaCircleColor *= manaCapacity;
-            spriteBatch.Draw(magicCircleTextureAsset.Value, Owner.Center - Main.screenPosition, null, manaCircleColor,  Main.GlobalTimeWrappedHourly * 0.4f, magicCircleTextureAsset.Size() /2f, scale * 0.4f, SpriteEffects.None, 0);
+            spriteBatch.Draw(magicCircleTextureAsset.Value, Owner.Center - Main.screenPosition, null, manaCircleColor,  Main.GlobalTimeWrappedHourly * 0.4f, magicCircleTextureAsset.Size() /2f, scale * 0.6f, SpriteEffects.None, 0);
         }
         
         private void DrawPixelatedTomeTrail(GraphicsDevice graphicsDevice)

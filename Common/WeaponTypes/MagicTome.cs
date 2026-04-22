@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using ReLogic.Content;
 using Stellamod.Common.WeaponTypes;
 using Stellamod.Helpers;
 using System.Collections.Generic;
@@ -58,6 +59,10 @@ namespace Stellamod.Core.Bases
             return Color.White;
         }
 
+        public virtual Asset<Texture2D> GetMagicCircleTexture()
+        {
+            return ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/PentagramP2");
+        }
         public virtual void SetDefaults2()
         {
 
