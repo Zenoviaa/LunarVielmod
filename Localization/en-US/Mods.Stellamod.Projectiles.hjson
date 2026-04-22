@@ -1864,3 +1864,6 @@ SporeShroomClouds.DisplayName: Spore Shroom Clouds
 FallingMushroomCloud.DisplayName: Falling Mushroom Cloud
 MagicalButterfly.DisplayName: Magical Butterfly
 FlyingLeaf.DisplayName: Flying Leaf
+ElectricTridentLightning.DisplayName: Electric Trident Lightning
+ElectricTridentThrow.DisplayName: Electric Trident Throw
+ElectricTridentBoom.DisplayName: Electric Trident Boom

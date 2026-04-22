@@ -34,6 +34,7 @@ namespace Stellamod.Core.Palettes
         public bool hasSpiritPendant;
         public bool hasSunGlyph;
         public float darkness;
+
         public float darknessCurve;
         public float whiteCurve;
         public float blackCurve;
@@ -54,12 +55,13 @@ namespace Stellamod.Core.Palettes
             hasSpiritPendant = false;
             hasSunGlyph = false;
             darkness = 0;
-            darknessCurve = 0;
+            darknessCurve = MathHelper.Lerp(darknessCurve, 0f, 0.005f);
 
             //Curve based
+            /*
             float progress = (float)(Player.position.ToTileCoordinates().Y - Main.worldSurface) / 1000;
             progress = MathHelper.Clamp(progress, 0, 1);
-            darknessCurve = MathHelper.Lerp(0f, darknessCurve, progress * darknessCurveProgress);
+            darknessCurve = MathHelper.Lerp(0f, darknessCurve, progress * darknessCurveProgress);*/
             whiteCurve = 0f;
             blackCurve = 1f;
 
@@ -248,9 +250,9 @@ namespace Stellamod.Core.Palettes
             screenShaderData.UseProgress(darknessCurve);
             screenShaderData.Shader.Parameters["blackCurve"].SetValue(blackCurve);
             screenShaderData.Shader.Parameters["whiteCurve"].SetValue(whiteCurve);
-           // ToggleScreenShader("LunarVeil:DarknessCurve", darknessCurve != 0);
-
-
+            ToggleScreenShader("LunarVeil:DarknessCurve", darknessCurve != 0);
+      //      Main.NewText(darknessCurve);
+       //     Main.NewText(darknessCurve);
             if (hellPaletteActive || desertPaletteActive || desertTopPaletteActive)
             {
                 darknessCurveProgress -= 0.1f;

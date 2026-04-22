@@ -89,5 +89,6 @@ namespace Stellamod.Core.Utilities
             AfterImageRenderer renderer = ModContent.GetInstance<AfterImageRenderer>();
             renderer._afterImages.Add(afterImage);
         }
+
     }
 }

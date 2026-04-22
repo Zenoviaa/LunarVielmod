@@ -10862,3 +10862,8 @@ FlyingLeavesTome: {
 	DisplayName: Flying Leaves Tome
 	Tooltip: Unleash a barrage of leaves...
 }
+
+ElectricTrident: {
+	DisplayName: Electric Trident Artifact
+	Tooltip: Throws a very powerful lightning-powered trident that travels extremely fast!!
+}
