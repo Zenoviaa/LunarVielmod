@@ -8121,11 +8121,11 @@ EreshkigalStatueItem: {
 }
 
 SuperStaff: {
-	DisplayName: Super Staff
+	DisplayName: Super Artifact
 	Tooltip:
 		'''
 		Conjure ball lightning!
-		You can charge it up to fire a slower, but more powerful ball
+		You can charge it up to fire a slower, but more powerful electric ball
 		'''
 }
 
