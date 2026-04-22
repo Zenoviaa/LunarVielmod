@@ -96,13 +96,7 @@ namespace Stellamod.Content.CommonMaterials
 
         public override void Update(ref float gravity, ref float maxFallSpeed)
         {
-            //The below code makes this item hover up and down in the world
-            //Don't forget to make the item have no gravity, otherwise there will be weird side effects
-            float hoverSpeed = 5;
-            float hoverRange = 0.2f;
-            float y = VectorHelper.Osc(-hoverRange, hoverRange, hoverSpeed);
-            Vector2 position = new Vector2(Item.position.X, Item.position.Y + y);
-            Item.position = position;
+
         }
     }
     public class MarshScrap : ModItem
