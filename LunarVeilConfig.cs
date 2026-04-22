@@ -133,6 +133,9 @@ namespace Stellamod
         [DefaultValue(true)]
         public bool Dither;
 
+        [DefaultValue(true)]
+        public bool DramaticEffects;
+
         [DefaultValue(false)]
         public bool DisableSummonHealthbar;
 

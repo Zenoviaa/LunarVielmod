@@ -39,11 +39,11 @@ public class ElectricTrident : ModItem
     {
         base.SetDefaults();
         Item.DefaultToArtifact();
-        Item.damage = 40;
+        Item.damage = 80;
         Item.width = 16;
         Item.height = 16;
-        Item.mana = 25;
-        Item.useAnimation = Item.useTime = 48;
+        Item.mana = 50;
+        Item.useAnimation = Item.useTime = 70;
         Item.useStyle = ItemUseStyleID.Shoot;
         Item.UseSound = SoundID.Item92 with { PitchVariance = 0.4f, Volume = 0.3f };
         Item.knockBack = 2;
@@ -167,8 +167,8 @@ public class ElectricTridentThrow : ModProjectile
 
         //  Owner.GetModPlayer<SwingPlayerV2>().isSwinging = true;
         Owner.itemRotation = rotation * Owner.direction;
-        Owner.itemTime = 2;
-        Owner.itemAnimation = 2;
+    //    Owner.itemTime = 2;
+  //      Owner.itemAnimation = 2;
         // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
         Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(135));// set arm position (90 degree offset since arm starts lowered)
 
@@ -245,7 +245,7 @@ public class ElectricTridentBoom : ModProjectile
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
         Projectile.friendly = true;
-        Projectile.timeLeft = 30;
+        Projectile.timeLeft = 60;
         Projectile.tileCollide = false;
     }
 
@@ -255,12 +255,7 @@ public class ElectricTridentBoom : ModProjectile
         Timer++;
         if(Timer == 1)
         {
-            if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
-            {
-                SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
-                effectsPlayer.darknessCurve = 0.5f;
-            }
-   
+
 
             SoundStyle lightningSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
             lightningSoundStyle.PitchVariance = 0.4f;
@@ -335,6 +330,12 @@ public class ElectricTridentBoom : ModProjectile
                 particle.Rotation = rot + MathHelper.ToRadians(45);
             }
         }
+        if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
+        {
+            SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
+            effectsPlayer.darknessCurve = MathHelper.Lerp(0.25f, 0f, EasingFunction.InOutExpo(Timer / 60));
+        }
+
     }
     public override bool PreDraw(ref Color lightColor)
     {
@@ -456,7 +457,7 @@ public class ElectricTridentLightning : ModProjectile
             Vector2 lvelocity = -Projectile.velocity * 8;
             for (float f = 0; f < 8; f++)
             {
-                Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                Vector2 pVelocity = (lvelocity.SafeNormalize(Vector2.Zero)).RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 2f);
                 var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
                 FXUtil.GlowFragmentParticle(position, pVelocity,
@@ -478,7 +479,7 @@ public class ElectricTridentLightning : ModProjectile
             }
             for (float f = 0; f < 8; f++)
             {
-                Vector2 pVelocity = lvelocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
+                Vector2 pVelocity = (lvelocity.SafeNormalize(Vector2.Zero)).RotatedByRandom(MathHelper.PiOver4 / 3f);
                 pVelocity *= Main.rand.NextFloat(0.5f, 1f);
                 var spark = LegacyParticle.NewParticle<SparkParticle>(position + Main.rand.NextVector2Circular(64, 64), pVelocity);
             }

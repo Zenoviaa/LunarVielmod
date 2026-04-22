@@ -14,6 +14,11 @@ FocusMode: {
 	Tooltip: Disables certain ambient visual effects and background effects during boss fights to make it a little easier to focus on the fight itself.
 }
 
+DramaticEffects: {
+	Label: Dramatic Effects
+	Tooltip: Toggles certain screen-wide effects from specific weapons which may be a bit too intense.
+}
+
 VanillaTexturesToggle: {
 	Label: Vanilla Textures Overhaul
 	Tooltip: Updates vanilla textures to match the style of Lunar Veil!
