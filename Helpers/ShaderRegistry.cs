@@ -1,13 +1,8 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.Core.LoadingSystems;
+﻿using ReLogic.Content;
 using Stellamod.Core.Skies;
 using Stellamod.Skies;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
@@ -16,7 +11,6 @@ namespace Stellamod.Helpers
 {
     public static class ShaderRegistry
     {
-        private static List<IOrderedLoadable> _loadCache;
         public static string VampKnives_Basic_Trail => "VampKnives:BasicTrail";
         public static string VampKnives_Lightning_Trail => "VampKnives:LightningTrail";
         public static string VampKnives_Generic_Laser_Shader => "VampKnives:GenericLaserShader";
@@ -79,7 +73,7 @@ namespace Stellamod.Helpers
             Asset<Effect> paletteShader = Assets.Request<Effect>(path);
             Filters.Scene[name] = new Filter(new ScreenShaderData(paletteShader, "ScreenPass"), effectPriority);
             ScreenShaders.Add(name);
-//            Console.WriteLine($"Loaded Screen Shader {name}");
+            //            Console.WriteLine($"Loaded Screen Shader {name}");
         }
         public static void LoadShaders()
         {
@@ -135,7 +129,7 @@ namespace Stellamod.Helpers
             GameShaders.Misc["LunarVeil:GustArmor"] = new MiscShaderData(gustArmorRef, "PixelPass");
 
             //Palette Shaders
-         
+
             RegisterScreenShader("LunarVeil:DarknessVignette", "Effects/DarknessVignette");
             RegisterScreenShader("LunarVeil:DarknessCurve", "Effects/DarknessCurve", EffectPriority.High);
             RegisterScreenShader("LunarVeil:Blur", "Effects/Blur", EffectPriority.High);
@@ -169,7 +163,7 @@ namespace Stellamod.Helpers
             RegisterMiscShader("LunarVeil:SunBlur", "Effects/SunBlur", "ScreenPass");
             RegisterMiscShader("LunarVeil:MoonWaters", "Effects/MoonWaters", "P0");
             RegisterMiscShader("LunarVeil:SingularReflection", "Effects/SingularReflection", "P0");
-      
+
             //White Flame Pixel Shader
             RegisterMiscShader(FireWhitePixelShaderName, "Effects/WhiteflamePixelShader", "TrailPass");
 
@@ -220,44 +214,7 @@ namespace Stellamod.Helpers
             SkyManager.Instance["CrystalMoon:DesertSky"] = new DesertSky();
             SkyManager.Instance["CrystalMoon:DesertSky"].Load();
             Filters.Scene["CrystalMoon:DesertSky"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
-            LoadOrderedLoadables();
         }
 
-        public static void LoadOrderedLoadables()
-        {
-            _loadCache = new List<IOrderedLoadable>();
-            foreach (Type type in Stellamod.Instance.Code.GetTypes())
-            {
-                if (!type.IsAbstract && type.GetInterfaces().Contains(typeof(IOrderedLoadable)))
-                {
-                    object instance = Activator.CreateInstance(type);
-                    _loadCache.Add(instance as IOrderedLoadable);
-                }
-
-                _loadCache.Sort((n, t) => n.Priority.CompareTo(t.Priority));
-            }
-
-            for (int k = 0; k < _loadCache.Count; k++)
-            {
-                _loadCache[k].Load();
-            }
-        }
-
-        public static void UnloadOrderedLoadables()
-        {
-            if (_loadCache != null)
-            {
-                foreach (IOrderedLoadable loadable in _loadCache)
-                {
-                    loadable.Unload();
-                }
-
-                _loadCache = null;
-            }
-            else
-            {
-                //   Logger.Warn("load cache was null, IOrderedLoadable's may not have been unloaded...");
-            }
-        }
     }
 }
