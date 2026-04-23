@@ -209,7 +209,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
         {
             base.AI();
             Timer++;
-            FlameParticle dp = Particle<FlameParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8), 
+            FlameParticle dp = Particle<FlameParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(2, 2), 
                 Scale: Main.rand.NextFloat(0.2f, 0.35f) * 0.5f);
             dp.innerColor = Color.Goldenrod;
             dp.outerColor = Color.Red;
