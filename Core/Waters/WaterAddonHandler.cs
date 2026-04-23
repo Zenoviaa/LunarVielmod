@@ -1,12 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using Stellamod.Core.LoadingSystems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Terraria;
-
-/*
+﻿/*
 namespace Stellamod.Core.Waters
 {
     class WaterAddonHandler : HookGroup

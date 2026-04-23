@@ -1,14 +1,4 @@
-﻿
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Core.LoadingSystems;
-using System.Collections.Generic;
-using System.Threading;
-using Terraria;
-using Terraria.ModLoader;
-
-/*
+﻿/*
 namespace Stellamod.Core.ScreenSystems
 {
     public partial class ScreenTarget
