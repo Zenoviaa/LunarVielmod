@@ -209,68 +209,51 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles
         {
             base.AI();
             Timer++;
-            if (Timer == 1)
+            FlameParticle dp = Particle<FlameParticle>.Spawn(Projectile.Center, Main.rand.NextVector2Circular(8, 8), 
+                Scale: Main.rand.NextFloat(0.2f, 0.35f) * 0.5f);
+            dp.innerColor = Color.Goldenrod;
+            dp.outerColor = Color.Red;
+            dp.parent = Projectile;
+            dp.gravity = 0f;
+            dp.dampening = 0.05f;
+            dp.fast = true;
+
+            if (Main.rand.NextBool(5))
             {
-                Vector2 velocity = Projectile.velocity;
-                Vector2 position = Projectile.Center;
-                for (float f = 0; f < 16; f++)
+                switch (Main.rand.Next(2))
                 {
-                    Vector2 pVelocity = velocity.RotatedByRandom(MathHelper.PiOver4 / 3f);
-                    pVelocity *= Main.rand.NextFloat(0.5f, 2f);
-                    var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
-                    FXUtil.GlowFragmentParticle(position, pVelocity,
-                        innerColor: Color.Red,
-                        outerColor: Color.Orange,
-                        fadeToColor: Color.Purple,
-                        distortOut: true);
-
-                    if (Main.rand.NextBool(4))
-                    {
-                        Dust.NewDustPerfect(position, ModContent.DustType<TSmokeDust>(),
-                                         velocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 2);
-                    }
-                    if (Main.rand.NextBool(4))
-                    {
-                        Dust.NewDustPerfect(position, ModContent.DustType<GlowDust>(),
-                                         velocity.RotatedByRandom(MathHelper.PiOver4 / 2f) * 3 * Main.rand.NextFloat(0.4f, 1f), newColor: Color.White, Scale: 0.2f);
-                    }
-                    if (Main.rand.NextBool(4))
-                    {
-
-                        var part = FXUtil.GlowFragmentParticle(position, pVelocity,
-                         innerColor: Color.DarkRed,
-                         outerColor: Color.DarkBlue,
-                         fadeToColor: Color.Black,
-                         distortOut: false);
-                        part.Scale *= 1.3f;
-                    }
+                    case 0:
+                        DustParticle sp = Particle<DustParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.3f, 16), Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                        sp.gravity = 0f;
+                        sp.fast = true;
+                        sp.dampening = 0.1f;
+                        break;
+                    case 1:
+                        FlameParticle sp2 = Particle<FlameParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) 
+                            * Main.rand.NextFloat(1f, 16), Scale: Main.rand.NextFloat(0.1f, 0.2f) * 0.5f);
+                        sp2.gravity = 0f;
+                        sp2.fast = true;
+                        sp2.dampening = 0.1f;
+                        break;
                 }
+
             }
 
-            if (Timer % 8 == 0)
+            if (Main.rand.NextBool(8))
             {
-                Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(32, 32);
-                Vector2 pVelocity = Main.rand.NextVector2Circular(4, 4);
-                var frag = LegacyParticle.NewParticle<GlowFragmentParticle>(position, pVelocity);
-                FXUtil.GlowFragmentParticle(position, pVelocity,
-                    innerColor: Color.Red,
-                    outerColor: Color.Orange,
-                    fadeToColor: Color.Purple,
-                    distortOut: true);
-                frag.Scale *= 0.5f;
-
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.InfernoFork);
+                FlameSparksParticle sp = Particle<FlameSparksParticle>.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(0.6f, 8f),
+                    color: Color.OrangeRed, Scale: Main.rand.NextFloat(0.35f, 0.75f));
+                sp.gravity = 0f;
+                sp.fast = true;
+                sp.dampening = 0.1f;
             }
+
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-
-            FlamingTrailShader flamingTrailShader = FlamingTrailShader.Instance;
-            TrailDrawer.Draw(spriteBatch, OldCenterPos, OldCenterRot, ColorFunction, WidthFunction, flamingTrailShader, Vector2.Zero);
-            this.Outline(Color.Red, ref lightColor);
-            this.DrawCentered(ref lightColor);
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+            Main.spriteBatch.Draw(sbDrawer);
             return false;
         }
         public float WidthFunction(float completionRatio)
