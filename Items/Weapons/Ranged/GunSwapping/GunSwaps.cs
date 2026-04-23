@@ -887,7 +887,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<AuroreanStarI>());
+           // this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<AuroreanStarI>());
         }
     }
 

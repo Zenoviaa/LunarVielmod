@@ -1,8 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Buffs;
-using Stellamod.NPCs.Harvesting.Morrow;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.UI.Systems;
 using System;
@@ -60,7 +57,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
                 if (Main.rand.NextBool(9))
                 {
                     var entitySource = Projectile.GetSource_FromThis();
-                    NPC.NewNPC(entitySource, (int)Projectile.Center.X / 2, (int)Projectile.Center.Y / 2, ModContent.NPCType<GreenLightBig>(), ai1: Projectile.whoAmI);
+                    //   NPC.NewNPC(entitySource, (int)Projectile.Center.X / 2, (int)Projectile.Center.Y / 2, ModContent.NPCType<GreenLightBig>(), ai1: Projectile.whoAmI);
                 }
             }
 
@@ -87,7 +84,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
                     case 0:
                         target.AddBuff(ModContent.BuffType<Genesis>(), 640);
 
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GenesisDebuff>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GenesisDebuff>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
 
 
                         break;
@@ -96,14 +93,14 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
                     case 1:
 
 
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<ExecutorDebuff>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<ExecutorDebuff>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
                         target.AddBuff(ModContent.BuffType<Executor>(), 640);
                         break;
 
 
                     case 2:
 
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<LiberatorDebuff>(), (int)(Projectile.damage * 0), 0f, Projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<LiberatorDebuff>(), Projectile.damage * 0, 0f, Projectile.owner, 0f, 0f);
                         target.AddBuff(ModContent.BuffType<Liberator>(), 640);
                         break;
                 }

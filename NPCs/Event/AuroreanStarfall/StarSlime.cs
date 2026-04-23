@@ -126,7 +126,6 @@ namespace Stellamod.NPCs.Event.AuroreanStarfall
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             base.ModifyNPCLoot(npcLoot);
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AuroreanStarI>(), 1, 1, 1));
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         {
             base.SetDefaults();
             Item.noMelee = true;
-            Item.mana = 6;
+            Item.mana = 12;
             Item.damage = 19;
             Item.DamageType = DamageClass.Magic;
             Item.width = 40;
@@ -87,7 +87,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             base.AddRecipes();
             this.RegisterBrew(
                 mold: ModContent.ItemType<BlankGun>(),
-                material: ModContent.ItemType<AuroreanStarI>());
+                material: ModContent.ItemType<MarshScrap>());
         }
     }
 

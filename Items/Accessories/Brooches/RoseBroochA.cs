@@ -26,11 +26,12 @@ namespace Stellamod.Items.Accessories.Brooches
         public override void UpdateBrooch(Player player)
         {
             base.UpdateBrooch(player);
+            /*
             if (player.ownedProjectileCounts[ModContent.ProjectileType<RoseShield>()] == 0)
             {
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, player.velocity * -1f,
                     ModContent.ProjectileType<RoseShield>(), 0, 1f, player.whoAmI);
-            }
+            }*/
         }
 
         public override void AddRecipes()

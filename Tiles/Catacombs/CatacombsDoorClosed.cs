@@ -1,4 +1,0 @@
-﻿namespace Stellamod.Tiles.Catacombs
-{
-
-}

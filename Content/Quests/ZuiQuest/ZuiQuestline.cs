@@ -220,7 +220,8 @@ namespace Stellamod.Content.Quests.ZuiQuest
 
         public override bool CheckCompletion(Player player)
         {
-            return player.HasItem(ModContent.ItemType<VoidalPassageway>());
+            return true;
+         //   return player.HasItem(ModContent.ItemType<VoidalPassageway>());
         }
     }
 

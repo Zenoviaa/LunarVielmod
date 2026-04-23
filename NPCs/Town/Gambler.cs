@@ -374,13 +374,6 @@ namespace Stellamod.NPCs.Town
                     })
 
 
-                    .Add(new Item(ModContent.ItemType<Items.Weapons.Thrown.IgniterCards>())
-                    {
-                        shopCustomPrice = 1,
-
-                        shopSpecialCurrency = Stellamod.MedalCurrencyID // omit this line if shopCustomPrice should be in regular coins.
-                    })
-
                     .Add(new Item(ModContent.ItemType<Items.Accessories.Igniter.ReverieExtenderPowder>())
                     {
                         shopCustomPrice = 5,

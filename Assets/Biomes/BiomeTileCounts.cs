@@ -6,7 +6,6 @@ using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Abyss.Aurelus;
 using Stellamod.Tiles.Acid;
-using Stellamod.Tiles.Catacombs;
 using Stellamod.Tiles.Ishtar;
 using Stellamod.Tiles.RoyalCapital;
 using Stellamod.Tiles.Veil;
@@ -137,7 +136,7 @@ namespace Stellamod
             WorldsEndCount = tileCounts[ModContent.TileType<WhiteGrass>()];
             MarshCount = tileCounts[ModContent.TileType<RainforestGrass>()];
             MorrowCount = tileCounts[ModContent.TileType<OvermorrowdirtTile>()];
-         //   CathedralCount = tileCounts[ModContent.TileType<CathediteTile>()];
+            //   CathedralCount = tileCounts[ModContent.TileType<CathediteTile>()];
             MistyDungeonCount = tileCounts[TileID.BlueDungeonBrick] + tileCounts[TileID.GreenDungeonBrick] + tileCounts[TileID.PinkDungeonBrick] + tileCounts[ModContent.TileType<MothlightBrick>()];
             SpringGrassCount = tileCounts[ModContent.TileType<SpringGrass>()];
             AcidCount = tileCounts[ModContent.TileType<AcidialDirt>()];
@@ -150,9 +149,6 @@ namespace Stellamod
             VeriCount = tileCounts[ModContent.TileType<VeriplantDirt>()];
             FableCount = tileCounts[ModContent.TileType<GovheilTile>()];
             SeaCount = tileCounts[ModContent.TileType<SeavathanBrick>()];
-            TrapCount = tileCounts[ModContent.TileType<CatacombStoneTrap>()];
-            FireCount = tileCounts[ModContent.TileType<CatacombStoneFire>()];
-            WaterCount = tileCounts[ModContent.TileType<CatacombStoneWater>()];
             XixCount = tileCounts[ModContent.TileType<HuntiacTile>()];
             CinderCount = tileCounts[ModContent.TileType<CindersparkDirt>()];
             ManorCount = tileCounts[ModContent.TileType<ManorBlock>()];
@@ -165,7 +161,7 @@ namespace Stellamod
             AshotiTempleCount = tileCounts[TileID.LihzahrdBrick];
             MineshaftTileCount = tileCounts[ModContent.TileType<RobedCatastoneBlock>()];
             ColosseumCount = tileCounts[ModContent.TileType<ChiseledSandstoneT>()];
-   //         MothlightCount = tileCounts[ModContent.TileType<MothlightBrick>()];
+            //         MothlightCount = tileCounts[ModContent.TileType<MothlightBrick>()];
             DarkspaceCount = tileCounts[TileID.Granite];
             DesertTownCount = tileCounts[TileID.SmoothSandstone];
         }
