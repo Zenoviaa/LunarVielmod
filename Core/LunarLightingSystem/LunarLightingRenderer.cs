@@ -1,7 +1,6 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Foggy;
-using Stellamod.Core.MoonWaters;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
@@ -14,7 +13,6 @@ using Terraria.Graphics.Light;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.Tiles.SpecialDecorativeWall;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
@@ -68,11 +66,11 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             _backLightModifiers = new List<IBackLightModifier>();
             _emitters = new List<ILightEmitter>();
-            
+
             On_Main.CheckMonoliths += RenderToLightMaps;
             On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
         }
-    
+
 
         public override void Unload()
         {
@@ -97,7 +95,7 @@ namespace Stellamod.Core.LunarLightingSystem
             graphicsDevice.SetRenderTarget(_tileLightRT);
             graphicsDevice.Clear(Color.Transparent);
             Texture2D heightTile = TextureAssets.BlackTile.Value;
-;
+            ;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
 
             Vector2 cameraCenterWorld = Main.Camera.Center;
@@ -128,17 +126,17 @@ namespace Stellamod.Core.LunarLightingSystem
                 }
             }
 
-       
+
             spriteBatch.End();
             graphicsDevice.SetRenderTarget(null);
         }
 
         private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
         {
-           // Player.solidLightDecay = 1f;
+            // Player.solidLightDecay = 1f;
             if (IsActive && _isLoaded)
             {
-          //      RenderTileLight();
+                //      RenderTileLight();
                 RenderLightsV2();
                 if (DrawSunShadows2())
                 {
@@ -308,7 +306,7 @@ namespace Stellamod.Core.LunarLightingSystem
             }
 
             spriteBatch.End();
-        
+
         }
         private void DrawAtlasToScreen()
         {
@@ -492,7 +490,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
             _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
             SunColor = Color.Lerp(SunColor, Main.ColorOfTheSkies, 0.1f);
-   
+
             //SunColor = Color.Black;
         }
 
@@ -566,8 +564,8 @@ namespace Stellamod.Core.LunarLightingSystem
 
             var effect = PointLightSoftenShader.Instance.Effect;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-         //   spriteBatch.Draw(_tileLightRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            
+            //   spriteBatch.Draw(_tileLightRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
             for (int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
             {
                 //These lights won't be iterated over/drawn
@@ -589,9 +587,9 @@ namespace Stellamod.Core.LunarLightingSystem
                 for (int k = 0; k < 1; k++)
                     spriteBatch.Draw(_tempLightMapAtlasRT, position - Main.screenPosition, atlasRectangle, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
             }
-            
+
             spriteBatch.End();
-            
+
             //Render the Player PointLight
             int playerLightIndex = PointLightManager.MAX_POINT_LIGHTS - 1;
             PointLightManager.RenderLight(playerLightIndex, _pointLightRT, _accumulatedLightRT);

@@ -1,15 +1,10 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Biomes;
-using Stellamod.Core.MoonWaters;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -98,7 +93,7 @@ namespace Stellamod.Core.WallBackgroundSystem
             int height = Main.screenHeight;
 
             int padding = 32;
- 
+
 
             Point topLeftTile = Main.screenPosition.ToTileCoordinates();
             topLeftTile += new Point(-padding / 2, -padding / 2);
@@ -137,7 +132,7 @@ namespace Stellamod.Core.WallBackgroundSystem
                 QueueDraws();
                 DrawMaskedBG();
             }
-              
+
             orig(self);
         }
 
@@ -157,7 +152,7 @@ namespace Stellamod.Core.WallBackgroundSystem
 
         private void SelectActiveMaskedWallBackground()
         {
-       
+
             //What we're gonna do is select the first background that has an alpha
             _activeMaskedWallBackground = null;
             for (int i = 0; i < _maskedWallBackgrounds.Length; i++)
@@ -166,7 +161,7 @@ namespace Stellamod.Core.WallBackgroundSystem
                 maskedWallBackground.SetupDrawLayers();
                 Player player = Main.LocalPlayer;
                 bool isActive = maskedWallBackground.IsActive(player);
-                if(maskedWallBackground.Alpha <= 0)
+                if (maskedWallBackground.Alpha <= 0)
                 {
                     maskedWallBackground.StartParallaxPosition = Main.Camera.Center;
                 }
@@ -176,7 +171,8 @@ namespace Stellamod.Core.WallBackgroundSystem
                     maskedWallBackground.Alpha -= 0.1f;
                     maskedWallBackground.Alpha = MathHelper.Clamp(maskedWallBackground.Alpha, 0f, 1f);
                     break;
-                } else if (maskedWallBackground.Alpha <= 1 && isActive)
+                }
+                else if (maskedWallBackground.Alpha <= 1 && isActive)
                 {
                     _activeMaskedWallBackground = maskedWallBackground;
                     maskedWallBackground.Alpha += 0.1f;
@@ -202,10 +198,10 @@ namespace Stellamod.Core.WallBackgroundSystem
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             if (_drawQueue.Count > 0)
             {
-          
+
                 graphicsDevice.SetRenderTarget(_wallMaskRenderTarget);
                 graphicsDevice.Clear(Color.Transparent);
-  
+
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
                     Main.GameViewMatrix.TransformationMatrix);
 
@@ -230,7 +226,7 @@ namespace Stellamod.Core.WallBackgroundSystem
             {
                 MaskedWallDrawLayer drawLayer = _activeMaskedWallBackground.DrawLayers[i];
                 if (drawLayer == null)
-                    break; 
+                    break;
                 if (drawLayer.textureAsset == null)
                     break;
                 BackgroundParallaxShader backgroundShader = BackgroundParallaxShader.Instance;
@@ -251,7 +247,7 @@ namespace Stellamod.Core.WallBackgroundSystem
                 spriteBatch.End();
             }
 
-            
+
             spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Multiply);
             spriteBatch.Draw(_wallMaskRenderTarget, Vector2.Zero, null, Color.White);
             spriteBatch.End();
