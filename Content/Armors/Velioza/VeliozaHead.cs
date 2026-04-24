@@ -18,7 +18,7 @@ namespace Stellamod.Content.Armors.Velioza;
 public class VeliozaRobeDrawLayer : PlayerDrawLayer
 {
     private Asset<Texture2D> _robeTextureAsset;
-    public override bool IsHeadLayer => true;
+    public override bool IsHeadLayer => false;
 
     public override void SetStaticDefaults()
     {
@@ -32,6 +32,7 @@ public class VeliozaRobeDrawLayer : PlayerDrawLayer
     }
     public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
     {
+   //     Main.NewText(drawInfo.drawPlayer.body);
         return drawInfo.drawPlayer.body == ModContent.GetInstance<VeliozaBody>().Item.bodySlot;
 
     }
@@ -83,7 +84,7 @@ public class VeliozaHatDrawLayer : PlayerDrawLayer
 
     }
 
-    public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.ProjectileOverArm);
+    public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Head);
     protected override void Draw(ref PlayerDrawSet drawInfo)
     {
 

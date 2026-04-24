@@ -84,7 +84,7 @@ public class FlashbackPlayer : ModPlayer
     public override void PostUpdateMiscEffects()
     {
         base.PostUpdateMiscEffects();
-        _oldPos ??= new Vector2[180];
+        _oldPos ??= new Vector2[60];
         for (int i = _oldPos.Length - 1; i > 0; i--)
         {
             _oldPos[i] = _oldPos[i - 1];

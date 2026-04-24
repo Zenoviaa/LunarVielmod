@@ -10870,5 +10870,5 @@ ElectricTrident: {
 
 Flashback: {
 	DisplayName: Flashback
-	Tooltip: Whenever you take a hit, you warp back to where you were 3 seconds ago!
+	Tooltip: Whenever you take a hit, you warp back to where you were 1 second ago!
 }
