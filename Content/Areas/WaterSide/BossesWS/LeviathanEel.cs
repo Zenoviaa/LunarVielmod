@@ -64,38 +64,6 @@ public class MultiHitboxSegment : ModNPC
     }
 }
 
-public static class TileUtilities
-{
-    public static Point FallToSolidTile(Point tile)
-    {
-        return FallToSolidTile(tile.X, tile.Y);
-    }
-    public static Point FallToSolidTile(int x, int y)
-    {
-        Point start = new Point(x, y);
-        Point current = start;
-        for (int i = 0; i < Main.maxTilesY; i++)
-        {
-            if (WorldGen.InWorld(current.X, current.Y) && WorldGen.SolidTile(current.X, current.Y))
-                return current;
-            current.Y += 1;
-        }
-        return Point.Zero;
-    }
-    public static Point RiseToSolidTile(int x, int y)
-    {
-        Point start = new Point(x, y);
-        Point current = start;
-        for (int i = 0; i < Main.maxTilesY; i++)
-        {
-            if (WorldGen.InWorld(current.X, current.Y) && WorldGen.SolidTile(current.X, current.Y))
-                return current;
-            current.Y -= 1;
-        }
-        return Point.Zero;
-    }
-}
-
 
 public class PrismaticElectricBolt : ModProjectile
 {

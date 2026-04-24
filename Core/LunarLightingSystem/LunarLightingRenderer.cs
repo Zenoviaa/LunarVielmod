@@ -58,6 +58,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private List<ILightEmitter> _emitters;
         private List<IBackLightModifier> _backLightModifiers;
 
+        public Color SmoothedBackLightColor;
         public Color BackLightColor;
         public Color SunColor;
         public Vector3 AmbientLight;
@@ -133,6 +134,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
         {
+            /*
             // Player.solidLightDecay = 1f;
             if (IsActive && _isLoaded)
             {
@@ -142,7 +144,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 {
                     RenderShadows();
                 }
-            }
+            }*/
 
 
 
@@ -151,11 +153,12 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void DrawShadowsBehindTiles(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
         {
+            /*
             if (behindTiles && DrawSunShadows2() && IsActive && _isLoaded)
             {
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.Draw(_tileSunShadowRT, Vector2.Zero, Color.White);
-            }
+            }*/
             orig(self, npcCache, behindTiles);
         }
 
@@ -174,7 +177,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             base.OnModLoad();
             _tileLightRT = ManagedRenderTarget.New();
-            PostProcessingRenderer.AddPass(this);
+         //   PostProcessingRenderer.AddPass(this);
         }
 
         public override void ClearWorld()
@@ -489,6 +492,7 @@ namespace Stellamod.Core.LunarLightingSystem
             }
 
             _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
+            SmoothedBackLightColor = _backLightColor;
             SunColor = Color.Lerp(SunColor, Main.ColorOfTheSkies, 0.1f);
 
             //SunColor = Color.Black;
@@ -506,7 +510,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public override void PostUpdateEverything()
         {
-            ResizeRenderTarget(false);
+         //   ResizeRenderTarget(false);
         }
 
         private static bool ShouldRender()
