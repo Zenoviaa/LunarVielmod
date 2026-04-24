@@ -10867,3 +10867,8 @@ ElectricTrident: {
 	DisplayName: Electric Trident Artifact
 	Tooltip: Throws a very powerful lightning-powered trident that travels extremely fast!!
 }
+
+Flashback: {
+	DisplayName: Flashback
+	Tooltip: Whenever you take a hit, you warp back to where you were 3 seconds ago!
+}
