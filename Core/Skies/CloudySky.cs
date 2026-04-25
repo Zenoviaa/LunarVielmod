@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Biomes;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.Graphics.Effects;
@@ -105,7 +106,11 @@ namespace Stellamod.Core.Skies
         {
             get
             {
-                Color cloudColor = Color.Lerp(Color.White, Color.Black, 0.5f);
+                Color primaryColor = Color.White;
+ 
+                Color cloudColor = Color.Lerp(primaryColor, Color.Black, 0.5f);
+                if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneAegislavSurface)
+                    cloudColor = Color.IndianRed;
                 cloudColor.A = 0;
        
                 return cloudColor;

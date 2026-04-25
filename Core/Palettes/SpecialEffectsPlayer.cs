@@ -204,8 +204,10 @@ namespace Stellamod.Core.Palettes
             bool mistyPaletteActive = Player.GetModPlayer<BiomePlayer>().ZoneMistyDungeon && clientConfig.PaletteShadersToggle;
             bool bloodPaletteActive = MyPlayer.ZoneBloodCathedral && !Main.dayTime && clientConfig.PaletteShadersToggle;
             //  bloodPaletteActive |= NPC.AnyNPCs(ModContent.NPCType<SanguineSingularity>());
-
+         //   bloodPaletteActive = true;
             bool sanguinePaletteActive = NPC.AnyNPCs(ModContent.NPCType<SanguineSingularity>());
+         //   Filters.Scene["Stellamod:Aegislav"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.6f, 0f, 0f).UseOpacity(0.25f), EffectPriority.Medium);
+
             if (abyssPaletteActive)
             {
                 darkness += 2;

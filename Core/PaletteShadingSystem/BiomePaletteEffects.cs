@@ -15,6 +15,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PalettePriority Priority => PalettePriority.Medium;
         public override bool IsActive(Player player)
         {
+      
             BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
             return myPlayer.ZoneMoonspiralTower;
         }
@@ -25,6 +26,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PalettePriority Priority => PalettePriority.Medium;
         public override bool IsActive(Player player)
         {
+      
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneAbyss)
                 return true;
@@ -40,6 +42,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
+   
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneGovheil)
                 return true;
@@ -55,6 +58,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
+         
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneCinder)
                 return true;
@@ -74,6 +78,7 @@ namespace Stellamod.Core.PaletteShadingSystem
 
         public override bool IsActive(Player player)
         {
+        
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             return myPlayer.ZoneAlcadzia;
         }
@@ -85,6 +90,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.VanillaShader;
         public override bool IsActive(Player player)
         {
+
             if (player.ZoneDungeon)
                 return true;
             return false;
@@ -111,6 +117,7 @@ namespace Stellamod.Core.PaletteShadingSystem
 
         public override bool IsActive(Player player)
         {
+   
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneAshotiTemple)
                 return true;
@@ -132,6 +139,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
+   
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneFable)
                 return true;
@@ -155,6 +163,8 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
+     
+            //       return true;
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (Main.dayTime)
                 return false;
@@ -170,6 +180,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
+      
             return base.IsActive(player) && NPC.AnyNPCs(ModContent.NPCType<SanguineSingularity>());
         }
     }

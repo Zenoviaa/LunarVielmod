@@ -21,7 +21,8 @@ float4 uSourceRect;
 float2 uZoom;
 
 float2 parallax[3];
-float4 SampleParallaxing(sampler textureSampler, float2 coords, float2 parallax)
+float4 fadeToColor;
+float4 SampleParallaxing(sampler textureSampler, float2 coords, float2 parallax, float depth)
 {
     float2 offsetCoords = coords + parallax;
     //If going into the sky
@@ -30,6 +31,9 @@ float4 SampleParallaxing(sampler textureSampler, float2 coords, float2 parallax)
 
     float2 normalCoords = float2(frac(offsetCoords.x), frac(offsetCoords.y));
     float4 backgroundColor = tex2D(textureSampler, normalCoords);
+    
+    float yDepth = coords.y * depth * fadeToColor.a;
+    backgroundColor.rgb = lerp(backgroundColor.rgb, fadeToColor.rgb, yDepth);
     return backgroundColor;
 }
 
@@ -44,9 +48,9 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     }
     
     //Using a matrix here just to store multiple values in the same variable
-    float4 farLayer = SampleParallaxing(uImage2, coords, parallax[0]);
-    float4 midLayer = SampleParallaxing(uImage1, coords, parallax[1]);
-    float4 closeLayer = SampleParallaxing(uImage0, coords, parallax[2]);
+    float4 farLayer = SampleParallaxing(uImage2, coords, parallax[0], 1.0);
+    float4 midLayer = SampleParallaxing(uImage1, coords, parallax[1], 0.66);
+    float4 closeLayer = SampleParallaxing(uImage0, coords, parallax[2], 0.33);
     
     farLayer *= (1.0 - closeLayer.a) * (1.0 - midLayer.a);
     midLayer *= (1.0 - closeLayer.a);

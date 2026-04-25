@@ -44,7 +44,9 @@ public class AegislavSurfaceBackground : CustomBG
     {
         base.Draw(spriteBatch);
         LunarBackgroundShader backgroundShader = LunarBackgroundShader.Instance;
-
+        Color fadeToColor = new Color(124, 87, 94);
+        fadeToColor *= 0.86f;
+        backgroundShader.FadeToColor = fadeToColor;
         GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
         
         //Prepare sampler states
