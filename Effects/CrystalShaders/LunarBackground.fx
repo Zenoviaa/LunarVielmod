@@ -22,6 +22,17 @@ float2 uZoom;
 
 float2 parallax[3];
 float4 fadeToColor;
+float time;
+texture dustTexture;
+sampler2D dustTex = sampler_state
+{
+    texture = <dustTexture>;
+    magfilter = LINEAR;
+    minfilter = LINEAR;
+    mipfilter = LINEAR;
+    AddressU = wrap;
+    AddressV = clamp;
+};
 float4 SampleParallaxing(sampler textureSampler, float2 coords, float2 parallax, float depth)
 {
     float2 offsetCoords = coords + parallax;
@@ -33,6 +44,11 @@ float4 SampleParallaxing(sampler textureSampler, float2 coords, float2 parallax,
     float4 backgroundColor = tex2D(textureSampler, normalCoords);
     
     float yDepth = coords.y * depth * fadeToColor.a;
+   
+    normalCoords.x += time;
+    normalCoords.x = frac(normalCoords.x);
+    float disturbance = tex2D(dustTex, normalCoords).r;
+    yDepth *= lerp(0.5, 1.0, disturbance);
     backgroundColor.rgb = lerp(backgroundColor.rgb, fadeToColor.rgb, yDepth);
     return backgroundColor;
 }

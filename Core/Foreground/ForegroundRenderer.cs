@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
 using Stellamod.Helpers;
 using System;
@@ -123,17 +125,30 @@ namespace Stellamod.Core.Foreground
             if (!_drawForeground)
                 return;
 
+            void Draw(SpriteBatch spriteBatch, ForegroundLayer layer)
+            {
+                if (layer.fade > 0)
+                {
+                    if (layer.tilingInBothAxes)
+                    {
+                        DrawForegroundXY(spriteBatch, layer);
+                    }
+                    else
+                    {
+                        DrawForeground(spriteBatch, layer);
+                    }
+                }
+            }
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
-                null, Main.GameViewMatrix.TransformationMatrix);
+
            // Main.NewText("e");
             for (int i = 0; i < _layers.Length; i++)
             {
                 ForegroundLayer layer = _layers[i];
                 if(layer.shader != null)
                 {
-                    spriteBatch.End();
+            
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
                         layer.shader.Effect, Main.GameViewMatrix.TransformationMatrix);
                     EffectParameter parallaxParameter = layer.shader.Effect.Parameters["uImageOffset"];
@@ -148,20 +163,25 @@ namespace Stellamod.Core.Foreground
                         float yParallax = (cameraY * parallax.Y);
                         parallaxParameter.SetValue(new Vector2(xParallax, yParallax) * 0.0005f);
                     }
+                    Draw(spriteBatch, layer);
+                    spriteBatch.End();
                 }
-                if (layer.fade > 0)
+                else
                 {
-                    if (layer.tilingInBothAxes)
-                    {
-                        DrawForegroundXY(spriteBatch, layer);
-                    }
-                    else
-                    {
-                        DrawForeground(spriteBatch, layer);
-                    }
+
+                    ForegroundParallaxShader parallaxShader = ForegroundParallaxShader.Instance;
+
+
+                    Vector2 p = layer.totalParallax * 0.0003f + new Vector2(0, 0);
+                    parallaxShader.Parallax = p;
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                        parallaxShader.Effect, Main.GameViewMatrix.TransformationMatrix);
+                    Draw(spriteBatch, layer);
+                    spriteBatch.End();
                 }
+
             }
-            spriteBatch.End();
+   
 
         }
 
@@ -231,6 +251,22 @@ namespace Stellamod.Core.Foreground
         {
             float scale = 3;
             Texture2D foregroundTexture = ModContent.Request<Texture2D>(layer.Texture).Value;
+            Vector2 parallax = Vector2.Zero;
+            float zLayer = 0f;
+            layer.SetLayering(ref zLayer, ref parallax);
+            Vector2 oldScreenPosition = Main.screenLastPosition;
+            Vector2 screenPosition = Main.screenPosition;
+            Vector2 cameraMovement = screenPosition - oldScreenPosition;
+            Vector2 parallaxAdd = cameraMovement * parallax;
+            layer.totalParallax += parallaxAdd;
+
+
+            Rectangle targetRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+            Color drawColor = Color.Black;
+            spriteBatch.Draw(foregroundTexture, new Vector2(0, Main.screenHeight), targetRectangle, drawColor * 0.62f * layer.fade, 0, 
+                new Vector2(0, foregroundTexture.Height), scale, SpriteEffects.None, 0);
+           
+            /*
             Vector2 drawOrigin = Vector2.Zero;
             Color drawColor = Color.White * layer.fade;
 
@@ -275,7 +311,7 @@ namespace Stellamod.Core.Foreground
                 leftPosition.X += i * width;
 
                 spriteBatch.Draw(foregroundTexture, leftPosition, null, drawColor * 0.62f, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
-            }
+            }*/
         }
 
         public void RenderToScreen()

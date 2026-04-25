@@ -2,6 +2,7 @@
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Gores.Foreground;
 using Stellamod.Core.Foreground;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Visual.Particles;
 using Stellamod.WorldG;
@@ -159,6 +160,16 @@ namespace Stellamod.Content.Biomes
                 }
             }
 
+          
+            if (ZoneAegislavSurface)
+            {
+                if (Main.rand.NextBool(5))
+                {
+                    ForegroundParticleRenderer.NewParticle<AegislavStrike>();
+                }
+
+     
+            }
         }
 
         private void SpringHillsForegroundBackground()

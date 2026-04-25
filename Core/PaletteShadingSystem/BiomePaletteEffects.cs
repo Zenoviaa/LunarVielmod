@@ -15,7 +15,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PalettePriority Priority => PalettePriority.Medium;
         public override bool IsActive(Player player)
         {
-      
+   
             BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
             return myPlayer.ZoneMoonspiralTower;
         }
@@ -26,7 +26,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PalettePriority Priority => PalettePriority.Medium;
         public override bool IsActive(Player player)
         {
-      
+
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneAbyss)
                 return true;
@@ -42,7 +42,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
-   
+         
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneGovheil)
                 return true;
@@ -58,7 +58,8 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
-         
+
+
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneCinder)
                 return true;

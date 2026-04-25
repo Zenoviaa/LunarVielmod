@@ -45,8 +45,9 @@ public class AegislavSurfaceBackground : CustomBG
         base.Draw(spriteBatch);
         LunarBackgroundShader backgroundShader = LunarBackgroundShader.Instance;
         Color fadeToColor = new Color(124, 87, 94);
-        fadeToColor *= 0.86f;
+        fadeToColor *= 0.96f;
         backgroundShader.FadeToColor = fadeToColor;
+        backgroundShader.Time = Main.GlobalTimeWrappedHourly * -1 * 0.1f;
         GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
         
         //Prepare sampler states
@@ -85,6 +86,7 @@ public class AegislavSurfaceBackground : CustomBG
         parallax[1] = midParallax;
         parallax[2] = closeParallax;
         backgroundShader.Parallax = parallax;
+        backgroundShader.DustTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds").Value;
 
         spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Deferred,

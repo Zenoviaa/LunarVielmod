@@ -30,6 +30,7 @@ namespace Stellamod.Visual.Particles
     }
     public class EmberParticle : LegacyParticle
     {
+        private float _randOffset;
         private Vector2 _stretchScale;
         protected float _interpolant;
         public int FrameWidth = 128;
@@ -39,14 +40,17 @@ namespace Stellamod.Visual.Particles
         public Color innerColor;
         public Color outerColor;
         public Color fadeToColor;
-
+        public bool isLong;
         public override void OnSpawn()
         {
+            isLong
+                = false;
        
             Frame = new Rectangle(0, 0, FrameWidth, FrameHeight);
             Scale = Main.rand.NextFloat(0.3f, 0.6f);
             customShader = RadiantShader.Instance;
             _stretchScale = Vector2.One;
+            _randOffset = Main.rand.NextFloat(0f, MathHelper.TwoPi);
             innerColor = Color.Yellow;
             outerColor = Color.Red;
             fadeToColor = Color.Blue;
@@ -55,14 +59,30 @@ namespace Stellamod.Visual.Particles
 
         public override void Update()
         {
-            color *= 0.98f;
+            if (isLong)
+            {
+                color *= 0.99f;
+                Rotation = Velocity.ToRotation() + _randOffset;
+                fadeIn++;
+                _interpolant = fadeIn / 220f;
+                if (fadeIn > 280f)
+                    active = false;
+            }
+            else
+            {
+                color *= 0.98f;
+                Rotation = Velocity.ToRotation();
+                fadeIn++;
+                _interpolant = fadeIn / 120f;
+                if (fadeIn > 180f)
+                    active = false;
+            }
+      
+
+
             Velocity.X *= 0.95f;
             Velocity.Y -= 0.02f;
-            Rotation = Velocity.ToRotation();
-            fadeIn++;
-            _interpolant = fadeIn / 120f;
-            if (fadeIn > 180f)
-                active = false;
+
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
