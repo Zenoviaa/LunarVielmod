@@ -10872,3 +10872,8 @@ Flashback: {
 	DisplayName: Flashback
 	Tooltip: Whenever you take a hit, you warp back to where you were 1 second ago!
 }
+
+AegislavSand: {
+	DisplayName: Aegislav Sand
+	Tooltip: ""
+}

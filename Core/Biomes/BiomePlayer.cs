@@ -31,6 +31,7 @@ namespace Stellamod.Content.Biomes
         public bool ZoneForest;
         public bool ZoneJunkyard;
         public bool ZoneHarmonicCoralways;
+        public bool ZoneAegislavSurface;
         public bool ZoneDeepBelowCoralways
         {
             get
@@ -63,6 +64,7 @@ namespace Stellamod.Content.Biomes
                 }
                 AddForegroundOrBackground();
                 Player.ManageSpecialBiomeVisuals("Stellamod:Marsh", ZoneMarsh);
+                Player.ManageSpecialBiomeVisuals("Stellamod:Aegislav", ZoneAegislavSurface);
                 if (ZoneWorldsEnd)
                 {
                     ActivateWorldsEndSky();

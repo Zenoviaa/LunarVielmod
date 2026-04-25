@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets.Biomes;
 using Stellamod.Content.Areas.Dungeon;
+using Stellamod.Content.Areas.Terror;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Biomes;
 using Terraria;
@@ -41,6 +42,8 @@ namespace Stellamod.Content.Areas.SpringHills
             if (player.InModBiome<MistyDungeonBiome>())
                 return false;
             if (player.InModBiome<IlluriaBiome>())
+                return false;
+            if (player.InModBiome<AegislavBiome>())
                 return false;
 
             return true;

@@ -95,6 +95,9 @@ namespace Stellamod.Core.Backgrounds
 
         private void DrawLoop()
         {
+            if (Main.gameMenu)
+                return;
+
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred,
@@ -115,38 +118,17 @@ namespace Stellamod.Core.Backgrounds
                 if (bg.Alpha != 0)
                 {
                     drawingCustomBG = true;
-                    DrawBG(bg);
+                    if (bg.UseCustomDrawing())
+                        bg.Draw(spriteBatch);
+                    else
+                        DrawBG(bg);
                 }
             }
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
         }
-        private void DrawLoop2()
-        {
-            SpriteBatch spriteBatch = Main.spriteBatch;
 
-            //Sort the list by their priority, so the higest priority one is in front
-            drawingCustomBG = false;
-
-            foreach (var bg in Backgrounds)
-            {
-                bg.SetDrawDefaults();
-                bg.ParallaxYOffset = -100;
-                bg.Alpha += bg.IsActive() ? 0.01f : -0.01f;
-                bg.Alpha = MathHelper.Clamp(bg.Alpha, 0, 1);
-                if (bg.Alpha != 0)
-                {
-
-
-                    drawingCustomBG = true;
-                    DrawBG(bg);
-                }
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
-        }
         private void DrawBG(CustomBG bg)
         {
             _currentShader = null;

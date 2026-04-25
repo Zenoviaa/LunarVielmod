@@ -3,6 +3,7 @@ global using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Backgrounds;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Terror;
 using Stellamod.Content.Areas.WorldsEnd;
 using Stellamod.Content.Currencies;
 using Stellamod.Content.Items.Materials;
@@ -81,6 +82,7 @@ namespace Stellamod
                 //----------------------------------------------- Shaders
                 Filters.Scene["Stellamod:Illuria"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
                 Filters.Scene["Stellamod:Marsh"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, 0f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Aegislav"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.6f, 0f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
 
                 Asset<Effect> screenRef = ModContent.Request<Effect>("Stellamod/Effects/Shockwave"); // The path to the compiled shader file.
                 Filters.Scene["Shockwave"] = new Filter(new ScreenShaderData(screenRef, "Shockwave"), EffectPriority.VeryHigh);
@@ -91,6 +93,10 @@ namespace Stellamod
 
                 SkyManager.Instance["Stellamod:WorldsEndSky"] = new WorldsEndSky();
                 SkyManager.Instance["Stellamod:WorldsEndSky"].Load();
+
+
+                SkyManager.Instance["Stellamod:AegislavSky"] = new AegislavSky();
+                SkyManager.Instance["Stellamod:AegislavSky"].Load();
 
                 Asset<Effect> GenericLaserShader = Assets.Request<Effect>("Effects/LaserShader");
                 GameShaders.Misc["Stellamod:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");

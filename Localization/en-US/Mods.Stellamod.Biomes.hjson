@@ -212,3 +212,8 @@ HarmonicCoralwaysBiome: {
 	DisplayName: Harmonic Coralways Biome
 	TownNPCDialogueName: the Harmonic Coralways Biome
 }
+
+AegislavBiome: {
+	DisplayName: Aegislav Biome
+	TownNPCDialogueName: the Aegislav Biome
+}

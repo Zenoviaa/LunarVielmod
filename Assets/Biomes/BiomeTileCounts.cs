@@ -1,6 +1,7 @@
 ﻿
 using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.TilesSH;
+using Stellamod.Content.Areas.Terror.TilesTR;
 using Stellamod.Content.Areas.WorldsEnd.TilesWE;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
@@ -12,6 +13,7 @@ using Stellamod.Tiles.Veil;
 using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;
 using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -123,6 +125,9 @@ namespace Stellamod
 
         public int MoonspiralTowerCount;
         public static bool InMoonspiralTower => ModContent.GetInstance<BiomeTileCounts>().MoonspiralTowerCount >= 50;
+
+        public int AegislavCount;
+        public static bool InAegislav => ModContent.GetInstance<BiomeTileCounts>().AegislavCount >= 50;
         public int ForestCount;
         public static bool InForest => ModContent.GetInstance<BiomeTileCounts>().ForestCount >= 25;
 
@@ -130,6 +135,8 @@ namespace Stellamod
         public static bool InJunkyard => ModContent.GetInstance<BiomeTileCounts>().JunkyardCount >= 25;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
+            AegislavCount = tileCounts[ModContent.TileType<AegislavSandTile>()] + tileCounts[TileID.CrimsonGrass] + tileCounts[TileID.Crimstone];
+           // Main.NewText(AegislavCount);
             JunkyardCount = tileCounts[ModContent.TileType<JunkyTile>()];
             ForestCount = tileCounts[TileID.Grass];
             MoonspiralTowerCount = tileCounts[ModContent.TileType<CathediteTile>()];

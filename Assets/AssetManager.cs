@@ -149,5 +149,10 @@ namespace Stellamod.Assets
     Noise.Whirly = null;
             Noise.AuroraRays = null;
         }
+
+        public static Asset<Texture2D> LoadBackground(string name)
+        {
+            return ModContent.Request<Texture2D>($"Stellamod/Assets/Textures/Backgrounds/{name}");
+        }
     }
 }

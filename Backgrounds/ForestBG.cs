@@ -64,10 +64,6 @@ public class ForestBG : CustomBG
         DrawScale = 1f;
         DrawOffset = new Vector2(0, 400);
         ParallaxYFactor = 0.35f;
-        /*
-        NoSurfaceOffset = true;
-        DrawScale = 1;
-      */
 
         BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
         bool isActive = biomePlayer.ZoneForest || biomePlayer.ZoneSpringHills;

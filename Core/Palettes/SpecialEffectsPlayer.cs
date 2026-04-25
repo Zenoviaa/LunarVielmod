@@ -240,11 +240,7 @@ namespace Stellamod.Core.Palettes
         //    ToggleScreenShader("LunarVeil:DarknessVignette", darkness != 0);
 
           //  Main.ColorOfTheSkies = Color.Black;
-            bool evilAreaActive = Player.ZoneCrimson || Player.ZoneCorrupt;
-            if (evilAreaActive && darknessCurve < 0.5f)
-            {
-                darknessCurve = 0.5f;
-            }
+
 
             screenShaderData = FilterManager["LunarVeil:DarknessCurve"].GetShader();
             screenShaderData.UseProgress(darknessCurve);

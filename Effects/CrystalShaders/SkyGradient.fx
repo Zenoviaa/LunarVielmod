@@ -42,7 +42,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
         lerp(midColor, endColor, (coords.y - h) / (1.0 - h)),
         step(h, coords.y));
     
-    return col;
+    return col * sampleColor;
 
 }
 

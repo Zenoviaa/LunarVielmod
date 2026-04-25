@@ -38,6 +38,11 @@ namespace Stellamod.Core.Backgrounds
             DrawColor = Color.White;
         }
 
+        public virtual bool UseCustomDrawing() => false;
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+
+        }
         public virtual int GetParallaxYStartHeight()
         {
             return (int)(Main.worldSurface * 16);
