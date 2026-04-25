@@ -163,7 +163,7 @@ namespace Stellamod.Content.Biomes
           
             if (ZoneAegislavSurface)
             {
-                if (Main.rand.NextBool(5))
+                if (Main.rand.NextBool(8))
                 {
                     ForegroundParticleRenderer.NewParticle<AegislavStrike>();
                 }

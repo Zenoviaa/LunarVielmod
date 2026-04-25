@@ -40,3 +40,46 @@ public class AegislavCloudsShader : CrystalShader<AegislavCloudsShader>
         }
     }
 }
+public class AegislavDustShader : CrystalShader<AegislavDustShader>
+{
+    private EffectParameter _parallaxParam;
+    private EffectParameter _tilingParam;
+    private EffectParameter _timeParam;
+    private EffectParameter _texelSizeParam;
+    public Vector2 Parallax
+    {
+        set
+        {
+            _parallaxParam ??= Effect.Parameters["parallax"];
+            _parallaxParam.SetValue(value);
+        }
+    }
+
+    public Vector2 TexelSize
+    {
+        set
+        {
+            _texelSizeParam ??= Effect.Parameters["texelSize"];
+            _texelSizeParam.SetValue(value);
+        }
+    }
+    public Vector2 Tiling
+    {
+        set
+        {
+            _tilingParam ??= Effect.Parameters["tiling"];
+            _tilingParam.SetValue(value);
+        }
+    }
+
+    public float Time
+    {
+        set
+        {
+            _timeParam ??= Effect.Parameters["time"];
+            _timeParam.SetValue(value);
+        }
+    }
+
+
+}
