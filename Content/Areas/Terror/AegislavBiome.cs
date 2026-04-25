@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Biomes;
+﻿using Stellamod.Assets.Biomes;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.Biomes;
 using Terraria;
 using Terraria.Graphics.Capture;
@@ -10,6 +11,7 @@ namespace Stellamod.Content.Areas.Terror;
 
 public class AegislavBiome : BaseUrdveilBiome
 {
+    public override ModWaterStyle WaterStyle => ModContent.GetInstance<StarbloomWaterStyle>();
     public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<NoBackgroundStyle>();
     public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 

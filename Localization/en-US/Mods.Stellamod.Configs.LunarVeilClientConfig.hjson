@@ -213,3 +213,8 @@ Dither: {
 	Label: Dither
 	Tooltip: ""
 }
+
+Foreground: {
+	Label: Foreground
+	Tooltip: ""
+}

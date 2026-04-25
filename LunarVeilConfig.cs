@@ -44,6 +44,9 @@ public class LunarVeilClientConfig : ModConfig
     public bool FocusMode;
 
     [DefaultValue(true)]
+    public bool Foreground;
+
+    [DefaultValue(true)]
     public bool Dither;
 
     [DefaultValue(true)]

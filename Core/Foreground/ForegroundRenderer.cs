@@ -24,6 +24,7 @@ namespace Stellamod.Core.Foreground
         public Vector2 totalParallax;
         public Vector2 drawOffset;
         public IShader shader;
+        public float drawAlpha;
         public sealed override void SetupContent()
         {
             base.SetupContent();
@@ -123,6 +124,9 @@ namespace Stellamod.Core.Foreground
         private void DrawActiveForegrounds()
         {
             if (!_drawForeground)
+                return;
+
+            if (!ModContent.GetInstance<LunarVeilClientConfig>().Foreground)
                 return;
 
             void Draw(SpriteBatch spriteBatch, ForegroundLayer layer)
@@ -263,7 +267,7 @@ namespace Stellamod.Core.Foreground
 
             Rectangle targetRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
             Color drawColor = Color.Black;
-            spriteBatch.Draw(foregroundTexture, new Vector2(0, Main.screenHeight), targetRectangle, drawColor * 0.62f * layer.fade, 0, 
+            spriteBatch.Draw(foregroundTexture, new Vector2(0, Main.screenHeight), targetRectangle, drawColor * 0.62f * layer.fade * layer.drawAlpha, 0, 
                 new Vector2(0, foregroundTexture.Height), scale, SpriteEffects.None, 0);
            
             /*
