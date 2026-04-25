@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Content.Areas.Terror.TilesTR;
 using Stellamod.Core.Godrays;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
@@ -221,7 +222,10 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
 
             Point tileEnd = tileStart + new Point(tileWidth, tileHeight);
             int treeType = ModContent.TileType<MangroveTreeTop>();
+            int treeType2 = ModContent.TileType<BigDeadTreeTop>();
             MangroveTreeTop treeTopTile = ModContent.GetInstance<MangroveTreeTop>();
+            BigDeadTreeTop treeTopTile2 = ModContent.GetInstance<BigDeadTreeTop>();
+
 
 
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -233,9 +237,17 @@ namespace Stellamod.Content.Areas.PunkerTown.TilesPT
                     if (!WorldGen.InWorld(x, y))
                         continue;
                     Tile tile = Main.tile[x, y];
-                    if (tile.TileType != treeType)
-                        continue;
-                    treeTopTile.DrawTreeTops(x, y, spriteBatch);
+                    if (tile.TileType == treeType)
+                    {
+                        treeTopTile.DrawTreeTops(x, y, spriteBatch);
+                    }
+
+                    if (tile.TileType == treeType2)
+                    {
+                        treeTopTile2.DrawTreeTops(x, y, spriteBatch);
+                    }
+
+
                 }
             }
             spriteBatch.End();

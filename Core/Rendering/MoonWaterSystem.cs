@@ -122,7 +122,6 @@ public class AegislavWaterStyle : PixelWaterStyle
         pixelWater.CausticsColor = Color.Lerp(Color.DarkRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 2, offset: 1));
         pixelWater.CausticsTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/LavaDepths");
         pixelWater.TilingMultiplier = Vector2.One * 2;
-
     }
 }
 

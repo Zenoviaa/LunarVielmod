@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Backgrounds;
 
-public class AegislavSurfaceBackground : CustomBG
+public partial class AegislavSurfaceBackground : CustomBG
 {
     private Asset<Texture2D> _farTextureAsset;
     private Asset<Texture2D> _midTextureAsset;
@@ -122,4 +122,5 @@ public class AegislavSurfaceBackground : CustomBG
     {
         return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneAegislavSurface;
     }
+
 }

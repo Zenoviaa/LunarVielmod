@@ -1,4 +1,5 @@
-﻿using Stellamod.WorldG;
+﻿using Stellamod.Content.Areas.Terror.TilesTR;
+using Stellamod.WorldG;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -45,8 +46,8 @@ namespace Stellamod.Helpers
         {
             int i = (int)Main.MouseWorld.X / 16;
             int j = (int)Main.MouseWorld.Y / 16;
-            int height = Main.rand.Next(12, 16);
-            VeilGen.PlaceAcaciaTrees(i, j, height);
+            int height = Main.rand.Next(12, 45);
+            VeilGen.PlaceBigTrees<BigDeadTree, BigDeadTreeTop>(i, j, height);
             return true;
         }
     }

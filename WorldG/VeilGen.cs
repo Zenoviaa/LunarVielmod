@@ -3,6 +3,7 @@ using ReLogic.Content;
 using ReLogic.Utilities;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.PunkerTown.TilesPT;
+using Stellamod.Content.Areas.Terror.TilesTR;
 using Stellamod.Helpers;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Swords.Altride;
@@ -1453,6 +1454,82 @@ public static class VeilGen
             {
                 WorldGen.TileFrame(treex + x, treey + y);
             }
+        }
+    }
+    public static void PlaceBigTrees<TreeTrunk, TreeTop>(int treex, int treey, int height)
+        where TreeTrunk : ModTile
+        where TreeTop : ModTile
+    {
+
+        if (treey - height < 1)
+            return;
+
+        for (int x = -1; x < 3; x++)
+        {
+            for (int y = 0; y < (height + 2); y++)
+            {
+                WorldGen.KillTile(treex + x, treey - y);
+            }
+        }
+
+        WorldGen.PlaceTile(treex, treey, ModContent.TileType<TreeTrunk>(), true, true);
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (y == height - 1 && x == 1)
+                {
+                    WorldGen.PlaceTile(treex + x, treey - (y), ModContent.TileType<TreeTop>(), true, true);
+
+                }
+                else
+                {
+                    WorldGen.PlaceTile(treex + x, treey - (y), ModContent.TileType<TreeTrunk>(), true, true);
+                }
+            }
+        }
+
+        for (int x = -1; x < 3; x++)
+        {
+            for (int y = 0; y < (height + 2); y++)
+            {
+                WorldGen.TileFrame(treex + x, treey + y);
+            }
+        }
+    }
+    public static void PlaceTrees<TreeTrunk, TreeTop>(int treex, int treey, int height)
+        where TreeTrunk : ModTile
+        where TreeTop : ModTile
+    {
+        if (treey - height < 1)
+            return;
+
+        for (int x = -1; x < 3; x++)
+        {
+            for (int y = 0; y < (height + 2); y++)
+            {
+                WorldGen.KillTile(treex + x, treey - y);
+            }
+        }
+
+        WorldGen.PlaceTile(treex, treey, ModContent.TileType<TreeTrunk>(), true, true);
+        for (int y = 0; y < height; y++)
+        {
+            if (y == height - 1)
+            {
+                WorldGen.PlaceTile(treex, treey - (y + 1), ModContent.TileType<TreeTop>(), true, true);
+            }
+            else
+            {
+                WorldGen.PlaceTile(treex, treey - (y + 1), ModContent.TileType<TreeTrunk>(), true, true);
+
+            }
+
+        }
+
+        for (int y = 0; y < (height + 2); y++)
+        {
+            WorldGen.TileFrame(treex, treey + y);
         }
     }
     public static void PlaceAcaciaTrees(int treex, int treey, int height)
