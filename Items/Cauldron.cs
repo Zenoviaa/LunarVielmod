@@ -356,25 +356,13 @@ namespace Stellamod.Items
             }
             else
             {
-                bool getNothingFailed = Main.rand.NextFloat(0, 100) <= cauldronPlayer.NothingFailChance;
-                bool inkFailed = Main.rand.NextFloat(0, 100) <= cauldronPlayer.InkFailChance;
-
-                if (getNothingFailed)
-                {
-                    result = NothingBrew;
-                }
-
-                if (!getNothingFailed)
-                {
-                    cauldronPlayer.Make(ModContent.GetModItem(result.result).Item);
-                }
+                cauldronPlayer.Make(ModContent.GetModItem(result.result).Item);
             }
 
             //Crafting Quest
             QuestPlayer questPlayer = Main.LocalPlayer.GetModPlayer<QuestPlayer>();
             var starterQuest = ModContent.GetInstance<CraftAtCauldron>();
             questPlayer.CompleteQuest(starterQuest);
-
             JustCrafted = result;
             return result;
         }

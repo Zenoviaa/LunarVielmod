@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Common.DungeonGeneration;
+﻿using Stellamod.Common.DungeonGeneration;
 using Stellamod.Common.Players;
 using Stellamod.Common.WaypointSystem;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
@@ -7,7 +6,6 @@ using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Special.DeadRomancesExcalibur;
 using Stellamod.Core;
 using Stellamod.Core.RibbonSystem;
-using Stellamod.Core.SilkSystem;
 using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -67,6 +65,9 @@ namespace Stellamod
             byte player;
             switch (id)
             {
+                case MessageType.ZTileSync:
+                    ModContent.GetInstance<ZTileMap>().HandleZTileSyncPacket(reader);
+                    break;
                 case MessageType.BossDowned:
                     DownedBossRewardPlayer.HandleBossDownedMessage(reader, whoAmI);
                     break;
@@ -95,7 +96,7 @@ namespace Stellamod
                     }
                     break;
                 case MessageType.SpawnNPC:
-                    if(Main.netMode == NetmodeID.Server)
+                    if (Main.netMode == NetmodeID.Server)
                     {
                         int npc = reader.ReadInt32();
                         int x = reader.ReadInt32();
@@ -135,15 +136,16 @@ namespace Stellamod
 
                     break;
 
-                case MessageType.BreakString:
-                    if (Main.netMode == NetmodeID.Server)
-                    {
-                        int x = reader.ReadInt32();
-                        int y = reader.ReadInt32();
-                        SilkManager.DestroySilk(x, y);
-                    }
-                    break;
-
+                /*
+            case MessageType.BreakString:
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    int x = reader.ReadInt32();
+                    int y = reader.ReadInt32();
+                    SilkManager.DestroySilk(x, y);
+                }
+                break;
+                */
                 case MessageType.DashPlayerSync:
                     {
 
@@ -180,13 +182,13 @@ namespace Stellamod
                     }
                     break;
                 case MessageType.HandleDoor:
-                    if(Main.netMode == NetmodeID.Server)
+                    if (Main.netMode == NetmodeID.Server)
                     {
-                        int x = (int)reader.ReadInt32();
-                        int y = (int)reader.ReadInt32();
+                        int x = reader.ReadInt32();
+                        int y = reader.ReadInt32();
                         Point tilePosition = new Point(x, y);
-                        int d = (int)reader.ReadInt32();
-                        if(d == -1)
+                        int d = reader.ReadInt32();
+                        if (d == -1)
                         {
                             DungeonGenerationHelper.RemoveDoorInWorld(tilePosition);
                         }
@@ -217,7 +219,7 @@ namespace Stellamod
                         RibbonRenderer ribbonRenderer = ModContent.GetInstance<RibbonRenderer>();
                         ribbonRenderer.ReceiveBreakRibbonSync(rx, ry);
                     }
-           
+
                     break;
                 case MessageType.PlaceRibbon:
                     {
@@ -244,14 +246,14 @@ namespace Stellamod
                         ZTileInstanceData instanceData = new ZTileInstanceData();
                         instanceData.scale = reader.ReadSingle();
                         instanceData.flipX = reader.ReadBoolean();
-                        instanceData.frameNumber= reader.ReadUInt16();
+                        instanceData.frameNumber = reader.ReadUInt16();
                         instanceData.rotation = (Rotation)reader.ReadByte();
                         instanceData.type = reader.ReadUInt16();
                         instanceData.value = reader.ReadByte();
 
                         ZTileMap tileMap = ModContent.GetInstance<ZTileMap>();
                         tileMap.Add(layer, tilePosition, instanceData);
-                        if(Main.netMode == NetmodeID.Server)
+                        if (Main.netMode == NetmodeID.Server)
                         {
                             //Forward all changes to other clients
                             tileMap.SyncPlaceTile(-1, whoAmI, layer, tilePosition, instanceData);
@@ -290,7 +292,7 @@ namespace Stellamod
                 case MessageType.CauldronSync:
                     {
                         Cauldron cauldron = ModContent.GetInstance<Cauldron>();
-         
+
                         cauldron.HandleSyncPacket(reader);
                     }
                     break;

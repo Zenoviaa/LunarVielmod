@@ -13,7 +13,7 @@ public static class TileUtilities
     {
         return FallToSolidTile(tile.X, tile.Y);
     }
-    public static Point FallToSolidTile(int x, int y)
+    public static Point FallToSolidTile(int x, int y, int direction = 1)
     {
         Point start = new Point(x, y);
         Point current = start;
@@ -21,19 +21,7 @@ public static class TileUtilities
         {
             if (WorldGen.InWorld(current.X, current.Y) && WorldGen.SolidTile(current.X, current.Y))
                 return current;
-            current.Y += 1;
-        }
-        return Point.Zero;
-    }
-    public static Point RiseToSolidTile(int x, int y)
-    {
-        Point start = new Point(x, y);
-        Point current = start;
-        for (int i = 0; i < Main.maxTilesY; i++)
-        {
-            if (WorldGen.InWorld(current.X, current.Y) && WorldGen.SolidTile(current.X, current.Y))
-                return current;
-            current.Y -= 1;
+            current.Y += direction;
         }
         return Point.Zero;
     }

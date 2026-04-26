@@ -1,5 +1,4 @@
-﻿using ReLogic.Content;
-using ReLogic.Utilities;
+﻿using ReLogic.Utilities;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.Abyss.WeaponsAB;
 using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
@@ -7,9 +6,7 @@ using Stellamod.Content.Areas.Collosseum.TilesCL;
 using Stellamod.Content.Areas.Collosseum.WeaponsCL;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Areas.Junkyard.TilesJY;
-using Stellamod.Content.Areas.PunkerTown.TilesPT;
 using Stellamod.Content.Areas.SpringHills.AccSH;
-using Stellamod.Content.Areas.SpringHills.TilesSH;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.Terror.TilesTR;
 using Stellamod.Content.Areas.WaterSide.TilesWS;
@@ -19,7 +16,6 @@ using Stellamod.Content.Armors.Alcalite;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.RibbonSystem;
-using Stellamod.Core.SilkSystem;
 using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
@@ -40,7 +36,6 @@ using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.Items.Weapons.Thrown;
-using Stellamod.NPCs;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Acid;
@@ -54,7 +49,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.Biomes;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
@@ -250,13 +244,13 @@ public partial class StellaWorld : ModSystem
     private void CindersparkCavesPass(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Making Cinderspark Caves";
-        var genRand = WorldGen.genRand; 
+        var genRand = WorldGen.genRand;
         for (int x = 0; x < Main.maxTilesX; x++)
         {
             int caveMakerSteps = 32;
             for (int j = 0; j < caveMakerSteps; j++)
             {
-                int y = genRand.Next((int)Main.maxTilesY - 600, (int)Main.maxTilesY - 350);
+                int y = genRand.Next(Main.maxTilesY - 600, Main.maxTilesY - 350);
                 Tile tile = Main.tile[x, y];
                 if (!genRand.NextBool(1512))
                     continue;
@@ -265,7 +259,7 @@ public partial class StellaWorld : ModSystem
                 int clearingCaveSteps = 500;
 
                 //Cave position in tiles
-                Vector2 clearingPosition = new Vector2((int)x, (int)y);
+                Vector2 clearingPosition = new Vector2(x, y);
 
                 //Starting cave direction
 
@@ -323,7 +317,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("MarshTerrain", WorldGenMarsh));
         passWriter.NextPass(new PassLegacy("Veizal Hill Terrain", WorldGenVeizalHillsTerrain));
         passWriter.NextPass(new PassLegacy("Misty Dungeon Hill Terrain", WorldGenMistyDungeonHill));
-       // passWriter.NextPass(new PassLegacy("Jungle Caves", JungleCavesPass));
+        // passWriter.NextPass(new PassLegacy("Jungle Caves", JungleCavesPass));
         passWriter.NextPass(new PassLegacy("RoyalCapitalTerrain", WorldGenCapitalTerrain));
         passWriter.NextPass(new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
         passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
@@ -374,7 +368,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Jungle Surface Caves", WorldGenJungleSurfaceCaves));
 
         passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
-  
+
 
         //Set desert location
         passWriter.SetInsertionIndex("Full Desert");
@@ -385,7 +379,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Manor", WorldGenManor));
         passWriter.NextPass(new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
         passWriter.NextPass(new PassLegacy("World Gen Dock", WorldGenDock));
-     //   passWriter.NextPass(new PassLegacy("World Gen Evil", WorldGenEvil));
+        //   passWriter.NextPass(new PassLegacy("World Gen Evil", WorldGenEvil));
         passWriter.NextPass(new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
         passWriter.NextPass(new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
         passWriter.NextPass(new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
@@ -402,7 +396,7 @@ public partial class StellaWorld : ModSystem
         startTile.X -= 50;
         startTile.Y -= 300;
         startTile = FallToSolidTile(startTile);
-  
+
 
         Point endTile = startTile;
         endTile.X += 850;
@@ -418,24 +412,24 @@ public partial class StellaWorld : ModSystem
         int startHeight = (int)Main.worldSurface - 500;
 
         //Place all the sand
-        for(int x  = startTile.X; x < endTile.X; x++)
+        for (int x = startTile.X; x < endTile.X; x++)
         {
             int localX = x - startTile.X;
-            float ratio = (float)localX / (float)length;
+            float ratio = localX / (float)length;
             float bump = EasingFunction.QuadraticBump(ratio);
             float depthAtPosition = MathHelper.Lerp(minDepth, maxDepth, bump);
 
             Point point = new Point(x, startHeight);
             point = FallToSolidTile(point);
             heights[localX] = point.Y;
-   
+
 
             //Clear every tile above the ground
-            for(int d = 0; d < 50; d++)
+            for (int d = 0; d < 50; d++)
             {
-                Main.tile[x, point.Y - (1+d)].ClearEverything();
+                Main.tile[x, point.Y - (1 + d)].ClearEverything();
             }
-            for(int depthY = 0; depthY < depthAtPosition; depthY++)
+            for (int depthY = 0; depthY < depthAtPosition; depthY++)
             {
                 Point tileToPlaceAt = new Point(x, point.Y + depthY);
                 tileToPlaceAt.Y -= 2;
@@ -457,7 +451,7 @@ public partial class StellaWorld : ModSystem
         for (int x = startTile.X; x < endTile.X; x++)
         {
             float localX = x - startTile.X;
-            float ratio = localX / (float)length;
+            float ratio = localX / length;
             int heightIndex = x - startTile.X;
             int height = heights[heightIndex];
 
@@ -467,7 +461,7 @@ public partial class StellaWorld : ModSystem
             Rectangle scanArea = new Rectangle(x, y, 5, 2);
             Point point = new Point(x - scanArea.Width / 2, y);
             Dictionary<ushort, int> dictionary = new Dictionary<ushort, int>();
-            WorldUtils.Gen(point, new Shapes.Rectangle(scanArea.Width, scanArea.Height), 
+            WorldUtils.Gen(point, new Shapes.Rectangle(scanArea.Width, scanArea.Height),
                 new Actions.TileScanner(uGrassTileType).Output(dictionary));
             int tileCount = dictionary[uGrassTileType];
 
@@ -486,7 +480,7 @@ public partial class StellaWorld : ModSystem
         for (int x = startTile.X; x < endTile.X; x++)
         {
             float localX = x - startTile.X;
-            float ratio = localX / (float)length;
+            float ratio = localX / length;
             int heightIndex = x - startTile.X;
             int height = heights[heightIndex];
 
@@ -496,7 +490,7 @@ public partial class StellaWorld : ModSystem
             Rectangle scanArea = new Rectangle(x, y, 5, 2);
             Point point = new Point(x - scanArea.Width / 2, y);
             Dictionary<ushort, int> dictionary = new Dictionary<ushort, int>();
-            WorldUtils.Gen(point, new Shapes.Rectangle(scanArea.Width, scanArea.Height), 
+            WorldUtils.Gen(point, new Shapes.Rectangle(scanArea.Width, scanArea.Height),
                 new Actions.TileScanner(uGrassTileType, bigTreeTileType).Output(dictionary));
             int tileCount = dictionary[uGrassTileType];
             int mangroveTreeCount = dictionary[bigTreeTileType];
@@ -525,7 +519,7 @@ public partial class StellaWorld : ModSystem
 
         string GetStruturePath(int index)
         {
-            return $"Structures/MarshOutpost{index+1}";
+            return $"Structures/MarshOutpost{index + 1}";
         }
 
         //Place ravager first
@@ -543,12 +537,12 @@ public partial class StellaWorld : ModSystem
         Structurizer.ReadStruct(ravagerPlacementPoint, ravagerArena, tileBlend);
 
         int numHouses = 5;
-        for(int i = 0; i < numHouses; i++)
+        for (int i = 0; i < numHouses; i++)
         {
             int houseIndex = houses.NextPattern();
             string structure = GetStruturePath(houseIndex);
 
-            for(int a = 0; a < 100000; a++)
+            for (int a = 0; a < 100000; a++)
             {
                 Point houseFallingPoint = MarshLocation;
                 houseFallingPoint.Y -= 1000;
@@ -736,19 +730,19 @@ public partial class StellaWorld : ModSystem
 
             for (int x = left; x < right && x < Main.maxTilesX; x++)
             {
-                float ratio = (float)(x - left) / (float)(right - left);
+                float ratio = (x - left) / (float)(right - left);
                 float ease = EasingFunction.QuadraticBump(ratio);
 
-                if(ease < 0.5f)
+                if (ease < 0.5f)
                 {
                     int denom = (int)MathHelper.Lerp(1, 8, ease);
                     if (Main.rand.NextBool(denom))
                         continue;
                 }
-       
+
                 if (caveOriginY > bottom - 25)
                 {
-                    float heightRatio = (float)(caveOriginY - (bottom - 25)) / 25f;
+                    float heightRatio = (caveOriginY - (bottom - 25)) / 25f;
                     int heightDenom = (int)MathHelper.Lerp(1, 16, heightRatio);
                     if (!Main.rand.NextBool(heightDenom))
                         continue;
@@ -785,7 +779,7 @@ public partial class StellaWorld : ModSystem
             ModContent.GetInstance<PinkCoralLarge>()
         };
 
- 
+
         for (int y = caveOriginY; y < bottom; y++)
         {
 
@@ -835,7 +829,7 @@ public partial class StellaWorld : ModSystem
 
         //Just throw a big ass circle of water at the top to fill the empty space
         Point centerPoint = new Point(caveOriginX, caveOriginY);
-        WorldUtils.Gen(centerPoint, new Shapes.Circle(10, 10), 
+        WorldUtils.Gen(centerPoint, new Shapes.Circle(10, 10),
             Actions.Chain(new GenAction[]
         {
             new Actions.SetLiquid(LiquidID.Water)
@@ -860,20 +854,20 @@ public partial class StellaWorld : ModSystem
         for (int y = caveOriginY; y < bottom; y++)
         {
 
-            for(int x = left; x < right; x++)
+            for (int x = left; x < right; x++)
             {
-                float ratio = (float)(x - left) / (float)(right - left);
+                float ratio = (x - left) / (float)(right - left);
                 float ease = EasingFunction.QuadraticBump(ratio);
                 int denom = (int)MathHelper.Lerp(1, 8, ease);
-                if(ease < 0.5f)
+                if (ease < 0.5f)
                 {
                     if (Main.rand.NextBool(denom))
                         continue;
                 }
-              
-                if(caveOriginY > bottom - 25)
+
+                if (caveOriginY > bottom - 25)
                 {
-                    float heightRatio = (float)(caveOriginY - (bottom - 25)) / 25f;
+                    float heightRatio = (caveOriginY - (bottom - 25)) / 25f;
                     int heightDenom = (int)MathHelper.Lerp(1, 16, heightRatio);
                     if (!Main.rand.NextBool(heightDenom))
                         continue;
@@ -914,8 +908,8 @@ public partial class StellaWorld : ModSystem
 
 
         //int sb = ModContent.TileType<Tiles.StarbloomDirt>();
-       // TileID.Sets.CanBeClearedDuringOreRunner[sb] = false;
-      //  TileID.Sets.CanBeClearedDuringGeneration[sb] = false;
+        // TileID.Sets.CanBeClearedDuringOreRunner[sb] = false;
+        //  TileID.Sets.CanBeClearedDuringGeneration[sb] = false;
     }
 
     private void WorldGenVeizalHillsTerrain(GenerationProgress progress, GameConfiguration configuration)
@@ -931,7 +925,7 @@ public partial class StellaWorld : ModSystem
         {
             endHillTile.Y++;
         }
-     
+
 
         //Move the start tile backwards so it connects to the marsh
         while (WorldGen.InWorld(startHillTile.X, startHillTile.Y) && !WorldGen.SolidTile(endHillTile.X, endHillTile.Y))
@@ -959,7 +953,7 @@ public partial class StellaWorld : ModSystem
         {
             //Calculate heights, creating a slowly descending slope
             float width = endHillTile.X - startHillTile.X;
-            float ratio = (float)(x - startHillTile.X) / width;
+            float ratio = (x - startHillTile.X) / width;
 
             float tileYHeight = MathHelper.Lerp(startHillTile.Y, endHillTile.Y, ratio);
 
@@ -1187,7 +1181,7 @@ public partial class StellaWorld : ModSystem
         DisableGenTask(tasks, "Granite");
         DisableGenTask(tasks, "Jungle");
         DisableGenTask(tasks, "Wall Variety");
-      //  DisableAllGenTasks(tasks);
+        //  DisableAllGenTasks(tasks);
         //    AddWorldGenTasks(tasks, ref totalWeight);
         AddNewGenerationPasses(tasks, ref totalWeight);
     }
@@ -1213,7 +1207,7 @@ public partial class StellaWorld : ModSystem
                 startY++;
 
             float width = endTileX - startTileX;
-            float ratio = (float)(tileX - startTileX) / width;
+            float ratio = (tileX - startTileX) / width;
             int depth = (int)MathHelper.SmoothStep(maxDepth, minDepth, ratio);
             for (int tileY = startY; tileY < startY + depth; tileY++)
             {
@@ -1228,7 +1222,7 @@ public partial class StellaWorld : ModSystem
 
         for (int tileX = startSlope.X; tileX < endTileX; tileX++)
         {
-            float ratio = (float)(tileX - startSlope.X) / (float)(endTileX - startSlope.X);
+            float ratio = (tileX - startSlope.X) / (float)(endTileX - startSlope.X);
             float y = MathHelper.SmoothStep(0f, 27, ratio);
             int tileY = (int)(startSlopeY - y);
             for (int innerY = tileY; innerY < startSlopeY; innerY++)
@@ -1253,7 +1247,7 @@ public partial class StellaWorld : ModSystem
             waterEnd.Y++;
         for (int lakeX = waterStart.X; lakeX < waterEnd.X; lakeX++)
         {
-            float ratio = (float)(lakeX - waterStart.X) / (float)(waterEnd.X - waterStart.X);
+            float ratio = (lakeX - waterStart.X) / (float)(waterEnd.X - waterStart.X);
             float bump = EasingFunction.QuadraticBump(ratio);
             int depth = (int)MathHelper.Lerp(0, maxLakeDepth, bump);
 
@@ -1287,7 +1281,7 @@ public partial class StellaWorld : ModSystem
             waterEnd.Y++;
         for (int lakeX = waterStart.X; lakeX < waterEnd.X; lakeX++)
         {
-            float ratio = (float)(lakeX - waterStart.X) / (float)(waterEnd.X - waterStart.X);
+            float ratio = (lakeX - waterStart.X) / (float)(waterEnd.X - waterStart.X);
             float bump = EasingFunction.QuadraticBump(ratio);
             int depth = (int)MathHelper.Lerp(0, maxLakeDepth, bump);
 
@@ -1540,7 +1534,7 @@ public partial class StellaWorld : ModSystem
         GenVars.jungleOriginX = marshSpot.X + 700;
 
         //Set snow biome location
-      
+
         GenVars.snowOriginLeft = WitchTownLocation.X + 4400;
         GenVars.snowOriginRight = GenVars.snowOriginLeft + 1200;
 
@@ -1721,7 +1715,8 @@ public partial class StellaWorld : ModSystem
                            strength,
                             steps, tileType);
                         TileID.Sets.CanBeClearedDuringOreRunner[TileID.Granite] = false;
-                        SilkManager.GrowSilk(x, y, genRand);
+                        WorldGen.PlaceTile(x, y, ModContent.TileType<MiracleSilkTile>(), mute: true, forced: true);
+                        //     SilkManager.GrowSilk(x, y, genRand);
                     }
                 }
                 if (hasAny && (tile.TileType == TileID.Granite))
@@ -2389,7 +2384,7 @@ public partial class StellaWorld : ModSystem
         float pokey = 12;
         for (int n = 0; n < pokey; n++)
         {
-            float p = (float)n / pokey;
+            float p = n / pokey;
             float rot = p * MathHelper.TwoPi;
             Vector2 velocity = rot.ToRotationVector2() * 66;
             Point cavePoint = evilPoint + velocity.ToPoint();
@@ -2402,47 +2397,47 @@ public partial class StellaWorld : ModSystem
 
         for (int n = 0; n < 800; n++)
         {
-            float p = (float)n / 800f;
+            float p = n / 800f;
             float rot = p * MathHelper.TwoPi;
             Vector2 velocity = rot.ToRotationVector2() * genRand.NextFloat(50, 80);
             Point cavePoint = evilPoint + velocity.ToPoint();
             Vector2 strength = new Vector2(3, 4);
 
-            WorldGen.TileRunner((int)cavePoint.X, (int)cavePoint.Y,
+            WorldGen.TileRunner(cavePoint.X, cavePoint.Y,
                 genRand.NextFloat(strength.X, strength.Y),
                 genRand.Next(4, 5), -1);
         }
 
         for (int n = 0; n < 800; n++)
         {
-            float p = (float)n / 800f;
+            float p = n / 800f;
             float rot = p * MathHelper.TwoPi;
             Vector2 velocity = rot.ToRotationVector2() * genRand.NextFloat(50, 80);
             Point cavePoint = evilPoint + velocity.ToPoint();
             Vector2 strength = new Vector2(3, 4);
 
 
-            WorldGen.TileRunner((int)cavePoint.X, (int)cavePoint.Y,
+            WorldGen.TileRunner(cavePoint.X, cavePoint.Y,
                 genRand.NextFloat(strength.X, strength.Y),
                 genRand.Next(4, 5), decorativeBlock);
         }
 
         for (int n = 0; n < 800; n++)
         {
-            float p = (float)n / 800f;
+            float p = n / 800f;
             float rot = p * MathHelper.TwoPi;
             Vector2 velocity = rot.ToRotationVector2() * genRand.NextFloat(60, 100);
             Point cavePoint = evilPoint + velocity.ToPoint();
             Vector2 strength = new Vector2(3, 4);
 
-            WorldGen.TileRunner((int)cavePoint.X, (int)cavePoint.Y,
+            WorldGen.TileRunner(cavePoint.X, cavePoint.Y,
                 genRand.NextFloat(strength.X, strength.Y),
                 genRand.Next(4, 5), decorativeBlock);
         }
 
         for (int n = 0; n < 10; n++)
         {
-            float p = (float)n / 10f;
+            float p = n / 10f;
             float rot = p * MathHelper.TwoPi;
             rot += MathHelper.ToRadians(30);
             Vector2 velocity = rot.ToRotationVector2() * 10;
@@ -2452,7 +2447,7 @@ public partial class StellaWorld : ModSystem
 
         for (int n = 0; n < 10; n++)
         {
-            float p = (float)n / 10f;
+            float p = n / 10f;
             float rot = p * MathHelper.TwoPi;
             rot += MathHelper.ToRadians(60);
             Vector2 velocity = rot.ToRotationVector2() * 30;
@@ -2462,7 +2457,7 @@ public partial class StellaWorld : ModSystem
 
         for (int n = 0; n < 10; n++)
         {
-            float p = (float)n / 10f;
+            float p = n / 10f;
             float rot = p * MathHelper.TwoPi;
             Vector2 velocity = rot.ToRotationVector2() * 50;
             Point shadowOrbPoint = evilPoint + velocity.ToPoint();
@@ -2559,7 +2554,7 @@ public partial class StellaWorld : ModSystem
         evilPoint.Y -= 300;
         evilPoint = FallToSolidTile(evilPoint);
         evilPoint.Y += 150;
-        
+
     }
 
     private void WorldGenAshotiTemple(GenerationProgress progress, GameConfiguration configuration)
@@ -2595,7 +2590,7 @@ public partial class StellaWorld : ModSystem
         //Decorate arena with walls
         for (int w = 0; w < 80; w++)
         {
-            float progressOnCircle = (float)w / 80f;
+            float progressOnCircle = w / 80f;
             float rot = progressOnCircle * MathHelper.TwoPi;
             Vector2 vel = rot.ToRotationVector2() * radius;
             Point pointToWall = arenaPoint + vel.ToPoint();
@@ -2825,7 +2820,7 @@ public partial class StellaWorld : ModSystem
             for (int a = 0; a < 10000; a++)
             {
                 int x = genRand.Next(250, Main.maxTilesX - 250);
-                int y = genRand.Next((int)GenVars.rockLayerHigh, (int)GenVars.lavaLine);
+                int y = genRand.Next((int)GenVars.rockLayerHigh, GenVars.lavaLine);
                 Tile tile = Main.tile[x, y];
                 if (tile.TileType != TileID.Stone)
                     continue;
@@ -2845,7 +2840,7 @@ public partial class StellaWorld : ModSystem
         var genRand = WorldGen.genRand;
 
         int numCaves = 120;
-        for(int n = 0; n < numCaves; n++)
+        for (int n = 0; n < numCaves; n++)
         {
             int caveOriginX = genRand.Next(15, Main.maxTilesX - 15);
             int caveOriginY = genRand.Next((int)GenVars.rockLayerHigh, Main.UnderworldLayer);
@@ -2953,7 +2948,7 @@ public partial class StellaWorld : ModSystem
                         TileID.Mud).Output(dictionary));
                     int mudCount = dictionary[TileID.Mud];
                     int maxCount = 900;
-                    float percent = (float)mudCount / (float)maxCount;
+                    float percent = mudCount / (float)maxCount;
                     if (percent < 0.75f)
                     {
                         continue;
@@ -3340,7 +3335,7 @@ public partial class StellaWorld : ModSystem
         placementTile.X = (int)MathHelper.Lerp(startHillTile.X, endHillTile.X, 0.65f);
         placementTile.Y = (int)(Main.worldSurface - 400);
         placementTile = FallToSolidTile(placementTile.X, placementTile.Y);
-        MistyDungeonLocation = placementTile;      
+        MistyDungeonLocation = placementTile;
     }
 
     private void WorldGenFableTerrain(GenerationProgress progress, GameConfiguration configuration)
@@ -3458,14 +3453,14 @@ public partial class StellaWorld : ModSystem
         endCaveTile = FallToSolidTile(endCaveTile.X, endCaveTile.Y);
 
 
-         width = endCaveTile.X - startCaveTile.X;
+        width = endCaveTile.X - startCaveTile.X;
         float maxCaveDepth = 66;
         var genRand = WorldGen.genRand;
         Vector2 caveStrength = new Vector2(15, 20);
- 
+
         for (int x = startCaveTile.X; x < endCaveTile.X; x++)
         {
-            float ratio = (float)(x - startCaveTile.X) / width;
+            float ratio = (x - startCaveTile.X) / width;
             float bump = EasingFunction.QuadraticBump(ratio);
             int y = (int)MathHelper.Lerp(startCaveTile.Y, endCaveTile.Y, ratio);
             y += (int)MathHelper.Lerp(0, maxCaveDepth, bump);
@@ -3526,7 +3521,7 @@ public partial class StellaWorld : ModSystem
             int yMax = (Main.UnderworldLayer - (Main.maxTilesY / 20));
             int yMin = yMax - 50;
 
-            float ratio = (float)x / (float)Main.maxTilesX;
+            float ratio = x / (float)Main.maxTilesX;
 
             float y = yMin;
             y += MathF.Sin(ratio * 64) * 8;
@@ -3538,7 +3533,7 @@ public partial class StellaWorld : ModSystem
             {
                 endY++;
             }
-           
+
 
             for (int j = startY; j < endY; j++)
             {
@@ -4147,7 +4142,7 @@ public partial class StellaWorld : ModSystem
             break;
         }
 
-     
+
     }
 
     private Point FallToSolidTile(Point tile)
@@ -6807,8 +6802,6 @@ public partial class StellaWorld : ModSystem
         double centerX = AbyssCenter.X;
         double centerY = AbyssCenter.Y;
 
-        int innerCircleRadius = 24;
-
         // For every side, step around and away from center.
         // start at the angle corresponding to a distance of chord
         // away from centre.
@@ -6867,7 +6860,7 @@ public partial class StellaWorld : ModSystem
             if (currentPoint.Y < fluff || currentPoint.Y > Main.maxTilesY - fluff)
                 continue;
 
-            WorldGen.TileRunner((int)currentPoint.X, (int)currentPoint.Y,
+            WorldGen.TileRunner(currentPoint.X, currentPoint.Y,
               genRand.NextFloat(5, 10),
               genRand.Next(60, 80), -1);
         }
@@ -7427,7 +7420,7 @@ public partial class StellaWorld : ModSystem
         int attempts = 0;
         while (!placed && attempts++ < 10000000)
         {
-            Point Loc = RoyalCapitalLocation; 
+            Point Loc = RoyalCapitalLocation;
             rectangle.Location = Loc;
             AlcadLocation = Loc;
             Structurizer.ProtectStructure(Loc, "Structures/RoyalCapital");
@@ -7532,7 +7525,7 @@ public partial class StellaWorld : ModSystem
                         break; // Make sure not to exceed the capacity of the chest
                 }
             }
-            
+
 
             placed = true;
 
@@ -7644,7 +7637,7 @@ public partial class StellaWorld : ModSystem
                 if (chestItemIndex >= 40)
                     break; // Make sure not to exceed the capacity of the chest
             }
-        }     
+        }
     }
 
     private void WorldGenWorshipingTowers(GenerationProgress progress, GameConfiguration configuration)

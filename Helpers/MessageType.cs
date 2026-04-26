@@ -33,7 +33,8 @@
         BossDowned,
         CauldronSync,
         WaypointActivate,
-        SpawnNPC
+        SpawnNPC,
+        ZTileSync
     }
 
     public enum DialogueType : byte

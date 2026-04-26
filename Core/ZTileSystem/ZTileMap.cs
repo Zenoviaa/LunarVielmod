@@ -579,35 +579,79 @@ public class ZTileMap : ModSystem
     public override void NetSend(BinaryWriter writer)
     {
         base.NetSend(writer);
-        for (int i = 0; i < _renderLayers.Length; i++)
-        {
-            var layer = _renderLayers[i];
-            TileScene[] scenes = layer.GetScenes();
-            for (int j = 0; j < scenes.Length; j++)
-            {
-                TileScene scene = scenes[j];
-                foreach (KeyValuePair<ZTilePosition, ZTileInstanceData> tilePair in scene)
-                {
-                    writer.Write((byte)i);
-                    writer.Write((ushort)tilePair.Key.x);
-                    writer.Write((ushort)tilePair.Key.y);
-                    writer.Write((ushort)tilePair.Key.z);
-                    writer.Write((float)tilePair.Value.scale);
-                    writer.Write((bool)tilePair.Value.flipX);
-                    writer.Write((ushort)tilePair.Value.frameNumber);
-                    writer.Write((byte)tilePair.Value.rotation);
-                    writer.Write((ushort)tilePair.Value.type);
-                    writer.Write((byte)tilePair.Value.value);
-                }
-            }
-        }
+        SendZTileSyncPacket();
     }
+  
 
     public override void NetReceive(BinaryReader reader)
     {
         base.NetReceive(reader);
-        //As long as there is a character we have more thingies
-        while(reader.PeekChar() != -1)
+       
+    }
+
+    public void SendZTileSyncPacket()
+    {
+        //We need a completely separate packet to sync this, so we just send this when world data gets sent
+        //Should work just fine lol
+        try
+        {
+            ModPacket packet = Stellamod.Instance.GetPacket(capacity: 65536);
+            packet.Write((byte)MessageType.ZTileSync);
+            int length = 0;
+            for (int i = 0; i < _renderLayers.Length; i++)
+            {
+                var layer = _renderLayers[i];
+                TileScene[] scenes = layer.GetScenes();
+                for (int j = 0; j < scenes.Length; j++)
+                {
+                    TileScene scene = scenes[j];
+                    foreach (KeyValuePair<ZTilePosition, ZTileInstanceData> tilePair in scene)
+                    {
+                        length++;
+                    }
+                }
+            }
+            packet.Write((int)length);
+            for (int i = 0; i < _renderLayers.Length; i++)
+            {
+                var layer = _renderLayers[i];
+                TileScene[] scenes = layer.GetScenes();
+                for (int j = 0; j < scenes.Length; j++)
+                {
+                    TileScene scene = scenes[j];
+                    foreach (KeyValuePair<ZTilePosition, ZTileInstanceData> tilePair in scene)
+                    {
+                        packet.Write((byte)i);
+                        packet.Write((ushort)tilePair.Key.x);
+                        packet.Write((ushort)tilePair.Key.y);
+                        packet.Write((ushort)tilePair.Key.z);
+                        packet.Write((float)tilePair.Value.scale);
+                        packet.Write((bool)tilePair.Value.flipX);
+                        packet.Write((ushort)tilePair.Value.frameNumber);
+                        packet.Write((byte)tilePair.Value.rotation);
+                        packet.Write((ushort)tilePair.Value.type);
+                        packet.Write((byte)tilePair.Value.value);
+                    }
+                }
+            }
+            packet.Send();
+        }
+        catch (System.Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+    }    
+
+    public void HandleZTileSyncPacket(BinaryReader reader)
+    {
+        //Console.WriteLine($"Receive Z Tile Sync {reader.BaseStream.Length}");
+        for (int i = 0; i < _renderLayers.Length; i++)
+        {
+            _renderLayers[i].Clear();
+        }
+
+        int length = reader.ReadInt32();
+        for(int i = 0; i < length; i++)
         {
             ZRenderLayer renderLayer = (ZRenderLayer)reader.ReadByte();
             ZTilePosition tilePosition = new ZTilePosition();
@@ -625,7 +669,7 @@ public class ZTileMap : ModSystem
             Add(renderLayer, tilePosition, instanceData);
         }
     }
-    
+
     private void RenderOverWalls(On_Main.orig_DoDraw_WallsAndBlacks orig, Main self)
     {
         DrawBehindWalls();

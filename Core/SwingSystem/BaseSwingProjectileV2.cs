@@ -40,6 +40,7 @@ public struct Bloom
 public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     ISwingProjectile
 {
+    private bool _hasInitializedRendering;
     private bool _hasInitialized;
     private bool _canHurtThings;
     private bool _hasHitStop;
@@ -197,6 +198,11 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             Projectile.ResetLocalNPCHitImmunity();
             _hasInitialized = true;
         }
+    }
+
+    public virtual void Init_Rendering()
+    {
+
     }
 
     private ISwing GetSwing()
@@ -379,6 +385,12 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
     public override bool PreDraw(ref Color lightColor)
     {
+        if (!_hasInitializedRendering)
+        {
+            Init_Rendering();
+            _hasInitializedRendering = true;
+        }
+
         if (Timer <= 3)
             return false;
         //Draw the texture, by 

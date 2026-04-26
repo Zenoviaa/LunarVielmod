@@ -47,9 +47,9 @@ public class MinersSwordSlash : BaseSwingProjectileV2
     public bool Hit;
     private float _traveledRotation;
     private float _oldRot;
-    public override void SetDefaults2()
+    public override void Init_Rendering()
     {
-        base.SetDefaults2();
+        base.Init_Rendering();
         SlashTrailer swingTrailer = new SlashTrailer
         {
             Shader = new SlashEffect()
@@ -70,8 +70,8 @@ public class MinersSwordSlash : BaseSwingProjectileV2
                 Color lerp1 = Color.Lerp(Color.White, Color.Black, interpolant);
                 return Color.Lerp(Color.Transparent, lerp1, interpolant);
             }
+        };
 
-        }; 
         swingTrailer.invert = ComboIndex % 2 != 0;
         Trailer = swingTrailer;
 
@@ -80,7 +80,6 @@ public class MinersSwordSlash : BaseSwingProjectileV2
         bloom.outerBloomColor = Color.Black;
         bloom.bloomWidthFunction = GetBloomWidth;
         bloom.bloomColorFunction = GetBloomColor;
-
     }
 
     public override void AI()

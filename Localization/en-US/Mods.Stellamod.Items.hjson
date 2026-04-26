@@ -10877,3 +10877,8 @@ AegislavSand: {
 	DisplayName: Aegislav Sand
 	Tooltip: ""
 }
+
+MiracleSilkTileBlock: {
+	DisplayName: Miracle Silk Tile Block
+	Tooltip: ""
+}

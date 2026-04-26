@@ -115,6 +115,7 @@ namespace Stellamod.WorldG
                 FillColumn(i, worldSurface, rockLayer);
             }
 
+          //  WorldFile
             Main.worldSurface = (int)(worldSurfaceHigh + 25.0);
             Main.rockLayer = rockLayerHigh;
             double num12 = (int)((Main.rockLayer - Main.worldSurface) / 6.0) * 6;
