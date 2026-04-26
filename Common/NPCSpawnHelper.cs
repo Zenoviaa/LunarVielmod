@@ -1,4 +1,5 @@
 ﻿using Stellamod.Content.Areas.PunkerTown;
+using Stellamod.Content.Areas.Terror;
 using Stellamod.Content.Areas.WaterSide;
 using System.Collections.Generic;
 using Terraria;
@@ -17,6 +18,7 @@ namespace Stellamod.Common
             SpringEnemy = new List<int>();
             HarmonicEnemy = new List<int>();
             MarshEnemy = new List<int>();
+            AegislavSurfaceEnemy = new List<int>();
             ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
             base.SetupContent();
 
@@ -24,6 +26,7 @@ namespace Stellamod.Common
         public static List<int> SpringEnemy;
         public static List<int> HarmonicEnemy;
         public static List<int> MarshEnemy;
+        public static List<int> AegislavSurfaceEnemy;
         public static float[] ModifiedWeights;
     }
 
@@ -90,6 +93,14 @@ namespace Stellamod.Common
                 pool.TryAdd(NPCID.PinkJellyfish, 0.1f);
                 pool.TryAdd(NPCID.Squid, 0.1f);
                 pool.TryAdd(NPCID.Crab, 0.1f);
+            }
+            if (spawnInfo.Player.InModBiome<AegislavBiome>())
+            {
+                pool.Clear();
+                AddEnemiesFromSpawnSet(SpawnSets.AegislavSurfaceEnemy, pool, spawnInfo);
+                pool.TryAdd(NPCID.BloodCrawler, 0.1f);
+                pool.TryAdd(NPCID.FaceMonster, 0.1f);
+                pool.TryAdd(NPCID.Crimera, 0.1f);
             }
         }
     }

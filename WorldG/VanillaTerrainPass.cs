@@ -58,8 +58,13 @@ namespace Stellamod.WorldG
             progress.Message = "Generating Terrain";
             TerrainFeatureType terrainFeatureType = TerrainFeatureType.Plateau;
             int num2 = 0;
+
+            /*
             double worldSurface = Main.maxTilesY * 0.65;
             worldSurface *= GenBase._random.Next(90, 110) * 0.005;
+            */
+
+            double worldSurface = 1569;
             double rockLayer = worldSurface + Main.maxTilesY * 0.13;
             rockLayer *= GenBase._random.Next(90, 110) * 0.01;
 

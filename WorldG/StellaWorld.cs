@@ -7,9 +7,11 @@ using Stellamod.Content.Areas.Collosseum.TilesCL;
 using Stellamod.Content.Areas.Collosseum.WeaponsCL;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Areas.Junkyard.TilesJY;
+using Stellamod.Content.Areas.PunkerTown.TilesPT;
 using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.TilesSH;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
+using Stellamod.Content.Areas.Terror.TilesTR;
 using Stellamod.Content.Areas.WaterSide.TilesWS;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Content.Areas.WorldsEnd.TilesWE;
@@ -94,7 +96,7 @@ public class PassWriter
         Tasks[_insertionIndex] = genPass;
     }
 }
-public class StellaWorld : ModSystem
+public partial class StellaWorld : ModSystem
 {
     public Point RoyalCapitalLocation { get; private set; }
     public Point VeizalHillStartLcoation { get; private set; }
@@ -352,8 +354,11 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Runica Waterside Underwater", WorldGenRunicaUnderwaterCaves));
         passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
         passWriter.NextPass(new PassLegacy("Marsh Housing", WorldGenMarshHousing));
+        passWriter.NextPass(new PassLegacy("Aegislav", WorldGen_AegislavFull));
+
 
         passWriter.SetInsertionIndex("Generate Ice Biome");
+
         passWriter.NextPass(new ReworkedVanillaIceBiomePass());
         passWriter.NextPass(new PassLegacy("Ice Clumping", IceClump));
         passWriter.NextPass(new PassLegacy("Ice Spikes", MakingIcyRandomness));
@@ -380,7 +385,7 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Manor", WorldGenManor));
         passWriter.NextPass(new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
         passWriter.NextPass(new PassLegacy("World Gen Dock", WorldGenDock));
-        passWriter.NextPass(new PassLegacy("World Gen Evil", WorldGenEvil));
+     //   passWriter.NextPass(new PassLegacy("World Gen Evil", WorldGenEvil));
         passWriter.NextPass(new PassLegacy("World Gen Ashoti Temple", WorldGenAshotiTemple));
         passWriter.NextPass(new PassLegacy("World Gen AureTemple", WorldGenAurelusTemple));
         passWriter.NextPass(new PassLegacy("World Gen Windmills Village", WorldGenWindmills));
@@ -390,34 +395,123 @@ public class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Grassing Caves", WorldGenGrassPass));
     }
 
-
-    public class PaintWall : GenAction
+    private void WorldGen_AegislavFull(GenerationProgress progress, GameConfiguration configuration)
     {
-        private byte _type;
-        private bool _neighbors;
+        progress.Message = "Creating an Evil Place...";
+        Point startTile = MistyHillEndLocation;
+        startTile.X -= 50;
+        startTile.Y -= 300;
+        startTile = FallToSolidTile(startTile);
+  
 
-        public PaintWall(byte type, bool neighbors = true)
-        {
-            _type = type;
-            _neighbors = neighbors;
-        }
+        Point endTile = startTile;
+        endTile.X += 850;
+        endTile.Y -= 500;
+        endTile = FallToSolidTile(endTile);
 
-        public override bool Apply(Point origin, int x, int y, params object[] args)
+
+        int sandTile = ModContent.TileType<AegislavSandTile>();
+        float minDepth = 45;
+        float maxDepth = 200;
+        int[] heights = new int[endTile.X - startTile.X];
+        int length = endTile.X - startTile.X;
+        int startHeight = (int)Main.worldSurface - 500;
+
+        //Place all the sand
+        for(int x  = startTile.X; x < endTile.X; x++)
         {
-            ref Tilemap tm = ref GenBase._tiles;
-            Tile tile = tm[x, y];
-            tile.WallColor = _type;
-            WorldGen.SquareWallFrame(x, y);
-            if (_neighbors)
+            int localX = x - startTile.X;
+            float ratio = (float)localX / (float)length;
+            float bump = EasingFunction.QuadraticBump(ratio);
+            float depthAtPosition = MathHelper.Lerp(minDepth, maxDepth, bump);
+
+            Point point = new Point(x, startHeight);
+            point = FallToSolidTile(point);
+            heights[localX] = point.Y;
+   
+
+            //Clear every tile above the ground
+            for(int d = 0; d < 50; d++)
             {
-                WorldGen.SquareWallFrame(x + 1, y);
-                WorldGen.SquareWallFrame(x - 1, y);
-                WorldGen.SquareWallFrame(x, y - 1);
-                WorldGen.SquareWallFrame(x, y + 1);
+                Main.tile[x, point.Y - (1+d)].ClearEverything();
             }
-
-            return UnitApply(origin, x, y, args);
+            for(int depthY = 0; depthY < depthAtPosition; depthY++)
+            {
+                Point tileToPlaceAt = new Point(x, point.Y + depthY);
+                tileToPlaceAt.Y -= 2;
+                if (!Main.tile[tileToPlaceAt].HasTile)
+                    continue;
+                WorldGen.PlaceTile(tileToPlaceAt.X, tileToPlaceAt.Y, sandTile, mute: true, forced: true);
+            }
         }
+
+
+        Point evilPoint = startTile;
+        evilPoint.X = (int)MathHelper.Lerp(evilPoint.X, endTile.X, 0.5f);
+        evilPoint = FallToSolidTile(evilPoint);
+        evilPoint.Y += 250;
+        WorldGen_EvilCircle(evilPoint);
+        ushort uGrassTileType = (ushort)sandTile;
+        var genRand = WorldGen.genRand;
+        //Generate big trees, mangrove trees
+        for (int x = startTile.X; x < endTile.X; x++)
+        {
+            float localX = x - startTile.X;
+            float ratio = localX / (float)length;
+            int heightIndex = x - startTile.X;
+            int height = heights[heightIndex];
+
+            int y = height;
+            Tile tile = Main.tile[x, y];
+
+            Rectangle scanArea = new Rectangle(x, y, 5, 2);
+            Point point = new Point(x - scanArea.Width / 2, y);
+            Dictionary<ushort, int> dictionary = new Dictionary<ushort, int>();
+            WorldUtils.Gen(point, new Shapes.Rectangle(scanArea.Width, scanArea.Height), 
+                new Actions.TileScanner(uGrassTileType).Output(dictionary));
+            int tileCount = dictionary[uGrassTileType];
+
+            if (tileCount >= 5)
+            {
+                if (genRand.NextBool(32))
+                {
+                    int treeHeight = genRand.Next(20, 48);
+                    VeilGen.PlaceBigTrees<BigDeadTree, BigDeadTreeTop>(x, y, treeHeight);
+                }
+            }
+        }
+
+        //Now we're going to place acacia trees
+        ushort bigTreeTileType = (ushort)ModContent.TileType<BigDeadTree>();
+        for (int x = startTile.X; x < endTile.X; x++)
+        {
+            float localX = x - startTile.X;
+            float ratio = localX / (float)length;
+            int heightIndex = x - startTile.X;
+            int height = heights[heightIndex];
+
+            int y = height;
+            Tile tile = Main.tile[x, y];
+
+            Rectangle scanArea = new Rectangle(x, y, 5, 2);
+            Point point = new Point(x - scanArea.Width / 2, y);
+            Dictionary<ushort, int> dictionary = new Dictionary<ushort, int>();
+            WorldUtils.Gen(point, new Shapes.Rectangle(scanArea.Width, scanArea.Height), 
+                new Actions.TileScanner(uGrassTileType, bigTreeTileType).Output(dictionary));
+            int tileCount = dictionary[uGrassTileType];
+            int mangroveTreeCount = dictionary[bigTreeTileType];
+
+            if (tileCount >= 5 && mangroveTreeCount <= 0)
+            {
+                if (genRand.NextBool(8))
+                {
+                    int treeHeight = genRand.Next(6, 20);
+                    VeilGen.PlaceTrees<DeadTree, DeadTreeTop>(x, y, treeHeight);
+                }
+            }
+        }
+
+
     }
 
     private void WorldGenMarshHousing(GenerationProgress progress, GameConfiguration configuration)
@@ -1447,7 +1541,7 @@ public class StellaWorld : ModSystem
 
         //Set snow biome location
       
-        GenVars.snowOriginLeft = WitchTownLocation.X + 4000;
+        GenVars.snowOriginLeft = WitchTownLocation.X + 4400;
         GenVars.snowOriginRight = GenVars.snowOriginLeft + 1200;
 
         //Set dungeon and jungle sides
@@ -2237,20 +2331,9 @@ public class StellaWorld : ModSystem
         }
     }
 
-    private void WorldGenMarbleCaves(GenerationProgress progress, GameConfiguration configuration)
+    private void WorldGen_EvilCircle(Point evilPoint)
     {
-        progress.Message = "Forming marble caves";
-    }
-
-    private void WorldGenEvil(GenerationProgress progress, GameConfiguration configuration)
-    {
-        progress.Message = "Making the evil";
         var genRand = WorldGen.genRand;
-        Point evilPoint = MistyHillEndLocation;
-        evilPoint.X += 200;
-        evilPoint.Y -= 300;
-        evilPoint = FallToSolidTile(evilPoint);
-        evilPoint.Y += 150;
         int radius = 96;
         ushort blockType = WorldGen.crimson ? TileID.Crimstone : TileID.Ebonstone;
         ushort wallType = WorldGen.crimson ? WallID.CrimsonUnsafe1 : WallID.CorruptionUnsafe1;
@@ -2465,6 +2548,18 @@ public class StellaWorld : ModSystem
                 }
             }
         }
+    }
+
+    private void WorldGenEvil(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Making the evil";
+        var genRand = WorldGen.genRand;
+        Point evilPoint = MistyHillEndLocation;
+        evilPoint.X += 200;
+        evilPoint.Y -= 300;
+        evilPoint = FallToSolidTile(evilPoint);
+        evilPoint.Y += 150;
+        
     }
 
     private void WorldGenAshotiTemple(GenerationProgress progress, GameConfiguration configuration)

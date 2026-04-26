@@ -67,7 +67,7 @@ public partial class AegislavSurfaceBackground : CustomBG
 
 
         int worldSurfaceY = GetParallaxYStartHeight();
-        worldSurfaceY -= 3000;
+        worldSurfaceY -= 1600;
         int diffY = (int)(worldSurfaceY - Main.screenPosition.Y);
         closeParallax.Y = -diffY * 0.0001f ;
         closeParallax.Y += 0.2f;

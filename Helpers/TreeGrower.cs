@@ -44,6 +44,7 @@ namespace Stellamod.Helpers
 
         public override bool? UseItem(Player player)
         {
+            Main.NewText(Main.worldSurface);
             int i = (int)Main.MouseWorld.X / 16;
             int j = (int)Main.MouseWorld.Y / 16;
             int height = Main.rand.Next(12, 45);

@@ -60,6 +60,16 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     {
         float2 loopCoords = float2(frac(undergroundCoords.x), frac(undergroundCoords.y));
         float4 backgroundColor = tex2D(uImage3, loopCoords);
+        
+        
+        float2 normalCoords = loopCoords;
+        normalCoords.x += time;
+        normalCoords.x = frac(normalCoords.x);
+
+        float disturbance = tex2D(dustTex, normalCoords).r;
+        float yDepth = 0.33;
+        yDepth *= lerp(0.5, 1.0, disturbance);
+        backgroundColor.rgb = lerp(backgroundColor.rgb, fadeToColor.rgb, yDepth);
         return backgroundColor * sampleColor;
     }
     

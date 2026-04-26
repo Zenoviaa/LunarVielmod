@@ -37,13 +37,13 @@ public partial class AegislavSurfaceBackground
         public override void SetupDrawLayers()
         {
             base.SetupDrawLayers();
-            DrawScale = 1f;
+            DrawScale = 1;
 
             DrawLayers[1].textureAsset = _moonspiralTowerMidTextureAsset;
-            DrawLayers[1].parallax = new Vector2(0.0135f);
+            DrawLayers[1].parallax = new Vector2(0.135f);
 
             DrawLayers[0].textureAsset = _moonspiralTowerBackTextureAsset;
-            DrawLayers[0].parallax = new Vector2(0.00075f);
+            DrawLayers[0].parallax = new Vector2(0.0075f);
         }
     }
 

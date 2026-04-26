@@ -37,7 +37,7 @@ public class AegislavSandTile : ModTile
         Main.tileLighted[Type] = true;
         Main.tileBlockLight[Type] = true;
         RegisterItemDrop(ModContent.ItemType<AegislavSand>());
-        AddMapEntry(Color.IndianRed);
+        AddMapEntry(new Color(40, 40, 40));
     }
     public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
     {

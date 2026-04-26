@@ -205,15 +205,15 @@ ForestBiome: {
 
 JunkyardBiome: {
 	DisplayName: Junkyard Biome
-	TownNPCDialogueName: the Junkyard Biome
+	TownNPCDialogueName: the Junkyard
 }
 
 HarmonicCoralwaysBiome: {
-	DisplayName: Harmonic Coralways Biome
-	TownNPCDialogueName: the Harmonic Coralways Biome
+	DisplayName: Harmonic Coralways
+	TownNPCDialogueName: the Harmonic Coralways
 }
 
 AegislavBiome: {
-	DisplayName: Aegislav Biome
-	TownNPCDialogueName: the Aegislav Biome
+	DisplayName: Aegislav
+	TownNPCDialogueName: the Aegislav
 }
