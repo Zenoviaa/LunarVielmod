@@ -95,6 +95,7 @@ public class MiracleSilkRenderer : ModSystem
                 if (tile.TileType != miracleSilkTile.Type)
                     continue;
                 miracleSilkTile.DrawString(x, y, Main.spriteBatch);
+              //  miracleSilkTile.MakeDust(x, y);
             }
         }
     }
@@ -154,18 +155,37 @@ public class MiracleSilkTile : ModTile
 
     public float GetWidth(float completionRatio)
     {
-        float width = 1f;
+        float width = 2f;
         float startWidth = width * 64;
         float midWidth = width * 16;
         float ease = EasingFunction.QuadraticBump(completionRatio);
         return MathHelper.Lerp(startWidth, midWidth, ease);
     }
 
+    public float GetBloomWidth(float completionRatio)
+    {
+        return GetWidth(completionRatio) * 1.3f;
+    }
     public Color GetColor(float completionRatio)
     {
-        return Color.White;
+        return Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(completionRatio));
     }
 
+    public void MakeDust(int i, int j)
+    {
+        Point start = new Point(i, j);
+        Point end = GetConnectedTile(i, j);
+
+        Vector2 tile1 = start.ToWorldCoordinates();
+        Vector2 tile2 = end.ToWorldCoordinates();
+        Vector2 dustTile = Vector2.Lerp(tile1, tile2, Main.rand.NextFloat(0f, 1f));
+        if (!Main.rand.NextBool(16))
+            return;
+
+        var sp = SparkleParticle.Spawn(dustTile, Vector2.Zero, Scale: 0.6f);
+        sp.innerColor = Color.White;
+        sp.outerColor = Main.DiscoColor;
+    }
 
     public void DrawString(int i, int j, SpriteBatch spriteBatch)
     {
@@ -184,10 +204,18 @@ public class MiracleSilkTile : ModTile
         Color rgbColor = Color.Lerp(Color.White, Color.Pink, MathUtil.Osc(0f, 1f, speed: 1));
     //    rgbColor = rgbColor.MultiplyRGB(lightColor);
         trailShader.PrimaryColor = rgbColor;
-        trailShader.SecondaryColor = rgbColor * 0.5f;
+        trailShader.SecondaryColor = rgbColor * 1f;
 
         Vector2[] trailingPoints = GetTrail(start, end);
         TrailDrawer.Draw(spriteBatch, trailingPoints, null, GetColor, GetWidth, trailShader);
+
+
+
+        BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
+        bloomTrailShader.InnerColor = Color.Lerp(Main.DiscoColor * 0.4f, Color.Pink, 0.5f);
+        TrailDrawer.Draw(spriteBatch, trailingPoints, null, GetColor, GetBloomWidth, bloomTrailShader);
+
+
 
         Asset<Texture2D> silkEnd = TrailRegistry.SilkEnd;
         Vector2 startPoint = start.ToWorldCoordinates();
@@ -196,6 +224,7 @@ public class MiracleSilkTile : ModTile
         float drawRotation = (endPoint - startPoint).ToRotation();
         Vector2 drawPoint = startPoint - Main.screenPosition;
         Color drawColor = Color.White.MultiplyRGB(lightColor) * 0.75f;
+        drawColor.A = 0;
         Vector2 origin = silkEnd.Size() / 2f;
         Vector2 drawScale = Vector2.One;
 
