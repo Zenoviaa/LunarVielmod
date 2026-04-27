@@ -67,11 +67,11 @@ public partial class AegislavSurfaceBackground : CustomBG
 
 
         int worldSurfaceY = GetParallaxYStartHeight();
-        worldSurfaceY -= 1600;
+        worldSurfaceY -= 1800;
         int diffY = (int)(worldSurfaceY - Main.screenPosition.Y);
         closeParallax.Y = -diffY * 0.0001f ;
         closeParallax.Y += 0.2f;
-
+  
         Vector2 midParallax = new Vector2();
         midParallax.X = Main.screenPosition.X * LocalParallaxSpeed * 0.0002f * 0.5f;
         midParallax.Y = closeParallax.Y;
@@ -79,7 +79,7 @@ public partial class AegislavSurfaceBackground : CustomBG
         Vector2 farParallax = new Vector2();
         farParallax.X = Main.screenPosition.X * LocalParallaxSpeed * 0.0002f * 0.25f + 0.25f;
         farParallax.Y = closeParallax.Y;
-
+        farParallax.X += 0.35f;
         //Set up parallax
         Vector2[] parallax = new Vector2[3];
         parallax[0] = farParallax;

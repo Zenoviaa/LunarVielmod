@@ -35,6 +35,13 @@ namespace Stellamod.Helpers
             base.SetStaticDefaults();
             BuffID.Sets.TimeLeftDoesNotDecrease[Type] = true;
         }
+        public override void Update(Player player, ref int buffIndex)
+        {
+            base.Update(player, ref buffIndex);
+            if (NPC.AnyDanger())
+                return;
+            player.DelBuff(buffIndex);
+        }
     }
 
     public class DownedBossRewardPlayer : ModPlayer
