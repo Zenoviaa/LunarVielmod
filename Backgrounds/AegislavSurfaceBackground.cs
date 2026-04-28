@@ -96,7 +96,9 @@ public partial class AegislavSurfaceBackground : CustomBG
             RasterizerState.CullNone,
             backgroundShader.Effect);
 
-        Color drawColor = Color.White * Alpha;
+        Color baseColor = Color.White;
+        baseColor = Color.Lerp(baseColor, Main.ColorOfTheSkies, 0.5f);
+        Color drawColor = baseColor * Alpha;
         Vector2 drawScale = Vector2.One * 2;
         spriteBatch.Draw(
             _closeTextureAsset.Value,

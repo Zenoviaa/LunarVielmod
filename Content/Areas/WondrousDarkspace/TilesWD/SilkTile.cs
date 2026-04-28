@@ -212,7 +212,8 @@ public class MiracleSilkTile : ModTile
 
 
         BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
-        bloomTrailShader.InnerColor = Color.Lerp(Main.DiscoColor * 0.4f, Color.Pink, 0.5f);
+        bloomTrailShader.InnerColor = Color.Lerp(Color.White, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 1f)) * 0.5f;
+        bloomTrailShader.OuterColor = Color.Lerp(Color.Pink, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 1)) * 0.5f;
         TrailDrawer.Draw(spriteBatch, trailingPoints, null, GetColor, GetBloomWidth, bloomTrailShader);
 
 
@@ -229,12 +230,12 @@ public class MiracleSilkTile : ModTile
         Vector2 drawScale = Vector2.One;
 
 
-        spriteBatch.Draw(silkEnd.Value, drawPoint, null, drawColor, drawRotation, origin, drawScale, SpriteEffects.None, 0);
+     //   spriteBatch.Draw(silkEnd.Value, drawPoint, null, drawColor, drawRotation, origin, drawScale, SpriteEffects.None, 0);
 
         Vector2 drawPoint2 = endPoint - Main.screenPosition;
         drawPoint2 += (startPoint - endPoint).SafeNormalize(Vector2.Zero) * 32;
         float drawRotation2 = (startPoint - endPoint).ToRotation();
-        spriteBatch.Draw(silkEnd.Value, drawPoint2, null, drawColor, drawRotation2, origin, drawScale, SpriteEffects.None, 0);
+  //      spriteBatch.Draw(silkEnd.Value, drawPoint2, null, drawColor, drawRotation2, origin, drawScale, SpriteEffects.None, 0);
     }
     public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
     {

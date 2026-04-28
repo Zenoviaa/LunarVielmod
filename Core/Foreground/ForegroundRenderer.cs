@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace Stellamod.Core.Foreground
 {
@@ -214,10 +215,10 @@ namespace Stellamod.Core.Foreground
             Vector2 drawPosition = Vector2.Zero;
             drawPosition.Y -= yParallax;
             drawPosition.X -= xParallax;
-
+         
 
             Rectangle drawRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-            spriteBatch.Draw(foregroundTexture, drawRectangle, null, Color.White * 1f * layer.fade, 0, Vector2.Zero, SpriteEffects.None, 0);
+            spriteBatch.Draw(foregroundTexture, drawRectangle, null, Color.White * 1f * layer.fade * layer.drawAlpha, 0, Vector2.Zero, SpriteEffects.None, 0);
 
             /*
             Vector2 cameraCenterWorld = Main.Camera.Center;

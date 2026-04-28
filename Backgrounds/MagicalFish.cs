@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Foreground;
 using Terraria;
@@ -44,6 +45,15 @@ public class MagicalFish : ForegroundLayer
 
         parallax.X = 1.5f;
         parallax.Y = 1.5f;
+        if (NPC.AnyNPCs(ModContent.NPCType<Verlia>()))
+        {
+            drawAlpha = MathHelper.Lerp(drawAlpha, 0f, 0.1f);
+        }
+        else
+        {
+            drawAlpha = MathHelper.Lerp(drawAlpha, 1f, 0.1f);
+        }
+
     }
 }
 

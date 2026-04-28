@@ -15,6 +15,8 @@ namespace Stellamod.Assets
 
         public class GlowMask
         {
+            public static Asset<Texture2D> SolarEye;
+            public static Asset<Texture2D> SolarRing;
             public static Asset<Texture2D> Spotlight;
             public static Asset<Texture2D> RomanceGlowSwordMedium;
             public static Asset<Texture2D> RomanceGlowSwordSmall;
@@ -64,6 +66,8 @@ namespace Stellamod.Assets
         public override void OnModLoad()
         {
             base.OnModLoad();
+            GlowMask.SolarEye = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/SolarEye");
+            GlowMask.SolarRing = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/SolarRing");
             GlowMask.ButterflyCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/ButterflyCircle");
             GlowMask.Spotlight = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Spotlight");
             GlowMask.RomanceGlowSwordMedium = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/RomanceGlowSword_Medium");
@@ -107,6 +111,8 @@ namespace Stellamod.Assets
         public override void OnModUnload()
         {
             base.OnModUnload();
+            GlowMask.SolarEye = null;
+            GlowMask.SolarRing = null;
             //Set to null otherwise we'll have a memory leak
             GlowMask.ButterflyCircle = null;
             GlowMask.MagicSwordCircle = null;

@@ -17,6 +17,7 @@
 	<ItemGroup>
 	  <Folder Include="Common\WaypointSystem\UI\" />
 	  <Folder Include="Core\SilkSystem\" />
+	  <Folder Include="Effects\CrystalShaders\Verlia\" />
 	  <Folder Include="Items\Weapons\Melee\Knives\" />
 	  <Folder Include="Items\Weapons\Ranged\Balls\" />
 	</ItemGroup>
