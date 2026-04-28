@@ -280,6 +280,8 @@ public class VerliaBouncingMoon : ModProjectile
     private ref float Direction => ref Projectile.ai[2];
 
     private Vector2 _squishScale;
+    private Vector2 _scale;
+    private Vector2 _targetScale;
     public Vector2 BounceUp1Distance => new Vector2(128, 75);
     public Vector2 BounceUp2Distance => new Vector2(256, 50);
     public Vector2 BounceOutDistance => new Vector2(384, 50);
@@ -310,8 +312,8 @@ public class VerliaBouncingMoon : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 64;
-        Projectile.height = 64;
+        Projectile.width = 100;
+        Projectile.height = 100;
         Projectile.penetrate = -1;
         Projectile.hostile = true;
         Projectile.tileCollide = false;
@@ -336,6 +338,7 @@ public class VerliaBouncingMoon : ModProjectile
         _flashAlpha = MathHelper.Lerp(_flashAlpha, 0f, 0.1f);
 
 
+        _targetScale = Vector2.One;
         switch (State)
         {
             case BounceState.Spawn:
@@ -346,11 +349,14 @@ public class VerliaBouncingMoon : ModProjectile
                 break;
             case BounceState.Bounce_2:
                 AI_Bounce2();
+                _targetScale *= 1.25f;
                 break;
             case BounceState.Bounce_Out:
                 AI_BounceOut();
+                _targetScale *= 1.5f;
                 break;
         }
+        _scale = Vector2.Lerp(_scale, _targetScale, 0.1f);
     }
 
     private void SwitchState(BounceState state)
@@ -481,7 +487,7 @@ public class VerliaBouncingMoon : ModProjectile
         glowDrawer.color = Color.SkyBlue * 0.3f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.7f;
-        glowDrawer.scale *= _squishScale;
+        glowDrawer.scale *= _squishScale * _targetScale;
         Main.spriteBatch.Draw(glowDrawer);
 
 
@@ -490,7 +496,7 @@ public class VerliaBouncingMoon : ModProjectile
         glowDrawer.color.A = 0;
         glowDrawer.scale.X *= 1.2f;
         glowDrawer.scale.Y *= 0.6f;
-        glowDrawer.scale *= _squishScale;
+        glowDrawer.scale *= _squishScale * _targetScale;
         Main.spriteBatch.Draw(glowDrawer);
 
 
@@ -509,7 +515,7 @@ public class VerliaBouncingMoon : ModProjectile
         sb.Restart(effect: scrollingMoonShader.Effect);
         moonSprite.rotation = MathHelper.ToRadians(-12);
         moonSprite.color = Color.Lerp(Color.White, Color.LightSkyBlue, ExtraMath.Osc(0f, 0.3f, speed: 8));
-        moonSprite.scale *= _squishScale;
+        moonSprite.scale *= _squishScale * _targetScale;
         Main.spriteBatch.Draw(moonSprite);
         sb.RestartDefaults();
 
@@ -520,7 +526,7 @@ public class VerliaBouncingMoon : ModProjectile
         glowDrawer.color = Color.SkyBlue * 0.6f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.5f;
-        glowDrawer.scale *= _squishScale;
+        glowDrawer.scale *= _squishScale * _targetScale;
         Main.spriteBatch.Draw(glowDrawer);
 
 
@@ -529,7 +535,7 @@ public class VerliaBouncingMoon : ModProjectile
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 1f;
         glowDrawer.rotation = Main.GlobalTimeWrappedHourly;
-        glowDrawer.scale *= _squishScale;
+        glowDrawer.scale *= _squishScale * _targetScale;
         Main.spriteBatch.Draw(glowDrawer);
 
 
@@ -572,13 +578,13 @@ public class VerliaBouncingMoon : ModProjectile
         _shadowMoonTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Shadow");
         SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureAsset(_shadowMoonTextureAsset, Projectile.Center);
         shadowDrawer.color *= 0.45f;
-        shadowDrawer.scale *= _squishScale;
+        shadowDrawer.scale *= _squishScale * _targetScale;
         Main.spriteBatch.Draw(shadowDrawer);
 
 
         SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineMoonTextureAsset, Projectile.Center);
         outlineDrawer.color = Color.Red;
-        outlineDrawer.scale *= _squishScale;
+        outlineDrawer.scale *= _squishScale * _targetScale;
         Main.spriteBatch.Draw(outlineDrawer);
 
         return false;
