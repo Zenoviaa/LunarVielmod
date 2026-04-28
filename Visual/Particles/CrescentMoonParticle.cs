@@ -82,7 +82,6 @@ public class CrescentMoonParticle : Particle<CrescentMoonParticle>
     {
         var textureAsset = GetTexture();
         Color drawColor = color;
-        drawColor.A = 0;
         spriteBatch.Draw(textureAsset.Value, DrawPosition, Frame, drawColor, Rotation + MathHelper.PiOver2, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
     }
 }

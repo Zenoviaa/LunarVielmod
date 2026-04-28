@@ -108,6 +108,8 @@ public class DustParticle : Particle<DustParticle>
         outerColor = Color.Red;
         Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
         customShader = DustShader.Instance;
+        superFast = false;
+        fast = false;
     }
 
     public override void Update()
