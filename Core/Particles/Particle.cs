@@ -13,6 +13,7 @@ namespace Stellamod.Core.Particles
         private static int _lastIndex;
         private static T[] _pool;
         public const int Max_Particle_Count = 300;
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -23,6 +24,14 @@ namespace Stellamod.Core.Particles
         {
             base.Unload();
             _pool = null;
+        }
+        protected void BounceOnTileCollide()
+        {
+            Vector2 collisionVelocity = Collision.TileCollision(Center, Velocity, 2, 2);
+            if (Velocity.X != collisionVelocity.X)
+                Velocity.X = -collisionVelocity.X;
+            if (Velocity.Y != collisionVelocity.Y)
+                Velocity.Y = -collisionVelocity.Y;
         }
         private static void InitializePool()
         {

@@ -1,87 +1,84 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.Shaders;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
-namespace Stellamod.Core.Particles
+namespace Stellamod.Core.Particles;
+
+/// <summary>
+/// Base class for a particle
+/// </summary>
+public abstract class BaseParticle : ModTexturedType
 {
-    /// <summary>
-    /// Base class for a particle
-    /// </summary>
-    public abstract class BaseParticle : ModTexturedType
+    private Asset<Texture2D> _textureAsset;
+
+
+    private Vector2 _center;
+    public Vector2 Center
     {
-        private Asset<Texture2D> _textureAsset;
-
-
-        private Vector2 _center;
-        public Vector2 Center
+        get
         {
-            get
-            {
-                return _center;
-            }
-            set
-            {
-                _center = value;
-            }
+            return _center;
         }
-
-        public Vector2 DrawPosition
+        set
         {
-            get => drawInUI ? Center : Center - Main.screenPosition;
+            _center = value;
         }
+    }
 
-        public Vector2 Velocity;
-        public float fadeIn;
-        public float Scale;
-        public float Rotation;
-        public bool active;
-        public bool shouldKilledOutScreen = true;
-        public bool isBlack;
-        public Color color;
-        public Rectangle Frame;
-        public ArmorShaderData shader;
-        public BaseShader customShader;
-        public Entity parent;
-        public bool hasParent;
-        public bool drawInUI;
-        public bool behindLayer;
-        public override void Unload()
-        {
-            base.Unload();
-            _textureAsset = null;
-            shader = null;
-            customShader = null;
-            parent = null;
-        }
+    public Vector2 DrawPosition
+    {
+        get => drawInUI ? Center : Center - Main.screenPosition;
+    }
 
-        protected sealed override void Register()
-        {
-            ModTypeLookup<BaseParticle>.Register(this);
-        }
+    public BaseShader customShader;
+    public Entity parent;
+    public Color color;
+    public Rectangle Frame;
+    public Vector2 Velocity;
+    public float fadeIn;
+    public float Scale;
+    public float Rotation;
+    public bool active;
+    public bool shouldKilledOutScreen = true;
+    public bool isBlack;
+    public bool hasParent;
+    public bool drawInUI;
+    public bool behindLayer;
 
-        public sealed override void SetupContent()
-        {
-            base.SetupContent();
-            SetStaticDefaults();
-        }
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
+    public override void Unload()
+    {
+        base.Unload();
+        _textureAsset = null;
+        customShader = null;
+        parent = null;
+    }
 
-        }
+    protected sealed override void Register()
+    {
+        ModTypeLookup<BaseParticle>.Register(this);
+    }
 
-        public Asset<Texture2D> GetTexture()
-        {
-            _textureAsset ??= ModContent.Request<Texture2D>(Texture);
-            return _textureAsset;
-        }
-        public abstract void OnSpawn();
-        public abstract void Update();
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
+    public sealed override void SetupContent()
+    {
+        base.SetupContent();
+        SetStaticDefaults();
+    }
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
 
-        }
+    }
+
+    public Asset<Texture2D> GetTexture()
+    {
+        _textureAsset ??= ModContent.Request<Texture2D>(Texture);
+        return _textureAsset;
+    }
+    public abstract void OnSpawn();
+    public abstract void Update();
+    public virtual void Draw(SpriteBatch spriteBatch)
+    {
+
     }
 }

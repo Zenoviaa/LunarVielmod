@@ -203,6 +203,7 @@ FrostShot.DisplayName: Frost Shot
 FrostShot2.DisplayName: Frost Shot2
 FrostShotIN.DisplayName: Frost Shot I N
 MoonBladeTrail.DisplayName: Moon Blade Trail
+MoonBlade.DisplayName: Moon Blade
 MoonOut.DisplayName: Moon Out
 Notia.DisplayName: Notia
 Sigil.DisplayName: Sigil
@@ -1870,3 +1871,12 @@ ElectricTridentBoom.DisplayName: Electric Trident Boom
 VerliaBouncingMoon.DisplayName: Verlia Bouncing Moon
 VerliaBouncingMoonBoom.DisplayName: Verlia Bouncing Moon Boom
 VerliaBouncingMoonShockwave.DisplayName: Verlia Bouncing Moon Shockwave
+FallingMoonBlade.DisplayName: Falling Moon Blade
+MoonShot.DisplayName: Moon Shot
+MoonSlash.DisplayName: Moon Slash
+MoonSlashHold.DisplayName: Moon Slash Hold
+MoonSnipe.DisplayName: Moon Snipe
+VerliaDesperationMoon.DisplayName: Verlia Desperation Moon
+VerliaDesperationMoonBoom.DisplayName: Verlia Desperation Moon Boom
+VerliaGreatBlade.DisplayName: Verlia Great Blade
+VerliaMiniMoon.DisplayName: Verlia Mini Moon
