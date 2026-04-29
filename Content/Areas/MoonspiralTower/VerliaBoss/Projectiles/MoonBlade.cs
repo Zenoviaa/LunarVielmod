@@ -55,8 +55,8 @@ public class MoonBlade : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 24;
-        Projectile.height = 24;
+        Projectile.width = 16;
+        Projectile.height = 16;
         Projectile.hostile = true;
         Projectile.timeLeft = 600;
         Projectile.penetrate = -1;
@@ -86,7 +86,7 @@ public class MoonBlade : ModProjectile
             _lodged = true;
         }
 
-        return false;
+        return true;
     }
     public override void AI()
     {
