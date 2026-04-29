@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
@@ -100,7 +101,7 @@ public class VerliaBouncingMoon : ModProjectile
 
         _flashAlpha = MathHelper.Lerp(_flashAlpha, 0f, 0.1f);
 
-
+        OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
         _targetScale = Vector2.One;
         switch (State)
         {

@@ -1,18 +1,28 @@
-﻿using Stellamod.Assets;
+﻿using ReLogic.Content;
+using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Palettes;
 using Stellamod.Helpers;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
 
 public class VerliaBouncingMoonShockwave : ModProjectile
 {
+    public int rippleCount = 20;
+    public int rippleSize = 5;
+    public int rippleSpeed = 15;
+    public float distortStrength = 300f;
+
     private float Time => 120f;
     private ref float Timer => ref Projectile.ai[0];
+    private ref float Style => ref Projectile.ai[1];
+    private ref float Bee => ref Projectile.ai[2];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -38,6 +48,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
         Timer++;
         if (Timer == 1)
         {
+            Bee = 120;
             float numDust = 32;
             for (float f = 0; f < numDust; f++)
             {
@@ -78,14 +89,44 @@ public class VerliaBouncingMoonShockwave : ModProjectile
                 SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
                 effectsPlayer.darknessCurve = MathHelper.Lerp(0.5f, 0f, EasingFunction.InExpo(Timer / Time));
             }
-            SoundStyle impactSound = AssetRegistry.Sounds.Verlia.MoonDuoHitGround;
-            SoundEngine.PlaySound(impactSound);
+            if(Style == 0)
+            {
+                SoundStyle impactSound = AssetRegistry.Sounds.Verlia.MoonDuoHitGround;
+                SoundEngine.PlaySound(impactSound);
+            }
+            else if(Style == 1)
+            {
+                SoundStyle impactSound = AssetRegistry.Sounds.Verlia.BigMoonExplosion;
+                SoundEngine.PlaySound(impactSound);
+            } else if(Style == 2)
+            {
+                SoundStyle impactSound = AssetRegistry.Sounds.Verlia.BigSwordHitDown;
+                SoundEngine.PlaySound(impactSound);
+            }
+     
 
             ShakeModSystem.Shake = 16;
             FXUtil.ShakeCamera(Projectile.Center, 2048, 32);
             //     FXUtil.PunchCamera(Projectile.Center, Vector2.UnitY, 32, 2, 32);
         }
 
+        Bee--;
+        if (Style == 1)
+        {
+
+            if (Main.netMode != NetmodeID.Server && !Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+            {
+                Terraria.Graphics.Effects.Filters.Scene.Activate("Shockwave", Projectile.Center).GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(Projectile.Center);
+
+            }
+
+            if (Main.netMode != NetmodeID.Server && Terraria.Graphics.Effects.Filters.Scene["Shockwave"].IsActive())
+            {
+                float progress = (180f - Bee) / 60f; // Will range from -3 to 3, 0 being the point where the bomb explodes.
+                Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseColor(rippleCount, rippleSize, rippleSpeed).UseTargetPosition(Projectile.Center);
+                Terraria.Graphics.Effects.Filters.Scene["Shockwave"].GetShader().UseProgress(progress).UseOpacity(distortStrength * (1 - progress / 3f));
+            }
+        }
     }
     public override bool PreDraw(ref Color lightColor)
     {
@@ -123,6 +164,20 @@ public class VerliaBouncingMoonShockwave : ModProjectile
         glowLineDrawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time));
         glowLineDrawer.color.A = 0;
         Main.spriteBatch.Draw(glowLineDrawer);
+        if(Style == 1)
+        {
+            float outRatio = Timer / Time;
+
+            string path = $"Stellamod/Content/Areas/MoonspiralTower/VerliaBoss/VerlianSigil";
+            Asset<Texture2D> sigilTextureAsset = ModContent.Request<Texture2D>(path);
+
+            SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(sigilTextureAsset, Projectile.Center);
+            waveDrawer.rotation = 0;
+            waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 2f, EasingFunction.InOutSine(outRatio));
+            waveDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.QuadraticBump(outRatio));
+            waveDrawer.color.A = 0;
+            Main.spriteBatch.Draw(waveDrawer);
+        }
         return false;
     }
     public override void OnKill(int timeLeft)

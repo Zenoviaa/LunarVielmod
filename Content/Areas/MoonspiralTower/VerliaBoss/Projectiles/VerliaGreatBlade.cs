@@ -2,6 +2,7 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
@@ -22,6 +23,7 @@ public class VerliaGreatBlade : ModProjectile
         Out
     }
 
+    private float _growthScale;
     private float _stretchAlpha;
     private float _inScale;
     private int _growthIndex;
@@ -74,14 +76,13 @@ public class VerliaGreatBlade : ModProjectile
     }
     private float Fixer => Projectile.extraUpdates + 1;
     private float SwingTime => 60f * Fixer;
-    private float ChargeTime => 100 * Fixer;
+    private float ChargeTime => 240 * Fixer;
     private float OutTime => 30f * Fixer;
     private Vector2 AimingDirection => Projectile.velocity.X > 0 ? Vector2.UnitX : -Vector2.UnitX;
     public override void AI()
     {
         base.AI();
-        ProjectileID.Sets.TrailCacheLength[Type] = 128;
-        ProjectileID.Sets.TrailingMode[Type] = 2;
+
         switch (State)
         {
             case SwingState.Charge:
@@ -94,6 +95,23 @@ public class VerliaGreatBlade : ModProjectile
                 AI_Out();
                 break;
         }
+        float targetScale = 0f;
+        switch (_growthIndex)
+        {
+            case 0:
+                targetScale = 0.3f;
+                break;
+            case 1:
+                targetScale = 0.5f;
+                break;
+            case 2:
+                targetScale = 0.75f;
+                break;
+            case 3:
+                targetScale = 1f;
+                break;
+        }
+        _growthScale = MathHelper.Lerp(_growthScale, targetScale, 0.1f);
         _flashAlpha = MathHelper.Lerp(_flashAlpha, 1f, 0.1f);
     }
 
@@ -104,7 +122,7 @@ public class VerliaGreatBlade : ModProjectile
 
     private void Grow()
     {
-        if (_growthIndex >= 1)
+        if (_growthIndex >= 3)
             return;
 
         _flashAlpha = 0;
@@ -126,15 +144,35 @@ public class VerliaGreatBlade : ModProjectile
         Timer++;
         if (Timer == 1)
         {
+
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Huhhuh"), Projectile.position);
             // SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/StarCharge"), Projectile.position);
         }
-        int growth1 = (int)ChargeTime / 2;
+        int growth1 = (int)ChargeTime / 4;
+        int growth2 = growth1 * 2;
+        int growth3 = growth1 * 3;
         if (Timer == growth1)
         {
+            SoundStyle growSound1 = AssetRegistry.Sounds.Verlia.SwordGrowSmall;
+            growSound1.Pitch = -0.5f;
+            SoundEngine.PlaySound(growSound1, Projectile.position);
+            Grow();
+        }
+        if (Timer == growth2)
+        {
+            SoundStyle growSound1 = AssetRegistry.Sounds.Verlia.SwordGrowSmall;
+            SoundEngine.PlaySound(growSound1, Projectile.position);
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordSheethe"), Projectile.position);
             Grow();
         }
+        if (Timer == growth3)
+        {
+            SoundStyle growSound1 = AssetRegistry.Sounds.Verlia.SwordGrowBigga;
+            SoundEngine.PlaySound(growSound1, Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/SwordSheethe"), Projectile.position);
+            Grow();
+        }
+
 
 
         float rotation = AimingDirection.ToRotation();
@@ -154,12 +192,13 @@ public class VerliaGreatBlade : ModProjectile
 
 
         _inScale = MathHelper.Lerp(0f, 1f, EasingFunction.OutCirc(ratio));
-        float ease = EasingFunction.InOutExpo(ratio);
+        float ease = EasingFunction.InOutCirc(ratio);
         float startRotation = -Vector2.UnitY.ToRotation();
         float endRotation = rotation - MathHelper.ToRadians(208 * AimingDirection.X);
         float interpolatedRotation = Utils.AngleLerp(startRotation, endRotation, ease);
         Projectile.rotation = interpolatedRotation;
         Projectile.Center = Parent.Center;
+
         if (Timer >= ChargeTime + 30)
         {
             SwitchState(SwingState.Swing);
@@ -186,6 +225,13 @@ public class VerliaGreatBlade : ModProjectile
         Projectile.hostile = true;
         _inScale = MathHelper.Lerp(_inScale, 1f, 0.1f);
         Timer++;
+
+
+        if (Timer == 120)
+        {
+            SoundStyle growSound1 = AssetRegistry.Sounds.Verlia.BigSwordSwing;
+            SoundEngine.PlaySound(growSound1);
+        }
         if (Timer % 8 == 0 && Timer > 120)
         {
             Vector2 offset = Projectile.rotation.ToRotationVector2() * MathHelper.Lerp(0, 384f, Main.rand.NextFloat(0f, 1f));
@@ -221,7 +267,7 @@ public class VerliaGreatBlade : ModProjectile
         float interpolatedRotation = MathHelper.Lerp(startRotation, endRotation, ease);
         Projectile.rotation = interpolatedRotation;
         Projectile.Center = Parent.Center;
-        if (Timer >= SwingTime - 120)
+        if (Timer >= SwingTime - 260)
         {
             SwitchState(SwingState.Out);
         }
@@ -257,9 +303,10 @@ public class VerliaGreatBlade : ModProjectile
     private void DrawTrails(GraphicsDevice gDevice)
     {
         Vector2[] swingPos = new Vector2[Projectile.oldRot.Length];
+        float radians = MathHelper.PiOver4 * 0.5f;
         for (int i = 0; i < swingPos.Length; i++)
         {
-            swingPos[i] = Projectile.oldRot[i].ToRotationVector2() * 484 * 2f + Projectile.Center;
+            swingPos[i] = (Projectile.oldRot[i]).ToRotationVector2() * 484 * 2f + Projectile.Center;
         }
 
         RichLaserShader laserShader = RichLaserShader.Instance;
@@ -277,7 +324,7 @@ public class VerliaGreatBlade : ModProjectile
         swingPos = new Vector2[Projectile.oldRot.Length];
         for (int i = 0; i < swingPos.Length; i++)
         {
-            swingPos[i] = Projectile.oldRot[i].ToRotationVector2() * 484 * 1.25f + Projectile.Center;
+            swingPos[i] = (Projectile.oldRot[i]).ToRotationVector2() * 484 * 1.25f + Projectile.Center;
         }
 
         TrailDrawer.Draw(Main.spriteBatch, swingPos, GetTrailColor, GetTrailWidth3, laserShader);
@@ -315,11 +362,17 @@ public class VerliaGreatBlade : ModProjectile
                 bladeAsset = _smallBladeTextureAsset;
                 break;
             case 1:
+                bladeAsset = _smallBladeTextureAsset;
+                break;
+            case 2:
+                bladeAsset = _smallBladeTextureAsset;
+                break;
+            case 3:
                 bladeAsset = _bigBladeTextureAsset;
                 break;
         }
 
-        float scale = 1.5f;
+        float scale = 1.5f * _growthScale;
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(bladeAsset, Projectile.Center);
         sbDrawer.LeftCenterOrigin();
         sbDrawer.rotation = Projectile.rotation;
@@ -371,6 +424,21 @@ public class VerliaGreatBlade : ModProjectile
                 continue;
             Vector2 pos = Projectile.oldRot[i].ToRotationVector2() * 484 + Projectile.Center;
             FXUtil.GlowStretch(pos, (pos - Parent.Center).SafeNormalize(Vector2.Zero) * 8);
+        }
+
+        if (this.OwnedByLocalClient())
+        {
+            float d = 600 * 1.5f;
+            Vector2 position = Projectile.Center + Projectile.rotation.ToRotationVector2() * d * 0.5f;
+            Point tile = position.ToTileCoordinates();
+            tile = TileUtilities.FallToSolidTile(tile);
+            tile.Y -= 5;
+            Vector2 fallPosition = tile.ToWorldCoordinates();
+           // fallPosition.Y -= 48;
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), fallPosition, Vector2.Zero,
+                ModContent.ProjectileType<VerliaBouncingMoonShockwave>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 2);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), fallPosition, Vector2.Zero,
+                ModContent.ProjectileType<VerliaBouncingMoonBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
     }
 }

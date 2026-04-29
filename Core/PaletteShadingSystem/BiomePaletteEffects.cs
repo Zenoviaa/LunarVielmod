@@ -15,6 +15,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PalettePriority Priority => PalettePriority.Medium;
         public override bool IsActive(Player player)
         {
+            
    
             BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
             return myPlayer.ZoneMoonspiralTower;

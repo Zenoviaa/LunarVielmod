@@ -476,6 +476,7 @@ public class Verlia : ScarletBoss,
 {
     private enum AIState
     {
+        Despawn,
         Spawn,
         Idle,
         ReallyIdle,
@@ -658,8 +659,22 @@ public class Verlia : ScarletBoss,
             _teleportPosition = Vector2.Zero;
         }
         _inwardAlpha = MathHelper.Lerp(_inwardAlpha, 0f, 0.1f);
+
+        if (!NPC.HasValidTarget)
+        {
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget)
+            {
+                if(State != AIState.Despawn)
+                    SwitchState(AIState.Despawn);
+            }
+        }
         switch (State)
         {
+            case AIState.Despawn:
+                AI_Despawn();
+                break;
+
             case AIState.Spawn:
                 AI_Spawn();
                 break;
@@ -745,6 +760,18 @@ public class Verlia : ScarletBoss,
         }
     }
 
+    private void AI_Despawn()
+    {
+        Timer++;
+        NPC.velocity.Y -= 1f;
+        FaceTarget();
+        Animator.PlayAnimation(ANIM_EXPLODE);
+        if(Timer >= 90)
+        {
+            NPC.active = false;
+        }
+    }
+
     private void ReallyIdle()
     {
 
@@ -812,7 +839,7 @@ public class Verlia : ScarletBoss,
            
         }
 
-        SwitchState(AIState.Running);
+        SwitchState(AIState.Blue_Magic_Sword);
     }
 
     private void Teleport(Vector2 pos)
@@ -935,8 +962,9 @@ public class Verlia : ScarletBoss,
                 break;
             case 1:
                 {
+                    _warning = true;
                     NPC.velocity *= 0.9f;
-                    CameraTargetSystem.AddTarget(NPC.Center);
+                    //CameraTargetSystem.AddTarget(NPC.Center);
                     Animator.PlayAnimation(ANIM_HOLDUP);
                     if (Animator.IsFinished())
                     {
@@ -947,15 +975,18 @@ public class Verlia : ScarletBoss,
                 break;
             case 2:
                 {
+                    _warning = true;
                     NPC.velocity *= 0.9f;
                     if (Timer == 1)
                     {
                         if (MultiplayerHelper.IsHost)
                         {
-                            Projectile.NewProjectile(SourceFromThis, NPC.Center + -Vector2.UnitY * 100, Vector2.Zero, ModContent.ProjectileType<VerliaDesperationMoon>(), Desperation_Moon_Damage, 1, Main.myPlayer);
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center + -Vector2.UnitY * 384, Vector2.Zero, 
+                                ModContent.ProjectileType<VerliaDesperationMoon>(), Desperation_Moon_Damage, 1, Main.myPlayer);
                         }
                     }
-                    Animator.PlayAnimation(ANIM_PULSE);
+                    FaceTarget();
+                    Animator.PlayAnimation(ANIM_HOLDUP);
                     if (Animator.IsFinished())
                     {
                         Timer = 0;
@@ -965,8 +996,9 @@ public class Verlia : ScarletBoss,
                 break;
             case 3:
                 {
+                    FaceTarget();
                     NPC.velocity *= 0.9f;
-                    Animator.PlayAnimation(ANIM_IDLESUMMON);
+                    Animator.PlayAnimation(ANIM_HOLDUP);
                     if (Timer >= 800)
                     {
                         Timer = 0;
@@ -1323,7 +1355,7 @@ public class Verlia : ScarletBoss,
                     }
                     NPC.velocity *= 0.9f;
                     Animator.PlayAnimation(ANIM_SWORD);
-                    if (Animator.IsFinished() && Timer >= 100)
+                    if (Animator.IsFinished() && Timer >= 240)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -1332,7 +1364,6 @@ public class Verlia : ScarletBoss,
                 break;
             case 2:
                 {
-                    CameraTargetSystem.AddTarget(NPC.Center);
                     if (Timer == 1)
                     {
                         if (MultiplayerHelper.IsHost)

@@ -8,6 +8,7 @@ using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
@@ -15,6 +16,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
 public class VerliaDesperationMoon : ModProjectile
 {
     private ref float Timer => ref Projectile.ai[0];
+    private ref float GrowthCount => ref Projectile.ai[1];
     private float _scale;
     private float _flashAlpha;
     private Asset<Texture2D> _outlineTextureAsset;
@@ -38,16 +40,53 @@ public class VerliaDesperationMoon : ModProjectile
     public override void AI()
     {
         base.AI();
-        Timer++;
-        if(Timer == 1)
+        
+        if(GrowthCount < 3)
         {
-            SoundStyle inSound = new SoundStyle($"Stellamod/Assets/Sounds/StarCharge");
-         //   inSound.PitchVariance = 0.3f;
-            SoundEngine.PlaySound(inSound, Projectile.position);
+            Timer++;
+            if(Timer == 1)
+            {
+                if(GrowthCount == 0)
+                {
+                    SoundStyle e = new SoundStyle($"Stellamod/Assets/Sounds/StarCharge");
+                    SoundEngine.PlaySound(e, Projectile.position);
+                }
+
+                if(Main.netMode != NetmodeID.Server)
+                {
+                    ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                    shaderSystem.TintScreen(Color.LightBlue, 0.2f, 15);
+                }
+                SoundStyle inSound = AssetRegistry.Sounds.Verlia.BigMoonGrow;
+                inSound.Pitch = MathHelper.Lerp(0f, 1f, (GrowthCount + 1f) / 3f);
+                SoundEngine.PlaySound(inSound, Projectile.position);
+                _flashAlpha = 1f;
+            }
+
+            if(Timer % 12 == 0)
+            {
+                float range = Main.rand.NextFloat(192, 384);
+                Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(range, range);
+                Vector2 vel = (Projectile.Center - pos);
+                vel *= 0.1f;
+                FXUtil.GlowStretch(pos, vel);
+            }
+            float maxScale = MathHelper.Lerp(0f, 1f, (GrowthCount+1) / 3f);
+            _scale = MathHelper.Lerp(_scale, maxScale, 0.1f);
+            _flashAlpha = MathHelper.Lerp(_flashAlpha, 0f, 0.1f);
+            if (Timer >= 90)
+            {
+                Timer = 0;
+                GrowthCount++;
+            }
+            return;
+
         }
-        if (Timer >= 60 && Timer < 600)
+        Timer++;
+
+        if (Timer >= 60 && Timer < 500)
         {
-            int divisor = (int)MathHelper.Lerp(30, 10, EasingFunction.InOutSine(Timer / 400));
+            int divisor = (int)MathHelper.Lerp(40, 20, EasingFunction.InOutSine(Timer / 400));
             if (Timer % divisor == 0)
             {
                 _flashAlpha = 1f;
@@ -59,8 +98,8 @@ public class VerliaDesperationMoon : ModProjectile
                         Vector2 velocity = player.Center - Projectile.Center;
                         velocity = velocity.SafeNormalize(Vector2.Zero);
 
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + velocity * 192, velocity * 15,
-                            ModContent.ProjectileType<MoonSnipe>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + velocity * 192, velocity * 1400,
+                            ModContent.ProjectileType<MoonBlast>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     }
 
                 }
@@ -68,16 +107,16 @@ public class VerliaDesperationMoon : ModProjectile
         }
         else if (Timer > 600)
         {
-            CameraTargetSystem.AddTarget(Projectile.Center);
+       //     CameraTargetSystem.AddTarget(Projectile.Center);
             ShakeModSystem.Shake = 2;
             Projectile.tileCollide = true;
             if (Projectile.velocity.Y < 5)
             {
                 Projectile.velocity.Y += 0.2f;
             }
-            _flashAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine((Timer - 600f) / 60f));
+          //  _flashAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine((Timer - 600f) / 60f));
         }
-        _scale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60f));
+        _scale = MathHelper.Lerp(_scale, 1f, 0.1f);
         _flashAlpha = MathHelper.Lerp(_flashAlpha, 0f, 0.1f);
     }
     private void DrawPixelatedMoon(SpriteBatch sb, Vector2 screenPos)
@@ -118,7 +157,7 @@ public class VerliaDesperationMoon : ModProjectile
         //Draw the moon itself
         sb.Restart(effect: scrollingMoonShader.Effect);
         moonSprite.rotation = MathHelper.ToRadians(-12);
-        moonSprite.color = Color.Lerp(Color.White, Color.LightSkyBlue, ExtraMath.Osc(0f, 0.3f, speed: 8));
+        moonSprite.color = Color.Lerp(Color.White, Color.DarkBlue, 0.5f);
         moonSprite.scale *= scale;
         Main.spriteBatch.Draw(moonSprite);
         sb.RestartDefaults();
@@ -131,7 +170,7 @@ public class VerliaDesperationMoon : ModProjectile
         glowDrawer.scale *= scale * 3f;
         Main.spriteBatch.Draw(glowDrawer);
 
-
+        moonSprite.scale = scale;
         moonSprite.color = Color.Lerp(Color.Transparent, Color.White, _flashAlpha);
         Main.spriteBatch.Draw(moonSprite);
     }
@@ -144,6 +183,7 @@ public class VerliaDesperationMoon : ModProjectile
 
         SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureAsset(_shadowMoonTextureAsset, Projectile.Center);
         shadowDrawer.color *= 0.45f;
+        shadowDrawer.scale *= scale;
         Main.spriteBatch.Draw(shadowDrawer);
 
         SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineTextureAsset, Projectile.Center);
@@ -167,7 +207,7 @@ public class VerliaDesperationMoon : ModProjectile
             }
 
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<VerliaBouncingMoonShockwave>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                ModContent.ProjectileType<VerliaBouncingMoonShockwave>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<VerliaBouncingMoonBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
@@ -184,5 +224,6 @@ public class VerliaDesperationMoon : ModProjectile
             dp.noTileCollide = true;
             dp.dampening = 0.05f;
         }
+        FXUtil.PunchCamera(Projectile.Center, Vector2.UnitY, 32, 2, 32);
     }
 }
