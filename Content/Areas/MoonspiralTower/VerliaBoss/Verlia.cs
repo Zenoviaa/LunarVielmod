@@ -1368,15 +1368,21 @@ public class VerliaBouncingMoon : ModProjectile
     }
 }
 
-public class VerliaClone : ModNPC
+public class VerliaClone : ModNPC,
+    IDrawOutlines
 {
+    private Color _outlineColor;
+    private bool _warning;
+    private bool _attacking;
 
+    private Vector2 _startVelocity;
+    private float _dir;
     public string RootTexture => ModContent.GetInstance<Verlia>().Texture;
     public override string Texture => TextureRegistry.EmptyTexture;
     private enum AIState
     {
         Idle,
-        Dash_Slash_Copy
+        Moon_Slash_Copy
     }
 
     private ref float Timer => ref NPC.ai[0];
@@ -1385,15 +1391,38 @@ public class VerliaClone : ModNPC
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
     }
+    private ref float AttackCycle => ref NPC.ai[2];
     private Animator _animatorBackingField;
     private Animator Animator
     {
         get
         {
             if (_animatorBackingField == null)
+            {
+
                 _animatorBackingField = ModContent.GetInstance<Verlia>().CreateAnimator();
+                _animatorBackingField.PlayAnimation(Verlia.ANIM_UNSUMMON);
+            }
             return _animatorBackingField;
         }
+    }
+    private Player MyTarget => Main.player[NPC.target];
+    private int Moon_Slash_Damage => 50;
+
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.WriteVector2(_startVelocity);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _startVelocity = reader.ReadVector2();
+    }
+
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return false;
     }
 
     public override void SetStaticDefaults()
@@ -1431,14 +1460,185 @@ public class VerliaClone : ModNPC
     public override void AI()
     {
         base.AI();
+        _attacking = false;
+        _warning = false;
+        switch (State)
+        {
+            case AIState.Moon_Slash_Copy:
+                AI_MoonSlashCopy();
+                break;
+        }
+        if (_attacking)
+        {
+            _outlineColor = Color.Lerp(_outlineColor, Color.Red, 0.1f);
+        }
+        else if (_warning)
+        {
+            _outlineColor = Color.Lerp(_outlineColor, Color.Yellow, 0.1f);
+        }
+        else
+        {
+            _outlineColor = Color.Lerp(_outlineColor, Color.Transparent, 0.1f);
+        }
+    }
+    private void FaceTarget()
+    {
+        NPC.spriteDirection = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
+    }
+    private void AI_MoonSlashCopy()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        _startVelocity = NPC.velocity;
+                        _dir = Main.rand.NextBool(2) ? -1 : 1;
+                    }
+
+                    float time = 60;
+                    float ratio = Timer / time;
+                    float ease = EasingFunction.InOutSine(ratio);
+                    Vector2 pos = MyTarget.Center + Vector2.UnitX * _dir * 128;
+                    Vector2 targetVelocity = (pos - NPC.Center);
+                    NPC.velocity = Vector2.Lerp(_startVelocity, targetVelocity, ease);
+                    FaceTarget();
+                    Animator.PlayAnimation(Verlia.ANIM_TELEPORTIN);
+                    if (Animator.IsFinished() && Timer >= time) 
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                //    CameraTargetSystem.AddTarget(NPC.Center);
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        _startVelocity = NPC.velocity;
+
+                    }
+
+                    FaceTarget();
+
+                    if(Timer < 90f)
+                    {
+                        float ratio = Timer / 90f;
+                        float ease = EasingFunction.InOutExpo(ratio);
+                        Vector2 inverseDir = MyTarget.Center.X > NPC.Center.X ? -Vector2.UnitX : Vector2.UnitX;
+                        Vector2 targetPosition = MyTarget.Center + inverseDir * 128;
+                        Vector2 targetVelocity = targetPosition - NPC.Center;
+                        Vector2 interpolatedVelocity = Vector2.Lerp(_startVelocity, targetVelocity, ease);
+                        NPC.velocity = interpolatedVelocity;
+                    }
+                    else
+                    {
+                        NPC.velocity *= 0.9f;
+                    }
+           
+
+                    _warning = true;
+                    Animator.PlayAnimation(Verlia.ANIM_SWORD);
+                    if (Animator.IsFinished() && Timer > 140)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    if (Timer == 1)
+                    {
+                        Vector2 dir2 = MyTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
+                        NPC.velocity = dir2;
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            float dir = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
+                            Vector2 velocity = Vector2.UnitX * dir;
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, velocity, ModContent.ProjectileType<MoonSlash>(), Moon_Slash_Damage, 1, Main.myPlayer);
+                        }
+
+                        FXUtil.ShakeCamera(NPC.Center, 1024, 16);
+                    }
+                    if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
+                    {
+                        SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
+                        effectsPlayer.darknessCurve = MathHelper.Lerp(0.75f, 0f, EasingFunction.InExpo(Timer / 30f));
+                    }
+                    if (NPC.velocity.Length() < 25)
+                        NPC.velocity *= 1.5f;
+
+                    _attacking = true;
+                    Animator.PlayAnimation(Verlia.ANIM_SWORDSLASH);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                        NPC.active = false;
+                    }
+                }
+                break;
+        }
     }
     public override void OnHitNPC(NPC target, NPC.HitInfo hit)
     {
         base.OnHitNPC(target, hit);
     }
+
+    public override void FindFrame(int frameHeight)
+    {
+        base.FindFrame(frameHeight);
+        Animator.Update();
+        NPC.frame.Y = Animator.GetFrameY(184);
+        NPC.frame.Height = 184;
+        NPC.frame.Width = 266;
+    }
+
+    private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        string path = $"{ModContent.GetInstance<Verlia>().Texture}_{Animator.GetAnimation()}";
+
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromNPC(NPC);
+        drawer.texture = ModContent.Request<Texture2D>(path).Value;
+     
+        drawer.sourceRect = NPC.frame;
+        drawer.drawOrigin = Animator.GetDrawOrigin().Value;
+        if (NPC.spriteDirection == -1)
+            drawer.drawOrigin.X = NPC.frame.Size().X - drawer.drawOrigin.X;
+        drawer.color = drawColor * ExtraMath.Osc(0.25f, 0.75f, speed: 12, offset: NPC.whoAmI);
+        drawer.worldPosition += screenPos;
+        spriteBatch.Draw(drawer);
+    }
+
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        return base.PreDraw(spriteBatch, screenPos, drawColor);
+        if (!Animator.GetDrawOrigin().HasValue)
+            return false;
+        DrawSprite(spriteBatch, Vector2.Zero, drawColor);
+        return false;
+    }
+
+    public override void OnKill()
+    {
+        base.OnKill();
+    }
+
+    public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+    {
+        Vector2 v = Vector2.UnitX * 2;
+        Vector2 h = Vector2.UnitY * 2;
+
+        DrawSprite(spriteBatch, v, _outlineColor);
+        DrawSprite(spriteBatch, -v, _outlineColor);
+        DrawSprite(spriteBatch, h, _outlineColor);
+        DrawSprite(spriteBatch, -h, _outlineColor);
+        //      throw new System.NotImplementedException();
     }
 }
 
@@ -1545,6 +1745,10 @@ public class FallingMoonBlade : ModProjectile
     {
         base.AI();
     }
+    public override bool OnTileCollide(Vector2 oldVelocity)
+    {
+        return base.OnTileCollide(oldVelocity);
+    }
     public override bool PreDraw(ref Color lightColor)
     {
         _outlineTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Outline");
@@ -1557,7 +1761,16 @@ public class FallingMoonBlade : ModProjectile
 }
 public class MoonBlade : ModProjectile
 {
+    private bool _lodged;
+    private float _randScale;
+    private float _rotOffset;
+    private Vector2 _pullOffset;
+    private Vector2 _startPullOffset;
+    private Vector2 _scale;
+    private Vector2 _outScale;
+    private Vector2 _initialVelocity;
     private Asset<Texture2D> _outlineTextureAsset;
+    private ref float Timer => ref Projectile.ai[0];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -1567,23 +1780,147 @@ public class MoonBlade : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 16;
-        Projectile.height = 16;
+        Projectile.width = 24;
+        Projectile.height = 24;
         Projectile.hostile = true;
-        Projectile.timeLeft = 120;
+        Projectile.timeLeft = 600;
         Projectile.penetrate = -1;
         Projectile.ignoreWater = true;
-        Projectile.tileCollide = false;
+        Projectile.tileCollide = true;
     }
 
+    public override bool OnTileCollide(Vector2 oldVelocity)
+    {
+        if (!_lodged)
+        {
+            float numDust = 8;
+            for(float n = 0; n < numDust; n++)
+            {
+                Vector2 vel = -oldVelocity;
+                vel = vel.RotatedByRandom(MathHelper.ToRadians(60));
+                vel = vel.SafeNormalize(Vector2.Zero);
+                vel *= Main.rand.NextFloat(6, 12f);
+                DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                spawnParams.outerColor = Color.Blue;
+                var dp = DustParticle.Spawn(Projectile.Center, vel, spawnParams);
+                dp.fast = true;
+                dp.noTileCollide = true;
+                dp.dampening = 0.05f;
+            }
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+            _lodged = true;
+        }
+        
+        return false;
+    }
     public override void AI()
     {
         base.AI();
+        _outScale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.InOutSine((float)Projectile.timeLeft / 30f));
+        if (_lodged)
+        {
+            Projectile.extraUpdates = 0;
+            Projectile.velocity *= 0f;
+            return;
+        }
+        Timer++;
+        if(Timer == 1)
+        {
+            if (this.OwnedByLocalClient())
+            {
+                float dist = Main.rand.NextFloat(140, 400);
+                float dir = Main.rand.NextBool(2) ? -1 : 1;
+                _startPullOffset = Vector2.UnitX * dist * dir;//Vector2.Lerp(-Vector2.UnitX * 128, Vector2.UnitX * 128, Main.rand.NextFloat(0f,
+                _randScale = Main.rand.NextFloat(0.66f, 1.5f);
+                Projectile.netUpdate = true;
+            }
+            _initialVelocity = Projectile.velocity;
+            //MoonSpiralParticle.Spawn(Projectile.Center, Vector2.Zero);
+        }
+
+        if(Timer < 70f)
+        {
+            _pullOffset = Vector2.Lerp(_startPullOffset, Vector2.Zero, EasingFunction.InOutSine(Timer / 70f));
+            _rotOffset = MathHelper.Lerp(MathHelper.TwoPi * 2, 0, EasingFunction.OutExpo(Timer / 70f));
+            if(Projectile.velocity.Length() > 0.2f)
+                Projectile.velocity *= 0.2f;
+        } else if (Timer == 71)
+        {
+            Projectile.velocity = _initialVelocity * 0.5f;
+        }
+        else
+        {
+            if(Projectile.velocity.Length() < _initialVelocity.Length())
+            {
+                Projectile.velocity *= 1.1f;
+                if(Projectile.velocity.Length() >= _initialVelocity.Length())
+                {
+                    LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity);
+                }
+            }
+            else
+            {
+                if (Timer % 24 == 0)
+                {
+                    var sp = FaintSmokeParticle.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(32, 32), Main.rand.NextVector2Circular(2, 2));
+                    sp.Scale *= Main.rand.NextFloat(0.125f, 0.25f);
+                    sp.behindLayer = true;
+                    sp.noShrink = true;
+                    sp.fadeToColor = Color.Black;
+                    sp.color = Color.Lerp(Color.Blue, Color.Black, 0.75f);
+
+                }
+                Projectile.extraUpdates = 2;
+            }
+        }
+        float ratio = Timer / 60f;
+        float ease = EasingFunction.OutExpo(ratio);
+        _scale = Vector2.Lerp(Vector2.Zero, new Vector2(1f, 0.46f), ease);
+        Projectile.rotation = Projectile.velocity.ToRotation()  +_rotOffset;
+    }
+    private void DrawPixelatedSwords(SpriteBatch sb, Vector2 screenPos)
+    {
+        _outlineTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Outline");
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        sbDrawer.color = Color.Lerp(Color.Blue, Color.DarkBlue, ExtraMath.Osc(0f, 1f, 0, Projectile.whoAmI));
+        sbDrawer.color.A = 0;
+        sbDrawer.scale *= _scale * _outScale * _randScale;
+        sbDrawer.worldPosition += _pullOffset;
+        Main.spriteBatch.Draw(sbDrawer);
+        for (int i = 0; i < Projectile.oldPos.Length; i++)
+        {
+            Vector2 pos = Projectile.oldPos[i] + Projectile.Size * 0.5f;
+            sbDrawer.worldPosition = pos;
+            float ratio = (float)i / (float)Projectile.oldPos.Length;
+            sbDrawer.color = Color.Lerp(Color.Blue, Color.DarkBlue, ratio);
+            sbDrawer.color *= MathHelper.SmoothStep(1f, 0f, EasingFunction.OutExpo(ratio));
+            sbDrawer.color.A = 0;
+            //   sbDrawer.scale *= _scale;
+            sbDrawer.worldPosition += _pullOffset;
+            Main.spriteBatch.Draw(sbDrawer);
+        }
+        sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        sbDrawer.color = Color.White * ExtraMath.Osc(0.35f, 0.6f, speed: 6, Projectile.whoAmI);
+        sbDrawer.color.A = 0;
+        sbDrawer.scale *= _scale * _outScale * _randScale;
+        sbDrawer.scale *= 0.9f;
+        sbDrawer.worldPosition += _pullOffset;
+        Main.spriteBatch.Draw(sbDrawer);
+
+        sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        sbDrawer.scale *= _scale * _outScale * _randScale;
+        sbDrawer.color = Color.White * ExtraMath.Osc(0f, 1f, speed: 12, offset: Projectile.whoAmI);
+        sbDrawer.color.A = 0;
+        sbDrawer.texture = _outlineTextureAsset.Value;
+        sbDrawer.worldPosition += _pullOffset;
+        Main.spriteBatch.Draw(sbDrawer);
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        _outlineTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Outline");
-        return base.PreDraw(ref lightColor);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSwords);
+
+        //Main.spriteBatch.Draw(sbDrawer);
+        return false;
     }
     public override void OnKill(int timeLeft)
     {
@@ -1864,8 +2201,11 @@ public class Verlia : ScarletBoss,
     private bool _warning;
     private bool _attacking;
     private bool _showTrail;
+    private bool _bladeDanceV2;
+    private bool _contactDamage;
     private float _trailAlpha;
     private Vector2 _startVelocity;
+    private Vector2 _runningVelocity;
     private Vector2 _teleportPosition;
     private PatternManager<AIState> _patternManager;
     private PatternManager<AIState> PatternManager
@@ -1902,30 +2242,34 @@ public class Verlia : ScarletBoss,
     }
 
     private ref float AttackCycle => ref NPC.ai[2];
+    private ref float AttackCounter => ref NPC.ai[3];
 
     private int Twin_Bouncing_Moon_Damage => 50;
 
     private int Mini_Moon_Damage => 20;
     private int Moon_Slash_Damage => 35;
     private int Moon_Shot_Damage => 20;
+    private int Moon_Blade_damage = 30;
     private int Great_Blade_Damage => 50;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
         writer.WriteVector2(_teleportPosition);
         writer.WriteVector2(_startVelocity);
+        writer.WriteVector2(_runningVelocity);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
         _teleportPosition = reader.ReadVector2();
         _startVelocity = reader.ReadVector2();
+        _runningVelocity = reader.ReadVector2();
     }
 
     #region Defaults
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
-        return false;
+        return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
     }
 
     public override void SetStaticDefaults()
@@ -1943,7 +2287,7 @@ public class Verlia : ScarletBoss,
         base.SetDefaults();
         NPC.width = 32;
         NPC.height = 64;
-        NPC.damage = 1;
+        NPC.damage = 50;
         NPC.defense = 15;
         NPC.lifeMax = 6750;
         NPC.HitSound = SoundID.NPCHit1;
@@ -1980,7 +2324,9 @@ public class Verlia : ScarletBoss,
         _showTrail = false;
         _attacking = false;
         _warning = false;
-        if(_teleportPosition != Vector2.Zero)
+        _bladeDanceV2 = false;
+        _contactDamage = false;
+        if (_teleportPosition != Vector2.Zero)
         {
             NPC.Center = _teleportPosition;
             _teleportPosition = Vector2.Zero;
@@ -2010,6 +2356,23 @@ public class Verlia : ScarletBoss,
             case AIState.Blue_Magic_Sword:
                 AI_BlueMagicSword();
                 break;
+
+            case AIState.Blade_Dance_V2:
+                _bladeDanceV2 = true;
+                AI_BladeDance();
+                break;
+
+            case AIState.Clone_Summon:
+                AI_CloneSummon();
+                break;
+
+            case AIState.Running:
+                AI_Running();
+                break;
+
+            case AIState.Sword_Fall:
+                AI_SwordFall();
+                break;
         }
 
 
@@ -2031,6 +2394,7 @@ public class Verlia : ScarletBoss,
     {
         if (MultiplayerHelper.IsHost)
         {
+            AttackCounter = 0;
             AttackCycle = 0;
             Timer = 0;
             State = state;
@@ -2044,7 +2408,7 @@ public class Verlia : ScarletBoss,
         {
             SwitchState(PatternManager.NextPattern());
         }
-        SwitchState(AIState.Blue_Magic_Sword);
+        SwitchState(AIState.Sword_Fall);
     }
 
     private void Teleport(Vector2 pos)
@@ -2055,20 +2419,20 @@ public class Verlia : ScarletBoss,
             NPC.netUpdate = true;
         }
     }
+    
     private void FaceTarget()
     {
         NPC.spriteDirection = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
     }
 
-
-    private void TeleportsBehindYou()
+    private void TeleportsBehindYou(float dist = 64)
     {
         if (Timer == 1)
         {
             NPC.TargetClosest();
             _startVelocity = NPC.velocity;
             float dir = Main.rand.NextBool(2) ? -1 : 1;
-            Teleport(MyTarget.Center + dir * Vector2.UnitX * 64);
+            Teleport(MyTarget.Center + dir * Vector2.UnitX * dist);
         }
 
         NPC.velocity = Vector2.Zero;
@@ -2078,6 +2442,248 @@ public class Verlia : ScarletBoss,
         {
             Timer = 0;
             AttackCycle++;
+        }
+    }
+
+    private void TeleportsAboveYou()
+    {
+        if (Timer == 1)
+        {
+            NPC.TargetClosest();
+            _startVelocity = NPC.velocity;
+            float dir = Main.rand.NextBool(2) ? -1 : 1;
+            Teleport(MyTarget.Center + -Vector2.UnitY * 100);
+        }
+
+        NPC.velocity = Vector2.Zero;
+        FaceTarget();
+        Animator.PlayAnimation(ANIM_TELEPORTIN);
+        if (Animator.IsFinished())
+        {
+            Timer = 0;
+            AttackCycle++;
+        }
+    }
+
+    private void AI_SwordFall()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    _warning = true;
+                    TeleportsAboveYou();
+                }
+                break;
+            case 1:
+                {
+                    FaceTarget();
+                    _warning = true;
+                    if(Timer % 5 == 0)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Vector2 pos = NPC.Center;
+                            pos.X += Main.rand.NextFloat(-256, 256);
+                            pos.Y -= 256;
+                            Vector2 vel = (NPC.Center - pos);
+                            vel = vel.SafeNormalize(Vector2.Zero);
+                            vel *= 15;
+                            Projectile.NewProjectile(SourceFromThis, pos, vel, ModContent.ProjectileType<MoonBlade>(), Moon_Blade_damage, 1, Main.myPlayer);
+                        }
+                    }
+                    Animator.PlayAnimation(ANIM_HOLDUP);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    ExplodeOut();
+                }
+                break;
+        }
+    }
+
+    private void ExplodeOut()
+    {
+        NPC.velocity *= 0.9f;
+        Animator.PlayAnimation(ANIM_EXPLODE);
+        if (Animator.IsFinished())
+        {
+            SwitchState(AIState.Idle);
+        }
+    }
+
+    private void AI_Running()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    _warning = true;
+                    TeleportsBehindYou(256);
+                }
+                break;
+            case 1:
+                {
+                    FaceTarget();
+                    _warning = true;
+                    Animator.PlayAnimation(ANIM_READYDASH);
+                    if (Animator.IsFinished() && Timer >= 90f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    _contactDamage = true;
+                    if (Timer == 1)
+                    {
+                        _startVelocity = NPC.velocity;
+                        _runningVelocity = MyTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
+                        _runningVelocity *= 20;
+                        FaceTarget();
+                    }
+                    DustTrailEffects();
+
+                    _runningVelocity *= 1.02f;
+                    float time = 30;
+                    float ratio = Timer / time;
+                    float ease = EasingFunction.InOutSine(ratio);
+                    NPC.velocity = Vector2.Lerp(_startVelocity, _runningVelocity, ease);
+                    _attacking = true;
+                    _showTrail = true;
+                    Animator.PlayAnimation(ANIM_RUN);
+                    if(Timer >= 45)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+
+                    if(AttackCounter < 7)
+                    {
+                        var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue);
+                        fx.Scale *= 2;
+                        float numDust = 16;
+                        for(float n = 0; n < numDust; n++)
+                        {
+                            Vector2 vel = Main.rand.NextVector2Circular(16, 16);
+                            DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                            spawnParams.outerColor = Color.Blue;
+                            var dp = DustParticle.Spawn(NPC.Center, vel, spawnParams);
+                            dp.gravity = 0;
+                            dp.dampening = 0.05f;
+                            dp.noTileCollide = true;
+                        }
+
+                        NPC.velocity *= 0.9f;
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            _startVelocity = NPC.velocity;
+                            float dir = _runningVelocity.X > 0 ? 1 : -1;
+                            Teleport(MyTarget.Center + dir * Vector2.UnitX * 256);
+                        }
+
+                        Timer = 0;
+                        AttackCycle--;
+                        AttackCounter++;
+                    }
+                    else
+                    {
+                        NPC.velocity *= 0.9f;
+                        Animator.PlayAnimation(ANIM_EXPLODE);
+                        if (Animator.IsFinished())
+                        {
+                            SwitchState(AIState.Idle);
+                        }
+                    }
+                
+
+                }
+                break;
+
+        }
+    }
+
+    private void AI_CloneSummon()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    _warning = true;
+                    TeleportsAboveYou();
+                }
+                break;
+            case 1:
+                {
+                    _warning = true;
+                    if (Timer == 1 || Timer == 30 || Timer == 60 || Timer == 90 || Timer == 120)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Vector2 spawnPos = NPC.Center;
+                            NPC.NewNPC(SourceFromThis, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<VerliaClone>(), ai1: 1);
+                           // Vector2 forwardVector = MyTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
+                           // Projectile.NewProjectile(SourceFromThis, NPC.Center, forwardVector, ModContent.ProjectileType<VerliaGreatBlade>(), Great_Blade_Damage, 1, Main.myPlayer, ai2: NPC.whoAmI);
+                        }
+                    }
+                    NPC.velocity *= 0.9f;
+                    Animator.PlayAnimation(ANIM_HOLDUP);
+                    if (Animator.IsFinished() && Timer >= 100)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    NPC.velocity *= 0.9f;
+                    Animator.PlayAnimation(ANIM_EXPLODE);
+                    if (Animator.IsFinished())
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
+    }
+    private void DustTrailEffects()
+    {
+        if (Timer % 12 == 0)
+        {
+            var sp = MoonSpiralParticle.Spawn(NPC.Center, Main.rand.NextVector2Circular(2, 2));
+            sp.Scale *= Main.rand.NextFloat(0.5f, 1f);
+        }
+        if (Timer % 6 == 0)
+        {
+            var sp = SparkleParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(32, 32), Main.rand.NextVector2Circular(2, 2));
+            sp.Scale *= Main.rand.NextFloat(0.5f, 1f);
+            sp.flickering = true;
+            sp.gravity = 0;
+        }
+        if (Timer % 4 == 0)
+        {
+            var sp = FaintSmokeParticle.SpawnInAlphaLayer(NPC.Center + Main.rand.NextVector2Circular(32, 32), Main.rand.NextVector2Circular(2, 2));
+            sp.Scale *= Main.rand.NextFloat(0.5f, 0.75f);
+            sp.behindLayer = true;
+            sp.noShrink = true;
+            sp.fadeToColor = Color.Black;
+            sp.color = Color.Lerp(Color.Blue, Color.Black, 0.75f);
         }
     }
     private void AI_BlueMagicSword()
@@ -2280,8 +2886,15 @@ public class Verlia : ScarletBoss,
                     Animator.PlayAnimation(ANIM_DOWN);
                     if (Animator.IsFinished())
                     {
-                        Timer = 0;
-                        AttackCycle++;
+                        if (_bladeDanceV2)
+                        {
+                            SwitchState(AIState.Blue_Magic_Sword);
+                        }
+                        else
+                        {
+                            Timer = 0;
+                            AttackCycle++;
+                        }     
                     }
                 }
                 break;
@@ -2360,27 +2973,7 @@ public class Verlia : ScarletBoss,
                     {
                         _startVelocity = NPC.velocity;
                     }
-                    if(Timer % 12 == 0)
-                    {
-                        var sp = MoonSpiralParticle.Spawn(NPC.Center, Main.rand.NextVector2Circular(2, 2));
-                        sp.Scale *= Main.rand.NextFloat(0.5f, 1f);
-                    }
-                    if (Timer % 6 == 0)
-                    {
-                        var sp = SparkleParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(32, 32), Main.rand.NextVector2Circular(2, 2));
-                        sp.Scale *= Main.rand.NextFloat(0.5f, 1f);
-                        sp.flickering = true;
-                        sp.gravity = 0;
-                    }
-                    if (Timer % 4 == 0)
-                    {
-                        var sp = FaintSmokeParticle.SpawnInAlphaLayer(NPC.Center + Main.rand.NextVector2Circular(32, 32), Main.rand.NextVector2Circular(2, 2));
-                        sp.Scale *= Main.rand.NextFloat(0.5f, 0.75f);
-                        sp.behindLayer = true;
-                        sp.noShrink = true;
-                        sp.fadeToColor = Color.Black;
-                        sp.color = Color.Lerp(Color.Blue, Color.Black, 0.75f);
-                    }
+                    DustTrailEffects();
 
                     if(Timer > 60 && Timer % 25 == 0)
                     {
@@ -2578,10 +3171,10 @@ public class Verlia : ScarletBoss,
         var foundYou = new SpriteAnimation(0, 4, isLooping: false, drawOrigin);
         animator.AddAnimation(ANIM_TELEPORTIN, foundYou);
 
-        var holding = new SpriteAnimation(0, 8, isLooping: true, drawOrigin);
+        var holding = new SpriteAnimation(0, 8, isLooping: true, drawOrigin, frameSpeed: 0.3f);
         animator.AddAnimation(ANIM_RUN, holding);
 
-        var bigSlash = new SpriteAnimation(0, 7, isLooping: false, drawOrigin, frameSpeed: 0.5f);
+        var bigSlash = new SpriteAnimation(0, 7, isLooping: false, drawOrigin, frameSpeed: 0.25f);
         animator.AddAnimation(ANIM_READYDASH, bigSlash);
 
         var running = new SpriteAnimation(0, 0, isLooping: true, drawOrigin, frameSpeed: 0.35f);
