@@ -2472,7 +2472,14 @@ public class Verlia : ScarletBoss,
         {
             _patternManager ??= new PatternManager<AIState>(
                 new Tuple<AIState, float>(AIState.Two_Bouncing_Moons, 1.0f),
-                new Tuple<AIState, float>(AIState.Spining_Little_Moons, 1.0f));
+                new Tuple<AIState, float>(AIState.Spining_Little_Moons, 1.0f),
+                new Tuple<AIState, float>(AIState.Blue_Magic_Sword, 1.0f),
+                new Tuple<AIState, float>(AIState.Clone_Summon, 1.0f),
+                new Tuple<AIState, float>(AIState.Blade_Dance, 1.0f),
+                new Tuple<AIState, float>(AIState.Blade_Dance_V2, 1.0f),
+                new Tuple<AIState, float>(AIState.Desperation_Big_Moon, 1.0f),
+                new Tuple<AIState, float>(AIState.Running, 1.0f),
+                new Tuple<AIState, float>(AIState.Sword_Fall, 1.0f));
             return _patternManager;
         }
     }
@@ -2665,13 +2672,49 @@ public class Verlia : ScarletBoss,
         }
     }
 
+    private bool IsBlacklisted(AIState state)
+    {
+        if (_phase2)
+        {
+            switch (state)
+            {
+                case AIState.Blade_Dance:
+                case AIState.Clone_Summon:
+                    return true;
+            }
+        }
+        else
+        {
+            switch (state)
+            {
+                case AIState.Desperation_Big_Moon:
+                case AIState.Blade_Dance_V2:
+                case AIState.Sword_Fall:
+                    return true;
+            }
+        }
+        return false;
+    }
     private void ChooseAttack()
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(PatternManager.NextPattern());
+            AIState state;
+            if (!_phase2 && NPC.life < NPC.lifeMax * 0.5f)
+            {
+                state = AIState.Desperation_Big_Moon;
+            }
+            else
+            {
+                state = PatternManager.NextPattern();
+                while(IsBlacklisted(state))
+                    state = PatternManager.NextPattern();
+            }
+            SwitchState(state);
         }
-        SwitchState(AIState.Desperation_Big_Moon);
+    
+        
+        SwitchState(AIState.Two_Bouncing_Moons);
     }
 
     private void Teleport(Vector2 pos)
@@ -3366,6 +3409,12 @@ public class Verlia : ScarletBoss,
         {
             case 0:
                 {
+                    _warning = true;
+                    TeleportsAboveYou();
+                }
+                break;
+            case 1:
+                {
                     if(Timer == 1)
                     {
                         NPC.TargetClosest();
@@ -3394,7 +3443,7 @@ public class Verlia : ScarletBoss,
                     _warning = true;
                 }
                 break;
-            case 1:
+            case 2:
                 if(Timer == 1)
                 {
                     var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightSkyBlue, Color.DarkBlue);
@@ -3408,7 +3457,7 @@ public class Verlia : ScarletBoss,
                     AttackCycle++;
                 }
                 break;
-            case 2:
+            case 3:
                 if (Timer == 1)
                 {
                     var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightSkyBlue, Color.DarkBlue);
