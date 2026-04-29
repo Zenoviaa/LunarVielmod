@@ -460,8 +460,17 @@ public class Verlia : ScarletBoss,
 
             case AIState.Idle:
                 AI_Idle();
+                _showWings = true;
                 break;
 
+            case AIState.ReallyIdle:
+                AI_ReallyIdle();
+                _showWings = true;
+                break;
+            case AIState.IdleOut:
+                AI_IdleOut();
+                //_showWings = true;
+                break;
             case AIState.Two_Bouncing_Moons:
                 AI_TwoBouncingMoons();
                 _showMagicCircle = true;
@@ -530,6 +539,10 @@ public class Verlia : ScarletBoss,
         }
     }
 
+    private void ReallyIdle()
+    {
+
+    }
     private void SwitchState(AIState state)
     {
         if (MultiplayerHelper.IsHost)
@@ -1443,14 +1456,71 @@ public class Verlia : ScarletBoss,
         SwitchState(AIState.Idle);
     }
 
-    private void AI_Idle()
+    private void AI_IdleOut()
     {
-        _magicSwordV2 = false;
         Timer++;
-        if (Timer >= 100)
+        FaceTarget();
+        if (Timer == 1)
+        {
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/VTeleportOut"), NPC.position);
+        }
+        if (Timer == 1)
+        {
+
+            var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightSkyBlue, Color.DarkBlue);
+            fx.Scale *= 2f;
+
+            for (float f = 0; f < 4f; f++)
+            {
+                var sp = FaintSmokeParticle.SpawnInAlphaLayer(NPC.Center + Main.rand.NextVector2Circular(32, 32), Main.rand.NextVector2Circular(2, 2));
+                sp.Scale *= Main.rand.NextFloat(0.5f, 0.75f);
+                //      sp.behindLayer = true;
+                sp.noShrink = true;
+                sp.fadeToColor = Color.Black;
+                sp.color = Color.Lerp(Color.Blue, Color.Black, 0.75f);
+            }
+
+        }
+
+
+        NPC.velocity *= 0.9f;
+        Animator.PlayAnimation(ANIM_EXPLODE);
+        if (Animator.IsFinished())
         {
             ChooseAttack();
         }
+    }
+
+    private void AI_ReallyIdle()
+    {
+        Timer++;
+        FaceTarget();
+        Animator.PlayAnimation(ANIM_IDLESUMMON);
+
+        NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 0.5f;
+        if(Timer >= 100)
+        {
+            SwitchState(AIState.IdleOut);
+        }
+    }
+    private void AI_Idle()
+    {
+        Timer++;
+        _magicSwordV2 = false;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    TeleportsAboveYou();
+                }
+                break;
+            case 1:
+                {
+                    SwitchState(AIState.ReallyIdle);
+                }
+                break;
+        }
+
     }
 
     public override void HitEffect(NPC.HitInfo hit)
@@ -1707,7 +1777,7 @@ public class Verlia : ScarletBoss,
     
         VerlianWingsShader wingShader = VerlianWingsShader.Instance;
         wingShader.BloomColorStart = Color.White;
-        wingShader.BloomColorEnd = Color.Lerp(Color.Lerp(Color.Blue, Color.Black, 0.35f), Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 2));
+        wingShader.BloomColorEnd = Color.Lerp(Color.Lerp(Color.Blue, Color.Black, 0.5f), Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 2));
         wingShader.PerlinNoiseTexture = AssetManager.Noise.Whirly.Value;
         wingShader.ScrollingTexture = TrailRegistry.WaterTrail.Value;
         wingShader.DistortionStrength = 0.15f;
