@@ -70,9 +70,6 @@ public class CrescentMoonParticle : Particle<CrescentMoonParticle>
             Scale *= 0.98f;
         color *= 0.99f;
 
-        float stretchInterp = Velocity.Length() / 5f;
-        stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);
-        stretchScale.Y = 1f;
         fadeIn++;
         if (fadeIn > 180 || Scale < 0.1f)
             active = false;
@@ -82,6 +79,6 @@ public class CrescentMoonParticle : Particle<CrescentMoonParticle>
     {
         var textureAsset = GetTexture();
         Color drawColor = color;
-        spriteBatch.Draw(textureAsset.Value, DrawPosition, Frame, drawColor, Rotation + MathHelper.PiOver2, Frame.Size() / 2f, Scale * stretchScale, SpriteEffects.None, 0);
+        spriteBatch.Draw(textureAsset.Value, DrawPosition, Frame, drawColor, Rotation + MathHelper.PiOver2, Frame.Size() / 2f, Scale, SpriteEffects.None, 0);
     }
 }
