@@ -70,6 +70,105 @@ namespace Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 //She sees a clone of herself before the mirror cracks and she dies
 //and her sword drops on the ground (you can't pick it up it's just visual)
 
+public class VerlianWingsShader : CrystalShader<VerlianWingsShader>
+{
+    private EffectParameter _scrollOffsetParam;
+    private EffectParameter _maskSizeParam;
+    private EffectParameter _perlinNoiseSizeParam;
+    private EffectParameter _scrollingTextureSizeParam;
+    private EffectParameter _tilingParam;
+    private EffectParameter _distortionStrengthParam;
+    private EffectParameter _bloomColorStartParam;
+    private EffectParameter _bloomColorEndParam;
+    private EffectParameter _frequencyParam;
+
+    public float Frequency
+    {
+        set
+        {
+            _frequencyParam ??= Effect.Parameters["frequency"];
+            _frequencyParam.SetValue(value);
+        }
+    }
+    public Vector2 MaskSize
+    {
+        set
+        {
+            _maskSizeParam ??= Effect.Parameters["maskSize"];
+            _maskSizeParam.SetValue(value);
+        }
+    }
+    public Texture2D ScrollingTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            _scrollingTextureSizeParam ??= Effect.Parameters["scrollingTextureSize"];
+            _scrollingTextureSizeParam.SetValue(value.Size());
+        }
+    }
+
+    public Texture2D PerlinNoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointClamp;
+            Main.graphics.GraphicsDevice.Textures[2] = value;
+            _perlinNoiseSizeParam ??= Effect.Parameters["perlinNoiseSize"];
+            _perlinNoiseSizeParam.SetValue(value.Size());
+        }
+    }
+
+    public Vector2 ScrollOffset
+    {
+        set
+        {
+            _scrollOffsetParam ??= Effect.Parameters["scrollOffset"];
+            _scrollOffsetParam.SetValue(value);
+        }
+    }
+
+    public Vector2 Tiling
+    {
+        set
+        {
+            _tilingParam ??= Effect.Parameters["tiling"];
+            _tilingParam.SetValue(value);
+        }
+    }
+
+    public float DistortionStrength
+    {
+        set
+        {
+            _distortionStrengthParam ??= Effect.Parameters["distortionStrength"];
+            _distortionStrengthParam.SetValue(value);
+        }
+    }
+
+    public Color BloomColorStart
+    {
+        set
+        {
+            _bloomColorStartParam ??= Effect.Parameters["bloomColorStart"];
+            _bloomColorStartParam.SetValue(value.ToVector3());
+        }
+    }
+
+    public Color BloomColorEnd
+    {
+        set
+        {
+            _bloomColorEndParam ??= Effect.Parameters["bloomColorEnd"];
+            _bloomColorEndParam.SetValue(value.ToVector3());
+        }
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+    }
+}
 public class VerliaShockwaveShader : CrystalShader<VerliaShockwaveShader>
 {
     private EffectParameter _timeParam;
@@ -108,7 +207,6 @@ public class VerliaShockwaveShader : CrystalShader<VerliaShockwaveShader>
         Frequency = 4.0f;
     }
 }
-
 public class ScrollingMoonShader : CrystalShader<ScrollingMoonShader>
 {
     private EffectParameter _scrollOffsetParam;
@@ -173,7 +271,6 @@ public class ScrollingMoonShader : CrystalShader<ScrollingMoonShader>
         }
     }
 }
-
 public class VerliaGreatBlade : ModProjectile
 {
     private enum SwingState
@@ -407,6 +504,14 @@ public class VerliaGreatBlade : ModProjectile
     {
         return GetTrailWidth(ratio) * 1.05f;
     }
+    private float GetTrailWidth3(float ratio)
+    {
+        return GetTrailWidth(ratio) * 3;
+    }
+    private float GetTrailWidth4(float ratio)
+    {
+        return GetTrailWidth3(ratio) * 1.05f;
+    }
     private void DrawTrails(GraphicsDevice gDevice)
     {
         Vector2[] swingPos = new Vector2[Projectile.oldRot.Length];
@@ -425,6 +530,16 @@ public class VerliaGreatBlade : ModProjectile
         b.InnerColor = Color.Blue;
         b.OuterColor = Color.DarkBlue;
         TrailDrawer.Draw(Main.spriteBatch, swingPos, GetTrailColor, GetTrailWidth2, b);
+
+
+        swingPos = new Vector2[Projectile.oldRot.Length];
+        for (int i = 0; i < swingPos.Length; i++)
+        {
+            swingPos[i] = Projectile.oldRot[i].ToRotationVector2() * 484 * 1.25f + Projectile.Center;
+        }
+
+        TrailDrawer.Draw(Main.spriteBatch, swingPos, GetTrailColor, GetTrailWidth3, laserShader);
+        TrailDrawer.Draw(Main.spriteBatch, swingPos, GetTrailColor, GetTrailWidth4, b);
     }
 
     public override bool PreDraw(ref Color lightColor)
@@ -517,7 +632,6 @@ public class VerliaGreatBlade : ModProjectile
         }
     }
 }
-
 public class VerliaBouncingMoonBoom : ModProjectile
 {
     public override string Texture => TextureRegistry.EmptyTexture;
@@ -635,6 +749,10 @@ public class VerliaBouncingMoonShockwave : ModProjectile
     public override void AI()
     {
         base.AI();
+        if(Timer > 12)
+        {
+            Projectile.hostile = false;
+        }
         Timer++;
         if (Timer == 1)
         {
@@ -678,11 +796,9 @@ public class VerliaBouncingMoonShockwave : ModProjectile
                 SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
                 effectsPlayer.darknessCurve = MathHelper.Lerp(0.5f, 0f, EasingFunction.InExpo(Timer / Time));
             }
-            SoundStyle impactSound = new SoundStyle("Stellamod/Assets/Sounds/Verifallstar");
-            SoundEngine.PlaySound(impactSound, Projectile.position);
+            SoundStyle impactSound = AssetRegistry.Sounds.Verlia.MoonDuoHitGround;
+            SoundEngine.PlaySound(impactSound);
 
-            impactSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb");
-            SoundEngine.PlaySound(impactSound, Main.LocalPlayer.position);
             ShakeModSystem.Shake = 16;
             FXUtil.ShakeCamera(Projectile.Center, 2048, 32);
             //     FXUtil.PunchCamera(Projectile.Center, Vector2.UnitY, 32, 2, 32);
@@ -732,7 +848,6 @@ public class VerliaBouncingMoonShockwave : ModProjectile
         base.OnKill(timeLeft);
     }
 }
-
 public class VerliaMiniMoon : ModProjectile
 {
 
@@ -969,7 +1084,6 @@ public class VerliaMiniMoon : ModProjectile
         FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
     }
 }
-
 public class VerliaBouncingMoon : ModProjectile
 {
     private float _flashAlpha;
@@ -985,6 +1099,7 @@ public class VerliaBouncingMoon : ModProjectile
         Bounce_Out
     }
 
+    private Color _outlineColor;
     private ref float Timer => ref Projectile.ai[0];
     private BounceState State
     {
@@ -1071,6 +1186,14 @@ public class VerliaBouncingMoon : ModProjectile
                 _targetScale *= 1.5f;
                 break;
         }
+        if (Projectile.hostile)
+        {
+            _outlineColor = Color.Lerp(_outlineColor, Color.Red, 0.1f);
+        }
+        else
+        {
+            _outlineColor = Color.Lerp(_outlineColor, Color.Yellow, 0.1f);
+        }
         _scale = Vector2.Lerp(_scale, _targetScale, 0.1f);
     }
 
@@ -1099,6 +1222,14 @@ public class VerliaBouncingMoon : ModProjectile
         float ratio = Timer / time;
         float ease = EasingFunction.InExpo(ratio);
         Vector2 targetPosition = _startPosition + -Vector2.UnitY * distance.Y;
+
+        float bounceD = 90;
+        if (State == BounceState.Bounce_2)
+        {
+            bounceD = 0;
+        }
+        
+        targetPosition.X += Direction * bounceD;
         Vector2 interpolatedPosition = Vector2.Lerp(_startPosition, targetPosition, ease);
         float ease2 = EasingFunction.QuadraticBump(ratio);
         interpolatedPosition.X += MathHelper.Lerp(0f, distance.X * Direction, ease2);
@@ -1117,12 +1248,18 @@ public class VerliaBouncingMoon : ModProjectile
         FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
         _flashAlpha = 1f;
         _squishScale = new Vector2(0.8f, 1.4f);
-        var donut = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitX * -Direction, Color.LightSkyBlue);
-        donut.Scale *= 2;
-        SoundStyle bounceSound = new SoundStyle("Stellamod/Assets/Sounds/VeriButterfly");
-        bounceSound.PitchVariance = 0.15f;
-        bounceSound.Pitch = MathHelper.Lerp(0f, -0.5f, Projectile.ai[1] / 3f);
-        bounceSound.MaxInstances = 1;
+        for(int i = 0; i < 3; i++)
+        {
+            var donut = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.UnitX * -Direction, Color.LightSkyBlue);
+            donut.Scale *= 2;
+
+        }
+
+        SoundStyle bounceSound = AssetRegistry.Sounds.Verlia.MoonBounceOnce;
+        if (State == BounceState.Bounce_2)
+        {
+            bounceSound = AssetRegistry.Sounds.Verlia.MoonBounceTwo;
+        }
         SoundEngine.PlaySound(bounceSound, Projectile.position);
     }
 
@@ -1133,7 +1270,7 @@ public class VerliaBouncingMoon : ModProjectile
 
     private void AI_Bounce1()
     {
-
+        Projectile.hostile = false;
         Timer++;
         if (Timer == 1)
         {
@@ -1152,6 +1289,7 @@ public class VerliaBouncingMoon : ModProjectile
 
     private void AI_Bounce2()
     {
+        Projectile.hostile = false;
         Timer++;
         Bounce(BounceUp2Time, BounceUp2Distance);
         if (Timer >= BounceUp2Time)
@@ -1162,15 +1300,19 @@ public class VerliaBouncingMoon : ModProjectile
 
     private void AI_BounceOut()
     {
+        Projectile.hostile = true;
         if (Timer < 80)
         {
             Vector2 pos = Projectile.Center;
             pos.Y += 384;
-            CameraTargetSystem.AddTarget(pos);
+        //    CameraTargetSystem.AddTarget(pos);
         }
 
         Timer++;
-
+        if(Timer == 1)
+        {
+            Projectile.velocity.X *= -1;
+        }
 
         Player telegraphPlayer = Main.LocalPlayer;
         Point tile = telegraphPlayer.Center.ToTileCoordinates();
@@ -1272,7 +1414,7 @@ public class VerliaBouncingMoon : ModProjectile
         //Draw the moon itself
         sb.Restart(effect: scrollingMoonShader.Effect);
         moonSprite.rotation = MathHelper.ToRadians(-12);
-        moonSprite.color = Color.Lerp(Color.White, Color.LightSkyBlue, ExtraMath.Osc(0f, 0.3f, speed: 8));
+        moonSprite.color = Color.Lerp(Color.White, Color.Black, 0.18f);
         moonSprite.scale *= _squishScale * _targetScale;
         Main.spriteBatch.Draw(moonSprite);
         sb.RestartDefaults();
@@ -1303,15 +1445,6 @@ public class VerliaBouncingMoon : ModProjectile
         glowDrawer.color = Color.SkyBlue * 0.6f;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.5f;
-        glowDrawer.scale *= _squishScale * _targetScale * 1.5f;
-        Main.spriteBatch.Draw(glowDrawer);
-
-
-        glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SolarEye, Projectile.Center);
-        glowDrawer.color = Color.Blue * 0.16f;
-        glowDrawer.color.A = 0;
-        glowDrawer.scale *= 1f;
-        glowDrawer.rotation = Main.GlobalTimeWrappedHourly;
         glowDrawer.scale *= _squishScale * _targetScale * 1.5f;
         Main.spriteBatch.Draw(glowDrawer);
 
@@ -1354,13 +1487,13 @@ public class VerliaBouncingMoon : ModProjectile
 
         _shadowMoonTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Shadow");
         SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureAsset(_shadowMoonTextureAsset, Projectile.Center);
-        shadowDrawer.color *= 0.45f;
+        shadowDrawer.color *= 0.58f;
         shadowDrawer.scale *= _squishScale * _targetScale;
         Main.spriteBatch.Draw(shadowDrawer);
 
 
         SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineMoonTextureAsset, Projectile.Center);
-        outlineDrawer.color = Color.Red;
+        outlineDrawer.color = _outlineColor;
         outlineDrawer.scale *= _squishScale * _targetScale;
         Main.spriteBatch.Draw(outlineDrawer);
 
@@ -1380,7 +1513,6 @@ public class VerliaBouncingMoon : ModProjectile
         }
     }
 }
-
 public class VerliaClone : ModNPC,
     IDrawOutlines
 {
@@ -1655,7 +1787,6 @@ public class VerliaClone : ModNPC,
         //      throw new System.NotImplementedException();
     }
 }
-
 public class MoonSnipe : ModProjectile
 {
     private float _inScale;
@@ -1942,7 +2073,6 @@ public class VerliaDesperationMoon : ModProjectile
 
         SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureAsset(_shadowMoonTextureAsset, Projectile.Center);
         shadowDrawer.color *= 0.45f;
-        shadowDrawer.scale *= scale * 2;
         Main.spriteBatch.Draw(shadowDrawer);
 
         SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineTextureAsset, Projectile.Center);
@@ -1986,46 +2116,6 @@ public class VerliaDesperationMoon : ModProjectile
     }
 }
 
-public class FallingMoonBlade : ModProjectile
-{
-    public override string Texture => ModContent.GetInstance<MoonBlade>().Texture;
-    private Asset<Texture2D> _outlineTextureAsset;
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-        ProjectileID.Sets.TrailCacheLength[Type] = 16;
-        ProjectileID.Sets.TrailingMode[Type] = 2;
-    }
-    public override void SetDefaults()
-    {
-        base.SetDefaults();
-        Projectile.width = 16;
-        Projectile.height = 16;
-        Projectile.hostile = true;
-        Projectile.timeLeft = 120;
-        Projectile.penetrate = -1;
-        Projectile.ignoreWater = true;
-        Projectile.tileCollide = false;
-    }
-
-    public override void AI()
-    {
-        base.AI();
-    }
-    public override bool OnTileCollide(Vector2 oldVelocity)
-    {
-        return base.OnTileCollide(oldVelocity);
-    }
-    public override bool PreDraw(ref Color lightColor)
-    {
-        _outlineTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Outline");
-        return base.PreDraw(ref lightColor);
-    }
-    public override void OnKill(int timeLeft)
-    {
-        base.OnKill(timeLeft);
-    }
-}
 public class MoonBlade : ModProjectile
 {
     private bool _lodged;
@@ -2494,6 +2584,8 @@ public class Verlia : ScarletBoss,
         Death
     }
 
+    private Asset<Texture2D> _wingTextureAsset;
+    private Asset<Texture2D> _wingOutlineTextureAsset;
 
     private Color _outlineColor;
     private bool _warning;
@@ -2502,9 +2594,13 @@ public class Verlia : ScarletBoss,
     private bool _bladeDanceV2;
     private bool _magicSwordV2;
     private bool _contactDamage;
+    private bool _showWings;
+    private bool _showMagicCircle;
+    private float _magicCircleAlpha;
     private float _trailAlpha;
 
     private bool _phase2;
+    private float _wingScale;
     private Vector2 _startVelocity;
     private Vector2 _runningVelocity;
     private Vector2 _teleportPosition;
@@ -2635,6 +2731,8 @@ public class Verlia : ScarletBoss,
         _warning = false;
         _bladeDanceV2 = false;
         _contactDamage = false;
+        _showWings = false;
+        _showMagicCircle = false;
         if (_teleportPosition != Vector2.Zero)
         {
             NPC.Center = _teleportPosition;
@@ -2652,18 +2750,22 @@ public class Verlia : ScarletBoss,
 
             case AIState.Two_Bouncing_Moons:
                 AI_TwoBouncingMoons();
+                _showMagicCircle = true;
                 break;
 
             case AIState.Spining_Little_Moons:
                 AI_SpinningLittleMoons();
+                _showMagicCircle = true;
                 break;
 
             case AIState.Blade_Dance:
                 AI_BladeDance();
+                _showMagicCircle = true;
                 break;
 
             case AIState.Blue_Magic_Sword:
                 AI_BlueMagicSword();
+                _showMagicCircle = true;
                 break;
 
             case AIState.Blade_Dance_V2:
@@ -2673,6 +2775,7 @@ public class Verlia : ScarletBoss,
 
             case AIState.Clone_Summon:
                 AI_CloneSummon();
+                _showMagicCircle = true;
                 break;
 
             case AIState.Running:
@@ -2681,14 +2784,23 @@ public class Verlia : ScarletBoss,
 
             case AIState.Sword_Fall:
                 AI_SwordFall();
+                _showMagicCircle = true;
                 break;
 
             case AIState.Desperation_Big_Moon:
                 AI_DesperationBigMoon();
+                _showMagicCircle = true;
                 break;
         }
+        if (State != AIState.Idle && Animator.GetAnimation() != "Explode") 
+            _showWings = true;
 
 
+        float targetMagicCircleAlpha = _showMagicCircle ? 1f : 0f;
+        _magicCircleAlpha = MathHelper.Lerp(_magicCircleAlpha, targetMagicCircleAlpha, 0.1f);
+
+        float targetWingScale = _showWings ? 1f : 0f;
+        _wingScale = MathHelper.Lerp(_wingScale, targetWingScale, 0.1f);
         _trailAlpha = MathHelper.Lerp(_trailAlpha, _showTrail ? 1f : 0f, 0.1f);
         if (_attacking)
         {
@@ -2758,7 +2870,7 @@ public class Verlia : ScarletBoss,
         }
 
 
-      //  SwitchState(AIState.Desperation_Big_Moon);
+        SwitchState(AIState.Blue_Magic_Sword);
     }
 
     private void Teleport(Vector2 pos)
@@ -2782,6 +2894,8 @@ public class Verlia : ScarletBoss,
             SoundStyle inSound = new SoundStyle($"Stellamod/Assets/Sounds/VDisappear");
             inSound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(inSound, NPC.position);
+            var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue);
+            fx.Scale *= 1.8f;
             NPC.TargetClosest();
             _startVelocity = NPC.velocity;
             float dir = Main.rand.NextBool(2) ? -1 : 1;
@@ -2805,6 +2919,8 @@ public class Verlia : ScarletBoss,
             SoundStyle inSound = new SoundStyle($"Stellamod/Assets/Sounds/VDisappear");
             inSound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(inSound, NPC.position);
+            var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue);
+            fx.Scale *= 1.8f;
             NPC.TargetClosest();
             _startVelocity = NPC.velocity;
             float dir = Main.rand.NextBool(2) ? -1 : 1;
@@ -2820,6 +2936,18 @@ public class Verlia : ScarletBoss,
             AttackCycle++;
         }
     }
+
+    private void TeleportAbovePlayer(float height)
+    {
+        NPC.TargetClosest();
+        Vector2 playerPosition = MyTarget.Center;// + -Vector2.UnitY * 384;
+        Point tile = playerPosition.ToTileCoordinates();
+        tile = TileUtilities.FallToSolidTile(tile);
+        Vector2 bottomWorld = tile.ToWorldCoordinates();
+        bottomWorld.Y -= height;
+        Teleport(bottomWorld);
+    }
+
     private void TeleportsFarAboveYou()
     {
         if (Timer == 1)
@@ -2827,10 +2955,17 @@ public class Verlia : ScarletBoss,
             SoundStyle inSound = new SoundStyle($"Stellamod/Assets/Sounds/VDisappear");
             inSound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(inSound, NPC.position);
-            NPC.TargetClosest();
+         
             _startVelocity = NPC.velocity;
             float dir = Main.rand.NextBool(2) ? -1 : 1;
-            Teleport(MyTarget.Center + -Vector2.UnitY * 384);
+            TeleportAbovePlayer(144);
+
+           
+        }
+        if(Timer == 5)
+        {
+            var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue);
+            fx.Scale *= 1.8f;
         }
 
         NPC.velocity = Vector2.Zero;
@@ -2846,6 +2981,7 @@ public class Verlia : ScarletBoss,
 
     private void AI_DesperationBigMoon()
     {
+        _phase2 = true;
         Timer++;
         switch (AttackCycle)
         {
@@ -2970,6 +3106,7 @@ public class Verlia : ScarletBoss,
             }
  
         }
+
 
         NPC.velocity *= 0.9f;
         Animator.PlayAnimation(ANIM_EXPLODE);
@@ -3169,13 +3306,14 @@ public class Verlia : ScarletBoss,
                     else
                     {
                         _warning = true;
-                        TeleportsBehindYou();
+                        TeleportsFarAboveYou();
                     }
                 
                 }
                 break;
             case 1:
                 {
+                    //CameraTargetSystem.AddTarget(NPC.Center);
                     _warning = true;
                     if (Timer == 1)
                     {
@@ -3196,6 +3334,7 @@ public class Verlia : ScarletBoss,
                 break;
             case 2:
                 {
+                    CameraTargetSystem.AddTarget(NPC.Center);
                     if (Timer == 1)
                     {
                         if (MultiplayerHelper.IsHost)
@@ -3289,8 +3428,16 @@ public class Verlia : ScarletBoss,
                         SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
                         effectsPlayer.darknessCurve = MathHelper.Lerp(0.75f, 0f, EasingFunction.InExpo(Timer / 30f));
                     }
-                    if (NPC.velocity.Length() < 25)
-                        NPC.velocity *= 1.5f;
+                    if(Timer < 15)
+                    {
+                        if (NPC.velocity.Length() < 25)
+                            NPC.velocity *= 1.5f;
+                    }
+                    else
+                    {
+                        NPC.velocity *= 0.9f;
+                    }
+         
 
                     _attacking = true;
                     Animator.PlayAnimation(ANIM_SWORDSLASH);
@@ -3304,18 +3451,10 @@ public class Verlia : ScarletBoss,
             case 3:
                 {
 
-                    if (Timer < 15)
-                    {
-                        NPC.velocity *= 0.7f;
-                    }
-                    else
-                    {
-                        Vector2 targetVelocity = (MyTarget.Center - NPC.Center);
-                        targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
-                        float speed = MathHelper.Lerp(76, 1f, Timer / 60f);
-                        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity * speed, 0.2f);
-                    }
-
+                    Vector2 targetVelocity = (MyTarget.Center - NPC.Center);
+                    targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
+                    float speed = 14;
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity * speed, 0.5f);
                     FaceTarget();
                     if (Timer == 1)
                     {
@@ -3424,7 +3563,7 @@ public class Verlia : ScarletBoss,
         {
             case 0:
                 {
-                    TeleportsAboveYou();
+                    TeleportsFarAboveYou();
                 }
                 break;
             case 1:
@@ -3523,7 +3662,7 @@ public class Verlia : ScarletBoss,
             case 0:
                 {
                     _warning = true;
-                    TeleportsAboveYou();
+                    TeleportsFarAboveYou();
                 }
                 break;
             case 1:
@@ -3594,7 +3733,7 @@ public class Verlia : ScarletBoss,
     {
         _magicSwordV2 = false;
         Timer++;
-        if (Timer >= 60)
+        if (Timer >= 100)
         {
             ChooseAttack();
         }
@@ -3675,6 +3814,7 @@ public class Verlia : ScarletBoss,
         Animator.Update();
         NPC.frame.Y = Animator.GetFrameY(184);
         NPC.frame.Height = 184;
+        NPC.frame.Width = 266;
     }
 
     private float GetTrailWidth(float ratio)
@@ -3745,9 +3885,180 @@ public class Verlia : ScarletBoss,
         glowDrawer.color.A = 0;
         glowDrawer.rotation = Main.GlobalTimeWrappedHourly;
         spriteBatch.Draw(glowDrawer);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSpellCircle, DrawLayer.BehindNPCsWithOutline);
+        DrawWings(spriteBatch, screenPos, drawColor);
         DrawAfterImage(spriteBatch);
         DrawSprite(spriteBatch, Vector2.Zero, drawColor);
         return false;
+    }
+
+    private Vector2 LeftWingScale
+    {
+        get
+        {
+            Vector2 leftWingScale = Vector2.One;
+            leftWingScale.X = MathHelper.Lerp(1f, 0.7f, EasingFunction.Clamp(NPC.velocity.X / -15f));
+            leftWingScale *= _wingScale;
+            return leftWingScale;
+        }
+    }
+    private float LeftWingRotation
+    {
+        get
+        {
+            float rot = MathHelper.Lerp(0, MathHelper.ToRadians(12), EasingFunction.Clamp(NPC.velocity.X / -15f));
+            return rot;
+        }
+    }
+    private Vector2 RightWingScale
+    {
+        get
+        {
+            Vector2 leftWingScale = Vector2.One;
+            leftWingScale.X = MathHelper.Lerp(1f, 0.7f, EasingFunction.Clamp(NPC.velocity.X / 15f));
+            leftWingScale *= _wingScale;
+            return leftWingScale;
+        }
+    }
+    private float RightWingRotation
+    {
+        get
+        {
+            float rot = MathHelper.Lerp(0, MathHelper.ToRadians(-12), EasingFunction.Clamp(NPC.velocity.X / -15f));
+            return rot;
+        }
+    }
+
+    private void DrawPixelatedSpellCircle(SpriteBatch sb, Vector2 screenPos)
+    {
+        DrawSpellCircle(sb);
+    }
+    private void DrawSpellCircle(SpriteBatch sb)
+    {
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>(Texture + "_MagicCircle"), NPC.Center);
+        drawer.color = Color.Lerp(Color.LightBlue, Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 4)) * _magicCircleAlpha;
+        drawer.color.A = 0;
+        drawer.rotation = Main.GlobalTimeWrappedHourly;
+        drawer.scale *= 0.8f;
+        drawer.scale *= MathHelper.Lerp(1.5f, 1f, _magicCircleAlpha);
+        sb.Draw(drawer);
+    }
+    private void DrawWings_Inner(SpriteBatch spriteBatch)
+    {
+
+        float degrees = -MathHelper.Lerp(8, 15, ExtraMath.Osc(0f, 1f, speed: 3));
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        glowDrawer.color = Color.DeepSkyBlue * 0.4f;
+        glowDrawer.color.A = 0;
+        glowDrawer.scale.Y *= 0.66f;
+        glowDrawer.scale *= 0.6f;
+        glowDrawer.scale *= _wingScale;
+        glowDrawer.rotation = MathHelper.ToRadians(degrees);
+
+        glowDrawer.drawOrigin = new Vector2(AssetManager.GlowMask.SimpleGlowCircle.Width() * 0.2f, AssetManager.GlowMask.SimpleGlowCircle.Height() * 0.5f);
+        spriteBatch.Draw(glowDrawer);
+
+
+
+        glowDrawer.rotation = MathHelper.ToRadians(-degrees);
+        glowDrawer.drawOrigin.X = glowDrawer.texture.Size().X - glowDrawer.drawOrigin.X;
+    //    glowDrawer.drawOrigin = new Vector2(AssetManager.GlowMask.SimpleGlowCircle.Width() * 0.2f, AssetManager.GlowMask.SimpleGlowCircle.Height() * 0.5f);
+        spriteBatch.Draw(glowDrawer);
+
+
+        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
+        wingDrawer.LeftCenterOrigin();
+        wingDrawer.worldPosition.Y -= 32;
+        wingDrawer.color = Color.DarkBlue;
+
+        wingDrawer.scale = RightWingScale;
+        wingDrawer.rotation = MathHelper.ToRadians(degrees) + RightWingRotation;
+        spriteBatch.Draw(wingDrawer);
+
+        wingDrawer.scale = LeftWingScale;
+        wingDrawer.rotation = MathHelper.ToRadians(-degrees) + LeftWingRotation;
+        wingDrawer.drawOrigin.X = wingDrawer.texture.Size().X - wingDrawer.drawOrigin.X;
+        wingDrawer.spriteEffects = SpriteEffects.FlipHorizontally;
+        spriteBatch.Draw(wingDrawer);
+    }
+    private void DrawPixelatedWings(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        DrawWings(spriteBatch, screenPos, Color.White);
+    }
+    private void DrawWings(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        _wingTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Wing");
+        _wingOutlineTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_WingOutline");
+
+    
+        VerlianWingsShader wingShader = VerlianWingsShader.Instance;
+        wingShader.BloomColorStart = Color.White;
+        wingShader.BloomColorEnd = Color.Lerp(Color.Lerp(Color.Blue, Color.Black, 0.35f), Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 2));
+        wingShader.PerlinNoiseTexture = AssetManager.Noise.Whirly.Value;
+        wingShader.ScrollingTexture = TrailRegistry.WaterTrail.Value;
+        wingShader.DistortionStrength = 0.15f;
+        wingShader.MaskSize = _wingTextureAsset.Size();
+        wingShader.Frequency = 1f;
+        wingShader.Tiling = Vector2.One * 2.5f;
+        wingShader.ScrollOffset = new Vector2(-Main.GlobalTimeWrappedHourly * 0.4f, 0.0f);
+
+        DrawWings_Inner(spriteBatch);
+        float degrees = -MathHelper.Lerp(8, 15, ExtraMath.Osc(0f, 1f, speed: 3));
+        spriteBatch.Restart(effect: wingShader.Effect, sortMode: SpriteSortMode.Immediate);
+        SpritebatchDrawer wingDrawer;
+      
+        //Draw main wings
+        wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
+        wingDrawer.LeftCenterOrigin();
+        wingDrawer.worldPosition.Y -= 32;
+        wingDrawer.color = Color.Lerp(Color.White, Color.Black, 0.5f) * 0.6f;
+        wingDrawer.rotation = MathHelper.ToRadians(degrees) + RightWingRotation; 
+        wingDrawer.scale = RightWingScale;
+        spriteBatch.Draw(wingDrawer);
+
+        wingDrawer.rotation = MathHelper.ToRadians(-degrees) + LeftWingRotation;
+        wingDrawer.drawOrigin.X = wingDrawer.texture.Size().X - wingDrawer.drawOrigin.X;
+        wingDrawer.scale = LeftWingScale;
+        wingDrawer.spriteEffects = SpriteEffects.FlipHorizontally;
+        spriteBatch.Draw(wingDrawer);
+
+        //Draw stars in wings
+        spriteBatch.Restart(effect: wingShader.Effect, sortMode: SpriteSortMode.Immediate);
+        wingShader.Tiling = Vector2.One *16f;
+        wingShader.ScrollingTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise2").Value;
+        wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
+        wingDrawer.LeftCenterOrigin();
+        wingDrawer.worldPosition.Y -= 32;
+        wingDrawer.color = Color.Lerp(Color.White, Color.Black, 0.35f) * 0.45f;
+        wingDrawer.color.A = 0;
+        wingDrawer.scale = RightWingScale;
+        wingDrawer.rotation = MathHelper.ToRadians(degrees) + RightWingRotation;
+        spriteBatch.Draw(wingDrawer);
+
+        wingDrawer.rotation = MathHelper.ToRadians(-degrees) + LeftWingRotation;
+        wingDrawer.drawOrigin.X = wingDrawer.texture.Size().X - wingDrawer.drawOrigin.X;
+        wingDrawer.spriteEffects = SpriteEffects.FlipHorizontally;
+        wingDrawer.scale = LeftWingScale;
+        spriteBatch.Draw(wingDrawer);
+
+
+        wingShader.BloomColorEnd = Color.White;
+        wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingOutlineTextureAsset, NPC.Center);
+        wingDrawer.LeftCenterOrigin();
+        wingDrawer.worldPosition.Y -= 32;
+        wingDrawer.color = Color.White;
+        wingDrawer.scale = RightWingScale;
+        wingDrawer.rotation = MathHelper.ToRadians(degrees) + RightWingRotation;
+        spriteBatch.Draw(wingDrawer);
+
+        wingDrawer.rotation = MathHelper.ToRadians(-degrees) + LeftWingRotation;
+        wingDrawer.drawOrigin.X = wingDrawer.texture.Size().X - wingDrawer.drawOrigin.X;
+        wingDrawer.spriteEffects = SpriteEffects.FlipHorizontally;
+        wingDrawer.scale = LeftWingScale;
+        spriteBatch.Draw(wingDrawer);
+
+        spriteBatch.RestartDefaults();
+
     }
     #endregion
     public override void OnKill()

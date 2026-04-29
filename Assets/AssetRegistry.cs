@@ -45,6 +45,20 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+            public static class Verlia
+            {
+                public static SoundStyle BigMoonExplosion => new SoundStyle($"{Path}Verlia/BigMoonExplosion");
+                public static SoundStyle MoonDuoHitGround => new SoundStyle($"{Path}Verlia/MoonDuoHitGround");
+                public static SoundStyle MoonBounceTwo => new SoundStyle($"{Path}Verlia/MoonBounceTwo");
+                public static SoundStyle MoonBounceOnce => new SoundStyle($"{Path}Verlia/MoonBounceOnce");
+                public static SoundStyle MoonshotBlast => new SoundStyle($"{Path}Verlia/MoonshotBlast");
+                public static SoundStyle BigMoonGrow => new SoundStyle($"{Path}Verlia/BigMoonGrow");
+                public static SoundStyle SwordGrowBigga => new SoundStyle($"{Path}Verlia/SwordGrowBigga");
+                public static SoundStyle SwordGrowSmall => new SoundStyle($"{Path}Verlia/SwordGrowSmall");
+                public static SoundStyle BigSwordHitDown => new SoundStyle($"{Path}Verlia/BigSwordHitDown");
+                public static SoundStyle BigSwordSwing => new SoundStyle($"{Path}Verlia/BigSwordSwing");
+                public static SoundStyle ShockwaveGround => new SoundStyle($"{Path}Verlia/ShockwaveGround");
+            }
             public static class Waypoint
             {
                 public static SoundStyle OpenWaypointSection => new SoundStyle($"{Path}Waypoint/OpenWaypointSection");
