@@ -202,7 +202,7 @@ public class DaedusLibrarian : VeilTownNPC
         base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
         //Set buttons
         buttons.Add(new Tuple<string, Action>("Talk", Talk));
-        if (DownedBossSystem.downedDaedusBoss)
+        if (DownedBossTracker.IsDowned(DownedBossFlag.Daedus))
         {
             buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
         }
