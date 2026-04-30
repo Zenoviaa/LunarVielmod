@@ -225,8 +225,8 @@ public static class PixelPrimitiveCircleFactory
             TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
         }
         PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
-        circle.circleParams.minRadius = 888;
-        circle.circleParams.maxRadius = 0;
+        circle.circleParams.minRadius = 0;
+        circle.circleParams.maxRadius = 100;
         circle.circleParams.time = 45;
         circle.renderPixelPrimitivesFunction = RenderPrimitives;
         circle.position = position;

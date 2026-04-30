@@ -129,6 +129,7 @@ public class HarmonicBlasphemyBoom : ModProjectile
         Projectile.penetrate = -1;
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
+        Projectile.timeLeft = 24;
     }
     public override void AI()
     {

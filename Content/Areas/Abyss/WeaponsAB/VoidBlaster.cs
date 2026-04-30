@@ -25,7 +25,7 @@ public class VoidBlaster : BaseGun
         base.SetDefaults();
         Item.noUseGraphic = true;
         Item.noMelee = true;
-        Item.damage = 8;
+        Item.damage = 10;
         Item.DamageType = DamageClass.Ranged;
         Item.width = 40;
         Item.height = 40;
@@ -64,8 +64,8 @@ public class VoidBlaster : BaseGun
             Vector2 perturbedSpeed = new Vector2(velocity.X, velocity.Y).RotatedByRandom(MathHelper.ToRadians(8));                                                                                                         // perturbedSpeed = perturbedSpeed * scale; 
             Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, Item.knockBack, player.whoAmI);
         }
-        float recoilStrength = 1;
-        player.AddRecoil(-velocity.SafeNormalize(Vector2.Zero) * recoilStrength);
+     //   float recoilStrength = 1;
+       // player.AddRecoil(-velocity.SafeNormalize(Vector2.Zero) * recoilStrength);
         FXUtil.ShakeCamera(player.Center, 1024, 8f);
         //Dust Burst Towards Mouse
         float rot = velocity.ToRotation();
@@ -342,28 +342,41 @@ public class VoidBlasterProj : ModProjectile
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center.X, target.Center.Y, 0, 0,
                     ModContent.ProjectileType<VoidBlasterExsplosion>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 0, ai1: target.whoAmI);
                 int Sound = Main.rand.Next(1, 3);
+
+                SoundStyle fireSound;
                 if (Sound == 1)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidBlasterExplosionBomb"), Projectile.position);
+                    fireSound = new SoundStyle("Stellamod/Assets/Sounds/VoidBlasterExplosionBomb");
+                 //   SoundEngine.PlaySound(, Projectile.position);
                 }
                 else
                 {
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidBlasterExplosionBomb2"), Projectile.position);
+                    fireSound = new SoundStyle("Stellamod/Assets/Sounds/VoidBlasterExplosionBomb2");
+
                 }
+                fireSound.PitchVariance = 0.3f;
+                fireSound.Volume = 0.1f;
+                SoundEngine.PlaySound(fireSound, Projectile.position);
             }
         }
     }
     public override void OnSpawn(IEntitySource source)
     {
         int Sound = Main.rand.Next(1, 3);
+        SoundStyle fireSound;
         if (Sound == 1)
         {
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidBlaster2"), Projectile.position);
+            fireSound = new SoundStyle("Stellamod/Assets/Sounds/VoidBlaster2");
+          
         }
         else
         {
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/VoidBlaster1"), Projectile.position);
+            fireSound = new SoundStyle("Stellamod/Assets/Sounds/VoidBlaster1");
+
         }
+        fireSound.PitchVariance = 0.3f;
+        fireSound.Volume = 0.1f;
+        SoundEngine.PlaySound(fireSound, Projectile.position);
     }
 
     public override bool PreDraw(ref Color lightColor)
