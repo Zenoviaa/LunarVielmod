@@ -59,7 +59,7 @@ public class ForegroundParticleRenderer : ModSystem
         {
             ForegroundGore gore = _gores[i];
             gore.type = i;
-            _particleTextureAssets[gore.type] = ModContent.Request<Texture2D>(gore.Texture, AssetRequestMode.AsyncLoad).Value;
+            _particleTextureAssets[gore.type] = ModContent.Request<Texture2D>(gore.Texture, AssetRequestMode.ImmediateLoad).Value;
         }
 
         //Now i don't need to initialize multiple instances :)
@@ -95,6 +95,7 @@ public class ForegroundParticleRenderer : ModSystem
     /// <param name="type"></param>
     private void SpawnParticle(int index, int type)
     {
+      //  Main.NewText("Test");
         _particles.active[index] = true;
         _particles.velocity[index] = Vector2.Zero;
         _particles.rotation[index] = 0;
@@ -111,8 +112,8 @@ public class ForegroundParticleRenderer : ModSystem
             return;
 
         _particles.position[index] += _particles.velocity[index];
-
-        float xVel = (float)Math.Sin(_particles.timer[index]++ * 0.036) * 0.48f * _particles.scale[index];
+        _particles.timer[index] += 1;
+        float xVel = (float)Math.Sin(_particles.timer[index] * 0.036) * 0.48f * _particles.scale[index];
         _particles.velocity[index].X = xVel + (_particles.position[index].Y < Main.worldSurface * 16 ? Main.windSpeedCurrent * 8 : 0);
         _particles.velocity[index].Y = (-Math.Abs(xVel) + _particles.scale[index]) * 0.4f;
         _particles.rotation[index] = _particles.velocity[index].X * -0.5f;
@@ -145,12 +146,15 @@ public class ForegroundParticleRenderer : ModSystem
 
     private void DrawPixelatedForeground(SpriteBatch spriteBatch, Vector2 screenPos)
     {
+  
         for (int i = 0; i < Max_Particle_Count; i++)
         {
             if (!_particles.active[i])
                 continue;
 
+        
             Vector2 drawPosition = _particles.position[i] - Main.screenPosition;
+   //         Main.NewText(drawPosition);
             Vector2 drawOrigin = GetDrawOrigin(i);
             Color lightColour = Lighting.GetColor((int)(drawPosition.X / 16f), (int)(drawPosition.Y / 16f));
             Color frontColour = (_particles.position[i].Y / 16f < Main.worldSurface) ? Main.ColorOfTheSkies : new Color(85, 85, 85);
@@ -158,9 +162,15 @@ public class ForegroundParticleRenderer : ModSystem
 
             float inAlpha = EasingFunction.InOutSine(_particles.timer[i] / 30f);
             float outAlpha = 1f - ((_particles.timer[i] - 570f) / 30f);
+
+           // Main.NewText(_particles.timer[i]);
             float alpha = inAlpha * outAlpha;
+
+            //Main.NewText(alpha);
             drawColor *= alpha;
             Texture2D textureAsset = _particleTextureAssets[_particles.type[i]];
+   //         Main.NewText(_particles.frame[i]);
+           // Main.NewText(_particles.frame[i]);
             spriteBatch.Draw(textureAsset, drawPosition, _particles.frame[i], drawColor, _particles.rotation[i], drawOrigin, _particles.scale[i], 
                 SpriteEffects.None, 0);
         }
@@ -175,7 +185,7 @@ public class ForegroundParticleRenderer : ModSystem
 
         ForegroundParticleRenderer renderer = ModContent.GetInstance<ForegroundParticleRenderer>();
         int steps = 0;
-
+   
         //Starting from the last search index and looping around for a small performance boost
         int index = _lastIndex;
         int maxSteps = Max_Particle_Count;
@@ -183,7 +193,7 @@ public class ForegroundParticleRenderer : ModSystem
         {
             index++;
             index = index % Max_Particle_Count;
-  
+ 
             if (!renderer._particles.active[index])
             {
                 T t = ModContent.GetInstance<T>();
@@ -205,6 +215,9 @@ public class ForegroundParticleRenderer : ModSystem
     }
     public static void NewParticle<T>() where T : ForegroundGore
     {
+
+      //  Main.NewText("G");
+        //DebugHelper.NewTextOnlyInTesting("E");
         float xPosition = Main.rand.Next(-(int)(Main.screenWidth * 0.52f), (int)(Main.screenWidth * 0.52f));
         if (xPosition < 0)
             xPosition -= Main.screenWidth / 2f;

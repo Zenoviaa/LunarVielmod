@@ -110,6 +110,7 @@ namespace Stellamod.Content.Biomes
 
                 if (Main.rand.NextBool(5))
                 {
+                    //Main.NewText("E");
                     ForegroundParticleRenderer.NewParticle<Snowstrike>();
                 }
             }
@@ -170,6 +171,7 @@ namespace Stellamod.Content.Biomes
 
      
             }
+            SpringHillsForegroundBackground();
         }
 
         private void SpringHillsForegroundBackground()
