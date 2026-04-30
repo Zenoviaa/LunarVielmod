@@ -1215,7 +1215,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
 
 
             // ItemDropRule.MasterModeCommonDrop for the relic
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<RekBossRel>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 13, 25));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SerpentWings>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.OneFromOptions(1,

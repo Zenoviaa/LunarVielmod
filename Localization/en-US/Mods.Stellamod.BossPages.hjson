@@ -111,3 +111,9 @@ SteamrollerPage: {
 	WhereToFind: In Your Mom
 	Lore: Birthed by your mom
 }
+
+VerliaPage: {
+	DisplayName: Who???
+	WhereToFind: In Your Mom
+	Lore: Birthed by your mom
+}

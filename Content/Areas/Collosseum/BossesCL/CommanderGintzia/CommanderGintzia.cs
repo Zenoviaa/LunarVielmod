@@ -882,16 +882,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                 NPC.rotation = MathHelper.Lerp(NPC.rotation, targetRotation, 0.1f);
             }
 
-            if (Timer == 150)
-            {
-                if (MultiplayerHelper.IsHost)
-                {
-                    int itemIndex = Item.NewItem(NPC.GetSource_FromThis(), NPC.getRect(),
-                        ModContent.ItemType<CommanderGintziaBossRel>(), Main.rand.Next(1, 1));
-                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
-                }
-            }
-
             if (Timer > 150)
             {
                 if (NPC.velocity.Y > -14)
@@ -948,12 +938,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
         }
 
 
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            base.ModifyNPCLoot(npcLoot);
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<CommanderGintziaBossRel>()));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VoidKey>()));
-        }
         public override void OnKill()
         {
             base.OnKill();

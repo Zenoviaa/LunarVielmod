@@ -815,11 +815,5 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
         {
             return !DownedBossTracker.IsDowned(DownedBossFlag.StoneGolem);
         }
-
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            //  npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StoneKey>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<VeriBossRel>()));
-        }
     }
 }

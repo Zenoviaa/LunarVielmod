@@ -1621,12 +1621,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             return new Vector2((1 - t) * P0.X + t * P1.X, (1 - t) * P0.Y + t * P1.Y);
         }
 
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            base.ModifyNPCLoot(npcLoot);
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<GustbeakBossRel>()));
-        }
-
         public override void OnKill()
         {
             base.OnKill();

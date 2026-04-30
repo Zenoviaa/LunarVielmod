@@ -10882,3 +10882,8 @@ MiracleSilkTileBlock: {
 	DisplayName: Miracle Silk Tile Block
 	Tooltip: ""
 }
+
+VerliaRelicItem: {
+	DisplayName: Verlia Relic Item
+	Tooltip: ""
+}

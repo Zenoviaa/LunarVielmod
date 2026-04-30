@@ -1704,7 +1704,6 @@ namespace Stellamod.NPCs.Bosses.Niivi
             npcLoot.Add(notExpertRule);
 
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<PureHeart>()));
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<NiiviBossRel>()));
         }
     }
 }

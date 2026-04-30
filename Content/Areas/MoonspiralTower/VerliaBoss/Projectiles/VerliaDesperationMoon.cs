@@ -33,7 +33,7 @@ public class VerliaDesperationMoon : ModProjectile
     public bool ready;
     public int holdState;
     public float throwTimer;
-   
+    public bool crushMe;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -42,6 +42,7 @@ public class VerliaDesperationMoon : ModProjectile
         writer.Write(ready);
         writer.Write(holdState);
         writer.Write(throwTimer);
+        writer.Write(crushMe);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -51,6 +52,7 @@ public class VerliaDesperationMoon : ModProjectile
         ready = reader.ReadBoolean();
         holdState = reader.ReadInt32();
         throwTimer = reader.ReadSingle();
+        crushMe=reader.ReadBoolean();
     }
 
     public override void SetStaticDefaults()
@@ -87,7 +89,7 @@ public class VerliaDesperationMoon : ModProjectile
                 {
                     ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                     shaderSystem.TintScreen(Color.LightBlue, 0.2f, 15);
-                    PixelPrimitiveCircleFactory.CreateMoonBoom(Projectile.Center);
+                    PixelPrimitiveCircleFactory.CreateVerliaMoonBoom(Projectile.Center);
                 }
 
 
@@ -207,7 +209,8 @@ public class VerliaDesperationMoon : ModProjectile
                     {
                         Player target = Main.player[parent.target];
                         float x = (target.Center.X > parent.Center.X) ? 1 : -1;
-                        Projectile.velocity.X = x * 5;
+                        if(!crushMe)
+                            Projectile.velocity.X = x * 5;
                         Projectile.velocity.Y = -16;
                         holdState++;
                     }

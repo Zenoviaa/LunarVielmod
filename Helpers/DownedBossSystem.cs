@@ -26,6 +26,7 @@ namespace Stellamod.Helpers
         StoneGolem = 15,
         Steamroller = 16,
         DescendingTwins=17,
+        Verlia=18,
     }
 
     public class Flawless : ModBuff

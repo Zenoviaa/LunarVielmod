@@ -169,7 +169,6 @@ public class VerliaWings2Shader : CrystalShader<VerliaWings2Shader>
         base.SetDefaults();
     }
 }
-
 public class VerlianWingsShader : CrystalShader<VerlianWingsShader>
 {
     private EffectParameter _scrollOffsetParam;
@@ -371,7 +370,6 @@ public class ScrollingMoonShader : CrystalShader<ScrollingMoonShader>
         }
     }
 }
-
 public class StarMixShader : CrystalShader<StarMixShader>
 {
     private EffectParameter _tilingParam;
@@ -460,118 +458,6 @@ public class StarMixShader : CrystalShader<StarMixShader>
         Tiling = Vector2.One;
     }
 }
-public class StarryMoonTrail : ModProjectile
-{
-    public override string Texture => TextureRegistry.EmptyTexture;
-    private NPC Parent => Main.npc[(int)Projectile.ai[0]];
-    private ref float ShouldKill => ref Projectile.ai[1];
-    private ref float KillTimer => ref Projectile.ai[2];
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-        ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2064;
-        ProjectileID.Sets.TrailCacheLength[Type] = 64;
-        ProjectileID.Sets.TrailingMode[Type] = 2;
-    }
-
-    public override void SetDefaults()
-    {
-        base.SetDefaults();
-        Projectile.width = 64;
-        Projectile.height = 64;
-        Projectile.tileCollide = false;
-        Projectile.timeLeft = 600;
-        Projectile.hostile = false;
-        Projectile.penetrate = -1;
-        Projectile.ignoreWater = true;
-    }
-
-    public override void AI()
-    {
-        base.AI();
-
-
-        float distanceToParent = Vector2.Distance(Parent.Center, Projectile.Center);
-        if(!Parent.active || distanceToParent > 64)
-        {
-            ShouldKill = 1;
-        }
-
-        if (Main.rand.NextBool(6))
-        {
-           var sp = SparkleParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(32, 32), Vector2.Zero);
-            sp.innerColor = Color.White;
-            sp.outerColor = Color.Blue;
-            sp.behindLayer = true;
-            sp.gravity = 0;
-            sp.noTileCollide = true;
-            sp.fast = true;
-        }
-        if (ShouldKill == 1)
-        {
-            KillTimer++;
-            if (KillTimer >= 30f)
-                Projectile.Kill();
-        }
-        if (ShouldKill == 0)
-        {
-            Projectile.velocity = (Parent.Center - Projectile.Center);
-        }
-    }
-
-    private void DrawPixelatedStarTrail(GraphicsDevice gDevice)
-    {
-        StarMixShader laserShader = StarMixShader.Instance;
-        laserShader.MaskTexture = TrailRegistry.Beamlight;
-        laserShader.InnerTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StarNoise");
-       // laserShader.t
-        laserShader.InnerColor = Color.White;
-        laserShader.OuterColor = Color.DarkBlue;
-        laserShader.Tiling = Vector2.One ;
-        laserShader.Time = Main.GlobalTimeWrappedHourly * -0.5f;
-       
-        TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetTrailColor, GetTrailWidth, laserShader, Projectile.Size * 0.5f);
-
-        BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
-        bloomTrailShader.InnerColor = Color.SkyBlue;
-        bloomTrailShader.OuterColor = Color.Blue;
-        TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetTrailColor2, GetTrailWidth2, bloomTrailShader, Projectile.Size * 0.5f);
-    }
-
-
-    private float GetTrailWidth2(float ratio)
-    {
-        return GetTrailWidth(ratio) * 1.2f;
-    }
-    private float GetTrailWidth(float ratio)
-    {
-        float width = MathHelper.Lerp(1f, 0f, KillTimer / 30f);
-        return MathHelper.SmoothStep(80, 0, ratio) * width;
-    }
-    private Color GetTrailColor2(float ratio)
-    {
-        return Color.White;
-    }
-
-    private Color GetTrailColor(float ratio)
-    {
-        Color trailColor = Color.SkyBlue;
-        trailColor = Color.Lerp(trailColor, Color.Black, ratio);
-        trailColor.A = 0;
-        return trailColor;
-    }
-
-    public override bool PreDraw(ref Color lightColor)
-    {
-        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedStarTrail, DrawLayer.BehindTiles); 
-        return false;
-    }
-
-    public override void OnKill(int timeLeft)
-    {
-        base.OnKill(timeLeft);
-    }
-}
 
 public class Verlia : ScarletBoss,
     IDrawOutlines
@@ -600,7 +486,8 @@ public class Verlia : ScarletBoss,
         Dash_Slash,
         Blade_Dance_V2,
 
-        Death
+        Death_Start,
+        Death,
     }
 
     private Asset<Texture2D> _wingTextureAsset;
@@ -608,6 +495,7 @@ public class Verlia : ScarletBoss,
     private Asset<Texture2D> _wingTextureAsset2;
 
     private Color _outlineColor;
+    private bool _dying;
     private bool _warning;
     private bool _attacking;
     private bool _showTrail;
@@ -687,6 +575,7 @@ public class Verlia : ScarletBoss,
         writer.WriteVector2(_startVelocity);
         writer.WriteVector2(_runningVelocity);
         writer.Write(_traveledDistance);
+        writer.Write(_dying);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -695,6 +584,7 @@ public class Verlia : ScarletBoss,
         _startVelocity = reader.ReadVector2();
         _runningVelocity = reader.ReadVector2();
         _traveledDistance = reader.ReadSingle();
+        _dying = reader.ReadBoolean();
     }
 
     #region Defaults
@@ -963,6 +853,11 @@ public class Verlia : ScarletBoss,
            
         }
 
+        if (_dying)
+        {
+            SwitchState(AIState.Desperation_Big_Moon);
+        }
+
     //   SwitchState(AIState.Desperation_Big_Moon);
     }
 
@@ -1132,22 +1027,18 @@ public class Verlia : ScarletBoss,
         }
     }
 
-    private void PrepareMoonPickup()
+
+    private VerliaDesperationMoon GetDesperationMoonProj()
     {
-        Vector2 pos = NPC.Center;
         foreach (var proj in Main.ActiveProjectiles)
         {
             if (proj.type == ModContent.ProjectileType<VerliaDesperationMoon>())
             {
-                pos = proj.Center;
-                break;
+                VerliaDesperationMoon despMoon = proj.ModProjectile as VerliaDesperationMoon;
+                return despMoon;
             }
         }
-
-        Vector2 targetPos = pos + Vector2.UnitY * 400;
-        Vector2 targetVelocity = (targetPos - NPC.Center);
-        float velEase = EasingFunction.InOutSine(Timer  / 80f);
-        NPC.velocity = Vector2.Lerp(Vector2.Zero, targetVelocity, velEase);
+        return null;
     }
 
     private void AI_DesperationBigMoon()
@@ -1225,13 +1116,10 @@ public class Verlia : ScarletBoss,
                     }
                     FaceTarget();
                     Vector2 pos = NPC.Center;
-                    foreach(var proj in Main.ActiveProjectiles)
+                    var moon = GetDesperationMoonProj();
+                    if(moon != null)
                     {
-                        if (proj.type == ModContent.ProjectileType<VerliaDesperationMoon>())
-                        {
-                            pos = proj.Center;
-                            break;
-                        }  
+                        pos = moon.Projectile.Center;
                     }
 
                     _showMagicCircle = true;
@@ -1308,35 +1196,28 @@ public class Verlia : ScarletBoss,
                 break;
             case 8:
                 {
+                    var despMoon = GetDesperationMoonProj();
                     if (Timer == 1 && MultiplayerHelper.IsHost)
                     {
-                        foreach (var proj in Main.ActiveProjectiles)
+   
+                        if(despMoon != null)
                         {
-                            if (proj.type == ModContent.ProjectileType<VerliaDesperationMoon>())
+                            despMoon.verliaHold = true;
+                            if (_dying)
                             {
-                                VerliaDesperationMoon despMoon = proj.ModProjectile as VerliaDesperationMoon;
-                                despMoon.verliaHold = true;
-                                despMoon.verliaNpc = NPC.whoAmI;
-                                despMoon.Projectile.netUpdate = true;
-                                break;
+                                despMoon.crushMe = true;
                             }
+                            despMoon.verliaNpc = NPC.whoAmI;
+                            despMoon.Projectile.netUpdate = true;
                         }
                     }
                     Animator.PlayAnimation(ANIM_HOLDUP);
                     FaceTarget();
                     NPC.velocity *= 0.8f;
-                    foreach (var proj in Main.ActiveProjectiles)
+                    if (despMoon != null && despMoon.holdState == 1 && despMoon.verliaNpc == NPC.whoAmI)
                     {
-                        if (proj.type == ModContent.ProjectileType<VerliaDesperationMoon>())
-                        {
-                            VerliaDesperationMoon despMoon = proj.ModProjectile as VerliaDesperationMoon;
-                            if (despMoon.holdState == 1 && despMoon.verliaNpc == NPC.whoAmI)
-                            {
-                                Timer = 0;
-                                AttackCycle++;
-                            }
-                            break;
-                        }
+                        Timer = 0;
+                        AttackCycle++;
                     }
                 }
                 break;
@@ -1365,18 +1246,11 @@ public class Verlia : ScarletBoss,
 
                     if (Timer == 1 && MultiplayerHelper.IsHost)
                     {
-                        foreach (var proj in Main.ActiveProjectiles)
+                        var despMoon = GetDesperationMoonProj();
+                        if(despMoon != null)
                         {
-                            if (proj.type == ModContent.ProjectileType<VerliaDesperationMoon>())
-                            {
-                                VerliaDesperationMoon despMoon = proj.ModProjectile as VerliaDesperationMoon;
-                                if (despMoon.verliaNpc == NPC.whoAmI)
-                                {
-                                    despMoon.holdState++;
-                                    despMoon.Projectile.netUpdate = true;
-                                }
-                                break;
-                            }
+                            despMoon.holdState++;
+                            despMoon.Projectile.netUpdate = true;
                         }
                     }
                     Animator.PlayAnimation(ANIM_HOLDUP);
@@ -1384,12 +1258,24 @@ public class Verlia : ScarletBoss,
 
                     NPC.velocity.X *= 0.9f;
                     NPC.velocity.Y = MathHelper.Lerp(1.25f, -2.5f, EasingFunction.InOutSine(Timer / 30f));
-           
-                    if(Timer >= 30)
+
+                    if (_dying)
                     {
-                        Timer = 0;
-                        AttackCycle++;
+                        if(Timer >= 30f)
+                        {
+                            Timer = 0;
+                            AttackCycle += 2;
+                        }
                     }
+                    else
+                    {
+                        if (Timer >= 30)
+                        {
+                            Timer = 0;
+                            AttackCycle++;
+                        }
+                    }
+    
                 }
                 break;
             case 11:
@@ -1397,8 +1283,34 @@ public class Verlia : ScarletBoss,
                     ExplodeOut();
                 }
                 break;
+            case 12:
+                {
+                    if(Timer == 1)
+                    {
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Moaning"));
+                    }
+
+                    Animator.PlayAnimation(ANIM_HOLDUP);
+                    NPC.velocity.X *= 0.9f;
+                    FaceTarget();
+                    if(Timer >= 75)
+                    {
+                        var despMoon = GetDesperationMoonProj();
+                        if(despMoon != null)
+                        {
+                            NPC.velocity.Y = despMoon.Projectile.velocity.Y;
+                        }
+
+                        if(despMoon == null || !despMoon.Projectile.active)
+                        {
+                            NPC.Kill();
+                        }
+                    }
+                }
+                break;
         }
     }
+
     private void AI_SwordFall()
     {
         Timer++;
@@ -2347,7 +2259,37 @@ public class Verlia : ScarletBoss,
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
+        if (NPC.life <= 0)
+        {
+            if (!_dying)
+            {
+                if(Main.netMode != NetmodeID.Server)
+                {
+                    ScreenShaderSystem tintSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                    tintSystem.TintScreen(Color.White, 0.2f, 15);
+                    float numDust = 16;
+                    for(float f =0; f < numDust;f++)
+                    {
+                        Vector2 offset = Main.rand.NextVector2CircularEdge(64, 64);
+                        DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                        spawnParams.outerColor = Color.Blue;
+                        var dp = DustParticle.Spawn(NPC.Center + offset, offset * 0.3f, spawnParams);
+                        dp.gravity = 0;
+                        dp.noTileCollide = true;
+                        dp.dampening = 0.05f;
+                        dp.Scale *= Main.rand.NextFloat(0.5f, 1f);
+                    }
+                    FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.SkyBlue, Color.DarkBlue);
+                    PixelPrimitiveCircleFactory.CreateVerliaMoonBoom(NPC.Center);
+                    SoundStyle desperationReady = AssetRegistry.Sounds.Bishinine.BishinineFastfall;
+                    SoundEngine.PlaySound(desperationReady);
+                }
+            }
+            _dying = true;
+            NPC.life = 1;
+        }
     }
+
     #region Drawing
 
 
@@ -2748,6 +2690,7 @@ public class Verlia : ScarletBoss,
     public override void OnKill()
     {
         base.OnKill();
+        DownedBossTracker.ClearFlag(DownedBossFlag.Verlia);
     }
 
     public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)

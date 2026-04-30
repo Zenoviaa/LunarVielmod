@@ -436,3 +436,14 @@ public class SteamrollerRelicItem :
 {
 
 }
+
+
+public class VerliaRelic : AbstractRelicTile<VerliaRelicItem, VerliaPage>
+{
+
+}
+
+public class VerliaRelicItem : AbstractRelicItem<VerliaRelicItem, VerliaRelic>
+{
+
+}

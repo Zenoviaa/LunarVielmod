@@ -2180,7 +2180,6 @@ namespace Stellamod.NPCs.Bosses.Zui
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MagiciansCodeHat>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RadianuiBar>(), 1, 10, 40));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShopNote>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.ZuiBossRel>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<ZuiBomb>()));
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CompletedFlowerBag>(), minimumDropped: 1, maximumDropped: 3));

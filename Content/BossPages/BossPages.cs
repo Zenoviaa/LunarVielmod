@@ -10,6 +10,7 @@ using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
 using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar;
 using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
+using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
@@ -194,6 +195,21 @@ namespace Stellamod.Content.BossPages
             flag = DownedBossFlag.Verlian_Singularity;
         }
     }
+    public class VerliaPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.IllurianTroupe;
+            bossNPC = ModContent.GetInstance<Verlia>();
+            progression = 10;
+            flag = DownedBossFlag.Verlia;
+
+            StarRanking = 6;
+            AddMasterModeReward<VerliaRelicItem>(stack: 1);
+        }
+    }
+
 
     public class BishininePage : BossPage
     {
