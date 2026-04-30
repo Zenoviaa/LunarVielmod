@@ -79,7 +79,7 @@ public class VerliaBouncingMoon : ModProjectile
         Projectile.width = 100;
         Projectile.height = 100;
         Projectile.penetrate = -1;
-        Projectile.hostile = true;
+        Projectile.hostile = false;
         Projectile.tileCollide = false;
         Projectile.light = 0.7f;
         Projectile.timeLeft = 600;
@@ -440,9 +440,16 @@ public class VerliaBouncingMoon : ModProjectile
         base.OnKill(timeLeft);
         if (this.OwnedByLocalClient())
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            Point tile = Projectile.Center.ToTileCoordinates();
+            tile.Y -= 6;
+            tile = TileUtilities.FallToSolidTile(tile);
+            tile.Y -= 1;
+            Vector2 pos = tile.ToWorldCoordinates();
+
+
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), pos, Vector2.Zero,
                 ModContent.ProjectileType<VerliaBouncingMoonShockwave>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), pos, Vector2.Zero,
                 ModContent.ProjectileType<VerliaBouncingMoonBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
     }

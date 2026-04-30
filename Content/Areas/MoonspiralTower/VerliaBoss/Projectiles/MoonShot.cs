@@ -16,6 +16,7 @@ public class MoonShot : ModProjectile
     private float _inScale;
     private ref float Timer => ref Projectile.ai[0];
     private ref float Style => ref Projectile.ai[1];
+    private ref float AIStyle => ref Projectile.ai[2];
     public override string Texture => TextureRegistry.EmptyTexture;
     public override void SetStaticDefaults()
     {
@@ -85,7 +86,9 @@ public class MoonShot : ModProjectile
             Vector2 targetVelocity = (player.Center - Projectile.Center);
             targetVelocity = targetVelocity.SafeNormalize(Vector2.Zero);
             targetVelocity *= MathHelper.Lerp(12f, 25f, EasingFunction.InExpo(Timer / 180f));
-            Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, 0.01f);
+
+            float lerp = AIStyle == 1 ? 0.005f : 0.01f;
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, targetVelocity, lerp);
         }
     }
     private void DrawTrails(GraphicsDevice gDevice)

@@ -210,11 +210,12 @@ public class VerliaClone : ModNPC,
 
                         FXUtil.ShakeCamera(NPC.Center, 1024, 16);
                     }
+                    /*
                     if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
                     {
                         SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
                         effectsPlayer.darknessCurve = MathHelper.Lerp(0.75f, 0f, EasingFunction.InExpo(Timer / 30f));
-                    }
+                    }*/
                     if (NPC.velocity.Length() < 25)
                         NPC.velocity *= 1.5f;
 

@@ -23,8 +23,10 @@ namespace Stellamod.Visual.Particles
         public float BasePower = 0.5f;
         public float BaseSize = 0.05f;
         public float Pixelation = 1f;
+        public Vector2 VectorScale;
         public override void OnSpawn()
         {
+            VectorScale = Vector2.One;
             Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
             Duration = 15;
             InnerColor = Color.White;
@@ -80,7 +82,8 @@ namespace Stellamod.Visual.Particles
             shader.Apply();
             for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(GetTexture().Value, centerPos, null, Color.White, Rotation, GetTexture().Size() / 2f, Scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(GetTexture().Value, centerPos, null, Color.White, Rotation, GetTexture().Size() / 2f, 
+                    VectorScale  * Scale, SpriteEffects.None, 0);
             }
         }
 

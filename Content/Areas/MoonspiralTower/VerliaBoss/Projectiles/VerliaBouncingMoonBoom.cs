@@ -17,7 +17,7 @@ public class VerliaBouncingMoonBoom : ModProjectile
     {
         base.SetDefaults();
         Projectile.width = 2048;
-        Projectile.height = 32;
+        Projectile.height = 64;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
         Projectile.timeLeft = 60;

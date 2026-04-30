@@ -38,6 +38,7 @@ public class VerliaGreatBlade : ModProjectile
         set => Projectile.ai[1] = (float)value;
     }
     private NPC Parent => Main.npc[(int)Projectile.ai[2]];
+
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -65,7 +66,7 @@ public class VerliaGreatBlade : ModProjectile
         _stretchAlpha = 1f;
         Projectile.width = 16;
         Projectile.height = 16;
-        Projectile.timeLeft = 6000;
+        Projectile.timeLeft = 9000;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
         Projectile.ignoreWater = true;
@@ -75,10 +76,12 @@ public class VerliaGreatBlade : ModProjectile
         Projectile.hostile = true;
     }
     private float Fixer => Projectile.extraUpdates + 1;
-    private float SwingTime => 60f * Fixer;
+    private float SwingTime => 110 * Fixer;
     private float ChargeTime => 240 * Fixer;
     private float OutTime => 30f * Fixer;
     private Vector2 AimingDirection => Projectile.velocity.X > 0 ? Vector2.UnitX : -Vector2.UnitX;
+
+    public bool noBreak;
     public override void AI()
     {
         base.AI();
@@ -127,6 +130,14 @@ public class VerliaGreatBlade : ModProjectile
 
         _flashAlpha = 0;
         _growthIndex++;
+    }
+    private void Shrink()
+    {
+        if (_growthIndex <= 0)
+            return;
+
+        _flashAlpha = 0;
+        _growthIndex--;
     }
     private void SwitchState(SwingState state)
     {
@@ -267,7 +278,16 @@ public class VerliaGreatBlade : ModProjectile
         float interpolatedRotation = MathHelper.Lerp(startRotation, endRotation, ease);
         Projectile.rotation = interpolatedRotation;
         Projectile.Center = Parent.Center;
-        if (Timer >= SwingTime - 260)
+        bool impact = !Collision.CanHitLine(Projectile.Center, 1, 1, Projectile.Center + Projectile.rotation.ToRotationVector2() * 600, 1, 1);
+        if (ease < 0.5f)
+            impact = false;
+        if (noBreak)
+            impact = false;
+        if (impact)
+        {
+            Projectile.Kill();
+        }
+        if (Timer >= SwingTime)
         {
             SwitchState(SwingState.Out);
         }
@@ -404,20 +424,66 @@ public class VerliaGreatBlade : ModProjectile
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-        float numDust = 32;
-        for (float n = 0; n < numDust; n++)
+        if (noBreak)
         {
-            Vector2 offset = Projectile.rotation.ToRotationVector2() * MathHelper.Lerp(0, 384f, Main.rand.NextFloat(0f, 1f));
-            var sp = DustParticle.Spawn(Projectile.Center + offset, Main.rand.NextVector2Circular(15, 15));
-            //sp.flickering = true;
+            float e = 50;
+            for (float d = 0; d < e; d++)
+            {
+                Vector2 spawnPos = Projectile.Center + Projectile.rotation.ToRotationVector2() * Main.rand.NextFloat(100, 700);
+                spawnPos += Main.rand.NextVector2Circular(64, 64);
+                Vector2 spawnVelocity = Projectile.rotation.ToRotationVector2();
+                spawnVelocity = spawnVelocity.RotatedByRandom(MathHelper.ToRadians(35));
+                spawnVelocity *= Main.rand.NextFloat(5f, 14f);
+                var sp = DustParticle.Spawn(spawnPos, spawnVelocity);
+                sp.dampening = 0.05f;
+                sp.noTileCollide = true;
+                sp.Scale *= Main.rand.NextFloat(0.5f, 1f);
+                sp.Scale *= 3;
+                sp.gravity = 0;
+
+                sp.innerColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
+                sp.outerColor = Color.Blue;
+            }
+
+            return;
+        }
+ 
+
+        float dustNumDust = 50;
+        for(float d = 0; d < dustNumDust; d++)
+        {
+            float ratio = d / dustNumDust;
+            float midRotation = AimingDirection.ToRotation();
+            float startRotation = midRotation - MathHelper.ToRadians(208 * AimingDirection.X);
+            float endRotation = midRotation + MathHelper.ToRadians(90 * AimingDirection.X);
+            float interpolatedRotation = MathHelper.Lerp(startRotation, endRotation, ratio);
+
+            Vector2 swingOffset = interpolatedRotation.ToRotationVector2() * Main.rand.NextFloat(520, 750);
+            Vector2 spawnPos = Projectile.Center + swingOffset;
+            spawnPos += Main.rand.NextVector2Circular(32, 32);
+            Vector2 spawnVelocity = (spawnPos - Projectile.Center).SafeNormalize(Vector2.Zero);
+            spawnVelocity = spawnVelocity.RotatedBy(MathHelper.PiOver2);
+
+            var sp = DustParticle.Spawn(spawnPos, spawnVelocity * Main.rand.NextFloat(6, 12));
             sp.dampening = 0.05f;
             sp.noTileCollide = true;
-            //    sp.flickering = true;
             sp.Scale *= Main.rand.NextFloat(0.5f, 1f);
+            sp.Scale *= 7;
             sp.gravity = 0;
-            sp.Scale *= 2;
+
+            sp.innerColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
             sp.outerColor = Color.Blue;
+
+
+            var sp2 = FaintSmokeParticle.SpawnInAlphaLayer(spawnPos, spawnVelocity * Main.rand.NextFloat(6, 12));
+            sp2.behindLayer = true;
+            sp2.fadeToColor = Color.Black;
+            sp2.color = Color.Lerp(Color.LightSkyBlue, Color.DarkBlue, Main.rand.NextFloat(0f, 1f));
+            sp2.color = Color.Lerp(sp.color, Color.Black, 0.5f);
+            //    sp.flickering = true;
+            sp2.Scale *= Main.rand.NextFloat(0.5f, 1f);
         }
+
         for (int i = 0; i < Projectile.oldRot.Length; i++)
         {
             if (!Main.rand.NextBool(8))
@@ -426,14 +492,22 @@ public class VerliaGreatBlade : ModProjectile
             FXUtil.GlowStretch(pos, (pos - Parent.Center).SafeNormalize(Vector2.Zero) * 8);
         }
 
+        if(Main.netMode != NetmodeID.Server)
+        {
+            ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            shaderSystem.TintScreen(Color.White, 0.2f, 15);
+        }
+
+        float dist = 600 * 1.5f;
+        Vector2 position = Projectile.Center + Projectile.rotation.ToRotationVector2() * dist * 0.5f;
+        Point tile = position.ToTileCoordinates();
+        tile = TileUtilities.FallToSolidTile(tile);
+        tile.Y -= 5;
+        Vector2 fallPosition = tile.ToWorldCoordinates();
+
         if (this.OwnedByLocalClient())
         {
-            float d = 600 * 1.5f;
-            Vector2 position = Projectile.Center + Projectile.rotation.ToRotationVector2() * d * 0.5f;
-            Point tile = position.ToTileCoordinates();
-            tile = TileUtilities.FallToSolidTile(tile);
-            tile.Y -= 5;
-            Vector2 fallPosition = tile.ToWorldCoordinates();
+
            // fallPosition.Y -= 48;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), fallPosition, Vector2.Zero,
                 ModContent.ProjectileType<VerliaBouncingMoonShockwave>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 2);

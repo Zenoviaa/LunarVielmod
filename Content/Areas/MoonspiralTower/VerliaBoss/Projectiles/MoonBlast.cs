@@ -103,6 +103,22 @@ public class MoonBlast : ModProjectile
     private void AI_Charge()
     {
         Timer++;
+        if(Timer == 1)
+        {
+            SoundStyle chargeSound = AssetRegistry.Sounds.Bishinine.BishinineFastfall;
+            SoundEngine.PlaySound(chargeSound, Projectile.position);
+        }
+        if(Timer % 6 == 0)
+        {
+            DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+            spawnParams.scaleRange *= 0.66f;
+            var dp = DustParticle.Spawn(Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero) * 15, spawnParams);
+            dp.Velocity = dp.Velocity.RotatedByRandom(MathHelper.ToRadians(25));
+            dp.Velocity *= Main.rand.NextFloat(0.5f, 1f);
+            dp.noTileCollide = true;
+            dp.gravity = 0;
+            dp.dampening = 0.05f;
+        }
         _glowAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / ChargeTime));
         if(Timer >= ChargeTime)
         {
@@ -116,6 +132,14 @@ public class MoonBlast : ModProjectile
         Timer++;
         if(Timer == 2)
         {
+            foreach(var proj in Main.ActiveProjectiles)
+            {
+                if(proj.type == ModContent.ProjectileType<VerliaDesperationMoon>())
+                {
+                    proj.ai[2] = 1;
+                }
+            }
+
             LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero) * 2);
             var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.SkyBlue, Color.DarkBlue);
             fx.Scale *= 1f;
@@ -234,9 +258,9 @@ public class MoonBlast : ModProjectile
         //Draw the glow
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.MuzzleFlash, Projectile.Center);
         sbDrawer.rotation = Projectile.velocity.ToRotation();
-        sbDrawer.color = Color.Lerp(Color.White, Color.Blue, 0.3f) * 0.4f;
+        sbDrawer.color = Color.Lerp(Color.White, Color.Blue, 0.3f);
         sbDrawer.color *= _glowAlpha;
-        sbDrawer.scale = Vector2.Lerp(Vector2.One * 0.5f, Vector2.One, _glowAlpha);
+        sbDrawer.scale = Vector2.Lerp(Vector2.One * 0.5f, Vector2.One, _glowAlpha) * 1.75f;
         sbDrawer.color.A = 0;
         Main.spriteBatch.Draw(sbDrawer);
 
@@ -252,9 +276,15 @@ public class MoonBlast : ModProjectile
         glowDrawer.drawOrigin.X += 80;
 
         glowDrawer.worldPosition -= Projectile.velocity.SafeNormalize(Vector2.Zero) * 186;
+        glowDrawer.color = Color.White;
+        glowDrawer.color *= _blowtorchInterp;
+        glowDrawer.color.A = 0;
+        Main.spriteBatch.Draw(glowDrawer);
+
         glowDrawer.color = Color.Blue;
         glowDrawer.color *= _blowtorchInterp;
         glowDrawer.color.A = 0;
+        glowDrawer.scale *= 1.05f;
         Main.spriteBatch.Draw(glowDrawer);
 
         glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
