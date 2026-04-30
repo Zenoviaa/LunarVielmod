@@ -720,7 +720,7 @@ public class Verlia : ScarletBoss,
         NPC.height = 64;
         NPC.damage = 50;
         NPC.defense = 15;
-        NPC.lifeMax = 10000;
+        NPC.lifeMax = 12000;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.knockBackResist = 0f;
@@ -963,7 +963,7 @@ public class Verlia : ScarletBoss,
            
         }
 
- //      SwitchState(AIState.Blade_Dance_V2);
+    //   SwitchState(AIState.Desperation_Big_Moon);
     }
 
     private void Teleport(Vector2 pos)
@@ -1184,8 +1184,15 @@ public class Verlia : ScarletBoss,
                     {
                         if (MultiplayerHelper.IsHost)
                         {
-                            Projectile.NewProjectile(SourceFromThis, NPC.Center + -Vector2.UnitY * 384, Vector2.Zero, 
+                            var modProj = Projectile.NewProjectileDirect(SourceFromThis, NPC.Center + -Vector2.UnitY * 384, Vector2.Zero, 
                                 ModContent.ProjectileType<VerliaDesperationMoon>(), Desperation_Moon_Damage, 1, Main.myPlayer);
+
+                            if (modProj.ModProjectile is VerliaDesperationMoon moon)
+                            {
+                                moon.verliaNpc = NPC.whoAmI;
+                                moon.Projectile.netUpdate = true;
+                                break;
+                            }
                         }
                     }
                     FaceTarget();

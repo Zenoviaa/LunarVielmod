@@ -129,8 +129,15 @@ public class VerliaDesperationMoon : ModProjectile
 
         }
         Timer++;
+        NPC parent = Main.npc[verliaNpc];
+        bool noVerl = !parent.active || parent.type != ModContent.NPCType<Verlia>();
+        if (noVerl)
+        {
+            holdState = 4;
+            Timer = 800;
+        }
 
-        if (Timer >= 60 && Timer < 700)
+        if (Timer >= 60 && Timer < 700 && !noVerl)
         {
             _magicCircleAlpha = MathHelper.Lerp(_magicCircleAlpha, 1f, 0.1f);
             int divisor = (int)MathHelper.Lerp(40, 20, EasingFunction.InOutSine(Timer / 400));
@@ -153,6 +160,7 @@ public class VerliaDesperationMoon : ModProjectile
         }
         else
         {
+
             _magicCircleAlpha = MathHelper.Lerp(_magicCircleAlpha, 0f, 0.1f);
             switch (holdState)
             {
@@ -161,10 +169,10 @@ public class VerliaDesperationMoon : ModProjectile
                         if (verliaHold)
                         {
                             ShakeModSystem.Shake = 2;
-                            NPC parent = Main.npc[verliaNpc];
-                            if (!parent.active)
+                            Vector2 targetPosition = parent.Center;
+                            targetPosition.Y -= 262;
+                            if (Projectile.Center.Y < targetPosition.Y)
                             {
-                                Projectile.tileCollide = true;
                                 if (Projectile.velocity.Y < 5)
                                 {
                                     Projectile.velocity.Y += 0.2f;
@@ -172,20 +180,8 @@ public class VerliaDesperationMoon : ModProjectile
                             }
                             else
                             {
-                                Vector2 targetPosition = parent.Center;
-                                targetPosition.Y -= 262;
-                                if (Projectile.Center.Y < targetPosition.Y)
-                                {
-                                    if (Projectile.velocity.Y < 5)
-                                    {
-                                        Projectile.velocity.Y += 0.2f;
-                                    }
-                                }
-                                else
-                                {
-                                    holdState++;
-                                    Projectile.velocity.Y *= 0.5f;
-                                }
+                                holdState++;
+                                Projectile.velocity.Y *= 0.5f;
                             }
                         }
           
@@ -209,7 +205,6 @@ public class VerliaDesperationMoon : ModProjectile
                     break;
                 case 3:
                     {
-                        NPC parent = Main.npc[verliaNpc];
                         Player target = Main.player[parent.target];
                         float x = (target.Center.X > parent.Center.X) ? 1 : -1;
                         Projectile.velocity.X = x * 5;

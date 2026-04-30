@@ -156,7 +156,7 @@ public class VerliaGreatBlade : ModProjectile
         if (Timer == 1)
         {
 
-            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Huhhuh"), Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Sadano"), Projectile.position);
             // SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/StarCharge"), Projectile.position);
         }
         int growth1 = (int)ChargeTime / 4;
