@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Areas.Collosseum.NPCsCL;
+﻿using Stellamod.Content.Areas.Collosseum;
+using Stellamod.Content.Areas.Collosseum.NPCsCL;
 using Stellamod.Content.Biomes;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace Stellamod.Core
         {
             base.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
             //More towns people
-            if (Main.dayTime && player.GetModPlayer<BiomePlayer>().ZoneDesertTown)
+            if (Main.dayTime && player.InModBiome<DesertTownBiome>())
             {
                 float spRate = spawnRate;
                 spawnRate = (int)(spRate * 0.3f);
