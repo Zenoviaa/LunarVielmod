@@ -203,56 +203,6 @@ public class MoonBlast : ModProjectile
         }
     }
 
-    private void DrawBlowtorch(GraphicsDevice gDevice)
-    {
-        /*
-        Vector2[] blowtorchArray = new Vector2[8];
-        for(int i = 0; i < blowtorchArray.Length; i++)
-        {
-            blowtorchArray[i] = Vector2.Lerp(
-                Projectile.Center,
-                Projectile.Center + Projectile.velocity * _blowtorchInterp, 
-                (float)i / (float)blowtorchArray.Length);
-        }
-        StarMixShader laserShader = StarMixShader.Instance;
-        laserShader.MaskTexture = TrailRegistry.Beamlight;
-        laserShader.InnerTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/StarNoise");
-        laserShader.InnerColor = Color.White;
-        laserShader.OuterColor = Color.DarkBlue;
-        laserShader.Tiling = Vector2.One * new Vector2(0.2f, 1f);
-        laserShader.Time = Main.GlobalTimeWrappedHourly * 0.5f;
-        TrailDrawer.Draw(Main.spriteBatch, blowtorchArray, GetTrailColor, GetTrailWidth, laserShader, Projectile.Size * 0.5f);
-
-        BloomTrailShader bloomTrailShader = BloomTrailShader.Instance;
-        bloomTrailShader.InnerColor = Color.SkyBlue;
-        bloomTrailShader.OuterColor = Color.Blue;
-        TrailDrawer.Draw(Main.spriteBatch, blowtorchArray, GetTrailColor2, GetTrailWidth2, bloomTrailShader, Projectile.Size * 0.5f);*/
-    }
-
-    private float GetTrailWidth2(float ratio)
-    {
-        return GetTrailWidth(ratio) * 1.2f;
-    }
-
-    private float GetTrailWidth(float ratio)
-    {
-        return MathHelper.SmoothStep(80, 40, ratio) * _blowtorchInterp;
-    }
-
-    private Color GetTrailColor2(float ratio)
-    {
-        return Color.White;
-    }
-
-    private Color GetTrailColor(float ratio)
-    {
-        Color trailColor = Color.SkyBlue;
-        trailColor = Color.Lerp(trailColor, Color.Black, ratio);
-        trailColor = Color.Lerp(trailColor, Color.Black, (1f - _blowtorchInterp));
-        trailColor.A = 0;
-        return trailColor;
-    }
-
     private void DrawPixelatedBlowtorch(SpriteBatch sb, Vector2 screenPos)
     {
         //Draw the glow
@@ -306,11 +256,6 @@ public class MoonBlast : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
-        if (State != BlastState.ChargeUp)
-        {
-            PixelationManager.QueuePrimitivesDrawAction(DrawBlowtorch);
-        }
-
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedBlowtorch, DrawLayer.OverPlayers);
         return false;
     }

@@ -17,69 +17,33 @@ namespace Stellamod.Helpers
 
             //npc.netUpdate = true;
         }
+
         public static void OpenShop(NPC npc)
         {
+            if (npc.ModNPC == null)
+                return;
+
             Main.LocalPlayer.SetTalkNPC(npc.whoAmI);
             string shopName = null;
+            npc.ModNPC.OnChatButtonClicked(false, ref shopName);
+            SoundEngine.PlaySound(SoundID.MenuTick);
 
-            if (npc.ModNPC != null)
+            if (string.IsNullOrEmpty(shopName))
             {
-                npc.ModNPC.OnChatButtonClicked(false, ref shopName);
-                SoundEngine.PlaySound(SoundID.MenuTick);
+                shopName = "Shop";
+            }
 
-                if (shopName != null)
-                {
-                    // Copied from Main.OpenShop
-                    Main.playerInventory = true;
-                    Main.stackSplit = 9999;
-                    Main.npcChatText = "";
-                    Main.SetNPCShopIndex(1);
-                    Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetShopName(npc.type, shopName), npc);
-                }
-            }
-        }
-        /// <summary>
-        /// Returns whether a boss is alive
-        /// </summary>
-        /// <returns></returns>
-        public static bool IsBossAlive()
-        {
-            for (int k = 0; k < Main.maxNPCs; k++)
-            {
-                NPC npc = Main.npc[k];
-                if (npc.boss)
-                    return true;
-            }
-            return false;
+            // Copied from Main.OpenShop
+            Main.playerInventory = true;
+            Main.stackSplit = 9999;
+            Main.npcChatText = "";
+            Main.SetNPCShopIndex(1);
+            Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetShopName(npc.type, shopName), npc);
         }
 
         public static float TilesToDistance(this float tiles)
         {
             return (tiles * 16);
-        }
-
-        public static bool IsHealthLowerThanPercent(this NPC npc, float healthPercent)
-        {
-            float lifeMax = npc.lifeMax;
-            float life = npc.life;
-            float lifeFactor = life / lifeMax;
-            return lifeFactor <= healthPercent;
-        }
-
-        public static int ScaleFromContactDamage(this NPC npc, float damageMultiplier)
-        {
-            float damage = npc.damage;
-            float factor = 1f;
-            if (Main.masterMode)
-            {
-                factor = 0.33f;
-            }
-            else if (Main.expertMode)
-            {
-                factor = 0.5f;
-            }
-
-            return (int)(damage * damageMultiplier * factor);
         }
 
         public static NPC[] FindNPCsInRange(Vector2 position, float maxDetectDistance, int npcType)
