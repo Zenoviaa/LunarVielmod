@@ -6,6 +6,7 @@ using Stellamod.Common.DungeonGeneration;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
@@ -151,10 +152,8 @@ public class ForegroundParticleRenderer : ModSystem
         {
             if (!_particles.active[i])
                 continue;
-
         
             Vector2 drawPosition = _particles.position[i] - Main.screenPosition;
-   //         Main.NewText(drawPosition);
             Vector2 drawOrigin = GetDrawOrigin(i);
             Color lightColour = Lighting.GetColor((int)(drawPosition.X / 16f), (int)(drawPosition.Y / 16f));
             Color frontColour = (_particles.position[i].Y / 16f < Main.worldSurface) ? Main.ColorOfTheSkies : new Color(85, 85, 85);
@@ -162,15 +161,11 @@ public class ForegroundParticleRenderer : ModSystem
 
             float inAlpha = EasingFunction.InOutSine(_particles.timer[i] / 30f);
             float outAlpha = 1f - ((_particles.timer[i] - 570f) / 30f);
-
-           // Main.NewText(_particles.timer[i]);
             float alpha = inAlpha * outAlpha;
 
             //Main.NewText(alpha);
             drawColor *= alpha;
             Texture2D textureAsset = _particleTextureAssets[_particles.type[i]];
-   //         Main.NewText(_particles.frame[i]);
-           // Main.NewText(_particles.frame[i]);
             spriteBatch.Draw(textureAsset, drawPosition, _particles.frame[i], drawColor, _particles.rotation[i], drawOrigin, _particles.scale[i], 
                 SpriteEffects.None, 0);
         }
@@ -185,6 +180,7 @@ public class ForegroundParticleRenderer : ModSystem
 
         ForegroundParticleRenderer renderer = ModContent.GetInstance<ForegroundParticleRenderer>();
         int steps = 0;
+
    
         //Starting from the last search index and looping around for a small performance boost
         int index = _lastIndex;
