@@ -2,6 +2,7 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.EveroseVillage.CelestiaBoss.Projectiles;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
@@ -24,19 +25,22 @@ internal class Celestia : ScarletBoss,
 
         Horse_Ride_Backflip_Shot,
         Horse_Ride_Big_Bow_Shot,
-        Project_Away,
+
         Bow_Spin,
+        Grounded_Small_Shot,
         Backflip_Bow_Rain,
         Projection_Dash,
+        Dizzy,
     }
-
+    private int _bowIndex;
     private bool _contactDamage;
     private bool _warning;
     private bool _attacking;
     private bool _showTrail;
     private bool _show;
     private float _ghostAlpha;
-
+    private float _alphaTimer;
+    private bool _firstAttack;
     private float _trailAlpha;
     private Color _outlineColor;
     private Vector2 _teleportPosition;
@@ -47,6 +51,8 @@ internal class Celestia : ScarletBoss,
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
     }
+
+
     private ref float AttackCycle => ref NPC.ai[2];
     private ref float AttackCounter => ref NPC.ai[3];
     private const string ANIM_CONFUSED = "Confused";
@@ -60,6 +66,37 @@ internal class Celestia : ScarletBoss,
     private const string ANIM_AIRTIME = "Airtime";
     private const string ANIM_LANDBACKFLIP = "LandBackflip";
 
+    private PatternManager<AIState> _horseAttacksBackingField;
+    private PatternManager<AIState> HorseAttacks
+    {
+        get
+        {
+            if(_horseAttacksBackingField == null)
+            {
+                _horseAttacksBackingField = new PatternManager<AIState>(
+                    new Tuple<AIState, float>(AIState.Horse_Ride_Backflip_Shot, 1.0f),
+                    new Tuple<AIState, float>(AIState.Horse_Ride_Big_Bow_Shot, 1.0f));
+            }
+            return _horseAttacksBackingField;
+        }
+    }
+
+    private PatternManager<AIState> _groundAttacksBackingField;
+    private PatternManager<AIState> GroundAttacks
+    {
+        get
+        {
+            if (_groundAttacksBackingField == null)
+            {
+                _groundAttacksBackingField = new PatternManager<AIState>(
+                    new Tuple<AIState, float>(AIState.Bow_Spin, 2.0f),
+                    new Tuple<AIState, float>(AIState.Backflip_Bow_Rain, 1.0f),
+                    new Tuple<AIState, float>(AIState.Grounded_Small_Shot, 2.0f));
+            }
+
+            return _groundAttacksBackingField;
+        }
+    }
     private Animator _animatorBackingField;
     private Animator Animator
     {
@@ -75,6 +112,9 @@ internal class Celestia : ScarletBoss,
     }
 
     private int Backflip_Bow_Damage => 35;
+    private int Big_Celestial_Bow_Damage => 40;
+    private int Bow_Spin_Damage => 35;
+    private int Bow_Rain_Damage => 25;
     public Animator CreateAnimator()
     {
         Animator animator = new Animator();
@@ -210,14 +250,42 @@ internal class Celestia : ScarletBoss,
             case AIState.Idle:
                 AI_Idle();
                 break;
+            case AIState.Bow_Spin:
+                AI_BowSpin();
+                break;
+            case AIState.Backflip_Bow_Rain:
+                AI_BowRain();
+                break;
+            case AIState.Grounded_Small_Shot:
+                AI_GroundedSmallShot();
+                break;
             case AIState.Horse_Ride_Backflip_Shot:
                 AI_HorseRideBackflipShot();
                 break;
-            case AIState.Death:
+            case AIState.Horse_Ride_Big_Bow_Shot:
+                AI_HorseRideBackBigShot();
+                break;
+            case AIState.Dizzy:
+                AI_Dizzy();
+                break;
+            case AIState.Projection_Dash:
+                AI_ProjectionDash();
                 break;
         }
 
-        _ghostAlpha = MathHelper.Lerp(_ghostAlpha, (_show ? 1f : 0f), 0.02f);
+        if (_show)
+        {
+            _alphaTimer++;
+        }
+        else
+        {
+            _alphaTimer--;
+        }
+
+        float fadeTime = 75;
+        _alphaTimer = MathHelper.Clamp(_alphaTimer, 0f, fadeTime);
+
+        _ghostAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(_alphaTimer / fadeTime));
         float targetTrailAlpha = _showTrail ? 1f : 0f;
         _trailAlpha = MathHelper.Lerp(_trailAlpha, targetTrailAlpha, 0.1f);
         Color targetOutlineColor = Color.Transparent;
@@ -233,17 +301,15 @@ internal class Celestia : ScarletBoss,
 
     private void ProjectOut()
     {
+        Timer++;
         _show = false;
-        NPC.velocity.X += 0.1f;
+        NPC.velocity.X += 0.1f * -NPC.direction;
         Animator.PlayAnimation(ANIM_DISAPPEAR);
         if (Animator.IsFinished())
         {
-            SwitchState(AIState.Idle);
+            Timer = 0;
+            AttackCycle++;
         }
-    }
-
-    private void ProjectIn()
-    {
 
     }
 
@@ -269,7 +335,211 @@ internal class Celestia : ScarletBoss,
         return MyTarget.Center.X > NPC.Center.X ? 1 : -1;
     }
 
-    private void AI_HorseRideBackflipShot()
+    private void TeleportHorseBackStart()
+    {
+
+        //Get the starting position and teleport there
+        if (MultiplayerHelper.IsHost)
+        {
+            Vector2 startFrom = MyTarget.Center;
+            float dir = Main.rand.NextBool(2) ? 1 : -1;
+         
+            startFrom = Fall(startFrom);
+            startFrom.X += 1024 * dir;
+            startFrom.Y -= 100;
+            Teleport(startFrom);
+        }
+
+    }
+
+    private void AI_Dizzy()
+    {
+
+    }
+
+    private void AI_ProjectionDash()
+    {
+
+    }
+    private void CreateNewAfterImage()
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+
+        Vector2 afterImageVelocity = Vector2.Zero;
+        string texture = Texture + "_"+Animator.GetAnimation();
+
+        Vector2 drawOrigin = Animator.GetDrawOrigin().Value;
+        float rotation = NPC.rotation;
+        Rectangle frame = NPC.frame;
+        SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        if (NPC.spriteDirection == -1)
+            drawOrigin.X = NPC.frame.Size().X - drawOrigin.X;
+
+        AfterImageRenderer.New(texture, frame, NPC.Bottom, afterImageVelocity, NPC.rotation, Vector2.One, drawOrigin, Color.White * 0.6f, spriteEffects);
+    }
+    private void AI_BowSpin()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+
+                    if(Timer == 5 && MultiplayerHelper.IsHost)
+                    {
+                        Vector2 vel = Vector2.UnitX * DirectionToTarget();
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, vel, ModContent.ProjectileType<CelestialBowSpin>(), Bow_Spin_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                    }
+                    _warning = true;
+                    Animator.PlayAnimation(ANIM_THROWBOW);
+                    if (Animator.IsFinished() && Timer > 45)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    if(Timer == 1)
+                    {
+                        Vector2 vel = Vector2.UnitX * DirectionToTarget();
+                        NPC.velocity = vel * 30;
+                    }
+
+
+                    if (Timer % 4 == 0)
+                    {
+                        Vector2 pos = NPC.Center + Main.rand.NextVector2Circular(48, 48);
+                        var d = Dust.NewDustPerfect(pos, DustID.GemEmerald, Scale: 1f);
+                        d.noGravity = true;
+                    }
+
+                    if(NPC.velocity.Length() > 15 && Timer % 2 == 0)
+                    {
+                        Vector2 pos = NPC.Center + Main.rand.NextVector2Circular(48, 48);
+                        Vector2 vel = NPC.velocity * 0.5f;
+                        var fx = FXUtil.GlowStretch(pos, vel);
+                        fx.OuterGlowColor = Color.Turquoise;
+                        fx.Scale *= 0.5f;
+                        CreateNewAfterImage();
+                    }
+
+
+                    NPC.velocity.X *= MathHelper.Lerp(0.96f, 0.92f, EasingFunction.InOutSine(Timer/30f));
+                    _attacking = true;
+                    _showTrail = true;
+                    Animator.PlayAnimation(ANIM_BOWOUT);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    NPC.velocity.X *= 0.92f;
+                    Animator.PlayAnimation(ANIM_IDLE);
+                    if(Timer >= 30f)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
+    }
+
+    private void AI_BowRain()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    //Prepare the attack, basic telegraph
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+
+                    _warning = true;
+                    Animator.PlayAnimation(ANIM_BACKFLIPREADY);
+                    if (Timer >= 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    //Backflip jump
+                    if (Timer == 1)
+                    {
+                        NPC.velocity.Y = -15;
+                    }
+                    _squishScale = Vector2.Lerp(new Vector2(0.9f, 1.2f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
+                    _showTrail = true;
+                    _attacking = true;
+                    NPC.noGravity = true;
+                    NPC.noTileCollide = true;
+
+                    if (Timer == 1)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Vector2 vel = new Vector2();
+                            vel.X = DirectionToTarget() * 5;
+                            vel.Y -= 15;
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center - Vector2.UnitY * 4, vel,
+                                ModContent.ProjectileType<ArrowRainBow>(), Bow_Rain_Damage, 1, Main.myPlayer, ai1: MyTarget.whoAmI);
+                        }
+                    }
+
+                    OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -100);
+                    if (NPC.velocity.Y < 15)
+                        NPC.velocity.Y += 0.25f;
+                    NPC.velocity.X *= 0.94f;
+                    Animator.PlayAnimation(ANIM_BACKFLIP);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    _squishScale = Vector2.Lerp(new Vector2(1.3f, 0.9f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
+                    NPC.noGravity = false;
+                    NPC.noTileCollide = false;
+                    Animator.PlayAnimation(ANIM_LANDBACKFLIP);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    Animator.PlayAnimation(ANIM_IDLE);
+                    if(Timer >= 60)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
+    }
+
+    private void AI_GroundedSmallShot()
     {
         Timer++;
         switch (AttackCycle)
@@ -279,13 +549,216 @@ internal class Celestia : ScarletBoss,
                     if(Timer == 1)
                     {
                         NPC.TargetClosest();
+                    }
+                    if(Timer == 3 && MultiplayerHelper.IsHost)
+                    {
+                        Vector2 vel = NPC.velocity;
+                        vel.X += Main.rand.NextFloat(-4f, 4f);
+                        var p = Projectile.NewProjectileDirect(SourceFromThis, NPC.Center - Vector2.UnitY * 4, vel,
+                            ModContent.ProjectileType<CelestialBow>(), Backflip_Bow_Damage, 1, Main.myPlayer, ai1: MyTarget.whoAmI);
+                        if(p.ModProjectile is  CelestialBow bow)
+                        {
+                            bow.style = 1;
+                            bow.Projectile.netUpdate = true;
+                        }
+                    }
+                    _warning = true;
+                    Animator.PlayAnimation(ANIM_THROWBOW);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    _attacking = true;
+                    Animator.PlayAnimation(ANIM_BOWOUT);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    SwitchState(AIState.Idle);
+                }
+                break;
+        }
+    }
 
-                        //Get the starting position and teleport there
-                        Vector2 startFrom = MyTarget.Center;
-                        startFrom.X += 1024;
-                        startFrom = Fall(startFrom);
-                        startFrom.Y -= 100;
-                        Teleport(startFrom);
+    private void AI_HorseRideBackBigShot()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    ProjectOut();
+                }
+                break;
+            case 1:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        TeleportHorseBackStart();
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            _bowIndex = Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero, ModContent.ProjectileType<BigCelestialBow>(), 
+                                Big_Celestial_Bow_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                        }
+                    }
+
+
+                    //Ride in from whatever sides
+                    _warning = true;
+                    FaceTarget();
+                    NPC.noGravity = true;
+                    NPC.noTileCollide = true;
+                    NPC.velocity.Y = MathF.Sin(Timer * 0.5f) * 0.5f;
+
+                    float dist = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
+                    float direction = DirectionToTarget();
+                    float gallopSpeed = MathHelper.Lerp(5, 10, EasingFunction.Clamp(dist / 384f));
+                    NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, gallopSpeed * direction, 0.1f);
+                    Animator.PlayAnimation(ANIM_HOLDINGBOW);
+
+                    _showTrail = true;
+                    if (dist <= 666 && Timer > 30)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    NPC.velocity.X *= 0.98f;
+                    _attacking = true;
+                    FaceTarget();
+                    NPC.noGravity = true;
+                    NPC.noTileCollide = true;
+                    NPC.velocity.Y = MathF.Sin(Timer * 0.5f) * 0.5f;
+
+                    if(Timer >= 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+  
+                }
+                break;
+            case 3:
+                {
+                    _attacking = true;
+                    FaceTarget();
+                    NPC.noGravity = true;
+                    NPC.noTileCollide = true;
+                    NPC.velocity.Y = MathF.Sin(Timer * 0.5f) * 0.5f;
+
+                    if (Timer == 12 && MultiplayerHelper.IsHost)
+                    {
+                        Main.projectile[_bowIndex].ai[2] = 1;
+                        Main.projectile[_bowIndex].netUpdate = true;
+                    }
+
+
+                    Animator.PlayAnimation(ANIM_BOWOUT);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
+                    NPC.noGravity = true;
+                    NPC.noTileCollide = true;
+                    NPC.velocity.Y = MathF.Sin(Timer * 0.5f) * 0.5f;
+                    Animator.PlayAnimation(ANIM_BACKFLIPREADY);
+                    if(Timer >= 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 5:
+                {
+                    //Gotta jump off
+                    if (Timer == 1)
+                    {
+                        NPC.velocity.Y = -15;
+                    }
+                    _squishScale = Vector2.Lerp(new Vector2(0.9f, 1.2f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
+                    _showTrail = true;
+                    NPC.noGravity = true;
+                    NPC.noTileCollide = true;
+                    if (NPC.velocity.Y < 15)
+                        NPC.velocity.Y += 0.5f;
+                    NPC.velocity.X *= 0.94f;
+                    Animator.PlayAnimation(ANIM_BACKFLIP);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 6:
+                {
+                    _squishScale = Vector2.Lerp(Vector2.One, new Vector2(0.9f, 1.2f), EasingFunction.InOutSine(Timer / 30f));
+                    _showTrail = true;
+                    NPC.noGravity = true;
+                    NPC.noTileCollide = false;
+
+                    if (NPC.velocity.Y < 15)
+                        NPC.velocity.Y += 0.5f;
+                    NPC.velocity.X *= 0.94f;
+
+                    Animator.PlayAnimation(ANIM_AIRTIME);
+                    if (NPC.collideY)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 7:
+                {
+                    _squishScale = Vector2.Lerp(new Vector2(1.3f, 0.9f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
+                    NPC.noGravity = false;
+                    NPC.noTileCollide = false;
+                    Animator.PlayAnimation(ANIM_LANDBACKFLIP);
+                    if (Animator.IsFinished())
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
+    }
+    private void AI_HorseRideBackflipShot()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    ProjectOut();
+                }
+                break;
+            case 1:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        TeleportHorseBackStart();
                     }
 
                     //Ride in from whatever sides
@@ -309,7 +782,7 @@ internal class Celestia : ScarletBoss,
                     }
                 }
                 break;
-            case 1:
+            case 2:
                 {
                     if(Timer == 1)
                     {
@@ -343,7 +816,7 @@ internal class Celestia : ScarletBoss,
                     }
                 }
                 break;
-            case 2:
+            case 3:
                 {
                     _squishScale = Vector2.Lerp(Vector2.One, new Vector2(0.9f, 1.2f), EasingFunction.InOutSine(Timer / 30f));
                     _showTrail = true;
@@ -362,7 +835,7 @@ internal class Celestia : ScarletBoss,
                     }
                 }
                 break;
-            case 3:
+            case 4:
                 {
                     _squishScale = Vector2.Lerp( new Vector2(1.3f, 0.9f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
                     if (Timer == 5)
@@ -385,7 +858,7 @@ internal class Celestia : ScarletBoss,
                     }
                 }
                 break;
-            case 4:
+            case 5:
                 {
                     _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.2f);
                     FaceTarget();
@@ -401,7 +874,7 @@ internal class Celestia : ScarletBoss,
                     }
                 }
                 break;
-            case 5:
+            case 6:
                 {
                     FaceTarget();
                     NPC.noGravity = true;
@@ -416,9 +889,9 @@ internal class Celestia : ScarletBoss,
                     }
                 }
                 break;
-            case 6:
+            case 7:
                 {
-                    ProjectOut();
+                    SwitchState(AIState.Idle);
                 }
                 break;
         }
@@ -453,9 +926,21 @@ internal class Celestia : ScarletBoss,
     {
         if (MultiplayerHelper.IsHost)
         {
-            AIState state = AIState.Horse_Ride_Backflip_Shot;
+            AIState state;
+            if(!_firstAttack || GroundAttacks.HasNothingLeft())
+            {
+                state = HorseAttacks.NextPattern();
+                GroundAttacks.ResetToDefaultWeights();
+                _firstAttack = true;
+            }
+            else
+            {
+                state = GroundAttacks.NextPattern();
+            }
+
             SwitchState(state);
         }
+        SwitchState(AIState.Bow_Spin);
     }
     private void AI_Idle()
     {
@@ -463,11 +948,10 @@ internal class Celestia : ScarletBoss,
         NPC.velocity.X *= 0.5f;
         NPC.noGravity = false;
         NPC.noTileCollide = false;
-
-        _show = false;
         Timer++;
         FaceTarget();
-        if(Timer >= 120)
+        Animator.PlayAnimation(ANIM_IDLE);
+        if(Timer >= 90)
         {
             ChooseAttack();
         }
@@ -478,6 +962,10 @@ internal class Celestia : ScarletBoss,
 
     }
 
+    public override void HitEffect(NPC.HitInfo hit)
+    {
+        base.HitEffect(hit);
+    }
 
     public override void FindFrame(int frameHeight)
     {

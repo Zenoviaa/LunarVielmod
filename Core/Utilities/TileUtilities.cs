@@ -1,14 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 
 namespace Stellamod.Core.Utilities;
 
 public static class TileUtilities
 {
+    public static void FastPlaceTile(int x, int y, ushort tileType)
+    {
+        Tile tile = Main.tile[x, y];
+        tile.ClearTile();
+        tile.TileType = tileType;
+        tile.HasTile = true;
+
+        //-1 means it'll get framed later I think.
+        tile.TileFrameX = -1;
+        tile.TileFrameY = -1;
+
+        //Unsure if this is needed?
+        //WorldGen.SquareTileFrame(x, y);
+    }
     public static Point FallToSolidTile(Point tile)
     {
         return FallToSolidTile(tile.X, tile.Y);
@@ -34,7 +43,7 @@ public static class TileUtilities
             tilePoint.Y = 0;
         if (tilePoint.X >= Main.maxTilesX)
             tilePoint.X = Main.maxTilesX - 1;
-        if(tilePoint.Y >= Main.maxTilesY)
+        if (tilePoint.Y >= Main.maxTilesY)
             tilePoint.Y = Main.maxTilesY - 1;
         return tilePoint;
     }
@@ -52,7 +61,7 @@ public static class TileUtilities
         Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
 
         topLeftTile = Clamp(topLeftTile);
-        bottomRightTile = Clamp(bottomRightTile);   
-        return (topLeftTile, bottomRightTile);  
-    } 
+        bottomRightTile = Clamp(bottomRightTile);
+        return (topLeftTile, bottomRightTile);
+    }
 }

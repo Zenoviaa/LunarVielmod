@@ -28,6 +28,16 @@ namespace Stellamod.Helpers
             //If an attack hits, the current weight of the attack increases by 0.25, and the default weight increases by 0.5
         }
 
+        public bool HasNothingLeft()
+        {
+            float weight = 0f;
+            float totalWeight = 0f;
+            foreach (var kvp in _weights)
+            {
+                totalWeight += kvp.Value;
+            }
+            return totalWeight <= 0;
+        }
         public void AddWeight(T t, float weight)
         {
             _weights[t] += weight;

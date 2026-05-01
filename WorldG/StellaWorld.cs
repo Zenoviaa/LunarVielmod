@@ -16,6 +16,7 @@ using Stellamod.Content.Armors.Alcalite;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Core.RibbonSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
@@ -3338,6 +3339,8 @@ public partial class StellaWorld : ModSystem
         MistyDungeonLocation = placementTile;
     }
 
+
+
     private void WorldGenFableTerrain(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Fable Terrain";
@@ -3365,7 +3368,7 @@ public partial class StellaWorld : ModSystem
             float height = (int)(GetFableHillHeight(ratio) * hillHeight);
             for (int y = 0; y < height; y++)
             {
-                WorldGen.PlaceTile(x, startHillTile.Y - y, TileID.Dirt);
+                TileUtilities.FastPlaceTile(x, y, TileID.Dirt);
             }
         }
 
@@ -3400,7 +3403,7 @@ public partial class StellaWorld : ModSystem
             Point tilePlace = new Point(x, startY);
             for (int y = startY; y < fableFalloffEnd.Y; y++)
             {
-                WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
+                TileUtilities.FastPlaceTile(tilePlace.X, y, TileID.Dirt);
             }
         }
 
@@ -3436,7 +3439,8 @@ public partial class StellaWorld : ModSystem
             Point tilePlace = new Point(x, startY);
             for (int y = startY; y < fableFalloffEnd.Y; y++)
             {
-                WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
+                TileUtilities.FastPlaceTile(tilePlace.X, y, TileID.Dirt);
+               // WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
             }
         }
 

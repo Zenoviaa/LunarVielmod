@@ -1892,3 +1892,6 @@ CelestialImpact.DisplayName: Celestial Impact
 CelestialShot.DisplayName: Celestial Shot
 MiniCelestialArrow.DisplayName: Mini Celestial Arrow
 ProjectionDashTrail.DisplayName: Projection Dash Trail
+ArrowRainBow.DisplayName: Arrow Rain Bow
+MiniCelestialArrowRainer.DisplayName: Mini Celestial Arrow Rainer
+CelestialBowSpin.DisplayName: Celestial Bow Spin

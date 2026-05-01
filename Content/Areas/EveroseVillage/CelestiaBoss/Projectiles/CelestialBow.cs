@@ -9,6 +9,7 @@ using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.EveroseVillage.CelestiaBoss.Projectiles;
 
+
 public class CelestialBow : ModProjectile
 {
     private Vector2 _mirageOffset;
@@ -28,6 +30,17 @@ public class CelestialBow : ModProjectile
     private ref float Timer => ref Projectile.ai[0];
     private Player Target => Main.player[(int)Projectile.ai[1]];
     private ref float AttackTimer => ref Projectile.ai[2];
+    public int style;
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.Write(style);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        style = reader.ReadInt32();
+    }
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -92,8 +105,11 @@ public class CelestialBow : ModProjectile
             {
                 if (this.OwnedByLocalClient() && AttackTimer == 70)
                 {
+                    int projStyle = 0;
+                    if (style == 1)
+                        projStyle = 2;
                     Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2(),
-                        ModContent.ProjectileType<CelestialArrow>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: Target.whoAmI);
+                        ModContent.ProjectileType<CelestialArrow>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: Target.whoAmI, ai2: projStyle);
                 }
                 if (AttackTimer == 70 || AttackTimer == 80 || AttackTimer == 90)
                 {
@@ -225,6 +241,7 @@ public class CelestialArrow : ModProjectile
     private Vector2 _mirageOffset;
     private ref float Timer => ref Projectile.ai[0];
     private Player Target => Main.player[(int)Projectile.ai[1]];
+    private ref float Style => ref Projectile.ai[2];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -253,17 +270,21 @@ public class CelestialArrow : ModProjectile
         if(Timer == 1)
         {
             _stretchScale = Vector2.One;
-            for(float f = 0; f < 4f; f++)
+            if(Style == 0)
             {
-                Vector2 vel = Projectile.velocity;
-                vel = vel.RotatedByRandom(MathHelper.PiOver4 / 2f);
-                vel *= Main.rand.NextFloat(5f, 15f);
-                DustParticle dp = DustParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(16, 16), vel);
-                dp.outerColor = Color.Turquoise;
-                dp.gravity = 0;
-                dp.dampening = 0.05f;
-                dp.noTileCollide = true;
+                for (float f = 0; f < 4f; f++)
+                {
+                    Vector2 vel = Projectile.velocity;
+                    vel = vel.RotatedByRandom(MathHelper.PiOver4 / 2f);
+                    vel *= Main.rand.NextFloat(5f, 15f);
+                    DustParticle dp = DustParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(16, 16), vel);
+                    dp.outerColor = Color.Turquoise;
+                    dp.gravity = 0;
+                    dp.dampening = 0.05f;
+                    dp.noTileCollide = true;
+                }
             }
+
 
             GlowDonutParticle d = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 2);
             d.outerColor = Color.Turquoise;
@@ -292,16 +313,26 @@ public class CelestialArrow : ModProjectile
             }
      
         }
-        if (Projectile.velocity.Length() < 50)
-            Projectile.velocity *= 1.1f;
 
-        float dotProduct = Vector2.Dot(Projectile.velocity.SafeNormalize(Vector2.Zero), (Target.Center - Projectile.Center).SafeNormalize(Vector2.Zero));
-        if(dotProduct > 0)
+        if(Style == 0)
         {
-            Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, Target.Center, degreesToRotate: 0.5f);
+            if (Projectile.velocity.Length() < 50)
+                Projectile.velocity *= 1.1f;
+
+            float dotProduct = Vector2.Dot(Projectile.velocity.SafeNormalize(Vector2.Zero), (Target.Center - Projectile.Center).SafeNormalize(Vector2.Zero));
+            if (dotProduct > 0)
+            {
+                Projectile.velocity = ProjectileHelper.SimpleHomingVelocity(Projectile, Target.Center, degreesToRotate: 0.5f);
+            }
+        } else if (Style == 1 || Style == 2)
+        {
+            if (Projectile.velocity.Length() < 15)
+                Projectile.velocity *= 1.1f;
+
         }
-  
-        if(Timer % 6 == 0)
+
+
+        if (Timer % 6 == 0)
         {
             DustParticle dp = DustParticle.Spawn(Projectile.Center, Projectile.velocity * 0.1f);
             dp.outerColor = Color.Turquoise;
@@ -321,7 +352,7 @@ public class CelestialArrow : ModProjectile
             sp.gravity = 0;
             sp.dampening = 0.05f;
         }
-        if (Timer > 80)
+        if (Timer > 80 || (Style == 1 && Projectile.Bottom.Y > Target.Top.Y))
         {
             Projectile.tileCollide = true;
         }
@@ -420,28 +451,3 @@ public class CelestialArrow : ModProjectile
     }
 }
 
-
-public class  CelestialImpact : ModProjectile
-{
-    public override string Texture => TextureRegistry.EmptyTexture;
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-    }
-    public override void SetDefaults()
-    {
-        base.SetDefaults();
-    }
-    public override void AI()
-    {
-        base.AI();
-    }
-    public override bool PreDraw(ref Color lightColor)
-    {
-        return base.PreDraw(ref lightColor);
-    }
-    public override void OnKill(int timeLeft)
-    {
-        base.OnKill(timeLeft);
-    }
-}
