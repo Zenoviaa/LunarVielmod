@@ -743,6 +743,7 @@ internal class Celestia : ScarletBoss,
                     if(Timer == 1)
                     {
                         NPC.TargetClosest();
+                        Warn();
                     }
                     if(Timer == 3 && MultiplayerHelper.IsHost)
                     {
@@ -1196,7 +1197,7 @@ internal class Celestia : ScarletBoss,
 
             SwitchState(state);
         }
-        SwitchState(AIState.Horse_Ride_Big_Bow_Shot);
+        //SwitchState(AIState.Horse_Ride_Big_Bow_Shot);
     }
     private void AI_Idle()
     {

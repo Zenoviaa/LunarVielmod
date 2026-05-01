@@ -298,7 +298,7 @@ public class CelestialArrow : ModProjectile
             d2.Scale *= 0.15f;
             Projectile.velocity *= 8;
 
-            if(Style == 0)
+            if(Style == 0 || Style == 2)
             {
                 SoundStyle shootSound1 = AssetRegistry.Sounds.Celestia.SmallBowShoot1 with { PitchVariance = 0.3f };
                 SoundStyle shootSound2 = AssetRegistry.Sounds.Celestia.SmallBowShoot2 with { PitchVariance = 0.3f };
@@ -312,6 +312,10 @@ public class CelestialArrow : ModProjectile
                         break;
                 }
            //     SoundEngine.PlaySound(backflipSound, NPC.position);
+            }
+            if(Style == 1)
+            {
+                Projectile.velocity *= 0.6f;
             }
         }
 
