@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -295,7 +296,23 @@ public class CelestialArrow : ModProjectile
             d2.outerColor = Color.Turquoise;
             d2.fadeToColor = Color.DarkTurquoise;
             d2.Scale *= 0.15f;
-            Projectile.velocity *= 5;
+            Projectile.velocity *= 8;
+
+            if(Style == 0)
+            {
+                SoundStyle shootSound1 = AssetRegistry.Sounds.Celestia.SmallBowShoot1 with { PitchVariance = 0.3f };
+                SoundStyle shootSound2 = AssetRegistry.Sounds.Celestia.SmallBowShoot2 with { PitchVariance = 0.3f };
+                switch (Main.rand.Next(2))
+                {
+                    case 0:
+                        SoundEngine.PlaySound(shootSound1, Projectile.position);
+                        break;
+                    case 1:
+                        SoundEngine.PlaySound(shootSound2, Projectile.position);
+                        break;
+                }
+           //     SoundEngine.PlaySound(backflipSound, NPC.position);
+            }
         }
 
         if (Timer % 4 == 0)
@@ -316,8 +333,8 @@ public class CelestialArrow : ModProjectile
 
         if(Style == 0)
         {
-            if (Projectile.velocity.Length() < 50)
-                Projectile.velocity *= 1.1f;
+            if (Projectile.velocity.Length() < 30)
+                Projectile.velocity *= 1.2f;
 
             float dotProduct = Vector2.Dot(Projectile.velocity.SafeNormalize(Vector2.Zero), (Target.Center - Projectile.Center).SafeNormalize(Vector2.Zero));
             if (dotProduct > 0)
@@ -352,7 +369,7 @@ public class CelestialArrow : ModProjectile
             sp.gravity = 0;
             sp.dampening = 0.05f;
         }
-        if (Timer > 80 || (Style == 1 && Projectile.Bottom.Y > Target.Top.Y))
+        if (Timer > 10 || (Style == 1 && Projectile.Bottom.Y > Target.Top.Y))
         {
             Projectile.tileCollide = true;
         }
@@ -447,6 +464,32 @@ public class CelestialArrow : ModProjectile
             dp.dampening = 0.05f;
             dp.gravity = 0;
             dp.Scale *= 0.5f;
+        }
+
+       for(int i = 0; i < Projectile.oldPos.Length - 1; i++)
+        {
+            if (Main.rand.NextBool(2))
+            {
+                Vector2 vel = -(Projectile.oldPos[i] - Projectile.oldPos[i + 1]);
+                vel = vel.RotatedByRandom(MathHelper.ToRadians(25));
+                vel = vel.SafeNormalize(Vector2.Zero);
+                vel *= Main.rand.NextFloat(2, 7);
+                DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                spawnParams.innerColor = Color.LightGreen;
+                spawnParams.outerColor = Color.Turquoise;
+                var dp = DustParticle.Spawn(Projectile.oldPos[i] + Projectile.Size * 0.5f, vel, spawnParams);
+                dp.fast = true;
+                dp.noTileCollide = true;
+                dp.dampening = 0.05f;
+                dp.gravity = 0;
+            //    dp.Scale *= 0.5f;
+            }
+        }
+
+         if(Style == 1)
+        {
+            SoundStyle arrowRainHit = AssetRegistry.Sounds.Celestia.ArrowRainArrowhitground with { PitchVariance = 0.4f };
+            SoundEngine.PlaySound(arrowRainHit, Projectile.position);
         }
     }
 }

@@ -1,13 +1,18 @@
-﻿using Stellamod.Common.Animations;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Animations;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.EveroseVillage.CelestiaBoss.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using Stellamod.Trails;
+using Stellamod.Visual.Particles;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -30,6 +35,8 @@ internal class Celestia : ScarletBoss,
         Grounded_Small_Shot,
         Backflip_Bow_Rain,
         Projection_Dash,
+
+        Punish_Snipe,
         Dizzy,
     }
     private int _bowIndex;
@@ -38,10 +45,14 @@ internal class Celestia : ScarletBoss,
     private bool _attacking;
     private bool _showTrail;
     private bool _show;
+    private bool _showSlideTrail;
+    private bool _projectionFlicker;
+    private float _projectionAlpha;
     private float _ghostAlpha;
     private float _alphaTimer;
     private bool _firstAttack;
     private float _trailAlpha;
+    private float _slideTrailAlpha;
     private Color _outlineColor;
     private Vector2 _teleportPosition;
     private Vector2 _squishScale;
@@ -193,7 +204,7 @@ internal class Celestia : ScarletBoss,
         NPC.npcSlots = 10f;
         NPC.scale = 1f;
         NPC.aiStyle = -1;
-
+        
         // The following code assigns a music track to the boss in a simple way.
         if (!Main.dedServ)
         {
@@ -234,11 +245,14 @@ internal class Celestia : ScarletBoss,
             _teleportPosition = Vector2.Zero;
         }
 
+        Lighting.AddLight(NPC.position, Color.LightGreen.ToVector3() * 0.78f);
         _contactDamage = false;
         _warning = false;
         _attacking = false;
         _showTrail = false;
         _show = true;
+        _projectionFlicker = false;
+        _showSlideTrail = false;
         switch (State)
         {
             case AIState.Despawn:
@@ -271,8 +285,13 @@ internal class Celestia : ScarletBoss,
             case AIState.Projection_Dash:
                 AI_ProjectionDash();
                 break;
+            case AIState.Punish_Snipe:
+                AI_PunishSnipe();
+                break;
         }
 
+        float a = _projectionFlicker ? 1 : 0;
+        _projectionAlpha = MathHelper.Lerp(_projectionAlpha, a, 0.1f);
         if (_show)
         {
             _alphaTimer++;
@@ -288,6 +307,13 @@ internal class Celestia : ScarletBoss,
         _ghostAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(_alphaTimer / fadeTime));
         float targetTrailAlpha = _showTrail ? 1f : 0f;
         _trailAlpha = MathHelper.Lerp(_trailAlpha, targetTrailAlpha, 0.1f);
+
+
+        float slideTrailAlpha = _showSlideTrail ? 1f : 0f;
+        _slideTrailAlpha = MathHelper.Lerp(_slideTrailAlpha, slideTrailAlpha, 0.1f);
+
+
+
         Color targetOutlineColor = Color.Transparent;
         if (_attacking)
         {
@@ -299,6 +325,12 @@ internal class Celestia : ScarletBoss,
         _outlineColor = Color.Lerp(_outlineColor, targetOutlineColor, 0.1f);
     }
 
+    private void Warn()
+    {
+        SoundStyle warningSound = AssetRegistry.Sounds.Celestia.CelestiaAbouttoAttack;
+        warningSound.PitchVariance = 0.3f;
+        SoundEngine.PlaySound(warningSound, NPC.position)
+;    }
     private void ProjectOut()
     {
         Timer++;
@@ -359,8 +391,78 @@ internal class Celestia : ScarletBoss,
 
     private void AI_ProjectionDash()
     {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+
+                    _projectionFlicker = true;
+                    FaceTarget();
+                
+                    Animator.PlayAnimation(ANIM_THROWBOW);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    if (Timer == 1)
+                    {
+                        Vector2 vel = Vector2.UnitX * DirectionToTarget();
+                        float speed = MathF.Abs(MyTarget.Center.X - NPC.Center.X) / 16f;
+                        NPC.velocity = vel * speed;
+                    }
+
+
+                    if (Timer % 4 == 0)
+                    {
+                        Vector2 pos = NPC.Center + Main.rand.NextVector2Circular(48, 48);
+                        var d = Dust.NewDustPerfect(pos, DustID.GemEmerald, Scale: 1f);
+                        d.noGravity = true;
+                    }
+
+                    if (NPC.velocity.Length() > 15 && Timer % 2 == 0)
+                    {
+                        Vector2 pos = NPC.Center + Main.rand.NextVector2Circular(48, 48);
+                        Vector2 vel = NPC.velocity * 0.5f;
+                        var fx = FXUtil.GlowStretch(pos, vel);
+                        fx.OuterGlowColor = Color.Turquoise;
+                        fx.Scale *= 0.5f;
+                        CreateNewAfterImage();
+                    }
+
+
+                    NPC.velocity.X *= MathHelper.Lerp(0.96f, 0.92f, EasingFunction.InOutSine(Timer / 30f));
+                    _showTrail = true;
+                    Animator.PlayAnimation(ANIM_BOWOUT);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    ChooseAttack();
+                }
+                break;
+        }
+    }
+
+    private void AI_PunishSnipe()
+    {
 
     }
+
     private void CreateNewAfterImage()
     {
         if (Main.netMode == NetmodeID.Server)
@@ -378,6 +480,7 @@ internal class Celestia : ScarletBoss,
 
         AfterImageRenderer.New(texture, frame, NPC.Bottom, afterImageVelocity, NPC.rotation, Vector2.One, drawOrigin, Color.White * 0.6f, spriteEffects);
     }
+
     private void AI_BowSpin()
     {
         Timer++;
@@ -387,17 +490,21 @@ internal class Celestia : ScarletBoss,
                 {
                     if (Timer == 1)
                     {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Vector2 vel = Vector2.UnitX * DirectionToTarget();
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, vel,
+                                ModContent.ProjectileType<CelestialBowSpin>(), Bow_Spin_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: 1);
+                        }
                         NPC.TargetClosest();
+                        Warn();
                     }
 
-                    if(Timer == 5 && MultiplayerHelper.IsHost)
-                    {
-                        Vector2 vel = Vector2.UnitX * DirectionToTarget();
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, vel, ModContent.ProjectileType<CelestialBowSpin>(), Bow_Spin_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI);
-                    }
                     _warning = true;
-                    Animator.PlayAnimation(ANIM_THROWBOW);
-                    if (Animator.IsFinished() && Timer > 45)
+                    FaceTarget();
+                    Animator.PlayAnimation(ANIM_IDLE);
+                    _squishScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.9f), EasingFunction.InOutSine(Timer / 60f));
+                    if(Timer >= 60)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -406,13 +513,42 @@ internal class Celestia : ScarletBoss,
                 break;
             case 1:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
-                        Vector2 vel = Vector2.UnitX * DirectionToTarget();
-                        NPC.velocity = vel * 30;
+                        NPC.TargetClosest();
+                       
                     }
 
+                    _squishScale = Vector2.Lerp(new Vector2(1.2f, 0.9f), Vector2.One, EasingFunction.InSine(Timer / 30f));
+                    _attacking = true;
+                    _showSlideTrail = true;
+                    NPC.velocity.X *= 0.98f;
+                    if(Timer == 25)
+                    {
+                        NPC.velocity.X = DirectionToTarget() * 6;
+                    }
 
+                    if (Timer == 25 && MultiplayerHelper.IsHost)
+                    {
+                        Vector2 vel = Vector2.UnitX * DirectionToTarget();
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, vel,
+                            ModContent.ProjectileType<CelestialBowSpin>(), Bow_Spin_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                    }
+                   
+                    FaceTarget();
+                    Animator.PlayAnimation(ANIM_THROWBOW);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    _attacking = true;
+                    _showSlideTrail = true;
+                    NPC.velocity.X *= 0.98f;
                     if (Timer % 4 == 0)
                     {
                         Vector2 pos = NPC.Center + Main.rand.NextVector2Circular(48, 48);
@@ -432,21 +568,20 @@ internal class Celestia : ScarletBoss,
 
 
                     NPC.velocity.X *= MathHelper.Lerp(0.96f, 0.92f, EasingFunction.InOutSine(Timer/30f));
-                    _attacking = true;
-                    _showTrail = true;
-                    Animator.PlayAnimation(ANIM_BOWOUT);
-                    if (Animator.IsFinished())
+         
+                    Animator.PlayAnimation(ANIM_HOLDINGBOW);
+                    if (Timer >= 78)
                     {
                         Timer = 0;
                         AttackCycle++;
                     }
                 }
                 break;
-            case 2:
+            case 3:
                 {
                     NPC.velocity.X *= 0.92f;
-                    Animator.PlayAnimation(ANIM_IDLE);
-                    if(Timer >= 30f)
+                    Animator.PlayAnimation(ANIM_BOWOUT);
+                    if(Animator.IsFinished())
                     {
                         SwitchState(AIState.Idle);
                     }
@@ -466,6 +601,7 @@ internal class Celestia : ScarletBoss,
                     if(Timer == 1)
                     {
                         NPC.TargetClosest();
+                        Warn();
                     }
 
                     _warning = true;
@@ -482,6 +618,9 @@ internal class Celestia : ScarletBoss,
                     //Backflip jump
                     if (Timer == 1)
                     {
+                        SoundStyle backflipSound = AssetRegistry.Sounds.Celestia.CelestiaBackflip with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(backflipSound, NPC.position);
+                        NPC.velocity.X = -(DirectionToTarget() * 4);
                         NPC.velocity.Y = -15;
                     }
                     _squishScale = Vector2.Lerp(new Vector2(0.9f, 1.2f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
@@ -492,20 +631,24 @@ internal class Celestia : ScarletBoss,
 
                     if (Timer == 1)
                     {
+                     
                         if (MultiplayerHelper.IsHost)
                         {
                             Vector2 vel = new Vector2();
                             vel.X = DirectionToTarget() * 5;
                             vel.Y -= 15;
-                            Projectile.NewProjectile(SourceFromThis, NPC.Center - Vector2.UnitY * 4, vel,
+                            var proj = Projectile.NewProjectileDirect(SourceFromThis, NPC.Center - Vector2.UnitY * 4, vel,
                                 ModContent.ProjectileType<ArrowRainBow>(), Bow_Rain_Damage, 1, Main.myPlayer, ai1: MyTarget.whoAmI);
+                            ArrowRainBow bow = proj.ModProjectile as ArrowRainBow;
+                            bow.parentIndex = NPC.whoAmI;
+                            bow.Projectile.netUpdate = true;
                         }
                     }
 
                     OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -100);
                     if (NPC.velocity.Y < 15)
                         NPC.velocity.Y += 0.25f;
-                    NPC.velocity.X *= 0.94f;
+                    NPC.velocity.X *= 0.99f;
                     Animator.PlayAnimation(ANIM_BACKFLIP);
                     if (Animator.IsFinished())
                     {
@@ -516,11 +659,19 @@ internal class Celestia : ScarletBoss,
                 break;
             case 2:
                 {
-                    _squishScale = Vector2.Lerp(new Vector2(1.3f, 0.9f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
-                    NPC.noGravity = false;
+                    _squishScale = Vector2.Lerp(Vector2.One, new Vector2(0.9f, 1.2f), EasingFunction.InOutSine(Timer / 30f));
+                    _showTrail = true;
+                    NPC.noGravity = true;
                     NPC.noTileCollide = false;
-                    Animator.PlayAnimation(ANIM_LANDBACKFLIP);
-                    if (Animator.IsFinished())
+
+                    if (NPC.velocity.Y < 15)
+                        NPC.velocity.Y += 0.5f;
+                    NPC.velocity.X *= 0.99f;
+
+                    Animator.PlayAnimation(ANIM_AIRTIME);
+
+
+                    if (IsGrounded())
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -529,8 +680,51 @@ internal class Celestia : ScarletBoss,
                 break;
             case 3:
                 {
+                    if (Timer == 1)
+                    {
+                        NPC.velocity.X += DirectionToTarget() * 7;
+                    }
+                    if (Timer % 6 == 0)
+                    {
+                        var sp = SparkleParticle.Spawn(NPC.Bottom + Main.rand.NextVector2Circular(12, 12), Vector2.Zero);
+                        sp.outerColor = Color.Turquoise;
+                        sp.Scale *= 0.5f;
+                        sp.gravity = 0;
+                        sp.fast = true;
+                    }
+                    _showSlideTrail = true;
+                    _showTrail = true;
+                    _squishScale = Vector2.Lerp(new Vector2(1.3f, 0.9f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
+                    NPC.noGravity = false;
+                    NPC.noTileCollide = false;
+                    Animator.PlayAnimation(ANIM_LANDBACKFLIP);
+                    NPC.velocity.X *= 0.98f;
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
+
+                    _showSlideTrail = true;
+                    _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.2f);
+                    FaceTarget();
+                    NPC.noGravity = true;
+                    NPC.noTileCollide = false;
+                    if (Timer % 6 == 0)
+                    {
+                        var sp = SparkleParticle.Spawn(NPC.Bottom + Main.rand.NextVector2Circular(12, 12), Vector2.Zero);
+                        sp.outerColor = Color.Turquoise;
+                        sp.Scale *= 0.5f;
+                        sp.gravity = 0;
+                        sp.fast = true;
+                    }
+                    NPC.velocity.X *= 0.98f;
                     Animator.PlayAnimation(ANIM_IDLE);
-                    if(Timer >= 60)
+                    if (Timer >= 45)
                     {
                         SwitchState(AIState.Idle);
                     }
@@ -598,6 +792,10 @@ internal class Celestia : ScarletBoss,
             case 0:
                 {
                     ProjectOut();
+                    if(Timer == 1)
+                    {
+                        Warn();
+                    }
                 }
                 break;
             case 1:
@@ -644,10 +842,17 @@ internal class Celestia : ScarletBoss,
                     NPC.noTileCollide = true;
                     NPC.velocity.Y = MathF.Sin(Timer * 0.5f) * 0.5f;
 
-                    if(Timer >= 60)
+                    if (MultiplayerHelper.IsHost)
                     {
-                        Timer = 0;
-                        AttackCycle++;
+                        Projectile p = Main.projectile[_bowIndex];
+                        BigCelestialBow bigCelestialBow = p.ModProjectile as BigCelestialBow;
+                        if (bigCelestialBow.ready)
+                        {
+                            Timer = 0;
+                            AttackCycle++;
+                            NPC.netUpdate = true;
+                        }
+            
                     }
   
                 }
@@ -693,6 +898,9 @@ internal class Celestia : ScarletBoss,
                     //Gotta jump off
                     if (Timer == 1)
                     {
+                        SoundStyle backflipSound = AssetRegistry.Sounds.Celestia.CelestiaBackflip with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(backflipSound, NPC.position);
+                        NPC.velocity.X = -(MathF.Sign(NPC.velocity.X) * 8);
                         NPC.velocity.Y = -15;
                     }
                     _squishScale = Vector2.Lerp(new Vector2(0.9f, 1.2f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
@@ -722,7 +930,7 @@ internal class Celestia : ScarletBoss,
                     NPC.velocity.X *= 0.94f;
 
                     Animator.PlayAnimation(ANIM_AIRTIME);
-                    if (NPC.collideY)
+                    if (IsGrounded())
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -731,17 +939,64 @@ internal class Celestia : ScarletBoss,
                 break;
             case 7:
                 {
+                    if (Timer == 1)
+                    {
+                        NPC.velocity.X += DirectionToTarget() * 7;
+                    }
+                    if (Timer % 6 == 0)
+                    {
+                        var sp = SparkleParticle.Spawn(NPC.Bottom + Main.rand.NextVector2Circular(12, 12), Vector2.Zero);
+                        sp.outerColor = Color.Turquoise;
+                        sp.Scale *= 0.5f;
+                        sp.gravity = 0;
+                        sp.fast = true;
+                    }
+                    _showSlideTrail = true;
+                    _showTrail = true;
                     _squishScale = Vector2.Lerp(new Vector2(1.3f, 0.9f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
                     NPC.noGravity = false;
                     NPC.noTileCollide = false;
                     Animator.PlayAnimation(ANIM_LANDBACKFLIP);
+                    NPC.velocity.X *= 0.98f;
                     if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 8:
+                {
+                    _showSlideTrail = true;
+                    _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.2f);
+                    FaceTarget();
+                    NPC.noGravity = true;
+                    NPC.noTileCollide = false;
+                    if (Timer % 6 == 0)
+                    {
+                        var sp = SparkleParticle.Spawn(NPC.Bottom + Main.rand.NextVector2Circular(12, 12), Vector2.Zero);
+                        sp.outerColor = Color.Turquoise;
+                        sp.Scale *= 0.5f;
+                        sp.gravity = 0;
+                        sp.fast = true;
+                    }
+                    NPC.velocity.X *= 0.98f;
+                    Animator.PlayAnimation(ANIM_IDLE);
+                    if (Timer >= 45)
                     {
                         SwitchState(AIState.Idle);
                     }
                 }
                 break;
         }
+    }
+    private bool IsGrounded()
+    {
+        Point solidTileBelow = NPC.Bottom.ToTileCoordinates();
+        solidTileBelow.Y++;
+        bool isGrounded = Main.tile[solidTileBelow].HasTile && Main.tileSolid[Main.tile[solidTileBelow].TileType];
+        return isGrounded;
+         
     }
     private void AI_HorseRideBackflipShot()
     {
@@ -751,6 +1006,10 @@ internal class Celestia : ScarletBoss,
             case 0:
                 {
                     ProjectOut();
+                    if(Timer == 1)
+                    {
+                        Warn();
+                    }
                 }
                 break;
             case 1:
@@ -786,6 +1045,9 @@ internal class Celestia : ScarletBoss,
                 {
                     if(Timer == 1)
                     {
+                        SoundStyle backflipSound = AssetRegistry.Sounds.Celestia.CelestiaBackflip with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(backflipSound, NPC.position);
+                        NPC.velocity.X = -(MathF.Sign(NPC.velocity.X) * 8);
                         NPC.velocity.Y = -15;
                     }
                     _squishScale = Vector2.Lerp(new Vector2(0.9f, 1.2f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
@@ -794,20 +1056,20 @@ internal class Celestia : ScarletBoss,
                     NPC.noGravity = true;
                     NPC.noTileCollide = true;
 
-                    if(Timer == 15 || Timer == 45)
+                    if(Timer == 25 || Timer == 35 || Timer == 42)
                     {
                         if (MultiplayerHelper.IsHost)
                         {
                             Vector2 vel = NPC.velocity;
-                            vel.X += Main.rand.NextFloat(-4f, 4f);
-                            Projectile.NewProjectile(SourceFromThis, NPC.Center - Vector2.UnitY * 4, vel,
+                            vel.X += Main.rand.NextFloat(-2f, 2f);
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center, vel,
                                 ModContent.ProjectileType<CelestialBow>(), Backflip_Bow_Damage, 1, Main.myPlayer, ai1: MyTarget.whoAmI);
                         }
                     }
                     
                     if(NPC.velocity.Y < 15)
                         NPC.velocity.Y += 0.5f;
-                    NPC.velocity.X *= 0.94f;
+                    NPC.velocity.X *= 0.96f;
                     Animator.PlayAnimation(ANIM_BACKFLIP);
                     if (Animator.IsFinished())
                     {
@@ -828,7 +1090,9 @@ internal class Celestia : ScarletBoss,
                     NPC.velocity.X *= 0.94f;
 
                     Animator.PlayAnimation(ANIM_AIRTIME);
-                    if (NPC.collideY)
+      
+                    
+                    if (IsGrounded())
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -837,21 +1101,26 @@ internal class Celestia : ScarletBoss,
                 break;
             case 4:
                 {
-                    _squishScale = Vector2.Lerp( new Vector2(1.3f, 0.9f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
-                    if (Timer == 5)
+                    if(Timer == 1)
                     {
-                        if (MultiplayerHelper.IsHost)
-                        {
-                            Vector2 vel = NPC.velocity;
-                            Projectile.NewProjectile(SourceFromThis, NPC.Center - Vector2.UnitY * 4, vel,
-                                ModContent.ProjectileType<CelestialBow>(), Backflip_Bow_Damage, 1, Main.myPlayer, ai1: MyTarget.whoAmI);
-                        }
+                        NPC.velocity.X += DirectionToTarget() * 7;
                     }
-
+                    if(Timer % 6 == 0)
+                    {
+                        var sp = SparkleParticle.Spawn(NPC.Bottom + Main.rand.NextVector2Circular(12, 12), Vector2.Zero);
+                        sp.outerColor = Color.Turquoise;
+                        sp.Scale *= 0.5f;
+                        sp.gravity = 0;
+                        sp.fast = true;
+                    }
+                    _showSlideTrail = true;
+                    _showTrail = true;
+                    _squishScale = Vector2.Lerp( new Vector2(1.3f, 0.9f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
                     NPC.noGravity = false;
                     NPC.noTileCollide = false;
                     Animator.PlayAnimation(ANIM_LANDBACKFLIP);
-                    if (Animator.IsFinished())
+                    NPC.velocity.X *= 0.98f;
+                    if (Animator.IsFinished() )
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -860,38 +1129,25 @@ internal class Celestia : ScarletBoss,
                 break;
             case 5:
                 {
+                    _showSlideTrail = true;
                     _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.2f);
                     FaceTarget();
                     NPC.noGravity = true;
                     NPC.noTileCollide = false;
-
-                    NPC.velocity.X *= 0.94f;
-                    Animator.PlayAnimation(ANIM_THROWBOW);
-                    if(Animator.IsFinished())
+                    if (Timer % 6 == 0)
                     {
-                        Timer = 0;
-                        AttackCycle++;
+                        var sp = SparkleParticle.Spawn(NPC.Bottom + Main.rand.NextVector2Circular(12, 12), Vector2.Zero);
+                        sp.outerColor = Color.Turquoise;
+                        sp.Scale *= 0.5f;
+                        sp.gravity = 0;
+                        sp.fast = true;
                     }
-                }
-                break;
-            case 6:
-                {
-                    FaceTarget();
-                    NPC.noGravity = true;
-                    NPC.noTileCollide = false;
-
-                    NPC.velocity.X *= 0.94f;
-                    Animator.PlayAnimation(ANIM_BOWOUT);
-                    if (Animator.IsFinished())
+                    NPC.velocity.X *= 0.98f;
+                    Animator.PlayAnimation(ANIM_IDLE);
+                    if(Timer >= 45)
                     {
-                        Timer = 0;
-                        AttackCycle++;
+                        SwitchState(AIState.Idle);
                     }
-                }
-                break;
-            case 7:
-                {
-                    SwitchState(AIState.Idle);
                 }
                 break;
         }
@@ -940,12 +1196,12 @@ internal class Celestia : ScarletBoss,
 
             SwitchState(state);
         }
-        SwitchState(AIState.Bow_Spin);
+        SwitchState(AIState.Horse_Ride_Big_Bow_Shot);
     }
     private void AI_Idle()
     {
         _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.2f);
-        NPC.velocity.X *= 0.5f;
+        NPC.velocity.X *= 0.98f;
         NPC.noGravity = false;
         NPC.noTileCollide = false;
         Timer++;
@@ -972,6 +1228,22 @@ internal class Celestia : ScarletBoss,
         base.FindFrame(frameHeight);
         Animator.Update();
         NPC.frame.Y = Animator.GetFrameY(frameHeight);
+    }
+    private float GetTrailWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(0, 8, EasingFunction.QuadraticBump(ratio)) * _slideTrailAlpha;
+    }
+    private Color GetTrailColor(float ratio)
+    {
+        return Color.Lerp(Color.Lerp(Color.White, Color.Turquoise, ExtraMath.Osc(0f, 1f, speed: 12)), Color.Transparent, ratio) * _slideTrailAlpha;
+    }
+    private void DrawTrail(GraphicsDevice gDevice)
+    {
+        RichLaserShader laserShader = RichLaserShader.Instance;
+        laserShader.LaserTexture = TrailRegistry.CorkscrewTrail;
+        laserShader.InnerColor = Color.White;
+        laserShader.OuterColor = Color.White;
+        TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, GetTrailColor, GetTrailWidth, laserShader, new Vector2(NPC.Size.X * 0.5f, NPC.Size.Y));
     }
     private void DrawAfterImage(SpriteBatch spriteBatch)
     {
@@ -1015,10 +1287,34 @@ internal class Celestia : ScarletBoss,
 
     }
 
+    private void DrawPixelatedSprites(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, NPC.Bottom);
+        sbDrawer.scale *= 0.12f * ExtraMath.Osc(0.9f, 1f, speed: 24);
+        sbDrawer.color = Color.Turquoise * _slideTrailAlpha;
+        sbDrawer.color.A = 0;
+        Main.spriteBatch.Draw(sbDrawer);
+
+        //     sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, NPC.Bottom);
+        sbDrawer.scale *= 0.9f;
+        sbDrawer.color = Color.White * _slideTrailAlpha;
+        sbDrawer.color.A = 0;
+        Main.spriteBatch.Draw(sbDrawer);
+    }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+        PixelationManager.QueuePrimitivesDrawAction(DrawTrail);
         DrawAfterImage(spriteBatch);
         DrawSprite(spriteBatch, Vector2.Zero, drawColor);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSprites);
+        if (_projectionFlicker)
+        {
+            SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+            spriteBatch.Restart(effect: whiteShader.Effect);
+            DrawSprite(spriteBatch, Vector2.Zero,
+                Color.Lerp(Color.Turquoise, Color.DarkTurquoise, ExtraMath.Osc(0f, 1f, speed: 24)) * 0.5f * _projectionAlpha * ExtraMath.Osc(0f, 1f, speed: 24));
+            spriteBatch.RestartDefaults();
+        }
         return false;
     }
 

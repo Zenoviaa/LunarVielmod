@@ -1,4 +1,5 @@
-﻿using Stellamod.Assets;
+﻿using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
@@ -8,6 +9,7 @@ using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -24,6 +26,8 @@ public class ArrowRainBow : ModProjectile
     private ref float Timer => ref Projectile.ai[0];
     private Player Target => Main.player[(int)Projectile.ai[1]];
     private ref float AttackTimer => ref Projectile.ai[2];
+
+    public int parentIndex;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -115,6 +119,14 @@ public class ArrowRainBow : ModProjectile
         else
         {
             Projectile.velocity.Y *= 0.94f;
+        }
+
+
+        NPC parent = Main.npc[parentIndex];
+        
+        if(AttackTimer < 60)
+        {
+            Projectile.Center = parent.Center;
         }
 
         _pullScale = Vector2.Lerp(_pullScale, _targetPullScale, 0.1f);
@@ -424,6 +436,11 @@ public class MiniCelestialArrowRainer : ModProjectile
         base.AI();
         OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -64);
         Timer++;
+        if(Timer == 1)
+        {
+            SoundStyle arrowRainStart = AssetRegistry.Sounds.Celestia.ArrowRainStart with { PitchVariance = 0.3f, Volume = 0.5f };
+            SoundEngine.PlaySound(arrowRainStart, Target.position);
+        }
         if(Timer % 7 == 0 && this.OwnedByLocalClient())
         {
             Vector2 pos = Target.Center;
@@ -439,6 +456,15 @@ public class MiniCelestialArrowRainer : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
+        Asset<Texture2D> gradientTexture = TextureAssets.Projectile[Type];
+        Vector2 drawOrigin = gradientTexture.Size() * 0.5f;
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, (int)(Main.screenHeight * 0.2f * MathHelper.Lerp(0.2f, 1f, EasingFunction.QuadraticBump(Timer / 100f))));
+        Color drawColor = Color.Lerp(Color.Transparent, Color.Turquoise, EasingFunction.OutExpo(Timer / 30f) *
+            EasingFunction.InOutSine((float)Projectile.timeLeft / 30f));
+        drawColor *= 0.5f;
+        drawColor.A = 0;
+        spriteBatch.Draw(gradientTexture.Value, drawRect, drawColor);
         return false;
     }
     public override void OnKill(int timeLeft)

@@ -563,6 +563,8 @@ public class Verlia : ScarletBoss,
 
     private int Mini_Moon_Damage => 20;
     private int Moon_Slash_Damage => 35;
+
+    private int Moon_Slash_Hold_Damage => 70;
     private int Moon_Shot_Damage => 20;
     private int Moon_Blade_damage = 30;
     private int Great_Blade_Damage => 50;
@@ -1909,7 +1911,7 @@ public class Verlia : ScarletBoss,
                             float dir = MyTarget.Center.X > NPC.Center.X ? 1 : -1;
                             Vector2 velocity = Vector2.UnitX * dir;
                             Projectile.NewProjectile(SourceFromThis, NPC.Center, velocity,
-                                ModContent.ProjectileType<MoonSlashHold>(), Moon_Slash_Damage, 1, Main.myPlayer, ai0: NPC.whoAmI);
+                                ModContent.ProjectileType<MoonSlashHold>(), Moon_Slash_Hold_Damage, 1, Main.myPlayer, ai0: NPC.whoAmI);
                         }
                     }
                     if (Timer % 3 == 0)

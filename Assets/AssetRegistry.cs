@@ -45,6 +45,19 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+            public static class Celestia
+            {
+                public static SoundStyle ArrowRainStart => new SoundStyle($"{Path}Celestia/ArrowRainStart");
+                public static SoundStyle ArrowRainArrowhitground => new SoundStyle($"{Path}Celestia/ArrowRainArrowhitground");
+                public static SoundStyle ArrowCrash => new SoundStyle($"{Path}Celestia/ArrowCrash");
+                public static SoundStyle BigBowCharge => new SoundStyle($"{Path}Celestia/BigBowCharge");
+                public static SoundStyle BigBowFullyGrown => new SoundStyle($"{Path}Celestia/BigBowFullyGrown");
+                public static SoundStyle CelestiaAbouttoAttack => new SoundStyle($"{Path}Celestia/CelestiaAbouttoAttack");
+                public static SoundStyle CelestiaBackflip => new SoundStyle($"{Path}Celestia/CelestiaBackflip");
+                public static SoundStyle CelestiaBowThrow => new SoundStyle($"{Path}Celestia/CelestiaBowThrow");
+                public static SoundStyle SmallBowShoot1 => new SoundStyle($"{Path}Celestia/SmallBowShoot1");
+                public static SoundStyle SmallBowShoot2 => new SoundStyle($"{Path}Celestia/SmallBowShoot2");
+            }
             public static class Verlia
             {
                 public static SoundStyle BigMoonExplosion => new SoundStyle($"{Path}Verlia/BigMoonExplosion");
