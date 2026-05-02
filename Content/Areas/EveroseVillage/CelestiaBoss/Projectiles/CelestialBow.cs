@@ -472,7 +472,7 @@ public class CelestialArrow : ModProjectile
 
        for(int i = 0; i < Projectile.oldPos.Length - 1; i++)
         {
-            if (Main.rand.NextBool(2))
+            if (Main.rand.NextBool(4))
             {
                 Vector2 vel = -(Projectile.oldPos[i] - Projectile.oldPos[i + 1]);
                 vel = vel.RotatedByRandom(MathHelper.ToRadians(25));
@@ -481,12 +481,13 @@ public class CelestialArrow : ModProjectile
                 DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
                 spawnParams.innerColor = Color.LightGreen;
                 spawnParams.outerColor = Color.Turquoise;
+                spawnParams.scaleRange *= 0.66f;
                 var dp = DustParticle.Spawn(Projectile.oldPos[i] + Projectile.Size * 0.5f, vel, spawnParams);
                 dp.fast = true;
                 dp.noTileCollide = true;
                 dp.dampening = 0.05f;
                 dp.gravity = 0;
-            //    dp.Scale *= 0.5f;
+        
             }
         }
 
