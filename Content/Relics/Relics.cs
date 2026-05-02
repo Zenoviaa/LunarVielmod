@@ -447,3 +447,12 @@ public class VerliaRelicItem : AbstractRelicItem<VerliaRelicItem, VerliaRelic>
 {
 
 }
+public class CelestiaRelic : AbstractRelicTile<CelestiaRelicItem, CelestiaPage>
+{
+
+}
+
+public class CelestiaRelicItem : AbstractRelicItem<CelestiaRelicItem, CelestiaRelic>
+{
+
+}

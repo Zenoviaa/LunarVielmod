@@ -152,13 +152,13 @@ namespace Stellamod.Core.Particles
             for (int i = 0; i < AdditiveParticles.Count; i++)
             {
                 var particle = AdditiveParticles[i];
-                if (particle == null || !particle.active)
+                if (!particle.active)
                     continue;
 
                 if (!ParticleUtils.OnScreen(particle.Center - Main.screenPosition))
                     continue;
 
-                if (particle.customShader != myCustomShader || spriteBatch.GraphicsDevice.BlendState != BlendState.Additive)
+                if (particle.customShader != myCustomShader)
                 {
                     spriteBatch.End();
                     myCustomShader = particle.customShader;

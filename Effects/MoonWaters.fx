@@ -311,6 +311,19 @@ float4 CombinePS(VertexShaderOutput input) : COLOR
     return finalColor * input.Color;
 }
 
+float4 CombineALLPS(VertexShaderOutput input) : COLOR
+{
+    float2 coords = input.TextureCoordinates;
+    float4 heightMapColor = tex2D(HeightMapTextureSampler, coords);     
+    float3 gradient = lerp(endGradient, startGradient, heightMapColor.a);
+    
+    float4 baseWaterColor = tex2D(SpriteTextureSampler, coords);
+    float4 fancyWaterColor = tex2D(WaterTextureSampler, coords);
+    
+    float4 finalColor = fancyWaterColor * baseWaterColor.a;
+    return finalColor * input.Color;
+}
+
 technique SpriteDrawing
 {
     pass P0
@@ -354,6 +367,7 @@ technique CausticsDrawing
         PixelShader = compile PS_SHADERMODEL CausticsPS();
     }
 };
+
 technique SparklingCausticsDrawing
 {
     pass P0
@@ -361,6 +375,7 @@ technique SparklingCausticsDrawing
         PixelShader = compile PS_SHADERMODEL SparklingCausticsPS();
     }
 };
+
 technique FoamDrawing
 {
     pass P0
@@ -368,6 +383,7 @@ technique FoamDrawing
         PixelShader = compile PS_SHADERMODEL FoamPS();
     }
 };
+
 technique PosterizeDrawing
 {
     pass P0
@@ -375,6 +391,7 @@ technique PosterizeDrawing
         PixelShader = compile PS_SHADERMODEL PosterizePS();
     }
 };
+
 technique BlurDrawing
 {
     pass P0
@@ -382,10 +399,19 @@ technique BlurDrawing
         PixelShader = compile PS_SHADERMODEL BlurPS();
     }
 };
+
 technique CombineRTDrawing
 {
     pass P0
     {
         PixelShader = compile PS_SHADERMODEL CombinePS();
+    }
+};
+
+technique CombineRTAllDrawing
+{
+    pass P0
+    {
+        PixelShader = compile PS_SHADERMODEL CombineALLPS();
     }
 };

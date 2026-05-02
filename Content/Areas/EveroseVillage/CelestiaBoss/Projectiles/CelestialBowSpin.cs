@@ -16,7 +16,18 @@ public class CelestialBowSpin : ModProjectile
 {
     private Vector2 _mirageOffset;
     private ref float Timer => ref Projectile.ai[0];
-    private NPC Parent => Main.npc[(int)Projectile.ai[1]];
+    private NPC Parent
+    {
+        get
+        {
+            int parentIndex = (int)Projectile.ai[1];
+            //Genuinely so confused how this even happens
+            if (parentIndex < 0 || parentIndex >= Main.npc.Length)
+                return Main.npc[0];
+            NPC parent = Main.npc[parentIndex];
+            return parent;
+        }
+    }
     private ref float Style => ref Projectile.ai[2];
     public override void SetStaticDefaults()
     {
@@ -108,10 +119,8 @@ public class CelestialBowSpin : ModProjectile
     {
         BlackFireShader laserShader =BlackFireShader.Instance;
         laserShader.Tiling = new Vector2(1f, 1f);
-        //   laserShader.LaserTexture = TrailRegistry.TwistingTrail;
         laserShader.PrimaryTexture = TrailRegistry.WhispyTrail;
         laserShader.BloomTexture = TrailRegistry.WhispyTrail;
-   //     laserShader.LaserColor = Color.LightGreen;
         laserShader.InnerColor = Color.Turquoise;
         laserShader.OuterColor = Color.Lerp(Color.Turquoise, Color.Black, 0.85f);
         TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetTrailColor, GetTrailWidth, laserShader, Projectile.Size * 0.5f);
@@ -121,26 +130,8 @@ public class CelestialBowSpin : ModProjectile
         bloomTrail.InnerColor = Color.Turquoise;
         bloomTrail.OuterColor = Color.Black;
         TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetTrailColor, GetTrailWidth2, bloomTrail, Projectile.Size * 0.5f);
-
-        /*
-        BasicLaserShader splittingShader = BasicLaserShader.Instance;
-        splittingShader.LaserTexture = AssetManager.LaserTextures.SplittingTrail;
-        splittingShader.InnerColor = Color.Turquoise;
-        splittingShader.OuterColor = Color.Lerp(Color.White, Color.DarkTurquoise, ExtraMath.Osc(0f, 1f, speed: 16));
-        TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, DashTrailColorFunction, DashTrailWidthFunction, splittingShader, Projectile.Size * 0.5f);
-        */
-        // TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, DashTrailColorFunction, DashTrailWidthFunction, splittingShader, Projectile.Size * 0.5f);
-    }
-    private float DashTrailWidthFunction(float completionRatio)
-    {
-        float outAlpha = EasingFunction.Clamp((float)Projectile.timeLeft / 60f);
-        return MathHelper.Lerp(58, 0, completionRatio) * outAlpha;
     }
 
-    private Color DashTrailColorFunction(float completionRatio)
-    {
-        return Color.Lerp(Color.White, Color.Transparent, completionRatio);
-    }
     private float GetTrailWidth(float completionRatio)
     {
         float outAlpha = EasingFunction.Clamp((float)Projectile.timeLeft / 60f);

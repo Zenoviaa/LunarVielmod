@@ -117,3 +117,9 @@ VerliaPage: {
 	WhereToFind: In Your Mom
 	Lore: Birthed by your mom
 }
+
+CelestiaPage: {
+	DisplayName: Who???
+	WhereToFind: In Your Mom
+	Lore: Birthed by your mom
+}

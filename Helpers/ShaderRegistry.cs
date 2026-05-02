@@ -176,10 +176,6 @@ namespace Stellamod.Helpers
             RegisterMiscShader("LunarVeil:SimpleDistortion", "Effects/SimpleDistortion", "PixelPass");
             RegisterMiscShader("LunarVeil:SimpleMasking", "Effects/SimpleMasking", "PixelPass");
 
-            Asset<Effect> lavaRef = Assets.Request<Effect>("Effects/Lava");
-            Filters.Scene["LunarVeil:Lava"] = new Filter(new ScreenShaderData(lavaRef, "PrimitivesPass"), EffectPriority.VeryHigh);
-            Filters.Scene["LunarVeil:Lava"].Load();
-
             //Skies
             SkyManager.Instance["LunarVeil:RoyalCapitalSky"] = new RoyalCapitalSky();
             SkyManager.Instance["LunarVeil:RoyalCapitalSky"].Load();
@@ -195,9 +191,6 @@ namespace Stellamod.Helpers
 
             SkyManager.Instance["Stellamod:AlcadSky"] = new NaxtrinSky3();
             SkyManager.Instance["Stellamod:AlcadSky"].Load();
-
-            SkyManager.Instance["Stellamod:VillageSky"] = new VillageSky();
-            SkyManager.Instance["Stellamod:VillageSky"].Load();
 
             RegisterMiscCrystalShader("Clouds", "ScreenPass");
             RegisterMiscCrystalShader("CloudsFront", "ScreenPass");

@@ -10887,3 +10887,8 @@ VerliaRelicItem: {
 	DisplayName: Verlia Relic Item
 	Tooltip: ""
 }
+
+CelestiaRelicItem: {
+	DisplayName: Celestia Relic Item
+	Tooltip: ""
+}

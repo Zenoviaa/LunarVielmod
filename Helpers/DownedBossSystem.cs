@@ -27,6 +27,7 @@ namespace Stellamod.Helpers
         Steamroller = 16,
         DescendingTwins=17,
         Verlia=18,
+        Celestia=19
     }
 
     public class Flawless : ModBuff

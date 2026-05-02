@@ -56,6 +56,12 @@ namespace Stellamod.Helpers
                 _weights.Add(kvp.Key, kvp.Value);
             }
         }
+        public void ResetToDefaultWeight(T key)
+        {
+            _weights[key] = 0;
+        }
+
+
 
 
         public void ZeroWeights()

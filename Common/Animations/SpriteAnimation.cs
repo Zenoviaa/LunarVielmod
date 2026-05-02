@@ -33,6 +33,13 @@ namespace Stellamod.Common.Animations
             _animations.Add(name, animation);
         }
 
+        public bool IsTimerFinished(float timer)
+        {
+            if (_currentAnimation == null)
+                return true;
+            return _currentAnimation.ShouldBeFinished(timer);
+        }
+
         public bool IsFinished()
         {
             if (_currentAnimation == null)
@@ -145,6 +152,17 @@ namespace Stellamod.Common.Animations
             }
 
             isPlaying = true;
+        }
+
+        public float AnimationTime()
+        {
+            float ticksPerFrame = 1f / frameSpeed;
+            return ticksPerFrame * (endFrame-startFrame);
+        }
+
+        public bool ShouldBeFinished(float timer)
+        {
+            return timer >= AnimationTime();
         }
 
         public void Stop()

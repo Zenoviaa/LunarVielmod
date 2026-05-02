@@ -29,6 +29,27 @@ public class DefaultPixelWaterStyle : PixelWaterStyle
         priority = -1;
     }
 }
+
+public class LavaStyle : PixelWaterStyle
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+    }
+    public override bool IsActive(Player player)
+    {
+        return 
+            player.ZoneUnderworldHeight || 
+            player.GetModPlayer<MyPlayer>().ZoneCinder || 
+            player.GetModPlayer<MyPlayer>().ZoneDrakonic;
+    }
+    public override void ModifyPixelWater(ref PixelWater pixelWater)
+    {
+        base.ModifyPixelWater(ref pixelWater);
+     //  pixelWater.noLighting = true;
+    }
+}
+
 /// <summary>
 /// Default pixel water that looks like the ocean
 /// </summary>
@@ -45,7 +66,7 @@ public class BeachPixelWaterStyle : PixelWaterStyle
     public override void ModifyPixelWater(ref PixelWater pixelWater)
     {
         base.ModifyPixelWater(ref pixelWater);
-        pixelWater.NoLighting = true;
+        pixelWater.noLighting = true;
     }
 }
 public class CoralwaysWaterStyle : PixelWaterStyle
@@ -64,10 +85,10 @@ public class CoralwaysWaterStyle : PixelWaterStyle
     public override void ModifyPixelWater(ref PixelWater pixelWater)
     {
         base.ModifyPixelWater(ref pixelWater);
-        pixelWater.NoLighting = true;
-        pixelWater.Vibrant = true;
+        pixelWater.noLighting = true;
+        pixelWater.vibrant = true;
         pixelWater.EndGradientColor = Color.Lerp(Color.Aqua, Color.Black, 0.05f);
-        pixelWater.IgnoreSkyColor = true;
+        pixelWater.ignoreSkyColor = true;
     }
 }
 
@@ -114,8 +135,8 @@ public class AegislavWaterStyle : PixelWaterStyle
     public override void ModifyPixelWater(ref PixelWater pixelWater)
     {
         base.ModifyPixelWater(ref pixelWater);
-            pixelWater.NoLighting = false;
-            pixelWater.Vibrant = true;
+            pixelWater.noLighting = false;
+            pixelWater.vibrant = true;
         pixelWater.StartGradientColor = Color.RosyBrown;
         pixelWater.EndGradientColor = Color.Red;
         pixelWater.BackgroundColor = Color.Lerp(Color.Pink, Color.Black, ExtraMath.Osc(0f,0.5f, speed: 3));
@@ -213,6 +234,7 @@ public class PixelWater
         CausticsTexture = LoadTexture("WaterCaustics");
         NoiseTexture = LoadTexture("WaterNoise2");
         TilingMultiplier = Vector2.One;
+        affectsLava = false;
     }
 
     private Asset<Texture2D> LoadTexture(string fileName)
@@ -226,9 +248,10 @@ public class PixelWater
     public Vector2 TilingMultiplier;
     public Asset<Texture2D> NoiseTexture;
     public Asset<Texture2D> CausticsTexture;
-    public bool NoLighting;
-    public bool Vibrant;
-    public bool IgnoreSkyColor;
+    public bool noLighting;
+    public bool vibrant;
+    public bool ignoreSkyColor;
+    public bool affectsLava;
 }
 
 public class PixelWaterStyleComparer : IComparer<PixelWaterStyle>
@@ -248,7 +271,6 @@ public class MoonWaterSystem : ModSystem
         public float height;
     }
 
-    private ManagedRenderTarget _waterRT;
     private ManagedRenderTarget _waterHeightMapRT;
     private ManagedRenderTarget _waterTextureRT;
     private ManagedRenderTarget _waterTextureRTSwap;
@@ -278,7 +300,6 @@ public class MoonWaterSystem : ModSystem
         On_Main.CheckMonoliths += RenderHook;
         On_Main.DrawDust += CopyScreenTarget;
         On_OverlayManager.Draw += ApplyWaterShader;
-        On_Main.Draw += DrawToScreen;
         On_Main.DrawWaters += StopDrawWater;
     }
 
@@ -296,21 +317,10 @@ public class MoonWaterSystem : ModSystem
         On_Main.CheckMonoliths -= RenderHook;
         On_Main.DrawDust -= CopyScreenTarget;
         On_OverlayManager.Draw -= ApplyWaterShader;
-        On_Main.Draw -= DrawToScreen;
         On_Main.DrawWaters -= StopDrawWater;
         _pixelWaterStyles = null;
         _heightsToDraw.Clear();
     }
-
-    private void DrawToScreen(On_Main.orig_Draw orig, Main self, GameTime gameTime)
-    {
-        orig(self, gameTime);
-        if (Main.gameMenu)
-            return;
-
-        //  DrawWaterBaseToScreen();
-    }
-
     public override void OnModLoad()
     {
         base.OnModLoad();
@@ -334,7 +344,6 @@ public class MoonWaterSystem : ModSystem
     }
     private void InitializeRenderTargets()
     {
-        _waterRT = ManagedRenderTarget.New(GetWaterTargetSize);
         _reflectionRT = ManagedRenderTarget.New(GetWaterTargetSize, DownSamples);
         _waterTextureRT = ManagedRenderTarget.New(GetWaterTargetSize, DownSamples);
         _waterTextureRTSwap = ManagedRenderTarget.New(GetWaterTargetSize, DownSamples);
@@ -354,8 +363,6 @@ public class MoonWaterSystem : ModSystem
         //This will never happen since the default water is always true, lol.
         return _pixelWaterStyles[0];
     }
-
-
 
     private void CopyScreenTarget(On_Main.orig_DrawDust orig, Main self)
     {
@@ -496,6 +503,7 @@ public class MoonWaterSystem : ModSystem
 
     private Type[] _invokeTypes;
     private object[] _invokeParams;
+    private MethodInfo _drawWatersMethod;
     private void CopyWaterTarget()
     {
         //So we'er copying the water target here cause it doesn't render every frame
@@ -517,8 +525,10 @@ public class MoonWaterSystem : ModSystem
             {
                 false
             };
-            MethodInfo methodInfo = typeof(Main).GetMethod("DrawWaters", BindingFlags.NonPublic | BindingFlags.Instance, _invokeTypes);
-            methodInfo.Invoke(Main.instance, _invokeParams);
+
+            //Cache the method info so we're not spamming reflection calls
+            _drawWatersMethod ??= typeof(Main).GetMethod("DrawWaters", BindingFlags.NonPublic | BindingFlags.Instance, _invokeTypes);
+            _drawWatersMethod.Invoke(Main.instance, _invokeParams);
         }
         catch
         {
@@ -530,14 +540,7 @@ public class MoonWaterSystem : ModSystem
         graphicsDevice.SetRenderTarget(null);
     }
 
-    private void ApplyScreenOffset()
-    {
-        //Apply an offset so the texture doesn't move when you're moving
-        //This will wrap inside the shader
-        Vector2 texelSize = Vector2.One / new Vector2(_drawLocation.Width, _drawLocation.Height);
-        Vector2 screenoffset = Main.screenPosition * texelSize;
-        _waterEffect.Parameters["screenOffset"].SetValue(screenoffset);
-    }
+
     private void ApplyScreenOffset(float scale)
     {
         //Apply an offset so the texture doesn't move when you're moving
@@ -547,15 +550,7 @@ public class MoonWaterSystem : ModSystem
         screenoffset *= (1f / scale);
         _waterEffect.Parameters["screenOffset"].SetValue(screenoffset);
     }
-    private void ApplyScreenOffset(float scale, Vector2 textureSize)
-    {
-        //Apply an offset so the texture doesn't move when you're moving
-        //This will wrap inside the shader
-        Vector2 texelSize = Vector2.One / textureSize;
-        Vector2 screenoffset = Main.screenPosition * texelSize;
-        screenoffset *= (1f / scale);
-        _waterEffect.Parameters["screenOffset"].SetValue(screenoffset);
-    }
+
     private void DrawWaterBase(SpriteBatch spriteBatch)
     {
         _waterEffect.CurrentTechnique = _waterEffect.Techniques["SpriteDrawing"];
@@ -575,7 +570,7 @@ public class MoonWaterSystem : ModSystem
 
         Color baseColor = _pixelWater.BackgroundColor * 0.75f;
 
-        if (!_pixelWater.IgnoreSkyColor)
+        if (!_pixelWater.ignoreSkyColor)
         {
             baseColor = baseColor.MultiplyRGB(Main.ColorOfTheSkies);
         }
@@ -725,7 +720,7 @@ public class MoonWaterSystem : ModSystem
         spriteBatch.End();
 
 
-        if (!_pixelWater.NoLighting)
+        if (!_pixelWater.noLighting)
         {
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["BlurDrawing"];
             spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.Multiply, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);

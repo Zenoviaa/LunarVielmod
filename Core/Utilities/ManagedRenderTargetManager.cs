@@ -32,12 +32,17 @@ namespace Stellamod.Core.Utilities
             _downSamples = downSamples;
             if (resizeFunction == null)
                 _resizeFunction = GetScreenTargetSize;
-
+            active = true;
             //Setting to 1 here just incase we get a division by 0 somewhere for like a single frame
             Width = 1;
             Height = 1;
         }
+        public bool NeedsResizing()
+        {
+            return _oldScreenSize != GetScreenTargetSize();
+        }
 
+        public bool active;
         public Vector2 Size() => new Vector2(Width, Height);
         public void Dispose()
         {
@@ -53,6 +58,8 @@ namespace Stellamod.Core.Utilities
         public int Height { get; private set; }
 
         public static Semaphore Semaphore = new(1, 1);
+
+
         private void Resize()
         {
             Semaphore.WaitOne();
@@ -76,6 +83,11 @@ namespace Stellamod.Core.Utilities
             _oldScreenSize = screenSize;
             Main.QueueMainThreadAction(Resize);
         }
+        public void QueueDispose()
+        {
+            Main.QueueMainThreadAction(Dispose);
+        }
+
 
 
         public Point GetScreenTargetSize()
@@ -182,15 +194,26 @@ namespace Stellamod.Core.Utilities
             }
                 
             Point screenSize = Main.ScreenSize;
-            if (_oldScreenSize == screenSize)
-                return;
-   
-            for (int i = 0; i < _managedRenderTargets.Count; i++)
+            for(int i = 0; i < _managedRenderTargets.Count; i++)
             {
                 ManagedRenderTarget managedRenderTarget = _managedRenderTargets[i];
-                managedRenderTarget.QueueResize(screenSize);
+                //Some render targets don't need to be resized when the screen size changes.
+                //So we should check this individually
+                if (managedRenderTarget.NeedsResizing())
+                {
+                    managedRenderTarget.QueueResize(screenSize);
+                }
+
+                if (!managedRenderTarget.active)
+                {
+
+                    managedRenderTarget.QueueDispose();
+                }
             }
-            _oldScreenSize = screenSize;
+
+            //Remove all render targets that are no longer active
+            //They should've already been queued to be disposed
+            _managedRenderTargets.RemoveAll(x => !x.active);
         }
     }
 }

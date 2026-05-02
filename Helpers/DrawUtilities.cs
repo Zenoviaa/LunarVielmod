@@ -170,6 +170,18 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width * 0.5f, 0);
         }
     }
+    public void CenterOrigin()
+    {
+        if (sourceRect.HasValue)
+        {
+            Rectangle rectangle = sourceRect.Value;
+            drawOrigin = new Vector2(rectangle.Width * 0.5f, rectangle.Height * 0.5f);
+        }
+        else
+        {
+            drawOrigin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+        }
+    }
     public static SpritebatchDrawer FromTextureAsset(Asset<Texture2D> textureAsset, Vector2 worldPosition)
     {
         SpritebatchDrawer spritebatchDrawer = new SpritebatchDrawer();

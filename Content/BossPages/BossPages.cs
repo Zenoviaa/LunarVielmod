@@ -6,6 +6,7 @@ using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander;
 using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak;
 using Stellamod.Content.Areas.Dock.BossesDK.Jiitas;
 using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine;
+using Stellamod.Content.Areas.EveroseVillage.CelestiaBoss;
 using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
 using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar;
 using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria;
@@ -158,6 +159,18 @@ namespace Stellamod.Content.BossPages
             bossNPC = ModContent.GetInstance<Jiitas>();
             progression = 2;
             flag = DownedBossFlag.Jiitas;
+        }
+    }
+    public class CelestiaPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.ForgottenWarriors;
+            bossNPC = ModContent.GetInstance<Celestia>();
+            progression = 3;
+            flag = DownedBossFlag.Celestia;
+            StarRanking = 3;
         }
     }
     public class SkullrunnerPage : BossPage

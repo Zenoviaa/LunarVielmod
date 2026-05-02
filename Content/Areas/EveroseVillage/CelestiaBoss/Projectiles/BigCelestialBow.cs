@@ -1,7 +1,9 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
 using Stellamod.Content.Areas.Snow.WeaponsSN;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
@@ -24,9 +26,13 @@ public class BigCelestialBow : ModProjectile
 {
     private int _growthIndex;
     private float _growthTimer;
+   
     private Vector2 _mirageOffset;
     private Vector2 _pullScale;
     private Vector2 _chargeScale;
+    private Vector2 _arrowOffset;
+    private Vector2 _bowOffset;
+    private float _arrowAlpha;
     private float _alphaTimer;
     private ref float Timer => ref Projectile.ai[0];
     private NPC Parent => Main.npc[(int)Projectile.ai[1]];
@@ -36,7 +42,7 @@ public class BigCelestialBow : ModProjectile
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        Main.projFrames[Type] = 7;
+        Main.projFrames[Type] = 10;
     }
 
     public override void SetDefaults()
@@ -88,7 +94,7 @@ public class BigCelestialBow : ModProjectile
                 }
             }
 
-            if(Projectile.frame < 6)
+            if(Projectile.frame < 9)
             {
                 Projectile.frameCounter += 1;
                 if (Projectile.frameCounter >= 5)
@@ -98,25 +104,16 @@ public class BigCelestialBow : ModProjectile
                 }
             }
         }
-        else
-        {
-            if (Projectile.frame < 3)
-            {
-                Projectile.frameCounter += 1;
-                if (Projectile.frameCounter >= 5)
-                {
-                    Projectile.frameCounter = 0;
-                    Projectile.frame++;
-                }
-            }
 
-        }
-
+        float offsetDistance = 0;
+        float targetArrowAlpha=0;
+ 
         Vector2 targetScale = Vector2.One;
         switch (_growthIndex)
         {
             case 0:
                 {
+                    Projectile.frame = 0;
                     _growthTimer++;
                     if(_growthTimer >= 60)
                     {
@@ -124,54 +121,94 @@ public class BigCelestialBow : ModProjectile
                         _growthTimer = 0;
                         _growthIndex++;
                     }
-                    targetScale = Vector2.One * 0.2f;
+                    offsetDistance = 196;
+                    targetArrowAlpha = 0.2f;
+                    targetScale = Vector2.One * 0.5f;
                 }
                 break;
             case 1:
                 {
+                
                     _growthTimer++;
                     if (_growthTimer >= 60)
                     {
+                        Projectile.frame = 1;
                         GrowEffect();
                         _growthTimer = 0;
                         _growthIndex++;
                     }
+                    offsetDistance = 128;
+                    targetArrowAlpha = 0.5f;
                     targetScale = Vector2.One * 0.4f;
                 }
                 break;
             case 2:
                 {
+                
                     _growthTimer++;
                     if (_growthTimer >= 60)
                     {
+                        Projectile.frame = 2;
                         BigGrowEffect();
                         _growthTimer = 0;
                         _growthIndex++;
                     }
+                    offsetDistance = 64;
+                    targetArrowAlpha = 0.75f;
                     targetScale = Vector2.One * 0.6f;
                 }
                 break;
             case 3:
                 {
+                    if (Projectile.frame < 6)
+                    {
+                        Projectile.frameCounter += 1;
+                        if (Projectile.frameCounter >= 5)
+                        {
+                            Projectile.frameCounter = 0;
+                            Projectile.frame++;
+                        }
+                    }
+
                     _growthTimer++;
-                    if(_growthTimer >= 120)
+                    if(_growthTimer >= 60f)
                     {
                         ready = true;
                     }
+                    offsetDistance = 0;
+                    targetArrowAlpha = 1f;
                     targetScale = Vector2.One * 1.15f;
                 }
                 break;
         }
         _chargeScale = Vector2.Lerp(_chargeScale, targetScale, 0.1f);
 
+        Vector2 targetArrowOffset = Projectile.rotation.ToRotationVector2() * offsetDistance;
+        _arrowOffset = Vector2.Lerp(_arrowOffset, targetArrowOffset, 0.1f);
+        _arrowAlpha = MathHelper.Lerp(_arrowAlpha, targetArrowAlpha, 0.1f);
       //  _pullScale = Vector2.Lerp(_pullScale, _targetPullScale, 0.1f);
  
         if(Timer < 10)
         {
             Vector2 aimingDirection = (target.Center - Projectile.Center);
+            _bowOffset = Vector2.Lerp(-aimingDirection.SafeNormalize(Vector2.Zero) * 96, Vector2.Zero, 
+                EasingFunction.InOutSine(_alphaTimer / 240f));
+
+            Vector2 start = -aimingDirection.SafeNormalize(Vector2.Zero);
+            float startArcHoldOffset = start.ToRotation();
+            float endArcHoldOffset = aimingDirection.ToRotation();
+
+            float ratio = _alphaTimer / 240f;
+            float ease = EasingFunction.InOutSine(ratio);
+            float dir = aimingDirection.X > 0 ? 0 : 1;
+            float arcHoldOffset = MathHelper.Lerp(startArcHoldOffset, endArcHoldOffset - MathHelper.TwoPi * dir, ease);
+            _bowOffset += arcHoldOffset.ToRotationVector2() * 64;
+
+
             float aimingRotation = aimingDirection.ToRotation();
             float rotOffset = MathHelper.Lerp(-MathHelper.Pi + MathHelper.PiOver4, 0, EasingFunction.OutCirc(_alphaTimer / 60f));
             float targetRot = aimingRotation + rotOffset;
+
             Projectile.rotation = Utils.AngleLerp(Projectile.rotation, targetRot, 0.1f);
         }
 
@@ -260,29 +297,28 @@ public class BigCelestialBow : ModProjectile
         pullScale *= MathHelper.Lerp(1.45f, 1f, EasingFunction.InSine(_alphaTimer / 60f));
         pullScale *= _chargeScale;
 
+        Vector2 bowOffset = _bowOffset;
         float come = EasingFunction.InSine(_alphaTimer / 70f);
-        Vector2 inOffset = Vector2.Lerp(-Projectile.rotation.ToRotationVector2() * 128, Vector2.Zero, come);
 
         SpritebatchDrawer backGlowDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow"), Projectile.Center); ;
         backGlowDrawer.scale *= pullScale * 2.5f;
         backGlowDrawer.color = Color.Black * 0.5f * alpha;
-        //  glowDrawer.color.A = 0;
-        backGlowDrawer.worldPosition += inOffset;
+        backGlowDrawer.worldPosition += bowOffset;
         Main.spriteBatch.Draw(backGlowDrawer);
 
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center); ;
         glowDrawer.scale *= pullScale * 0.5f;
         glowDrawer.color = Color.Lerp(Color.Teal, Color.LightGreen, ExtraMath.Osc(0f, 1f, 0, Projectile.whoAmI)) * 0.2f * alpha;
         glowDrawer.color.A = 0;
-        glowDrawer.worldPosition += inOffset;
+        glowDrawer.worldPosition += bowOffset;
         Main.spriteBatch.Draw(glowDrawer);
 
         SpritebatchDrawer spiralVortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center); ;
         spiralVortexDrawer.scale *= pullScale * 0.5f;
         spiralVortexDrawer.color = Color.Lerp(Color.Teal, Color.LightGreen, ExtraMath.Osc(0f, 1f, 0, Projectile.whoAmI)) * 0.1f * alpha;
         spiralVortexDrawer.color.A = 0;
-        spiralVortexDrawer.worldPosition += inOffset;
         spiralVortexDrawer.rotation = Main.GlobalTimeWrappedHourly;
+        spiralVortexDrawer.worldPosition += bowOffset;
         Main.spriteBatch.Draw(spiralVortexDrawer);
 
         GlowingSwordMaskShader shader = GlowingSwordMaskShader.Instance;
@@ -301,7 +337,7 @@ public class BigCelestialBow : ModProjectile
         bowDrawer.scale *= pullScale;
         bowDrawer.color = Color.Lerp(Color.Teal, Color.LightGreen, ExtraMath.Osc(0f, 1f, 16, Projectile.whoAmI)) * 0.5f * alpha;
         bowDrawer.color.A = 0;
-        bowDrawer.worldPosition += inOffset;
+        bowDrawer.worldPosition += bowOffset;
         Main.spriteBatch.Draw(bowDrawer);
 
 
@@ -340,6 +376,7 @@ public class BigCelestialBow : ModProjectile
         bloomlineDrawer.LeftCenterOrigin();
         bloomlineDrawer.drawOrigin.X += 64;
         bloomlineDrawer.rotation = Projectile.rotation;
+        bloomlineDrawer.worldPosition += bowOffset;
         Main.spriteBatch.Draw(bloomlineDrawer);
 
         SpritebatchDrawer arrowDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<CelestialArrow>()], Projectile.Center);
@@ -348,8 +385,9 @@ public class BigCelestialBow : ModProjectile
         arrowDrawer.scale.X *= MathHelper.Lerp(0.5f, 1f, come);
         arrowDrawer.scale *= 2;
         arrowDrawer.scale *= _chargeScale;
-        arrowDrawer.color = Color.LightGreen * come * alpha * lineOutAlpha;
+        arrowDrawer.color = Color.LightGreen * come * alpha * lineOutAlpha * _arrowAlpha;
         arrowDrawer.color.A = 0;
+        arrowDrawer.worldPosition += _arrowOffset + _bowOffset;
 
         Main.spriteBatch.Draw(arrowDrawer);
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedPrims);
@@ -457,7 +495,7 @@ public class BigCelestialArrow : ModProjectile
             d3.fadeToColor = Color.DarkTurquoise;
             d3.Scale *= 1f;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-            Projectile.velocity *= 4;
+            Projectile.velocity *= 5;
         }
 
         if(Timer % 4 == 0)
@@ -579,6 +617,12 @@ public class BigCelestialArrow : ModProjectile
         //return base.PreDraw(ref lightColor);
     }
 
+    public override void OnHitPlayer(Player target, Player.HurtInfo info)
+    {
+        base.OnHitPlayer(target, info);
+        Projectile.Kill();
+    }
+
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
@@ -623,7 +667,7 @@ public class BigCelestialBoom : ModProjectile
         Projectile.tileCollide = false;
         Projectile.ignoreWater = true;
         Projectile.penetrate = -1;
-        Projectile.timeLeft = 60;
+        Projectile.timeLeft = 120;
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = 20;
     }
@@ -636,6 +680,8 @@ public class BigCelestialBoom : ModProjectile
         Timer++;
         if (Timer == 1)
         {
+
+            // BigCrackParticle.Spawn(Projectile.Center, Vector2.Zero, color: Color.Turquoise, Scale: 1.4f);
             ShockwavePlayer shockwavePlayer = Main.LocalPlayer.GetModPlayer<ShockwavePlayer>();
             shockwavePlayer.Bee = 120;
             shockwavePlayer.shockwavePosition = Projectile.Center;
@@ -672,14 +718,25 @@ public class BigCelestialBoom : ModProjectile
                 ScreenShaderSystem e = ModContent.GetInstance<ScreenShaderSystem>();
                 e.TintScreen(Color.Turquoise, 0.1f, 20);
             }
-
         
             FXUtil.ShakeCamera(Projectile.Center, 1024, 64);
             SoundStyle spawnSound = AssetRegistry.Sounds.Celestia.ArrowCrash with { PitchVariance = 0.3f };
             SoundEngine.PlaySound(spawnSound, Projectile.position);
         }
 
- 
+        if (Timer == 45 && Main.netMode != NetmodeID.Server)
+        {
+            for (int i = 0; i < 16; i++)
+            {
+                Vector2 spawnPosition = Projectile.Center;
+                spawnPosition.X += Main.rand.NextFloat(-64, 64);
+                spawnPosition.Y += Main.rand.NextFloat(-50, 0);
+
+                Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
+                ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
+            }
+        }
+
         ShakeModSystem.Shake = MathHelper.Lerp(18, 1f, EasingFunction.InSine(Timer / 60f));
         if (Timer % 12 == 0)
         {
@@ -731,7 +788,73 @@ public class BigCelestialBoom : ModProjectile
         waveDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.InOutSine(outRatio));
         waveDrawer.color.A = 0;
         Main.spriteBatch.Draw(waveDrawer);
+
+
         Main.spriteBatch.RestartDefaults();
+
+
+        shearShader.Time = MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(Timer / 120f));
+        Main.spriteBatch.Restart(effect: shearShader.Effect);
+
+        SpritebatchDrawer crackDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Visual/Particles/BigCrackParticle"), Projectile.Center);
+        crackDrawer.color = Color.Lerp(Color.White, Color.Turquoise, EasingFunction.InExpo(Timer / 60f));
+        crackDrawer.color.A = 0;
+        crackDrawer.scale = Vector2.One * 2f;
+        Main.spriteBatch.Draw(crackDrawer);
+
+
+        Main.spriteBatch.RestartDefaults();
+
+
+        float Time = 90f;
+        float target = -Timer * 0.02f + 0.8f;
+        VerliaShockwaveShader shockwaevShader = VerliaShockwaveShader.Instance;
+        shockwaevShader.Time = MathHelper.Lerp(0, target, EasingFunction.InExpo(Timer / Time));
+     
+        SpriteBatch sb = Main.spriteBatch;
+        sb.Restart(effect: shockwaevShader.Effect);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, Projectile.Center);
+        sbDrawer.BottomCenterOrigin();
+        sbDrawer.scale.X *= MathHelper.Lerp(0f, 5f, EasingFunction.OutExpo(Timer / Time));
+        sbDrawer.scale.Y += MathHelper.Lerp(8f, 0f, EasingFunction.InOutExpo(Timer / Time));
+        sbDrawer.scale.Y *= MathHelper.Lerp(0.2f, 2f, EasingFunction.QuadraticBump(Timer / Time));
+        sbDrawer.color = Color.Turquoise;
+        sbDrawer.color.A = 0;
+
+        int height = 16;
+        sbDrawer.worldPosition.Y += height;
+        Main.spriteBatch.Draw(sbDrawer);
+
+
+        sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, Projectile.Center);
+        sbDrawer.BottomCenterOrigin();
+        sbDrawer.scale.X *= MathHelper.Lerp(0f, 3f, EasingFunction.OutExpo(Timer / Time));
+        sbDrawer.scale.Y += MathHelper.Lerp(4f, 0f, EasingFunction.InOutExpo(Timer / Time));
+        sbDrawer.scale.Y *= MathHelper.Lerp(0.2f, 2f, EasingFunction.QuadraticBump(Timer / Time));
+        sbDrawer.color = Color.White;
+        sbDrawer.color.A = 0;
+        sbDrawer.worldPosition.Y += height;
+        Main.spriteBatch.Draw(sbDrawer);
+
+
+
+        sb.RestartDefaults();
+
+
+        SpritebatchDrawer glowLineDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        glowLineDrawer.worldPosition.Y += height;
+        glowLineDrawer.scale.X *= MathHelper.Lerp(1f, 4f, EasingFunction.OutExpo(Timer / Time));
+        glowLineDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time)) * 0.2f;
+        glowLineDrawer.color = Color.Turquoise;
+        glowLineDrawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time));
+        glowLineDrawer.color.A = 0;
+        Main.spriteBatch.Draw(glowLineDrawer);
+        glowLineDrawer.scale.X *= 0.5f;
+        glowLineDrawer.color = Color.White;
+        glowLineDrawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / Time));
+        glowLineDrawer.color.A = 0;
+        Main.spriteBatch.Draw(glowLineDrawer);
+
     }
 
 }
