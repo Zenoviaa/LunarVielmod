@@ -299,6 +299,11 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
             Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
         }
     }
+
+    public virtual Vector2 DrawOffset()
+    {
+        return Vector2.Zero;
+    }
     public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
     {
         // This is lighting-mode specific, always include this if you draw tiles manually
@@ -322,6 +327,7 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
 
         Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height);
         Vector2 worldPos = p.ToWorldCoordinates(48, 64f);
+        worldPos += DrawOffset();
 
         Color color = Lighting.GetColor(p.X, p.Y);
 
@@ -331,7 +337,7 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
         const float TwoPi = (float)Math.PI * 2f;
         float offset = (float)Math.Sin(Main.GlobalTimeWrappedHourly * TwoPi / 5f);
         Vector2 drawPos = worldPos + offScreen - Main.screenPosition + new Vector2(0f, -40f) + new Vector2(0f, offset * 4f);
-
+  
         // Draw the main texture
         spriteBatch.Draw(texture, drawPos, null, color, 0f, origin, 1f, effects, 0f);
 
@@ -449,6 +455,10 @@ public class VerliaRelicItem : AbstractRelicItem<VerliaRelicItem, VerliaRelic>
 }
 public class CelestiaRelic : AbstractRelicTile<CelestiaRelicItem, CelestiaPage>
 {
+    public override Vector2 DrawOffset()
+    {
+        return new Vector2(-20, 0);
+    }
 
 }
 
