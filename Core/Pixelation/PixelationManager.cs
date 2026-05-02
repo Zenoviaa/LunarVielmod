@@ -6,6 +6,7 @@ using Stellamod.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -209,8 +210,7 @@ namespace Stellamod.Core.Pixelation
     /// Manages create a pixelation effect for our weapons
     /// </summary>
     [Autoload(Side = ModSide.Client)]
-    public class PixelationManager : ModSystem,
-        IRenderer
+    public class PixelationManager : ModSystem
     {
         private PixelTarget _overNPCsPixelTarget;
         private PixelTarget _overNPCsPixelTargetAdditive;
@@ -225,13 +225,39 @@ namespace Stellamod.Core.Pixelation
         public int Priority => 10;
         public static event Action OnBehindGrass;
         public static event Action OnInFrontGrass;
-        public override void OnModLoad()
+        public override void Load()
         {
-            base.OnModLoad();
+            base.Load();
+            On_FilterManager.BeginCapture += RenderToPixelRTs;
+            On_FilterManager.EndCapture += RenderToPixelRTs;
             On_Main.DoDraw_Tiles_NonSolid += RenderBehindTiles2;
             On_Main.DoDraw_DrawNPCsBehindTiles += RenderBehindTiles;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawOverNPCs;
             On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
+        }
+
+        private void RenderToPixelRTs(On_FilterManager.orig_BeginCapture orig, FilterManager self, RenderTarget2D screenTarget1, Color clearColor)
+        {
+            orig(self, screenTarget1, clearColor);
+
+        }
+
+        private void RenderToPixelRTs(On_FilterManager.orig_EndCapture orig,
+            FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, 
+            Color clearColor)
+        {
+            if (!Main.gameMenu)
+            {
+                Render();
+            }
+            orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
+
+        }
+
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+
   
             _overNPCsPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
 
@@ -290,15 +316,6 @@ namespace Stellamod.Core.Pixelation
 
             _backGrassPixelTarget.DrawToScreen();
             orig(self);
-        }
-
-        public override void OnModUnload()
-        {
-            base.OnModUnload();
-            On_Main.DoDraw_Tiles_NonSolid -= RenderBehindTiles2;
-            On_Main.DoDraw_DrawNPCsBehindTiles -= RenderBehindTiles;
-            On_Main.DoDraw_DrawNPCsOverTiles -= DrawOverNPCs;
-            On_Main.DrawPlayers_AfterProjectiles -= RenderOverPlayers;
         }
 
         private void RenderOverPlayers(On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)

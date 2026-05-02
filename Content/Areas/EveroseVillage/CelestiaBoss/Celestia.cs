@@ -587,7 +587,7 @@ public class Celestia : ScarletBoss
                     FaceTarget();
 
                     Animator.PlayAnimation(ANIM_THROWBOW);
-                    if (Animator.IsFinished())
+                    if (Animator.IsTimerFinished(Timer))
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -625,7 +625,7 @@ public class Celestia : ScarletBoss
                     NPC.velocity.X *= MathHelper.Lerp(0.96f, 0.92f, EasingFunction.InOutSine(Timer / 30f));
                     _showTrail = true;
                     Animator.PlayAnimation(ANIM_BOWOUT);
-                    if (Animator.IsFinished())
+                    if (Animator.IsTimerFinished(Timer))
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -705,21 +705,23 @@ public class Celestia : ScarletBoss
                     _attacking = true;
                     _showSlideTrail = true;
                     NPC.velocity.X *= 0.98f;
-                    if (Timer == 25)
+                    if (Timer == 24)
                     {
                         NPC.velocity.X = DirectionToTarget() * 6;
                     }
 
-                    if (Timer == 25 && MultiplayerHelper.IsHost)
+                    if (Timer == 24 && MultiplayerHelper.IsHost)
                     {
+                      
                         Vector2 vel = Vector2.UnitX * DirectionToTarget();
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, vel,
-                            ModContent.ProjectileType<CelestialBowSpin>(), Bow_Spin_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                            ModContent.ProjectileType<CelestialBowSpin>(), Bow_Spin_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: 0);
                     }
 
+               
                     FaceTarget();
                     Animator.PlayAnimation(ANIM_THROWBOW);
-                    if (Animator.IsFinished())
+                    if (Animator.IsTimerFinished(Timer))
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -763,7 +765,7 @@ public class Celestia : ScarletBoss
                 {
                     NPC.velocity.X *= 0.92f;
                     Animator.PlayAnimation(ANIM_BOWOUT);
-                    if (Animator.IsFinished())
+                    if (Animator.IsTimerFinished(Timer))
                     {
                         SwitchState(AIState.Idle);
                     }
@@ -832,7 +834,7 @@ public class Celestia : ScarletBoss
                         NPC.velocity.Y += 0.25f;
                     NPC.velocity.X *= 0.99f;
                     Animator.PlayAnimation(ANIM_BACKFLIP);
-                    if (Animator.IsFinished())
+                    if (Animator.IsTimerFinished(Timer))
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -881,7 +883,7 @@ public class Celestia : ScarletBoss
                     NPC.noTileCollide = false;
                     Animator.PlayAnimation(ANIM_LANDBACKFLIP);
                     NPC.velocity.X *= 0.98f;
-                    if (Animator.IsFinished())
+                    if (Animator.IsTimerFinished(Timer))
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -941,7 +943,7 @@ public class Celestia : ScarletBoss
                     }
                     _warning = true;
                     Animator.PlayAnimation(ANIM_THROWBOW);
-                    if (Animator.IsFinished())
+                    if (Animator.IsTimerFinished(Timer))
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -952,7 +954,7 @@ public class Celestia : ScarletBoss
                 {
                     _attacking = true;
                     Animator.PlayAnimation(ANIM_BOWOUT);
-                    if (Animator.IsFinished())
+                    if (Animator.IsTimerFinished(Timer))
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -1229,7 +1231,7 @@ public class Celestia : ScarletBoss
                     Animator.PlayAnimation(ANIM_BACKFLIPREADY);
                     _showHorse = true;
                     _showTrail = true;
-                    if (dist <= 384 && Animator.IsFinished())
+                    if (dist <= 384 && Animator.IsTimerFinished(Timer))
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -1267,7 +1269,7 @@ public class Celestia : ScarletBoss
                         NPC.velocity.Y += 0.5f;
                     NPC.velocity.X *= 0.96f;
                     Animator.PlayAnimation(ANIM_BACKFLIP);
-                    if (Animator.IsFinished())
+                    if (Animator.IsTimerFinished(Timer))
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -1316,7 +1318,7 @@ public class Celestia : ScarletBoss
                     NPC.noTileCollide = false;
                     Animator.PlayAnimation(ANIM_LANDBACKFLIP);
                     NPC.velocity.X *= 0.98f;
-                    if (Animator.IsFinished())
+                    if (Animator.IsTimerFinished(Timer))
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -1408,7 +1410,7 @@ public class Celestia : ScarletBoss
 
             SwitchState(state);
         }
-     //   SwitchState(AIState.Horse_Ride_Backflip_Shot);
+       // SwitchState(AIState.Bow_Spin);
     }
     private void AI_Idle()
     {

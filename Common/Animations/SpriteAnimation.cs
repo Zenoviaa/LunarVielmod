@@ -157,7 +157,7 @@ namespace Stellamod.Common.Animations
         public float AnimationTime()
         {
             float ticksPerFrame = 1f / frameSpeed;
-            return ticksPerFrame * (endFrame-startFrame);
+            return ticksPerFrame * ((endFrame-startFrame)+1);
         }
 
         public bool ShouldBeFinished(float timer)
