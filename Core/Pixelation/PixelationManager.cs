@@ -228,18 +228,11 @@ namespace Stellamod.Core.Pixelation
         public override void Load()
         {
             base.Load();
-            On_FilterManager.BeginCapture += RenderToPixelRTs;
             On_FilterManager.EndCapture += RenderToPixelRTs;
             On_Main.DoDraw_Tiles_NonSolid += RenderBehindTiles2;
             On_Main.DoDraw_DrawNPCsBehindTiles += RenderBehindTiles;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawOverNPCs;
             On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
-        }
-
-        private void RenderToPixelRTs(On_FilterManager.orig_BeginCapture orig, FilterManager self, RenderTarget2D screenTarget1, Color clearColor)
-        {
-            orig(self, screenTarget1, clearColor);
-
         }
 
         private void RenderToPixelRTs(On_FilterManager.orig_EndCapture orig,

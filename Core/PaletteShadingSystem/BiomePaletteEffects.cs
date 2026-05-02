@@ -226,6 +226,4 @@ namespace Stellamod.Core.PaletteShadingSystem
             return true;
         }
     }
-
-
 }
