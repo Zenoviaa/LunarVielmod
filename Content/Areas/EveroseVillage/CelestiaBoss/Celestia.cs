@@ -319,7 +319,7 @@ public class Celestia : ScarletBoss
         NPC.height = 64;
         NPC.damage = 50;
         NPC.defense = 5;
-        NPC.lifeMax = 1800;
+        NPC.lifeMax = 2800;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.knockBackResist = 0f;

@@ -45,6 +45,15 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+            public static class Cariya
+            {
+                public static SoundStyle CariyaGrunt2 => new SoundStyle($"{Path}Cariya/CariyaGrunt2");
+                public static SoundStyle CariyaGrunt1 => new SoundStyle($"{Path}Cariya/CariyaGrunt1");
+                public static SoundStyle CarianDownslash => new SoundStyle($"{Path}Cariya/CarianDownslash");
+                public static SoundStyle Carianpokie => new SoundStyle($"{Path}Cariya/Carianpokie");
+                public static SoundStyle CarianSlash2 => new SoundStyle($"{Path}Cariya/CarianSlash2");
+                public static SoundStyle CarianSlash1 => new SoundStyle($"{Path}Cariya/CarianSlash1");
+            }
             public static class Celestia
             {
                 public static SoundStyle ArrowRainStart => new SoundStyle($"{Path}Celestia/ArrowRainStart");

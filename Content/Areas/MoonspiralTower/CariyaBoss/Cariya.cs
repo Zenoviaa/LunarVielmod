@@ -596,20 +596,21 @@ public class Cariya : ScarletBoss
                     if(Timer == 1)
                     {
                         NPC.velocity.X = NPC.spriteDirection * 3;
-                        NPC.velocity.Y -= 7;
+                        NPC.velocity.Y -= 24;
                     }
                     if (Timer == 8 && MultiplayerHelper.IsHost)
                     {
                         Vector2 fireVelocity = Vector2.UnitX * NPC.spriteDirection;
                         fireVelocity *= 5;
-                        fireVelocity.Y -= 10;
+                        fireVelocity.Y -= 15;
                         Projectile.NewProjectile(SourceFromThis, NPC.Center, fireVelocity, ModContent.ProjectileType<CariyaUppercut>(), Overhead_Slash_Damage, 1, Main.myPlayer);
                     }
                     _showTrail = true;
                     _attacking = true;
-                    NPC.velocity.X *= 0.7f;
+                    NPC.velocity.X *= 0.98f;
+                    NPC.velocity.Y *= 0.96f;
                     Animator.PlayAnimation(ANIM_UPPERCUT);
-                    if (Animator.IsTimerFinished(Timer))
+                    if (Animator.IsFinished())
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -617,6 +618,18 @@ public class Cariya : ScarletBoss
                 }
                 break;
             case 2:
+                {
+                    _showTrail = true;
+                    _attacking = true;
+                    Animator.PlayAnimation(ANIM_SWORD_READY_OVERHEAD);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
                 {
                     if (Timer == 8 && MultiplayerHelper.IsHost)
                     {
@@ -634,7 +647,7 @@ public class Cariya : ScarletBoss
                     }
                 }
                 break;
-            case 3:
+            case 4:
                 {
                     SwitchState(AIState.Aura_Monster);
                 }
@@ -728,7 +741,7 @@ public class Cariya : ScarletBoss
                     _attacking = true;
                     NPC.velocity.X *= 0.7f;
                     Animator.PlayAnimation(ANIM_OVERHEAD_SWING);
-                    if (Animator.IsTimerFinished(Timer))
+                    if (Timer >= 30)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -821,7 +834,7 @@ public class Cariya : ScarletBoss
         NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, walkingSpeed * direction, 0.1f);
         FaceTarget();
         Animator.PlayAnimation(ANIM_WALK);
-        if (Timer >= 120)
+        if (Timer >= 180)
         {
            SwitchState(AIState.Shes_Right_Behind_Me_Isnt_She);
         }
@@ -844,8 +857,9 @@ public class Cariya : ScarletBoss
                 }
 
                 SwitchState(pattern);
-            }    
+            }
         }
+        SwitchState(AIState.Uppercut);
     }
 
     private void AI_Spawn()
@@ -870,6 +884,7 @@ public class Cariya : ScarletBoss
             NPC.active = false;
         }
     }
+
 
     private const string ANIM_IDLE = "Idle";
     private const string ANIM_WALK = "Walk";
@@ -1089,5 +1104,6 @@ public class Cariya : ScarletBoss
     public override void OnKill()
     {
         base.OnKill();
+        DownedBossTracker.ClearFlag(DownedBossFlag.Cariya);
     }
 }

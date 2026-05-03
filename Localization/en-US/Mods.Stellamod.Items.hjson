@@ -10892,3 +10892,8 @@ CelestiaRelicItem: {
 	DisplayName: Celestia Relic Item
 	Tooltip: ""
 }
+
+CariyaRelicItem: {
+	DisplayName: Cariya Relic Item
+	Tooltip: ""
+}

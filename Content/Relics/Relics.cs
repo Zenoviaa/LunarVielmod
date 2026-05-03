@@ -466,3 +466,11 @@ public class CelestiaRelicItem : AbstractRelicItem<CelestiaRelicItem, CelestiaRe
 {
 
 }
+public class CariyaRelicItem : AbstractRelicItem<CariyaRelicItem, CariyaRelic>
+{
+
+}
+public class CariyaRelic : AbstractRelicTile<CariyaRelicItem, CariyaPage>
+{
+
+}

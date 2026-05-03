@@ -123,3 +123,9 @@ CelestiaPage: {
 	WhereToFind: In Your Mom
 	Lore: Birthed by your mom
 }
+
+CariyaPage: {
+	DisplayName: Who???
+	WhereToFind: In Your Mom
+	Lore: Birthed by your mom
+}

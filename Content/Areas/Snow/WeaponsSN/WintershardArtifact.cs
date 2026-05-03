@@ -206,7 +206,7 @@ public class WintershardArtifact : ModItem
         Item.height = 16;
         Item.channel = true;
         Item.autoReuse = false;
-        Item.mana = 52;
+        Item.mana = 100;
         Item.useAnimation = Item.useTime = 24;
         Item.useStyle = ItemUseStyleID.Shoot;
         Item.knockBack = 2;

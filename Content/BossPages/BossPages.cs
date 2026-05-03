@@ -11,6 +11,7 @@ using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
 using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar;
 using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
+using Stellamod.Content.Areas.MoonspiralTower.CariyaBoss;
 using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime;
@@ -206,6 +207,19 @@ namespace Stellamod.Content.BossPages
             bossNPC = ModContent.GetInstance<VerlianSingularity>();
             progression = 9;
             flag = DownedBossFlag.Verlian_Singularity;
+        }
+    }
+    public class CariyaPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.ForgottenWarriors;
+            bossNPC = ModContent.GetInstance<Cariya>();
+            progression = 9;
+            flag = DownedBossFlag.Cariya;
+            StarRanking = 3;
+            AddMasterModeReward<CariyaRelicItem>(stack: 1);
         }
     }
     public class VerliaPage : BossPage
