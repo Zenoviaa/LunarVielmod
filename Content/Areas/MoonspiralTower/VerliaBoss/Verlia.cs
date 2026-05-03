@@ -2427,7 +2427,6 @@ public class Verlia : ScarletBoss,
         if (!Animator.GetDrawOrigin().HasValue)
             return false;
 
-
         PixelationManager.QueuePrimitivesDrawAction(DrawTrail, DrawLayer.BehindNPCsWithOutline);
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, NPC.Center);
         glowDrawer.scale *= 0.35f * _trailAlpha * ExtraMath.Osc(0.66f, 1f, speed: 2);
@@ -2566,43 +2565,6 @@ public class Verlia : ScarletBoss,
         spriteBatch.Draw(wingDrawer);
     }
 
-    private void DrawWings_Inner2(SpriteBatch spriteBatch)
-    {
-
-        float degrees = -MathHelper.Lerp(8, 15, ExtraMath.Osc(0f, 1f, speed: 3));
-
-        VerliaWings2Shader wingShader = VerliaWings2Shader.Instance;
-   
-        wingShader.PerlinNoiseTexture = AssetManager.Noise.Whirly.Value;
-      //  wingShader.ScrollingTexture = TrailRegistry.WaterTrail.Value;
-        wingShader.DistortionStrength = 0.15f;
-        wingShader.MaskSize = _wingTextureAsset.Size();
-        wingShader.Frequency = 1f;
-        wingShader.Tiling = Vector2.One * 2.5f;
-        wingShader.ScrollOffset = new Vector2(-Main.GlobalTimeWrappedHourly * 0.4f, 0.0f);
-
-        spriteBatch.Restart(effect: wingShader.Effect);
-        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset2, NPC.Center);
-        wingDrawer.LeftCenterOrigin();
-        wingDrawer.drawOrigin.X += WingOffset;
-        wingDrawer.worldPosition.Y -= HeightOffset;
-        wingDrawer.color = Color.White;//.MultiplyRGB(Lighting.GetColor(NPC.Center.ToTileCoordinates()));
-
-        wingDrawer.scale = RightWingScale;
-        wingDrawer.rotation = MathHelper.ToRadians(degrees) + RightWingRotation;
-        spriteBatch.Draw(wingDrawer);
-
-        wingDrawer.scale = LeftWingScale;
-        wingDrawer.rotation = MathHelper.ToRadians(-degrees) + LeftWingRotation;
-        wingDrawer.drawOrigin.X = wingDrawer.texture.Size().X - wingDrawer.drawOrigin.X;
-        wingDrawer.spriteEffects = SpriteEffects.FlipHorizontally;
-        spriteBatch.Draw(wingDrawer);
-        spriteBatch.RestartDefaults();
-    }
-    private void DrawPixelatedWings(SpriteBatch spriteBatch, Vector2 screenPos)
-    {
-        DrawWings(spriteBatch, screenPos, Color.White);
-    }
     private void DrawWings(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         _wingTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Wing");

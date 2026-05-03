@@ -205,10 +205,14 @@ public class BigCelestialBow : ModProjectile
             _bowOffset += arcHoldOffset.ToRotationVector2() * 64;
 
 
+            Vector2 outPosition = Parent.Center + _bowOffset;
+            float outRotation = (outPosition - Parent.Center).ToRotation();
+
+
             float aimingRotation = aimingDirection.ToRotation();
             float rotOffset = MathHelper.Lerp(-MathHelper.Pi + MathHelper.PiOver4, 0, EasingFunction.OutCirc(_alphaTimer / 60f));
             float targetRot = aimingRotation + rotOffset;
-
+            targetRot = Utils.AngleLerp(outRotation, targetRot, EasingFunction.InOutSine(_alphaTimer / 240f));
             Projectile.rotation = Utils.AngleLerp(Projectile.rotation, targetRot, 0.1f);
         }
 

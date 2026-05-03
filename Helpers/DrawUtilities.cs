@@ -133,6 +133,20 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width, texture.Height) * normalizedOrigin;
         }
     }
+
+    public void BottomLeftOrigin()
+    {
+        Vector2 normalizedOrigin = new Vector2(0f, 1f);
+        if (sourceRect.HasValue)
+        {
+            Rectangle rectangle = sourceRect.Value;
+            drawOrigin = new Vector2(rectangle.Width, rectangle.Height) * normalizedOrigin;
+        }
+        else
+        {
+            drawOrigin = new Vector2(texture.Width, texture.Height) * normalizedOrigin;
+        }
+    }
     public void RightCenterOrigin()
     {
         Vector2 normalizedOrigin = new Vector2(1f, 0.5f);

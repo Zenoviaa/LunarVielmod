@@ -173,6 +173,7 @@ public class Celestia : ScarletBoss
     private float _alphaTimer;
     private bool _firstAttack;
     private float _trailAlpha;
+    private float _startY;
     private float _slideTrailAlpha;
     private Color _outlineColor;
     private Vector2 _teleportPosition;
@@ -580,6 +581,7 @@ public class Celestia : ScarletBoss
                 {
                     if (Timer == 1)
                     {
+
                         NPC.TargetClosest();
                     }
 
@@ -598,6 +600,7 @@ public class Celestia : ScarletBoss
                 {
                     if (Timer == 1)
                     {
+                        _startY = NPC.position.Y;
                         Vector2 vel = Vector2.UnitX * DirectionToTarget();
                         float speed = MathF.Abs(MyTarget.Center.X - NPC.Center.X) / 16f;
                         NPC.velocity = vel * speed;
@@ -622,7 +625,9 @@ public class Celestia : ScarletBoss
                     }
 
                     _showSlideTrail = true;
+                    NPC.position.Y = _startY;
                     NPC.velocity.X *= MathHelper.Lerp(0.96f, 0.92f, EasingFunction.InOutSine(Timer / 30f));
+                    NPC.velocity.Y = 0;
                     _showTrail = true;
                     Animator.PlayAnimation(ANIM_BOWOUT);
                     if (Animator.IsTimerFinished(Timer))
@@ -1411,7 +1416,7 @@ public class Celestia : ScarletBoss
 
             SwitchState(state);
         }
-       // SwitchState(AIState.Bow_Spin);
+     //   SwitchState(AIState.Horse_Ride_Big_Bow_Shot);
     }
     private void AI_Idle()
     {
