@@ -784,6 +784,9 @@ public class Cariya : ScarletBoss
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
+                        FaceTarget();
+                        NPC.velocity.X = -NPC.spriteDirection * 8;
+                        NPC.velocity.Y -= 4;
                         SoundStyle grunt = AssetRegistry.Sounds.Cariya.CariyaGrunt1 with { PitchVariance = 0.3f };
                         SoundEngine.PlaySound(grunt, NPC.position);
                     }
@@ -792,7 +795,7 @@ public class Cariya : ScarletBoss
                     if(Timer < 30)
                         FaceTarget();
                     _showDirectionLine = true;
-                    NPC.velocity.X *= 0.7f;
+                    NPC.velocity.X *= 0.96f;
                     Animator.PlayAnimation(ANIM_SWORDREADYLONG);
                     if (Timer >= 70)
                     {
@@ -1022,6 +1025,7 @@ public class Cariya : ScarletBoss
                 SwitchState(pattern);
             }
         }
+       // SwitchState(AIState.Long_Thrust);
     }
 
     private void AI_Spawn()
@@ -1198,7 +1202,7 @@ public class Cariya : ScarletBoss
     }
     private float GetHairWidth(float ratio)
     {
-        return MathHelper.SmoothStep(32, 0, ratio) * _ghostAlpha * EasingFunction.QuadraticBump(ratio);
+        return MathHelper.SmoothStep(48, 0, ratio) * _ghostAlpha * EasingFunction.QuadraticBump(ratio);
     }
     private Color GetHairColor(float ratio)
     {

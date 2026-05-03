@@ -54,7 +54,7 @@ public class CariyaMagicBlade : ModProjectile
         base.SetDefaults();
         Projectile.width = 16;
         Projectile.height = 16;
-        Projectile.hostile = true;
+        Projectile.hostile = false;
         Projectile.timeLeft = 600;
         Projectile.penetrate = -1;
         Projectile.ignoreWater = true;
@@ -131,6 +131,10 @@ public class CariyaMagicBlade : ModProjectile
             }
         }
 
+        if(Timer >= 71)
+        {
+            Projectile.hostile = true;
+        }
         float ratio = Timer / 60f;
         float ease = EasingFunction.OutExpo(ratio);
         _scale = Vector2.Lerp(Vector2.Zero, new Vector2(1f, 0.46f), ease);
