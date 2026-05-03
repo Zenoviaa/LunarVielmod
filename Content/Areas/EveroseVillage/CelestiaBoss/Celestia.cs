@@ -521,7 +521,7 @@ public class Celestia : ScarletBoss
         _showSlideTrail = true;
         NPC.velocity.X += 0.1f * -NPC.direction;
         Animator.PlayAnimation(ANIM_DISAPPEAR);
-        if (Animator.IsTimerFinished(Timer))
+        if (Timer >= 150)
         {
             Timer = 0;
             AttackCycle++;
@@ -561,7 +561,7 @@ public class Celestia : ScarletBoss
 
             startFrom = Fall(startFrom);
             startFrom.X += 1024 * dir;
-            startFrom.Y -= 100;
+            startFrom.Y -= 120;
             Teleport(startFrom);
         }
 
@@ -993,6 +993,7 @@ public class Celestia : ScarletBoss
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
+                     
                         TeleportHorseBackStart();
                         if (MultiplayerHelper.IsHost)
                         {
@@ -1096,6 +1097,7 @@ public class Celestia : ScarletBoss
                     //Gotta jump off
                     if (Timer == 1)
                     {
+                        HorseAwayEffect();
                         SoundStyle backflipSound = AssetRegistry.Sounds.Celestia.CelestiaBackflip with { PitchVariance = 0.3f };
                         SoundEngine.PlaySound(backflipSound, NPC.position);
                         NPC.velocity.X = -(MathF.Sign(NPC.velocity.X) * 8);
@@ -1189,6 +1191,26 @@ public class Celestia : ScarletBoss
                 break;
         }
     }
+    private void HorseAwayEffect()
+    {
+        Vector2 pos2 = NPC.Bottom;
+        pos2.Y += 64;
+        var fx = FXUtil.GlowCircleBoom(pos2, Color.White, Color.Turquoise, Color.DarkGreen, 35);
+        fx.Scale *= 2;
+        for (float f = 0; f < 32f; f++)
+        {
+            Vector2 vel = -Vector2.UnitY * 3;
+            vel *= Main.rand.NextFloat(0.5f, 6);
+            Vector2 pos = pos2 + Main.rand.NextVector2Circular(127, 127);
+            DustParticle dp = DustParticle.Spawn(pos, vel);
+            dp.outerColor = Color.Turquoise;
+            dp.gravity = 0;
+            dp.dampening = 0.05f;
+            dp.noTileCollide = true;
+            dp.Scale *= 1.5f;
+            dp.innerColor = Color.Lerp(Color.White, Color.Turquoise, Main.rand.NextFloat(0f, 1f));
+        }
+    }
     private bool IsGrounded()
     {
         Point solidTileBelow = NPC.Bottom.ToTileCoordinates();
@@ -1247,6 +1269,7 @@ public class Celestia : ScarletBoss
                 {
                     if (Timer == 1)
                     {
+                        HorseAwayEffect();
                         SoundStyle backflipSound = AssetRegistry.Sounds.Celestia.CelestiaBackflip with { PitchVariance = 0.3f };
                         SoundEngine.PlaySound(backflipSound, NPC.position);
                         NPC.velocity.X = -(MathF.Sign(NPC.velocity.X) * 8);
@@ -1502,11 +1525,11 @@ public class Celestia : ScarletBoss
     }
     private float GetTrailWidth(float ratio)
     {
-        return MathHelper.SmoothStep(0, 8, EasingFunction.QuadraticBump(ratio)) * _slideTrailAlpha;
+        return MathHelper.SmoothStep(0, 8, EasingFunction.QuadraticBump(ratio)) * _slideTrailAlpha * _ghostAlpha; ;
     }
     private Color GetTrailColor(float ratio)
     {
-        return Color.Lerp(Color.Lerp(Color.White, Color.Turquoise, ExtraMath.Osc(0f, 1f, speed: 12)), Color.Transparent, ratio) * _slideTrailAlpha;
+        return Color.Lerp(Color.Lerp(Color.White, Color.Turquoise, ExtraMath.Osc(0f, 1f, speed: 12)), Color.Transparent, ratio) * _slideTrailAlpha * _ghostAlpha; ;
     }
     private void DrawTrail(GraphicsDevice gDevice)
     {
@@ -1535,7 +1558,7 @@ public class Celestia : ScarletBoss
             drawer.worldPosition.Y -= 2;
             drawer.color = Color.Lerp(Color.Lerp(Color.White, Color.Turquoise, 0.85f), Color.DarkGreen, i / (float)NPC.oldPos.Length);
             drawer.color *= MathHelper.Lerp(1f, 0f, i / (float)NPC.oldPos.Length);
-            drawer.color *= _trailAlpha;
+            drawer.color *= _trailAlpha * _ghostAlpha; ;
             drawer.color *= 0.35f;
             spriteBatch.Draw(drawer);
 
@@ -1545,6 +1568,18 @@ public class Celestia : ScarletBoss
 
     private void DrawHorse(SpriteBatch spriteBatch)
     {
+        GlowingSwordMaskShader shader = GlowingSwordMaskShader.Instance;
+        shader.TrailTexture = TrailRegistry.BulbTrail;
+        shader.Distortion = 0.02f;
+        shader.DistortionTexture = TrailRegistry.WhispyTrail;
+        shader.Time = Main.GlobalTimeWrappedHourly * 16;
+        shader.Bloom = 0.8f;
+        shader.Tiling = Vector2.One * 0.75f;
+        shader.InnerColor = Color.Lerp(Color.LightGreen, Color.DarkTurquoise, ExtraMath.Osc(0f, 1f, 12)) * _horseAlpha;
+        shader.OuterColor = Color.DarkTurquoise * _horseAlpha;
+        Main.spriteBatch.Restart(effect: shader.Effect);
+
+
         Asset<Texture2D> horseTextureAsset = ModContent.Request<Texture2D>(Texture + "_Horse");
         SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(horseTextureAsset, NPC.Bottom);
         drawer.spriteEffects = NPC.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
@@ -1553,13 +1588,12 @@ public class Celestia : ScarletBoss
         drawer.CenterOrigin();
         
         drawer.color = Color.Turquoise;
-        drawer.color *= 0.25f * _horseAlpha;
-        spriteBatch.Draw(drawer);
-
-        drawer.color = Color.Turquoise;
-        drawer.color *= 0.5f * ExtraMath.Osc(0.5f, 1f, speed: 3) * _horseAlpha;
+        drawer.color *= 0.5f * _horseAlpha;
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);
+        Main.spriteBatch.RestartDefaults();
+
+
     }
 
     private void DrawSprite(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -1594,13 +1628,13 @@ public class Celestia : ScarletBoss
     {
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, NPC.Bottom);
         sbDrawer.scale *= 0.12f * ExtraMath.Osc(0.9f, 1f, speed: 24);
-        sbDrawer.color = Color.Turquoise * _slideTrailAlpha;
+        sbDrawer.color = Color.Turquoise * _slideTrailAlpha * _ghostAlpha;
         sbDrawer.color.A = 0;
         Main.spriteBatch.Draw(sbDrawer);
 
         //     sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, NPC.Bottom);
         sbDrawer.scale *= 0.9f;
-        sbDrawer.color = Color.White * _slideTrailAlpha;
+        sbDrawer.color = Color.White * _slideTrailAlpha * _ghostAlpha;
         sbDrawer.color.A = 0;
         Main.spriteBatch.Draw(sbDrawer);
     }

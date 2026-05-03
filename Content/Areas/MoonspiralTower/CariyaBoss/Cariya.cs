@@ -864,6 +864,7 @@ public class Cariya : ScarletBoss
     private void AI_Despawn()
     {
         Timer++;
+        _show = false;
         if (Timer >= 90)
         {
             NPC.active = false;
