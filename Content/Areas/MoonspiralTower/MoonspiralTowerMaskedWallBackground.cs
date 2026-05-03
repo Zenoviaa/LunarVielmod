@@ -37,7 +37,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower
         
         public override bool IsActive(Player player)
         {
-            if (NPC.AnyNPCs(ModContent.NPCType<Verlia>()))
+            if (NPC.AnyDanger())
             {
                 Color = Color.Lerp(Color, Color.Lerp(Color.White, Color.Black, 0.5f), 0.1f);
             }

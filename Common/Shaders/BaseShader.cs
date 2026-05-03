@@ -19,6 +19,19 @@ namespace Stellamod.Common.Shaders
         }
     }
 
+    public static class ShaderContent
+    {
+        /// <summary>
+        /// Returns the instance of the shader wrapper
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T GetInstance<T>() where T : BaseShader, new()
+        {
+            return CrystalShader<T>.Instance;
+        }
+    }
+
     public abstract class BaseShader : IShader
     {
         public virtual string EffectPath

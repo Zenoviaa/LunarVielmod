@@ -45,7 +45,7 @@ public class MagicalFish : ForegroundLayer
 
         parallax.X = 1.5f;
         parallax.Y = 1.5f;
-        if (NPC.AnyNPCs(ModContent.NPCType<Verlia>()))
+        if (NPC.AnyDanger())
         {
             drawAlpha = MathHelper.Lerp(drawAlpha, 0f, 0.1f);
         }

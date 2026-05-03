@@ -21,6 +21,7 @@ public class CariyaMagicBlade : ModProjectile
     private Vector2 _outScale;
     private Vector2 _initialVelocity;
     private ref float Timer => ref Projectile.ai[0];
+    private ref float Style => ref Projectile.ai[1];
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -138,6 +139,20 @@ public class CariyaMagicBlade : ModProjectile
 
     private void DrawPixelatedSwords(SpriteBatch sb, Vector2 screenPos)
     {
+        if(Style == 1)
+        {
+            SpritebatchDrawer bloomLineDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4"), Projectile.Center);
+            bloomLineDrawer.rotation = _initialVelocity.ToRotation();
+            bloomLineDrawer.LeftCenterOrigin();
+            bloomLineDrawer.drawOrigin.X += 48;
+            bloomLineDrawer.scale.X *= 4;
+            bloomLineDrawer.scale.Y *= MathHelper.Lerp(0.5f, 0.2f, EasingFunction.InOutSine(Timer / 60f));
+            bloomLineDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.InSine(Timer / 30f)) * 0.5f;
+            float outLineAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine((Timer - 71) / 15f));
+            bloomLineDrawer.color *= outLineAlpha;
+            bloomLineDrawer.color.A = 0;
+            sb.Draw(bloomLineDrawer);
+        }
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         sbDrawer.color = Color.Lerp(Color.Blue, Color.DarkBlue, ExtraMath.Osc(0f, 1f, 0, Projectile.whoAmI));
         sbDrawer.color.A = 0;

@@ -4,26 +4,40 @@ using Terraria;
 
 namespace Stellamod.Common.Shaders
 {
-    public class BasicLaserAlphaShader : BaseShader
+    public class HairShader : CrystalShader<HairShader>
     {
         private EffectParameter _tilingParam;
         private EffectParameter _matrixParam;
         private EffectParameter _laserTextureParam;
         private EffectParameter _timeParam;
-        private EffectParameter _innerColorParam;
-        private EffectParameter _outerColorParam;
+        private EffectParameter _waveFrequencyParam;
+        private EffectParameter _waveAmplitudeParam;
+        private EffectParameter _xOffsetParam;
 
-        private static BasicLaserAlphaShader _instance;
-        public static BasicLaserAlphaShader Instance
+        public float WaveFrequency
         {
-            get
+            set
             {
-                _instance ??= new();
-                _instance.SetDefaults();
-                return _instance;
+                _waveFrequencyParam ??= Effect.Parameters["waveFrequency"];
+                _waveFrequencyParam.SetValue(value);
             }
         }
-
+        public float WaveAmplitude
+        {
+            set
+            {
+                _waveAmplitudeParam ??= Effect.Parameters["waveAmplitude"];
+                _waveAmplitudeParam.SetValue(value);
+            }
+        }
+        public float XOffset
+        {
+            set
+            {
+                _xOffsetParam ??= Effect.Parameters["xOffset"];
+                _xOffsetParam.SetValue(value);
+            }
+        }
         public Matrix TransformMatrix
         {
             set
@@ -42,24 +56,6 @@ namespace Stellamod.Common.Shaders
             }
         }
 
-
-        public Color InnerColor
-        {
-            set
-            {
-                _innerColorParam ??= Effect.Parameters["innerColor"];
-                _innerColorParam.SetValue(value.ToVector3());
-            }
-        }
-
-        public Color OuterColor
-        {
-            set
-            {
-                _outerColorParam ??= Effect.Parameters["outerColor"];
-                _outerColorParam.SetValue(value.ToVector3());
-            }
-        }
 
         public float Time
         {
@@ -83,8 +79,9 @@ namespace Stellamod.Common.Shaders
         {
             base.SetDefaults();
             TransformMatrix = TrailDrawer.WorldViewPoint2;
-            //InnerColor = Color.Yellow;
-            //  OuterColor = Color.Red;
+            WaveFrequency = 1f;
+            WaveAmplitude = 0.2f;
+            XOffset = 1f;
 
             LaserTexture = TrailRegistry.BeamTrail;
             Time = Main.GlobalTimeWrappedHourly * 24;

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -45,6 +46,11 @@ public class CariyaSwordFall : ModProjectile
             Projectile.hostile = false;
         }
         Timer++;
+        if(Timer == 1)
+        {
+            SoundStyle downSlash = AssetRegistry.Sounds.Cariya.CarianDownslash with { PitchVariance = 0.3f };
+            SoundEngine.PlaySound(downSlash, Projectile.position);
+        }
         if(Timer == 1)
         {
             if(Main.netMode != NetmodeID.Server)

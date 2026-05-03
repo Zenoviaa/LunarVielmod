@@ -5,14 +5,17 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.EveroseVillage.CelestiaBoss;
 using Stellamod.Content.Areas.MoonspiralTower.CariyaBoss.Projectiles;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -73,6 +76,10 @@ public class Cariya : ScarletBoss
     private float _wingAlpha;
     private bool _phase2Effect;
     private bool _showWings;
+
+
+    private bool _showDirectionLine;
+    private float _directionLineAlpha;
     private Color _outlineColor;
     private Vector2 _teleportPosition;
     private Asset<Texture2D> _wingTextureAsset;
@@ -81,6 +88,19 @@ public class Cariya : ScarletBoss
     {
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
+    }
+    private Chain _chain;
+    private Chain Chain
+    {
+        get
+        {
+            if (_chain == null)
+            {
+
+                _chain = new Chain(NPC.Center, 2, 128);
+            }
+            return _chain;
+        }
     }
 
     private ref float AttackCycle => ref NPC.ai[2];
@@ -178,6 +198,7 @@ public class Cariya : ScarletBoss
         _showWings = false;
         _showMagicCircle = false;
         _show = true;
+        _showDirectionLine = false;
         switch (State)
         {
             case AIState.Despawn:
@@ -188,6 +209,9 @@ public class Cariya : ScarletBoss
                 break;
             case AIState.Idle:
                 AI_Idle();
+                break;
+            case AIState.Death:
+                AI_Death();
                 break;
             case AIState.Aura_Monster:
                 AI_AuraMonster();
@@ -227,6 +251,10 @@ public class Cariya : ScarletBoss
             }
         }
 
+
+        float targetLineAlpha = _showDirectionLine ? 1f : 0f;
+        _directionLineAlpha = MathHelper.Lerp(_directionLineAlpha, targetLineAlpha, 0.1f);
+
         float targetWingAlpha = _showWings ? 1f : 0f;
         _wingAlpha = MathHelper.Lerp(_wingAlpha, targetWingAlpha, 0.1f);
 
@@ -260,7 +288,10 @@ public class Cariya : ScarletBoss
             targetOutlineColor = Color.Yellow;
         }
         _outlineColor = Color.Lerp(_outlineColor, targetOutlineColor, 0.1f);
+        SimulateHair();
     }
+
+
     private bool IsGrounded()
     {
         Point solidTileBelow = NPC.Bottom.ToTileCoordinates();
@@ -280,6 +311,65 @@ public class Cariya : ScarletBoss
             State = state;
             NPC.netUpdate = true;
         }
+    }
+
+    private void AI_Death()
+    {
+        //Main.NewText(IsGrounded());
+        NPC.noGravity = false;
+        NPC.velocity.X *= 0.8f;
+        if (NPC.collideY)
+        {
+            Timer++;
+            if(Timer < 60)
+                Animator.PlayAnimation(ANIM_IDLE);
+            else
+            {
+                Animator.PlayAnimation(ANIM_SWORDSTUCK);
+
+                if(Timer == 65)
+                {
+                    SoundStyle gruntSound = AssetRegistry.Sounds.Cariya.CariyaGrunt1 with { PitchVariance = 0.3f };
+                    SoundEngine.PlaySound(gruntSound, NPC.position);
+                }
+
+                if (Timer % 5 == 0)
+                {
+                    Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(128, 128);
+                    Vector2 vel = (NPC.Center - pos);
+                    vel *= 0.1f;
+                    var fx = FXUtil.GlowStretch(pos, vel);
+                    fx.VectorScale *= 0.5f;
+                }
+                _showMagicCircle = true;
+                ShakeModSystem.Shake = MathHelper.Lerp(0f, 8f, EasingFunction.InExpo(Timer / 240f));
+                if (Timer >= 240)
+                {
+                    if (MultiplayerHelper.IsHost)
+                    {
+                        
+                        Projectile.NewProjectile(SourceFromThis, NPC.Bottom, -Vector2.UnitY, ModContent.ProjectileType<CariyaSpear>(), Sword_Fall_Damage, 1, Main.myPlayer);
+                        Projectile.NewProjectile(SourceFromThis, NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<CariyaSwordFall>(), Sword_Fall_Damage, 1, Main.myPlayer);
+                       
+                    }
+                    var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightSkyBlue, Color.DarkBlue, 45);
+                    fx.Scale *= 2f;
+                    for(float f = 0; f < 16; f++)
+                    {
+                        Vector2 velocity = Main.rand.NextVector2Circular(12, 12);
+                        DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                        spawnParams.outerColor = Color.Blue;
+                        var dp = DustParticle.Spawn(NPC.Center, velocity, spawnParams);
+                        dp.noTileCollide = true;
+                        dp.dampening = 0.05f;
+                        dp.gravity = 0;
+                    }
+                    NPC.Kill();
+                }
+            }
+        }
+    
+        
     }
 
     private void AI_Idle()
@@ -336,9 +426,11 @@ public class Cariya : ScarletBoss
                     _allowPhase2Attacks = true;
                     if(Timer == 1)
                     {
-    
+
+                        SoundStyle gruntSound = AssetRegistry.Sounds.Cariya.CariyaGrunt2 with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(gruntSound, NPC.position);
                         Vector2 teleportSpot = MyTarget.Center;
-                        teleportSpot.Y -= 144;
+                        teleportSpot.Y -= 340;
                         teleportSpot.X += -NPC.spriteDirection * 512;
                         Teleport(teleportSpot);
                     }
@@ -382,7 +474,8 @@ public class Cariya : ScarletBoss
                             spawnPos -= new Vector2(64);
                             spawnPos += Main.rand.NextVector2Circular(64, 64);
                             Vector2 velocity = new Vector2(15 * NPC.spriteDirection, 15);
-                            Projectile.NewProjectile(SourceFromThis, spawnPos, velocity, ModContent.ProjectileType<CariyaMagicBlade>(), Magic_Blade_Damage, 1, Main.myPlayer);
+                            Projectile.NewProjectile(SourceFromThis, spawnPos, velocity, 
+                                ModContent.ProjectileType<CariyaMagicBlade>(), Magic_Blade_Damage, 1, Main.myPlayer, ai1: 1);
 
                         }
                     }
@@ -407,7 +500,7 @@ public class Cariya : ScarletBoss
                             spawnPos -= new Vector2(64);
                             spawnPos += Main.rand.NextVector2Circular(64, 64);
                             Vector2 velocity = new Vector2(15 * NPC.spriteDirection, 15);
-                            Projectile.NewProjectile(SourceFromThis, spawnPos, velocity, ModContent.ProjectileType<CariyaMagicBlade>(), Magic_Blade_Damage, 1, Main.myPlayer);
+                            Projectile.NewProjectile(SourceFromThis, spawnPos, velocity, ModContent.ProjectileType<CariyaMagicBlade>(), Magic_Blade_Damage, 1, Main.myPlayer, ai1: 1);
 
                         }
                     }
@@ -467,7 +560,6 @@ public class Cariya : ScarletBoss
                 break;
         }
     }
-
     private void AI_SwordFall()
     {
         Timer++;
@@ -477,9 +569,12 @@ public class Cariya : ScarletBoss
                 {
                     if (Timer == 1)
                     {
+                        SoundStyle gruntSound = AssetRegistry.Sounds.Cariya.CariyaGrunt1 with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(gruntSound, NPC.position);
+
                         NPC.TargetClosest();
                         FaceTarget();
-                        NPC.velocity.Y -= 13;
+                        NPC.velocity.Y -= 18;
                         NPC.velocity.X = NPC.spriteDirection * 6;
                     }
                     _warning = true;
@@ -511,7 +606,8 @@ public class Cariya : ScarletBoss
                     }
 
                     NPC.velocity.X *= 0.94f;
-                    NPC.velocity.Y *= 0.5f;
+                    NPC.velocity.Y *= 0.92f;
+                    NPC.velocity.Y -= 0.15f;
                     Animator.PlayAnimation(ANIM_SWORDFALLREADY);
 
                     _warning = true;
@@ -527,6 +623,8 @@ public class Cariya : ScarletBoss
                 {
                     if(Timer == 1)
                     {
+                        SoundStyle gruntSound = AssetRegistry.Sounds.Cariya.CarianSlash2 with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(gruntSound, NPC.position);
                         NPC.velocity.Y -= 10;
                     }
                     _attacking = true;
@@ -534,7 +632,7 @@ public class Cariya : ScarletBoss
                     if (NPC.velocity.Y < 15)
                         NPC.velocity.Y += 0.85f;
                     else
-                        NPC.velocity.Y *= 1.01f;
+                        NPC.velocity.Y *= 1.04f;
 
                     if (Timer % 5 == 0)
                     {
@@ -579,6 +677,8 @@ public class Cariya : ScarletBoss
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
+                        SoundStyle gruntSound = AssetRegistry.Sounds.Cariya.CariyaGrunt1 with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(gruntSound, NPC.position);
                     }
                     _warning = true;
                     FaceTarget();
@@ -598,17 +698,19 @@ public class Cariya : ScarletBoss
                         NPC.velocity.X = NPC.spriteDirection * 3;
                         NPC.velocity.Y -= 24;
                     }
-                    if (Timer == 8 && MultiplayerHelper.IsHost)
+                    if (Timer == 1 && MultiplayerHelper.IsHost)
                     {
                         Vector2 fireVelocity = Vector2.UnitX * NPC.spriteDirection;
                         fireVelocity *= 5;
                         fireVelocity.Y -= 15;
                         Projectile.NewProjectile(SourceFromThis, NPC.Center, fireVelocity, ModContent.ProjectileType<CariyaUppercut>(), Overhead_Slash_Damage, 1, Main.myPlayer);
                     }
+                    _showSlideTrail = true;
                     _showTrail = true;
                     _attacking = true;
                     NPC.velocity.X *= 0.98f;
                     NPC.velocity.Y *= 0.96f;
+                    NPC.rotation = Utils.AngleLerp(0, -NPC.velocity.X * 0.05f, EasingFunction.InOutSine(Timer / 25f));
                     Animator.PlayAnimation(ANIM_UPPERCUT);
                     if (Animator.IsFinished())
                     {
@@ -619,9 +721,16 @@ public class Cariya : ScarletBoss
                 break;
             case 2:
                 {
+                    _showSlideTrail = true;
                     _showTrail = true;
                     _attacking = true;
+
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation,0, 0.01f);
                     Animator.PlayAnimation(ANIM_SWORD_READY_OVERHEAD);
+                    if(Timer % 5 == 0)
+                    {
+                        CreateNewAfterImage();
+                    }
                     if (Animator.IsFinished())
                     {
                         Timer = 0;
@@ -634,10 +743,20 @@ public class Cariya : ScarletBoss
                     if (Timer == 8 && MultiplayerHelper.IsHost)
                     {
                         Vector2 fireVelocity = Vector2.UnitX * NPC.spriteDirection;
-                        fireVelocity *= 15;
-                        Projectile.NewProjectile(SourceFromThis, NPC.Center, fireVelocity, ModContent.ProjectileType<CariyaFlyingSlash>(), Overhead_Slash_Damage, 1, Main.myPlayer);
+                        fireVelocity *= 2;
+                        fireVelocity.Y += 8;
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, fireVelocity, ModContent.ProjectileType<CariyaDownSlash>(), Overhead_Slash_Damage, 1, Main.myPlayer);
+
+                        fireVelocity = Vector2.UnitX * NPC.spriteDirection;
+                        fireVelocity *= 25;
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, fireVelocity,
+                            ModContent.ProjectileType<CariyaFlyingSlash>(), Overhead_Slash_Damage, 1, Main.myPlayer);
                     }
+                    _showSlideTrail = true;
+                    _showTrail = true;
                     _attacking = true;
+
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.01f);
                     NPC.velocity.X *= 0.7f;
                     Animator.PlayAnimation(ANIM_OVERHEAD_SWING);
                     if (Animator.IsTimerFinished(Timer))
@@ -665,12 +784,17 @@ public class Cariya : ScarletBoss
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
+                        SoundStyle grunt = AssetRegistry.Sounds.Cariya.CariyaGrunt1 with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(grunt, NPC.position);
                     }
+
                     _warning = true;
-                    FaceTarget();
+                    if(Timer < 30)
+                        FaceTarget();
+                    _showDirectionLine = true;
                     NPC.velocity.X *= 0.7f;
                     Animator.PlayAnimation(ANIM_SWORDREADYLONG);
-                    if (Timer >= 50)
+                    if (Timer >= 70)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -712,15 +836,25 @@ public class Cariya : ScarletBoss
                 {
                     if (Timer == 1)
                     {
+                        NPC.velocity.X = NPC.spriteDirection * 3;
+                        float heightDiff = (NPC.Center.Y - MyTarget.Center.Y);
+                        float jumpSpeed = MathHelper.Max(24, heightDiff / 12f);
+                        NPC.velocity.Y -= jumpSpeed;
                         NPC.TargetClosest();
+                        SoundStyle overheadSlash = AssetRegistry.Sounds.Cariya.CariyaGrunt1 with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(overheadSlash, NPC.position);
                     }
                     _warning = true;
                     if(Timer < 10)
                     {
                         FaceTarget();
                     }
-              
-                    NPC.velocity.X *= 0.7f;
+
+                    _showSlideTrail = true;
+                    _showTrail = true;
+                    NPC.velocity.X *= 0.98f;
+                    NPC.velocity.Y *= 0.96f;
+                    NPC.rotation = Utils.AngleLerp(0, -NPC.velocity.X * 0.05f, EasingFunction.InOutSine(Timer / 25f));
                     Animator.PlayAnimation(ANIM_SWORD_READY_OVERHEAD);
                     if (Timer >= 50)
                     {
@@ -731,12 +865,39 @@ public class Cariya : ScarletBoss
                 break;
             case 1:
                 {
+                    _showSlideTrail = true;
+                    _showTrail = true;
+                    _attacking = true;
+
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.01f);
+                    Animator.PlayAnimation(ANIM_SWORD_READY_OVERHEAD);
+                    if (Timer % 5 == 0)
+                    {
+                        CreateNewAfterImage();
+                    }
+
+                    float heightDiff = (NPC.Center.Y - MyTarget.Center.Y);
+                    heightDiff += 180;
+                    if (Timer >= 15 && heightDiff > 0)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
                     if(Timer == 8 && MultiplayerHelper.IsHost)
                     {
                         Vector2 fireVelocity = Vector2.UnitX * NPC.spriteDirection;
-                        fireVelocity *= 15;
+                        fireVelocity *= 2;
+                        fireVelocity.Y += 8;
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, fireVelocity, ModContent.ProjectileType<CariyaDownSlash>(), Overhead_Slash_Damage, 1, Main.myPlayer);
+
+                        fireVelocity = Vector2.UnitX * NPC.spriteDirection;
+                        fireVelocity *= 19;
                         Projectile.NewProjectile(SourceFromThis, NPC.Center, fireVelocity, 
-                            ModContent.ProjectileType<CariyaFlyingSlash>(), Overhead_Slash_Damage, 1, Main.myPlayer);
+                            ModContent.ProjectileType<CariyaTallFlyingSlash>(), Overhead_Slash_Damage, 1, Main.myPlayer);
                     }
                     _attacking = true;
                     NPC.velocity.X *= 0.7f;
@@ -748,9 +909,9 @@ public class Cariya : ScarletBoss
                     }
                 }
                 break;
-            case 2:
+            case 3:
                 {
-                    SwitchState(AIState.Long_Thrust);
+                    SwitchState(AIState.Idle);
                 }
                 break;
         }
@@ -765,6 +926,8 @@ public class Cariya : ScarletBoss
                     if(Timer == 1)
                     {
                         NPC.TargetClosest();
+                        SoundStyle gruntSound = AssetRegistry.Sounds.Cariya.CariyaGrunt2 with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(gruntSound, NPC.position);
                     }
 
                     Animator.PlayAnimation(ANIM_DASH);
@@ -859,7 +1022,6 @@ public class Cariya : ScarletBoss
                 SwitchState(pattern);
             }
         }
-        SwitchState(AIState.Uppercut);
     }
 
     private void AI_Spawn()
@@ -971,7 +1133,20 @@ public class Cariya : ScarletBoss
         Animator.Update();
         NPC.frame.Y = Animator.GetFrameY(frameHeight);
     }
-
+    private void DrawDirectionLine(SpriteBatch spriteBatch, Vector2 drawOffset, Color drawColor)
+    {
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_47"), NPC.Center);
+        //drawer.sourceRect = NPC.frame;
+        drawer.TopCenterOrigin();
+        drawer.rotation -= MathHelper.PiOver2;
+        if (NPC.spriteDirection == -1)
+            drawer.rotation -= MathHelper.Pi;
+        drawer.color = drawColor * _ghostAlpha * _directionLineAlpha * 0.6f;
+        drawer.color.A = 0;
+        drawer.scale.Y *= 0.4f;
+        drawer.scale.X *= 1f;
+        spriteBatch.Draw(drawer);
+    }
     private void DrawSprite(SpriteBatch spriteBatch, Vector2 drawOffset, Color drawColor)
     {
         SpritebatchDrawer drawer = SpritebatchDrawer.FromNPC(NPC);
@@ -997,6 +1172,51 @@ public class Cariya : ScarletBoss
         spriteBatch.Draw(drawer);
 
     }
+
+
+    #region Draw Code
+
+    #region Hair Rendering
+    private void SimulateHair()
+    {
+        Chain.points[0] = NPC.Center;
+        Chain.points[0].Y -= 4 + ExtraMath.Osc(0f, 16, speed: 2);
+        Chain.pinned[0] = true;
+
+        for (int i = 0; i < 6; i++)
+        {
+            Chain.points[i].Y += ExtraMath.Osc(-8f, 8f, speed: 0.5f, offset: i);
+        }
+        for (int i = 0; i < Chain.points.Length; i++)
+        {
+            Chain.points[i].Y += MathHelper.Lerp(0.2f, 1f, (float)i / (float)Chain.points.Length);
+        }
+        for (int i = 0; i < 32; i++)
+        {
+            Chain.Resolve();
+        }
+    }
+    private float GetHairWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(32, 0, ratio) * _ghostAlpha * EasingFunction.QuadraticBump(ratio);
+    }
+    private Color GetHairColor(float ratio)
+    {
+        return Color.DarkGray * _ghostAlpha * EasingFunction.OutExpo(ratio + 0.5f);
+    }
+
+    private void DrawHair(GraphicsDevice gDevice)
+    {
+        HairShader shader = ShaderContent.GetInstance<HairShader>();
+        shader.LaserTexture = TrailRegistry.GlowTrailNoBlack;
+        shader.Time = Main.GlobalTimeWrappedHourly * 0.2f;
+        shader.WaveFrequency = 8;
+        shader.XOffset = 12;
+        TrailDrawer.Draw(Main.spriteBatch, Chain.points, GetHairColor, GetHairWidth, shader);
+    }
+    #endregion
+
+    #region Slide Trail
     private float GetTrailWidth(float ratio)
     {
         return MathHelper.SmoothStep(0, 16, EasingFunction.QuadraticBump(ratio)) * _slideTrailAlpha * _ghostAlpha;
@@ -1013,6 +1233,9 @@ public class Cariya : ScarletBoss
         laserShader.OuterColor = Color.White;
         TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, GetTrailColor, GetTrailWidth, laserShader, new Vector2(NPC.Size.X * 0.5f, NPC.Size.Y));
     }
+    #endregion
+
+
     private void DrawWing(SpriteBatch spriteBatch)
     {
         SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureAsset(_wingTextureAsset, NPC.Center);
@@ -1084,22 +1307,35 @@ public class Cariya : ScarletBoss
             return false;
         _wingTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Wing");
         PixelationManager.QueuePrimitivesDrawAction(DrawTrail);
+        PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.BehindNPCsWithOutline);
         SpritebatchDrawer auraDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
         auraDrawer.scale *= 0.2f;
         auraDrawer.color = Color.Blue * ExtraMath.Osc(0.5f, 1f) * _ghostAlpha;
         auraDrawer.color.A = 0;
         spriteBatch.Draw(auraDrawer);
+      //a  DrawHair();
         DrawSpellCircle(spriteBatch);
         DrawAfterImage(spriteBatch);
         DrawWing(spriteBatch);
+        DrawDirectionLine(spriteBatch, Vector2.Zero, Color.White);
         DrawSprite(spriteBatch, Vector2.Zero, drawColor);
         OutlineRenderer.Queue(DrawWhite);
         return false;
     }
+    #endregion
 
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
+        if(NPC.life <= 0)
+        {
+            if (State != AIState.Death)
+            {
+                SwitchState(AIState.Death);
+            }
+            NPC.life = 1;
+        }
+   
     }
     public override void OnKill()
     {

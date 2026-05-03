@@ -1,8 +1,10 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -22,7 +24,7 @@ public class CariyaUppercut : ModProjectile
         base.SetDefaults();
         Projectile.width = 100;
         Projectile.height = 100;
-        Projectile.timeLeft = 60;
+        Projectile.timeLeft = 120;
         Projectile.hostile = true;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
@@ -36,12 +38,12 @@ public class CariyaUppercut : ModProjectile
         Timer++;
         if(Timer == 1)
         {
-            if (Timer == 1)
-            {
-                var fx = FXUtil.GlowStretch(Projectile.Center, Projectile.velocity.RotatedBy(-MathHelper.PiOver4));
-                fx.VectorScale.X *= 6;
-                fx.VectorScale.Y *= 0.75f;
-            }
+            SoundStyle slashSound = AssetRegistry.Sounds.Cariya.CarianSlash1 with { PitchVariance = 0.3f };
+            SoundEngine.PlaySound(slashSound, Projectile.position);
+
+           var fx = FXUtil.GlowStretch(Projectile.Center, Projectile.velocity.RotatedBy(-MathHelper.PiOver4));
+            fx.VectorScale.X *= 6;
+            fx.VectorScale.Y *= 0.75f;
         }
         if (Timer % 4 == 0)
         {
@@ -81,7 +83,7 @@ public class CariyaUppercut : ModProjectile
             Projectile.frame++;
         }
         Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
-        Projectile.velocity.Y *= 0.94f;
+        Projectile.velocity.Y *= 0.97f;
     }
     public override bool PreDraw(ref Color lightColor)
     {

@@ -1,9 +1,12 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
+using Stellamod.Core.Particles;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -36,11 +39,18 @@ public class CariyaThrust : ModProjectile
         base.AI();
    
         Timer++;
+        if(Timer == 1)
+        {
+            SoundStyle thrustSound = AssetRegistry.Sounds.Cariya.Carianpokie with { PitchVariance = 0.3f };
+            SoundEngine.PlaySound(thrustSound, Projectile.position);
+            ThrustParticle.Spawn(Projectile.Center, Projectile.velocity);
+            LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 0.1f);
+        }
         if (Timer % 4 == 0)
         {
             _mirageOffset = Main.rand.NextVector2Circular(4, 4);
         }
-        Projectile.velocity.X *= 0.98f;
+        Projectile.velocity.X *= 0.94f;
         Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
         if (Timer % 8 == 0)
@@ -92,8 +102,8 @@ public class CariyaThrust : ModProjectile
         shader.Time = Main.GlobalTimeWrappedHourly * 16;
         shader.Bloom = MathHelper.Lerp(4f, 0.8f, EasingFunction.InOutSine(Timer / 60f));
         shader.Tiling = Vector2.One * 0.75f;
-        shader.InnerColor = Color.Lerp(Color.LightBlue, Color.Lerp(Color.LightBlue, Color.Blue, 0.4f), ExtraMath.Osc(0f, 1f, 12)) * 0.5f;
-        shader.OuterColor = Color.DarkBlue * 0.5f;
+        shader.InnerColor = Color.Lerp(Color.LightBlue, Color.Lerp(Color.LightBlue, Color.Blue, 0.4f), ExtraMath.Osc(0f, 1f, 12)) * 0.5f * outAlpha;
+        shader.OuterColor = Color.DarkBlue * 0.5f * outAlpha;
         Main.spriteBatch.Restart(effect: shader.Effect);
 
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
