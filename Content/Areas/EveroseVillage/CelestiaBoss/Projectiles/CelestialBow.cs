@@ -54,7 +54,7 @@ public class CelestialBow : ModProjectile
         Projectile.width = 32;
         Projectile.height = 32;
         Projectile.tileCollide = false;
-        Projectile.timeLeft = 240;
+        Projectile.timeLeft = 180;
         Projectile.hostile = false;
         Projectile.penetrate = -1;
         Projectile.ignoreWater = true;

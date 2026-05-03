@@ -1615,7 +1615,7 @@ public class Celestia : ScarletBoss
         spriteBatch.Draw(drawer);
 
 
-        drawer.worldPosition += _mirageOffset;
+    //    drawer.worldPosition += _mirageOffset;
         drawer.color = Color.Turquoise * _ghostAlpha;
         drawer.color.A = 0;
         spriteBatch.Draw(drawer);

@@ -139,7 +139,7 @@ public class Cariya : ScarletBoss
         NPC.height = 64;
         NPC.damage = 50;
         NPC.defense = 15;
-        NPC.lifeMax = 7000;
+        NPC.lifeMax = 4000;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.knockBackResist = 0f;
@@ -584,7 +584,7 @@ public class Cariya : ScarletBoss
                     FaceTarget();
                     NPC.velocity.X *= 0.7f;
                     Animator.PlayAnimation(ANIM_UPPERCUTREADY);
-                    if (Animator.IsTimerFinished(Timer))
+                    if (Timer >= 50)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -657,7 +657,7 @@ public class Cariya : ScarletBoss
                     FaceTarget();
                     NPC.velocity.X *= 0.7f;
                     Animator.PlayAnimation(ANIM_SWORDREADYLONG);
-                    if (Animator.IsTimerFinished(Timer))
+                    if (Timer >= 50)
                     {
                         Timer = 0;
                         AttackCycle++;
