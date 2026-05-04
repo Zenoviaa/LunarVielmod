@@ -33,7 +33,7 @@ namespace Stellamod.Content.Areas.Abyss.WeaponsAB
             Item.shoot = ModContent.ProjectileType<EventHorizonSlash>();
             staminaProjectileShoot = ModContent.ProjectileType<EventHorizonStaminaSlash>();
             meleeWeaponType = MeleeWeaponType.Sword;
-            staminaCost = 3;
+            staminaCost = 4;
         }
 
         public override void AddRecipes()

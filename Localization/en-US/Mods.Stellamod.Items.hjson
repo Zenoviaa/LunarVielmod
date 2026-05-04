@@ -2044,7 +2044,7 @@ LeatherGlove: {
 	Tooltip:
 		'''
 		Get a grip!
-		5% increased melee attack speed
+		20% increased melee attack speed
 		'''
 }
 
