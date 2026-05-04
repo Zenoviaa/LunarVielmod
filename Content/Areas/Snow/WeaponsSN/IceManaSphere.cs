@@ -244,7 +244,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
             Projectile.width = 64;
             Projectile.height = 64;
             Projectile.friendly = true;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             Projectile.timeLeft = 180;
             Projectile.ignoreWater = true;
         }
@@ -334,6 +334,11 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
                 sp.fast = true;
                 sp.dampening = 0.1f;
                 sp.Scale *= 0.25f;
+            }
+
+            if(Timer >= 60)
+            {
+                Projectile.tileCollide = true;
             }
 
         }

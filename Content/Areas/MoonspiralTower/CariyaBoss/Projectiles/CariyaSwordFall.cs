@@ -28,8 +28,8 @@ public class CariyaSwordFall : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 384;
-        Projectile.height = 32;
+        Projectile.width = 600;
+        Projectile.height = 64;
         Projectile.hostile = true;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;

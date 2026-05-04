@@ -26,6 +26,30 @@ namespace Stellamod.Common.WeaponTypes
             return base.AltFunctionUse(item, player);
         }
 
+        public override bool CanShoot(Item item, Player player)
+        {
+            if (isManaSphere)
+            {
+                //Check if any balls are out
+                //If a ball is out you can shoot
+                //If there's none, we'll get an error :(
+                bool hasAnyBallOut = false;
+                foreach (var proj in Main.ActiveProjectiles)
+                {
+                    if (proj.owner != player.whoAmI)
+                        continue;
+                    if (proj.type != heldProj)
+                        continue;
+
+                    hasAnyBallOut = true;
+                    break;
+                }
+
+                return base.CanShoot(item, player) && hasAnyBallOut;
+            }
+            return base.CanShoot(item, player);
+        }
+
         public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (isManaSphere)
@@ -45,7 +69,7 @@ namespace Stellamod.Common.WeaponTypes
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(4, 4), heldProj, 1, 1, player.whoAmI);
                 point.Kill();
                 DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
-                if (player.altFunctionUse == staminaCost && dashPlayer.CanConsume(2))
+                if (player.altFunctionUse == 2 && dashPlayer.CanConsume(staminaCost))
                 {
                     dashPlayer.Consume(staminaCost);
                     type = staminaProj;

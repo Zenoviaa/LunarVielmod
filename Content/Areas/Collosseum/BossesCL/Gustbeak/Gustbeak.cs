@@ -300,7 +300,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             NPC.height = 64;
             NPC.damage = 14;
             NPC.defense = 12;
-            NPC.lifeMax = 1300;
+            NPC.lifeMax = 3000;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.DD2_WyvernScream;
             NPC.knockBackResist = 0f;

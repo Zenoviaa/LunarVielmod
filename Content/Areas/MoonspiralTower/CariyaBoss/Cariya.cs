@@ -1000,7 +1000,10 @@ public class Cariya : ScarletBoss
         NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, walkingSpeed * direction, 0.1f);
         FaceTarget();
         Animator.PlayAnimation(ANIM_WALK);
-        if (Timer >= 180)
+        float walkTime = 180;
+        if (InPhase2)
+            walkTime *= 0.5f;
+        if (Timer >= walkTime)
         {
            SwitchState(AIState.Shes_Right_Behind_Me_Isnt_She);
         }
