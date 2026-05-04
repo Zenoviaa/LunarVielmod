@@ -18,12 +18,12 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
             base.SetDefaults2();
             Form = FormRegistry.FourPointedStar.Value;
             Item.damage = 70;
-            Item.mana = 50;
+            Item.mana = 30;
             Item.shootSpeed = 5;
             Size = 32;
             TrailLength = 64;
-            normalSlotCount = 2;
-            timedSlotCount = 2;
+            normalSlotCount = 1;
+            timedSlotCount = 3;
         }
 
         public override void AddRecipes()
