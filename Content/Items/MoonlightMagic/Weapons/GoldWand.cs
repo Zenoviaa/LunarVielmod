@@ -9,12 +9,11 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
             base.SetDefaults2();
             Item.damage = 35;
             Item.shootSpeed = 10;
-            Item.useTime = 18;
-            Item.useAnimation = 36;
+            Item.mana = 50;
             Size = 8;
             TrailLength = 16;
             normalSlotCount = 3;
-            timedSlotCount = 1;
+            timedSlotCount = 0;
         }
     }
 }

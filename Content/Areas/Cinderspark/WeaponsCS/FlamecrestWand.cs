@@ -17,7 +17,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         {
             base.SetDefaults2();
             Form = FormRegistry.Crescent.Value;
-            Item.damage = 125;
+            Item.damage = 170;
             Item.mana = 50;
             normalSlotCount = 1;
             timedSlotCount = 4;
