@@ -2576,12 +2576,8 @@ StaffOFlame: {
 }
 
 StaffoftheIrradiaflare: {
-	DisplayName: Staff of the Irradiaflare
-	Tooltip:
-		'''
-		Channels the power of the acid to shoot a powerful acidic blast!
-		It's powerful, source: trust me bro
-		'''
+	DisplayName: Explosion Artifact
+	Tooltip: Created a timed bomb that explodes and can chain with itself!
 }
 
 StarFlowerStaff: {
