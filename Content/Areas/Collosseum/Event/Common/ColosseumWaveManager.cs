@@ -126,9 +126,14 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
             {
                 NPC.active = false;
             }
+
+            if(Timer > 10)
+            {
+                NPC.velocity = Vector2.Zero;
+                NPC.position = _startTile.ToWorldCoordinates();
+            }
             NPC.scale = ExtraMath.Osc(0.8f, 1f);
-            NPC.velocity = Vector2.Zero;
-            NPC.position = _startTile.ToWorldCoordinates();
+ 
 
             if (_broadcastWave && Main.netMode != NetmodeID.Server)
             {

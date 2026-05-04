@@ -1,14 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Assets;
-using Stellamod.Content.Areas.Cinderspark.AccCS;
+﻿using Stellamod.Content.Areas.Cinderspark.AccCS;
 using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Visual.Particles;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -18,7 +14,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
     public class SkullrunnerThrowModPlayer : ModPlayer
     {
         public Vector2? targetSuckPosition;
-        public Vector2? resetVelocity;
+        public Vector2? overrideVelocity;
         public Vector2? throwVelocity;
         public override void PreUpdateMovement()
         {
@@ -30,10 +26,10 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                 Player.velocity = Vector2.Lerp(Player.velocity, velocityToPosition, 0.5f);
                 targetSuckPosition = null;
             }
-            if (resetVelocity.HasValue)
+            if (overrideVelocity.HasValue)
             {
-                Player.velocity = resetVelocity.Value;
-                resetVelocity = null;
+                Player.velocity = overrideVelocity.Value;
+                overrideVelocity = null;
             }
             if (throwVelocity.HasValue)
             {
@@ -49,7 +45,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                         damage *= 2;
                     if (Player.GetModPlayer<FlamecrestPlayer>().ConsumeShield())
                         damage *= 0.9f;
-                    if(Main.myPlayer == Player.whoAmI)
+                    if (Main.myPlayer == Player.whoAmI)
                     {
                         Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - Vector2.UnitY * 128, Vector2.UnitY,
                             ModContent.ProjectileType<ScatterBoom>(), 0, 0, Player.whoAmI);
@@ -59,7 +55,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
                     Eruption(Player.Center, -Vector2.UnitY);
                     throwVelocity = null;
                 }
-          
+
             }
         }
         private void Eruption(Vector2 position, Vector2 velocity)

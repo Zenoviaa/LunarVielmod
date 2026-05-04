@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Helpers;
 using System.IO;
@@ -97,11 +98,12 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
                 {
                     Vector2 targetVelocity = ThrowVelocity;
                     targetVelocity *= MathHelper.Lerp(0f, 30, Timer / 60f);
+                    targetVelocity.Y -= 5;
                     ThrowVelocity = ThrowVelocity.RotatedBy(MathHelper.ToRadians(15));
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
                     NPC.rotation = NPC.velocity.ToRotation();
                     Player target = Main.player[GrabbedPlayer];
-                    target.Center = NPC.Center;
+                    target.GetModPlayer<SkullrunnerThrowModPlayer>().overrideVelocity = (NPC.Center - target.Center);
                 }
 
                 if (Timer == 90)

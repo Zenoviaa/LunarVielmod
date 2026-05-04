@@ -225,6 +225,7 @@ namespace Stellamod.Core.Pixelation
         public int Priority => 10;
         public static event Action OnBehindGrass;
         public static event Action OnInFrontGrass;
+        public static event Action OnPreRender;
         public override void Load()
         {
             base.Load();
@@ -241,6 +242,7 @@ namespace Stellamod.Core.Pixelation
         {
             if (!Main.gameMenu)
             {
+                OnPreRender?.Invoke();
                 Render();
             }
             orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
