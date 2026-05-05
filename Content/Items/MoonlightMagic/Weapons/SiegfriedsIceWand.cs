@@ -7,19 +7,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class MothwingWand : AbstractMagicWand
+    public class SiegfriedsIceWand : AbstractMagicWand
     {
         public override void SetDefaults2()
         {
             base.SetDefaults2();
             Item.damage = 1500;
-            Item.shootSpeed = 16;
-            Size = 8;
-            TrailLength = 16;
-            Form = FormRegistry.Fairy.Value;
-            normalSlotCount = 2;
-            timedSlotCount = 6;
-            Item.mana = 20;
+            Item.shootSpeed = 8;
+            Size = 20;
+            TrailLength = 30;
+            Form = FormRegistry.Tickler.Value;
+            normalSlotCount = 6;
+            timedSlotCount = 2;
+            Item.mana = 60;
         }
 
         public override void AddRecipes()
