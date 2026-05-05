@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Items.MoonlightMagic;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Content.Items.MoonlightMagic.Forms;
 using Stellamod.Items;
@@ -34,7 +35,7 @@ namespace Stellamod.Content.Areas.MothlightManor.WeaponsMM
         public override void AddRecipes()
         {
             base.AddRecipes();
-            //   this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<MarshScrap>());
+               this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<MothlightWing>());
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
            public override void AddRecipes()
            {
             base.AddRecipes();
-         //   this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<MarshScrap>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<GhastlySpirit>());
            }
     }
     }
