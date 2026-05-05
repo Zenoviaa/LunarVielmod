@@ -120,6 +120,11 @@ public struct SpritebatchDrawer
     public SpriteEffects spriteEffects;
     public Vector2 scale;
     public bool blackIsTransparency;
+    public void VerticalFrame(int frameIndex, int frameCount)
+    {
+        sourceRect = texture.GetFrame(frameIndex, frameCount);
+    }
+
     public void LeftCenterOrigin()
     {
         Vector2 normalizedOrigin = new Vector2(0f, 0.5f);

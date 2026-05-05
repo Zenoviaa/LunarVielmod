@@ -5209,7 +5209,7 @@ WindmillShuriken: {
 }
 
 PerfectionStaff: {
-	Tooltip: "Casts a swarm of funnily moving, but homing green stars!"
+	Tooltip: Casts a swarm of funnily moving, but homing green stars!
 	DisplayName: Perfection Artifact
 }
 
@@ -10885,5 +10885,65 @@ CelestiaRelicItem: {
 
 CariyaRelicItem: {
 	DisplayName: Cariya Relic Item
+	Tooltip: ""
+}
+
+PieceOfArtArtifact: {
+	DisplayName: Piece Of Art Artifact
+	Tooltip: Throws out a magic paintbrush that paints all over the place! Get messy!
+}
+
+GhastlySpirit: {
+	DisplayName: Ghastly Spirit
+	Tooltip: ""
+}
+
+MothlightWing: {
+	DisplayName: Mothlight Wing
+	Tooltip: ""
+}
+
+PinglerWand: {
+	DisplayName: Pingler Wand
+	Tooltip: ""
+}
+
+StoningWand: {
+	DisplayName: Stoning Wand
+	Tooltip: ""
+}
+
+FallenspireWand: {
+	DisplayName: Fallenspire Wand
+	Tooltip: ""
+}
+
+MiracleWand: {
+	DisplayName: Miracle Wand
+	Tooltip: ""
+}
+
+PieceOfCakeWand: {
+	DisplayName: Piece Of Cake Wand
+	Tooltip: ""
+}
+
+SiegfriedsIceWand: {
+	DisplayName: Siegfrieds Ice Wand
+	Tooltip: ""
+}
+
+ThunderingWand: {
+	DisplayName: Thundering Wand
+	Tooltip: ""
+}
+
+UselessWand: {
+	DisplayName: Useless Wand
+	Tooltip: ""
+}
+
+ZuisWand: {
+	DisplayName: Zuis Wand
 	Tooltip: ""
 }
