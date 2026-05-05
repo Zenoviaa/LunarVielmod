@@ -170,7 +170,7 @@ namespace Stellamod.Content.CommonMaterials
         {
             base.SetDefaults();
             Item.maxStack = Item.CommonMaxStack;
-            Item.rare = ModContent.RarityType<MothlightWingRarity>();
+            Item.rare = ModContent.RarityType<GhastlySpiritRarity>();
         }
     }
 }
