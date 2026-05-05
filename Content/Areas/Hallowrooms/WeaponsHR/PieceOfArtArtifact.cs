@@ -287,7 +287,7 @@ public class PieceOfArtRainbow : ModProjectile
 
         }
 
-        if(Timer % 8 == 0)
+        if(Timer % 16 == 0)
         {
             Vector2 pos = Owner.Center;
             Vector2 dir = (Projectile.Center - pos);
@@ -299,7 +299,7 @@ public class PieceOfArtRainbow : ModProjectile
             sp.noTileCollide = true;
             sp.gravity = 0;
             sp.dampening = 0.05f;
-            sp.Scale *= 0.4f;
+            sp.Scale *= 0.2f;
         }
         if (Timer % 8 == 0)
         {
