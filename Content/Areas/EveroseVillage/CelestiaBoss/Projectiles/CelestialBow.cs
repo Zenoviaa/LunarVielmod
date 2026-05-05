@@ -450,7 +450,7 @@ public class CelestialArrow : ModProjectile
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-        base.OnKill(timeLeft);
+
         var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Turquoise, Color.DarkTurquoise);
         fx.Scale *= 0.66f;
         float numDust = 4;
