@@ -22,7 +22,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
             Form = FormRegistry.Swirl.Value;
             normalSlotCount = 4;
             timedSlotCount = 3;
-            Item.mana = 60;
+            Item.mana = 70;
         }
 
         public override void AddRecipes()

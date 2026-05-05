@@ -17,7 +17,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
             base.SetDefaults2();
             Form = FormRegistry.Spine.Value;
             Item.damage = 150;
-            Item.mana = 30;
+            Item.mana = 60;
             normalSlotCount = 4;
             timedSlotCount = 0;
         }

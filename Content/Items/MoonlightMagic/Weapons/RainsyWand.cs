@@ -15,7 +15,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
             base.SetDefaults2();
             Form = FormRegistry.Aztec.Value;
             Item.damage = 800;
-            Item.mana = 40;
+            Item.mana = 70;
             Size = 16;
             TrailLength = 8;
             normalSlotCount = 1;
