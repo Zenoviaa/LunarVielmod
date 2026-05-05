@@ -7,19 +7,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
-    public class GhettingbergWand : AbstractMagicWand
+    public class FallenspireWand : AbstractMagicWand
     {
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 800;
-            Item.shootSpeed = 6;
+            Item.damage = 2200;
+            Item.shootSpeed = 10;
             Size = 10;
             TrailLength = 32;
-            Form = FormRegistry.Vase.Value;
-            normalSlotCount = 5;
-            timedSlotCount = 1;
-            Item.mana = 100;
+            Form = FormRegistry.Snake.Value;
+            normalSlotCount = 7;
+            timedSlotCount = 3;
+            Item.mana = 40;
         }
 
         public override void AddRecipes()
@@ -31,11 +31,12 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
         public override void ModifyElementPreferences(List<int> elements)
         {
             base.ModifyElementPreferences(elements);
-            elements.Add(ModContent.ItemType<RadianceElement>());
-            elements.Add(ModContent.ItemType<NaturalElement>());
+            elements.Add(ModContent.ItemType<PhantasmalElement>());
+            elements.Add(ModContent.ItemType<MothlightElement>());
             elements.Add(ModContent.ItemType<LightningElement>());
             elements.Add(ModContent.ItemType<GuutElement>());
-            elements.Add(ModContent.ItemType<UvilisElement>());
+            elements.Add(ModContent.ItemType<DeeyaElement>());
+            elements.Add(ModContent.ItemType<BloodletElement>());
         }
     }
 }
