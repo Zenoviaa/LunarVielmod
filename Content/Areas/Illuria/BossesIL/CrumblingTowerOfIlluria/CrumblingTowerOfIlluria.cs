@@ -276,6 +276,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         }
         private void Inner_AI()
         {
+         //   NPC.Center = MyTarget.Center - Vector2.UnitY * 128;
             switch (State)
             {
                 case AIState.SpawnIdle:

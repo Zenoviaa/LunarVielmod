@@ -4266,21 +4266,12 @@ VeriplantGrassWall: {
 
 MiracleBody: {
 	DisplayName: Miracle Cloak
-	Tooltip:
-		'''
-		Increases summon damage by 12%
-		Increases whip range by 20%
-		+1 Max Sentry
-		'''
+	Tooltip: ""
 }
 
 MiracleHead: {
 	DisplayName: Miracle Hat
-	Tooltip:
-		'''
-		Increases summon damage by 12%
-		+1 Max Sentry
-		'''
+	Tooltip: ""
 }
 
 MiracleThread: {

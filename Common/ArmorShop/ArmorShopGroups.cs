@@ -13,6 +13,7 @@ using Stellamod.Content.Armors.Huntrian;
 using Stellamod.Content.Armors.Leather;
 using Stellamod.Content.Armors.Lovestruck;
 using Stellamod.Content.Armors.LunarianVoid;
+using Stellamod.Content.Armors.Miracle;
 using Stellamod.Content.Armors.Sanctorous;
 using Stellamod.Content.Armors.Scrappy;
 using Stellamod.Content.Armors.ShadeWraith;
@@ -242,6 +243,11 @@ namespace Stellamod.Common.ArmorShop
             Gov2.SetMaterial(ModContent.ItemType<MarshScrap>());
             Gov2.Register();
 
+            ArmorShopSet miracle = new ArmorShopSet();
+            miracle.AddHead(ModContent.ItemType<MiracleHead>());
+            miracle.AddBody(ModContent.ItemType<MiracleBody>());
+            miracle.SetMaterial(ModContent.ItemType<MiracleThread>());
+            miracle.Register();
 
             //---------- Chlorophyte
             ArmorShopSet silk = new ArmorShopSet();

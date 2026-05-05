@@ -33,7 +33,7 @@ public class PieceOfArtArtifact : ModItem
     public override void SetDefaults()
     {
         Item.DefaultToArtifact();
-        Item.damage = 52;
+        Item.damage = 90;
         Item.DamageType = DamageClass.Magic;
         Item.useTime = 100;
         Item.useAnimation = 100;
@@ -486,12 +486,16 @@ public class PieceOfArtRainbow : ModProjectile
     }
     private Color GetTrailColor2(float completionRatio)
     {
-        return Color.White * 0.1f;
+        return Color.Lerp(Color.Black, Color.Transparent, EasingFunction.OutExpo(completionRatio / 0.5f));
         // return Color.White;
     }
     private float GetTrailWidth(float completionRatio)
     {
         return MathHelper.SmoothStep(16, 80, EasingFunction.QuadraticBump(completionRatio)) * MathHelper.Lerp(1f, 0f, EasingFunction.InSine(DeathTimer / 60f));
+    }
+    private float GetTrailWidth2(float completionRatio)
+    {
+        return GetTrailWidth(completionRatio) * 1.6f;
     }
     private void DrawTrail(GraphicsDevice gDevice)
     {
@@ -508,13 +512,13 @@ public class PieceOfArtRainbow : ModProjectile
     }
     private void DrawTrail2(GraphicsDevice gDevice)
     {
-
+        
         var shader = BasicLaserAlphaShader.Instance;
         shader.LaserTexture = TextureAssets.Projectile[Type];
         shader.Time = Main.GlobalTimeWrappedHourly * 0.2f;
 
-        TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetTrailColor2, GetTrailWidth, shader, Projectile.Size * 0.5f);
-
+        TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetTrailColor2, GetTrailWidth2, shader, Projectile.Size * 0.5f);
+        
 
     }
 
@@ -542,7 +546,7 @@ public class PieceOfArtRainbow : ModProjectile
 
 
         ModContent.GetInstance<PieceOfArtRenderer>().QueueMaskDraw(DrawTrail);
-        PixelationManager.QueuePrimitivesDrawAction(DrawTrail2, DrawLayer.BehindNPCsWithOutline);
+     //   PixelationManager.QueuePrimitivesDrawAction(DrawTrail2, DrawLayer.BehindNPCsWithOutline);
 
 
 
