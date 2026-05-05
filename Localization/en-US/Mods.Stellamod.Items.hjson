@@ -1500,14 +1500,8 @@ CanOfLeaves: {
 }
 
 StarCall: {
-	DisplayName: Starbomber
-	Tooltip:
-		'''
-		Explodes into big stary bits!
-		Takes 2 slots to summon
-		They will act as temporary summons for big damage
-		Definitely gonna bring flashbacks after Diari releases
-		'''
+	DisplayName: STARBOMB Artifact
+	Tooltip: Explodes into many tiny stars!!! Very powerful!
 }
 
 StumpBuster: {
@@ -5215,8 +5209,8 @@ WindmillShuriken: {
 }
 
 PerfectionStaff: {
-	Tooltip: ""
-	DisplayName: Perfection Staff
+	Tooltip: "Casts a swarm of funnily moving, but homing green stars!"
+	DisplayName: Perfection Artifact
 }
 
 XixianFlask: {

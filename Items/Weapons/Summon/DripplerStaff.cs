@@ -28,7 +28,7 @@ public class DripplerStaff : ModItem
     public override void AddRecipes()
     {
         base.AddRecipes();
-        this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<TerrorFragments>());
+        this.RegisterBrew(mold: ModContent.ItemType<BlankRune>(), material: ModContent.ItemType<TerrorFragments>());
     }
 }
 
