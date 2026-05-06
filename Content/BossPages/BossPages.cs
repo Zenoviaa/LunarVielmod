@@ -21,6 +21,7 @@ using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
+using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
 using Stellamod.Content.Armors.Ravaging;
 using Stellamod.Content.Currencies;
 using Stellamod.Content.Items.Materials;
@@ -220,6 +221,19 @@ namespace Stellamod.Content.BossPages
             flag = DownedBossFlag.Cariya;
             StarRanking = 3;
             AddMasterModeReward<CariyaRelicItem>(stack: 1);
+        }
+    }
+    public class KingJellyfishPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.Miniboss;
+            bossNPC = ModContent.GetInstance<KingJellyfish>();
+            progression = 4;
+            flag = DownedBossFlag.KingJellyfish;
+            StarRanking = 2;
+            AddMasterModeReward<KingJellyfishRelicItem>(stack: 1);
         }
     }
     public class VerliaPage : BossPage

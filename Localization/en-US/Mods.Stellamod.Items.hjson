@@ -10938,3 +10938,8 @@ ZuisWand: {
 	DisplayName: Zuis Wand
 	Tooltip: ""
 }
+
+TheAnchor: {
+	DisplayName: The Anchor
+	Tooltip: ""
+}

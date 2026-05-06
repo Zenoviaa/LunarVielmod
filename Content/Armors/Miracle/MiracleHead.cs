@@ -212,6 +212,8 @@ public class MiraclePlayer : ModPlayer
     public override void OnConsumeMana(Item item, int manaConsumed)
     {
         base.OnConsumeMana(item, manaConsumed);
+        if (!hasMiracleSet)
+            return;
         if (!Player.CheckMana(item.mana, false, false))
         {
             blackMana += item.mana;

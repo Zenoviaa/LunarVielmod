@@ -367,7 +367,7 @@ public class BabyRichochetZap : ModProjectile
         int newTarget = pool[Main.rand.Next(pool.Count)];
         Target = newTarget;
         _startPosition = Projectile.Center;
-        _midPosition = Projectile.Center + Main.rand.NextVector2CircularEdge(512, 512);
+        _midPosition = Projectile.Center + Main.rand.NextVector2CircularEdge(256, 256);
      //   _startPosition = Projectile.Center;
         Projectile.netUpdate = true;
     }
@@ -409,16 +409,17 @@ public class BabyRichochetZap : ModProjectile
 
     private void LightningZap()
     {
-        Projectile.extraUpdates = 4;
+     
         float bounces = 3;
         if (_bounceCount >= bounces)
         {
+            Projectile.extraUpdates = 2;
             Projectile.hostile = true;
             if (Projectile.velocity.Length() < 12)
                 Projectile.velocity *= 1.1f;
             return;
         }
-
+        Projectile.extraUpdates = 4;
         if (Main.rand.NextBool(16))
         {
             Dust.NewDustPerfect(Projectile.Center, DustID.Electric, Scale: 0.5f);
@@ -1092,8 +1093,8 @@ public class KingJellyfish : ScarletBoss
         NPC.width = 100;
         NPC.height = 100;
         NPC.damage = 50;
-        NPC.defense = 14;
-        NPC.lifeMax = 2700;
+        NPC.defense = 10;
+        NPC.lifeMax = 2000;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.knockBackResist = 0f;
@@ -1357,7 +1358,7 @@ public class KingJellyfish : ScarletBoss
                     if (NPC.velocity.Length() > 1)
                         NPC.velocity *= 0.98f;
                     _outliner.warning = true;
-                    if(Timer >= 60)
+                    if(Timer >= 120)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -1679,6 +1680,7 @@ public class KingJellyfish : ScarletBoss
         spriteBatch.Draw(glowLineDrawer);
 
 
+       // Lighting.AddLight(NPC.position, Color.White.ToVector3() * 0.6f);
         return false;
     }
 
