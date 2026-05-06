@@ -106,7 +106,7 @@ public class Cariya : ScarletBoss
     private ref float AttackCounter => ref NPC.ai[3];
 
     private bool InPhase2 => NPC.life < NPC.lifeMax * 0.5f;
-    private int Overhead_Slash_Damage => 35;
+    private int Overhead_Slash_Damage => 45;
     private int Sword_Fall_Damage => 50;
     private int Magic_Blade_Damage => 25;
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -604,6 +604,8 @@ public class Cariya : ScarletBoss
                         fx.VectorScale *= 0.5f;
                     }
 
+                    Vector2 homingVelocity = (MyTarget.Center.X > NPC.Center.X) ? Vector2.UnitX : -Vector2.UnitX;
+                    NPC.velocity += homingVelocity * 0.2f;
                     NPC.velocity.X *= 0.94f;
                     NPC.velocity.Y *= 0.92f;
                     NPC.velocity.Y -= 0.15f;

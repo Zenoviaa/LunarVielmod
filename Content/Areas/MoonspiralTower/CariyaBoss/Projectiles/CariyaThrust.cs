@@ -28,7 +28,7 @@ public class CariyaThrust : ModProjectile
         Projectile.width = 256;
         Projectile.height = 32;
         Projectile.hostile = true;
-        Projectile.timeLeft = 120;
+        Projectile.timeLeft = 240;
         Projectile.ignoreWater = true;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;

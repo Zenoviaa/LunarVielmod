@@ -1,22 +1,18 @@
-﻿
-using MonoMod.Cil;
-using Stellamod.Buffs;
+﻿using Stellamod.Buffs;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Quests.ZuiQuest;
-using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
-using Stellamod.Items.Ores;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria;
+using Terraria.Cinematics;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
-using static Stellamod.WorldG.StructureManager.Snapshot;
 
 namespace Stellamod.Items
 {
@@ -159,7 +155,7 @@ namespace Stellamod.Items
                 return brew;
             }
         }
-  
+
         public static event Action<CauldronBrew> OnBrew;
         public CauldronBrew JustCrafted { get; set; }
         public bool IsDirty;
@@ -280,8 +276,9 @@ namespace Stellamod.Items
             foreach (var brew in brewsFromMaterial)
             {
                 crafts.Add(new Item(brew.result));
-             //   crafts.Add(ModContent.GetModItem(brew.result).Item);
+                //   crafts.Add(ModContent.GetModItem(brew.result).Item);
             }
+     
             return crafts.ToArray();
         }
 
@@ -297,7 +294,7 @@ namespace Stellamod.Items
 
         public bool IsAir(Item[] molds)
         {
-            for(int i = 0; i < molds.Length; i++)
+            for (int i = 0; i < molds.Length; i++)
             {
                 if (!molds[i].IsAir)
                     return false;
@@ -385,17 +382,17 @@ namespace Stellamod.Items
         public void AddToBrew(int item, int stack)
         {
             bool found = false;
-            for(int i = 0; i < _brewingMaterials.Count; i++)
+            for (int i = 0; i < _brewingMaterials.Count; i++)
             {
                 StoredBrewingMaterial sbm = _brewingMaterials[i];
-                if(sbm.item == item)
+                if (sbm.item == item)
                 {
                     sbm.stack += stack;
                     _brewingMaterials[i] = sbm;
                     found = true;
                     break;
                 }
-              
+
             }
 
             if (!found)
@@ -424,10 +421,10 @@ namespace Stellamod.Items
         {
             List<Item> moldWith = new List<Item>();
             Queue<Item> brewWith = new Queue<Item>();
-            for(int i = 0; i < _brewingMaterials.Count; i++)
+            for (int i = 0; i < _brewingMaterials.Count; i++)
             {
                 StoredBrewingMaterial sbm = _brewingMaterials[i];
-                while(IsMaterial(sbm.item) && sbm.stack >= 10)
+                while (IsMaterial(sbm.item) && sbm.stack >= 10)
                 {
                     brewWith.Enqueue(new Item(sbm.item, sbm.stack));
                     sbm.stack -= 10;
@@ -442,7 +439,7 @@ namespace Stellamod.Items
 
             Item air = new Item(0);
             air.TurnToAir();
-            while(brewWith.Count > 0)
+            while (brewWith.Count > 0)
             {
                 Item mold = air;
                 if (moldWith.Count > 0)
@@ -473,7 +470,7 @@ namespace Stellamod.Items
             base.PostUpdateEverything();
             JustCrafted = null;
         }
-    
+
         public void SendSyncPacket()
         {
             if (Main.netMode != NetmodeID.SinglePlayer)
@@ -483,7 +480,7 @@ namespace Stellamod.Items
                 object[] data = new object[length * 2 + 1];
                 int index = 0;
                 data[index++] = length;
-                for(int i = 0; i < length; i++)
+                for (int i = 0; i < length; i++)
                 {
                     data[index++] = _brewingMaterials[i].item;
                     data[index++] = _brewingMaterials[i].stack;

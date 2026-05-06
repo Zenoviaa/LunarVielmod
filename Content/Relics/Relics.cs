@@ -198,7 +198,7 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
         TileObjectData.newTile.StyleMultiplier = 2; //same as above
         TileObjectData.newTile.StyleHorizontal = true;
         TileObjectData.newTile.Origin = new Point16(3, 1);
-        TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidWithTop, TileObjectData.newTile.Width, 0);
+        TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop, TileObjectData.newTile.Width, 0);
         TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
         TileObjectData.addTile(Type);
         LocalizedText name = CreateMapEntryName();
