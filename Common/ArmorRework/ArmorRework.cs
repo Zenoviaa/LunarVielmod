@@ -780,8 +780,8 @@ namespace Stellamod.Common.ArmorRework
             ArmorSet set = ArmorSetSystem.FindArmorSet(item.type);
             ArmorSetSystem.GetArmorSet(set, out Item helm, out Item armor, out Item leggings);
             Player player = Main.LocalPlayer;
-            bool isActive = player.armor[0].type == helm.type && player.armor[1].type == armor.type && player.armor[2].type == leggings.type; 
-            bool isActive2 = player.armor[0].type == helm.type && player.armor[1].type == armor.type && leggings.type == 0;
+            bool isActive = player.armor[0].type == helm.type && player.armor[1].type == armor.type && player.armor[2].type == leggings.type;
+            bool isActive2 = player.armor[0].type == helm.type && player.armor[1].type == armor.type && player.armor[2].IsAir;
             _uiState.inspectorUI.summaryUI.SetTooltips(stats, setBonus, isActive || isActive2);
             if (_userInterface.CurrentState == null)
                 OpenUI();

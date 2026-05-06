@@ -16,6 +16,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Common\WaypointSystem\UI\" />
+	  <Folder Include="Content\Areas\WaterSide\KingJellyfishBoss\Gores\" />
 	  <Folder Include="Core\SilkSystem\" />
 	  <Folder Include="Effects\CrystalShaders\Verlia\" />
 	  <Folder Include="Items\Armors\Miracle\" />

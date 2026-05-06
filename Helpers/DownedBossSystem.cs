@@ -28,7 +28,8 @@ namespace Stellamod.Helpers
         DescendingTwins=17,
         Verlia=18,
         Celestia=19,
-        Cariya=20
+        Cariya=20,
+        KingJellyfish=21
     }
 
     public class Flawless : ModBuff

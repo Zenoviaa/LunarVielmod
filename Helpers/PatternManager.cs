@@ -17,7 +17,7 @@ namespace Stellamod.Helpers
             _patternOverrideQueue = new Queue<T>();
             _defaultWeights = new Dictionary<T, float>();
             _weights = new Dictionary<T, float>();
-            for(int i = 0; i < defaultWeights.Length; i++)
+            for (int i = 0; i < defaultWeights.Length; i++)
             {
                 _defaultWeights.Add(defaultWeights[i].Item1, defaultWeights[i].Item2);
             }
@@ -26,6 +26,16 @@ namespace Stellamod.Helpers
             //basically
             //If an attack is successfully dodged, the weight of the attack decreases by 0.5, and cannot go below the default weight
             //If an attack hits, the current weight of the attack increases by 0.25, and the default weight increases by 0.5
+        }
+
+        public void EmptyWeights()
+        {
+            _defaultWeights.Clear();
+            _weights.Clear();
+        }
+        public void AddPattern(T pattern, float weight)
+        {
+            _defaultWeights.Add(pattern, weight);
         }
 
         public bool HasNothingLeft()

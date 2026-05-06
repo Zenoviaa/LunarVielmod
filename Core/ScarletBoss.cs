@@ -8,101 +8,112 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Core
+namespace Stellamod.Core;
+
+public enum BossLevel : byte
 {
-    public abstract class ScarletBoss : ModNPC
+    Miniboss,
+    Boss,
+    Superboss
+}
+public abstract class ScarletBoss : ModNPC
+{
+    private Vector2 _arenaCenter;
+    private float _bossHealthbarDelay;
+    public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
     {
-        private Vector2 _arenaCenter;
-        private float _bossHealthbarDelay;
-        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
+        DifficultyChanges.ApplyDifficultyAndScaling(NPC, numPlayers);
+    }
+
+    public override void OnSpawn(IEntitySource source)
+    {
+        base.OnSpawn(source);
+
+        foreach (var player in Main.ActivePlayers)
         {
-            DifficultyChanges.ApplyDifficultyAndScaling(NPC, numPlayers);
+            player.AddBuff(ModContent.BuffType<Flawless>(), 2);
+        }
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        NPC.boss = true;
+
+    }
+
+    public virtual BossLevel GetBossLevel()
+    {
+        return BossLevel.Boss;
+    }
+
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+
+        base.SendExtraAI(writer);
+        writer.WriteVector2(_arenaCenter);
+    }
+
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _arenaCenter = reader.ReadVector2();
+    }
+
+    public Player MyTarget => Main.player[NPC.target];
+    public float FacingDirectionToTarget => MyTarget.Center.X < NPC.Center.X ? -1 : 1;
+    public int TargetDirection => (int)FacingDirectionToTarget;
+    public IEntitySource SourceFromThis => NPC.GetSource_FromThis();
+    public string Texture_BossIcon => Texture + "_BossIcon";
+    public string Texture_BossBar => Texture + "_BossBar";
+
+    public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+    {
+        return false;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        if (_arenaCenter == Vector2.Zero)
+        {
+            _arenaCenter = NPC.Center;
+            NPC.netUpdate = true;
         }
 
-        public override void OnSpawn(IEntitySource source)
-        {
-            base.OnSpawn(source);
+        BarrierBlockSystem.BossArenaCenter = _arenaCenter;
+        if (Main.netMode == NetmodeID.Server)
+            return;
 
-            foreach (var player in Main.ActivePlayers)
-            {
-                player.AddBuff(ModContent.BuffType<Flawless>(), 2);
-            }
-        }
+        if (!NPC.boss)
+            return;
 
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-            NPC.boss = true;
+        //Healthbar isn't going to appear instantly, so we can do funny things where the boss isn't a boss for a second
+        _bossHealthbarDelay++;
+        if (_bossHealthbarDelay < 15)
+            return;
 
-        }
-        public override void SendExtraAI(BinaryWriter writer)
-        {
+        ModContent.GetInstance<BossHealthbarSystem>().Add(this);
+    }
 
-            base.SendExtraAI(writer);
-            writer.WriteVector2(_arenaCenter);
-        }
+    public override bool CheckActive()
+    {
+        return false;
+    }
 
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            base.ReceiveExtraAI(reader);
-            _arenaCenter = reader.ReadVector2();
-        }
+    public virtual bool CanFight()
+    {
+        return true;
+    }
 
-        public Player MyTarget => Main.player[NPC.target];
-        public float FacingDirectionToTarget => MyTarget.Center.X < NPC.Center.X ? -1 : 1;
-        public int TargetDirection => (int)FacingDirectionToTarget;
-        public IEntitySource SourceFromThis => NPC.GetSource_FromThis();
-        public string Texture_BossIcon => Texture + "_BossIcon";
-        public string Texture_BossBar => Texture + "_BossBar";
+    public void ShowNamePlate()
+    {
+        //UI can't run on the server
+        if (Main.netMode == NetmodeID.Server)
+            return;
 
-        public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
-        {
-            return false;
-        }
-
-        public override void AI()
-        {
-            base.AI();
-            if (_arenaCenter == Vector2.Zero)
-            {
-                _arenaCenter = NPC.Center;
-                NPC.netUpdate = true;
-            }
-
-            BarrierBlockSystem.BossArenaCenter = _arenaCenter;
-            if (Main.netMode == NetmodeID.Server)
-                return;
-
-            if (!NPC.boss)
-                return;
-
-            //Healthbar isn't going to appear instantly, so we can do funny things where the boss isn't a boss for a second
-            _bossHealthbarDelay++;
-            if (_bossHealthbarDelay < 15)
-                return;
-
-            ModContent.GetInstance<BossHealthbarSystem>().Add(this);
-        }
-
-        public override bool CheckActive()
-        {
-            return false;
-        }
-
-        public virtual bool CanFight()
-        {
-            return true;
-        }
-
-        public void ShowNamePlate()
-        {
-            //UI can't run on the server
-            if (Main.netMode == NetmodeID.Server)
-                return;
-
-            TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
-            uiSystem.OpenUI(DisplayName.Value, 7);
-            uiSystem.titleUIState.titleCardUI.LineTexture = ModContent.Request<Texture2D>(TitleCardUISystem.RootTexturePath + "UnderlineBiome");
-        }
+        TitleCardUISystem uiSystem = ModContent.GetInstance<TitleCardUISystem>();
+        uiSystem.OpenUI(DisplayName.Value, 7);
+        uiSystem.titleUIState.titleCardUI.LineTexture = ModContent.Request<Texture2D>(TitleCardUISystem.RootTexturePath + "UnderlineBiome");
     }
 }

@@ -1,6 +1,8 @@
-﻿using Stellamod.Assets;
+﻿using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
+using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
@@ -261,6 +263,82 @@ public static class PixelPrimitiveCircleFactory
         PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
         circle.circleParams.minRadius = 0;
         circle.circleParams.maxRadius = 100;
+        circle.circleParams.time = 45;
+        circle.renderPixelPrimitivesFunction = RenderPrimitives;
+        circle.position = position;
+        ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
+    }
+    public static void CreateElectricBoom(Vector2 position)
+    {
+        void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
+        {
+            float GetTrailWidthFunction(float interpolant)
+            {
+                return MathHelper.SmoothStep(256, 0, completionRatio);
+            }
+            ;
+            Color GetTrailColorFunction(float interpolant)
+            {
+                return Color.White;
+            }
+            ;
+            ZapLightningShader lightingShader = ZapLightningShader.Instance;
+            lightingShader.Amplitude = 0.2f;
+
+            float time = Main.GlobalTimeWrappedHourly * 16;
+            float levels = 4;
+            time = MathF.Floor(time * levels) / levels;
+            lightingShader.Time = time;
+            Asset<Texture2D> laserTexture = AssetManager.LaserTextures.TexturedLaser2;
+            lightingShader.LaserTexture = laserTexture;
+            lightingShader.Noise = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise").Value;
+            lightingShader.Gradient = ModContent.Request<Texture2D>(ModContent.GetInstance<ZapShockwave>().Texture + "_Gradient").Value;
+            lightingShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+            lightingShader.Levels = 64;
+            lightingShader.Tiling = new Vector2(2f);
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, lightingShader);
+        }
+        PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
+        circle.circleParams.minRadius = 0;
+        circle.circleParams.maxRadius = 384;
+        circle.circleParams.time = 45;
+        circle.renderPixelPrimitivesFunction = RenderPrimitives;
+        circle.position = position;
+        ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
+    }
+    public static void CreateElectricInwardBoom(Vector2 position)
+    {
+        void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
+        {
+            float GetTrailWidthFunction(float interpolant)
+            {
+                return MathHelper.SmoothStep(8, 0, completionRatio);
+            }
+            ;
+            Color GetTrailColorFunction(float interpolant)
+            {
+                return Color.White * 0.5f;
+            }
+            ;
+            ZapLightningShader lightingShader = ZapLightningShader.Instance;
+            lightingShader.Amplitude = 0.2f;
+
+            float time = Main.GlobalTimeWrappedHourly * 16;
+            float levels = 4;
+            time = MathF.Floor(time * levels) / levels;
+            lightingShader.Time = time;
+            Asset<Texture2D> laserTexture = AssetManager.LaserTextures.TexturedLaser2;
+            lightingShader.LaserTexture = laserTexture;
+            lightingShader.Noise = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise").Value;
+            lightingShader.Gradient = ModContent.Request<Texture2D>(ModContent.GetInstance<ZapShockwave>().Texture + "_Gradient").Value;
+            lightingShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+            lightingShader.Levels = 64;
+            lightingShader.Tiling = new Vector2(2f);
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, lightingShader);
+        }
+        PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
+        circle.circleParams.minRadius = 252;
+        circle.circleParams.maxRadius = 0;
         circle.circleParams.time = 45;
         circle.renderPixelPrimitivesFunction = RenderPrimitives;
         circle.position = position;

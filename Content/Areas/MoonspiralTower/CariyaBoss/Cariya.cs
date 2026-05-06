@@ -2,7 +2,6 @@
 using Stellamod.Assets;
 using Stellamod.Common.Animations;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.EveroseVillage.CelestiaBoss;
 using Stellamod.Content.Areas.MoonspiralTower.CariyaBoss.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;

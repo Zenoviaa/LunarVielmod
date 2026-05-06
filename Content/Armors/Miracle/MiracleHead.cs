@@ -8,8 +8,10 @@ using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI.Chat;
 
 namespace Stellamod.Content.Armors.Miracle;
 
@@ -74,7 +76,7 @@ public class ManaSpider : ModProjectile
         float blackMana = Owner.GetModPlayer<MiraclePlayer>().blackMana;
      
         float speed = 1f;
-        speed *= MathHelper.Lerp(1f, 4f, EasingFunction.Clamp(blackMana / 1500f));
+        speed *= MathHelper.Lerp(1f, 8.5f, EasingFunction.Clamp(blackMana / 500f));
         velocity *= speed;
         velocity.Y += MathF.Sin(Timer * 0.1f) * 0.5f;
         Projectile.velocity = velocity;
@@ -104,6 +106,9 @@ public class ManaSpider : ModProjectile
             sbDrawer.worldPosition = pos;
             Main.spriteBatch.Draw(sbDrawer);
         }
+        sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        sbDrawer.drawOrigin.Y += 50;
+        sbDrawer.color *= alpha;
         Main.spriteBatch.Draw(sbDrawer);
 
 
@@ -127,10 +132,12 @@ public class ManaSpider : ModProjectile
 }
 public class MiraclePlayer : ModPlayer
 {
+    private int _globalTimer;
     private int _blackManaTimer;
     private Asset<Texture2D> _blackStarTextureAsset;
     public bool hasMiracleSet;
     public int blackMana;
+    
 
     public static float TicksPerMonster => 120;
     public static float RegenerationRate => 3;
@@ -146,16 +153,22 @@ public class MiraclePlayer : ModPlayer
         if(blackMana > 0)
         {
             _blackManaTimer++;
-            if(_blackManaTimer >= TicksPerMonster)
+            if(_blackManaTimer >= TicksPerMonster && blackMana > 20)
             {
                 if(Player.whoAmI == Main.myPlayer)
                 {
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - Vector2.UnitY * 394, Vector2.Zero,
+                    
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2CircularEdge(444, 444), Vector2.Zero,
                         ModContent.ProjectileType<ManaSpider>(), 50, 1, Player.whoAmI);
                 }
                 _blackManaTimer = 0;
             }
-            blackMana-=2;
+            _globalTimer++;
+            if(_globalTimer % 4 == 0)
+            {
+                blackMana--;
+            }
+      
             if (Main.rand.NextBool(2))
             {
                 var p = LegacyParticle.NewParticle<EmberParticle>(Player.position + new Vector2(Main.rand.Next(0, Player.width),
@@ -174,7 +187,7 @@ public class MiraclePlayer : ModPlayer
         base.UpdateDead();
         if(blackMana > 0)
         {
-            blackMana -= 100;
+            blackMana -= 1000;
             if (blackMana <= 0)
                 blackMana = 0;
         }
@@ -192,13 +205,19 @@ public class MiraclePlayer : ModPlayer
                 SoundStyle goBlack = new SoundStyle("Stellamod/Assets/Sounds/OverGrowth_TP2") with { PitchVariance = 0.5f };
                 SoundEngine.PlaySound(goBlack, Player.position);
             }
-            blackMana += item.mana;
+    
         }
     }
 
     public override void OnConsumeMana(Item item, int manaConsumed)
     {
         base.OnConsumeMana(item, manaConsumed);
+        if (!Player.CheckMana(item.mana, false, false))
+        {
+            blackMana += item.mana;
+        }
+
+
     }
 
     public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
@@ -228,11 +247,17 @@ public class MiraclePlayer : ModPlayer
             starDrawer.rotation = ExtraMath.Osc(-0.05f, 0.05f, speed: 1, offset: f);
             starDrawer.worldPosition += offset;
 
-            float substractor = f * 240f;
+            float substractor = f * 20f;
             float alpha = (blackMana - substractor) / 20f;
             starDrawer.color *= alpha;
             Main.spriteBatch.Draw(starDrawer);
         }
+        string waveString = $"-{blackMana}";
+        float x = FontAssets.DeathText.Value.MeasureString(waveString).X;
+        float y = FontAssets.DeathText.Value.MeasureString(waveString).Y;
+        Vector2 drawPosition = drawInfo.drawPlayer.Center - Vector2.UnitY * 64;
+        ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.DeathText.Value, waveString,
+            drawPosition - new Vector2(4, 24) - Main.screenPosition, Color.White, 0, new Vector2(x * 0.5f, y * 0.5f), Vector2.One * 0.5f);
     }
 }
 
@@ -270,7 +295,7 @@ public class MiracleHead : ModItem
 
     public override bool IsArmorSet(Item head, Item body, Item legs)
     {
-        return body.type == ModContent.ItemType<MiracleBody>();
+        return body.type == ModContent.ItemType<MiracleBody>() && legs.IsAir;
     }
 
     public override void ArmorSetShadows(Player player)
