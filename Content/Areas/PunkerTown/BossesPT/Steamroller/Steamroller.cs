@@ -679,7 +679,7 @@ public class Steamroller : ScarletBoss,
         Chain.pinned[0] = true;
         for (int i = 0; i < 32; i++)
         {
-            Chain.Resolve();
+            Chain.ResolveBackToRoot();
         }
     }
 

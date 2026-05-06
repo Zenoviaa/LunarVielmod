@@ -10957,3 +10957,8 @@ KingJellyfishRelicItem: {
 	DisplayName: King Jellyfish Relic
 	Tooltip: ""
 }
+
+BlankVanilla: {
+	DisplayName: Blank Vanilla
+	Tooltip: ""
+}

@@ -1530,7 +1530,7 @@ public class KingJellyfish : ScarletBoss
         Chain.segmentLength = 1;
         Chain.points[0] = NPC.Center;
         Chain.pinned[0] = true;
-        Chain.Resolve();
+        Chain.ResolveBackToRoot();
 
         for(int i = 0; i < TentacleChains.Length; i++)
         {
@@ -1539,7 +1539,7 @@ public class KingJellyfish : ScarletBoss
             chain.segmentLength = 12;
             chain.points[0] = NPC.Center + right * ExtraMath.Osc(-32, 32, offset: i * 1.5f);
             chain.pinned[0] = true;
-            chain.Resolve();
+            chain.ResolveBackToRoot();
         }
     }
 

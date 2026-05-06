@@ -1199,7 +1199,7 @@ public class Cariya : ScarletBoss
         }
         for (int i = 0; i < 32; i++)
         {
-            Chain.Resolve();
+            Chain.ResolveBackToRoot();
         }
     }
     private float GetHairWidth(float ratio)

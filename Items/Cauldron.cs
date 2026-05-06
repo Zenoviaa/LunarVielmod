@@ -279,7 +279,8 @@ namespace Stellamod.Items
             List<CauldronBrew> brewsFromMaterial = _brews.Where(x => x.material == materialType).ToList();
             foreach (var brew in brewsFromMaterial)
             {
-                crafts.Add(ModContent.GetModItem(brew.result).Item);
+                crafts.Add(new Item(brew.result));
+             //   crafts.Add(ModContent.GetModItem(brew.result).Item);
             }
             return crafts.ToArray();
         }
@@ -353,7 +354,7 @@ namespace Stellamod.Items
             int starCount = cauldronPlayer.CrystalStarCount;
             if (cauldronPlayer.CrystalStarCount > 0 && consumeStar)
             {
-                cauldronPlayer.Make(ModContent.GetModItem(result.result).Item);
+                cauldronPlayer.Make(new Item(result.result));
                 cauldronPlayer.CrystalStarCount -= 1;
             }
             else
@@ -368,7 +369,7 @@ namespace Stellamod.Items
 
                 if (!getNothingFailed)
                 {
-                    cauldronPlayer.Make(ModContent.GetModItem(result.result).Item);
+                    cauldronPlayer.Make(new Item(result.result));
                 }
             }
 

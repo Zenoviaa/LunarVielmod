@@ -63,7 +63,7 @@ namespace Stellamod.Common.XixianFlaskSystem
         {
             if (!unlockedFlask)
                 return false;
-            return !Player.HasBuff<CannotUseFlask>();
+            return !Player.HasBuff<CannotUseFlask>() && !Player.HasBuff(BuffID.PotionSickness);
         }
 
         public bool HasUnlockedFlask()
