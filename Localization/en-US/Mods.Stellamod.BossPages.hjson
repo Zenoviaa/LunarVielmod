@@ -129,3 +129,9 @@ CariyaPage: {
 	WhereToFind: In Your Mom
 	Lore: Birthed by your mom
 }
+
+KingJellyfishPage: {
+	DisplayName: Who???
+	WhereToFind: In Your Mom
+	Lore: Birthed by your mom
+}

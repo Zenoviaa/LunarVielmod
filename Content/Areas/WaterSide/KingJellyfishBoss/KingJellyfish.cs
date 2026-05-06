@@ -853,7 +853,7 @@ public class BabyJellyfish  : ModNPC
         NPC.height = 100;
         NPC.damage = 50;
         NPC.defense = 15;
-        NPC.lifeMax = 100;
+        NPC.lifeMax = 30;
         NPC.HitSound = SoundID.NPCHit1;
         NPC.knockBackResist = 0f;
         NPC.noGravity = true;
@@ -1300,11 +1300,12 @@ public class KingJellyfish : ScarletBoss
                         NPC.TargetClosest();
                         SoundStyle telegraphSound = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain") with { PitchVariance = 0.5f };
                         SoundEngine.PlaySound(telegraphSound, NPC.position);
+                        PixelPrimitiveCircleFactory.CreateElectricInwardBoom(NPC.Center);
                     }
                     if (NPC.velocity.Length() > 1)
                         NPC.velocity *= 0.98f;
                     _outliner.warning = true;
-                    if (Timer >= 60)
+                    if (Timer >= 120)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -1354,6 +1355,9 @@ public class KingJellyfish : ScarletBoss
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
+                        SoundStyle telegraphSound = new SoundStyle("Stellamod/Assets/Sounds/Dreadmire__LightingRain") with { PitchVariance = 0.5f };
+                        SoundEngine.PlaySound(telegraphSound, NPC.position);
+                        PixelPrimitiveCircleFactory.CreateElectricInwardBoom(NPC.Center);
                     }
                     if (NPC.velocity.Length() > 1)
                         NPC.velocity *= 0.98f;

@@ -111,6 +111,8 @@ namespace Stellamod.Items
             Cauldron.MaterialRarity[result.Type] = ItemLoader.GetItem(material).Item.rare;
             return cauldron.AddBrew(result.Item.type, mold, material, 10, weight, yield);
         }
+
+
     }
 
     public struct StoredBrewingMaterial
@@ -167,6 +169,23 @@ namespace Stellamod.Items
             _brews.Clear();
         }
 
+        private static int _material;
+        public static void SetMaterial(int material)
+        {
+            _material = material;
+        }
+
+        public static CauldronBrew VanillaBrew(int result, float weight = 1.0f, int yield = 1)
+        {
+            int mold = ModContent.ItemType<BlankVanilla>();
+            Cauldron cauldron = ModContent.GetInstance<Cauldron>();
+
+            Cauldron.IsBrewingMaterial[_material] = true;
+            Cauldron.IsBrewingMold[mold] = true;
+            Cauldron.MaterialRarity[result] = (new Item(result).rare);
+            //    Cauldron.MaterialRarity[result.Type] = ItemLoader.GetItem(material).Item.rare;
+            return cauldron.AddBrew(result, mold, _material, 10, weight, yield);
+        }
         public CauldronBrew AddBrew(int result, int mold, int material, int materialCount, float weight = 1.0f, int yield = 1)
         {
             CauldronBrew brew = new CauldronBrew

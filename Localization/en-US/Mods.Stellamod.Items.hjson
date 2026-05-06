@@ -10943,3 +10943,17 @@ TheAnchor: {
 	DisplayName: The Anchor
 	Tooltip: ""
 }
+
+SunkenAnchor: {
+	DisplayName: Sunken Anchor
+	Tooltip:
+		'''
+		Increases enemy endurance by 20%
+		You have regular gravity in water
+		'''
+}
+
+KingJellyfishRelicItem: {
+	DisplayName: King Jellyfish Relic
+	Tooltip: ""
+}
