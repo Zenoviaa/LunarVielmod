@@ -474,3 +474,11 @@ public class CariyaRelic : AbstractRelicTile<CariyaRelicItem, CariyaPage>
 {
 
 }
+public class KingJellyfishRelicItem : AbstractRelicItem<KingJellyfishRelicItem, KingJellyfishRelic>
+{
+
+}
+public class KingJellyfishRelic : AbstractRelicTile<KingJellyfishRelicItem, KingJellyfishPage>
+{
+
+}
