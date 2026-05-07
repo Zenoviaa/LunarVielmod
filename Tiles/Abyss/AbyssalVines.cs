@@ -40,9 +40,9 @@ namespace Stellamod.Tiles.Abyss
         }
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
-            r = .154f * 2;
-            g = .077f * 2;
-            b = .255f * 2;
+            r = .154f ;
+            g = .077f;
+            b = .255f ;
         }
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
         {

@@ -219,6 +219,7 @@ namespace Stellamod.Core.Foreground
 
             Rectangle drawRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
             float foregroundAlpha = ModContent.GetInstance<LunarVeilClientConfig>().Foreground;
+            foregroundAlpha /= 100f;
             spriteBatch.Draw(foregroundTexture, drawRectangle, null, Color.White * 1f * layer.fade * layer.drawAlpha * foregroundAlpha, 0, Vector2.Zero, SpriteEffects.None, 0);
 
             /*
@@ -269,7 +270,9 @@ namespace Stellamod.Core.Foreground
 
             Rectangle targetRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
             Color drawColor = Color.Black;
-            spriteBatch.Draw(foregroundTexture, new Vector2(0, Main.screenHeight), targetRectangle, drawColor * 0.62f * layer.fade * layer.drawAlpha, 0, 
+            float foregroundAlpha = ModContent.GetInstance<LunarVeilClientConfig>().Foreground;
+            foregroundAlpha /= 100f;
+            spriteBatch.Draw(foregroundTexture, new Vector2(0, Main.screenHeight), targetRectangle, drawColor * 0.62f * layer.fade * layer.drawAlpha * foregroundAlpha, 0, 
                 new Vector2(0, foregroundTexture.Height), scale, SpriteEffects.None, 0);
            
             /*

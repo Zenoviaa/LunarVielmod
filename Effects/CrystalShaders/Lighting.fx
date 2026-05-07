@@ -50,6 +50,10 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float2 vectorToPixel = coords - float2(0.5, 0.5);
     float pixelLength = length(vectorToPixel);
     float angle = (atan2(vectorToPixel.y, vectorToPixel.x) + PI) / (PI * 2.0);
+    
+    //atan2 returns a value between -PI and PI
+    //We want 0 - TWO PI so we can normalize to 1
+    //That's what this here is for
     angle += 0.5;
     angle = frac(angle);
     
@@ -58,10 +62,14 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     //Angle is the x coordinate
     //Y is the index of the light
     //We should be able to render all the lights in 1 batch with this approach
+    
+    //Here we offset the y coordinate by half the texel size so that we're sampling the center of the pixel
+    //This prevents sampling other lines and fixes jittery shadows
+    shadowMapY += 0.5 / 255.0;
     float2 shadowMapSampleCoord = float2(angle, shadowMapY);
-  //  shadowMapSampleCoord.y = floor(shadowMapSampleCoord.y * 255.0) / 255.0;
     float distance = tex2D(ShadowMapSampler, shadowMapSampleCoord).y;
     
+    //Once it passes the falloff distance it quickly fades out
     float falloff = 1.0;
     if (pixelLength > distance)
     {
