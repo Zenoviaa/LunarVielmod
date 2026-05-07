@@ -6,6 +6,7 @@ using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.GameContent;
@@ -230,12 +231,26 @@ namespace Stellamod.Core.Bases
                 spriteBatch.Draw(auraTextureAsset.Value, drawPos, null, drawColor, Projectile.rotation, drawOrigin, scale * 0.5f, SpriteEffects.None, 0);
             }
 
+            Color manaCircleColor = drawColor;
+
+            float manaCapacity = (float)Owner.statMana / (float)Owner.statManaMax2;
+            GlowingSwordMaskShader shader = GlowingSwordMaskShader.Instance;
+            shader.TrailTexture = TrailRegistry.BulbTrail;
+            shader.Distortion = 0.02f;
+            shader.DistortionTexture = TrailRegistry.WhispyTrail;
+            shader.Time = Main.GlobalTimeWrappedHourly * 16;
+            shader.Bloom = 0.8f * manaCapacity;
+            shader.Tiling = Vector2.One * 0.75f;
+            shader.InnerColor = Color.Lerp(manaCircleColor, Color.Lerp(manaCircleColor, Color.Black, 0.5f), ExtraMath.Osc(0f, 1f, 12));
+            shader.OuterColor = Color.Lerp(manaCircleColor, Color.Black, 0.5f);
+            spriteBatch.Restart(effect: shader.Effect);
+
 
             Asset<Texture2D> magicCircleTextureAsset = HeldTome.GetMagicCircleTexture();
-            Color manaCircleColor = drawColor;
-            float manaCapacity = (float)Owner.statMana / (float)Owner.statManaMax2;
+      
             manaCircleColor *= manaCapacity;
             spriteBatch.Draw(magicCircleTextureAsset.Value, Owner.Center - Main.screenPosition, null, manaCircleColor,  Main.GlobalTimeWrappedHourly * 0.4f, magicCircleTextureAsset.Size() /2f, scale * 0.6f, SpriteEffects.None, 0);
+            spriteBatch.RestartDefaults();
         }
         
         private void DrawPixelatedTomeTrail(GraphicsDevice graphicsDevice)

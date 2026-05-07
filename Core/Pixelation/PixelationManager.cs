@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Illuria.WeaponsIL;
 using Stellamod.Core.Utilities;
+using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -86,6 +87,7 @@ namespace Stellamod.Core.Pixelation
                 drawAction(graphicsDevice);
                 _renderCount++;
             }
+     
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
             while (_spritebatchActionsQueue.Count > 0)

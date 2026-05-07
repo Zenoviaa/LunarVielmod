@@ -209,7 +209,7 @@ namespace Stellamod.Helpers
 
         public static void Restart(this SpriteBatch spriteBatch, SpriteSortMode sortMode = SpriteSortMode.Deferred, BlendState blendState = null, Effect effect = null, SamplerState samplerState = null)
         {
-            SamplerState newSamplerState = samplerState == null ? Main.DefaultSamplerState : samplerState;
+            SamplerState newSamplerState = samplerState == null ? SamplerState.PointClamp : samplerState;
             spriteBatch.End();
             spriteBatch.Begin(sortMode, blendState, newSamplerState, DepthStencilState.None, RasterizerState.CullNone, effect, Main.GameViewMatrix.TransformationMatrix);
         }
@@ -217,16 +217,7 @@ namespace Stellamod.Helpers
         public static void RestartDefaults(this SpriteBatch spriteBatch)
         {
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        }
-
-        public static void DrawDimLight(Vector2 pos, Color color, float rotation, float scale)
-        {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D texture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            Color drawColor = new Color(color.R, color.G, color.B, 0);
-            Vector2 drawOrigin = texture.Size() / 2;
-            spriteBatch.Draw(texture, pos, null, drawColor, rotation, drawOrigin, scale, SpriteEffects.None, 0f);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
         public static void DrawCircle(Vector2 center, float radius, Vector2[] circlePos, float offset = 0)
