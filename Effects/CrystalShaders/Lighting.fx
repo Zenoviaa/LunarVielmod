@@ -1,7 +1,21 @@
 ﻿sampler uImage0 : register(s0);
 sampler uImage1 : register(s1);
 #define PI 3.1415926535897932
+
 matrix transformMatrix;
+
+
+texture shadowMap;
+sampler2D ShadowMapSampler = sampler_state
+{
+    texture = <shadowMap>;
+    magfilter = LINEAR;
+    minfilter = LINEAR;
+    mipfilter = LINEAR;
+    AddressU = wrap;
+    AddressV = clamp;
+};
+
 struct VertexShaderInput
 {
     float4 Position : POSITION0;
@@ -29,6 +43,8 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 //TODO: custom vertex structure for inputting light data
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
+    const float MAX_ATTENTUATION_DISTANCE = length(float2(0.0, 0.0) - float2(0.5, 0.5));
+    
     float4 sampleColor = input.Color;
     float2 coords = input.TextureCoordinates;
     float2 vectorToPixel = coords - float2(0.5, 0.5);
@@ -43,16 +59,19 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     //Y is the index of the light
     //We should be able to render all the lights in 1 batch with this approach
     float2 shadowMapSampleCoord = float2(angle, shadowMapY);
-    float distance = tex2D(uImage1, shadowMapSampleCoord).y;
+  //  shadowMapSampleCoord.y = floor(shadowMapSampleCoord.y * 255.0) / 255.0;
+    float distance = tex2D(ShadowMapSampler, shadowMapSampleCoord).y;
     
     float falloff = 1.0;
     if (pixelLength > distance)
     {
-        falloff -= (pixelLength - distance) / 0.05;
+        falloff -= saturate((pixelLength - distance) / 0.05);
     }
- //   float falloff = lerp(1.0, 0.0, saturate(pixelLength / distance));
-    float4 light = float4(1.0, 1.0, 1.0, 1.0);
-    light *= falloff;
+
+    float4 light = float4(input.Color.rgb, 1.0);    
+
+    float attenuation = lerp(1.0, 0.0, pixelLength / MAX_ATTENTUATION_DISTANCE);
+    light *= falloff * attenuation;
     return light;
 }
 

@@ -1,5 +1,6 @@
 ﻿using ReLogic.Threading;
 using Stellamod.Common.Shaders;
+using Stellamod.Core.Utilities;
 using System;
 using System.Reflection;
 using Terraria;

@@ -90,6 +90,11 @@ namespace Stellamod.Core.Utilities
 
 
 
+
+        public static Point GetHalfScreenTargetSize()
+        {
+            return new Point((int)(Main.screenTarget.Width * 0.5f), (int)(Main.screenTarget.Height * 0.5f));
+        }
         public Point GetScreenTargetSize()
         {
             return new Point(Main.screenTarget.Width, Main.screenTarget.Height);

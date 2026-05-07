@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Stellamod.Core.LunarLightingSystem;
+using System;
 using System.ComponentModel;
 using Terraria;
 using Terraria.ModLoader;
@@ -12,13 +13,6 @@ public class LunarVeilServerConfig : ModConfig
     // ConfigScope.ClientSide should be used for client side, usually visual or audio tweaks.
     // ConfigScope.ServerSide should be used for basically everything else, including disabling items or changing NPC behaviors
     public override ConfigScope Mode => ConfigScope.ServerSide;
-
-    // The things in brackets are known as "Attributes".
-
-
-
-
-
 }
 
 public class DisableBossNameHover : GlobalNPC
@@ -39,24 +33,9 @@ public class LunarVeilClientConfig : ModConfig
 {
     public override ConfigScope Mode => ConfigScope.ClientSide;
 
-    [Header("Visual")] // Headers are like titles in a config. You only need to declare a header on the item it should appear over, not every item in the category.                                       // [Tooltip("$Some.Key")] // A tooltip is a description showed when you hover your mouse over the option. It can be used as a more in-depth explanation of the option. Like with Label, a specific key can be provided.
-    [DefaultValue(false)]
-    public bool FocusMode;
-
-    [DefaultValue(true)]
-    public bool Foreground;
-
-    [DefaultValue(true)]
-    public bool Dither;
-
-    [DefaultValue(true)]
-    public bool DramaticEffects;
-
-    [DefaultValue(false)]
-    public bool DisableSummonHealthbar;
-
-    [DefaultValue(true)]
-    public bool DisableBossNameHover;
+    [Header("Lighting")]
+    [DefaultValue(0)]
+    public ShadowQuality ShadowQuality;
 
     [DefaultValue(true)]
     public bool BeamingLights;
@@ -70,8 +49,24 @@ public class LunarVeilClientConfig : ModConfig
     [DefaultValue(true)]
     public bool SunShadows2;
 
+    [Header("Visual")] // Headers are like titles in a config. You only need to declare a header on the item it should appear over, not every item in the category.                                       // [Tooltip("$Some.Key")] // A tooltip is a description showed when you hover your mouse over the option. It can be used as a more in-depth explanation of the option. Like with Label, a specific key can be provided.
+    [Range(0f, 100f)]
+    public float Foreground = 100;
+
+    [DefaultValue(false)]
+    public bool FocusMode;
+
     [DefaultValue(true)]
-    public bool Bloom;
+    public bool Dither;
+
+    [DefaultValue(true)]
+    public bool DramaticEffects;
+
+    [DefaultValue(false)]
+    public bool DisableSummonHealthbar;
+
+    [DefaultValue(true)]
+    public bool DisableBossNameHover;
 
     [DefaultValue(true)] // This sets the configs default value.
     [ReloadRequired] // Marking it with [ReloadRequired] makes tModLoader force a mod reload if the option is changed. It should be used for things like item toggles, which only take effect during mod loading

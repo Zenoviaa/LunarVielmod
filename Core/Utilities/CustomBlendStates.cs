@@ -1,9 +1,18 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace Stellamod.Common.Shaders;
+namespace Stellamod.Core.Utilities;
 
 public static class CustomBlendStates
 {
+    public static readonly BlendState Brightest = new BlendState
+    {
+        AlphaSourceBlend = Blend.DestinationAlpha,
+        ColorSourceBlend = Blend.DestinationColor,
+        AlphaDestinationBlend = Blend.One,
+        ColorDestinationBlend = Blend.One,
+        AlphaBlendFunction = BlendFunction.Max,
+        ColorBlendFunction = BlendFunction.Max
+    };
 
     public static readonly BlendState Multiply = new BlendState
     {

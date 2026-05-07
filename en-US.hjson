@@ -1,0 +1,29 @@
+Mods: {
+	Stellamod: {
+		Configs: {
+			ShadowQuality: {
+				Tooltip: ""
+
+				Low: {
+					Label: Low
+					Tooltip: ""
+				}
+
+				Medium: {
+					Label: Medium
+					Tooltip: ""
+				}
+
+				High: {
+					Label: High
+					Tooltip: ""
+				}
+
+				Very_High: {
+					Label: Very_ High
+					Tooltip: ""
+				}
+			}
+		}
+	}
+}

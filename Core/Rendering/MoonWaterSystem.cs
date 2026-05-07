@@ -723,7 +723,7 @@ public class MoonWaterSystem : ModSystem
         if (!_pixelWater.noLighting)
         {
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["BlurDrawing"];
-            spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendState.Multiply, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
+            spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, _waterEffect);
             spriteBatch.Draw(_waterLightMapRT, _drawLocation, null, Color.White * 1);
             spriteBatch.End();
         }

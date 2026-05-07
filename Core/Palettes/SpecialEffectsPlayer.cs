@@ -154,21 +154,6 @@ namespace Stellamod.Core.Palettes
             ToggleScreenShader(screenShaderName, progress != 0);
         }
 
-        private void ApplyBloom()
-        {
-            string bloomShaderName = "LunarVeil:Bloom";
-            var config = ModContent.GetInstance<LunarVeilClientConfig>();
-            ToggleScreenShader(bloomShaderName, config.Bloom);
-            ScreenShaderData screenShaderData = FilterManager[bloomShaderName].GetShader();
-            float blurSize = 2;
-            float bloomIntensity = MathHelper.Lerp(0.1f, 2f, Main.MouseScreen.X / (float)Main.screenWidth);
-            float bloomThreshold = MathHelper.Lerp(0.1f, 1f, Main.MouseScreen.Y / (float)Main.screenHeight);
-            bloomIntensity = 0.6f;
-            bloomThreshold = 0.5f;
-            Vector3 bloomVector = new Vector3(blurSize, bloomIntensity, bloomThreshold);
-            screenShaderData.Shader.Parameters["bloom"].SetValue(bloomVector);
-        //    Main.NewText(bloomVector);
-        }
         private void SpecialBiomeEffects()
         {
             //This code should only run on each client
@@ -237,7 +222,6 @@ namespace Stellamod.Core.Palettes
 
             */
             CalculateDarkness();
-            ApplyBloom();
 
         //    ToggleScreenShader("LunarVeil:DarknessVignette", darkness != 0);
 
