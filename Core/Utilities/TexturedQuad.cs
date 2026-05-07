@@ -142,8 +142,8 @@ namespace Stellamod.Core.Utilities
         {
             Vector2 topLeftOffset = new Vector2(-length / 2f, -width / 2f);
             Vector2 bottomLeftOffset = new Vector2(-length / 2f, width / 2f);
-            Vector2 topRightOffset = topLeftOffset + new Vector2(length, -width / 2f);
-            Vector2 bottomRightOffset = bottomLeftOffset + new Vector2(length, width / 2f);
+            Vector2 topRightOffset = new Vector2(length /2f  , -width / 2f);
+            Vector2 bottomRightOffset =new Vector2(length / 2f, width / 2f);
 
             topLeftOffset = topLeftOffset.RotatedBy(rotation);
             bottomLeftOffset = bottomLeftOffset.RotatedBy(rotation);

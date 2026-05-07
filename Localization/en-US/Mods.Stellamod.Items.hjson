@@ -3670,7 +3670,7 @@ StarbloomTempleBlock: {
 }
 
 ShadegraveStaff: {
-	Tooltip: "Fires a dark bolt that explodes when it hits something and inflicts shadowflame"
+	Tooltip: Fires a dark bolt that explodes when it hits something and inflicts shadowflame
 	DisplayName: Shadegrave Artifact
 }
 

@@ -1,10 +1,12 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Microsoft.Xna.Framework.Input;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Foggy;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using Terraria;
 using Terraria.GameContent;
@@ -32,12 +34,151 @@ namespace Stellamod.Core.LunarLightingSystem
         }
     }
 
+    public class LightingShader : CrystalShader<LightingShader>
+    {
+        private EffectParameter _transformMatrixParam;
+        public Matrix TransformMatrix
+        {
+            set
+            {
+                _transformMatrixParam ??= Effect.Parameters["transformMatrix"];
+                _transformMatrixParam.SetValue(value);
+            }
+        }
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            TransformMatrix = TrailDrawer.WorldViewPoint2;
+        }
+    }
+
+    public class ShadowMap
+    {
+        private Vector2[] _shadowCoordinates;
+        public ShadowMap(int maxShadowCasters, int resolution)
+        {
+            MaxShadowCasters = maxShadowCasters;
+            Resolution = resolution;
+            _shadowCoordinates = new Vector2[maxShadowCasters * Resolution];
+        }
+        public Texture2D Texture { get; private set; }
+        public readonly int Resolution;
+        public readonly int MaxShadowCasters;
+        public void Clear()
+        {
+            for(int i = 0; i < _shadowCoordinates.Length; i++)
+            {
+                _shadowCoordinates[i] = new Vector2( 0, 10000);
+            }
+        }
+
+        public Texture2D Output()
+        {
+            if(Texture == null || Texture.Width != Resolution)
+            {
+                Texture?.Dispose();
+                Texture = new Texture2D(Main.graphics.GraphicsDevice, Resolution, MaxShadowCasters, false, SurfaceFormat.Vector2);
+            }
+
+            Texture.SetData(_shadowCoordinates);
+            return Texture;
+        }
+
+        public void RayMarch(int lightIndex, Vector2 lightPosition, float distance)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            //What we're gonna do is raycast in all directions and output the geometry
+            float d = 16;
+            float maxSteps = distance / d; 
+            for(int i = 0; i < Resolution; i++)
+            {
+                float radians = (float)i / (float)Resolution;
+                Vector2 rayDirection = (radians*MathHelper.TwoPi).ToRotationVector2();
+                Vector2 rayPos = lightPosition;
+                int steps = 0;
+                while (steps < maxSteps)
+                {
+                    Point tilePoint = rayPos.ToTileCoordinates();
+                    if(!WorldGen.InWorld(tilePoint.X, tilePoint.Y))
+                    {
+                        break;
+                    }
+                    Tile tile = Main.tile[tilePoint];
+                    if (tile.HasTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType])
+                    {
+                        //Submit for shadows
+                        break;
+                    }
+                    rayPos += rayDirection * d;
+                    steps++;
+                }
+
+                //Normalize to 1
+                Vector2 shadowCoordinate = new Vector2(radians, d * steps / distance);
+                _shadowCoordinates[lightIndex * Resolution + i] = shadowCoordinate;
+            }
+            sw.Stop();
+        //    Main.NewText(sw.ElapsedTicks);
+
+        }
+
+        public void MapLight(int lightIndex, Vector2 lightPosition, float distance)
+        {
+            Vector2 topLeftWorld = lightPosition - new Vector2(distance / 2f);
+            Vector2 bottomRightWorld = lightPosition + new Vector2(distance / 2f);
+            Point topLeft = topLeftWorld.ToTileCoordinates();
+            Point bottomRight = bottomRightWorld.ToTileCoordinates();
+
+            topLeft = TileUtilities.Clamp(topLeft);
+            bottomRight = TileUtilities.Clamp(bottomRight); 
+            for(int x = topLeft.X; x < bottomRight.X; x++)
+            {
+                for(int y =topLeft.Y; y < bottomRight.Y; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    if (!tile.HasTile || !Main.tileSolid[tile.TileType])
+                        continue;
+
+                    Vector2 worldCoordinates = new Point(x, y).ToWorldCoordinates();
+                    Vector2 lightVector = worldCoordinates - lightPosition;
+                    float angle = lightVector.ToRotation();
+                    float distToSolidTile = lightVector.Length();
+
+                    int indexOffset = (int)(angle / MathHelper.TwoPi * (Resolution - 1));
+                    int index = lightIndex * Resolution + indexOffset;
+                    ref Vector2 currentShadowCoordinate = ref _shadowCoordinates[index];
+                    if (currentShadowCoordinate.Y < distToSolidTile)
+                        continue;
+                    currentShadowCoordinate.X = angle;
+                    currentShadowCoordinate.Y = distToSolidTile;
+                }
+            }
+        }
+
+        public int IndexOf(int lightIndex, int i)
+        {
+            return lightIndex * Resolution + i; 
+        }
+
+        public void PreviewCoordinates(SpriteBatch spriteBatch, int lightIndex, Vector2 lightPosition)
+        {
+            for(int i = 0; i < Resolution; i++)
+            {
+                Vector2 coordinate = _shadowCoordinates[IndexOf(lightIndex, i)];
+                Vector2 offset = (coordinate.X*MathHelper.TwoPi).ToRotationVector2() * coordinate.Y * 400;
+                Primitives2D.DrawCircle(spriteBatch, lightPosition + offset - Main.screenPosition, 16, 8, Color.Red);
+            }
+        }
+    }
+
     [Autoload(Side = ModSide.Client)]
     public class LunarLightingRenderer : ModSystem,
         IPostProcessingPass
     {
         public int PostProcessPriority => 15;
 
+        private Texture2D _lightMapTexture;
         private Dictionary<Point, Fog> _fogIndex = new();
         private List<Fog> _fogsToRemove = new();
         public bool renderFog;
@@ -48,6 +189,7 @@ namespace Stellamod.Core.LunarLightingSystem
         private bool _isLoaded;
         private bool _initAtlas;
 
+        private ShadowMap _shadowMap;
         private RenderTarget2D _pointLightRT;
         private RenderTarget2D _tempLightMapAtlasRT;
         private RenderTarget2D _tileShadowMap;
@@ -65,6 +207,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public override void Load()
         {
+            _shadowMap = new ShadowMap(64, 90);
             _backLightModifiers = new List<IBackLightModifier>();
             _emitters = new List<ILightEmitter>();
 
@@ -134,7 +277,40 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
         {
-            
+
+            if (!Main.gameMenu)
+            {
+                //  _shadowMap.RayMarch(0, Main.LocalPlayer.Center, 400);
+                _shadowMap.Clear();
+                _shadowMap.RayMarch(0, Main.LocalPlayer.Center, 400);
+                // _shadowMap.MapLight(0, Main.LocalPlayer.Center, 400);
+
+                LightingEngine lightingEngine = typeof(Lighting).GetField("_activeEngine", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null) as LightingEngine;
+                LightMap lightMap = typeof(LightingEngine).GetField("_activeLightMap", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as LightMap;
+
+          //      lightingEngine.Clear();
+                Color[] pixels = new Color[lightMap.Width * lightMap.Height];
+                for (int x = 0; x < lightMap.Width; x++)
+                {
+                    for (int y = 0; y < lightMap.Height; y++)
+                    {
+                        lightMap.GetLight(x, y, out Vector3 color);
+                        pixels[x + y * lightMap.Width] = new Color(color);
+                    }
+                }
+
+
+                if (_lightMapTexture == null || _lightMapTexture.Width != lightMap.Width || _lightMapTexture.Height != lightMap.Height)
+                {
+                    _lightMapTexture?.Dispose();
+                    _lightMapTexture = new Texture2D(Main.graphics.GraphicsDevice, lightMap.Width, lightMap.Height, false, SurfaceFormat.Color);
+
+                }
+                _lightMapTexture.SetData(pixels);
+            }
+
+            //I want to see what the light map looks like when exported as a texture
+
             // Player.solidLightDecay = 1f;
             if (IsActive && _isLoaded)
             {
@@ -149,6 +325,10 @@ namespace Stellamod.Core.LunarLightingSystem
 
 
             orig();
+        }
+        public override void PostDrawTiles()
+        {
+            base.PostDrawTiles();
         }
 
         private void DrawShadowsBehindTiles(On_Main.orig_DrawCachedNPCs orig, Main self, List<int> npcCache, bool behindTiles)
@@ -201,8 +381,86 @@ namespace Stellamod.Core.LunarLightingSystem
 
 
 
-            //PreviewLightMaps();
-            DrawAccumulatedLightMapToScreen();
+            if (Keyboard.GetState().IsKeyDown(Keys.L))
+            {
+                _shadowMap = new ShadowMap(64, 64);
+            }
+                //PreviewLightMaps();
+                //  DrawAccumulatedLightMapToScreen();
+                
+            if (Keyboard.GetState().IsKeyDown(Keys.J))
+            {
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                   null);
+
+                _shadowMap.PreviewCoordinates(spriteBatch, 0, Main.LocalPlayer.Center);
+                spriteBatch.End();
+                /*
+                SpriteBatch sb = Main.spriteBatch;
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                _shadowMap.PreviewCoordinates(sb, 0, Main.LocalPlayer.Center);
+                sb.End();
+
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                   null);
+
+                LightingEngine lightingEngine = typeof(Lighting).GetField("_activeEngine", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null) as LightingEngine;
+                LightMap lightMap = typeof(LightingEngine).GetField("_activeLightMap", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as LightMap;
+                for(int x = 0; x < lightMap.Width;x++)
+                {
+                    for(int y = 0; y < lightMap.Height; y++)
+                    {
+                        lightMap.GetLight(x, y, out Vector3 color);
+                        Texture2D blackTile = TextureAssets.BlackTile.Value;
+                        spriteBatch.Draw(blackTile, new Vector2(x, y) * 16 - new Vector2(Main.offScreenRange*2) - new Vector2(96), null, new Color(color), 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                    }
+                }
+
+               // spriteBatch.Draw(_lightMapTexture, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 8, SpriteEffects.None, 0f);
+                spriteBatch.End();*/
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.K))
+            {
+                _shadowMap.Output();
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                   null);
+                spriteBatch.Draw(_shadowMap.Texture, new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f, null, Color.White, 0f, new Vector2(_shadowMap.Texture.Width, _shadowMap.Texture.Height) * 0.5f, 4, SpriteEffects.None, 0f);
+                spriteBatch.End();
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.H))
+            {
+                _shadowMap.Output();
+
+                /*
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                   null);
+                spriteBatch.Draw(_shadowMap.Texture, new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f, null, Color.White, 0f, new Vector2(_shadowMap.Texture.Width, _shadowMap.Texture.Height) * 0.5f, 4, SpriteEffects.None, 0f);
+                spriteBatch.End();
+            */
+
+                Vector2 position = Main.LocalPlayer.Center;
+                float diameter = 400;
+                Color color = Color.White;
+                color.A = 0;
+                TexturedQuad quad = new TexturedQuad();
+                quad.CalculateCenterVertices(Main.LocalPlayer.Center, diameter, diameter);
+                quad.SetColor(color);
+
+                GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
+                gDevice.BlendState = BlendState.AlphaBlend;
+                gDevice.SamplerStates[1] = SamplerState.LinearClamp;
+                gDevice.Textures[1] = _shadowMap.Texture;
+
+
+                var shadow2 = LightingShader.Instance;
+                quad.DrawWithShader(shadow2);
+               // var shader = PointLightShader.Instance;
+              //  quad.DrawWithShader(shader);
+            }
             RenderFog();
             //   DrawSoftGlows();
         }
