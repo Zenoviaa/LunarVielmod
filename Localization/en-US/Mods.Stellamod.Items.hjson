@@ -3670,8 +3670,8 @@ StarbloomTempleBlock: {
 }
 
 ShadegraveStaff: {
-	Tooltip: ""
-	DisplayName: Shadegrave Staff
+	Tooltip: "Fires a dark bolt that explodes when it hits something and inflicts shadowflame"
+	DisplayName: Shadegrave Artifact
 }
 
 BasicGunParts: {
@@ -10965,8 +10965,5 @@ BlankVanilla: {
 
 ElectricChainTome: {
 	DisplayName: Electric Chain Tome
-	Tooltip:
-		'''
-		Casts an electric bolt that chains up to 3 enemies!
-		'''
+	Tooltip: Casts an electric bolt that chains up to 3 enemies!
 }
