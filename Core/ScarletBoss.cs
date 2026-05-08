@@ -2,6 +2,8 @@
 using Stellamod.Content.Areas.SpecialTiles.EffectTiles;
 using Stellamod.Core.TitleSystem;
 using Stellamod.Helpers;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -16,10 +18,61 @@ public enum BossLevel : byte
     Boss,
     Superboss
 }
+
+
+public class FightTimer
+{
+    public FightTimer(int npcToTrack)
+    {
+        whoAmI = npcToTrack;
+    }
+    public float timer;
+    public int whoAmI;
+}
+public class BossFightTimer : ModSystem
+{
+    private List<FightTimer> _timers;
+    public override void Load()
+    {
+        base.Load();
+        _timers = new List<FightTimer>();
+    }
+
+    public override void PostUpdateEverything()
+    {
+        base.PostUpdateEverything();
+        _timers.RemoveAll(x => x.whoAmI == -1);
+        foreach (var timer in _timers)
+        {
+            timer.timer++;
+            NPC npc = Main.npc[timer.whoAmI];
+            if (!npc.active)
+            {
+                OutputTimer(timer.timer, npc.FullName);
+                timer.whoAmI = -1;
+            }
+        }
+    }
+
+    public void StartTimer(int trackingNPC)
+    {
+        FightTimer timer = new FightTimer(trackingNPC);
+        _timers.Add(timer);
+    }
+
+    public void OutputTimer(float timer, string displayName)
+    {
+        TimeSpan killTime = TimeSpan.FromSeconds(timer / 60f);
+        string timeString = string.Format("{0:00}h:{1:00}m:{2:00}s", killTime.Hours, killTime.Minutes, killTime.Seconds);
+        Main.NewText($"{displayName} - Fight Time: {timeString}", Color.SkyBlue);
+    }
+}
 public abstract class ScarletBoss : ModNPC
 {
     private Vector2 _arenaCenter;
     private float _bossHealthbarDelay;
+
+    private bool _startTimer;
     public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
     {
         DifficultyChanges.ApplyDifficultyAndScaling(NPC, numPlayers);
@@ -88,6 +141,12 @@ public abstract class ScarletBoss : ModNPC
         if (!NPC.boss)
             return;
 
+        if (!_startTimer)
+        {
+            ModContent.GetInstance<BossFightTimer>().StartTimer(NPC.whoAmI);
+            _startTimer = true;
+        }
+
         //Healthbar isn't going to appear instantly, so we can do funny things where the boss isn't a boss for a second
         _bossHealthbarDelay++;
         if (_bossHealthbarDelay < 15)
@@ -95,6 +154,13 @@ public abstract class ScarletBoss : ModNPC
 
         ModContent.GetInstance<BossHealthbarSystem>().Add(this);
     }
+
+    public override void OnKill()
+    {
+        base.OnKill();
+
+    }
+
 
     public override bool CheckActive()
     {

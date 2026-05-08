@@ -18,7 +18,9 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
     public class WindShockwave : ModProjectile
     {
         private Vector2[] _shockwavePos;
+        private float FadeTime => 15f;
         private ref float Timer => ref Projectile.ai[0];
+        private ref float DeathTimer => ref Projectile.ai[1];
         public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
@@ -62,6 +64,20 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
             }
 
             Projectile.velocity *= 1.01f;
+            Point tp = (Projectile.Center+new Vector2(0, -8)).ToTileCoordinates();
+            Tile tile = Main.tile[tp];
+            if (tile.HasTile && Main.tileSolid[tile.type] && DeathTimer == 0)
+            {
+                DeathTimer++;
+               // Projectile.Kill();
+            }
+
+            if(DeathTimer > 0)
+            {
+                DeathTimer++;
+                if (DeathTimer >= FadeTime)
+                    Projectile.Kill();
+            }
         }
 
         private Color GetTrailColor(float progressOnTrail)
@@ -105,6 +121,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
 
         private void DrawPixelatedShockwaveV2(SpriteBatch sb, Vector2 screenPos)
         {
+            float fade = MathHelper.Lerp(1f, 0f, DeathTimer / FadeTime);
             float inScale = EasingFunction.OutExpo(Timer / 30f);
             Asset<Texture2D> waveTexture = AssetManager.GlowMask.Wave;
             WaveShader waveShader = ShaderContent.GetInstance<WaveShader>();
@@ -116,7 +133,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
             sb.Restart(effect: waveShader.Effect);
             SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(waveTexture, Projectile.Center);
             drawer.BottomCenterOrigin();
-            drawer.color = Color.White;
+            drawer.color = Color.White * fade;
             drawer.color.A = 0;
             drawer.scale *= 0.5f * inScale;
             if (Projectile.velocity.X < 0)
@@ -133,7 +150,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
             SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureAsset(bloomLine, Projectile.Center);
             //      drawer2.BottomCenterOrigin();
             drawer2.scale *= new Vector2(0.55f, 0.05f) * ExtraMath.Osc(0.8f, 1f, speed: 3) * inScale;
-            drawer2.color = Color.White;
+            drawer2.color = Color.White * fade; ;
             drawer2.color.A = 0;
             sb.Draw(drawer2);
 
