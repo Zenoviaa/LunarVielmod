@@ -57,6 +57,7 @@ namespace Stellamod.Core.LunarLightingSystem
                 g = MathHelper.Clamp(g + lightStrength, 0, 1);
                 b = MathHelper.Clamp(b + lightStrength, 0, 1);
             }
+        
 
         }
     }

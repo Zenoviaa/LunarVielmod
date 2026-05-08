@@ -299,6 +299,8 @@ public partial class StellaWorld : ModSystem
     private void AddNewGenerationPasses(List<GenPass> tasks, ref double totalWeight)
     {
         PassWriter passWriter = new PassWriter(tasks);
+       // passWriter.DisablePass("Grass");
+
         passWriter.SetInsertionIndex("Ocean Sand");
         passWriter.NextPass(new ReworkedOceanSandPass());
 
@@ -3368,9 +3370,11 @@ public partial class StellaWorld : ModSystem
             float height = (int)(GetFableHillHeight(ratio) * hillHeight);
             for (int y = 0; y < height; y++)
             {
-                TileUtilities.FastPlaceTile(x, y, TileID.Dirt);
+                WorldGen.PlaceTile(x, startHillTile.Y - y, TileID.Dirt);
+               //  WorldGen.PlaceTile(x, y, TileID.Dirt);
             }
         }
+      //  WorldGen
 
         //Place the fable
         Point placementTile = new Point();
@@ -3403,7 +3407,7 @@ public partial class StellaWorld : ModSystem
             Point tilePlace = new Point(x, startY);
             for (int y = startY; y < fableFalloffEnd.Y; y++)
             {
-                TileUtilities.FastPlaceTile(tilePlace.X, y, TileID.Dirt);
+                 WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
             }
         }
 
@@ -3439,7 +3443,7 @@ public partial class StellaWorld : ModSystem
             Point tilePlace = new Point(x, startY);
             for (int y = startY; y < fableFalloffEnd.Y; y++)
             {
-                TileUtilities.FastPlaceTile(tilePlace.X, y, TileID.Dirt);
+                 WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
                // WorldGen.PlaceTile(tilePlace.X, y, TileID.Dirt);
             }
         }
