@@ -13,7 +13,13 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
-            GlobalLum = 0.3f;
+            GlobalLum = 0f;
+            BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
+            if (biomePlayer.ZoneHarmonicCoralways)
+            {
+                GlobalLum = 0.3f;
+            }
+
             if (Main.LocalPlayer.ZoneUnderworldHeight)
             {
                 GlobalLum = 0.7f;
@@ -36,12 +42,14 @@ namespace Stellamod.Core.LunarLightingSystem
             if (!config.BeamingLights)
                 return;
 
-
+          
             Tile tile = Main.tile[i, j];
             if (tile.HasTile)
                 return;
             if (tile.WallType > 0)
                 return;
+   
+
             float lightStrength = GlobalLumSystem.GlobalLightStrength;
             if (lightStrength > 0)
             {

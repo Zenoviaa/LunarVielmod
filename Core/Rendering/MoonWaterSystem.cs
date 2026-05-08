@@ -235,6 +235,9 @@ public class PixelWater
         NoiseTexture = LoadTexture("WaterNoise2");
         TilingMultiplier = Vector2.One;
         affectsLava = false;
+        noLighting = false;
+        vibrant = false;
+        ignoreSkyColor = false;
     }
 
     private Asset<Texture2D> LoadTexture(string fileName)
@@ -738,7 +741,7 @@ public class MoonWaterSystem : ModSystem
         _pixelWater.SetDefaults();
         _activePixelWaterStyle = GetActivePixelWaterStyle();
         _activePixelWaterStyle.ModifyPixelWater(ref _pixelWater);
-
+        
     }
 
     private void RenderIntoWaterTextureTarget()
