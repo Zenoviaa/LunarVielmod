@@ -71,6 +71,7 @@ float3 calculateColor(float3 color)
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 {
+ //   return float4(1.0, 1.0, 0.5, 1.0);
     float4 color = tex2D(uImage0, coords);
     float3 newColor = calculateColor(color.rgb);
     color.rgb = newColor;

@@ -68,9 +68,9 @@ namespace Stellamod.Helpers
         private static void RegisterScreenShader(string name, string path, EffectPriority effectPriority = EffectPriority.Medium)
         {
             var mod = Stellamod.Instance;
-            if (!mod.FileExists(path + ".xnb"))
+            if (!mod.FileExists(path + ".xnb") && !mod.FileExists(path + ".fxc"))
                 return;
-            Asset<Effect> paletteShader = Assets.Request<Effect>(path);
+            Asset<Effect> paletteShader = Assets.Request<Effect>(path, AssetRequestMode.AsyncLoad);
             Filters.Scene[name] = new Filter(new ScreenShaderData(paletteShader, "ScreenPass"), effectPriority);
             ScreenShaders.Add(name);
             //            Console.WriteLine($"Loaded Screen Shader {name}");

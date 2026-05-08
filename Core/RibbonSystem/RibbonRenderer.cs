@@ -1,11 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using ReLogic.Threading;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Terraria;
@@ -155,14 +158,10 @@ namespace Stellamod.Core.RibbonSystem
             for (int r = 0; r < linePoints.Length; r++)
             {
                 float completionRatio = (float)r / steps;
-
                 Vector2 linePoint = Vector2.Lerp(startPosition, endPosition, completionRatio);
 
                 float slack = EasingFunction.QuadraticBump(completionRatio);
                 slack *= maxSlack;
-
-
-
                 Vector2 velocity = normalVelocity * length;
                 Vector2 perpVector = velocity.RotatedBy(MathHelper.PiOver2);
                 if (perpVector.Y < 0)
@@ -185,11 +184,11 @@ namespace Stellamod.Core.RibbonSystem
                 Vector2 ribbonEnd = ribbonStart + ribbonNormalVelocity * ribbonLength;
 
                 Vector2 ribbonMiddle = (ribbonStart + ribbonEnd) / 2f;
-
+                ribbonMiddle.X += 8;
                 //Clamp the velocity to the length of the ribbon
                 //Calculate the perpendicular velocity
                 Vector2 vel = (ribbonEnd - ribbonStart);
-                vel = vel.SafeNormalize(Vector2.Zero) * ribbonLength;
+                vel = vel.SafeNormalize(Vector2.Zero) * ribbonLength ;
                 Vector2 perpVector = vel.RotatedBy(MathHelper.PiOver2);
 
 
@@ -201,6 +200,7 @@ namespace Stellamod.Core.RibbonSystem
                 Vector2 ribbonBottom = ribbonMiddle + Vector2.UnitY * 8;
 
                 Color color = GetColor(i);
+                color = color.MultiplyRGB(Lighting.GetColor(ribbonMiddle.ToTileCoordinates()));
                 VertexPositionColor v1 = new VertexPositionColor(new Vector3(ribbonStart, 0), color);
                 VertexPositionColor v2 = new VertexPositionColor(new Vector3(ribbonEnd, 0), color);
                 VertexPositionColor v3 = new VertexPositionColor(new Vector3(ribbonBottom, 0), color);
@@ -216,6 +216,7 @@ namespace Stellamod.Core.RibbonSystem
             }
             vertices = ribbonVertices.ToArray();
             originalPositions = ribbonOriginalPositions.ToArray();
+
         }
     }
 
@@ -328,14 +329,14 @@ namespace Stellamod.Core.RibbonSystem
         public override void PostDrawTiles()
         {
             base.PostDrawTiles();
-            if(Main.GameUpdateCount % 4 == 0)
+            if(Main.GameUpdateCount % 8 == 0)
             {
                 GatherRibbonVertices();
             }
 
             if(_vertexIndex > 0)
             {
-                PixelationManager.QueueSpritebatchDrawAction(RenderPixelatedFlags, DrawLayer.BehindTilesOutline);
+                PixelationManager.QueueSpritebatchDrawAction(RenderPixelatedFlags, DrawLayer.BehindTiles);
                 PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedRibbons, DrawLayer.BehindTilesOutline);
             }
 
@@ -437,18 +438,23 @@ namespace Stellamod.Core.RibbonSystem
         {
             Texture2D ribbonLineTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Line").Value;
             Vector2 drawOrigin = new Vector2(0, ribbonLineTexture.Height / 2);
+            Vector2 drawScale = new Vector2(0.1f, 2f);
             for (int i = 0; i < _lineIndex - 1; i++)
             {
                 Vector2 position = _linesBufferArr[i];
                 Vector2 nextPosition = _linesBufferArr[i + 1];
                 float rotation = (nextPosition - position).ToRotation();
 
+                Color lineColor = Color.White * 0.8f;
+                lineColor = lineColor.MultiplyRGB(Lighting.GetColor(position.ToTileCoordinates()));
+                
                 position -= Main.screenPosition;
 
-                Vector2 drawScale = new Vector2(0.1f, 1f);
-
-                spriteBatch.Draw(ribbonLineTexture, position, null, Color.White * 0.5f, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+    
+                spriteBatch.Draw(ribbonLineTexture, position, null, lineColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
             }
+
+
         }
 
         
@@ -476,33 +482,42 @@ namespace Stellamod.Core.RibbonSystem
 
         private void GatherRibbonVertices()
         {
+            //Stopwatch sw = Stopwatch.StartNew();
             _vertexIndex = 0;
             _lineIndex = 0;
             Vector2 cameraCenterWorld = Main.Camera.Center;
-            Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
-            Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
-            Rectangle cameraRectangle = new Rectangle((int)cameraTopLeft.X, (int)cameraTopLeft.Y, (int)(cameraBottomRight.X - cameraTopLeft.X), (int)(cameraBottomRight.Y - cameraTopLeft.Y));
+            float fluff = 512;
+            Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2 - new Vector2(fluff);
+            Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2 + new Vector2(fluff);
+            Rectangle cameraRectangle = new Rectangle(
+                (int)cameraTopLeft.X, (int)cameraTopLeft.Y, 
+                (int)(cameraBottomRight.X - cameraTopLeft.X), 
+                (int)(cameraBottomRight.Y - cameraTopLeft.Y));
             for (int i = 0; i < _ribbons.Count; i++)
             {
                 Ribbon ribbon = _ribbons[i];
+            
                 Vector2 start = ribbon.startPosition;
                 Vector2 end = ribbon.endPosition;
-
-                if (cameraRectangle.Contains(start.ToPoint()) || cameraRectangle.Contains(end.ToPoint()))
+                if (!cameraRectangle.Contains(start.ToPoint()) && !cameraRectangle.Contains(end.ToPoint()))
+                    continue;
+                ribbon.CalculateVertices();
+                for (int j = 0; j < ribbon.vertices.Length && _vertexIndex < _vertexBufferArr.Length; j++)
                 {
-                    for (int j = 0; j < ribbon.vertices.Length && _vertexIndex < _vertexBufferArr.Length; j++)
-                    {
-                        _vertexBufferArr[_vertexIndex] = ribbon.vertices[j];
-                        _vertexIndex++;
-                    }
+                    _vertexBufferArr[_vertexIndex] = ribbon.vertices[j];
+                    _vertexIndex++;
+                }
 
-                    for (int j = 0; j < ribbon.linePoints.Length && _lineIndex < _linesBufferArr.Length; j++)
-                    {
-                        _linesBufferArr[_lineIndex] = ribbon.linePoints[j];
-                        _lineIndex++;
-                    }
+                for (int j = 0; j < ribbon.linePoints.Length && _lineIndex < _linesBufferArr.Length; j++)
+                {
+                    _linesBufferArr[_lineIndex] = ribbon.linePoints[j];
+                    _lineIndex++;
                 }
             }
+            /*
+            sw.Stop();
+            Main.NewText(sw.ElapsedTicks);
+            */
         }
     }
 }

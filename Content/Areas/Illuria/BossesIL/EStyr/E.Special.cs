@@ -590,9 +590,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void RenderRiverRT(On_Main.orig_CheckMonoliths orig)
         {
-            RenderRiverMaskRT();
-            RenderRiverTextureRT();
-            RenderToPixelRT();
+            if (!Main.gameMenu)
+            {
+                RenderRiverMaskRT();
+                RenderRiverTextureRT();
+                RenderToPixelRT();
+            }
+
             orig();
         }
         private void DrawRiverToScreenBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)

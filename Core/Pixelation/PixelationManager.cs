@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Illuria.WeaponsIL;
 using Stellamod.Core.Utilities;
+using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -60,11 +61,11 @@ namespace Stellamod.Core.Pixelation
         private Queue<PrimitivesDrawAction> _primitivesActionsQueue;
         private float _downSamples;
         private BlendState _blendState;
-        public PixelTarget(int downSamples = 2, BlendState blendState = null)
+        public PixelTarget(int downSamples = 2, BlendState blendState = null, bool mipMap = false)
         {
             _downSamples = downSamples;
-            _downScaleRenderTarget = ManagedRenderTarget.New(null, downSamples);
-            _originalRenderTarget = ManagedRenderTarget.New();
+            _downScaleRenderTarget = ManagedRenderTarget.New(null, downSamples, mipMap);
+            _originalRenderTarget = ManagedRenderTarget.New(mipMap: mipMap);
             _spritebatchActionsQueue = new Queue<SpritebatchDrawAction>(100);
             _primitivesActionsQueue = new Queue<PrimitivesDrawAction>(100);
             _blendState = blendState == null ? BlendState.AlphaBlend : blendState;
@@ -283,6 +284,24 @@ namespace Stellamod.Core.Pixelation
             On_Main.DoDraw_DrawNPCsBehindTiles += RenderBehindTiles;
             On_Main.DoDraw_DrawNPCsOverTiles += DrawOverNPCs;
             On_Main.DrawPlayers_AfterProjectiles += RenderOverPlayers;
+            //On_Main.DrawCachedProjs += RenderLater;
+            ZTileMap.OnRenderForeground += RenderLater;
+        }
+
+        private void RenderLater()
+        {
+            if (!Main.gameMenu)
+            {
+                _overPlayersPixelTarget.DrawToScreen();
+            }
+
+            //   throw new NotImplementedException();
+        }
+
+        private void RenderLater(On_Main.orig_DrawCachedProjs orig, Main self, List<int> projCache, bool startSpriteBatch)
+        {
+        
+            orig(self, projCache, startSpriteBatch);
         }
 
         private void RenderToPixelRTs(On_FilterManager.orig_EndCapture orig,
@@ -301,10 +320,7 @@ namespace Stellamod.Core.Pixelation
         public override void OnModLoad()
         {
             base.OnModLoad();
-
-  
             _overNPCsPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
-
             _overNPCsPixelTargetWithOutline = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
             _overNPCsPixelTargetWithOutline.outlineColor = Color.Black;
 
@@ -313,10 +329,10 @@ namespace Stellamod.Core.Pixelation
 
             _overNPCsPixelTargetAdditive = new PixelTarget(downSamples: 2, BlendState.Additive);
 
-            _frontGrassPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+            _frontGrassPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend, true);
             _frontGrassPixelTarget.outlineColor = Color.Lerp(Color.Goldenrod, Color.Black, 0.7f);
 
-            _backGrassPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+            _backGrassPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend, true);
             _backGrassPixelTarget.outlineColor = Color.Lerp(Color.Goldenrod, Color.Black, 0.7f);
 
             _overPlayersPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
@@ -329,6 +345,7 @@ namespace Stellamod.Core.Pixelation
         public override void Unload()
         {
             base.Unload();
+            ZTileMap.OnRenderForeground -= RenderLater;
             _overNPCsPixelTarget = null;
             _overNPCsPixelTargetWithOutline = null;
             _behindNPCsPixelTargetWithOutline = null;
@@ -369,7 +386,7 @@ namespace Stellamod.Core.Pixelation
             {
                 _frontGrassPixelTarget.DrawToScreen();
                 OnInFrontGrass?.Invoke();
-                _overPlayersPixelTarget.DrawToScreen();
+        
             }
         }
 
@@ -433,10 +450,10 @@ namespace Stellamod.Core.Pixelation
         public void Render()
         {
             Color skyColor = Main.ColorOfTheSkies;
-            Color grassColor = Color.Goldenrod.MultiplyRGB(skyColor);
+            Color grassColor = Color.DarkGreen.MultiplyRGB(skyColor);
             _frontGrassPixelTarget.outlineColor = Color.Lerp(grassColor, Color.Black, 0.7f);
             _backGrassPixelTarget.outlineColor = Color.Lerp(grassColor, Color.Black, 0.7f);
-
+  
             _overNPCsPixelTarget.Render();
             _overNPCsPixelTargetWithOutline.Render();
             _overNPCsPixelTargetAdditive.Render();

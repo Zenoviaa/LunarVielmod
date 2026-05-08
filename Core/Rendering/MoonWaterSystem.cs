@@ -46,6 +46,14 @@ public class LavaStyle : PixelWaterStyle
     public override void ModifyPixelWater(ref PixelWater pixelWater)
     {
         base.ModifyPixelWater(ref pixelWater);
+        pixelWater.CausticsTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/LavaDepths");
+        pixelWater.CausticsColor = Color.Lerp(Color.Yellow, Color.OrangeRed, ExtraMath.Osc(0.5f, 1f));
+        pixelWater.BackgroundColor = Color.DarkRed;
+        pixelWater.StartGradientColor = Color.DarkRed;
+        pixelWater.EndGradientColor = Color.Black;
+        pixelWater.affectsLava = true;
+        pixelWater.noReflection = true;
+   //     pixelWater.TilingMultiplier = new Vector2(
      //  pixelWater.noLighting = true;
     }
 }
@@ -238,6 +246,7 @@ public class PixelWater
         noLighting = false;
         vibrant = false;
         ignoreSkyColor = false;
+        noReflection = false;
     }
 
     private Asset<Texture2D> LoadTexture(string fileName)
@@ -255,6 +264,7 @@ public class PixelWater
     public bool vibrant;
     public bool ignoreSkyColor;
     public bool affectsLava;
+    public bool noReflection;
 }
 
 public class PixelWaterStyleComparer : IComparer<PixelWaterStyle>
@@ -428,6 +438,11 @@ public class MoonWaterSystem : ModSystem
             CopySwapToScreenTarget();
 
             _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombineRTDrawing"];
+            if (_pixelWater.affectsLava)
+            {
+          //      Main.NewText("yuh");
+                _waterEffect.CurrentTechnique = _waterEffect.Techniques["CombineRTAllDrawing"];
+            }
             _waterEffect.Parameters["WaterTexture"].SetValue(_waterTextureRTOutput);
 
 
@@ -761,7 +776,8 @@ public class MoonWaterSystem : ModSystem
         DrawWaterCaustics(spriteBatch);
         //  DrawWaterSparkle(spriteBatch);
         DrawWaterFoam(spriteBatch);
-        DrawReflection(spriteBatch);
+        if(!_pixelWater.noReflection)
+            DrawReflection(spriteBatch);
         // 
         DrawPosterization(spriteBatch);
     }

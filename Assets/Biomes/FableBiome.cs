@@ -34,7 +34,7 @@ namespace Stellamod.Assets.Biomes
                 }
                 else
                 {
-                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/LibraryWorld");
+                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/LightedFable");
                 }
             }
         }

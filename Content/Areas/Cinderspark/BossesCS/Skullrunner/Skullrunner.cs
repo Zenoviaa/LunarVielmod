@@ -173,7 +173,7 @@ public class Skullrunner : ScarletBoss
         NPC.height = 64;
         NPC.damage = 32;
         NPC.defense = 10;
-        NPC.lifeMax = 7000;
+        NPC.lifeMax = 5500;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);
         NPC.knockBackResist = 0f;

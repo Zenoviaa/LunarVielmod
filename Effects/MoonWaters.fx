@@ -333,28 +333,28 @@ technique SpriteDrawing
 };
 technique WrapDrawing
 {
-    pass P0
+    pass P1
     {
         PixelShader = compile PS_SHADERMODEL WrapPS();
     }
 };
 technique HeightDrawing
 {
-    pass P0
+    pass P2
     {
         PixelShader = compile PS_SHADERMODEL HeightPS();
     }
 };
 technique ReflectionDrawing
 {
-    pass P0
+    pass P3
     {
         PixelShader = compile PS_SHADERMODEL ReflectPS();
     }
 };
 technique GradientDrawing
 {
-    pass P0
+    pass P4
     {
         PixelShader = compile PS_SHADERMODEL GradientPS();
     }
@@ -362,7 +362,7 @@ technique GradientDrawing
 
 technique CausticsDrawing
 {
-    pass P0
+    pass P5
     {
         PixelShader = compile PS_SHADERMODEL CausticsPS();
     }
@@ -370,7 +370,7 @@ technique CausticsDrawing
 
 technique SparklingCausticsDrawing
 {
-    pass P0
+    pass P6
     {
         PixelShader = compile PS_SHADERMODEL SparklingCausticsPS();
     }
@@ -378,7 +378,7 @@ technique SparklingCausticsDrawing
 
 technique FoamDrawing
 {
-    pass P0
+    pass P7
     {
         PixelShader = compile PS_SHADERMODEL FoamPS();
     }
@@ -386,7 +386,7 @@ technique FoamDrawing
 
 technique PosterizeDrawing
 {
-    pass P0
+    pass P8
     {
         PixelShader = compile PS_SHADERMODEL PosterizePS();
     }
@@ -394,7 +394,7 @@ technique PosterizeDrawing
 
 technique BlurDrawing
 {
-    pass P0
+    pass P9
     {
         PixelShader = compile PS_SHADERMODEL BlurPS();
     }
@@ -402,7 +402,7 @@ technique BlurDrawing
 
 technique CombineRTDrawing
 {
-    pass P0
+    pass P10
     {
         PixelShader = compile PS_SHADERMODEL CombinePS();
     }
@@ -410,7 +410,7 @@ technique CombineRTDrawing
 
 technique CombineRTAllDrawing
 {
-    pass P0
+    pass P11
     {
         PixelShader = compile PS_SHADERMODEL CombineALLPS();
     }

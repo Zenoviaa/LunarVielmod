@@ -22,11 +22,17 @@ namespace Stellamod.Core.LunarLightingSystem
 
             if (Main.LocalPlayer.ZoneUnderworldHeight)
             {
-                GlobalLum = 0.7f;
+                GlobalLum = 0.1f;
             }
-            if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower)
+            if (biomePlayer.ZoneMoonspiralTower)
             {
                 GlobalLum = 0.5f;
+            }
+        
+
+            if(Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneDrakonic || Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneCinder)
+            {
+                GlobalLum = 0.3f;
             }
             GlobalLightStrength = MathHelper.Lerp(GlobalLightStrength, GlobalLum, 0.1f);
   

@@ -401,6 +401,7 @@ public class ZTileMap : ModSystem
     private ZTileRenderLayer[] _renderLayers;
     public const int Chunk_Size = 64;
 
+    public static event Action OnRenderForeground;
     public ZTilePosition Find(ushort type) 
     {
         foreach (ZTileRenderLayer layer in _renderLayers)
@@ -687,6 +688,7 @@ public class ZTileMap : ModSystem
     {
         orig(self);
         DrawForeground();
+        OnRenderForeground?.Invoke();
     }
 
     public bool IsHoldingDecorationBuilder => Main.LocalPlayer.HeldItem.type == ModContent.ItemType<DecorationBuilder>();

@@ -475,6 +475,8 @@ namespace Stellamod.Core.LunarLightingSystem
 
             //PreviewLightMaps();
             //  DrawAccumulatedLightMapToScreen();
+
+            /*
             if (Keyboard.GetState().IsKeyDown(Keys.K))
             {
                 _shadowMap.Output();
@@ -500,7 +502,7 @@ namespace Stellamod.Core.LunarLightingSystem
                    null);
                 spriteBatch.Draw(_lightsRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
                 spriteBatch.End();
-            }
+            }*/
             RenderFog();
             //   DrawSoftGlows();
         }
@@ -680,13 +682,23 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 BackLightColor = Color.White * 0.8f;
             }
-            if ((Main.LocalPlayer.ZoneSnow || Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower) && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight)
+            if ((Main.LocalPlayer.ZoneSnow || 
+                Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower)
+                && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight)
             {
                 Color color1 = Color.Lerp(Color.LightGreen, Color.LightPink, ExtraMath.Osc(0f, 1f, speed: 0.4f));
                 Color color2 = Color.Lerp(Color.Cyan, color1, ExtraMath.Osc(0f, 1f, offset: 1, speed: 0.4f));
                 Color finalColor = Color.Lerp(Color.White, color2, ExtraMath.Osc(0f, 1f, offset: 2, speed: 0.4f) * 0.5f);
                 BackLightColor = finalColor * 0.8f;
             }
+
+            BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
+            MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+            if(myPlayer.ZoneDrakonic || myPlayer.ZoneCinder)
+            {
+                BackLightColor = Color.White * 0.7f;
+            }
+
             foreach (var backLightModifier in _backLightModifiers)
             {
                 backLightModifier.ModifyBackLight(ref BackLightColor);

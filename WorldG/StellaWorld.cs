@@ -5665,8 +5665,7 @@ public partial class StellaWorld : ModSystem
             WorldUtils.Gen(Loc7, new Shapes.Circle(500, 300), Actions.Chain(new GenAction[]
             {
                     new Actions.ClearWall(true),
-                    new Actions.PlaceWall(WallID.SnowWallUnsafe),
-                    new Actions.Smooth(true)
+                    new Actions.PlaceWall(WallID.SnowWallUnsafe)
             }));
 
             // Dig big chasm at top
@@ -6273,13 +6272,6 @@ public partial class StellaWorld : ModSystem
 
 
             }
-
-
-
-
-
-
-
         }
 
 

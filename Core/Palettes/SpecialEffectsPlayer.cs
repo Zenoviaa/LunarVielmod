@@ -56,6 +56,8 @@ namespace Stellamod.Core.Palettes
             hasSunGlyph = false;
             darkness = 0;
             darknessCurve = MathHelper.Lerp(darknessCurve, 0f, 0.005f);
+            if (darknessCurve < 0.05f)
+                darknessCurve = 0f;
 
             //Curve based
             /*
@@ -228,6 +230,7 @@ namespace Stellamod.Core.Palettes
           //  Main.ColorOfTheSkies = Color.Black;
 
 
+           
             screenShaderData = FilterManager["LunarVeil:DarknessCurve"].GetShader();
             screenShaderData.UseProgress(darknessCurve);
             screenShaderData.Shader.Parameters["blackCurve"].SetValue(blackCurve);
@@ -322,6 +325,7 @@ namespace Stellamod.Core.Palettes
 
         private void UpdateVignette()
         {
+  
             if (Main.netMode == NetmodeID.Server)
                 return;
             if (Main.myPlayer != Player.whoAmI)

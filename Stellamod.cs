@@ -31,7 +31,10 @@ namespace Stellamod
     {
         public Stellamod()
         {
-
+#if DEBUG
+            MusicAutoloadingEnabled = false;
+#endif
+            //     Music
         }
 
         // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
@@ -65,8 +68,13 @@ namespace Stellamod
         public static int EreshstylCurrencyID;
         public static int NoHitCrystalCurrencyID;
         public static int DragonShardCurrencyID;
+        public override void PostSetupContent()
+        {
+            base.PostSetupContent();
+        }
         public override void Load()
         {
+
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             //   Instance = this;
             if (Main.netMode != NetmodeID.Server)

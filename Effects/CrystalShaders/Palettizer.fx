@@ -56,6 +56,8 @@ float3 DitherV2(float2 uv)
 }
 float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 {
+ 
+
     float4 baseColor = tex2D(uImage0, coords);
        //Dither as close as possible to the color quantization
     if (dither)
