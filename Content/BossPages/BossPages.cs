@@ -27,6 +27,7 @@ using Stellamod.Content.Currencies;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Content.Relics;
 using Stellamod.Content.Vanity.IllurianGeneralHat;
+using Stellamod.Content.Vanity.RedFeatherHat;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Insources;

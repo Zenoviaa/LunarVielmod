@@ -934,6 +934,7 @@ namespace Stellamod.Common.ArmorRework
         public override void OnModLoad()
         {
             base.OnModLoad();
+
             On_Player.IsItemSlotUnlockedAndUsable += LimitAccessorySlots;
         }
         public override void OnModUnload()
@@ -953,7 +954,7 @@ namespace Stellamod.Common.ArmorRework
             {
                 int accessoryNumber = slot - start;
                 ArmorStatsPlayer armorStatsPlayer = self.GetModPlayer<ArmorStatsPlayer>();
-                if (armorStatsPlayer.accessorySlots > accessoryNumber)
+                if (armorStatsPlayer.accessorySlotsLastFrame > accessoryNumber)
                     return true;
                 else
                     return false;
@@ -1120,6 +1121,7 @@ namespace Stellamod.Common.ArmorRework
 
         public int stamina;
         public int accessorySlots;
+        public int accessorySlotsLastFrame;
         public int insourceSlots;
         public int inventorySlots;
         public float insourceTimeFlatBonus;
@@ -1491,6 +1493,7 @@ namespace Stellamod.Common.ArmorRework
             Player.maxMinions += minionSlots;
             Player.aggro += meleeAggressiveness;
             Player.aggro -= rangedStealthtiness;
+            accessorySlotsLastFrame = accessorySlots;
         }
     }
 }

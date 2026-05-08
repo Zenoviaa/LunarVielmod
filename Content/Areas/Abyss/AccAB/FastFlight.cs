@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Stellamod.Assets;
+using Stellamod.Core.ZTileSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Terraria;
@@ -75,20 +78,45 @@ namespace Stellamod.Content.Areas.Abyss.AccAB
             if (Player.dead)
                 return;
             float alpha = EasingFunction.InOutSine(_wingTimer / 60f);
-            Texture2D wingsTexture = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/FastFlightProj").Value;
-            Rectangle frame = wingsTexture.GetFrame(_frame, 8);
+
+            Asset<Texture2D> wingsTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/FastFlightProj");
+            Asset<Texture2D> glowMaskWingsTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/FastFlightProj_GlowMask");
+            Rectangle frame = wingsTextureAsset.Value.GetFrame(_frame, 8);
             SpriteBatch spriteBatch = Main.spriteBatch;
             Color glowColor = Color.White;
             glowColor *= alpha;
             glowColor.A = 0;
             Vector2 drawOrigin = frame.Size() / 2f;
-            Vector2 drawScale = Vector2.One * 0.5f;
+            Vector2 drawScale = Vector2.One * 0.75f;
             Vector2 drawPosition = Player.Center - Main.screenPosition;
+     
             drawPosition.Y -= 12;
             drawPosition.Y += Player.gfxOffY;
-            Texture2D zuiTexyt = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;
-            spriteBatch.Draw(zuiTexyt, drawPosition, null, glowColor, 0, zuiTexyt.Size() / 2f, drawScale * 0.75f, SpriteEffects.None, 0);
-            spriteBatch.Draw(wingsTexture, drawPosition, frame, glowColor, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
+
+            //This draws it in persepctive
+            drawScale.X *= 0.65f;
+            drawPosition.X -= Player.direction * 12;
+            drawPosition.Y += ExtraMath.Osc(0f, -6);
+            Texture2D zuiTexyt = AssetManager.GlowMask.SimpleGlowCircle.Value;
+            spriteBatch.Draw(glowMaskWingsTextureAsset.Value, drawPosition, frame, glowColor * 0.5f, 0, frame.Size() / 2f, drawScale * 1.2f, SpriteEffects.None, 0);
+            //  spriteBatch.Draw(wingsTexture, drawPosition, frame, glowColor * 0.7f, 0, drawOrigin, drawScale, SpriteEffects.None, 0);
+
+            Color wingColor = glowColor * 0.7f;
+            wingColor.A = 0;
+         //   wingColor *=
+            var drawData = new DrawData(
+                wingsTextureAsset.Value,
+                drawPosition,
+                frame,
+                wingColor,
+                0,
+                frame.Size() * 0.5f,
+                drawScale,
+               SpriteEffects.None,
+                0
+            );
+            drawData.shader = drawInfo.cWings;
+            drawInfo.DrawDataCache.Add(drawData);
         }
     }
 

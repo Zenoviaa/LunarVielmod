@@ -10967,3 +10967,8 @@ ElectricChainTome: {
 	DisplayName: Electric Chain Tome
 	Tooltip: Casts an electric bolt that chains up to 3 enemies!
 }
+
+RedFeatherHat: {
+	DisplayName: Red Feather Hat
+	Tooltip: ""
+}
