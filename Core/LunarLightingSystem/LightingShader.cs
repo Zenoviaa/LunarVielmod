@@ -6,6 +6,16 @@ namespace Stellamod.Core.LunarLightingSystem
     {
         private EffectParameter _transformMatrixParam;
         private EffectParameter _shadowMapTexture;
+        private EffectParameter _levelsParam;
+
+        public float Levels
+        {
+            set
+            {
+                _levelsParam ??= Effect.Parameters["levels"];
+                _levelsParam.SetValue(value);
+            }
+        }
         public Matrix TransformMatrix
         {
             set
@@ -27,6 +37,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             base.SetDefaults();
             TransformMatrix = TrailDrawer.WorldViewPoint2;
+            Levels = 400;
         }
     }
 }

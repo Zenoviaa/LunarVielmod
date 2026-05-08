@@ -150,7 +150,7 @@ namespace Stellamod.Core.LunarLightingSystem
 
                 //Now apply pixelationed to the lights so it looks a lot less jarring
                 //Pixelating it should look pretty cool
-                /*
+      /*          
     gDevice.SetRenderTarget(_pixelLightTarget);
     gDevice.Clear(Color.Transparent);
 

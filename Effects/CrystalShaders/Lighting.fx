@@ -3,7 +3,7 @@ sampler uImage1 : register(s1);
 #define PI 3.1415926535897932
 
 matrix transformMatrix;
-
+float levels;
 
 texture shadowMap;
 sampler2D ShadowMapSampler = sampler_state
@@ -47,6 +47,8 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     float4 sampleColor = input.Color;
     float2 coords = input.TextureCoordinates;
+    coords = floor(coords * levels) / levels;
+    
     float2 vectorToPixel = coords - float2(0.5, 0.5);
     float pixelLength = length(vectorToPixel);
     float angle = (atan2(vectorToPixel.y, vectorToPixel.x) + PI) / (PI * 2.0);
