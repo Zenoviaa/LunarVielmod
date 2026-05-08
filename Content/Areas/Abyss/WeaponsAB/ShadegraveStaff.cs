@@ -6,6 +6,7 @@ using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -255,10 +256,9 @@ public class SGBolt : ModProjectile
         glowDrawer.scale *= 0.75f;
         Main.spriteBatch.Draw(glowDrawer);
     }
-    public override bool PreDraw(ref Color lightColor)
+
+    private void DrawTrail(GraphicsDevice gDevice)
     {
-        _gradientTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Gradient");
-        Lighting.AddLight(Projectile.Center, Color.MediumPurple.ToVector3() * 1.75f * Main.essScale);
         ZapLightningShader lightingShader = ZapLightningShader.Instance;
         lightingShader.Amplitude = 0.4f;
 
@@ -281,6 +281,12 @@ public class SGBolt : ModProjectile
         TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetTrailColor2, GetTrailWidth2, bloom, Projectile.Size * 0.5f);
 
 
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
+        _gradientTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Gradient");
+        Lighting.AddLight(Projectile.Center, Color.MediumPurple.ToVector3() * 1.75f * Main.essScale);
+        PixelationManager.QueuePrimitivesDrawAction(DrawTrail);
         return false;
     }
 
