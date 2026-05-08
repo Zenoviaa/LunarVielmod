@@ -105,7 +105,7 @@ namespace Stellamod.Core.Utilities
             DummyTarget = new RenderTarget2D(Main.instance.GraphicsDevice, 1, 1);
         }
 
-        public static ManagedRenderTarget New(ResizeFunction resizeFunction = null, int downSamples = 1, bool mipMap = true, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
+        public static ManagedRenderTarget New(ResizeFunction resizeFunction = null, int downSamples = 1, bool mipMap = false, SurfaceFormat surfaceFormat = SurfaceFormat.Color, DepthFormat depthFormat = DepthFormat.None)
         {
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
             ManagedRenderTarget managedRenderTarget = new ManagedRenderTarget(resizeFunction, downSamples, mipMap, surfaceFormat, depthFormat);

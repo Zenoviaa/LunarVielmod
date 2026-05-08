@@ -13,7 +13,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
-            GlobalLum = 0f;
+            GlobalLum = 0.15f;
             BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
             if (biomePlayer.ZoneHarmonicCoralways)
             {

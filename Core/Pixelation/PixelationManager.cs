@@ -22,6 +22,29 @@ namespace Stellamod.Core.Pixelation
         }
     }
 
+    public class PixelateShader : CrystalShader<PixelateShader>
+    {
+        private EffectParameter _widthParam;
+        private EffectParameter _heightParam;
+        public float Width
+        {
+            set
+            {
+                _widthParam ??= Effect.Parameters["width"];
+                _widthParam.SetValue(value);
+            }
+        }
+
+        public float Height
+        {
+            set
+            {
+                _heightParam ??= Effect.Parameters["height"];   
+                _heightParam.SetValue(value);
+            }
+        }
+    }
+
     /// <summary>
     /// Handles pixelation effects
     /// </summary>
@@ -87,7 +110,9 @@ namespace Stellamod.Core.Pixelation
                 drawAction(graphicsDevice);
                 _renderCount++;
             }
-     
+
+
+       
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
             while (_spritebatchActionsQueue.Count > 0)
@@ -122,6 +147,7 @@ namespace Stellamod.Core.Pixelation
                 return;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
+            
             if (outlineColor.HasValue)
             {
                 Vector2 v = Vector2.UnitX * 2;
@@ -138,10 +164,31 @@ namespace Stellamod.Core.Pixelation
 
                 spriteBatch.End();
             }
-            spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+            
+           // DrawWithPixelateShader();
+            DrawByUpScale();
+        }
 
-            spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+        private void DrawWithPixelateShader()
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            PixelateShader pixelateShader = ShaderContent.GetInstance<PixelateShader>();
+            pixelateShader.Width = _originalRenderTarget.Width / 2;
+            pixelateShader.Height = _originalRenderTarget.Height / 2;
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, pixelateShader.Effect);
+
+            spriteBatch.Draw(_originalRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
+        }
+
+        private void DrawByUpScale()
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+            spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+            spriteBatch.End();
+
         }
     }
 
