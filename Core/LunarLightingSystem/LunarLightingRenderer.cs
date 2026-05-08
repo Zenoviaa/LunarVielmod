@@ -275,7 +275,7 @@ namespace Stellamod.Core.LunarLightingSystem
             if (Main.gameMenu)
                 return;
 
-            RenderTileLight();
+       //     RenderTileLight();
             if (!IsLightingEnabled)
                 return;
 
