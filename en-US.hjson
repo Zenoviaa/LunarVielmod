@@ -23,6 +23,11 @@ Mods: {
 					Label: Very_ High
 					Tooltip: ""
 				}
+
+				Ultra_Low: {
+					Label: Ultra_ Low
+					Tooltip: ""
+				}
 			}
 		}
 	}

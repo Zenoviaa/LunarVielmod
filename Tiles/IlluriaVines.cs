@@ -17,7 +17,7 @@ namespace Stellamod.Tiles
             Main.tileLavaDeath[Type] = false;
             Main.tileNoFail[Type] = true;
             Main.tileNoAttach[Type] = true;
-            Main.tileLighted[Type] = true;
+            Main.tileLighted[Type] = false;
 
             TileID.Sets.VineThreads[Type] = true;
             TileID.Sets.IsVine[Type] = true;
@@ -70,7 +70,7 @@ namespace Stellamod.Tiles
         public override void RandomUpdate(int i, int j)
         {
             Tile tileBelow = Framing.GetTileSafely(i, j + 1);
-            if (WorldGen.genRand.NextBool(2) && !tileBelow.HasTile)
+            if (WorldGen.genRand.NextBool(16) && !tileBelow.HasTile)
             {
                 bool placeVines = false;
                 int yTests = j;

@@ -34,7 +34,7 @@ public class LunarVeilClientConfig : ModConfig
     public override ConfigScope Mode => ConfigScope.ClientSide;
 
     [Header("Lighting")]
-    [DefaultValue(1)]
+    [DefaultValue(2)]
     public ShadowQuality ShadowQuality;
 
     [DefaultValue(true)]

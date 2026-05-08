@@ -35,16 +35,19 @@ namespace Stellamod.Core.LunarLightingSystem
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.BeamingLights)
                 return;
-          
-            if (!Main.tile[i, j].HasTile)
+
+
+            Tile tile = Main.tile[i, j];
+            if (tile.HasTile)
+                return;
+            if (tile.WallType > 0)
+                return;
+            float lightStrength = GlobalLumSystem.GlobalLightStrength;
+            if (lightStrength > 0)
             {
-                float lightStrength = GlobalLumSystem.GlobalLightStrength;
-                if (lightStrength > 0)
-                {
-                    r = MathHelper.Clamp(r + lightStrength, 0, 1);
-                    g = MathHelper.Clamp(g + lightStrength, 0, 1);
-                    b = MathHelper.Clamp(b + lightStrength, 0, 1);
-                }
+                r = MathHelper.Clamp(r + lightStrength, 0, 1);
+                g = MathHelper.Clamp(g + lightStrength, 0, 1);
+                b = MathHelper.Clamp(b + lightStrength, 0, 1);
             }
 
         }

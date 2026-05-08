@@ -21,6 +21,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
+    public class LuminanceShader : CrystalShader<LuminanceShader>
+    {
+        private EffectParameter _thresholdParam;
+        public float Threshold
+        {
+            set
+            {
+                _thresholdParam ??= Effect.Parameters["threshold"];
+                _thresholdParam.SetValue(value);
+            }
+        }
+
+    }
 
     //TODO: Rewrite this and try implementing Radiance Cascades instead, might be really cool
     //I'll make a prototype elsewhere first though
@@ -90,28 +103,93 @@ namespace Stellamod.Core.LunarLightingSystem
             On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
         }
 
+        private void Test()
+        {
+            GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
+            SpriteBatch sb = Main.spriteBatch;
+            gDevice.SetRenderTarget(Main.screenTargetSwap);
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                null);
+            sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+            sb.End();
+
+            var glowMaskBloomShader = ShaderContent.GetInstance<LuminanceShader>();
+            // glowMaskBloomShader.Threshold = 0.5f;
+            glowMaskBloomShader.Threshold = 1F;
+         //   glowMaskBloomShader.Gamma = 2.2f;
+
+            gDevice.SetRenderTarget(Main.screenTarget);
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                glowMaskBloomShader.Effect);
+            sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+            sb.End();
+
+        }
         private void ApplyLighting(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.P))
+            {
+                Test();
+            }
             if (!Main.gameMenu && IsLightingEnabled)
             {
+                var glowMaskBloomShader = ShaderContent.GetInstance<LuminanceShader>();
+                // glowMaskBloomShader.Threshold = 0.5f;
+                glowMaskBloomShader.Threshold = 1F;
+      
+
+                //First we're going to draw the screen target to the lights RT while calculating which colors are bright so we don't kill glow masks and whatnot
                 GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
-                gDevice.SetRenderTarget(Main.screenTargetSwap);
-                gDevice.Clear(Color.Transparent);
-                
                 SpriteBatch sb = Main.spriteBatch;
-                sb.Begin();
+                gDevice.SetRenderTarget(_lightsRT);
+                sb.Begin(SpriteSortMode.Deferred, CustomBlendStates.Brightest, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, 
+                    glowMaskBloomShader.Effect);
                 sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
                 sb.End();
 
-                //Apply lighting
-                sb.Begin(SpriteSortMode.Immediate, blendState: CustomBlendStates.Multiply);
-                sb.Draw(_pixelLightTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+
+                //Now apply pixelationed to the lights so it looks a lot less jarring
+                //Pixelating it should look pretty cool
+                /*
+    gDevice.SetRenderTarget(_pixelLightTarget);
+    gDevice.Clear(Color.Transparent);
+
+    sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+             null);
+    sb.Draw(_lightsRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+    sb.End();
+
+
+
+    gDevice.SetRenderTarget(_lightsRT);
+    gDevice.Clear(Color.Transparent);
+
+    sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+             null);
+    sb.Draw(_pixelLightTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+    sb.End();
+    */
+
+
+
+                //Take the screen target again and multiple the final light RT over it, to apply the lighting
+                gDevice.SetRenderTarget(Main.screenTargetSwap);
+                gDevice.Clear(Color.White);
+               
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, 
+                    null);
+                sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
                 sb.End();
 
+                sb.Begin(SpriteSortMode.Immediate, blendState: CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+                sb.Draw(_lightsRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+                sb.End();
+
+                //Put it back and let the rest of post processing take over
                 gDevice.SetRenderTarget(Main.screenTarget);
                 gDevice.Clear(Color.Transparent);
 
-                sb.Begin();
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
                 sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
                 sb.End();
 
@@ -153,18 +231,15 @@ namespace Stellamod.Core.LunarLightingSystem
             LightMap lightMap = typeof(LightingEngine).GetField("_activeLightMap", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as LightMap;
 
             (Point topLeftTile, Point bottomRightTile) = TileUtilities.CameraTileBounds(256);
-            for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
+            for (int x = 0; x < lightMap.Width; x++)
             {
-                for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
+                for (int y = 0; y < lightMap.Height; y++)
                 {
-                    Point lightTilePoint = new Point(x, y);
-                    Vector3 lightColor;
-                    tileScanner.GetTileLight(x, y, out lightColor);
-                    Vector2 position = lightTilePoint.ToWorldCoordinates();
-                    Color drawColor = new Color(lightColor.X, lightColor.Y, lightColor.Z, 1f);
-                    spriteBatch.Draw(heightTile, position - Main.screenPosition, drawColor);
+                    lightMap.GetLight(x, y, out Vector3 c);
+                    spriteBatch.Draw(heightTile, new Vector2(x, y)*16, null, new Color(c), 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 }
             }
+
 
 
             spriteBatch.End();
@@ -208,6 +283,9 @@ namespace Stellamod.Core.LunarLightingSystem
             int resolution = 64;
             switch (config.ShadowQuality)
             {
+                case ShadowQuality.Ultra_Low:
+                    resolution = 16;
+                    break;
                 default:
                 case ShadowQuality.Low:
                     resolution = 32;
@@ -339,13 +417,7 @@ namespace Stellamod.Core.LunarLightingSystem
             graphicsDevice.DrawUserIndexedPrimitives(
                 PrimitiveType.TriangleList, vertices, 0, vertices.Length, indices, 0, primitiveCount);
 
-            //Pixelating it should look pretty cool
-            graphicsDevice.SetRenderTarget(_pixelLightTarget);
-            graphicsDevice.Clear(Color.Transparent);
-            SpriteBatch sb = Main.spriteBatch;
-            sb.Begin();
-            sb.Draw(_lightsRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
-            sb.End();
+
         }
 
         private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
@@ -401,9 +473,8 @@ namespace Stellamod.Core.LunarLightingSystem
             if (!_isLoaded)
                 return;
 
-                //PreviewLightMaps();
-                //  DrawAccumulatedLightMapToScreen();
-                
+            //PreviewLightMaps();
+            //  DrawAccumulatedLightMapToScreen();
             if (Keyboard.GetState().IsKeyDown(Keys.K))
             {
                 _shadowMap.Output();
@@ -415,7 +486,11 @@ namespace Stellamod.Core.LunarLightingSystem
             }
             if (Keyboard.GetState().IsKeyDown(Keys.H))
             {
-
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                   null);
+                spriteBatch.Draw(_tileLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                spriteBatch.End();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.N))
             {

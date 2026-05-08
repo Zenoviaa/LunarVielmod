@@ -15,6 +15,7 @@ public struct Light
 
 public enum ShadowQuality
 {
+    Ultra_Low,
     Low,
     Medium,
     High,
