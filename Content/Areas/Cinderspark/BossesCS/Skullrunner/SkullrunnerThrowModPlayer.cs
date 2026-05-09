@@ -16,29 +16,44 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         public Vector2? targetSuckPosition;
         public Vector2? overrideVelocity;
         public Vector2? throwVelocity;
+        public bool grabbed;
+        public float grabDelayTimer;
         public override void PreUpdateMovement()
         {
             base.PreUpdateMovement();
+            grabbed = false;
             if (targetSuckPosition.HasValue)
             {
                 Vector2 suckPosition = targetSuckPosition.Value;
                 Vector2 velocityToPosition = (suckPosition - Player.Center);
                 Player.velocity = Vector2.Lerp(Player.velocity, velocityToPosition, 0.5f);
+                //    Player.controlDown = true;
+  
+                grabDelayTimer = 8;
                 targetSuckPosition = null;
+            }
+      
+            if(grabDelayTimer > 0)
+            {
+                grabbed = true;
+                grabDelayTimer--;
             }
             if (overrideVelocity.HasValue)
             {
+          //      Player.controlDown = true;
                 Player.velocity = overrideVelocity.Value;
                 overrideVelocity = null;
             }
             if (throwVelocity.HasValue)
             {
+   
+                //        Player.controlDown = true;
                 Player.velocity = throwVelocity.Value;
                 Point point = new Vector2(Player.BottomLeft.X, Player.BottomLeft.Y).ToTileCoordinates();
                 Tile? floorTile = Player.GetFloorTile(point.X, point.Y);
                 if (floorTile.HasValue)
                 {
-                    float damage = 32;
+                    float damage = 48;
                     if (Main.masterMode)
                         damage *= 3;
                     if (Main.expertMode)

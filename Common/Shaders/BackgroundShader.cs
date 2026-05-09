@@ -74,7 +74,25 @@ namespace Stellamod.Common.Shaders
         {
             set
             {
-                _parallaxParam ??= Effect.Parameters["uImageOffset"];
+                _parallaxParam = Effect.Parameters["uImageOffset"];
+                _parallaxParam.SetValue(value);
+            }
+        }
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Parallax = Vector2.Zero;
+        }
+    }
+    public class ForegroundParallaxXYShader : CrystalShader<ForegroundParallaxXYShader>
+    {
+        private EffectParameter _parallaxParam;
+        public Vector2 Parallax
+        {
+            set
+            {
+                _parallaxParam = Effect.Parameters["uImageOffset"];
                 _parallaxParam.SetValue(value);
             }
         }

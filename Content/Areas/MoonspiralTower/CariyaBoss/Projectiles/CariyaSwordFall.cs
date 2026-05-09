@@ -40,7 +40,7 @@ public class CariyaSwordFall : ModProjectile
     public override void AI()
     {
         base.AI();
-        if (Timer > 20)
+        if (Timer > 26)
         {
             
             Projectile.hostile = false;

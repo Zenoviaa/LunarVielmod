@@ -50,7 +50,16 @@ namespace Stellamod.Core.LunarLightingSystem
 
         public void RayCast(Vector2 position, Vector2 direction, float edgeLightWidth, float distance)
         {
+            float increments = 1f / ((distance-64) / 16f);
+            for (float i = 0; i < 1f; i += increments)
+            {
+                Vector2 offset = Vector2.Lerp(Vector2.Zero, direction * distance, i);
+                Vector2 pos = position + offset;
+                Point lightPoint = pos.ToTileCoordinates();
 
+                float strength = MathHelper.Lerp(1f, 0f, EasingFunction.InOutExpo7(i));
+                Lighting.AddLight(lightPoint.X, lightPoint.Y, strength, strength, strength);
+            }
 
             float edgeLightRadius = edgeLightWidth / 2f;
             float castMultiplier = 0.1f;
