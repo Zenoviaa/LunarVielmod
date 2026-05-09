@@ -30,6 +30,43 @@ float colorDistance2(float3 a, float3 b)
     float d = ar + ag + ab;
     return d;
 }
+float grayscale(float3 rgb)
+{
+    
+    float grey = max(rgb.r, rgb.g);
+    grey = max(grey, rgb.b);
+    return grey;
+    
+  //  return (rgb.r * 0.3 + rgb.g * 0.59 + rgb.b * 0.11);
+}
+
+
+float3 calculateColorGrayScale(float3 rgb)
+{
+    float currentGrayscale = grayscale(rgb);
+
+    float3 closestColor = float3(0.0, 0.0, 0.0);
+    float minDiff = 123;
+    
+    for (int x = 0; x < length; x++)
+    {
+        //Get the palette color
+        float3 paletteColor = colors[x];
+        
+        //Check grayscale difference
+        float grey = grayscale(paletteColor);
+        float g = grey - currentGrayscale;
+        float diff = abs(g);
+        
+        //No if statement, avoid branching
+        float a = diff < minDiff;
+        float b = 1.0 - a;
+        minDiff = a * diff + b * minDiff;
+        closestColor = a * paletteColor.rgb + b * closestColor;
+    }
+    
+    return closestColor;
+}
 
 float3 calculateColor(float3 color)
 {
@@ -69,7 +106,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     processedColor.g = clamp(processedColor.g, 0.0, 1.0);
     processedColor.b = clamp(processedColor.b, 0.0, 1.0);
     
-    float3 newColor = calculateColor(processedColor);
+    float3 newColor = calculateColorGrayScale(processedColor);
     
 
     color.rgb = newColor;

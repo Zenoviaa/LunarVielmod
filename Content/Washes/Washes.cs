@@ -1,10 +1,6 @@
 ﻿using ReLogic.Content;
-using Stellamod.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -34,7 +30,7 @@ public class WashShaderData : ArmorShaderData
 
 public abstract class AbstractWash : ModItem
 {
-    private WashShaderData _armorShader;
+    private static WashShaderData _armorShader;
     public override void SetStaticDefaults()
     {
         // Avoid loading assets on dedicated servers. They don't use graphics cards.
@@ -78,7 +74,6 @@ public abstract class AbstractWash : ModItem
         int dye = Item.dye;
 
         Item.CloneDefaults(ItemID.GelDye); // Makes the item copy the attributes of the item "Gel Dye" Change "GelDye" to whatever dye type you want.
-
         Item.dye = dye;
     }
 }
@@ -86,5 +81,64 @@ public abstract class AbstractWash : ModItem
 
 public class PumpkinSpiceWash : AbstractWash { }
 
-
 public class SillySweetWash : AbstractWash { }
+
+public class CarrotWash : AbstractWash { }
+
+public class PurpleShadowWash : AbstractWash { }
+
+public class CandyCaneWash : AbstractWash { }
+
+public class GrassyWash : AbstractWash { }
+
+public class VileWash : AbstractWash { }
+
+public class GoldenrodWash : AbstractWash { }
+
+public class DiamondWash : AbstractWash { }
+
+public class SapphireWash : AbstractWash { }
+
+public class LavenderWash : AbstractWash { }
+
+public class SilverWash : AbstractWash { }
+
+public class HalloweenWash : AbstractWash { }
+
+public class SanguineWash : AbstractWash { }
+
+public class MistletoeWash : AbstractWash { }
+
+public class CaramelWash : AbstractWash { }
+
+public class CherryBlossomWash : AbstractWash { }
+
+public class BeachDayWash  : AbstractWash { }
+
+public class ChocolateWash : AbstractWash { }
+
+public class RainbowWash : AbstractWash { }
+
+public class CoralWash : AbstractWash { }
+
+public class AcidWash : AbstractWash { }
+
+public class GroundyWash : AbstractWash { }
+
+public class SeafloorWash : AbstractWash { }
+
+public class AquaWash : AbstractWash { }
+
+public class TurquoiseWash : AbstractWash { }
+
+public class TwinklingWash : AbstractWash { }
+
+public class WheatFieldsWash : AbstractWash { }
+
+public class RedMixWash : AbstractWash { }
+
+public class SunsetWash : AbstractWash { }
+
+public class PeachyWash : AbstractWash { }
+
+public class DarkSunsetWash : AbstractWash { }

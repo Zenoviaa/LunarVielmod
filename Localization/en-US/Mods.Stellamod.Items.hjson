@@ -10982,3 +10982,153 @@ SillySweetWash: {
 	DisplayName: Silly Sweet Wash
 	Tooltip: ""
 }
+
+CandyCaneWash: {
+	DisplayName: Candy Cane Wash
+	Tooltip: ""
+}
+
+CarrotWash: {
+	DisplayName: Carrot Wash
+	Tooltip: ""
+}
+
+PurpleShadowWash: {
+	DisplayName: Purple Shadow Wash
+	Tooltip: ""
+}
+
+AcidWash: {
+	DisplayName: Acid Wash
+	Tooltip: ""
+}
+
+AquaWash: {
+	DisplayName: Aqua Wash
+	Tooltip: ""
+}
+
+BeachDayWash: {
+	DisplayName: Beach Day Wash
+	Tooltip: ""
+}
+
+CaramelWash: {
+	DisplayName: Caramel Wash
+	Tooltip: ""
+}
+
+CherryBlossomWash: {
+	DisplayName: Cherry Blossom Wash
+	Tooltip: ""
+}
+
+ChocolateWash: {
+	DisplayName: Chocolate Wash
+	Tooltip: ""
+}
+
+CoralWash: {
+	DisplayName: Coral Wash
+	Tooltip: ""
+}
+
+DarkSunsetWash: {
+	DisplayName: Dark Sunset Wash
+	Tooltip: ""
+}
+
+DiamondWash: {
+	DisplayName: Diamond Wash
+	Tooltip: ""
+}
+
+GoldenrodWash: {
+	DisplayName: Goldenrod Wash
+	Tooltip: ""
+}
+
+GrassyWash: {
+	DisplayName: Grassy Wash
+	Tooltip: ""
+}
+
+GroundyWash: {
+	DisplayName: Groundy Wash
+	Tooltip: ""
+}
+
+HalloweenWash: {
+	DisplayName: Halloween Wash
+	Tooltip: ""
+}
+
+LavenderWash: {
+	DisplayName: Lavender Wash
+	Tooltip: ""
+}
+
+MistletoeWash: {
+	DisplayName: Mistletoe Wash
+	Tooltip: ""
+}
+
+PeachyWash: {
+	DisplayName: Peachy Wash
+	Tooltip: ""
+}
+
+RainbowWash: {
+	DisplayName: Rainbow Wash
+	Tooltip: ""
+}
+
+RedMixWash: {
+	DisplayName: Red Mix Wash
+	Tooltip: ""
+}
+
+SanguineWash: {
+	DisplayName: Sanguine Wash
+	Tooltip: ""
+}
+
+SapphireWash: {
+	DisplayName: Sapphire Wash
+	Tooltip: ""
+}
+
+SeafloorWash: {
+	DisplayName: Seafloor Wash
+	Tooltip: ""
+}
+
+SilverWash: {
+	DisplayName: Silver Wash
+	Tooltip: ""
+}
+
+SunsetWash: {
+	DisplayName: Sunset Wash
+	Tooltip: ""
+}
+
+TurquoiseWash: {
+	DisplayName: Turquoise Wash
+	Tooltip: ""
+}
+
+TwinklingWash: {
+	DisplayName: Twinkling Wash
+	Tooltip: ""
+}
+
+VileWash: {
+	DisplayName: Vile Wash
+	Tooltip: ""
+}
+
+WheatFieldsWash: {
+	DisplayName: Wheat Fields Wash
+	Tooltip: ""
+}
