@@ -10972,3 +10972,13 @@ RedFeatherHat: {
 	DisplayName: Red Feather Hat
 	Tooltip: ""
 }
+
+PumpkinSpiceWash: {
+	DisplayName: Pumpkin Spice Wash
+	Tooltip: ""
+}
+
+SillySweetWash: {
+	DisplayName: Silly Sweet Wash
+	Tooltip: ""
+}

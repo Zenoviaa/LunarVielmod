@@ -10,6 +10,7 @@
 			
 	</PropertyGroup>
 	<ItemGroup>
+	  <Folder Include="Effects\Palettes\" />
 	  <Folder Include="Properties\" />
 	</ItemGroup>
 

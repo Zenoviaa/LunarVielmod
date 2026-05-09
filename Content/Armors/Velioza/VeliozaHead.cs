@@ -49,7 +49,7 @@ public class VeliozaRobeDrawLayer : PlayerDrawLayer
         position.Y += yOsc * 2;
         float rotation = yOsc * MathHelper.ToRadians(5);
         SpriteEffects spriteEffects = drawInfo.drawPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        drawInfo.DrawDataCache.Add(new DrawData(
+        var drawData = new DrawData(
             _robeTextureAsset.Value,
             position,
             null,
@@ -59,7 +59,10 @@ public class VeliozaRobeDrawLayer : PlayerDrawLayer
             1f,
            spriteEffects,
             0
-        ));
+        );
+
+        drawData.shader = drawInfo.cBody;
+        drawInfo.DrawDataCache.Add(drawData);
     }
 }
 
@@ -97,7 +100,8 @@ public class VeliozaHatDrawLayer : PlayerDrawLayer
         position.Y += yOsc * 2;
         float rotation = yOsc * MathHelper.ToRadians(5);
         SpriteEffects spriteEffects = drawInfo.drawPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        drawInfo.DrawDataCache.Add(new DrawData(
+
+        var drawData = new DrawData(
             _hatTextureAsset.Value,
             position,
             null,
@@ -107,7 +111,9 @@ public class VeliozaHatDrawLayer : PlayerDrawLayer
             1f,
            spriteEffects,
             0
-        ));
+        );
+        drawData.shader = drawInfo.cHead;
+        drawInfo.DrawDataCache.Add(drawData);
     }
 }
 
