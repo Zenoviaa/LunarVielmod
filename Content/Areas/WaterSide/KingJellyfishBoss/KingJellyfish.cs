@@ -624,8 +624,7 @@ public class BabyRichochetZap : ModProjectile
         if (Timer > 2)
             return false;
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedLightning);
-        SpritebatchDrawer sb = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
-        //Main.spriteBatch.Draw(sb);
+
         return false;
     }
 }

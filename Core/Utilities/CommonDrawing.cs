@@ -5,6 +5,15 @@ namespace Stellamod.Helpers
 {
     public static class CommonDrawing
     {
+        public static Vector2[] InterpolateBetweenPoints(Vector2 start, Vector2 end, float numPoints = 64)
+        {
+            Vector2[] arr = new Vector2[(int)numPoints];
+            for(float f = 0; f < numPoints; f++)
+            {
+                arr[(int)f] = Vector2.Lerp(start, end, f / numPoints);
+            }
+            return arr;
+        }
 
         /// <summary>
         /// Performs a spline interpolation across an array of points, good for smoothing out trails
