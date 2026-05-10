@@ -35,7 +35,8 @@ namespace Stellamod.Core.Backgrounds
         }
         public virtual void SetDrawDefaults()
         {
-            DrawColor = Color.White;
+            if (!IsActive())
+                DrawColor = Color.White;
         }
 
         public virtual bool UseCustomDrawing() => false;

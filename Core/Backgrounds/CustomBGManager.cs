@@ -199,6 +199,7 @@ namespace Stellamod.Core.Backgrounds
                 float combinedParallaxY = parallaxY + defaultParallax.Y * 0.001f;
                 BeginParallaxLayer(spriteBatch, defaultParallax.X, combinedParallaxY);
             }
+         //   Main.NewText(bg.DrawColor);
             spriteBatch.Draw(
                 bgLayer.Texture.Value,
                 drawPosition,

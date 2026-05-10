@@ -43,7 +43,7 @@ public class PointLights
         }
         else
         {
-            return 200;
+            return 50;
         }
     }
     public Vector3 GetPlayerLightColor(Player player)

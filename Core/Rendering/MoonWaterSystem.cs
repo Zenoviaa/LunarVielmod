@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Content.Areas.WaterSide.BossesWS;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -308,6 +309,7 @@ public class MoonWaterSystem : ModSystem
     //This will give us a cool pixelation effect
     public int DownSamples => 2;
     public Vector2 Tiling => new Vector2(1.5f, 1.5f) * 0.75f;
+    public float waterAlpha;
     public override void Load()
     {
         On_Main.CheckMonoliths += RenderHook;
@@ -451,7 +453,7 @@ public class MoonWaterSystem : ModSystem
 
             Vector2 pos = Main.sceneWaterPos - Main.screenPosition;
 
-            spriteBatch.Draw(Main.waterTarget, pos, Color.White);
+            spriteBatch.Draw(Main.waterTarget, pos, Color.White * waterAlpha);
             spriteBatch.End();
 
 
@@ -486,6 +488,10 @@ public class MoonWaterSystem : ModSystem
     {
         base.PostUpdateTime();
         _time += 0.0025f;
+        float targetWaterAlpha = 1f;
+        if (NPC.AnyNPCs(ModContent.NPCType<LeviathanEel>()))
+            targetWaterAlpha = 0.1f;
+        waterAlpha = MathHelper.Lerp(waterAlpha, targetWaterAlpha, 0.1f);
     }
 
     private Texture2D LoadTexture(string fileName)

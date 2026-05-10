@@ -190,32 +190,5 @@ namespace Stellamod.Common.Shaders
         {
             Draw(spriteBatch, oldPos, null, colorFunc, widthFunc, shader, offset);
         }
-
-
-        private static void DrawPrimsTriangles(List<VertexPositionColorTexture> vertices, BaseShader shader)
-        {
-            if (vertices.Count % 6 != 0 || vertices.Count <= 3)
-                return;
-
-            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
-            BlendState originalBlendState = graphicsDevice.BlendState;
-            CullMode oldCullMode = graphicsDevice.RasterizerState.CullMode;
-            SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
-
-            graphicsDevice.RasterizerState.CullMode = CullMode.None;
-
-            if (shader != null)
-            {
-                graphicsDevice.BlendState = shader.BlendState;
-                graphicsDevice.SamplerStates[0] = shader.SamplerState;
-            }
-
-            graphicsDevice.DrawUserPrimitives(
-              PrimitiveType.TriangleList, vertices.ToArray(), 0, vertices.Count / 3);
-
-            graphicsDevice.RasterizerState.CullMode = oldCullMode;
-            graphicsDevice.BlendState = originalBlendState;
-            graphicsDevice.SamplerStates[0] = originalSamplerState;
-        }
     }
 }
