@@ -16,6 +16,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
         public Vector2? targetSuckPosition;
         public Vector2? overrideVelocity;
         public Vector2? throwVelocity;
+        public Vector2? pullVelocity;
         public bool grabbed;
         public float grabDelayTimer;
         public override void PreUpdateMovement()
@@ -31,6 +32,12 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
   
                 grabDelayTimer = 8;
                 targetSuckPosition = null;
+            }
+
+            if (pullVelocity.HasValue)
+            {
+                Player.velocity = Vector2.Lerp(Player.velocity, pullVelocity.Value, 0.05f);
+                pullVelocity = null;
             }
       
             if(grabDelayTimer > 0)

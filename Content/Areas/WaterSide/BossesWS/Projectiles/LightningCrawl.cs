@@ -1,7 +1,9 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
+using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -20,6 +22,15 @@ public class LightningCrawl : ModProjectile
 {
     private Vector2 _hitPoint;
     private Asset<Texture2D> _gradientTextureAsset;
+    private TexturedQuad _quad;
+    private TexturedQuad Quad
+    {
+        get
+        {
+            _quad ??= new();
+            return _quad;
+        }
+    }
     private ref float Timer => ref Projectile.ai[0];
     private NPC Parent => Main.npc[(int)Projectile.ai[1]];
     public override string Texture => TextureRegistry.EmptyTexture;
@@ -35,7 +46,7 @@ public class LightningCrawl : ModProjectile
         Projectile.hostile = true;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
-        Projectile.timeLeft = 180;
+        Projectile.timeLeft = 100;
     }
 
     public override bool ShouldUpdatePosition()
@@ -64,8 +75,12 @@ public class LightningCrawl : ModProjectile
             {
                 var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.TintScreen(Color.White, 0.2f, 15);
+                ShockwavePlayer s = Main.LocalPlayer.GetModPlayer<ShockwavePlayer>();
+                s.Bee = 200;
+                s.shockwavePosition = Projectile.Center;
             }
-
+            var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 40, baseSize: 0.24f);
+            fx.Scale *= 5;
         }
 
 
@@ -74,6 +89,11 @@ public class LightningCrawl : ModProjectile
         float maxBeamLength = 2000; 
         Vector2 fireVelocity = Parent.rotation.ToRotationVector2();
         float length = ProjectileHelper.PerformBeamHitscan(Projectile.Center, fireVelocity, maxBeamLength);
+        Tile tile = Main.tile[Projectile.Center.ToTileCoordinates()];
+        if (tile.HasTile && Main.tileSolid[tile.type])
+            length = maxBeamLength;
+
+
         Projectile.velocity = fireVelocity;
         _hitPoint = Projectile.Center + fireVelocity.Resize(length);
 
@@ -98,8 +118,22 @@ public class LightningCrawl : ModProjectile
             smoke.fadeToColor = Color.Black * 0.2f;
             smoke.color = Color.SandyBrown * 0.2f;
         }
+        if (Main.rand.NextBool(4))
+        {
+            Vector2 inverseVelocity = Projectile.velocity;
+            inverseVelocity = inverseVelocity.SafeNormalize(Vector2.Zero);
+            inverseVelocity = inverseVelocity.RotatedByRandom(1f);
+            inverseVelocity *= Main.rand.NextFloat(5f, 25f);
+            var dp = DustParticle.Spawn(Projectile.Center, inverseVelocity);
 
-        if(Timer % 8 == 0)
+            dp.outerColor = Color.DarkBlue;
+            dp.dampening = 0.05f;
+            dp.noTileCollide = true;
+
+        }
+        SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
+        effectsPlayer.darknessCurve = MathHelper.Lerp(0.5f, 0f, EasingFunction.InSine(Timer / 100f));
+        if (Timer % 8 == 0)
         {
             var sp = SparkleParticle.Spawn(_hitPoint + Main.rand.NextVector2Circular(64, 64), Vector2.Zero);
             sp.gravity = 0;
@@ -123,12 +157,12 @@ public class LightningCrawl : ModProjectile
 
     private Color GetTrailColor2(float ratio)
     {
-        return Color.DarkBlue;
+        return Color.Lerp(Color.LightCyan, Color.Cyan, ExtraMath.Osc(0f, 1f, speed: 64));
     }
 
     private float GetTrailWidth2(float ratio)
     {
-        return GetTrailWidth(ratio) * 2f;
+        return GetTrailWidth(ratio) * 1.5f;
     }
 
     private void DrawPixelatedLightning(GraphicsDevice gDevice)
@@ -141,14 +175,14 @@ public class LightningCrawl : ModProjectile
             Vector2 end = _hitPoint;
             Vector2 easedPoint = Vector2.Lerp(start, end, f / numPoints);
             Vector2 up = (end - start).RotatedBy(MathHelper.PiOver2).SafeNormalize(Vector2.Zero);
-            easedPoint += up * 16 * MathF.Sin(f * 0.3f);
+            easedPoint += up * 16 * MathF.Sin(f * 0.3f + Main.GlobalTimeWrappedHourly * 16);
             points.Add(easedPoint);
         }
         Vector2[] lightningPoints = points.ToArray();
         ZapLightningShader lightingShader = ZapLightningShader.Instance;
         lightingShader.Amplitude = MathHelper.Lerp(0f, 0.8f, EasingFunction.InOutSine(Timer / 100f));
 
-        float time = Main.GlobalTimeWrappedHourly * 16;
+        float time = Main.GlobalTimeWrappedHourly * 32;
         float levels = 4;
         time = MathF.Floor(time * levels) / levels;
         lightingShader.Time = time;
@@ -159,12 +193,25 @@ public class LightningCrawl : ModProjectile
         lightingShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
         lightingShader.Levels = 64;
        
-        lightingShader.Tiling = new Vector2(0.5f);
-        TrailDrawer.Draw(Main.spriteBatch, lightningPoints, GetTrailColor, GetTrailWidth, lightingShader, Projectile.Size * 0.5f);
+        lightingShader.Tiling = new Vector2(1f);
 
-        lightingShader.BloomColor = Main.DiscoColor;
-        lightingShader.LaserTexture = TrailRegistry.SpikyTrail2;
+        Vector2 vec = (_hitPoint - Projectile.Center);
+        Quad.Cone(Projectile.Center, 80, 100, vec.Length(), vec.ToRotation());
+        Color color = Color.White;
+        color.A = 0;
+        Quad.SetColor(color);
+        Quad.DrawWithShader(lightingShader);
+
+
+        lightingShader.BloomColor = Color.White ;
+      
+        lightingShader.LaserTexture = TrailRegistry.LightningTrail3;
         lightingShader.Tiling = new Vector2(1);
+        TrailDrawer.Draw(Main.spriteBatch, lightningPoints, GetTrailColor2, GetTrailWidth2, lightingShader, Projectile.Size * 0.5f);
+        lightingShader.Time = time - 32.3f;
+        TrailDrawer.Draw(Main.spriteBatch, lightningPoints, GetTrailColor2, GetTrailWidth2, lightingShader, Projectile.Size * 0.5f);
+
+        lightingShader.Time = time + 16.3f;
         TrailDrawer.Draw(Main.spriteBatch, lightningPoints, GetTrailColor2, GetTrailWidth2, lightingShader, Projectile.Size * 0.5f);
 
 
@@ -184,6 +231,26 @@ public class LightningCrawl : ModProjectile
         flashDrawer2.color.A = 0;
         flashDrawer2.scale *= 0.66f;
         sb.Draw(flashDrawer2);
+
+        for(int i =0; i < 2; i++)
+        {
+            SpritebatchDrawer flashDrawer3 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            flashDrawer3.color = Color.Lerp(Color.LightSkyBlue, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 32));
+            flashDrawer3.color.A = 0;
+            flashDrawer3.scale *= 0.4f;
+            sb.Draw(flashDrawer3);
+        }
+        SpritebatchDrawer flashDrawer4 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        flashDrawer4.color = Color.Lerp(Color.LightSkyBlue, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 32));
+        flashDrawer4.color.A = 0;
+        flashDrawer4.scale *= 2f;
+        sb.Draw(flashDrawer4);
+
+        SpritebatchDrawer flashDrawer5 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        flashDrawer5.color = Color.Lerp(Color.LightSkyBlue, Color.DarkBlue, ExtraMath.Osc(0f, 1f, speed: 32)) * 0.3f;
+        flashDrawer5.color.A = 0;
+        flashDrawer5.scale *= 4f;
+        sb.Draw(flashDrawer5);
     }
 
     public override bool PreDraw(ref Color lightColor)

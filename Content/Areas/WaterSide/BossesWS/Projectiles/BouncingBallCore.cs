@@ -1,6 +1,9 @@
 ﻿using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
@@ -15,6 +18,15 @@ public class BouncingBall : ModProjectile
     private Asset<Texture2D> _outlineTextureAsset;
     private ref float Timer => ref Projectile.ai[0];
     private ref float Parent => ref Projectile.ai[1];
+    private float Scale
+    {
+        get
+        {
+            float inScale = EasingFunction.InOutSine(Timer / 30f);
+            float outScale = EasingFunction.InOutSine(Projectile.timeLeft / 30f);
+            return inScale * outScale;
+        }
+    }
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -24,9 +36,9 @@ public class BouncingBall : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 32;
-        Projectile.height = 32;
-        Projectile.hostile = true;
+        Projectile.width = 28;
+        Projectile.height = 28;
+        Projectile.hostile = false;
         Projectile.timeLeft = 600;
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
@@ -37,40 +49,62 @@ public class BouncingBall : ModProjectile
     {
         base.AI();
         Timer++;
-        if (Timer % 7 == 0)
-        {
-            var d = FaintSmokeParticle.SpawnInAlphaLayer(Projectile.Center, Vector2.Zero);
-            d.fadeToColor = Color.Black * 0.1f;
-            d.color = Color.DarkBlue * 0.1f;
-        }
-
         if (Timer % 12 == 0)
         {
             var d = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Pearlsand);
             Main.dust[d].noGravity = true;
         }
 
+        if(Timer >= 90)
+        {
+            Projectile.hostile = true;
+        }
+        if (Timer % 6 == 0)
+        {
+            var d = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height,
+                ModContent.DustType<SeafloorRockDust>());
+            Main.dust[d].noGravity = true;
+        }
 
+        if (Timer % 8 == 0)
+        {
+            Vector2 velocity = (Projectile.position - Projectile.oldPosition);
+            Vector2 pos = Projectile.Center;
+            pos += Main.rand.NextVector2Circular(32, 32);
+            var bp = BubbleParticle.Spawn(pos, -velocity * 0.25f);
+            bp.Scale *= Main.rand.NextFloat(0.3f, 0.6f);
+            bp.gravity = 0;
+        }
+
+        if(Timer % 30 == 0)
+        {
+            ElectricZapParticle.Spawn(
+                Projectile.Center + Main.rand.NextVector2Circular(32, 32),
+                Main.rand.NextVector2Circular(2, 2), Scale: Main.rand.NextFloat(0.3f, 0.6f));
+        }
         Projectile.rotation += 0.1f;
         Lighting.AddLight(Projectile.Center, Color.SkyBlue.ToVector3() * 0.4f);
     }
 
     private float GetTrailWidth(float ratio)
     {
-        return MathHelper.SmoothStep(1f, 0f, ratio) * 128;
+        return MathHelper.SmoothStep(1f, 0f, ratio) * 64 * Scale;
     }
+
     private Color GetTrailColor(float ratio)
     {
         return Color.Lerp(Color.White, Color.Transparent, ratio) * 0.66f;
     }
+
     private void DrawPixelatedTrail(GraphicsDevice gDevice)
     {
-        var shader = ShaderContent.GetInstance<BasicLaserAlphaShader>();
-        shader.InnerColor = Color.DarkGray;
-        shader.OuterColor = Color.Black;
-        shader.LaserTexture = TrailRegistry.FlamingTrailNoBlack;
-        TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetTrailColor, GetTrailWidth, shader, Projectile.Size * 0.5f);
+        BasicLaserShader laserShader = BasicLaserShader.Instance;
+        laserShader.LaserTexture = AssetManager.LaserTextures.SplittingTrail;
+        laserShader.InnerColor = Color.White;
+        laserShader.OuterColor = Color.Lerp(Color.White, Color.LightBlue, ExtraMath.Osc(0f, 1f, speed: 16));
+        TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetTrailColor, GetTrailWidth, laserShader, Projectile.Size * 0.5f);
     }
+
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTrail);
@@ -81,13 +115,16 @@ public class BouncingBall : ModProjectile
             SpritebatchDrawer e = SpritebatchDrawer.FromProjectile(Projectile);
             e.worldPosition = pos;
             e.color = Color.Lerp(Color.White, Color.Transparent, i / (float)Projectile.oldPos.Length) * 0.05f;
+            e.scale = Vector2.One * Scale;
             Main.spriteBatch.Draw(e);
         }
         SpritebatchDrawer ballDraer = SpritebatchDrawer.FromProjectile(Projectile);
+        ballDraer.scale = Vector2.One * Scale;
         Main.spriteBatch.Draw(ballDraer);
 
         SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineTextureAsset, Projectile.Center);
-        outlineDrawer.color = Color.Red;
+        outlineDrawer.color = Projectile.hostile ? Color.Red : Color.Yellow;
+        outlineDrawer.scale = Vector2.One * Scale;
         outlineDrawer.rotation = ballDraer.rotation;
         Main.spriteBatch.Draw(outlineDrawer);
         return false;
@@ -96,6 +133,12 @@ public class BouncingBall : ModProjectile
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        for (float f = 0; f < 32; f++)
+        {
+            var d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(32, 32),
+                ModContent.DustType<SeafloorRockDust>(), Main.rand.NextVector2Circular(16, 16), Scale: 2);
+            d.noGravity = true;
+        }
     }
 }
 public class BouncingBallCore : ModProjectile
@@ -116,9 +159,10 @@ public class BouncingBallCore : ModProjectile
         base.SetDefaults();
         Projectile.width = 32;
         Projectile.height = 32;
-        Projectile.hostile = true;
+        Projectile.hostile = false;
         Projectile.timeLeft = 600;
         Projectile.penetrate = -1;
+        Projectile.tileCollide = false;
     }
     public override void AI()
     {
@@ -126,11 +170,11 @@ public class BouncingBallCore : ModProjectile
         Timer++;
         if (Timer == 1)
         {
-            Slavery = 2;
             if (this.OwnedByLocalClient())
             {
                 for (int i = 0; i < 2; i++)
-                    Projectile.NewProjectile(Projectile.GetItemSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<BouncingBall>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: Slavery);
+                    Projectile.NewProjectile(Projectile.GetItemSource_FromThis(), Projectile.Center, Vector2.Zero,
+                        ModContent.ProjectileType<BouncingBall>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: Slavery);
             }
         }
 
@@ -138,15 +182,25 @@ public class BouncingBallCore : ModProjectile
         BounceTimer++;
         if (BounceTimer >= bounceTime)
         {
+            var gd = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero);
+            gd.noStretch = true;
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+            for (float f = 0; f < 16; f++)
+            {
+                var d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(32, 32),
+                    ModContent.DustType<SeafloorRockDust>(), Main.rand.NextVector2Circular(16, 16), Scale: 0.5f);
+                d.noGravity = true;
+            }
             BounceTimer = 0f;
         }
+        float dir = Slavery == 1 ? -1 : 1;
         _children ??= new Projectile[2];
         _offsets ??= new Vector2[2];
         for (int i = 0; i < _offsets.Length; i++)
         {
             ref Vector2 offset = ref _offsets[i];
-            Vector2 maxOffset = -Vector2.UnitY * 196;
-            maxOffset = maxOffset.RotatedBy(Timer * 0.05f);
+            Vector2 maxOffset = -Vector2.UnitY * 512;
+            maxOffset = maxOffset.RotatedBy(Timer * 0.05f * dir);
 
             float halfTime = bounceTime / 2f;
             float inEasing = BounceTimer / halfTime;
@@ -160,14 +214,16 @@ public class BouncingBallCore : ModProjectile
 
         }
 
+
         Player nearestPlayer = PlayerHelper.FindClosestPlayer(Projectile.Center, 2048);
         if (nearestPlayer != null)
         {
             Vector2 velToPalyer = (nearestPlayer.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-            Projectile.velocity += velToPalyer * 0.2f;
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, velToPalyer * 25, 0.015f);
         }
 
-        Projectile.rotation += 0.05f;
+    
+        Projectile.rotation += 0.05f * dir;
         Projectile.rotation += Projectile.velocity.Length() * 0.02f;
 
         int index = 0;
@@ -198,12 +254,12 @@ public class BouncingBallCore : ModProjectile
 
     private float GetTrailWidth(float ratio)
     {
-        return 16;
+        return 8;
     }
 
     private Color GetTrailColor(float ratio)
     {
-        return Color.DarkGreen;
+        return new Color(45, 54, 57);
     }
 
     private void DrawPixelatedThornTrail(GraphicsDevice gDevice)
@@ -231,7 +287,7 @@ public class BouncingBallCore : ModProjectile
     {
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedThornTrail);
         SpritebatchDrawer ballCoreDrawer = SpritebatchDrawer.FromProjectile(Projectile);
-        ballCoreDrawer.scale = Vector2.One * EasingFunction.InOutSine(Timer / 30f) * EasingFunction.InOutSine((float)Projectile.timeLeft / 30f);
+        ballCoreDrawer.scale = Vector2.One * EasingFunction.InOutSine(Timer / 30f) * EasingFunction.InOutSine(Projectile.timeLeft / 30f);
         Main.spriteBatch.Draw(ballCoreDrawer);
         return false;
         //    return base.PreDraw(ref lightColor);

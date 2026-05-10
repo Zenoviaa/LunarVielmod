@@ -47,6 +47,33 @@ namespace Stellamod.Core.Utilities
             }
         }
 
+        public void Cone(Vector2 leftCenter, float minWidth, float maxWidth, float length, float rotation)
+        {
+            Vector2 topLeftOffset = new Vector2(0, -minWidth / 2f);
+            Vector2 bottomLeftOffset = new Vector2(0, minWidth / 2f);
+            Vector2 topRightOffset = new Vector2(length, -maxWidth / 2f);
+            Vector2 bottomRightOffset = new Vector2(length, maxWidth / 2f);
+
+            topLeftOffset = topLeftOffset.RotatedBy(rotation);
+            bottomLeftOffset = bottomLeftOffset.RotatedBy(rotation);
+            topRightOffset = topRightOffset.RotatedBy(rotation);
+            bottomRightOffset = bottomRightOffset.RotatedBy(rotation);
+
+            Vector2 topLeft = leftCenter + topLeftOffset;
+            Vector2 bottomLeft = leftCenter + bottomLeftOffset;
+            Vector2 topRight = leftCenter + topRightOffset;
+            Vector2 bottomRight = leftCenter + bottomRightOffset;
+
+
+            //Rotate around the center pivot
+            vertices[0] = new VertexPositionColorTexture(new Vector3(topLeft, 0), Color.White, new Vector2(0, 0));
+            vertices[1] = new VertexPositionColorTexture(new Vector3(topRight, 0), Color.White, new Vector2(1, 0));
+
+            vertices[2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), Color.White, new Vector2(0, 1));
+            vertices[3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), Color.White, new Vector2(1, 1));
+        }
+
+
         public void CalculatePerspectiveCenterVertices(Vector2 center, float length, float width, float rotation = 0, float perspectiveRotation = 0)
         {
             Vector3 topLeftOffset = new Vector3(0.15f, -1, -1);

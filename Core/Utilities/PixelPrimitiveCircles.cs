@@ -204,6 +204,40 @@ public static class PixelPrimitiveCircleFactory
         circle.position = position;
         ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
     }
+    public static void CreateEelInSuck(Vector2 position)
+    {
+        void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
+        {
+            float GetTrailWidthFunction(float interpolant)
+            {
+                return MathHelper.SmoothStep(32, 0, completionRatio);
+            }
+            ;
+            Color GetTrailColorFunction(float interpolant)
+            {
+                Color lerp1 = Color.Lerp(Color.White, Color.SkyBlue, ExtraMath.Osc(0.5f, 1f, speed: 8));
+                lerp1 = Color.Lerp(Color.Blue, lerp1, completionRatio);
+                return lerp1;
+            }
+            ;
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            blackFireShader.InnerColor = Color.White;
+            blackFireShader.OuterColor = Color.DarkGray;
+            blackFireShader.BackColor = Color.Black;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
+            BloomTrailShader bloomTrail = BloomTrailShader.Instance;
+            bloomTrail.InnerColor = Color.White;
+            bloomTrail.OuterColor = Color.Blue;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, bloomTrail);
+        }
+        PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
+        circle.circleParams.minRadius = 666;
+        circle.circleParams.maxRadius = 0;
+        circle.circleParams.time = 45;
+        circle.renderPixelPrimitivesFunction = RenderPrimitives;
+        circle.position = position;
+        ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
+    }
     public static void CreateHeavenlyBoom(Vector2 position)
     {
         void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)

@@ -100,14 +100,14 @@ public class SinElectricShock : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        _shockPos = new Vector2[32];
-        _sparkPos = new Vector2[32];
+        _shockPos = new Vector2[16];
+        _sparkPos = new Vector2[16];
         Projectile.width = 128;
         Projectile.height = 128;
         Projectile.hostile = true;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
-        Projectile.timeLeft = 120;
+        Projectile.timeLeft = 30;
     }
 
     public override void AI()
@@ -121,6 +121,8 @@ public class SinElectricShock : ModProjectile
             var fp = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.Goldenrod);
             fp.Scale *= 1.5f;
         }
+        if (Timer >= 15)
+            Projectile.hostile = false;
         Projectile.velocity = Projectile.velocity.RotatedBy(0.03f);
         if (Timer % 8 == 0)
         {
@@ -136,7 +138,7 @@ public class SinElectricShock : ModProjectile
             sp.gravity = 0;
         }
 
-        float inScale = EasingFunction.InOutSine(Timer / 30f);
+        float inScale = EasingFunction.InOutSine(Timer / 10f);
         float outScale = EasingFunction.InOutSine((float)Projectile.timeLeft / 30f);
         for (int i = 0; i < _shockPos.Length; i++)
         {
