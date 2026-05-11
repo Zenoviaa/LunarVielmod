@@ -1,4 +1,4 @@
-﻿using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner;
+﻿using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
 using Terraria;
@@ -60,7 +60,7 @@ namespace Stellamod.Core
 
         private void FallThroughPlatform(On_Player.orig_DryCollision orig, Player self, bool fallThrough, bool ignorePlats)
         {
-            if (self.GetModPlayer<SkullrunnerThrowModPlayer>().grabbed)
+            if (self.GetModPlayer<MovePlayer>().grabbed)
             {
                 ignorePlats = true;
                 fallThrough = true;
@@ -109,7 +109,7 @@ namespace Stellamod.Core
         private void HoverPlatformCollisionCheck(On_Player.orig_SlopingCollision orig, Player self, bool fallThrough, bool ignorePlats)
         {
 
-            if (self.GetModPlayer<SkullrunnerThrowModPlayer>().grabbed)
+            if (self.GetModPlayer<MovePlayer>().grabbed)
             {
                 ignorePlats = true;
                 fallThrough = true;

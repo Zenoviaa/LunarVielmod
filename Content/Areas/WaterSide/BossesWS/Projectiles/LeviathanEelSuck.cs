@@ -1,6 +1,5 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -261,7 +260,7 @@ public class LeviathanEelSuck : ModProjectile
 
         foreach(Player player in Main.ActivePlayers)
         {
-            player.GetModPlayer<SkullrunnerThrowModPlayer>().pullVelocity = -Parent.rotation.ToRotationVector2() * 1.5f;
+            player.GetModPlayer<MovePlayer>().pullVelocity = -Parent.rotation.ToRotationVector2() * 1.5f;
         }
         ShakeScreenPosition.Shake = 4;
         Projectile.Center = Parent.Center;

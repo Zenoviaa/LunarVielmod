@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Core.Utilities;
 using Stellamod.Core.ZTileSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -77,6 +78,9 @@ namespace Stellamod.Content.Areas.Abyss.AccAB
                 return;
             if (Player.dead)
                 return;
+            if (Player.GetModPlayer<MovePlayer>().eaten)
+                return;
+
             float alpha = EasingFunction.InOutSine(_wingTimer / 60f);
 
             Asset<Texture2D> wingsTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/FastFlightProj");

@@ -8,6 +8,7 @@ using Stellamod.Content.Areas.WondrousDarkspace.NPCsWD;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -757,7 +758,7 @@ public class Skullrunner : ScarletBoss
         if (_grabbedTarget)
         {
             HandOutlineColor = Color.Red;
-            SkullrunnerThrowModPlayer throwModPlayer = Target.GetModPlayer<SkullrunnerThrowModPlayer>();
+            MovePlayer throwModPlayer = Target.GetModPlayer<MovePlayer>();
             throwModPlayer.targetSuckPosition = _handPosition;
         }
 
@@ -878,7 +879,7 @@ public class Skullrunner : ScarletBoss
         Timer++;
         if(Timer == 1)
         {
-            SkullrunnerThrowModPlayer throwModPlayer = Target.GetModPlayer<SkullrunnerThrowModPlayer>();
+            MovePlayer throwModPlayer = Target.GetModPlayer<MovePlayer>();
             throwModPlayer.throwVelocity = Vector2.UnitY * 40;
             Eruption(NPC.Center, -Vector2.UnitY);
         }

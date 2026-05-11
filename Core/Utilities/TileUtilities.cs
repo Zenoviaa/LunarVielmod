@@ -4,6 +4,66 @@ namespace Stellamod.Core.Utilities;
 
 public static class TileUtilities
 {
+    /// <summary>
+    /// Attempts to find the center of a closed spaced by averaging the nearest tiles on the left, right, top and bottom. Not guaranteed to work with complex shapes
+    /// </summary>
+    /// <param name="centerOfClosedSpace"></param>
+    /// <returns></returns>
+    public static Vector2 GuessArenaCenter(Vector2 centerOfClosedSpace)
+    {
+        Point playerPoint = centerOfClosedSpace.ToTileCoordinates();
+        Point right = playerPoint;
+        Point left = playerPoint;
+        for (int x = 0; x < 100; x++)
+        {
+            right = playerPoint + new Point(x, 0);
+            if (!WorldGen.InWorld(right.X, right.Y))
+                break;
+            Tile tile = Main.tile[right];
+            if (tile.HasTile && Main.tileSolid[tile.TileType])
+                break;
+        }
+
+        for (int x = 0; x < 100; x++)
+        {
+            left = playerPoint - new Point(x, 0);
+            if (!WorldGen.InWorld(left.X, left.Y))
+                break;
+            Tile tile = Main.tile[left];
+            if (tile.HasTile && Main.tileSolid[tile.TileType])
+                break;
+        }
+        Point up = playerPoint;
+        Point down = playerPoint;
+        for (int y = 0; y < 100; y++)
+        {
+            down = playerPoint + new Point(0, y);
+            if (!WorldGen.InWorld(down.X, down.Y))
+                break;
+            Tile tile = Main.tile[down];
+            if (tile.HasTile && Main.tileSolid[tile.TileType])
+                break;
+        }
+        for (int x = 0; x < 100; x++)
+        {
+            up = playerPoint - new Point(0, x);
+            if (!WorldGen.InWorld(up.X, up.Y))
+                break;
+            Tile tile = Main.tile[up];
+            if (tile.HasTile && Main.tileSolid[tile.TileType])
+                break;
+        }
+
+
+        Point midHorizontal = left + right;
+        midHorizontal.X /= 2;
+
+        Point midVertical = up + down;
+        midVertical.Y /= 2;
+
+        return new Point(midHorizontal.X, midVertical.Y).ToWorldCoordinates();
+
+    }
     public static void FastPlaceTile(int x, int y, ushort tileType)
     {
         Tile tile = Main.tile[x, y];

@@ -7,7 +7,6 @@ using Stellamod.Common.Shaders;
 using Stellamod.Common.SirestiasShop;
 using Stellamod.Common.UI;
 using Stellamod.Common.WeaponUpgrade.UI;
-using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner;
 using Stellamod.Content.Areas.SpringHills.NPCsSH;
 using Stellamod.Content.Armors.Sanctorous;
 using Stellamod.Core.Camera;
@@ -257,7 +256,7 @@ public class OrganDragon : ModNPC
     {
         _mountTimer++;
         Player target = Main.player[PlayerToTravel];
-        SkullrunnerThrowModPlayer throwModPlayer = target.GetModPlayer<SkullrunnerThrowModPlayer>();
+        MovePlayer throwModPlayer = target.GetModPlayer<MovePlayer>();
         Vector2 mountPosition = NPC.Center;
         mountPosition.X -= 64;
         mountPosition.Y -= 32;

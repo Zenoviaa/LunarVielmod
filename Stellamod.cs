@@ -24,7 +24,6 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
-
 namespace Stellamod
 {
     public class Stellamod : Mod

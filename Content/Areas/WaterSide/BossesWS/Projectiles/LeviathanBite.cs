@@ -46,8 +46,7 @@ public class LeviathanBite : ModProjectile
    
 
         }
-        ProjectileID.Sets.TrailCacheLength[Type] = 16;
-        ProjectileID.Sets.TrailingMode[Type] = 2;
+   
         if(Timer == 30)
         {
             ShakeScreenPosition.Shake = 4;
@@ -74,7 +73,17 @@ public class LeviathanBite : ModProjectile
             Projectile.Center = Parent.Center;
             Projectile.velocity = Parent.velocity;
         }
+        if (Style == 2)
+        {
+            Projectile.Center = Parent.Center;
+            float dp = Vector2.Dot(Projectile.velocity.SafeNormalize(Vector2.Zero), Parent.velocity.SafeNormalize(Vector2.Zero));
+            if(dp > 0)
+            {
+                Projectile.velocity = Parent.velocity;
 
+            }
+            //
+        }
         Projectile.rotation = Projectile.velocity.ToRotation();
     }
     public override bool PreDraw(ref Color lightColor)

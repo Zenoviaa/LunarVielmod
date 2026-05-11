@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System.IO;
 using Terraria;
@@ -103,7 +103,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.1f);
                     NPC.rotation = NPC.velocity.ToRotation();
                     Player target = Main.player[GrabbedPlayer];
-                    target.GetModPlayer<SkullrunnerThrowModPlayer>().overrideVelocity = (NPC.Center - target.Center);
+                    target.GetModPlayer<MovePlayer>().overrideVelocity = (NPC.Center - target.Center);
                 }
 
                 if (Timer == 90)

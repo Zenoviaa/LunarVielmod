@@ -3,11 +3,14 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
+using Stellamod.Effects.Primitives;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -146,6 +149,7 @@ public class BouncingBallCore : ModProjectile
     private ref float Timer => ref Projectile.ai[0];
     private ref float Slavery => ref Projectile.ai[1];
     private ref float BounceTimer => ref Projectile.ai[2];
+    private Vector2 _shakeOffset;
     private Vector2[] _offsets;
     private Projectile[] _children;
     public override void SetStaticDefaults()
@@ -160,7 +164,7 @@ public class BouncingBallCore : ModProjectile
         Projectile.width = 32;
         Projectile.height = 32;
         Projectile.hostile = false;
-        Projectile.timeLeft = 600;
+        Projectile.timeLeft = 700;
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
     }
@@ -168,14 +172,60 @@ public class BouncingBallCore : ModProjectile
     {
         base.AI();
         Timer++;
-        if (Timer == 1)
+        if(Timer == 1)
         {
+            LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 0.2f);
+            for (float f = 0; f < 16; f++)
+            {
+                Vector2 vel = Vector2.UnitY * Main.rand.NextFloat(8, 35f);
+                vel = vel.RotatedByRandom(MathHelper.ToRadians(45));
+                var d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(32, 32),
+                    ModContent.DustType<SeafloorRockDust>(), vel, Scale: 2);
+                var dp = DustParticle.Spawn(Projectile.Center, vel);
+                dp.outerColor = Color.Blue;
+                dp.Scale *= 0.5f;
+                d.noGravity = true;
+            }
+        }
+
+        if(Timer == 100)
+        {
+            for (float f = 0; f < 16; f++)
+            {
+                var d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(32, 32),
+                    ModContent.DustType<SeafloorRockDust>(), Main.rand.NextVector2Circular(16, 16), Scale: 2);
+                d.noGravity = true;
+            }
+            for(float f = 0; f < 8f; f++)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(16, 16);
+                FXUtil.GlowStretch(Projectile.Center + vel * 0.5f, vel);
+            }
+
             if (this.OwnedByLocalClient())
             {
                 for (int i = 0; i < 2; i++)
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         ModContent.ProjectileType<BouncingBall>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: Slavery);
             }
+        }
+
+        if (Timer < 100)
+        {
+            if (Timer % 30 == 0)
+            {
+                ElectricZapParticle.Spawn(
+                    Projectile.Center + Main.rand.NextVector2Circular(32, 32),
+                    Main.rand.NextVector2Circular(2, 2), Scale: Main.rand.NextFloat(0.3f, 0.6f));
+            }
+            ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 4f, Timer / 100f);
+            if (Timer % 4 == 0)
+            {
+                _shakeOffset = Main.rand.NextVector2Circular(4, 4);
+            }
+            Projectile.velocity *= 0.97f;
+            Projectile.rotation += 0.05f;
+            return;
         }
 
         float bounceTime = 90f;
@@ -283,11 +333,32 @@ public class BouncingBallCore : ModProjectile
         }
     }
 
+    private void DrawWhites(SpriteBatch sb)
+    {
+        SpritebatchDrawer ballCoreDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        if (Timer < 100f)
+        {
+            ballCoreDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);
+            ballCoreDrawer.rotation = Projectile.rotation;
+        }
+        ballCoreDrawer.color = Color.Yellow;
+        ballCoreDrawer.scale = Vector2.One * EasingFunction.InOutSine(Timer / 30f) * EasingFunction.InOutSine(Projectile.timeLeft / 30f);
+        ballCoreDrawer.worldPosition += _shakeOffset;
+        sb.Draw(ballCoreDrawer);
+    }
+
     public override bool PreDraw(ref Color lightColor)
     {
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedThornTrail);
         SpritebatchDrawer ballCoreDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        if(Timer < 100f)
+        {
+            OutlineRenderer.Queue(DrawWhites);
+            ballCoreDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);
+            ballCoreDrawer.rotation = Projectile.rotation;
+        }
         ballCoreDrawer.scale = Vector2.One * EasingFunction.InOutSine(Timer / 30f) * EasingFunction.InOutSine(Projectile.timeLeft / 30f);
+        ballCoreDrawer.worldPosition += _shakeOffset;
         Main.spriteBatch.Draw(ballCoreDrawer);
         return false;
         //    return base.PreDraw(ref lightColor);

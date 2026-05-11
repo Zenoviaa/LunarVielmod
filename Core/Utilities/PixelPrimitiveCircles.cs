@@ -238,6 +238,74 @@ public static class PixelPrimitiveCircleFactory
         circle.position = position;
         ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
     }
+    public static void CreateEelInSuckQuick(Vector2 position)
+    {
+        void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
+        {
+            float GetTrailWidthFunction(float interpolant)
+            {
+                return MathHelper.SmoothStep(32, 0, completionRatio);
+            }
+            ;
+            Color GetTrailColorFunction(float interpolant)
+            {
+                Color lerp1 = Color.Lerp(Color.White, Color.SkyBlue, ExtraMath.Osc(0.5f, 1f, speed: 8));
+                lerp1 = Color.Lerp(Color.Blue, lerp1, completionRatio);
+                return lerp1;
+            }
+            ;
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            blackFireShader.InnerColor = Color.White;
+            blackFireShader.OuterColor = Color.DarkGray;
+            blackFireShader.BackColor = Color.Black;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
+            BloomTrailShader bloomTrail = BloomTrailShader.Instance;
+            bloomTrail.InnerColor = Color.White;
+            bloomTrail.OuterColor = Color.Blue;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, bloomTrail);
+        }
+        PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
+        circle.circleParams.minRadius = 666;
+        circle.circleParams.maxRadius = 0;
+        circle.circleParams.time = 25;
+        circle.renderPixelPrimitivesFunction = RenderPrimitives;
+        circle.position = position;
+        ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
+    }
+    public static void CreateEelSiningSuck(Entity parent)
+    {
+        void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
+        {
+            float GetTrailWidthFunction(float interpolant)
+            {
+                return MathHelper.SmoothStep(0, 64, completionRatio);
+            }
+            ;
+            Color GetTrailColorFunction(float interpolant)
+            {
+                Color lerp1 = Color.Lerp(Color.White, Color.Goldenrod, ExtraMath.Osc(0.5f, 1f, speed: 8));
+                lerp1 = Color.Lerp(Color.Blue, lerp1, completionRatio);
+                return lerp1;
+            }
+            ;
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            blackFireShader.InnerColor = Color.White;
+            blackFireShader.OuterColor = Color.DarkGray;
+            blackFireShader.BackColor = Color.Black;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
+            BloomTrailShader bloomTrail = BloomTrailShader.Instance;
+            bloomTrail.InnerColor = Color.White;
+            bloomTrail.OuterColor = Color.Goldenrod;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, bloomTrail);
+        }
+        PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
+        circle.circleParams.minRadius = 666;
+        circle.circleParams.maxRadius = 0;
+        circle.circleParams.time = 25;
+        circle.renderPixelPrimitivesFunction = RenderPrimitives;
+        circle.parent = parent;
+        ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
+    }
     public static void CreateHeavenlyBoom(Vector2 position)
     {
         void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
@@ -568,6 +636,7 @@ public class PixelPrimitiveCircle
 
     public float timer;
     public PixelPrimitiveCircleParams circleParams;
+    public Entity parent;
     public Vector2 position;
     public bool active;
     public CalculateCirclePoints circlePointsFunction;
@@ -585,6 +654,10 @@ public class PixelPrimitiveCircle
         float completionRatio = timer / circleParams.time;
         float radius = MathHelper.Lerp(circleParams.minRadius, circleParams.maxRadius, EasingFunction.InOutSine(completionRatio));
         float maxRadians = MathHelper.ToRadians(362);
+        if (parent != null)
+        {
+            position = parent.Center;
+        }
         for (int f = 0; f < points.Length; f++)
         {
             float ratio = (float)(f) / (float)(points.Length - 1);
@@ -593,6 +666,7 @@ public class PixelPrimitiveCircle
             float radians = ratio * maxRadians;
             float x = MathF.Sin(radians) * radius;
             float y = MathF.Cos(radians) * radius;
+ 
             point = position + new Vector2(x, y);
         }
     }

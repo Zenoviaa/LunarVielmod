@@ -45,7 +45,7 @@ public class LightningCrawl : ModProjectile
         Projectile.hostile = true;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
-        Projectile.timeLeft = 200;
+        Projectile.timeLeft = 180;
     }
 
     public override bool ShouldUpdatePosition()
