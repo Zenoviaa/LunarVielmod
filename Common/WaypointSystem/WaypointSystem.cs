@@ -16,7 +16,6 @@ using Stellamod.Core.ZTileSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using System.IO;
@@ -724,7 +723,7 @@ public class OrganWaypointTracker : ModSystem
         SoundEngine.PlaySound(activateSound);
 
         //Bit of screenshake never hurt anyone
-        ShakeModSystem.Shake = 4;
+        ShakeScreenPosition.Shake = 4;
         FXUtil.ShakeCamera(worldPosition, 1024, 4);
 
     }

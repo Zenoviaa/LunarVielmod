@@ -5,10 +5,10 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -233,7 +233,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (Timer == 1)
             {
                 //Here we do a crossing slash effect similar to the one in the grab attack
-                ShakeModSystem.Shake = 64;
+                ShakeScreenPosition.Shake = 64;
                 FXUtil.ShakeCamera(NPC.position, 1024, 4);
                 ScreenSmearEffectManager.DiagonalCut();
 
@@ -289,7 +289,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 }
 
    
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
                 FXUtil.ShakeCamera(NPC.position, 1024, 4);
 
                 Vector2 direction = Vector2.UnitY.RotateRandom(1.5f);

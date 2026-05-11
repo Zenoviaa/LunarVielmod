@@ -11,11 +11,11 @@ using Stellamod.Core.Camera;
 using Stellamod.Core.InverseKinematics;
 using Stellamod.Core.Particles;
 using Stellamod.Core.TriggersSystem.Triggers;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.IO;
@@ -737,7 +737,7 @@ public class STARBOMBERV2 : ScarletBoss,
         ApplyStandingYVelocity();
 
 
-        ShakeModSystem.Shake = 3;
+        ShakeScreenPosition.Shake = 3;
         if (Timer % 5 == 0)
         {
             Vector2 spawnPointOffset = Main.rand.NextVector2CircularEdge(64, 64);
@@ -1144,7 +1144,7 @@ public class STARBOMBERV2 : ScarletBoss,
                 SpawnSteamParticle();
             }
 
-            ShakeModSystem.Shake = MathHelper.Lerp(1f, 6f, progress);
+            ShakeScreenPosition.Shake = MathHelper.Lerp(1f, 6f, progress);
             if(Timer >= 180)
             {
                 SoundStyle wakeSound = new SoundStyle("Stellamod/Assets/Sounds/STARBOMBERWAKE");
@@ -1289,7 +1289,7 @@ public class STARBOMBERV2 : ScarletBoss,
                 FXUtil.GlowStretch(NPC.Center, v);
             }
             FXUtil.ShakeCamera(NPC.position, 1024, 8);
-            ShakeModSystem.Shake = 8;
+            ShakeScreenPosition.Shake = 8;
             var p = FXUtil.GlowCircleBoom(NPC.Center, Color.Pink, Color.Purple, Color.Blue);
             p.Scale *= 12;
             //Death Effect here
@@ -1847,7 +1847,7 @@ public class STARBOMBERV2 : ScarletBoss,
 
             part = FXUtil.GlowCircleBoom(NPC.Center, Color.Pink, Color.Purple, Color.Blue);
             part.Scale *= 3f;
-            ShakeModSystem.Shake = 6;
+            ShakeScreenPosition.Shake = 6;
 
             SoundStyle boom = SoundID.DD2_ExplosiveTrapExplode;
             boom.PitchVariance = 0.3f;
@@ -2098,11 +2098,11 @@ public class STARBOMBERV2 : ScarletBoss,
 
         Legs.rightLegData.rotationStyle = RotationStyle.Inverse;
         Legs.rightLegData.footPosition = Vector2.Lerp(Legs.rightLegData.startWalkPosition, _impactFootPosition, inEasing);
-        ShakeModSystem.Shake = 4;
+        ShakeScreenPosition.Shake = 4;
         OffsetCameraModifier.FocusTargetOffset = new Vector2(0, 100);
         if (Timer == time)
         {
-            ShakeModSystem.Shake = 16;
+            ShakeScreenPosition.Shake = 16;
             if (MultiplayerHelper.IsHost)
             {
                 Vector2 velocity = Vector2.UnitX * 22;

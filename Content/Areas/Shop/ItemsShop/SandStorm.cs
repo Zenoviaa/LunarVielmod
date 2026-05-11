@@ -5,8 +5,8 @@ using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Net.Sockets;
@@ -213,7 +213,7 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
 
                 }
             }
-            ShakeModSystem.Shake = 1;
+            ShakeScreenPosition.Shake = 1;
 
             inTornado = EasingFunction.InOutSine(inTornado);
             outTornado = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(outTornado));

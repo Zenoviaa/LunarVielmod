@@ -9,7 +9,6 @@ using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Gores;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -97,7 +96,7 @@ public class PunkerBoom : ModProjectile
             sear.outerColor = Color.Blue;
             sear.fadeToColor = Color.Black;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
             for (float f = 0; f < 4f; f++)
             {
                 Vector2 pos = Projectile.Center;
@@ -1185,12 +1184,12 @@ public class PunkerPrime : ScarletBoss,
         if (Timer >= deathTime)
         {
             FXUtil.ShakeCamera(NPC.position, 1024, 8);
-            ShakeModSystem.Shake = 16;
+            ShakeScreenPosition.Shake = 16;
 
             var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.Yellow, Color.Red, Color.DarkRed);
             fx.Scale *= 4;
             FXUtil.ShakeCamera(NPC.Center, 1024, 8);
-            ShakeModSystem.Shake = 5;
+            ShakeScreenPosition.Shake = 5;
             if (Main.netMode != NetmodeID.Server)
             {
                 int[] gores = new int[]

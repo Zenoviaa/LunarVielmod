@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -55,7 +55,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 SoundEngine.PlaySound(revUpSound, Projectile.position);
             }
 
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
 
             if (Timer % 5 == 0)
             {

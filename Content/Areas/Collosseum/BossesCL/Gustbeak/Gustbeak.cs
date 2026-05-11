@@ -7,11 +7,11 @@ using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core;
 using Stellamod.Core.DrawEffects;
 using Stellamod.Core.Palettes;
+using Stellamod.Core.Utilities;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
 using Stellamod.Projectiles;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -1192,7 +1192,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 
             if (Timer > 370)
             {
-                ShakeModSystem.Shake = 0f;
+                ShakeScreenPosition.Shake = 0f;
             }
             if (Timer > 370)
             {

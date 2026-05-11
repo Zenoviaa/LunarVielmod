@@ -5,7 +5,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.GameContent;
@@ -264,7 +263,7 @@ public class LeviathanEelSuck : ModProjectile
         {
             player.GetModPlayer<SkullrunnerThrowModPlayer>().pullVelocity = -Parent.rotation.ToRotationVector2() * 1.5f;
         }
-        ShakeModSystem.Shake = 4;
+        ShakeScreenPosition.Shake = 4;
         Projectile.Center = Parent.Center;
         Projectile.rotation = Parent.rotation;
     }

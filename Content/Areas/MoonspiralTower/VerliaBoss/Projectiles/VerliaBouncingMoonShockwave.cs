@@ -1,8 +1,8 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Core.Palettes;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -143,7 +143,7 @@ public class VerliaBouncingMoonShockwave : ModProjectile
                 shockwavePlayer.shockwavePosition = Projectile.Center;
                 shockwavePlayer.rippleSize = 5;
             }
-            ShakeModSystem.Shake = 16;
+            ShakeScreenPosition.Shake = 16;
             FXUtil.ShakeCamera(Projectile.Center, 2048, 32);
             //     FXUtil.PunchCamera(Projectile.Center, Vector2.UnitY, 32, 2, 32);
         }

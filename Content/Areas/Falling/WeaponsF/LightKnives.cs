@@ -5,10 +5,10 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -333,7 +333,7 @@ public class LightKnivesDash : ModProjectile
                 else
                 {
                     Projectile.velocity = (npc.Center - Projectile.Center);
-                    ShakeModSystem.Shake = 1;
+                    ShakeScreenPosition.Shake = 1;
                     if(Timer % 8 == 0)
                     {
                         SoundStyle zap = SoundID.DD2_LightningAuraZap;

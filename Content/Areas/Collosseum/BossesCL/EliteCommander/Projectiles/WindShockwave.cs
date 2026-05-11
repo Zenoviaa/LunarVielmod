@@ -66,7 +66,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles
             Projectile.velocity *= 1.01f;
             Point tp = (Projectile.Center+new Vector2(0, -8)).ToTileCoordinates();
             Tile tile = Main.tile[tp];
-            if (tile.HasTile && Main.tileSolid[tile.type] && DeathTimer == 0)
+            if (tile.HasTile && Main.tileSolid[tile.TileType] && DeathTimer == 0)
             {
                 DeathTimer++;
                // Projectile.Kill();

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Utilities;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -61,7 +61,7 @@ namespace Stellamod.NPCs.Bosses.Fenix.Projectiles
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.SilverCoin);
             }
 
-            ShakeModSystem.Shake = 5;
+            ShakeScreenPosition.Shake = 5;
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 

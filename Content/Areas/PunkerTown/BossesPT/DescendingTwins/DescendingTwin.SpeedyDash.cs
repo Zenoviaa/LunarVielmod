@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -170,7 +170,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
             _telegraphLineRot = NPC.rotation;
             _telegraphLineAlpha = MathHelper.Lerp(1f, 0f, ease);
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             if (Timer >= windUpTime)
             {
                 SwitchState(TwinAIState.SpeedyDashLoop);

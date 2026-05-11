@@ -1,8 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -38,7 +37,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public override void AI()
         {
 
-            ShakeModSystem.Shake = 3f;
+            ShakeScreenPosition.Shake = 3f;
             ExtraWidth += 0.03f;
             Projectile.Center = Owner.Center;
             Projectile.velocity = Owner.rotation.ToRotationVector2();

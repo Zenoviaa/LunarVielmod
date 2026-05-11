@@ -11,7 +11,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -741,7 +740,7 @@ public class BigCelestialBoom : ModProjectile
             }
         }
 
-        ShakeModSystem.Shake = MathHelper.Lerp(18, 1f, EasingFunction.InSine(Timer / 60f));
+        ShakeScreenPosition.Shake = MathHelper.Lerp(18, 1f, EasingFunction.InSine(Timer / 60f));
         if (Timer % 12 == 0)
         {
             SparkleParticle sp = SparkleParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(64, 64), Vector2.Zero, Color.White, Scale: 0.5f);

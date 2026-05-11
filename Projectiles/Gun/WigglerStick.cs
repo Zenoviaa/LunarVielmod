@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -68,7 +68,7 @@ namespace Stellamod.Projectiles.Gun
 
                 if (detonationTimer < 0)
                 {
-                    ShakeModSystem.Shake = 3;
+                    ShakeScreenPosition.Shake = 3;
                     SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom"), Projectile.position);
                     Boom();
                     Projectile.Kill();

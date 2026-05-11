@@ -3,11 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using Terraria;
@@ -73,7 +73,7 @@ namespace Stellamod.Projectiles.Gun
                 }
 
 
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
                 for (float f = 0; f < 12; f++)
                 {
                     Vector2 initialVelocity = -Vector2.UnitY;

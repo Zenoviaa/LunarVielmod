@@ -5,7 +5,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -193,12 +192,12 @@ public class VerliaGreatBlade : ModProjectile
         {
 
             Smoke();
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
             _stretchAlpha = MathHelper.Lerp(1f, 1.05f, EasingFunction.QuadraticBump((Timer - growth1) / (ChargeTime / 2)));
         }
         else
         {
-            ShakeModSystem.Shake = 1;
+            ShakeScreenPosition.Shake = 1;
         }
 
 

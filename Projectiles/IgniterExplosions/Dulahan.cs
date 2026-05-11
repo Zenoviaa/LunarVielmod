@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
@@ -85,7 +85,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
                     glowColor: Color.Blue,
                     outerGlowColor: Color.Black, duration: 25, baseSize: 0.24f);
                 FXUtil.ShakeCamera(target.position, 1024, 2);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
 
                 for (float i = 0; i < 8; i++)
                 {
@@ -109,7 +109,7 @@ namespace Stellamod.Projectiles.IgniterExplosions
                     glowColor: Color.Yellow,
                     outerGlowColor: Color.Red, duration: 25, baseSize: 0.24f);
                 FXUtil.ShakeCamera(target.position, 1024, 2);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
 
                 for (float i = 0; i < 8; i++)
                 {

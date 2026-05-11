@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.MoonspiralTower.WeaponsMT;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Verlia;
@@ -13,7 +14,6 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
 using Stellamod.NPCs.Projectiles;
-using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -1939,7 +1939,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 dashDirection *= speed;
                 NPC.velocity = dashDirection;
                 NPC.velocity.Y = 0;
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
             if (timer == 19)
@@ -1995,7 +1995,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 dashDirection.Normalize();
                 dashDirection *= speed;
                 NPC.velocity = dashDirection;
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
             if (timer == 38)

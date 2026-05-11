@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
@@ -64,7 +64,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
                 var p2 = FXUtil.GlowCircleBoom(Projectile.Center, Color.Red, Color.DarkBlue, Color.Black);
                 p2.Scale *= 2f;
 
-                ShakeModSystem.Shake = 16;
+                ShakeScreenPosition.Shake = 16;
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
                 for (float f = 0; f < 16f; f++)
                 {

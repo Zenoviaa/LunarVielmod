@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.UI.Systems;
+using Stellamod.Core.Utilities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -52,7 +52,7 @@ namespace Stellamod.NPCs.Bosses.Verlia.Projectiles
 
             if (Projectile.timeLeft == 180)
             {
-                ShakeModSystem.Shake = 6;
+                ShakeScreenPosition.Shake = 6;
 
                 for (int j = 0; j < 35; j++)
                 {

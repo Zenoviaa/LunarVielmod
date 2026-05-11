@@ -5,9 +5,9 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 
 using Terraria;
@@ -90,7 +90,7 @@ namespace Stellamod.Items.Weapons.Melee
             base.AI();
             Timer++;
             Projectile.scale = EasingFunction.QuadraticBump(Timer / Lifetime);
-            ShakeModSystem.Shake = MathHelper.SmoothStep(5, 0, Timer / Lifetime);
+            ShakeScreenPosition.Shake = MathHelper.SmoothStep(5, 0, Timer / Lifetime);
             float targetBeamLength = ProjectileHelper.PerformBeamHitscan(Projectile.Center, Projectile.velocity, 2000);
             BeamLength = targetBeamLength;
 

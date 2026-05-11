@@ -5,12 +5,12 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
@@ -200,7 +200,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             }
 
 
-            ShakeModSystem.Shake = 3;
+            ShakeScreenPosition.Shake = 3;
         }
 
 

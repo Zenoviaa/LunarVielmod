@@ -10,7 +10,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -341,7 +340,7 @@ public class Cariya : ScarletBoss
                     fx.VectorScale *= 0.5f;
                 }
                 _showMagicCircle = true;
-                ShakeModSystem.Shake = MathHelper.Lerp(0f, 8f, EasingFunction.InExpo(Timer / 240f));
+                ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 8f, EasingFunction.InExpo(Timer / 240f));
                 if (Timer >= 240)
                 {
                     if (MultiplayerHelper.IsHost)

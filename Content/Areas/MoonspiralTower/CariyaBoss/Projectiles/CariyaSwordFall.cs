@@ -2,8 +2,8 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -60,7 +60,7 @@ public class CariyaSwordFall : ModProjectile
             }
 
             FXUtil.ShakeCamera(Projectile.Center, 1024, 64);
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Blue, Color.DarkBlue, duration: 45);
             fx.Scale *= 3f;
 

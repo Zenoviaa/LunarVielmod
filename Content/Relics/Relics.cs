@@ -7,7 +7,6 @@ using Stellamod.Core.Camera;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -74,7 +73,7 @@ public class RelicSummon : ModProjectile
             SoundStyle summonSound = new SoundStyle("Stellamod/Assets/Sounds/RisingSummon");
             SoundEngine.PlaySound(summonSound, Projectile.position);
         }
-        ShakeModSystem.Shake = 3;
+        ShakeScreenPosition.Shake = 3;
         CameraTargetSystem.AddTarget(Projectile.Center);
         if(Timer % 8 == 0)
         {

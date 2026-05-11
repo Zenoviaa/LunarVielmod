@@ -5,10 +5,10 @@ using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -595,7 +595,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             }
 
 
-            ShakeModSystem.Shake = 3;
+            ShakeScreenPosition.Shake = 3;
         }
 
 

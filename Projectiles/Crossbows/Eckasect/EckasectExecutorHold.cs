@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.Systems;
+using Stellamod.Core.Utilities;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -76,7 +76,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
             if (Timer > 1)
             {
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             Projectile.Center = playerCenter + new Vector2(85, 0).RotatedBy(SwordRotation);

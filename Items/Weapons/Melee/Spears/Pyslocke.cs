@@ -5,11 +5,11 @@ using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using Terraria;
@@ -715,7 +715,7 @@ namespace Stellamod.Items.Weapons.Melee.Spears
                 }
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
                 FXUtil.ShakeCamera(Projectile.position, 1024, 32);
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
         }
     }

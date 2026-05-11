@@ -8,11 +8,11 @@ using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using System.IO;
@@ -102,7 +102,7 @@ namespace Stellamod.Content.Areas.Snow.WeaponsSN
 
 
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
 
                 for (float f = 0; f < 4f; f++)
                 {

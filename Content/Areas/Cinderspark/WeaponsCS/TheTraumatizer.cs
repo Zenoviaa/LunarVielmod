@@ -5,12 +5,12 @@ using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -186,7 +186,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                glowColor: Color.Red,
                outerGlowColor: Color.DarkRed, duration: 25, baseSize: 0.06f);
 
-            ShakeModSystem.Shake = 1;
+            ShakeScreenPosition.Shake = 1;
             for (int i = 0; i < 2; i++)
             {
                 Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Red, 0.5f).noGravity = true;

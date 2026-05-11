@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Utilities;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -53,7 +53,7 @@ namespace Stellamod.Content.Areas.Fable.AccFB
 
                 if (hit.Crit && Main.rand.NextBool(2))
                 {
-                    ShakeModSystem.Shake = 10;
+                    ShakeScreenPosition.Shake = 10;
                     SoundStyle soundStyle = new SoundStyle($"Stellamod/Assets/Sounds/Kaboom");
                     soundStyle.PitchVariance = 0.15f;
                     SoundEngine.PlaySound(soundStyle, target.position);

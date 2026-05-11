@@ -1,9 +1,9 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -50,7 +50,7 @@ public class LeviathanBite : ModProjectile
         ProjectileID.Sets.TrailingMode[Type] = 2;
         if(Timer == 30)
         {
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 16);
             for (float f = 0; f < 16; f++)
             {

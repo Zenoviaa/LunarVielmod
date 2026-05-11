@@ -3,11 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -154,7 +154,7 @@ namespace Stellamod.Content.Areas.Terror.WeaponsTR
             }
 
 
-            ShakeModSystem.Shake = 3;
+            ShakeScreenPosition.Shake = 3;
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
 

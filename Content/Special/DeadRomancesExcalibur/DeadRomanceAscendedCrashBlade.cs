@@ -3,11 +3,11 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -718,7 +718,7 @@ public class HeavenlyCrashBoom : ModProjectile
             sear.outerColor = Color.Goldenrod;
             sear.fadeToColor = Color.Black;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
 
             for (float f = 0; f < 4f; f++)
             {

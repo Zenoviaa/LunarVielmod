@@ -8,7 +8,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -244,7 +243,7 @@ public class ZapShockwave : ModProjectile
 
             FXUtil.ShakeCamera(Projectile.Center, 1024, 16);
         }
-        ShakeModSystem.Shake = MathHelper.Lerp(4f, 0f, Timer / 60f);
+        ShakeScreenPosition.Shake = MathHelper.Lerp(4f, 0f, Timer / 60f);
         if(Timer == 30)
         {
             var fx = FXUtil.GlowCircleBoom(Projectile.Center,
@@ -1252,7 +1251,7 @@ public class KingJellyfish : ScarletBoss
                         SoundEngine.PlaySound(inSound, NPC.position);
                     }
                     _magicCircleChargeProgress = EasingFunction.Clamp(Timer / 180f);
-                    ShakeModSystem.Shake = MathHelper.Lerp(0f, 4f, Timer / 180f);
+                    ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 4f, Timer / 180f);
                     _outliner.warning = true;
                     if (Timer >= 269)
                     {
@@ -1418,7 +1417,7 @@ public class KingJellyfish : ScarletBoss
             Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Electric, Scale: 0.5f);
         }
 
-        ShakeModSystem.Shake = MathHelper.Lerp(0f, 4f, Timer / 160f);
+        ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 4f, Timer / 160f);
         NPC.velocity *= 0.95f;
         NPC.rotation *= 0.95f;
         if(Timer >= 160)

@@ -5,7 +5,6 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
@@ -170,7 +169,7 @@ public class VerliaDesperationMoon : ModProjectile
                     {
                         if (verliaHold)
                         {
-                            ShakeModSystem.Shake = 2;
+                            ShakeScreenPosition.Shake = 2;
                             Vector2 targetPosition = parent.Center;
                             targetPosition.Y -= 262;
                             if (Projectile.Center.Y < targetPosition.Y)

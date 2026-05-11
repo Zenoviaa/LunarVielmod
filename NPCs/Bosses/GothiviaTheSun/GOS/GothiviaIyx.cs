@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Accessories.Wings;
@@ -11,7 +12,6 @@ using Stellamod.Items.Weapons.Thrown;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using System;
 using System.IO;
 using Terraria;
@@ -970,7 +970,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 dashDirection *= speed;
                 NPC.velocity = dashDirection;
 
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
 
@@ -991,7 +991,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                     //     Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, speedXb - 2 * 0, speedYb - 2 * 0, ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
 
                 }
-                ShakeModSystem.Shake = 12;
+                ShakeScreenPosition.Shake = 12;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothCarmody") { Pitch = Main.rand.NextFloat(-5f, 5f) }, NPC.Center);
                 if (MultiplayerHelper.IsHost)
                 {
@@ -1068,7 +1068,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 dashDirection.Normalize();
                 dashDirection *= speed;
                 NPC.velocity = dashDirection;
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
 
@@ -1080,7 +1080,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             }
             if (timer == 110)
             {
-                ShakeModSystem.Shake = 12;
+                ShakeScreenPosition.Shake = 12;
                 if (MultiplayerHelper.IsHost)
                 {
                     float speedXb = NPC.velocity.X * Main.rand.NextFloat(0f, 0f) + Main.rand.NextFloat(0f, 0f);
@@ -1184,7 +1184,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 dashDirection.Normalize();
                 dashDirection *= speed;
                 NPC.velocity = dashDirection;
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
             if (timer == 85)
@@ -1245,7 +1245,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 dashDirection.Normalize();
                 dashDirection *= speed;
                 NPC.velocity = dashDirection;
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
             if (timer == 45)
@@ -1277,7 +1277,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (timer == 1)
             {
 
-                ShakeModSystem.Shake = 8;
+                ShakeScreenPosition.Shake = 8;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") { Pitch = Main.rand.NextFloat(-5f, 2f) }, NPC.Center);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") { Pitch = Main.rand.NextFloat(-5f, 1f) }, NPC.Center);
                 if (MultiplayerHelper.IsHost)
@@ -1562,7 +1562,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 dashDirection.Normalize();
                 dashDirection *= speed;
                 NPC.velocity = dashDirection;
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
             }
 
 
@@ -1584,7 +1584,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
                 dashDirection.Normalize();
                 dashDirection *= speed;
                 NPC.velocity = dashDirection;
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
             if (timer == 150)
@@ -1677,7 +1677,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer < 80)
             {
-                ShakeModSystem.Shake = 5;
+                ShakeScreenPosition.Shake = 5;
 
 
 
@@ -1728,7 +1728,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer < 80)
             {
-                ShakeModSystem.Shake = 5;
+                ShakeScreenPosition.Shake = 5;
 
 
 
@@ -1905,7 +1905,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer == 80)
             {
-                ShakeModSystem.Shake = 5;
+                ShakeScreenPosition.Shake = 5;
 
                 if (MultiplayerHelper.IsHost)
                 {
@@ -2063,7 +2063,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer == 60)
             {
-                ShakeModSystem.Shake = 5;
+                ShakeScreenPosition.Shake = 5;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
                 //
                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
@@ -2114,7 +2114,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer == 154)
             {
-                ShakeModSystem.Shake = 5;
+                ShakeScreenPosition.Shake = 5;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
 
                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;
@@ -2169,7 +2169,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
 
             if (timer == 248)
             {
-                ShakeModSystem.Shake = 5;
+                ShakeScreenPosition.Shake = 5;
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { Pitch = Main.rand.NextFloat(-1f, 1f) }, NPC.Center);
 
                 Vector2 direction = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 8.5f;

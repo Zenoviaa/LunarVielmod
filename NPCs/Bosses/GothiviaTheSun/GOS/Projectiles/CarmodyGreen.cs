@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
-using Stellamod.Utilis;
+﻿using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

@@ -9,7 +9,6 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
@@ -277,7 +276,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
             _inScale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(Timer / 60f));
             _outScale = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo((float)Projectile.timeLeft / 100));
-            ShakeModSystem.Shake = MathHelper.Lerp(0, 9, _outScale);
+            ShakeScreenPosition.Shake = MathHelper.Lerp(0, 9, _outScale);
             LinePos[0] = Projectile.Center;
             LinePos[1] = Projectile.Center;
             LinePos[2] = Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 8000;
@@ -453,7 +452,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
         {
             Timer++;
             float gravityTime = 120f;
-            ShakeModSystem.Shake = MathHelper.Lerp(10, 0, Timer / gravityTime);
+            ShakeScreenPosition.Shake = MathHelper.Lerp(10, 0, Timer / gravityTime);
             for (int i = 0; i < 3; i++)
             {
                 Smear();
@@ -672,7 +671,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 SoundStyle hurriSlash = AssetRegistry.Sounds.E.Hurrislash;
                 hurriSlash.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(hurriSlash, NPC.position);
-                ShakeModSystem.Shake = 24;
+                ShakeScreenPosition.Shake = 24;
             }
 
             Animator.PlayAnimation(Anim_BigSlash);

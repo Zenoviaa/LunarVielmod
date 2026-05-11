@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.Systems;
+using Stellamod.Core.Utilities;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -77,7 +77,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt1>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis1"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 20)
@@ -87,7 +87,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt1>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis1"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 40)
@@ -97,7 +97,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt1>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis1"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
             if (Timer == 60)
             {
@@ -106,7 +106,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt1>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis1"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 80)
@@ -116,7 +116,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt2>(), Projectile.damage * 2, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis2"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 100)
@@ -126,7 +126,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt2>(), Projectile.damage * 2, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis2"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 120)
@@ -136,7 +136,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt2>(), Projectile.damage * 2, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis2"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 140)
@@ -146,7 +146,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt2>(), Projectile.damage * 2, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis2"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 160)
@@ -156,7 +156,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt3>(), Projectile.damage * 3, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis3"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 180)
@@ -166,7 +166,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt3>(), Projectile.damage * 3, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis3"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 200)
@@ -176,7 +176,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt3>(), Projectile.damage * 3, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis3"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 220)
@@ -186,7 +186,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt3>(), Projectile.damage * 3, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis3"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 240)
@@ -196,7 +196,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt1>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis4"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 260)
@@ -206,7 +206,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt2>(), Projectile.damage * 1, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis4"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 280)
@@ -216,7 +216,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt3>(), Projectile.damage * 4, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis4"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             if (Timer == 300)
@@ -226,7 +226,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<GenesisBolt2>(), Projectile.damage * 2, Projectile.knockBack, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Genesis4"), Projectile.position);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             Projectile.Center = playerCenter + new Vector2(80, 0).RotatedBy(SwordRotation);

@@ -11132,3 +11132,38 @@ WheatFieldsWash: {
 	DisplayName: Wheat Fields Wash
 	Tooltip: ""
 }
+
+RoseyWash: {
+	DisplayName: Rosey Wash
+	Tooltip: ""
+}
+
+MoodyWash: {
+	Tooltip: ""
+	DisplayName: Moody Wash
+}
+
+IllurianWash: {
+	Tooltip: ""
+	DisplayName: Illurian Wash
+}
+
+HotrodWash: {
+	Tooltip: ""
+	DisplayName: Hotrod Wash
+}
+
+CliffsideWash: {
+	Tooltip: ""
+	DisplayName: Cliffside Wash
+}
+
+BumbleBeeWash: {
+	Tooltip: ""
+	DisplayName: Bumble Bee Wash
+}
+
+ShadefulWash: {
+	DisplayName: Shadeful Wash
+	Tooltip: ""
+}

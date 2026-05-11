@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.Systems;
+using Stellamod.Core.Utilities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles
             Projectile.velocity *= 0.97f;
             if (Timer == 1)
             {
-                ShakeModSystem.Shake = 1;
+                ShakeScreenPosition.Shake = 1;
             }
             if (Timer < 30)
             {
@@ -69,7 +69,7 @@ namespace Stellamod.Projectiles
 
             if (Timer == 99)
             {
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
                 float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
                 float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 
@@ -116,7 +116,7 @@ namespace Stellamod.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            ShakeModSystem.Shake = 5;
+            ShakeScreenPosition.Shake = 5;
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
             float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
 

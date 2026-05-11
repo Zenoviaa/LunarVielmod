@@ -4,11 +4,11 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -126,7 +126,7 @@ public class VampiricArrow : ModProjectile
     private void HealEffect()
     {
         SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Suckler"), Projectile.position);
-        ShakeModSystem.Shake = 2;
+        ShakeScreenPosition.Shake = 2;
         float Speed = Main.rand.Next(4, 7);
         float offsetRandom = Main.rand.Next(0, 50);
 

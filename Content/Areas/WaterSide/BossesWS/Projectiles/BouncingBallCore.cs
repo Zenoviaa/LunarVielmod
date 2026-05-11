@@ -173,7 +173,7 @@ public class BouncingBallCore : ModProjectile
             if (this.OwnedByLocalClient())
             {
                 for (int i = 0; i < 2; i++)
-                    Projectile.NewProjectile(Projectile.GetItemSource_FromThis(), Projectile.Center, Vector2.Zero,
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                         ModContent.ProjectileType<BouncingBall>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: Slavery);
             }
         }

@@ -11,7 +11,6 @@ using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Town;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -1235,7 +1234,7 @@ public class LeviathanEel : ScarletBoss
                         AttackCounter++;
                     }
                     _bulbCharge = MathHelper.SmoothStep(0f, 1f, EasingFunction.InOutSine(Timer / 240f));
-                    ShakeModSystem.Shake = MathHelper.Lerp(0f, 2f, Timer / 240f);
+                    ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 2f, Timer / 240f);
               
                     if(NPC.velocity.Length() > 1)
                         NPC.velocity *= 0.94f;
@@ -1679,7 +1678,7 @@ public class LeviathanEel : ScarletBoss
                     _charge = MathHelper.Lerp(_charge, 1f, Timer / 180f);
                     _superCharge = MathHelper.SmoothStep(0f, 1f, EasingFunction.InOutSine(Timer / 240f));
                     _bulbCharge = MathHelper.SmoothStep(0f, 1f, EasingFunction.InOutSine(Timer / 240f));
-                    ShakeModSystem.Shake = MathHelper.Lerp(0f, 2f, Timer / 240f);
+                    ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 2f, Timer / 240f);
 
                     if (NPC.velocity.Length() > 1)
                         NPC.velocity *= 0.94f;

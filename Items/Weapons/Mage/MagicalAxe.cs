@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -122,7 +122,7 @@ namespace Stellamod.Items.Weapons.Mage
                 }
 
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StarFlower3"), Projectile.position);
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
                 FXUtil.ShakeCamera(Projectile.position, 1024, 4);
 
             }

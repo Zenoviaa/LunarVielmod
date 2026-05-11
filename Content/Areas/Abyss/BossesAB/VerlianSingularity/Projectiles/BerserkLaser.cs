@@ -4,9 +4,9 @@ using ReLogic.Content;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -73,7 +73,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity.Projectiles
                 spark.Scale *= 5;
 
             }
-            ShakeModSystem.Shake = 6;
+            ShakeScreenPosition.Shake = 6;
             if (Timer % 5 == 0)
             {
                 var zap = LegacyParticle.NewParticle<ZapParticle>(zapPosition + Main.rand.NextVector2Circular(64, 64), Vector2.Zero);

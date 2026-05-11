@@ -8,7 +8,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -84,13 +83,13 @@ public class LightningCrawl : ModProjectile
         }
 
 
-        ShakeModSystem.Shake = 2;
+        ShakeScreenPosition.Shake = 2;
         Projectile.Center = Parent.Center + new Vector2(80, -70).RotatedBy(Parent.rotation);
         float maxBeamLength = 2000; 
         Vector2 fireVelocity = Parent.rotation.ToRotationVector2();
         float length = ProjectileHelper.PerformBeamHitscan(Projectile.Center, fireVelocity, maxBeamLength);
         Tile tile = Main.tile[Projectile.Center.ToTileCoordinates()];
-        if (tile.HasTile && Main.tileSolid[tile.type])
+        if (tile.HasTile && Main.tileSolid[tile.TileType])
             length = maxBeamLength;
 
 
@@ -99,7 +98,7 @@ public class LightningCrawl : ModProjectile
 
         if (Timer % 16 == 0 && this.OwnedByLocalClient())
         {
-            Projectile.NewProjectile(Projectile.GetItemSource_FromThis(), Projectile.Center, fireVelocity * length, 
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, fireVelocity * length, 
                 ModContent.ProjectileType<BabyZap>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
         if (Main.rand.NextBool(4))

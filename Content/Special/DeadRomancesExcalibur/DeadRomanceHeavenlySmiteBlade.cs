@@ -2,8 +2,8 @@
 using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
@@ -198,7 +198,7 @@ public class DeadRomanceHeavenlySmiteBlade : ModProjectile
             sear.fadeToColor = Color.Black;
             sear.Scale *= 0.5f;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
 
             for (float f = 0; f < 2f; f++)
             {

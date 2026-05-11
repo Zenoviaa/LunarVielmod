@@ -11,7 +11,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.IO;
@@ -757,7 +756,7 @@ public class Steamroller : ScarletBoss,
         Vector2 shootVelocity = -Vector2.UnitY * 45;
         NPC.velocity = shootVelocity;
         NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
-        ShakeModSystem.Shake = 3;
+        ShakeScreenPosition.Shake = 3;
         if (Timer > 200 || NPC.Center.Y < MyTarget.Bottom.Y)
         {
             SwitchState(AIState.Phase_TransitionFall);
@@ -942,7 +941,7 @@ public class Steamroller : ScarletBoss,
         Vector2 shootVelocity = -Vector2.UnitY * 35;
         NPC.velocity = shootVelocity;
         NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
-        ShakeModSystem.Shake = 3;
+        ShakeScreenPosition.Shake = 3;
         if (Timer > 200 || NPC.Center.Y < MyTarget.Bottom.Y)
         {
             SwitchState(AIState.MeteorJump_Repair);
@@ -1060,7 +1059,7 @@ public class Steamroller : ScarletBoss,
         Vector2 shootVelocity = -Vector2.UnitY * 45;
         NPC.velocity = shootVelocity;
         NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
-        ShakeModSystem.Shake = 3;
+        ShakeScreenPosition.Shake = 3;
         if (Timer > 200 || NPC.Center.Y < MyTarget.Bottom.Y)
         {
             SwitchState(AIState.HeadPop_Spin);
@@ -1175,7 +1174,7 @@ public class Steamroller : ScarletBoss,
         _contactDamage = true;
         _renderDashTrail = true;
 
-        ShakeModSystem.Shake = 3;
+        ShakeScreenPosition.Shake = 3;
         Vector2 velToTarget = _targetPosition;
         float ratio = Timer / 60f;
         float ease = Easing.InExpo(ratio);
@@ -1302,7 +1301,7 @@ public class Steamroller : ScarletBoss,
         Vector2 shootVelocity = -Vector2.UnitY * 45;
         NPC.velocity = shootVelocity;
         NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
-        ShakeModSystem.Shake = 3;
+        ShakeScreenPosition.Shake = 3;
         if (Timer > 200 || NPC.Center.Y < MyTarget.Bottom.Y)
         {
             SwitchState(AIState.Cannon_Barrage);
@@ -1363,7 +1362,7 @@ public class Steamroller : ScarletBoss,
             if (Timer >= deathTime)
             {
                 FXUtil.ShakeCamera(NPC.Center, 1024, 8);
-                ShakeModSystem.Shake = 5;
+                ShakeScreenPosition.Shake = 5;
                 for (int i = 0; i < SteamRollerSegments.Length / 2; i++)
                 {
                     var steamRollerSegment = SteamRollerSegments[i];
@@ -1602,7 +1601,7 @@ public class Steamroller : ScarletBoss,
         Vector2 shootVelocity = -Vector2.UnitY * 45;
         NPC.velocity = shootVelocity;
         NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
-        ShakeModSystem.Shake = 3;
+        ShakeScreenPosition.Shake = 3;
         if (Timer > 200 || NPC.Center.Y < MyTarget.Bottom.Y)
         {
             SwitchState(AIState.DungDefenderRock_End);
@@ -1815,7 +1814,7 @@ public class Steamroller : ScarletBoss,
             SoundEngine.PlaySound(sound, NPC.position);
         }
 
-        ShakeModSystem.Shake = 4;
+        ShakeScreenPosition.Shake = 4;
         float ratio = Timer / 30f;
         float ease = EasingFunction.QuadraticBump(ratio);
         _squishScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.9f), ease);
@@ -2013,7 +2012,7 @@ public class Steamroller : ScarletBoss,
         sear.outerColor = Color.Blue;
         sear.fadeToColor = Color.Black;
         FXUtil.ShakeCamera(NPC.Center, 1024, 8);
-        ShakeModSystem.Shake = 2;
+        ShakeScreenPosition.Shake = 2;
 
 
         for (float f = 0; f < 4f; f++)
@@ -2096,7 +2095,7 @@ public class Steamroller : ScarletBoss,
         Vector2 shootVelocity = -Vector2.UnitY * 45;
         NPC.velocity = shootVelocity;
         NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
-        ShakeModSystem.Shake = 3;
+        ShakeScreenPosition.Shake = 3;
         if (Timer > 200 || NPC.Center.Y < MyTarget.Bottom.Y)
         {
             switch (_variant)

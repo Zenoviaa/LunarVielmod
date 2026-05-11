@@ -6,18 +6,11 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -95,7 +88,7 @@ public class ReavestingScytheSpinningSlash : BaseSwingProjectileV2
         if (Timer % 24 == 0)
         {
             Vector2 spawnPoint = Projectile.Center + Main.rand.NextVector2CircularEdge(256, 256);
-            Vector2 velocity = spawnPoint - Projectile.Center  ;
+            Vector2 velocity = spawnPoint - Projectile.Center;
             velocity *= 0.05f;
             var p = FXUtil.GlowStretch(spawnPoint, velocity);
             p.InnerColor = Color.White;
@@ -133,9 +126,9 @@ public class ReavestingScytheSpinningSlash : BaseSwingProjectileV2
             float dist = Vector2.Distance(Owner.Center, npc.Center);
             if (dist <= 444)
             {
-                if(Timer % 128 == 0)
+                if (Timer % 128 == 0)
                 {
-                    if(this.OwnedByLocalClient())
+                    if (this.OwnedByLocalClient())
                         npc.SimpleStrikeNPC(Projectile.damage, 1);
                 }
 

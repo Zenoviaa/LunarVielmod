@@ -5,12 +5,12 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.NPCs.Bosses.Fenix.Projectiles;
 using Stellamod.Trailing;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -156,7 +156,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 }
                 Player owner = Main.player[Projectile.owner];
                 owner.Hurt(new PlayerDeathReason(), 30, 1);
-                ShakeModSystem.Shake = 12;
+                ShakeScreenPosition.Shake = 12;
             }
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

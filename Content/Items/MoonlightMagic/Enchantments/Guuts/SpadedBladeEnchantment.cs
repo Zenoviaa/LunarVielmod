@@ -13,8 +13,8 @@ using Stellamod.Projectiles.Paint;
 using Stellamod.Trails;
 using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Dusts;
-using Stellamod.UI.Systems;
 using Terraria.Audio;
+using Stellamod.Core.Utilities;
 
 namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Guuts
 {
@@ -124,7 +124,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Enchantments.Guuts
               glowColor: Color.LightBlue,
               outerGlowColor: Color.Blue, duration: Main.rand.NextFloat(12, 25), baseSize: Main.rand.NextFloat(0.03f, 0.06f));
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Parendine2"), target.position);
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             for (int i = 0; i < 8; i++)
             {
                 Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.Gray, 0.5f).noGravity = true;

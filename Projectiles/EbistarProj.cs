@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.Systems;
+using Stellamod.Core.Utilities;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -46,7 +46,7 @@ namespace Stellamod.Projectiles
             {
                 // Our timer has finished, do something here:
                 // Main.PlaySound, Dust.NewDust, Projectile.NewProjectile, etc. Up to you.
-                ShakeModSystem.Shake = 8;
+                ShakeScreenPosition.Shake = 8;
 
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/MorrowSalfi"));
                 Timer = 0;

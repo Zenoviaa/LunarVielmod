@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
-using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -50,7 +50,7 @@ namespace Stellamod.Projectiles
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             for (int i = 0; i < 8; i++)
             {
                 Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 3)).RotatedByRandom(19.0), 0, Color.DeepSkyBlue, 0.5f).noGravity = true;

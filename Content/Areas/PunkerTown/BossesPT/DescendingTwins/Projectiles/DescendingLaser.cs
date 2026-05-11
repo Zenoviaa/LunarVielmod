@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.ModLoader;
@@ -47,7 +47,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
         {
             base.AI();
             Timer++;
-            ShakeModSystem.Shake = 1;
+            ShakeScreenPosition.Shake = 1;
             Projectile.Center = Parent.Center;
             Projectile.velocity = Parent.rotation.ToRotationVector2() * Projectile.velocity.Length();
             float numFlamePos = FlamePos.Length;

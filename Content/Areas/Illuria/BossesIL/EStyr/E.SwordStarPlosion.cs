@@ -6,10 +6,10 @@ using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -68,7 +68,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if (Timer == 1)
             {
-                ShakeModSystem.Shake = 32;
+                ShakeScreenPosition.Shake = 32;
                 FXUtil.ShakeCamera(Projectile.position, 1024, 4);
 
 

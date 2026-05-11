@@ -10,10 +10,10 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -431,7 +431,7 @@ ModContent.ProjectileType<EventHorizonRift>(), Projectile.damage / 2, Projectile
 ModContent.ProjectileType<EventHorizonRift>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner, ai2: 1);
                 }
             }
-            ShakeModSystem.Shake = 1;
+            ShakeScreenPosition.Shake = 1;
 
             float range = 400f;
             if (Timer % 2 == 0)

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.Systems;
+using Stellamod.Core.Utilities;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -100,7 +100,7 @@ namespace Stellamod.Projectiles.Magic
                 float speedY = Projectile.velocity.Y * 30;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX * 1f, speedY, ModContent.ProjectileType<RhamenthalShot>(), (int)(Projectile.damage * 12), 0f, Projectile.owner, 0f, 0f);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Rhamenthal"), Projectile.position);
-                ShakeModSystem.Shake = 9;
+                ShakeScreenPosition.Shake = 9;
             }
 
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
-using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -61,7 +61,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
             int duration = 180;
             if (ai_Timer < duration)
             {
-                ShakeModSystem.Shake = ai_Timer / 18;
+                ShakeScreenPosition.Shake = ai_Timer / 18;
                 if (ai_Timer % 4 == 0)
                 {
 
@@ -86,7 +86,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                     d.noGravity = true;
                 }
 
-                ShakeModSystem.Shake = 0;
+                ShakeScreenPosition.Shake = 0;
                 Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(NPC.Center, 1024f, 32f);
 
                 //oh wait i need net code

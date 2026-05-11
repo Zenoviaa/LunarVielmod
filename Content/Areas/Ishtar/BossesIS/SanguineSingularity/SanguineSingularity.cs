@@ -9,11 +9,11 @@ using Stellamod.Content.Gores;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Skies;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -518,7 +518,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 screenShaderSystem.TintScreen(Color.Red * 0.3f, 1f, 10f);
             }
 
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             _animation = AnimationState.Idle;
             _singularityDrawOverridePosition = NPC.Center;
 
@@ -607,7 +607,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     }
 
                 }
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
                 var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.TintScreen(Color.Red, 1f, 10f);
                 SoundStyle burstSound = AssetRegistry.Sounds.SanguineSingularity.SanguineBurst;
@@ -822,13 +822,13 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                
                 if (AttackNumber == 3)
                 {
-                    ShakeModSystem.Shake = 24;
+                    ShakeScreenPosition.Shake = 24;
                     SoundStyle cry = AssetRegistry.Sounds.SanguineSingularity.SanguineCry2;
                     SoundEngine.PlaySound(cry, NPC.position);
                 }
                 else
                 {
-                    ShakeModSystem.Shake = 12;
+                    ShakeScreenPosition.Shake = 12;
                     FXUtil.ShakeCamera(NPC.Center, 1024, 8);
                 }
             }
@@ -956,7 +956,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 _playedInSound = true;
             }
 
-            ShakeModSystem.Shake = 3;
+            ShakeScreenPosition.Shake = 3;
             EvilFlicker(20);
 
             _draw.alpha = 0;
@@ -1040,7 +1040,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
                 ShowNamePlate();
                 CreateRedFlash();
-                ShakeModSystem.Shake = 12;
+                ShakeScreenPosition.Shake = 12;
                 FXUtil.ShakeCamera(NPC.Center, 1024, 8);
                 SoundStyle spawnSound = AssetRegistry.Sounds.SanguineSingularity.SanguineCry;
                 SoundEngine.PlaySound(spawnSound, NPC.position);
@@ -1053,7 +1053,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             {
                 NPC.velocity *= 0.9f;
                 _animation = AnimationState.Idle;
-                ShakeModSystem.Shake = 8;
+                ShakeScreenPosition.Shake = 8;
                 if (Timer % 9 == 0)
                 {
                     LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
@@ -1238,7 +1238,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
             if(Timer >= 100 && Timer % 10 == 0)
             {
                 LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
-                ShakeModSystem.Shake = 8;
+                ShakeScreenPosition.Shake = 8;
             }
             if (Timer == deathTime)
             {
@@ -1272,7 +1272,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 SoundStyle deathSound = AssetRegistry.Sounds.SanguineSingularity.SanguineDeath;
                 SoundEngine.PlaySound(deathSound, NPC.position);
                 FXUtil.ShakeCamera(NPC.Center, 1024, 8);
-                ShakeModSystem.Shake = 9;
+                ShakeScreenPosition.Shake = 9;
                 NPC.Kill();
             }
         }
@@ -1405,7 +1405,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                 sanguineBurstReady.Volume = 0.1f;
                 SoundEngine.PlaySound(sanguineBurstReady, NPC.position);
                 FXUtil.ShakeCamera(NPC.Center, 1024, 8);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             TargetOutlineColor = Color.Yellow;
@@ -1465,7 +1465,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
                 var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                 screenShaderSystem.TintScreen(Color.Red * 0.15f, 0.5f, 30f);
-                ShakeModSystem.Shake = 8;
+                ShakeScreenPosition.Shake = 8;
                 FXUtil.ShakeCamera(NPC.Center, 1024, 8);
                 for (float f = 0f; f < 4f; f++)
                 {
@@ -1753,7 +1753,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
                     _draw.headless = true;
                     var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.Red, Color.DarkBlue, Color.Black);
                     boom.Scale *= 2;
-                    ShakeModSystem.Shake = 32;
+                    ShakeScreenPosition.Shake = 32;
                     if (MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero,
@@ -1887,7 +1887,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity
 
                 var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.Red, Color.DarkBlue, Color.Black);
                 boom.Scale *= 2;
-                ShakeModSystem.Shake = 32;
+                ShakeScreenPosition.Shake = 32;
                 if (MultiplayerHelper.IsHost)
                 {
                     Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero,

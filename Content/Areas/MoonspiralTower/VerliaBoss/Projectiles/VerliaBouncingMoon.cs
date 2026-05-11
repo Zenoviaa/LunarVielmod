@@ -7,7 +7,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
@@ -178,7 +177,7 @@ public class VerliaBouncingMoon : ModProjectile
 
     private void BounceEffect()
     {
-        ShakeModSystem.Shake = 2;
+        ShakeScreenPosition.Shake = 2;
         FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
         _flashAlpha = 1f;
         _squishScale = new Vector2(0.8f, 1.4f);
@@ -278,7 +277,7 @@ public class VerliaBouncingMoon : ModProjectile
                 var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Bottom, -Projectile.velocity);
                 p2.Scale *= 1.5f;
             }
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
             Projectile.velocity.Y *= 1.05f;
         }
         else

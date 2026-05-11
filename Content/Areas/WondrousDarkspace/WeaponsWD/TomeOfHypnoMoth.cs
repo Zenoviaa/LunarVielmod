@@ -15,7 +15,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Projectiles;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -24,6 +23,7 @@ using Stellamod.Items.Materials;
 using Stellamod.Core.Effects;
 using Stellamod.Trailing;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Utilities;
 
 namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 {
@@ -181,7 +181,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             }
 
 
-            ShakeModSystem.Shake = 7;
+            ShakeScreenPosition.Shake = 7;
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
             float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, speedXa * 0, speedYa * 0,

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Utilities;
 using Stellamod.Projectiles.Magic;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
@@ -64,7 +64,7 @@ namespace Stellamod.Projectiles
             Projectile.velocity *= 1.04f;
             if (nigga < 2)
             {
-                ShakeModSystem.Shake = 5;
+                ShakeScreenPosition.Shake = 5;
             }
 
 

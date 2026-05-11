@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.UI.Systems;
-using Terraria;
+﻿using Terraria;
 using Terraria.Graphics.Capture;
 using Terraria.ModLoader;
 

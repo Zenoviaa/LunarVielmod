@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Utilities;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -63,7 +63,7 @@ namespace Stellamod.Projectiles.Ammo
         public override void OnKill(int timeLeft)
         {
             // This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom") { PitchVariance = 0.15f }, Projectile.position);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<FireBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
@@ -72,7 +72,7 @@ namespace Stellamod.Projectiles.Ammo
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom") { PitchVariance = 0.15f }, Projectile.position);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
                 ModContent.ProjectileType<FireBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.Systems;
+using Stellamod.Core.Utilities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -67,7 +67,7 @@ namespace Stellamod.Items.Armors.Govheil
                 }
 
                 Projectile.Kill();
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
             alphaCounter += 0.2f;
@@ -127,7 +127,7 @@ namespace Stellamod.Items.Armors.Govheil
                 Vector2 speed2 = Main.rand.NextVector2CircularEdge(0.5f, 0.5f);
             }
 
-            ShakeModSystem.Shake = 3;
+            ShakeScreenPosition.Shake = 3;
             SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact, target.position);
             Projectile.Kill();
             base.OnHitNPC(target, hit, damageDone);

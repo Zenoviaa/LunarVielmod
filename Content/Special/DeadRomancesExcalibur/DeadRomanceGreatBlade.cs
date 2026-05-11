@@ -6,10 +6,10 @@ using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Explosions;
 using Stellamod.Visual.Particles;
 using System;
@@ -484,7 +484,7 @@ public class DeadRomanceGreatBlade : ModProjectile
         {
             GrowUp();
         }
-        ShakeModSystem.Shake = MathHelper.Lerp(1f, 4f, ratio);
+        ShakeScreenPosition.Shake = MathHelper.Lerp(1f, 4f, ratio);
         float dir = -Owner.direction;
         float inc = dir * 0.02f * MathHelper.Lerp(1f, 0f, ratio) * 1f / fixer;
         _rotationChargeOffset += inc;

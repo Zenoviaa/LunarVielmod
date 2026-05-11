@@ -2,11 +2,11 @@ using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Players;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -120,7 +120,7 @@ public class VoidBlasterExplosionBomb : ModProjectile
         Timer++;
         if (Timer == 1)
         {
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"), Projectile.position);
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
@@ -159,7 +159,7 @@ public class VoidBlasterExplosionBomb : ModProjectile
                 particle.Rotation = rot + MathHelper.ToRadians(45);
             }
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), Projectile.position);
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             for (int i = 0; i < 6; i++)
             {
 
