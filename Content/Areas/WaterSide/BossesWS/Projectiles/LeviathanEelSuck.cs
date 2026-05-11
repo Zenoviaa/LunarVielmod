@@ -61,6 +61,7 @@ public class LeviathanRock : ModProjectile
     private Asset<Texture2D> _outlineTextureAsset;
     private ref float Timer => ref Projectile.ai[0];
     private NPC Parent => Main.npc[(int)Projectile.ai[1]];
+    private ref float Style => ref Projectile.ai[2];
     private int Frame
     {
         get => (int)Projectile.ai[2];
@@ -89,13 +90,17 @@ public class LeviathanRock : ModProjectile
     {
         base.AI();
         Timer++;
-        if(Timer == 1 && this.OwnedByLocalClient())
+        if(Frame < 4)
         {
-            Frame = Main.rand.Next(3);
-            Projectile.netUpdate = true;
+            if (Timer == 1 && this.OwnedByLocalClient())
+            {
+                Frame = Main.rand.Next(3);
+                Projectile.netUpdate = true;
+            }
+            Projectile.frame = Frame;
         }
-        Projectile.frame = Frame;
-        if(Timer >= 60f)
+
+        if(Timer >= 60f && Frame < 4)
         {
             Projectile.hostile = true;
         }
@@ -115,18 +120,56 @@ public class LeviathanRock : ModProjectile
             Projectile.Kill();
     }
     
+    private void DrawWhite(SpriteBatch sb)
+    {
+        SpritebatchDrawer projDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        if (Frame == 4)
+        {
+            projDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);
+            projDrawer.rotation = Projectile.rotation;
+
+        }
+
+        float distanceToParent = Vector2.Distance(Projectile.Center, Parent.Center);
+        float outRatio = distanceToParent / 1000f;
+        projDrawer.scale = Vector2.One * MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(outRatio)) * EasingFunction.InOutSine(Timer / 30f);
+        if (Frame == 4)
+        {
+            projDrawer.scale *= 1.5f;
+
+        }
+        projDrawer.color = Color.Yellow;
+        Main.spriteBatch.Draw(projDrawer);
+
+    }
     public override bool PreDraw(ref Color lightColor)
     {
         _outlineTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_Outline");
         SpritebatchDrawer projDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        if (Frame == 4)
+        {
+            projDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);
+            projDrawer.rotation = Projectile.rotation;
+      
+        }
+          
         float distanceToParent = Vector2.Distance(Projectile.Center, Parent.Center);
         float outRatio = distanceToParent / 1000f;
         projDrawer.scale = Vector2.One * MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(outRatio)) * EasingFunction.InOutSine(Timer/30f);
+    if(Frame == 4)
+        {
+            projDrawer.scale *= 1.5f;
+            OutlineRenderer.Queue(DrawWhite);
+        }
         Main.spriteBatch.Draw(projDrawer);
 
-        projDrawer.texture = _outlineTextureAsset.Value;
-        projDrawer.color = Projectile.hostile ? Color.Red : Color.Yellow;
-        Main.spriteBatch.Draw(projDrawer);
+        if(Frame < 4)
+        {
+            projDrawer.texture = _outlineTextureAsset.Value;
+            projDrawer.color = Projectile.hostile ? Color.Red : Color.Yellow;
+            Main.spriteBatch.Draw(projDrawer);
+        }
+
         return false;
     }
 }
@@ -134,6 +177,7 @@ public class LeviathanEelSuck : ModProjectile
 {
     private ref float Timer => ref Projectile.ai[0];
     private NPC Parent => Main.npc[(int)Projectile.ai[1]];
+    private ref float Style => ref Projectile.ai[2];
     private TexturedQuad _quad;
     public TexturedQuad Quad
     {
@@ -189,15 +233,32 @@ public class LeviathanEelSuck : ModProjectile
             fx.OuterGlowColor = Color.DarkGray;
         }
 
-        if (this.OwnedByLocalClient() && Timer % 15 == 0 && Projectile.timeLeft > 100)
+        if(Style == 0)
         {
-            Vector2 offset = Projectile.rotation.ToRotationVector2();
-            offset = offset.RotatedByRandom(MathHelper.ToRadians(45));
-            offset *= Main.rand.NextFloat(1200, 1400);
-            Vector2 startPos = Projectile.Center + offset;
-            Projectile.NewProjectile(Projectile.GetSource_FromAI(), startPos, (Projectile.Center - startPos).SafeNormalize(Vector2.Zero),
-                ModContent.ProjectileType<LeviathanRock>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: Parent.whoAmI);
+            if (this.OwnedByLocalClient() && Timer % 15 == 0 && Projectile.timeLeft > 100)
+            {
+                Vector2 offset = Projectile.rotation.ToRotationVector2();
+                offset = offset.RotatedByRandom(MathHelper.ToRadians(45));
+                offset *= Main.rand.NextFloat(1200, 1400);
+                Vector2 startPos = Projectile.Center + offset;
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), startPos, (Projectile.Center - startPos).SafeNormalize(Vector2.Zero),
+                    ModContent.ProjectileType<LeviathanRock>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: Parent.whoAmI);
+            }
+        } else if (Style == 1)
+        {
+            if (Projectile.timeLeft > 100)
+                Projectile.timeLeft = 100;
+            if(Timer == 5 && this.OwnedByLocalClient())
+            {
+                Vector2 offset = Projectile.rotation.ToRotationVector2();
+                offset = offset.RotatedByRandom(MathHelper.ToRadians(10));
+                offset *= 800;
+                Vector2 startPos = Projectile.Center + offset;
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), startPos, (Projectile.Center - startPos).SafeNormalize(Vector2.Zero),
+                    ModContent.ProjectileType<LeviathanRock>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: Parent.whoAmI, ai2: 4);
+            }
         }
+  
 
         foreach(Player player in Main.ActivePlayers)
         {

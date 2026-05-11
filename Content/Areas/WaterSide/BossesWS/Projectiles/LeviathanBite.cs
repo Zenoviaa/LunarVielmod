@@ -46,6 +46,8 @@ public class LeviathanBite : ModProjectile
    
 
         }
+        ProjectileID.Sets.TrailCacheLength[Type] = 16;
+        ProjectileID.Sets.TrailingMode[Type] = 2;
         if(Timer == 30)
         {
             ShakeModSystem.Shake = 4;
@@ -128,11 +130,18 @@ public class LeviathanBite : ModProjectile
             Vector2 off = (f + Main.GlobalTimeWrappedHourly).ToRotationVector2();
             Draw(off * 4);
         }
+        for (int i = 0; i < Projectile.oldPos.Length; i++)
+        {
+            alpha = MathHelper.Lerp(1f, 0f, (float)i / (float)Projectile.oldPos.Length);
+            Vector2 pos = Projectile.oldPos[i] + Projectile.Size * 0.5f;
+            Draw(pos - Projectile.Center);
+        }
         Main.spriteBatch.Restart(effect: shader.Effect);
 
     
 
         alpha = 1f;
+
         Draw(Main.rand.NextVector2Circular(1,1));
 
         Main.spriteBatch.RestartDefaults();

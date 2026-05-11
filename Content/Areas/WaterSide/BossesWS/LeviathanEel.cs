@@ -18,10 +18,71 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WaterSide.BossesWS;
+
+public class EelSpeedTrail : ModProjectile
+{
+    public override string Texture => TextureRegistry.EmptyTexture;
+    private NPC Parent => Main.npc[(int)Projectile.ai[0]];
+    private ref float Timer => ref Projectile.ai[1];
+    public override void SetStaticDefaults()
+    {
+        ProjectileID.Sets.TrailCacheLength[Type] = 64;
+        ProjectileID.Sets.TrailingMode[Type] = 2;
+        ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.tileCollide = false;
+        Projectile.timeLeft = 60;
+        Projectile.ignoreWater = true;
+        Projectile.width = 1;
+        Projectile.height = 1;
+        Projectile.penetrate = -1;
+    }
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if(Timer == 1)
+        {
+
+        }
+
+        if(Timer <= 60)
+        {
+            Projectile.Center = Parent.Center;
+        }
+    }
+    private float GetSpeedWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(342, 0, ratio);
+    }
+    private Color GetSpeedColor(float ratio)
+    {
+        float ease = EasingFunction.InOutSine((float)Projectile.timeLeft / 30f);
+        return Color.White * EasingFunction.QuadraticBump(ratio) * ease;
+    }
+
+    private void DrawSpeedTrail(GraphicsDevice gDevice)
+    {
+        BasicLaserShader shader = BasicLaserShader.Instance;
+        shader.LaserTexture = TrailRegistry.Beamlight;
+        shader.InnerColor = Color.White;
+        shader.OuterColor = Color.SkyBlue;
+        TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetSpeedColor, GetSpeedWidth, shader, Projectile.Size * 0.5f);
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
+        PixelationManager.QueuePrimitivesDrawAction(DrawSpeedTrail);
+        return false;
+    }
+}
 public class LeviathanEel : ScarletBoss
 {
 
@@ -109,6 +170,8 @@ public class LeviathanEel : ScarletBoss
     private Vector2 _startPosition;
     private Vector2 _initialVelocity;
 
+    private float _blackAlpha;
+    private float _eyeFlashAlpha;
     private float _superCharge;
     private float _bulbCharge;
     private float _charge;
@@ -207,6 +270,70 @@ public class LeviathanEel : ScarletBoss
             Vector2 chargePos = NPC.Center + new Vector2(90, -64).RotatedBy(NPC.rotation);
             return chargePos;
         }
+    }
+    public Vector2 EyeFlashPosition
+    {
+        get
+        {
+            Vector2 chargePos = NPC.Center + new Vector2(16, -16).RotatedBy(NPC.rotation);
+            return chargePos;
+        }
+    }
+
+    private Vector2 FindArenaCenter()
+    {
+        Point playerPoint = MyTarget.Center.ToTileCoordinates();
+        Point right = playerPoint;
+        Point left = playerPoint;
+
+        for (int x = 0; x < 100; x++)
+        {
+            right = playerPoint + new Point(x, 0);
+            if (!WorldGen.InWorld(right.X, right.Y))
+                break;
+            Tile tile = Main.tile[right];
+            if (tile.HasTile && Main.tileSolid[tile.TileType])
+                break;
+        }
+        for (int x = 0; x < 100; x++)
+        {
+            left = playerPoint - new Point(x, 0);
+            if (!WorldGen.InWorld(left.X, left.Y))
+                break;
+            Tile tile = Main.tile[left];
+            if (tile.HasTile && Main.tileSolid[tile.TileType])
+                break;
+        }
+        Point up = playerPoint;
+        Point down = playerPoint;
+        for (int y = 0; y < 100; y++)
+        {
+            down = playerPoint + new Point(0, y);
+            if (!WorldGen.InWorld(down.X, down.Y))
+                break;
+            Tile tile = Main.tile[down];
+            if (tile.HasTile && Main.tileSolid[tile.TileType])
+                break;
+        }
+        for (int x = 0; x < 100; x++)
+        {
+            up = playerPoint - new Point(0, x);
+            if (!WorldGen.InWorld(up.X, up.Y))
+                break;
+            Tile tile = Main.tile[up];
+            if (tile.HasTile && Main.tileSolid[tile.TileType])
+                break;
+        }
+
+
+        Point midHorizontal = left + right;
+        midHorizontal.X /= 2;
+
+        Point midVertical = up + down;
+        midVertical.Y /= 2;
+
+        return new Point(midHorizontal.X, midVertical.Y).ToWorldCoordinates();
+
     }
     public override void SetStaticDefaults()
     {
@@ -340,10 +467,11 @@ public class LeviathanEel : ScarletBoss
         }
 
         _outliner.SetDefaults();
-        _charge = MathHelper.Lerp(_charge, 0f, 0.1f);
-        _bulbCharge = MathHelper.Lerp(_bulbCharge, 0f, 0.1f);
-        _superCharge = MathHelper.Lerp(_superCharge, 0f, 0.1f);
-       
+        _charge = MathHelper.Lerp(_charge, 0f, 0.01f);
+        _bulbCharge = MathHelper.Lerp(_bulbCharge, 0f, 0.01f);
+        _superCharge = MathHelper.Lerp(_superCharge, 0f, 0.01f);
+        _eyeFlashAlpha = MathHelper.Lerp(_eyeFlashAlpha, 0f, 0.1f);
+        _blackAlpha = MathHelper.Lerp(_blackAlpha, 0f, 0.1f);
         HoldEyesInFrontOfMe();
         switch (State)
         {
@@ -507,7 +635,7 @@ public class LeviathanEel : ScarletBoss
         if (!WorldGen.InWorld(point.X, point.Y))
             return false;
         Tile tile = Main.tile[point];
-        return !tile.HasTile && NPC.Bottom.Y + 252 > MyTarget.Bottom.Y;
+        return !tile.HasTile && NPC.Bottom.Y + 300 > FindArenaCenter().Y;
     }
     private void DiveOutToIdle()
     {
@@ -801,6 +929,10 @@ public class LeviathanEel : ScarletBoss
                     _effects |= EelVisualEffect.Invisible;
                     _effects |= EelVisualEffect.Mirage;
                     _outliner.warning = true;
+                    if(Timer >= 40)
+                    {
+                       
+                    }
                     if (Timer >= 60)
                     {
                         Timer = 0;
@@ -810,12 +942,15 @@ public class LeviathanEel : ScarletBoss
                 break;
             case 2:
                 {
+                    _eyeFlashAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / SDashChargeTime));
                     AnimateMouthBasedOnDistance();
                     if (Timer == 1)
                     {
                         _initialVelocity = NPC.velocity;
                         if (MultiplayerHelper.IsHost)
                         {
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center + _facingDirection * 128, _facingDirection,
+                                ModContent.ProjectileType<EelSpeedTrail>(), Bite_Damage, 1, Main.myPlayer, ai0: NPC.whoAmI);
                             Projectile.NewProjectile(SourceFromThis, NPC.Center + _facingDirection * 128, _facingDirection,
                                 ModContent.ProjectileType<LeviathanBite>(), Bite_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: 1);
                         }
@@ -910,7 +1045,7 @@ public class LeviathanEel : ScarletBoss
                 {
                     if (Timer == 1)
                     {
-                        Teleport(MyTarget.Center + new Vector2(0, -700));
+                        Teleport(FindArenaCenter() + new Vector2(0, -700));
                     }
 
                     NPC.velocity.X *= 0.8f;
@@ -942,7 +1077,40 @@ public class LeviathanEel : ScarletBoss
                 break;
             case 3:
                 {
+                    _outliner.warning = true;
+                    if (Timer == 1 && MultiplayerHelper.IsHost)
+                    {
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.UnitY, ModContent.ProjectileType<LeviathanEelSuck>(), Suck_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: 1);
+                    }
+                    if(Timer >= 150)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
                     CloseMouth();
+
+                    NPC.velocity = Vector2.Lerp(_facingDirection * 2, -_facingDirection * 7, EasingFunction.QuadraticBump(Timer / 60));
+                    _charge = MathHelper.Lerp(_charge, 1f, 0.04f);
+                    _outliner.warning = true;
+                    _eyeFlashAlpha = MathHelper.Lerp(1f, 0f, Timer / 30f);
+                    if (Timer >= 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 5:
+                {
+                    OpenMouth();
+                    if(Timer == 1)
+                    {
+                        NPC.velocity += _facingDirection * 15;
+                    }
                     if (Timer == 1 && MultiplayerHelper.IsHost)
                     {
                         Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.UnitY * 12, 
@@ -952,7 +1120,7 @@ public class LeviathanEel : ScarletBoss
                     }
 
                     _outliner.attacking = true;
-                    NPC.velocity *= 0.88f;
+                    NPC.velocity *= 0.94f;
                     if (Timer >= 60)
                     {
                         Timer = 0;
@@ -960,7 +1128,7 @@ public class LeviathanEel : ScarletBoss
                     }
                 }
                 break;
-            case 4:
+            case 6:
                 {
                     CloseMouth();
                     DiveOutToIdle();
@@ -1099,11 +1267,11 @@ public class LeviathanEel : ScarletBoss
                         NPC.TargetClosest();
                         NPC.velocity = Vector2.Zero;
                         _arenaCenter = MyTarget.Center - new Vector2(0, 128);
-                        Teleport(MyTarget.Center - new Vector2(1400, 0).RotatedByRandom(MathHelper.TwoPi));
+                        Teleport(FindArenaCenter() - new Vector2(1400, 0).RotatedByRandom(MathHelper.TwoPi));
                     }
 
                     float speed = MathHelper.Lerp(24, 4f, EasingFunction.InSine(Timer / 100f));
-                    Vector2 dir = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                    Vector2 dir = (FindArenaCenter() - NPC.Center).SafeNormalize(Vector2.Zero);
                     MoveAndSinToward(dir, speed);
                     FaceVelocity();
                     _bulbCharge = 1f;
@@ -1122,7 +1290,7 @@ public class LeviathanEel : ScarletBoss
                 break;
             case 6:
                 {
-                    NPC.velocity *= 0.98f;
+                    NPC.velocity *= 0.96f;
                     if(Timer >= 30)
                     {
                         Timer = 0;
@@ -1155,11 +1323,11 @@ public class LeviathanEel : ScarletBoss
                     _charge = 1f;
                     _outliner.attacking = true;
                     float currentRotation = NPC.rotation;
-                    float newRotation = currentRotation + MathHelper.Lerp(0f, 0.112f * _rotationDir, EasingFunction.QuadraticBump(Timer / 100f) *
-                        EasingFunction.InExpo(Timer / 60f));
+                    float newRotation = currentRotation + MathHelper.Lerp(0f, 0.06f * _rotationDir, EasingFunction.QuadraticBump(Timer / 200f) *
+                        EasingFunction.InExpo(Timer / 120f));
                     _facingDirection = newRotation.ToRotationVector2();
-                    NPC.velocity *= 0.98f;
-                    if (Timer >= 100f)
+                    NPC.velocity *= 0.96f;
+                    if (Timer >= 200f)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -1276,11 +1444,13 @@ public class LeviathanEel : ScarletBoss
                     {
                         if (MultiplayerHelper.IsHost)
                         {
+          
                             Projectile.NewProjectile(SourceFromThis, NPC.Center + _facingDirection * 128, _facingDirection,
                                 ModContent.ProjectileType<LeviathanBite>(), Bite_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI);
                         }
                     }
 
+                    _eyeFlashAlpha = MathHelper.Lerp(1f, 0f, Timer / 30f);
                     if (Timer >= 30)
                     {
                         Timer = 0;
@@ -1293,12 +1463,20 @@ public class LeviathanEel : ScarletBoss
                     if (Timer == 1)
                     {
                         _initialVelocity = NPC.velocity;
-
+         
                     }
 
                     if (Timer < 5)
                     {
                         _startPosition = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * SDashSpeed;
+                    }
+                    if(Timer == 1)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero,
+              ModContent.ProjectileType<EelSpeedTrail>(), Bite_Damage, 1, Main.myPlayer, ai0: NPC.whoAmI);
+                        }
                     }
 
                     if (Timer % 5 == 0)
@@ -1377,7 +1555,8 @@ public class LeviathanEel : ScarletBoss
         {
             case 0:
                 {
-                    FullTint.SetColor(Color.Black, Timer / 60f);
+                    NPC.velocity *= 0.8f;
+                    _blackAlpha = MathHelper.Lerp(0f, 1f, Timer / 60f);
                    if(Timer >= 60f)
                     {
                         Timer = 0;
@@ -1386,6 +1565,12 @@ public class LeviathanEel : ScarletBoss
                 }
                 break;
             case 1:
+                {
+                    _blackAlpha = 1f;
+                    DiveOutNextStateFast();
+                }
+                break;
+            case 2:
                 {
                     _inPhase2 = true;
                     SwitchState(AIState.Eyeline_Dash);
@@ -1502,7 +1687,8 @@ public class LeviathanEel : ScarletBoss
                     {
 
                         float alpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 300f));
-                        FullTint.SetColor(Color.Black, alpha);
+                        _blackAlpha = alpha;
+                        //Lighting.GlobalBrightness = MathHelper.Lerp(1.2f, 0f, alpha);
                     }
                     if (Timer >= 300)
                     {
@@ -1514,8 +1700,6 @@ public class LeviathanEel : ScarletBoss
                 break;
             case 3:
                 {
-                    float alpha = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / 60f));
-                    FullTint.SetColor(Color.Black, alpha);
                     SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
                     effectsPlayer.darknessCurve = MathHelper.Lerp(1f, 0.2f, EasingFunction.OutExpo(Timer / 30f));
                     _charge = 1f;
@@ -1560,7 +1744,8 @@ public class LeviathanEel : ScarletBoss
     {
         _inPhase2 = true;
         Timer++;
-        float speedMult = MathHelper.Lerp(1f, 0.65f, EasingFunction.Clamp(AttackCounter / 7f));
+        float speedMult = MathHelper.Lerp(1f, 0.75f, EasingFunction.Clamp(AttackCounter / 3f));
+        float dashingTime = 70 * speedMult;
         switch (AttackCycle)
         {
             case 0:
@@ -1574,24 +1759,26 @@ public class LeviathanEel : ScarletBoss
                 break;
             case 1:
                 {
-                    float dashDistance = 900;
+                    float dashDistance = 700;
                     if(Timer == 1)
                     {
                         NPC.TargetClosest();
-                        Teleport(MyTarget.Center - new Vector2(1400, 0));
+                  
                         if (MultiplayerHelper.IsHost)
                         {
                             _startPosition = MyTarget.Center - new Vector2(dashDistance, 0).RotatedByRandom(MathHelper.TwoPi);
+                            Teleport(_startPosition);
                             NPC.netUpdate = true;
                         }
 
                      
                     }
+                    _effects |= EelVisualEffect.Invisible;
 
                     if(Timer < 5)
                         _eyeballs[0].position = _startPosition;
 
-                    float warningTime = 80 * speedMult;
+                    float warningTime = dashingTime;
                     NPC.velocity *= 0.8f;
                     Vector2 direction = (MyTarget.Center - _startPosition).SafeNormalize(Vector2.Zero);
                     Vector2 endPosition = _startPosition + direction * dashDistance * 2;
@@ -1599,7 +1786,7 @@ public class LeviathanEel : ScarletBoss
                     float ratio = EasingFunction.InOutSine(Timer / warningTime);
                     Vector2 interpolatedPosition = Vector2.Lerp(_startPosition, endPosition, ratio);
                     Vector2 up = direction.RotatedBy(MathHelper.PiOver2);
-                    interpolatedPosition += up * MathF.Sin(ratio * 8) * 232;
+                    interpolatedPosition += up * MathF.Sin(ratio * 8) * 128;
 
                     if (Main.rand.NextBool(2))
                     {
@@ -1609,8 +1796,14 @@ public class LeviathanEel : ScarletBoss
                     _initialVelocity = interpolatedPosition;
                     _eyeballs[0].targetPosition = interpolatedPosition;
                     _eyeballs[0].speed = 8;
-                    _outliner.warning = true;
-                    if(Timer >= warningTime)
+         
+                    if(Timer > warningTime / 2f)
+                    {
+                        float halfTime = warningTime / 2f;
+                        _eyeFlashAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine((Timer-halfTime) / halfTime));
+                    }
+         
+                    if (Timer >= warningTime)
                     {
                         Timer=0;
                         AttackCycle++;
@@ -1619,23 +1812,27 @@ public class LeviathanEel : ScarletBoss
                 break;
             case 2:
                 {
+               
                     AnimateMouthBasedOnDistance();
                     if (Timer == 1)
                     {
                         if (MultiplayerHelper.IsHost)
                         {
                             Projectile.NewProjectile(SourceFromThis, NPC.Center + _facingDirection * 128, _facingDirection,
+                                ModContent.ProjectileType<EelSpeedTrail>(), Bite_Damage, 1, Main.myPlayer, ai0: NPC.whoAmI);
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center + _facingDirection * 128, _facingDirection,
                                 ModContent.ProjectileType<LeviathanBite>(), Bite_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: 1);
                         }
                     }
 
 
-                    float dashTime = 80 * speedMult;
+                    float dashTime = dashingTime;
+                  
                     float ratio = EasingFunction.InOutSine(Timer / dashTime);
                     Vector2 interpolatedPosition = Vector2.Lerp(_startPosition, _initialVelocity, ratio);
                     Vector2 direction = (_initialVelocity - _startPosition).SafeNormalize(Vector2.Zero);
                     Vector2 up = direction.RotatedBy(MathHelper.PiOver2);
-                    interpolatedPosition += up * MathF.Sin(ratio * 8) * 232;
+                    interpolatedPosition += up * MathF.Sin(ratio * 8) * 128;
                     Vector2 velocity = (interpolatedPosition - NPC.Center);
                     NPC.velocity = velocity;
                     FaceVelocity();
@@ -1670,12 +1867,12 @@ public class LeviathanEel : ScarletBoss
 
                     _effects |= EelVisualEffect.Invisible;
                     _effects |= EelVisualEffect.Mirage;
-                    NPC.velocity *= 0.94f;
+                    NPC.velocity *= 0.98f;
                     if(Timer >= 30f)
                     {
                         Timer = 0;
                         AttackCounter++;
-                        if (AttackCounter < 14)
+                        if (AttackCounter < 9)
                         {
                             AttackCycle = 1;
                         }
@@ -1720,6 +1917,7 @@ public class LeviathanEel : ScarletBoss
 
     private void ChooseAttack()
     {
+
         if (MultiplayerHelper.IsHost)
         {
             if(InPhase2 && !_inPhase2)
@@ -1738,8 +1936,7 @@ public class LeviathanEel : ScarletBoss
             {
                 pattern = PatternManager.NextPattern();
             }
-          
-            SwitchState(AIState.Overcharge);
+            SwitchState(pattern);
         }
     }
 
@@ -1854,6 +2051,11 @@ public class LeviathanEel : ScarletBoss
             segmentDrawer.color = Color.Lerp(Color.Black, lightningColor, levelOfCharge) * ExtraMath.Osc(0.5f, 1f, speed: 12, offset: index);
             segmentDrawer.color.A = 0;
             Main.spriteBatch.Draw(segmentDrawer);
+
+            SpritebatchDrawer glowingDrawer2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, root);
+            glowingDrawer2.color = Color.Lerp(Color.Black, lightningColor, levelOfCharge) * ExtraMath.Osc(0.5f, 1f, speed: 12, offset: index) * 0.2f;
+            glowingDrawer2.color.A = 0;
+            Main.spriteBatch.Draw(glowingDrawer2);
             Lighting.AddLight(root, lightningColor.ToVector3() * levelOfCharge * 0.3f);
         }
     }
@@ -1888,7 +2090,34 @@ public class LeviathanEel : ScarletBoss
 
     }
     
+    private void DrawBlacks(SpriteBatch sb, Vector2 screenPos)
+    {
+        if (_blackAlpha < 0.02f)
+            return;
 
+        Vector2 targetDirection = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+        SpritebatchDrawer blackDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Vector2.Zero);
+        blackDrawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+        blackDrawer.color = Color.Black * _blackAlpha;
+        blackDrawer.drawOrigin = Vector2.Zero;
+        sb.Draw(blackDrawer);
+
+        for (int i = 0; i < _eyeballs.Length; i++)
+        {
+            ref FloatingEyeball floatingEyeball = ref _eyeballs[i];
+            if (!_inPhase2)
+                continue;
+
+            SpritebatchDrawer pupilDrawer = SpritebatchDrawer.FromTextureAsset(_pupilTextureAsset, floatingEyeball.position);
+            pupilDrawer.drawOrigin -= targetDirection * 10;
+            pupilDrawer.color *= _invisibleAlpha * ExtraMath.Osc(0.5f, 1f, speed: 12, offset: i) * _blackAlpha;
+            sb.Draw(pupilDrawer);
+
+            pupilDrawer.color = Main.DiscoColor * ExtraMath.Osc(0.5f, 1f, speed: 1, offset: i) * _blackAlpha;
+            pupilDrawer.color.A = 0;
+            sb.Draw(pupilDrawer);
+        }
+    }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
@@ -1898,6 +2127,7 @@ public class LeviathanEel : ScarletBoss
         PixelationManager.QueuePrimitivesDrawAction(DrawHair);
         PixelationManager.QueuePrimitivesDrawAction(DrawHairBack, DrawLayer.BehindTiles);
         PixelationManager.QueuePrimitivesDrawAction(DrawEyeTentacles, DrawLayer.BehindTiles);
+        PixelationManager.QueueSpritebatchDrawAction(DrawBlacks, DrawLayer.OverPlayers);
         bool drawMirage = _mirageAlpha > 0.03f;
         if (drawMirage)
         {
@@ -1943,8 +2173,9 @@ public class LeviathanEel : ScarletBoss
         bulbDrawer.spriteEffects = segmentDrawer.spriteEffects;
         bulbDrawer.rotation = segmentDrawer.rotation;
         bulbDrawer.scale = Vector2.One * NPC.scale;
-        bulbDrawer.color *= _invisibleAlpha;
+
         bulbDrawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 1);
+        bulbDrawer.color *= _invisibleAlpha;
         bulbDrawer.color.A = 0;
         spriteBatch.Draw(bulbDrawer);
 
@@ -1998,6 +2229,17 @@ public class LeviathanEel : ScarletBoss
             }
         }
 
+        for(int i = 0; i < NPC.oldPos.Length; i++)
+        {
+            float ratio = (float)i / (float)NPC.oldPos.Length;
+            SpritebatchDrawer afDrawer = SpritebatchDrawer.FromNPC(NPC);
+            afDrawer.color *= MathHelper.Lerp(1f, 0f, ratio);
+            afDrawer.color *= _invisibleAlpha;
+            afDrawer.color *= _dashTrailAlpha;
+            afDrawer.worldPosition = NPC.oldPos[i] + NPC.Size * 0.5f;
+            afDrawer.rotation = NPC.oldRot[i];
+            spriteBatch.Draw(afDrawer);
+        }
 
         SpritebatchDrawer chargeDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, BulbPosition);
         chargeDrawer.color = Color.LightSkyBlue;
@@ -2008,6 +2250,26 @@ public class LeviathanEel : ScarletBoss
 
         chargeDrawer.scale *= 0.4f;
         Main.spriteBatch.Draw(chargeDrawer);
+
+
+        SpritebatchDrawer lampGlow = chargeDrawer;
+        lampGlow.color = Color.LightSkyBlue;
+        lampGlow.color *= ExtraMath.Osc(0.9f, 1f, speed: 10) * 0.35f * _invisibleAlpha; ;
+        lampGlow.color.A = 0;
+        lampGlow.scale = Vector2.One * 0.5f * ExtraMath.Osc(0.9f, 1f, speed: 10) * 2f;
+        Main.spriteBatch.Draw(lampGlow);
+
+        Vector2 directionToTarget = (MyTarget.Center - EyeFlashPosition) * 0.75f;
+        SpritebatchDrawer eyeFlashDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, EyeFlashPosition);
+        eyeFlashDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.OutSine(_eyeFlashAlpha)) * 0.6f;
+        eyeFlashDrawer.color = Color.White;
+        eyeFlashDrawer.color.A = 0;
+        eyeFlashDrawer.worldPosition += Vector2.Lerp(Vector2.Zero, directionToTarget, _eyeFlashAlpha);
+        eyeFlashDrawer.rotation = Main.GlobalTimeWrappedHourly * 4;
+        Main.spriteBatch.Draw(eyeFlashDrawer);
+
+        eyeFlashDrawer.scale *= 0.8f;
+        Main.spriteBatch.Draw(eyeFlashDrawer);
         return false;
     }
     #region Hair Rendering
@@ -2063,6 +2325,7 @@ public class LeviathanEel : ScarletBoss
     {
         return Color.DarkOliveGreen * _invisibleAlpha;
     }
+
     private void DrawHair(GraphicsDevice gDevice)
     {
         HairShader shader = ShaderContent.GetInstance<HairShader>();
