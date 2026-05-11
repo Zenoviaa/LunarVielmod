@@ -75,6 +75,7 @@ public class LeviathanElectricRock : ModProjectile
             z.Scale *= 0.5f;
         }
 
+        Projectile.velocity *= 0.999f;
         Projectile.frame = (int)Frame;
         Projectile.rotation += 0.025f;
     }

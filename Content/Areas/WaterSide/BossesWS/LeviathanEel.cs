@@ -2258,7 +2258,7 @@ public class LeviathanEel : ScarletBoss
                 Vector2 pos = Chain.points[i];
                 SpritebatchDrawer superChargeDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, pos);
                 superChargeDrawer.color = Main.DiscoColor;
-                superChargeDrawer.color *= _superCharge * ExtraMath.Osc(0.9f, 1f, speed: 10);
+                superChargeDrawer.color *= _superCharge * ExtraMath.Osc(0.9f, 1f, speed: 10) * _invisibleAlpha;
                 superChargeDrawer.color.A = 0;
                 superChargeDrawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 0.5f, _superCharge) * ExtraMath.Osc(0.9f, 1f, speed: 10, offset: i) * 2;
                 Main.spriteBatch.Draw(superChargeDrawer);
