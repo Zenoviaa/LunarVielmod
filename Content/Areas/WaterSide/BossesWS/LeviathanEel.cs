@@ -120,6 +120,7 @@ public class LeviathanEel : ScarletBoss
     private Outliner _outliner;
     private EelVisualEffect _effects;
 
+    private Asset<Texture2D> _bulbGlowTextureAsset;
     private Asset<Texture2D> _eyeballTextureAsset;
     private Asset<Texture2D> _pupilTextureAsset;
     private Asset<Texture2D> _eyebrowTextureAsset;
@@ -154,6 +155,7 @@ public class LeviathanEel : ScarletBoss
     }
     private int _frame;
     private float _rotationDir;
+    private bool _firstAttack;
     private ref float Timer => ref NPC.ai[0];
     private AIState State
     {
@@ -173,11 +175,19 @@ public class LeviathanEel : ScarletBoss
             {
                 _patternManagerBackingField = new PatternManager<AIState>();
                 _patternManagerBackingField.AddPattern(AIState.Lightning_Crawl, 1.0f);
+                _patternManagerBackingField.AddPattern(AIState.S_Dash, 1.0f);
+                _patternManagerBackingField.AddPattern(AIState.Ball_Bouncer, 1.0f);
+                _patternManagerBackingField.AddPattern(AIState.Chomp, 1.0f);
+                _patternManagerBackingField.AddPattern(AIState.Lightning_Wiggle, 1.0f);
+                _patternManagerBackingField.AddPattern(AIState.Overcharge, 1.0f);
+                _patternManagerBackingField.AddPattern(AIState.Eyeline_Dash, 1.0f);
+                _patternManagerBackingField.AddPattern(AIState.Suck, 1.0f);
             }
             return _patternManagerBackingField;
         }
     }
 
+    private bool InPhase2 => NPC.life < NPC.lifeMax * 0.5f;
     private int Super_Zap_Damage => 55;
     private int Bite_Damage => 35;
     private int Lightning_Crawl_Damage => 80;
@@ -213,7 +223,7 @@ public class LeviathanEel : ScarletBoss
         base.SetDefaults();
         NPC.width = 128;
         NPC.height = 128;
-        NPC.lifeMax = 12000;
+        NPC.lifeMax = 7000;
         NPC.defense = 18;
         NPC.damage = 90;
         NPC.noTileCollide = true;
@@ -233,6 +243,9 @@ public class LeviathanEel : ScarletBoss
         base.SendExtraAI(writer);
         writer.WriteVector2(_teleportPosition);
         writer.Write(_rotationDir);
+        writer.WriteVector2(_startPosition);
+        writer.WriteVector2(_initialVelocity);
+
 
     }
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -240,6 +253,8 @@ public class LeviathanEel : ScarletBoss
         base.ReceiveExtraAI(reader);
         _teleportPosition = reader.ReadVector2();
         _rotationDir = reader.ReadSingle();
+        _startPosition = reader.ReadVector2();
+        _initialVelocity = reader.ReadVector2();
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -258,13 +273,35 @@ public class LeviathanEel : ScarletBoss
         Vector2 targetVelocity = initialSpeed + offset;
         NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.04f);
     }
+
+    private bool IsBanned(AIState state)
+    {
+        if (!InPhase2)
+        {
+            switch (state)
+            {
+                case AIState.Overcharge:
+                case AIState.Eyeline_Dash:
+                    return true;
+            }
+        }
+        else
+        {
+            switch (state)
+            {
+                case AIState.S_Dash:
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     public override void AI()
     {
-        base.AI();
- 
+        base.AI(); 
         if (_arenaCenter == Vector2.Zero)
             _arenaCenter = MyTarget.Center;
-
 
         _effects = EelVisualEffect.None;
         _contactDamage = false;
@@ -306,6 +343,8 @@ public class LeviathanEel : ScarletBoss
         _charge = MathHelper.Lerp(_charge, 0f, 0.1f);
         _bulbCharge = MathHelper.Lerp(_bulbCharge, 0f, 0.1f);
         _superCharge = MathHelper.Lerp(_superCharge, 0f, 0.1f);
+       
+        HoldEyesInFrontOfMe();
         switch (State)
         {
             case AIState.Despawn:
@@ -370,8 +409,19 @@ public class LeviathanEel : ScarletBoss
         SimulateHair();
 
         //Testing Attacks
-        _attackToTest = AIState.Overcharge;
+     //   _attackToTest = AIState.SpawnIntro;
         SimulateEyes();
+    }
+
+    private void HoldEyesInFrontOfMe()
+    {
+        for (int i = 0; i < _eyeballs.Length; i++)
+        {
+            ref FloatingEyeball eyeball = ref _eyeballs[i];
+            Vector2 offset = -Vector2.UnitY * 64;
+            offset = offset.RotatedBy((float)i / (float)_eyeballs.Length * MathHelper.TwoPi + Main.GlobalTimeWrappedHourly * 2);
+            eyeball.targetPosition = NPC.Center + offset;
+        }
     }
 
     private void SimulateEyes()
@@ -1321,22 +1371,24 @@ public class LeviathanEel : ScarletBoss
 
     private void AI_PhaseTransition()
     {
+    
         Timer++;
         switch (AttackCycle)
         {
             case 0:
                 {
-
+                    FullTint.SetColor(Color.Black, Timer / 60f);
+                   if(Timer >= 60f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
                 }
                 break;
             case 1:
                 {
-
-                }
-                break;
-            case 2:
-                {
-
+                    _inPhase2 = true;
+                    SwitchState(AIState.Eyeline_Dash);
                 }
                 break;
         }
@@ -1549,6 +1601,11 @@ public class LeviathanEel : ScarletBoss
                     Vector2 up = direction.RotatedBy(MathHelper.PiOver2);
                     interpolatedPosition += up * MathF.Sin(ratio * 8) * 232;
 
+                    if (Main.rand.NextBool(2))
+                    {
+                        var b = BubbleParticle.Spawn(interpolatedPosition, Vector2.Zero, Scale: Main.rand.NextFloat(0.3f, 0.6f));
+                        b.gravity = 0;
+                    }
                     _initialVelocity = interpolatedPosition;
                     _eyeballs[0].targetPosition = interpolatedPosition;
                     _eyeballs[0].speed = 8;
@@ -1665,12 +1722,24 @@ public class LeviathanEel : ScarletBoss
     {
         if (MultiplayerHelper.IsHost)
         {
-            AIState pattern = PatternManager.NextPattern();
-            SwitchState(pattern);
-            if (_attackToTest != AIState.SpawnIntro)
+            if(InPhase2 && !_inPhase2)
             {
-                SwitchState(_attackToTest);
+                SwitchState(AIState.Phase_Transition);
+                return;
             }
+            if (!_firstAttack)
+            {
+                SwitchState(AIState.Suck);
+                _firstAttack = true;
+                return;
+            }
+            AIState pattern = PatternManager.NextPattern();
+            while (IsBanned(pattern))
+            {
+                pattern = PatternManager.NextPattern();
+            }
+          
+            SwitchState(AIState.Overcharge);
         }
     }
 
@@ -1678,6 +1747,7 @@ public class LeviathanEel : ScarletBoss
     {
         _facingDirection = Vector2.Lerp(_facingDirection, NPC.velocity.SafeNormalize(Vector2.Zero), 0.2f);
     }
+
     private void AI_Idle()
     {
         AttackCycle = 0;
@@ -1689,14 +1759,19 @@ public class LeviathanEel : ScarletBoss
             _arenaCenter = MyTarget.Center - new Vector2(0, 128);
             Teleport(MyTarget.Center - new Vector2(1900, 0));
         }
-
-        float speed = MathHelper.Lerp(24, 4f, EasingFunction.QuadraticBump(Timer / IdleTime));
+        float idleTime = IdleTime;
+        if (InPhase2)
+        {
+            idleTime *= 0.75f;
+        }
+        float speed = MathHelper.Lerp(24, 4f, EasingFunction.QuadraticBump(Timer / idleTime));
         MoveAndSinToward(Vector2.UnitX, speed);
         FaceVelocity();
         if (Timer < IdleTime / 2f)
             _effects |= EelVisualEffect.Mirage;
 
-        if (Timer >= IdleTime)
+    
+        if (Timer >= idleTime)
         {
             ChooseAttack();
         }
@@ -1726,6 +1801,7 @@ public class LeviathanEel : ScarletBoss
     {
         if (_segmentTextureAssets != null)
             return;
+        _bulbGlowTextureAsset = ModContent.Request<Texture2D>($"{Texture}_BulbGlow");
         _eyeballTextureAsset = ModContent.Request<Texture2D>($"{Texture}_Eyeball");
         _pupilTextureAsset = ModContent.Request<Texture2D>($"{Texture}_Pupil");
         _segmentTextureAssets = new Asset<Texture2D>[5];
@@ -1862,6 +1938,15 @@ public class LeviathanEel : ScarletBoss
             eyeDrawer.color.A = 0;
             spriteBatch.Draw(eyeDrawer);
         }
+
+        SpritebatchDrawer bulbDrawer = SpritebatchDrawer.FromTextureAsset(_bulbGlowTextureAsset, NPC.Center);
+        bulbDrawer.spriteEffects = segmentDrawer.spriteEffects;
+        bulbDrawer.rotation = segmentDrawer.rotation;
+        bulbDrawer.scale = Vector2.One * NPC.scale;
+        bulbDrawer.color *= _invisibleAlpha;
+        bulbDrawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 1);
+        bulbDrawer.color.A = 0;
+        spriteBatch.Draw(bulbDrawer);
 
         SpritebatchDrawer eyebrowDrawer = SpritebatchDrawer.FromTextureAsset(_eyebrowTextureAsset, NPC.Center);
         eyebrowDrawer.rotation = segmentDrawer.rotation;

@@ -88,9 +88,9 @@ namespace Stellamod
                 DragonShardCurrencyID = CustomCurrencyManager.RegisterCurrency(new Helpers.Medals(ModContent.ItemType<DragonShard>(), 999L, "Dragon Shard"));
 
                 //----------------------------------------------- Shaders
-                Filters.Scene["Stellamod:Illuria"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
-                Filters.Scene["Stellamod:Marsh"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.4f, 0f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
-                Filters.Scene["Stellamod:Aegislav"] = new Filter(new AuroreanStarsScreenShaderData("FilterMiniTower").UseColor(0.6f, 0f, 0f).UseOpacity(0.35f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Illuria"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0.4f, -0.3f, 1.3f).UseOpacity(0.275f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Marsh"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0.4f, 0f, 0f).UseOpacity(0.275f), EffectPriority.Medium);
+                Filters.Scene["Stellamod:Aegislav"] = new Filter(new ScreenShaderData("FilterMiniTower").UseColor(0.6f, 0f, 0f).UseOpacity(0.35f), EffectPriority.Medium);
 
                 Asset<Effect> screenRef = ModContent.Request<Effect>("Stellamod/Effects/Shockwave"); // The path to the compiled shader file.
                 Filters.Scene["Shockwave"] = new Filter(new ScreenShaderData(screenRef, "Shockwave"), EffectPriority.VeryHigh);
