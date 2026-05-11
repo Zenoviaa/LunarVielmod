@@ -142,3 +142,17 @@ public class SunsetWash : AbstractWash { }
 public class PeachyWash : AbstractWash { }
 
 public class DarkSunsetWash : AbstractWash { }
+
+public class RoseyWash : AbstractWash { }
+
+public class IllurianWash : AbstractWash { }
+
+public class ShadefulWash : AbstractWash { }
+
+public class CliffsideWash : AbstractWash { }
+
+public class BumbleBeeWash : AbstractWash { }
+
+public class HotrodWash : AbstractWash { }
+
+public class MoodyWash : AbstractWash { }

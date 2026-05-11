@@ -410,6 +410,7 @@ public class Steamroller : ScarletBoss,
         Main.npcFrameCount[Type] = 12;
         NPCID.Sets.TrailCacheLength[Type] = 32;
         NPCID.Sets.TrailingMode[Type] = 3;
+        NPCID.Sets.MustAlwaysDraw[NPC.type] = true;
         NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         NPCID.Sets.BossBestiaryPriority.Add(Type);
     }
@@ -480,7 +481,6 @@ public class Steamroller : ScarletBoss,
             NPC.Center = _positionToWarpTo;
             _positionToWarpTo = Vector2.Zero;
         }
-
         for (int i = 0; i < SteamRollerSegments.Length; i++)
         {
             SteamRollerSegments[i].paused = false;
@@ -1217,7 +1217,7 @@ public class Steamroller : ScarletBoss,
             Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
             ModContent.GetInstance<FlyingSoilSystem>().NewSoil(spawnPosition, spawnVelocity);
         }
-        Vector2 bodyVel = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 15, EasingFunction.InExpo(Timer / 60f));
+        Vector2 bodyVel = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 18, EasingFunction.InExpo(Timer / 60f));
         for (int i = 0; i < Chain.points.Length; i++)
         {
             ref Vector2 p = ref Chain.points[i];
