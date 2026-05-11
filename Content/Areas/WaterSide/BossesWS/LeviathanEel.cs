@@ -1,16 +1,20 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.BlackSystem;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.WaterSide.BossesWS.Projectiles;
 using Stellamod.Core;
+using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Town;
 using Stellamod.Trails;
 using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -18,36 +22,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WaterSide.BossesWS;
-
-
-public class MirageShader : CrystalShader<MirageShader>
-{
-    public float Time
-    {
-        set
-        {
-            Effect.Parameters["time"].SetValue(value);
-        }
-    }
-
-    public Texture2D NoiseTexture
-    {
-        set
-        {
-            Effect.Parameters["noiseTexture"].SetValue(value);
-            //   Effect.Parameters["noiseSize"].SetValue(value.Size());
-        }
-    }
-
-    public float Alpha
-    {
-        set
-        {
-            Effect.Parameters["alpha"].SetValue(value);
-        }
-    }
-}
-
 public class LeviathanEel : ScarletBoss
 {
 
@@ -60,6 +34,24 @@ public class LeviathanEel : ScarletBoss
         Invisible = 4,
         Mirage = 8
     }
+
+    private Chain[] _eyeTentacles;
+    private Chain[] EyeTentacles
+    {
+        get
+        {
+            if(_eyeTentacles == null)
+            {
+                _eyeTentacles = new Chain[3];
+                for(int i = 0; i < _eyeTentacles.Length; i++)
+                {
+                    _eyeTentacles[i] = new Chain(NPC.Center, 2, 64);
+                }
+            }
+            return _eyeTentacles;
+        }
+    }
+
     private Chain _hairChain2;
     private Chain HairChain2
     {
@@ -99,26 +91,41 @@ public class LeviathanEel : ScarletBoss
             return _chain;
         }
     }
-    private Asset<Texture2D> _eyebrowTextureAsset;
-    private Asset<Texture2D>[] _eyeTextureAssets;
-    private Asset<Texture2D>[] _segmentTextureAssets;
-    private Asset<Texture2D>[] _segmentGlowTextureAssets;
+    private struct FloatingEyeball
+    {
+        public Vector2 position;
+        public Vector2 targetPosition;
+        public Vector2 scale;
+        public float rotation;
+        public float speed;
+    }
+
+    private bool _inPhase2;
+    private FloatingEyeball[] _eyeballs = new FloatingEyeball[3];
+
     private Vector2 _facingDirection;
     private Vector2 _arenaCenter;
     private Vector2 _teleportPosition;
     private Vector2 _startPosition;
     private Vector2 _initialVelocity;
 
+    private float _superCharge;
     private float _bulbCharge;
     private float _charge;
     private float _dashTrailAlpha;
     private float _mirageAlpha;
     private float _invisibleAlpha;
-    private Outliner _outliner;
     private bool _contactDamage;
     private bool _showDashTrail;
+    private Outliner _outliner;
     private EelVisualEffect _effects;
 
+    private Asset<Texture2D> _eyeballTextureAsset;
+    private Asset<Texture2D> _pupilTextureAsset;
+    private Asset<Texture2D> _eyebrowTextureAsset;
+    private Asset<Texture2D>[] _eyeTextureAssets;
+    private Asset<Texture2D>[] _segmentTextureAssets;
+    private Asset<Texture2D>[] _segmentGlowTextureAssets;
     private enum AIState
     {
         //First let's break this down, and get all the states that we need
@@ -138,6 +145,7 @@ public class LeviathanEel : ScarletBoss
         Suck,
         Suck_V2,
 
+        Phase_Transition,
         Tesla_Coil,
         Overcharge,
         Eyeline_Dash,
@@ -169,6 +177,8 @@ public class LeviathanEel : ScarletBoss
             return _patternManagerBackingField;
         }
     }
+
+    private int Super_Zap_Damage => 55;
     private int Bite_Damage => 35;
     private int Lightning_Crawl_Damage => 80;
     private int Bouncing_Ball_Damage => 40;
@@ -274,6 +284,10 @@ public class LeviathanEel : ScarletBoss
             {
                 HairChain2.points[i] = _teleportPosition;
             }
+            for (int i = 0; i < _eyeballs.Length; i++)
+            {
+                _eyeballs[i].position = _teleportPosition;
+            }
             NPC.velocity = Vector2.Zero;
             _teleportPosition = Vector2.Zero;
 
@@ -291,6 +305,7 @@ public class LeviathanEel : ScarletBoss
         _outliner.SetDefaults();
         _charge = MathHelper.Lerp(_charge, 0f, 0.1f);
         _bulbCharge = MathHelper.Lerp(_bulbCharge, 0f, 0.1f);
+        _superCharge = MathHelper.Lerp(_superCharge, 0f, 0.1f);
         switch (State)
         {
             case AIState.Despawn:
@@ -320,7 +335,18 @@ public class LeviathanEel : ScarletBoss
             case AIState.Suck:
                 AI_Suck();
                 break;
-
+            case AIState.Eyeline_Dash:
+                AI_EyelineDash();
+                break;
+            case AIState.Tesla_Coil:
+                AI_TeslaCoil();
+                break;
+            case AIState.Overcharge:
+                AI_Overcharge();
+                break;
+            case AIState.Phase_Transition:
+                AI_PhaseTransition();
+                break;
         }
         _outliner.Update();
 
@@ -344,7 +370,21 @@ public class LeviathanEel : ScarletBoss
         SimulateHair();
 
         //Testing Attacks
-        _attackToTest = AIState.Lightning_Wiggle;
+        _attackToTest = AIState.Overcharge;
+        SimulateEyes();
+    }
+
+    private void SimulateEyes()
+    {
+        for(int i = 0; i < _eyeballs.Length; i++)
+        {
+            ref FloatingEyeball eyeball = ref _eyeballs[i];
+            eyeball.speed = 64;
+            eyeball.position = eyeball.position.MoveTowards(eyeball.targetPosition, eyeball.speed);
+            EyeTentacles[i].pinned[0] = true;
+            EyeTentacles[i].points[0] = eyeball.position;
+            EyeTentacles[i].ResolveRootToBack();
+        }
     }
 
     private void CloseMouth()
@@ -461,6 +501,8 @@ public class LeviathanEel : ScarletBoss
             AttackCycle++;
         }
     }
+
+    #region Phase 1 Attacks
     private void AI_Suck()
     {
         Timer++;
@@ -1273,7 +1315,329 @@ public class LeviathanEel : ScarletBoss
                 break;
         }
     }
+    #endregion
 
+    #region Phase 2 Attacks
+
+    private void AI_PhaseTransition()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+
+                }
+                break;
+            case 1:
+                {
+
+                }
+                break;
+            case 2:
+                {
+
+                }
+                break;
+        }
+    }
+
+    private void AI_TeslaCoil()
+    {
+        _inPhase2 = true;
+        Timer++;
+     
+    }
+
+    private void AI_Overcharge()
+    {
+        _inPhase2 = true;
+        Timer++;
+
+        //So for this attack uhh uhh
+        //1. Dive out like usually
+        //2. Teleport to the left of the player and come in and slow down
+        //3. Start charging up, this one uses a different charge effect that uses the points on the Chain and a lightning trail effect that flickers in and out
+        //4. The bulb also charges htough, but make a separate charge variable for this
+        //The 3 eyes orbit in a circle and shoot electirc bolts at you while it's charging
+        //5. Once full charge, the eyes go away, screen blackens for a second and several lightning bolts come out everywhere in different directions (crazy)
+        //6. 
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    DiveOutNextState();
+                }
+                break;
+            case 1:
+                {
+                    if (Timer == 1)
+                    {
+                        Teleport(MyTarget.Center + new Vector2(-1500, 0));
+                    }
+
+                    float startupTime = 100f;
+                    float speed = MathHelper.Lerp(24, 4f, EasingFunction.InOutSine(Timer / startupTime));
+                    MoveAndSinToward(Vector2.UnitX, speed);
+                    FaceVelocity();
+                    if(Timer >= startupTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+
+             
+                    if (Timer % 2 == 0)
+                    {
+                        float range = Main.rand.NextFloat(252, 512);
+                        Vector2 pos = BulbPosition + Main.rand.NextVector2CircularEdge(range, range);
+                        Vector2 vel = (BulbPosition - pos);
+                        vel *= 0.1f;
+                        FXUtil.GlowStretch(pos, vel);
+                    }
+
+                    if (Timer % 2 == 0)
+                    {
+                        float range = Main.rand.NextFloat(384, 666);
+                        Vector2 pos = BulbPosition + Main.rand.NextVector2CircularEdge(range, range);
+                        Vector2 vel = (BulbPosition - pos);
+                        vel *= 0.1f;
+                        var fx = FXUtil.GlowStretch(pos, vel);
+                        fx.OuterGlowColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
+                        fx.VectorScale *= 0.5f;
+                    }
+
+                    if (Timer % 6 == 0)
+                    {
+                        var zap = ElectricZapParticle.Spawn(BulbPosition + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(2, 2),
+                            Scale: Main.rand.NextFloat(0.3f, 0.6f) * Timer / 240f);
+                    }
+
+
+                    if (Timer % 60 == 0 && Timer <= 236 && Timer > 2)
+                    {
+                        if (Main.netMode != NetmodeID.Server)
+                        {
+                            ScreenShaderSystem tintSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                            tintSystem.TintScreen(Color.Blue, 0.05f, 15f);
+                            PixelPrimitiveCircleFactory.CreateClosingGustCircle(BulbPosition);
+                            PixelPrimitiveCircleFactory.CreateEelInSuck(BulbPosition);
+                        }
+                        string path = $"Stellamod/Assets/Sounds/Dreadmire__LightingRain{AttackCounter + 1}";
+                        SoundStyle sound = new SoundStyle(path) with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(sound, NPC.position);
+                        FXUtil.GlowCircleBoom(BulbPosition, Color.White, Color.LightBlue, Color.DarkBlue);
+                        AttackCounter++;
+                    }
+                    _outliner.warning = true;
+                    _charge = MathHelper.Lerp(_charge, 1f, Timer / 180f);
+                    _superCharge = MathHelper.SmoothStep(0f, 1f, EasingFunction.InOutSine(Timer / 240f));
+                    _bulbCharge = MathHelper.SmoothStep(0f, 1f, EasingFunction.InOutSine(Timer / 240f));
+                    ShakeModSystem.Shake = MathHelper.Lerp(0f, 2f, Timer / 240f);
+
+                    if (NPC.velocity.Length() > 1)
+                        NPC.velocity *= 0.94f;
+                    FaceVelocity();
+                    if(Main.netMode != NetmodeID.Server)
+                    {
+
+                        float alpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 300f));
+                        FullTint.SetColor(Color.Black, alpha);
+                    }
+                    if (Timer >= 300)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                        AttackCounter = 0;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    float alpha = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / 60f));
+                    FullTint.SetColor(Color.Black, alpha);
+                    SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
+                    effectsPlayer.darknessCurve = MathHelper.Lerp(1f, 0.2f, EasingFunction.OutExpo(Timer / 30f));
+                    _charge = 1f;
+                    _bulbCharge = 1f;
+                    _superCharge = 1f;
+                    _outliner.attacking = true;
+                    if (Timer % 5 == 0 && MultiplayerHelper.IsHost && Timer < 400)
+                    {
+                        int index = Main.rand.Next(Chain.points.Length);
+                 
+                        SortedSet<(float, Vector2)> openList = 
+                            new SortedSet<(float, Vector2)>(Comparer<(float, Vector2)>.Create((a, b) => a.Item1.CompareTo(b.Item1)));
+                        for (int i = 0; i < Chain.points.Length; i++)
+                        {
+                            Vector2 potentialPoint = Chain.points[i];
+                            float distToPoint = Vector2.Distance(MyTarget.Center, potentialPoint);
+                            openList.Add((distToPoint, potentialPoint));
+                        }
+
+                        int rand = Main.rand.Next(12);
+                        Vector2 pos = Chain.points[rand];
+
+                        Projectile.NewProjectile(SourceFromThis, pos, Main.rand.NextVector2CircularEdge(1240, 1240),
+                            ModContent.ProjectileType<SuperZap>(), Super_Zap_Damage, 1, Main.myPlayer);
+                    }
+                    if(Timer >= 480)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
+                    DiveOutToIdle();
+                }
+                break;
+        }
+    }
+
+    private void AI_EyelineDash()
+    {
+        _inPhase2 = true;
+        Timer++;
+        float speedMult = MathHelper.Lerp(1f, 0.65f, EasingFunction.Clamp(AttackCounter / 7f));
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    DiveOutNextState();
+                }
+                break;
+            case 1:
+                {
+                    float dashDistance = 900;
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        Teleport(MyTarget.Center - new Vector2(1400, 0));
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            _startPosition = MyTarget.Center - new Vector2(dashDistance, 0).RotatedByRandom(MathHelper.TwoPi);
+                            NPC.netUpdate = true;
+                        }
+
+                     
+                    }
+
+                    if(Timer < 5)
+                        _eyeballs[0].position = _startPosition;
+
+                    float warningTime = 80 * speedMult;
+                    NPC.velocity *= 0.8f;
+                    Vector2 direction = (MyTarget.Center - _startPosition).SafeNormalize(Vector2.Zero);
+                    Vector2 endPosition = _startPosition + direction * dashDistance * 2;
+
+                    float ratio = EasingFunction.InOutSine(Timer / warningTime);
+                    Vector2 interpolatedPosition = Vector2.Lerp(_startPosition, endPosition, ratio);
+                    Vector2 up = direction.RotatedBy(MathHelper.PiOver2);
+                    interpolatedPosition += up * MathF.Sin(ratio * 8) * 232;
+
+                    _initialVelocity = interpolatedPosition;
+                    _eyeballs[0].targetPosition = interpolatedPosition;
+                    _eyeballs[0].speed = 8;
+                    _outliner.warning = true;
+                    if(Timer >= warningTime)
+                    {
+                        Timer=0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    AnimateMouthBasedOnDistance();
+                    if (Timer == 1)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center + _facingDirection * 128, _facingDirection,
+                                ModContent.ProjectileType<LeviathanBite>(), Bite_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: 1);
+                        }
+                    }
+
+
+                    float dashTime = 80 * speedMult;
+                    float ratio = EasingFunction.InOutSine(Timer / dashTime);
+                    Vector2 interpolatedPosition = Vector2.Lerp(_startPosition, _initialVelocity, ratio);
+                    Vector2 direction = (_initialVelocity - _startPosition).SafeNormalize(Vector2.Zero);
+                    Vector2 up = direction.RotatedBy(MathHelper.PiOver2);
+                    interpolatedPosition += up * MathF.Sin(ratio * 8) * 232;
+                    Vector2 velocity = (interpolatedPosition - NPC.Center);
+                    NPC.velocity = velocity;
+                    FaceVelocity();
+                    _contactDamage = true;
+                    _outliner.attacking = true;
+                    if(Timer >= dashTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    void Spawn(int index, int offset)
+                    {
+                        int combinedIndex = index + offset;
+                        combinedIndex %= Chain.points.Length;
+                        Vector2 pos = Chain.points[combinedIndex];
+                        Projectile.NewProjectile(SourceFromThis, pos, Vector2.Zero, ModContent.ProjectileType<SinElectricShock>(), Sin_Electric_Shock_Damage, 1, Main.myPlayer);
+                    }
+                    if (Timer % 2 == 0 && MultiplayerHelper.IsHost)
+                    {
+                        int a = (int)Timer / 2;
+                        a %= Chain.points.Length;
+                        int distanceBtween = 16;
+                        Spawn(a, 0);
+
+
+                    }
+
+
+                    _effects |= EelVisualEffect.Invisible;
+                    _effects |= EelVisualEffect.Mirage;
+                    NPC.velocity *= 0.94f;
+                    if(Timer >= 30f)
+                    {
+                        Timer = 0;
+                        AttackCounter++;
+                        if (AttackCounter < 14)
+                        {
+                            AttackCycle = 1;
+                        }
+                        else
+                        {
+
+                            AttackCycle++;
+                        }
+                    }
+                }
+                break;
+            case 4:
+                {
+                    DiveOutToIdle();
+                }
+                break;
+        }
+    }
+    #endregion
     public override void FindFrame(int frameHeight)
     {
         base.FindFrame(frameHeight);
@@ -1362,6 +1726,8 @@ public class LeviathanEel : ScarletBoss
     {
         if (_segmentTextureAssets != null)
             return;
+        _eyeballTextureAsset = ModContent.Request<Texture2D>($"{Texture}_Eyeball");
+        _pupilTextureAsset = ModContent.Request<Texture2D>($"{Texture}_Pupil");
         _segmentTextureAssets = new Asset<Texture2D>[5];
         _segmentGlowTextureAssets = new Asset<Texture2D>[5];
         for (int i = 0; i < _segmentTextureAssets.Length; i++)
@@ -1455,6 +1821,7 @@ public class LeviathanEel : ScarletBoss
         PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedDashTrail);
         PixelationManager.QueuePrimitivesDrawAction(DrawHair);
         PixelationManager.QueuePrimitivesDrawAction(DrawHairBack, DrawLayer.BehindTiles);
+        PixelationManager.QueuePrimitivesDrawAction(DrawEyeTentacles, DrawLayer.BehindTiles);
         bool drawMirage = _mirageAlpha > 0.03f;
         if (drawMirage)
         {
@@ -1478,6 +1845,9 @@ public class LeviathanEel : ScarletBoss
         Vector2 targetDirection = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
         for (int i = 0; i < _eyeTextureAssets.Length; i++)
         {
+            if (_inPhase2)
+                continue;
+
             Asset<Texture2D> eyeTextureAsset = _eyeTextureAssets[i];
             SpritebatchDrawer eyeDrawer = SpritebatchDrawer.FromTextureAsset(eyeTextureAsset, NPC.Center);
             eyeDrawer.spriteEffects = segmentDrawer.spriteEffects;
@@ -1501,10 +1871,48 @@ public class LeviathanEel : ScarletBoss
         eyebrowDrawer.color *= _invisibleAlpha;
         spriteBatch.Draw(eyebrowDrawer);
 
+        for(int i = 0; i < _eyeballs.Length; i++)
+        {
+            ref FloatingEyeball floatingEyeball = ref _eyeballs[i];
+            if (!_inPhase2)
+                continue;
+
+            SpritebatchDrawer eyeDrawer = SpritebatchDrawer.FromTextureAsset(_eyeballTextureAsset, floatingEyeball.position);
+            eyeDrawer.color *= _invisibleAlpha;
+            spriteBatch.Draw(eyeDrawer);
+
+            SpritebatchDrawer pupilDrawer = SpritebatchDrawer.FromTextureAsset(_pupilTextureAsset, floatingEyeball.position);
+            pupilDrawer.drawOrigin -= targetDirection * 10;
+            pupilDrawer.color *= _invisibleAlpha;
+            spriteBatch.Draw(pupilDrawer);
+
+            pupilDrawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 1, offset: i);
+            pupilDrawer.color.A = 0;
+            spriteBatch.Draw(pupilDrawer);
+        }
+
         if (drawMirage)
         {
             spriteBatch.RestartDefaults();
         }
+
+        if(_superCharge > 0.05f)
+        {
+            for (int i = 0; i < Chain.points.Length; i++)
+            {
+                Vector2 pos = Chain.points[i];
+                SpritebatchDrawer superChargeDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, pos);
+                superChargeDrawer.color = Main.DiscoColor;
+                superChargeDrawer.color *= _superCharge * ExtraMath.Osc(0.9f, 1f, speed: 10);
+                superChargeDrawer.color.A = 0;
+                superChargeDrawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 0.5f, _superCharge) * ExtraMath.Osc(0.9f, 1f, speed: 10, offset: i) * 2;
+                Main.spriteBatch.Draw(superChargeDrawer);
+
+                superChargeDrawer.scale *= 0.4f;
+                Main.spriteBatch.Draw(superChargeDrawer);
+            }
+        }
+
 
         SpritebatchDrawer chargeDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, BulbPosition);
         chargeDrawer.color = Color.LightSkyBlue;
@@ -1562,7 +1970,14 @@ public class LeviathanEel : ScarletBoss
     {
         return Color.Lerp(Color.DarkGray, Color.Black, 0.5f) * EasingFunction.OutExpo(ratio + 0.5f) * _invisibleAlpha;
     }
-
+    private float GetEyeWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(7, 0, ratio) * EasingFunction.QuadraticBump(ratio);
+    }
+    private Color GetEyeColor(float ratio)
+    {
+        return Color.DarkOliveGreen * _invisibleAlpha;
+    }
     private void DrawHair(GraphicsDevice gDevice)
     {
         HairShader shader = ShaderContent.GetInstance<HairShader>();
@@ -1571,6 +1986,26 @@ public class LeviathanEel : ScarletBoss
         shader.WaveFrequency = 8;
         shader.XOffset = 12;
         TrailDrawer.Draw(Main.spriteBatch, HairChain.points, GetHairColor, GetHairWidth, shader);
+        if (!_inPhase2)
+            return;
+        for(int i = 0; i < EyeTentacles.Length; i++)
+        {
+            TrailDrawer.Draw(Main.spriteBatch, EyeTentacles[i].points, GetEyeColor, GetEyeWidth, shader);
+        }
+    }
+    private void DrawEyeTentacles(GraphicsDevice gDevice)
+    {
+        if (!_inPhase2)
+            return;
+        HairShader shader = ShaderContent.GetInstance<HairShader>();
+        shader.LaserTexture = TrailRegistry.GlowTrailNoBlack;
+        shader.Time = Main.GlobalTimeWrappedHourly * 0.2f;
+        shader.WaveFrequency = 8;
+        shader.XOffset = 12;
+        for (int i = 0; i < EyeTentacles.Length; i++)
+        {
+            TrailDrawer.Draw(Main.spriteBatch, EyeTentacles[i].points, GetEyeColor, GetEyeWidth, shader);
+        }
     }
     private void DrawHairBack(GraphicsDevice gDevice)
     {
