@@ -241,7 +241,7 @@ public class LeviathanEel : ScarletBoss
                 _patternManagerBackingField.AddPattern(AIState.S_Dash, 1.0f);
                 _patternManagerBackingField.AddPattern(AIState.Ball_Bouncer, 1.0f);
                 _patternManagerBackingField.AddPattern(AIState.Chomp, 1.0f);
-                _patternManagerBackingField.AddPattern(AIState.Lightning_Wiggle, 1.0f);
+                _patternManagerBackingField.AddPattern(AIState.Lightning_Wiggle, 1.5f);
                 _patternManagerBackingField.AddPattern(AIState.Overcharge, 1.0f);
                 _patternManagerBackingField.AddPattern(AIState.Eyeline_Dash, 1.0f);
                 _patternManagerBackingField.AddPattern(AIState.Suck, 1.0f);
@@ -1566,6 +1566,7 @@ public class LeviathanEel : ScarletBoss
                 break;
             case 1:
                 {
+                    _inPhase2 = true;
                     _blackAlpha = 1f;
                     DiveOutNextStateFast();
                 }
@@ -1759,7 +1760,7 @@ public class LeviathanEel : ScarletBoss
                 break;
             case 1:
                 {
-                    float dashDistance = 700;
+                    float dashDistance = 900;
                     if(Timer == 1)
                     {
                         NPC.TargetClosest();
@@ -2143,6 +2144,17 @@ public class LeviathanEel : ScarletBoss
 
         //Finally attach the head
 
+        for (int i = 0; i < NPC.oldPos.Length; i++)
+        {
+            float ratio = (float)i / (float)NPC.oldPos.Length;
+            SpritebatchDrawer afDrawer = SpritebatchDrawer.FromNPC(NPC);
+            afDrawer.color *= MathHelper.Lerp(1f, 0f, ratio) * 0.05f;
+            afDrawer.color *= _invisibleAlpha;
+            afDrawer.color *= _dashTrailAlpha;
+            afDrawer.worldPosition = NPC.oldPos[i] + NPC.Size * 0.5f;
+            afDrawer.rotation = NPC.oldRot[i];
+            spriteBatch.Draw(afDrawer);
+        }
         SpritebatchDrawer segmentDrawer = SpritebatchDrawer.FromNPC(NPC);
         segmentDrawer.color *= _invisibleAlpha;
         spriteBatch.Draw(segmentDrawer);
@@ -2229,17 +2241,6 @@ public class LeviathanEel : ScarletBoss
             }
         }
 
-        for(int i = 0; i < NPC.oldPos.Length; i++)
-        {
-            float ratio = (float)i / (float)NPC.oldPos.Length;
-            SpritebatchDrawer afDrawer = SpritebatchDrawer.FromNPC(NPC);
-            afDrawer.color *= MathHelper.Lerp(1f, 0f, ratio);
-            afDrawer.color *= _invisibleAlpha;
-            afDrawer.color *= _dashTrailAlpha;
-            afDrawer.worldPosition = NPC.oldPos[i] + NPC.Size * 0.5f;
-            afDrawer.rotation = NPC.oldRot[i];
-            spriteBatch.Draw(afDrawer);
-        }
 
         SpritebatchDrawer chargeDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, BulbPosition);
         chargeDrawer.color = Color.LightSkyBlue;

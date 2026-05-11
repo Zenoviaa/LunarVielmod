@@ -219,7 +219,7 @@ public class BouncingBallCore : ModProjectile
         if (nearestPlayer != null)
         {
             Vector2 velToPalyer = (nearestPlayer.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-            Projectile.velocity = Vector2.Lerp(Projectile.velocity, velToPalyer * 25, 0.015f);
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, velToPalyer * 25, 0.008f);
         }
 
     
