@@ -112,8 +112,8 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
                     if (MultiplayerHelper.IsHost)
                     {
                         var EntitySource = NPC.GetSource_FromThis();
-                        Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 150, 0, 10,
-                            ModContent.ProjectileType<GoldBeam>(), 900, 0f, owner: Main.myPlayer, 0, NPC.whoAmI);
+                        Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y - 150, 0, 10,
+                            ModContent.ProjectileType<GoldBeam>(), 900, 0f, Main.myPlayer, 0, NPC.whoAmI);
                     }
                 }
                 if (NPC.ai[0] >= 10)

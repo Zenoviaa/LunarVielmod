@@ -171,7 +171,7 @@ namespace Stellamod.NPCs.Bosses.Zui.Projectiles
 
                         int Gore2 = ModContent.Find<ModGore>("Stellamod/ZuiHat").Type;
                         Gore.NewGore(EntitySource, NPC.position, NPC.velocity, Gore2);
-                        Utilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, -1, 0, NPC.whoAmI);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, NPC.Center.Y, 0, 0, ModContent.ProjectileType<ZuiSpawnEffect>(), 0, 0f, -1, 0, NPC.whoAmI);
                         NPC.active = false;
                     }
                 }

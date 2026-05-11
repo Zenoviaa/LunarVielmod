@@ -72,16 +72,13 @@ ModContent.Request<Texture2D>($"{BasePath}Beamlight");
         public static Asset<Texture2D> WhispyTrail => ModContent.Request<Texture2D>(BasePath + "WhispyTrail");
         public static Asset<Texture2D> CorkscrewTrail => ModContent.Request<Texture2D>(BasePath + "CorkscrewTrail");
         public static Asset<Texture2D> TwistingTrail => ModContent.Request<Texture2D>(BasePath + "TwistingTrail");
-        public static Asset<Texture2D> TwistingTrailSmall => ModContent.Request<Texture2D>(BasePath + "TwistingTrailSmall");
+   
         public static Asset<Texture2D> FadedStreak => ModContent.Request<Texture2D>(BasePath + "FadedStreak");
-        public static Asset<Texture2D> TerraTrail => ModContent.Request<Texture2D>(BasePath + "TerraTrail");
         public static Asset<Texture2D> DNATrail => ModContent.Request<Texture2D>(BasePath + "DNAHelixTrail");
         public static Asset<Texture2D> SpikyTrail1 => ModContent.Request<Texture2D>(BasePath + "SpikyTrail1");
         public static Asset<Texture2D> SpikyTrail2 => ModContent.Request<Texture2D>(BasePath + "SpikyTrail2");
         public static Asset<Texture2D> LightningTrail => ModContent.Request<Texture2D>(BasePath + "LightningTrail");
         public static Asset<Texture2D> SimpleTrail => ModContent.Request<Texture2D>(BasePath + "SimpleTrail");
-        public static Asset<Texture2D> SmoothTrailInverted => ModContent.Request<Texture2D>(BasePath + "SmoothTrailInverted");
-
 
         public static Asset<Texture2D> CrystalNoise => ModContent.Request<Texture2D>(BasePath + "Crystals");
         public static Asset<Texture2D> CausticTrail => ModContent.Request<Texture2D>(BasePath + "CausticTrail");
