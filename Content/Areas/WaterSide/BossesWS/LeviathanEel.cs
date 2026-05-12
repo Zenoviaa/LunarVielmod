@@ -106,7 +106,6 @@ public class LeviathanEel : ScarletBoss
     private FloatingEyeball[] _eyeballs = new FloatingEyeball[3];
 
     private Vector2 _facingDirection;
-    private Vector2 _arenaCenter;
     private Vector2 _teleportPosition;
     private Vector2 _startPosition;
     private Vector2 _initialVelocity;
@@ -184,7 +183,6 @@ public class LeviathanEel : ScarletBoss
     private ref float AttackCycle => ref NPC.ai[2];
     private ref float AttackCounter => ref NPC.ai[3];
 
-    private AIState _attackToTest;
     private PatternManager<AIState> _patternManagerBackingField;
     private PatternManager<AIState> PatternManager
     {
@@ -197,7 +195,10 @@ public class LeviathanEel : ScarletBoss
                 _patternManagerBackingField.AddPattern(AIState.S_Dash, 0.5f);
                 _patternManagerBackingField.AddPattern(AIState.Ball_Bouncer, 0.5f);
                 _patternManagerBackingField.AddPattern(AIState.Chomp, 0.5f);
-                _patternManagerBackingField.AddPattern(AIState.Lightning_Wiggle, 1.5f);
+
+                //Putting a weight greater than 1 will make the attack happen extra times per cycle 
+                //Adding this 0.05 here will makeit likely happen again at the end of eel's cycle
+                _patternManagerBackingField.AddPattern(AIState.Lightning_Wiggle, 1.05f);
                 _patternManagerBackingField.AddPattern(AIState.Overcharge, 1.0f);
                 _patternManagerBackingField.AddPattern(AIState.Eyeline_Dash, 1.0f);
                 _patternManagerBackingField.AddPattern(AIState.Suck, 0.5f);
@@ -244,6 +245,7 @@ public class LeviathanEel : ScarletBoss
             return chargePos;
         }
     }
+
     public Vector2 arenaCenter;
     public Vector2 lightningCircleCenter;
     public override void SetStaticDefaults()
@@ -254,7 +256,6 @@ public class LeviathanEel : ScarletBoss
         NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         NPCID.Sets.MustAlwaysDraw[Type] = true;
         NPCID.Sets.DoesntDespawnToInactivityAndCountsNPCSlots[Type] = true;
-
         Main.npcFrameCount[Type] = 5;
     }
 
@@ -264,19 +265,16 @@ public class LeviathanEel : ScarletBoss
         NPC.width = 128;
         NPC.height = 128;
         NPC.lifeMax = 9000;
-        NPC.defense = 18;
+        NPC.defense = 19;
         NPC.damage = 90;
         NPC.noTileCollide = true;
         NPC.noGravity = true;
         NPC.knockBackResist = 0f;
-
         NPC.npcSlots = 30f;
 
         Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/LeviathanEel");
         NPC.HitSound = SoundID.NPCHit1 with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
-        //  NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
     }
-
 
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -288,8 +286,10 @@ public class LeviathanEel : ScarletBoss
         writer.Write(_startRotation);
         writer.Write(_eatenPlayer);
         writer.Write(_aliveTimer);
-
+        writer.WriteVector2(arenaCenter);
+        writer.WriteVector2(lightningCircleCenter);
     }
+
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
@@ -300,6 +300,8 @@ public class LeviathanEel : ScarletBoss
         _startRotation = reader.ReadSingle();
         _eatenPlayer = reader.ReadInt32();
         _aliveTimer = reader.ReadSingle();
+        arenaCenter = reader.ReadVector2();
+        lightningCircleCenter = reader.ReadVector2();
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -346,15 +348,11 @@ public class LeviathanEel : ScarletBoss
     {
         ref float musicVolume = ref Main.musicFade[Music];
         musicVolume = 1f;
-
     }
 
     public override void AI()
     {
         base.AI();
-        if (_arenaCenter == Vector2.Zero)
-            _arenaCenter = MyTarget.Center;
-
         _aliveTimer++;
         if (_aliveTimer >= 120)
             ForceMusicOn();
@@ -382,7 +380,6 @@ public class LeviathanEel : ScarletBoss
             }
             NPC.velocity = Vector2.Zero;
             _teleportPosition = Vector2.Zero;
-
         }
 
         if (!NPC.HasValidTarget)
@@ -714,7 +711,6 @@ public class LeviathanEel : ScarletBoss
                     if (Timer == 1)
                     {
                         NPC.velocity = Vector2.Zero;
-                        _arenaCenter = MyTarget.Center - new Vector2(0, 128);
                         Teleport(MyTarget.Center - new Vector2(1400, 0));
                     }
 
@@ -1402,7 +1398,6 @@ public class LeviathanEel : ScarletBoss
                     {
                         NPC.TargetClosest();
                         NPC.velocity = Vector2.Zero;
-                        _arenaCenter = MyTarget.Center - new Vector2(0, 128);
                         Teleport(FindArenaCenter() - new Vector2(1400, 0).RotatedByRandom(MathHelper.TwoPi));
                     }
 
@@ -1721,6 +1716,7 @@ public class LeviathanEel : ScarletBoss
                     _inPhase2 = true;
                     _blackAlpha = 1f;
                     SwitchState(AIState.Eyeline_Dash);
+                    PatternManager.ResetToDefaultWeights();
                 }
                 break;
         }
@@ -2440,7 +2436,6 @@ public class LeviathanEel : ScarletBoss
 
             NPC.TargetClosest();
             NPC.velocity = Vector2.Zero;
-            _arenaCenter = MyTarget.Center - new Vector2(0, 128);
             Teleport(MyTarget.Center - new Vector2(1900, 0));
         }
         _blackedOut = false;

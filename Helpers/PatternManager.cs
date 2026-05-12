@@ -91,11 +91,15 @@ namespace Stellamod.Helpers
         {
             if (_patternOverrideQueue.Count > 0)
                 return _patternOverrideQueue.Dequeue();
-            float weight = 0f;
-            float totalWeight = 0f;
+            int weight = 0;
+            int totalWeight = 0;
+
+            //Here we are multiplying the float weight by 1000 because next float isn't exactly reliable at decimal places
+            //It's better to just use an int
             foreach (var kvp in _weights)
             {
-                totalWeight += kvp.Value;
+                int addedWeight = (int)(kvp.Value * 1000);
+                totalWeight += addedWeight;
             }
 
             if (totalWeight <= 0)
@@ -105,11 +109,12 @@ namespace Stellamod.Helpers
             }
 
             var rand = Main.rand;
-            float randWeight = rand.NextFloat(0f, totalWeight);
+            float randWeight = rand.Next(totalWeight);
             T result = default;
             foreach (var kvp in _weights)
             {
-                weight += kvp.Value;
+                int addedWeight = (int)(kvp.Value * 1000);
+                weight += addedWeight;
                 if (weight >= randWeight)
                 {
                     result = kvp.Key;
@@ -117,7 +122,11 @@ namespace Stellamod.Helpers
                 }
             }
 
-            _weights[result]--;
+            _weights[result] -= 1.0f;
+
+            //Not sure if this is needed, but just set zero if it goes negative
+            if (_weights[result] <= 0)
+                _weights[result] = 0;
             return result;
         }
     }

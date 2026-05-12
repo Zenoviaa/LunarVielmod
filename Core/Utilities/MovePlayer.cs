@@ -99,7 +99,7 @@ public class MovePlayer : ModPlayer
         base.HideDrawLayers(drawInfo);
         if (eaten)
         {
-            foreach(var layer in PlayerDrawLayers.VanillaLayers)
+            foreach(var layer in PlayerDrawLayerLoader.Layers)
             {
                 layer.Hide();
             }

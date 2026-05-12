@@ -610,7 +610,7 @@ public class Verlia : ScarletBoss,
         base.SetDefaults();
         NPC.width = 32;
         NPC.height = 64;
-        NPC.damage = 50;
+        NPC.damage = 80;
         NPC.defense = 15;
         NPC.lifeMax = 12000;
         NPC.HitSound = SoundID.NPCHit1;

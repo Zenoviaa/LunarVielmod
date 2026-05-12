@@ -85,8 +85,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar
             NPC.width = 30;
             NPC.height = 75;
             NPC.damage = 32;
-            NPC.defense = 8;
-            NPC.lifeMax = 1100;
+            NPC.defense = 2;
+            NPC.lifeMax = 1500;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = Item.buyPrice(silver: 50);
             NPC.knockBackResist = 0f;

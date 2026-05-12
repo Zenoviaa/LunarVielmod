@@ -81,7 +81,7 @@ public class DustParticle : Particle<DustParticle>
         fadeIn++;
         if (fadeIn > 180 || Scale < 0.1f)
             active = false;
-
+        Lighting.AddLight(Center, color.ToVector3());
         //Bouncing
         if (noTileCollide)
             return;

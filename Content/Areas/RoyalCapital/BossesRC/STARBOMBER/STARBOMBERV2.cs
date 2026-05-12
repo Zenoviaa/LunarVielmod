@@ -494,7 +494,7 @@ public class STARBOMBERV2 : ScarletBoss,
         NPC.height = 200;
         NPC.damage = 100;
         NPC.defense = 20;
-        NPC.lifeMax = 16000;
+        NPC.lifeMax = 11500;
         NPC.scale = 1f;
         NPC.aiStyle = -1;
 
