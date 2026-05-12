@@ -10147,7 +10147,7 @@ GintzeShield: {
 	DisplayName: Gintze Shield
 	Tooltip:
 		'''
-		When enemies touch the shield, they lose 10% maximum health!
+		When enemies touch the shield, they lose 25% maximum health!
 		This does not work on bosses
 		'''
 }

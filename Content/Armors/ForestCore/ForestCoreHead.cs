@@ -188,7 +188,7 @@ namespace Stellamod.Content.Armors.ForestCore
                 {
                     Projectile.ai[1]++;
 
-                    if (Projectile.ai[1] >= 30)
+                    if (Projectile.ai[1] >= 65)
                     {
                         Vector2 direction = targetCenter - Projectile.Center;
                         var EntitySource = Projectile.GetSource_Death();

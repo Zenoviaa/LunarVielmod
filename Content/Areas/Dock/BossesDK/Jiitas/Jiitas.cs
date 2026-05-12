@@ -131,7 +131,7 @@ public partial class Jiitas : ScarletBoss
         NPC.width = 32;
         NPC.height = 64;
         NPC.damage = 32;
-        NPC.defense = 0;
+        NPC.defense = 7;
         NPC.lifeMax = 1100;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);

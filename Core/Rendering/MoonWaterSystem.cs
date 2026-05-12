@@ -33,12 +33,14 @@ public class DefaultPixelWaterStyle : PixelWaterStyle
 
 public class LavaStyle : PixelWaterStyle
 {
+   
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
     }
     public override bool IsActive(Player player)
     {
+
         return 
             player.ZoneUnderworldHeight || 
             player.GetModPlayer<MyPlayer>().ZoneCinder || 
@@ -47,6 +49,7 @@ public class LavaStyle : PixelWaterStyle
     public override void ModifyPixelWater(ref PixelWater pixelWater)
     {
         base.ModifyPixelWater(ref pixelWater);
+        priority = 2;
         pixelWater.CausticsTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/LavaDepths");
         pixelWater.CausticsColor = Color.Lerp(Color.Yellow, Color.OrangeRed, ExtraMath.Osc(0.5f, 1f));
         pixelWater.BackgroundColor = Color.DarkRed;
@@ -762,6 +765,7 @@ public class MoonWaterSystem : ModSystem
         _pixelWater.SetDefaults();
         _activePixelWaterStyle = GetActivePixelWaterStyle();
         _activePixelWaterStyle.ModifyPixelWater(ref _pixelWater);
+ //       Main.NewText(_activePixelWaterStyle.GetType().Name);
         
     }
 
