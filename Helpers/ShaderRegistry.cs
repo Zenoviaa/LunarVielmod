@@ -68,9 +68,9 @@ namespace Stellamod.Helpers
         private static void RegisterScreenShader(string name, string path, EffectPriority effectPriority = EffectPriority.Medium)
         {
             var mod = Stellamod.Instance;
-            if (!mod.FileExists(path + ".xnb"))
+            if (!mod.FileExists(path + ".xnb") && !mod.FileExists(path + ".fxc"))
                 return;
-            Asset<Effect> paletteShader = Assets.Request<Effect>(path);
+            Asset<Effect> paletteShader = Assets.Request<Effect>(path, AssetRequestMode.AsyncLoad);
             Filters.Scene[name] = new Filter(new ScreenShaderData(paletteShader, "ScreenPass"), effectPriority);
             ScreenShaders.Add(name);
             //            Console.WriteLine($"Loaded Screen Shader {name}");
@@ -176,10 +176,6 @@ namespace Stellamod.Helpers
             RegisterMiscShader("LunarVeil:SimpleDistortion", "Effects/SimpleDistortion", "PixelPass");
             RegisterMiscShader("LunarVeil:SimpleMasking", "Effects/SimpleMasking", "PixelPass");
 
-            Asset<Effect> lavaRef = Assets.Request<Effect>("Effects/Lava");
-            Filters.Scene["LunarVeil:Lava"] = new Filter(new ScreenShaderData(lavaRef, "PrimitivesPass"), EffectPriority.VeryHigh);
-            Filters.Scene["LunarVeil:Lava"].Load();
-
             //Skies
             SkyManager.Instance["LunarVeil:RoyalCapitalSky"] = new RoyalCapitalSky();
             SkyManager.Instance["LunarVeil:RoyalCapitalSky"].Load();
@@ -195,9 +191,6 @@ namespace Stellamod.Helpers
 
             SkyManager.Instance["Stellamod:AlcadSky"] = new NaxtrinSky3();
             SkyManager.Instance["Stellamod:AlcadSky"].Load();
-
-            SkyManager.Instance["Stellamod:VillageSky"] = new VillageSky();
-            SkyManager.Instance["Stellamod:VillageSky"].Load();
 
             RegisterMiscCrystalShader("Clouds", "ScreenPass");
             RegisterMiscCrystalShader("CloudsFront", "ScreenPass");

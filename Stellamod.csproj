@@ -1,5 +1,5 @@
 ﻿
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Tomat.Terraria.ModLoader.Sdk/2.1.0">
   <Import Project="..\tModLoader.targets" />
 	<PropertyGroup>
 		<AssemblyName>Stellamod</AssemblyName>
@@ -7,16 +7,11 @@
 		<LangVersion>latest</LangVersion>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Platforms>AnyCPU;x64;x86</Platforms>
+			
 	</PropertyGroup>
 	<ItemGroup>
-	  <AdditionalFiles Remove="Items\Armors\Huntrian\**" />
-	  <Compile Remove="Items\Armors\Huntrian\**" />
-	  <EmbeddedResource Remove="Items\Armors\Huntrian\**" />
-	  <None Remove="Items\Armors\Huntrian\**" />
+	  <Folder Include="Effects\Palettes\" />
+	  <Folder Include="Properties\" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Common\WaypointSystem\UI\" />
-	  <Folder Include="Items\Weapons\Melee\Knives\" />
-	  <Folder Include="Items\Weapons\Ranged\Balls\" />
-	</ItemGroup>
+
 </Project>

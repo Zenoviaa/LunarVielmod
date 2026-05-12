@@ -25,6 +25,10 @@ namespace Stellamod.Content.CommonMaterials
     {
 
     }
+    public class BlankVanilla : SirestiasMold
+    {
+
+    }
     public class BlankBag : SirestiasMold
     {
 

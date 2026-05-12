@@ -1,5 +1,6 @@
 ﻿using ReLogic.Content;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Foreground;
 using Terraria;
@@ -44,6 +45,8 @@ public class MagicalFish : ForegroundLayer
 
         parallax.X = 1.5f;
         parallax.Y = 1.5f;
+
+ //       Main.NewText(drawAlpha);
     }
 }
 

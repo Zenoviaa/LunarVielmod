@@ -17,7 +17,7 @@ public class UndergroundSandCity : ForegroundLayer
     public override void SetLayering(ref float zLayer, ref Vector2 parallax)
     {
         base.SetLayering(ref zLayer, ref parallax);
-        parallax.X = 1.2f;
-        parallax.Y = 1.2f;
+        parallax.X = 2f;
+        parallax.Y = 2f;
     }
 }

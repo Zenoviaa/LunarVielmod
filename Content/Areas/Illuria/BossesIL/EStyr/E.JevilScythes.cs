@@ -9,7 +9,6 @@ using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -176,7 +175,7 @@ public class BlackSword : ScarletProjectile,
         Timer++;
         if (Timer == 1)
         {
-            ShakeModSystem.Shake = 6;
+            ShakeScreenPosition.Shake = 6;
             FXUtil.ShakeCamera(Projectile.position, 1024, 4);
 
             Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);

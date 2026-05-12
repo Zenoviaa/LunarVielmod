@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.Systems;
+using Stellamod.Core.Utilities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -166,7 +166,7 @@ namespace Stellamod.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<FrostKaboom>(), (int)(Projectile.damage * 1.5), 0f, Projectile.owner, 0f, 0f);
 
             SoundEngine.PlaySound(SoundID.Item110, Projectile.position);

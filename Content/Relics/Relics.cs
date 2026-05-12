@@ -7,7 +7,6 @@ using Stellamod.Core.Camera;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -74,7 +73,7 @@ public class RelicSummon : ModProjectile
             SoundStyle summonSound = new SoundStyle("Stellamod/Assets/Sounds/RisingSummon");
             SoundEngine.PlaySound(summonSound, Projectile.position);
         }
-        ShakeModSystem.Shake = 3;
+        ShakeScreenPosition.Shake = 3;
         CameraTargetSystem.AddTarget(Projectile.Center);
         if(Timer % 8 == 0)
         {
@@ -198,7 +197,7 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
         TileObjectData.newTile.StyleMultiplier = 2; //same as above
         TileObjectData.newTile.StyleHorizontal = true;
         TileObjectData.newTile.Origin = new Point16(3, 1);
-        TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile, TileObjectData.newTile.Width, 0);
+        TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop, TileObjectData.newTile.Width, 0);
         TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
         TileObjectData.addTile(Type);
         LocalizedText name = CreateMapEntryName();
@@ -299,6 +298,11 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
             Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
         }
     }
+
+    public virtual Vector2 DrawOffset()
+    {
+        return Vector2.Zero;
+    }
     public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
     {
         // This is lighting-mode specific, always include this if you draw tiles manually
@@ -322,6 +326,7 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
 
         Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height);
         Vector2 worldPos = p.ToWorldCoordinates(48, 64f);
+        worldPos += DrawOffset();
 
         Color color = Lighting.GetColor(p.X, p.Y);
 
@@ -331,7 +336,7 @@ public abstract class AbstractRelicTile<ItemType, BossType> : ModTile
         const float TwoPi = (float)Math.PI * 2f;
         float offset = (float)Math.Sin(Main.GlobalTimeWrappedHourly * TwoPi / 5f);
         Vector2 drawPos = worldPos + offScreen - Main.screenPosition + new Vector2(0f, -40f) + new Vector2(0f, offset * 4f);
-
+  
         // Draw the main texture
         spriteBatch.Draw(texture, drawPos, null, color, 0f, origin, 1f, effects, 0f);
 
@@ -433,6 +438,46 @@ public class SteamrollerRelic :
 
 public class SteamrollerRelicItem :
     AbstractRelicItem<SteamrollerRelicItem, SteamrollerRelic>
+{
+
+}
+
+
+public class VerliaRelic : AbstractRelicTile<VerliaRelicItem, VerliaPage>
+{
+
+}
+
+public class VerliaRelicItem : AbstractRelicItem<VerliaRelicItem, VerliaRelic>
+{
+
+}
+public class CelestiaRelic : AbstractRelicTile<CelestiaRelicItem, CelestiaPage>
+{
+    public override Vector2 DrawOffset()
+    {
+        return new Vector2(-20, 0);
+    }
+
+}
+
+public class CelestiaRelicItem : AbstractRelicItem<CelestiaRelicItem, CelestiaRelic>
+{
+
+}
+public class CariyaRelicItem : AbstractRelicItem<CariyaRelicItem, CariyaRelic>
+{
+
+}
+public class CariyaRelic : AbstractRelicTile<CariyaRelicItem, CariyaPage>
+{
+
+}
+public class KingJellyfishRelicItem : AbstractRelicItem<KingJellyfishRelicItem, KingJellyfishRelic>
+{
+
+}
+public class KingJellyfishRelic : AbstractRelicTile<KingJellyfishRelicItem, KingJellyfishPage>
 {
 
 }

@@ -22,6 +22,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
 {
     public class ColosseumWaveManager : ModNPC
     {
+
         private bool _broadcastWave;
         private ref float Timer => ref NPC.ai[0];
         private int ColosseumIndex => (int)NPC.ai[1];
@@ -57,6 +58,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
             SoundStyle cheer = AssetRegistry.Sounds.Collosseum.GintzeCheer;
             SoundEngine.PlaySound(cheer);
         }
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -91,6 +93,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
             writer.Write(_enemyCount);
             writer.Write(_waveIndex);
             writer.Write(_maxWave);
+            writer.WriteVector2(_startTile.ToVector2());
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -101,6 +104,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
             _enemyCount = reader.ReadInt32();  
             _waveIndex = reader.ReadInt32();
             _maxWave = reader.ReadInt32();
+            _startTile = reader.ReadVector2().ToPoint();
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -122,7 +126,14 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
             {
                 NPC.active = false;
             }
+
+            if(Timer > 10)
+            {
+                NPC.velocity = Vector2.Zero;
+                NPC.position = _startTile.ToWorldCoordinates();
+            }
             NPC.scale = ExtraMath.Osc(0.8f, 1f);
+ 
 
             if (_broadcastWave && Main.netMode != NetmodeID.Server)
             {

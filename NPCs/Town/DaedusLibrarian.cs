@@ -2,6 +2,7 @@
 using Stellamod.Content.Areas.Shop.ItemsShop;
 using Stellamod.Content.Areas.Snow.WeaponsSN;
 using Stellamod.Core;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Mage.Tomes;
 using System;
@@ -202,7 +203,7 @@ public class DaedusLibrarian : VeilTownNPC
         base.OpenTownDialogue(ref text, ref portrait, ref timeBetweenTexts, ref talkingSound, buttons);
         //Set buttons
         buttons.Add(new Tuple<string, Action>("Talk", Talk));
-        if (DownedBossSystem.downedDaedusBoss)
+        if (DownedBossTracker.IsDowned(DownedBossFlag.Daedus))
         {
             buttons.Add(new Tuple<string, Action>("Shop", OpenShop));
         }
@@ -232,22 +233,7 @@ public class DaedusLibrarian : VeilTownNPC
     private void Challenge()
     {
         CloseTownDialogue();
-        if (Main.netMode != NetmodeID.MultiplayerClient)
-        {
-            Main.NewText(LangText.Chat(this, "Challenge"), Color.Gold);
-            NPC npc = NPC.NewNPCDirect(NPC.GetSource_FromThis(), (int)NPC.position.X, (int)NPC.position.Y,
-                ModContent.NPCType<DaedusTheDevoted>());
-            npc.netUpdate = true;
-        }
-        else
-        {
-            if (Main.netMode == NetmodeID.SinglePlayer)
-                return;
-
-            MultiplayerHelper.SpawnBossFromClient((byte)Main.LocalPlayer.whoAmI,
-                ModContent.NPCType<DaedusTheDevoted>(), (int)NPC.position.X, (int)NPC.position.Y);
-        }
-
+        NPCUtilities.SpawnNPCFromClient<DaedusTheDevoted>(NPC.Center);
         //Spawn Boss
         NPC.Kill();
     }

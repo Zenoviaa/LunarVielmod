@@ -1,4 +1,5 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Core.Utilities;
+using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -51,10 +52,20 @@ namespace Stellamod.Core
         public override void OnModLoad()
         {
             base.OnModLoad();
-         
+            On_Player.DryCollision += FallThroughPlatform;
             On_Player.SlopingCollision += HoverPlatformCollisionCheck;
             On_Collision.TileCollision += HoverPlatformTileCollision;
             On_Collision.WetCollision += DisableWetCollisions;
+        }
+
+        private void FallThroughPlatform(On_Player.orig_DryCollision orig, Player self, bool fallThrough, bool ignorePlats)
+        {
+            if (self.GetModPlayer<MovePlayer>().grabbed)
+            {
+                ignorePlats = true;
+                fallThrough = true;
+            }
+            orig(self, fallThrough, ignorePlats);
         }
 
         private Vector2 HoverPlatformTileCollision(On_Collision.orig_TileCollision orig, 
@@ -86,6 +97,7 @@ namespace Stellamod.Core
             On_Collision.TileCollision -= HoverPlatformTileCollision;
             On_Collision.WetCollision -= DisableWetCollisions;
             On_Player.SlopingCollision -= HoverPlatformCollisionCheck;
+
         }
 
         private void WaterCollisionCheck(On_Player.orig_WaterCollision orig, Player self, bool fallThrough, bool ignorePlats)
@@ -96,7 +108,13 @@ namespace Stellamod.Core
  
         private void HoverPlatformCollisionCheck(On_Player.orig_SlopingCollision orig, Player self, bool fallThrough, bool ignorePlats)
         {
-       
+
+            if (self.GetModPlayer<MovePlayer>().grabbed)
+            {
+                ignorePlats = true;
+                fallThrough = true;
+            }
+
             if (hoveringPlatform)
             {
                 float y = hoverPlatformY + 36;

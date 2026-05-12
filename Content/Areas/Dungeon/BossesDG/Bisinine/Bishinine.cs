@@ -8,9 +8,9 @@ using Stellamod.Content.Gores;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 
@@ -1279,7 +1279,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
                 SoundEngine.PlaySound(bellHitSound, NPC.position);
                 MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
                 myPlayer.ShakeAtPosition(NPC.Center, 1024f, 30f);
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
                 SoundStyle boom = SoundID.DD2_ExplosiveTrapExplode;
                 boom.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(boom, NPC.position);

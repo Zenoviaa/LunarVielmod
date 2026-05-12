@@ -1,8 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -38,7 +37,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 
         public override void AI()
         {
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
             if (Timer < 60)
             {
                 Scale = MathHelper.Lerp(Scale, 1f, 0.04f);

@@ -5,6 +5,17 @@ namespace Stellamod.Helpers
 {
     public static class ExtraMath
     {
+        public static Vector2 CubicBezier(Vector2 start, Vector2 controlPoint1, Vector2 controlPoint2, Vector2 end, float t)
+        {
+            float tSquared = t * t;
+            float tCubed = t * t * t;
+            return
+                -(start * (-tCubed + (3 * tSquared) - (3 * t) - 1) +
+                controlPoint1 * ((3 * tCubed) - (6 * tSquared) + (3 * t)) +
+                controlPoint2 * ((-3 * tCubed) + (3 * tSquared)) +
+                end * tCubed);
+        }
+
         public static float Saturate(float a)
         {
             return MathHelper.Clamp(a, 0f, 1f);

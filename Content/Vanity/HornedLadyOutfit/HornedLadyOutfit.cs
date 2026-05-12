@@ -45,7 +45,8 @@ public class HornedLadyOutfitHeadDrawLayer : PlayerDrawLayer
         position.Y += yOsc * 2;
         float rotation = 0;
         SpriteEffects spriteEffects = drawInfo.drawPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        drawInfo.DrawDataCache.Add(new DrawData(
+
+        var drawData = new DrawData(
             _hatTextureAsset.Value,
             position,
             null,
@@ -55,7 +56,9 @@ public class HornedLadyOutfitHeadDrawLayer : PlayerDrawLayer
             1f,
            spriteEffects,
             0
-        ));
+        );
+        drawData.shader = drawInfo.cHead;
+        drawInfo.DrawDataCache.Add(drawData);
     }
 }
 

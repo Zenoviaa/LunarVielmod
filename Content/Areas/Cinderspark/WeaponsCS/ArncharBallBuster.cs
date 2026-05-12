@@ -2,11 +2,11 @@
 using Stellamod.Common.GunSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -195,7 +195,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             SoundStyle impact = AssetManager.GetSound("Fire/FireballImpact1");
             impact.PitchVariance = 0.3f;
             SoundEngine.PlaySound(impact, Projectile.position);
-            ShakeModSystem.Shake = 3;
+            ShakeScreenPosition.Shake = 3;
         }
 
         public override bool PreDraw(ref Color lightColor)

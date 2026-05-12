@@ -4,11 +4,11 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -117,7 +117,7 @@ public class StarBeam : ScarletProjectile
 
     private void ImpactEffect()
     {
-        ShakeModSystem.Shake = 9;
+        ShakeScreenPosition.Shake = 9;
         FXUtil.ShakeCamera(Projectile.position, 1024, 32);
         FXUtil.GlowCircleBoom(Projectile.Center, Color.Pink, Color.Purple, Color.Black);
         FXUtil.PunchCamera(Projectile.Center, Vector2.UnitY, 8, 8, 8);

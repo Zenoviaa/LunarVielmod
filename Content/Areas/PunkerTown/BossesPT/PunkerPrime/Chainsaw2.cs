@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.IO;
@@ -188,7 +188,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
 
                 Vector2 rocketVelocity = NPC.rotation.ToRotationVector2() * 40;
                 NPC.velocity = rocketVelocity;
-                ShakeModSystem.Shake = 8;
+                ShakeScreenPosition.Shake = 8;
                 CreateMuzzleFlash();
                 FXUtil.ShakeCamera(NPC.position, 1024, 8);
 

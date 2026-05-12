@@ -7,11 +7,11 @@ using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Core;
 using Stellamod.Core.DrawEffects;
 using Stellamod.Core.Palettes;
+using Stellamod.Core.Utilities;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
 using Stellamod.Projectiles;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -300,7 +300,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             NPC.height = 64;
             NPC.damage = 14;
             NPC.defense = 12;
-            NPC.lifeMax = 1300;
+            NPC.lifeMax = 3000;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.DD2_WyvernScream;
             NPC.knockBackResist = 0f;
@@ -1192,7 +1192,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
 
             if (Timer > 370)
             {
-                ShakeModSystem.Shake = 0f;
+                ShakeScreenPosition.Shake = 0f;
             }
             if (Timer > 370)
             {
@@ -1619,12 +1619,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak
             var P0 = GetBezierPoint(t, controlPoints, index, count - 1);
             var P1 = GetBezierPoint(t, controlPoints, index + 1, count - 1);
             return new Vector2((1 - t) * P0.X + t * P1.X, (1 - t) * P0.Y + t * P1.Y);
-        }
-
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            base.ModifyNPCLoot(npcLoot);
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<GustbeakBossRel>()));
         }
 
         public override void OnKill()

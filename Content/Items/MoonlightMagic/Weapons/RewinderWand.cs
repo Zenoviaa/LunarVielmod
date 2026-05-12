@@ -1,4 +1,9 @@
-﻿using Stellamod.Content.Items.MoonlightMagic.Forms;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Items.MoonlightMagic.Elements;
+using Stellamod.Content.Items.MoonlightMagic.Forms;
+using Stellamod.Items;
+using System.Collections.Generic;
+using Terraria.ModLoader;
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
     public class RewinderWand : AbstractMagicWand
@@ -6,15 +11,21 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 24;
-            Item.shootSpeed = 12;
-            Item.useTime = 30;
-            Item.useAnimation = 30;
-            Size = 20;
-            TrailLength = 64;
-            Form = FormRegistry.Circle.Value;
-            normalSlotCount = 0;
-            timedSlotCount = 5;
+            Form = FormRegistry.Gear.Value;
+            Item.damage = 1200;
+            Item.mana = 40;
+            Size = 30;
+            TrailLength = 30;
+            normalSlotCount = 1;
+            timedSlotCount = 6;
         }
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<MechanizedSoul>());
+        }
+
+      
     }
 }

@@ -278,7 +278,14 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander
 
             if (Timer >= 60)
             {
-                if (JumpCount < 3)
+
+                int npcCount = 0;
+                foreach(var npc in Main.ActiveNPCs)
+                {
+                    if (npc.type == Type)
+                        npcCount++;
+                }
+                if (JumpCount < 3 || npcCount > 1)
                 {
                     SwitchState(AIState.Walk);
                 }

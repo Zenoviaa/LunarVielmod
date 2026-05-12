@@ -1137,3 +1137,8 @@ Sanctorous: {
 	DisplayName: Sanctorous
 	Description: Mods.Stellamod.Buffs.Sanctorous.Description
 }
+
+NeuroZap: {
+	DisplayName: Neuro Zap
+	Description: Mods.Stellamod.Buffs.NeuroZap.Description
+}

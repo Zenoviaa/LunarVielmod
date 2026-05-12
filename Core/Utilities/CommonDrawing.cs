@@ -1,12 +1,32 @@
-﻿using Microsoft.Xna.Framework;
-using ReLogic.Threading;
+﻿using ReLogic.Threading;
 using System;
+using Terraria;
 
 namespace Stellamod.Helpers
 {
     public static class CommonDrawing
     {
-     
+        public static Vector2[] InterpolatePointsOnACircle(Vector2 center, float radius, float numPoints = 64)
+        {
+            Vector2[] arr = new Vector2[(int)numPoints];
+            for (float f = 0; f < numPoints; f++)
+            {
+                Vector2 offset = -Vector2.UnitY * radius;
+                offset = offset.RotatedBy((f / (numPoints - 1)) * (MathHelper.TwoPi + MathHelper.ToRadians(3.2f)));
+                arr[(int)f] = center + offset;
+            }
+            return arr;
+        }
+        public static Vector2[] InterpolateBetweenPoints(Vector2 start, Vector2 end, float numPoints = 64)
+        {
+            Vector2[] arr = new Vector2[(int)numPoints];
+            for (float f = 0; f < numPoints; f++)
+            {
+                arr[(int)f] = Vector2.Lerp(start, end, f / numPoints);
+            }
+            return arr;
+        }
+
         /// <summary>
         /// Performs a spline interpolation across an array of points, good for smoothing out trails
         /// </summary>
@@ -17,12 +37,12 @@ namespace Stellamod.Helpers
         {
             Vector2[] trailPoints = new Vector2[(int)numPoints];
             float trailLength = oldPos.Length;
-            FastParallel.For(0, trailPoints.Length, delegate (int start, int end, object context) 
+            void InterpInner(int start, int end)
             {
-                for(int i = start; i < end; i++)
+                for (int i = start; i < end; i++)
                 {
                     //Calculate the index in the oldpos array
-                    float ratio = (float)i / numPoints;
+                    float ratio = i / numPoints;
                     float weight = ratio * (trailLength) % 1f;
                     int oldPosIndex = (int)(ratio * (trailLength));
 
@@ -64,7 +84,18 @@ namespace Stellamod.Helpers
                     Vector2 e = Vector2.CatmullRom(leftMost, left, right, rightMost, weight);
                     trailPoints[i] = e;
                 }
-            });
+            }
+            InterpInner(0, trailPoints.Length);
+
+
+
+
+            /*
+            //Using parallel is probably actually slower here, readying several cores for a tiny array probably isn't actually a performance boost
+            FastParallel.For(0, trailPoints.Length, delegate (int start, int end, object context) 
+            {
+
+            });*/
 
             return trailPoints;
         }
@@ -84,7 +115,7 @@ namespace Stellamod.Helpers
                 for (int i = start; i < end; i++)
                 {
                     //Calculate the index in the oldpos array
-                    float ratio = (float)i / numPoints;
+                    float ratio = i / numPoints;
                     float weight = ratio * (trailLength) % 1f;
                     int oldPosIndex = (int)(ratio * (trailLength));
 

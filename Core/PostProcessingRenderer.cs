@@ -2,6 +2,7 @@
 using Stellamod.Content.CommonMaterials;
 using System;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 
@@ -40,7 +41,7 @@ namespace Stellamod.Core
         }
         private void DrawPostProcessingPasses(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
         {
-            if (layer == RenderLayers.All && beginSpriteBatch)
+            if (layer == RenderLayers.All && beginSpriteBatch && !Main.gameMenu)
             {
                 RenderPostProcessing();
             }

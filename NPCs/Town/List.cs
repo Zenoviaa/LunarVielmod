@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.Areas.Shop.AccShop;
 using Stellamod.Content.Dialogue;
+using Stellamod.Content.Vanity.RedFeatherHat;
 using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Insources;
@@ -191,7 +192,12 @@ public class List : VeilTownNPC
         {
             shopCustomPrice = 20,
             shopSpecialCurrency = Stellamod.MedalCurrencyID
-        });
+        })
+        .Add(new Item(ModContent.ItemType<RedFeatherHat>())
+        {
+            shopCustomPrice = 2,
+            shopSpecialCurrency = Stellamod.MedalCurrencyID
+        }); ;
         npcShop.Register(); // Name of this shop t
     }
 }

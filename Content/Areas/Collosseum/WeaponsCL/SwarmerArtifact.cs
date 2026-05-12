@@ -3,20 +3,14 @@ using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
 using Stellamod.Content.Areas.Snow.WeaponsSN;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Gores;
-using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Ores;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
 
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -40,14 +34,14 @@ public class SwarmerArtifact : ModItem
         Item.useAnimation = Item.useTime = 24;
         Item.useStyle = ItemUseStyleID.Shoot;
         Item.knockBack = 2;
-    //    Item.crit = 4;
+        //    Item.crit = 4;
         Item.shoot = ModContent.ProjectileType<LilSwarmer>();
         Item.shootSpeed = 15;
         Item.noMelee = true;
         Item.noUseGraphic = true;
     }
 
-    
+
     public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
     {
         base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
@@ -55,7 +49,7 @@ public class SwarmerArtifact : ModItem
     }
     public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
-        if(_dir == 0)
+        if (_dir == 0)
         {
             _dir = 1;
         }
@@ -75,12 +69,12 @@ public class SwarmerArtifact : ModItem
             tilePos.X = Main.maxTilesX - 1;
         if (tilePos.Y >= Main.maxTilesY)
             tilePos.Y = Main.maxTilesY - 1;
-        for(int i = 0; i < 1000; i++)
+        for (int i = 0; i < 1000; i++)
         {
             if (WorldGen.SolidTile(tilePos))
                 break;
             tilePos.Y++;
-            if(tilePos.Y >= Main.maxTilesY)
+            if (tilePos.Y >= Main.maxTilesY)
             {
                 tilePos.Y = Main.maxTilesY - 1;
                 break;
@@ -136,7 +130,7 @@ public class StaffWaveHold : ModProjectile
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
         Projectile.ignoreWater = true;
-       
+
     }
 
     public override bool ShouldUpdatePosition()
@@ -156,7 +150,7 @@ public class StaffWaveHold : ModProjectile
     {
         base.AI();
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             SwingTime = GetSwingTime();
         }
@@ -232,7 +226,7 @@ public class StaffWaveHold : ModProjectile
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Item[Owner.HeldItem.type], Projectile.Center);
         sbDrawer.rotation = Projectile.rotation;
         sbDrawer.worldPosition += _thrustOffset;
-        sbDrawer.scale = Vector2.One *  Projectile.scale;
+        sbDrawer.scale = Vector2.One * Projectile.scale;
         Main.spriteBatch.Draw(sbDrawer);
 
         switch (MagicCircleStyle)
@@ -311,14 +305,14 @@ public class LilSwarmer : ModProjectile
         }
 
         Point point = Projectile.Center.ToTileCoordinates();
-        for(int i = 0; i < 500; i++)
+        for (int i = 0; i < 500; i++)
         {
             point.Y++;
             if (WorldGen.SolidTile(point))
                 break;
         }
 
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             Vector2 spawnVelocity = Vector2.UnitY * Main.rand.NextFloat(-5, -15);
             int d = WorldGen.KillTile_MakeTileDust(point.X, point.Y, Framing.GetTileSafely(point));
@@ -373,16 +367,16 @@ public class LilSwarmer : ModProjectile
     private void AI_Jump()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             DirtRiseEffect();
             Projectile.velocity.Y -= 12;
         }
         Projectile.velocity.Y += 0.5f;
-        if(Projectile.velocity.Y > 0)
+        if (Projectile.velocity.Y > 0)
         {
             NPC nearest = NPCHelper.FindClosestNPC(Projectile.Center, 1024);
-            if(nearest != null)
+            if (nearest != null)
             {
                 Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(Projectile.Center, nearest.Center, Projectile.velocity, 9);
                 Projectile.velocity.X = MathHelper.Lerp(Projectile.velocity.X, homingVelocity.X, 0.3f);
@@ -396,7 +390,7 @@ public class LilSwarmer : ModProjectile
     private void AI_Latch()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             NPC target = Main.npc[TargetNPC];
             if (target.active)
@@ -406,8 +400,8 @@ public class LilSwarmer : ModProjectile
                 var hitFX = FXUtil.GlowStretch(target.Center, Main.rand.NextVector2Circular(1, 1));
                 hitFX.OuterGlowColor = Color.Red;
                 hitFX.VectorScale.X *= 2;
-                
-                for(float f = 0; f < 3; f++)
+
+                for (float f = 0; f < 3; f++)
                 {
                     Vector2 vel = Main.rand.NextVector2Circular(6, 6);
                     var dp = DustParticle.Spawn(target.Center, vel, DustParticleSpawnParams.Default);
@@ -431,7 +425,7 @@ public class LilSwarmer : ModProjectile
             FXUtil.ShakeCamera(Projectile.position, 1024, 4);
         }
 
-        
+
         NPC latchedNPC = Main.npc[TargetNPC];
         if (!latchedNPC.active)
         {
@@ -448,7 +442,7 @@ public class LilSwarmer : ModProjectile
         }
         else
         {
-            if(Timer % 8 == 0)
+            if (Timer % 8 == 0)
             {
                 Dust.NewDustPerfect(latchedNPC.Center, DustID.Blood, Main.rand.NextVector2Circular(2, 2));
             }
@@ -461,13 +455,13 @@ public class LilSwarmer : ModProjectile
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
     {
         base.OnHitNPC(target, hit, damageDone);
-        if(State != AIState.Latch)
+        if (State != AIState.Latch)
         {
             TargetNPC = target.whoAmI;
             SwitchState(AIState.Latch);
         }
         _hitCounter++;
-        if(_hitCounter >= 3)
+        if (_hitCounter >= 3)
         {
             Projectile.Kill();
         }
@@ -487,7 +481,7 @@ public class LilSwarmer : ModProjectile
 
             SpritebatchDrawer afDrawer = SpritebatchDrawer.FromProjectile(Projectile);
             afDrawer.worldPosition = pos;
-            afDrawer.color = Color.Lerp(Color.OrangeRed, Color.Transparent, (float)i / (float)Projectile.oldPos.Length) * 0.3f;
+            afDrawer.color = Color.Lerp(Color.OrangeRed, Color.Transparent, i / (float)Projectile.oldPos.Length) * 0.3f;
             Main.spriteBatch.Draw(afDrawer);
         }
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);

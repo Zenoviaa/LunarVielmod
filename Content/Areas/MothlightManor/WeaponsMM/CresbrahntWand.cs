@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Items.MoonlightMagic;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Content.Items.MoonlightMagic.Forms;
 using Stellamod.Items;
@@ -16,10 +17,10 @@ namespace Stellamod.Content.Areas.MothlightManor.WeaponsMM
         {
             base.SetDefaults2();
             Form = FormRegistry.Sword.Value;
-            Item.damage = 1000;
+            Item.damage = 2500;
             Item.mana = 45;
             normalSlotCount = 7;
-            timedSlotCount = 6;
+            timedSlotCount = 5;
         }
 
         public override void ModifyElementPreferences(List<int> elements)
@@ -31,12 +32,11 @@ namespace Stellamod.Content.Areas.MothlightManor.WeaponsMM
             elements.Add(ModContent.ItemType<MothlightElement>());
             elements.Add(ModContent.ItemType<PhantasmalElement>());
         }
-        /*
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew<HypnotizedSoul, BlankStaff>();
+               this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<MothlightWing>());
         }
-        */
     }
 }
+

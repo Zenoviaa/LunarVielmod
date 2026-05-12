@@ -107,6 +107,10 @@ namespace Stellamod.Core.Utilities
                     point.position += collisionVelocity;
 
                 }
+                else
+                {
+                    point.position += velocity;
+                }
 
             }
 

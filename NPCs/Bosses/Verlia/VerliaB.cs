@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.MoonspiralTower.WeaponsMT;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Verlia;
@@ -13,7 +14,6 @@ using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
 using Stellamod.NPCs.Projectiles;
-using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -1939,7 +1939,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 dashDirection *= speed;
                 NPC.velocity = dashDirection;
                 NPC.velocity.Y = 0;
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
             if (timer == 19)
@@ -1995,7 +1995,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
                 dashDirection.Normalize();
                 dashDirection *= speed;
                 NPC.velocity = dashDirection;
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
             if (timer == 38)
@@ -2021,7 +2021,6 @@ namespace Stellamod.NPCs.Bosses.Verlia
          //   npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedBravery>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StolenMagicTome>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.VerliBossRel>()));
 
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
             notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,

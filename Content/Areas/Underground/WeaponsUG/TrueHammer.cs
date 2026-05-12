@@ -5,9 +5,9 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -207,7 +207,7 @@ public class ThrowTrueHammer : ModProjectile
         ThrustParticle thrustParticle = ThrustParticle.Spawn(Projectile.Center, forwardVelocity, Color.White);
         thrustParticle.innerColor = Color.Yellow;
         thrustParticle.bloomColor = Color.OrangeRed;
-        ShakeModSystem.Shake = 2;
+        ShakeScreenPosition.Shake = 2;
 
         SoundStyle fireExplosion = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireExplosion1");
         fireExplosion.PitchVariance = 0.3f;
@@ -326,7 +326,7 @@ public class TrueHammerSlash : BaseSwingProjectileV2
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
                 ModContent.ProjectileType<TrueHammerBoom>(), Projectile.damage, Projectile.knockBack, ai1: ComboProgress);
             Bounce(8);
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
             FXUtil.ShakeCamera(target.Center, 1024, 16);
             FXUtil.PunchCamera(target.Center, Projectile.velocity, 0.5f, 2, 30);
         }

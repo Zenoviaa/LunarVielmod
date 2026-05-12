@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -179,7 +179,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 _shouldHome = true;
                 Vector2 targetVelocity = NPC.rotation.ToRotationVector2() * 18f;
                 NPC.velocity = targetVelocity;
-                ShakeModSystem.Shake = 10;
+                ShakeScreenPosition.Shake = 10;
             }
 
             if (Timer % 20 == 0)

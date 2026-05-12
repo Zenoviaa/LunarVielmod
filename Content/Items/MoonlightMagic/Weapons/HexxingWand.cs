@@ -1,22 +1,43 @@
-﻿using Stellamod.Content.Items.MoonlightMagic.Forms;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Content.Items.Materials;
+using Stellamod.Content.Items.MoonlightMagic.Elements;
+using Stellamod.Content.Items.MoonlightMagic.Forms;
+using Stellamod.Items;
+using Stellamod.Items.Materials;
+using System.Collections.Generic;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Items.MoonlightMagic.Weapons
 {
     public class HexxingWand : AbstractMagicWand
     {
+        
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 10;
-            Item.shootSpeed = 16;
-            Item.useTime = 23;
-            Item.useAnimation = 23;
-            Size = 8;
-            TrailLength = 30;
             Form = FormRegistry.Snowglobe.Value;
-            normalSlotCount = 3;
-            timedSlotCount = 0;
+            Item.damage = 450;
+            Item.mana = 100;
+            Item.shootSpeed = 10;
+            Size = 16;
+            TrailLength = 32;
+            normalSlotCount = 4;
+            timedSlotCount = 2;
         }
 
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<PearlescentScrap>());
+        }
+
+        public override void ModifyElementPreferences(List<int> elements)
+        {
+            base.ModifyElementPreferences(elements);
+            elements.Add(ModContent.ItemType<PhantasmalElement>());
+            elements.Add(ModContent.ItemType<MothlightElement>());
+            elements.Add(ModContent.ItemType<HexElement>());
+        }
     }
 }
+

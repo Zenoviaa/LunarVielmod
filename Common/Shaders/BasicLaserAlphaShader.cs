@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Stellamod.Trails;
 using Terraria;
 
@@ -86,7 +84,7 @@ namespace Stellamod.Common.Shaders
             base.SetDefaults();
             TransformMatrix = TrailDrawer.WorldViewPoint2;
             //InnerColor = Color.Yellow;
-          //  OuterColor = Color.Red;
+            //  OuterColor = Color.Red;
 
             LaserTexture = TrailRegistry.BeamTrail;
             Time = Main.GlobalTimeWrappedHourly * 24;

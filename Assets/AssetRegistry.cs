@@ -45,6 +45,66 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+            public static class LeviathanEel
+            {
+                public static SoundStyle Electrify = new SoundStyle($"{Path}LeviathanEel/Electrify");
+                public static SoundStyle SandFade = new SoundStyle($"{Path}LeviathanEel/SandFade");
+                public static SoundStyle SandDash = new SoundStyle($"{Path}LeviathanEel/SandDash");
+                public static SoundStyle EarthRumble = new SoundStyle($"{Path}LeviathanEel/EarthRumble");
+                public static SoundStyle Levigrowl => new SoundStyle($"{Path}LeviathanEel/Levigrowl");
+                public static SoundStyle LeviShockIn => new SoundStyle($"{Path}LeviathanEel/LeviShockIn");
+                public static SoundStyle LeviShockchain => new SoundStyle($"{Path}LeviathanEel/LeviShockchain");
+                public static SoundStyle LeviSmallBite1 => new SoundStyle($"{Path}LeviathanEel/LeviSmallBite1");
+                public static SoundStyle StartBodyPrisma => new SoundStyle($"{Path}LeviathanEel/StartBodyPrisma");
+                public static SoundStyle LeviBlink => new SoundStyle($"{Path}LeviathanEel/LeviBlink");
+                public static SoundStyle LeviSwipingBite => new SoundStyle($"{Path}LeviathanEel/LeviSwipingBite");
+                public static SoundStyle LeviBubbleStream => new SoundStyle($"{Path}LeviathanEel/LeviBubbleStream");
+                public static SoundStyle LeviBigSuck => new SoundStyle($"{Path}LeviathanEel/LeviBigSuck");
+                public static SoundStyle LeviZap1 => new SoundStyle($"{Path}LeviathanEel/LeviZap1");
+                public static SoundStyle LeviZap2 => new SoundStyle($"{Path}LeviathanEel/LeviZap2");
+                public static SoundStyle LeviZap3 => new SoundStyle($"{Path}LeviathanEel/LeviZap3");
+                public static SoundStyle LeviZap4 => new SoundStyle($"{Path}LeviathanEel/LeviZap4");
+                public static SoundStyle LeviGulp => new SoundStyle($"{Path}LeviathanEel/LeviGulp");
+                public static SoundStyle LeviSmallSuck => new SoundStyle($"{Path}LeviathanEel/LeviSmallSuck");
+                public static SoundStyle LeviLaserCharge => new SoundStyle($"{Path}LeviathanEel/LeviLaserCharge");
+                public static SoundStyle LeviBigLaserShoot => new SoundStyle($"{Path}LeviathanEel/LeviBigLaserShoot");
+            }
+            public static class Cariya
+            {
+                public static SoundStyle CariyaGrunt2 => new SoundStyle($"{Path}Cariya/CariyaGrunt2");
+                public static SoundStyle CariyaGrunt1 => new SoundStyle($"{Path}Cariya/CariyaGrunt1");
+                public static SoundStyle CarianDownslash => new SoundStyle($"{Path}Cariya/CarianDownslash");
+                public static SoundStyle Carianpokie => new SoundStyle($"{Path}Cariya/Carianpokie");
+                public static SoundStyle CarianSlash2 => new SoundStyle($"{Path}Cariya/CarianSlash2");
+                public static SoundStyle CarianSlash1 => new SoundStyle($"{Path}Cariya/CarianSlash1");
+            }
+            public static class Celestia
+            {
+                public static SoundStyle ArrowRainStart => new SoundStyle($"{Path}Celestia/ArrowRainStart");
+                public static SoundStyle ArrowRainArrowhitground => new SoundStyle($"{Path}Celestia/ArrowRainArrowhitground");
+                public static SoundStyle ArrowCrash => new SoundStyle($"{Path}Celestia/ArrowCrash");
+                public static SoundStyle BigBowCharge => new SoundStyle($"{Path}Celestia/BigBowCharge");
+                public static SoundStyle BigBowFullyGrown => new SoundStyle($"{Path}Celestia/BigBowFullyGrown");
+                public static SoundStyle CelestiaAbouttoAttack => new SoundStyle($"{Path}Celestia/CelestiaAbouttoAttack");
+                public static SoundStyle CelestiaBackflip => new SoundStyle($"{Path}Celestia/CelestiaBackflip");
+                public static SoundStyle CelestiaBowThrow => new SoundStyle($"{Path}Celestia/CelestiaBowThrow");
+                public static SoundStyle SmallBowShoot1 => new SoundStyle($"{Path}Celestia/SmallBowShoot1");
+                public static SoundStyle SmallBowShoot2 => new SoundStyle($"{Path}Celestia/SmallBowShoot2");
+            }
+            public static class Verlia
+            {
+                public static SoundStyle BigMoonExplosion => new SoundStyle($"{Path}Verlia/BigMoonExplosion");
+                public static SoundStyle MoonDuoHitGround => new SoundStyle($"{Path}Verlia/MoonDuoHitGround");
+                public static SoundStyle MoonBounceTwo => new SoundStyle($"{Path}Verlia/MoonBounceTwo");
+                public static SoundStyle MoonBounceOnce => new SoundStyle($"{Path}Verlia/MoonBounceOnce");
+                public static SoundStyle MoonshotBlast => new SoundStyle($"{Path}Verlia/MoonshotBlast");
+                public static SoundStyle BigMoonGrow => new SoundStyle($"{Path}Verlia/BigMoonGrow");
+                public static SoundStyle SwordGrowBigga => new SoundStyle($"{Path}Verlia/SwordGrowBigga");
+                public static SoundStyle SwordGrowSmall => new SoundStyle($"{Path}Verlia/SwordGrowSmall");
+                public static SoundStyle BigSwordHitDown => new SoundStyle($"{Path}Verlia/BigSwordHitDown");
+                public static SoundStyle BigSwordSwing => new SoundStyle($"{Path}Verlia/BigSwordSwing");
+                public static SoundStyle ShockwaveGround => new SoundStyle($"{Path}Verlia/ShockwaveGround");
+            }
             public static class Waypoint
             {
                 public static SoundStyle OpenWaypointSection => new SoundStyle($"{Path}Waypoint/OpenWaypointSection");
@@ -63,13 +123,6 @@ namespace Stellamod.Assets
                 public static SoundStyle GintzeHandSummon => new SoundStyle($"{Path}Collosseum/GintzeHandSummon");
             }
 
-            public static class LeviathanEel
-            {
-                public static SoundStyle Electrify = new SoundStyle($"{Path}LeviathanEel/Electrify");
-                public static SoundStyle SandFade = new SoundStyle($"{Path}LeviathanEel/SandFade");
-                public static SoundStyle SandDash = new SoundStyle($"{Path}LeviathanEel/SandDash");
-                public static SoundStyle EarthRumble = new SoundStyle($"{Path}LeviathanEel/EarthRumble");
-            }
             public static class Rune
             {
                 public static SoundStyle RuneTeleport = new SoundStyle($"{Path}Runes/RuneTeleport");

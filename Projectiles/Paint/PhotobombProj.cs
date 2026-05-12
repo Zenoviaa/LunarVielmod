@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Utilities;
 using Stellamod.Projectiles.Visual;
-using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -111,13 +111,13 @@ namespace Stellamod.Projectiles.Paint
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Bullet), Projectile.Center, Projectile.velocity * 12f,
                     ModContent.ProjectileType<PhotobombShot>(), Projectile.damage * 1, Projectile.knockBack, Projectile.owner);
 
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
                 SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.Center);
             }
 
             if (Timer == 60)
             {
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Bullet), Projectile.Center, Projectile.velocity * 10f,
                     ModContent.ProjectileType<PhotobombShot>(), Projectile.damage * 1, Projectile.knockBack, Projectile.owner);
                 SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.Center);
@@ -125,7 +125,7 @@ namespace Stellamod.Projectiles.Paint
 
             if (Timer == 100)
             {
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Bullet), Projectile.Center, Projectile.velocity * 10f,
                     ModContent.ProjectileType<PhotobombShot>(), Projectile.damage * 1, Projectile.knockBack, Projectile.owner);
                 SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Projectile.Center);

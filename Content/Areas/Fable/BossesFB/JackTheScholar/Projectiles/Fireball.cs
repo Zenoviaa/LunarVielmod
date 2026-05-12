@@ -313,7 +313,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
             BlackFireShader blackFireShader = BlackFireShader.Instance;
             blackFireShader.Time = _fireTime;
             TrailDrawer.Draw(Main.spriteBatch, OldCenterPos, OldCenterRot, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
-
             return false;
         }
 

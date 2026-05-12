@@ -4,9 +4,9 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.IO;
@@ -652,7 +652,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 FXUtil.ShakeCamera(NPC.position, 1024, 8);
                 var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Yellow, Color.Red);
                 boom.Scale *= 3f;
-                ShakeModSystem.Shake = 16;
+                ShakeScreenPosition.Shake = 16;
                 var p = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Red, Color.Black);
                 NPC.Kill();
             }

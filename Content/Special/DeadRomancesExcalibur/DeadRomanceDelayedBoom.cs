@@ -2,7 +2,6 @@
 using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -65,7 +64,7 @@ public class DeadRomanceDelayedBoom : ModProjectile
             sound.PitchVariance = 0.5f;
         
             SoundEngine.PlaySound(sound, Projectile.position);
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
             FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Goldenrod, Color.DarkGoldenrod);
             var boom = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Goldenrod, Color.DarkGoldenrod);
             boom.Scale *= 2;

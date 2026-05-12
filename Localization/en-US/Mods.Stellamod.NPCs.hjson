@@ -1261,6 +1261,7 @@ DummyNPC: {
 
 VerlianSingularity.DisplayName: Verlian Singularity
 VerlianMoon.DisplayName: Verlian Moon
+Verlia.DisplayName: Verlia of the Moon
 ColosseumWaveManager.DisplayName: Colosseum Wave Manager
 Bishinine.DisplayName: Bishinine
 BellBaseball.DisplayName: Bell Baseball
@@ -1348,3 +1349,9 @@ MagicWitchCauldron: {
 
 OrganDragon.DisplayName: Organ Dragon
 SporeWalker.DisplayName: Spore Walker
+VerliaClone.DisplayName: Verlia Clone
+Celestia.DisplayName: Celestia Bridget, The Moonwalker
+Cariya.DisplayName: Cariya, Moonlight Knight
+BabyJellyfish.DisplayName: Baby Jellyfish
+KingJellyfish.DisplayName: King Jellyfish
+LeviathanEelSegment.DisplayName: Leviathan Eel Segment

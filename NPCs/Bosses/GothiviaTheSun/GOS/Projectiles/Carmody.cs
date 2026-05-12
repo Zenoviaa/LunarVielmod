@@ -1,8 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Helpers;
+﻿using Stellamod.Helpers;
 using Stellamod.Projectiles.Visual;
-using Stellamod.Utilis;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -131,8 +128,8 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles
                 var EntitySource = NPC.GetSource_FromThis();
                 if (MultiplayerHelper.IsHost)
                 {
-                    Utilities.NewProjectileBetter(LightPos.X, LightPos.Y - 2000, 0, 10,
-                        ModContent.ProjectileType<ORANGELS>(), 1500, 0f, owner: Main.myPlayer);
+                    Projectile.NewProjectile(EntitySource, LightPos.X, LightPos.Y - 2000, 0, 10,
+                        ModContent.ProjectileType<ORANGELS>(), 1500, 0f, Owner: Main.myPlayer);
 
                 }
 

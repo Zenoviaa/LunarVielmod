@@ -5,7 +5,6 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -139,7 +138,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             if(Timer >= 100)
             {
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
             }
 
             //Spawn particles to go into him
@@ -187,7 +186,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Animator.PlayAnimation(Anim_LookOver);
 
             IntroHoverMovement();
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             Main.windSpeedCurrent = 6;
             if (Main.netMode != NetmodeID.Server)
             {
@@ -240,7 +239,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 blackseaRenderer.miniOrbDrawPosition = Vector2.Lerp(TargetVector, Main.Camera.Center, ease);
                 blackseaRenderer.miniOrbDrawScale = MathHelper.Lerp(0.4f, 1f, ease);
             }
-            ShakeModSystem.Shake = 8;
+            ShakeScreenPosition.Shake = 8;
 
             //Keep the camera on the boss
             CameraTargetSystem.AddTarget(NPC.Center);

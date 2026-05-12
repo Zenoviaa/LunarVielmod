@@ -5,12 +5,12 @@ using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -254,7 +254,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
 
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), target.position);
-            ShakeModSystem.Shake = 1;
+            ShakeScreenPosition.Shake = 1;
             for (int i = 0; i < 2; i++)
             {
                 Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightPink, Main.rand.NextFloat(0.1f, 0.5f)).noGravity = true;

@@ -1,14 +1,19 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Microsoft.Xna.Framework.Input;
+using ReLogic.Threading;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Foggy;
 using Stellamod.Core.Utilities;
+using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
+using Terraria.Graphics.Effects;
 using Terraria.Graphics.Light;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -16,6 +21,19 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.LunarLightingSystem
 {
+    public class LuminanceShader : CrystalShader<LuminanceShader>
+    {
+        private EffectParameter _thresholdParam;
+        public float Threshold
+        {
+            set
+            {
+                _thresholdParam ??= Effect.Parameters["threshold"];
+                _thresholdParam.SetValue(value);
+            }
+        }
+
+    }
 
     //TODO: Rewrite this and try implementing Radiance Cascades instead, might be really cool
     //I'll make a prototype elsewhere first though
@@ -32,28 +50,37 @@ namespace Stellamod.Core.LunarLightingSystem
         }
     }
 
+
     [Autoload(Side = ModSide.Client)]
     public class LunarLightingRenderer : ModSystem,
         IPostProcessingPass
     {
+        //We're using 255 lights because that's how many values are in the alpha channel in color
+        //We're using the alpha channel to mask which shadows it checks for in the shadow map
+        //We could make a custom vertex structure if we need to have more
+        public const int MAX_POINT_LIGHTS = 255;
+        public const float POINT_LIGHT_DIAMETER = 800;
         public int PostProcessPriority => 15;
+
+        private Texture2D _lightMapTexture;
+        private PointLights _pointLights;
+        private ShadowMap _shadowMap;
 
         private Dictionary<Point, Fog> _fogIndex = new();
         private List<Fog> _fogsToRemove = new();
         public bool renderFog;
         private Color _backLightColor;
         private Vector2 _previousScreenSize;
-        private RenderTarget2D _accumulatedLightRT;
 
         private bool _isLoaded;
-        private bool _initAtlas;
 
-        private RenderTarget2D _pointLightRT;
-        private RenderTarget2D _tempLightMapAtlasRT;
+        private ManagedRenderTarget _pixelLightTarget;
+        private ManagedRenderTarget _lightsRT;
+        private ManagedRenderTarget _tileLightRT;
         private RenderTarget2D _tileShadowMap;
         private RenderTarget2D _tileBlurRT;
         private RenderTarget2D _tileSunShadowRT;
-        private ManagedRenderTarget _tileLightRT;
+
 
         private List<ILightEmitter> _emitters;
         private List<IBackLightModifier> _backLightModifiers;
@@ -62,14 +89,113 @@ namespace Stellamod.Core.LunarLightingSystem
         public Color BackLightColor;
         public Color SunColor;
         public Vector3 AmbientLight;
+        public bool leviathanDarken;
 
+        public bool IsLightingEnabled => ModContent.GetInstance<LunarVeilClientConfig>().BeamingLights;
         public override void Load()
         {
+            _pointLights = new PointLights(MAX_POINT_LIGHTS);
+            _shadowMap = new ShadowMap(MAX_POINT_LIGHTS, 64);
             _backLightModifiers = new List<IBackLightModifier>();
             _emitters = new List<ILightEmitter>();
 
+            On_FilterManager.EndCapture += ApplyLighting;
             On_Main.CheckMonoliths += RenderToLightMaps;
             On_Main.DrawCachedNPCs += DrawShadowsBehindTiles;
+        }
+
+        private void Test()
+        {
+            GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
+            SpriteBatch sb = Main.spriteBatch;
+            gDevice.SetRenderTarget(Main.screenTargetSwap);
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                null);
+            sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+            sb.End();
+
+            var glowMaskBloomShader = ShaderContent.GetInstance<LuminanceShader>();
+            // glowMaskBloomShader.Threshold = 0.5f;
+            glowMaskBloomShader.Threshold = 1F;
+         //   glowMaskBloomShader.Gamma = 2.2f;
+
+            gDevice.SetRenderTarget(Main.screenTarget);
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                glowMaskBloomShader.Effect);
+            sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+            sb.End();
+
+        }
+        private void ApplyLighting(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.P))
+            {
+                Test();
+            }
+            if (!Main.gameMenu && IsLightingEnabled)
+            {
+                var glowMaskBloomShader = ShaderContent.GetInstance<LuminanceShader>();
+                // glowMaskBloomShader.Threshold = 0.5f;
+                glowMaskBloomShader.Threshold = 1F;
+      
+
+                //First we're going to draw the screen target to the lights RT while calculating which colors are bright so we don't kill glow masks and whatnot
+                GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
+                SpriteBatch sb = Main.spriteBatch;
+                gDevice.SetRenderTarget(_lightsRT);
+                sb.Begin(SpriteSortMode.Deferred, CustomBlendStates.Brightest, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, 
+                    glowMaskBloomShader.Effect);
+                sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+                sb.End();
+
+
+                //Now apply pixelationed to the lights so it looks a lot less jarring
+                //Pixelating it should look pretty cool
+      /*          
+    gDevice.SetRenderTarget(_pixelLightTarget);
+    gDevice.Clear(Color.Transparent);
+
+    sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+             null);
+    sb.Draw(_lightsRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+    sb.End();
+
+
+
+    gDevice.SetRenderTarget(_lightsRT);
+    gDevice.Clear(Color.Transparent);
+
+    sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+             null);
+    sb.Draw(_pixelLightTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+    sb.End();
+    */
+
+
+
+                //Take the screen target again and multiple the final light RT over it, to apply the lighting
+                gDevice.SetRenderTarget(Main.screenTargetSwap);
+                gDevice.Clear(Color.White);
+               
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, 
+                    null);
+                sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+                sb.End();
+
+                sb.Begin(SpriteSortMode.Immediate, blendState: CustomBlendStates.Multiply, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+                sb.Draw(_lightsRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+                sb.End();
+
+                //Put it back and let the rest of post processing take over
+                gDevice.SetRenderTarget(Main.screenTarget);
+                gDevice.Clear(Color.Transparent);
+
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+                sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                sb.End();
+
+            }
+            orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
         }
 
 
@@ -77,6 +203,7 @@ namespace Stellamod.Core.LunarLightingSystem
         {
             base.Unload();
             Main.QueueMainThreadAction(UnloadRenderTargets);
+            On_FilterManager.EndCapture -= ApplyLighting;
             On_Main.CheckMonoliths -= RenderToLightMaps;
             On_Main.DrawCachedNPCs -= DrawShadowsBehindTiles;
         }
@@ -96,57 +223,214 @@ namespace Stellamod.Core.LunarLightingSystem
             graphicsDevice.SetRenderTarget(_tileLightRT);
             graphicsDevice.Clear(Color.Transparent);
             Texture2D heightTile = TextureAssets.BlackTile.Value;
-            ;
+            
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null);
 
-            Vector2 cameraCenterWorld = Main.Camera.Center;
-            Vector2 cameraTopLeft = cameraCenterWorld - new Vector2(Main.screenWidth, Main.screenHeight) / 2;
-            Vector2 cameraBottomRight = cameraCenterWorld + new Vector2(Main.screenWidth, Main.screenHeight) / 2;
-
-            const float range = 256;
-            cameraTopLeft -= new Vector2(range);
-            cameraBottomRight += new Vector2(range);
-
-            Point topLeftTile = cameraTopLeft.ToTileCoordinates();
-            Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
 
             LightingEngine lightingEngine = typeof(Lighting).GetField("_activeEngine", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null) as LightingEngine;
             TileLightScanner tileScanner = typeof(LightingEngine).GetField("_tileScanner", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as TileLightScanner;
             LightMap lightMap = typeof(LightingEngine).GetField("_activeLightMap", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as LightMap;
 
-            for (int x = topLeftTile.X; x < bottomRightTile.X; x++)
+            (Point topLeftTile, Point bottomRightTile) = TileUtilities.CameraTileBounds(256);
+            for (int x = 0; x < lightMap.Width; x++)
             {
-                for (int y = topLeftTile.Y; y < bottomRightTile.Y; y++)
+                for (int y = 0; y < lightMap.Height; y++)
                 {
-                    Point lightTilePoint = new Point(x, y);
-                    Vector3 lightColor;
-                    tileScanner.GetTileLight(x, y, out lightColor);
-                    Vector2 position = lightTilePoint.ToWorldCoordinates();
-                    Color drawColor = new Color(lightColor.X, lightColor.Y, lightColor.Z, 1f);
-                    spriteBatch.Draw(heightTile, position - Main.screenPosition, drawColor);
+                    lightMap.GetLight(x, y, out Vector3 c);
+                    spriteBatch.Draw(heightTile, new Vector2(x, y)*16, null, new Color(c), 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 }
             }
+
 
 
             spriteBatch.End();
             graphicsDevice.SetRenderTarget(null);
         }
 
+        private void RenderLightMapToTexture()
+        {
+            LightingEngine lightingEngine = typeof(Lighting).GetField("_activeEngine", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null) as LightingEngine;
+            LightMap lightMap = typeof(LightingEngine).GetField("_activeLightMap", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as LightMap;
+            Color[] pixels = new Color[lightMap.Width * lightMap.Height];
+            for (int x = 0; x < lightMap.Width; x++)
+            {
+                for (int y = 0; y < lightMap.Height; y++)
+                {
+                    lightMap.GetLight(x, y, out Vector3 c);
+                    pixels[x + y * lightMap.Width] = new Color(c);
+                }
+            }
+
+
+            if (_lightMapTexture == null || _lightMapTexture.Width != lightMap.Width || _lightMapTexture.Height != lightMap.Height)
+            {
+                _lightMapTexture?.Dispose();
+                _lightMapTexture = new Texture2D(Main.graphics.GraphicsDevice, lightMap.Width, lightMap.Height, false, SurfaceFormat.Color);
+
+            }
+            _lightMapTexture.SetData(pixels);
+        }
+
+        private void RenderToLightsRT()
+        {
+            if (Main.gameMenu)
+                return;
+
+       //     RenderTileLight();
+            if (!IsLightingEnabled)
+                return;
+
+            var config = ModContent.GetInstance<LunarVeilClientConfig>();
+            int resolution = 64;
+            switch (config.ShadowQuality)
+            {
+                case ShadowQuality.Ultra_Low:
+                    resolution = 16;
+                    break;
+                default:
+                case ShadowQuality.Low:
+                    resolution = 32;
+                    break;
+                case ShadowQuality.Medium:
+                    resolution = 64;
+                    break;
+                case ShadowQuality.High:
+                    resolution = 128;
+                    break;
+                case ShadowQuality.Very_High:
+                    resolution = 256;
+                    break;
+            }
+            if(_shadowMap.Resolution != resolution)
+            {
+                _shadowMap.Dispose();
+                _shadowMap = new ShadowMap(MAX_POINT_LIGHTS, resolution);
+            }
+            _shadowMap.Clear();
+            _pointLights.Clear();
+            _pointLights.GatherLights();
+
+            FastParallel.For(0, _pointLights.UsedLightCount, delegate (int start, int end, object context) {
+                for (int j = start; j < end; j++)
+                {
+                    Light light = _pointLights[j];
+
+                    //For now all lights will have the same radius
+                    //I think we need a custom vertex structure to have difference radiuses
+                    _shadowMap.RayMarch(j, light.position, light.diameter);
+                }
+            });
+
+            //      FastParallel.For(0, _pointLights.UsedLightCount, (int start, int end, ))
+            //_shadowMap.RayMarch(0, Main.LocalPlayer.Center, PointLightSize);
+            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+            graphicsDevice.SetRenderTarget(_lightsRT);
+            graphicsDevice.Clear(_backLightColor);
+
+            //Render Sun
+            SunLightManager.RenderSunLight();
+            _emitters.Clear();
+            foreach (var proj in Main.ActiveProjectiles)
+            {
+                if (proj.ModProjectile is ILightEmitter emitter)
+                {
+                    _emitters.Add(emitter);
+                }
+            }
+
+            if (_emitters.Count > 0)
+            {
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                //Draw additional lights
+                foreach (ILightEmitter emitter in _emitters)
+                {
+                    emitter.RenderLight(spriteBatch);
+                }
+            }
+
+            VertexPositionColorTexture[] vertices = new VertexPositionColorTexture[_pointLights.UsedLightCount * 4];
+
+            //Prepare the index buffer, we need to draw all the lights in the same batch
+            int[] indices = new int[_pointLights.UsedLightCount * 6];
+            int connectIndex = 0;
+            for (int i = 0; i < indices.Length; i += 6)
+            {
+                indices[i] = connectIndex + 0;
+                indices[i + 1] = connectIndex + 2;
+                indices[i + 2] = connectIndex + 3;
+                indices[i + 3] = connectIndex + 0;
+                indices[i + 4] = connectIndex + 1;
+                indices[i + 5] = connectIndex + 3;
+                connectIndex += 4;
+            }
+
+
+            for (int i = 0; i < _pointLights.UsedLightCount; i++)
+            {
+                Light light = _pointLights[i];
+                float r = light.diameter;
+                r /= 2;
+                Vector2 topLeftOffset = new Vector2(-r, -r);
+                Vector2 bottomLeftOffset = new Vector2(-r, r);
+                Vector2 topRightOffset = new Vector2(r, -r);
+                Vector2 bottomRightOffset = new Vector2(r, r);
+
+                Vector2 center = light.position;
+                Vector2 topLeft = center + topLeftOffset;
+                Vector2 bottomLeft = center + bottomLeftOffset;
+                Vector2 topRight = center + topRightOffset;
+                Vector2 bottomRight = center + bottomRightOffset;
+
+                //Rotate around the center pivot
+                int startIndex = i * 4;
+                Color lightColor = light.color;
+                vertices[startIndex + 0] = new VertexPositionColorTexture(new Vector3(topLeft, 0), lightColor, new Vector2(0, 0));
+                vertices[startIndex + 1] = new VertexPositionColorTexture(new Vector3(topRight, 0), lightColor, new Vector2(1, 0));
+                vertices[startIndex + 2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), lightColor, new Vector2(0, 1));
+                vertices[startIndex + 3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), lightColor, new Vector2(1, 1));
+            }
+
+            if (vertices.Length <= 0 || indices.Length <= 0)
+                return;
+
+            //Get the shadow map texture
+            _shadowMap.Output();
+
+            //We have to use a blend state that takes the brightest color otherwies shadows would be able to blend over other
+            //Lights
+            //Actually not sure if we need that with this specific implementation
+
+
+            var shadow2 = LightingShader.Instance;
+            shadow2.ShadowMap = _shadowMap.Texture;
+            shadow2.TransformMatrix = TrailDrawer.WorldViewPoint2;
+
+
+            //Using the max color state gives a really nice look on colors
+            //Additive seems to just lerp towards white which looks kinda bland
+            graphicsDevice.BlendState = CustomBlendStates.Brightest;
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+
+
+            int primitiveCount = vertices.Length / 2;
+            shadow2.ApplyPasses();
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+            graphicsDevice.DrawUserIndexedPrimitives(
+                PrimitiveType.TriangleList, vertices, 0, vertices.Length, indices, 0, primitiveCount);
+
+
+        }
+
         private void RenderToLightMaps(On_Main.orig_CheckMonoliths orig)
         {
-            
-            // Player.solidLightDecay = 1f;
+            RenderToLightsRT();
             if (IsActive && _isLoaded)
             {
-                //      RenderTileLight();
-                RenderLightsV2();
                 if (DrawSunShadows2())
                 {
                     RenderShadows();
                 }
             }
-
-
 
             orig();
         }
@@ -162,20 +446,11 @@ namespace Stellamod.Core.LunarLightingSystem
             orig(self, npcCache, behindTiles);
         }
 
-
-        private void DrawShadowsBehindTiles(On_Main.orig_DoDraw_DrawNPCsBehindTiles orig, Main self)
-        {
-            //Just draw it
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin();
-            spriteBatch.Draw(_tileSunShadowRT, Vector2.Zero, Color.White);
-            spriteBatch.End();
-            orig(self);
-        }
-
         public override void OnModLoad()
         {
             base.OnModLoad();
+            _pixelLightTarget = ManagedRenderTarget.New(ManagedRenderTarget.GetHalfScreenTargetSize);
+            _lightsRT = ManagedRenderTarget.New();
             _tileLightRT = ManagedRenderTarget.New();
             PostProcessingRenderer.AddPass(this);
         }
@@ -199,10 +474,36 @@ namespace Stellamod.Core.LunarLightingSystem
             if (!_isLoaded)
                 return;
 
-
-
             //PreviewLightMaps();
-            DrawAccumulatedLightMapToScreen();
+            //  DrawAccumulatedLightMapToScreen();
+
+            /*
+            if (Keyboard.GetState().IsKeyDown(Keys.K))
+            {
+                _shadowMap.Output();
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                   null);
+                spriteBatch.Draw(_shadowMap.Texture, new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f, null, Color.White, 0f, new Vector2(_shadowMap.Texture.Width, _shadowMap.Texture.Height) * 0.5f, 4, SpriteEffects.None, 0f);
+                spriteBatch.End();
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.H))
+            {
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                   null);
+                spriteBatch.Draw(_tileLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                spriteBatch.End();
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.N))
+            {
+                Main.NewText(_pointLights.UsedLightCount);
+                SpriteBatch spriteBatch = Main.spriteBatch;
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                   null);
+                spriteBatch.Draw(_lightsRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                spriteBatch.End();
+            }*/
             RenderFog();
             //   DrawSoftGlows();
         }
@@ -311,31 +612,6 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
 
         }
-        private void DrawAtlasToScreen()
-        {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-            Rectangle screenRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-            spriteBatch.Draw(_tempLightMapAtlasRT, screenRectangle, Color.White);
-            spriteBatch.End();
-        }
-
-        private void DrawAccumulatedLightMapToScreen()
-        {
-            Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
-            SimpleBlurShader simpleBlurShader = SimpleBlurShader.Instance;
-            simpleBlurShader.TexelSize = texelSize;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Immediate, CustomBlendState.Multiply, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, simpleBlurShader.Effect);
-            spriteBatch.Draw(_accumulatedLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.End();
-            /*
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, simpleBlurShader.Effect);
-            spriteBatch.Draw(_tileLightRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.End();
-            */
-        }
 
 
         private static bool DrawSunShadows2()
@@ -344,78 +620,6 @@ namespace Stellamod.Core.LunarLightingSystem
             return config.SunShadows2;
         }
 
-        private void DrawTileShadowMapToScreen()
-        {
-            if (Main.gameMenu)
-                return;
-
-            if (!DrawSunShadows2())
-                return;
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            spriteBatch.Draw(_tileSunShadowRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-            spriteBatch.End();
-
-        }
-        private static void DrawSoftGlows()
-        {
-            /*
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-
-            Texture2D glowTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SoftGlow").Value;
-            Vector2 drawOrigin = glowTexture.Size() / 2f;
-
-            for (int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
-            {
-                if (PointLightManager.LightStates[i] == PointLightState.INACTIVE)
-                    continue;
-
-                ref PointLightData pointLightData = ref PointLightManager.PointLights[i];
-                Vector2 drawPosition = pointLightData.position - Main.screenPosition;
-
-                Point tilePosition = (pointLightData.position - new Vector2(8, 8)).ToTileCoordinates();
-                Tile tile = Main.tile[tilePosition.X, tilePosition.Y];
-
-                Color drawColor = Lighting.GetColor(tilePosition.X, tilePosition.Y);
-                drawColor *= ExtraMath.Osc(0.9f, 1f, speed: 2, offset: tilePosition.X + tilePosition.Y);
-                drawColor *= 0.13f;
-                drawColor.A = 0;
-                spriteBatch.Draw(glowTexture, drawPosition, null, drawColor, 0, drawOrigin, 2, SpriteEffects.None, 0);
-            }
-
-            spriteBatch.End();*/
-        }
-
-        private void PreviewLightMaps()
-        {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-
-
-            for (int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
-            {
-                //These lights won't be iterated over/drawn
-                switch (PointLightManager.LightStates[i])
-                {
-                    case PointLightState.CUSTOM:
-                    case PointLightState.INACTIVE:
-                    case PointLightState.NEEDS_UPDATING:
-                    case PointLightState.NEEDS_BAKING:
-                        continue;
-                }
-
-                ref PointLightData pointLightData = ref PointLightManager.PointLights[i];
-                Rectangle atlasRectangle = PointLightManager.LightAtlasRectangles[i];
-                Vector2 position = pointLightData.position;
-                Vector2 drawOrigin = atlasRectangle.Size() / 2f;
-                float scale = PointLightManager.POINT_LIGHT_DOWN_SAMPLES;
-                spriteBatch.Draw(_tempLightMapAtlasRT, position - Main.screenPosition, atlasRectangle, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
-            }
-
-            spriteBatch.End();
-        }
 
         private void RenderShadows()
         {
@@ -471,6 +675,12 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
 
         }
+        public override void PreUpdateNPCs()
+        {
+            base.PreUpdateNPCs();
+            leviathanDarken = false;
+        }
+
         public override void PostUpdateTime()
         {
             base.PostUpdateTime();
@@ -479,13 +689,23 @@ namespace Stellamod.Core.LunarLightingSystem
             {
                 BackLightColor = Color.White * 0.8f;
             }
-            if ((Main.LocalPlayer.ZoneSnow || Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower) && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight)
+            if ((Main.LocalPlayer.ZoneSnow || 
+                Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower)
+                && !Main.dayTime && Main.LocalPlayer.ZoneOverworldHeight)
             {
                 Color color1 = Color.Lerp(Color.LightGreen, Color.LightPink, ExtraMath.Osc(0f, 1f, speed: 0.4f));
                 Color color2 = Color.Lerp(Color.Cyan, color1, ExtraMath.Osc(0f, 1f, offset: 1, speed: 0.4f));
                 Color finalColor = Color.Lerp(Color.White, color2, ExtraMath.Osc(0f, 1f, offset: 2, speed: 0.4f) * 0.5f);
                 BackLightColor = finalColor * 0.8f;
             }
+
+            BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
+            MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+            if(myPlayer.ZoneDrakonic || myPlayer.ZoneCinder)
+            {
+                BackLightColor = Color.White * 0.7f;
+            }
+
             foreach (var backLightModifier in _backLightModifiers)
             {
                 backLightModifier.ModifyBackLight(ref BackLightColor);
@@ -494,8 +714,6 @@ namespace Stellamod.Core.LunarLightingSystem
             _backLightColor = Color.Lerp(_backLightColor, BackLightColor, 0.1f);
             SmoothedBackLightColor = _backLightColor;
             SunColor = Color.Lerp(SunColor, Main.ColorOfTheSkies, 0.1f);
-
-            //SunColor = Color.Black;
         }
 
         public void AddBackLight(IBackLightModifier backLightModifier)
@@ -524,130 +742,15 @@ namespace Stellamod.Core.LunarLightingSystem
                 return false;
             return true;
         }
-
-        private void RenderLightsV2()
-        {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            TileDrawing tilesRenderer = Main.instance.TilesRenderer;
-            if (!ShouldRender())
-                return;
-
-            //First we need to bake the lights so
-
-            int maxBakesPerFrame = 1;
-            int bakes = 0;
-            for (int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
-            {
-                switch (PointLightManager.LightStates[i])
-                {
-                    case PointLightState.NEEDS_BAKING:
-                        PointLightManager.BakeLight(i, _pointLightRT, _tempLightMapAtlasRT);
-                        bakes++;
-                        break;
-                }
-                if (bakes >= maxBakesPerFrame)
-                    break;
-            }
-
-            //Prepare to draw to the accumulate light render target
-
-            graphicsDevice.SetRenderTarget(_accumulatedLightRT);
-            graphicsDevice.Clear(_backLightColor);
-
-            //Render Sun
-            SunLightManager.RenderSunLight();
-
-
-            //Wait why not just like
-            //paste the tile light here wait
-
-            /*
-            LightingV2 lightingV2 = ModContent.GetInstance<LightingV2>();
-            lightingV2.RenderLightSources();*/
-
-            var effect = PointLightSoftenShader.Instance.Effect;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-            //   spriteBatch.Draw(_tileLightRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-
-            for (int i = 0; i < PointLightManager.MAX_POINT_LIGHTS; i++)
-            {
-                //These lights won't be iterated over/drawn
-                switch (PointLightManager.LightStates[i])
-                {
-                    case PointLightState.CUSTOM:
-                    case PointLightState.INACTIVE:
-                    case PointLightState.NEEDS_UPDATING:
-                    case PointLightState.NEEDS_BAKING:
-                        continue;
-                }
-
-                ref PointLightData pointLightData = ref PointLightManager.PointLights[i];
-                Rectangle atlasRectangle = PointLightManager.LightAtlasRectangles[i];
-                Vector2 position = pointLightData.position;
-                Vector2 drawOrigin = atlasRectangle.Size() / 2f;
-                float scale = PointLightManager.POINT_LIGHT_DOWN_SAMPLES;
-
-                for (int k = 0; k < 1; k++)
-                    spriteBatch.Draw(_tempLightMapAtlasRT, position - Main.screenPosition, atlasRectangle, Color.White, 0, drawOrigin, scale, SpriteEffects.None, 0);
-            }
-
-            spriteBatch.End();
-
-            //Render the Player PointLight
-            int playerLightIndex = PointLightManager.MAX_POINT_LIGHTS - 1;
-            PointLightManager.RenderLight(playerLightIndex, _pointLightRT, _accumulatedLightRT);
-
-            _emitters.Clear();
-            foreach (var proj in Main.ActiveProjectiles)
-            {
-                if (proj.ModProjectile is ILightEmitter emitter)
-                {
-                    _emitters.Add(emitter);
-                }
-            }
-
-            if (_emitters.Count > 0)
-            {
-                //Draw additional lights
-                foreach (ILightEmitter emitter in _emitters)
-                {
-                    graphicsDevice.SetRenderTarget(_pointLightRT);
-                    graphicsDevice.Clear(Color.Black);
-                    emitter.RenderLight(spriteBatch);
-
-                    graphicsDevice.SetRenderTarget(_accumulatedLightRT);
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
-                    spriteBatch.Draw(_pointLightRT, Vector2.Zero, Color.White);
-                    spriteBatch.End();
-                }
-            }
-            graphicsDevice.SetRenderTarget(null);
-
-
-        }
-
-
-        private void InitAtlas()
-        {
-            _tempLightMapAtlasRT = new RenderTarget2D(Main.graphics.GraphicsDevice, PointLightManager.MAX_ATLAS_SIZE, PointLightManager.MAX_ATLAS_SIZE, false,
-                  SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
-            _initAtlas = true;
-        }
-
+    
+    
         private void UnloadRenderTargets()
         {
-            _accumulatedLightRT?.Dispose();
             _tileShadowMap?.Dispose();
-            _pointLightRT?.Dispose();
             _tileBlurRT?.Dispose();
             _tileSunShadowRT?.Dispose();
-            _tempLightMapAtlasRT?.Dispose();
 
-            _tempLightMapAtlasRT = null;
-            _accumulatedLightRT = null;
             _tileShadowMap = null;
-            _pointLightRT = null;
             _tileBlurRT = null;
             _tileSunShadowRT = null;
             _isLoaded = false;
@@ -655,10 +758,6 @@ namespace Stellamod.Core.LunarLightingSystem
 
         private void ResizeRenderTargets()
         {
-            if (_accumulatedLightRT != null && !_accumulatedLightRT.IsDisposed)
-                _accumulatedLightRT.Dispose();
-            if (_pointLightRT != null && !_pointLightRT.IsDisposed)
-                _pointLightRT.Dispose();
             if (_tileShadowMap != null && !_tileShadowMap.IsDisposed)
                 _tileShadowMap.Dispose();
             if (_tileBlurRT != null && !_tileBlurRT.IsDisposed)
@@ -666,18 +765,9 @@ namespace Stellamod.Core.LunarLightingSystem
             if (_tileSunShadowRT != null && !_tileSunShadowRT.IsDisposed)
                 _tileSunShadowRT.Dispose();
 
-            if (!_initAtlas)
-            {
-                InitAtlas();
-            }
-
             _tileSunShadowRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
             _tileBlurRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight);
             _tileShadowMap = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth + Main.offScreenRange * 2, Main.screenHeight + Main.offScreenRange * 2);
-            _pointLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false,
-                SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
-            _accumulatedLightRT = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false,
-                SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
             _isLoaded = true;
         }
 

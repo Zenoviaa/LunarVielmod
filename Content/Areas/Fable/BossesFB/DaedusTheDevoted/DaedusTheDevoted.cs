@@ -602,7 +602,7 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted
             NPC.height = 128;
             NPC.damage = 14;
             NPC.defense = 2;
-            NPC.lifeMax = 2600;
+            NPC.lifeMax = 4000;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb");
             NPC.knockBackResist = 0f;

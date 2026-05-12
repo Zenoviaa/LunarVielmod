@@ -203,6 +203,7 @@ FrostShot.DisplayName: Frost Shot
 FrostShot2.DisplayName: Frost Shot2
 FrostShotIN.DisplayName: Frost Shot I N
 MoonBladeTrail.DisplayName: Moon Blade Trail
+MoonBlade.DisplayName: Moon Blade
 MoonOut.DisplayName: Moon Out
 Notia.DisplayName: Notia
 Sigil.DisplayName: Sigil
@@ -1867,3 +1868,55 @@ FlyingLeaf.DisplayName: Flying Leaf
 ElectricTridentLightning.DisplayName: Electric Trident Lightning
 ElectricTridentThrow.DisplayName: Electric Trident Throw
 ElectricTridentBoom.DisplayName: Electric Trident Boom
+VerliaBouncingMoon.DisplayName: Verlia Bouncing Moon
+VerliaBouncingMoonBoom.DisplayName: Verlia Bouncing Moon Boom
+VerliaBouncingMoonShockwave.DisplayName: Verlia Bouncing Moon Shockwave
+FallingMoonBlade.DisplayName: Falling Moon Blade
+MoonShot.DisplayName: Moon Shot
+MoonSlash.DisplayName: Moon Slash
+MoonSlashHold.DisplayName: Moon Slash Hold
+MoonSnipe.DisplayName: Moon Snipe
+VerliaDesperationMoon.DisplayName: Verlia Desperation Moon
+VerliaDesperationMoonBoom.DisplayName: Verlia Desperation Moon Boom
+VerliaGreatBlade.DisplayName: Verlia Great Blade
+VerliaMiniMoon.DisplayName: Verlia Mini Moon
+MoonBlast.DisplayName: Moon Blast
+StarryMoonTrail.DisplayName: Starry Moon Trail
+ArrowRainArrow.DisplayName: Arrow Rain Arrow
+BigCelestialArrow.DisplayName: Big Celestial Arrow
+BigCelestialBoom.DisplayName: Big Celestial Boom
+BigCelestialBow.DisplayName: Big Celestial Bow
+CelestialArrow.DisplayName: Celestial Arrow
+CelestialBow.DisplayName: Celestial Bow
+CelestialImpact.DisplayName: Celestial Impact
+CelestialShot.DisplayName: Celestial Shot
+MiniCelestialArrow.DisplayName: Mini Celestial Arrow
+ProjectionDashTrail.DisplayName: Projection Dash Trail
+ArrowRainBow.DisplayName: Arrow Rain Bow
+MiniCelestialArrowRainer.DisplayName: Mini Celestial Arrow Rainer
+CelestialBowSpin.DisplayName: Celestial Bow Spin
+CariyaFlyingSlash.DisplayName: Cariya Flying Slash
+CariyaSpear.DisplayName: Cariya Spear
+CariyaThrust.DisplayName: Cariya Thrust
+CariyaUppercut.DisplayName: Cariya Uppercut
+CariyaSwordFall.DisplayName: Cariya Sword Fall
+CariyaMagicBlade.DisplayName: Cariya Magic Blade
+CariyaDownSlash.DisplayName: Cariya Down Slash
+CariyaTallFlyingSlash.DisplayName: Cariya Tall Flying Slash
+PieceOfArtRainbow.DisplayName: Piece Of Art Rainbow
+ManaSpider.DisplayName: Mana Spider
+BabyZap.DisplayName: Baby Zap
+ZapShockwave.DisplayName: Zap Shockwave
+BabyRichochetZap.DisplayName: Baby Richochet Zap
+HangingAnchor.DisplayName: Hanging Anchor
+ElectricChain.DisplayName: Electric Chain
+LightningCrawl.DisplayName: Lightning Crawl
+LeviathanBite.DisplayName: Leviathan Bite
+BouncingBall.DisplayName: Bouncing Ball
+BouncingBallCore.DisplayName: Bouncing Ball Core
+LeviathanEelSuck.DisplayName: Leviathan Eel Suck
+LeviathanRock.DisplayName: Leviathan Rock
+SuperZap.DisplayName: Super Zap
+EelSpeedTrail.DisplayName: Eel Speed Trail
+LeviathanElectricRock.DisplayName: Leviathan Electric Rock
+ElectricPirahna.DisplayName: Electric Pirahna

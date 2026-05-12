@@ -118,6 +118,10 @@ namespace Stellamod.Core.Bases
         public override void AI()
         {
             base.AI();
+            if (Owner.dead)
+            {
+                Projectile.Kill();
+            }
             switch (State)
             {
                 case AIState.Take_Aim:

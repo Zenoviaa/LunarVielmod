@@ -5,9 +5,9 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -213,7 +213,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             sear.outerColor = Color.Blue;
             sear.fadeToColor = Color.Black;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
 
 
             for (float f = 0; f < 4f; f++)
@@ -471,7 +471,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             sear.outerColor = Color.Blue;
             sear.fadeToColor = Color.Black;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
 
 
             for (float f = 0; f < 4f; f++)
@@ -787,7 +787,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
 
             _extraAfterImageAlpha = MathHelper.Lerp(0f, 0.5f, ease);
-            ShakeModSystem.Shake = MathHelper.Lerp(0f, 2f, ease);
+            ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 2f, ease);
             if (Timer >= prespinTime)
             {
                 SwitchState(AIState.Tornado_Spin);
@@ -821,7 +821,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             NPC.velocity = tornadoVelocity;
             NPC.direction = NPC.velocity.X > 0 ? 1 : -1;
             Animator.PlayAnimation(Anim_Running);
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
 
             //Unsure how strong this should actually be so make sure to balance this number properly
             float tornadoStrength = 1f;

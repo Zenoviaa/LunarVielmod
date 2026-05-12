@@ -75,54 +75,6 @@ namespace Stellamod.Core.Utilities
                 return;
             _trailVertexBuffer[_index++] = vertex;
         }
-        public void CreateCircleVertices(Vector2 center, float radius, int numPoints, Func<float, Color> colorFunction,
-    out VertexPositionColorTexture[] vertices, out int[] indices)
-        {
-            //So what I want to do is create a primtive circle
-            //Before anything we need the center vertex
-            Color centerColor = colorFunction(0);
-            Vector2 centerTextureCoordinate = Vector2.Zero;
-
-            int numVertices = numPoints + 1;
-            vertices = new VertexPositionColorTexture[numVertices];
-
-            VertexPositionColorTexture centerVertex = new VertexPositionColorTexture(new Vector3(center, 0), centerColor, centerTextureCoordinate);
-            vertices[0] = centerVertex;
-
-            //First let's get evenly spaced points
-            for (int n = 0; n < numPoints; n++)
-            {
-                float ratio = (float)n / (float)numPoints;
-                float radians = ratio * MathHelper.TwoPi;
-                Vector2 offset = radians.ToRotationVector2();
-                offset *= radius;
-                Vector2 edgePoint = center + offset;
-
-                Color color = colorFunction(1);
-                Vector2 edgeTextureCoordinate = new Vector2(1, 1);
-                VertexPositionColorTexture edgeVertex = new VertexPositionColorTexture(new Vector3(edgePoint, 0), color, edgeTextureCoordinate);
-                vertices[n + 1] = edgeVertex;
-            }
-
-            //The index pattern for this is going to go back to vertex 0 every every vertex so
-            //Example:
-            //1 0 2
-            //2 0 3
-            //3 0 4
-            //4 0 1/
-            //etc, so let's create the index buffer
-            indices = new int[3 * numPoints];
-            int connectToIndex = 1;
-            for (int n = 0; n < indices.Length; n += 3)
-            {
-                indices[n] = connectToIndex;
-                indices[n + 1] = 0;
-                indices[n + 2] = connectToIndex + 1;
-
-                connectToIndex += 1;
-            }
-            indices[indices.Length - 1] = 1;
-        }
 
         public VertexSection FillVertexArrayNonAlloc(Vector2[] trailingPoints, Func<float, Color> colorFunc, Func<float, float> widthFunc, Vector2 offset)
         {
@@ -282,33 +234,7 @@ namespace Stellamod.Core.Utilities
             graphicsDevice.BlendState = originalBlendState;
             graphicsDevice.SamplerStates[0] = originalSamplerState;
         }
-        public void DrawPrimitives(VertexPositionColorTexture[] vertices, int[] indices, BaseShader shader)
-        {
-            if (vertices.Length <= 0)
-                return;
 
-
-            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
-            BlendState originalBlendState = graphicsDevice.BlendState;
-            CullMode oldCullMode = graphicsDevice.RasterizerState.CullMode;
-            SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
-
-            graphicsDevice.RasterizerState.CullMode = CullMode.None;
-
-            if (shader != null)
-            {
-                graphicsDevice.BlendState = shader.BlendState;
-                graphicsDevice.SamplerStates[0] = shader.SamplerState;
-            }
-
-            shader.ApplyPasses();
-            graphicsDevice.DrawUserIndexedPrimitives<VertexPositionColorTexture>(
-              PrimitiveType.TriangleList, vertices, 0, vertices.Length, indices, 0, vertices.Length / 2);
-
-            graphicsDevice.RasterizerState.CullMode = oldCullMode;
-            graphicsDevice.BlendState = originalBlendState;
-            graphicsDevice.SamplerStates[0] = originalSamplerState;
-        }
         public void DrawPrimitives(VertexSection section, BaseShader shader)
         {
             if (section.primitiveCount <= 0)
@@ -354,26 +280,6 @@ namespace Stellamod.Core.Utilities
             graphicsDevice.RasterizerState.CullMode = oldCullMode;
             graphicsDevice.BlendState = originalBlendState;
             graphicsDevice.SamplerStates[0] = originalSamplerState;
-        }
-        public void DrawPrimitives(VertexPositionColorTexture[] vertices)
-        {
-            if (vertices.Length <= 0)
-                return;
-
-            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
-            graphicsDevice.DrawUserIndexedPrimitives<VertexPositionColorTexture>(
-              PrimitiveType.TriangleList, vertices, 0, vertices.Length, _trailIndexBuffer, 0, vertices.Length / 2);
-        }
-        public void DrawPrimitives(VertexSection section)
-        {
-            if (section.primitiveCount <= 0)
-                return;
-
-
-            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
-            graphicsDevice.DrawUserIndexedPrimitives<VertexPositionColorTexture>(
-              PrimitiveType.TriangleList, _trailVertexBuffer, 0, section.vertexCount, _trailIndexBuffer, 0, section.primitiveCount);
-
         }
 
         public void DrawCachedPrimitives()

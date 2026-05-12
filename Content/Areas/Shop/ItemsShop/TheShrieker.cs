@@ -4,8 +4,8 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -102,7 +102,7 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
             Timer++;
             if (Timer == 1)
             {
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
                 int Sound = Main.rand.Next(1, 3);
                 SoundStyle mySound = new SoundStyle("Stellamod/Assets/Sounds/TheDeafen");

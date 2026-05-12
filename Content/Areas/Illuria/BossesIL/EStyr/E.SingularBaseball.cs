@@ -5,10 +5,10 @@ using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -145,7 +145,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             SoundStyle deathSound = new SoundStyle("Stellamod/Assets/Sounds/GothExplode");
             deathSound.PitchVariance = 0.3f;
             SoundEngine.PlaySound(deathSound, Projectile.position);
-            ShakeModSystem.Shake = 24;
+            ShakeScreenPosition.Shake = 24;
             FXUtil.ShakeCamera(Projectile.position, 1024, 8);
             var boom = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGray, Color.Black);
             boom.Scale *= 4f;
@@ -222,7 +222,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if(Timer == 1)
             {
                 Charge++;
-                ShakeModSystem.Shake = 8;
+                ShakeScreenPosition.Shake = 8;
                 FXUtil.ShakeCamera(Projectile.position, 1024, 4);
                 Player closest = PlayerHelper.FindClosestPlayer(Projectile.position, 8000);
                 if(closest != null)
@@ -266,7 +266,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (Timer == 1)
             {
                 Charge++;
-                ShakeModSystem.Shake = 8;
+                ShakeScreenPosition.Shake = 8;
                 FXUtil.ShakeCamera(Projectile.position, 1024, 4);
 
                 Player closest = PlayerHelper.FindClosestPlayer(Projectile.position, 8000);

@@ -10,7 +10,6 @@ using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -49,7 +48,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             {
       
 
-                ShakeModSystem.Shake = 32;
+                ShakeScreenPosition.Shake = 32;
                 FXUtil.ShakeCamera(Projectile.position, 1024, 4);
 
                 Vector2 direction = Projectile.velocity;
@@ -274,7 +273,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void DunkImpact()
         {
-            ShakeModSystem.Shake = 16;
+            ShakeScreenPosition.Shake = 16;
             int[] gores = AutoGoreLoader.FindGores("GrayRock");
             foreach (int g in gores)
             {
@@ -378,7 +377,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             }
 
             Animator.PlayAnimation(Anim_Running);
-            ShakeModSystem.Shake = 6;
+            ShakeScreenPosition.Shake = 6;
             int[] gores = AutoGoreLoader.FindGores("GrayRock");
             int goreToSpawn = gores[Main.rand.Next(0, gores.Length)];
             Gore.NewGore(MyTarget.GetSource_FromThis(),

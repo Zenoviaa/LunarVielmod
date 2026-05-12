@@ -41,7 +41,7 @@ namespace Stellamod.Content.Biomes
                 StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
                 int heightOffset = 100;
                 Rectangle biomeRect = new Rectangle(stellaWorld.CoralwaysLocation.X, stellaWorld.CoralwaysLocation.Y + heightOffset, 1000, 1800 - heightOffset);
-                return localPlayer.Center.ToTileCoordinates().Y > biomeRect.Bottom - 400;
+                return localPlayer.Center.ToTileCoordinates().Y > biomeRect.Bottom - 400 && localPlayer.Center.ToTileCoordinates().Y < biomeRect.Bottom;
             }
         }
         public override void PostUpdateMiscEffects()
@@ -110,6 +110,7 @@ namespace Stellamod.Content.Biomes
 
                 if (Main.rand.NextBool(5))
                 {
+                    //Main.NewText("E");
                     ForegroundParticleRenderer.NewParticle<Snowstrike>();
                 }
             }
@@ -170,6 +171,7 @@ namespace Stellamod.Content.Biomes
 
      
             }
+            SpringHillsForegroundBackground();
         }
 
         private void SpringHillsForegroundBackground()

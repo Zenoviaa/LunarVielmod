@@ -23,6 +23,8 @@ namespace Stellamod.Core.WallBackgroundSystem
         public float Alpha { get; set; }
         public MaskedWallDrawLayer[] DrawLayers { get; private set; }
         public Vector2 StartParallaxPosition { get; set; }
+
+        public Color Color { get; set; }
         protected override void Register()
         {
             ModTypeLookup<MaskedWallBackground>.Register(this);
@@ -46,6 +48,7 @@ namespace Stellamod.Core.WallBackgroundSystem
             DrawLayers = new MaskedWallDrawLayer[10];
             for (int i = 0; i < DrawLayers.Length; i++)
                 DrawLayers[i] = new MaskedWallDrawLayer();
+            Color = Color.White;
         }
 
         public virtual bool IsActive(Player player)
@@ -202,7 +205,7 @@ namespace Stellamod.Core.WallBackgroundSystem
                 graphicsDevice.SetRenderTarget(_wallMaskRenderTarget);
                 graphicsDevice.Clear(Color.Transparent);
 
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, null,
                     Main.GameViewMatrix.TransformationMatrix);
 
                 Texture2D texture = AssetManager.GlowMask.WhiteSquare.Value;
@@ -234,13 +237,13 @@ namespace Stellamod.Core.WallBackgroundSystem
                 backgroundShader.Parallax = drawLayer.parallax * 0.001f * (cameraMovement);
                 spriteBatch.Begin(default,
                     default,
-                    SamplerState.PointClamp,
+                    SamplerState.PointWrap,
                     default,
                     default,
                     effect: backgroundShader.Effect);
                 Vector2 drawPosition = Vector2.Zero;
-                Rectangle drawRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-                Color drawColor = Color.White * _activeMaskedWallBackground.Alpha;
+                Rectangle drawRectangle = new Rectangle(0, 0, Main.screenWidth*2, Main.screenHeight*2);
+                Color drawColor = _activeMaskedWallBackground.Color * _activeMaskedWallBackground.Alpha;
                 if (drawLayer.additive)
                     drawColor.A = 0;
                 spriteBatch.Draw(drawLayer.textureAsset.Value, drawPosition, drawRectangle, drawColor, 0, drawLayer.textureAsset.Value.Size() * 0.5f, _activeMaskedWallBackground.DrawScale, SpriteEffects.None, 0);

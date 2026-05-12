@@ -7,7 +7,6 @@ using Stellamod.Common.Shaders;
 using Stellamod.Common.SirestiasShop;
 using Stellamod.Common.UI;
 using Stellamod.Common.WeaponUpgrade.UI;
-using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner;
 using Stellamod.Content.Areas.SpringHills.NPCsSH;
 using Stellamod.Content.Armors.Sanctorous;
 using Stellamod.Core.Camera;
@@ -16,7 +15,6 @@ using Stellamod.Core.ZTileSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.UI;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using System.IO;
@@ -258,7 +256,7 @@ public class OrganDragon : ModNPC
     {
         _mountTimer++;
         Player target = Main.player[PlayerToTravel];
-        SkullrunnerThrowModPlayer throwModPlayer = target.GetModPlayer<SkullrunnerThrowModPlayer>();
+        MovePlayer throwModPlayer = target.GetModPlayer<MovePlayer>();
         Vector2 mountPosition = NPC.Center;
         mountPosition.X -= 64;
         mountPosition.Y -= 32;
@@ -724,7 +722,7 @@ public class OrganWaypointTracker : ModSystem
         SoundEngine.PlaySound(activateSound);
 
         //Bit of screenshake never hurt anyone
-        ShakeModSystem.Shake = 4;
+        ShakeScreenPosition.Shake = 4;
         FXUtil.ShakeCamera(worldPosition, 1024, 4);
 
     }

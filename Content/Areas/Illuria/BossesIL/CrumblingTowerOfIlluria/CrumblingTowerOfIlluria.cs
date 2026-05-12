@@ -8,9 +8,9 @@ using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.IO;
@@ -276,6 +276,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
         }
         private void Inner_AI()
         {
+         //   NPC.Center = MyTarget.Center - Vector2.UnitY * 128;
             switch (State)
             {
                 case AIState.SpawnIdle:
@@ -879,7 +880,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             if (NPC.collideY)
             {
                 Squish();
-                ShakeModSystem.Shake = 16;
+                ShakeScreenPosition.Shake = 16;
                 FXUtil.ShakeCamera(NPC.position, 1024, 129);
                 SoundStyle boom = new SoundStyle("Stellamod/Assets/Sounds/RocketExplosion");
                 boom.PitchVariance = 0.3f;
@@ -1037,7 +1038,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             TargetOutlineColor = Color.Yellow;
             Hover();
             Hover();
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
             _shakeOffset = Main.rand.NextVector2Circular(3, 3);
             if (Timer % 20 == 0 && MultiplayerHelper.IsHost)
             {
@@ -1065,7 +1066,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
                 NPC.TargetClosest();
             }
 
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             if (Timer % 7 == 0)
             {
                 LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
@@ -1205,7 +1206,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             }
 
             CameraTargetSystem.AddTarget(NPC.Center);
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
 
@@ -1220,7 +1221,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             if (Timer >= deathTime)
             {
                 FXUtil.ShakeCamera(NPC.position, 1024, 32);
-                ShakeModSystem.Shake = 20;
+                ShakeScreenPosition.Shake = 20;
                 var boom = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.Cyan, Color.Purple);
                 boom.Scale *= 2f;
 

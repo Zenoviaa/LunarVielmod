@@ -5,6 +5,7 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -13,7 +14,6 @@ using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trailing;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using Terraria;
@@ -289,7 +289,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
             Timer++;
             if (Timer == 1)
             {
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
                 FXUtil.ShakeCamera(Projectile.position, 1024, 8);
                 SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"), Projectile.position);
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger2"), Projectile.position);

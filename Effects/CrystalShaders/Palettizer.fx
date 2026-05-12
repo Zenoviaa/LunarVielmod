@@ -20,7 +20,8 @@ float uSaturation;
 float4 uSourceRect;
 float2 uZoom;
 bool dither;
-
+float spread;
+float ditherAlpha;
 Texture3D ColorSpectrumTexture;
 sampler3D ColorSpectrumTextureSampler = sampler_state
 {
@@ -43,13 +44,25 @@ float3 ScreenSpaceDither(float2 vScreenPos, float colorDepth)
     return (vDither.rgb / colorDepth) * 0.375;
 }
 
+float3 DitherV2(float2 uv)
+{
+    float2x2 bayerMatrix = float2x2(
+        -0.375, 0.125,
+        0.375, -0.125);
+    float n = 2.0;
+    float2 modUV = float2(fmod(uv.x * 1920.0, n), fmod(uv.y * 1080.0 * -1.0, n));
+    float ditherStrength = spread * (mul(bayerMatrix, modUV));
+    return float3(ditherStrength, ditherStrength, ditherStrength) * ditherAlpha;
+}
 float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 {
+ 
+
     float4 baseColor = tex2D(uImage0, coords);
        //Dither as close as possible to the color quantization
     if (dither)
     {
-        float3 ditheredColor = baseColor.rgb + ScreenSpaceDither(coords * uImageSize1, 5.0);
+        float3 ditheredColor = baseColor.rgb + ScreenSpaceDither(coords * uImageSize1, 1.0) * ditherAlpha;
         baseColor.rgb = ditheredColor;
         baseColor.rgb = saturate(baseColor.rgb);
     }

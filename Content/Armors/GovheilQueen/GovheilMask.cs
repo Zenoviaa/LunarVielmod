@@ -285,7 +285,7 @@ public class GovheilMask : ModItem
     public override void UpdateEquip(Player player)
     {
         var stats = player.GetStats();
-        stats.wandNormalEnchantmentSlots += 2;
+        stats.wandNormalEnchantmentSlots += 1;
         stats.defenseBonus += 6;
         stats.accessorySlots++;
     }
@@ -322,9 +322,9 @@ public class GovheilBreastplate : ModItem
     public override void UpdateEquip(Player player)
     {
         var stats = player.GetStats();
-        stats.wandCastTime += 0.5f;
+        stats.wandCastTime += 0.1f;
         stats.defenseBonus += 8;
-        stats.accessorySlots += 1;
+    //    stats.accessorySlots += 1;
     }
 }
 

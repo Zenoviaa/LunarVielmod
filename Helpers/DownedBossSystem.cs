@@ -26,6 +26,10 @@ namespace Stellamod.Helpers
         StoneGolem = 15,
         Steamroller = 16,
         DescendingTwins=17,
+        Verlia=18,
+        Celestia=19,
+        Cariya=20,
+        KingJellyfish=21
     }
 
     public class Flawless : ModBuff
@@ -34,6 +38,13 @@ namespace Stellamod.Helpers
         {
             base.SetStaticDefaults();
             BuffID.Sets.TimeLeftDoesNotDecrease[Type] = true;
+        }
+        public override void Update(Player player, ref int buffIndex)
+        {
+            base.Update(player, ref buffIndex);
+            if (NPC.AnyDanger())
+                return;
+            player.DelBuff(buffIndex);
         }
     }
 

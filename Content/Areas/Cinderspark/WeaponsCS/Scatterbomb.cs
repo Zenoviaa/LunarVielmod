@@ -1,11 +1,11 @@
 ﻿using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Harvesting;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -201,7 +201,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
                 }
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
                 FXUtil.ShakeCamera(Projectile.position, 1024, 32);
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
         }
     }

@@ -7,14 +7,13 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
         public override void SetDefaults2()
         {
             base.SetDefaults2();
-            Item.damage = 8;
-            Item.shootSpeed = 10;
-            Item.useTime = 18;
-            Item.useAnimation = 36;
-            Size = 8;
-            TrailLength = 16;
-            normalSlotCount = 2;
-            timedSlotCount = 0;
+            Item.damage = 32;
+            Item.mana = 30;
+            Item.shootSpeed = 8;
+            Size = 16;
+            TrailLength = 24;
+            normalSlotCount = 0;
+            timedSlotCount = 2;
         }
     }
 }

@@ -67,8 +67,8 @@ namespace Stellamod.Content.Areas.Collosseum.AccCL
 
         public override void Update(NPC npc, ref int buffIndex)
         {
-            if (npc.life > npc.lifeMax * 0.9f)
-                npc.life = (int)(npc.lifeMax * 0.9f);
+            if (npc.life > npc.lifeMax * 0.75f)
+                npc.life = (int)(npc.lifeMax * 0.75f);
         }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -44,7 +43,7 @@ public class ITProj : ModProjectile
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/ITBeep");
             //Between -1 and 1f
             soundStyle.Pitch = 0.8f;
-            SoundEngine.PlaySound(soundStyle);
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
             WhiteTimer = 1;
         }
         if (Projectile.ai[1] == 60)
@@ -52,7 +51,7 @@ public class ITProj : ModProjectile
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/ITBeep");
             //Between -1 and 1f
             soundStyle.Pitch = 0.9f;
-            SoundEngine.PlaySound(soundStyle);
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
             WhiteTimer = 1;
         }
         if (Projectile.ai[1] == 90)
@@ -60,7 +59,7 @@ public class ITProj : ModProjectile
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/ITBeep");
             //Between -1 and 1f
             soundStyle.Pitch = 1f;
-            SoundEngine.PlaySound(soundStyle);
+            SoundEngine.PlaySound(soundStyle, Projectile.position);
             WhiteTimer = 1;
         }
         if (Projectile.ai[1] >= 120)
@@ -69,20 +68,6 @@ public class ITProj : ModProjectile
             WhiteTimer = 1;
         }
 
-
-        if (Projectile.ai[1] >= 60)
-        {
-            int S1 = Main.rand.Next(0, 3);
-            if (S1 == 0)
-            {
-                for (int i = 0; i < 2; i++)
-                {
-                    Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkSeaGreen, 0.4f).noGravity = true;
-                }
-            }
-
-
-        }
         if (Projectile.ai[1] >= 90)
         {
             for (int i = 0; i < 2; i++)
@@ -91,16 +76,9 @@ public class ITProj : ModProjectile
             }
         }
         WhiteTimer = MathHelper.Lerp(WhiteTimer, 0, 0.1f);
-        if (Projectile.alpha >= 255)
-        {
-
-        }
         Rectangle myRect = Projectile.getRect();
-        for (int i = 0; i < Main.maxProjectiles; i++)
+        foreach (var p in Main.ActiveProjectiles)
         {
-            Projectile p = Main.projectile[i];
-            if (!p.active)
-                continue;
             if (p.type != ModContent.ProjectileType<ITExplosionProj>())
                 continue;
             if (p == Projectile)
@@ -115,15 +93,20 @@ public class ITProj : ModProjectile
                 }
             }
         }
+
         Projectile.spriteDirection = Projectile.direction;
     }
     public override void OnKill(int timeLeft)
     {
         var entitySource = Projectile.GetSource_Death();
-        Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<IrradiatedBoom>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+        if (this.OwnedByLocalClient())
+        {
+            Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<ITExplosionProj>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+            Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<IrradiatedBoom>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+        }
 
         SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.position);
-        Projectile.NewProjectile(entitySource, Projectile.Center.X, Projectile.Center.Y, 0, 0, ModContent.ProjectileType<ITExplosionProj>(), Projectile.damage, 1, Projectile.owner, 0, 0);
+
         int S1 = Main.rand.Next(0, 3);
         if (S1 == 0)
         {
@@ -137,50 +120,33 @@ public class ITProj : ModProjectile
         {
             SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/ITBomb3"), Projectile.position);
         }
-        Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 2048f, 16f);
+        FXUtil.ShakeCamera(Projectile.Center, 2048, 8);
     }
 
     public override bool PreDraw(ref Color lightColor)
     {
-        if (Main.rand.NextBool(5))
+        for (int i = 0; i < Projectile.oldPos.Length; i++)
         {
-            int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CursedTorch, 0f, 0f, 150, Color.MediumPurple, 1f);
-            Main.dust[dustnumber].velocity *= 0.3f;
-            Main.dust[dustnumber].noGravity = true;
+            Vector2 drawCenter = Projectile.oldPos[i] + Projectile.Size * 0.5f;
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+            sbDrawer.worldPosition = drawCenter;
+            sbDrawer.color = Color.Lerp(Color.Green, Color.Transparent, i / (float)Projectile.oldPos.Length) * 0.3f;
+            Main.spriteBatch.Draw(sbDrawer);
         }
-        SpriteEffects Effects = Projectile.spriteDirection != 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        Main.spriteBatch.End();
-        Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        Main.instance.LoadProjectile(Projectile.type);
-        Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-
-        // Redraw the projectile with the color not influenced by light
-        Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-        for (int k = 0; k < Projectile.oldPos.Length; k++)
-        {
-            Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-            Color color = Projectile.GetAlpha(Color.Lerp(new Color(152, 208, 113), new Color(53, 107, 112), 1f / Projectile.oldPos.Length * k) * (1f - 1f / Projectile.oldPos.Length * k));
-            Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, Effects, 0);
-        }
-        Main.spriteBatch.End();
-        Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-        return true;
+        SpritebatchDrawer sbDrawer2 = SpritebatchDrawer.FromProjectile(Projectile);
+        Main.spriteBatch.Draw(sbDrawer2);
+        return false;
     }
     public override void PostDraw(Color lightColor)
     {
         Lighting.AddLight(Projectile.Center, Color.DarkSeaGreen.ToVector3() * 1.75f * Main.essScale);
         string glowTexture = Texture + "_White";
-        Texture2D whiteTexture = ModContent.Request<Texture2D>(glowTexture).Value;
-
-        Vector2 textureSize = new Vector2(70, 74);
-        Vector2 drawOrigin = textureSize / 2;
-
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>(glowTexture), Projectile.Center);
         //Lerping
         float progress = WhiteTimer;
         Color drawColor = Color.Lerp(Color.Transparent, Color.White, progress);
-        Vector2 drawPosition = Projectile.position - Main.screenPosition + drawOrigin;
-        Main.spriteBatch.Draw(whiteTexture, drawPosition, Projectile.Frame(), drawColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
+        drawer.color = drawColor;
+        Main.spriteBatch.Draw(drawer);
     }
 }
 

@@ -4,19 +4,9 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
-using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
-using Stellamod.Projectiles.Gun;
-using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -63,12 +53,12 @@ public class RingShotgun : BaseGun
 
     public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
-        for(int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
         {
             Vector2 p = velocity;
             p = p.RotatedByRandom(MathHelper.ToRadians(35));
             p *= Main.rand.NextFloat(0.66f, 1f);
-            Projectile.NewProjectile(source, position, p, ModContent.ProjectileType<RingShotgunRing>(), damage, knockback, player.whoAmI, ai0: remainingAmmo, ai2:  30 + i * 6);
+            Projectile.NewProjectile(source, position, p, ModContent.ProjectileType<RingShotgunRing>(), damage, knockback, player.whoAmI, ai0: remainingAmmo, ai2: 30 + i * 6);
         }
         return false;
     }
@@ -146,7 +136,7 @@ public class ClockworkBoomer : ModProjectile
         Timer++;
         if (Timer == 1)
         {
-      
+
             FXUtil.ShakeCamera(Projectile.Center, 1024, 2);
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
             for (float f = 0; f < 32; f++)
@@ -183,7 +173,7 @@ public class ClockworkBoomer : ModProjectile
         if (Timer == 10)
         {
             PixelPrimitiveCircleFactory.CreateMoonBoom(Projectile.Center);
-            for(float f = 0; f < 7; f++)
+            for (float f = 0; f < 7; f++)
             {
                 Vector2 vel = Main.rand.NextVector2Circular(8, 8);
                 var sp = SparkleParticle.Spawn(Projectile.Center, vel, Scale: 0.5f);
@@ -195,7 +185,7 @@ public class ClockworkBoomer : ModProjectile
 
             float damage = Projectile.damage;
             damage *= 0.5f;
-            
+
             /*
             if (Main.myPlayer == Projectile.owner)
             {
@@ -267,9 +257,9 @@ public class RingShotgunRing : ModProjectile
             sp.fast = true;
         }
         float inScale = EasingFunction.InOutSine(Timer / 30f);
-        float outScale = EasingFunction.InOutSine((float)Projectile.timeLeft / 30f);
+        float outScale = EasingFunction.InOutSine(Projectile.timeLeft / 30f);
         Projectile.scale = MathHelper.Lerp(1f, 0.5f, outScale);
-        if(Timer > 18)
+        if (Timer > 18)
             Projectile.velocity *= 0.95f;
     }
 
@@ -285,7 +275,7 @@ public class RingShotgunRing : ModProjectile
         SpritebatchDrawer afterImageDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.ShootingStarGlint, Projectile.Center);
         for (int i = 0; i < Projectile.oldPos.Length; i += 2)
         {
-            float interp = (float)(i + 1) / (float)Projectile.oldPos.Length;
+            float interp = (i + 1) / (float)Projectile.oldPos.Length;
             float ease = EasingFunction.InOutSine(interp);
             Vector2 drawPosition = Projectile.oldPos[i] + Projectile.Size * 0.5f;
             afterImageDrawer.worldPosition = drawPosition;

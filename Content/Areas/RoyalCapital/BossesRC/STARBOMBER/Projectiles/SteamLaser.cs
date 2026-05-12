@@ -5,11 +5,11 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -76,7 +76,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.STARBOMBER.Projectiles
                 }
 
 
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, explosionCenter);
                 for (float f = 0; f < 16; f++)
                 {

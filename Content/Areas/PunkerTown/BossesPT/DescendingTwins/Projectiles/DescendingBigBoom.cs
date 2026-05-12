@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -33,7 +33,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
         {
             base.AI();
             Timer++;
-            ShakeModSystem.Shake = 10;
+            ShakeScreenPosition.Shake = 10;
             if (Timer == 1)
             {
                 SoundStyle boomSound = AssetRegistry.Sounds.SteamPunking.DescendingBoom;

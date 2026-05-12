@@ -9,11 +9,11 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -352,7 +352,7 @@ public class SkeweredAxeSlash : BaseSwingProjectileV2
             }
 
             Bounce(8);
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
             FXUtil.ShakeCamera(target.Center, 1024, 16);
             FXUtil.PunchCamera(target.Center, Projectile.velocity, 0.5f, 2, 30);
         }

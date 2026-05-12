@@ -5,7 +5,9 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Helpers;
 using System.IO;
+using System.Reflection;
 using Terraria;
+using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -105,6 +107,9 @@ namespace Stellamod.Core.Bases
                     AI_Flashlight();
                     break;
             }
+
+            Vector2 direction = _lightVelocity.SafeNormalize(Vector2.Zero);
+
 
             if (Main.myPlayer == Projectile.owner)
             {

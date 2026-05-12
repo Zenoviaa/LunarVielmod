@@ -5,9 +5,9 @@ using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -352,7 +352,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
                 }
 
                 FXUtil.ShakeCamera(NPC.position, 1024, 8);
-                ShakeModSystem.Shake = 8;
+                ShakeScreenPosition.Shake = 8;
                 //Death Effect here
                 NPC.Kill();
             }
@@ -413,7 +413,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Ravager
             NPC.spriteDirection = -NPC.direction;
             if (Timer >= 10 && NPC.collideY)
             {
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
                 SoundStyle boom = SoundID.DD2_ExplosiveTrapExplode;
                 boom.PitchVariance = 0.3f;
                 SoundEngine.PlaySound(boom, NPC.position);

@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Buffs;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -39,7 +39,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override void AI()
         {
-            ShakeModSystem.Shake = 3f;
+            ShakeScreenPosition.Shake = 3f;
 
             float progress = Time / 90f;
             progress = MathHelper.Clamp(progress, 0, 1);

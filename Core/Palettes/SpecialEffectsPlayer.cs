@@ -56,6 +56,8 @@ namespace Stellamod.Core.Palettes
             hasSunGlyph = false;
             darkness = 0;
             darknessCurve = MathHelper.Lerp(darknessCurve, 0f, 0.005f);
+            if (darknessCurve < 0.05f)
+                darknessCurve = 0f;
 
             //Curve based
             /*
@@ -154,21 +156,6 @@ namespace Stellamod.Core.Palettes
             ToggleScreenShader(screenShaderName, progress != 0);
         }
 
-        private void ApplyBloom()
-        {
-            string bloomShaderName = "LunarVeil:Bloom";
-            var config = ModContent.GetInstance<LunarVeilClientConfig>();
-            ToggleScreenShader(bloomShaderName, config.Bloom);
-            ScreenShaderData screenShaderData = FilterManager[bloomShaderName].GetShader();
-            float blurSize = 2;
-            float bloomIntensity = MathHelper.Lerp(0.1f, 2f, Main.MouseScreen.X / (float)Main.screenWidth);
-            float bloomThreshold = MathHelper.Lerp(0.1f, 1f, Main.MouseScreen.Y / (float)Main.screenHeight);
-            bloomIntensity = 0.6f;
-            bloomThreshold = 0.5f;
-            Vector3 bloomVector = new Vector3(blurSize, bloomIntensity, bloomThreshold);
-            screenShaderData.Shader.Parameters["bloom"].SetValue(bloomVector);
-        //    Main.NewText(bloomVector);
-        }
         private void SpecialBiomeEffects()
         {
             //This code should only run on each client
@@ -237,13 +224,13 @@ namespace Stellamod.Core.Palettes
 
             */
             CalculateDarkness();
-            ApplyBloom();
 
         //    ToggleScreenShader("LunarVeil:DarknessVignette", darkness != 0);
 
           //  Main.ColorOfTheSkies = Color.Black;
 
 
+           
             screenShaderData = FilterManager["LunarVeil:DarknessCurve"].GetShader();
             screenShaderData.UseProgress(darknessCurve);
             screenShaderData.Shader.Parameters["blackCurve"].SetValue(blackCurve);
@@ -338,6 +325,7 @@ namespace Stellamod.Core.Palettes
 
         private void UpdateVignette()
         {
+  
             if (Main.netMode == NetmodeID.Server)
                 return;
             if (Main.myPlayer != Player.whoAmI)

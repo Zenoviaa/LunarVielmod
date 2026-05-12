@@ -180,6 +180,44 @@ namespace Stellamod.Common.Shaders
                 shader.FillShape = false;
             }
         }
+        public static void Draw(
+            Vector2[] oldPos,
+            Func<float, Color> colorFunc,
+            Func<float, float> widthFunc,
+            BaseShader shader,
+            Vector2? offset = null)
+        {
+            //Apply passes
+            if (shader != null)
+            {
+                shader.Apply();
+                ApplyPasses(shader.Effect);
+                if (shader.FillShape)
+                {
+                    Vector2[] filledPos = new Vector2[oldPos.Length + 1];
+                    for (int i = 0; i < oldPos.Length; i++)
+                    {
+                        filledPos[i] = oldPos[i];
+                    }
+                    filledPos[filledPos.Length - 1] = oldPos[0];
+                    oldPos = filledPos;
+                }
+            }
+            Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
+            float numPoints = oldPos.Length * 2;
+
+            Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
+
+            TrailVertexHelper trailVertexCache = ModContent.GetInstance<TrailVertexHelper>();
+            trailVertexCache.Clear();
+            VertexSection section = trailVertexCache.FillVertexArrayNonAlloc(trailingPoints, colorFunc, widthFunc, trailOffset);
+            trailVertexCache.DrawPrimitives(section, shader);
+            if (shader != null)
+            {
+                shader.FillShape = false;
+            }
+        }
+
 
         public static void Draw(SpriteBatch spriteBatch,
              Vector2[] oldPos,
@@ -189,33 +227,6 @@ namespace Stellamod.Common.Shaders
              Vector2? offset = null)
         {
             Draw(spriteBatch, oldPos, null, colorFunc, widthFunc, shader, offset);
-        }
-
-
-        private static void DrawPrimsTriangles(List<VertexPositionColorTexture> vertices, BaseShader shader)
-        {
-            if (vertices.Count % 6 != 0 || vertices.Count <= 3)
-                return;
-
-            GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
-            BlendState originalBlendState = graphicsDevice.BlendState;
-            CullMode oldCullMode = graphicsDevice.RasterizerState.CullMode;
-            SamplerState originalSamplerState = graphicsDevice.SamplerStates[0];
-
-            graphicsDevice.RasterizerState.CullMode = CullMode.None;
-
-            if (shader != null)
-            {
-                graphicsDevice.BlendState = shader.BlendState;
-                graphicsDevice.SamplerStates[0] = shader.SamplerState;
-            }
-
-            graphicsDevice.DrawUserPrimitives(
-              PrimitiveType.TriangleList, vertices.ToArray(), 0, vertices.Count / 3);
-
-            graphicsDevice.RasterizerState.CullMode = oldCullMode;
-            graphicsDevice.BlendState = originalBlendState;
-            graphicsDevice.SamplerStates[0] = originalSamplerState;
         }
     }
 }

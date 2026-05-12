@@ -110,9 +110,9 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.Minerva
             TargetScale = Vector2.One;
             NPC.width = 64;
             NPC.height = 100;
-            NPC.damage = 32;
+            NPC.damage = 70;
             NPC.defense = 10;
-            NPC.lifeMax = 1500;
+            NPC.lifeMax = 3500;
             NPC.HitSound = SoundID.NPCHit16;
             NPC.value = Item.buyPrice(silver: 50);
             NPC.knockBackResist = 0f;

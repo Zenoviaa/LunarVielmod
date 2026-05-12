@@ -174,6 +174,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
             glowColor.A = 0;
             Vector2 drawOrigin = frame.Size() / 2f;
             Vector2 drawScale = Vector2.One;
+
             Vector2 drawPosition = Player.Center - Main.screenPosition;
             drawPosition.Y -= 12;
             Texture2D zuiTexyt = ModContent.Request<Texture2D>(TextureRegistry.ZuiEffect).Value;

@@ -4,9 +4,9 @@ Headers: {
 	Visual: Visual
 	Effects: Effects
 	UI: UI
-	Experiment: Experiment Header
-	Lighting: Lighting Header
-	Experimental: Experimental Header
+	Experiment: Experiment
+	Lighting: Lighting
+	Experimental: Experimental
 }
 
 FocusMode: {
@@ -216,5 +216,10 @@ Dither: {
 
 Foreground: {
 	Label: Foreground
-	Tooltip: ""
+	Tooltip: Controls the opacity of foreground elements
+}
+
+ShadowQuality: {
+	Label: Shadow Quality
+	Tooltip: Affects how precise shadow calculations are, reduce this if you're having issues with performance, this does not do anything if Beaming Lights is off.
 }

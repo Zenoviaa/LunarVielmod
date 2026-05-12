@@ -15,7 +15,7 @@ namespace Stellamod.Content.Areas.Fable.AccFB
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetAttackSpeed(DamageClass.Melee) += 0.05f;
+            player.GetAttackSpeed(DamageClass.Melee) += 0.2f;
         }
 
         public override void AddRecipes()

@@ -85,12 +85,14 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
                     break;
             }
 
-            bool shouldKill = !Parent.active || Parent.type != ModContent.NPCType<CommanderGintzia>() && Parent.type != ModContent.NPCType<CommanderGintziaTaunting>();
-            if (shouldKill && State != AIState.Despawn)
+            if(Timer >= 30)
             {
-                SwitchState(AIState.Despawn);
+                bool shouldKill = !Parent.active;
+                if (shouldKill && State != AIState.Despawn)
+                {
+                    SwitchState(AIState.Despawn);
+                }
             }
-
         }
         protected void SwitchState(AIState state)
         {
@@ -104,6 +106,7 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
         private void AI_Hover()
         {
+            Timer++;
             NPC.Center = Parent.Center + Vector2.UnitY * 48;
             NPC.rotation = Parent.rotation;
         }
@@ -142,9 +145,6 @@ namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 
         public override bool CheckActive()
         {
-            NPC parent = Main.npc[ParentIndex];
-            if (!parent.active || parent.type != ModContent.NPCType<CommanderGintzia>())
-                return base.CheckActive();
             return false;
         }
 

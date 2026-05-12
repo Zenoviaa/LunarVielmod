@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 
 namespace Stellamod.Helpers
@@ -17,7 +14,7 @@ namespace Stellamod.Helpers
             _patternOverrideQueue = new Queue<T>();
             _defaultWeights = new Dictionary<T, float>();
             _weights = new Dictionary<T, float>();
-            for(int i = 0; i < defaultWeights.Length; i++)
+            for (int i = 0; i < defaultWeights.Length; i++)
             {
                 _defaultWeights.Add(defaultWeights[i].Item1, defaultWeights[i].Item2);
             }
@@ -28,6 +25,25 @@ namespace Stellamod.Helpers
             //If an attack hits, the current weight of the attack increases by 0.25, and the default weight increases by 0.5
         }
 
+        public void EmptyWeights()
+        {
+            _defaultWeights.Clear();
+            _weights.Clear();
+        }
+        public void AddPattern(T pattern, float weight)
+        {
+            _defaultWeights.Add(pattern, weight);
+        }
+
+        public bool HasNothingLeft()
+        {
+            float totalWeight = 0f;
+            foreach (var kvp in _weights)
+            {
+                totalWeight += kvp.Value;
+            }
+            return totalWeight <= 0;
+        }
         public void AddWeight(T t, float weight)
         {
             _weights[t] += weight;
@@ -41,11 +57,17 @@ namespace Stellamod.Helpers
         public void ResetToDefaultWeights()
         {
             _weights.Clear();
-            foreach(var kvp in _defaultWeights)
+            foreach (var kvp in _defaultWeights)
             {
                 _weights.Add(kvp.Key, kvp.Value);
             }
         }
+        public void ResetToDefaultWeight(T key)
+        {
+            _weights[key] = 0;
+        }
+
+
 
 
         public void ZeroWeights()
@@ -69,33 +91,42 @@ namespace Stellamod.Helpers
         {
             if (_patternOverrideQueue.Count > 0)
                 return _patternOverrideQueue.Dequeue();
-            float weight = 0f;
-            float totalWeight = 0f;
+            int weight = 0;
+            int totalWeight = 0;
+
+            //Here we are multiplying the float weight by 1000 because next float isn't exactly reliable at decimal places
+            //It's better to just use an int
             foreach (var kvp in _weights)
             {
-                totalWeight += kvp.Value;
+                int addedWeight = (int)(kvp.Value * 1000);
+                totalWeight += addedWeight;
             }
 
-            if(totalWeight <= 0)
+            if (totalWeight <= 0)
             {
                 ResetToDefaultWeights();
                 return NextPattern();
             }
 
             var rand = Main.rand;
-            float randWeight = rand.NextFloat(0f, totalWeight);
+            float randWeight = rand.Next(totalWeight);
             T result = default;
-            foreach(var kvp in _weights)
+            foreach (var kvp in _weights)
             {
-                weight += kvp.Value;
-                if(weight >= randWeight)
+                int addedWeight = (int)(kvp.Value * 1000);
+                weight += addedWeight;
+                if (weight >= randWeight)
                 {
                     result = kvp.Key;
                     break;
                 }
             }
 
-            _weights[result]--;
+            _weights[result] -= 1.0f;
+
+            //Not sure if this is needed, but just set zero if it goes negative
+            if (_weights[result] <= 0)
+                _weights[result] = 0;
             return result;
         }
     }

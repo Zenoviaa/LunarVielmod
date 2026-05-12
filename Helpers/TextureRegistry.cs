@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
@@ -31,7 +30,7 @@ namespace Stellamod.Helpers
         public static Asset<Texture2D> GlowSword_Chillrend => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Chillrend");
         public static Asset<Texture2D> GlowSword_Sword => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Sword");
         public static Asset<Texture2D> GlowSword_Spear => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Spear");
-        public static Asset<Texture2D> GlowSword_Scythe=> ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Scythe");
+        public static Asset<Texture2D> GlowSword_Scythe => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Scythe");
         public static Asset<Texture2D> GlowSword_Scythe2 => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Scythe2");
         public static Asset<Texture2D> DimLight => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight");
         public static Asset<Texture2D> Clouds6 => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6");

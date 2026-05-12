@@ -34,8 +34,12 @@ namespace Stellamod.Common.HealthbarSystem
             _bossNameText = new UIText("Boss");
             string directory = this.GetType().DirectoryHere();
 
-            string barPath = directory + "/Healthbar";
-            BarTextureAsset = ModContent.Request<Texture2D>(barPath, ReLogic.Content.AssetRequestMode.ImmediateLoad);
+            string barPath = directory + "/Healthbar_";
+            BarTextureAsset = new Asset<Texture2D>[3];
+            for (int i = 0; i < 3; i++)
+            {
+                BarTextureAsset[i] = ModContent.Request<Texture2D>($"{barPath}{i}", ReLogic.Content.AssetRequestMode.ImmediateLoad);
+            }
 
             string fillPath = directory + "/HealthbarFill";
             FillTextureAsset = ModContent.Request<Texture2D>(fillPath, ReLogic.Content.AssetRequestMode.ImmediateLoad);
@@ -43,25 +47,29 @@ namespace Stellamod.Common.HealthbarSystem
             string edgePath = directory + "/HealthbarEdge";
             EdgeTextureAsset = ModContent.Request<Texture2D>(edgePath, ReLogic.Content.AssetRequestMode.ImmediateLoad);
 
-            string barMoonPath = directory + "/HealthbarMoon";
-            BarMoonTextureAsset = ModContent.Request<Texture2D>(barMoonPath, ReLogic.Content.AssetRequestMode.ImmediateLoad);
+            string barMoonPath = directory + "/HealthbarSigil_";
+            BarMoonTextureAsset = new Asset<Texture2D>[3];
+            for(int i = 0; i < 3; i++)
+            {
+                BarMoonTextureAsset[i] = ModContent.Request<Texture2D>($"{barMoonPath}{i}", ReLogic.Content.AssetRequestMode.ImmediateLoad);
+            }
 
             BossFillTextureAsset = ModContent.Request<Texture2D>(fillPath, ReLogic.Content.AssetRequestMode.ImmediateLoad);
         }
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Width.Pixels = BarTextureAsset.Width();
-            Height.Pixels = BarTextureAsset.Height();
+            Width.Pixels = BarTextureAsset[0].Width();
+            Height.Pixels = BarTextureAsset[0].Height();
             Left.Pixels = RelativeLeft;
             Top.Pixels = RelativeTop;
             Append(_bossNameText);
         }
-        public Asset<Texture2D> BarTextureAsset;
+        public Asset<Texture2D>[] BarTextureAsset;
         public Asset<Texture2D> FillTextureAsset;
         public Asset<Texture2D> EdgeTextureAsset;
         public Asset<Texture2D> BossFillTextureAsset;
-        public Asset<Texture2D> BarMoonTextureAsset;
+        public Asset<Texture2D>[] BarMoonTextureAsset;
         public ScarletBoss TrackingNpc;
         public override void Update(GameTime gameTime)
         {
@@ -112,17 +120,24 @@ namespace Stellamod.Common.HealthbarSystem
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-   
+            int index = 0;
+            if (IsTracking())
+            {
+                index = (int)TrackingNpc.GetBossLevel();
+            }
+
+            var barTextureAsset = BarTextureAsset[index];
+            var sigilTextuerAsset = BarMoonTextureAsset[index];
             Rectangle rectangle = GetDimensions().ToRectangle();
             Vector2 topLeft = rectangle.TopLeft();
-            spriteBatch.Draw(BarTextureAsset.Value, topLeft, null, Color.White * _easeInAlpha, 0f, default, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(barTextureAsset.Value, topLeft, null, Color.White * _easeInAlpha, 0f, default, 1f, SpriteEffects.None, 0f);
 
             Vector2 fillTopLeft = topLeft;
             fillTopLeft.Y += 20;
             fillTopLeft.X += 50;
 
             float fillAmount = GetFill();
-            float width = (BarTextureAsset.Width() / 2) - 30;
+            float width = (barTextureAsset.Width() / 2) - 30;
             Vector2 maxScale = new Vector2(width, 1);
             Vector2 scale = Vector2.Lerp(new Vector2(1, 1), maxScale, fillAmount);
             if (_oldFill != fillAmount)
@@ -187,8 +202,8 @@ namespace Stellamod.Common.HealthbarSystem
             }
 
 
-            Vector2 moonDrawOrigin = BarMoonTextureAsset.Size() / 2f;
-            spriteBatch.Draw(BarMoonTextureAsset.Value, topLeft + moonDrawOrigin, null, Color.White * _easeInAlpha , 0f, moonDrawOrigin, _easeInAlpha, SpriteEffects.None, 0f);
+            Vector2 moonDrawOrigin = sigilTextuerAsset.Size() / 2f;
+            spriteBatch.Draw(sigilTextuerAsset.Value, topLeft + moonDrawOrigin, null, Color.White * _easeInAlpha , 0f, moonDrawOrigin, _easeInAlpha, SpriteEffects.None, 0f);
         }
 
         public void ResetEaseTimer()

@@ -3,10 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
@@ -36,7 +36,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
         {
             base.AI();
             Timer++;
-            ShakeModSystem.Shake = 10;
+            ShakeScreenPosition.Shake = 10;
             if (Timer == 1)
             {
                 var screenShaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
@@ -196,7 +196,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectile
             float completionRatio = Timer / chargeTime;
             float ease = EasingFunction.InOutExpo(completionRatio);
             Projectile.scale = ease;
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
         }
 
         private void AI_Fire()

@@ -1,13 +1,8 @@
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Content.Areas.Abyss.AccAB;
 using Stellamod.Content.Biomes;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
-using Stellamod.Utilis;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -172,7 +167,7 @@ namespace Stellamod.NPCs.Abyssal
                 float offsetX = Main.rand.Next(-50, 50) * 0.01f;
                 float offsetY = Main.rand.Next(-50, 50) * 0.01f;
                 int damage = Main.expertMode ? 40 : 43;
-      
+
             }
             if (NPC.ai[0] == 300)
             {

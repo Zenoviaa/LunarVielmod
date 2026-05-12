@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.WallBackgroundSystem;
 using Terraria;
@@ -36,6 +37,14 @@ namespace Stellamod.Content.Areas.MoonspiralTower
         
         public override bool IsActive(Player player)
         {
+            if (NPC.AnyDanger())
+            {
+                Color = Color.Lerp(Color, Color.Lerp(Color.White, Color.Black, 0.5f), 0.1f);
+            }
+            else
+            {
+                Color = Color.Lerp(Color, Color.White, 0.1f);
+            }
             BiomePlayer biomePlayer = player.GetModPlayer<BiomePlayer>();
             return biomePlayer.ZoneMoonspiralTower;
         }

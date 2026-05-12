@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -221,7 +221,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             }
 
             _afterImageAlpha = 1f;
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
 
             if (Timer % 5 == 0)
             {

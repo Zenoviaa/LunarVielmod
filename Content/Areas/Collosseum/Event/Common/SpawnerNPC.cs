@@ -21,6 +21,10 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
         }
 
         private ref float Timer => ref NPC.ai[1];
+        public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+        {
+            return false;
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -42,6 +46,7 @@ namespace Stellamod.Content.Areas.Collosseum.Event.Common
             NPC.dontTakeDamage = true;
             NPC.dontTakeDamageFromHostiles = true;
             NPC.dontCountMe = true;
+            NPC.ShowNameOnHover = false;
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

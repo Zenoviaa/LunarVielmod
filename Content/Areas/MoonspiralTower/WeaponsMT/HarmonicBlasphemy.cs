@@ -8,7 +8,6 @@ using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using System.Buffers;
@@ -129,6 +128,7 @@ public class HarmonicBlasphemyBoom : ModProjectile
         Projectile.penetrate = -1;
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
+        Projectile.timeLeft = 24;
     }
     public override void AI()
     {
@@ -159,7 +159,7 @@ public class HarmonicBlasphemyBoom : ModProjectile
             sound.PitchVariance = 0.5f;
             sound.Volume = 0.3f;
             SoundEngine.PlaySound(sound, Projectile.position);
-            ShakeModSystem.Shake = 2;
+            ShakeScreenPosition.Shake = 2;
             FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Blue, Color.DarkBlue);
             var boom = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Blue, Color.DarkBlue);
             boom.Scale *= 2;

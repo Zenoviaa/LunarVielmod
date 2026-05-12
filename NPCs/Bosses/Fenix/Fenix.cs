@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Accessories.Igniter;
@@ -8,7 +9,6 @@ using Stellamod.Items.Materials;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Melee;
 using Stellamod.NPCs.Bosses.Fenix.Projectiles;
-using Stellamod.UI.Systems;
 using System;
 using System.IO;
 using Terraria;
@@ -1955,7 +1955,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
                     NPC.velocity = dashDirection;
                 }
 
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
             if (timer == 90)
@@ -2249,7 +2249,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
                     NPC.velocity = dashDirection;
                 }
 
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
             if (timer == 75)
@@ -2436,7 +2436,7 @@ namespace Stellamod.NPCs.Bosses.Fenix
                     NPC.velocity = dashDirection;
                 }
 
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
                 //NPC.netUpdate = true;
             }
 

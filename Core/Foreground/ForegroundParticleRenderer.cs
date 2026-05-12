@@ -2,29 +2,43 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.Threading;
+using Stellamod.Common.DungeonGeneration;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Foreground;
 
-/// <summary>
-/// Represents a single particle that exists in the foreground layer and has parallaxing, to be used with the particle renderer
-/// </summary>
-public class ForegroundParticle
+
+public class ForegroundParticles
 {
-    public Rectangle? frame;
-    public Vector2 position;
-    public Vector2 velocity;
-    public bool active;
-    public int type;
-    public float scale;
-    public float timer;
-    public float rotation;
-    public float parallax;
+    public ForegroundParticles(int maxLength)
+    {
+        frame = new Rectangle?[maxLength];
+        position = new Vector2[maxLength];
+        velocity = new Vector2[maxLength];
+        active = new bool[maxLength];
+        type = new int[maxLength];  
+        scale = new float[maxLength];
+        timer = new float[maxLength];
+        rotation = new float[maxLength];
+        parallax = new float[maxLength];
+    }
+
+    public Rectangle?[] frame;
+    public Vector2[] position;
+    public Vector2[] velocity;
+    public bool[] active;
+    public int[] type;
+    public float[] scale;
+    public float[] timer;
+    public float[] rotation;
+    public float[] parallax;
+
 }
 
 /// <summary>
@@ -35,7 +49,7 @@ public class ForegroundParticleRenderer : ModSystem
     private static int _lastIndex;
     private Texture2D[] _particleTextureAssets;
     private ForegroundGore[] _gores;
-    private readonly ForegroundParticle[] _particles = new ForegroundParticle[Max_Particle_Count];
+    private readonly ForegroundParticles _particles = new ForegroundParticles(Max_Particle_Count);
     public const int Max_Particle_Count = 400;
     public override void OnModLoad()
     {
@@ -48,36 +62,31 @@ public class ForegroundParticleRenderer : ModSystem
             gore.type = i;
             _particleTextureAssets[gore.type] = ModContent.Request<Texture2D>(gore.Texture, AssetRequestMode.ImmediateLoad).Value;
         }
+
+        //Now i don't need to initialize multiple instances :)
+        //SOA is so cool
+        /*
         for (int i = 0; i < _particles.Length; i++)
         {
             _particles[i] = new ForegroundParticle();
-        }
+        }*/
         On_Main.DrawDust += DrawForegroundGores;
     }
 
     private void DrawForegroundGores(On_Main.orig_DrawDust orig, Main self)
     {
         orig(self);
-       // DrawForeground();
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedForeground, DrawLayer.OverPlayers);
     }
 
-    public override void OnModUnload()
-    {
-        base.OnModUnload();
-        On_Main.DrawDust -= DrawForegroundGores;
-    }
 
     public override void PostUpdateDusts()
     {
         base.PostUpdateDusts();
-        FastParallel.For(0, Max_Particle_Count, delegate (int start, int end, object context)
+        for (int i = 0; i < Max_Particle_Count; i++)
         {
-            for (int i = start; i < end; i++)
-            {
-                UpdateParticle(i);
-            }
-        });
-        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedForeground, DrawLayer.OverPlayers);
+            UpdateParticle(i);
+        }
     }
 
     /// <summary>
@@ -87,42 +96,42 @@ public class ForegroundParticleRenderer : ModSystem
     /// <param name="type"></param>
     private void SpawnParticle(int index, int type)
     {
-        ref ForegroundParticle particle = ref _particles[index];
-        particle.active = true;
-        particle.velocity = Vector2.Zero;
-        particle.rotation = 0;
-        particle.timer = 0;
-        particle.parallax = Main.rand.Next(25, 150) * 0.01f;
-        particle.scale = particle.parallax + 1f;
-        particle.type = type;
+      //  Main.NewText("Test");
+        _particles.active[index] = true;
+        _particles.velocity[index] = Vector2.Zero;
+        _particles.rotation[index] = 0;
+        _particles.timer[index] = 0;
+        _particles.parallax[index] = Main.rand.Next(25, 150) * 0.01f;
+        _particles.scale[index] = _particles.parallax[index] + 1f;
+        _particles.type[index] = type;
     }
 
     private void UpdateParticle(int index)
     {
-        ref ForegroundParticle particle = ref _particles[index];
-        if (!particle.active)
+        bool active = _particles.active[index];
+        if (!active)
             return;
 
-        particle.position += particle.velocity;
+        _particles.position[index] += _particles.velocity[index];
+        _particles.timer[index] += 1;
+        float xVel = (float)Math.Sin(_particles.timer[index] * 0.036) * 0.48f * _particles.scale[index];
+        _particles.velocity[index].X = xVel + (_particles.position[index].Y < Main.worldSurface * 16 ? Main.windSpeedCurrent * 8 : 0);
+        _particles.velocity[index].Y = (-Math.Abs(xVel) + _particles.scale[index]) * 0.4f;
+        _particles.rotation[index] = _particles.velocity[index].X * -0.5f;
 
-        float xVel = (float)Math.Sin(particle.timer++ * 0.036) * 0.48f * particle.scale;
-        particle.velocity.X = xVel + (particle.position.Y < Main.worldSurface * 16 ? Main.windSpeedCurrent * 8 : 0);
-        particle.velocity.Y = (-Math.Abs(xVel) + particle.scale) * 0.4f;
-        particle.rotation = particle.velocity.X * -0.5f;
-
-        if (particle.timer >= 600)
+        if (_particles.timer[index] >= 600)
         {
-            particle.active = false;
+            _particles.active[index] = false;
         }
 
         //Apply parallax
         Vector2 diff = Main.screenLastPosition - Main.screenPosition;
-        particle.position += diff * particle.parallax;
+        _particles.position[index] += diff * _particles.parallax[index];
     }
 
-    private Vector2 GetDrawOrigin(ForegroundParticle particle)
+    private Vector2 GetDrawOrigin(int particle)
     {
-        Rectangle? frame = particle.frame;
+        Rectangle? frame = _particles.frame[particle];
         Vector2 drawOrigin = Vector2.Zero;
         if (frame.HasValue)
         {
@@ -130,7 +139,7 @@ public class ForegroundParticleRenderer : ModSystem
         }
         else
         {
-            drawOrigin = _particleTextureAssets[particle.type].Size() / 2f;
+            drawOrigin = _particleTextureAssets[_particles.type[particle]].Size() / 2f;
         }
 
         return drawOrigin;
@@ -138,50 +147,28 @@ public class ForegroundParticleRenderer : ModSystem
 
     private void DrawPixelatedForeground(SpriteBatch spriteBatch, Vector2 screenPos)
     {
+  
         for (int i = 0; i < Max_Particle_Count; i++)
         {
-            ForegroundParticle particle = _particles[i];
-            if (!particle.active)
+            if (!_particles.active[i])
                 continue;
-
-            Vector2 drawPosition = particle.position - Main.screenPosition;
-            Vector2 drawOrigin = GetDrawOrigin(particle);
+        
+            Vector2 drawPosition = _particles.position[i] - Main.screenPosition;
+            Vector2 drawOrigin = GetDrawOrigin(i);
             Color lightColour = Lighting.GetColor((int)(drawPosition.X / 16f), (int)(drawPosition.Y / 16f));
-            Color frontColour = (particle.position.Y / 16f < Main.worldSurface) ? Main.ColorOfTheSkies : new Color(85, 85, 85);
-            Color drawColor = Color.Lerp(lightColour, frontColour, (particle.parallax - (0.25f)) / 1.25f);
+            Color frontColour = (_particles.position[i].Y / 16f < Main.worldSurface) ? Main.ColorOfTheSkies : new Color(85, 85, 85);
+            Color drawColor = Color.Lerp(lightColour, frontColour, (_particles.parallax[i] - (0.25f)) / 1.25f);
 
-            float inAlpha = EasingFunction.InOutSine(particle.timer / 30f);
-            float outAlpha = 1f - ((particle.timer - 570f) / 30f);
+            float inAlpha = EasingFunction.InOutSine(_particles.timer[i] / 30f);
+            float outAlpha = 1f - ((_particles.timer[i] - 570f) / 30f);
             float alpha = inAlpha * outAlpha;
-            drawColor *= alpha;
-            Texture2D textureAsset = _particleTextureAssets[particle.type];
-            spriteBatch.Draw(textureAsset, drawPosition, particle.frame, drawColor, particle.rotation, drawOrigin, particle.scale, SpriteEffects.None, 0);
-        }
-    }
-    private void DrawForeground()
-    {
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
-        for (int i = 0; i < Max_Particle_Count; i++)
-        {
-            ForegroundParticle particle = _particles[i];
-            if (!particle.active)
-                continue;
 
-            Vector2 drawPosition = particle.position - Main.screenPosition;
-            Vector2 drawOrigin = GetDrawOrigin(particle);
-            Color lightColour = Lighting.GetColor((int)(drawPosition.X / 16f), (int)(drawPosition.Y / 16f));
-            Color frontColour = (particle.position.Y / 16f < Main.worldSurface) ? Main.ColorOfTheSkies : new Color(85, 85, 85);
-            Color drawColor = Color.Lerp(lightColour, frontColour, (particle.parallax - (0.25f)) / 1.25f);
-
-            float inAlpha = EasingFunction.InOutSine(particle.timer / 30f);
-            float outAlpha = 1f - ((particle.timer - 570f) / 30f);
-            float alpha = inAlpha * outAlpha;
+            //Main.NewText(alpha);
             drawColor *= alpha;
-            Texture2D textureAsset = _particleTextureAssets[particle.type];
-            spriteBatch.Draw(textureAsset, drawPosition, particle.frame, drawColor, particle.rotation, drawOrigin, particle.scale, SpriteEffects.None, 0);
+            Texture2D textureAsset = _particleTextureAssets[_particles.type[i]];
+            spriteBatch.Draw(textureAsset, drawPosition, _particles.frame[i], drawColor, _particles.rotation[i], drawOrigin, _particles.scale[i], 
+                SpriteEffects.None, 0);
         }
-        spriteBatch.End();
     }
 
     public static void NewParticle<T>(Vector2 position) where T : ForegroundGore
@@ -194,6 +181,7 @@ public class ForegroundParticleRenderer : ModSystem
         ForegroundParticleRenderer renderer = ModContent.GetInstance<ForegroundParticleRenderer>();
         int steps = 0;
 
+   
         //Starting from the last search index and looping around for a small performance boost
         int index = _lastIndex;
         int maxSteps = Max_Particle_Count;
@@ -201,8 +189,8 @@ public class ForegroundParticleRenderer : ModSystem
         {
             index++;
             index = index % Max_Particle_Count;
-            var gore = renderer._particles[index];
-            if (!gore.active)
+ 
+            if (!renderer._particles.active[index])
             {
                 T t = ModContent.GetInstance<T>();
                 renderer.SpawnParticle(index, t.type);
@@ -212,9 +200,9 @@ public class ForegroundParticleRenderer : ModSystem
                 int frameWidth = texture.Width;
                 int frameIndex = Main.rand.Next(0, t.frameCount);
                 Rectangle frame = new Rectangle(0, frameIndex * frameHeight, frameWidth, frameHeight);
-                gore.frame = frame;
-                gore.position = position;
-                gore.active = true;
+                renderer._particles.frame[index] = frame;
+                renderer._particles.position[index] = position;
+                renderer._particles.active[index] = true;
                 _lastIndex = index;
                 break;
             }
@@ -223,6 +211,9 @@ public class ForegroundParticleRenderer : ModSystem
     }
     public static void NewParticle<T>() where T : ForegroundGore
     {
+
+      //  Main.NewText("G");
+        //DebugHelper.NewTextOnlyInTesting("E");
         float xPosition = Main.rand.Next(-(int)(Main.screenWidth * 0.52f), (int)(Main.screenWidth * 0.52f));
         if (xPosition < 0)
             xPosition -= Main.screenWidth / 2f;

@@ -311,6 +311,19 @@ float4 CombinePS(VertexShaderOutput input) : COLOR
     return finalColor * input.Color;
 }
 
+float4 CombineALLPS(VertexShaderOutput input) : COLOR
+{
+    float2 coords = input.TextureCoordinates;
+    float4 heightMapColor = tex2D(HeightMapTextureSampler, coords);     
+    float3 gradient = lerp(endGradient, startGradient, heightMapColor.a);
+    
+    float4 baseWaterColor = tex2D(SpriteTextureSampler, coords);
+    float4 fancyWaterColor = tex2D(WaterTextureSampler, coords);
+    
+    float4 finalColor = fancyWaterColor * baseWaterColor.a;
+    return finalColor * input.Color;
+}
+
 technique SpriteDrawing
 {
     pass P0
@@ -320,28 +333,28 @@ technique SpriteDrawing
 };
 technique WrapDrawing
 {
-    pass P0
+    pass P1
     {
         PixelShader = compile PS_SHADERMODEL WrapPS();
     }
 };
 technique HeightDrawing
 {
-    pass P0
+    pass P2
     {
         PixelShader = compile PS_SHADERMODEL HeightPS();
     }
 };
 technique ReflectionDrawing
 {
-    pass P0
+    pass P3
     {
         PixelShader = compile PS_SHADERMODEL ReflectPS();
     }
 };
 technique GradientDrawing
 {
-    pass P0
+    pass P4
     {
         PixelShader = compile PS_SHADERMODEL GradientPS();
     }
@@ -349,43 +362,56 @@ technique GradientDrawing
 
 technique CausticsDrawing
 {
-    pass P0
+    pass P5
     {
         PixelShader = compile PS_SHADERMODEL CausticsPS();
     }
 };
+
 technique SparklingCausticsDrawing
 {
-    pass P0
+    pass P6
     {
         PixelShader = compile PS_SHADERMODEL SparklingCausticsPS();
     }
 };
+
 technique FoamDrawing
 {
-    pass P0
+    pass P7
     {
         PixelShader = compile PS_SHADERMODEL FoamPS();
     }
 };
+
 technique PosterizeDrawing
 {
-    pass P0
+    pass P8
     {
         PixelShader = compile PS_SHADERMODEL PosterizePS();
     }
 };
+
 technique BlurDrawing
 {
-    pass P0
+    pass P9
     {
         PixelShader = compile PS_SHADERMODEL BlurPS();
     }
 };
+
 technique CombineRTDrawing
 {
-    pass P0
+    pass P10
     {
         PixelShader = compile PS_SHADERMODEL CombinePS();
+    }
+};
+
+technique CombineRTAllDrawing
+{
+    pass P11
+    {
+        PixelShader = compile PS_SHADERMODEL CombineALLPS();
     }
 };

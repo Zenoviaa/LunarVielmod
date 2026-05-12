@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Projectiles;
-using Stellamod.UI.Systems;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -44,7 +44,7 @@ namespace Stellamod.Items.Accessories.AlcadChests
 
         public override bool? UseItem(Player player)
         {
-            ShakeModSystem.Shake = 5;
+            ShakeScreenPosition.Shake = 5;
             if (Main.rand.NextBool(4))
             {
                 CastMagic(player);

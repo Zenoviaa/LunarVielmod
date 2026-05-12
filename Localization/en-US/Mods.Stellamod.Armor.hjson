@@ -1,3 +1,10 @@
+MiracleHead: {
+	Log: Act II Mage artifact armor
+	Type: Artifact
+	Lore: An armor forged from the magical and silky threads of the Wonderous Darkspace, it is said that wrapping yourself up in too much of this stuff will cause even the most hardened souls to lose their minds...
+	SetBonus: Even after running out of mana, you can continue attacking, but this will put you into debt giving you black mana stars. While you have black mana stars, spiders will aggressively attack you until it regenerates back.
+}
+
 SanctorousHead: {
 	Log: Act III Resource armor
 	Type: Resource

@@ -1,11 +1,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -232,7 +232,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"), target.position);
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
@@ -260,7 +260,7 @@ namespace Stellamod.Items.Weapons.Ranged
                outerGlowColor: Color.DarkBlue, duration: 25, baseSize: 0.12f);
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), target.position);
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             for (int i = 0; i < 6; i++)
             {
                 Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.LightSeaGreen, 0.5f).noGravity = true;
@@ -413,7 +413,7 @@ namespace Stellamod.Items.Weapons.Ranged
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/MorrowExp"), target.position);
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.2f, .3f) + Main.rand.NextFloat(-4f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.Next(20, 35) * 0.01f + Main.rand.Next(-10, 11) * 0.2f;
@@ -441,7 +441,7 @@ namespace Stellamod.Items.Weapons.Ranged
                outerGlowColor: Color.DarkRed, duration: 25, baseSize: 0.12f);
 
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Vinger"), target.position);
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             for (int i = 0; i < 6; i++)
             {
                 Dust.NewDustPerfect(target.Center, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.PaleVioletRed, 0.5f).noGravity = true;

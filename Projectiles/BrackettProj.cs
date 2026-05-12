@@ -1,8 +1,8 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -38,7 +38,7 @@ namespace Stellamod.Projectiles
             if (Main.rand.NextBool(2))
                 target.AddBuff(BuffID.Poisoned, 180);
 
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             float speedX = Projectile.velocity.X;
             float speedY = Projectile.velocity.Y;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedX, Projectile.position.Y + speedY, speedX, speedY, ModContent.ProjectileType<BrackettThrough>(), (int)(Projectile.damage * 1.2), 0f, Projectile.owner, 0f, 0f);

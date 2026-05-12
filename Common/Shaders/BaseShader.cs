@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Core.Effects;
 using Terraria.Graphics.Shaders;
+using Terraria.ModLoader;
 
 namespace Stellamod.Common.Shaders
 {
@@ -19,6 +20,19 @@ namespace Stellamod.Common.Shaders
         }
     }
 
+    public static class ShaderContent
+    {
+        /// <summary>
+        /// Returns the instance of the shader wrapper
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T GetInstance<T>() where T : BaseShader, new()
+        {
+            return CrystalShader<T>.Instance;
+        }
+    }
+
     public abstract class BaseShader : IShader
     {
         public virtual string EffectPath
@@ -31,6 +45,8 @@ namespace Stellamod.Common.Shaders
 
         public MiscShaderData Data => GameShaders.Misc[$"LunarVeil:{EffectPath}"];
         public Effect Effect => Data.Shader;
+        public Effect Effect2 =>
+            ModContent.Request<Effect>($"Stellamod/Effects/CrystalShaders/{EffectPath}", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
         public BlendState BlendState { get; set; } = BlendState.Additive;
         public SamplerState SamplerState { get; set; } = SamplerState.LinearWrap;
         public bool FillShape { get; set; }

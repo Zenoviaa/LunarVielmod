@@ -35,6 +35,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
                 return _tailSimulation;
             }
         }
+
+        private Chain _tailChain;
+        private Chain TailChain
+        {
+            get
+            {
+                _tailChain ??= new Chain(NPC.Center, 4, 128);
+                return _tailChain;
+            }
+        }
         private Vector2[] _tendrilPoints;
         private Vector2[] TendrilPoints
         {
@@ -53,6 +63,13 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private void UpdateDraw()
         {
             _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
+            TailChain.points[0] = NPC.Center;
+            TailChain.pinned[0] = true;
+            for(int i = 1; i < TailChain.points.Length; i++)
+            {
+                TailChain.points[i] -= NPC.rotation.ToRotationVector2() * 8;
+            }
+            TailChain.ResolveRootToBack();
         }
 
         private void DrawTelegraphLine(SpriteBatch spriteBatch, Vector2 screenPos)
@@ -107,7 +124,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
 
         private float GetFlamingTrailWidth(float completionRatio)
         {
-            return MathHelper.SmoothStep(222, 222, completionRatio);
+            return MathHelper.SmoothStep(128, 128, completionRatio);
         }
 
 
@@ -166,8 +183,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
         private Color GetTendrilColorFunction(float completionRatio)
         {
             Color fadeColor = GetTwinColor();
-            Color flameColor = Color.Lerp(Color.Gray, Color.Lerp(Color.Blue, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 8, offset: NPC.whoAmI)), completionRatio) * EasingFunction.QuadraticBump(completionRatio);
-            return flameColor * 3 * EasingFunction.QuadraticBump(completionRatio);
+            Color flameColor = Color.Lerp(fadeColor,
+                Color.Lerp(Color.White, Color.Black, ExtraMath.Osc(0f, 0.5f, speed: 8, offset: NPC.whoAmI)), completionRatio) * EasingFunction.QuadraticBump(completionRatio);
+            Color finalColor = flameColor * 3 * EasingFunction.QuadraticBump(completionRatio);
+            return finalColor;
         }
 
         private float GetTendrilWidthFunction(float completionRatio)
@@ -185,19 +204,26 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             shader.OuterColor = Color.Lerp(GetTwinColor(), Color.Lerp(GetTwinColor(), Color.Black, 0.5f), ExtraMath.Osc(0f, 1f, speed: 2, offset: NPC.whoAmI));
             shader.Distortion = 0.2f;
             shader.Time = Main.GlobalTimeWrappedHourly * 10;
-            TrailDrawer.Draw(Main.spriteBatch, TendrilPoints, GetTendrilColorFunction, GetTendrilWidthFunction, shader);
+            TrailDrawer.Draw(Main.spriteBatch, _tailChain.points, GetTendrilColorFunction, GetTendrilWidthFunction, shader);
         }
 
         private void DrawPixelatedTendril(GraphicsDevice graphicsDevice)
         {
             BlackFireShader shader = BlackFireShader.Instance;
-            shader.PrimaryTexture = TrailRegistry.WhispyTrail;
+            shader.PrimaryTexture = TrailRegistry.GlowTrail;
             shader.PrimaryTexture2 = TrailRegistry.StarTrail;
-            shader.InnerColor = Color.Gray;
-            shader.OuterColor = Color.Lerp(GetTwinColor(), Color.Lerp(GetTwinColor(), Color.Black, 0.5f), ExtraMath.Osc(0f, 1f, speed: 2, offset: NPC.whoAmI));
+            shader.InnerColor = Color.White;
+            shader.OuterColor = Color.Lerp(GetTwinColor(), Color.Lerp(GetTwinColor(), Color.Black, 0.5f), 
+                ExtraMath.Osc(0f, 1f, speed: 2, offset: NPC.whoAmI));
             shader.Distortion = 0.2f;
             shader.Time = Main.GlobalTimeWrappedHourly * 10;
-            TrailDrawer.Draw(Main.spriteBatch, TendrilPoints, GetTendrilColorFunction, GetTendrilWidthFunction, shader);
+            TrailDrawer.Draw(Main.spriteBatch, TailChain.points, GetTendrilColorFunction, GetTendrilWidthFunction, shader);
+
+            BloomTrailShader bloom = BloomTrailShader.Instance;
+            bloom.InnerColor = GetTwinColor();
+            bloom.OuterColor = Color.Lerp(Color.White, Color.Black, ExtraMath.Osc(0f, 1f, speed: 2));
+            TrailDrawer.Draw(Main.spriteBatch, TailChain.points, GetTendrilColorFunction, GetTendrilWidthFunction, bloom);
+
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

@@ -6,10 +6,13 @@ using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander;
 using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak;
 using Stellamod.Content.Areas.Dock.BossesDK.Jiitas;
 using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine;
+using Stellamod.Content.Areas.EveroseVillage.CelestiaBoss;
 using Stellamod.Content.Areas.Fable.BossesFB.DaedusTheDevoted;
 using Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar;
 using Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
+using Stellamod.Content.Areas.MoonspiralTower.CariyaBoss;
+using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
@@ -18,11 +21,13 @@ using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
+using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
 using Stellamod.Content.Armors.Ravaging;
 using Stellamod.Content.Currencies;
 using Stellamod.Content.Items.Materials;
 using Stellamod.Content.Relics;
 using Stellamod.Content.Vanity.IllurianGeneralHat;
+using Stellamod.Content.Vanity.RedFeatherHat;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Insources;
@@ -159,6 +164,18 @@ namespace Stellamod.Content.BossPages
             flag = DownedBossFlag.Jiitas;
         }
     }
+    public class CelestiaPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.ForgottenWarriors;
+            bossNPC = ModContent.GetInstance<Celestia>();
+            progression = 3;
+            flag = DownedBossFlag.Celestia;
+            StarRanking = 3;
+        }
+    }
     public class SkullrunnerPage : BossPage
     {
         public override void SetStaticDefaults()
@@ -194,6 +211,47 @@ namespace Stellamod.Content.BossPages
             flag = DownedBossFlag.Verlian_Singularity;
         }
     }
+    public class CariyaPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.ForgottenWarriors;
+            bossNPC = ModContent.GetInstance<Cariya>();
+            progression = 9;
+            flag = DownedBossFlag.Cariya;
+            StarRanking = 3;
+            AddMasterModeReward<CariyaRelicItem>(stack: 1);
+        }
+    }
+    public class KingJellyfishPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.Miniboss;
+            bossNPC = ModContent.GetInstance<KingJellyfish>();
+            progression = 4;
+            flag = DownedBossFlag.KingJellyfish;
+            StarRanking = 2;
+            AddMasterModeReward<KingJellyfishRelicItem>(stack: 1);
+        }
+    }
+    public class VerliaPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.IllurianTroupe;
+            bossNPC = ModContent.GetInstance<Verlia>();
+            progression = 10;
+            flag = DownedBossFlag.Verlia;
+
+            StarRanking = 6;
+            AddMasterModeReward<VerliaRelicItem>(stack: 1);
+        }
+    }
+
 
     public class BishininePage : BossPage
     {

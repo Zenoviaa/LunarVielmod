@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
 using Stellamod.Items.Armors.Vanity.Verlia;
@@ -9,7 +10,6 @@ using Stellamod.Items.Ores;
 using Stellamod.Items.Quest.Zui;
 using Stellamod.NPCs.Bosses.Zui.Projectiles;
 using Stellamod.NPCs.Town;
-using Stellamod.UI.Systems;
 using System;
 using System.IO;
 using Terraria;
@@ -1591,7 +1591,7 @@ namespace Stellamod.NPCs.Bosses.Zui
                     dashDirection *= speed;
                     dashDirection.Y = 0;
                     NPC.velocity = dashDirection;
-                    ShakeModSystem.Shake = 3;
+                    ShakeScreenPosition.Shake = 3;
                 }
             }
 
@@ -2029,7 +2029,7 @@ namespace Stellamod.NPCs.Bosses.Zui
                 dashDirection *= speed;
                 dashDirection.X = NPC.velocity.X;
                 NPC.velocity = dashDirection;
-                ShakeModSystem.Shake = 3;
+                ShakeScreenPosition.Shake = 3;
             }
 
 
@@ -2180,7 +2180,6 @@ namespace Stellamod.NPCs.Bosses.Zui
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MagiciansCodeHat>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RadianuiBar>(), 1, 10, 40));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShopNote>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.ZuiBossRel>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<ZuiBomb>()));
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CompletedFlowerBag>(), minimumDropped: 1, maximumDropped: 3));

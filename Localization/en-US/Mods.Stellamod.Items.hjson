@@ -1500,14 +1500,8 @@ CanOfLeaves: {
 }
 
 StarCall: {
-	DisplayName: Starbomber
-	Tooltip:
-		'''
-		Explodes into big stary bits!
-		Takes 2 slots to summon
-		They will act as temporary summons for big damage
-		Definitely gonna bring flashbacks after Diari releases
-		'''
+	DisplayName: STARBOMB Artifact
+	Tooltip: Explodes into many tiny stars!!! Very powerful!
 }
 
 StumpBuster: {
@@ -2044,7 +2038,7 @@ LeatherGlove: {
 	Tooltip:
 		'''
 		Get a grip!
-		5% increased melee attack speed
+		20% increased melee attack speed
 		'''
 }
 
@@ -2576,12 +2570,8 @@ StaffOFlame: {
 }
 
 StaffoftheIrradiaflare: {
-	DisplayName: Staff of the Irradiaflare
-	Tooltip:
-		'''
-		Channels the power of the acid to shoot a powerful acidic blast!
-		It's powerful, source: trust me bro
-		'''
+	DisplayName: Explosion Artifact
+	Tooltip: Created a timed bomb that explodes and can chain with itself!
 }
 
 StarFlowerStaff: {
@@ -3680,8 +3670,8 @@ StarbloomTempleBlock: {
 }
 
 ShadegraveStaff: {
-	Tooltip: ""
-	DisplayName: Shadegrave Staff
+	Tooltip: Fires a dark bolt that explodes when it hits something and inflicts shadowflame
+	DisplayName: Shadegrave Artifact
 }
 
 BasicGunParts: {
@@ -4276,21 +4266,12 @@ VeriplantGrassWall: {
 
 MiracleBody: {
 	DisplayName: Miracle Cloak
-	Tooltip:
-		'''
-		Increases summon damage by 12%
-		Increases whip range by 20%
-		+1 Max Sentry
-		'''
+	Tooltip: ""
 }
 
 MiracleHead: {
 	DisplayName: Miracle Hat
-	Tooltip:
-		'''
-		Increases summon damage by 12%
-		+1 Max Sentry
-		'''
+	Tooltip: ""
 }
 
 MiracleThread: {
@@ -5219,8 +5200,8 @@ WindmillShuriken: {
 }
 
 PerfectionStaff: {
-	Tooltip: ""
-	DisplayName: Perfection Staff
+	Tooltip: Casts a swarm of funnily moving, but homing green stars!
+	DisplayName: Perfection Artifact
 }
 
 XixianFlask: {
@@ -10166,7 +10147,7 @@ GintzeShield: {
 	DisplayName: Gintze Shield
 	Tooltip:
 		'''
-		When enemies touch the shield, they lose 10% maximum health!
+		When enemies touch the shield, they lose 25% maximum health!
 		This does not work on bosses
 		'''
 }
@@ -10875,5 +10856,314 @@ Flashback: {
 
 AegislavSand: {
 	DisplayName: Aegislav Sand
+	Tooltip: ""
+}
+
+MiracleSilkTileBlock: {
+	DisplayName: Miracle Silk Tile Block
+	Tooltip: ""
+}
+
+VerliaRelicItem: {
+	DisplayName: Verlia Relic Item
+	Tooltip: ""
+}
+
+CelestiaRelicItem: {
+	DisplayName: Celestia Relic Item
+	Tooltip: ""
+}
+
+CariyaRelicItem: {
+	DisplayName: Cariya Relic Item
+	Tooltip: ""
+}
+
+PieceOfArtArtifact: {
+	DisplayName: Piece Of Art Artifact
+	Tooltip: Throws out a magic paintbrush that paints all over the place! Get messy!
+}
+
+GhastlySpirit: {
+	DisplayName: Ghastly Spirit
+	Tooltip: ""
+}
+
+MothlightWing: {
+	DisplayName: Mothlight Wing
+	Tooltip: ""
+}
+
+PinglerWand: {
+	DisplayName: Pingler Wand
+	Tooltip: ""
+}
+
+StoningWand: {
+	DisplayName: Stoning Wand
+	Tooltip: ""
+}
+
+FallenspireWand: {
+	DisplayName: Fallenspire Wand
+	Tooltip: ""
+}
+
+MiracleWand: {
+	DisplayName: Miracle Wand
+	Tooltip: ""
+}
+
+PieceOfCakeWand: {
+	DisplayName: Piece Of Cake Wand
+	Tooltip: ""
+}
+
+SiegfriedsIceWand: {
+	DisplayName: Siegfrieds Ice Wand
+	Tooltip: ""
+}
+
+ThunderingWand: {
+	DisplayName: Thundering Wand
+	Tooltip: ""
+}
+
+UselessWand: {
+	DisplayName: Useless Wand
+	Tooltip: ""
+}
+
+ZuisWand: {
+	DisplayName: Zuis Wand
+	Tooltip: ""
+}
+
+TheAnchor: {
+	DisplayName: The Anchor
+	Tooltip: ""
+}
+
+SunkenAnchor: {
+	DisplayName: Sunken Anchor
+	Tooltip:
+		'''
+		Increases enemy endurance by 20%
+		You have regular gravity in water
+		'''
+}
+
+KingJellyfishRelicItem: {
+	DisplayName: King Jellyfish Relic
+	Tooltip: ""
+}
+
+BlankVanilla: {
+	DisplayName: Blank Vanilla
+	Tooltip: ""
+}
+
+ElectricChainTome: {
+	DisplayName: Electric Chain Tome
+	Tooltip: Casts an electric bolt that chains up to 3 enemies!
+}
+
+RedFeatherHat: {
+	DisplayName: Red Feather Hat
+	Tooltip: ""
+}
+
+PumpkinSpiceWash: {
+	DisplayName: Pumpkin Spice Wash
+	Tooltip: ""
+}
+
+SillySweetWash: {
+	DisplayName: Silly Sweet Wash
+	Tooltip: ""
+}
+
+CandyCaneWash: {
+	DisplayName: Candy Cane Wash
+	Tooltip: ""
+}
+
+CarrotWash: {
+	DisplayName: Carrot Wash
+	Tooltip: ""
+}
+
+PurpleShadowWash: {
+	DisplayName: Purple Shadow Wash
+	Tooltip: ""
+}
+
+AcidWash: {
+	DisplayName: Acid Wash
+	Tooltip: ""
+}
+
+AquaWash: {
+	DisplayName: Aqua Wash
+	Tooltip: ""
+}
+
+BeachDayWash: {
+	DisplayName: Beach Day Wash
+	Tooltip: ""
+}
+
+CaramelWash: {
+	DisplayName: Caramel Wash
+	Tooltip: ""
+}
+
+CherryBlossomWash: {
+	DisplayName: Cherry Blossom Wash
+	Tooltip: ""
+}
+
+ChocolateWash: {
+	DisplayName: Chocolate Wash
+	Tooltip: ""
+}
+
+CoralWash: {
+	DisplayName: Coral Wash
+	Tooltip: ""
+}
+
+DarkSunsetWash: {
+	DisplayName: Dark Sunset Wash
+	Tooltip: ""
+}
+
+DiamondWash: {
+	DisplayName: Diamond Wash
+	Tooltip: ""
+}
+
+GoldenrodWash: {
+	DisplayName: Goldenrod Wash
+	Tooltip: ""
+}
+
+GrassyWash: {
+	DisplayName: Grassy Wash
+	Tooltip: ""
+}
+
+GroundyWash: {
+	DisplayName: Groundy Wash
+	Tooltip: ""
+}
+
+HalloweenWash: {
+	DisplayName: Halloween Wash
+	Tooltip: ""
+}
+
+LavenderWash: {
+	DisplayName: Lavender Wash
+	Tooltip: ""
+}
+
+MistletoeWash: {
+	DisplayName: Mistletoe Wash
+	Tooltip: ""
+}
+
+PeachyWash: {
+	DisplayName: Peachy Wash
+	Tooltip: ""
+}
+
+RainbowWash: {
+	DisplayName: Rainbow Wash
+	Tooltip: ""
+}
+
+RedMixWash: {
+	DisplayName: Red Mix Wash
+	Tooltip: ""
+}
+
+SanguineWash: {
+	DisplayName: Sanguine Wash
+	Tooltip: ""
+}
+
+SapphireWash: {
+	DisplayName: Sapphire Wash
+	Tooltip: ""
+}
+
+SeafloorWash: {
+	DisplayName: Seafloor Wash
+	Tooltip: ""
+}
+
+SilverWash: {
+	DisplayName: Silver Wash
+	Tooltip: ""
+}
+
+SunsetWash: {
+	DisplayName: Sunset Wash
+	Tooltip: ""
+}
+
+TurquoiseWash: {
+	DisplayName: Turquoise Wash
+	Tooltip: ""
+}
+
+TwinklingWash: {
+	DisplayName: Twinkling Wash
+	Tooltip: ""
+}
+
+VileWash: {
+	DisplayName: Vile Wash
+	Tooltip: ""
+}
+
+WheatFieldsWash: {
+	DisplayName: Wheat Fields Wash
+	Tooltip: ""
+}
+
+RoseyWash: {
+	DisplayName: Rosey Wash
+	Tooltip: ""
+}
+
+MoodyWash: {
+	Tooltip: ""
+	DisplayName: Moody Wash
+}
+
+IllurianWash: {
+	Tooltip: ""
+	DisplayName: Illurian Wash
+}
+
+HotrodWash: {
+	Tooltip: ""
+	DisplayName: Hotrod Wash
+}
+
+CliffsideWash: {
+	Tooltip: ""
+	DisplayName: Cliffside Wash
+}
+
+BumbleBeeWash: {
+	Tooltip: ""
+	DisplayName: Bumble Bee Wash
+}
+
+ShadefulWash: {
+	DisplayName: Shadeful Wash
 	Tooltip: ""
 }

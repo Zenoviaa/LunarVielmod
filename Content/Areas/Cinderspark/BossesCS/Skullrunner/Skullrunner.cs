@@ -8,6 +8,7 @@ using Stellamod.Content.Areas.WondrousDarkspace.NPCsWD;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -79,6 +80,7 @@ public class Skullrunner : ScarletBoss
     private Vector2 _targetReposition;
     private Vector2 _startBobPos;
     private Vector2 _dashVelocity;
+    private Vector2 _initialVelocity;
 
     private Vector2 _spawnPos;
     private Vector2 _handRiseStartPosition;
@@ -130,6 +132,7 @@ public class Skullrunner : ScarletBoss
         writer.Write(_localBeatCounter);
         writer.Write(_longDash);
         writer.Write(_lastDunkDirection);
+        writer.WriteVector2(_initialVelocity);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -154,6 +157,7 @@ public class Skullrunner : ScarletBoss
         _localBeatCounter = reader.ReadSingle();
         _longDash = reader.ReadBoolean();
         _lastDunkDirection = reader.ReadSingle();
+        _initialVelocity = reader.ReadVector2();
     }
 
 
@@ -173,7 +177,7 @@ public class Skullrunner : ScarletBoss
         NPC.height = 64;
         NPC.damage = 32;
         NPC.defense = 10;
-        NPC.lifeMax = 7000;
+        NPC.lifeMax = 5500;
         NPC.HitSound = SoundID.NPCHit16;
         NPC.value = Item.buyPrice(silver: 50);
         NPC.knockBackResist = 0f;
@@ -284,6 +288,7 @@ public class Skullrunner : ScarletBoss
             _spawnPos = NPC.Center;
             _handRiseStartPosition = _spawnPos;
         }
+        Lighting.AddLight(NPC.Center, Color.Yellow.ToVector3() * 2);
         Metronome();
         if (_drawTrail)
         {
@@ -546,17 +551,21 @@ public class Skullrunner : ScarletBoss
         }
         _showHand = true;
         Timer++;
-
+        if(Timer == 1)
+        {
+            _initialVelocity = NPC.Center;
+            NPC.TargetClosest();
+        }
 
         _handPosition += NPC.velocity;
         Vector2 sidePosition = NPC.Center + -Vector2.UnitX * NPC.direction * 72 + Vector2.UnitY * 48;
-        NPC.TargetClosest();
+   
         FaceDirection();
-        
-  
+
+        _startBobPos = Target.Center + Vector2.UnitX * _lastDunkDirection * 72;
         if (Timer < 10)
         {
-            _startBobPos = Target.Center + Vector2.UnitX * _lastDunkDirection * 72;
+           
             NPC.velocity *= 0.9f;
             NPC.rotation *= 0.9f;
         }
@@ -616,9 +625,11 @@ public class Skullrunner : ScarletBoss
         }
 
         Vector2 velocityToCirclePos = (targetCirclePos - NPC.Center);
-        velocityToCirclePos *= 0.1f;
+        Vector2 interpolatedPosition = Vector2.Lerp(_initialVelocity, targetCirclePos, EasingFunction.InOutExpo(Timer / 120f));
+        Vector2 vel = interpolatedPosition - NPC.Center;
+        NPC.velocity = vel;// Vector2.Lerp(_initialVelocity, velocityToCirclePos, EasingFunction.InOutSine(Timer / 40f));
 
-        NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToCirclePos, 0.1f);
+      //  NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToCirclePos, 0.1f);
 
         //Bobble his head to the beat
         //It's 130 beat sper minute
@@ -757,7 +768,7 @@ public class Skullrunner : ScarletBoss
         if (_grabbedTarget)
         {
             HandOutlineColor = Color.Red;
-            SkullrunnerThrowModPlayer throwModPlayer = Target.GetModPlayer<SkullrunnerThrowModPlayer>();
+            MovePlayer throwModPlayer = Target.GetModPlayer<MovePlayer>();
             throwModPlayer.targetSuckPosition = _handPosition;
         }
 
@@ -878,7 +889,7 @@ public class Skullrunner : ScarletBoss
         Timer++;
         if(Timer == 1)
         {
-            SkullrunnerThrowModPlayer throwModPlayer = Target.GetModPlayer<SkullrunnerThrowModPlayer>();
+            MovePlayer throwModPlayer = Target.GetModPlayer<MovePlayer>();
             throwModPlayer.throwVelocity = Vector2.UnitY * 40;
             Eruption(NPC.Center, -Vector2.UnitY);
         }
@@ -1407,7 +1418,7 @@ public class Skullrunner : ScarletBoss
                     SwitchState(AIState.BobbingFlyingSkulls);
                     break;
                 case 1:
-                    if (_beatCounter < 26)
+                    if (_beatCounter < 24)
                         return;
 
                     SwitchState(AIState.DunkBeginStart);

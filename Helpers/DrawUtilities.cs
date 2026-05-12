@@ -120,9 +120,28 @@ public struct SpritebatchDrawer
     public SpriteEffects spriteEffects;
     public Vector2 scale;
     public bool blackIsTransparency;
+    public void VerticalFrame(int frameIndex, int frameCount)
+    {
+        sourceRect = texture.GetFrame(frameIndex, frameCount);
+    }
+
     public void LeftCenterOrigin()
     {
         Vector2 normalizedOrigin = new Vector2(0f, 0.5f);
+        if (sourceRect.HasValue)
+        {
+            Rectangle rectangle = sourceRect.Value;
+            drawOrigin = new Vector2(rectangle.Width, rectangle.Height) * normalizedOrigin;
+        }
+        else
+        {
+            drawOrigin = new Vector2(texture.Width, texture.Height) * normalizedOrigin;
+        }
+    }
+
+    public void BottomLeftOrigin()
+    {
+        Vector2 normalizedOrigin = new Vector2(0f, 1f);
         if (sourceRect.HasValue)
         {
             Rectangle rectangle = sourceRect.Value;
@@ -168,6 +187,18 @@ public struct SpritebatchDrawer
         else
         {
             drawOrigin = new Vector2(texture.Width * 0.5f, 0);
+        }
+    }
+    public void CenterOrigin()
+    {
+        if (sourceRect.HasValue)
+        {
+            Rectangle rectangle = sourceRect.Value;
+            drawOrigin = new Vector2(rectangle.Width * 0.5f, rectangle.Height * 0.5f);
+        }
+        else
+        {
+            drawOrigin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
         }
     }
     public static SpritebatchDrawer FromTextureAsset(Asset<Texture2D> textureAsset, Vector2 worldPosition)

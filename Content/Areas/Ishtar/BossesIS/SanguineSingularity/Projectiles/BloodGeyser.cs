@@ -3,10 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Gores;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -112,7 +112,7 @@ namespace Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity.Projectile
                 SoundEngine.PlaySound(sound2, Projectile.position);
 
                 FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-                ShakeModSystem.Shake = 8;
+                ShakeScreenPosition.Shake = 8;
                 CreateGoreBurst(Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero) * 10);
                 CreateGoreBurst(Projectile.Center, Projectile.velocity.SafeNormalize(Vector2.Zero) * 5);
                 float numDust = 8;

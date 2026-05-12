@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -144,7 +144,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             NPC.velocity = Vector2.Lerp(Vector2.Zero, -NPC.rotation.ToRotationVector2() * 10f, ease);
             _telegraphLineAlpha = MathHelper.Lerp(1f, 0f, ease);
             TargetOutlineColor = Color.Yellow;
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             if (Timer % 5 == 0)
             {
                 SpawnFlameDust();

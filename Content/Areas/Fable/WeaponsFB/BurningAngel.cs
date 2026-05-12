@@ -1,9 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Common.Shaders;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Gores;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.SwingSystem;
@@ -11,9 +7,6 @@ using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
-using Stellamod.Trailing;
-using Stellamod.UI.Systems;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -41,7 +34,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(), 
+            this.RegisterBrew(mold: ModContent.ItemType<BlankJuggler>(),
                 material: ModContent.ItemType<AlcadizScrap>());
         }
     }
@@ -153,7 +146,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             Projectile.height = 32;
             Projectile.width = 32;
             Projectile.friendly = true;
-            Projectile.scale = 1f;    
+            Projectile.scale = 1f;
             Projectile.timeLeft = 100;
         }
 
@@ -175,7 +168,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
 
             if (Timer < 30)
             {
-                if(Main.myPlayer == Projectile.owner && player.controlUseItem)
+                if (Main.myPlayer == Projectile.owner && player.controlUseItem)
                 {
                     Projectile.velocity = Projectile.DirectionTo(Main.MouseWorld) * Projectile.Distance(Main.MouseWorld) / 12;
                     Projectile.netUpdate = true;

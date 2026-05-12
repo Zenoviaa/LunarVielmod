@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.WaterSide.BossesWS;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Backgrounds;
 using Stellamod.Core.Effects;
@@ -80,6 +81,15 @@ public class HarmonicCoralwaysBG : CustomBG
         NoSurfaceOffset = true;
         DrawScale = 1.2f;
         DrawOffset = new Vector2(0, 100);
+        if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneDeepBelowCoralways)
+        {
+            DrawColor = Color.Lerp(DrawColor, Color.Lerp(Color.White, Color.Black, 0.85f), 0.1f);
+        }
+        else
+        {
+            DrawColor = Color.Lerp(DrawColor, Color.White, 0.1f);
+        }
+     
         return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneHarmonicCoralways;
     }
 }

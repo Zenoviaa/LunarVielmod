@@ -1,451 +1,187 @@
-﻿using Stellamod.Assets;
+﻿using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Gores;
+using Stellamod.Content.Areas.WaterSide.BossesWS.Projectiles;
+using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
 using Stellamod.Core;
-using Stellamod.Core.Effects;
+using Stellamod.Core.LunarLightingSystem;
+using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
+using Stellamod.Gores;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
+using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.WaterSide.BossesWS;
 
-
-/*
- * 
- * 
- * Phase 1
-
-- After each attack, the eel goes away for a short time before deciding its next move
-
-
-
-
-
- */
-
-/// <summary>
-/// This is just for the Eel's hitbox, all drawcode and AI is handled by the boss NPC
-/// </summary>
-public class MultiHitboxSegment : ModNPC
+public class LeviathanEel : ScarletBoss
 {
-    public int Parent => (int)NPC.ai[0];
-    public override string Texture => TextureRegistry.EmptyTexture;
-    public override void SetDefaults()
+
+    [Flags]
+    public enum EelVisualEffect
     {
-        base.SetDefaults();
-        NPC.width = 64;
-        NPC.height = 64;
-        NPC.lifeMax = 10000;
-        NPC.defense = 18;
-        NPC.damage = 90;
-        NPC.noTileCollide = true;
-        NPC.noGravity = true;
-        NPC.knockBackResist = 0f;
+        None = 0,
+        Zappy = 1,
+        WaterTrail = 2,
+        Invisible = 4,
+        Mirage = 8
     }
 
-    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    private Chain[] _eyeTentacles;
+    private Chain[] EyeTentacles
     {
-        return false;
-    }
-
-    public override void AI()
-    {
-        base.AI();
-    }
-}
-
-
-public class PrismaticElectricBolt : ModProjectile
-{
-    private Vector2 _initialVelocity;
-    private float _randRadians;
-    private ref float Timer => ref Projectile.ai[0];
-    public override string Texture => TextureRegistry.EmptyTexture;
-    public override void SetDefaults()
-    {
-        base.SetDefaults();
-        Projectile.width = 24;
-        Projectile.height = 24;
-        Projectile.hostile = true;
-        Projectile.timeLeft = 180;
-        Projectile.penetrate = -1;
-        Projectile.extraUpdates = 1;
-    }
-
-    public override void AI()
-    {
-        base.AI();
-        Timer++;
-        if(Timer == 1)
+        get
         {
-            _initialVelocity = Projectile.velocity;
-        }
-
-
-        if(Timer % 30 == 0)
-        {
-            if (this.OwnedByLocalClient())
+            if (_eyeTentacles == null)
             {
-                float radians = MathHelper.ToRadians(10);
-                _randRadians = Main.rand.NextFloat(-radians, radians);
-                Projectile.velocity = _initialVelocity.RotatedBy(_randRadians);
-                Projectile.netUpdate = true;
+                _eyeTentacles = new Chain[3];
+                for (int i = 0; i < _eyeTentacles.Length; i++)
+                {
+                    _eyeTentacles[i] = new Chain(NPC.Center, 2, 64);
+                }
             }
+            return _eyeTentacles;
         }
     }
-    public override void SendExtraAI(BinaryWriter writer)
-    {
-        base.SendExtraAI(writer);
-        writer.WriteVector2(_initialVelocity);
-    }
-    public override void ReceiveExtraAI(BinaryReader reader)
-    {
-        base.ReceiveExtraAI(reader);
-        _initialVelocity = reader.ReadVector2();
-    }
 
-    public override void OnKill(int timeLeft)
+    private Chain _hairChain2;
+    private Chain HairChain2
     {
-        base.OnKill(timeLeft);
-    }
-}
-public class SinElectricShock : ModProjectile
-{
-    private Vector2[] _shockPos;
-    private Vector2[] _sparkPos;
-    public override string Texture => TextureRegistry.EmptyTexture;
-    private ref float Timer => ref Projectile.ai[0];
-    public override void SetDefaults()
-    {
-        base.SetDefaults();
-        _shockPos = new Vector2[32];
-        _sparkPos = new Vector2[32];
-        Projectile.width = 128;
-        Projectile.height = 128;
-        Projectile.hostile = true;
-        Projectile.tileCollide = false;
-        Projectile.penetrate = -1;
-        Projectile.timeLeft = 120;
-    }
-
-    public override void AI()
-    {
-        base.AI();
-        Timer++;
-        if(Timer == 1)
+        get
         {
-            Projectile.velocity = -Vector2.UnitY;
-            FXUtil.ShakeCamera(Projectile.Center, 1024, 4);
-            var fp = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.Goldenrod);
-            fp.Scale *= 1.5f;
+            if (_hairChain2 == null)
+            {
+
+                _hairChain2 = new Chain(NPC.Center, 2, 128);
+            }
+            return _hairChain2;
         }
-        Projectile.velocity = Projectile.velocity.RotatedBy(0.03f);
-        if (Timer % 8 == 0)
+    }
+    private Chain _hairChain;
+    private Chain HairChain
+    {
+        get
         {
-            DustParticle sp = DustParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(128, 128), Main.rand.NextVector2Circular(12, 12), Color.White, 0.7f);
-            sp.fast = true;
-            sp.gravity = 0;
-            sp.noTileCollide = true;
-        }
+            if (_hairChain == null)
+            {
 
-        if (Timer % 8 == 0)
+                _hairChain = new Chain(NPC.Center, 2, 128);
+            }
+            return _hairChain;
+        }
+    }
+
+    private Chain _chain;
+    private Chain Chain
+    {
+        get
         {
-            SparkleParticle sp = SparkleParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(128, 128), Vector2.Zero, Color.White, 0.3f);
-            sp.gravity = 0;
+            if (_chain == null)
+            {
+                _chain = new Chain(NPC.Center, 100, 64);
+            }
+            return _chain;
         }
-
-        float inScale = EasingFunction.InOutSine(Timer / 30f);
-        float outScale = EasingFunction.InOutSine((float)Projectile.timeLeft / 30f);
-        for (int i = 0; i < _shockPos.Length; i++)
-        {
-            ref Vector2 position = ref _shockPos[i];
-            Vector2 offset = new Vector2();
-
-            float radians = (float)i / (float)_shockPos.Length * MathHelper.TwoPi;
-            radians += Timer * 0.03f;
-
-            float radius = ExtraMath.Osc(80, 128, speed: 18, offset: Projectile.whoAmI);
-
-            radius *= inScale * outScale;
-            offset.X += MathF.Sin(radians) * radius;
-            offset.Y += MathF.Cos(radians) * radius;
-            offset = Vector2.Lerp(offset, Vector2.Zero, (MathF.Sin(Timer * 0.5f + i) + 0.5f) * 0.1f);
-            offset += Main.rand.NextVector2Circular(6, 6);
-            position = Projectile.Center + offset;
-
-            _sparkPos[i] = Projectile.Center + offset.RotatedBy(MathHelper.PiOver4) * 0.2f * Main.rand.NextFloat(1f, 1.5f);
-        }
-
     }
-
-    public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
-    {
-        base.ModifyHitPlayer(target, ref modifiers);
-    }
-    public override void OnKill(int timeLeft)
-    {
-        base.OnKill(timeLeft);
-    }
-
-    private void DrawBloom(SpriteBatch spriteBatch, Vector2 screenPos)
-    {
-        Texture2D bloomTexture = AssetManager.GlowMask.SimpleGlowCircle.Value;
-        Vector2 glowScale = Vector2.One * 0.25f;
-        float rotation = Main.GlobalTimeWrappedHourly * 4;
-        float outScale = EasingFunction.InOutSine((float)Projectile.timeLeft / 30f);
-        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
-        bloomDrawer.color = Main.DiscoColor;
-        bloomDrawer.color.A = 0;
-        bloomDrawer.color *= 0.1f;
-        bloomDrawer.color *= outScale;
-        spriteBatch.Draw(bloomDrawer);
-        for (int i = 0; i < _shockPos.Length; i += 2)
-        {
-            Vector2 pos = _shockPos[i];
-
-            Color glowColor = Color.Lerp(Color.White, Main.DiscoColor, 0.6f);
-            glowColor.A = 0;
-            glowColor *= 0.2f;
-            glowColor *= ExtraMath.Osc(0.6f, 1f, speed: 6, offset: i);
-            glowColor *= outScale;
-
-            bloomDrawer.worldPosition = pos;
-            bloomDrawer.color = glowColor;
-            bloomDrawer.scale = glowScale;
-            spriteBatch.Draw(bloomDrawer);
-        }
-
-        SpritebatchDrawer spiralDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Projectile.Center);
-
-        Color spiralGlowColor = Color.Lerp(Color.White, Main.DiscoColor, 0.6f);
-        spiralGlowColor.A = 0;
-        spiralGlowColor *= 0.2f;
-        spiralGlowColor *= ExtraMath.Osc(0.6f, 1f, speed: 6);
-        spiralGlowColor *= outScale;
-        spiralDrawer.color = spiralGlowColor;
-        spriteBatch.Draw(spiralDrawer);
-    }
-    public override bool PreDraw(ref Color lightColor)
-    {
-        PixelationManager.QueueSpritebatchDrawAction(DrawBloom);
-        PrismaticLightningRenderer.Queue(_shockPos);
-        PrismaticLightningRenderer.Queue(_sparkPos);
-        return false;
-    }
-}
-
-public class PrismaticLightningRenderer : PixelPrimitiveRenderer<PrismaticLightningRenderer>
-{
-    public override BaseShader PrepareShader()
-    {
-        var shader = RichLaserShader.Instance;
-        shader.LaserColor = Color.White;
-        shader.InnerColor = Main.DiscoColor;
-        shader.OuterColor = Color.Goldenrod;
-        shader.LaserTexture = AssetManager.LaserTextures.TexturedLaser;
-        shader.BloomTexture = AssetManager.LaserTextures.TexturedLaser2;
-        return shader;
-    }
-
-    public override Color GetTrailColor(float completionRatio)
-    {
-        float osc = MathF.Sin(Main.GlobalTimeWrappedHourly * 4 + completionRatio * 8) * 0.5f + 0.5f;
-        return Color.Lerp(Color.White, Main.DiscoColor, osc);
-    }
-
-    public override float GetTrailWidth(float completionRatio)
-    {
-        return MathHelper.SmoothStep(16, 32, completionRatio) * MathF.Sin(Main.GlobalTimeWrappedHourly * 4 + completionRatio * 8) * 0.5f + 0.5f;
-    }
-}
-
-public class LeviathanEel : ScarletBoss,
-    IDrawOutlines
-{
-    public struct EelSegment
+    private struct FloatingEyeball
     {
         public Vector2 position;
-        public Vector2 oldPosition;
-        public Vector2 velocity;
+        public Vector2 targetPosition;
+        public Vector2 scale;
+        public float rotation;
+        public float speed;
     }
 
+    private bool _inPhase2;
+    private FloatingEyeball[] _eyeballs = new FloatingEyeball[3];
+
     private Vector2 _facingDirection;
-    private Vector2 _arenaCenter;
     private Vector2 _teleportPosition;
-    private Vector2 _dashDirection;
-    private Vector2 _dustPosition;
+    private Vector2 _startPosition;
+    private Vector2 _initialVelocity;
+    private Vector2 _eyeFlashOffset;
+    private Vector2 _eatingSquishScale;
 
+    private int _hideSegmentCount;
+    private int _eatenPlayer;
+    private float _aliveTimer;
+    private float _startRotation;
 
+    private float _bloomLineRot;
+    private Color _bloomLineColor;
 
-    private Color _outlineColor;
-    private Color _targetOutlineColor;
+    private float _blackAlpha;
+    private float _eyeFlashAlpha;
+    private float _superCharge;
+    private float _bulbCharge;
+    private float _charge;
+    private float _siningCharge;
+
+    private float _dashTrailAlpha;
+    private float _mirageAlpha;
+    private float _lightningCircleAlpha;
+    private float _invisibleAlpha;
+    private float _invisibleTimer;
+
     private bool _contactDamage;
-    private bool _effectZappy;
-    private bool _effectWaterTrail;
-    private bool _effectInvisible;
-    private bool _effectMirage;
+    private bool _showDashTrail;
+    private bool _blackedOut;
+    private Outliner _outliner;
+    private EelVisualEffect _effects;
+
+    private Asset<Texture2D> _bulbGlowTextureAsset;
+    private Asset<Texture2D> _eyeballTextureAsset;
+    private Asset<Texture2D> _pupilTextureAsset;
+    private Asset<Texture2D> _eyebrowTextureAsset;
+    private Asset<Texture2D>[] _eyeTextureAssets;
+    private Asset<Texture2D>[] _segmentTextureAssets;
+    private Asset<Texture2D>[] _segmentGlowTextureAssets;
     private enum AIState
     {
         //First let's break this down, and get all the states that we need
         //Then we can figure out which systems and projectiles we need
         //Solve smaller problems until the whole is complete
-
         SpawnIntro,
+        Despawn,
+
         Idle,
+        Death,
 
-        /*
-         * 
-         * - The ground or ceiling rumbles, and the eel charges through after sand clouds telegraph where he’s coming from for a bit, 
-            this gradually gets faster and on the last one he does a cool circle and dashes into you before going holographic again
-         */
+        S_Dash,
+        Lightning_Crawl,
+        Ball_Bouncer,
+        Chomp,
+        Lightning_Wiggle,
+        Suck,
 
-        SandDashHideAway,
-        SandDash_Warning,
-        SandDash,
-        SandSpiralDash,
-        SandDashEnd,
-
-        /*
-         * 
-           - The eel comes in from the bottom left or bottom right of the arena and goes straight in a sining motion, 
-           it slowly becomes visible and rainbowy electricity comes out of it, electrifying the area around its body
-         */
-
-        SinElectric_HideAway,
-        SinElectric_ComeIn,
-        SinElectric_Shock,
-        SinElectric_GoOut,
-        SinElectric_End,
-
-        /*
-         * 
-         * 
-         
-           - The eel comes in from the top and goes down in a large sining motion all around the arena,
-           while doing so it flickers in and out and shoots precise electric bolts from the different parts of its body directly at you
-
-         */
-
-        SpiralSinElectricBolt_HideAway,
-        SpiralSinElectricBolt_MoveAround,
-        SpiralSinElectricBolt_ChargeUp,
-        SpiralSinElectricBolt_Shoot,
-        SpiralSinElectricBolt_End,
-
-        /*
-         * 
-         * 
-         *
-         *
-         *
-         *
-            - A dust cloud appears on either left or right wall, and the eel quickly pokes out and yells, 
-            then it opens its mouth with a really cool animation and starts sucking you in, 
-            bubbles and dust and everything goes into it, after it finishes its eyes and gills light up a glowy color 
-            and it shoots three powerful lightning blasts, before going away
-
-                Opens it’s mouth and tries to suck everything in, including you and the water,
-                you just have to run the other way and youll be fine, but if you get eaten its insta death, good telegraph for this too (so melee)
-         */
-
-        SuckingBlast_HideAway,
-        SuckingBlast_PokeOut,
-        SuckingBlast_Suck,
-        SuckingBlast_ChargeUp,
-        SuckingBlast_LightningZap,
-
-        //This is the one that instant-kills you, it has a different indication
-        SuckingBlast_REALLYSuck,
-
-
-        //PHASE 2 ATTACKS
-
-        /*
-         * - The screen shakes for a bit and half the arena drains out, with three platforms floating to the top of the water
-
-         */
-        Phase2Transition_WaterDrain,
-        Phase2Transition_Yell,
-
-        //- All of the eels previous attacks get faster, and he has some new ones
-
-        /*
-         * - The eel dives into the water and charges up as much electricity as he can, 
-         * electrifying the entire body of water and having some stray bolts shoot up from it
-         */
-
-        ElectricDive_HideAway,
-        ElectricDive_Shocking,
-        ElectricDive_End,
-
-
-        /*
-         * 
-        - A dust cloud appears above one of the platforms, and the eel dives directly on top of it, destroying it,
-        it takes a while before it comes back
-
-         */
-
-        PlatformSmash_HideAway,
-        PlatformSmash_Dash,
-        PlatformSmash_End,
-
-        /*
-         * 
-         * - Several bubbles appear underneath one of the platforms, 
-         * and after a while a violent waterfall pushes the platform upward into the ceiling, dealing a ton of damage
-
-         */
-
-        PlatformBubble_HideAway,
-        PlatformBubble_Rush,
-        PlatformBubble_End,
-
-
-        /*
-         * 
-         * 
-         * - The eel breathes in and creates toxic bubbles that slowly float towards you, after a while the explode into lightning fields
-         */
-
-        ToxicBubble_HideAway,
-        ToxicBubble_Ready,
-        ToxicBubble_Breath,
-        ToxicBubble_End,
-
-        /*
-         * 
-         * - The arena refills back up with water, 
-         * and the eel goes into hiding for a little while,
-         * after a bit, the floor shakes and breaks, and bubbles start rushing down,
-         * forcibly pulling you downward, you can fall faster if you hold down.
-         * While you’re falling, the eel will sometimes come in from the side and try to ram you, 
-         * and will shoot 1 slightly homing projectile down from its body each time, 
-         * while shocking the surrounding water. Once you reach the bottom, 
-         * a geyser explodes and pushes you back up at insane speed, and the eel chases you back to the original arena
-
-         */
+        Phase_Transition,
+       
+        Overcharge,
+        Eyeline_Dash,
+        Tesla_Coil,
 
     }
-
+    private int _frame;
+    private float _rotationDir;
+    private bool _firstAttack;
     private ref float Timer => ref NPC.ai[0];
     private AIState State
     {
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
     }
-    private ref float OvalTimer => ref NPC.ai[2];
-    private ref float AttackCycle => ref NPC.ai[3];
+    private ref float AttackCycle => ref NPC.ai[2];
+    private ref float AttackCounter => ref NPC.ai[3];
 
     private PatternManager<AIState> _patternManagerBackingField;
     private PatternManager<AIState> PatternManager
@@ -454,255 +190,388 @@ public class LeviathanEel : ScarletBoss,
         {
             if (_patternManagerBackingField == null)
             {
-                _patternManagerBackingField = new PatternManager<AIState>(
-                    new Tuple<AIState, float>(AIState.SandDashHideAway, 1.0f));
+                _patternManagerBackingField = new PatternManager<AIState>();
+                _patternManagerBackingField.AddPattern(AIState.Lightning_Crawl, 0.5f);
+                _patternManagerBackingField.AddPattern(AIState.S_Dash, 0.5f);
+                _patternManagerBackingField.AddPattern(AIState.Ball_Bouncer, 0.5f);
+                _patternManagerBackingField.AddPattern(AIState.Chomp, 0.5f);
+
+                //Putting a weight greater than 1 will make the attack happen extra times per cycle 
+                //Adding this 0.05 here will makeit likely happen again at the end of eel's cycle
+                _patternManagerBackingField.AddPattern(AIState.Lightning_Wiggle, 1.05f);
+                _patternManagerBackingField.AddPattern(AIState.Overcharge, 1.0f);
+                _patternManagerBackingField.AddPattern(AIState.Eyeline_Dash, 1.0f);
+                _patternManagerBackingField.AddPattern(AIState.Suck, 0.5f);
             }
+
             return _patternManagerBackingField;
         }
     }
 
-    private AIState _attackToTest;
-    private EelSegment[] _segments;
-    public int SegmentCount => 50;
+    public static float DesperationCircleRadius => 400;
+    private bool InPhase2 => NPC.life < NPC.lifeMax * 0.5f;
 
-    private float IdleTime => 480;
+    #region Damage values
+    private int Electric_Pirahna_Damage => 20;
+    private int Electric_Rock_Damage => 30;
+    private int Super_Zap_Damage => 55;
+    private int Bite_Damage => 50;
+    private int Lightning_Crawl_Damage => 80;
+    private int Bouncing_Ball_Damage => 40;
+    private int Sin_Electric_Shock_Damage => 35;
+    private int Suck_Damage => 45;
 
-    private float SandDashHideAwayTime => 100;
-    private float SandDashStartWarningTime => 120;
-    private float SandDashEndWarningTime => 30;
-    private float SandDashCount => 8;
-    private float SandDashRushTime => 30;
+    #endregion
 
+    private float IdleTime => 360;
+    private float SDashReadyTime => 120;
+    private float SDashChargeTime => 24;
+    private float SDashSpeed => 55;
+    private float SChompSpeed => 55;
 
-    //Sin Electric Attack
-    private float SinElectricHideAwayTime => 100;
+    public Vector2 BulbPosition
+    {
+        get
+        {
+            Vector2 chargePos = NPC.Center + new Vector2(90, -64).RotatedBy(NPC.rotation);
+            return chargePos;
+        }
+    }
+    public Vector2 EyeFlashPosition
+    {
+        get
+        {
+            Vector2 chargePos = NPC.Center + new Vector2(16, -16).RotatedBy(NPC.rotation);
+            return chargePos;
+        }
+    }
 
-    private float SinElectricComeInTime => 100;
-    private float SinElectricShockTime => 120;
-    private int SinElectricDamage => 40;
-    private float SinElectricGoOutTime => 60;
+    public Vector2 arenaCenter;
+    public Vector2 lightningCircleCenter;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        NPCID.Sets.TrailCacheLength[Type] = 16;
+        NPCID.Sets.TrailCacheLength[Type] = 64;
         NPCID.Sets.TrailingMode[Type] = 3;
         NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
+        NPCID.Sets.MustAlwaysDraw[Type] = true;
+        NPCID.Sets.DoesntDespawnToInactivityAndCountsNPCSlots[Type] = true;
+        Main.npcFrameCount[Type] = 5;
     }
 
     public override void SetDefaults()
     {
         base.SetDefaults();
-        _segments = new EelSegment[SegmentCount];
-    
-        NPC.width = 64;
-        NPC.height = 64;
-        NPC.lifeMax = 12000;
-        NPC.defense = 18;
+        NPC.width = 128;
+        NPC.height = 128;
+        NPC.lifeMax = 9000;
+        NPC.defense = 19;
         NPC.damage = 90;
         NPC.noTileCollide = true;
         NPC.noGravity = true;
         NPC.knockBackResist = 0f;
-
         NPC.npcSlots = 30f;
 
         Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/LeviathanEel");
         NPC.HitSound = SoundID.NPCHit1 with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
-      //  NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
     }
-
 
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
         writer.WriteVector2(_teleportPosition);
-
+        writer.Write(_rotationDir);
+        writer.WriteVector2(_startPosition);
+        writer.WriteVector2(_initialVelocity);
+        writer.Write(_startRotation);
+        writer.Write(_eatenPlayer);
+        writer.Write(_aliveTimer);
+        writer.WriteVector2(arenaCenter);
+        writer.WriteVector2(lightningCircleCenter);
     }
+
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
         _teleportPosition = reader.ReadVector2();
+        _rotationDir = reader.ReadSingle();
+        _startPosition = reader.ReadVector2();
+        _initialVelocity = reader.ReadVector2();
+        _startRotation = reader.ReadSingle();
+        _eatenPlayer = reader.ReadInt32();
+        _aliveTimer = reader.ReadSingle();
+        arenaCenter = reader.ReadVector2();
+        lightningCircleCenter = reader.ReadVector2();
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
         return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
     }
-    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {
-        SpritebatchDrawer segmentDrawer = SpritebatchDrawer.FromNPC(NPC);
-        /*
-        for (int i = 0; i < SegmentCount; i++)
-        {
-            EelSegment eelSegment = _segments[i];
-            segmentDrawer.worldPosition = eelSegment.position;
-            spriteBatch.Draw(segmentDrawer);
-        }
-        */
 
-        spriteBatch.Draw(segmentDrawer);
+    private void MoveAndSinToward(Vector2 directionToTarget, float speed)
+    {
+        float distance = 6;
+        Vector2 initialSpeed = directionToTarget * speed;
+        Vector2 offset = initialSpeed.RotatedBy(Math.PI / 2);
+        offset.Normalize();
+        offset *= (float)(Math.Cos(Timer * 3 * (Math.PI / 180)) * (distance / 3));
+
+        Vector2 targetVelocity = initialSpeed + offset;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.04f);
+    }
+
+    private bool IsBanned(AIState state)
+    {
+        if (!InPhase2)
+        {
+            switch (state)
+            {
+                case AIState.Overcharge:
+                case AIState.Eyeline_Dash:
+                    return true;
+            }
+        }
+        else
+        {
+            switch (state)
+            {
+                case AIState.S_Dash:
+                    return true;
+            }
+        }
+
         return false;
+    }
+
+    private void ForceMusicOn()
+    {
+        ref float musicVolume = ref Main.musicFade[Music];
+        musicVolume = 1f;
     }
 
     public override void AI()
     {
         base.AI();
-        //Testing Attacks
-        _attackToTest = AIState.SinElectric_HideAway; 
-        if (_arenaCenter == Vector2.Zero)
-            _arenaCenter = MyTarget.Center;
-        for (int i = 0; i < _segments.Length; i++)
-        {
-            ref EelSegment eelSegment = ref _segments[i];
-            eelSegment.position = NPC.Center;
-            eelSegment.position -= Vector2.UnitX * 64 * i;
-        }
-
-        _effectZappy = false;
-        _effectWaterTrail = false;
-        _effectInvisible = false;
-        _effectMirage = false;
+        _aliveTimer++;
+        if (_aliveTimer >= 120)
+            ForceMusicOn();
+        _effects = EelVisualEffect.None;
         _contactDamage = false;
-
-        if(_teleportPosition != Vector2.Zero)
+        _showDashTrail = false;
+        if (_teleportPosition != Vector2.Zero)
         {
             NPC.Center = _teleportPosition;
+            for (int i = 0; i < Chain.points.Length; i++)
+            {
+                Chain.points[i] = _teleportPosition;
+            }
+            for (int i = 0; i < HairChain.points.Length; i++)
+            {
+                HairChain.points[i] = _teleportPosition;
+            }
+            for (int i = 0; i < HairChain2.points.Length; i++)
+            {
+                HairChain2.points[i] = _teleportPosition;
+            }
+            for (int i = 0; i < _eyeballs.Length; i++)
+            {
+                _eyeballs[i].position = _teleportPosition;
+            }
+            NPC.velocity = Vector2.Zero;
             _teleportPosition = Vector2.Zero;
         }
 
-        _targetOutlineColor = Color.Transparent;
+        if (!NPC.HasValidTarget)
+        {
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget && State != AIState.Despawn)
+            {
+                SwitchState(AIState.Despawn);
+            }
+        }
+
+        _outliner.SetDefaults();
+        _charge = MathHelper.Lerp(_charge, 0f, 0.005f);
+        _bulbCharge = MathHelper.Lerp(_bulbCharge, 0f, 0.005f);
+        _superCharge = MathHelper.Lerp(_superCharge, 0f, 0.005f);
+        _eyeFlashAlpha = MathHelper.Lerp(_eyeFlashAlpha, 0f, 0.1f);
+        _blackAlpha = MathHelper.Lerp(_blackAlpha, 0f, 0.1f);
+        _siningCharge = MathHelper.Lerp(_siningCharge, 0f, 0.1f);
+        _lightningCircleAlpha = MathHelper.Lerp(_lightningCircleAlpha, 0f, 0.1f);
+        _bloomLineColor = Color.Lerp(_bloomLineColor, Color.Transparent, 0.1f);
+
+        HoldEyesInFrontOfMe();
+        _eyeFlashOffset = Vector2.Zero;
+        _eatingSquishScale = Vector2.Lerp(_eatingSquishScale, Vector2.One, 0.1f);
         switch (State)
         {
+            case AIState.Despawn:
+                AI_Despawn();
+                break;
             case AIState.SpawnIntro:
                 AI_SpawnIntro();
                 break;
             case AIState.Idle:
                 AI_Idle();
                 break;
-
-
-            case AIState.SandDashHideAway:
-                AI_SandDashHideAway();
+            case AIState.S_Dash:
+                AI_SDash();
                 break;
-            case AIState.SandDash_Warning:
-                AI_SandDashWarning();
+            case AIState.Lightning_Crawl:
+                AI_LightningCrawl();
                 break;
-            case AIState.SandDash:
-                AI_SandDash();
+            case AIState.Ball_Bouncer:
+                AI_BallBouncer();
                 break;
-            case AIState.SandDashEnd:
-                AI_SandDashEnd();
+            case AIState.Chomp:
+                AI_Chomp();
                 break;
-            case AIState.SandSpiralDash:
-                AI_SandSpiralDash();
+            case AIState.Lightning_Wiggle:
+                AI_LightningWiggle();
                 break;
-
-            case AIState.SinElectric_HideAway:
-                AI_SinElectricHideAway();
+            case AIState.Suck:
+                AI_Suck();
                 break;
-            case AIState.SinElectric_ComeIn:
-                AI_SinElectricComeIn();
+            case AIState.Eyeline_Dash:
+                AI_EyelineDash();
                 break;
-            case AIState.SinElectric_Shock:
-                AI_SinElectricShock();
+            case AIState.Tesla_Coil:
+                AI_TeslaCoil();
                 break;
-            case AIState.SinElectric_GoOut:
-                AI_SinElectricGoOut();
+            case AIState.Death:
+                AI_Death();
                 break;
-            case AIState.SinElectric_End:
-                AI_SinElectricEnd();
+            case AIState.Overcharge:
+                AI_Overcharge();
                 break;
-
-            case AIState.SpiralSinElectricBolt_HideAway:
-                AI_SpiralSinElectricBoltHideAway();
-                break;
-            case AIState.SpiralSinElectricBolt_MoveAround:
-                AI_SpiralSinElectricBoltMoveAround();
-                break;
-            case AIState.SpiralSinElectricBolt_ChargeUp:
-                AI_SpiralSinElectricBoltChargeUp();
-                break;
-            case AIState.SpiralSinElectricBolt_Shoot:
-                AI_SpiralSinElectricBoltShoot();
-                break;
-            case AIState.SpiralSinElectricBolt_End:
-                AI_SpiralSinElectricBoltEnd();
-                break;
-
-            case AIState.SuckingBlast_HideAway:
-                AI_SuckingBlastHideAway();
-                break;
-            case AIState.SuckingBlast_PokeOut:
-                AI_SuckingBlastPokeOut();
-                break;
-            case AIState.SuckingBlast_Suck:
-                AI_SuckingBlastSuck();
-                break;
-            case AIState.SuckingBlast_ChargeUp:
-                AI_SuckingBlastChargeUp();
-                break;
-            case AIState.SuckingBlast_LightningZap:
-                AI_SuckingBlastLightningZap();
-                break;
-            case AIState.SuckingBlast_REALLYSuck:
-                AI_SuckingBlastReallySuck();
-                break;
-
-            case AIState.Phase2Transition_WaterDrain:
-                AI_Phase2TransitionWaterDrain();
-                break;
-            case AIState.Phase2Transition_Yell:
-                AI_Phase2TransitionYell();
-                break;
-
-            case AIState.ElectricDive_HideAway:
-                AI_ElectricDiveHideAway();
-                break;
-            case AIState.ElectricDive_Shocking:
-                AI_ElectricDiveShocking();
-                break;
-            case AIState.ElectricDive_End:
-                AI_ElectricDiveEnd();
-                break;
-
-            case AIState.PlatformSmash_HideAway:
-                AI_PlatformSmashHideAway();
-                break;
-            case AIState.PlatformSmash_Dash:
-                AI_PlatformSmashDash();
-                break;
-            case AIState.PlatformSmash_End:
-                AI_PlatformSmashEnd();
-                break;
-
-            case AIState.PlatformBubble_HideAway:
-                AI_PlatformBubbleHideAway();
-                break;
-            case AIState.PlatformBubble_Rush:
-                AI_PlatformBubbleRush();
-                break;
-            case AIState.PlatformBubble_End:
-                AI_PlatformBubbleEnd();
-                break;
-
-            case AIState.ToxicBubble_HideAway:
-                AI_ToxicBubbleHideAway();
-                break;
-            case AIState.ToxicBubble_Ready:
-                AI_ToxicBubbleReady();
-                break;
-            case AIState.ToxicBubble_Breath:
-                AI_ToxicBubbleBreath();
-                break;
-            case AIState.ToxicBubble_End:
-                AI_ToxicBubbleEnd();
+            case AIState.Phase_Transition:
+                AI_PhaseTransition();
                 break;
         }
-        _outlineColor = Color.Lerp(_outlineColor, _targetOutlineColor, 0.3f);
-        //Set the facing the direction
+        _outliner.Update();
+
+        float targetMirageAlpha = _effects.HasFlag(EelVisualEffect.Mirage) ? 1f : 0f;
+        _mirageAlpha = MathHelper.Lerp(_mirageAlpha, targetMirageAlpha, 0.1f);
+
+
+        float targetInvisibleAlpha = _effects.HasFlag(EelVisualEffect.Invisible) ? -1f : 1f;
+        _invisibleTimer += targetInvisibleAlpha;
+        _invisibleTimer = MathHelper.Clamp(_invisibleTimer, 0f, 40f);
+        _invisibleAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.Clamp(_invisibleTimer/30f));
+
+        float targetDashTrailAlpha = _showDashTrail ? 1f : 0f;
+        _dashTrailAlpha = MathHelper.Lerp(_dashTrailAlpha, targetDashTrailAlpha, 0.1f);
+
+        if(_lightningCircleAlpha <= 0)
+        {
+            Chain.pinned[0] = true;
+            Chain.points[0] = NPC.Center;
+            Chain.ResolveRootToBack();
+
+        }
+
+        NPC.spriteDirection = 1;
         float facingRotation = _facingDirection.ToRotation();
         NPC.rotation = facingRotation;
+
+        SimulateHair();
+        SimulateEyes();
     }
 
+    private void HoldEyesInFrontOfMe()
+    {
+        for (int i = 0; i < _eyeballs.Length; i++)
+        {
+            ref FloatingEyeball eyeball = ref _eyeballs[i];
+            Vector2 offset = -Vector2.UnitY * 64;
+            offset = offset.RotatedBy(i / (float)_eyeballs.Length * MathHelper.TwoPi + Main.GlobalTimeWrappedHourly * 2);
+            eyeball.targetPosition = NPC.Center + offset;
+        }
+    }
+
+    private void SimulateEyes()
+    {
+        for (int i = 0; i < _eyeballs.Length; i++)
+        {
+            ref FloatingEyeball eyeball = ref _eyeballs[i];
+            eyeball.speed = 64;
+            eyeball.position = eyeball.position.MoveTowards(eyeball.targetPosition, eyeball.speed);
+            EyeTentacles[i].pinned[0] = true;
+            EyeTentacles[i].points[0] = eyeball.position;
+            EyeTentacles[i].ResolveRootToBack();
+        }
+    }
+
+    private void CloseMouth()
+    {
+        NPC.frameCounter += 0.15f;
+        if (NPC.frameCounter >= 1f)
+        {
+            _frame--;
+            NPC.frameCounter = 0;
+        }
+        if (_frame <= 0)
+        {
+            _frame = 0;
+        }
+    }
+    private void OpenMouth()
+    {
+        NPC.frameCounter += 0.15f;
+        if (NPC.frameCounter >= 1f)
+        {
+            _frame++;
+            NPC.frameCounter = 0;
+        }
+        if (_frame >= 4)
+        {
+            _frame = 4;
+        }
+    }
+    private void AnimateMouthBasedOnDistance()
+    {
+        float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
+        float progress = distanceToTarget / 600f;
+        progress = EasingFunction.InSine(progress);
+        float ratio = 1f - progress;
+        _frame = (int)MathHelper.Lerp(0, 5, ratio);
+    }
+    private void PlayBlinkSound()
+    {
+        SoundStyle blink = AssetRegistry.Sounds.LeviathanEel.LeviBlink with { PitchVariance = 0.5f };
+        SoundEngine.PlaySound(blink, NPC.position);
+    }
+    private void PlaySmallBiteSound()
+    {
+        SoundStyle bite = AssetRegistry.Sounds.LeviathanEel.LeviSmallBite1 with { PitchVariance = 0.5f };
+        SoundEngine.PlaySound(bite, MyTarget.position);
+    }
+
+    public static void PlayRandomZapSound(Vector2 position)
+    {
+        SoundStyle zapSound;
+        int rand = Main.rand.Next(4);
+        switch (rand)
+        {
+            default:
+            case 0:
+                zapSound = AssetRegistry.Sounds.LeviathanEel.LeviZap1 with { PitchVariance = 0.3f };
+                break;
+            case 1:
+                zapSound = AssetRegistry.Sounds.LeviathanEel.LeviZap2 with { PitchVariance = 0.3f };
+                break;
+            case 2:
+                zapSound = AssetRegistry.Sounds.LeviathanEel.LeviZap3 with { PitchVariance = 0.3f };
+                break;
+            case 3:
+                zapSound = AssetRegistry.Sounds.LeviathanEel.LeviZap4 with { PitchVariance = 0.3f };
+                break;
+        }
+        zapSound.MaxInstances = 3;
+        zapSound.Volume = 0.3f;
+        SoundEngine.PlaySound(zapSound, position);
+    }
     private void Teleport(Vector2 teleportPosition)
     {
         if (!MultiplayerHelper.IsHost)
@@ -712,509 +581,6 @@ public class LeviathanEel : ScarletBoss,
         NPC.netUpdate = true;
     }
 
-    #region Toxic Bubble
-
-    private void AI_ToxicBubbleHideAway()
-    {
-
-    }
-
-    private void AI_ToxicBubbleReady()
-    {
-
-    }
-
-    private void AI_ToxicBubbleBreath()
-    {
-
-    }
-
-    private void AI_ToxicBubbleEnd()
-    {
-
-    }
-    #endregion
-
-    #region Platform Bubble
-    private void AI_PlatformBubbleHideAway()
-    {
-
-    }
-
-    private void AI_PlatformBubbleRush()
-    {
-
-    }
-
-    private void AI_PlatformBubbleEnd()
-    {
-
-    }
-    #endregion
-
-    #region Platform Smash
-    private void AI_PlatformSmashHideAway()
-    {
-
-    }
-
-    private void AI_PlatformSmashDash()
-    {
-
-    }
-
-    private void AI_PlatformSmashEnd()
-    {
-
-    }
-    #endregion
-
-    #region Electric Dive
-    private void AI_ElectricDiveHideAway()
-    {
-
-    }
-
-    private void AI_ElectricDiveShocking()
-    {
-
-    }
-
-    private void AI_ElectricDiveEnd()
-    {
-
-    }
-    #endregion
-
-    #region Phase 2 Transition
-    private void AI_Phase2TransitionWaterDrain()
-    {
-
-    }
-
-    private void AI_Phase2TransitionYell()
-    {
-
-    }
-    #endregion
-
-    #region Sucking Blast
-    private void AI_SuckingBlastHideAway()
-    {
-
-    }
-
-    private void AI_SuckingBlastPokeOut()
-    {
-
-
-    }
-
-    private void AI_SuckingBlastSuck()
-    {
-
-    }
-
-    private void AI_SuckingBlastChargeUp()
-    {
-
-    }
-
-    private void AI_SuckingBlastLightningZap()
-    {
-
-    }
-
-    private void AI_SuckingBlastReallySuck()
-    {
-
-    }
-    #endregion
-
-    #region Spiral Sin Electric Bolt
-    private void AI_SpiralSinElectricBoltHideAway()
-    {
-
-    }
-
-    private void AI_SpiralSinElectricBoltMoveAround()
-    {
-
-    }
-
-    private void AI_SpiralSinElectricBoltChargeUp()
-    {
-
-    }
-    private void AI_SpiralSinElectricBoltShoot()
-    {
-
-    }
-
-    private void AI_SpiralSinElectricBoltEnd()
-    {
-
-    }
-    #endregion
-
-    #region Sin Electric
-    private void AI_SinElectricHideAway()
-    {
-        Timer++;
-        if(Timer == 1)
-        {
-            SoundStyle hideAwaySound = new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune_Fade");
-            hideAwaySound.PitchVariance = 0.3f;
-            SoundEngine.PlaySound(hideAwaySound, NPC.position);
-            NPC.TargetClosest();
-        }
-
-        Vector2 targetVelocity = -Vector2.UnitY * 3;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.3f);
-
-        Vector2 targetFacingDirection = NPC.velocity.SafeNormalize(Vector2.Zero);
-        _facingDirection = Vector2.Lerp(_facingDirection, targetFacingDirection, 0.3f);
-        _targetOutlineColor = Color.Yellow;
-        if(Timer >= 60)
-        {
-            _effectInvisible = true;
-        }
-
-        if(Timer >= SinElectricHideAwayTime)
-        {
-            SwitchState(AIState.SinElectric_ComeIn);
-        }
-    }
-
-    private void AI_SinElectricComeIn()
-    {
-        Timer++;
-        if (Timer == 1)
-        {
-            SoundStyle soulShot = new SoundStyle("Stellamod/Assets/Sounds/Binding_Abyss_Rune_SoulShot");
-            soulShot.PitchVariance = 0.3f;
-            SoundEngine.PlaySound(soulShot, NPC.position);
-            NPC.TargetClosest();
-            Teleport(MyTarget.Center - Vector2.UnitX * 1200);
-        }
-
-        _effectMirage = true;
-        Vector2 targetVelocity = Vector2.UnitX * 12;
-        targetVelocity.Y += MathF.Sin(Timer * 0.2f) * 2;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.3f);
-
-        _facingDirection = Vector2.Lerp(_facingDirection, NPC.velocity.SafeNormalize(Vector2.Zero), 0.3f);
-        _targetOutlineColor = Color.Yellow;
-        if (Timer >= SinElectricComeInTime)
-        {
-            SwitchState(AIState.SinElectric_Shock);
-        }
-    }
-
-    private void AI_SinElectricShock()
-    {
-        Timer++;
-        if(Timer == 1)
-        {
-            NPC.TargetClosest();
-        }
-
-
-        NPC.velocity *= 0.98f;
-        if(Timer == 30)
-        {
-            SoundStyle electrify = AssetRegistry.Sounds.LeviathanEel.Electrify;
-            electrify.PitchVariance = 0.3f;
-            SoundEngine.PlaySound(electrify, NPC.position);
-            FXUtil.ShakeCamera(MyTarget.Center, 1024, 3);
-            for (int i = 0; i < _segments.Length; i += 4)
-            {
-                if (MultiplayerHelper.IsHost)
-                {
-                    //Spawn electric fields around the body
-                    Projectile.NewProjectile(SourceFromThis, _segments[i].position, Vector2.Zero,
-                        ModContent.ProjectileType<SinElectricShock>(), SinElectricDamage, 1, Main.myPlayer);
-                }    
-            }
-        }
-
-        _targetOutlineColor = Color.Red;
-        if (Timer >= SinElectricShockTime)
-        {
-            SwitchState(AIState.SinElectric_GoOut);
-        }
-    }
-
-    private void AI_SinElectricGoOut()
-    {
-        Timer++;
-        if (Timer == 1)
-        {
-            NPC.TargetClosest();
-        }
-
-        Vector2 targetVelocity = -Vector2.UnitY * 3;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.3f);
-
-        Vector2 targetFacingDirection = NPC.velocity.SafeNormalize(Vector2.Zero);
-        _facingDirection = Vector2.Lerp(_facingDirection, targetFacingDirection, 0.3f);
-        _targetOutlineColor = Color.Yellow;
-        if (Timer >= 60)
-        {
-            _effectInvisible = true;
-        }
-
-        if (Timer >= SinElectricGoOutTime)
-        {
-            SwitchState(AIState.Idle);
-        }
-    }
-
-    private void AI_SinElectricEnd()
-    {
-
-    }
-
-    #endregion
-    #region Sand Dash
-
-    private void AI_SandDashHideAway()
-    {
-        Timer++;
-        if(Timer == 1)
-        {
-            //Play the sound
-            NPC.TargetClosest();
-        }
-
-        //Slowly face down and go down for a bit
-        float time = SandDashHideAwayTime;
-        float ease = EasingFunction.QuadraticBump(Timer / time);
-        float downSpeed = MathHelper.Lerp(0, 25, ease);
-        Vector2 targetMovementVelocity = Vector2.UnitY * downSpeed;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, targetMovementVelocity, 0.3f);
-        _facingDirection = Vector2.Lerp(_facingDirection, NPC.velocity.SafeNormalize(Vector2.Zero), 0.3f);
-
-        //Have segments go into mirage stage for a bit
-        if(Timer >= 20 && Timer < 60)
-        {
-            _effectMirage = true;
-        }
-
-        if(Timer % 5 == 0 && Timer < 60)
-        {
-            Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BreatheBubble);
-            var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 2, newColor: Color.Red);
-            p.Scale *= 0.33f;
-        }
-
-        if(Timer >= 60)
-        {
-            _effectInvisible = true;
-        }
-
-        if(Timer >= time)
-        {
-            SwitchState(AIState.SandDash_Warning);
-        }
-    }
-
-    private void AI_SandDashWarning()
-    {
-        Timer++;
-        if(Timer == 1)
-        {
-            SoundStyle earthQuake = AssetRegistry.Sounds.LeviathanEel.EarthRumble;
-            earthQuake.PitchVariance = 0.3f;
-            SoundEngine.PlaySound(earthQuake, MyTarget.position);
-            NPC.TargetClosest();
-        }
-
-        _effectInvisible = true;
-        ShakeModSystem.Shake = 2;
-        //Dust clouds appear above or below you, snapping to the nearest tile, this is where bro will dash from
-        //Alright, we have a steam particle we can use for that
-        Vector2 positionToDashTo = MyTarget.Center + new Vector2(0, -182) + Vector2.UnitX * MyTarget.velocity.X * 64;
-        Point point = positionToDashTo.ToTileCoordinates();
-        Point tileToComeFrom = TileUtilities.FallToSolidTile(point);
-       _dustPosition = tileToComeFrom.ToWorldCoordinates();
-        if(Timer % 5 == 0)
-        {
-            Vector2 positionToSpawnDustFrom = _dustPosition;
-            positionToSpawnDustFrom += Main.rand.NextVector2Circular(64, 16);
-            var sp = SmokeParticle.Spawn(positionToSpawnDustFrom, -Vector2.UnitY, Color.SandyBrown);
-            sp.initialColor = Color.SandyBrown * 0.65f;
-         
-        }
-        if (Timer % 5 == 0)
-        {
-            Vector2 positionToSpawnDustFrom = _dustPosition;
-            positionToSpawnDustFrom += Main.rand.NextVector2Circular(64, 16);
-            DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
-            spawnParams.scaleRange *= 0.5f;
-            spawnParams.outerColor = Color.SandyBrown;
-            Vector2 dustVelocity = -Vector2.UnitY * 8;
-            if (AttackCycle == SandDashCount - 1)
-            {
-                spawnParams.scaleRange *= 2f;
-                dustVelocity *= 2f;
-            }
-
-
-            var sp = DustParticle.Spawn(positionToSpawnDustFrom, dustVelocity, spawnParams);
-            sp.noTileCollide = true;
-          //  sp.initialColor = Color.SandyBrown * 0.65f;
-
-        }
-
-
-        float sandDashProgress = (AttackCycle+1) / SandDashCount;
-        float ease = EasingFunction.OutExpo(sandDashProgress);
-        float warningTime = MathHelper.Lerp(SandDashStartWarningTime, SandDashEndWarningTime, ease);
-        warningTime *= AttackCycle == SandDashCount - 1 ? 2f : 1f;
-        if(Timer >= warningTime)
-        {
-            SwitchState(AIState.SandDash);
-        }
-    }
-
-    private void AI_SandDash()
-    {
-        Timer++;
-        if (Timer == 1)
-        {
-            FXUtil.ShakeCamera(MyTarget.position, 1024, 8);
-            SoundStyle sandDash = AssetRegistry.Sounds.LeviathanEel.SandDash;
-            sandDash.PitchVariance = 0.3f;
-            SoundEngine.PlaySound(sandDash, MyTarget.position);
-            Teleport(_dustPosition + Vector2.UnitY * 1000);
-         
-        }
-
-        if(Timer == 15)
-        {
-            int[] gores = AutoGoreLoader.FindGores("GrayRock");
-
-            Vector2 pos = _dustPosition;
-            foreach (int g in gores)
-            {
-                Gore.NewGore(NPC.GetSource_FromThis(),
-                   _dustPosition - new Vector2(0, 32) + Main.rand.NextVector2Circular(64, 16),
-                    -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
-            }
-
-            var p = Particle<ThickSmokeParticle>.Spawn(_dustPosition, Vector2.Zero, Color.DarkGray);
-
-        }
-
-        if (Timer % 5 == 0)
-        {
-            Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BreatheBubble);
-            var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 2, newColor: Color.Red);
-            p.Scale *= 0.33f;
-        }
-
-        Vector2 dashVelocity = -Vector2.UnitY * 45;
-        _facingDirection = Vector2.Lerp(_facingDirection, NPC.velocity.SafeNormalize(Vector2.Zero), 0.3f);
-        NPC.velocity = Vector2.Lerp(NPC.velocity, dashVelocity, 0.3f);
-
-        _effectWaterTrail = true;
-        _contactDamage = true;
-        _targetOutlineColor = Color.Red;
-
-
-        float timeMult = 1f;
-        if(AttackCycle == SandDashCount - 1)
-        {
-            timeMult *= 0.66f;
-        }
-        if(Timer >= SandDashRushTime * timeMult)
-        {
-            AttackCycle++;
-            if (AttackCycle < SandDashCount)
-            {
-                SwitchState(AIState.SandDashEnd);
-            }
-            else
-            {
-                SwitchState(AIState.SandSpiralDash);
-            }
-         
-        }
-    }
-
-    private void AI_SandDashEnd()
-    {
-        Timer++;
-        if(Timer == 1)
-        {
-            SoundStyle sandFade = AssetRegistry.Sounds.LeviathanEel.SandFade;
-            sandFade.PitchVariance = 0.3f;
-            SoundEngine.PlaySound(sandFade, MyTarget.position);
-        }
-
-        NPC.velocity *= 0.8f;
-        if(Timer >= 5)
-        {
-            SwitchState(AIState.SandDash_Warning);
-        }
-    }
-
-    private void AI_SandSpiralDash()
-    {
-        Timer++;
-        if(Timer == 1)
-        {
-            NPC.TargetClosest();
-        }
-
-        _targetOutlineColor = Color.Red;
-        _contactDamage = true;
-
-
-        //For this attack, he'll spin around a bit and then dash at you again
-        if(Timer < 30)
-        {
-            NPC.velocity = NPC.velocity.RotatedBy(0.06f);
-            _facingDirection = NPC.velocity.SafeNormalize(Vector2.Zero);
-
-            _dashDirection = (MyTarget.Center - NPC.Center);
-            _dashDirection = _dashDirection.SafeNormalize(Vector2.Zero);
-        } 
-        else if (Timer < 60)
-        {
-            if(Timer == 31)
-            {
-                FXUtil.ShakeCamera(MyTarget.position, 1024, 8);
-                SoundStyle sandDash = AssetRegistry.Sounds.LeviathanEel.SandDash;
-                sandDash.PitchVariance = 0.3f;
-                SoundEngine.PlaySound(sandDash, MyTarget.position);
-            }
-
-
-            float dashSpeed = 45;
-            Vector2 targetDashVelocity = _dashDirection * dashSpeed;
-            NPC.velocity = Vector2.Lerp(NPC.velocity, targetDashVelocity, 0.3f);
-            _facingDirection = NPC.velocity.SafeNormalize(Vector2.Zero);
-        }
-        else
-        {
-            if (Timer % 5 == 0)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.BreatheBubble);
-                var p = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 2, newColor: Color.Red);
-                p.Scale *= 0.33f;
-            }
-
-            if (Timer >= 90)
-            {
-                SwitchState(AIState.Idle);
-            }
-        }
-        //  SwitchState(AIState.Idle);
-    }
-
-    #endregion
 
     private void SwitchState(AIState state)
     {
@@ -1222,53 +588,1843 @@ public class LeviathanEel : ScarletBoss,
         {
             State = state;
             Timer = 0;
+            AttackCycle = 0;
+            AttackCounter = 0;
             NPC.netUpdate = true;
+        }
+    }
+
+    private bool AboveTheSand()
+    {
+        Point point = NPC.Center.ToTileCoordinates();
+        if (!WorldGen.InWorld(point.X, point.Y))
+            return false;
+        Tile tile = Main.tile[point];
+        return !tile.HasTile && NPC.Bottom.Y < MyTarget.Bottom.Y;
+    }
+
+    private void CreateInwardElectricRocks()
+    {
+        if (!MultiplayerHelper.IsHost)
+            return;
+        if (!Main.rand.NextBool(20))
+            return;
+
+        Vector2 pos = BulbPosition;
+        Vector2 offset = -Vector2.UnitY * 2000;
+        offset = offset.RotatedByRandom(MathHelper.TwoPi);
+        pos += offset;
+
+        Vector2 vel = MyTarget.Center - pos;
+        vel = vel.SafeNormalize(Vector2.Zero);
+        vel *= Main.rand.NextFloat(7, 10);
+        Projectile.NewProjectile(SourceFromThis, pos, vel, ModContent.ProjectileType<LeviathanElectricRock>(), Electric_Rock_Damage, 1, Main.myPlayer, ai2: NPC.whoAmI);
+    }
+
+    private Vector2 FindArenaCenter() => TileUtilities.GuessArenaCenter(MyTarget.Center);
+    private bool BelowTheSand()
+    {
+        Point point = NPC.Center.ToTileCoordinates();
+        if (!WorldGen.InWorld(point.X, point.Y))
+            return false;
+        Tile tile = Main.tile[point];
+        return !tile.HasTile && NPC.Bottom.Y + 300 > FindArenaCenter().Y;
+    }
+
+    private void DiveOutToIdle()
+    {
+        if (Timer == 60)
+        {
+            SoundStyle diveOutBubbles = AssetRegistry.Sounds.LeviathanEel.LeviBubbleStream with { PitchVariance = 0.5f };
+            SoundEngine.PlaySound(diveOutBubbles, MyTarget.position);
+        }
+        float outTime = 140f;
+        float halfTime = outTime / 2f;
+        _effects |= EelVisualEffect.Mirage;
+        if (Timer >= halfTime)
+            _effects |= EelVisualEffect.Invisible;
+
+        float speed = MathHelper.Lerp(0f, 45, EasingFunction.InExpo(Timer / halfTime));
+        MoveAndSinToward(Vector2.UnitY, speed);
+        FaceVelocity();
+        if (Timer >= outTime)
+        {
+            SwitchState(AIState.Idle);
+        }
+    }
+    private void DiveOutNextState()
+    {
+        if(Timer == 100)
+        {
+            SoundStyle diveOutBubbles = AssetRegistry.Sounds.LeviathanEel.LeviBubbleStream with { PitchVariance = 0.5f };
+            SoundEngine.PlaySound(diveOutBubbles, MyTarget.position);
+        }
+
+        float time = 280;
+        float halfTime = time / 2f;
+        _effects |= EelVisualEffect.Mirage;
+        if (Timer >= halfTime)
+            _effects |= EelVisualEffect.Invisible;
+
+        float speed = MathHelper.Lerp(0f, 45, EasingFunction.InExpo(Timer / 100f));
+        MoveAndSinToward(Vector2.UnitY, speed);
+        FaceVelocity();
+        if (Timer >= 280)
+        {
+            Timer = 0;
+            AttackCycle++;
+        }
+    }
+    private void DiveOutNextStateFast()
+    {
+        _effects |= EelVisualEffect.Invisible;
+        _effects |= EelVisualEffect.Mirage;
+        // NPC.velocity.X *= 0.98f;
+        // NPC.velocity.Y += 0.5f;
+        float speed = MathHelper.Lerp(0f, 45, EasingFunction.InExpo(Timer / 50f));
+        MoveAndSinToward(Vector2.UnitY, speed);
+        FaceVelocity();
+        if (Timer >= 140f)
+        {
+            Timer = 0;
+            AttackCycle++;
+        }
+    }
+
+    #region Phase 1 Attacks
+    private void AI_Suck()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    DiveOutNextState();
+                }
+                break;
+            case 1:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.velocity = Vector2.Zero;
+                        Teleport(MyTarget.Center - new Vector2(1400, 0));
+                    }
+
+                    float speed = MathHelper.Lerp(24, 4f, EasingFunction.InOutSine(Timer / 60f));
+                    MoveAndSinToward(Vector2.UnitX, speed);
+                    FaceVelocity();
+                    if (Timer >= 60f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    //Slowly inch up to target
+                    Vector2 positionToMoveTo = MyTarget.Center;
+                    float distanceToTarget = Vector2.Distance(positionToMoveTo, NPC.Center);
+                    Vector2 targetVector = (positionToMoveTo - NPC.Center).RotatedBy(0.05f);
+                    targetVector = targetVector.SafeNormalize(Vector2.Zero);
+                    MoveAndSinToward(targetVector, MathHelper.Lerp(8f, 16, EasingFunction.InOutSine(Timer / 120f)));
+                    FaceVelocity();
+                    _outliner.warning = true;
+                    if (distanceToTarget < 512)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    _outliner.warning = true;
+                    OpenMouth();
+                    NPC.velocity *= 0.97f;
+                    if (Timer >= 60f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
+                    OpenMouth();
+                    if (Timer == 1)
+                    {
+                 
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero,
+                                ModContent.ProjectileType<LeviathanEelSuck>(), Suck_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                        }
+                    }
+
+                    float distanceToTarget = Vector2.Distance(NPC.Center, MyTarget.Center);
+                    if (distanceToTarget < 32)
+                    {
+                        Timer = 0;
+                        AttackCycle = 7;
+                        _eatenPlayer = MyTarget.whoAmI;
+                    }
+
+                    Vector2 directionToTarget = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                    _facingDirection = Vector2.Lerp(_facingDirection, directionToTarget, 0.2f);
+                    _charge = MathHelper.Lerp(0f, 1f, Timer / 480f);
+                    _contactDamage = false;
+                    _outliner.attacking = true;
+                    if (NPC.velocity.Length() > 1)
+                        NPC.velocity *= 0.94f;
+                    NPC.velocity += (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.1f;
+                    if (Timer >= 480)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 5:
+                {
+                    NPC.velocity *= 0.88f;
+                    CloseMouth();
+                    if (Timer >= 120)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 6:
+                {
+                    CloseMouth();
+                    DiveOutToIdle();
+                }
+                break;
+            case 7:
+                {
+                    _charge = 1f;
+                    CloseMouth();
+                    NPC.velocity *= 0.94f;
+                    foreach (var proj in Main.ActiveProjectiles)
+                    {
+                        if (proj.type != ModContent.ProjectileType<LeviathanEelSuck>())
+                            continue;
+                        if (proj.timeLeft > 30)
+                            proj.timeLeft = 30;
+                    }
+                    _contactDamage = true;
+                    _outliner.attacking = true;
+                    _eatingSquishScale = Vector2.Lerp(Vector2.One, new Vector2(1.2f, 0.9f), ExtraMath.Osc(0f, 1f, speed: 12));
+                    Player player = Main.player[_eatenPlayer];
+                    MovePlayer movePlayer = player.GetModPlayer<MovePlayer>();
+                    movePlayer.eatenDelayTimer = 15;
+                    movePlayer.overrideVelocity = NPC.Center - player.Center;
+                    if (player.dead || Timer >= 280)
+                    {
+                        Timer = 0;
+                        AttackCycle = 6;
+                    }
+                }
+                break;
+        }
+    }
+    private void AI_LightningWiggle()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+
+                    }
+
+                    NPC.velocity = NPC.velocity.RotatedBy(-0.05f);
+                    FaceVelocity();
+                    if (Timer >= 60f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    //Slowly inch up to target
+                    Vector2 positionToMoveTo = MyTarget.Center;
+                    float distanceToTarget = Vector2.Distance(positionToMoveTo, NPC.Center);
+                    Vector2 targetVector = (positionToMoveTo - NPC.Center).RotatedBy(0.05f);
+                    targetVector = targetVector.SafeNormalize(Vector2.Zero);
+                    MoveAndSinToward(targetVector, MathHelper.Lerp(8f, 16, EasingFunction.InOutSine(Timer / 120f)));
+                    FaceVelocity();
+                    if (distanceToTarget < 384)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    NPC.velocity *= 0.88f;
+
+                    _outliner.warning = true;
+                    _charge = MathHelper.Lerp(0f, 1f, Timer / 100f);
+                    _bulbCharge = _charge;
+                    if (Timer >= 100)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    _effects |= EelVisualEffect.Mirage;
+                    void Spawn(int index, int offset)
+                    {
+                        int combinedIndex = index + offset;
+                        combinedIndex %= Chain.points.Length;
+                        Vector2 pos = Chain.points[combinedIndex];
+                        Projectile.NewProjectile(SourceFromThis, pos, Vector2.Zero, ModContent.ProjectileType<SinElectricShock>(), Sin_Electric_Shock_Damage, 1, Main.myPlayer);
+                    }
+
+                    bool IsAboutToMakeOne()
+                    {
+                        int a = (int)AttackCounter + 6;
+                        int distanceBtween = 16;
+                        for (int i = 0; i < 3; i++)
+                        {
+                            int combinedIndex = a + i * distanceBtween;
+                            combinedIndex %= Chain.points.Length;
+                            if (combinedIndex == 0)
+                            {
+                                return true;
+                            }
+                            //    Spawn(a, i * distanceBtween);
+                        }
+                        return false;
+                    }
+                    bool MadeOne()
+                    {
+                        int a = (int)AttackCounter;
+                        int distanceBtween = 16;
+                        for (int i = 0; i < 3; i++)
+                        {
+                            int combinedIndex = a + i * distanceBtween;
+                            combinedIndex %= Chain.points.Length;
+                            if (combinedIndex == 0)
+                            {
+                                return true;
+                            }
+                            //    Spawn(a, i * distanceBtween);
+                        }
+                        return false;
+                    }
+                    if (IsAboutToMakeOne() && Timer % 4 == 0)
+                    {
+                        SoundStyle shockTelegraphSound = AssetRegistry.Sounds.LeviathanEel.LeviShockIn with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(shockTelegraphSound, MyTarget.Center);
+                        PixelPrimitiveCircleFactory.CreateEelSiningSuck(NPC);
+                    }
+                    if(MadeOne() && Timer % 4 == 0)
+                    {
+                        SoundStyle shockChainSound = AssetRegistry.Sounds.LeviathanEel.LeviShockchain with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(shockChainSound, MyTarget.Center);
+                    }
+
+                    if(Timer == 1)
+                    {
+                        SoundStyle gulpSound = AssetRegistry.Sounds.LeviathanEel.LeviGulp with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(gulpSound, MyTarget.Center);
+                    }
+
+                    if (Timer % 4 == 0 && MultiplayerHelper.IsHost)
+                    {
+                        int a = (int)AttackCounter;
+                        int distanceBtween = 16;
+                        for (int i = 0; i < 3; i++)
+                        {
+                            Spawn(a, i * distanceBtween);
+                        }
+
+                        AttackCounter++;
+                        AttackCounter %= Chain.points.Length;
+                    }
+
+                    _bulbCharge = 1f;
+                    _charge = MathHelper.Lerp(0.8f, 1f, ExtraMath.Osc(0f, 1f, speed: 16));
+                    if (NPC.velocity.Length() < 15)
+                        NPC.velocity *= 1.05f;
+                    if (NPC.velocity.Length() < 1)
+                        NPC.velocity += (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 0.2f;
+                    Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(NPC.Center, MyTarget.Center, NPC.velocity, degreesToRotate: 2);
+                    NPC.velocity = homingVelocity;
+                    FaceVelocity();
+                    _showDashTrail = true;
+
+                    _outliner.attacking = true;
+                    _charge = 1f;
+                    if (Timer >= 600f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
+                    DiveOutToIdle();
+                }
+                break;
+
+        }
+    }
+    private void AI_Chomp()
+    {
+        Timer++;
+
+
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    DiveOutNextState();
+                }
+                break;
+            case 1:
+                {
+                    if (Timer == 1)
+                    {
+                        SoundStyle bubbles = AssetRegistry.Sounds.LeviathanEel.LeviBubbleStream with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(bubbles, MyTarget.Center);
+                        Teleport(MyTarget.Center + new Vector2(0, 1300).RotatedByRandom(MathHelper.TwoPi));
+                    }
+
+                    NPC.velocity = Vector2.Zero;
+                    Vector2 directionToTarget = (NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero);
+                    if (Timer % 2 == 0)
+                    {
+                        Vector2 pos = MyTarget.Center + directionToTarget * 1024;
+                        pos += Main.rand.NextVector2Circular(64, 64);
+                        var bp = BubbleParticle.Spawn(pos, -directionToTarget * 48);
+                        bp.Scale *= Main.rand.NextFloat(0.3f, 0.6f);
+                        bp.gravity = 0;
+
+                    }
+                    _effects |= EelVisualEffect.Invisible;
+                    _effects |= EelVisualEffect.Mirage;
+                    _outliner.warning = true;
+                    if (Timer >= 40)
+                    {
+
+                    }
+                    if(Timer == 20)
+                    {
+                        SoundStyle bigChomp = AssetRegistry.Sounds.LeviathanEel.LeviSwipingBite with { PitchVariance = 0.2f };
+                        bigChomp.MaxInstances = 0;
+                        SoundEngine.PlaySound(bigChomp, MyTarget.position);
+                    }
+                    if (Timer >= 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    Vector2 directionToMe = (NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero);
+                    Vector2 newPos = MyTarget.Center + directionToMe * 256;
+                    _eyeFlashOffset = newPos - NPC.Center;
+
+                    _eyeFlashAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / SDashChargeTime));
+                    AnimateMouthBasedOnDistance();
+                    if (Timer == 1)
+                    {
+                        PlayBlinkSound();
+                        _initialVelocity = NPC.velocity;
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center + _facingDirection * 128, _facingDirection,
+                                ModContent.ProjectileType<EelSpeedTrail>(), Bite_Damage, 1, Main.myPlayer, ai0: NPC.whoAmI);
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center + _facingDirection * 128, _facingDirection,
+                                ModContent.ProjectileType<LeviathanBite>(), Bite_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: 1);
+                        }
+                    }
+
+                    if(Timer == 1)
+                    {
+ 
+                    }
+
+                    if (Timer < 5)
+                    {
+                        _startPosition = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * SChompSpeed;
+                    }
+
+                    if (Timer % 5 == 0)
+                    {
+                        var dp = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity * 0.5f);
+                        dp.Scale *= 2f;
+                    }
+                    if (Timer % 5 == 0)
+                    {
+                        var dp = LegacyParticle.NewParticle<ZapParticle>(NPC.Center, -NPC.velocity * 0.5f);
+                        dp.Scale *= 2f;
+                        dp.innerColor = Color.LightBlue;
+                        dp.outerColor = Color.Blue;
+                        dp.fadeToColor = Color.DarkBlue;
+                    }
+                    _charge = MathHelper.Lerp(_charge, 1f, 0.02f);
+                    _showDashTrail = true;
+
+                    float ratio = Timer / (SDashChargeTime / 3f);
+                    float ease2 = EasingFunction.InExpo(ratio);
+                    Vector2 easeVelocity = Vector2.Lerp(_initialVelocity, _startPosition, ease2);
+                    NPC.velocity = easeVelocity;
+                    FaceVelocity();
+
+                    _contactDamage = true;
+                    _outliner.attacking = true;
+                    if (Timer >= SDashChargeTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    AnimateMouthBasedOnDistance();
+                    _effects |= EelVisualEffect.Mirage;
+                    _effects |= EelVisualEffect.Invisible;
+                    NPC.velocity = NPC.velocity.RotatedBy(0.05f);
+                    NPC.velocity *= 0.99f;
+                    FaceVelocity();
+                    _outliner.attacking = true;
+                    if (Timer % 5 == 0)
+                    {
+                        var dp = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity * 0.5f);
+                        dp.Scale *= 2f;
+                    }
+                    if (Timer >= 80)
+                    {
+                        Timer = 0;
+                        AttackCounter++;
+                        if (AttackCounter < 7)
+                        {
+                            AttackCycle = 1;
+                        }
+                        else
+                        {
+                            AttackCycle++;
+
+                        }
+
+
+                    }
+                }
+                break;
+            case 4:
+                {
+                    DiveOutToIdle();
+                }
+                break;
+        }
+    }
+    private void AI_BallBouncer()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    DiveOutNextState();
+                }
+                break;
+            case 1:
+                {
+                    if (Timer == 1)
+                    {
+                        Teleport(FindArenaCenter() + new Vector2(0, -1400));
+                    }
+
+                    NPC.velocity.X *= 0.8f;
+                    if (NPC.velocity.Y < 12)
+                        NPC.velocity.Y += 0.25f;
+                    FaceVelocity();
+                    if (BelowTheSand())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    OpenMouth();
+                    if (NPC.velocity.Length() > 1)
+                    {
+                        NPC.velocity *= 0.88f;
+                    }
+
+                    _outliner.warning = true;
+                    if (Timer > 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    _outliner.warning = true;
+                    if (Timer == 1 && MultiplayerHelper.IsHost)
+                    {
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.UnitY, ModContent.ProjectileType<LeviathanEelSuck>(), Suck_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: 1);
+                    }
+                    if (Timer >= 150)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
+                    CloseMouth();
+
+                    NPC.velocity = Vector2.Lerp(_facingDirection * 2, -_facingDirection * 7, EasingFunction.QuadraticBump(Timer / 60));
+                    _charge = MathHelper.Lerp(_charge, 1f, 0.04f);
+                    _outliner.warning = true;
+                    _eyeFlashAlpha = MathHelper.Lerp(1f, 0f, Timer / 30f);
+                    if(Timer == 1)
+                    {
+                        SoundStyle startSound = AssetRegistry.Sounds.LeviathanEel.LeviGulp with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(startSound, MyTarget.Center);
+                        PlayBlinkSound();
+                    }
+                    if (Timer >= 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 5:
+                {
+                    OpenMouth();
+                    if (Timer == 1)
+                    {
+                        NPC.velocity += _facingDirection * 15;
+                    }
+                    if (Timer == 1 && MultiplayerHelper.IsHost)
+                    {
+                        Vector2 spitVelocity = Vector2.UnitY * 20;
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, spitVelocity,
+                            ModContent.ProjectileType<BouncingBallCore>(), Bouncing_Ball_Damage, 1, Main.myPlayer, ai1: 1);
+                        Projectile.NewProjectile(SourceFromThis, NPC.Center, spitVelocity,
+                         ModContent.ProjectileType<BouncingBallCore>(), Bouncing_Ball_Damage, 1, Main.myPlayer, ai1: 2);
+                    }
+
+                    _outliner.attacking = true;
+                    NPC.velocity *= 0.94f;
+                    if (Timer >= 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 6:
+                {
+                    CloseMouth();
+                    DiveOutToIdle();
+                }
+                break;
+        }
+    }
+    private void AI_LightningCrawl()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    DiveOutNextState();
+                }
+                break;
+            case 1:
+                {
+                    if (Timer == 1)
+                    {
+                        Teleport(MyTarget.Center + new Vector2(-1200, 666));
+
+                    }
+
+                    NPC.velocity.X += (MyTarget.Center.X > NPC.Center.X) ? 0.2f : -0.2f;
+                    if (NPC.velocity.Y > -12)
+                        NPC.velocity.Y -= 0.5f;
+                    FaceVelocity();
+                    if (AboveTheSand())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    if (NPC.velocity.Length() > 16)
+                    {
+                        NPC.velocity *= 0.97f;
+                    }
+                    else
+                    {
+                        Vector2 targetDirectionToSin = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                        MoveAndSinToward(targetDirectionToSin, MathHelper.Lerp(8f, 16, EasingFunction.InOutSine(Timer / 120f)));
+                        FaceVelocity();
+                    }
+
+                    bool closeEnoughToPlayer = Vector2.Distance(NPC.Center, MyTarget.Center) < 500;
+                    if (closeEnoughToPlayer)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    _charge = MathHelper.Lerp(0, 1f, Timer / 180f);
+                    if (Timer % 2 == 0)
+                    {
+                        float range = Main.rand.NextFloat(252, 512);
+                        Vector2 pos = BulbPosition + Main.rand.NextVector2CircularEdge(range, range);
+                        Vector2 vel = (BulbPosition - pos);
+                        vel *= 0.1f;
+                        FXUtil.GlowStretch(pos, vel);
+                    }
+
+                    if (Timer % 2 == 0)
+                    {
+                        float range = Main.rand.NextFloat(384, 666);
+                        Vector2 pos = BulbPosition + Main.rand.NextVector2CircularEdge(range, range);
+                        Vector2 vel = (BulbPosition - pos);
+                        vel *= 0.1f;
+                        var fx = FXUtil.GlowStretch(pos, vel);
+                        fx.OuterGlowColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
+                        fx.VectorScale *= 0.5f;
+                    }
+                    if (Timer % 6 == 0)
+                    {
+                        var zap = ElectricZapParticle.Spawn(BulbPosition + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(2, 2),
+                            Scale: Main.rand.NextFloat(0.3f, 0.6f) * Timer / 240f);
+                    }
+
+
+                    if (Timer % 60 == 0 && Timer <= 236 && Timer > 2)
+                    {
+                        if (Main.netMode != NetmodeID.Server)
+                        {
+                            ScreenShaderSystem tintSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                            tintSystem.TintScreen(Color.Blue, 0.05f, 15f);
+                            PixelPrimitiveCircleFactory.CreateClosingGustCircle(BulbPosition);
+                            PixelPrimitiveCircleFactory.CreateEelInSuck(BulbPosition);
+                        }
+                        string path = $"Stellamod/Assets/Sounds/Dreadmire__LightingRain{AttackCounter + 1}";
+                        SoundStyle sound = new SoundStyle(path) with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(sound, NPC.position);
+                        FXUtil.GlowCircleBoom(BulbPosition, Color.White, Color.LightBlue, Color.DarkBlue);
+                        AttackCounter++;
+                    }
+                    _bulbCharge = MathHelper.SmoothStep(0f, 1f, EasingFunction.InOutSine(Timer / 240f));
+                    ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 2f, Timer / 240f);
+                    if(Timer < 200)
+                    {
+                        CreateInwardElectricRocks();
+
+                    }
+
+                    if (Timer == 200)
+                    {
+                        SoundStyle chargeReadySound = AssetRegistry.Sounds.LeviathanEel.LeviLaserCharge;
+                        SoundEngine.PlaySound(chargeReadySound, MyTarget.Center);
+                    }
+
+                    if (NPC.velocity.Length() > 1)
+                        NPC.velocity *= 0.94f;
+                    FaceVelocity();
+                    if (Timer >= 300)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                        AttackCounter = 0;
+                    }
+                }
+                break;
+            case 4:
+                {
+                    _bulbCharge = 1f;
+                    if (Timer % 6 == 0)
+                    {
+                        var zap = ElectricZapParticle.Spawn(BulbPosition + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(2, 2),
+                            Scale: Main.rand.NextFloat(0.3f, 0.6f) * Timer / 240f);
+                    }
+
+                    DiveOutNextStateFast();
+                }
+                break;
+            case 5:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        NPC.velocity = Vector2.Zero;
+                        Teleport(FindArenaCenter() - new Vector2(1400, 0).RotatedByRandom(MathHelper.TwoPi));
+                    }
+
+                    float speed = MathHelper.Lerp(24, 4f, EasingFunction.InSine(Timer / 100f));
+                    Vector2 dir = (FindArenaCenter() - NPC.Center).SafeNormalize(Vector2.Zero);
+                    MoveAndSinToward(dir, speed);
+                    FaceVelocity();
+                    _bulbCharge = 1f;
+                    _outliner.warning = true;
+                    if (Timer % 6 == 0)
+                    {
+                        var zap = ElectricZapParticle.Spawn(BulbPosition + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(2, 2),
+                            Scale: Main.rand.NextFloat(0.3f, 0.6f) * Timer / 240f);
+                    }
+                    if (Timer >= 100f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 6:
+                {
+                    NPC.velocity *= 0.96f;
+                    if (Timer >= 30)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 7:
+                {
+                    _bulbCharge = 1f;
+                    if (Timer == 1)
+                    {
+                        Vector2 offsetToPlayer = (MyTarget.Center - NPC.Center);
+                        float rot = offsetToPlayer.ToRotation();
+                        float diff = rot - NPC.rotation;
+                        float diff2 = MathHelper.TwoPi - diff;
+                        _rotationDir = diff < diff2 ? 1 : -1;
+                        _startRotation = NPC.rotation;
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center, _facingDirection,
+                                ModContent.ProjectileType<LightningCrawl>(), Lightning_Crawl_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                        }
+                    }
+                    if (Timer % 6 == 0)
+                    {
+                        var zap = ElectricZapParticle.Spawn(BulbPosition + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(2, 2),
+                            Scale: Main.rand.NextFloat(0.3f, 0.6f) * Timer / 240f);
+                    }
+
+                    _charge = 1f;
+                    _outliner.attacking = true;
+                    _bloomLineColor = Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(Timer / 90f));
+
+
+
+                    float endRotation = _startRotation + MathHelper.ToRadians(200 * _rotationDir);
+                    float ratio = Timer / 180f;
+                    float easing = EasingFunction.InOutExpo(ratio);
+                    float newRotation = MathHelper.Lerp(_startRotation, endRotation, easing);
+
+                    _bloomLineRot = MathHelper.Lerp(_startRotation, endRotation, EasingFunction.InOutExpo(Timer / 90f));
+                    _facingDirection = newRotation.ToRotationVector2();
+                    NPC.velocity *= 0.96f;
+                    if (Timer >= 180f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                        AttackCounter++;
+                    }
+                }
+                break;
+            case 8:
+                {
+                    _bulbCharge = 1f;
+                    NPC.velocity *= 0.94f;
+                    //  FaceVelocity();
+                    if (Timer >= 30)
+                    {
+                        if (AttackCounter >= 3)
+                        {
+                            Timer = 0;
+                            AttackCycle++;
+                        }
+                        else
+                        {
+                            Timer = 0;
+                            AttackCycle = 4;
+                        }
+                    }
+                }
+                break;
+            case 9:
+                {
+                    DiveOutToIdle();
+                }
+                break;
+        }
+    }
+    private void AI_SDash()
+    {
+        Timer++;
+        AnimateMouthBasedOnDistance();
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+
+                    }
+
+                    NPC.velocity = NPC.velocity.RotatedBy(0.05f);
+                    FaceVelocity();
+                    if (Timer >= 60f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        _startPosition = NPC.Center;
+                        _initialVelocity = NPC.velocity;
+                    }
+
+
+                    _effects |= EelVisualEffect.Mirage;
+                    //Slowly inch up to target
+                    Vector2 positionToMoveTo = MyTarget.Center;
+                    float distanceToTarget = Vector2.Distance(positionToMoveTo, NPC.Center);
+                    Vector2 targetVector = (positionToMoveTo - NPC.Center).RotatedBy(0.05f);
+                    targetVector = targetVector.SafeNormalize(Vector2.Zero);
+                    MoveAndSinToward(targetVector, MathHelper.Lerp(8f, 16, EasingFunction.InOutSine(Timer / 120f)));
+                    FaceVelocity();
+
+
+                    _charge = MathHelper.Lerp(1f, 0f, distanceToTarget / 384f);
+                    //   _outliner.warning = true;
+                    if (distanceToTarget < 384)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    if (Timer == 1)
+                    {
+
+                    }
+                    NPC.velocity *= 0.92f;
+                    _effects |= EelVisualEffect.Mirage;
+
+                    // FaceVelocity();
+
+                    _charge = MathHelper.Lerp(_charge, 1f, 0.04f);
+                    //  _outliner.warning = true;
+                    if (Timer >= 30)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    NPC.velocity = Vector2.Lerp(_facingDirection * 2, -_facingDirection * 7, EasingFunction.QuadraticBump(Timer / 30f));
+                    _charge = MathHelper.Lerp(_charge, 1f, 0.04f);
+                    _outliner.warning = true;
+
+                    if (Timer == 15)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center + _facingDirection * 128, _facingDirection,
+                                ModContent.ProjectileType<LeviathanBite>(), Bite_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: 2);
+                        }
+                    }
+                    if (Timer == 1)
+                    {
+                        PlayBlinkSound();
+
+                    }
+                    _eyeFlashAlpha = MathHelper.Lerp(1f, 0f, Timer / 30f);
+                    if (Timer >= 30)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
+                    if (Timer == 1)
+                    {
+                        _initialVelocity = NPC.velocity;
+                        PlaySmallBiteSound();
+                    }
+
+                    if (Timer < 5)
+                    {
+                        _startPosition = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * SDashSpeed;
+                    }
+                    if (Timer == 1)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero,
+                                ModContent.ProjectileType<EelSpeedTrail>(), Bite_Damage, 1, Main.myPlayer, ai0: NPC.whoAmI);
+                        }
+                    }
+
+                    if (Timer % 5 == 0)
+                    {
+                        var dp = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity * 0.5f);
+                        dp.Scale *= 2f;
+                    }
+                    if (Timer % 5 == 0)
+                    {
+                        var dp = LegacyParticle.NewParticle<ZapParticle>(NPC.Center, -NPC.velocity * 0.5f);
+                        dp.Scale *= 2f;
+                        dp.innerColor = Color.LightBlue;
+                        dp.outerColor = Color.Blue;
+                        dp.fadeToColor = Color.DarkBlue;
+                    }
+                    _charge = MathHelper.Lerp(_charge, 1f, 0.02f);
+                    _showDashTrail = true;
+
+                    float ratio = Timer / (SDashChargeTime / 3f);
+                    float ease2 = EasingFunction.InExpo(ratio);
+                    Vector2 easeVelocity = Vector2.Lerp(_initialVelocity, _startPosition, ease2);
+                    NPC.velocity = easeVelocity;
+                    FaceVelocity();
+
+                    _contactDamage = true;
+                    _outliner.attacking = true;
+                    if (Timer >= SDashChargeTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 5:
+                {
+                    _effects |= EelVisualEffect.Mirage;
+                    NPC.velocity = NPC.velocity.RotatedBy(0.05f);
+                    NPC.velocity *= 0.99f;
+                    FaceVelocity();
+
+                    //   _outliner.warning = true;
+                    if (Timer >= 15)
+                    {
+                        Timer = 0;
+                        AttackCounter++;
+                        if (AttackCounter < 3)
+                        {
+                            AttackCycle = 1;
+                        }
+                        else
+                        {
+                            AttackCycle++;
+
+                        }
+
+
+                    }
+                }
+                break;
+            case 6:
+                {
+                    DiveOutToIdle();
+                }
+                break;
+        }
+    }
+    #endregion
+
+    #region Phase 2 Attacks
+    private void AI_PhaseTransition()
+    {
+
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    NPC.velocity *= 0.8f;
+                    _blackAlpha = MathHelper.Lerp(0f, 1f, Timer / 60f);
+                    if (Timer >= 60f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    if (Timer == 1)
+                    {
+                        Teleport(MyTarget.Center + new Vector2(0, -1000));
+                    }
+                    _blackedOut = true;
+                    _inPhase2 = true;
+                    _blackAlpha = 1f;
+                    SwitchState(AIState.Eyeline_Dash);
+                    PatternManager.ResetToDefaultWeights();
+                }
+                break;
+        }
+    }
+
+    private void AI_Overcharge()
+    {
+        _inPhase2 = true;
+        Timer++;
+
+        //So for this attack uhh uhh
+        //1. Dive out like usually
+        //2. Teleport to the left of the player and come in and slow down
+        //3. Start charging up, this one uses a different charge effect that uses the points on the Chain and a lightning trail effect that flickers in and out
+        //4. The bulb also charges htough, but make a separate charge variable for this
+        //The 3 eyes orbit in a circle and shoot electirc bolts at you while it's charging
+        //5. Once full charge, the eyes go away, screen blackens for a second and several lightning bolts come out everywhere in different directions (crazy)
+        //6. 
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    DiveOutNextState();
+                }
+                break;
+            case 1:
+                {
+                    if (Timer == 1)
+                    {
+                        Teleport(MyTarget.Center + new Vector2(-1500, 0));
+                    }
+
+                    float startupTime = 100f;
+                    float speed = MathHelper.Lerp(24, 4f, EasingFunction.InOutSine(Timer / startupTime));
+                    MoveAndSinToward(Vector2.UnitX, speed);
+                    FaceVelocity();
+                    if (Timer >= startupTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    if (Timer % 2 == 0)
+                    {
+                        float range = Main.rand.NextFloat(252, 512);
+                        Vector2 pos = BulbPosition + Main.rand.NextVector2CircularEdge(range, range);
+                        Vector2 vel = (BulbPosition - pos);
+                        vel *= 0.1f;
+                        FXUtil.GlowStretch(pos, vel);
+                    }
+
+                    if (Timer % 2 == 0)
+                    {
+                        float range = Main.rand.NextFloat(384, 666);
+                        Vector2 pos = BulbPosition + Main.rand.NextVector2CircularEdge(range, range);
+                        Vector2 vel = (BulbPosition - pos);
+                        vel *= 0.1f;
+                        var fx = FXUtil.GlowStretch(pos, vel);
+                        fx.OuterGlowColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
+                        fx.VectorScale *= 0.5f;
+                    }
+
+                    if (Timer % 6 == 0)
+                    {
+                        var zap = ElectricZapParticle.Spawn(BulbPosition + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(2, 2),
+                            Scale: Main.rand.NextFloat(0.3f, 0.6f) * Timer / 240f);
+                    }
+
+                    if(Timer == 1)
+                    {
+                        SoundStyle startSound = AssetRegistry.Sounds.LeviathanEel.StartBodyPrisma;
+                        SoundEngine.PlaySound(startSound, MyTarget.Center);
+                    }
+                    if (Timer % 60 == 0 && Timer <= 236 && Timer > 2)
+                    {
+                        if (Main.netMode != NetmodeID.Server)
+                        {
+                            ScreenShaderSystem tintSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                            tintSystem.TintScreen(Color.Blue, 0.05f, 15f);
+                            PixelPrimitiveCircleFactory.CreateClosingGustCircle(BulbPosition);
+                            PixelPrimitiveCircleFactory.CreateEelInSuck(BulbPosition);
+                        }
+                        string path = $"Stellamod/Assets/Sounds/Dreadmire__LightingRain{AttackCounter + 1}";
+                        SoundStyle sound = new SoundStyle(path) with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(sound, NPC.position);
+                        FXUtil.GlowCircleBoom(BulbPosition, Color.White, Color.LightBlue, Color.DarkBlue);
+                        AttackCounter++;
+                    }
+                    _outliner.warning = true;
+                    _charge = MathHelper.Lerp(_charge, 1f, Timer / 180f);
+                    _superCharge = MathHelper.SmoothStep(0f, 1f, EasingFunction.InOutSine(Timer / 240f));
+                    _bulbCharge = MathHelper.SmoothStep(0f, 1f, EasingFunction.InOutSine(Timer / 240f));
+                    ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 2f, Timer / 240f);
+
+                    if (NPC.velocity.Length() > 1)
+                        NPC.velocity *= 0.94f;
+                    FaceVelocity();
+                    if (Main.netMode != NetmodeID.Server)
+                    {
+
+                        float alpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 300f));
+                        _blackAlpha = alpha;
+                        //Lighting.GlobalBrightness = MathHelper.Lerp(1.2f, 0f, alpha);
+                    }
+                    if (Timer >= 300)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                        AttackCounter = 0;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
+                    effectsPlayer.darknessCurve = MathHelper.Lerp(1f, 0.2f, EasingFunction.OutExpo(Timer / 30f));
+                    _charge = 1f;
+                    _bulbCharge = 1f;
+                    _superCharge = 1f;
+                    _outliner.attacking = true;
+                    if (Timer % 5 == 0 && MultiplayerHelper.IsHost && Timer < 400)
+                    {
+                        int index = Main.rand.Next(Chain.points.Length);
+
+                        SortedSet<(float, Vector2)> openList =
+                            new SortedSet<(float, Vector2)>(Comparer<(float, Vector2)>.Create((a, b) => a.Item1.CompareTo(b.Item1)));
+                        for (int i = 0; i < Chain.points.Length; i++)
+                        {
+                            Vector2 potentialPoint = Chain.points[i];
+                            float distToPoint = Vector2.Distance(MyTarget.Center, potentialPoint);
+                            openList.Add((distToPoint, potentialPoint));
+                        }
+
+                        int rand = Main.rand.Next(12);
+                        Vector2 pos = Chain.points[rand];
+
+                        Projectile.NewProjectile(SourceFromThis, pos, Main.rand.NextVector2CircularEdge(1240, 1240),
+                            ModContent.ProjectileType<SuperZap>(), Super_Zap_Damage, 1, Main.myPlayer);
+                    }
+                    if (Timer >= 480)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
+                    DiveOutToIdle();
+                }
+                break;
+        }
+    }
+    private void AI_EyelineDash()
+    {
+        _inPhase2 = true;
+        Timer++;
+        float speedMult = MathHelper.Lerp(1f, 0.75f, EasingFunction.Clamp(AttackCounter / 3f));
+        float dashingTime = 70 * speedMult;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (_blackedOut)
+                    {
+                        _blackAlpha = 1f;
+                    }
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    DiveOutNextState();
+                }
+                break;
+            case 1:
+                {
+                    _blackedOut = false;
+                    float dashDistance = 900;
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            _startPosition = MyTarget.Center - new Vector2(dashDistance, 0).RotatedByRandom(MathHelper.TwoPi);
+                            Teleport(_startPosition);
+                            NPC.netUpdate = true;
+                        }
+
+
+                    }
+                    _effects |= EelVisualEffect.Invisible;
+
+                    if (Timer < 5)
+                        _eyeballs[0].position = _startPosition;
+
+                    float warningTime = dashingTime;
+                    NPC.velocity *= 0.8f;
+                    Vector2 direction = (MyTarget.Center - _startPosition).SafeNormalize(Vector2.Zero);
+                    Vector2 endPosition = _startPosition + direction * dashDistance * 2;
+
+                    float ratio = EasingFunction.InOutSine(Timer / warningTime);
+                    Vector2 interpolatedPosition = Vector2.Lerp(_startPosition, endPosition, ratio);
+                    Vector2 up = direction.RotatedBy(MathHelper.PiOver2);
+                    interpolatedPosition += up * MathF.Sin(ratio * 8) * 128;
+
+                    if (Main.rand.NextBool(2))
+                    {
+                        var b = BubbleParticle.Spawn(interpolatedPosition, Vector2.Zero, Scale: Main.rand.NextFloat(0.3f, 0.6f));
+                        b.gravity = 0;
+                    }
+                    _initialVelocity = interpolatedPosition;
+                    _eyeballs[0].targetPosition = interpolatedPosition;
+                    _eyeballs[0].speed = 8;
+
+                    int halfTimee = (int)(warningTime / 2f);
+                    if(Timer == halfTimee)
+                    {
+                        PlayBlinkSound();
+              
+                    }
+
+                    if(Timer == halfTimee - 10)
+                    {
+                        SoundStyle swipingSound = AssetRegistry.Sounds.LeviathanEel.LeviSwipingBite with { PitchVariance = 0.3f };
+                        swipingSound.MaxInstances = 0;
+                        SoundEngine.PlaySound(swipingSound, MyTarget.Center);
+                    }
+                    if (Timer > warningTime / 2f)
+                    {
+                        float halfTime = warningTime / 2f;
+                        _eyeFlashAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine((Timer - halfTime) / halfTime));
+                        Vector2 directionToMe = (NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero);
+                        Vector2 newPos = MyTarget.Center + directionToMe * 256;
+                        _eyeFlashOffset = newPos - NPC.Center;
+
+                    }
+
+                    if (Timer >= warningTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+
+                    AnimateMouthBasedOnDistance();
+                    if (Timer == 1)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center + _facingDirection * 128, _facingDirection,
+                                ModContent.ProjectileType<EelSpeedTrail>(), Bite_Damage, 1, Main.myPlayer, ai0: NPC.whoAmI);
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center + _facingDirection * 128, _facingDirection,
+                                ModContent.ProjectileType<LeviathanBite>(), Bite_Damage, 1, Main.myPlayer, ai1: NPC.whoAmI, ai2: 1);
+                        }
+                    }
+
+
+                    float dashTime = dashingTime;
+
+                    float ratio = EasingFunction.InOutSine(Timer / dashTime);
+                    Vector2 interpolatedPosition = Vector2.Lerp(_startPosition, _initialVelocity, ratio);
+                    Vector2 direction = (_initialVelocity - _startPosition).SafeNormalize(Vector2.Zero);
+                    Vector2 up = direction.RotatedBy(MathHelper.PiOver2);
+                    interpolatedPosition += up * MathF.Sin(ratio * 8) * 128;
+                    Vector2 velocity = (interpolatedPosition - NPC.Center);
+                    NPC.velocity = velocity;
+                    FaceVelocity();
+                    _contactDamage = true;
+                    _outliner.attacking = true;
+                    if (Timer >= dashTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    void Spawn(int index, int offset)
+                    {
+                        int combinedIndex = index + offset;
+                        combinedIndex %= Chain.points.Length;
+                        Vector2 pos = Chain.points[combinedIndex];
+                        Projectile.NewProjectile(SourceFromThis, pos, Vector2.Zero, ModContent.ProjectileType<SinElectricShock>(), Sin_Electric_Shock_Damage, 1, Main.myPlayer);
+                    }
+                    if (Timer % 2 == 0 && MultiplayerHelper.IsHost)
+                    {
+                        int a = (int)Timer / 2;
+                        a %= Chain.points.Length;
+                        Spawn(a, 0);
+
+
+                    }
+
+
+                    _effects |= EelVisualEffect.Invisible;
+                    _effects |= EelVisualEffect.Mirage;
+                    NPC.velocity *= 0.98f;
+                    if (Timer >= 30f)
+                    {
+                        Timer = 0;
+                        AttackCounter++;
+                        if (AttackCounter < 9)
+                        {
+                            AttackCycle = 1;
+                        }
+                        else
+                        {
+
+                            AttackCycle++;
+                        }
+                    }
+                }
+                break;
+            case 4:
+                {
+                    DiveOutToIdle();
+                }
+                break;
+        }
+    }
+    #endregion
+
+    #region Special Attack
+    private void AI_Death()
+    {
+        Timer++;
+        if(Timer >= 5)
+        {
+            Vector2 pointToPop = Chain.points[Chain.points.Length - 1 - _hideSegmentCount];
+            var fx = FXUtil.GlowCircleBoom(pointToPop, Color.White, Color.SkyBlue, Color.DarkBlue, 25f);
+            fx.Scale *= 2f;
+            for(float f = 0; f < 6f; f++)
+            {
+                Vector2 vel = Main.rand.NextVector2Circular(16, 16);
+                var dp = ElectricZapParticle.Spawn(pointToPop, vel);
+                dp.outerColor = Color.DarkBlue;
+                dp.dampening = 0.05f;
+                dp.gravity = 0;
+                dp.Scale *= 0.5f;
+            }
+
+            ShakeScreenPosition.Shake = 4;
+            FXUtil.ShakeCamera(NPC.Center, 1024, 4);
+            PlayRandomZapSound(pointToPop);
+            _hideSegmentCount++;
+            if(_hideSegmentCount >= Chain.points.Length)
+            {
+                if(Main.netMode != NetmodeID.Server)
+                {
+                    int headGore = Mod.Find<ModGore>($"{Name}_Gore_0").Type;
+                    int legGore = Mod.Find<ModGore>($"{Name}_Gore_1").Type;
+                    int legGore2 = Mod.Find<ModGore>($"{Name}_Gore_2").Type;
+
+                    // Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore, 1f);
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore2);
+                }
+                if (MultiplayerHelper.IsHost)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero,
+                        ModContent.ProjectileType<ZapShockwave>(), 45, 1, Main.myPlayer);
+                }
+                SoundStyle roarSound = AssetRegistry.Sounds.LeviathanEel.Levigrowl with { PitchVariance = 0.3f };
+                SoundEngine.PlaySound(roarSound, MyTarget.Center);
+
+                NPC.Kill();
+            }
+            Timer = 0;
+        }
+
+        NPC.velocity *= 0.98f;
+    }
+
+    private void AI_TeslaCoil()
+    {
+        _inPhase2 = true;
+        Timer++;
+        lightningCircleCenter = arenaCenter;
+        Vector2 targetOrbitPosition = 
+            (Vector2.UnitY * DesperationCircleRadius).RotatedBy(_aliveTimer * 0.015f);
+        targetOrbitPosition += lightningCircleCenter;
+        void MoveInCircle()
+        {
+            Vector2 targetVelocity = (targetOrbitPosition - NPC.Center);
+            NPC.velocity = targetVelocity;
+            FaceVelocity();
+            for(int i = Chain.points.Length - 1; i >= 0 ; i--)
+            {
+                float radius = DesperationCircleRadius;
+                radius *= ExtraMath.Osc(0.8f, 1f, speed: 1f, offset: i);
+                radius *= MathHelper.Lerp(0.95f, 1f, MathF.Sin(_aliveTimer * 0.05f) + 0.5f);
+                float radians = _aliveTimer * 0.015f  - i * 0.3f ;
+                Vector2 circlingPosition =
+                    (Vector2.UnitY * radius).RotatedBy(radians);
+                circlingPosition += lightningCircleCenter;
+                ref Vector2 p = ref Chain.points[i];
+                p = circlingPosition;
+            }
+        }
+
+        if(AttackCycle >= 2)
+        {
+        
+            _lightningCircleAlpha = 1f;
+            foreach(var player in Main.ActivePlayers)
+            {
+                float distanceToPlayer = Vector2.Distance(lightningCircleCenter, player.Center);
+                if(distanceToPlayer > DesperationCircleRadius && 
+                    distanceToPlayer < DesperationCircleRadius + 400)
+                {
+                    player.AddBuff(ModContent.BuffType<NeuroZap>(), 2);
+                }
+            }
+
+            if (Main.rand.NextBool(14))
+            {
+                Vector2 randomPointOnCircle = Main.rand.NextVector2CircularEdge(DesperationCircleRadius, DesperationCircleRadius);
+                var z = ElectricZapParticle.Spawn(randomPointOnCircle + Main.rand.NextVector2Circular(32, 32),
+                    Main.rand.NextVector2Circular(2, 2), Scale: Main.rand.NextFloat(0.3f, 0.6f));
+                z.Scale *= 0.25f;
+            }
+        }
+        ModContent.GetInstance<LunarLightingRenderer>().leviathanDarken = true;
+
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        SoundStyle startSound = AssetRegistry.Sounds.LeviathanEel.StartBodyPrisma;
+                        SoundEngine.PlaySound(startSound, MyTarget.Center);
+                    }
+                    arenaCenter = FindArenaCenter();
+                    DiveOutNextState();
+                }
+                break;
+            case 1:
+                {
+                    if(Timer == 1)
+                    {
+                        Teleport(lightningCircleCenter - Vector2.UnitY * 800);
+                    }
+
+                    MoveInCircle();
+                    _effects |= EelVisualEffect.Invisible;
+            
+                    if(Timer >= 120)
+                    {
+                        Timer = 0;
+                        AttackCycle=2;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    _aliveTimer += MathHelper.Lerp(0f, 6f, EasingFunction.InExpo(Timer / 60f));
+                    MoveInCircle();
+                    ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 4f, EasingFunction.InOutSine(Timer / 120f));
+
+                    _lightningCircleAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 120f));
+                    _superCharge = MathHelper.Lerp(0f, 0.2f, EasingFunction.InOutSine(Timer / 30f)) * ExtraMath.Osc(0.5f, 1f, speed: 16);
+                    void Spawn(int index, int offset)
+                    {
+                        int combinedIndex = index + offset;
+                        combinedIndex %= Chain.points.Length;
+                        Vector2 pos = Chain.points[combinedIndex];
+                        Projectile.NewProjectile(SourceFromThis, pos, Vector2.Zero, ModContent.ProjectileType<SinElectricShock>(), Sin_Electric_Shock_Damage, 1, Main.myPlayer);
+                    }
+                    if(Timer >= 60f)
+                    {
+                        if (Timer % 2 == 0 && MultiplayerHelper.IsHost)
+                        {
+                            int a = (int)(Timer-60);
+                            a %= Chain.points.Length;
+                            Spawn(a, 0);
+
+
+                        }
+
+                    }
+
+                    if (Timer >= 120)
+                    {
+                        Timer = 0;
+                        AttackCycle = 3;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    //   _effects |= EelVisualEffect.Mirage;
+                    //  float osc = MathF.Sin(Timer * 0.05f) + 0.5f;
+                    // _charge = MathHelper.Lerp(0f, 0.5f, osc);
+                    _siningCharge = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 60f));
+             //       Main.NewText(_siningCharge);
+                    _superCharge = MathHelper.Lerp(0f, 0.1f, EasingFunction.QuadraticBump(Timer / 180f));
+                    _lightningCircleAlpha = 1f;
+                    MoveInCircle();
+                    if(Timer == 1)
+                    {
+                        SoundStyle growlSound = AssetRegistry.Sounds.LeviathanEel.Levigrowl with { PitchVariance = 0.3f };
+                        SoundEngine.PlaySound(growlSound, MyTarget.position);
+                    }
+                    if(Timer % 6 == 0 && Timer < 60)
+                    {
+                        LegacyParticle.NewParticle<ShockParticle>(NPC.Center, Vector2.Zero, Color.White);
+                    }
+                    ShakeScreenPosition.Shake = MathHelper.Lerp(12, 0f, EasingFunction.InOutSine(Timer / 120f));
+                    if (MultiplayerHelper.IsHost && Main.rand.NextBool(150))
+                    {
+                        float radians = Main.rand.NextFloat(0f, MathHelper.TwoPi);
+                        Vector2 offset = radians.ToRotationVector2() * 1200;
+
+                        Projectile.NewProjectile(SourceFromThis, lightningCircleCenter + offset, Vector2.Zero,
+                            ModContent.ProjectileType<ElectricPirahna>(), Electric_Pirahna_Damage, 1, Main.myPlayer,
+                            ai2: NPC.whoAmI);
+                    }
+                    if (Timer >= 540)
+                    {
+                        AttackCounter = 0;
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
+                    _siningCharge = 1f;
+                    _lightningCircleAlpha = 1f;
+                    MoveInCircle();
+                    if(Timer >= 15)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Vector2 pos = lightningCircleCenter;
+                            Vector2 offset = -Vector2.UnitY * 1200;
+                            offset = offset.RotatedBy(_aliveTimer * 0.05f);
+                            pos += offset;
+                            Projectile.NewProjectile(SourceFromThis, pos, Vector2.Zero, 
+                                ModContent.ProjectileType<ElectricPirahna>(), Electric_Pirahna_Damage, 1, Main.myPlayer,
+                                ai2: NPC.whoAmI);
+                        }
+
+                        Timer = 0;
+                        AttackCounter++;
+                        if(AttackCounter >= 10)
+                        {
+                            AttackCounter = 0;
+                            AttackCycle++;
+                        }
+                    }
+                }
+                break;
+            case 5:
+                {
+                    _siningCharge = 1f;
+                    MoveInCircle();
+                    if (Timer >= 15)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Vector2 pos = lightningCircleCenter;
+                            Vector2 offset = -Vector2.UnitY * 1200;
+                            float x = MathHelper.Lerp(-400f, 400f, (_aliveTimer % 60) / 60f);
+                            offset.X += x;
+                            pos += offset;
+                            Projectile.NewProjectile(SourceFromThis, pos, Vector2.Zero,
+                                ModContent.ProjectileType<ElectricPirahna>(), Electric_Pirahna_Damage, 1, Main.myPlayer,
+                                ai2: NPC.whoAmI);
+                        }
+
+                        Timer = 0;
+                        AttackCounter++;
+                        if (AttackCounter >= 5)
+                        {
+                            AttackCounter = 0;
+                            AttackCycle++;
+                        }
+                    }
+                }
+                break;
+            case 6:
+                {
+                    _siningCharge = 1f;
+                    MoveInCircle();
+                    if(Timer >= 120)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 7:
+                {
+                    MoveInCircle();
+                    _effects |= EelVisualEffect.Invisible;
+                    float time = MathHelper.Lerp(20f, 6f, EasingFunction.Clamp(AttackCounter / 30f));
+                    if(Timer >= time)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            float radians = Main.rand.NextFloat(0f, MathHelper.TwoPi);
+                            Vector2 offset = radians.ToRotationVector2() * DesperationCircleRadius;
+
+                            Projectile.NewProjectile(SourceFromThis, lightningCircleCenter + offset, lightningCircleCenter - (lightningCircleCenter + offset),
+                                ModContent.ProjectileType<SuperZap>(), Electric_Pirahna_Damage, 1, Main.myPlayer);
+                        }
+                        Timer = 0;
+                        AttackCounter++;
+                        if(AttackCounter >= 30)
+                        {
+                            AttackCounter = 0;
+                            AttackCycle = 3;
+                        }
+                    }
+                }
+                break;
+
+        }
+    }
+    #endregion
+
+    public override void HitEffect(NPC.HitInfo hit)
+    {
+        base.HitEffect(hit);
+        if(NPC.life <= 0)
+        {
+            if (State != AIState.Death)
+                SwitchState(AIState.Death);
+            NPC.life = 1;
+        }
+    }
+
+    public override void FindFrame(int frameHeight)
+    {
+        base.FindFrame(frameHeight);
+        NPC.frame.Y = frameHeight * _frame;
+    }
+
+    private void AI_Despawn()
+    {
+        Timer++;
+        NPC.velocity.X *= 0.98f;
+        NPC.velocity.Y += 0.5f;
+        FaceVelocity();
+        if (Timer >= 180)
+        {
+            NPC.active = false;
         }
     }
 
     private void AI_SpawnIntro()
     {
+    
         ShowNamePlate();
         SwitchState(AIState.Idle);
     }
-    #region Movement
-    private Vector2 GetNextPointToTrack(float time)
-    {
-        float xRadius = 700;
-        float yRadius = xRadius * 0.15f;
-        Vector2 pointOnOval = _arenaCenter;
-
-        float radians = time * 0.02f;
-        pointOnOval.X += MathF.Sin(radians) * xRadius;
-        pointOnOval.Y += MathF.Cos(radians) * yRadius;
-
-        float osc = MathF.Sin(time * 0.25f) * 0.5f + 0.5f;
-        if (Vector2.Distance(pointOnOval, _arenaCenter) < xRadius * 0.75f)
-        {
-            pointOnOval = Vector2.Lerp(pointOnOval, _arenaCenter, osc * 0.05f);
-        }
-
-        return pointOnOval;
-    }
-
-    private bool HasCrossedPoint(Vector2 current, Vector2 target)
-    {
-        float distanceToPoint = Vector2.Distance(current, target);
-        return distanceToPoint < 8f;
-    }
-    #endregion
 
     private void ChooseAttack()
     {
         if (MultiplayerHelper.IsHost)
         {
-            AIState pattern = PatternManager.NextPattern();
-            SwitchState(pattern);
-            if(_attackToTest != AIState.SpawnIntro)
+            if(NPC.life < NPC.lifeMax * 0.15f)
             {
-                SwitchState(_attackToTest);
+                SwitchState(AIState.Tesla_Coil);
+                return;
             }
+
+            if (InPhase2 && !_inPhase2)
+            {
+                SwitchState(AIState.Phase_Transition);
+                return;
+            }
+
+            if (!_firstAttack)
+            {
+                SwitchState(AIState.Suck);
+                _firstAttack = true;
+                return;
+            }
+            AIState pattern = PatternManager.NextPattern();
+            while (IsBanned(pattern))
+            {
+               
+                pattern = PatternManager.NextPattern();
+            }
+            SwitchState(pattern);
         }
+    }
+
+    private void FaceVelocity()
+    {
+        _facingDirection = Vector2.Lerp(_facingDirection, NPC.velocity.SafeNormalize(Vector2.Zero), 0.2f);
     }
 
     private void AI_Idle()
@@ -1277,32 +2433,542 @@ public class LeviathanEel : ScarletBoss,
         Timer++;
         if (Timer == 1)
         {
+
             NPC.TargetClosest();
-            _arenaCenter = MyTarget.Center - new Vector2(0, 128);
+            NPC.velocity = Vector2.Zero;
+            Teleport(MyTarget.Center - new Vector2(1900, 0));
         }
-        OvalTimer++;
-        //For this movement we'll just have him moving in an oval
-        //But he should have a lot of different movement types
-        //First lets make that oval shape
-        Vector2 pointOnOval = GetNextPointToTrack(OvalTimer);
+        _blackedOut = false;
+        float idleTime = IdleTime;
+        if (InPhase2)
+        {
+            idleTime *= 0.8f;
+        }
+        float speed = MathHelper.Lerp(24, 4f, EasingFunction.QuadraticBump(Timer / idleTime));
+        MoveAndSinToward(Vector2.UnitX, speed);
+        FaceVelocity();
+        if (Timer < IdleTime / 2f)
+            _effects |= EelVisualEffect.Mirage;
 
 
-        Vector2 vectorToOvalPoint = pointOnOval - NPC.Center;
-        vectorToOvalPoint = vectorToOvalPoint.SafeNormalize(Vector2.Zero);
+        int halfTime = (int)(idleTime * 0.5f);
+        if(Timer == halfTime)
+        {
+            SoundStyle growlSound = AssetRegistry.Sounds.LeviathanEel.Levigrowl with { PitchVariance = 0.8f };
+            SoundEngine.PlaySound(growlSound, MyTarget.Center);
+        }
 
-        Vector2 targetVelocity = vectorToOvalPoint;
-        float movementSpeed = MathHelper.SmoothStep(3f, 10f, EasingFunction.InOutSine(OvalTimer / 120f));
-        targetVelocity *= movementSpeed;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, 0.15f);
-        _facingDirection = Vector2.Lerp(_facingDirection, NPC.velocity.SafeNormalize(Vector2.Zero), 0.2f);
-        if(Timer >= IdleTime)
+        if (Timer >= idleTime)
         {
             ChooseAttack();
         }
     }
+    #region Dash Trail
 
-    public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+    private Color DashTrailColorFunction(float completionRatio)
     {
-        // throw new NotImplementedException();
+        return Color.Lerp(Color.White, Color.Transparent, EasingFunction.InExpo(completionRatio)) * _dashTrailAlpha * EasingFunction.QuadraticBump(completionRatio);
     }
+
+    private float DashTrailWidthFunction(float completionRatio)
+    {
+        return MathHelper.SmoothStep(128, 128, completionRatio);
+    }
+    private void RenderPixelatedDashTrail(GraphicsDevice gDevice)
+    {
+        BasicLaserShader laserShader = BasicLaserShader.Instance;
+        laserShader.LaserTexture = AssetManager.LaserTextures.SplittingTrail;
+        laserShader.InnerColor = Color.White;
+        laserShader.OuterColor = Color.Lerp(Color.White, Color.LightBlue, ExtraMath.Osc(0f, 1f, speed: 16));
+        TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, DashTrailColorFunction, DashTrailWidthFunction, laserShader, NPC.Size * 0.5f);
+    }
+    #endregion
+    #region DrawCode
+    private void LoadSegmentTextureAssets()
+    {
+        if (_segmentTextureAssets != null)
+            return;
+        _bulbGlowTextureAsset = ModContent.Request<Texture2D>($"{Texture}_BulbGlow");
+        _eyeballTextureAsset = ModContent.Request<Texture2D>($"{Texture}_Eyeball");
+        _pupilTextureAsset = ModContent.Request<Texture2D>($"{Texture}_Pupil");
+        _segmentTextureAssets = new Asset<Texture2D>[5];
+        _segmentGlowTextureAssets = new Asset<Texture2D>[5];
+        for (int i = 0; i < _segmentTextureAssets.Length; i++)
+        {
+            _segmentTextureAssets[i] = ModContent.Request<Texture2D>($"{Texture}_{i}");
+            _segmentGlowTextureAssets[i] = ModContent.Request<Texture2D>($"{Texture}_{i}_Glow");
+        }
+
+        _eyeTextureAssets = new Asset<Texture2D>[3];
+        for (int i = 0; i < _eyeTextureAssets.Length; i++)
+        {
+            _eyeTextureAssets[i] = ModContent.Request<Texture2D>($"{Texture}_Eye_{i}");
+        }
+        _eyebrowTextureAsset = ModContent.Request<Texture2D>($"{Texture}_Eyebrow");
+    }
+
+    private Color GetTrailColor(float completionRatio)
+    {
+        float osc = MathF.Sin(Main.GlobalTimeWrappedHourly * 4 + completionRatio * 8) * 0.5f + 0.5f;
+        return Color.Lerp(Color.White, Main.DiscoColor, osc) * 0.5f;
+    }
+
+    private float GetTrailWidth(float completionRatio)
+    {
+        return MathHelper.SmoothStep(17, 17, completionRatio) * _lightningCircleAlpha;
+    }
+    private float GetTrailWidth2(float completionRatio)
+    {
+        return GetTrailWidth(completionRatio) * 2f;
+    }
+
+
+    private void DrawLightningCircle(GraphicsDevice gDevice)
+    {
+        if (_lightningCircleAlpha <= 0.03f)
+            return;
+        Vector2[] circlePoints = CommonDrawing.InterpolatePointsOnACircle(lightningCircleCenter, DesperationCircleRadius, 32);
+        for(int i = 0; i < circlePoints.Length; i++)
+        {
+            float strength = ExtraMath.Osc(0f, 16f, speed: 1);
+            circlePoints[i] += Main.rand.NextVector2Circular(strength, strength);
+        }
+        var shader = RichLaserShader.Instance;
+        shader.LaserColor = Color.White * 0.15f;
+        shader.InnerColor = Main.DiscoColor * 0.15f;
+        shader.OuterColor = Color.Goldenrod * 0.15f;
+        shader.LaserTexture = AssetManager.LaserTextures.TexturedLaser;
+        shader.BloomTexture = AssetManager.LaserTextures.TexturedLaser2;
+        TrailDrawer.Draw(circlePoints, GetTrailColor, GetTrailWidth, shader);
+
+        ZapLightningShader lightingShader = ZapLightningShader.Instance;
+        lightingShader.Amplitude = 0.5f;
+
+        float time = Main.GlobalTimeWrappedHourly * 16;
+        float levels = 4;
+        time = MathF.Floor(time * levels) / levels;
+        lightingShader.Time = time;
+        Asset<Texture2D> laserTexture = AssetManager.LaserTextures.TexturedLaser;
+        lightingShader.LaserTexture = laserTexture;
+        lightingShader.Noise = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BlurryPerlinNoise").Value;
+        lightingShader.Gradient = ModContent.Request<Texture2D>(ModContent.GetInstance<ZapShockwave>().Texture + "_Gradient").Value;
+        lightingShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+        lightingShader.Levels = 64;
+        lightingShader.Tiling = new Vector2(2f);
+        lightingShader.BloomColor = Color.White * 0.1f;
+        TrailDrawer.Draw(Main.spriteBatch, circlePoints, GetTrailColor, GetTrailWidth2, lightingShader);
+
+        BloomTrailShader bloom = BloomTrailShader.Instance;
+        bloom.InnerColor = Color.SkyBlue * 0.5f;
+        bloom.OuterColor = Color.DeepSkyBlue * 0.5f;
+        TrailDrawer.Draw(Main.spriteBatch, circlePoints, GetTrailColor, GetTrailWidth2, bloom);
+    }
+
+    private void DrawSegment(int index, int segmentIndex, Color? overrideColor = null)
+    {
+        //Segment 0 is drawn manually
+        if (index == 0)
+            return;
+        if ((Chain.points.Length - index) < _hideSegmentCount)
+            return;
+
+        Vector2 root = Chain.points[index];
+        Vector2 next = Chain.points[index - 1];
+        float rotation = (next - root).ToRotation();
+        Asset<Texture2D> segmentTextureAsset = _segmentTextureAssets[segmentIndex];
+        SpritebatchDrawer segmentDrawer = SpritebatchDrawer.FromTextureAsset(segmentTextureAsset, root);
+        segmentDrawer.rotation = rotation;
+
+        float ratio = index / (float)(Chain.points.Length - 2);
+        segmentDrawer.scale = Vector2.One * MathHelper.SmoothStep(1f, 0.85f, ratio);
+
+        if (overrideColor.HasValue)
+        {
+            segmentDrawer.color = overrideColor.Value;
+        }
+        segmentDrawer.color *= _invisibleAlpha;
+        Main.spriteBatch.Draw(segmentDrawer);
+
+        if (overrideColor == null)
+        {
+            float extraCharge = MathF.Sin(_aliveTimer * 0.05f + index * 12f) * 0.5f + 0.5f;
+     //       Main.NewText(extraCharge);
+            extraCharge *= _siningCharge;
+        
+            Color lightningColor = new Color(185, 255, 234);
+            float chargePerSegment = 1f / Chain.points.Length;
+            float myCharge = _charge - (chargePerSegment * index);
+
+            float levelOfCharge = EasingFunction.Clamp((myCharge / chargePerSegment));
+            levelOfCharge += extraCharge;
+            segmentDrawer.texture = _segmentGlowTextureAssets[segmentIndex].Value;
+            segmentDrawer.color = Color.Lerp(Color.Black, lightningColor, levelOfCharge) * ExtraMath.Osc(0.5f, 1f, speed: 12, offset: index)
+                * _invisibleAlpha;
+            segmentDrawer.color.A = 0;
+           // Main.NewText(segmentDrawer.color);
+            Main.spriteBatch.Draw(segmentDrawer);
+
+            SpritebatchDrawer glowingDrawer2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, root);
+            glowingDrawer2.color = Color.Lerp(Color.Black, lightningColor, levelOfCharge) * ExtraMath.Osc(0.5f, 1f, speed: 12, offset: index) * 0.2f
+                * _invisibleAlpha;
+            glowingDrawer2.color.A = 0;
+            Main.spriteBatch.Draw(glowingDrawer2);
+            Lighting.AddLight(root, lightningColor.ToVector3() * levelOfCharge * 0.3f);
+        }
+    }
+
+    private void DrawAllSegments(Color? overrideColor = null)
+    {
+        //Draw Tail 
+        int tailIndex = 4;
+        int neckIndex = 0;
+        DrawSegment(Chain.points.Length - 1, tailIndex, overrideColor);
+
+        int segmentCounter = 0;
+        for (int i = Chain.points.Length - 1; i > 1; i--)
+        {
+            segmentCounter++;
+            float ratio = segmentCounter / (float)(Chain.points.Length - 2);
+            int segmentTextureIndex = (int)MathHelper.Lerp(3, 1, ratio);
+            DrawSegment(i, segmentTextureIndex, overrideColor);
+        }
+
+        //Draw Neck
+        DrawSegment(1, neckIndex, overrideColor);
+    }
+    private void DrawWhites(SpriteBatch sb)
+    {
+        DrawAllSegments(_outliner.outlineColor);
+        SpritebatchDrawer segmentDrawer = SpritebatchDrawer.FromNPC(NPC);
+        segmentDrawer.color = _outliner.outlineColor;
+        sb.Draw(segmentDrawer);
+    }
+
+    private void DrawBlacks(SpriteBatch sb, Vector2 screenPos)
+    {
+        SpritebatchDrawer bloomLineTelegraphDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Extra_48"), NPC.Center);
+        bloomLineTelegraphDrawer.rotation = _bloomLineRot - MathHelper.PiOver2;
+        bloomLineTelegraphDrawer.color = _bloomLineColor;
+        bloomLineTelegraphDrawer.color.A = 0;
+        bloomLineTelegraphDrawer.scale.Y *= 4f;
+        bloomLineTelegraphDrawer.scale.X *= 1.15f;
+        sb.Draw(bloomLineTelegraphDrawer);
+        if (_blackAlpha < 0.02f)
+            return;
+
+        Vector2 targetDirection = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+        SpritebatchDrawer blackDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Vector2.Zero);
+        blackDrawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+        blackDrawer.color = Color.Black * _blackAlpha;
+        blackDrawer.drawOrigin = Vector2.Zero;
+        sb.Draw(blackDrawer);
+
+        for (int i = 0; i < _eyeballs.Length; i++)
+        {
+            ref FloatingEyeball floatingEyeball = ref _eyeballs[i];
+            if (!_inPhase2)
+                continue;
+
+            SpritebatchDrawer pupilDrawer = SpritebatchDrawer.FromTextureAsset(_pupilTextureAsset, floatingEyeball.position);
+            pupilDrawer.drawOrigin -= targetDirection * 10;
+            pupilDrawer.color *= _invisibleAlpha * ExtraMath.Osc(0.5f, 1f, speed: 12, offset: i) * _blackAlpha;
+            sb.Draw(pupilDrawer);
+
+            pupilDrawer.color = Main.DiscoColor * ExtraMath.Osc(0.5f, 1f, speed: 1, offset: i) * _blackAlpha;
+            pupilDrawer.color.A = 0;
+            sb.Draw(pupilDrawer);
+        }
+    }
+
+    private void DrawFishes(SpriteBatch sb, Vector2 screenPos)
+    {
+        if (_lightningCircleAlpha < 0.1f)
+            return;
+
+        Asset<Texture2D> fishTextureAsset = TextureAssets.Projectile[ModContent.ProjectileType<ElectricPirahna>()];
+
+        float numFishes = 32;
+        for(int i = 0; i < numFishes; i++)
+        {
+            float radians = (float)i / numFishes;
+            radians *= MathHelper.TwoPi;
+            radians += Main.GlobalTimeWrappedHourly * 0.6f;
+            Vector2 offset = -Vector2.UnitY * 800 * ExtraMath.Osc(0.75f, 1f, speed: 1, offset: i);
+            offset = offset.RotatedBy(radians);
+            Vector2 pos = lightningCircleCenter + offset;
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(fishTextureAsset, pos);
+            float rotation = radians;// - MathHelper.PiOver2;
+            sbDrawer.color *= _lightningCircleAlpha;
+            sbDrawer.rotation = rotation;
+            sb.Draw(sbDrawer);
+        }
+
+
+        for (int i = 0; i < numFishes; i++)
+        {
+            float radians = (float)i / numFishes;
+            radians *= MathHelper.TwoPi;
+            radians += Main.GlobalTimeWrappedHourly * 0.6f;
+            Vector2 offset = -Vector2.UnitY * 700 * ExtraMath.Osc(0.75f, 1f, speed: 1, offset: i);
+            offset = offset.RotatedBy(-radians);
+            Vector2 pos = lightningCircleCenter + offset;
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(fishTextureAsset, pos);
+            float rotation = -radians;// - MathHelper.PiOver2;
+            sbDrawer.spriteEffects = SpriteEffects.FlipHorizontally;
+            sbDrawer.color *= _lightningCircleAlpha;
+            sbDrawer.rotation = rotation;
+            sb.Draw(sbDrawer);
+        }
+    }
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        LoadSegmentTextureAssets();
+        OutlineRenderer.Queue(DrawWhites);
+        DrawFishes(spriteBatch, screenPos);
+        PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedDashTrail);
+        PixelationManager.QueuePrimitivesDrawAction(DrawLightningCircle);
+        PixelationManager.QueuePrimitivesDrawAction(DrawHair);
+        PixelationManager.QueuePrimitivesDrawAction(DrawHairBack, DrawLayer.BehindTiles);
+        PixelationManager.QueuePrimitivesDrawAction(DrawEyeTentacles, DrawLayer.BehindTiles);
+        PixelationManager.QueueSpritebatchDrawAction(DrawBlacks, DrawLayer.OverPlayers);
+
+        bool drawMirage = _mirageAlpha > 0.03f;
+        if (drawMirage)
+        {
+            MirageShader mirageShader = MirageShader.Instance;
+            mirageShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
+            mirageShader.Time = Main.GlobalTimeWrappedHourly;
+            mirageShader.Alpha = _mirageAlpha;
+            spriteBatch.Restart(effect: mirageShader.Effect);
+        }
+
+        DrawAllSegments();
+
+
+        //Finally attach the head
+
+        for (int i = 0; i < NPC.oldPos.Length; i++)
+        {
+            float ratio = i / (float)NPC.oldPos.Length;
+            SpritebatchDrawer afDrawer = SpritebatchDrawer.FromNPC(NPC);
+            afDrawer.color *= MathHelper.Lerp(1f, 0f, ratio) * 0.05f;
+            afDrawer.color *= _invisibleAlpha;
+            afDrawer.color *= _dashTrailAlpha;
+            afDrawer.worldPosition = NPC.oldPos[i] + NPC.Size * 0.5f;
+            afDrawer.rotation = NPC.oldRot[i];
+            spriteBatch.Draw(afDrawer);
+        }
+        SpritebatchDrawer segmentDrawer = SpritebatchDrawer.FromNPC(NPC);
+        segmentDrawer.color *= _invisibleAlpha;
+        segmentDrawer.scale *= _eatingSquishScale;
+        spriteBatch.Draw(segmentDrawer);
+
+        //draw eyes
+        Vector2 targetDirection = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+        for (int i = 0; i < _eyeTextureAssets.Length; i++)
+        {
+            if (_inPhase2)
+                continue;
+
+            Asset<Texture2D> eyeTextureAsset = _eyeTextureAssets[i];
+            SpritebatchDrawer eyeDrawer = SpritebatchDrawer.FromTextureAsset(eyeTextureAsset, NPC.Center);
+            eyeDrawer.spriteEffects = segmentDrawer.spriteEffects;
+            eyeDrawer.rotation = segmentDrawer.rotation;
+            eyeDrawer.scale = Vector2.One * NPC.scale;
+            eyeDrawer.drawOrigin -= targetDirection * 10;
+            eyeDrawer.color *= _invisibleAlpha;
+            spriteBatch.Draw(eyeDrawer);
+
+            //Glow in the darkkk
+            eyeDrawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 1, offset: i);
+            eyeDrawer.color.A = 0;
+            spriteBatch.Draw(eyeDrawer);
+        }
+
+        SpritebatchDrawer bulbDrawer = SpritebatchDrawer.FromTextureAsset(_bulbGlowTextureAsset, NPC.Center);
+        bulbDrawer.spriteEffects = segmentDrawer.spriteEffects;
+        bulbDrawer.rotation = segmentDrawer.rotation;
+        bulbDrawer.scale = Vector2.One * NPC.scale;
+
+        bulbDrawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 1);
+        bulbDrawer.color *= _invisibleAlpha;
+        bulbDrawer.color.A = 0;
+        spriteBatch.Draw(bulbDrawer);
+
+        SpritebatchDrawer eyebrowDrawer = SpritebatchDrawer.FromTextureAsset(_eyebrowTextureAsset, NPC.Center);
+        eyebrowDrawer.rotation = segmentDrawer.rotation;
+        eyebrowDrawer.spriteEffects = segmentDrawer.spriteEffects;
+        eyebrowDrawer.scale = Vector2.One * NPC.scale;
+        eyebrowDrawer.drawOrigin = new Vector2(80, 64);
+        eyebrowDrawer.color *= _invisibleAlpha;
+        spriteBatch.Draw(eyebrowDrawer);
+
+        for (int i = 0; i < _eyeballs.Length; i++)
+        {
+            ref FloatingEyeball floatingEyeball = ref _eyeballs[i];
+            if (!_inPhase2)
+                continue;
+
+            SpritebatchDrawer eyeDrawer = SpritebatchDrawer.FromTextureAsset(_eyeballTextureAsset, floatingEyeball.position);
+            eyeDrawer.color *= _invisibleAlpha;
+            spriteBatch.Draw(eyeDrawer);
+
+            SpritebatchDrawer pupilDrawer = SpritebatchDrawer.FromTextureAsset(_pupilTextureAsset, floatingEyeball.position);
+            pupilDrawer.drawOrigin -= targetDirection * 10;
+            pupilDrawer.color *= _invisibleAlpha;
+            spriteBatch.Draw(pupilDrawer);
+
+            pupilDrawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 1, offset: i);
+            pupilDrawer.color.A = 0;
+            spriteBatch.Draw(pupilDrawer);
+        }
+
+        if (drawMirage)
+        {
+            spriteBatch.RestartDefaults();
+        }
+
+        if (_superCharge > 0.05f)
+        {
+            for (int i = 0; i < Chain.points.Length; i++)
+            {
+                Vector2 pos = Chain.points[i];
+                SpritebatchDrawer superChargeDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, pos);
+                superChargeDrawer.color = Main.DiscoColor;
+                superChargeDrawer.color *= _superCharge * ExtraMath.Osc(0.9f, 1f, speed: 10) * _invisibleAlpha;
+                superChargeDrawer.color.A = 0;
+                superChargeDrawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 0.5f, _superCharge) * ExtraMath.Osc(0.9f, 1f, speed: 10, offset: i) * 2;
+                Main.spriteBatch.Draw(superChargeDrawer);
+
+                superChargeDrawer.scale *= 0.4f;
+                Main.spriteBatch.Draw(superChargeDrawer);
+            }
+        }
+
+
+        SpritebatchDrawer chargeDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, BulbPosition);
+        chargeDrawer.color = Color.LightSkyBlue;
+        chargeDrawer.color *= _bulbCharge * ExtraMath.Osc(0.9f, 1f, speed: 10);
+        chargeDrawer.color.A = 0;
+        chargeDrawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 0.5f, _bulbCharge) * ExtraMath.Osc(0.9f, 1f, speed: 10);
+        Main.spriteBatch.Draw(chargeDrawer);
+
+        chargeDrawer.scale *= 0.4f;
+        Main.spriteBatch.Draw(chargeDrawer);
+
+
+        SpritebatchDrawer lampGlow = chargeDrawer;
+        lampGlow.color = Color.LightSkyBlue;
+        lampGlow.color *= ExtraMath.Osc(0.9f, 1f, speed: 10) * 0.35f * _invisibleAlpha; ;
+        lampGlow.color.A = 0;
+        lampGlow.scale = Vector2.One * 0.5f * ExtraMath.Osc(0.9f, 1f, speed: 10) * 2f;
+        Main.spriteBatch.Draw(lampGlow);
+
+
+        SpritebatchDrawer eyeFlashDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, EyeFlashPosition);
+        eyeFlashDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.OutSine(_eyeFlashAlpha)) * 1.3f;
+        eyeFlashDrawer.color = Color.White;
+        eyeFlashDrawer.color.A = 0;
+        eyeFlashDrawer.worldPosition += _eyeFlashOffset;
+        eyeFlashDrawer.rotation = Main.GlobalTimeWrappedHourly * 4;
+        Main.spriteBatch.Draw(eyeFlashDrawer);
+
+        eyeFlashDrawer.scale *= 0.8f;
+        Main.spriteBatch.Draw(eyeFlashDrawer);
+        return false;
+    }
+    #region Hair Rendering
+    private void SimulateHair()
+    {
+        HairChain.points[0] = NPC.Center + new Vector2(-80, -64).RotatedBy(NPC.rotation);
+        HairChain.points[0].Y -= 4 + ExtraMath.Osc(0f, 16, speed: 2);
+        HairChain.pinned[0] = true;
+
+        for (int i = 0; i < 6; i++)
+        {
+            HairChain.points[i].Y += ExtraMath.Osc(-8f, 8f, speed: 0.5f, offset: i);
+        }
+        for (int i = 0; i < HairChain.points.Length; i++)
+        {
+            HairChain.points[i].Y += MathHelper.Lerp(0.2f, 1f, i / (float)HairChain.points.Length);
+        }
+        HairChain.ResolveBackToRoot();
+
+
+
+        HairChain2.points[0] = NPC.Center + new Vector2(-64, -80).RotatedBy(NPC.rotation);
+        HairChain2.points[0].Y -= 4 + ExtraMath.Osc(0f, 16, speed: 2);
+        HairChain2.pinned[0] = true;
+
+        for (int i = 0; i < 6; i++)
+        {
+            HairChain2.points[i].Y += ExtraMath.Osc(-8f, 8f, speed: 0.5f, offset: i);
+        }
+        for (int i = 0; i < HairChain2.points.Length; i++)
+        {
+            HairChain2.points[i].Y += MathHelper.Lerp(0.2f, 1f, i / (float)HairChain2.points.Length);
+        }
+        HairChain2.ResolveBackToRoot();
+    }
+    private float GetHairWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(24, 0, ratio) * EasingFunction.QuadraticBump(ratio);
+    }
+    private Color GetHairColor(float ratio)
+    {
+        return Color.DarkGray * EasingFunction.OutExpo(ratio + 0.5f) * _invisibleAlpha;
+    }
+    private Color GetHairColor2(float ratio)
+    {
+        return Color.Lerp(Color.DarkGray, Color.Black, 0.5f) * EasingFunction.OutExpo(ratio + 0.5f) * _invisibleAlpha;
+    }
+    private float GetEyeWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(7, 0, ratio) * EasingFunction.QuadraticBump(ratio);
+    }
+    private Color GetEyeColor(float ratio)
+    {
+        return Color.DarkOliveGreen * _invisibleAlpha;
+    }
+
+    private void DrawHair(GraphicsDevice gDevice)
+    {
+        HairShader shader = ShaderContent.GetInstance<HairShader>();
+        shader.LaserTexture = TrailRegistry.GlowTrailNoBlack;
+        shader.Time = Main.GlobalTimeWrappedHourly * 0.2f;
+        shader.WaveFrequency = 8;
+        shader.XOffset = 12;
+        TrailDrawer.Draw(Main.spriteBatch, HairChain.points, GetHairColor, GetHairWidth, shader);
+        if (!_inPhase2)
+            return;
+        for (int i = 0; i < EyeTentacles.Length; i++)
+        {
+            TrailDrawer.Draw(Main.spriteBatch, EyeTentacles[i].points, GetEyeColor, GetEyeWidth, shader);
+        }
+    }
+    private void DrawEyeTentacles(GraphicsDevice gDevice)
+    {
+        if (!_inPhase2)
+            return;
+        HairShader shader = ShaderContent.GetInstance<HairShader>();
+        shader.LaserTexture = TrailRegistry.GlowTrailNoBlack;
+        shader.Time = Main.GlobalTimeWrappedHourly * 0.2f;
+        shader.WaveFrequency = 8;
+        shader.XOffset = 12;
+        for (int i = 0; i < EyeTentacles.Length; i++)
+        {
+            TrailDrawer.Draw(Main.spriteBatch, EyeTentacles[i].points, GetEyeColor, GetEyeWidth, shader);
+        }
+    }
+    private void DrawHairBack(GraphicsDevice gDevice)
+    {
+        HairShader shader = ShaderContent.GetInstance<HairShader>();
+        shader.LaserTexture = TrailRegistry.GlowTrailNoBlack;
+        shader.Time = Main.GlobalTimeWrappedHourly * 0.2f;
+        shader.WaveFrequency = 8;
+        shader.XOffset = 12;
+        TrailDrawer.Draw(Main.spriteBatch, HairChain2.points, GetHairColor2, GetHairWidth, shader);
+    }
+    #endregion
+    #endregion
 }

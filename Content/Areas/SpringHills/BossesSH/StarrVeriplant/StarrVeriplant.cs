@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles;
 using Stellamod.Core;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Placeable;
-using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -429,7 +429,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                     {
                         MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
                         myPlayer.ShakeAtPosition(NPC.Center, 1024f, 30f);
-                        ShakeModSystem.Shake = 2;
+                        ShakeScreenPosition.Shake = 2;
                         SoundStyle boom = SoundID.DD2_ExplosiveTrapExplode;
                         boom.PitchVariance = 0.3f;
                         SoundEngine.PlaySound(boom, NPC.position);
@@ -546,7 +546,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                     {
                         MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
                         myPlayer.ShakeAtPosition(NPC.Center, 1024f, 30f);
-                        ShakeModSystem.Shake = 2;
+                        ShakeScreenPosition.Shake = 2;
                         SoundStyle boom = SoundID.DD2_ExplosiveTrapExplode;
                         boom.PitchVariance = 0.3f;
                         SoundEngine.PlaySound(boom, NPC.position);
@@ -758,7 +758,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                         }
 
 
-                        ShakeModSystem.Shake = 16;
+                        ShakeScreenPosition.Shake = 16;
                         FXUtil.ShakeCamera(NPC.position, 1024, 129);
                         SoundStyle boom = new SoundStyle("Stellamod/Assets/Sounds/RocketExplosion");
                         boom.PitchVariance = 0.3f;
@@ -814,12 +814,6 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
         public override bool CanFight()
         {
             return !DownedBossTracker.IsDowned(DownedBossFlag.StoneGolem);
-        }
-
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            //  npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StoneKey>(), 1, 1, 1));
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<VeriBossRel>()));
         }
     }
 }

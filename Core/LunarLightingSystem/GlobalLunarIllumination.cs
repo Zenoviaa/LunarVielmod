@@ -13,14 +13,26 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
-            GlobalLum = 0.3f;
+            GlobalLum = 0.15f;
+            BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
+            if (biomePlayer.ZoneHarmonicCoralways)
+            {
+                GlobalLum = 0.3f;
+            }
+
             if (Main.LocalPlayer.ZoneUnderworldHeight)
             {
-                GlobalLum = 0.7f;
+                GlobalLum = 0.1f;
             }
-            if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower)
+            if (biomePlayer.ZoneMoonspiralTower)
             {
                 GlobalLum = 0.5f;
+            }
+        
+
+            if(Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneDrakonic || Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneCinder)
+            {
+                GlobalLum = 0.3f;
             }
             GlobalLightStrength = MathHelper.Lerp(GlobalLightStrength, GlobalLum, 0.1f);
   
@@ -35,17 +47,23 @@ namespace Stellamod.Core.LunarLightingSystem
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.BeamingLights)
                 return;
+
           
-            if (!Main.tile[i, j].HasTile)
+            Tile tile = Main.tile[i, j];
+            if (tile.HasTile)
+                return;
+            if (tile.WallType > 0)
+                return;
+   
+
+            float lightStrength = GlobalLumSystem.GlobalLightStrength;
+            if (lightStrength > 0)
             {
-                float lightStrength = GlobalLumSystem.GlobalLightStrength;
-                if (lightStrength > 0)
-                {
-                    r = MathHelper.Clamp(r + lightStrength, 0, 1);
-                    g = MathHelper.Clamp(g + lightStrength, 0, 1);
-                    b = MathHelper.Clamp(b + lightStrength, 0, 1);
-                }
+                r = MathHelper.Clamp(r + lightStrength, 0, 1);
+                g = MathHelper.Clamp(g + lightStrength, 0, 1);
+                b = MathHelper.Clamp(b + lightStrength, 0, 1);
             }
+        
 
         }
     }

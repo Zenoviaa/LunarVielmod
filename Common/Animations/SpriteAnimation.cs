@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Stellamod.Common.Animations
 {
@@ -14,9 +15,29 @@ namespace Stellamod.Common.Animations
         }
 
         public float extraUpdates;
+        public void NetSend(BinaryWriter writer)
+        {
+            writer.Write(_name);
+            _currentAnimation.NetSend(writer);
+        }
+        
+        public void NetReceive(BinaryReader reader)
+        {
+            _name = reader.ReadString();
+            PlayAnimation(_name);
+            _currentAnimation.NetReceive(reader);
+        }
+
         public void AddAnimation(string name, SpriteAnimation animation)
         {
             _animations.Add(name, animation);
+        }
+
+        public bool IsTimerFinished(float timer)
+        {
+            if (_currentAnimation == null)
+                return true;
+            return _currentAnimation.ShouldBeFinished(timer);
         }
 
         public bool IsFinished()
@@ -98,6 +119,21 @@ namespace Stellamod.Common.Animations
         public bool reverse;
         public Vector2? drawOriginOverride;
         public bool isFinished;
+        public void NetSend(BinaryWriter writer)
+        {
+            writer.Write(_frame);
+            writer.Write(_frameCounter);
+            writer.Write(isFinished);
+            writer.Write(isPlaying);
+        }
+
+        public void NetReceive(BinaryReader reader)
+        {
+            _frame = reader.ReadInt32();
+            _frameCounter = reader.ReadSingle();
+            isFinished = reader.ReadBoolean();
+            isPlaying = reader.ReadBoolean();
+        }
 
         public int GetFrameCount()
         {
@@ -116,6 +152,17 @@ namespace Stellamod.Common.Animations
             }
 
             isPlaying = true;
+        }
+
+        public float AnimationTime()
+        {
+            float ticksPerFrame = 1f / frameSpeed;
+            return ticksPerFrame * ((endFrame-startFrame)+1);
+        }
+
+        public bool ShouldBeFinished(float timer)
+        {
+            return timer >= AnimationTime();
         }
 
         public void Stop()

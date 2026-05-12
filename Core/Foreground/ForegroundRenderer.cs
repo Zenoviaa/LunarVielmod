@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace Stellamod.Core.Foreground
 {
@@ -51,6 +52,14 @@ namespace Stellamod.Core.Foreground
         /// <param name="zLayer"></param>
         public virtual void SetLayering(ref float zLayer, ref Vector2 parallax)
         {
+            if (NPC.AnyDanger())
+            {
+                drawAlpha = MathHelper.Lerp(drawAlpha, 0f, 0.1f);
+            }
+            else
+            {
+                drawAlpha = MathHelper.Lerp(drawAlpha, 1f, 0.1f);
+            }
 
         }
 
@@ -86,6 +95,7 @@ namespace Stellamod.Core.Foreground
             {
                 ForegroundLayer layer = _layers[i];
                 bool isActive = layer.IsActive();
+             //   Main.NewText($"{layer.GetType().Name} {isActive}");
                 if(layer.fade <= 0 && !layer.showWhenNotGrounded)
                 {
                     bool isPlayerTouchingGround = Main.LocalPlayer.velocity.Y == 0;
@@ -126,13 +136,15 @@ namespace Stellamod.Core.Foreground
             if (!_drawForeground)
                 return;
 
-            if (!ModContent.GetInstance<LunarVeilClientConfig>().Foreground)
+            if (ModContent.GetInstance<LunarVeilClientConfig>().Foreground <= 0)
                 return;
 
             void Draw(SpriteBatch spriteBatch, ForegroundLayer layer)
             {
+          
                 if (layer.fade > 0)
                 {
+             
                     if (layer.tilingInBothAxes)
                     {
                         DrawForegroundXY(spriteBatch, layer);
@@ -173,15 +185,31 @@ namespace Stellamod.Core.Foreground
                 else
                 {
 
-                    ForegroundParallaxShader parallaxShader = ForegroundParallaxShader.Instance;
+                    if (layer.tilingInBothAxes)
+                    {
+                        ForegroundParallaxXYShader parallaxShader = ForegroundParallaxXYShader.Instance;
 
+                        //     Main.NewText(layer.totalParallax);
+                        Vector2 p = layer.totalParallax * 0.0003f + new Vector2(0, 0);
+                        parallaxShader.Parallax = p;
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                            parallaxShader.Effect, Main.GameViewMatrix.TransformationMatrix);
+                        Draw(spriteBatch, layer);
+                        spriteBatch.End();
+                    }
+                    else
+                    {
+                        ForegroundParallaxShader parallaxShader = ForegroundParallaxShader.Instance;
 
-                    Vector2 p = layer.totalParallax * 0.0003f + new Vector2(0, 0);
-                    parallaxShader.Parallax = p;
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
-                        parallaxShader.Effect, Main.GameViewMatrix.TransformationMatrix);
-                    Draw(spriteBatch, layer);
-                    spriteBatch.End();
+                        //     Main.NewText(layer.totalParallax);
+                        Vector2 p = layer.totalParallax * 0.0003f + new Vector2(0, 0);
+                        parallaxShader.Parallax = p;
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer,
+                            parallaxShader.Effect, Main.GameViewMatrix.TransformationMatrix);
+                        Draw(spriteBatch, layer);
+                        spriteBatch.End();
+                    }
+              
                 }
 
             }
@@ -195,29 +223,30 @@ namespace Stellamod.Core.Foreground
             //Main.NewText(layer.fade);
             Texture2D foregroundTexture = ModContent.Request<Texture2D>(layer.Texture).Value;
             Vector2 drawOrigin = Vector2.Zero;
-            Color drawColor = Color.White * layer.fade;
 
-            float drawWidth = foregroundTexture.Width * scale;
-            float drawHeight = foregroundTexture.Height * scale;
-
-
+ 
             Vector2 parallax = Vector2.Zero;
             float zLayer = 0f;
             layer.SetLayering(ref zLayer, ref parallax);
+            Vector2 oldScreenPosition = Main.screenLastPosition;
+            Vector2 screenPosition = Main.screenPosition;
+            Vector2 cameraMovement = screenPosition - oldScreenPosition;
+            Vector2 parallaxAdd = cameraMovement * parallax;
+            layer.totalParallax += parallaxAdd;
+
 
             float cameraX = (Main.Camera.Center.X);
             float cameraY = (Main.Camera.Center.Y);
-            float xParallax = (cameraX * parallax.X);
-            float yParallax = (cameraY * parallax.Y);
 
 
-            Vector2 drawPosition = Vector2.Zero;
-            drawPosition.Y -= yParallax;
-            drawPosition.X -= xParallax;
-
-
+          //  Main.NewText("e");
             Rectangle drawRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-            spriteBatch.Draw(foregroundTexture, drawRectangle, null, Color.White * 1f * layer.fade, 0, Vector2.Zero, SpriteEffects.None, 0);
+            float foregroundAlpha = ModContent.GetInstance<LunarVeilClientConfig>().Foreground;
+            foregroundAlpha /= 100f;
+
+            Color drawColor = Color.White * 1f * layer.fade * layer.drawAlpha * foregroundAlpha;
+
+            spriteBatch.Draw(foregroundTexture, drawRectangle, null, drawColor, 0, Vector2.Zero, SpriteEffects.None, 0);
 
             /*
             Vector2 cameraCenterWorld = Main.Camera.Center;
@@ -267,7 +296,9 @@ namespace Stellamod.Core.Foreground
 
             Rectangle targetRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
             Color drawColor = Color.Black;
-            spriteBatch.Draw(foregroundTexture, new Vector2(0, Main.screenHeight), targetRectangle, drawColor * 0.62f * layer.fade * layer.drawAlpha, 0, 
+            float foregroundAlpha = ModContent.GetInstance<LunarVeilClientConfig>().Foreground;
+            foregroundAlpha /= 100f;
+            spriteBatch.Draw(foregroundTexture, new Vector2(0, Main.screenHeight), targetRectangle, drawColor * 0.62f * layer.fade * layer.drawAlpha * foregroundAlpha, 0, 
                 new Vector2(0, foregroundTexture.Height), scale, SpriteEffects.None, 0);
            
             /*

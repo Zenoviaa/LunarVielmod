@@ -21,6 +21,7 @@ namespace Stellamod.Visual.Particles
             gravity = 0.2f;
             Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
             //    customShader = DustShader.Instance;
+            stretchScale = Vector2.One;
         }
 
         public override void Update()
@@ -46,19 +47,11 @@ namespace Stellamod.Visual.Particles
             }
 
             float stretchInterp = Velocity.Length() / 5f;
-            stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);
-            stretchScale.Y = 1f;
+          //  stretchScale.X = MathHelper.Lerp(1f, 2f, stretchInterp);
+            //stretchScale.Y = 1f;
             fadeIn++;
             if (fadeIn > 180 || Scale < 0.1f)
                 active = false;
-
-            //Bouncing
-            Vector2 collisionVelocity = Collision.TileCollision(Center, Velocity, 2, 2);
-            if (Velocity.X != collisionVelocity.X)
-                Velocity.X = -collisionVelocity.X;
-            if (Velocity.Y != collisionVelocity.Y)
-                Velocity.Y = -collisionVelocity.Y;
-
         }
 
         public override void Draw(SpriteBatch spriteBatch)

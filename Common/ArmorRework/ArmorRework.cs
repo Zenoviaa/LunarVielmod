@@ -780,8 +780,9 @@ namespace Stellamod.Common.ArmorRework
             ArmorSet set = ArmorSetSystem.FindArmorSet(item.type);
             ArmorSetSystem.GetArmorSet(set, out Item helm, out Item armor, out Item leggings);
             Player player = Main.LocalPlayer;
-            bool isActive = player.armor[0].type == helm.type && player.armor[1].type == armor.type && player.armor[2].type == leggings.type; 
-            _uiState.inspectorUI.summaryUI.SetTooltips(stats, setBonus, isActive);
+            bool isActive = player.armor[0].type == helm.type && player.armor[1].type == armor.type && player.armor[2].type == leggings.type;
+            bool isActive2 = player.armor[0].type == helm.type && player.armor[1].type == armor.type && player.armor[2].IsAir;
+            _uiState.inspectorUI.summaryUI.SetTooltips(stats, setBonus, isActive || isActive2);
             if (_userInterface.CurrentState == null)
                 OpenUI();
         }
@@ -855,6 +856,12 @@ namespace Stellamod.Common.ArmorRework
         {
             RegisterArmorSet(ModContent.ItemType<Helm>(), ModContent.ItemType<Armor>(), ModContent.ItemType<Legs>());
         }
+        public static void RegisterArmorSet<Helm, Armor>()
+            where Helm : ModItem
+            where Armor : ModItem
+        {
+            RegisterArmorSet(ModContent.ItemType<Helm>(), ModContent.ItemType<Armor>(), 0);
+        }
 
         public static void RegisterArmorSet(int helm, int armor, int legs)
         {
@@ -927,6 +934,7 @@ namespace Stellamod.Common.ArmorRework
         public override void OnModLoad()
         {
             base.OnModLoad();
+
             On_Player.IsItemSlotUnlockedAndUsable += LimitAccessorySlots;
         }
         public override void OnModUnload()
@@ -946,7 +954,7 @@ namespace Stellamod.Common.ArmorRework
             {
                 int accessoryNumber = slot - start;
                 ArmorStatsPlayer armorStatsPlayer = self.GetModPlayer<ArmorStatsPlayer>();
-                if (armorStatsPlayer.accessorySlots > accessoryNumber)
+                if (armorStatsPlayer.accessorySlotsLastFrame > accessoryNumber)
                     return true;
                 else
                     return false;
@@ -1113,6 +1121,7 @@ namespace Stellamod.Common.ArmorRework
 
         public int stamina;
         public int accessorySlots;
+        public int accessorySlotsLastFrame;
         public int insourceSlots;
         public int inventorySlots;
         public float insourceTimeFlatBonus;
@@ -1484,6 +1493,7 @@ namespace Stellamod.Common.ArmorRework
             Player.maxMinions += minionSlots;
             Player.aggro += meleeAggressiveness;
             Player.aggro -= rangedStealthtiness;
+            accessorySlotsLastFrame = accessorySlots;
         }
     }
 }

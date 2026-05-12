@@ -1,13 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Buffs;
+﻿using Stellamod.Buffs;
 using Stellamod.Content.Biomes;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Foods;
 using Stellamod.Items.Armors.Pieces.RareMetals;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Ores;
-using Stellamod.Utilis;
 using System;
 using Terraria;
 using Terraria.Audio;

@@ -2,8 +2,8 @@
 using Stellamod.Assets;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins.Projectiles;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -154,7 +154,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             _telegraphLineAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(completionRatio / 0.3f));
             _telegraphLineRot = NPC.rotation;
             TargetOutlineColor = Color.Red;
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             if (Timer % 5 == 0)
             {
                 SpawnFlameDust();

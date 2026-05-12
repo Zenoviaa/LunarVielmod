@@ -15,6 +15,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PalettePriority Priority => PalettePriority.Medium;
         public override bool IsActive(Player player)
         {
+            
    
             BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
             return myPlayer.ZoneMoonspiralTower;
@@ -216,7 +217,9 @@ namespace Stellamod.Core.PaletteShadingSystem
             palettizerShader.PaletteTexture = PaletteHelper.GetColorSpectrum(palFile);
             palettizerShader.Progress = fade;
             palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
-            palettizerShader.ImageSize = new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f;
+            palettizerShader.ImageSize = new Vector2(131, 312) * 4f;
+         //   palettizerShader.Spread = 5f;
+            palettizerShader.DitherAlpha =0.125f;
             return palettizerShader.Effect;
         }
 
@@ -225,6 +228,4 @@ namespace Stellamod.Core.PaletteShadingSystem
             return true;
         }
     }
-
-
 }

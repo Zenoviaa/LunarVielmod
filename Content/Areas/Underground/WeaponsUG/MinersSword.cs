@@ -5,10 +5,10 @@ using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.SwingSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -47,9 +47,9 @@ public class MinersSwordSlash : BaseSwingProjectileV2
     public bool Hit;
     private float _traveledRotation;
     private float _oldRot;
-    public override void SetDefaults2()
+    public override void Init_Rendering()
     {
-        base.SetDefaults2();
+        base.Init_Rendering();
         SlashTrailer swingTrailer = new SlashTrailer
         {
             Shader = new SlashEffect()
@@ -70,8 +70,8 @@ public class MinersSwordSlash : BaseSwingProjectileV2
                 Color lerp1 = Color.Lerp(Color.White, Color.Black, interpolant);
                 return Color.Lerp(Color.Transparent, lerp1, interpolant);
             }
+        };
 
-        }; 
         swingTrailer.invert = ComboIndex % 2 != 0;
         Trailer = swingTrailer;
 
@@ -80,7 +80,6 @@ public class MinersSwordSlash : BaseSwingProjectileV2
         bloom.outerBloomColor = Color.Black;
         bloom.bloomWidthFunction = GetBloomWidth;
         bloom.bloomColorFunction = GetBloomColor;
-
     }
 
     public override void AI()
@@ -312,7 +311,7 @@ public class ThrowRock : ModProjectile
         HitstopTimer = 10;
         Vector2 forwardVelocity = (target.Center - Projectile.Center);
       
-        ShakeModSystem.Shake = 2;
+        ShakeScreenPosition.Shake = 2;
 
         SoundStyle smashSound = Main.rand.NextBool(2) ? SoundRegistry.HammerHit1 : SoundRegistry.HammerHit2;
         smashSound.PitchVariance = 0.2f;

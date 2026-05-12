@@ -8,7 +8,6 @@ using Stellamod.Core.Camera;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -590,9 +589,13 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void RenderRiverRT(On_Main.orig_CheckMonoliths orig)
         {
-            RenderRiverMaskRT();
-            RenderRiverTextureRT();
-            RenderToPixelRT();
+            if (!Main.gameMenu)
+            {
+                RenderRiverMaskRT();
+                RenderRiverTextureRT();
+                RenderToPixelRT();
+            }
+
             orig();
         }
         private void DrawRiverToScreenBehindNPCs(On_Main.orig_DrawPlayers_BehindNPCs orig, Main self)
@@ -653,7 +656,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             if (Timer == 1)
             {
                 TargetVector = NPC.velocity;
-                ShakeModSystem.Shake = 2;
+                ShakeScreenPosition.Shake = 2;
             }
 
             float warnTime = 30f;
@@ -753,7 +756,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             Vector2 positionToMoveTo = NPCAIHelper.CalculatePositionToMoveTo(MyTarget.Center, NPC.Center, new Vector2(64, -64));
             Vector2 targetVelocity = positionToMoveTo - NPC.Center;
             NPC.velocity = Vector2.Lerp(TargetVector, targetVelocity, ease);
-            ShakeModSystem.Shake = MathHelper.Lerp(0f, 8, completionRatio);
+            ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 8, completionRatio);
             if (Timer >= dripDropTime)
             {
                 SwitchState(AIState.Special_FadeToBlack);
@@ -775,7 +778,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
             float completionRatio = Timer / fadeTime;
 
             //Fade the screen to black
-            ShakeModSystem.Shake = 8;
+            ShakeScreenPosition.Shake = 8;
             Vector2 boxPosition = GetBoxPosition();
             CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, boxPosition, completionRatio));
             //  FullTint.SetColor(Color.Black, completionRatio);
@@ -1045,7 +1048,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
                 }
                 if (_attackNumber == 25)
                 {
-                    ShakeModSystem.Shake = 64;
+                    ShakeScreenPosition.Shake = 64;
                     FXUtil.ShakeCamera(NPC.position, 1024, 4);
                     ScreenSmearEffectManager.DiagonalCut();
                     SoundStyle hurriboom = AssetRegistry.Sounds.E.Hurriboom;
@@ -1148,7 +1151,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
             float fadeOuTime = 120;
             float completionRatio = Timer / fadeOuTime;
-            ShakeModSystem.Shake = 8;
+            ShakeScreenPosition.Shake = 8;
             if (Timer >= fadeOuTime)
             {
                 SwitchState(AIState.Special_SlashEndOutBlack);

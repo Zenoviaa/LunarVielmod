@@ -7,12 +7,12 @@ using Stellamod.Core;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -216,7 +216,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                             v = v.RotatedBy(MathHelper.PiOver4);
                             FXUtil.GlowStretch(Projectile.Center, v);
                         }
-                        ShakeModSystem.Shake = 4;
+                        ShakeScreenPosition.Shake = 4;
                         SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger2;
                         hitSound.PitchVariance = 0.2f;
                         SoundEngine.PlaySound(hitSound, targetNpc.position);
@@ -274,7 +274,7 @@ namespace Stellamod.Content.Areas.Collosseum.WeaponsCL
                 SoundEngine.PlaySound(sunstalkerPickupSound, target.position);
 
                 FXUtil.GlowCircleBoom(target.Center, Color.LightGoldenrodYellow, Color.DarkGoldenrod, Color.Black);
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
 
                 //Simple glow explosion
                 float numDust = 16;

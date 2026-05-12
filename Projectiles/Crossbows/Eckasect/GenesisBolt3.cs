@@ -1,7 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Buffs;
+using Stellamod.Core.Utilities;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.UI.Systems;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -64,7 +64,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             float speedXa = -Projectile.velocity.X * Main.rand.NextFloat(.4f, .7f) + Main.rand.NextFloat(-8f, 8f);
             float speedYa = -Projectile.velocity.Y * Main.rand.Next(0, 0) * 0.01f + Main.rand.Next(-20, 21) * 0.0f;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<GenesisBoom3>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
@@ -120,7 +120,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            ShakeModSystem.Shake = 4;
+            ShakeScreenPosition.Shake = 4;
             float speedX = Projectile.velocity.X * Main.rand.NextFloat(.3f, .3f) + Main.rand.NextFloat(4f, 4f);
             float speedY = Projectile.velocity.Y * Main.rand.Next(-1, -1) * 0.0f + Main.rand.Next(-4, -4) * 0f;
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Starexplosion"), Projectile.position);

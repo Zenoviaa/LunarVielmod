@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -26,24 +27,28 @@ public abstract class PixelPrimitiveRenderer<T> : BasePixelPrimitiveRenderer whe
     {
         base.Load();
         _primitiveDrawQueue = new Queue<Vector2[]>();
-        On_Main.DrawProjectiles += QueueDraws;
+        PixelationManager.OnPreRender += QueueDraws;
     }
+
+
 
     public override void Unload()
     {
         base.Unload();
         _primitiveDrawQueue.Clear();
         _primitiveDrawQueue = null;
-        On_Main.DrawProjectiles -= QueueDraws;
+        PixelationManager.OnPreRender -= QueueDraws;
     }
-    
-    private void QueueDraws(On_Main.orig_DrawProjectiles orig, Main self)
+    private void QueueDraws()
     {
-        orig(self);
         if (_primitiveDrawQueue.Count <= 0)
             return;
-        PixelationManager.QueuePrimitivesDrawAction(DrawPrimitives);
+
+       // Main.NewText("E");
+        PixelationManager.QueuePrimitivesDrawAction(DrawPrimitives, DrawLayer.OverPlayers);
     }
+
+
 
     public override void PreparePoints(Vector2[] points) => _primitiveDrawQueue.Enqueue(points);
     public static void Queue(Vector2[] points)
@@ -54,7 +59,9 @@ public abstract class PixelPrimitiveRenderer<T> : BasePixelPrimitiveRenderer whe
 
     public void DrawPrimitives(GraphicsDevice graphicsDevice)
     {
+
         TrailDrawer.ClearPrimitives();
+        //Main.NewText(_primitiveDrawQueue.Count);
         while (_primitiveDrawQueue.Count > 0)
         {
             TrailDrawer.PreparePrimitives(_primitiveDrawQueue.Dequeue(), GetTrailColor, GetTrailWidth);

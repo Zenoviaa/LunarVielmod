@@ -7,10 +7,10 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trails;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using Terraria;
@@ -80,7 +80,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
             Timer++;
             if(Timer == 1)
             {
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
                 int rand = Main.rand.Next(0, 2);
                 SoundStyle soundStyle;
                 switch (rand)

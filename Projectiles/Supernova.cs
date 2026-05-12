@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.UI.Systems;
+using Stellamod.Core.Utilities;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -44,7 +44,7 @@ namespace Stellamod.Projectiles
 
             if (Timer2 <= 2)
             {
-                ShakeModSystem.Shake = 5;
+                ShakeScreenPosition.Shake = 5;
             }
 
         }

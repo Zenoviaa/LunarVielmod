@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Stellamod.UI.Systems;
+using Stellamod.Core.Utilities;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -81,7 +81,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 4, Projectile.knockBack * 4, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator1"), Projectile.position);
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
             }
 
             if (Timer == 61)
@@ -93,7 +93,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 4, Projectile.knockBack * 4, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator1"), Projectile.position);
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
             }
 
             if (Timer == 121)
@@ -105,7 +105,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 3, Projectile.knockBack * 4, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator1"), Projectile.position);
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
             }
 
             if (Timer == 181)
@@ -117,7 +117,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 2, Projectile.knockBack * 4, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator1"), Projectile.position);
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
             }
 
             if (Timer == 241)
@@ -129,7 +129,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 3, Projectile.knockBack * 4, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator2"));
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
             }
 
             if (Timer == 301)
@@ -141,7 +141,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 2, Projectile.knockBack * 4, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator2"), Projectile.position);
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
             }
 
             if (Timer == 361)
@@ -153,7 +153,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 7, Projectile.knockBack * 4, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator2"), Projectile.position);
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
             }
 
             if (Timer == 421)
@@ -165,7 +165,7 @@ namespace Stellamod.Projectiles.Crossbows.Eckasect
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 12f, ModContent.ProjectileType<Alvial>(), Projectile.damage * 0, Projectile.knockBack * 4, player.whoAmI);
                 Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, AmmoID.Arrow), Projectile.Center, Projectile.velocity * 40f, ModContent.ProjectileType<EckasectLiberatorBolt1>(), Projectile.damage * 3, Projectile.knockBack * 4, player.whoAmI);
                 SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Liberator2"), Projectile.position);
-                ShakeModSystem.Shake = 4;
+                ShakeScreenPosition.Shake = 4;
             }
 
             Projectile.Center = playerCenter + new Vector2(80, 0).RotatedBy(SwordRotation);

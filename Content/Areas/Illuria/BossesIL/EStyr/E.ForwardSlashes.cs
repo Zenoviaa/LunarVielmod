@@ -3,7 +3,6 @@ using Stellamod.Assets;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.UI.Systems;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
@@ -91,7 +90,7 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.EStyr
 
         private void Slash()
         {
-            ShakeModSystem.Shake = 16;
+            ShakeScreenPosition.Shake = 16;
             FXUtil.ShakeCamera(NPC.position, 1024, 4);
 
 
