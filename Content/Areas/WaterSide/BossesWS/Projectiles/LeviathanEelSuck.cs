@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
@@ -6,6 +7,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -205,6 +207,20 @@ public class LeviathanEelSuck : ModProjectile
     {
         base.AI();
         Timer++;
+        if(Timer == 1)
+        {
+            if(Style == 0)
+            {
+                SoundStyle bigSuck = AssetRegistry.Sounds.LeviathanEel.LeviBigSuck with { PitchVariance = 0.2f };
+                SoundEngine.PlaySound(bigSuck, Projectile.position);
+            }
+            else
+            {
+                SoundStyle smallSuck = AssetRegistry.Sounds.LeviathanEel.LeviSmallSuck with { PitchVariance = 0.2f };
+                SoundEngine.PlaySound(smallSuck, Projectile.position);
+            }
+        }
+
         if (Timer % 6 == 0)
         {
             Vector2 offset = Projectile.rotation.ToRotationVector2();

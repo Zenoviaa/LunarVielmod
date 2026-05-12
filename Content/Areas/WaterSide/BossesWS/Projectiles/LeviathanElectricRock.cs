@@ -13,6 +13,7 @@ public class LeviathanElectricRock : ModProjectile
     private Asset<Texture2D> _outlineTextureAsset;
     private ref float Timer => ref Projectile.ai[0];
     private ref float Frame => ref Projectile.ai[1];
+    private NPC Parent => Main.npc[(int)Projectile.ai[2]];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -45,7 +46,7 @@ public class LeviathanElectricRock : ModProjectile
             }
 
         }
-        if (Timer >= 90)
+        if (Timer >= 20)
         {
             Projectile.hostile = true;
         }
@@ -75,7 +76,13 @@ public class LeviathanElectricRock : ModProjectile
             z.Scale *= 0.5f;
         }
 
-        Projectile.velocity *= 0.999f;
+        Vector2 targetVelocity = (Parent.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 15;
+        Projectile.velocity = Projectile.velocity.MoveTowards(targetVelocity, 1f);
+
+        float distanceToParent = Vector2.Distance(Projectile.Center, Parent.Center);
+        if (distanceToParent <= 32f)
+            Projectile.Kill();
+
         Projectile.frame = (int)Frame;
         Projectile.rotation += 0.025f;
     }
@@ -85,8 +92,11 @@ public class LeviathanElectricRock : ModProjectile
         if (Timer < 2)
             return false;
         _outlineTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Outline");
+
+        float distanceToParent = Vector2.Distance(Projectile.Center, Parent.Center);
         SpritebatchDrawer spriteDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         spriteDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.InOutSine(Timer / 30f));
+        spriteDrawer.scale *= MathHelper.Lerp(0f, 1f, EasingFunction.Clamp(distanceToParent / 384));
         Main.spriteBatch.Draw(spriteDrawer);
 
         spriteDrawer.texture = _outlineTextureAsset.Value;
@@ -98,5 +108,11 @@ public class LeviathanElectricRock : ModProjectile
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        for (float f = 0; f < 16; f++)
+        {
+            var d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(32, 32),
+                ModContent.DustType<SeafloorRockDust>(), Main.rand.NextVector2Circular(16, 16), Scale: 1);
+            d.noGravity = true;
+        }
     }
 }

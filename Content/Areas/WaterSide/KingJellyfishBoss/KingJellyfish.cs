@@ -186,6 +186,7 @@ public class ZapShockwave : ModProjectile
 {
     private Asset<Texture2D> _gradientTextureAsset;
     private ref float Timer => ref Projectile.ai[0];
+    private ref float Style => ref Projectile.ai[1];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -201,6 +202,13 @@ public class ZapShockwave : ModProjectile
         Projectile.tileCollide = false;
     }
 
+    public override bool CanHitPlayer(Player target)
+    {
+        if (Style == 1)
+            return false;
+        return base.CanHitPlayer(target);
+    }
+
     public override void AI()
     {
         base.AI();
@@ -211,9 +219,17 @@ public class ZapShockwave : ModProjectile
         }
         if(Timer == 1)
         {
-            SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb");
-            SoundEngine.PlaySound(explosionSound, Projectile.position);
-            PixelPrimitiveCircleFactory.CreateElectricBoom(Projectile.Center);
+            if(Style == 0)
+            {
+                SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb");
+                SoundEngine.PlaySound(explosionSound, Projectile.position);
+                PixelPrimitiveCircleFactory.CreateElectricBoom(Projectile.Center);
+            }
+
+            float particleNumber = 64;
+            if (Style == 1)
+                particleNumber *= 0.5f;
+      
             FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
             var fx = FXUtil.GlowCircleBoom(Projectile.Center,
                 innerColor: Color.White,
@@ -221,7 +237,7 @@ public class ZapShockwave : ModProjectile
                 outerGlowColor: Color.DarkBlue, duration: 25, baseSize: 0.28f);
             fx.Scale *= 2f;
 
-            for (float f = 0; f < 64; f++)
+            for (float f = 0; f < particleNumber; f++)
             {
                 Vector2 vel = Main.rand.NextVector2Circular(24, 24);
                 DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
@@ -235,10 +251,14 @@ public class ZapShockwave : ModProjectile
 
             }
 
-            if (Main.netMode != NetmodeID.Server)
+            if(Style == 0)
             {
-                ScreenShaderSystem e = ModContent.GetInstance<ScreenShaderSystem>();
-                e.TintScreen(Color.SkyBlue, 0.1f, 20);
+                if (Main.netMode != NetmodeID.Server)
+                {
+                    ScreenShaderSystem e = ModContent.GetInstance<ScreenShaderSystem>();
+                    e.TintScreen(Color.SkyBlue, 0.1f, 20);
+                }
+
             }
 
             FXUtil.ShakeCamera(Projectile.Center, 1024, 16);
@@ -266,6 +286,10 @@ public class ZapShockwave : ModProjectile
         zapShockwaveShader.Gradient = _gradientTextureAsset.Value;
         SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
         drawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One * 3f, EasingFunction.OutExpo(Timer / 60f));
+        if(Style == 1)
+        {
+            drawer.scale *= 0.5f;
+        }
         drawer.color = Color.SkyBlue;
         drawer.color *= MathHelper.Lerp(1f, 0f, EasingFunction.OutExpo(Timer / 30f));
         drawer.color.A = 0;
@@ -640,6 +664,7 @@ public class BabyZap : ModProjectile
     private Vector2 _controlPoint4;
     private Asset<Texture2D> _gradientTextureAsset;
     private ref float Timer => ref Projectile.ai[0];
+    private ref float Style => ref Projectile.ai[1];
     public override string Texture => TextureRegistry.EmptyTexture;
     private Vector2 EndPoint => Projectile.Center + Projectile.velocity;
     private Vector2 EndPoint2 => Projectile.Center - Projectile.velocity;
@@ -677,13 +702,17 @@ public class BabyZap : ModProjectile
         Timer++;
         if(Timer == 1)
         {
-            SoundStyle lightningSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
-            lightningSoundStyle.PitchVariance = 0.4f;
-            SoundEngine.PlaySound(lightningSoundStyle, Projectile.position);
+            if(Style == 0)
+            {
+                SoundStyle lightningSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
+                lightningSoundStyle.PitchVariance = 0.4f;
+                SoundEngine.PlaySound(lightningSoundStyle, Projectile.position);
 
-            SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger2;
-            hitSound.PitchVariance = 0.2f;
-            SoundEngine.PlaySound(hitSound, Projectile.position);
+                SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger2;
+                hitSound.PitchVariance = 0.2f;
+                SoundEngine.PlaySound(hitSound, Projectile.position);
+            }
+
 
             FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
 

@@ -76,13 +76,28 @@ public class SuperZap : ModProjectile
         Timer++;
         if (Timer == 60)
         {
-            string path = $"Stellamod/Assets/Sounds/Dreadmire__LightingRain{Main.rand.Next(3) + 1}";
-            SoundStyle sound = new SoundStyle(path) with { PitchVariance = 0.3f };
-            SoundEngine.PlaySound(sound, Projectile.position);
+            SoundStyle zapSound;
+            int rand = Main.rand.Next(4);
+            switch (rand)
+            {
+                default:
+                case 0:
+                    zapSound = AssetRegistry.Sounds.LeviathanEel.LeviZap1 with { PitchVariance = 0.3f };
+                    break;
+                case 1:
+                    zapSound = AssetRegistry.Sounds.LeviathanEel.LeviZap2 with { PitchVariance = 0.3f };
+                    break;
+                case 2:
+                    zapSound = AssetRegistry.Sounds.LeviathanEel.LeviZap3 with { PitchVariance = 0.3f };
+                    break;
+                case 3:
+                    zapSound = AssetRegistry.Sounds.LeviathanEel.LeviZap4 with { PitchVariance = 0.3f };
+                    break;
+            }
+            zapSound.MaxInstances = 3;
+            zapSound.Volume = 0.6f;
+            SoundEngine.PlaySound(zapSound, Projectile.position);
 
-            SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger2;
-            hitSound.PitchVariance = 0.2f;
-            SoundEngine.PlaySound(hitSound, Projectile.position);
 
             FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
 

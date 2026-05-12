@@ -1,14 +1,26 @@
 ﻿using ReLogic.Threading;
 using System;
+using Terraria;
 
 namespace Stellamod.Helpers
 {
     public static class CommonDrawing
     {
+        public static Vector2[] InterpolatePointsOnACircle(Vector2 center, float radius, float numPoints = 64)
+        {
+            Vector2[] arr = new Vector2[(int)numPoints];
+            for (float f = 0; f < numPoints; f++)
+            {
+                Vector2 offset = -Vector2.UnitY * radius;
+                offset = offset.RotatedBy((f / (numPoints - 1)) * (MathHelper.TwoPi + MathHelper.ToRadians(3.2f)));
+                arr[(int)f] = center + offset;
+            }
+            return arr;
+        }
         public static Vector2[] InterpolateBetweenPoints(Vector2 start, Vector2 end, float numPoints = 64)
         {
             Vector2[] arr = new Vector2[(int)numPoints];
-            for(float f = 0; f < numPoints; f++)
+            for (float f = 0; f < numPoints; f++)
             {
                 arr[(int)f] = Vector2.Lerp(start, end, f / numPoints);
             }

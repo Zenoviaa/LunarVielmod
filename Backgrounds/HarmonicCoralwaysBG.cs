@@ -81,7 +81,7 @@ public class HarmonicCoralwaysBG : CustomBG
         NoSurfaceOffset = true;
         DrawScale = 1.2f;
         DrawOffset = new Vector2(0, 100);
-        if (NPC.AnyNPCs(ModContent.NPCType<LeviathanEel>()))
+        if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneDeepBelowCoralways)
         {
             DrawColor = Color.Lerp(DrawColor, Color.Lerp(Color.White, Color.Black, 0.85f), 0.1f);
         }

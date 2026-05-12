@@ -12,6 +12,7 @@ using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -69,6 +70,8 @@ public class LightningCrawl : ModProjectile
         Timer++;
         if(Timer == 1)
         {
+            SoundStyle chargeReadySound = AssetRegistry.Sounds.LeviathanEel.LeviBigLaserShoot with { PitchVariance = 0.3f };
+            SoundEngine.PlaySound(chargeReadySound, Projectile.Center);
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
             if(Main.netMode != NetmodeID.Server)
             {
@@ -96,10 +99,15 @@ public class LightningCrawl : ModProjectile
         Projectile.velocity = fireVelocity;
         _hitPoint = Projectile.Center + fireVelocity.Resize(length);
 
+        if(Timer % 4 == 0)
+        {
+            LeviathanEel.PlayRandomZapSound(Projectile.position);
+        }
+
         if (Timer % 16 == 0 && this.OwnedByLocalClient())
         {
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, fireVelocity * length, 
-                ModContent.ProjectileType<BabyZap>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                ModContent.ProjectileType<BabyZap>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
         }
         if (Main.rand.NextBool(4))
         {

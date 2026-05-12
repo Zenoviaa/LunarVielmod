@@ -116,6 +116,7 @@ public class SinElectricShock : ModProjectile
         Timer++;
         if(Timer == 1)
         {
+            LeviathanEel.PlayRandomZapSound(Projectile.Center);
             Projectile.velocity = -Vector2.UnitY;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 4);
             var fp = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Yellow, Color.Goldenrod);

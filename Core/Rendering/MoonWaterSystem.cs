@@ -489,7 +489,7 @@ public class MoonWaterSystem : ModSystem
         base.PostUpdateTime();
         _time += 0.0025f;
         float targetWaterAlpha = 1f;
-        if (NPC.AnyNPCs(ModContent.NPCType<LeviathanEel>()))
+        if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneDeepBelowCoralways)
             targetWaterAlpha = 0.1f;
         waterAlpha = MathHelper.Lerp(waterAlpha, targetWaterAlpha, 0.1f);
     }

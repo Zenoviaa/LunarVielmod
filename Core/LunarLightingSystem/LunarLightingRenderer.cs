@@ -89,6 +89,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public Color BackLightColor;
         public Color SunColor;
         public Vector3 AmbientLight;
+        public bool leviathanDarken;
 
         public bool IsLightingEnabled => ModContent.GetInstance<LunarVeilClientConfig>().BeamingLights;
         public override void Load()
@@ -674,6 +675,12 @@ namespace Stellamod.Core.LunarLightingSystem
             spriteBatch.End();
 
         }
+        public override void PreUpdateNPCs()
+        {
+            base.PreUpdateNPCs();
+            leviathanDarken = false;
+        }
+
         public override void PostUpdateTime()
         {
             base.PostUpdateTime();

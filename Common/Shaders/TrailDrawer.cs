@@ -180,6 +180,44 @@ namespace Stellamod.Common.Shaders
                 shader.FillShape = false;
             }
         }
+        public static void Draw(
+            Vector2[] oldPos,
+            Func<float, Color> colorFunc,
+            Func<float, float> widthFunc,
+            BaseShader shader,
+            Vector2? offset = null)
+        {
+            //Apply passes
+            if (shader != null)
+            {
+                shader.Apply();
+                ApplyPasses(shader.Effect);
+                if (shader.FillShape)
+                {
+                    Vector2[] filledPos = new Vector2[oldPos.Length + 1];
+                    for (int i = 0; i < oldPos.Length; i++)
+                    {
+                        filledPos[i] = oldPos[i];
+                    }
+                    filledPos[filledPos.Length - 1] = oldPos[0];
+                    oldPos = filledPos;
+                }
+            }
+            Vector2 trailOffset = offset == null ? Vector2.Zero : (Vector2)offset;
+            float numPoints = oldPos.Length * 2;
+
+            Vector2[] trailingPoints = CommonDrawing.CatmullRomSplineInterpolation(oldPos, numPoints);
+
+            TrailVertexHelper trailVertexCache = ModContent.GetInstance<TrailVertexHelper>();
+            trailVertexCache.Clear();
+            VertexSection section = trailVertexCache.FillVertexArrayNonAlloc(trailingPoints, colorFunc, widthFunc, trailOffset);
+            trailVertexCache.DrawPrimitives(section, shader);
+            if (shader != null)
+            {
+                shader.FillShape = false;
+            }
+        }
+
 
         public static void Draw(SpriteBatch spriteBatch,
              Vector2[] oldPos,

@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
@@ -10,6 +11,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -174,7 +176,13 @@ public class BouncingBallCore : ModProjectile
         Timer++;
         if(Timer == 1)
         {
+            SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/FungalFlaceBall3");
+            SoundEngine.PlaySound(explosionSound, Projectile.position);
             LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 0.2f);
+
+
+     
+
             for (float f = 0; f < 16; f++)
             {
                 Vector2 vel = Vector2.UnitY * Main.rand.NextFloat(8, 35f);
@@ -190,6 +198,31 @@ public class BouncingBallCore : ModProjectile
 
         if(Timer == 100)
         {
+            if(Slavery == 1)
+            {
+                SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb");
+                SoundEngine.PlaySound(explosionSound, Projectile.position);
+                FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+                for (float f = 0; f < 32; f++)
+                {
+                    Vector2 vel = Main.rand.NextVector2Circular(24, 24);
+                    DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+                    spawnParams.innerColor = Color.Lerp(Color.White, Color.SkyBlue, Main.rand.NextFloat(0f, 1f));
+                    spawnParams.outerColor = Color.Turquoise;
+                    var d = DustParticle.Spawn(Projectile.Center, vel, spawnParams);
+                    d.dampening = 0.05f;
+                    d.gravity = 0;
+                    d.noTileCollide = true;
+                    d.Scale *= 1.5f;
+
+                }
+            }
+            if (this.OwnedByLocalClient() && Slavery == 1)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero,
+                    ModContent.ProjectileType<ZapShockwave>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
+            }
+
             for (float f = 0; f < 16; f++)
             {
                 var d = Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(32, 32),
@@ -232,6 +265,17 @@ public class BouncingBallCore : ModProjectile
         BounceTimer++;
         if (BounceTimer >= bounceTime)
         {
+            SoundStyle hammerHit = AssetRegistry.Sounds.Melee.HammerHit1;
+            if (Main.rand.NextBool(2))
+                hammerHit = AssetRegistry.Sounds.Melee.HammerHit2;
+            hammerHit.PitchVariance = 0.5f;
+            SoundEngine.PlaySound(hammerHit, Projectile.position);
+            if (this.OwnedByLocalClient() && Slavery == 1)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, 
+                    ModContent.ProjectileType<ZapShockwave>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
+            }
+
             var gd = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero);
             gd.noStretch = true;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);

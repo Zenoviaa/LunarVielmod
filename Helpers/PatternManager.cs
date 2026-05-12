@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 
 namespace Stellamod.Helpers
@@ -40,7 +37,6 @@ namespace Stellamod.Helpers
 
         public bool HasNothingLeft()
         {
-            float weight = 0f;
             float totalWeight = 0f;
             foreach (var kvp in _weights)
             {
@@ -61,7 +57,7 @@ namespace Stellamod.Helpers
         public void ResetToDefaultWeights()
         {
             _weights.Clear();
-            foreach(var kvp in _defaultWeights)
+            foreach (var kvp in _defaultWeights)
             {
                 _weights.Add(kvp.Key, kvp.Value);
             }
@@ -102,7 +98,7 @@ namespace Stellamod.Helpers
                 totalWeight += kvp.Value;
             }
 
-            if(totalWeight <= 0)
+            if (totalWeight <= 0)
             {
                 ResetToDefaultWeights();
                 return NextPattern();
@@ -111,10 +107,10 @@ namespace Stellamod.Helpers
             var rand = Main.rand;
             float randWeight = rand.NextFloat(0f, totalWeight);
             T result = default;
-            foreach(var kvp in _weights)
+            foreach (var kvp in _weights)
             {
                 weight += kvp.Value;
-                if(weight >= randWeight)
+                if (weight >= randWeight)
                 {
                     result = kvp.Key;
                     break;

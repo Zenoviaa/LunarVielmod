@@ -24,8 +24,8 @@ public class LeviathanBite : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 128;
-        Projectile.height = 128;
+        Projectile.width = 200;
+        Projectile.height = 200;
         Projectile.hostile = false;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
@@ -64,7 +64,7 @@ public class LeviathanBite : ModProjectile
         }
         SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
         effectsPlayer.darknessCurve = MathHelper.Lerp(0f, 0.5f, EasingFunction.QuadraticBump(Timer / 60f));
-        if (Timer > 30)
+        if (Timer > 8)
         {
             Projectile.hostile = true;
         }

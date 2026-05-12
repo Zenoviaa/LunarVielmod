@@ -115,7 +115,8 @@ public class HarmonicCoralwaysBiome : ModBiome,
     {
         if (IsDeepBelow)
         {
-            //backLightColor = Color.Lerp(backLightColor, Color.White, 0.3f);
+            if(ModContent.GetInstance<LunarLightingRenderer>().leviathanDarken)
+                backLightColor = Color.Lerp(backLightColor, Color.Black, 0.6f);
             ModContent.GetInstance<CustomBGManager>().darkenBGColor = Color.Lerp(Color.White, Color.Black, 0.25f);
             return;
         }

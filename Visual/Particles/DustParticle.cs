@@ -56,6 +56,8 @@ public class DustParticle : Particle<DustParticle>
         customShader = DustShader.Instance;
         superFast = false;
         fast = false;
+        noTileCollide = false;
+        dampening = 0f;
     }
 
     public override void Update()
