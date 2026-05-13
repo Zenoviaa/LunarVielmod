@@ -481,3 +481,11 @@ public class KingJellyfishRelic : AbstractRelicTile<KingJellyfishRelicItem, King
 {
 
 }
+public class LeviathanEelRelicItem : AbstractRelicItem<LeviathanEelRelicItem, LeviathanEelRelic>
+{
+
+}
+public class LeviathanEelRelic : AbstractRelicTile<LeviathanEelRelicItem, LeviathanEelPage>
+{
+
+}

@@ -11167,3 +11167,8 @@ ShadefulWash: {
 	DisplayName: Shadeful Wash
 	Tooltip: ""
 }
+
+LeviathanEelRelicItem: {
+	DisplayName: Leviathan Eel Relic
+	Tooltip: ""
+}

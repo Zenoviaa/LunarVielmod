@@ -350,6 +350,11 @@ public class LeviathanEel : ScarletBoss
         musicVolume = 1f;
     }
 
+    public override void OnKill()
+    {
+        base.OnKill();
+        DownedBossTracker.ClearFlag(DownedBossFlag.LeviathanEel);
+    }
     public override void AI()
     {
         base.AI();
