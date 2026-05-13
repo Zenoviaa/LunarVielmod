@@ -322,7 +322,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Misty Dungeon Hill Terrain", WorldGenMistyDungeonHill));
         // passWriter.NextPass(new PassLegacy("Jungle Caves", JungleCavesPass));
         passWriter.NextPass(new PassLegacy("RoyalCapitalTerrain", WorldGenCapitalTerrain));
-        passWriter.NextPass(new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
+
         passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
         passWriter.NextPass(new PassLegacy("Cinderspark Caves", CindersparkCavesPass));
         passWriter.NextPass(new PassLegacy("Tree Caves", TreeCavesPass));
@@ -337,6 +337,7 @@ public partial class StellaWorld : ModSystem
 
         passWriter.SetInsertionIndex("Micro Biomes");
         passWriter.DisablePass("Micro Biomes");
+        passWriter.NextPass(new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
         passWriter.NextPass(new PassLegacy("World Gen Other stones", WorldGenDarkstone));
         passWriter.NextPass(new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
         passWriter.NextPass(new PassLegacy("World Gen Illuria", WorldGenIlluria));
@@ -352,7 +353,9 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
         passWriter.NextPass(new PassLegacy("Marsh Housing", WorldGenMarshHousing));
         passWriter.NextPass(new PassLegacy("Aegislav", WorldGen_AegislavFull));
-
+        passWriter.NextPass(new PassLegacy("Water Wobble Cave", WorldGen_WaterWobbleCave));
+        passWriter.NextPass(new PassLegacy("Craftsman Cave", WorldGen_CraftsMenCaves));
+        passWriter.NextPass(new PassLegacy("Treasure Trove", WorldGen_TreasureTrove));
 
         passWriter.SetInsertionIndex("Generate Ice Biome");
 
@@ -390,6 +393,89 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
         passWriter.NextPass(new PassLegacy("World Gen Stone Golem Cave", WorldGenStoneGolemCave));
         passWriter.NextPass(new PassLegacy("Grassing Caves", WorldGenGrassPass));
+    }
+    private void WorldGen_TreasureTrove(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Treasure Trove";
+        Point caveOrigin = AbyssCenter;
+  
+        caveOrigin.Y -= 800;
+        GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("TreasureTrove");
+        Rectangle bounds = prefab.GetBounds(caveOrigin.X, caveOrigin.Y, PrefabPlacementType.FromTopCenter);
+
+        //Fill up area with random tiles fr
+        for (int x = bounds.Left; x < bounds.Right; x++)
+        {
+            for (int y = bounds.Top; y < bounds.Bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (!Main.rand.NextBool(16))
+                    continue;
+
+                int randTile = Main.rand.Next(3);
+                int tileToPlace = TileID.SnowBlock;
+                WorldGen.TileRunner(x, y, 16, 32, tileToPlace, addTile: true, 1, 1);
+            }
+        }
+
+        prefab.PasteErase(caveOrigin, PrefabPlacementType.FromTopCenter);
+    }
+
+    private void WorldGen_CraftsMenCaves(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Craftsman Tunnels";
+        Point caveOrigin = RoyalCapitalLocation;
+        caveOrigin.X -= 310;
+        caveOrigin.Y += 100;
+        GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("CraftsmanTunnels");
+        prefab.PasteErase(caveOrigin, PrefabPlacementType.FromTopCenter);
+    }
+
+    private void WorldGen_WaterWobbleCave(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Water Wobble Cave";
+        Point caveOrigin = CoralwaysLocation;
+        caveOrigin.X += 60;
+        caveOrigin.Y += 334;
+        GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("WaterWobbleCave");
+        Rectangle bounds = prefab.GetBounds(caveOrigin.X, caveOrigin.Y, PrefabPlacementType.FromTopRight);
+
+
+        int deepSeaTile = ModContent.TileType<DeepSeaTile>();
+        int pinkSandTile = ModContent.TileType<PinkSandTile>();
+        int reefTile = ModContent.TileType<ReefTile>();
+        int[] tiles = new int[]
+        {
+            deepSeaTile,
+            pinkSandTile,
+            reefTile
+        };
+        for (int x = bounds.Left; x < bounds.Right; x++)
+        {
+            for (int y = bounds.Top; y < bounds.Bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                ModContent.GetInstance<ZTileMap>().KillAnyTile(new Point(x, y));
+            }
+        }
+
+
+        //Fill up area with random tiles fr
+        for (int x = bounds.Left; x < bounds.Right; x++)
+        {
+            for(int y = bounds.Top; y < bounds.Bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (!Main.rand.NextBool(16))
+                    continue;
+
+                int randTile = Main.rand.Next(3);
+                int tileToPlace = tiles[randTile];
+                WorldGen.TileRunner(x, y, 16, 32, tileToPlace, addTile: true, 1, 1);
+            }
+        }
+
+        prefab.PasteErase(caveOrigin, PrefabPlacementType.FromTopRight);
     }
 
     private void WorldGen_AegislavFull(GenerationProgress progress, GameConfiguration configuration)
@@ -1189,6 +1275,72 @@ public partial class StellaWorld : ModSystem
         AddNewGenerationPasses(tasks, ref totalWeight);
     }
 
+    public void ClearTrees(Rectangle rectangle)
+    {
+        int startX = rectangle.Location.X;
+        int endX = startX + rectangle.Width;
+        int startY = rectangle.Location.Y;
+        int endY = rectangle.Location.Y + rectangle.Height;
+
+        startX = Math.Clamp(startX, 0, Main.maxTilesX - 1);
+        endX = Math.Clamp(endX, 0, Main.maxTilesX - 1);
+        startY = Math.Clamp(startY, 0, Main.maxTilesY - 1);
+        endY = Math.Clamp(endY, 0, Main.maxTilesY - 1);
+
+        for (int x = startX; x < endX; x++)
+        {
+            for (int y = startY; y < endY; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (TileID.Sets.IsATreeTrunk[tile.TileType])
+                {
+                    tile.ClearEverything();
+                }
+            }
+        }
+    }
+    public void ClearLonelyTiles(Rectangle rectangle)
+    {
+        int startX = rectangle.Location.X;
+        int endX = startX + rectangle.Width;
+        int startY = rectangle.Location.Y;
+        int endY = rectangle.Location.Y + rectangle.Height;
+
+        //Add 1 extra tile of fluff since we're checking adjacent tiles
+        startX = Math.Clamp(startX, 1, Main.maxTilesX - 2);
+        endX = Math.Clamp(endX, 1, Main.maxTilesX - 2);
+        startY = Math.Clamp(startY, 1, Main.maxTilesY - 2);
+        endY = Math.Clamp(endY, 1, Main.maxTilesY - 2);
+
+        for (int x = startX; x < endX; x++)
+        {
+            for (int y = startY; y < endY; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (!tile.HasTile)
+                    continue;
+
+                int adjacentCount = 0;
+                for(int i = -1; i <= 1; i++)
+                {
+                    for(int j = -1; j <= 1; j++)
+                    {
+                        //Ignore diagonals
+                        if (i != 0 && j != 0)
+                            continue;
+                        if (i == 0 && j == 0)
+                            continue;
+                        Tile adjacentTile = Main.tile[x + i, y + j];
+                        if (adjacentTile.HasTile && Main.tileSolid[adjacentTile.TileType])
+                            adjacentCount++;
+                    }
+                }
+
+                if (adjacentCount <= 1)
+                    tile.ClearEverything();
+            }
+        }
+    }
     private void WorldGenWorldsEnd(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Ending the World";
@@ -1201,6 +1353,9 @@ public partial class StellaWorld : ModSystem
 
         TileID.Sets.CanBeClearedDuringGeneration[grass] = false;
         TileID.Sets.CanBeClearedDuringOreRunner[grass] = false;
+
+        Rectangle treeRect = new Rectangle(0, RoyalCapitalLocation.Y - 32, RoyalCapitalLocation.X, 500);
+        ClearTrees(treeRect);
 
         //Create a base for all the grass
         for (int tileX = startTileX; tileX < endTileX; tileX++)
@@ -1218,6 +1373,7 @@ public partial class StellaWorld : ModSystem
             }
         }
 
+
         Point startSlope = RoyalCapitalLocation;
         startSlope.X -= 250;
 
@@ -1230,9 +1386,13 @@ public partial class StellaWorld : ModSystem
             int tileY = (int)(startSlopeY - y);
             for (int innerY = tileY; innerY < startSlopeY; innerY++)
             {
-                WorldGen.PlaceTile(tileX, innerY, grass, forced: true);
+                Tile tile = Main.tile[tileX, innerY];
+                tile.ClearTile();
+                tile.TileType = (ushort)grass;
+                tile.TileFrameX = -1;
+                tile.TileFrameY = -1;
+              //  WorldGen.PlaceTile(tileX, innerY, grass, forced: true);
             }
-
         }
 
         //Generate water bowl
@@ -1261,8 +1421,8 @@ public partial class StellaWorld : ModSystem
             int d = 0;
             for (int lakeY = startY; lakeY < endY; lakeY++)
             {
-                WorldGen.KillTile(lakeX, lakeY);
-                WorldGen.KillWall(lakeX, lakeY);
+                Tile tile = Main.tile[lakeX, lakeY];
+                tile.ClearEverything();
                 d++;
                 if (d > 10)
                 {
@@ -1272,6 +1432,9 @@ public partial class StellaWorld : ModSystem
 
             }
         }
+
+        ClearLonelyTiles(treeRect);
+
     }
 
     private void GenerateBowlLake(Point waterStart, Point waterEnd, int maxLakeDepth)
@@ -2103,6 +2266,8 @@ public partial class StellaWorld : ModSystem
         {
             TileID.RubyGemspark
         };
+
+        dockLoc.X += 300;
         int[] ChestIndexs = Structurizer.ReadStruct(dockLoc, structure);
         Rectangle structureRectangle = Structurizer.ReadRectangle(structure);
         structureRectangle.Location = dockLoc;

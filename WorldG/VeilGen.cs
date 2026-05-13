@@ -44,7 +44,8 @@ public enum PrefabPlacementType : byte
 {
     FromTopLeft,
     FromTopCenter,
-    FromCenter
+    FromCenter,
+    FromTopRight
 }
 
 /// <summary>
@@ -103,6 +104,43 @@ public class GenerationPrefab : IDisposable
         originY -= pixelOrigin.Y;
         PasteEraseInner(originX, originY);
     }
+    public void PasteErase(Point origin, PrefabPlacementType placementType)
+    {
+        PasteErase(origin.X, origin.Y, placementType);
+    }
+    public Rectangle GetBounds(int originX, int originY, PrefabPlacementType placementType)
+    {
+        switch (placementType)
+        {
+            case PrefabPlacementType.FromTopLeft:
+                break;
+            case PrefabPlacementType.FromTopCenter:
+                originX -= Width / 2;
+                break;
+            case PrefabPlacementType.FromCenter:
+                originX -= Width / 2;
+                originY -= Height / 2;
+                break;
+            case PrefabPlacementType.FromTopRight:
+                originX -= Width;
+                break;
+
+        }
+
+        //Clamp to world bounds to prevent index out of bounds exceptions
+        Rectangle rectangle = new Rectangle(originX, originY, Width, Height);
+        rectangle.X = (int)MathHelper.Clamp(rectangle.X, 0, Main.maxTilesX - 1);
+        rectangle.Y = (int)MathHelper.Clamp(rectangle.Y, 0, Main.maxTilesY - 1);
+
+        int maxRight = (int)MathHelper.Clamp(rectangle.X + rectangle.Width, 0, Main.maxTilesX - 1);
+        int maxWidth = maxRight - rectangle.Left;
+        rectangle.Width = (int)MathHelper.Min(rectangle.Width, maxWidth);
+
+        int maxBottom = (int)MathHelper.Clamp(rectangle.Y + rectangle.Height, 0, Main.maxTilesY - 1);
+        int maxHeight = maxBottom - rectangle.Top;
+        rectangle.Height = (int)MathHelper.Min(rectangle.Height, maxHeight);
+        return rectangle;
+    }
     public void PasteErase(int originX, int originY, PrefabPlacementType placementType)
     {
         switch (placementType)
@@ -116,10 +154,16 @@ public class GenerationPrefab : IDisposable
                 originX -= Width / 2;
                 originY -= Height / 2;
                 break;
+            case PrefabPlacementType.FromTopRight:
+                originX -= Width;
+                break;
+
         }
 
         PasteEraseInner(originX, originY);
     }
+
+
 }
 
 

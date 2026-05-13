@@ -11182,3 +11182,8 @@ PasteWand: {
 	DisplayName: Paste Wand
 	Tooltip: ""
 }
+
+EraseWand: {
+	DisplayName: Erase Wand
+	Tooltip: ""
+}
