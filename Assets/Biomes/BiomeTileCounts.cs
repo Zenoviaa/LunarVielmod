@@ -129,7 +129,7 @@ namespace Stellamod
         public int AegislavCount;
         public static bool InAegislav => ModContent.GetInstance<BiomeTileCounts>().AegislavCount >= 50;
         public int ForestCount;
-        public static bool InForest => ModContent.GetInstance<BiomeTileCounts>().ForestCount >= 25;
+        public static bool InForest => ModContent.GetInstance<BiomeTileCounts>().ForestCount >= 25 || InSpringHills;
 
         public int JunkyardCount;
         public static bool InJunkyard => ModContent.GetInstance<BiomeTileCounts>().JunkyardCount >= 25;

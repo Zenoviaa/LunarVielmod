@@ -2357,6 +2357,10 @@ public class LeviathanEel : ScarletBoss
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
+        if(NPC.life <= (NPC.lifeMax * 0.15f) && (State != AIState.Death && State != AIState.Tesla_Coil))
+        {
+            SwitchState(AIState.Tesla_Coil);
+        }
         if(NPC.life <= 0)
         {
             if (State != AIState.Death)

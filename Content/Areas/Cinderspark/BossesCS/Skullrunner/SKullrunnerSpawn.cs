@@ -6,6 +6,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles;
 using Stellamod.Content.Areas.WondrousDarkspace.NPCsWD;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
@@ -59,6 +60,7 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             NPCID.Sets.TrailCacheLength[Type] = 8;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             Main.npcFrameCount[Type] = 17;
+            NPCSets.Heavy[Type] = true;
         }
         public override void SetDefaults()
         {
@@ -74,6 +76,11 @@ namespace Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.npcSlots = 10f;
+            
+            NPC.ShowNameOnHover = false;
+            NPC.dontCountMe = true;
+            NPC.dontTakeDamage = true;
+            NPC.dontTakeDamageFromHostiles = true;
 
             //Setup the music and boss bar
             NPC.aiStyle = -1;

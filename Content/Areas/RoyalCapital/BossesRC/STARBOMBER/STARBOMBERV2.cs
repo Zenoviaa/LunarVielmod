@@ -9,7 +9,9 @@ using Stellamod.Content.Buffs;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.InverseKinematics;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.TriggersSystem.Triggers;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
@@ -18,6 +20,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -484,14 +487,14 @@ public class STARBOMBERV2 : ScarletBoss,
         NPCID.Sets.TrailingMode[Type] = 3;
         NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
         NPCID.Sets.BossBestiaryPriority.Add(Type);
+        NPCSets.Heavy[Type] = true;
     }
 
     public override void SetDefaults()
     {
         base.SetDefaults();
         _squishScale = Vector2.One;
-        NPC.width = 128;
-        NPC.height = 200;
+        NPC.width = NPC.height = 200;
         NPC.damage = 100;
         NPC.defense = 20;
         NPC.lifeMax = 11500;
@@ -959,8 +962,8 @@ public class STARBOMBERV2 : ScarletBoss,
                 float leftThighAngle = MathHelper.ToRadians(-100);
                 float leftKneeAngle = MathHelper.ToRadians(-10);
 
-                float rightThighAngle = MathHelper.ToRadians(-70);
-                float rightKneeAngle = MathHelper.ToRadians(-130);
+                float rightThighAngle = MathHelper.Pi - leftThighAngle;
+                float rightKneeAngle = MathHelper.Pi - leftKneeAngle;
 
                 Legs.ConstantLerpAngles(Legs.LeftLeg, leftThighAngle, leftKneeAngle);
                 Legs.ConstantLerpAngles(Legs.RightLeg, rightThighAngle, rightKneeAngle);
@@ -1633,6 +1636,11 @@ public class STARBOMBERV2 : ScarletBoss,
         NPC.rotation = NPC.velocity.X * 0.015f;
         NPC.noTileCollide = false;
         NPC.noGravity = false;
+        if (NPC.collideX)
+        {
+            NPC.velocity.X *= 0.8f;
+
+        }
         if (Timer == 25)
         {
             SoundStyle spin = AssetRegistry.Sounds.STARBOMBER.Ommove1;
@@ -1975,6 +1983,7 @@ public class STARBOMBERV2 : ScarletBoss,
         {
             NPC.position.Y -= 16;
         }
+        NPC.velocity.Y = 0;
         NPC.noTileCollide = false;
         NPC.noGravity = true;
         if (MathF.Abs(NPC.velocity.X) <= 1f && Timer >= 60)
@@ -2688,6 +2697,36 @@ public class STARBOMBERV2 : ScarletBoss,
     {
         return 64;
     }
+    private Color LegColorFunction(float completionRatio)
+    {
+        float outAlpha=1f;
+        if (State == AIState.Death)
+            outAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(Timer / 60f));
+        return Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(completionRatio)) * outAlpha;
+    }
+
+    private float LegLightningWidthFunction(float completionRatio)
+    {
+        return 32;
+    }
+    private void DrawPixelatedLightning(GraphicsDevice gDevice)
+    {
+                
+        DrawLegLightning(LeftLegRootPosition);
+        DrawLegLightning(RightLegRootPosition);
+    }
+    private void DrawLegLightning( Vector2 targetPosition)
+    {
+        Vector2[] lightningPoints = CommonDrawing.InterpolateBetweenPoints(NPC.Center, targetPosition + (targetPosition - NPC.Center).Resize(128), 32);
+        BlackFireShader shader = BlackFireShader.Instance;
+        shader.PrimaryTexture = TrailRegistry.LightningTrail;
+        shader.PrimaryTexture2 = TrailRegistry.StarTrail;
+        shader.InnerColor = Color.Lerp(Color.Black, Color.White, ExtraMath.Osc(0f, 1f, speed: 2));
+        shader.OuterColor = Color.Lerp(Color.Blue, Color.Purple, ExtraMath.Osc(0f, 1f, speed: 2));
+        shader.Distortion = 0.05f;
+        shader.Time = Main.GlobalTimeWrappedHourly * 12;
+        TrailDrawer.Draw(lightningPoints, LegColorFunction, LegLightningWidthFunction, shader);
+    }
     private void DrawHeldLightning(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         BlackFireShader shader = BlackFireShader.Instance;
@@ -2760,7 +2799,7 @@ public class STARBOMBERV2 : ScarletBoss,
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-
+        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedLightning, DrawLayer.BehindNPCsWithOutline);
         DrawBody(spriteBatch, screenPos, drawColor);
 
         DrawHeldGun(spriteBatch, screenPos, drawColor);

@@ -171,8 +171,8 @@ namespace Stellamod.Content.Areas.Illuria.BossesIL.CrumblingTowerOfIlluria
             base.SetDefaults();
             _draw.SetDefaults();
             _squishScale = Vector2.One;
-            NPC.width = 100;
-            NPC.height = 100;
+            NPC.width = NPC.height = 144;
+
             NPC.damage = 100;
             NPC.defense = 30;
             NPC.lifeMax = 28000;

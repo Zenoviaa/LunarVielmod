@@ -6,6 +6,7 @@ using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.Areas.Cinderspark.BossesCS.Skullrunner.Projectiles;
 using Stellamod.Content.Areas.WondrousDarkspace.NPCsWD;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
@@ -40,6 +41,7 @@ public class Skullrunner : ScarletBoss
         Idle,
         BobbingFlyingSkulls,
         Reposition,
+ 
 
         EightwayBlobs,
         OutOfBreath,
@@ -61,7 +63,8 @@ public class Skullrunner : ScarletBoss
         Dunksucceed,
         Dunksink,
         DunkRise,
-        Despawn
+        Despawn,
+        Death,
     }
     private float _lifeTimer;
     private AnimationState _animation;
@@ -70,7 +73,6 @@ public class Skullrunner : ScarletBoss
     private bool _drawAura;
     private bool _drawTrail;
     private float _trailInterpolant;
-    private bool _cockHand;
     private bool _oscScale;
     private bool _grabbedTarget;
     private bool _freezeFrame;
@@ -81,7 +83,7 @@ public class Skullrunner : ScarletBoss
     private Vector2 _startBobPos;
     private Vector2 _dashVelocity;
     private Vector2 _initialVelocity;
-
+    private Vector2 _arenaCenter;
     private Vector2 _spawnPos;
     private Vector2 _handRiseStartPosition;
     private Vector2 _handPosition;
@@ -109,6 +111,8 @@ public class Skullrunner : ScarletBoss
     }
     private ref float BeatTimer => ref NPC.ai[2];
     private ref float Cycle => ref NPC.ai[3];
+    private float MultiDunkPrepareTime => 80;
+    private float FirstDunkPrepareTime => 170;
     private int BurningBlackSkullDamage => 20;
     private int LavaBubbleDamage => 20;
     private Player Target => Main.player[NPC.target];
@@ -133,6 +137,7 @@ public class Skullrunner : ScarletBoss
         writer.Write(_longDash);
         writer.Write(_lastDunkDirection);
         writer.WriteVector2(_initialVelocity);
+        writer.WriteVector2(_arenaCenter);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -147,17 +152,15 @@ public class Skullrunner : ScarletBoss
         _spawnPos = reader.ReadVector2();
         _handPosition = reader.ReadVector2();
         _grabbedTarget = reader.ReadBoolean();
-
         _startDunkPosition = reader.ReadVector2();
         _endDunkPosition = reader.ReadVector2();
-
         _beatCounter = reader.ReadSingle();
-
         _lifeTimer = reader.ReadSingle();
         _localBeatCounter = reader.ReadSingle();
         _longDash = reader.ReadBoolean();
         _lastDunkDirection = reader.ReadSingle();
         _initialVelocity = reader.ReadVector2();
+        _arenaCenter = reader.ReadVector2();
     }
 
 
@@ -175,7 +178,7 @@ public class Skullrunner : ScarletBoss
         _scale = Vector2.One;
         NPC.width = 64;
         NPC.height = 64;
-        NPC.damage = 32;
+        NPC.damage = 80;
         NPC.defense = 10;
         NPC.lifeMax = 5500;
         NPC.HitSound = SoundID.NPCHit16;
@@ -210,7 +213,6 @@ public class Skullrunner : ScarletBoss
         }
         if(_beatCounter >= 96)
         {
-            _cockHand = false;
             _longDash = false;
             _bopCounter = 0;
             _dashCounter = 0;
@@ -280,11 +282,22 @@ public class Skullrunner : ScarletBoss
         NPC.frame.Y = frameHeight * _frame;
     }
 
+    private void NextDunkPositions()
+    {
+        float dir = MyTarget.Center.X > _arenaCenter.X ? 1 : -1;
+        float dunkRange = 384;
+        _startDunkPosition = _arenaCenter + Vector2.UnitX * dunkRange * dir;
+        _startDunkPosition = TileUtilities.FallToSolidTile(_startDunkPosition.ToTileCoordinates()).ToWorldCoordinates();
+        _startDunkPosition.Y -= 400;
+        _endDunkPosition = _startDunkPosition - Vector2.UnitX * dunkRange * dir * 2;
+    }
     public override void AI()
     {
         base.AI();
         if (_spawnPos == Vector2.Zero)
         {
+            NPC.TargetClosest();
+            _arenaCenter = TileUtilities.GuessArenaCenter(MyTarget.Center);
             _spawnPos = NPC.Center;
             _handRiseStartPosition = _spawnPos;
         }
@@ -336,6 +349,9 @@ public class Skullrunner : ScarletBoss
         _lifeTimer++;
         switch (State)
         {
+            case AIState.Death:
+                AI_Death();
+                break;
             case AIState.Despawn:
                 AI_Despawn();
                 break;
@@ -420,7 +436,8 @@ public class Skullrunner : ScarletBoss
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
-        return base.CanHitPlayer(target, ref cooldownSlot) && (State == AIState.Dash || State == AIState.Dash_Big);
+        return base.CanHitPlayer(target, ref cooldownSlot)
+            && (State == AIState.Dash || State == AIState.Dash_Big);
     }
 
     private bool BeatHit()
@@ -432,6 +449,148 @@ public class Skullrunner : ScarletBoss
     {
         base.OnKill();
         DownedBossTracker.ClearFlag(DownedBossFlag.Skullrunner);
+    }
+
+    public override void HitEffect(NPC.HitInfo hit)
+    {
+        base.HitEffect(hit);
+        if(NPC.life <= 0)
+        {
+            if (State != AIState.Death)
+                SwitchState(AIState.Death);
+            NPC.life = 1;
+        }
+    }
+    private void AI_Death()
+    {
+        float deathTime = 240f;
+        Timer++;
+        if(Timer == 1)
+        {
+            _initialVelocity = NPC.velocity;
+        }
+        if (Timer % 2 == 0)
+        {
+            float range = Main.rand.NextFloat(252, 512);
+            Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
+            Vector2 vel = (NPC.Center - pos);
+            vel *= 0.1f;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            fx.OuterGlowColor = Color.Red;
+        }
+
+        if (Timer % 2 == 0)
+        {
+            float range = Main.rand.NextFloat(384, 666);
+            Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
+            Vector2 vel = (NPC.Center - pos);
+            vel *= 0.1f;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            fx.OuterGlowColor = Color.Lerp(Color.White, Color.Red, Main.rand.NextFloat(0f, 1f));
+            fx.VectorScale *= 0.5f;
+        }
+
+        if(Timer > deathTime * 0.5f)
+        {
+            CameraTargetSystem.AddTarget(NPC.Center);
+            CameraTargetSystem.SetLingerTime(120);
+        }
+
+        ShakeScreenPosition.Shake = MathHelper.Lerp(0, 4, EasingFunction.InOutSine(Timer / deathTime));
+
+        //Move to the center of the arena and slowly move up
+        Vector2 positionToDieAt = _arenaCenter;
+        positionToDieAt.Y -= MathHelper.Lerp(0, 128, Timer / 180f);
+        Vector2 targetVelocity = (positionToDieAt - NPC.Center );
+        NPC.velocity = Vector2.Lerp(_initialVelocity, targetVelocity, EasingFunction.InExpo(Timer / 90f));
+       
+        NPC.noTileCollide = true;
+        NPC.noGravity = true;
+        NPC.rotation = MathHelper.Lerp(-0.05f, 0.05f, ExtraMath.Osc(0f, 1f, speed: 12));
+        if(Timer < 90)
+        {
+            _animation = AnimationState.Deadass;
+        }
+        else
+        {
+            _animation = AnimationState.Laugh;
+        }
+        
+        if(Timer % 15 == 0)
+        {
+            FXUtil.GlowCircleBoom(NPC.Center, Color.White * 0.5f, Color.Yellow * 0.5f, Color.Red * 0.5f, 25, baseSize: MathHelper.Lerp(0.1f, 0.24f, EasingFunction.InOutSine(Timer/180f)));
+        }
+
+        if(Timer >= deathTime)
+        {
+            GoreUtilities.CreateDeathGores(this, 3);
+            NPC target = NPC;
+
+            SoundStyle deathSound = new SoundStyle($"Stellamod/Assets/Sounds/DMHeart__Dash");
+            SoundEngine.PlaySound(deathSound);
+
+            SoundStyle hitSound = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireExplosion1");
+            SoundEngine.PlaySound(hitSound, target.position);
+
+            FXUtil.ShakeCamera(target.Center, 1024, 32);
+            FXUtil.GlowCircleBoom(target.Center,
+                innerColor: Color.White,
+                glowColor: Color.Yellow,
+                outerGlowColor: Color.Red, duration: 25, baseSize: 0.28f);
+
+            for (float f = 0; f < 32; f++)
+            {
+                Vector2 vel = -Vector2.UnitY * 8 * Main.rand.NextFloat(0.2f, 1f);
+                Dust.NewDustPerfect(target.Center + Main.rand.NextVector2Circular(32, 32), DustID.Torch, vel, Scale: 3f);
+            }
+
+            //Big ass explosion
+            float num = 10f;
+            for (float f = 0; f < num; f++)
+            {
+                Vector2 upwardVelocity = -Vector2.UnitY * 8;
+                upwardVelocity = upwardVelocity.RotatedByRandom(MathHelper.ToRadians(45));
+                DustParticle.Spawn(target.Center, upwardVelocity);
+            }
+
+            for (float f = 0; f < num; f++)
+            {
+                Vector2 upwardVelocity = -Vector2.UnitY * 2;
+                upwardVelocity = upwardVelocity.RotatedByRandom(MathHelper.ToRadians(45));
+                SparkleParticle.Spawn(target.Center, upwardVelocity, Scale: 0.5f);
+            }
+
+            for (float f = 0; f < 16; f++)
+            {
+                var dp = Particle<DustParticle>.Spawn(target.Center, Vector2.UnitY.RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(6, 8f), Scale: Main.rand.NextFloat(0.5f, 1f));
+                dp.innerColor = Color.Yellow;
+                dp.gravity = 0;
+                dp.dampening = 0.05f;
+                dp.noTileCollide = true;
+            }
+
+            for (float f = 0; f < 4; f++)
+            {
+                var smoke = Particle<SmokeParticle>.SpawnInAlphaLayer(target.Center, -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver4) * Main.rand.NextFloat(1, 1f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1f));
+                smoke.initialColor = Color.DarkGray;
+            }
+
+            for (float i = 0; i < 4; i++)
+            {
+                float rot = -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(60)).ToRotation();
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleDetailedBoom1(target.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Yellow,
+                    outerGlowColor: Color.Red,
+                    baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                    duration: Main.rand.NextFloat(15, 25));
+                particle.Rotation = rot;
+                particle.VectorScale *= 3;
+            }
+
+            NPC.Kill();
+        }
     }
 
     private void AI_Despawn()
@@ -543,117 +702,55 @@ public class Skullrunner : ScarletBoss
             SwitchState(AIState.Idle);
         }
     }
-    private void AI_DunkPosition()
+
+    private void AI_GetReadyToDunk(float dunkPrepareTime)
     {
+        Timer++;
+        //Get the hand up
         if (!_showHand)
         {
             _handPosition = NPC.Center;
         }
         _showHand = true;
-        Timer++;
         if(Timer == 1)
         {
             _initialVelocity = NPC.Center;
             NPC.TargetClosest();
         }
 
-        _handPosition += NPC.velocity;
+        Vector2 targetHandPosition = NPC.Center + Vector2.UnitX * NPC.direction * 32;
+        _handPosition = _handPosition.MoveTowards(targetHandPosition, MathHelper.Lerp(0f, 32, EasingFunction.InOutExpo7(Timer / dunkPrepareTime)));
         Vector2 sidePosition = NPC.Center + -Vector2.UnitX * NPC.direction * 72 + Vector2.UnitY * 48;
-   
         FaceDirection();
-
-        _startBobPos = Target.Center + Vector2.UnitX * _lastDunkDirection * 72;
-        if (Timer < 10)
-        {
-           
-            NPC.velocity *= 0.9f;
-            NPC.rotation *= 0.9f;
-        }
-        else if (Timer < 40)
+        if(Timer < 40)
         {
             _animation = AnimationState.Sideframe;
-            _handPosition = Vector2.Lerp(_handPosition, sidePosition, 0.1f);
         }
-        else if (Timer < 50)
-        {
 
-            _handFrame = 1;
-            _handPosition = Vector2.Lerp(_handPosition, sidePosition, 0.1f);
-            if (Timer == 41 && !_cockHand)
-            {
-                _cockHand = true;
-                FXUtil.GlowCircleBoom(_handPosition,
-                    innerColor: Color.White,
-                    glowColor: Color.Yellow,
-                    outerGlowColor: Color.Red, duration: 25, baseSize: 0.12f);
-
-
-                SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger;
-                hitSound.PitchVariance = 0.2f;
-                SoundEngine.PlaySound(hitSound, _handPosition);
-                for (int i = 0; i < 3; i++)
-                {
-                    Dust.NewDustPerfect(_handPosition, ModContent.DustType<GlowDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.Orange, 0.5f).noGravity = true;
-                }
-
-                for (int i = 0; i < 4; i++)
-                {
-                    Dust.NewDustPerfect(_handPosition, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 0, Color.DarkGray, 0.5f).noGravity = true;
-                }
-            }
-
-        }
         HandOutlineColor = Color.Yellow;
         float targetRotation = (Target.Center - _handPosition).ToRotation();
-        _handDrawRotation = MathHelper.Lerp(
-            MathHelper.WrapAngle(_handDrawRotation),
-            MathHelper.WrapAngle(targetRotation), 0.07f);
+        _handDrawRotation = Utils.AngleLerp(_handDrawRotation, targetRotation, 0.07f);
+        _startBobPos = Target.Center + Vector2.UnitX * _lastDunkDirection * 72;
+        Vector2 targetSidePosition = _startBobPos;
+        Vector2 startSidePosition = _initialVelocity;
 
-        float rotOffset = Timer * 0.025f;
-        float offset = 16;
-        Vector2 targetCirclePos = _startBobPos + rotOffset.ToRotationVector2() * offset;
-        float hoverRange = 20;
-        switch (Cycle)
+        float ratio = Timer / dunkPrepareTime;
+        float ease = EasingFunction.InOutExpo7(ratio);
+        Vector2 interp = Vector2.Lerp(startSidePosition, targetSidePosition, ease);
+        Vector2 vel = interp - NPC.Center;
+        NPC.velocity = vel;
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
+
+        if(Timer >= dunkPrepareTime * 0.8f)
         {
-            default:
-            case 0:
-                targetCirclePos.Y -= hoverRange;
-                break;
-            case 1:
-                targetCirclePos.Y += hoverRange;
-                break;
-        }
-
-        Vector2 velocityToCirclePos = (targetCirclePos - NPC.Center);
-        Vector2 interpolatedPosition = Vector2.Lerp(_initialVelocity, targetCirclePos, EasingFunction.InOutExpo(Timer / 120f));
-        Vector2 vel = interpolatedPosition - NPC.Center;
-        NPC.velocity = vel;// Vector2.Lerp(_initialVelocity, velocityToCirclePos, EasingFunction.InOutSine(Timer / 40f));
-
-      //  NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToCirclePos, 0.1f);
-
-        //Bobble his head to the beat
-        //It's 130 beat sper minute
-        //3600 ticks per minute
-        //3600 / 130
-        //27 ticks per beat, roughly, not evenly but close enough, you'd need a long fight to notice desync
-        if (BeatHit())
-        {
-            Cycle++;
-            if (Cycle >= 2)
-            {
-                Cycle = 0;
-            }
+            _handFrame = 1;
         }
     }
 
     private void AI_DunkPrepare()
     {
-        if(Timer == 1)
-        {
-            _handPosition = NPC.Center;
-        }
-        AI_DunkPosition();
-        if (_localBeatCounter >= 2)
+        AI_GetReadyToDunk(FirstDunkPrepareTime);
+        if (Timer >= FirstDunkPrepareTime)
         {
             SwitchState(AIState.Idle);
         }
@@ -661,7 +758,7 @@ public class Skullrunner : ScarletBoss
 
     private void AI_DunkStart()
     {
-        AI_DunkPosition();
+        AI_GetReadyToDunk(MultiDunkPrepareTime);
         if (_localBeatCounter >= 2)
         {
             SwitchState(AIState.Dunking);
@@ -675,19 +772,8 @@ public class Skullrunner : ScarletBoss
         //If you move out of the way you won't get grabbed, but this attack is fast sooo
         if (Timer == 1)
         {
-            _lastDunkDirection *= -1;
-            _startDunkPosition = Target.Center;
-
-            float dunkOffset = 384;
-            float upOffset = 64;
-            Vector2 pos1 = _spawnPos +  Vector2.UnitX * dunkOffset - Vector2.UnitY * upOffset;
-            Vector2 pos2 = _spawnPos + -1 * Vector2.UnitX * dunkOffset - Vector2.UnitY * upOffset;
-
-            float distTo1 = Vector2.Distance(Target.Center, pos1);
-            float distTo2 = Vector2.Distance(Target.Center, pos2);
-            float longest = MathF.Max(distTo1, distTo2);
-            _endDunkPosition = longest == distTo1 ? pos1 : pos2;
             _handRiseStartPosition = _handPosition;
+            NextDunkPositions();
         }
 
         NPC.velocity *= 0.9f;
@@ -699,17 +785,17 @@ public class Skullrunner : ScarletBoss
         float grabTicks = 12;
         float interpolant = Timer / grabTicks;
         float ease = EasingFunction.InOutCubic(interpolant);
-        Vector2 newHandPosition = Vector2.Lerp(_handRiseStartPosition, _startDunkPosition, ease);
+        Vector2 newHandPosition = Vector2.Lerp(_handRiseStartPosition, MyTarget.Center, ease);
         _handPosition = newHandPosition;
 
         float targetRotation = (_endDunkPosition - _handPosition).ToRotation();
-        _handDrawRotation = MathHelper.Lerp(_handDrawRotation, targetRotation, 0.1f);
+        _handDrawRotation = Utils.AngleLerp(_handDrawRotation, targetRotation, 0.1f);
 
         //check if completed
         if(Timer >= grabTicks)
         {
             float distanceToTarget = Vector2.Distance(_handPosition, Target.Center);
-            if(distanceToTarget <= 74 && !Target.immune)
+            if(distanceToTarget <= 200 && !Target.immune)
             {
                 _grabbedTarget = true;
             }
@@ -728,8 +814,6 @@ public class Skullrunner : ScarletBoss
         Timer++;
         if (Timer == 1)
         {
-            _startDunkPosition = NPC.Center;
-            
             NPC.netUpdate = true;
         }
 
@@ -746,18 +830,18 @@ public class Skullrunner : ScarletBoss
         float dunkingInterpolant = Timer / dunkingTicks;
         float dunkEase = EasingFunction.InOutSine(dunkingInterpolant);
         Vector2 linearPosition = Vector2.Lerp(_startDunkPosition, _endDunkPosition, dunkEase);
-
+       // _endDunkPosition = _endDunkPosition.RotatedBy(0.005f, _startDunkPosition);
         //Go up
         float jumpEase = EasingFunction.QuadraticBump(dunkEase);
-        float yOffset = MathHelper.Lerp(0f, -274, jumpEase);
+        float yOffset = MathHelper.Lerp(0f, -700, jumpEase);
         if (_longDash)
         {
-            yOffset *= 1.5f;
+            yOffset *= 1.25f;
         }
 
         Vector2 dunkPosition = linearPosition + new Vector2(0, yOffset);
         Vector2 velocityToDunkPosition = (dunkPosition - NPC.Center);
-        NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToDunkPosition, 0.5f);
+        NPC.velocity = Vector2.Lerp(Vector2.Zero, velocityToDunkPosition, EasingFunction.InExpo(Timer / (dunkingTicks)));
         NPC.rotation = NPC.velocity.ToRotation();
         if(NPC.spriteDirection == -1)
         {
@@ -896,7 +980,7 @@ public class Skullrunner : ScarletBoss
        
 
         Vector2 velocity = Vector2.UnitY * MathF.Sin(Timer * 0.2f) * 0.1f;
-        velocity -= Vector2.UnitY * MathHelper.Lerp(6, 0f, Timer / 60f);
+        velocity -= Vector2.UnitY * MathHelper.Lerp(3, 0f, Timer / 60f);
         NPC.velocity = Vector2.Lerp(NPC.velocity, velocity, 0.1f);
 
         _handPosition += NPC.velocity;
@@ -938,6 +1022,7 @@ public class Skullrunner : ScarletBoss
         float ease = EasingFunction.InOutSine(interpolant);
         Vector2 targetPosition = Vector2.Lerp(_startDunkPosition, _endDunkPosition, ease);
         targetPosition.X += EasingFunction.QuadraticBump(interpolant) * NPC.spriteDirection * 180;
+        targetPosition.Y -= 100;
         Vector2 velocityToSinkPosition = (targetPosition - NPC.Center);
         NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToSinkPosition, 0.5f);
         NPC.rotation = NPC.velocity.ToRotation();
@@ -1142,8 +1227,9 @@ public class Skullrunner : ScarletBoss
         Vector2 offset = -Vector2.UnitY.RotatedBy(_lifeTimer * 0.15f) * MathHelper.Lerp(250, 400, Timer / waitTime);
         targetPosition += offset;
         Vector2 velocityToPosition = targetPosition - NPC.Center;
-        velocityToPosition *= 0.2f;
-        NPC.velocity = Vector2.Lerp(NPC.velocity, velocityToPosition, 0.5f);
+        NPC.direction = -1;
+        NPC.spriteDirection = -NPC.direction;
+        NPC.velocity = Vector2.Lerp(Vector2.Zero, velocityToPosition, EasingFunction.InOutSine(Timer / 90f));
         NPC.rotation = NPC.velocity.ToRotation();
         if (_localBeatCounter >= 5)
         {
@@ -1387,7 +1473,7 @@ public class Skullrunner : ScarletBoss
 
         //This attack is uh
         //How many beats long?
-        if (_beatCounter >= 29)
+        if (_beatCounter >= 24)
         {
             foreach(var proj in Main.ActiveProjectiles)
             {
