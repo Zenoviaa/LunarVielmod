@@ -151,6 +151,21 @@ namespace Stellamod.Helpers
             return true;
         }
     }
+    public class EraseWand : AbstractStructureWand
+    {
+        public override bool? UseItem(Player player)
+        {
+            if (player.whoAmI == Main.myPlayer)
+            {
+                StructureSelection selection = ModContent.GetInstance<StructureSelection>();
+                selection.Erase();
+            }
+
+            //selection.SpawnSelection = true;
+            SoundEngine.PlaySound(SoundID.Item47);
+            return true;
+        }
+    }
 
     public class CopyWand : AbstractStructureWand
     {
@@ -159,7 +174,16 @@ namespace Stellamod.Helpers
             if (player.whoAmI == Main.myPlayer)
             {
                 StructureSelection selection = ModContent.GetInstance<StructureSelection>();
-                selection.Copy();
+                if (player.altFunctionUse == 2)
+                {
+                  //  selection.Erase();
+                }
+                else
+                {
+                    selection.Copy();
+                }
+          
+          
             }
 
             //selection.SpawnSelection = true;
@@ -177,7 +201,9 @@ namespace Stellamod.Helpers
                 StructureSelection selection = ModContent.GetInstance<StructureSelection>();
                 if (player.altFunctionUse == 2)
                 {
-                    selection.Erase();
+                    Structurizer.FlipStructure = !Structurizer.FlipStructure;
+                    Main.NewText($"FLIP: {Structurizer.FlipStructure}");
+                //    selection.Erase();
                 }
                 else
                 {
