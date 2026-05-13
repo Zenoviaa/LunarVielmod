@@ -15,7 +15,7 @@ public static class ZTileStructurizer
 {
     private const string FileExtension = ".ztl";
     private static Mod Mod => Stellamod.Instance;
-    public static void SaveStruct(string fileName, Point bottomLeft, Point topRight)
+    public static TagCompound Serialize(Point bottomLeft, Point topRight)
     {
         TagCompound root = new TagCompound();
         ZTileMap zTileMap = ModContent.GetInstance<ZTileMap>();
@@ -23,7 +23,16 @@ public static class ZTileStructurizer
             topRight.X - bottomLeft.X,
             bottomLeft.Y - topRight.Y);
         zTileMap.SaveTileData(root, bounds, bottomLeft);
-
+        return root;
+    }
+    public static void DeSerialize(TagCompound root, Point bottomLeft)
+    {
+        ZTileMap zTileMap = ModContent.GetInstance<ZTileMap>();
+        zTileMap.LoadTileData(root, bottomLeft);
+    }
+    public static void SaveStruct(string fileName, Point bottomLeft, Point topRight)
+    {
+        TagCompound root = Serialize(bottomLeft, topRight);
         if (root.Count == 0)
         {
             DebugHelper.NewTextOnlyInTesting("Z Tile Structure Here");
@@ -44,8 +53,7 @@ public static class ZTileStructurizer
     {
         //Read the nested tag compound or whatever
         TagCompound root = TagIO.FromStream(stream, compressed: true);
-        ZTileMap zTileMap = ModContent.GetInstance<ZTileMap>();
-        zTileMap.LoadTileData(root, bottomLeft);
+        DeSerialize(root, bottomLeft);
     }
 
     public static void ReadSavedStruct(string filePath, Point BottomLeft, int[] tileBlend = null)
@@ -77,7 +85,27 @@ internal static class TileEntityStructurizer
 {
     private const string FileExtension = ".ten";
     private static Mod Mod => Stellamod.Instance;
-    public static void SaveStruct(string fileName, Point bottomLeft, Point topRight)
+    public static void DeSerialize(TagCompound root, Point bottomLeft)
+    {
+        foreach (var tag in root)
+        {
+            TagCompound element = (TagCompound)tag.Value;
+            int xOffset = element.Get<int>("_x");
+            int yOffset = element.Get<int>("_y");
+            string type = element.Get<string>("_type");
+            ModTileEntity template = ModContent.Find<ModTileEntity>(Mod.Name + "/" + type);
+            //    DebugHelper.NewTextOnlyInTesting("Construct Tile Entity " + template.Name);
+
+            Point16 point = new Point16(bottomLeft.X + xOffset, bottomLeft.Y - yOffset);
+            Dust.QuickBox(new Vector2(point.X, point.Y) * 16, new Vector2(point.X + 1, point.Y + 1) * 16, 2, Color.Red, null);
+
+            //Place the tile entity
+            template.Place(point.X, point.Y);
+            ModTileEntity entity = TileEntity.ByPosition[point] as ModTileEntity;
+            entity.LoadData(element);
+        }
+    }
+    public static TagCompound Serialize(Point bottomLeft, Point topRight)
     {
         TagCompound root = new TagCompound();
         for (int x = bottomLeft.X; x <= topRight.X; x++)
@@ -107,6 +135,12 @@ internal static class TileEntityStructurizer
             }
         }
 
+        return root;
+    }
+
+    public static void SaveStruct(string fileName, Point bottomLeft, Point topRight)
+    {
+        TagCompound root = Serialize(bottomLeft, topRight);
         if (root.Count == 0)
         {
             DebugHelper.NewTextOnlyInTesting("No Tile Entity Structure Here");
@@ -132,23 +166,7 @@ internal static class TileEntityStructurizer
     {
         //Read the nested tag compound or whatever
         TagCompound root = TagIO.FromStream(stream, compressed: true);
-        foreach (var tag in root)
-        {
-            TagCompound element = (TagCompound)tag.Value;
-            int xOffset = element.Get<int>("_x");
-            int yOffset = element.Get<int>("_y");
-            string type = element.Get<string>("_type");
-            ModTileEntity template = ModContent.Find<ModTileEntity>(Mod.Name + "/" + type);
-            //    DebugHelper.NewTextOnlyInTesting("Construct Tile Entity " + template.Name);
-
-            Point16 point = new Point16(bottomLeft.X + xOffset, bottomLeft.Y - yOffset);
-            Dust.QuickBox(new Vector2(point.X, point.Y) * 16, new Vector2(point.X + 1, point.Y + 1) * 16, 2, Color.Red, null);
-
-            //Place the tile entity
-            template.Place(point.X, point.Y);
-            ModTileEntity entity = TileEntity.ByPosition[point] as ModTileEntity;
-            entity.LoadData(element);
-        }
+        DeSerialize(root, bottomLeft);
     }
 
     /// <summary>

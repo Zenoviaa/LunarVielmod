@@ -25,8 +25,20 @@ namespace Stellamod.Helpers
         }
         public override bool? UseItem(Player player)
         {
-            StructureSelection selection = ModContent.GetInstance<StructureSelection>();
-            selection.SpawnSelection = true;
+            if(player.whoAmI == Main.myPlayer)
+            {
+                StructureSelection selection = ModContent.GetInstance<StructureSelection>();
+                if(player.altFunctionUse == 2)
+                {
+                    selection.MakeNewSelection();
+                }
+                else
+                {
+                    selection.OpenSaveSelectionUI();
+                }
+            }
+        
+            //selection.SpawnSelection = true;
             SoundEngine.PlaySound(SoundID.Item47);
             return true;
         }

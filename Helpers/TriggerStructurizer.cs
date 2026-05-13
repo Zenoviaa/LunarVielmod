@@ -10,6 +10,55 @@ namespace Stellamod.Helpers
     {
         private const string FileExtension = ".tle";
         private static Mod Mod => Stellamod.Instance;
+        public static TagCompound Serialize(Point bottomLeft, Point topRight)
+        {
+            TriggerManager triggerManager = ModContent.GetInstance<TriggerManager>();
+            TagCompound root = new TagCompound();
+            for (int x = bottomLeft.X; x <= topRight.X; x++)
+            {
+                for (int y = bottomLeft.Y; y >= topRight.Y; y--)
+                {
+                    //tile
+                    Point point = new Point(x, y);
+                    if (triggerManager.TryGetTrigger(point, out var trigger))
+                    {
+                        int xOffset = x - bottomLeft.X;
+                        int yOffset = bottomLeft.Y - y;
+                        TagCompound tag = new TagCompound();
+                        tag["_x"] = xOffset;
+                        tag["_y"] = yOffset;
+                        tag["_id"] = trigger.id;
+                        if (trigger is ISaveData saveData)
+                        {
+                            saveData.SaveData(tag);
+                        }
+                        root[$"{xOffset}{yOffset}"] = tag;
+                    }
+                }
+            }
+            return root;
+        }
+        public static void DeSerialize(TagCompound root, Point bottomLeft)
+        {
+            TriggerManager triggerManager = ModContent.GetInstance<TriggerManager>();
+            foreach (var tag in root)
+            {
+                TagCompound element = (TagCompound)tag.Value;
+                int xOffset = element.Get<int>("_x");
+                int yOffset = element.Get<int>("_y");
+                int type = element.Get<int>("_id");
+                Trigger trigger = TriggerFactory.Create((TriggerID)type);
+                if (trigger is ISaveData saveData)
+                {
+                    saveData.LoadData(element);
+                }
+                Point point = new Point(bottomLeft.X + xOffset, bottomLeft.Y - yOffset);
+                triggerManager.PlaceTrigger(point, trigger);
+                // DebugHelper.NewTextOnlyInTesting("Construct Trigger " + trigger);
+
+                Dust.QuickBox(new Vector2(point.X, point.Y) * 16, new Vector2(point.X + 1, point.Y + 1) * 16, 2, Color.Red, null);
+            }
+        }
         public static void SaveStruct(string fileName, Point bottomLeft, Point topRight)
         {
             TriggerManager triggerManager = ModContent.GetInstance<TriggerManager>();
@@ -70,23 +119,7 @@ namespace Stellamod.Helpers
             TriggerManager triggerManager = ModContent.GetInstance<TriggerManager>();
             //Read the nested tag compound or whatever
             TagCompound root = TagIO.FromStream(stream, compressed: true);
-            foreach (var tag in root)
-            {
-                TagCompound element = (TagCompound)tag.Value;
-                int xOffset = element.Get<int>("_x");
-                int yOffset = element.Get<int>("_y");
-                int type = element.Get<int>("_id");
-                Trigger trigger = TriggerFactory.Create((TriggerID)type);
-                if (trigger is ISaveData saveData)
-                {
-                    saveData.LoadData(element);
-                }
-                Point point = new Point(bottomLeft.X + xOffset, bottomLeft.Y - yOffset);
-                triggerManager.PlaceTrigger(point, trigger);
-               // DebugHelper.NewTextOnlyInTesting("Construct Trigger " + trigger);
-
-                Dust.QuickBox(new Vector2(point.X, point.Y) * 16, new Vector2(point.X + 1, point.Y + 1) * 16, 2, Color.Red, null);
-            }
+            DeSerialize(root, bottomLeft);
         }
 
         /// <summary>

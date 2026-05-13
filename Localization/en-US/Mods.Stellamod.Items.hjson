@@ -11172,3 +11172,13 @@ LeviathanEelRelicItem: {
 	DisplayName: Leviathan Eel Relic
 	Tooltip: ""
 }
+
+CopyWand: {
+	DisplayName: Copy Wand
+	Tooltip: ""
+}
+
+PasteWand: {
+	DisplayName: Paste Wand
+	Tooltip: ""
+}

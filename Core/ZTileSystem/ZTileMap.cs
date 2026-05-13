@@ -185,6 +185,13 @@ public class TileScene : IEnumerable
         _tiles.Remove(tilePosition);
     }
 
+    public void Remove(Point point)
+    {
+        IEnumerable<ZTilePosition> pointsToRemove = _tiles.Keys.Where(x => x.x == point.X && x.y == point.Y);
+        foreach (ZTilePosition tilePosition in pointsToRemove)
+            _tiles.Remove(tilePosition);
+    }
+
     public void Clear()
     {
         _tiles.Clear();
@@ -339,6 +346,21 @@ public class ZTileRenderLayer
 
         //Add it to the tile scene
         tileScene.Remove(tilePosition);
+    }
+    public void Remove(Point tilePosition)
+    {
+        //Calculate the chunk
+        int chunkX = tilePosition.X / ZTileMap.Chunk_Size;
+        int chunkY = tilePosition.Y / ZTileMap.Chunk_Size;
+        Point chunk = new Point(chunkX, chunkY);
+
+        if (_tileScenes.TryGetValue(chunk, out TileScene tileScene))
+        {
+            tileScene.Remove(tilePosition);
+        }
+
+        //Add it to the tile scene
+
     }
     public void Clear()
     {
@@ -822,6 +844,22 @@ public class ZTileMap : ModSystem
         }
 
         Remove(renderLayer, zTilePosition);
+    }
+    public void KillTileNoSync(ZRenderLayer renderLayer, Point tileCoordinates, int z)
+    {
+        ZTilePosition zTilePosition = new ZTilePosition();
+        zTilePosition.x = tileCoordinates.X;
+        zTilePosition.y = tileCoordinates.Y;
+        zTilePosition.z = z;
+        Remove(renderLayer, zTilePosition);
+    }
+
+    public void KillAnyTile(Point tileCoordinates)
+    {
+        foreach (var layer in _renderLayers)
+        {
+            layer.Remove(tileCoordinates);
+        }
     }
 
     /// <summary>

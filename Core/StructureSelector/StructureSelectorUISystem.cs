@@ -74,8 +74,15 @@ namespace Stellamod.Core.StructureSelector
 
         public void OpenSaveUI()
         {
-
-            _saveUserInterface.SetState(saveUIState);
+            if(_saveUserInterface.CurrentState != null)
+            {
+                _saveUserInterface.SetState(null);
+            }
+            else
+            {
+                _saveUserInterface.SetState(saveUIState);
+            }
+  
         }
         public void CloseSaveUI()
         {

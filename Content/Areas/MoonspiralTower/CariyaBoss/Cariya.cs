@@ -12,6 +12,7 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -108,6 +109,16 @@ public class Cariya : ScarletBoss
     private int Overhead_Slash_Damage => 45;
     private int Sword_Fall_Damage => 50;
     private int Magic_Blade_Damage => 25;
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.WriteVector2(_teleportPosition);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _teleportPosition = reader.ReadVector2();
+    }
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
         return false;
