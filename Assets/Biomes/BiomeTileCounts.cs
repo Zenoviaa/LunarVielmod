@@ -133,6 +133,9 @@ namespace Stellamod
 
         public int JunkyardCount;
         public static bool InJunkyard => ModContent.GetInstance<BiomeTileCounts>().JunkyardCount >= 25;
+
+        public int EveroseCount;
+        public static bool InEveroseVillage => ModContent.GetInstance<BiomeTileCounts>().EveroseCount >= 25;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             AegislavCount = tileCounts[ModContent.TileType<VeilBrickTile>()] + tileCounts[ModContent.TileType<AegislavSandTile>()] + tileCounts[TileID.CrimsonGrass] + tileCounts[TileID.Crimstone];
@@ -157,6 +160,7 @@ namespace Stellamod
             FableCount = tileCounts[ModContent.TileType<GovheilTile>()];
             SeaCount = tileCounts[ModContent.TileType<SeavathanBrick>()];
             XixCount = tileCounts[ModContent.TileType<HuntiacTile>()];
+            EveroseCount = tileCounts[ModContent.TileType<VeriplantGrass>()];
             CinderCount = tileCounts[ModContent.TileType<CindersparkDirt>()];
             ManorCount = tileCounts[ModContent.TileType<ManorBlock>()];
             MechCount = tileCounts[ModContent.TileType<StarbloomTempleBlock>()];

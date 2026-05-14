@@ -134,6 +134,109 @@ namespace Stellamod.Helpers
             return true;
         }
 
+        public static int OffsetToGround(string structurePath)
+        {
+            Tile[,] tileMap = ReadTileData(structurePath);
+            int yOffset = 0;
+            for(int y = 0; y < tileMap.GetLength(1); y++)
+            {
+                if (tileMap[0, y].HasTile)
+                {
+                    yOffset = y;
+                    break;
+                }
+            }
+
+            //Invert it so we know how much downward to move the structure
+            yOffset = tileMap.GetLength(1) - yOffset;
+            return yOffset;
+        }
+
+        public static Tile[,] ReadTileData(string structurePath)
+        {
+            using Stream stream = Mod.GetFileStream(structurePath + ".str");
+            return ReadTileData(stream);
+        }
+
+        public static Tile[,] ReadTileData(Stream stream)
+        {
+            using var reader = new BinaryReader(stream, Encoding.UTF8, false);
+            int width = reader.ReadInt32();
+            int height = reader.ReadInt32();
+            Tile[,] tileMap = new Tile[width+1, height+1];
+            void InnerLoop(int i, int j)
+            {
+                Tile t = new Tile();
+                t.ClearEverything();
+
+                //tile
+                bool hastile = reader.ReadBoolean();
+                t.LiquidType = reader.ReadInt32();
+                t.LiquidAmount = reader.ReadByte();
+                t.BlueWire = reader.ReadBoolean();
+                t.RedWire = reader.ReadBoolean();
+                t.GreenWire = reader.ReadBoolean();
+                t.YellowWire = reader.ReadBoolean();
+                t.HasActuator = reader.ReadBoolean();
+                t.IsActuated = reader.ReadBoolean();
+                if (hastile)
+                {
+                    t.HasTile = hastile;
+                    bool Modded = reader.ReadBoolean();
+                    int TileType = 0;
+                    if (Modded)
+                    {
+                        TileType = ReadModTile(reader);
+                    }
+                    else
+                    {
+                        TileType = reader.ReadInt16();
+                    }
+
+                    t.TileType = (ushort)TileType;
+                    t.BlockType = (BlockType)reader.ReadByte();
+                    t.IsHalfBlock = reader.ReadBoolean();
+                    //t.LiquidType = reader.ReadInt32();
+                    t.Slope = (SlopeType)reader.ReadByte();
+                    t.TileFrameNumber = reader.ReadInt32();
+                    t.TileFrameX = reader.ReadInt16();
+                    t.TileFrameY = reader.ReadInt16();
+
+                    t.TileColor = reader.ReadByte();
+                    t.IsTileInvisible = reader.ReadBoolean();
+                }
+
+                //wall
+                int WallType = 0;
+                bool ModdedWall = reader.ReadBoolean();
+                if (ModdedWall)
+                {
+                    WallType = ReadModWall(reader);
+                }
+                else
+                {
+                    WallType = reader.ReadInt16();
+                }
+                t.WallType = (ushort)WallType;
+                t.WallFrameX = reader.ReadInt32();
+                t.WallFrameY = reader.ReadInt32();
+                t.WallColor = reader.ReadByte();
+                t.IsWallInvisible = reader.ReadBoolean();
+                t.IsWallFullbright = reader.ReadBoolean();
+                tileMap[i, height - j] = t;
+            }
+
+            for (int i = 0; i <= width; i++)
+            {
+                for (int j = 0; j <= height; j++)
+                {
+                    InnerLoop(i, j);
+                }
+            }
+
+            return tileMap;
+        }
+
 
         private static int[] ReadStruct(Stream stream, Point bottomLeft, int[] tileBlend = null)
         {

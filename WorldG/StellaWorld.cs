@@ -48,6 +48,7 @@ using Stellamod.TilesNew.Virulent;
 using Stellamod.WorldG.MarshJungle;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Terraria;
 using Terraria.GameContent.Biomes;
@@ -3460,7 +3461,7 @@ public partial class StellaWorld : ModSystem
         return y + 0.1f;
     }
 
-    private void WorldGenMistyDungeonHill(GenerationProgress progress, GameConfiguration configuration)
+    public void WorldGenMistyDungeonHill(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "A Mysterious Hill...";
 
@@ -3502,12 +3503,12 @@ public partial class StellaWorld : ModSystem
 
 
 
-    private void WorldGenFableTerrain(GenerationProgress progress, GameConfiguration configuration)
+    public void WorldGenFableTerrain(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Fable Terrain";
         //Calculate the starting location
         Point startHillTile = WitchTownLocation;
-        startHillTile.X += 248;
+        startHillTile.X += 300;
         startHillTile.Y -= 200;
         startHillTile = FallToSolidTile(startHillTile.X, startHillTile.Y);
         startHillTile.Y += 36;
@@ -3573,7 +3574,7 @@ public partial class StellaWorld : ModSystem
         FableFarEdgeLocation = fableFalloffEnd;
 
     }
-    private void WorldGenFabiliaRuin(GenerationProgress progress, GameConfiguration configuration)
+    public void WorldGenFabiliaRuin(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Daedus is Reading Books...";
         Structurizer.PlaceAndProtect(new StructurePlacementParams
@@ -4096,6 +4097,10 @@ for (int beamX = structureRectangle.Location.X;
         string path = "Structures/GilatineCave";
         gilatineHousePoint.X -= 80;
         gilatineHousePoint.Y += 300;
+
+        gilatineHousePoint.X -= 7;
+        gilatineHousePoint.Y += 7;
+        gilatineHousePoint.X -= 25;
         Structurizer.ReadStruct(gilatineHousePoint, path, tileBlend);
         Structurizer.ProtectStructure(gilatineHousePoint, path);
         /*
@@ -4104,7 +4109,7 @@ for (int beamX = structureRectangle.Location.X;
         progress.Message = "I'm Racist.";
     }
 
-    private void WorldGenStoneGolemCave(GenerationProgress progress, GameConfiguration configuration)
+    public void WorldGenStoneGolemCave(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Stone Golem Cave";
 
@@ -4165,11 +4170,17 @@ for (int beamX = structureRectangle.Location.X;
         }
     }
 
-    private void SetXixVillageLocation(GenerationProgress progress, GameConfiguration configuration)
+    private void WriteLine(string? value)
     {
+        Console.WriteLine(value);
+    }
+    public void SetXixVillageLocation(GenerationProgress progress, GameConfiguration configuration)
+    {
+        Stopwatch sw = Stopwatch.StartNew();
         progress.Message = "Set Xix Village";
         string path = "Structures/WitchTown";
         var rectangle = Structurizer.ReadRectangle(path);
+        int yOffset = Structurizer.OffsetToGround(path);
 
         bool placed = false;
         int attempts = 0;
@@ -4214,13 +4225,15 @@ for (int beamX = structureRectangle.Location.X;
                 continue;
 
 
-            Point Loc = new Point(smx, smy + 66);
+            Point Loc = new Point(smx, smy + 57);
             WitchTownLocation = Loc;
             break;
         }
-        Console.WriteLine($"Witch Town Location: {WitchTownLocation}");
+        sw.Stop();
+        WriteLine($"Witch Town Location Generation Time {sw.ElapsedMilliseconds}ms");
+        WriteLine($"Witch Town Location: {WitchTownLocation}");
     }
-    private void WorldGenXixVillage(GenerationProgress progress, GameConfiguration configuration)
+    public void WorldGenXixVillage(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Witches spreading love all inside you!";
         string path = "Structures/WitchTown";
@@ -4312,8 +4325,8 @@ for (int beamX = structureRectangle.Location.X;
 
         path = "Structures/DelgrimHill";
         Point delgrimHillPoint = FableHillStartLocation;
-        delgrimHillPoint.X += 200;
-        delgrimHillPoint.Y -= 42;
+        delgrimHillPoint.X += 130;
+        delgrimHillPoint.Y -= 10;
         Structurizer.ReadStruct(delgrimHillPoint, path, tileBlend);
         Structurizer.ProtectStructure(delgrimHillPoint, path);
 

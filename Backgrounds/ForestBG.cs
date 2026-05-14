@@ -66,7 +66,7 @@ public class ForestBG : CustomBG
         ParallaxYFactor = 0.35f;
 
         BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
-        bool isActive = biomePlayer.ZoneForest || biomePlayer.ZoneSpringHills;
+        bool isActive = biomePlayer.ZoneForest || biomePlayer.ZoneSpringHills || biomePlayer.ZoneEveroseVillage;
         return isActive;
     }
 }
