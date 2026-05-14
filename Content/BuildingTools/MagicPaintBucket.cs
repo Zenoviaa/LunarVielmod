@@ -1,10 +1,14 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Core.Utilities;
+using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Stellamod.Content.BuildingTools;
 
@@ -33,6 +37,61 @@ public class TheMagicHand : ModItem
     }
 }
 
+public class TileEyeDropper : ModItem
+{
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Item.width = 16;
+        Item.height = 16;
+        Item.useAnimation = Item.useTime = 24;
+        Item.useStyle = ItemUseStyleID.Swing;
+        Item.UseSound = SoundID.Item9;
+    }
+
+    public override bool AltFunctionUse(Player player)
+    {
+        return true;
+    }
+
+    public override bool? UseItem(Player player)
+    {
+        if (player.whoAmI == Main.myPlayer)
+        {
+            Point point = Main.MouseWorld.ToTileCoordinates();
+            point = TileUtilities.Clamp(point);
+            Tile tile = Main.tile[point];
+            Point playerPoint = player.position.ToTileCoordinates();
+            if(player.altFunctionUse == 2)
+            {
+                if (tile.WallType > WallID.None)
+                {
+                    int itemType = 0;
+                    //int itemType = WallLoader.Drop[tile.WallType];
+                    WallLoader.Drop(playerPoint.X, playerPoint.Y, tile.WallType, ref itemType);
+                    player.QuickSpawnItem(new EntitySource_TileBreak(point.X, point.Y), itemType, Item.CommonMaxStack);
+            
+                    //TODO: See if there's a way to get the paint item associatied with a paint ID
+                    if(tile.WallColor > PaintID.None)
+                    {
+                     
+                    }
+                }
+            } else
+            {
+                if (tile.HasTile)
+                {
+                    int dropItem = TileLoader.GetItemDropFromTypeAndStyle(tile.TileType);
+                    player.QuickSpawnItem(new EntitySource_TileBreak(point.X, point.Y), dropItem, Item.CommonMaxStack);
+                }
+            }
+            //Main.NewText("Collected Tile!");    
+        }
+
+        return true;
+    }
+}
+
 public class MagicPaintBucket : ModItem
 {
     public override void SetDefaults()
@@ -47,45 +106,87 @@ public class MagicPaintBucket : ModItem
 
     public override bool? UseItem(Player player)
     {
-        Point point = Main.MouseWorld.ToTileCoordinates();
-        
-        GetFloodCreateTiles(player, out var selected);
-        MagicTileUtility.FloodFill(point, selected.createTile, selected.createWall);
+        if(player.whoAmI == Main.myPlayer)
+        {
+            Point point = Main.MouseWorld.ToTileCoordinates();
+            MagicTileUtility.GetFloodCreateTiles(player, out var selected);
+            if (Main.mouseRight)
+            {
+                if (selected.tileType > 0)
+                    selected.tileType = 0;
+                if (selected.wallType > 0)
+                    selected.wallType = 0;
+            }
+            MagicTileUtility.FloodFill(point, selected);
+ 
+        }
+
         return true;
     }
-
-    private void GetFloodCreateTiles(Player player, out Item selected)
+}
+public class UndoBucket : ModItem
+{
+    public override void SetDefaults()
     {
-        Item air = new Item(0);
-        air.TurnToAir();
-
-        selected = air;
-        for (int i = 0; i < player.inventory.Length; i++)
-        {
-            Item item = player.inventory[i];
-            if (item.createTile != -1 || item.createWall != -1)
-            {
-                selected = item;
-                break;
-            }
-        }
+        base.SetDefaults();
+        Item.width = 16;
+        Item.height = 16;
+        Item.useAnimation = Item.useTime = 24;
+        Item.useStyle = ItemUseStyleID.Swing;
+        Item.UseSound = SoundID.Item9;
     }
 
-    public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+    public override bool? UseItem(Player player)
     {
-        base.PostDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-        GetFloodCreateTiles(Main.LocalPlayer, out Item selected);
-        if (selected.IsAir)
-            return;
+        if (player.whoAmI == Main.myPlayer)
+        {
+            MagicTileUtility.FloodUndo();
+        }
 
-        Vector2 drawPos = position + new Vector2(8);
-        drawPos.Y += ExtraMath.Osc(0f, 2f, speed: 1);
-       // drawPos -= Main.screenPosition;
-        ItemSlot.DrawItemIcon(selected, 0, spriteBatch, drawPos, scale * 0.66f, 32, itemColor);
+        return true;
     }
 }
 
 
+
+[Autoload(Side = ModSide.Client)]
+public class MagicPaintBucketPreview : ModSystem
+{
+    private HashSet<Point> _visited;
+    public override void PostDrawTiles()
+    {
+        base.PostDrawTiles();
+        Player player = Main.LocalPlayer;
+        if (player.HeldItem.type != ModContent.ItemType<MagicPaintBucket>())
+            return;
+        
+        Point tilePoint = Main.MouseWorld.ToTileCoordinates();
+        if(Main.GameUpdateCount % 12 == 0)
+        {
+            MagicTileUtility.GetFloodCreateTiles(player, out var selected);
+            (int loops, HashSet<Point> visited) = MagicTileUtility.GetAffectedPoints(tilePoint, selected);
+            _visited = visited;
+        }
+
+        
+        if (_visited == null)
+            return;
+
+
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Vector2.Zero);
+        drawer.color = Color.Green * 0.5f * ExtraMath.Osc(0.5f, 1f, speed: 6);
+        foreach(Point p in _visited)
+        {
+            drawer.worldPosition = p.ToWorldCoordinates();
+            spriteBatch.Draw(drawer);
+        }
+
+        spriteBatch.End();
+    }
+}
 public class MagicTilePlacer : ModSystem
 {
     public override void Load()
@@ -107,51 +208,174 @@ public class MagicTilePlacer : ModSystem
             overrideCanPlace = true;
     }
 
+
 }
 public static class MagicTileUtility
 {
-    public static void FloodFill_InnerRecursive(HashSet<Point> visited, Point tilePoint, int tileType = -1, int wallType = -1)
+    public struct MagicTileParams
     {
-       
-        visited.Add(tilePoint);
-        if (tilePoint.X < 0 || tilePoint.X > Main.maxTilesX || tilePoint.Y < 0 || tilePoint.Y > Main.maxTilesY)
-            return;
-        Tile tile = Main.tile[tilePoint];
-        if (WorldGen.SolidTile(tilePoint))
-            return;
-        if (tileType != -1)
+        public MagicTileParams()
         {
-            WorldGen.PlaceTile(tilePoint.X, tilePoint.Y, tileType);
+            tileType = -1;
+            wallType = -1;
+            tileReplace = -1;
+            wallReplace = -1;
+            paint = 0;
         }
-        if (wallType != -1)
-        {
-            tile.WallType = (ushort)wallType;
-        }
-
-        Point left = tilePoint + new Point(1, 0);
-        Point right = tilePoint + new Point(-1, 0);
-        Point up = tilePoint + new Point(0, -1);
-        Point down = tilePoint + new Point(0, 1);
-
-        if(!visited.Contains(left))
-            FloodFill_InnerRecursive(visited, left, tileType, wallType);
-
-        if (!visited.Contains(right))
-            FloodFill_InnerRecursive(visited, right, tileType, wallType);
-
-        if (!visited.Contains(up))
-            FloodFill_InnerRecursive(visited, up, tileType, wallType);
-
-        if (!visited.Contains(down))
-            FloodFill_InnerRecursive(visited, down, tileType, wallType);
+        public int tileType;
+        public int wallType;
+        public int tileReplace;
+        public int wallReplace;
+        public byte paint;
     }
 
-    public static int CountLoops(Point tilePoint, int tileType = -1, int wallType = -1)
+    public class TileSnapshot
+    {
+        public struct OldTile
+        {
+            public ushort oldWall;
+            public ushort oldTile;
+            public byte oldWallColor;
+            public byte oldTileColor;
+            public bool oldHasTile;
+            public short oldTileFrameX;
+            public short oldTileFrameY;
+            public int oldTileFrameNumber;
+            public int oldWallFrameX;
+            public int oldWallFrameY;
+            public int oldWallFrameNumber;
+            public bool oldTileInvis;
+            public bool oldWallinvis;
+        }
+        public TileSnapshot(Point topLeft, Point bottomRight)
+        {
+            int width = bottomRight.X - topLeft.X;
+            int height = bottomRight.Y - topLeft.Y;
+            width += 1;
+            height += 1;
+            OldTiles = new OldTile[width, height];
+            for(int x = topLeft.X; x < bottomRight.X + 1; x++)
+            {
+                for(int y = topLeft.Y; y < bottomRight.Y + 1; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                   
+                    OldTiles[x - topLeft.X, y - topLeft.Y] = new OldTile
+                    {
+                        oldTile = tile.TileType,
+                        oldWall = tile.WallType,
+                        oldWallColor = tile.WallColor,
+                        oldTileColor = tile.TileColor,
+                        oldHasTile = tile.HasTile,
+                        oldTileFrameX = tile.TileFrameX,
+                        oldTileFrameY = tile.TileFrameY,
+                        oldTileFrameNumber = tile.TileFrameNumber,
+                        oldWallFrameX = tile.WallFrameX,
+                        oldWallFrameY = tile.WallFrameY,
+                        oldWallFrameNumber = tile.WallFrameNumber,
+                        oldTileInvis = tile.IsTileInvisible,
+                        oldWallinvis = tile.IsWallInvisible
+                    };
+                }
+            }
+
+            TopLeft = topLeft;
+            BottomRight = bottomRight;
+        }
+
+        public Point TopLeft;
+        public Point BottomRight;
+        public OldTile[,] OldTiles;
+    }
+
+    public static Stack<TileSnapshot> TileSnapshots;
+    public static int Limit => 50000;
+    public static void GetFloodCreateTiles(Player player, out MagicTileParams tileParams)
+    {
+        Item air = new Item(0);
+        air.TurnToAir();
+
+        tileParams = new MagicTileParams();
+
+        for (int i = 0; i < player.inventory.Length; i++)
+        {
+            Item item = player.inventory[i];
+            if (item.createTile != -1 || item.createWall != -1)
+            {
+                tileParams.tileType = item.createTile;
+                tileParams.wallType = item.createWall;
+                break;
+            }
+        }
+        for (int i = 0; i < player.inventory.Length; i++)
+        {
+            Item item = player.inventory[i];
+            if(item.paint != 0)
+            {
+                tileParams.paint = item.paint;
+                break;
+            }
+       
+        }
+
+
+        Point point = Main.MouseWorld.ToTileCoordinates();
+        point = TileUtilities.Clamp(point);
+        Tile tile = Main.tile[point];
+        if (tile.HasTile)
+        {
+            tileParams.tileReplace = tile.TileType;
+        }
+        if (tile.WallType > 0)
+        {
+            tileParams.wallReplace = tile.WallType;
+        }
+    }
+
+    public delegate bool BlockerFunction(in Point p, in MagicTileParams tileParams);
+    public static (int, HashSet<Point>) GetAffectedPoints(Point tilePoint, MagicTileParams tileParams)
     {
         var visited = new HashSet<Point>();
         var path = new Stack<Point>();
         path.Push(tilePoint);
         int loops = 0;
+
+        //Decide blocker function
+        BlockerFunction solidFunction;
+        if(tileParams.wallType != -1)
+        {
+            if(tileParams.wallReplace != -1)
+            {
+                solidFunction = IsWallBlockedWallReplace;
+            }
+            else
+            {
+                solidFunction = IsWallBlocked;
+            }
+        }
+        else
+        {
+            if(tileParams.tileReplace != -1)
+            {
+                solidFunction = IsTileBlockedTileReplace;
+            }
+            else
+            {
+                solidFunction = IsTileBlocked;
+            }
+        }
+
+
+        bool NeedsVisiting(Point tilePoint)
+        {
+            return !solidFunction(tilePoint, tileParams) && !visited.Contains(tilePoint);
+        }
+
+        void Visit(Point tilePoint)
+        {
+            path.Push(tilePoint);
+            visited.Add(tilePoint);
+        }
         while (path.Count > 0)
         {
             Point next = path.Pop();
@@ -160,75 +384,131 @@ public static class MagicTileUtility
             Point up = next + new Point(0, -1);
             Point down = next + new Point(0, 1);
 
-            loops++;
-            if (loops > 100000)
+          
+            if (visited.Count > Limit)
                 break;
-            if (next.X < 0 || next.X > Main.maxTilesX || next.Y < 0 || next.Y > Main.maxTilesY)
+
+
+            if (next.X < 1 || next.X > Main.maxTilesX - 1|| next.Y < 1 || next.Y > Main.maxTilesY - 1)
             {
                 continue;
             }
 
             Tile tile = Main.tile[next];
-            if (WorldGen.SolidTile(next))
+            if (solidFunction(next, tileParams))
             {
                 continue;
             }
 
-            
+            if (NeedsVisiting(left))
+            {
+                Visit(left);
+            }
+            if (NeedsVisiting(right))
+            {
+                Visit(right);
+            }
 
-            if (!visited.Contains(left))
+            if (NeedsVisiting(up))
             {
-                path.Push(left);
-                visited.Add(left);
+                Visit(up);
             }
-            if (!visited.Contains(right))
+            if (NeedsVisiting(down))
             {
-                path.Push(right);
-                visited.Add(right);
-            }
-            if (!visited.Contains(up))
-            {
-                path.Push(up);
-                visited.Add(up);
-            }
-            if (!visited.Contains(down))
-            {
-                path.Push(down);
-                visited.Add(down);
+                Visit(down);
             }
         }
-        return loops;
-        //     FloodFill_Inner(visited, tilePoint, tileType, wallType);
+        return (loops, visited);
     }
-    public static void FloodFill(Point tilePoint, int tileType = -1, int wallType = -1)
+
+    public static bool IsTileBlockedTileReplace(in Point tilePoint, in MagicTileParams tileParams)
     {
-        int loops = CountLoops(tilePoint, tileType, wallType);
-        if(loops > 100000)
+        Tile tile = Main.tile[tilePoint];
+        if (tile.HasTile && tile.TileType == tileParams.tileReplace)
+            return false;
+        if (!tile.HasTile)
+            return true;
+
+        return IsTileBlocked(tilePoint, tileParams);
+    }
+    public static bool IsTileBlocked(in Point tilePoint, in MagicTileParams tileParams)
+    {
+        return WorldGen.SolidTile(tilePoint);
+    }
+    public static bool IsWallBlockedWallReplace(in Point tilePoint, in MagicTileParams tileParams)
+    {
+        Tile tile = Main.tile[tilePoint];
+        if (WorldGen.SolidTile(tilePoint))
+            return true;
+        if (tile.WallType == tileParams.wallReplace)
+            return false;
+        if (tile.WallType == 0)
+            return true;
+        return tile.WallType != 0;
+        //return IsWallBlocked(tilePoint, tileParams);
+    }
+    public static bool IsWallBlocked(in Point tilePoint, in MagicTileParams tileParams)
+    {
+        Tile tile = Main.tile[tilePoint];
+        return tile.WallType > 0 || WorldGen.SolidTile(tilePoint);
+    }
+
+    public static void FloodUndo()
+    {
+        TileSnapshots ??= new();
+        if (TileSnapshots.Count <= 0)
+            return;
+        TileSnapshot snapShot = TileSnapshots.Pop();
+        for(int x = 0; x < snapShot.OldTiles.GetLength(0); x++)
+        {
+            for(int y = 0; y < snapShot.OldTiles.GetLength(1); y++)
+            {
+                ref var oldTile = ref snapShot.OldTiles[x, y];
+                Point tilePoint = snapShot.TopLeft + new Point(x, y);
+                Tile tile = Main.tile[tilePoint];
+                tile.ClearTile();
+                tile.ClearBlockPaintAndCoating();
+                tile.TileType = oldTile.oldTile;
+                tile.HasTile = oldTile.oldHasTile;
+                tile.TileColor = oldTile.oldTileColor;
+                tile.TileFrameX = oldTile.oldTileFrameX;
+                tile.TileFrameY = oldTile.oldTileFrameY;
+                tile.TileFrameNumber = oldTile.oldTileFrameNumber;
+               // WorldGen.SquareTileFrame(tilePoint.X, tilePoint.Y);
+
+                tile.WallType = oldTile.oldWall;
+                tile.WallColor = oldTile.oldWallColor;
+                tile.WallFrameX = oldTile.oldWallFrameX;
+                tile.WallFrameY = oldTile.oldWallFrameY;
+                tile.WallFrameNumber = oldTile.oldWallFrameNumber;
+                tile.IsTileInvisible = oldTile.oldTileInvis;
+                tile.IsWallInvisible = oldTile.oldWallinvis;
+              //  WorldGen.SquareWallFrame(tilePoint.X, tilePoint.Y);
+            }
+        }
+        if (Main.netMode == NetmodeID.SinglePlayer)
+            return;
+        int width = snapShot.BottomRight.X - snapShot.TopLeft.X;
+        int height = snapShot.BottomRight.Y - snapShot.TopLeft.Y;
+        width += 1;
+        height += 1;
+        NetMessage.SendTileSquare(-1, snapShot.TopLeft.X, snapShot.TopLeft.Y, width, height);
+     
+    }
+    public static void FloodFill(Point tilePoint, in MagicTileParams tileParams)
+    {
+        (int loops, HashSet<Point> visited) = GetAffectedPoints(tilePoint, tileParams);
+        if(loops > Limit)
         {
             Vector2 pos = tilePoint.ToWorldCoordinates();
             CombatText.NewText(new Rectangle((int)pos.X, (int)pos.Y, 16, 16), Color.Red, "....", true);
             return;
-        }    
-        var visited = new HashSet<Point>();
-        var path = new Stack<Point>();
-        path.Push(tilePoint);
+        }
 
+        TileSnapshots ??= new();
         Point topLeft = tilePoint, bottomRight = tilePoint;
-        while(path.Count > 0)
+        foreach (Point next in visited)
         {
-            Point next = path.Pop();
-
-            Point left = next + new Point(1, 0);
-            Point right = next + new Point(-1, 0);
-            Point up = next + new Point(0, -1);
-            Point down = next + new Point(0, 1);
-     
-        
-            if (next.X < 0 || next.X > Main.maxTilesX || next.Y < 0 || next.Y > Main.maxTilesY)
-            {
-                continue;
-            }
-            
             if (next.X < topLeft.X)
                 topLeft.X = next.X;
             if (next.Y < topLeft.Y)
@@ -237,41 +517,32 @@ public static class MagicTileUtility
                 bottomRight.X = next.X;
             if (next.Y > bottomRight.Y)
                 bottomRight.Y = next.Y;
+        }
 
-            Tile tile = Main.tile[next];
-            if (WorldGen.SolidTile(next))
+        TileSnapshots.Push(new TileSnapshot(topLeft, bottomRight));
+        if (tileParams.tileType != -1)
+        {
+          
+            foreach (Point next in visited)
             {
-                continue;
+                Tile tile = Main.tile[next];
+                tile.ClearTile();
+                tile.ClearBlockPaintAndCoating();
+                tile.TileType = (ushort)tileParams.tileType;
+                tile.HasTile = true;
+                tile.TileColor = tileParams.paint;
+                WorldGen.SquareTileFrame(next.X, next.Y);
             }
+        }
 
-            if (tileType != -1)
+        if (tileParams.wallType != -1)
+        {
+            foreach (Point next in visited)
             {
-                WorldGen.PlaceTile(next.X, next.Y, tileType, true);
-            }
-            if (wallType != -1)
-            {
-                WorldGen.PlaceWall(next.X, next.Y, wallType, true);
-            }
-
-            if (!visited.Contains(left))
-            {
-                path.Push(left);
-                visited.Add(left);
-            }
-            if (!visited.Contains(right))
-            {
-                path.Push(right);
-                visited.Add(right);
-            }
-            if (!visited.Contains(up))
-            {
-                path.Push(up);
-                visited.Add(up);
-            }
-            if (!visited.Contains(down))
-            {
-                path.Push(down);
-                visited.Add(down);
+                Tile tile = Main.tile[next];
+                tile.WallType = (ushort)tileParams.wallType;
+                tile.WallColor = tileParams.paint;
+                WorldGen.SquareWallFrame(next.X, next.Y);
             }
         }
 
@@ -279,7 +550,8 @@ public static class MagicTileUtility
             return;
         int width = bottomRight.X - topLeft.X;
         int height = bottomRight.Y - topLeft.Y;
+        width += 1;
+        height += 1;
         NetMessage.SendTileSquare(-1, topLeft.X, topLeft.Y, width, height);
-   //     FloodFill_Inner(visited, tilePoint, tileType, wallType);
     }
 }

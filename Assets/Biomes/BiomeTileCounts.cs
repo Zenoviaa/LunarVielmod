@@ -135,7 +135,7 @@ namespace Stellamod
         public static bool InJunkyard => ModContent.GetInstance<BiomeTileCounts>().JunkyardCount >= 25;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
-            AegislavCount = tileCounts[ModContent.TileType<AegislavSandTile>()] + tileCounts[TileID.CrimsonGrass] + tileCounts[TileID.Crimstone];
+            AegislavCount = tileCounts[ModContent.TileType<VeilBrickTile>()] + tileCounts[ModContent.TileType<AegislavSandTile>()] + tileCounts[TileID.CrimsonGrass] + tileCounts[TileID.Crimstone];
            // Main.NewText(AegislavCount);
             JunkyardCount = tileCounts[ModContent.TileType<JunkyTile>()];
             ForestCount = tileCounts[TileID.Grass];

@@ -6,6 +6,16 @@ namespace Stellamod.Helpers
 {
     public static class CommonDrawing
     {
+        public static Rectangle GetFrame(int width, int height, int frameNumber, int horizontalFrameCount, int verticalFrameCount)
+        {
+            int widthPerFrame = width / horizontalFrameCount;
+            int heightPerFrame = height / verticalFrameCount;
+
+            Rectangle rectangle = new Rectangle(0, 0, widthPerFrame, heightPerFrame);
+            rectangle.X = ((int)frameNumber % horizontalFrameCount) * rectangle.Width;
+            rectangle.Y = (((int)frameNumber - ((int)frameNumber % horizontalFrameCount)) / horizontalFrameCount) * rectangle.Height;
+            return rectangle;
+        }
         public static Vector2[] InterpolatePointsOnACircle(Vector2 center, float radius, float numPoints = 64)
         {
             Vector2[] arr = new Vector2[(int)numPoints];

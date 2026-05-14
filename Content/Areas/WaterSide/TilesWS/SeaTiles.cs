@@ -9,7 +9,7 @@ public class DeepSeaTile : ModTile
 {
     public override void SetStaticDefaults()
     {
-        TileSets.RegisterGrassyTile<CoralwayGrass>(Type);
+        GrassTileSystem.RegisterGrassyTile<CoralwayGrass>(Type);
 
         TileID.Sets.CanBeClearedDuringOreRunner[Type] = true;
         Main.tileSolid[Type] = true;

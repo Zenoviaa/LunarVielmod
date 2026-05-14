@@ -475,7 +475,6 @@ namespace Stellamod.Items
         {
             if (Main.netMode != NetmodeID.SinglePlayer)
             {
-                int clientToIgnore = Main.LocalPlayer.whoAmI;
                 int length = _brewingMaterials.Count;
                 object[] data = new object[length * 2 + 1];
                 int index = 0;
@@ -486,7 +485,7 @@ namespace Stellamod.Items
                     data[index++] = _brewingMaterials[i].stack;
                 }
                 Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.CauldronSync, data)
-                    .Send(ignoreClient: clientToIgnore);
+                    .Send(-1);
             }
         }
 

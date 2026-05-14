@@ -30,7 +30,7 @@ public class AegislavHangingCage : ZTile
         drawOrigin = TileDrawOrigin.TopDown;
         
         windSwayOffset = 0f;
-        windSwayMagnitude = 0.2f;
+        windSwayMagnitude = 0.08f;
         windSwaySpeed = 0.02f;
     }
 }

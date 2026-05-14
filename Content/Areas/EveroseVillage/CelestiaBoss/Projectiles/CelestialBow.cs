@@ -373,10 +373,21 @@ public class CelestialArrow : ModProjectile
             sp.gravity = 0;
             sp.dampening = 0.05f;
         }
-        if (Timer > 10 || (Style == 1 && Projectile.Bottom.Y > Target.Top.Y))
+        if(Style == 1)
         {
-            Projectile.tileCollide = true;
+            if (Projectile.Bottom.Y > Target.Top.Y)
+            {
+                Projectile.tileCollide = true;
+            }
         }
+        else
+        {
+            if (Timer > 10)
+            {
+                Projectile.tileCollide = true;
+            }
+        }
+
 
         Vector2 targetScale = Vector2.Lerp(Vector2.One, new Vector2(1.5f, 0.6f), Projectile.velocity.Length() / 25f);
         _stretchScale = Vector2.Lerp(_stretchScale, targetScale, 0.1f);

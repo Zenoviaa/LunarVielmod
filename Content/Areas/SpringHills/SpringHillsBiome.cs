@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets.Biomes;
 using Stellamod.Content.Areas.Dungeon;
 using Stellamod.Content.Areas.Terror;
+using Stellamod.Content.Areas.WorldsEnd;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Biomes;
 using Terraria;
@@ -32,8 +33,18 @@ namespace Stellamod.Content.Areas.SpringHills
             bool isaActive = BiomeTileCounts.InForest && player.ZoneOverworldHeight;
             if (!isaActive)
                 return false;
+            if (player.InModBiome<FableBiome>())
+                return false;
+            if (player.InModBiome<AlcadziaBiome>())
+                return false;
+            if (player.InModBiome<WorldsEndBiome>())
+                return false;
+            if (player.InModBiome<AegislavBiome>())
+                return false;
+
             if (player.InZonePurity())
                 return true;
+
             return true;
         }
 

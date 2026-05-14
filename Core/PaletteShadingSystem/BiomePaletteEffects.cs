@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
+﻿using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Palettes;
@@ -9,14 +7,25 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.PaletteShadingSystem
 {
+    public class AegislavPaletteEffect : PaletteEffect
+    {
+        public override PaletteType PaletteType => PaletteType.LunarShader;
+        public override PalettePriority Priority => PalettePriority.Medium;
+        public override bool IsActive(Player player)
+        {
+            return false;
+            BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
+            return myPlayer.ZoneAegislavSurface;
+        }
+    }
     public class MoonspiralTowerPaletteEffect : PaletteEffect
     {
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override PalettePriority Priority => PalettePriority.Medium;
         public override bool IsActive(Player player)
         {
-            
-   
+
+
             BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
             return myPlayer.ZoneMoonspiralTower;
         }
@@ -43,7 +52,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
-         
+
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneGovheil)
                 return true;
@@ -80,7 +89,7 @@ namespace Stellamod.Core.PaletteShadingSystem
 
         public override bool IsActive(Player player)
         {
-        
+
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             return myPlayer.ZoneAlcadzia;
         }
@@ -119,7 +128,7 @@ namespace Stellamod.Core.PaletteShadingSystem
 
         public override bool IsActive(Player player)
         {
-   
+
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneAshotiTemple)
                 return true;
@@ -141,7 +150,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
-   
+
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneFable)
                 return true;
@@ -165,7 +174,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
-     
+
             //       return true;
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (Main.dayTime)
@@ -182,7 +191,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
-      
+
             return base.IsActive(player) && NPC.AnyNPCs(ModContent.NPCType<SanguineSingularity>());
         }
     }
@@ -218,8 +227,8 @@ namespace Stellamod.Core.PaletteShadingSystem
             palettizerShader.Progress = fade;
             palettizerShader.Dither = ModContent.GetInstance<LunarVeilClientConfig>().Dither;
             palettizerShader.ImageSize = new Vector2(131, 312) * 4f;
-         //   palettizerShader.Spread = 5f;
-            palettizerShader.DitherAlpha =0.125f;
+            //   palettizerShader.Spread = 5f;
+            palettizerShader.DitherAlpha = 0.125f;
             return palettizerShader.Effect;
         }
 

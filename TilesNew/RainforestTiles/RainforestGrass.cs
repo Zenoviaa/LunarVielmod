@@ -20,7 +20,7 @@ namespace Stellamod.TilesNew.RainforestTiles
             TileID.Sets.JungleBiome[Type] = 1;
             TileID.Sets.Grass[Type] = true;
             TileID.Sets.NeedsGrassFraming[Type] = false;
-            TileSets.RegisterGrassyTile<TallGrass>(Type);
+            GrassTileSystem.RegisterGrassyTile<TallGrass>(Type);
 
             Main.tileSolid[Type] = true;
             Main.tileMergeDirt[Type] = true;

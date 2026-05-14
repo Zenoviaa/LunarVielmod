@@ -11187,3 +11187,13 @@ EraseWand: {
 	DisplayName: Erase Wand
 	Tooltip: ""
 }
+
+TileEyeDropper: {
+	Tooltip: ""
+	DisplayName: Tile Eye Dropper
+}
+
+UndoBucket: {
+	DisplayName: Undo Bucket
+	Tooltip: ""
+}

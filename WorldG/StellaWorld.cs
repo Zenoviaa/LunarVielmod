@@ -593,8 +593,21 @@ public partial class StellaWorld : ModSystem
                 }
             }
         }
+        int[] tileBlend = new int[]
+        {
+            TileID.RubyGemspark
+        };
 
+        Point aegislavCastlePoint = new Point();
+        aegislavCastlePoint = endTile;
+        aegislavCastlePoint.X -= 300;
+        aegislavCastlePoint.Y -= 20;
+        aegislavCastlePoint = FallToSolidTile(aegislavCastlePoint.X, aegislavCastlePoint.Y);
 
+        string path = "Structures/BloodletCastle";
+        aegislavCastlePoint.Y += 15;
+        Structurizer.ReadStruct(aegislavCastlePoint, path, tileBlend);
+        Structurizer.ProtectStructure(aegislavCastlePoint, path);
     }
 
     private void WorldGenMarshHousing(GenerationProgress progress, GameConfiguration configuration)
@@ -2117,55 +2130,36 @@ public partial class StellaWorld : ModSystem
         }
 
         //Place List House
-        string listHouseStructureFile = "Structures/ListsHouse";
-        for (int attempts = 0; attempts < 10000; attempts++)
+        void RandomlyPlaceStructureInSurfaceDesert(string structure)
         {
-            int randDesertX = genRand.Next(GenVars.desertHiveLeft, GenVars.desertHiveRight);
-            int y = (int)(Main.worldSurface - 300);
-            for (int m = 0; m < 1000; m++)
+            for (int attempts = 0; attempts < 10000; attempts++)
             {
-                y++;
-                if (WorldGen.SolidTile(randDesertX, y))
+                int randDesertX = genRand.Next(GenVars.desertHiveLeft, GenVars.desertHiveRight);
+                int y = (int)(Main.worldSurface - 300);
+                for (int m = 0; m < 1000; m++)
                 {
+                    y++;
+                    if (WorldGen.SolidTile(randDesertX, y))
+                    {
 
 
+                        break;
+                    }
+                }
+
+                Point tilePoint = new Point(randDesertX, y);
+                if (Structurizer.SafePlaceAndProtectStructure(tilePoint, structure, desertStructures, tileBlend, out int[] chestIndices))
+                {
+                    Rectangle structureRect = Structurizer.ReadRectangle(structure);
+                    PlaceRibbonsandBeams(structureRect, tilePoint);
                     break;
                 }
             }
-
-            Point tilePoint = new Point(randDesertX, y);
-            if (Structurizer.SafePlaceAndProtectStructure(tilePoint, listHouseStructureFile, desertStructures, tileBlend, out int[] chestIndices))
-            {
-                Rectangle structureRect = Structurizer.ReadRectangle(listHouseStructureFile);
-                PlaceRibbonsandBeams(structureRect, tilePoint);
-                break;
-            }
         }
 
-        //Place Eresh place
-        string ereshStructureFile = "Structures/DesertEresh";
-        for (int attempts = 0; attempts < 10000; attempts++)
-        {
-            int randDesertX = genRand.Next(GenVars.desertHiveLeft, GenVars.desertHiveRight);
-            int y = (int)(Main.worldSurface - 300);
-            for (int m = 0; m < 1000; m++)
-            {
-                y++;
-                if (WorldGen.SolidTile(randDesertX, y))
-                {
-                    break;
-                }
-            }
-
-            Point tilePoint = new Point(randDesertX, y);
-
-            if (Structurizer.SafePlaceAndProtectStructure(tilePoint, ereshStructureFile, desertStructures, tileBlend, out int[] chestIndices))
-            {
-                Rectangle structureRect = Structurizer.ReadRectangle(ereshStructureFile);
-                PlaceRibbonsandBeams(structureRect, tilePoint);
-                break;
-            }
-        }
+        RandomlyPlaceStructureInSurfaceDesert("Structures/ListsHouse");
+        RandomlyPlaceStructureInSurfaceDesert("Structures/DesertOrgan");
+        RandomlyPlaceStructureInSurfaceDesert("Structures/DesertEresh");
 
         int newDesertLeft = GenVars.desertHiveLeft - Desert_Padding;
         int newDesertRight = GenVars.desertHiveRight + Desert_Padding;
@@ -3614,69 +3608,72 @@ public partial class StellaWorld : ModSystem
         }
 
         FableFarEdgeLocation = fableFalloffEnd;
-        Point startCaveTile = new Point();
-        startCaveTile.X = (int)MathHelper.Lerp(FableHillStartLocation.X, FableHillEndLocation.X, 0.2f);
-        startCaveTile.Y = (int)(Main.worldSurface - 400);
 
-        Point endCaveTile = new Point();
-        endCaveTile.X = (int)MathHelper.Lerp(FableHillStartLocation.X, FableHillEndLocation.X, 0.4f);
-        endCaveTile.Y = (int)(Main.worldSurface - 400);
+        /*
+Point startCaveTile = new Point();
+startCaveTile.X = (int)MathHelper.Lerp(FableHillStartLocation.X, FableHillEndLocation.X, 0.2f);
+startCaveTile.Y = (int)(Main.worldSurface - 400);
 
-        startCaveTile = FallToSolidTile(startCaveTile.X, startCaveTile.Y);
-        endCaveTile = FallToSolidTile(endCaveTile.X, endCaveTile.Y);
+Point endCaveTile = new Point();
+endCaveTile.X = (int)MathHelper.Lerp(FableHillStartLocation.X, FableHillEndLocation.X, 0.4f);
+endCaveTile.Y = (int)(Main.worldSurface - 400);
+
+startCaveTile = FallToSolidTile(startCaveTile.X, startCaveTile.Y);
+endCaveTile = FallToSolidTile(endCaveTile.X, endCaveTile.Y);
 
 
-        width = endCaveTile.X - startCaveTile.X;
-        float maxCaveDepth = 66;
-        var genRand = WorldGen.genRand;
-        Vector2 caveStrength = new Vector2(15, 20);
+width = endCaveTile.X - startCaveTile.X;
+float maxCaveDepth = 66;
+var genRand = WorldGen.genRand;
+Vector2 caveStrength = new Vector2(15, 20);
 
-        for (int x = startCaveTile.X; x < endCaveTile.X; x++)
+for (int x = startCaveTile.X; x < endCaveTile.X; x++)
+{
+    float ratio = (x - startCaveTile.X) / width;
+    float bump = EasingFunction.QuadraticBump(ratio);
+    int y = (int)MathHelper.Lerp(startCaveTile.Y, endCaveTile.Y, ratio);
+    y += (int)MathHelper.Lerp(0, maxCaveDepth, bump);
+
+    WorldGen.TileRunner(x, y,
+        genRand.NextFloat(caveStrength.X, caveStrength.Y),
+        genRand.Next(12, 30), -1);
+}
+
+
+//Place Telegrim
+//Place DELGRIM
+Point delgrimPoint = new Point();
+delgrimPoint.X = (int)MathHelper.Lerp(startCaveTile.X, endCaveTile.X, 0.5f);
+delgrimPoint.Y = (int)MathHelper.Lerp(startCaveTile.Y, endCaveTile.Y, 0.5f) + (int)MathHelper.Lerp(0, maxCaveDepth, EasingFunction.QuadraticBump(0.5f)); ;
+
+string structure = "Struct/Underground/DelgrimShop";
+Point pointToPlaceDelgrimShop = delgrimPoint;
+while (!Structurizer.TryPlaceAndProtectStructure(pointToPlaceDelgrimShop, structure))
+{
+    pointToPlaceDelgrimShop += genRand.NextVector2Circular(4, 4).ToPoint();
+}
+
+Structurizer.ReadStruct(pointToPlaceDelgrimShop, structure);
+Rectangle structureRectangle = Structurizer.ReadRectangle(structure);
+structureRectangle.Location = pointToPlaceDelgrimShop;
+for (int beamX = structureRectangle.Location.X;
+    beamX < structureRectangle.Location.X + structureRectangle.Width; beamX += 4)
+{
+    int beamY = structureRectangle.Location.Y;
+    int solidCount = 0;
+    while (solidCount < 5)
+    {
+        if (!WorldGen.SolidTile(beamX, beamY))
         {
-            float ratio = (x - startCaveTile.X) / width;
-            float bump = EasingFunction.QuadraticBump(ratio);
-            int y = (int)MathHelper.Lerp(startCaveTile.Y, endCaveTile.Y, ratio);
-            y += (int)MathHelper.Lerp(0, maxCaveDepth, bump);
-
-            WorldGen.TileRunner(x, y,
-                genRand.NextFloat(caveStrength.X, caveStrength.Y),
-                genRand.Next(12, 30), -1);
+            WorldGen.PlaceTile(beamX, beamY, TileID.WoodenBeam);
         }
-
-        //Place Telegrim
-        //Place DELGRIM
-        Point delgrimPoint = new Point();
-        delgrimPoint.X = (int)MathHelper.Lerp(startCaveTile.X, endCaveTile.X, 0.5f);
-        delgrimPoint.Y = (int)MathHelper.Lerp(startCaveTile.Y, endCaveTile.Y, 0.5f) + (int)MathHelper.Lerp(0, maxCaveDepth, EasingFunction.QuadraticBump(0.5f)); ;
-
-        string structure = "Struct/Underground/DelgrimShop";
-        Point pointToPlaceDelgrimShop = delgrimPoint;
-        while (!Structurizer.TryPlaceAndProtectStructure(pointToPlaceDelgrimShop, structure))
+        else
         {
-            pointToPlaceDelgrimShop += genRand.NextVector2Circular(4, 4).ToPoint();
+            solidCount++;
         }
-
-        Structurizer.ReadStruct(pointToPlaceDelgrimShop, structure);
-        Rectangle structureRectangle = Structurizer.ReadRectangle(structure);
-        structureRectangle.Location = pointToPlaceDelgrimShop;
-        for (int beamX = structureRectangle.Location.X;
-            beamX < structureRectangle.Location.X + structureRectangle.Width; beamX += 4)
-        {
-            int beamY = structureRectangle.Location.Y;
-            int solidCount = 0;
-            while (solidCount < 5)
-            {
-                if (!WorldGen.SolidTile(beamX, beamY))
-                {
-                    WorldGen.PlaceTile(beamX, beamY, TileID.WoodenBeam);
-                }
-                else
-                {
-                    solidCount++;
-                }
-                beamY++;
-            }
-        }
+        beamY++;
+    }
+}*/
     }
 
 
@@ -4092,11 +4089,18 @@ public partial class StellaWorld : ModSystem
         Point gilatineHousePoint = new Point();
         gilatineHousePoint = FableFarEdgeLocation;
         gilatineHousePoint.X += 800;
-        gilatineHousePoint.Y -= 300;
+        gilatineHousePoint.Y -= 330;
         gilatineHousePoint = FallToSolidTile(gilatineHousePoint.X, gilatineHousePoint.Y);
 
+
+        string path = "Structures/GilatineCave";
+        gilatineHousePoint.X -= 80;
+        gilatineHousePoint.Y += 300;
+        Structurizer.ReadStruct(gilatineHousePoint, path, tileBlend);
+        Structurizer.ProtectStructure(gilatineHousePoint, path);
+        /*
         GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("GilatineCave");
-        prefab.PasteErase(gilatineHousePoint.X, gilatineHousePoint.Y, new Point(55, 0));
+        prefab.PasteErase(gilatineHousePoint.X, gilatineHousePoint.Y, new Point(55, 0));*/
         progress.Message = "I'm Racist.";
     }
 
@@ -4164,7 +4168,7 @@ public partial class StellaWorld : ModSystem
     private void SetXixVillageLocation(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Set Xix Village";
-        string path = "Struct/Overworld/WitchTown";
+        string path = "Structures/WitchTown";
         var rectangle = Structurizer.ReadRectangle(path);
 
         bool placed = false;
@@ -4210,112 +4214,116 @@ public partial class StellaWorld : ModSystem
                 continue;
 
 
-            Point Loc = new Point(smx, smy + 15);
-            Point Loc2 = Loc;
+            Point Loc = new Point(smx, smy + 66);
             WitchTownLocation = Loc;
             break;
         }
+        Console.WriteLine($"Witch Town Location: {WitchTownLocation}");
     }
     private void WorldGenXixVillage(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Witches spreading love all inside you!";
-        string path = "Struct/Overworld/WitchTown";
-
+        string path = "Structures/WitchTown";
         var rectangle = Structurizer.ReadRectangle(path);
-
-        bool placed = false;
-        int attempts = 0;
-        while (!placed && attempts++ < 10000000)
+        var tileBlend = new int[]
         {
-            var tileBlend = new int[]
-            {
-                TileID.RubyGemspark
-            };
+            TileID.RubyGemspark
+        };
 
-            int[] ChestIndexs = Structurizer.ReadStruct(WitchTownLocation, path, tileBlend);
-            Structurizer.ProtectStructure(WitchTownLocation, path);
-            for (int x = WitchTownLocation.X; x < WitchTownLocation.X + rectangle.Width; x++)
+        int[] ChestIndexs = Structurizer.ReadStruct(WitchTownLocation, path, tileBlend);
+        Structurizer.ProtectStructure(WitchTownLocation, path);
+        for (int x = WitchTownLocation.X; x < WitchTownLocation.X + rectangle.Width; x++)
+        {
+            for (int y = WitchTownLocation.Y; y < WitchTownLocation.Y + 40; y++)
             {
-                for (int y = WitchTownLocation.Y; y < WitchTownLocation.Y + 40; y++)
+                if (!WorldGen.SolidTile(x, y))
                 {
-                    if (!WorldGen.SolidTile(x, y))
-                    {
-                        WorldGen.PlaceTile(x, y, TileID.Dirt);
-                    }
+                    WorldGen.PlaceTile(x, y, TileID.Dirt);
                 }
             }
-
-            foreach (int chestIndex in ChestIndexs)
-            {
-                var chest = Main.chest[chestIndex];
-
-                // itemsToAdd will hold type and stack data for each item we want to add to the chest
-                var itemsToAdd = new List<(int type, int stack)>();
-
-                // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
-                int specialItem = new Terraria.Utilities.WeightedRandom<int>(
-
-                    Tuple.Create(ModContent.ItemType<Ivythorn>(), 0.5)
-
-
-                // Choose no item with a high weight of 7.
-                );
-                if (specialItem != ItemID.None)
-                {
-                    itemsToAdd.Add((specialItem, 1));
-                }
-                // Using a switch statement and a random choice to add sets of items.
-                switch (Main.rand.Next(4))
-                {
-                    case 0:
-                        itemsToAdd.Add((ModContent.ItemType<PerfectionStaff>(), Main.rand.Next(1, 1)));
-                        itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-                        // itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
-                        itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
-                        itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
-                        itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
-                        break;
-                    case 1:
-                        itemsToAdd.Add((ItemID.CordageGuide, Main.rand.Next(1, 1)));
-                        itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-                        //    itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
-                        itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 3)));
-                        itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
-                        break;
-                    case 2:
-                        itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-                        //   itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
-                        itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 50)));
-                        itemsToAdd.Add((ItemID.EndurancePotion, Main.rand.Next(1, 3)));
-                        itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
-                        break;
-                    case 3:
-                        itemsToAdd.Add((ItemID.SlimeStaff, Main.rand.Next(1, 1)));
-                        itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
-                        // itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
-                        itemsToAdd.Add((ItemID.EndurancePotion, Main.rand.Next(1, 3)));
-                        itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
-                        break;
-                }
-
-                // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
-                int chestItemIndex = 0;
-                foreach (var itemToAdd in itemsToAdd)
-                {
-                    Item item = new Item();
-                    item.SetDefaults(itemToAdd.type);
-                    item.stack = itemToAdd.stack;
-                    chest.item[chestItemIndex] = item;
-                    chestItemIndex++;
-                    if (chestItemIndex >= 40)
-                        break; // Make sure not to exceed the capacity of the chest
-                }
-            }
-            placed = true;
-            break;
         }
 
+        foreach (int chestIndex in ChestIndexs)
+        {
+            var chest = Main.chest[chestIndex];
 
+            // itemsToAdd will hold type and stack data for each item we want to add to the chest
+            var itemsToAdd = new List<(int type, int stack)>();
+
+            // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+            int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+                Tuple.Create(ModContent.ItemType<Ivythorn>(), 0.5)
+
+
+            // Choose no item with a high weight of 7.
+            );
+            if (specialItem != ItemID.None)
+            {
+                itemsToAdd.Add((specialItem, 1));
+            }
+            // Using a switch statement and a random choice to add sets of items.
+            switch (Main.rand.Next(4))
+            {
+                case 0:
+                    itemsToAdd.Add((ModContent.ItemType<PerfectionStaff>(), Main.rand.Next(1, 1)));
+                    itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+                    // itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
+                    itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                    itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                    itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
+                    break;
+                case 1:
+                    itemsToAdd.Add((ItemID.CordageGuide, Main.rand.Next(1, 1)));
+                    itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+                    //    itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
+                    itemsToAdd.Add((ItemID.IronskinPotion, Main.rand.Next(1, 3)));
+                    itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                    break;
+                case 2:
+                    itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+                    //   itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
+                    itemsToAdd.Add((ItemID.Book, Main.rand.Next(1, 50)));
+                    itemsToAdd.Add((ItemID.EndurancePotion, Main.rand.Next(1, 3)));
+                    itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                    break;
+                case 3:
+                    itemsToAdd.Add((ItemID.SlimeStaff, Main.rand.Next(1, 1)));
+                    itemsToAdd.Add((ModContent.ItemType<CondensedDirt>(), Main.rand.Next(20, 30)));
+                    // itemsToAdd.Add((ModContent.ItemType<FrileOre>(), Main.rand.Next(9, 15)));
+                    itemsToAdd.Add((ItemID.EndurancePotion, Main.rand.Next(1, 3)));
+                    itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                    break;
+            }
+
+            // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+            int chestItemIndex = 0;
+            foreach (var itemToAdd in itemsToAdd)
+            {
+                Item item = new Item();
+                item.SetDefaults(itemToAdd.type);
+                item.stack = itemToAdd.stack;
+                chest.item[chestItemIndex] = item;
+                chestItemIndex++;
+                if (chestItemIndex >= 40)
+                    break; // Make sure not to exceed the capacity of the chest
+            }
+        }
+
+        path = "Structures/DelgrimHill";
+        Point delgrimHillPoint = FableHillStartLocation;
+        delgrimHillPoint.X += 200;
+        delgrimHillPoint.Y -= 42;
+        Structurizer.ReadStruct(delgrimHillPoint, path, tileBlend);
+        Structurizer.ProtectStructure(delgrimHillPoint, path);
+
+        path = "Structures/EveroseVillage";
+        Point everosePoint = FableHillEndLocation;
+        everosePoint.X += 8;
+        everosePoint = FallToSolidTile(everosePoint);
+        everosePoint.Y += 19;
+        Structurizer.ReadStruct(everosePoint, path, tileBlend);
+        Structurizer.ProtectStructure(everosePoint, path);
     }
 
     private Point FallToSolidTile(Point tile)

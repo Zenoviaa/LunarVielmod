@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.Common.QuestSystem;
+﻿using Stellamod.Common.QuestSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Quests.DelgrimQuest;
 using Stellamod.Core;
@@ -15,12 +12,9 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Stellamod.NPCs.Town
 {
@@ -72,7 +66,6 @@ namespace Stellamod.NPCs.Town
             NPC.knockBackResist = 0.5f;
             NPC.dontTakeDamage = true;
             NPC.BossBar = Main.BigBossProgressBar.NeverValid;
-            SpawnAtPoint = true;
             HasTownDialogue = true;
         }
 
@@ -93,7 +86,7 @@ namespace Stellamod.NPCs.Town
 
 
 
-    
+
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
@@ -111,15 +104,15 @@ namespace Stellamod.NPCs.Town
             });
         }
 
-    
-      
+
+
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
                 "Magical Engineer Delgrim"
             };
         }
-  
+
         public override void AddShops()
         {
             var npcShop = new NPCShop(Type, ShopName)
@@ -150,15 +143,6 @@ namespace Stellamod.NPCs.Town
             ;
             npcShop.Register(); // Name of this shop tab		
         }
-
-        public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
-        {
-            string structure = "Struct/Underground/DelgrimShop";
-            spawner.structureToSpawnIn = structure;
-            spawner.spawnTileOffset = new Point(12, -12);
-            spawner.always = true;
-        }
-
 
         public override void OpenTownDialogue(ref string text, ref string portrait, ref float timeBetweenTexts, ref SoundStyle? talkingSound, List<Tuple<string, Action>> buttons)
         {
