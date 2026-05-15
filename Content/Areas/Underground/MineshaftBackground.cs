@@ -37,7 +37,10 @@ public class MineshaftBackground : CustomBG
         backgroundShader.Parallax = parallax;
         backgroundShader.Offsets = offsets;
         backgroundShader.Tiling = new Vector2(1f, numBackgrounds);
-        backgroundShader.FadeToColor = Color.White * 0.25f;
+
+        Color fadeToColor = Color.White;
+        fadeToColor.A = 25;
+        backgroundShader.FadeToColor = fadeToColor;
         spriteBatch.Begin(SpriteSortMode.Deferred,
             BlendState.AlphaBlend,
             SamplerState.PointClamp,

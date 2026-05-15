@@ -313,7 +313,7 @@ namespace Stellamod.Core.Pixelation
                 OnPreRender?.Invoke();
                 Render();
             }
-            orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
+             orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
 
         }
 
