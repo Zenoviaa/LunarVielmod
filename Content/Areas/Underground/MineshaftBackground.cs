@@ -48,7 +48,7 @@ public class MineshaftBackground : CustomBG
             RasterizerState.CullNone,
             backgroundShader.Effect);
 
-        Color baseColor = Color.Lerp(Color.White, Color.Black, 0.25f);
+        Color baseColor = Color.Lerp(Color.White, Color.Black, 0.75f);
       //  baseColor = Color.Lerp(baseColor, Main.ColorOfTheSkies, 0.5f);
         Color drawColor = baseColor * Alpha;
 

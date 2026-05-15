@@ -11207,3 +11207,8 @@ EreshkinCandle: {
 	DisplayName: Ereshkin Candle
 	Tooltip: ""
 }
+
+EternalFlameArtifact: {
+	DisplayName: Eternal Flame Artifact
+	Tooltip: ""
+}
