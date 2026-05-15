@@ -895,7 +895,7 @@ public class Celestia : ScarletBoss
                     _warning = true;
                     FaceTarget();
                     NPC.noGravity = true;
-                    
+                    NPC.noTileCollide = true;
                     NPC.velocity.Y = MathF.Sin(Timer * 0.5f) * 0.5f;
 
                     float dist = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
@@ -920,7 +920,7 @@ public class Celestia : ScarletBoss
                     _attacking = true;
                     FaceTarget();
                     NPC.noGravity = true;
-                    
+                    NPC.noTileCollide = true;
                     NPC.velocity.Y = MathF.Sin(Timer * 0.5f) * 0.5f;
 
                     if (MultiplayerHelper.IsHost)
@@ -945,7 +945,7 @@ public class Celestia : ScarletBoss
                     _attacking = true;
                     FaceTarget();
                     NPC.noGravity = true;
-                    
+                    NPC.noTileCollide = true;
                     NPC.velocity.Y = MathF.Sin(Timer * 0.5f) * 0.5f;
 
                     if (Timer == 12 && MultiplayerHelper.IsHost)
@@ -968,7 +968,7 @@ public class Celestia : ScarletBoss
                     _horseAnimation = 0;
                     _showHorse = true;
                     NPC.noGravity = true;
-                    
+                    NPC.noTileCollide = true;
                     NPC.velocity.Y = MathF.Sin(Timer * 0.5f) * 0.5f;
                     Animator.PlayAnimation(ANIM_BACKFLIPREADY);
                     if (Timer >= 60)
@@ -992,7 +992,8 @@ public class Celestia : ScarletBoss
                     _squishScale = Vector2.Lerp(new Vector2(0.9f, 1.2f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
                     _showTrail = true;
                     NPC.noGravity = true;
-                    
+
+                    NoTileCollideIfAbovePlayer();
                     if (NPC.velocity.Y < 15)
                         NPC.velocity.Y += 0.5f;
                     NPC.velocity.X *= 0.94f;
@@ -1009,7 +1010,7 @@ public class Celestia : ScarletBoss
                     _squishScale = Vector2.Lerp(Vector2.One, new Vector2(0.9f, 1.2f), EasingFunction.InOutSine(Timer / 30f));
                     _showTrail = true;
                     NPC.noGravity = true;
-                    
+                    NoTileCollideIfAbovePlayer();
 
                     if (NPC.velocity.Y < 15)
                         NPC.velocity.Y += 0.5f;
@@ -1041,7 +1042,7 @@ public class Celestia : ScarletBoss
                     _showTrail = true;
                     _squishScale = Vector2.Lerp(new Vector2(1.3f, 0.9f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
                     NPC.noGravity = false;
-                    
+                    NPC.noTileCollide = false;
                     Animator.PlayAnimation(ANIM_LANDBACKFLIP);
                     NPC.velocity.X *= 0.98f;
                     if (Animator.IsTimerFinished(Timer))
@@ -1057,7 +1058,8 @@ public class Celestia : ScarletBoss
                     _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.2f);
                     FaceTarget();
                     NPC.noGravity = true;
-                    
+                    NPC.noTileCollide = false;
+
                     if (Timer % 6 == 0)
                     {
                         var sp = SparkleParticle.Spawn(NPC.Bottom + Main.rand.NextVector2Circular(12, 12), Vector2.Zero);
@@ -1106,6 +1108,14 @@ public class Celestia : ScarletBoss
         return isGrounded;
 
     }
+
+    private void NoTileCollideIfAbovePlayer()
+    {
+        if (NPC.Bottom.Y < MyTarget.Top.Y || NPC.velocity.Y < 0)
+            NPC.noTileCollide = true;
+        NPC.noTileCollide = false;
+    }
+
     private void AI_HorseRideBackflipShot()
     {
         Timer++;
@@ -1134,7 +1144,7 @@ public class Celestia : ScarletBoss
                     _warning = true;
                     FaceTarget();
                     NPC.noGravity = true;
-                    
+                    NPC.noTileCollide = true;
                     NPC.velocity.Y = MathF.Sin(Timer * 0.5f) * 0.5f;
 
                     float dist = MathF.Abs(MyTarget.Center.X - NPC.Center.X);
@@ -1165,6 +1175,8 @@ public class Celestia : ScarletBoss
                     _showTrail = true;
                     _horseAnimation = 1;
                     _attacking = true;
+
+                    NoTileCollideIfAbovePlayer();
                     NPC.noGravity = true;
                     
 
@@ -1195,7 +1207,7 @@ public class Celestia : ScarletBoss
                     _squishScale = Vector2.Lerp(Vector2.One, new Vector2(0.9f, 1.2f), EasingFunction.InOutSine(Timer / 30f));
                     _showTrail = true;
                     NPC.noGravity = true;
-                    
+                    NPC.noTileCollide = false;
 
                     if (NPC.velocity.Y < 15)
                         NPC.velocity.Y += 0.5f;
@@ -1229,6 +1241,7 @@ public class Celestia : ScarletBoss
                     _showTrail = true;
                     _squishScale = Vector2.Lerp(new Vector2(1.3f, 0.9f), Vector2.One, EasingFunction.InOutSine(Timer / 30f));
                     NPC.noGravity = false;
+                    NPC.noTileCollide = false;
                     
                     Animator.PlayAnimation(ANIM_LANDBACKFLIP);
                     NPC.velocity.X *= 0.98f;
@@ -1254,6 +1267,8 @@ public class Celestia : ScarletBoss
                         sp.gravity = 0;
                         sp.fast = true;
                     }
+
+                    NPC.noTileCollide = false;
                     NPC.velocity.X *= 0.98f;
                     Animator.PlayAnimation(ANIM_IDLE);
                     if (Timer >= 45)

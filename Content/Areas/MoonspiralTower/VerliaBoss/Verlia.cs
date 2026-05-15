@@ -1030,18 +1030,7 @@ public class Verlia : ScarletBoss,
     }
 
 
-    private VerliaDesperationMoon GetDesperationMoonProj()
-    {
-        foreach (var proj in Main.ActiveProjectiles)
-        {
-            if (proj.type == ModContent.ProjectileType<VerliaDesperationMoon>())
-            {
-                VerliaDesperationMoon despMoon = proj.ModProjectile as VerliaDesperationMoon;
-                return despMoon;
-            }
-        }
-        return null;
-    }
+    private VerliaDesperationMoon _moon;
 
     private void AI_DesperationBigMoon()
     {
@@ -1079,15 +1068,14 @@ public class Verlia : ScarletBoss,
                         {
                             var modProj = Projectile.NewProjectileDirect(SourceFromThis, NPC.Center + -Vector2.UnitY * 384, Vector2.Zero, 
                                 ModContent.ProjectileType<VerliaDesperationMoon>(), Desperation_Moon_Damage, 1, Main.myPlayer);
-
-                            if (modProj.ModProjectile is VerliaDesperationMoon moon)
+                            _moon = modProj.ModProjectile as VerliaDesperationMoon;
+                            if (_moon != null)
                             {
-                                moon.verliaNpc = NPC.whoAmI;
-                                moon.Projectile.netUpdate = true;
-                                break;
+                                _moon.parentIndex = NPC.whoAmI;
                             }
                         }
                     }
+    
                     FaceTarget();
                     Animator.PlayAnimation(ANIM_HOLDUP);
                     if (Animator.IsFinished())
@@ -1118,10 +1106,9 @@ public class Verlia : ScarletBoss,
                     }
                     FaceTarget();
                     Vector2 pos = NPC.Center;
-                    var moon = GetDesperationMoonProj();
-                    if(moon != null)
+                    if(_moon != null)
                     {
-                        pos = moon.Projectile.Center;
+                        pos = _moon.Projectile.Center;
                     }
 
                     _showMagicCircle = true;
@@ -1198,28 +1185,28 @@ public class Verlia : ScarletBoss,
                 break;
             case 8:
                 {
-                    var despMoon = GetDesperationMoonProj();
                     if (Timer == 1 && MultiplayerHelper.IsHost)
                     {
    
-                        if(despMoon != null)
+                        if(_moon != null)
                         {
-                            despMoon.verliaHold = true;
-                            if (_dying)
-                            {
-                                despMoon.crushMe = true;
-                            }
-                            despMoon.verliaNpc = NPC.whoAmI;
-                            despMoon.Projectile.netUpdate = true;
+                            _moon.Projectile.ai[1] = _dying ? 5 : 4;
                         }
                     }
                     Animator.PlayAnimation(ANIM_HOLDUP);
                     FaceTarget();
                     NPC.velocity *= 0.8f;
-                    if (despMoon != null && despMoon.holdState == 1 && despMoon.verliaNpc == NPC.whoAmI)
+             
+                    if(_moon != null)
+                    {
+                        _moon.parentIndex = NPC.whoAmI;
+                    }
+
+                    if (_moon != null && _moon.holdState == 1)
                     {
                         Timer = 0;
                         AttackCycle++;
+                        NPC.netUpdate = true;
                     }
                 }
                 break;
@@ -1248,11 +1235,10 @@ public class Verlia : ScarletBoss,
 
                     if (Timer == 1 && MultiplayerHelper.IsHost)
                     {
-                        var despMoon = GetDesperationMoonProj();
-                        if(despMoon != null)
+                        if(_moon != null)
                         {
-                            despMoon.holdState++;
-                            despMoon.Projectile.netUpdate = true;
+                            _moon.holdState++;
+                            _moon.Projectile.netUpdate = true;
                         }
                     }
                     Animator.PlayAnimation(ANIM_HOLDUP);
@@ -1267,6 +1253,7 @@ public class Verlia : ScarletBoss,
                         {
                             Timer = 0;
                             AttackCycle += 2;
+                            NPC.netUpdate = true;
                         }
                     }
                     else
@@ -1297,13 +1284,8 @@ public class Verlia : ScarletBoss,
                     FaceTarget();
                     if(Timer >= 75)
                     {
-                        var despMoon = GetDesperationMoonProj();
-                        if(despMoon != null)
-                        {
-                            NPC.velocity.Y = despMoon.Projectile.velocity.Y;
-                        }
 
-                        if(despMoon == null || !despMoon.Projectile.active)
+                        if(_moon == null || !_moon.Projectile.active)
                         {
                             NPC.Kill();
                         }

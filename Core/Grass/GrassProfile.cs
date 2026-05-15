@@ -87,8 +87,8 @@ namespace Stellamod.Core.Grass
             for (int n = 0; n < num; n++)
             {
                 Vector2 position = worldPosition;
-                position.X += ExtraMath.Osc(-32f, 32f, 0, i + n);
-                position.Y += ExtraMath.Osc(0f, 4f, 0, i + n);
+                position.X += ExtraMath.Osc(-8, 8, 0, i + n);
+                position.Y += ExtraMath.Osc(2, 8, 0, i + n);
 
                 Point tilePoint = position.ToTileCoordinates();
                 

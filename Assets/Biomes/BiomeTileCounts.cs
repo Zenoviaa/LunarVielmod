@@ -1,4 +1,5 @@
 ﻿
+using Stellamod.Content.Areas.Ishtar.TilesIS;
 using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.TilesSH;
 using Stellamod.Content.Areas.Terror.TilesTR;
@@ -129,13 +130,16 @@ namespace Stellamod
         public int AegislavCount;
         public static bool InAegislav => ModContent.GetInstance<BiomeTileCounts>().AegislavCount >= 50;
         public int ForestCount;
-        public static bool InForest => ModContent.GetInstance<BiomeTileCounts>().ForestCount >= 25;
+        public static bool InForest => ModContent.GetInstance<BiomeTileCounts>().ForestCount >= 25 || InSpringHills;
 
         public int JunkyardCount;
         public static bool InJunkyard => ModContent.GetInstance<BiomeTileCounts>().JunkyardCount >= 25;
+
+        public int EveroseCount;
+        public static bool InEveroseVillage => ModContent.GetInstance<BiomeTileCounts>().EveroseCount >= 25;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
-            AegislavCount = tileCounts[ModContent.TileType<AegislavSandTile>()] + tileCounts[TileID.CrimsonGrass] + tileCounts[TileID.Crimstone];
+            AegislavCount = tileCounts[ModContent.TileType<VeilBrickTile>()] + tileCounts[ModContent.TileType<AegislavSandTile>()] + tileCounts[TileID.CrimsonGrass] + tileCounts[TileID.Crimstone];
            // Main.NewText(AegislavCount);
             JunkyardCount = tileCounts[ModContent.TileType<JunkyTile>()];
             ForestCount = tileCounts[TileID.Grass];
@@ -157,13 +161,14 @@ namespace Stellamod
             FableCount = tileCounts[ModContent.TileType<GovheilTile>()];
             SeaCount = tileCounts[ModContent.TileType<SeavathanBrick>()];
             XixCount = tileCounts[ModContent.TileType<HuntiacTile>()];
+            EveroseCount = tileCounts[ModContent.TileType<VeriplantGrass>()];
             CinderCount = tileCounts[ModContent.TileType<CindersparkDirt>()];
             ManorCount = tileCounts[ModContent.TileType<ManorBlock>()];
             MechCount = tileCounts[ModContent.TileType<StarbloomTempleBlock>()];
             LabCount = tileCounts[ModContent.TileType<LostScrapT>()];
             IlluriaCount = tileCounts[ModContent.TileType<IlluriaGrass>()];
             VeilCount = tileCounts[ModContent.TileType<CatagrassBlock>()];
-            IshtarCount = tileCounts[ModContent.TileType<IshtarMoss>()];
+            IshtarCount = tileCounts[ModContent.TileType<IshtarMoss>()] + tileCounts[ModContent.TileType<IshtarTempleBlock>()];
             BloodCathedralCount = tileCounts[ModContent.TileType<RobedSandstoneBlock>()];
             AshotiTempleCount = tileCounts[TileID.LihzahrdBrick];
             MineshaftTileCount = tileCounts[ModContent.TileType<RobedCatastoneBlock>()];

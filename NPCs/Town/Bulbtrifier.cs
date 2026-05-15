@@ -57,7 +57,6 @@ public class Bulbtrifier : VeilTownNPC
         NPC.DeathSound = SoundID.NPCDeath1;
         NPC.knockBackResist = 0.5f;
         NPC.dontTakeDamageFromHostiles = true;
-        SpawnAtPoint = true;
         HasTownDialogue = true;
     }
 
@@ -73,14 +72,6 @@ public class Bulbtrifier : VeilTownNPC
         {
             shop = ShopName;
         }
-    }
-
-    public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
-    {
-        spawner.isGlobal = true;
-        StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
-        Point spawnPoint = stellaWorld.FableHillStartLocation + new Point(344, -140); ;
-        spawner.spawnTileOffset = spawnPoint;
     }
 
     public override void FindFrame(int frameHeight)

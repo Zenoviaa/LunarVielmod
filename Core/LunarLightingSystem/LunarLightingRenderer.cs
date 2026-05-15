@@ -684,6 +684,7 @@ namespace Stellamod.Core.LunarLightingSystem
         public override void PostUpdateTime()
         {
             base.PostUpdateTime();
+            AmbientLight = Color.White.ToVector3();
             BackLightColor = Color.Black;
             if (Main.LocalPlayer.ZoneUnderworldHeight)
             {

@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using ReLogic.Content;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Core.StructureSelector;
+using Stellamod.Core.ZTileSystem;
 using Stellamod.WorldG.StructureManager;
 using System.IO;
 using Terraria;
@@ -9,6 +9,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace Stellamod.Helpers
 {
@@ -131,227 +132,395 @@ namespace Stellamod.Helpers
         }
     }
 
-    public class StructurePoint : ModProjectile
+    public abstract class AbstractStructureWand : ModItem
     {
-        private static bool _capturedMouse;
-        private bool _isDragging;
-        private Rectangle Rectangle
-        {
-            get
-            {
-                Rectangle rectangle = new Rectangle((int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width, Projectile.height);
-                return rectangle;
-            }
-        }
-        private bool IsMouseHovering
-        {
-            get
-            {
-                if (Rectangle.Contains(Main.MouseWorld.ToPoint()))
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-        private bool IsDragging
-        {
-            get
-            {
-                return IsMouseHovering && Main.mouseLeft;
-            }
-        }
-
-        private bool IsTopRight
-        {
-            get
-            {
-                return Projectile.ai[0] == 1;
-            }
-        }
-        private ref float Timer => ref Projectile.ai[1];
-
-        private Player Owner => Main.player[Projectile.owner];
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            ProjectileID.Sets.DrawScreenCheckFluff[Projectile.type] = 51200;
-        }
-
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 16;
-            Projectile.height = 16;
-            Projectile.penetrate = -1;
-            Projectile.tileCollide = false;
-            Projectile.timeLeft = int.MaxValue;
+            Item.width = 16;
+            Item.height = 16;
+            Item.rare = ItemRarityID.Green;
+            Item.useTime = 2;
+            Item.useAnimation = 2;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.autoReuse = false;
         }
 
-        public override void AI()
+        public override bool AltFunctionUse(Player player)
         {
-            base.AI();
-
-            Player owner = Main.player[Projectile.owner];
-            Timer++;
-            if (Timer == 1)
-            {
-                _capturedMouse = false;
-                _isDragging = false;
-                if (IsTopRight)
-                {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Vector2.Zero,
-                        ModContent.ProjectileType<Save>(), 1, 1, Projectile.owner, ai0: Projectile.whoAmI);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Vector2.Zero,
-                        ModContent.ProjectileType<Magic>(), 1, 1, Projectile.owner, ai0: Projectile.whoAmI);
-                }
-            }
-
-            if (IsMouseHovering && Main.mouseLeft && !_capturedMouse)
-            {
-                _isDragging = true;
-                _capturedMouse = true;
-            }
-            if (_isDragging && !Main.mouseLeft)
-            {
-                _isDragging = false;
-                _capturedMouse = false;
-            }
-            StructureSelection structureSelection = ModContent.GetInstance<StructureSelection>();
-            if (_isDragging)
-            {
-                int x = (int)Main.MouseWorld.X / 16;
-                int y = (int)Main.MouseWorld.Y / 16;
-                Vector2 roundedPoint = new Vector2(x, y) * 16;
-                Projectile.position = roundedPoint;
-
-
-            }
-            if (IsTopRight)
-            {
-                structureSelection.TopRight = Projectile.position.ToTileCoordinates();
-            }
-            else
-            {
-                structureSelection.BottomLeft = Projectile.position.ToTileCoordinates();
-            }
-            if (IsMouseHovering)
-            {
-                Main.LocalPlayer.itemTime = 12;
-                Main.LocalPlayer.itemAnimation = 12;
-                Main.LocalPlayer.heldProj = Projectile.whoAmI;
-            }
+            return true;
         }
-        public override bool PreDraw(ref Color lightColor)
+    }
+    public class EraseWand : AbstractStructureWand
+    {
+        public override bool? UseItem(Player player)
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Vector2 scale = Vector2.One;
-            Color drawColor = Color.White;
-            if (IsMouseHovering)
+            if (player.whoAmI == Main.myPlayer)
             {
-                scale *= 1.5f;
-                drawColor = Color.LightGoldenrodYellow;
+                StructureSelection selection = ModContent.GetInstance<StructureSelection>();
+                selection.Erase();
             }
-            spriteBatch.Restart(samplerState: SamplerState.PointWrap);
 
-            StructureSelection structureSelection = ModContent.GetInstance<StructureSelection>();
-            Texture2D line = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/StructureLine").Value;
-
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            int x = (int)drawPos.X;
-            int y = (int)drawPos.Y;
-
-            //This should scroll the texture
-
-
-
-            Color chainColor = Color.White;
-            if (IsTopRight)
-            {
-                //Draw Down/Left
-                Vector2 drawOrigin = new Vector2(0, line.Height / 2);
-                Rectangle destinationRectangle = new Rectangle(x, y, (int)structureSelection.XDistance, line.Height);
-                Rectangle sourceRectangle = new Rectangle(0, 0, (int)structureSelection.XDistance, line.Height);
-                sourceRectangle.X += (int)(Main.GlobalTimeWrappedHourly * 32);
-                spriteBatch.Draw(line, destinationRectangle, sourceRectangle, chainColor, Projectile.rotation - MathHelper.ToRadians(180), drawOrigin, SpriteEffects.None, 0);
-
-
-                destinationRectangle.Width = (int)structureSelection.YDistance;
-                sourceRectangle.Width = (int)structureSelection.YDistance;
-
-                spriteBatch.Draw(line, destinationRectangle, sourceRectangle, chainColor, Projectile.rotation - MathHelper.ToRadians(90), drawOrigin, SpriteEffects.None, 0);
-            }
-            else
-            {
-                //Draw Up/Right
-                Vector2 drawOrigin = new Vector2(0, line.Height / 2);
-                Rectangle destinationRectangle = new Rectangle(x, y, (int)structureSelection.XDistance, line.Height);
-                Rectangle sourceRectangle = new Rectangle(0, 0, (int)structureSelection.XDistance, line.Height);
-                sourceRectangle.X += (int)(Main.GlobalTimeWrappedHourly * 32);
-                spriteBatch.Draw(line, destinationRectangle, sourceRectangle, chainColor, Projectile.rotation, drawOrigin, SpriteEffects.None, 0);
-
-
-                destinationRectangle.Width = (int)structureSelection.YDistance;
-                sourceRectangle.Width = (int)structureSelection.YDistance;
-
-                spriteBatch.Draw(line, destinationRectangle, sourceRectangle, chainColor, Projectile.rotation + MathHelper.ToRadians(90), drawOrigin, SpriteEffects.None, 0);
-            }
-            spriteBatch.RestartDefaults();
-            spriteBatch.Draw(TextureAssets.Projectile[Type].Value, Projectile.Center - Main.screenPosition, null, drawColor, Projectile.rotation, TextureAssets.Projectile[Type].Value.Size() / 2, scale, SpriteEffects.None, 0);
-            return false;
+            //selection.SpawnSelection = true;
+            SoundEngine.PlaySound(SoundID.Item47);
+            return true;
         }
     }
 
+    public class CopyWand : AbstractStructureWand
+    {
+        public override bool? UseItem(Player player)
+        {
+            if (player.whoAmI == Main.myPlayer)
+            {
+                StructureSelection selection = ModContent.GetInstance<StructureSelection>();
+                if (player.altFunctionUse == 2)
+                {
+                  //  selection.Erase();
+                }
+                else
+                {
+                    selection.Copy();
+                }
+          
+          
+            }
+
+            //selection.SpawnSelection = true;
+            SoundEngine.PlaySound(SoundID.Item47);
+            return true;
+        }
+    }
+
+    public class PasteWand : AbstractStructureWand
+    {
+        public override bool? UseItem(Player player)
+        {
+            if (player.whoAmI == Main.myPlayer)
+            {
+                StructureSelection selection = ModContent.GetInstance<StructureSelection>();
+                if (player.altFunctionUse == 2)
+                {
+                    Structurizer.FlipStructure = !Structurizer.FlipStructure;
+                    Main.NewText($"FLIP: {Structurizer.FlipStructure}");
+                //    selection.Erase();
+                }
+                else
+                {
+                    selection.Paste();
+                }
+          
+            
+            }
+
+            //selection.SpawnSelection = true;
+            SoundEngine.PlaySound(SoundID.Item47);
+            return true;
+        }
+    }
+
+
+    [Autoload(Side = ModSide.Client)]
     public class StructureSelection : ModSystem
     {
-        public bool SpawnSelection;
+        public class StructurePoint
+        {
+            private Asset<Texture2D> _structurePointAsset;
+            private static bool _capturedMouse;
+            private bool _isDragging;
+
+            private Rectangle Rectangle
+            {
+                get
+                {
+                    Rectangle rectangle = new Rectangle((int)position.X - 8, (int)position.Y - 8, 16, 16);
+                    return rectangle;
+                }
+            }
+            private bool IsMouseHovering
+            {
+                get
+                {
+                    if (Rectangle.Contains(Main.MouseWorld.ToPoint()))
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            private bool IsDragging
+            {
+                get
+                {
+                    return IsMouseHovering && Main.mouseLeft;
+                }
+            }
+
+            public Vector2 position;
+            public bool isTopRight;
+            public void Update()
+            {
+                if (IsMouseHovering && Main.mouseLeft && !_capturedMouse)
+                {
+                    _isDragging = true;
+                    _capturedMouse = true;
+                }
+                if (_isDragging && !Main.mouseLeft)
+                {
+                    _isDragging = false;
+                    _capturedMouse = false;
+                }
+                StructureSelection structureSelection = ModContent.GetInstance<StructureSelection>();
+                if (_isDragging)
+                {
+                    int x = (int)Main.MouseWorld.X / 16;
+                    int y = (int)Main.MouseWorld.Y / 16;
+                    Vector2 roundedPoint = new Vector2(x, y) * 16;
+                    position = roundedPoint;
+                }
+                if (isTopRight)
+                {
+                    structureSelection.TopRight = position.ToTileCoordinates();
+                }
+                else
+                {
+                    structureSelection.BottomLeft = position.ToTileCoordinates();
+                }
+
+                if (IsMouseHovering)
+                {
+                    Main.LocalPlayer.itemTime = 12;
+                    Main.LocalPlayer.itemAnimation = 12;
+                }
+            }
+
+            public void Draw(SpriteBatch spriteBatch)
+            {
+                _structurePointAsset ??= ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/StructurePoint");
+                Vector2 scale = Vector2.One;
+                Color drawColor = Color.White;
+                if (IsMouseHovering)
+                {
+                    scale *= 1.5f;
+                    drawColor = Color.LightGoldenrodYellow;
+                }
+
+                StructureSelection structureSelection = ModContent.GetInstance<StructureSelection>();
+                Texture2D line = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/StructureLine").Value;
+
+                Vector2 drawPos = position - Main.screenPosition;
+                int x = (int)drawPos.X;
+                int y = (int)drawPos.Y;
+
+                //This should scroll the texture
+
+
+
+                Color chainColor = Color.White;
+                if (isTopRight)
+                {
+                    //Draw Down/Left
+                    Vector2 drawOrigin = new Vector2(0, line.Height / 2);
+                    Rectangle destinationRectangle = new Rectangle(x, y, (int)structureSelection.XDistance, line.Height);
+                    Rectangle sourceRectangle = new Rectangle(0, 0, (int)structureSelection.XDistance, line.Height);
+                    sourceRectangle.X += (int)(Main.GlobalTimeWrappedHourly * 32);
+                    spriteBatch.Draw(line, destinationRectangle, sourceRectangle, chainColor, 0 - MathHelper.ToRadians(180), drawOrigin, SpriteEffects.None, 0);
+
+
+                    destinationRectangle.Width = (int)structureSelection.YDistance;
+                    sourceRectangle.Width = (int)structureSelection.YDistance;
+
+                    spriteBatch.Draw(line, destinationRectangle, sourceRectangle, chainColor, 0 + MathHelper.ToRadians(90), drawOrigin, SpriteEffects.None, 0);
+                }
+                else
+                {
+                    //Draw Up/Right
+                    Vector2 drawOrigin = new Vector2(0, line.Height / 2);
+                    Rectangle destinationRectangle = new Rectangle(x, y, (int)structureSelection.XDistance, line.Height);
+                    Rectangle sourceRectangle = new Rectangle(0, 0, (int)structureSelection.XDistance, line.Height);
+                    sourceRectangle.X += (int)(Main.GlobalTimeWrappedHourly * 32);
+                    spriteBatch.Draw(line, destinationRectangle, sourceRectangle, chainColor, 0, drawOrigin, SpriteEffects.None, 0);
+
+
+                    destinationRectangle.Width = (int)structureSelection.YDistance;
+                    sourceRectangle.Width = (int)structureSelection.YDistance;
+
+                    spriteBatch.Draw(line, destinationRectangle, sourceRectangle, chainColor, 0 - MathHelper.ToRadians(90), drawOrigin, SpriteEffects.None, 0);
+                }
+
+                spriteBatch.Draw(_structurePointAsset.Value, position - Main.screenPosition, null, drawColor, 0, _structurePointAsset.Value.Size() / 2, scale, SpriteEffects.None, 0);
+            }
+        }
+
+        public class CopySelection
+        {
+            public byte[] structureBytes;
+            public TagCompound triggerCompoundRoot;
+            public TagCompound tileEntityCompoundRoot;
+            public TagCompound zTileCompoundRoot;
+            public int width;
+            public int height;
+        }
+
         public Point BottomLeft;
         public Point TopRight;
+        public StructurePoint bottomLeftPoint;
+        public StructurePoint topRightPoint;
+        public CopySelection copySelection;
         public Vector2 TopRightWorld => TopRight.ToWorldCoordinates();
         public Vector2 BottomLeftWorld => BottomLeft.ToWorldCoordinates();
         public float XDistance => TopRightWorld.X - BottomLeftWorld.X;
-        public float YDistance => TopRightWorld.Y - BottomLeftWorld.Y;
+        public float YDistance => BottomLeftWorld.Y - TopRightWorld.Y;
+        public override void Load()
+        {
+            base.Load();
+            copySelection = new CopySelection();
+            bottomLeftPoint = new StructurePoint();
+            topRightPoint = new StructurePoint();
+        }
+
+        public bool ShowStructureSelection()
+        {
+            if (Main.LocalPlayer.HeldItem.type == ModContent.ItemType<WandSaver>())
+                return true;
+            if (Main.LocalPlayer.HeldItem.ModItem is not null && Main.LocalPlayer.HeldItem.ModItem is AbstractStructureWand)
+                return true;
+            return false;
+        }
         public override void PostUpdateEverything()
         {
             base.PostUpdateEverything();
-            Player player = Main.LocalPlayer;
-            bool showSelection = player.HeldItem.type == ModContent.ItemType<Modelizer>();
+            if (!ShowStructureSelection())
+                return;
 
-            if (SpawnSelection)
+            bottomLeftPoint.Update();
+            topRightPoint.Update();
+        }
+
+        public void MakeNewSelection()
+        {
+            Point tilePoint = Main.MouseWorld.ToTileCoordinates();
+            int x = (int)Main.MouseWorld.X / 16;
+            int y = (int)Main.MouseWorld.Y / 16;
+            Vector2 roundedPoint = new Vector2(x, y) * 16;
+            Vector2 roundedPoint2 = new Vector2(x + 15, y - 15) * 16;
+            BottomLeft = tilePoint;
+            TopRight = tilePoint + new Point(1, -1);
+
+            bottomLeftPoint = new StructurePoint();
+
+            topRightPoint = new StructurePoint();
+            topRightPoint.isTopRight = true;
+            bottomLeftPoint.position = BottomLeftWorld;
+            topRightPoint.position = TopRightWorld;
+        }
+
+        public override void PostDrawTiles()
+        {
+            base.PostDrawTiles();
+            if (!ShowStructureSelection())
+                return;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            bottomLeftPoint.Draw(spriteBatch);
+            topRightPoint.Draw(spriteBatch);
+            if(Main.LocalPlayer.HeldItem.type == ModContent.ItemType<PasteWand>())
             {
-                foreach (var proj in Main.ActiveProjectiles)
-                {
-                    if (proj.type == ModContent.ProjectileType<StructurePoint>())
-                        proj.Kill();
-                }
+                int width, height;
+                width = copySelection.width;
+                height = copySelection.height;
 
                 Point tilePoint = Main.MouseWorld.ToTileCoordinates();
                 int x = (int)Main.MouseWorld.X / 16;
                 int y = (int)Main.MouseWorld.Y / 16;
-                Vector2 roundedPoint = new Vector2(x, y) * 16;
-                Vector2 roundedPoint2 = new Vector2(x + 15, y - 15) * 16;
 
-
-                Projectile.NewProjectile(player.GetSource_FromThis(), roundedPoint, Vector2.Zero, ModContent.ProjectileType<StructurePoint>(), 0, 0,
-                    player.whoAmI);
-                Projectile.NewProjectile(player.GetSource_FromThis(), roundedPoint2, Vector2.Zero, ModContent.ProjectileType<StructurePoint>(), 0, 0,
-                    player.whoAmI, ai0: 1);
-                SpawnSelection = false;
+                Vector2 topLeft = tilePoint.ToWorldCoordinates();
+                topLeft.Y -= height * 16;
+                Rectangle pasteRectangle = new Rectangle((int)topLeft.X-(int)Main.screenPosition.X, (int)topLeft.Y-(int)Main.screenPosition.Y, width*16, height*16);
+                pasteRectangle.Y += 8;
+                pasteRectangle.X -= 8;
+                spriteBatch.Draw(TextureAssets.BlackTile.Value, pasteRectangle, null, Color.Red * ExtraMath.Osc(0.5f, 1f, speed: 6));
+                //Primitives2D.DrawRectangle(spriteBatch, pasteRectangle, Color.Red * ExtraMath.Osc(0.5f, 1f, speed: 6));
             }
+            spriteBatch.End();
         }
 
         public void OpenSaveSelectionUI()
         {
             ModContent.GetInstance<StructureSelectorUISystem>().OpenSaveUI();
         }
+
         public void OpenMagicSelectionUI()
         {
             ModContent.GetInstance<StructureSelectorUISystem>().OpenMagicWandUI();
         }
 
+        public void Copy()
+        {
+            Point bottomLeft, topRight;
+            bottomLeft = BottomLeft;
+            topRight = TopRight;
+            copySelection = new CopySelection();
+            copySelection.width = topRight.X - bottomLeft.X;
+            copySelection.height = bottomLeft.Y - topRight.Y;
+            copySelection.structureBytes = Structurizer.Serialize(bottomLeft, topRight);
+            copySelection.triggerCompoundRoot = TriggerStructurizer.Serialize(bottomLeft, topRight);
+            copySelection.tileEntityCompoundRoot = TileEntityStructurizer.Serialize(bottomLeft, topRight);
+            copySelection.zTileCompoundRoot = ZTileStructurizer.Serialize(bottomLeft, topRight);
+            Main.NewText("$Copied Structure!");
+        }
+
+        public void Paste()
+        {
+            if (copySelection == null)
+                return;
+
+            Point tilePoint = Main.MouseWorld.ToTileCoordinates();
+            int x = (int)Main.MouseWorld.X / 16;
+            int y = (int)Main.MouseWorld.Y / 16;
+            // = tilePoint;
+            Structurizer.DeSerialize(copySelection.structureBytes, tilePoint);
+            TriggerStructurizer.DeSerialize(copySelection.triggerCompoundRoot, tilePoint);
+            TileEntityStructurizer.DeSerialize(copySelection.tileEntityCompoundRoot, tilePoint);
+            ZTileStructurizer.DeSerialize(copySelection.zTileCompoundRoot, tilePoint);
+            Main.NewText("Pasted Structure");
+
+            if (Main.netMode == NetmodeID.SinglePlayer)
+                return;
+            int width = copySelection.width;
+            int height = copySelection.height;
+            Point topLeft = tilePoint;
+            topLeft.Y -= height;
+            NetMessage.SendTileSquare(-1, topLeft.X, topLeft.Y, width, height);
+            ModContent.GetInstance<ZTileMap>().SendZTileSyncPacket();
+        }
+
+        public void Erase()
+        {
+            ZTileMap ztileMap = ModContent.GetInstance<ZTileMap>();
+            for (int x = BottomLeft.X; x < TopRight.X; x++)
+            {
+                for(int y = TopRight.Y; y < BottomLeft.Y; y++)
+                {
+                    Main.tile[x, y].ClearEverything();
+                    ztileMap.KillAnyTile(new Point(x, y));
+                }
+            }
+
+            int width = TopRight.X - BottomLeft.X;
+            int height = BottomLeft.Y - TopRight.Y;
+            Point topLeft = BottomLeft;
+            topLeft.Y = TopRight.Y;
+
+            if (Main.netMode == NetmodeID.SinglePlayer)
+                return;
+            NetMessage.SendTileSquare(-1, topLeft.X, topLeft.Y, width, height);
+            ztileMap.SendZTileSyncPacket();
+        }
+
         public void SaveSelection(string fileName)
         {
-            if(DungeonGenerationHelper.DoorInRectangle(BottomLeft, TopRight))
+            if (DungeonGenerationHelper.DoorInRectangle(BottomLeft, TopRight))
             {
                 string structurePath = $"Dungeon/{fileName}";
                 string savePath = Main.SavePath + $"/ModSources/{Mod.Name}/Structures/{structurePath}{DungeonGenerationHelper.FileExtension}";
@@ -371,7 +540,7 @@ namespace Stellamod.Helpers
                 TileEntityStructurizer.SaveStruct(fileName, BottomLeft, TopRight);
                 ZTileStructurizer.SaveStruct(fileName, BottomLeft, TopRight);
             }
-        
+
             SoundEngine.PlaySound(SoundID.AchievementComplete);
         }
 

@@ -9,10 +9,12 @@ namespace Stellamod.Core.Camera
 {
     public class CameraTargetSystem : ModSystem
     {
+        
         public List<Vector2> TargetPositions;
         public Vector2 reTargetPosition;
         public float reTargetLerp;
         public float reTargetTimer;
+        public float lingerTimer;
         public float easingTime => 60;
         public override void Load()
         {
@@ -37,6 +39,12 @@ namespace Stellamod.Core.Camera
             reTargetLerp = EasingFunction.InOutSine(reTargetTimer / easingTime);
             if (TargetPositions.Count <= 0)
             {
+                if(lingerTimer > 0)
+                {
+                    lingerTimer--;
+                    return;
+                }
+
                 if(reTargetTimer > 0)
                 {
                     reTargetTimer--;
@@ -64,6 +72,13 @@ namespace Stellamod.Core.Camera
         public static void AddTarget(Vector2 position)
         {
             ModContent.GetInstance<CameraTargetSystem>().TargetPositions.Add(position);
+        }
+        public static void SetLingerTime(float lingerTime)
+        {
+            CameraTargetSystem targetSystem = ModContent.GetInstance<CameraTargetSystem>();
+            if (targetSystem.lingerTimer > lingerTime)
+                return;
+            targetSystem.lingerTimer = lingerTime;
         }
     }
     public class RetargetCameraModifier : ICameraModifier

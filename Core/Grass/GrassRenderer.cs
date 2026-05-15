@@ -150,7 +150,7 @@ namespace Stellamod.Core.Grass
                     float i = x;   
                     if(_noise.GetNoise(i, 0) > -0.95f)
                     {
-                        if (tile.HasTile && TileSets.GetGrassProfile(tile.TileType, out GrassProfile profile))
+                        if (tile.HasTile && GrassTileSystem.GetGrassProfile(tile.TileType, out GrassProfile profile))
                         {
                             GrassProfile profileToUse = profile.GetVariantProfile(x, y);
                             profileToUse.Grow(x, y);

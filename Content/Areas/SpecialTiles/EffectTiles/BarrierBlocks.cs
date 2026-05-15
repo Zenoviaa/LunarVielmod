@@ -24,6 +24,7 @@ public class BarrierBlockSystem : ModSystem
         base.OnModUnload();
         On_Player.DryCollision -= PreDryCollision;
     }
+
     public static Vector2 BossArenaCenter;
 
     private bool GetNearestBarrierBlock(Player player, out Vector2 worldPoint)

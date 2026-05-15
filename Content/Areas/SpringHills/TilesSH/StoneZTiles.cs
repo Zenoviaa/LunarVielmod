@@ -2,6 +2,36 @@
 
 namespace Stellamod.Content.Areas.SpringHills.TilesSH;
 
+public class WoodenZui : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+
+    public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);
+
+    }
+}
+public class QueenCalamitous : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+
+    public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);
+
+    }
+}
 public class TheGreatDoor : ZTile
 {
     public override void SetStaticDefaults()

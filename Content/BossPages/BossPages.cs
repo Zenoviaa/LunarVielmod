@@ -21,6 +21,7 @@ using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Minerva;
 using Stellamod.Content.Areas.SpringHills.BossesSH.Ravager;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant;
+using Stellamod.Content.Areas.WaterSide.BossesWS;
 using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
 using Stellamod.Content.Armors.Ravaging;
 using Stellamod.Content.Currencies;
@@ -237,6 +238,21 @@ namespace Stellamod.Content.BossPages
             AddMasterModeReward<KingJellyfishRelicItem>(stack: 1);
         }
     }
+    
+    public class LeviathanEelPage : BossPage
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            banner = BossBannerType.LifeNPlants;
+            bossNPC = ModContent.GetInstance<LeviathanEel>();
+            progression = 8;
+            flag = DownedBossFlag.KingJellyfish;
+            StarRanking = 5;
+            AddMasterModeReward<LeviathanEelRelicItem>(stack: 1);
+        }
+    }
+
     public class VerliaPage : BossPage
     {
         public override void SetStaticDefaults()

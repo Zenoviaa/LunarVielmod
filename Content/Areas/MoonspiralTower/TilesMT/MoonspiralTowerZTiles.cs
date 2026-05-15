@@ -146,6 +146,15 @@ namespace Stellamod.Content.Areas.MoonspiralTower.TilesMT
             return false;
         }
     }
+    public class SingularDoor : ZTile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            drawOrigin = TileDrawOrigin.BottomLeft;
+            frameCount = 2;
+        }
+    }
     public class MoonPedestal : ZTile
     {
         public override void SetStaticDefaults()

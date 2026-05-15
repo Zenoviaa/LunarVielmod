@@ -54,6 +54,18 @@ public abstract class OrganZTile : ZTile
         return base.GetBounds();
     }
 }
+public class MistyDungeonOrgan : OrganZTile
+{
+    public override OrganWaypoint GetWaypoint()
+    {
+        return OrganWaypoint.Moonspiral;
+    }
+
+    public override (int, int) GetBounds()
+    {
+        return (224, 168);
+    }
+}
 
 
 public class MoonSpiralTowerOrgan : OrganZTile

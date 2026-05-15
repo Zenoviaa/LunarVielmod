@@ -175,6 +175,7 @@ public class OrganDragon : ModNPC
         NPC.dontCountMe = true;
         NPC.dontTakeDamage = true;
         NPC.noGravity = true;
+        NPC.noTileCollide = true;
     }
 
     public override void AI()

@@ -137,7 +137,7 @@ namespace Stellamod.Content.CommonMaterials
     }
 
 
-    public class SpidersSilk : ModItem
+    public class EreshkinCandle : ModItem
     {
         public override void SetDefaults()
         {

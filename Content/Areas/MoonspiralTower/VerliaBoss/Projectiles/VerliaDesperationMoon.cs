@@ -1,11 +1,11 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
-using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -17,9 +17,12 @@ namespace Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
 
 public class VerliaDesperationMoon : ModProjectile
 {
+
     private ref float Timer => ref Projectile.ai[0];
-    private ref float GrowthCount => ref Projectile.ai[1];
-    private ref float ShootFlash => ref Projectile.ai[2];
+    private ref float GrabbingState => ref Projectile.ai[1];
+    private NPC Parent => Main.npc[parentIndex];
+    private float _growthCount;
+    private float _shootFlash;
     private float _scale;
     private float _flashAlpha;
     private float _magicCircleAlpha;
@@ -27,31 +30,28 @@ public class VerliaDesperationMoon : ModProjectile
     private Asset<Texture2D> _scrollingMoonTextureAsset;
     private Asset<Texture2D> _shadowMoonTextureAsset;
     private Asset<Texture2D> _magicCircleTextureAsset;
-    public bool verliaHold;
-    public int verliaNpc;
     public bool ready;
     public int holdState;
     public float throwTimer;
-    public bool crushMe;
+    public int parentIndex;
+    public float verliaFallTimer;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
-        writer.Write(verliaHold);
-        writer.Write(verliaNpc);
         writer.Write(ready);
         writer.Write(holdState);
         writer.Write(throwTimer);
-        writer.Write(crushMe);
+        writer.Write(_growthCount);
+        writer.Write(parentIndex);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
-        verliaHold = reader.ReadBoolean();
-        verliaNpc = reader.ReadInt32();
         ready = reader.ReadBoolean();
         holdState = reader.ReadInt32();
         throwTimer = reader.ReadSingle();
-        crushMe=reader.ReadBoolean();
+        _growthCount = reader.ReadSingle();
+        parentIndex = reader.ReadInt32();
     }
 
     public override void SetStaticDefaults()
@@ -72,19 +72,19 @@ public class VerliaDesperationMoon : ModProjectile
     public override void AI()
     {
         base.AI();
-        
-        if(GrowthCount < 3)
+
+        if (_growthCount < 3)
         {
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
-                if(GrowthCount == 0)
+                if (_growthCount == 0)
                 {
                     SoundStyle e = new SoundStyle($"Stellamod/Assets/Sounds/StarCharge");
                     SoundEngine.PlaySound(e, Projectile.position);
                 }
 
-                if(Main.netMode != NetmodeID.Server)
+                if (Main.netMode != NetmodeID.Server)
                 {
                     ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
                     shaderSystem.TintScreen(Color.LightBlue, 0.2f, 15);
@@ -95,12 +95,12 @@ public class VerliaDesperationMoon : ModProjectile
 
 
                 SoundStyle inSound = AssetRegistry.Sounds.Verlia.BigMoonGrow;
-                inSound.Pitch = MathHelper.Lerp(0f, 1f, (GrowthCount + 1f) / 3f);
+                inSound.Pitch = MathHelper.Lerp(0f, 1f, (_growthCount + 1f) / 3f);
                 SoundEngine.PlaySound(inSound);
                 _flashAlpha = 1f;
             }
 
-            if(Timer % 2 == 0)
+            if (Timer % 2 == 0)
             {
                 float range = Main.rand.NextFloat(252, 512);
                 Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(range, range);
@@ -118,20 +118,34 @@ public class VerliaDesperationMoon : ModProjectile
                 fx.OuterGlowColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
                 fx.VectorScale *= 0.5f;
             }
-            float maxScale = MathHelper.Lerp(0f, 1f, (GrowthCount+1) / 3f);
+            float maxScale = MathHelper.Lerp(0f, 1f, (_growthCount + 1) / 3f);
             _scale = MathHelper.Lerp(_scale, maxScale, 0.1f);
             _flashAlpha = MathHelper.Lerp(_flashAlpha, 0f, 0.1f);
             if (Timer >= 90)
             {
                 Timer = 0;
-                GrowthCount++;
+                _growthCount++;
             }
             return;
 
         }
+
+        if (this.OwnedByLocalClient() && GrabbingState > 3)
+        {
+            if (GrabbingState == 4)
+            {
+                GrabbingState = 1;
+            }
+            if (GrabbingState == 5)
+            {
+                GrabbingState = 2;
+            }
+            Projectile.netUpdate = true;
+        }
+
         Timer++;
-        NPC parent = Main.npc[verliaNpc];
-        bool noVerl = !parent.active || parent.type != ModContent.NPCType<Verlia>();
+        NPC parent = Parent;
+        bool noVerl = !parent.active;
         if (noVerl)
         {
             holdState = 4;
@@ -167,11 +181,13 @@ public class VerliaDesperationMoon : ModProjectile
             {
                 case 0:
                     {
-                        if (verliaHold)
+                        if (GrabbingState != 0)
                         {
+
                             ShakeScreenPosition.Shake = 2;
                             Vector2 targetPosition = parent.Center;
                             targetPosition.Y -= 262;
+
                             if (Projectile.Center.Y < targetPosition.Y)
                             {
                                 if (Projectile.velocity.Y < 5)
@@ -183,9 +199,10 @@ public class VerliaDesperationMoon : ModProjectile
                             {
                                 holdState++;
                                 Projectile.velocity.Y *= 0.5f;
+                                Projectile.netUpdate = true;
                             }
                         }
-          
+
                     }
                     break;
                 case 1:
@@ -197,10 +214,11 @@ public class VerliaDesperationMoon : ModProjectile
                     {
                         throwTimer++;
                         Projectile.velocity.Y = MathHelper.Lerp(2.5f, -5f, EasingFunction.InOutSine(throwTimer / 30f));
-                        if(throwTimer > 30f)
+                        if (throwTimer > 30f)
                         {
                             throwTimer = 0;
                             holdState++;
+                            Projectile.netUpdate = true;
                         }
                     }
                     break;
@@ -208,15 +226,20 @@ public class VerliaDesperationMoon : ModProjectile
                     {
                         Player target = Main.player[parent.target];
                         float x = (target.Center.X > parent.Center.X) ? 1 : -1;
-                        if(!crushMe)
+                        if (GrabbingState == 1)
                             Projectile.velocity.X = x * 5;
                         Projectile.velocity.Y = -16;
                         holdState++;
+                        Projectile.netUpdate = true;
                     }
                     break;
                 case 4:
                     {
-           
+                        verliaFallTimer++;
+                        if(verliaFallTimer >= 72)
+                        {
+                            Parent.velocity.Y = Projectile.velocity.Y;
+                        }
                         if (Timer % 8 == 0)
                         {
                             var p2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Bottom, -Projectile.velocity);
@@ -242,14 +265,14 @@ public class VerliaDesperationMoon : ModProjectile
 
         _scale = MathHelper.Lerp(_scale, 1f, 0.1f);
         _flashAlpha = MathHelper.Lerp(_flashAlpha, 0f, 0.1f);
-        ShootFlash = MathHelper.Lerp(ShootFlash, 0f, 0.1f);
+        _shootFlash = MathHelper.Lerp(_shootFlash, 0f, 0.1f);
     }
     private void DrawPixelatedMoon(SpriteBatch sb, Vector2 screenPos)
     {
         Vector2 scale = Vector2.One * _scale;
 
         SpritebatchDrawer circleSprite = SpritebatchDrawer.FromTextureAsset(_magicCircleTextureAsset, Projectile.Center);
-        circleSprite.color = Color.Lerp(Color.Black, Color.White, _flashAlpha + ShootFlash);// * ExtraMath.Osc(0.5f, 1f, speed: 6);
+        circleSprite.color = Color.Lerp(Color.Black, Color.White, _flashAlpha + _shootFlash);// * ExtraMath.Osc(0.5f, 1f, speed: 6);
         circleSprite.color.A = 0;
         circleSprite.rotation = Main.GlobalTimeWrappedHourly;
         circleSprite.scale *= 1.2f;
@@ -262,7 +285,7 @@ public class VerliaDesperationMoon : ModProjectile
         _scrollingMoonTextureAsset ??= ModContent.Request<Texture2D>(Texture + "_ScrollingMoon");
         moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
-        glowDrawer.color = Color.Lerp(Color.Blue, Color.White, _flashAlpha + ShootFlash) * 0.8f * ExtraMath.Osc(0.5f, 1f, speed: 6);
+        glowDrawer.color = Color.Lerp(Color.Blue, Color.White, _flashAlpha + _shootFlash) * 0.8f * ExtraMath.Osc(0.5f, 1f, speed: 6);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 1.8f;
         glowDrawer.scale *= scale;
@@ -319,18 +342,18 @@ public class VerliaDesperationMoon : ModProjectile
 
         Color flashColor = Color.White;
         Color darkColor = Color.Lerp(Color.Blue, Color.Black, 0.8f) * 0.5f;
-        shadowDrawer.color = Color.Lerp(darkColor, flashColor, _flashAlpha + ShootFlash);
+        shadowDrawer.color = Color.Lerp(darkColor, flashColor, _flashAlpha + _shootFlash);
         shadowDrawer.scale *= scale * 1.05f;
         Main.spriteBatch.Draw(shadowDrawer);
 
         SpritebatchDrawer outlineDrawer = SpritebatchDrawer.FromTextureAsset(_outlineTextureAsset, Projectile.Center);
         outlineDrawer.color = Color.Red;
         outlineDrawer.scale *= scale;
-     //   Main.spriteBatch.Draw(outlineDrawer);
+        //   Main.spriteBatch.Draw(outlineDrawer);
 
         SpritebatchDrawer moonSprite = SpritebatchDrawer.FromProjectile(Projectile);
         moonSprite.scale = scale * 1.05f;
-        moonSprite.color = Color.Lerp(Color.Transparent, Color.White, _flashAlpha + ShootFlash);
+        moonSprite.color = Color.Lerp(Color.Transparent, Color.White, _flashAlpha + _shootFlash);
         Main.spriteBatch.Draw(moonSprite);
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedMoon);
         return false;

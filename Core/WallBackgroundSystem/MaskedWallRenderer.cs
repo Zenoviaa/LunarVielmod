@@ -25,6 +25,7 @@ namespace Stellamod.Core.WallBackgroundSystem
         public Vector2 StartParallaxPosition { get; set; }
 
         public Color Color { get; set; }
+        public bool dontDrawCenter;
         protected override void Register()
         {
             ModTypeLookup<MaskedWallBackground>.Register(this);
@@ -50,6 +51,21 @@ namespace Stellamod.Core.WallBackgroundSystem
                 DrawLayers[i] = new MaskedWallDrawLayer();
             Color = Color.White;
         }
+
+        public virtual bool UseCustomDrawing()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// If UseCustomDrawing returns true, this will run, keep in mind sprite batch needs to be begun and ended in here
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+
+        }
+
 
         public virtual bool IsActive(Player player)
         {
@@ -225,31 +241,43 @@ namespace Stellamod.Core.WallBackgroundSystem
 
             graphicsDevice.SetRenderTarget(_backgroundTarget);
             graphicsDevice.Clear(Color.Transparent);
-            for (int i = 0; i < _activeMaskedWallBackground.DrawLayers.Length; i++)
-            {
-                MaskedWallDrawLayer drawLayer = _activeMaskedWallBackground.DrawLayers[i];
-                if (drawLayer == null)
-                    break;
-                if (drawLayer.textureAsset == null)
-                    break;
-                BackgroundParallaxShader backgroundShader = BackgroundParallaxShader.Instance;
-                Vector2 cameraMovement = Main.Camera.Center - _activeMaskedWallBackground.StartParallaxPosition;
-                backgroundShader.Parallax = drawLayer.parallax * 0.001f * (cameraMovement);
-                spriteBatch.Begin(default,
-                    default,
-                    SamplerState.PointWrap,
-                    default,
-                    default,
-                    effect: backgroundShader.Effect);
-                Vector2 drawPosition = Vector2.Zero;
-                Rectangle drawRectangle = new Rectangle(0, 0, Main.screenWidth*2, Main.screenHeight*2);
-                Color drawColor = _activeMaskedWallBackground.Color * _activeMaskedWallBackground.Alpha;
-                if (drawLayer.additive)
-                    drawColor.A = 0;
-                spriteBatch.Draw(drawLayer.textureAsset.Value, drawPosition, drawRectangle, drawColor, 0, drawLayer.textureAsset.Value.Size() * 0.5f, _activeMaskedWallBackground.DrawScale, SpriteEffects.None, 0);
-                spriteBatch.End();
-            }
 
+            if (_activeMaskedWallBackground.UseCustomDrawing())
+            {
+                _activeMaskedWallBackground.Draw(spriteBatch);
+            }
+            else
+            {
+                for (int i = 0; i < _activeMaskedWallBackground.DrawLayers.Length; i++)
+                {
+                    MaskedWallDrawLayer drawLayer = _activeMaskedWallBackground.DrawLayers[i];
+                    if (drawLayer == null)
+                        break;
+                    if (drawLayer.textureAsset == null)
+                        break;
+                    BackgroundParallaxShader backgroundShader = BackgroundParallaxShader.Instance;
+                    Vector2 cameraMovement = Main.Camera.Center - _activeMaskedWallBackground.StartParallaxPosition;
+                    backgroundShader.Parallax = drawLayer.parallax * 0.001f * (cameraMovement);
+                    spriteBatch.Begin(default,
+                        default,
+                        SamplerState.PointWrap,
+                        default,
+                        default,
+                        effect: backgroundShader.Effect);
+                    Vector2 drawPosition = Vector2.Zero;
+                    Rectangle drawRectangle = new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2);
+                    Color drawColor = _activeMaskedWallBackground.Color * _activeMaskedWallBackground.Alpha;
+                    if (drawLayer.additive)
+                        drawColor.A = 0;
+                    Vector2 drawOrigin = drawLayer.textureAsset.Value.Size() * 0.5f;
+                    if (_activeMaskedWallBackground.dontDrawCenter)
+                        drawOrigin = Vector2.Zero;
+                    spriteBatch.Draw(drawLayer.textureAsset.Value, drawPosition, drawRectangle, drawColor, 0, drawOrigin, _activeMaskedWallBackground.DrawScale, SpriteEffects.None, 0);
+                    spriteBatch.End();
+                }
+
+
+            }
 
             spriteBatch.Begin(SpriteSortMode.Deferred, CustomBlendStates.Multiply);
             spriteBatch.Draw(_wallMaskRenderTarget, Vector2.Zero, null, Color.White);

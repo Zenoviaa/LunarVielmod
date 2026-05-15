@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Common
 {
-    public class TileSets : ModSystem
+    public class GrassTileSystem : ModSystem
     {
         private static bool _lastSuccess;
         private static int _lastLookup = -1;
@@ -31,17 +31,14 @@ namespace Stellamod.Common
         }
         public static bool GetGrassProfile(int type, out GrassProfile profile)
         {
-
             if (_lastLookup == type)
             {
 
                 profile = _lastProfile;
                 return _lastSuccess;
             }
-
-      
+  
             _lastLookup = type;
-
             bool success = GrassyTiles.TryGetValue(type, out profile);
             _lastSuccess = success;
             _lastProfile = profile;

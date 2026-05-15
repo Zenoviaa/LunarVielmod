@@ -39,7 +39,7 @@ public class MovePlayer : ModPlayer
             Vector2 suckPosition = targetSuckPosition.Value;
             Vector2 velocityToPosition = (suckPosition - Player.Center);
             Player.velocity = Vector2.Lerp(Player.velocity, velocityToPosition, 0.5f);
-            grabDelayTimer = 8;
+            grabDelayTimer = 4;
             targetSuckPosition = null;
         }
 

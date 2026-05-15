@@ -18,7 +18,11 @@ public class UIInputTextField : UITextPanel<string>
         _mText = text;
         SetPadding(4);
     }
-
+    public override void OnDeactivate()
+    {
+        base.OnDeactivate();
+        Unfocus();
+    }
     public override void LeftClick(UIMouseEvent evt)
     {
         Focus();
@@ -66,6 +70,7 @@ public class UIInputTextField : UITextPanel<string>
         this._cursor = text.Length;
         Recalculate();
     }
+
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {

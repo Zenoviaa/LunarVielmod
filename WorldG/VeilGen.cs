@@ -18,6 +18,7 @@ using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using Terraria.WorldBuilding;
@@ -44,7 +45,8 @@ public enum PrefabPlacementType : byte
 {
     FromTopLeft,
     FromTopCenter,
-    FromCenter
+    FromCenter,
+    FromTopRight
 }
 
 /// <summary>
@@ -103,6 +105,43 @@ public class GenerationPrefab : IDisposable
         originY -= pixelOrigin.Y;
         PasteEraseInner(originX, originY);
     }
+    public void PasteErase(Point origin, PrefabPlacementType placementType)
+    {
+        PasteErase(origin.X, origin.Y, placementType);
+    }
+    public Rectangle GetBounds(int originX, int originY, PrefabPlacementType placementType)
+    {
+        switch (placementType)
+        {
+            case PrefabPlacementType.FromTopLeft:
+                break;
+            case PrefabPlacementType.FromTopCenter:
+                originX -= Width / 2;
+                break;
+            case PrefabPlacementType.FromCenter:
+                originX -= Width / 2;
+                originY -= Height / 2;
+                break;
+            case PrefabPlacementType.FromTopRight:
+                originX -= Width;
+                break;
+
+        }
+
+        //Clamp to world bounds to prevent index out of bounds exceptions
+        Rectangle rectangle = new Rectangle(originX, originY, Width, Height);
+        rectangle.X = (int)MathHelper.Clamp(rectangle.X, 0, Main.maxTilesX - 1);
+        rectangle.Y = (int)MathHelper.Clamp(rectangle.Y, 0, Main.maxTilesY - 1);
+
+        int maxRight = (int)MathHelper.Clamp(rectangle.X + rectangle.Width, 0, Main.maxTilesX - 1);
+        int maxWidth = maxRight - rectangle.Left;
+        rectangle.Width = (int)MathHelper.Min(rectangle.Width, maxWidth);
+
+        int maxBottom = (int)MathHelper.Clamp(rectangle.Y + rectangle.Height, 0, Main.maxTilesY - 1);
+        int maxHeight = maxBottom - rectangle.Top;
+        rectangle.Height = (int)MathHelper.Min(rectangle.Height, maxHeight);
+        return rectangle;
+    }
     public void PasteErase(int originX, int originY, PrefabPlacementType placementType)
     {
         switch (placementType)
@@ -116,10 +155,16 @@ public class GenerationPrefab : IDisposable
                 originX -= Width / 2;
                 originY -= Height / 2;
                 break;
+            case PrefabPlacementType.FromTopRight:
+                originX -= Width;
+                break;
+
         }
 
         PasteEraseInner(originX, originY);
     }
+
+
 }
 
 
@@ -177,6 +222,21 @@ public class VeilGenTester : ModItem
 
     public override bool? UseItem(Player player)
     {
+        var progress = new GenerationProgress();
+        var configuration = new GameConfiguration(null);
+        StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
+     //   stellaWorld.SetXixVillageLocation(progress, configuration);
+        
+        stellaWorld.WorldGenFableTerrain(progress, configuration);
+        stellaWorld.WorldGenXixVillage(progress, configuration);
+        stellaWorld.WorldGenFabiliaRuin(progress, configuration);
+
+
+        return true;
+    }
+
+    private static void MistyDungeonTest()
+    {
         Vector2 mouseWorld = Main.MouseWorld;
         Point startTile = mouseWorld.ToTileCoordinates();
         Room[] prefabs = DungeonSaveUtility.ReadDungeonPrefabsFromFiles();
@@ -205,22 +265,22 @@ public class VeilGenTester : ModItem
                 bottomRight.Y = room.bounds.Bottom;
         }
         Rectangle rectangle = new Rectangle(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y);
-        
-            Point point = startTile;
-            Point vectorToOrigin = (point - rectangle.Top().ToPoint());
-            rectangle.Location += vectorToOrigin;
 
-            //Just a failsafe
-            while (rectangle.Right().X >= Main.maxTilesX)
-                rectangle.Location -= new Point(32, 0);
+        Point point = startTile;
+        Point vectorToOrigin = (point - rectangle.Top().ToPoint());
+        rectangle.Location += vectorToOrigin;
 
-            int width = rectangle.Width;
-            width -= 150;
-            int height = rectangle.Height;
+        //Just a failsafe
+        while (rectangle.Right().X >= Main.maxTilesX)
+            rectangle.Location -= new Point(32, 0);
+
+        int width = rectangle.Width;
+        width -= 150;
+        int height = rectangle.Height;
 
 
-            //So we're just gonna start from index 1 to skip it
-            for (int r = 1; r < map.Length; r++)
+        //So we're just gonna start from index 1 to skip it
+        for (int r = 1; r < map.Length; r++)
         {
             Room room = map[r];
             int padding = 10;
@@ -255,9 +315,7 @@ public class VeilGenTester : ModItem
             Structurizer.ReadStruct(bottomLeft, room.prefab, tileBlend);
             Structurizer.ProtectStructure(bottomLeft, room.prefab);
         }
-        return true;
     }
-
     public static void GenerateDungeon()
     {
         int tileX = (int)Main.MouseWorld.X / 16;

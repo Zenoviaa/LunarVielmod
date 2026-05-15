@@ -135,3 +135,9 @@ KingJellyfishPage: {
 	WhereToFind: In Your Mom
 	Lore: Birthed by your mom
 }
+
+LeviathanEelPage: {
+	DisplayName: Who???
+	WhereToFind: In Your Mom
+	Lore: Birthed by your mom
+}

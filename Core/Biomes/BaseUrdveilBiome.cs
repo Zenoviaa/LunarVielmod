@@ -9,9 +9,13 @@ namespace Stellamod.Core.Biomes
     public abstract class BaseUrdveilBiome : ModBiome
     {
         private static string _lastCard;
+
         public override void OnEnter(Player player)
         {
             base.OnEnter(player);
+            if (!ShowTitleCard())
+                return;
+
             if (Main.CurrentFrameFlags.AnyActiveBossNPC)
             {
                 return;
@@ -24,5 +28,6 @@ namespace Stellamod.Core.Biomes
             uiSystem.OpenUI(DisplayName.Value, 7);
             uiSystem.titleUIState.titleCardUI.LineTexture = ModContent.Request<Texture2D>(TitleCardUISystem.RootTexturePath + "UnderlineBiome");
         }
+        public virtual bool ShowTitleCard() => true;
     }
 }

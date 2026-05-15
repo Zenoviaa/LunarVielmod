@@ -254,7 +254,7 @@ namespace Stellamod.Common.ArmorShop
             silk.AddHead(ModContent.ItemType<CandlelightHood>());
             silk.AddBody(ModContent.ItemType<CandlelightBody>());
             silk.AddLegs(ModContent.ItemType<CandlelightLegs>());
-            silk.SetMaterial(ModContent.ItemType<SpidersSilk>());
+            silk.SetMaterial(ModContent.ItemType<EreshkinCandle>());
             silk.Register();
             //Daeden
             /*

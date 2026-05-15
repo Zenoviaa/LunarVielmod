@@ -134,70 +134,109 @@ namespace Stellamod.Helpers
             return true;
         }
 
-        public static Tile ReadTile(BinaryReader reader)
+        public static int OffsetToGround(string structurePath)
         {
-            Tile t = new Tile();
-            t.ClearEverything();
-            //tile
-            bool hastile = reader.ReadBoolean();
-            t.LiquidType = reader.ReadInt32();
-            t.LiquidAmount = reader.ReadByte();
-            t.BlueWire = reader.ReadBoolean();
-            t.RedWire = reader.ReadBoolean();
-            t.GreenWire = reader.ReadBoolean();
-            t.YellowWire = reader.ReadBoolean();
-            t.HasActuator = reader.ReadBoolean();
-            t.IsActuated = reader.ReadBoolean();
-            if (hastile)
+            Tile[,] tileMap = ReadTileData(structurePath);
+            int yOffset = 0;
+            for(int y = 0; y < tileMap.GetLength(1); y++)
             {
-                t.HasTile = hastile;
-                bool Modded = reader.ReadBoolean();
-                int TileType = 0;
-                if (Modded)
+                if (tileMap[0, y].HasTile)
                 {
-                    TileType = ReadModTile(reader);
+                    yOffset = y;
+                    break;
+                }
+            }
+
+            //Invert it so we know how much downward to move the structure
+            yOffset = tileMap.GetLength(1) - yOffset;
+            return yOffset;
+        }
+
+        public static Tile[,] ReadTileData(string structurePath)
+        {
+            using Stream stream = Mod.GetFileStream(structurePath + ".str");
+            return ReadTileData(stream);
+        }
+
+        public static Tile[,] ReadTileData(Stream stream)
+        {
+            using var reader = new BinaryReader(stream, Encoding.UTF8, false);
+            int width = reader.ReadInt32();
+            int height = reader.ReadInt32();
+            Tile[,] tileMap = new Tile[width+1, height+1];
+            void InnerLoop(int i, int j)
+            {
+                Tile t = new Tile();
+                t.ClearEverything();
+
+                //tile
+                bool hastile = reader.ReadBoolean();
+                t.LiquidType = reader.ReadInt32();
+                t.LiquidAmount = reader.ReadByte();
+                t.BlueWire = reader.ReadBoolean();
+                t.RedWire = reader.ReadBoolean();
+                t.GreenWire = reader.ReadBoolean();
+                t.YellowWire = reader.ReadBoolean();
+                t.HasActuator = reader.ReadBoolean();
+                t.IsActuated = reader.ReadBoolean();
+                if (hastile)
+                {
+                    t.HasTile = hastile;
+                    bool Modded = reader.ReadBoolean();
+                    int TileType = 0;
+                    if (Modded)
+                    {
+                        TileType = ReadModTile(reader);
+                    }
+                    else
+                    {
+                        TileType = reader.ReadInt16();
+                    }
+
+                    t.TileType = (ushort)TileType;
+                    t.BlockType = (BlockType)reader.ReadByte();
+                    t.IsHalfBlock = reader.ReadBoolean();
+                    //t.LiquidType = reader.ReadInt32();
+                    t.Slope = (SlopeType)reader.ReadByte();
+                    t.TileFrameNumber = reader.ReadInt32();
+                    t.TileFrameX = reader.ReadInt16();
+                    t.TileFrameY = reader.ReadInt16();
+
+                    t.TileColor = reader.ReadByte();
+                    t.IsTileInvisible = reader.ReadBoolean();
+                }
+
+                //wall
+                int WallType = 0;
+                bool ModdedWall = reader.ReadBoolean();
+                if (ModdedWall)
+                {
+                    WallType = ReadModWall(reader);
                 }
                 else
                 {
-                    TileType = reader.ReadInt16();
+                    WallType = reader.ReadInt16();
                 }
-
-                t.TileType = (ushort)TileType;
-                t.BlockType = (BlockType)reader.ReadByte();
-                t.IsHalfBlock = reader.ReadBoolean();
-                //t.LiquidType = reader.ReadInt32();
-                t.Slope = (SlopeType)reader.ReadByte();
-                t.TileFrameNumber = reader.ReadInt32();
-                t.TileFrameX = reader.ReadInt16();
-                t.TileFrameY = reader.ReadInt16();
-                t.TileColor = reader.ReadByte();
-                t.IsTileInvisible = reader.ReadBoolean();
-                t.IsTileFullbright = reader.ReadBoolean();
-                //byte slope = reader.ReadByte();
-
-                bool Chest = reader.ReadBoolean();
+                t.WallType = (ushort)WallType;
+                t.WallFrameX = reader.ReadInt32();
+                t.WallFrameY = reader.ReadInt32();
+                t.WallColor = reader.ReadByte();
+                t.IsWallInvisible = reader.ReadBoolean();
+                t.IsWallFullbright = reader.ReadBoolean();
+                tileMap[i, height - j] = t;
             }
 
-
-            //wall
-            int WallType = 0;
-            bool ModdedWall = reader.ReadBoolean();
-            if (ModdedWall)
+            for (int i = 0; i <= width; i++)
             {
-                WallType = ReadModWall(reader);
+                for (int j = 0; j <= height; j++)
+                {
+                    InnerLoop(i, j);
+                }
             }
-            else
-            {
-                WallType = reader.ReadInt16();
-            }
-            t.WallType = (ushort)WallType;
-            t.WallFrameX = reader.ReadInt32();
-            t.WallFrameY = reader.ReadInt32();
-            t.WallColor = reader.ReadByte();
-            t.IsWallInvisible = reader.ReadBoolean();
-            t.IsWallFullbright = reader.ReadBoolean();
-            return t;
+
+            return tileMap;
         }
+
 
         private static int[] ReadStruct(Stream stream, Point bottomLeft, int[] tileBlend = null)
         {
@@ -442,6 +481,190 @@ namespace Stellamod.Helpers
             using FileStream stream = File.Open(savedPath, FileMode.Open);
             return ReadStruct(stream, BottomLeft, tileBlend);
         }
+
+        public static void DeSerialize(byte[] bytes, Point bottomLeft)
+        {
+            using var ms = new MemoryStream(bytes);
+            using var reader = new BinaryReader(ms, Encoding.UTF8, false);
+            List<int> ChestIndexs = new List<int>();
+            int Xlenght = reader.ReadInt32();
+            int Ylenght = reader.ReadInt32();
+            void InnerLoop(int i, int j)
+            {
+                Tile t;
+                if (FlipStructure)
+                {
+                    t = Framing.GetTileSafely(bottomLeft.X + Xlenght - i, bottomLeft.Y - j);
+                }
+                else
+                {
+                    t = Framing.GetTileSafely(bottomLeft.X + i, bottomLeft.Y - j);
+
+                }
+                t.ClearEverything();
+                //tile
+                bool hastile = reader.ReadBoolean();
+                t.LiquidType = reader.ReadInt32();
+                t.LiquidAmount = reader.ReadByte();
+                t.BlueWire = reader.ReadBoolean();
+                t.RedWire = reader.ReadBoolean();
+                t.GreenWire = reader.ReadBoolean();
+                t.YellowWire = reader.ReadBoolean();
+                t.HasActuator = reader.ReadBoolean();
+                t.IsActuated = reader.ReadBoolean();
+                if (hastile)
+                {
+                    t.HasTile = hastile;
+                    bool Modded = reader.ReadBoolean();
+                    int TileType = 0;
+                    if (Modded)
+                    {
+                        TileType = ReadModTile(reader);
+                    }
+                    else
+                    {
+                        TileType = reader.ReadInt16();
+                    }
+
+                    t.TileType = (ushort)TileType;
+                    t.BlockType = (BlockType)reader.ReadByte();
+                    t.IsHalfBlock = reader.ReadBoolean();
+                    //t.LiquidType = reader.ReadInt32();
+                    t.Slope = (SlopeType)reader.ReadByte();
+                    t.TileFrameNumber = reader.ReadInt32();
+                    t.TileFrameX = reader.ReadInt16();
+                    t.TileFrameY = reader.ReadInt16();
+
+                    t.TileColor = reader.ReadByte();
+                    t.IsTileInvisible = reader.ReadBoolean();
+                    t.IsTileFullbright = reader.ReadBoolean();
+
+                    bool Chest = reader.ReadBoolean();
+                    if (Chest)
+                    {
+                        ChestIndexs.Add(Terraria.Chest.CreateChest(bottomLeft.X + i, bottomLeft.Y - j));
+                    }
+                    //byte slope = reader.ReadByte();
+
+
+                }
+
+
+                //wall
+                int WallType = 0;
+                bool ModdedWall = reader.ReadBoolean();
+                if (ModdedWall)
+                {
+                    WallType = ReadModWall(reader);
+                }
+                else
+                {
+                    WallType = reader.ReadInt16();
+                }
+                t.WallType = (ushort)WallType;
+                t.WallFrameX = reader.ReadInt32();
+                t.WallFrameY = reader.ReadInt32();
+                t.WallColor = reader.ReadByte();
+                t.IsWallInvisible = reader.ReadBoolean();
+                t.IsWallFullbright = reader.ReadBoolean();
+            }
+
+            for (int i = 0; i <= Xlenght; i++)
+            {
+                for (int j = 0; j <= Ylenght; j++)
+                {
+                    InnerLoop(i, j);
+                }
+            }
+
+        }
+
+        public static byte[] Serialize(Point bottomLeft, Point topRight)
+        {
+            byte[] buffer = new byte[16 * 16 * 16 * 16 * 16];
+            using var ms = new MemoryStream(buffer);
+            using var writer = new BinaryWriter(ms);
+
+
+            int Xlength = topRight.X - bottomLeft.X;
+            int Ylength = bottomLeft.Y - topRight.Y;
+            writer.Write(Xlength);
+            writer.Write(Ylength);
+            for (int x = bottomLeft.X; x <= topRight.X; x++)
+            {
+                for (int y = bottomLeft.Y; y >= topRight.Y; y--)
+                {
+                    //tile
+                    Tile t = Framing.GetTileSafely(x, y);
+                    bool hastile = t.HasTile;
+                    writer.Write(hastile);
+                    writer.Write(t.LiquidType);
+                    writer.Write(t.LiquidAmount);
+                    writer.Write(t.BlueWire);
+                    writer.Write(t.RedWire);
+                    writer.Write(t.GreenWire);
+                    writer.Write(t.YellowWire);
+                    writer.Write(t.HasActuator);
+                    writer.Write(t.IsActuated);
+                    if (hastile)
+                    {
+                        bool Modded = t.TileType > TileID.Count;
+                        writer.Write(Modded);
+                        if (Modded)
+                        {
+                            WriteModdedTile(writer, t);
+                        }
+                        else
+                        {
+                            WriteVanillaTile(writer, t);
+                        }
+                        writer.Write((byte)t.BlockType);
+                        writer.Write(t.IsHalfBlock);
+                        writer.Write((byte)t.Slope);
+                        writer.Write(t.TileFrameNumber);
+                        writer.Write(t.TileFrameX);
+                        writer.Write(t.TileFrameY);
+
+                        //Paint
+                        writer.Write(t.TileColor);
+                        writer.Write(t.IsTileInvisible);
+                        writer.Write(t.IsTileFullbright);
+
+                        bool Chest = false;
+                        foreach (Chest c in Main.chest)
+                        {
+                            if (c == null)
+                                continue;
+                            if (c.x == x && c.y == y)
+                            {
+                                Chest = true;
+                            }
+                        }
+                        writer.Write(Chest);
+                    }
+                    bool WallModded = t.WallType >= WallID.Count;
+                    writer.Write(WallModded);
+                    if (WallModded)
+                    {
+                        WriteModdedWall(writer, t);
+                    }
+                    else
+                    {
+                        WriteVanillaWall(writer, t);
+                    }
+                    writer.Write(t.WallFrameX);
+                    writer.Write(t.WallFrameY);
+                    writer.Write(t.WallColor);
+                    writer.Write(t.IsWallInvisible);
+                    writer.Write(t.IsWallFullbright);
+                }
+            }
+            writer.Dispose();
+            byte[] output = ms.ToArray();
+            ms.Dispose();
+
+            return output;
+        } 
         public static Rectangle ReadSavedRectangle(string filePath)
         {
             if (!filePath.Contains(".str"))
@@ -494,6 +717,7 @@ namespace Stellamod.Helpers
             Mod.Logger.Warn($"Could not find tile {Name} placing dirt instead");
             return TileID.Dirt;
         }
+ 
         public static void SaveStruct(string fileName, Point bottomLeft, Point topRight)
         {
             //string Path = Main.SavePath + "/" + "ModSources" + "/" + Mod.Name + "/" + "SavedStruct.str";

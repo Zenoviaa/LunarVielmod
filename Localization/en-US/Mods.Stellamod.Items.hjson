@@ -11167,3 +11167,38 @@ ShadefulWash: {
 	DisplayName: Shadeful Wash
 	Tooltip: ""
 }
+
+LeviathanEelRelicItem: {
+	DisplayName: Leviathan Eel Relic
+	Tooltip: ""
+}
+
+CopyWand: {
+	DisplayName: Copy Wand
+	Tooltip: ""
+}
+
+PasteWand: {
+	DisplayName: Paste Wand
+	Tooltip: ""
+}
+
+EraseWand: {
+	DisplayName: Erase Wand
+	Tooltip: ""
+}
+
+TileEyeDropper: {
+	Tooltip: ""
+	DisplayName: Tile Eye Dropper
+}
+
+UndoBucket: {
+	DisplayName: Undo Bucket
+	Tooltip: ""
+}
+
+IshtarTempleBrick: {
+	DisplayName: Ishtar Temple Brick
+	Tooltip: ""
+}

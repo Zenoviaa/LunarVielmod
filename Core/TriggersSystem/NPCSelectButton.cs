@@ -40,6 +40,7 @@ namespace Stellamod.Core.TriggersSystem
             bool contains = ContainsPoint(Main.MouseScreen);
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
+           
                 Main.LocalPlayer.mouseInterface = true;
             }
             if (IsMouseHovering)

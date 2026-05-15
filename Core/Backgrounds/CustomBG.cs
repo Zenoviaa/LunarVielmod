@@ -19,7 +19,7 @@ namespace Stellamod.Core.Backgrounds
         public bool NoParallaxY;
         public float ParallaxYFactor;
         public bool parallaxInBothWays;
-        public Color DrawColor;
+        public Color DrawColor = Color.White;
         public bool IgnorePaletteShader;
         public float LocalParallaxSpeed=1f;
         public bool ignoreSkyColor;
@@ -35,7 +35,7 @@ namespace Stellamod.Core.Backgrounds
         }
         public virtual void SetDrawDefaults()
         {
-            if (!IsActive())
+            if (Alpha <= 0)
                 DrawColor = Color.White;
         }
 

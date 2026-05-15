@@ -1,6 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -32,12 +30,11 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
                 Tile tile = Framing.GetTileSafely(i, j);
                 if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
                 {
-                    if (Main.rand.NextBool(2))
+                    if (Main.rand.NextBool(4))
                     {
                         int wallType = tilesToChooseFrom[Main.rand.Next(0, tilesToChooseFrom.Length)];
                         if (tile.WallType == WallID.FlowerUnsafe ||
-                            tile.WallType == WallID.GrassUnsafe ||
-                            tile.WallType == WallID.LivingLeaf || tile.WallType == 0)
+                            tile.WallType == WallID.GrassUnsafe || tile.WallType == 0)
                         {
                             WorldGen.KillWall(i, j);
                             WorldGen.PlaceWall(i, j, wallType, true);
@@ -87,10 +84,10 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
             Tile tileBelow = Framing.GetTileSafely(i, j + 1);
             if (!Main.tile[i, j - 1].HasTile && Main.tile[i, j].Slope == 0)//grass
             {
-                if (Main.rand.NextBool(2))
+                if (Main.rand.NextBool(4))
                 {
                     int wallType = tilesToChooseFrom[Main.rand.Next(0, tilesToChooseFrom.Length)];
-                    if (tile.WallType == WallID.FlowerUnsafe || tile.WallType == WallID.GrassUnsafe || tile.WallType == WallID.LivingLeaf)
+                    if (tile.WallType == WallID.FlowerUnsafe || tile.WallType == WallID.GrassUnsafe)
                     {
                         WorldGen.KillWall(i, j);
                         WorldGen.PlaceWall(i, j, wallType, true);
