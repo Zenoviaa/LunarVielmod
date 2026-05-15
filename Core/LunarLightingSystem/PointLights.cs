@@ -75,7 +75,7 @@ public class PointLights
     }
     public void GatherLights()
     {
-        (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(192);
+        (Point topLeft, Point bottomRight) = TileUtilities.CameraTileBounds(384);
         LightingEngine lightingEngine = typeof(Lighting).GetField("_activeEngine", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null) as LightingEngine;
         TileLightScanner tileScanner = typeof(LightingEngine).GetField("_tileScanner", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as TileLightScanner;
         LightMap lightMap = typeof(LightingEngine).GetField("_activeLightMap", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(lightingEngine) as LightMap;

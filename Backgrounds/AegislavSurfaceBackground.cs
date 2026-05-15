@@ -88,7 +88,6 @@ public partial class AegislavSurfaceBackground : CustomBG
         backgroundShader.Parallax = parallax;
         backgroundShader.DustTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds").Value;
 
-        spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Deferred,
             BlendState.AlphaBlend, 
             SamplerState.PointClamp, 
@@ -113,12 +112,6 @@ public partial class AegislavSurfaceBackground : CustomBG
         );
 
         spriteBatch.End();
-        spriteBatch.Begin(SpriteSortMode.Deferred,
-            BlendState.AlphaBlend,
-            SamplerState.PointClamp,
-            DepthStencilState.None,
-            RasterizerState.CullNone,
-            null);
     }
     public override bool IsActive()
     {

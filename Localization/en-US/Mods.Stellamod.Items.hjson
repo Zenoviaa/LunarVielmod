@@ -11202,3 +11202,8 @@ IshtarTempleBrick: {
 	DisplayName: Ishtar Temple Brick
 	Tooltip: ""
 }
+
+EreshkinCandle: {
+	DisplayName: Ereshkin Candle
+	Tooltip: ""
+}

@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Core.Effects;
 using Stellamod.Core.LunarLightingSystem;
+using Stellamod.Core.WallBackgroundSystem;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -23,7 +24,7 @@ public class CustomBGGlobalLightPlayer : ModPlayer
         base.PostUpdate();
         if (CustomBGManager.drawingCustomBG)
         {
-            LightStrength = 0.01f;
+            LightStrength = 0.005f;
         }
 
     }
@@ -95,34 +96,45 @@ public class CustomBGManager : ModSystem
             return;
 
         SpriteBatch spriteBatch = Main.spriteBatch;
-        spriteBatch.End();
-        spriteBatch.Begin(SpriteSortMode.Deferred,
-            BlendState.AlphaBlend,
-            SamplerState.PointWrap,
-            DepthStencilState.None,
-            RasterizerState.CullCounterClockwise);
-
+      
         //Sort the list by their priority, so the higest priority one is in front
         drawingCustomBG = false;
         foreach (var bg in Backgrounds)
         {
             bg.SetDrawDefaults();
             bg.ParallaxYOffset = -100;
-            bg.Alpha += bg.IsActive() ? 0.01f : -0.01f;
+            bg.Alpha += bg.IsActive() ? 0.015f : -0.015f;
             bg.Alpha = MathHelper.Clamp(bg.Alpha, 0, 1);
-
-            if (bg.Alpha != 0)
+            if (bg.Alpha <= 0)
+            {
+                bg.startParallaxPosition = Main.Camera.Center;
+            }
+            if (bg.Alpha > 0)
             {
                 drawingCustomBG = true;
                 if (bg.UseCustomDrawing())
+                {
+                    spriteBatch.End();
                     bg.Draw(spriteBatch);
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+                }
                 else
+                {
+                    spriteBatch.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred,
+                        BlendState.AlphaBlend,
+                        SamplerState.PointWrap,
+                        DepthStencilState.None,
+                        RasterizerState.CullCounterClockwise);
+
                     DrawBG(bg);
+
+
+                    spriteBatch.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+                }
             }
         }
-
-        spriteBatch.End();
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
     }
 
     private void DrawBG(CustomBG bg)

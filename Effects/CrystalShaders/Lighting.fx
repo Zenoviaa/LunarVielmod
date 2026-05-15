@@ -80,7 +80,8 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 
     float4 light = float4(input.Color.rgb, 1.0);    
 
-    float attenuation = lerp(1.0, 0.0, pixelLength / MAX_ATTENTUATION_DISTANCE);
+    float dist = MAX_ATTENTUATION_DISTANCE - 0.05;
+    float attenuation = lerp(1.0, 0.0, pixelLength / dist);
     light *= falloff * attenuation;
     return light;
 }

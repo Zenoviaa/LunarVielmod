@@ -9,6 +9,8 @@ namespace Stellamod.Core.Backgrounds
     {
         public int Type;
         public List<CustomBGLayer> Layers = new List<CustomBGLayer>();
+        public Vector2 startParallaxPosition;
+        public Vector2 CameraMovement => Main.Camera.Center - startParallaxPosition;
         public int Priority;
         public float Alpha;
         public float DrawScale;
@@ -40,6 +42,10 @@ namespace Stellamod.Core.Backgrounds
         }
 
         public virtual bool UseCustomDrawing() => false;
+        /// <summary>
+        /// The spritebatch must be begun and ended within this method, only executes if UseCustomDrawing returns true
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
 
