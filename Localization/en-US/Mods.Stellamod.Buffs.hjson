@@ -1142,3 +1142,8 @@ NeuroZap: {
 	DisplayName: Neuro Zap
 	Description: Mods.Stellamod.Buffs.NeuroZap.Description
 }
+
+ManaFire: {
+	DisplayName: Mana Fire
+	Description: Your mana is burning! 50% reduced mana consumption...
+}

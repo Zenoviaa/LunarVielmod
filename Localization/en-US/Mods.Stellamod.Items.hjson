@@ -1227,8 +1227,9 @@ Splitflame: {
 	DisplayName: Split-flame Candle Artifact
 	Tooltip:
 		'''
-		Summons a tiny ember that goes forward and explodes!
-		Totally not the candle from split, totally.
+		Encases you in a fury of flames!
+		Burning anything nearby and giving you 50% reduced mana cost for the duration
+		Cannot be used again while burning
 		'''
 }
 
@@ -11210,5 +11211,5 @@ EreshkinCandle: {
 
 EternalFlameArtifact: {
 	DisplayName: Eternal Flame Artifact
-	Tooltip: "Casts a fireball that leaves behind a lingering pile of flames! ~HOT HOT HOT!"
+	Tooltip: Casts a fireball that leaves behind a lingering pile of flames! ~HOT HOT HOT!
 }
