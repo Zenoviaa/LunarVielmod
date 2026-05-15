@@ -11210,5 +11210,5 @@ EreshkinCandle: {
 
 EternalFlameArtifact: {
 	DisplayName: Eternal Flame Artifact
-	Tooltip: ""
+	Tooltip: "Casts a fireball that leaves behind a lingering pile of flames! ~HOT HOT HOT!"
 }

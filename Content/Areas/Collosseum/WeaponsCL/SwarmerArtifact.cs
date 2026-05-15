@@ -1,4 +1,5 @@
-﻿using Stellamod.Assets;
+﻿using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Steamroller;
 using Stellamod.Content.Areas.Snow.WeaponsSN;
 using Stellamod.Content.CommonMaterials;
@@ -174,6 +175,8 @@ public class StaffWaveHold : ModProjectile
         float rotation = Projectile.rotation;
         Owner.ChangeDir(Projectile.direction);
         Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + radsOffset;
+        if (MagicCircleStyle == 2)
+            Projectile.rotation += MathHelper.PiOver4;
         Projectile.Center = Owner.MountedCenter;
         Projectile.spriteDirection = Owner.direction;
         if (Main.myPlayer == Projectile.owner)
@@ -194,15 +197,22 @@ public class StaffWaveHold : ModProjectile
     }
     private void DrawPixelatedRings(GraphicsDevice gDevice)
     {
+        Asset<Texture2D> magicCircleTexture = AssetManager.GlowMask.ButterflyCircle;
+        if (MagicCircleStyle == 2)
+            magicCircleTexture = AssetManager.GlowMask.MagicCircleVampiricVine;
 
-        _magicCircleRenderer ??= new MagicCircleRenderer(AssetManager.GlowMask.ButterflyCircle);
+        _magicCircleRenderer ??= new MagicCircleRenderer(magicCircleTexture);
         float qb = EasingFunction.QuadraticBump(Timer / SwingTime);
         Vector2 pos = Owner.MountedCenter + _holdDirection * 64 * MathHelper.Lerp(0.75f, 1f, qb);
         Vector2 velociy = _holdDirection;
 
 
 
-        Color glowColor = Color.Lerp(Color.Black, Color.Pink, qb);
+        Color targetColor = Color.Pink;
+        if (MagicCircleStyle == 2)
+            targetColor = Color.OrangeRed;
+
+            Color glowColor = Color.Lerp(Color.Black, targetColor, qb);
         _magicCircleRenderer.DrawRing(pos, velociy, 0, 1, glowColor, Main.GlobalTimeWrappedHourly * 3);
     }
 
@@ -212,6 +222,19 @@ public class StaffWaveHold : ModProjectile
         Vector2 pos = Owner.MountedCenter + _holdDirection * 64 * MathHelper.Lerp(0.75f, 1f, qb);
         SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, pos);
         bloomDrawer.color = Color.Lerp(Color.Black, Color.Violet, qb) * 0.6f;
+        bloomDrawer.color.A = 0;
+        bloomDrawer.scale *= 0.3f;
+        bloomDrawer.scale.X *= 0.5f;
+        bloomDrawer.rotation = _holdDirection.ToRotation();
+        Main.spriteBatch.Draw(bloomDrawer);
+        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedRings, DrawLayer.OverNPCs);
+    }
+    private void DrawFireCircle()
+    {
+        float qb = EasingFunction.QuadraticBump(Timer / SwingTime);
+        Vector2 pos = Owner.MountedCenter + _holdDirection * 64 * MathHelper.Lerp(0.75f, 1f, qb);
+        SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, pos);
+        bloomDrawer.color = Color.Lerp(Color.Black, Color.Red, qb) * 0.6f;
         bloomDrawer.color.A = 0;
         bloomDrawer.scale *= 0.3f;
         bloomDrawer.scale.X *= 0.5f;
@@ -233,6 +256,9 @@ public class StaffWaveHold : ModProjectile
         {
             case 1:
                 DrawButterflyCircle();
+                break;
+            case 2:
+                DrawFireCircle();
                 break;
         }
 
