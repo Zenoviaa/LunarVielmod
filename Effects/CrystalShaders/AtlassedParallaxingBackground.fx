@@ -32,7 +32,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     float yTiling = 1.0 / tiling.y;
     int parallaxIndex = coords.y / yTiling;
     
-    //Since frac takes the number after decimal point we need to convert to 0-1 to wrap it and then set it back
+    //Since frac takes the number after decimal point we need to convert the coords to 0-1 to wrap it and then set it back
     //It would not work otherwise
     float2 parallaxingCoords = coords;
     parallaxingCoords *= tiling;
