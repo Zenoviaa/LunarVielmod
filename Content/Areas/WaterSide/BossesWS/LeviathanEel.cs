@@ -288,6 +288,11 @@ public class LeviathanEel : ScarletBoss
         writer.Write(_aliveTimer);
         writer.WriteVector2(arenaCenter);
         writer.WriteVector2(lightningCircleCenter);
+
+        for(int i = 0; i < Chain.points.Length; i++)
+        {
+            writer.WriteVector2(Chain.points[i]);
+        }
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -302,6 +307,11 @@ public class LeviathanEel : ScarletBoss
         _aliveTimer = reader.ReadSingle();
         arenaCenter = reader.ReadVector2();
         lightningCircleCenter = reader.ReadVector2();
+        for (int i = 0; i < Chain.points.Length; i++)
+        {
+            Chain.points[i] = reader.ReadVector2();
+            //writer.WriteVector2(Chain.points[i]);
+        }
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -346,6 +356,9 @@ public class LeviathanEel : ScarletBoss
 
     private void ForceMusicOn()
     {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+
         ref float musicVolume = ref Main.musicFade[Music];
         musicVolume = 1f;
     }
@@ -409,6 +422,7 @@ public class LeviathanEel : ScarletBoss
         HoldEyesInFrontOfMe();
         _eyeFlashOffset = Vector2.Zero;
         _eatingSquishScale = Vector2.Lerp(_eatingSquishScale, Vector2.One, 0.1f);
+
         switch (State)
         {
             case AIState.Despawn:
@@ -2157,7 +2171,8 @@ public class LeviathanEel : ScarletBoss
                 z.Scale *= 0.25f;
             }
         }
-        ModContent.GetInstance<LunarLightingRenderer>().leviathanDarken = true;
+        if(Main.netMode != NetmodeID.Server)
+            ModContent.GetInstance<LunarLightingRenderer>().leviathanDarken = true;
 
         switch (AttackCycle)
         {
@@ -2424,7 +2439,7 @@ public class LeviathanEel : ScarletBoss
             AIState pattern = PatternManager.NextPattern();
             while (IsBanned(pattern))
             {
-               
+
                 pattern = PatternManager.NextPattern();
             }
             SwitchState(pattern);
@@ -2438,7 +2453,6 @@ public class LeviathanEel : ScarletBoss
 
     private void AI_Idle()
     {
-        AttackCycle = 0;
         Timer++;
         if (Timer == 1)
         {
