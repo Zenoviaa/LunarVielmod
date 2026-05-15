@@ -247,7 +247,7 @@ namespace Stellamod.Content.BossPages
             banner = BossBannerType.LifeNPlants;
             bossNPC = ModContent.GetInstance<LeviathanEel>();
             progression = 8;
-            flag = DownedBossFlag.KingJellyfish;
+            flag = DownedBossFlag.LeviathanEel;
             StarRanking = 5;
             AddMasterModeReward<LeviathanEelRelicItem>(stack: 1);
         }
