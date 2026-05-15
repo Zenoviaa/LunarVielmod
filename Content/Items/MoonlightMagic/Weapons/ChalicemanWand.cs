@@ -26,7 +26,7 @@ namespace Stellamod.Content.Items.MoonlightMagic.Weapons
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<SpidersSilk>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<EreshkinCandle>());
         }
 
         public override void ModifyElementPreferences(List<int> elements)

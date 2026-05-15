@@ -94,7 +94,7 @@ public class VanillaCauldronEditions : ModSystem
         Cauldron.VanillaBrew(result: ItemID.BlackBelt);
         Cauldron.VanillaBrew(result: ItemID.AnkhCharm);
 
-        Cauldron.SetMaterial(ModContent.ItemType<SpidersSilk>());
+        Cauldron.SetMaterial(ModContent.ItemType<EreshkinCandle>());
         Cauldron.VanillaBrew(result: ItemID.NecromanticScroll);
         Cauldron.VanillaBrew(result: ItemID.DemonWings);
 
