@@ -152,7 +152,7 @@ namespace Stellamod.Content.Areas.MoonspiralTower.TilesMT
         {
             base.SetStaticDefaults();
             drawOrigin = TileDrawOrigin.BottomLeft;
-            frameCount = 1;
+            frameCount = 2;
         }
     }
     public class MoonPedestal : ZTile
