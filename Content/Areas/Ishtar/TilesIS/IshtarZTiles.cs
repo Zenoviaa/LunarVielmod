@@ -214,7 +214,22 @@ public class IshtarWindow : ZTile
     }
 }
 
-public class IshtarHangingLamp : ZTile
+public class HangingIshtarLamp : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.TopDown;
+        windSwayMagnitude = 0.15f;
+        windSwaySpeed = 0.02f;
+    }
+    public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);
+    }
+}
+public class IshtarHangingFlag : ZTile
 {
     public override void SetStaticDefaults()
     {
@@ -355,21 +370,6 @@ public class IshtarPole : ZTile
         base.SetStaticDefaults();
         frameCount = 1;
         drawOrigin = TileDrawOrigin.BottomUp;
-    }
-    public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
-    {
-        base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);
-    }
-}
-public class HangingIshtarLamp : ZTile
-{
-    public override void SetStaticDefaults()
-    {
-        base.SetStaticDefaults();
-        frameCount = 1;
-        drawOrigin = TileDrawOrigin.TopDown;
-        windSwayMagnitude = 0.025f;
-        windSwaySpeed = 0.02f;
     }
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
     {

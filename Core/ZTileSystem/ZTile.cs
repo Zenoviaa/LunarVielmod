@@ -120,7 +120,9 @@ public abstract class ZTile : ModTexturedType, ILocalizedModType
                 drawOffset = new Vector2(0, 0);
                 drawOrigin = new Vector2(frame.Width / 2, 0);
                 break;
-
+            case TileDrawOrigin.BottomLeft:
+                drawOrigin = new Vector2(0, frame.Height);
+                break;
         }
 
 

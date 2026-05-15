@@ -1,4 +1,5 @@
 ﻿using Stellamod.Content.Areas.PunkerTown;
+using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Areas.Terror;
 using Stellamod.Content.Areas.WaterSide;
 using System.Collections.Generic;
@@ -74,7 +75,7 @@ namespace Stellamod.Common
         public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {
             base.EditSpawnPool(pool, spawnInfo);
-            if (spawnInfo.Player.ZoneForest || spawnInfo.Player.ZonePurity)
+            if (spawnInfo.Player.ZoneForest || spawnInfo.Player.ZonePurity || spawnInfo.Player.InModBiome<SpringHillsBiome>())
             {
                 AddEnemiesFromSpawnSet(SpawnSets.SpringEnemy, pool, spawnInfo);
             }
