@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Assets.Biomes
+namespace Stellamod.Content.Areas.Ishtar
 {
     public class IshtarWaterStyle : ModWaterStyle
     {

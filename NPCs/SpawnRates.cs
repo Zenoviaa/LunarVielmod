@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.Biomes;
+using Stellamod.Content.Areas.Ishtar;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 

@@ -222,3 +222,8 @@ EveroseVillageBiome: {
 	DisplayName: Everose Village
 	TownNPCDialogueName: the Everose Village
 }
+
+MistyDungeonSurfaceBiome: {
+	DisplayName: Misty Dungeon Surface Biome
+	TownNPCDialogueName: the Misty Dungeon Surface Biome
+}

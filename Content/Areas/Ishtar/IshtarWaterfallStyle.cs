@@ -1,7 +1,6 @@
-﻿
-using Terraria.ModLoader;
+﻿using Terraria.ModLoader;
 
-namespace Stellamod.Assets.Biomes
+namespace Stellamod.Content.Areas.Ishtar
 {
     public class IshtarWaterfallStyle : ModWaterfallStyle
     {

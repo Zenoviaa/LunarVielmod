@@ -1,4 +1,4 @@
-﻿using Stellamod.Assets.Biomes;
+﻿using Stellamod.Content.Areas.Ishtar;
 using Stellamod.Items.Weapons.Thrown.Jugglers;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
