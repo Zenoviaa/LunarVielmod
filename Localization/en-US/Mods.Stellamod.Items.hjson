@@ -11197,3 +11197,8 @@ UndoBucket: {
 	DisplayName: Undo Bucket
 	Tooltip: ""
 }
+
+IshtarTempleBrick: {
+	DisplayName: Ishtar Temple Brick
+	Tooltip: ""
+}

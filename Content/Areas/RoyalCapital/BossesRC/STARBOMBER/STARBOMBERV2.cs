@@ -267,6 +267,7 @@ public class STARBOMBERV2 : ScarletBoss,
     private float _acceleration;
     private float _spawnTimer;
 
+    private bool _slowedDownCauseWall;
     private bool _contactDamage;
     private bool _namePlate;
     private bool _playedSound;
@@ -531,6 +532,30 @@ public class STARBOMBERV2 : ScarletBoss,
         NPC.frame.Y = frameHeight * _frame;
     }
 
+    private bool CloseToWall()
+    {
+        Point currentTilePosition = NPC.Center.ToTileCoordinates();
+        currentTilePosition.Y -= 1;
+        for(int x = 0; x < 100; x++)
+        {
+            Point nextTilePosition = currentTilePosition;
+            nextTilePosition.X += (int)NPC.direction;
+            if (!WorldGen.InWorld(nextTilePosition.X, nextTilePosition.Y))
+                break;
+            Tile tile = Main.tile[nextTilePosition];
+            if (tile.HasTile && Main.tileSolid[tile.TileType])
+                break;
+            currentTilePosition = nextTilePosition;
+        }
+
+        Vector2 edge = currentTilePosition.ToWorldCoordinates();
+        Vector2 checkPoint = NPC.Center + new Vector2(NPC.direction, 0) * 200;
+        Vector2 dir1 = edge - NPC.Center;
+        dir1 = dir1.SafeNormalize(Vector2.Zero);
+        Vector2 dir2 = edge - checkPoint;
+        dir2 = dir2.SafeNormalize(Vector2.Zero);
+        return Vector2.Dot(dir1, dir2) < 0;
+    }
     private void SwitchState(AIState state)
     {
         if (MultiplayerHelper.IsHost)
@@ -549,6 +574,7 @@ public class STARBOMBERV2 : ScarletBoss,
         writer.Write((byte)_legsState);
         writer.Write(_aggroed);
         writer.WriteVector2(_impactFootPosition);
+        writer.Write(_slowedDownCauseWall);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -559,6 +585,7 @@ public class STARBOMBERV2 : ScarletBoss,
         _legsState = (LegsState)reader.ReadByte();
         _aggroed = reader.ReadBoolean();
         _impactFootPosition = reader.ReadVector2();
+        _slowedDownCauseWall = reader.ReadBoolean();
     }
 
 
@@ -832,8 +859,9 @@ public class STARBOMBERV2 : ScarletBoss,
         }
 
         SwitchState(_patternManager.NextPattern());
-    //    SwitchState(AIState.SteamWhistle_Start);
-    //    SwitchState(AIState.CrashJump_Start);
+        //SwitchState(AIState.LegUpSpin_Start);
+        //    SwitchState(AIState.SteamWhistle_Start);
+        //    SwitchState(AIState.CrashJump_Start);
     }
 
     private void SpawnSteamParticleBottom()
@@ -1178,6 +1206,7 @@ public class STARBOMBERV2 : ScarletBoss,
     }
     private void AI_Idle()
     {
+        _slowedDownCauseWall = false;
         NPC.boss = true;
         Timer++;
         if (Timer == 1)
@@ -1560,6 +1589,7 @@ public class STARBOMBERV2 : ScarletBoss,
     #region LegUpSpin
     private void AI_LegUpSpinStart()
     {
+        _slowedDownCauseWall = false;
         /*
          * 
          * Legs go up and his head drops to the ground, 
@@ -1631,7 +1661,22 @@ public class STARBOMBERV2 : ScarletBoss,
         float spinTime = 150;
         float spinSpeed = 30;
         float targetSpinVelocity = NPC.direction * spinSpeed;
-
+        if (CloseToWall())
+        {
+            targetSpinVelocity *= 0.15f;
+            if (!_slowedDownCauseWall)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 velocity = NPC.velocity.SafeNormalize(Vector2.Zero) * (i + 1);
+                    var donutParticle = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center + velocity.SafeNormalize(Vector2.Zero) * 128, velocity);
+                    donutParticle.Scale = MathHelper.Lerp(1f, 2f, (float)i / 4f);
+                }
+                _slowedDownCauseWall = true;
+            }
+        }
+         
+  
         SpinSpeed = MathHelper.Lerp(3, 0.2f, Timer / spinTime);
         NPC.rotation = NPC.velocity.X * 0.015f;
         NPC.noTileCollide = false;
@@ -1975,7 +2020,24 @@ public class STARBOMBERV2 : ScarletBoss,
         TargetOutlineColor = Color.Red;
         _squishScale = Vector2.Lerp(_squishScale, Vector2.One, 0.1f);
         NPC.rotation += NPC.velocity.X * 0.025f;
-        NPC.velocity.X = MathHelper.Lerp(NPC.direction * 32, 0, Timer / 100f);
+
+        float startXSpeed = NPC.direction * 32;
+        if (CloseToWall())
+        {
+            startXSpeed *= 0.15f;
+            if (!_slowedDownCauseWall)
+            {
+                for(int i = 0; i < 4; i++)
+                {
+                    Vector2 velocity = NPC.velocity.SafeNormalize(Vector2.Zero) * (i + 1);
+                    var donutParticle = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center + velocity.SafeNormalize(Vector2.Zero) * 128, velocity);
+                    donutParticle.Scale = MathHelper.Lerp(1f, 2f, (float)i / 4f);
+                }
+                _slowedDownCauseWall = true;
+            }
+        }
+
+        NPC.velocity.X = MathHelper.Lerp(startXSpeed, 0, Timer / 100f);
 
         //This looks dumb but its to correct his position after he lands so he doesn't end up stuck in the ground.
         //We substract 16 cause thats the length of a tile

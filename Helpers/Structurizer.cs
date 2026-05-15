@@ -581,7 +581,7 @@ namespace Stellamod.Helpers
 
         public static byte[] Serialize(Point bottomLeft, Point topRight)
         {
-            byte[] buffer = new byte[16 * 16 * 16 * 16];
+            byte[] buffer = new byte[16 * 16 * 16 * 16 * 16];
             using var ms = new MemoryStream(buffer);
             using var writer = new BinaryWriter(ms);
 

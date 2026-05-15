@@ -164,7 +164,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
-            return player.GetModPlayer<BiomePlayer>().ZoneMistyDungeon;
+            return player.GetModPlayer<BiomePlayer>().ZoneMistyDungeon || player.GetModPlayer<BiomePlayer>().ZoneMistyDungeonAnywhere;
         }
     }
 

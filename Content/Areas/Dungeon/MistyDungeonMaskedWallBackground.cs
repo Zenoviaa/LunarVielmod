@@ -48,18 +48,23 @@ public class MistyDungeonMaskedWallBackground : MaskedWallBackground
         base.Draw(spriteBatch);
         var backgroundShader = MistyDungeonBackgroundShader.Instance;
         Vector2[] parallax = new Vector2[4];
-        for(int i = 0; i < 4; i++)
+
+        Vector2 cameraMovement = Main.Camera.Center - StartParallaxPosition;
+
+        for (int i = 0; i < 4; i++)
         {
-            parallax[i] = Vector2.Lerp(new Vector2(0.01f, 0f), Vector2.Zero, (float)i / 4f);
+            parallax[i] = Vector2.Lerp(new Vector2(0.01f, 0f), Vector2.Zero, (float)i / 4f) * (cameraMovement) * 0.01f;
         }
-        backgroundShader.FadeToColor = Color.LightBlue;
+        backgroundShader.Parallax = parallax;
+        backgroundShader.FadeToColor = Color.Blue * 0.5f;
         spriteBatch.Begin(default,
             default,
             SamplerState.PointWrap,
             default,
             default,
             backgroundShader.Effect);
-    
+
+        Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         for(int i = 3; i >= 0; i--)
         {
             SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_mistyDungeonTextureAsset, Main.screenPosition);
@@ -67,6 +72,7 @@ public class MistyDungeonMaskedWallBackground : MaskedWallBackground
             drawer.scale = Vector2.One * 2;
             drawer.color = Color.White;
             drawer.VerticalFrame(i, 4);
+            drawer.dstRect = drawRect;
             spriteBatch.Draw(drawer);
         }
 

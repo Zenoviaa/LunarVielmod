@@ -19,6 +19,8 @@ public class EveroseVillageBiome : BaseUrdveilBiome
     {
         get
         {
+            if(!Main.dayTime)
+                return MusicLoader.GetMusicSlot(Mod, "Assets/Music/ObservatorOfTheStars");
             return MusicLoader.GetMusicSlot(Mod, "Assets/Music/JustAnotherDay");
         }
     }

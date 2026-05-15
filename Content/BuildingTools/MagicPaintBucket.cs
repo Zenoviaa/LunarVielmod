@@ -307,15 +307,15 @@ public static class MagicTileUtility
                 break;
             }
         }
+
         for (int i = 0; i < player.inventory.Length; i++)
         {
             Item item = player.inventory[i];
-            if(item.paint != 0)
+            if (item.paint != 0)
             {
                 tileParams.paint = item.paint;
                 break;
             }
-       
         }
 
 

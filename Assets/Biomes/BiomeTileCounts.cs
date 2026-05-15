@@ -1,4 +1,5 @@
 ﻿
+using Stellamod.Content.Areas.Ishtar.TilesIS;
 using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.TilesSH;
 using Stellamod.Content.Areas.Terror.TilesTR;
@@ -167,7 +168,7 @@ namespace Stellamod
             LabCount = tileCounts[ModContent.TileType<LostScrapT>()];
             IlluriaCount = tileCounts[ModContent.TileType<IlluriaGrass>()];
             VeilCount = tileCounts[ModContent.TileType<CatagrassBlock>()];
-            IshtarCount = tileCounts[ModContent.TileType<IshtarMoss>()];
+            IshtarCount = tileCounts[ModContent.TileType<IshtarMoss>()] + tileCounts[ModContent.TileType<IshtarTempleBlock>()];
             BloodCathedralCount = tileCounts[ModContent.TileType<RobedSandstoneBlock>()];
             AshotiTempleCount = tileCounts[TileID.LihzahrdBrick];
             MineshaftTileCount = tileCounts[ModContent.TileType<RobedCatastoneBlock>()];

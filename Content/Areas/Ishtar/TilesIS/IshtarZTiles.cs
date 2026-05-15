@@ -1,9 +1,14 @@
-﻿using Stellamod.Core.ZTileSystem;
+﻿using ReLogic.Content;
+using Stellamod.Common.Shaders;
+using Stellamod.Core.ZTileSystem;
+using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.Ishtar.TilesIS;
 
@@ -92,6 +97,8 @@ public class HangingGoldenBell : ZTile
         base.SetStaticDefaults();
         frameCount = 1;
         drawOrigin = TileDrawOrigin.TopDown;
+        windSwayMagnitude = 0.025f;
+        windSwaySpeed = 0.02f;
     }
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
     {
@@ -131,6 +138,8 @@ public class IshtarChandelier : ZTile
         base.SetStaticDefaults();
         frameCount = 3;
         drawOrigin = TileDrawOrigin.TopDown;
+        windSwayMagnitude = 0.025f;
+        windSwaySpeed = 0.02f;
     }
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
     {
@@ -155,7 +164,22 @@ public class IshtarOrb : ZTile
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        frameCount = 2;
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.TopDown;
+        windSwayMagnitude = 0.025f;
+        windSwaySpeed = 0.02f;
+    }
+    public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);
+    }
+}
+public class IshtarOrb2 : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
         drawOrigin = TileDrawOrigin.Center;
     }
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
@@ -189,19 +213,23 @@ public class IshtarWindow : ZTile
         base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);
     }
 }
-public class IshtarSword : ZTile
+
+public class IshtarHangingLamp : ZTile
 {
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
         frameCount = 1;
-        drawOrigin = TileDrawOrigin.BottomUp;
+        drawOrigin = TileDrawOrigin.TopDown;
+        windSwayMagnitude = 0.15f;
+        windSwaySpeed = 0.02f;
     }
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
     {
         base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);
     }
 }
+
 public class IshtarBackground : ZTile
 {
     public override void SetStaticDefaults()
@@ -226,6 +254,26 @@ public class IshtarBanner : ZTile
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
     {
         base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);
+    }
+
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+    {
+        //TODO: Don't spam ModContent.Request
+        Asset<Texture2D> texture = ModContent.Request<Texture2D>(Texture);
+
+        Vector2 flagPosition = drawPosition;
+        flagPosition.X += ExtraMath.Osc(0f, 4, speed: 3);
+        //  flagPosition.Y -= texture.Height() * 0.5f;
+        Vector2 drawOrigin = new Vector2(texture.Width() / 2f, 0f);
+        BannerWavingShader wavingShader = BannerWavingShader.Instance;
+        wavingShader.OscStrength = 0.1f;
+        wavingShader.XOffset = 4;
+        wavingShader.Time = Main.GlobalTimeWrappedHourly * 2 + drawParams.tilePosition.x;
+
+        spriteBatch.Restart(effect: wavingShader.Effect);
+        spriteBatch.Draw(texture.Value, flagPosition, null, drawParams.lightColor, 0, drawOrigin, 1, SpriteEffects.None, 0);
+        spriteBatch.RestartDefaults();
+        return false;
     }
 }
 public class IshtarRailing : ZTile
@@ -320,6 +368,8 @@ public class HangingIshtarLamp : ZTile
         base.SetStaticDefaults();
         frameCount = 1;
         drawOrigin = TileDrawOrigin.TopDown;
+        windSwayMagnitude = 0.025f;
+        windSwaySpeed = 0.02f;
     }
     public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
     {
