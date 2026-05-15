@@ -376,3 +376,31 @@ public class IshtarPole : ZTile
         base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);
     }
 }
+public class IshtarEreshkigal : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 1;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+    public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);
+    }
+}
+
+public class IshtarSingularity : ZTile
+{
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        frameCount = 2;
+        drawOrigin = TileDrawOrigin.BottomUp;
+    }
+    public override void PostDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+    {
+        base.PostDraw(spriteBatch, drawPosition, screenPos, drawParams);
+    }
+}
+
