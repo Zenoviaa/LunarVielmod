@@ -154,6 +154,91 @@ namespace Stellamod.Content.Areas.MoonspiralTower.TilesMT
             drawOrigin = TileDrawOrigin.BottomLeft;
             frameCount = 2;
         }
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 drawPosition, Vector2 screenPos, ZTileDrawParams drawParams)
+        {
+            drawParams.tileData.frameNumber = DownedBossTracker.IsDowned(DownedBossFlag.Verlian_Singularity) ? (ushort)1 : (ushort)0;
+            var _tileTextureAsset = ModContent.Request<Texture2D>(Texture);
+            //Calculate frame;
+            int frameHeight = _tileTextureAsset.Height() / frameCount;
+            int frameWidth = _tileTextureAsset.Width();
+            int yOffset = frameHeight * drawParams.tileData.frameNumber;
+            Rectangle frame = new Rectangle(0, yOffset, frameWidth, frameHeight);
+
+            //Calculate hte draworigin
+            Vector2 drawOrigin = new Vector2(frame.Width / 2, frame.Height / 2);
+            Vector2 drawOffset = Vector2.Zero;
+            switch (this.drawOrigin)
+            {
+                default:
+                case TileDrawOrigin.BottomUp:
+                    drawOffset = new Vector2(0, -frameHeight / 2f);
+                    break;
+                case TileDrawOrigin.Center:
+                    drawOffset = Vector2.Zero;
+                    break;
+                case TileDrawOrigin.TopDown:
+                    drawOffset = new Vector2(0, 0);
+                    drawOrigin = new Vector2(frame.Width / 2, 0);
+                    break;
+                case TileDrawOrigin.BottomLeft:
+                    drawOrigin = new Vector2(0, frame.Height);
+                    break;
+            }
+
+
+            //Since it's gonne default to 0 on old worlds
+            //We'll make 255 be black
+            Color valueColor = Color.Lerp(Color.White, Color.Black, (float)drawParams.tileData.value / 255f);
+            Color drawColor = drawParams.lightColor.MultiplyRGB(valueColor);
+
+            float drawRotation;
+            switch (drawParams.tileData.rotation)
+            {
+                default:
+                case Rotation.Degrees_0:
+                    drawRotation = 0;
+                    break;
+                case Rotation.Degrees_90:
+                    drawRotation = MathHelper.PiOver2;
+                    break;
+                case Rotation.Degrees_180:
+                    drawRotation = MathHelper.Pi;
+                    break;
+                case Rotation.Degrees_270:
+                    drawRotation = MathHelper.Pi + MathHelper.PiOver2;
+                    break;
+            }
+
+            if (rotateSpeed > 0)
+            {
+                drawRotation += Main.GlobalTimeWrappedHourly * rotateSpeed * 24;
+            }
+
+            //Calculate wind if any
+            if (windSwayMagnitude > 0)
+            {
+                drawRotation += GetLeafSway(windSwayOffset + drawParams.tilePosition.x, windSwayMagnitude, windSwaySpeed);
+            }
+
+
+            VelocityMap velocityMap = ModContent.GetInstance<VelocityMap>();
+
+            //Convert to world coordinates
+            Point point = new Point(drawParams.tilePosition.x, drawParams.tilePosition.y);
+            Vector2 worldCoordinates = point.ToWorldCoordinates();
+
+            /*
+            Vector2 accumVelocity = velocityMap.GetDecayingVelocity(worldCoordinates - new Vector2(32), 64, 64);
+            drawRotation += accumVelocity.ToRotation() * 0.2f;*/
+            drawPosition = worldCoordinates - screenPos;
+            drawPosition += new Vector2(8);
+
+            SpriteEffects spriteEffects = drawParams.tileData.flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            if (drawParams.tileData.flipX)
+                drawRotation *= -1;
+            spriteBatch.Draw(_tileTextureAsset.Value, drawPosition + drawOffset, frame, drawColor, drawRotation, drawOrigin, drawParams.tileData.scale, spriteEffects, 0);
+            return false;
+        }
     }
     public class MoonPedestal : ZTile
     {

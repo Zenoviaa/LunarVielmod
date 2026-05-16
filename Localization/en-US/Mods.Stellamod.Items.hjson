@@ -11213,3 +11213,8 @@ EternalFlameArtifact: {
 	DisplayName: Eternal Flame Artifact
 	Tooltip: Casts a fireball that leaves behind a lingering pile of flames! ~HOT HOT HOT!
 }
+
+SingularityBarrierBlockItem: {
+	DisplayName: Singularity Barrier Block Item
+	Tooltip: ""
+}
