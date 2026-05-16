@@ -166,7 +166,7 @@ public class AlcaliteMask : ModItem
     {
         base.SetStaticDefaults();
         CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        ArmorSetSystem.RegisterArmorSet<AlcaliteMask, AlcaliteRobe, AlcaliteTrunks>();
+        ArmorSetSystem.RegisterArmorSet<AlcaliteMask, AlcaliteRobe, AlcaliteTrunks>(ArmorGroup.Act_III);
     }
 
     public override void SetDefaults()

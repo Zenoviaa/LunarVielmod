@@ -279,7 +279,7 @@ namespace Stellamod.Content.Armors.HeavyMetal
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ArmorSetSystem.RegisterArmorSet<HeavyMetalHead, HeavyMetalBody, HeavyMetalLegs>();
+            ArmorSetSystem.RegisterArmorSet<HeavyMetalHead, HeavyMetalBody, HeavyMetalLegs>(ArmorGroup.Act_I);
         }
 
         public override void SetDefaults()

@@ -151,7 +151,7 @@ namespace Stellamod.Content.Armors.Huntrian
         {
             base.SetStaticDefaults();
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-            ArmorSetSystem.RegisterArmorSet<HuntrianHelmet, HuntrianChestplate, HuntrianBoots>();
+            ArmorSetSystem.RegisterArmorSet<HuntrianHelmet, HuntrianChestplate, HuntrianBoots>(ArmorGroup.Act_I);
         }
 
         public override void UpdateEquip(Player player)

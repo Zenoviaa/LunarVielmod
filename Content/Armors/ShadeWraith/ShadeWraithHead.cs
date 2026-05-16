@@ -47,7 +47,7 @@ namespace Stellamod.Content.Armors.ShadeWraith
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ArmorSetSystem.RegisterArmorSet<ShadeWraithHead, ShadeWraithBody, ShadeWraithLegs>();
+            ArmorSetSystem.RegisterArmorSet<ShadeWraithHead, ShadeWraithBody, ShadeWraithLegs>(ArmorGroup.Act_I);
         }
 
         public override void SetDefaults()

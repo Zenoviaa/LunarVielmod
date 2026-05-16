@@ -284,7 +284,7 @@ public class ScrappyHead : ModItem
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        ArmorSetSystem.RegisterArmorSet<ScrappyHead, ScrappyBody, ScrappyLegs>();
+        ArmorSetSystem.RegisterArmorSet<ScrappyHead, ScrappyBody, ScrappyLegs>(ArmorGroup.Act_II);
     }
 
     public override void SetDefaults()

@@ -15,7 +15,7 @@ namespace Stellamod.Content.Armors.Stone
             base.SetStaticDefaults();
             ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-            ArmorSetSystem.RegisterArmorSet<StoniaHat, StoniaChestplate, StoniaBoots>();
+            ArmorSetSystem.RegisterArmorSet<StoniaHat, StoniaChestplate, StoniaBoots>(ArmorGroup.Act_I);
         }
 
         public override void SetDefaults()

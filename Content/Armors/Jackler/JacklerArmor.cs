@@ -111,7 +111,7 @@ namespace Stellamod.Content.Armors.Jackler
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ArmorSetSystem.RegisterArmorSet<JacklerHat, JacklerCoat, JacklerPants>();
+            ArmorSetSystem.RegisterArmorSet<JacklerHat, JacklerCoat, JacklerPants>(ArmorGroup.Act_I);
         }
 
         public override void SetDefaults()

@@ -315,7 +315,7 @@ public class VirulentHelm : ModItem
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        ArmorSetSystem.RegisterArmorSet<VirulentHelm, VirulentArmor, VirulentLegs>();
+        ArmorSetSystem.RegisterArmorSet<VirulentHelm, VirulentArmor, VirulentLegs>(ArmorGroup.Act_II);
     }
 
     public override void SetDefaults()

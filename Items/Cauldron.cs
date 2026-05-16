@@ -38,23 +38,25 @@ namespace Stellamod.Items
             {
                 Player.AddBuff(ModContent.BuffType<CrystalLuck>(), 2);
             }
+     
         }
 
         public void Make(Item item)
-        {
-            //Add the template instance
-            if (!Crafts.Contains(item))
-                Crafts.Add(item);
+        {               
+            Crafts.Add(item);
+            Crafts = Crafts.DistinctBy(x => x.type).ToList();
         }
 
         public int CountCraftsInMaterial(int materialType)
         {
+         
+          //  Console.WriteLine(Crafts.Count);
             int count = 0;
             var cauldron = ModContent.GetInstance<Cauldron>();
             foreach(var craft in Crafts)
             {
                 int type = craft.type;
-                if (cauldron.IsMaterial(type))
+                if (cauldron.GetMaterial(type) == materialType)
                 {
                     count++;
                 }
@@ -300,6 +302,18 @@ namespace Stellamod.Items
             }
      
             return crafts.ToArray();
+        }
+
+        public int GetMaterial(int craft)
+        {
+            foreach (var brew in _brews)
+            {
+                if(brew.result == craft)
+                {
+                    return brew.material;
+                }
+            }
+            return 0;
         }
 
         public bool IsMaterial(int material)

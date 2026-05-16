@@ -279,7 +279,7 @@ public class GothinMask : ModItem
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        ArmorSetSystem.RegisterArmorSet<GothinMask, GothinRobe, GothinPants>();
+        ArmorSetSystem.RegisterArmorSet<GothinMask, GothinRobe, GothinPants>(ArmorGroup.Act_III);
     }
 
     public override void SetDefaults()

@@ -52,7 +52,7 @@ namespace Stellamod.Content.Armors.Astrasilk
         public override void SetStaticDefaults()
         {
             ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
-            ArmorSetSystem.RegisterArmorSet<AstrasilkHead, AstrasilkBody, AstrasilkLegs>();
+            ArmorSetSystem.RegisterArmorSet<AstrasilkHead, AstrasilkBody, AstrasilkLegs>(ArmorGroup.Act_I);
         }
 
 

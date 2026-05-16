@@ -92,7 +92,7 @@ namespace Stellamod.Content.Armors.Staffigy
             base.SetStaticDefaults();
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
-            ArmorSetSystem.RegisterArmorSet<StaffigyHat, StaffigyRobe, StaffigyPants>();
+            ArmorSetSystem.RegisterArmorSet<StaffigyHat, StaffigyRobe, StaffigyPants>(ArmorGroup.Act_I);
         }
 
         public override void UpdateEquip(Player player)

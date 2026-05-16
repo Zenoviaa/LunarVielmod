@@ -315,7 +315,7 @@ namespace Stellamod.Content.Armors.ForestCore
         public bool Spetalite = false;
         public override void SetStaticDefaults()
         {
-            ArmorSetSystem.RegisterArmorSet<ForestCoreHead, ForestCoreBody, ForestCoreLegs>();
+            ArmorSetSystem.RegisterArmorSet<ForestCoreHead, ForestCoreBody, ForestCoreLegs>(ArmorGroup.Act_I);
         }
 
         public override void SetDefaults()

@@ -170,7 +170,7 @@ namespace Stellamod.Content.Armors.Celestia
         public override void SetStaticDefaults()
         {
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-            ArmorSetSystem.RegisterArmorSet<CelestiaMoonHelmet, CelestiaMoonBreastplate, CelestiaMoonLegs>();
+            ArmorSetSystem.RegisterArmorSet<CelestiaMoonHelmet, CelestiaMoonBreastplate, CelestiaMoonLegs>(ArmorGroup.Act_I);
         }
 
         public override void SetDefaults()

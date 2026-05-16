@@ -30,6 +30,8 @@ namespace Stellamod.Common.ArmorRework
 {
     public struct ArmorSet
     {
+        public int order;
+        public ArmorGroup act;
         public int helm;
         public int armor;
         public int legs;
@@ -52,6 +54,7 @@ namespace Stellamod.Common.ArmorRework
             }
         }
 
+        public static bool silhouette;
         public void DrawPlayers(Camera camera, IEnumerable<Player> players)
         {
             foreach (Player player in players)
@@ -98,6 +101,8 @@ namespace Stellamod.Common.ArmorRework
                 return;
 
             PlayerDrawSet drawInfo = default(PlayerDrawSet);
+
+
             _drawData.Clear();
             _dust.Clear();
             _gore.Clear();
@@ -117,11 +122,18 @@ namespace Stellamod.Common.ArmorRework
             */
 
             PlayerLoader.ModifyDrawInfo(ref drawInfo);
-
             //For white, no lighting
             drawInfo.colorArmorBody = Color.White;
             drawInfo.colorArmorHead = Color.White;
             drawInfo.colorArmorLegs = Color.White;
+            if (silhouette)
+            {
+                drawInfo.colorArmorBody = Color.Black;
+                drawInfo.colorArmorHead = Color.Black;
+                drawInfo.colorArmorLegs = Color.Black;
+            }
+            silhouette = false;
+
             foreach (var layer in PlayerDrawLayerLoader.GetDrawLayers(drawInfo))
             {
                 if (!headOnly || layer.IsHeadLayer)
@@ -818,12 +830,24 @@ namespace Stellamod.Common.ArmorRework
             }
         }
     }
+    public enum ArmorGroup
+    {
+        Act_I,
+        Act_II,
+        Act_III
+    }
+
     public class ArmorSetSystem : ModSystem
     {
         private static List<ArmorSet> _armorSets;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+       
+        }
+        public override void Load()
+        {
+            base.Load();
             _armorSets = new List<ArmorSet>();
         }
 
@@ -832,7 +856,7 @@ namespace Stellamod.Common.ArmorRework
             base.Unload();
             _armorSets = null;
         }
-
+        public static ArmorSet[] GetArmorSets() => _armorSets.ToArray();
         public static ArmorSet FindArmorSet(int type)
         {
             return _armorSets.Find(x => x.helm == type || x.armor == type || x.legs == type);
@@ -849,27 +873,31 @@ namespace Stellamod.Common.ArmorRework
             armor = new Item(armorSet.armor);
             leggings = new Item(armorSet.legs);
         }
-        public static void RegisterArmorSet<Helm, Armor, Legs>()
+        public static void RegisterArmorSet<Helm, Armor, Legs>(ArmorGroup armorGroup)
             where Helm : ModItem
             where Armor : ModItem
             where Legs : ModItem
         {
-            RegisterArmorSet(ModContent.ItemType<Helm>(), ModContent.ItemType<Armor>(), ModContent.ItemType<Legs>());
+            RegisterArmorSet(
+                ModContent.ItemType<Helm>(), 
+                ModContent.ItemType<Armor>(), 
+                ModContent.ItemType<Legs>(), armorGroup);
         }
-        public static void RegisterArmorSet<Helm, Armor>()
+        public static void RegisterArmorSet<Helm, Armor>(ArmorGroup armorGroup)
             where Helm : ModItem
             where Armor : ModItem
         {
-            RegisterArmorSet(ModContent.ItemType<Helm>(), ModContent.ItemType<Armor>(), 0);
+            RegisterArmorSet(ModContent.ItemType<Helm>(), ModContent.ItemType<Armor>(), 0, armorGroup);
         }
 
-        public static void RegisterArmorSet(int helm, int armor, int legs)
+        public static void RegisterArmorSet(int helm, int armor, int legs, ArmorGroup armorGroup)
         {
             ArmorSet set = new ArmorSet
             {
                 helm = helm,
                 armor = armor,
-                legs = legs
+                legs = legs,
+                act = armorGroup
             };
             _armorSets.Add(set);
         }

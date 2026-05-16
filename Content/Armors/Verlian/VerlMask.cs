@@ -152,7 +152,7 @@ public class VerlMask : ModItem
     {
         base.SetStaticDefaults();
         CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        ArmorSetSystem.RegisterArmorSet<VerlMask, VerlBreastplate, VerlLeggings>();
+        ArmorSetSystem.RegisterArmorSet<VerlMask, VerlBreastplate, VerlLeggings>(ArmorGroup.Act_I);
     }
 
     public override void SetDefaults()

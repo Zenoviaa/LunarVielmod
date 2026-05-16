@@ -204,7 +204,7 @@ namespace Stellamod.Content.Armors.Artisan
         {
             base.SetStaticDefaults();
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-            ArmorSetSystem.RegisterArmorSet<ArtisanMask, ArtisanBreastplate, ArtisanThighs>();
+            ArmorSetSystem.RegisterArmorSet<ArtisanMask, ArtisanBreastplate, ArtisanThighs>(ArmorGroup.Act_II);
         }
 
         public override void SetDefaults()

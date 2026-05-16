@@ -74,7 +74,7 @@ public class ConvulgingMater : ModItem
 {
     public override void SetStaticDefaults()
     {
-        Cauldron.MaterialOrder[Type] = 13;
+        Cauldron.MaterialOrder[Type] = 12;
         // Tooltip.SetDefault("Pure shadows conjured by the darkest of entities."); // The (English) text shown below your item's name
         Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 5));
         ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
@@ -161,7 +161,7 @@ public class MusicalHarmonise : ModItem
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        Cauldron.MaterialOrder[Type] = 32;
+        Cauldron.MaterialOrder[Type] = 13;
     }
     public override void SetDefaults()
     {
@@ -358,7 +358,7 @@ public class Cinderscrap : ModItem
 {
     public override void SetStaticDefaults()
     {
-        Cauldron.MaterialOrder[Type] = 11;
+        Cauldron.MaterialOrder[Type] = 10;
         CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
     }
 
@@ -376,7 +376,7 @@ public class HypnotizedSoul : ModItem
 {
     public override void SetStaticDefaults()
     {
-        Cauldron.MaterialOrder[Type] = 12;
+        Cauldron.MaterialOrder[Type] = 11;
         // DisplayName.SetDefault("Terror Fragment");
         Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(1, 60));
         // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
@@ -409,7 +409,7 @@ public class PearlescentScrap : ModItem
 {
     public override void SetStaticDefaults()
     {
-        Cauldron.MaterialOrder[Type] = 13;
+        Cauldron.MaterialOrder[Type] = 14;
         CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
     }
 

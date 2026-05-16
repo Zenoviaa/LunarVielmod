@@ -162,7 +162,7 @@ namespace Stellamod.Content.Armors.Ravaging
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ArmorSetSystem.RegisterArmorSet<RavagingHelmet, RavagingChestplate, RavagingLegs>();
+            ArmorSetSystem.RegisterArmorSet<RavagingHelmet, RavagingChestplate, RavagingLegs>(ArmorGroup.Act_I);
         }
 
         public override void SetDefaults()

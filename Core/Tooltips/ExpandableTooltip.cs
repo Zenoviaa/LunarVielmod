@@ -5,6 +5,7 @@ using ReLogic.Content;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
+using Stellamod.UI.CollectionSystem;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -272,12 +273,13 @@ namespace Stellamod.Core.Tooltips
             _playerRenderer ??= new();
             IPlayerRenderer playerRenderer = _playerRenderer;
             var camera = new Terraria.Graphics.Camera();
-
+         
       
             playerRenderer.DrawPlayer(Main.Camera, player, left, rotation, player.fullRotationOrigin);
         }
 
 
+  
         public static void DrawArmorPreview(Vector2 position, Item helmet, Item armor, Item leggings)
         {
             _player ??= new Player();
@@ -288,11 +290,12 @@ namespace Stellamod.Core.Tooltips
 
             _player.head = helmet.headSlot;
             _player.body = armor.bodySlot;
-            _player.legs = leggings.legSlot;
-
+            if(!leggings.IsAir)
+                _player.legs = leggings.legSlot;
 
             DrawLocalPlayer(_player, position);
         }
+
 
         public static void DrawArmorTooltip(Item item, SpriteBatch spriteBatch, List<TooltipLine> lines, int X, int Y, float alpha)
         {

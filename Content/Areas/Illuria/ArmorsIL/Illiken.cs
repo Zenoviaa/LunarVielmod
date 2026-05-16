@@ -144,7 +144,7 @@ namespace Stellamod.Content.Areas.Illuria.ArmorsIL
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ArmorSetSystem.RegisterArmorSet<IllikenHelmet, IllikenCoat, IllikenLegs>();
+            ArmorSetSystem.RegisterArmorSet<IllikenHelmet, IllikenCoat, IllikenLegs>(ArmorGroup.Act_II);
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)

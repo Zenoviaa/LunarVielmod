@@ -1,7 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
-using Stellamod.Helpers;
+using Stellamod.Core.Tooltips;
 using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
 using Terraria;
@@ -16,38 +15,33 @@ using Terraria.UI.Chat;
 
 namespace Stellamod.UI.CollectionSystem;
 
+
 public class CollectionItemTabCraft : UIElement
 {
     public Item Item;
-    private readonly float _scale;
-    private readonly int _context;
-    public CollectionItemTabCraft(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
+    public CollectionItemTabCraft()
     {
-        _scale = scale;
-        _context = context;
         Item = new Item();
         Item.SetDefaults(ItemID.None);
 
         var value = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}CollectionTabSlot",
             ReLogic.Content.AssetRequestMode.ImmediateLoad);
-        Width.Set(value.Width() * scale, 0f);
-        Height.Set(value.Height() * scale, 0f);
+        Width.Set(value.Width(), 0f);
+        Height.Set(value.Height(), 0f);
     }
 
-    public float Glow { get; set; }
+    public ArmorSet armorSet;
+    public int slotType;
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
     }
 
-    protected override void DrawSelf(SpriteBatch spriteBatch)
-    {
-        float oldScale = Main.inventoryScale;
-        Main.inventoryScale = _scale;
-        Rectangle rectangle = GetDimensions().ToRectangle();
 
-        bool contains = ContainsPoint(Main.MouseScreen);
-        if (contains && !PlayerInput.IgnoreMouseInterface)
+    private void DrawBrewingCraft(SpriteBatch spriteBatch)
+    {
+        Rectangle rectangle = GetDimensions().ToRectangle();
+        if (IsMouseHovering && !PlayerInput.IgnoreMouseInterface)
         {
             Main.LocalPlayer.mouseInterface = true;
         }
@@ -63,7 +57,7 @@ public class CollectionItemTabCraft : UIElement
         if (!cauldronPlayer.HasMadeItem(Item))
         {
             drawColor = Color.Black;
-            if (contains)
+            if (IsMouseHovering)
             {
                 MoldTooltipItem t = ModContent.GetModItem(ModContent.ItemType<MoldTooltipItem>()) as MoldTooltipItem;
                 if (t.MoldNeeded == null)
@@ -79,34 +73,78 @@ public class CollectionItemTabCraft : UIElement
         }
         else
         {
-            if (contains)
+            if (IsMouseHovering)
             {
                 Main.hoverItemName = Item.Name;
                 Main.HoverItem = Item;
             }
         }
 
-        ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale, 32, drawColor);
-
-        spriteBatch.End();
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, default, default, default, default, Main.UIScaleMatrix);
-
-        for (int i = 0; i < 8f; i++)
+        ItemSlot.DrawItemIcon(Item, ItemSlot.Context.InventoryItem, spriteBatch, centerPos, 1f, 32, drawColor);
+    }
+    public override int CompareTo(object obj)
+    {
+        if (obj is CollectionItemTabCraft other)
         {
-            Color glowColor = Color.White * Glow;
-            float progress = (float)i / 8f;
-            float rot = progress * MathHelper.TwoPi;
-            Vector2 offset = rot.ToRotationVector2() * 8 * Glow;
-            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos + offset, _scale, 32, glowColor);
+            if (other.slotType == 1 && slotType == 1)
+            {
+                return armorSet.act.CompareTo(other.armorSet.act);
+            }
+            else
+            {
+                return slotType.CompareTo(other.slotType);
+            }
+
         }
 
-        spriteBatch.End();
-        spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
-        Main.inventoryScale = oldScale;
+        return base.CompareTo(obj);
     }
 
+    private void DrawArmor(SpriteBatch spriteBatch)
+    {
+        Height.Pixels = 72;
 
+        Rectangle rectangle = GetDimensions().ToRectangle();
+        Vector2 pos = rectangle.TopLeft();
+        Texture2D value = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}CollectionTabSlotArmor").Value;
+        Vector2 centerPos = rectangle.TopLeft() + value.Size() * 0.5f + new Vector2(-10, -10);
+        spriteBatch.Draw(value, rectangle.TopLeft(), null, Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+
+
+        /*
+        ArmorRenderSystem armorRenderSystem = ModContent.GetInstance<ArmorRenderSystem>();
+        ArmorSetSystem.GetArmorSet(armorSet, out Item helm, out Item armor, out Item leggings);
+        Rectangle frame = armorRenderSystem.armorFrames[helm.type];
+        spriteBatch.Draw(armorRenderSystem.armorRT, centerPos, frame, Color.White, 0, frame.Size() * 0.5f, 1f, SpriteEffects.None, 0);
+        */
+
+        RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+        SamplerState anisotropicClamp = SamplerState.PointClamp;
+        spriteBatch.End();
+        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
+
+        ArmorSetSystem.GetArmorSet(armorSet, out Item helm, out Item armor, out Item leggings);
+        ArmorReworkPlayerRenderer.silhouette = false;
+        ExpandableTooltip.DrawArmorPreview(centerPos, helm, armor, leggings);
+
+        spriteBatch.End();
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
+    }
+
+    protected override void DrawSelf(SpriteBatch spriteBatch)
+    {
+        switch (slotType)
+        {
+            case 0:
+                DrawBrewingCraft(spriteBatch);
+                break;
+            case 1:
+                DrawArmor(spriteBatch);
+                break;
+        }
+    }
 }
+
 
 
 /// <summary>
@@ -129,10 +167,22 @@ public class CollectionItemTabSlot : UIElement
     }
 
     public Item item;
+    public ArmorSet armorSet;
+    public int slotType;
     private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
     {
         CollectionBookUISystem uiSystem = ModContent.GetInstance<CollectionBookUISystem>();
-        uiSystem.OpenRecipesInfoUI(item);
+        switch (slotType)
+        {
+            case 0:
+
+                uiSystem.OpenRecipesInfoUI(item);
+                break;
+            case 1:
+                uiSystem.OpenArmorInfoUI();
+                break;
+        }
+
     }
 
     private void OnMouseHover(UIMouseEvent evt, UIElement listeningElement)
@@ -143,25 +193,61 @@ public class CollectionItemTabSlot : UIElement
     {
         if (obj is CollectionItemTabSlot other)
         {
-            Item itemA = item;
-            Item itemB = other.item;
-            return Cauldron.MaterialOrder[itemA.type].CompareTo(Cauldron.MaterialOrder[itemB.type]);
+            if (other.slotType == 0 && slotType == 0)
+            {
+                Item itemA = item;
+                Item itemB = other.item;
+                return Cauldron.MaterialOrder[itemA.type].CompareTo(Cauldron.MaterialOrder[itemB.type]);
+            }
+            else if (other.slotType == 1 && slotType == 1)
+            {
+                return armorSet.act.CompareTo(other.armorSet.act);
+            }
+            else
+            {
+                return other.CompareTo(slotType);
+            }
+
         }
 
         return base.CompareTo(obj);
     }
-    protected override void DrawSelf(SpriteBatch spriteBatch)
-    {
-        Rectangle rectangle = GetDimensions().ToRectangle();
 
-        bool contains = ContainsPoint(Main.MouseScreen);
-        if (contains && !PlayerInput.IgnoreMouseInterface)
+    private void DrawArmorSet(SpriteBatch spriteBatch)
+    {
+        Height.Pixels = 100;
+        Rectangle rectangle = GetDimensions().ToRectangle();
+        Vector2 pos = rectangle.TopLeft();
+        Texture2D value = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}CollectionTabSlotArmor").Value;
+        Vector2 centerPos = rectangle.TopLeft() + value.Size() * 0.5f + new Vector2(-10, -10);
+        spriteBatch.Draw(value, rectangle.TopLeft(), null, Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+
+        RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+        SamplerState anisotropicClamp = SamplerState.PointClamp;
+        SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+        spriteBatch.End();
+        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
+
+        ArmorSetSystem.GetArmorSet(armorSet, out Item helm, out Item armor, out Item leggings);
+        ExpandableTooltip.DrawArmorPreview(centerPos, helm, armor, leggings);
+
+        spriteBatch.End();
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
+
+        //Draw the name of the item
         {
-            Main.LocalPlayer.mouseInterface = true;
+            string drawString = "Armors";
+            Vector2 textSize = FontAssets.MouseText.Value.MeasureString(drawString);
+            Vector2 origin = new Vector2(0f, textSize.Y * 0.5f);
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, drawString, centerPos + Vector2.UnitX * 128,
+                Color.White, 0, origin, Vector2.One);
         }
 
-        Vector2 targetHoverScale = contains ? new Vector2(1.2f) : Vector2.One;
-        _hoverScale = Vector2.Lerp(_hoverScale, targetHoverScale, 0.25f);
+    }
+
+    private void DrawBrewingMaterial(SpriteBatch spriteBatch)
+    {
+        Rectangle rectangle = GetDimensions().ToRectangle();
 
         //Draw Backing
         Vector2 pos = rectangle.TopLeft();
@@ -169,16 +255,16 @@ public class CollectionItemTabSlot : UIElement
         Vector2 centerPos = rectangle.TopLeft() + new Vector2(18, rectangle.Height * 0.5f);
         spriteBatch.Draw(value, rectangle.TopLeft(), null, Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
 
-        if (contains)
+        if (IsMouseHovering)
         {
             var whiteShader = SpriteWhiteShader.Instance;
             float outlineOffset = 2;
             RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
             SamplerState anisotropicClamp = SamplerState.PointClamp;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, Main.Rasterizer, whiteShader.Effect, Main.UIScaleMatrix);
-   
-            for(float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, whiteShader.Effect, Main.UIScaleMatrix);
+
+            for (float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
             {
                 Vector2 offset = f.ToRotationVector2() * outlineOffset;
                 ItemSlot.DrawItemIcon(item, ItemSlot.Context.InventoryItem, spriteBatch, centerPos + offset, _hoverScale.X, 32, Color.White);
@@ -193,7 +279,7 @@ public class CollectionItemTabSlot : UIElement
 
         //Drawing the number of things you have unlocked
         {
-            var cauldronPlayer = ModContent.GetInstance<CauldronPlayer>();
+            var cauldronPlayer = Main.LocalPlayer.GetModPlayer<CauldronPlayer>();
             var cauldron = ModContent.GetInstance<Cauldron>();
             string amountYouHave = $"{cauldronPlayer.CountCraftsInMaterial(item.type)} / {cauldron.CountCraftsInMaterial(item.type)}";
             Vector2 textSize = FontAssets.MouseText.Value.MeasureString(item.Name);
@@ -211,10 +297,25 @@ public class CollectionItemTabSlot : UIElement
         }
 
         //Hovering text
-        if (contains)
+        if (IsMouseHovering)
         {
             Main.hoverItemName = item.Name;
             Main.HoverItem = item;
+        }
+    }
+    protected override void DrawSelf(SpriteBatch spriteBatch)
+    {
+
+        Vector2 targetHoverScale = IsMouseHovering ? new Vector2(1.2f) : Vector2.One;
+        _hoverScale = Vector2.Lerp(_hoverScale, targetHoverScale, 0.25f);
+        switch (slotType)
+        {
+            case 0:
+                DrawBrewingMaterial(spriteBatch);
+                break;
+            case 1:
+                DrawArmorSet(spriteBatch);
+                break;
         }
     }
 }
@@ -301,7 +402,6 @@ public class CollectionItemRecipesUI : UIPanel
             Item craft = crafts[i];
             CollectionItemTabCraft slot = new CollectionItemTabCraft();
             slot.Item = craft;
-            slot.Glow = Glow;
             _slotGrid.Add(slot);
         }
 
@@ -393,6 +493,20 @@ public class CollectionItemTabUI : UIPanel
     {
         base.OnActivate();
         _slotGrid.Clear();
+        //Armors need to show before the brewing materials
+        ArmorSet[] armorSets = ArmorSetSystem.GetArmorSets();
+        //When the ui activates on the load screen, there's no armors
+        //Maybe we shouldn't activate UIs there??
+        if (armorSets.Length <= 0)
+            return;
+        if (Main.gameMenu)
+            return;
+
+        CollectionItemTabSlot slot2 = new CollectionItemTabSlot();
+        slot2.armorSet = armorSets[0];
+        slot2.slotType = 1;
+        _slotGrid.Add(slot2);
+
         var cauldron = ModContent.GetInstance<Cauldron>();
         Item[] materialsYouCanCraftWith = cauldron.GetMaterials();
         for (int i = 0; i < materialsYouCanCraftWith.Length; i++)
@@ -410,7 +524,7 @@ public class CollectionItemTabUI : UIPanel
         //Constantly lock the UI in the position regardless of resolution changes
         Left.Pixels = RelativeLeft;
         Top.Pixels = RelativeTop;
-        
+
         _panel.Height.Pixels = _slotGrid.GetTotalHeight() + 32;
         float progress = _panel.Height.Pixels / Height.Pixels;
         progress = MathHelper.Clamp(progress, 0f, 1f);
@@ -425,6 +539,120 @@ public class CollectionItemTabUI : UIPanel
         {
             _scrollbar.Top.Set(0, 0f);
         }
- 
+
+    }
+}
+
+
+
+public class CollectionArmorInfoUI : UIPanel
+{
+    private UIList _uiList;
+    private UIPanel _panel;
+    private UIGrid _slotGrid;
+    private FancyScrollbar _scrollbar;
+
+    public const int width = 480;
+    public const int height = 155;
+
+    public int RelativeLeft => Main.screenWidth / 2 - width / 2 + 280;
+    public int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
+
+    public CollectionArmorInfoUI() : base()
+    {
+        //Set to air
+        Material = new Item();
+        Material.SetDefaults(ItemID.None);
+    }
+
+    public Item Material { get; set; }
+    public override void OnInitialize()
+    {
+        base.OnInitialize();
+        Width.Pixels = 48 * 8;
+        Height.Pixels = 48 * 9;
+        Left.Pixels = RelativeLeft;
+        Top.Pixels = RelativeTop;
+        BackgroundColor = Color.Transparent;
+        BorderColor = Color.Transparent;
+
+        _panel = new UIPanel();
+        _panel.Width.Pixels = Width.Pixels;
+        _panel.Height.Pixels = Height.Pixels;
+        _panel.BackgroundColor = Color.Transparent;
+        _panel.BorderColor = Color.Transparent;
+        Append(_panel);
+
+        _slotGrid = new UIGrid();
+        _slotGrid.Width.Set(0, 1f);
+        _slotGrid.Height.Set(0, 1f);
+        _slotGrid.ListPadding = 2f;
+        _panel.Append(_slotGrid);
+
+        _scrollbar = new FancyScrollbar();
+        _scrollbar.Width.Set(20, 0);
+        _scrollbar.Height.Set(340, 0);
+        _scrollbar.Left.Set(0, 0.86f);
+        _scrollbar.Top.Set(0, 0.05f);
+
+        float maxViewSize = 48 * 8f;
+        _scrollbar.SetView(0, maxViewSize);
+        Append(_scrollbar);
+
+
+        _uiList = new UIList();
+        _uiList.Width.Pixels = Width.Pixels;
+        _uiList.Height.Pixels = Height.Pixels;
+        _uiList.Add(_panel);
+        _uiList.SetScrollbar(_scrollbar);
+        Append(_uiList);
+    }
+
+    public override void OnActivate()
+    {
+        base.OnActivate();
+        _slotGrid?.Clear();
+        if (Main.gameMenu)
+            return;
+
+        //We just need to get the number of unique materials since that's how we're sorting things
+        ArmorSet[] armorSets = ArmorSetSystem.GetArmorSets();
+        foreach (ArmorSet armorSet in armorSets)
+        {
+            CollectionItemTabCraft slot = new CollectionItemTabCraft();
+            slot.armorSet = armorSet;
+            slot.slotType = 1;
+            slot.Width.Pixels = 48;
+            _slotGrid.Add(slot);
+        }
+
+        _slotGrid.Recalculate();
+    }
+
+
+    public override void Update(GameTime gameTime)
+    {
+        base.Update(gameTime);
+
+        //Constantly lock the UI in the position regardless of resolution changes
+        Left.Pixels = RelativeLeft;
+        Top.Pixels = RelativeTop;
+        Width.Pixels = 48 * 8;
+        _slotGrid.ListPadding = 16;
+        _slotGrid.PaddingRight = 52;
+        _panel.Height.Pixels = _slotGrid.GetTotalHeight() + 32;
+        float progress = _panel.Height.Pixels / Height.Pixels;
+        progress = MathHelper.Clamp(progress, 0f, 1f);
+        _scrollbar.Height.Set(Height.Pixels * progress, 0);
+
+        //Hacky way to get invisible scrollbar when there's no need for it
+        if (_panel.Height.Pixels < Height.Pixels)
+        {
+            _scrollbar.Top.Set(500000, 0f);
+        }
+        else
+        {
+            _scrollbar.Top.Set(0.05f, 0f);
+        }
     }
 }

@@ -234,7 +234,7 @@ namespace Stellamod.Content.Armors.LunarianVoid
     {
         public override void SetStaticDefaults()
         {
-            ArmorSetSystem.RegisterArmorSet<LunarianVoidHead, LunarianVoidBody, LunarianVoidLegs>();
+            ArmorSetSystem.RegisterArmorSet<LunarianVoidHead, LunarianVoidBody, LunarianVoidLegs>(ArmorGroup.Act_I);
         }
 
         public override void UpdateEquip(Player player)

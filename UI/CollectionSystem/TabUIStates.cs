@@ -6,6 +6,22 @@ namespace Stellamod.UI.CollectionSystem
 
 
 
+    public class CollectionArmorUIState : UIState
+    {
+        public CollectionArmorInfoUI ui;
+        public CollectionArmorUIState() : base()
+        {
+
+        }
+
+        public override void OnInitialize()
+        {
+            ui = new CollectionArmorInfoUI();
+            Append(ui);
+        }
+    }
+
+
     public class CollectionItemTabRecipeUIState : UIState
     {
         public CollectionItemRecipesUI ui;

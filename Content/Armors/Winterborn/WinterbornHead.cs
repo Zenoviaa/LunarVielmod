@@ -42,7 +42,7 @@ namespace Stellamod.Content.Armors.Winterborn
         public override void SetStaticDefaults()
         {
             ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
-            ArmorSetSystem.RegisterArmorSet<WinterbornHead, WinterbornBody, WinterbornLegs>();
+            ArmorSetSystem.RegisterArmorSet<WinterbornHead, WinterbornBody, WinterbornLegs>(ArmorGroup.Act_I);
         }
 
         public override void SetDefaults()

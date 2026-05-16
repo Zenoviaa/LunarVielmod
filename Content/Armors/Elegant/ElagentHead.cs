@@ -118,7 +118,7 @@ namespace Stellamod.Content.Armors.Elegant
         {
             base.SetStaticDefaults();
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-            ArmorSetSystem.RegisterArmorSet<ElagentHead, ElagentBody, ElagentLegs>();
+            ArmorSetSystem.RegisterArmorSet<ElagentHead, ElagentBody, ElagentLegs>(ArmorGroup.Act_I);
         }
 
         public override void SetDefaults()

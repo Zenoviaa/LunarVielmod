@@ -145,7 +145,7 @@ public class TerricHead : ModItem
     {
         base.SetStaticDefaults();
         CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        ArmorSetSystem.RegisterArmorSet<TerricHead, TerricBody, TerricLegs>();
+        ArmorSetSystem.RegisterArmorSet<TerricHead, TerricBody, TerricLegs>(ArmorGroup.Act_I);
     }
 
     public override void UpdateEquip(Player player)

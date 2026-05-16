@@ -276,7 +276,7 @@ public class VeliozaHead : ModItem
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        ArmorSetSystem.RegisterArmorSet<VeliozaHead, VeliozaBody, VeliozaLegs>();
+        ArmorSetSystem.RegisterArmorSet<VeliozaHead, VeliozaBody, VeliozaLegs>(ArmorGroup.Act_II);
     }
 
     public override void SetDefaults()

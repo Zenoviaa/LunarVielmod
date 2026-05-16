@@ -271,7 +271,7 @@ public class GovheilMask : ModItem
     {
         base.SetStaticDefaults();
         CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        ArmorSetSystem.RegisterArmorSet<GovheilMask, GovheilBreastplate, GovheilQueenThighs>();
+        ArmorSetSystem.RegisterArmorSet<GovheilMask, GovheilBreastplate, GovheilQueenThighs>(ArmorGroup.Act_II);
     }
 
     public override void SetDefaults()

@@ -93,7 +93,7 @@ public class VeldrinHead : ModItem
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        ArmorSetSystem.RegisterArmorSet<VeldrinHead, VeldrinBody, VeldrinLegs>();
+        ArmorSetSystem.RegisterArmorSet<VeldrinHead, VeldrinBody, VeldrinLegs>(ArmorGroup.Act_I);
     }
 
     public override void SetDefaults()

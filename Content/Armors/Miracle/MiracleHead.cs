@@ -270,7 +270,7 @@ public class MiracleHead : ModItem
     {
         ItemID.Sets.ItemNoGravity[Item.type] = true;
         ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
-        ArmorSetSystem.RegisterArmorSet<MiracleHead, MiracleBody>();
+        ArmorSetSystem.RegisterArmorSet<MiracleHead, MiracleBody>(ArmorGroup.Act_II);
     }
 
     public override void SetDefaults()

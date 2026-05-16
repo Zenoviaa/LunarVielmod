@@ -244,7 +244,7 @@ namespace Stellamod.Content.Armors.BellMaster
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ArmorSetSystem.RegisterArmorSet<BellMasterHood, BellMasterCloak, BellMasterLegs>();
+            ArmorSetSystem.RegisterArmorSet<BellMasterHood, BellMasterCloak, BellMasterLegs>(ArmorGroup.Act_II);
         }
 
         public override void SetDefaults()

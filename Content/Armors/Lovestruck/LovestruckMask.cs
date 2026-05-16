@@ -45,7 +45,7 @@ namespace Stellamod.Content.Armors.Lovestruck
         public override void SetStaticDefaults()
         {
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-            ArmorSetSystem.RegisterArmorSet<LovestruckMask, LovestruckBreastplate, LovestruckLegs>();
+            ArmorSetSystem.RegisterArmorSet<LovestruckMask, LovestruckBreastplate, LovestruckLegs>(ArmorGroup.Act_I);
         }
 
         public override void SetDefaults()

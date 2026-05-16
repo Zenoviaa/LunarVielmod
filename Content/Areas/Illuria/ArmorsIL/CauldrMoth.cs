@@ -128,7 +128,7 @@ namespace Stellamod.Content.Areas.Illuria.ArmorsIL
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ArmorSetSystem.RegisterArmorSet<CauldrMothHood, CauldrMothCoat, CauldrMothLegs>();
+            ArmorSetSystem.RegisterArmorSet<CauldrMothHood, CauldrMothCoat, CauldrMothLegs>(ArmorGroup.Act_II);
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)

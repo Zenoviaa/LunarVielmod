@@ -352,7 +352,7 @@ namespace Stellamod.Content.Armors.Moonsker
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ArmorSetSystem.RegisterArmorSet<MoonskerHood, MoonskerRobe, MoonskerPants>();
+            ArmorSetSystem.RegisterArmorSet<MoonskerHood, MoonskerRobe, MoonskerPants>(ArmorGroup.Act_III);
         }
 
 

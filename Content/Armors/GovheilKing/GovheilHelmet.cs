@@ -99,7 +99,7 @@ public class GovheilHelmet : ModItem
     {
         base.SetStaticDefaults();
         CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        ArmorSetSystem.RegisterArmorSet<GovheilHelmet, GovheilChainplate, GovheilThighs>();
+        ArmorSetSystem.RegisterArmorSet<GovheilHelmet, GovheilChainplate, GovheilThighs>(ArmorGroup.Act_II);
     }
 
     public override void SetDefaults()

@@ -279,7 +279,7 @@ public class AlsisMask : ModItem
     {
         base.SetStaticDefaults();
         CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        ArmorSetSystem.RegisterArmorSet<AlsisMask, AlsisChestplate, AlsisGreaves>();
+        ArmorSetSystem.RegisterArmorSet<AlsisMask, AlsisChestplate, AlsisGreaves>(ArmorGroup.Act_III);
     }
 
     public override void SetDefaults()

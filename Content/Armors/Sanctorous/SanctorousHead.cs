@@ -221,7 +221,7 @@ public class SanctorousHead : ModItem
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        ArmorSetSystem.RegisterArmorSet<SanctorousHead, SanctorousBody, SanctorousLegs>();
+        ArmorSetSystem.RegisterArmorSet<SanctorousHead, SanctorousBody, SanctorousLegs>(ArmorGroup.Act_II);
     }
 
     public override void SetDefaults()

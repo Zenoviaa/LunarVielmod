@@ -133,7 +133,7 @@ namespace Stellamod.Content.Armors.Fishy
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ArmorSetSystem.RegisterArmorSet<FishyHead, FishyBody, FishyLegs>();
+            ArmorSetSystem.RegisterArmorSet<FishyHead, FishyBody, FishyLegs>(ArmorGroup.Act_I);
         }
 
         public override void SetDefaults()

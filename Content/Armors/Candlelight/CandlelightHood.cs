@@ -158,7 +158,7 @@ public class CandlelightHood : ModItem
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        ArmorSetSystem.RegisterArmorSet<CandlelightHood, CandlelightBody, CandlelightLegs>();
+        ArmorSetSystem.RegisterArmorSet<CandlelightHood, CandlelightBody, CandlelightLegs>(ArmorGroup.Act_II);
     }
 
     public override void SetDefaults()

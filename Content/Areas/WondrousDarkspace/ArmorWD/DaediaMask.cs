@@ -269,7 +269,7 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.ArmorWD
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ArmorSetSystem.RegisterArmorSet<DaediaMask, DaediaBreastplate, DaediaThighs>();
+            ArmorSetSystem.RegisterArmorSet<DaediaMask, DaediaBreastplate, DaediaThighs>(ArmorGroup.Act_I);
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 

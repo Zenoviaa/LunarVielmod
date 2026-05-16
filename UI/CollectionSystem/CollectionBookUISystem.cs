@@ -25,6 +25,7 @@ namespace Stellamod.UI.CollectionSystem
         public CollectionBookIconUIState collectionBookIconUI;
         public CollectionItemTabUIState collectionItemTabUI;
         public CollectionItemTabRecipeUIState collectionRecipeInfoUI;
+        public CollectionArmorUIState collectionArmorInfoUI;
 
 
         public QuestTabUIState questTabUIState;
@@ -51,6 +52,9 @@ namespace Stellamod.UI.CollectionSystem
 
             collectionRecipeInfoUI = new CollectionItemTabRecipeUIState();
             collectionRecipeInfoUI.Activate();
+
+            collectionArmorInfoUI = new CollectionArmorUIState();
+            collectionArmorInfoUI.Activate();
 
             questTabUIState = new QuestTabUIState();
             questTabUIState.Activate();
@@ -187,6 +191,13 @@ namespace Stellamod.UI.CollectionSystem
             collectionRecipeInfoUI.ui.Glow = 1f;
             collectionRecipeInfoUI.Recalculate();
             _rightInfoUserInterface.SetState(collectionRecipeInfoUI);
+        }
+        public void OpenArmorInfoUI()
+        {
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");
+            soundStyle.PitchVariance = 0.1f;
+            SoundEngine.PlaySound(soundStyle);
+            _rightInfoUserInterface.SetState(collectionArmorInfoUI);
         }
 
         public void OpenQuestsTabUI()

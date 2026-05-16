@@ -33,7 +33,7 @@ namespace Stellamod.Content.Armors.Leather
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ArmorSetSystem.RegisterArmorSet<LeatherHead, LeatherBody, LeatherLegs>();
+            ArmorSetSystem.RegisterArmorSet<LeatherHead, LeatherBody, LeatherLegs>(ArmorGroup.Act_I);
         }
 
         public override void SetDefaults()

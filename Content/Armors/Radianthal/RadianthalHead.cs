@@ -209,7 +209,7 @@ public class RadianthalHead : ModItem
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        ArmorSetSystem.RegisterArmorSet<RadianthalHead, RadianthalBody, RadianthalLegs>();
+        ArmorSetSystem.RegisterArmorSet<RadianthalHead, RadianthalBody, RadianthalLegs>(ArmorGroup.Act_II);
     }
 
     public override void SetDefaults()

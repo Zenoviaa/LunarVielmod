@@ -135,7 +135,7 @@ namespace Stellamod.Content.Armors.Vextin
         public override void SetStaticDefaults()
         {
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-            ArmorSetSystem.RegisterArmorSet<VextinMask, VextinRobe, VextinBoots>();
+            ArmorSetSystem.RegisterArmorSet<VextinMask, VextinRobe, VextinBoots>(ArmorGroup.Act_I);
         }
 
 
