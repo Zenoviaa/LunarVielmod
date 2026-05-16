@@ -135,28 +135,6 @@ namespace Stellamod.Trailing
             }
 
         };
-        public static SlashTrailer Starvast => new SlashTrailer
-        {
-            Shader = new SlashEffect()
-            {
-                BaseColor = Color.Pink,
-                HighlightColor = Color.Pink,
-                RimHighlightColor = Color.Pink,
-                WindColor = Color.Blue,
-                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
-                WindTexture = TrailRegistry.StarTrail.Value
-            },
-            TrailWidthFunction = (float interpolant) =>
-            {
-                return EasingFunction.QuadraticBump(interpolant) * 16;
-            },
-            TrailColorFunction = (float interpolant) =>
-            {
-                Color lerp1 = Color.Lerp(Color.Pink, Color.Cyan, interpolant);
-                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
-            }
-
-        };
 
         public static SlashTrailer Starvast2 => new SlashTrailer
         {
@@ -172,7 +150,7 @@ namespace Stellamod.Trailing
             },
             TrailWidthFunction = (float interpolant) =>
             {
-                return EasingFunction.QuadraticBump(interpolant) * 32;
+                return EasingFunction.QuadraticBump(interpolant) * 14;
             },
             TrailColorFunction = (float interpolant) =>
             {
@@ -252,7 +230,30 @@ namespace Stellamod.Trailing
                 return Color.Lerp(Color.Transparent, lerp1, interpolant);
             }
 
+        }; 
+        public static SlashTrailer Starvast => new SlashTrailer
+        {
+            Shader = new SlashEffect()
+            {
+                BaseColor = Color.Pink,
+                HighlightColor = Color.LightGoldenrodYellow,
+                RimHighlightColor = Color.Pink,
+                WindColor = Color.Blue,
+                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive,
+                WindTexture = TrailRegistry.StarTrail.Value
+            },
+            TrailWidthFunction = (float interpolant) =>
+            {
+                return EasingFunction.QuadraticBump(interpolant) * 8;
+            },
+            TrailColorFunction = (float interpolant) =>
+            {
+                Color lerp1 = Color.Lerp(Color.LightGoldenrodYellow, Color.Cyan, interpolant);
+                return Color.Lerp(lerp1, Color.Transparent, EasingFunction.InExpo(interpolant));
+            }
+
         };
+
         public static SlashTrailer XScissor => new SlashTrailer
         {
             Shader = new SlashEffect()

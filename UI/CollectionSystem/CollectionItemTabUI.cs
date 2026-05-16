@@ -714,6 +714,7 @@ public class CollectionArmorInfoUI : UIPanel
         Width.Pixels = 48 * 8;
         _slotGrid.ListPadding = 16;
         _slotGrid.PaddingLeft = 16;
+        _slotGrid.PaddingRight = 52;
         _panel.Height.Pixels = _slotGrid.GetTotalHeight() + 32;
         float progress = _panel.Height.Pixels / Height.Pixels;
         progress = MathHelper.Clamp(progress, 0f, 1f);

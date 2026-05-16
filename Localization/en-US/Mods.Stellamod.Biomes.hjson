@@ -227,3 +227,8 @@ MistyDungeonSurfaceBiome: {
 	DisplayName: Misty Dungeon Surface Biome
 	TownNPCDialogueName: the Misty Dungeon Surface Biome
 }
+
+SacredUnknownsBiome: {
+	DisplayName: Sacred Unknowns Biome
+	TownNPCDialogueName: the Sacred Unknowns Biome
+}

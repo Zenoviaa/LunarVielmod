@@ -11220,3 +11220,8 @@ SingularityBarrierBlockItem: {
 	DisplayName: Singularity Barrier Block Item
 	Tooltip: ""
 }
+
+MimicTileItem: {
+	DisplayName: Mimic Tile Item
+	Tooltip: ""
+}
