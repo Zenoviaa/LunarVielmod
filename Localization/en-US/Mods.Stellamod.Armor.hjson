@@ -3,6 +3,7 @@ MiracleHead: {
 	Type: Artifact
 	Lore: An armor forged from the magical and silky threads of the Wonderous Darkspace, it is said that wrapping yourself up in too much of this stuff will cause even the most hardened souls to lose their minds...
 	SetBonus: Even after running out of mana, you can continue attacking, but this will put you into debt giving you black mana stars. While you have black mana stars, spiders will aggressively attack you until it regenerates back.
+	Set: Miracle
 }
 
 SanctorousHead: {
@@ -10,6 +11,7 @@ SanctorousHead: {
 	Type: Resource
 	Lore: The eyes of the fallen stare at you from above, you see everything, you know what will happen, and the armor calls to you as if a 1000 souls came begging to your knees to be worn, you hear the souls slain by dragons and yet you are unphased, the wearer of dragons.
 	SetBonus: Allows you to call your waypoint dragon from any point of the map by pressing [ABILITY] to open up your waypoint map, using an insource allows you to be invincible for 2 seconds after drinking it.
+	Set: Sanctorous
 }
 
 GothinMask: {
@@ -17,6 +19,7 @@ GothinMask: {
 	Type: Ranged
 	Lore: She quite likes that bow I think... Why not make it into something useful why don’t we?
 	SetBonus: Every 3 shots on a bow, you charge a super big arrow of magic into your bow and shoot it out with great intensity, doing 5x the amount of damage as your bow generally does
+	Set: Gothin
 }
 
 CandlelightHood: {
@@ -24,6 +27,7 @@ CandlelightHood: {
 	Type: Resource
 	Lore: Little sparks appear everywhere underneath, these candles represent the peacefulness Ereshkigal has in her home in the ishtar, Dkalin has seen Ereshkigal turn her moths she keeps so dearly into the flames that keep the candles lit forever.
 	SetBonus: You hold a candle above your head, which can protect you from a few hits per life, each hit, the candle whittles down for 5 hits until it’s gone, also provides a great light. Once the candle is gone however you take 25% increased damage.
+	Set: Candlelight
 }
 
 AlsisMask: {
@@ -31,6 +35,7 @@ AlsisMask: {
 	Type: Ranged
 	Lore: Verlia personally made this armor for Fenix as a gift for her 21st birthday before Verlia got put to trial, it was never given and it was sold by the army to Zui for money.
 	SetBonus: As long as you have mana, each of your bow and bullets now have magic over them, bullets use 5 mana, while arrows use 20 mana, until your mana bar drains, your shots 3x damage and explode! When you run out of mana, you must return to full to regain this ability
+	Set: Alsis
 }
 
 HarpyHead: {
@@ -38,6 +43,7 @@ HarpyHead: {
 	Type: Resource
 	Lore: Indeed someone who flies around all the time, never thinks to not fly...
 	SetBonus: Flying creates a tornado that repels enemies and makes them slower as they reach you, as well as projectiles, your flying acceleration and flight time are increased by 45%.
+	Set: Harpy
 }
 
 VeliozaHead: {
@@ -45,6 +51,7 @@ VeliozaHead: {
 	Type: Life/Movement
 	Lore: Armor made to represent the ever-so-attained form of a perfect body; a true warrior that can identify the art of the human physique decorated in the highest of fashion of one' s self. Sanguimi represents this perfectly.
 	SetBonus: An aura appears around your character, and when something gets within it, you start draining their life. Attacking something in this circle also increases your attack speed each hit, and if nothing is in the circle, you slow down at a constant rate back to normal
+	Set: Velioza
 }
 
 RadianthalHead: {
@@ -52,6 +59,7 @@ RadianthalHead: {
 	Type: Melee
 	Lore: Heavenly almost, this armor was requested by Zui for some of her front-lining mages for battle in her academy. Made from the radiant nectar, this armor is drenched in magic.
 	SetBonus: As you hit an enemy with a melee attack, your next attack will become slower by 10%, but gain an additional +20% damage each hit, this stacking wears off when you miss. Each hit also explodes with radiant glow when it starts stacking
+	Set: Radianthal
 }
 
 GovheilMask: {
@@ -59,12 +67,14 @@ GovheilMask: {
 	Type: Magic
 	Lore: An armor modeled off of one of the best mages in Illuria, Govhista. She was born in the Ghetsis, and moved to Illuria to fight for glory using her cloning style. Eventually she was lost to time after dying in the Lustrous war and this armor is a single thing to remember her by.
 	SetBonus: When you charge a wand, gain a smaller wand caster that casts another spell in a different magic, you can customize this wand too!
+	Set: Govheil Queen
 }
 
 AlcaliteMask: {
 	Type: Defensive
 	Lore: An armor worn by those who devote themselves to the great dragon Niivi, it is said that you’ll receive her blessing and become protected by her magic.
 	SetBonus: If an attack would’ve killed you, you instead enter a cocoon-like state where you are immune to all damage for 7 seconds, and you cannot attack or move, but have a lot of life regeneration, usually restoring you to about 60% health. After shattering, have 5% more damage and orbiting stars!
+	Set: Alcalite
 }
 
 ArtisanMask: {
@@ -72,6 +82,7 @@ ArtisanMask: {
 	Type: Crit
 	Lore: Every little while you’ll get a counter that when it hits 0, you gain 100% critical strike chance for a few seconds. With picture perfect on your weapons also receive a buff during this time
 	SetBonus: An armor gifted from the one and the only Gerisda, she paints far off in Runica Waterside, but she also gave her painter set as she’s retired from fighting! Now it’s passed down to you...
+	Set: Artisan
 }
 
 VirulentHelm: {
@@ -79,6 +90,7 @@ VirulentHelm: {
 	Type: Ranged
 	Lore: We love our guns...
 	SetBonus: Summons a little turret on your back that shoots a little minigun when you shoot, doing a fraction of your held weapon, when standing still you’ll also generate a regenerating aura around you!
+	Set: Virulent
 }
 
 ScrappyHead: {
@@ -86,6 +98,7 @@ ScrappyHead: {
 	Type: Summon
 	Lore: It’s crafted from trash, I don't know what you expected, some type of epic journey about a piece of trash? You disgust me... Almost as much as this armor does...
 	SetBonus: Summons a few little laser flying turrets that shoot your enemies with high accuracy! Pew Pew pew.
+	Set: Scrappy
 }
 
 GovheilHelmet: {
@@ -93,6 +106,7 @@ GovheilHelmet: {
 	Type: Melee
 	Lore: An armor modeled off of one of the best warriors in Illuria, Govhintin. He was born in the Ghetsis, and moved to Illuria to fight for glory using his double-cut style. He married a woman named Govhista and changed his name to match hers, they both died in battle.
 	SetBonus: While an enemy is targeting you, every other player takes 75% reduced damage, while you do 10% more melee damage as well as having a king crown over you.
+	Set: Govheil King
 }
 
 FishyHead: {
@@ -100,6 +114,7 @@ FishyHead: {
 	Type: Boss Endurance
 	Lore: Unda the sea...
 	SetBonus: Can Swim in water freely, gain a double jump/typhoon in a bottle, and your attacks now have little fish in bubbles that come out of your attacks and deal half the damage of the weapon in your hand like swarms
+	Set: Fishy
 }
 
 ElagentHead: {
@@ -107,6 +122,7 @@ ElagentHead: {
 	Type: Resource
 	Lore: Simple crafted armor gifted from the mistress in the sky, the harpy’s siren as they say. As elegant as can be and it is said the armor protects people from misfortune with its allusive feathers.
 	SetBonus: When you drink your Xixian Flask, gain temporary immunity for 3 seconds with floating feathers around you to protect you.
+	Set: Elegant
 }
 
 VerlMask: {
@@ -114,18 +130,21 @@ VerlMask: {
 	Type: Magic
 	Lore: An armor made in honor of a great craftswoman and a great swordswoman, Verlia. She can no longer be found today, as she was executed by Ereshkigal herself after trial for murder.
 	SetBonus: You create raining magic swords when you hit attacks with manaspheres, doing double damage of the held manasphere!
+	Set: Verl
 }
 
 VeldrinHead: {
 	Type: Ranged
 	Lore: A defense against the cold, this armor was made by Veldris and his brother for fighting cold
 	SetBonus: Ranged attacks can now inflict “Mild Curse,” (1/25) which makes them stop their ai and lose themselves for a few seconds (doesn’t work on bosses), also immune to freezing in ice water and frozen debuff.
+	Set: Veldrin
 }
 
 MoonskerHood: {
 	Type: Magic
 	Lore: One said that this armor is of Ereshkigal’s most loyal worshippers, it whispers in your ear, speaking with sounds, and sometimes moths fly out. The armor is filled with power and spirits… I guess this is where she likes to hide some of her moths...
 	SetBonus: Wand Casting time reduced by 30%, as well as having a few orbiting moons around you that shoot off when you cast a wand spell, that do half the damage!
+	Set: Moonsker
 }
 
 LunarianVoidHead: {
@@ -133,6 +152,7 @@ LunarianVoidHead: {
 	Lore: A sighted armor with a little slit in the middle, the convulging matter that made this armor still pulses, it even has a faint glow with its pulsing.
 	SetBonus: Hitting strike, hitting an enemy while getting hit with a melee weapon grants this huge strike on an enemy that does 400% more damage and a blue spark and flash on them, you also glow a bit in the dark
 	Log: Act I Melee Damage armor
+	Set: Lunarian Void
 }
 
 VextinMask: {
@@ -140,6 +160,7 @@ VextinMask: {
 	Lore: The sands shift beneath your feet, as if you tread lightly, the fabric was especially crafted by a clothier of some sort, sown together on the deathbed of themselves as a last hope, and eventually made it into Manman’s hands. What other secrets does the fabric hold?
 	SetBonus: Run fast on sand, and every time you get hit by an enemy, you gain a defensive shield that blocks 50% damage the next hit! You have a little sand shield bubble around you when you are blocking the next hit
 	Log: Act I Speed and Defense armor
+	Set: Vextin
 }
 
 TerricHead: {
@@ -147,6 +168,7 @@ TerricHead: {
 	Lore: Created by Vul and given to Manman, this armor reaches the highest heights of stealing life. To try to recreate this armor seems impossible. It’s made from brewing in a cauldron no longer found.
 	SetBonus: Turns regular arrows into blood arrows, that regenerate your life on hit, and has a blood spell circle on your bows, guns also regenerate you by 1 everytime you reload
 	Log: Act I Life steal ranger armor
+	Set: Terric
 }
 
 StaffigyHat: {
@@ -154,6 +176,7 @@ StaffigyHat: {
 	Lore: Simple armor crafted from the mysterious moth-shaped souls, why can they morph, let alone be turned into armor? It seems like each moth has a different set of attributes, but this armor, it’s perfect...
 	SetBonus: Makes your wand charge speed 25% faster!
 	Log: Act I Wand, Mage armor
+	Set: Staffigy
 }
 
 HuntrianHelmet: {
@@ -161,24 +184,28 @@ HuntrianHelmet: {
 	Lore: The battle scars on this armor show, the stingers imbue have a shocking amount of poison, which spikes everything around. Sometimes, it’s even a hassle to put on.
 	SetBonus: Have an aura that if anything walks in, gets poisoned heavily for 3 minutes, inflicting a dangerous venom that reduces enemies’ defense by 10 as well as damaging them with a constant effect.
 	Log: Act I Resource, Insource-Accessory armor
+	Set: Huntrian
 }
 
 BellMasterHood: {
 	Lore: Crafted from ancient silk of a fallen kingdom, decorated with bells along the way. I wonder what secrets the fabric itself holds. It’s said to do wonders for the backlines of the army, holding snipers...
 	Type: Ranged
 	SetBonus: Summons a large bell that hovers and circles around nearby enemies, when it is shot at, it rings and redirects the projectile to the nearest enemy and boosts the damage by 50%!
+	Set: Bell Master
 }
 
 JacklerHat: {
 	Lore: A fun costume Veldrin got for his brother, Veldris, to give to Veizal for Christmas as a helping hand since they were low on funds. They both made it together! Veldrin knows that his brother has a huge crush on the woman he lives with so he decided to give his brother something to help out.
 	Type: Summoner
 	SetBonus: Minions explode into rose petals upon death, which does great damage!
+	Set: Jackler
 }
 
 RavagingHelmet: {
 	Lore: An armor from an old ravaged beast, long stayed and love lived. The horns bear marks that no one person could cause, it has been beaten up for years on end, and it seems you came to give misery upon a creature and wear it for pride.
 	Type: Dodge
 	SetBonus: Your dash is longer and faster, and if you dash through an enemy a rock will fall on them
+	Set: Ravaging
 }
 
 HeavyMetalHead: {
@@ -186,6 +213,7 @@ HeavyMetalHead: {
 	Lore: Fashion for the ginzte people. Once a part of the Illuria, they gained their own sense of fashion to mimic their leader Ginztia, and now everyone wears it. The armor is heavy and weighted, but allows the wind to breeze through when it gets warm.
 	Type: Summoner
 	SetBonus: You have two gintze guards who sit by your side and attack enemies
+	Set: Heavy Metal
 }
 
 AstrasilkHead: {
@@ -193,6 +221,7 @@ AstrasilkHead: {
 	Lore: Blessed armor from the stars, granting magic capabilities through wands across time under the aurora.
 	Type: Magic
 	SetBonus: Every 5 hits it rains a falling star that does some great damage!
+	Set: Astrasilk
 }
 
 LovestruckMask: {
@@ -200,6 +229,7 @@ LovestruckMask: {
 	Lore: Blessed armor from the stars, said to never touch the outside of the armor, or else you’ll be forever attracted to it... I wonder how true that is.
 	Type: Summoner
 	SetBonus: Cheese-touch
+	Set: Lovestruck
 }
 
 ShadeWraithHead: {
@@ -207,6 +237,7 @@ ShadeWraithHead: {
 	Type: Defensive
 	SetBonus: You gain 30% increased melee damage and movement speed when you drop below 40% health for 5 seconds!
 	Lore: An old armor made from granite, Manman made it himself, one of his least favorite works though...
+	Set: Shade Wraith
 }
 
 CelestiaMoonHelmet: {
@@ -214,6 +245,7 @@ CelestiaMoonHelmet: {
 	Type: Defensive
 	SetBonus: You get a green aura around you that covers your body, that reduces the damage of the first hit every 30 seconds, by 50%!
 	Lore: One of the gifted armors from Celestia, a goddess that was no longer seen after the first God war, she gave protection and life and legends have it that all of the 7 sins had to try at the same time to take her down, nobody knows where she is today.
+	Set: Celestia Moon
 }
 
 WinterbornHead: {
@@ -221,6 +253,7 @@ WinterbornHead: {
 	Type: Magic
 	SetBonus: Gain up to 3 orbiting snowballs that hit enemies and fly around you. They can break, but they regenerate back!
 	Lore: A frozen armor carved and sculpted by the great sculptor Lia, nobody knows of her origins anymore but her statues appear everywhere, this is one of many that remain.
+	Set: Winterborn
 }
 
 LeatherHead: {
@@ -228,12 +261,14 @@ LeatherHead: {
 	Type: Ranged
 	SetBonus: Makes all your bows have a spell circle around it when they are charging, it enhances arrow speed by 30%!
 	Lore: A simple hunter’s armor, used in hunting small animals made by a small tribe called the Veldi, usually made in red. The armor was sold to Manman because it wasn’t so.
+	Set: Leather
 }
 
 StoniaHat: {
 	SetBonus: Allows you to take no fall damage and increases your mining and fall speed
 	Type: Crit
 	Lore: Given from the fallen soldier petrified, the Stone golem. This armor is given as a reward for overcoming the first challenge to being in the Witch's Academy. To test your will, to test your learning, you have so much farther to go. Young witches and wizards wear this as a sign of entrance.
+	Set: Stonia
 }
 
 ForestCoreHead: {
@@ -241,6 +276,7 @@ ForestCoreHead: {
 	SetBonus: Has a bow that shoots arrows that follow, doing equal damage to the weapon you hold.
 	Type: Resource
 	Lore: An armor full of secrets and mystery, it holds what we know as plant life, and the armor itself photosynthesizes to carry the nutrients to provide the armor its abilities. Manman says this armor was made by a student of Zui's, who no longer is alive, so it holds some sentimental value to her. Apparently, they used to steal spells from others and try to pass it off as her own, but she's gone now aren�t they?
+	Set: Forest Core
 }
 
 CauldrMothHood: {
@@ -251,12 +287,14 @@ CauldrMothHood: {
 		'''
 	Type: Defensive
 	Lore: An armor for Ereshkigal's follows as she was rising to Siegfried's side. Crafted to be a sort of fashion, or appreciation and to keep protection, it would be worn by those who would be protecting her during wars. Unfortuantely, it was never used, the war came too fast...
+	Set: Cauldr Moth
 }
 
 IllikenHelmet: {
 	SetBonus: After rolling, release a damaging icy burst and gain a burst of damage of 10% for a second!
 	Type: Resource
 	Lore: Armor crafted by the heaviest of hands, but fragile souls, a touch from a hammer and it could break. Blacksmiths, Mages, and Glassblowers united crafted an armor that could provide extra space within its hull. As during the building times of the Royal Capital Sector, this armor was supposed to carry more supplies to Verlia.
+	Set: Illiken
 }
 
 DaediaMask: {
@@ -264,6 +302,7 @@ DaediaMask: {
 	SetBonus: Summons a few flying moths to circle around you and attack nearby enemies
 	Type: Summoner
 	Lore: It represents a lazy goddess somewhere far away, its ties are endless and it resembles its form similar to even those who exist on this world, having the same sigil on its back that the Alca family own. Are they descendents of this Sin of Sloth?
+	Set: Daedia
 }
 
 SetBonus: Set Bonus: {0}

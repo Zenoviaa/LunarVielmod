@@ -172,7 +172,7 @@ namespace Stellamod.Core.Tooltips
         public bool armorDraw;
 
         public IExpandableTooltip[] ExpandableTooltips { get; private set; }
-        public float EaseTime => 0.9f;
+        public float EaseTime => 0.5f;
      
         public void SetTooltipsToDraw(List<TooltipLine> lines, int startingXOffset, int startingYOffset, bool drawGlass = true)
         {
@@ -210,8 +210,8 @@ namespace Stellamod.Core.Tooltips
                             int targetY = Main.mouseY + _startingYOffset;
 
                             float ratio = _timer / EaseTime;
-                            float ease = EasingFunction.OutExpo(ratio);
-                            int x = (int)MathHelper.Lerp(targetX - 128, targetX, ease);
+                            float ease = EasingFunction.InOutSine(ratio);
+                            int x = (int)MathHelper.Lerp(targetX - 64, targetX, ease);
                             int y = targetY;
                              ExpandableTooltip.DrawExpandableTooltip(Main.spriteBatch, _lines, x, y, ease, _drawGlass);
                         

@@ -105,7 +105,6 @@ public class ArrowRainBow : ModProjectile
             }
         }
 
-
         if (Timer % 4 == 0)
         {
             //Visual effect purely, doesn't need to be net synced.

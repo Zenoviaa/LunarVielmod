@@ -1,8 +1,12 @@
 ﻿using Stellamod.Common.ArmorRework;
+using Stellamod.Common.ArmorShop;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Tooltips;
+using Stellamod.Core.Utilities;
+using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -45,7 +49,9 @@ public class CollectionItemTabCraft : UIElement
         {
             Main.LocalPlayer.mouseInterface = true;
         }
+        //  Main.NewText(IsMouseHovering);
 
+        bool contains = ContainsPoint(Main.MouseScreen);
         //Draw Backing
         Color color2 = Main.inventoryBack;
         Vector2 pos = rectangle.TopLeft();
@@ -57,7 +63,7 @@ public class CollectionItemTabCraft : UIElement
         if (!cauldronPlayer.HasMadeItem(Item))
         {
             drawColor = Color.Black;
-            if (IsMouseHovering)
+            if (contains)
             {
                 MoldTooltipItem t = ModContent.GetModItem(ModContent.ItemType<MoldTooltipItem>()) as MoldTooltipItem;
                 if (t.MoldNeeded == null)
@@ -73,10 +79,15 @@ public class CollectionItemTabCraft : UIElement
         }
         else
         {
-            if (IsMouseHovering)
+            if (contains)
             {
-                Main.hoverItemName = Item.Name;
-                Main.HoverItem = Item;
+                var tooltipLines = new List<TooltipLine>();
+                TooltipLine helpLine = new TooltipLine(Stellamod.Instance, "ArmorHelp", Item.Name);
+                helpLine.OverrideColor = Color.Goldenrod;
+                tooltipLines.Add(helpLine);
+
+                var renderer = ModContent.GetInstance<ExpandableTooltipRenderer>();
+                renderer.SetTooltipsToDraw(tooltipLines, 28, 16);
             }
         }
 
@@ -123,12 +134,43 @@ public class CollectionItemTabCraft : UIElement
         spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
 
+        DiscoveredArmorsPlayer armorsPlayer = Main.LocalPlayer.GetModPlayer<DiscoveredArmorsPlayer>();
         ArmorSetSystem.GetArmorSet(armorSet, out Item helm, out Item armor, out Item leggings);
-        ArmorReworkPlayerRenderer.silhouette = false;
+        ArmorReworkPlayerRenderer.silhouette =
+            !armorsPlayer.IsAnyDiscovered(helm.type, armor.type, leggings.type);
         ExpandableTooltip.DrawArmorPreview(centerPos, helm, armor, leggings);
 
         spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
+
+        if (IsMouseHovering)
+        {
+            var tooltipLines = new List<TooltipLine>();
+            string text = LangText.Armor(helm.ModItem, "Set");
+            string combinedText = $"{text} {LangText.Common("Armor")}";
+            TooltipLine helpLine = new TooltipLine(Stellamod.Instance, "ArmorHelp", combinedText);
+            helpLine.OverrideColor = Color.Goldenrod;
+            tooltipLines.Add(helpLine);
+
+
+            TooltipLine helpLine3 = new TooltipLine(Stellamod.Instance, "ArmorDesc", LangText.Armor(helm.ModItem, "Type"));
+            helpLine3.OverrideColor = Color.Gray;
+            tooltipLines.Add(helpLine3);
+
+            ArmorShopGroups armorShopGroups = ModContent.GetInstance<ArmorShopGroups>();
+            ArmorShopSet armorShopSet = armorShopGroups.FindSet(helm);
+            if(armorShopSet != null)
+            {
+                string craftString = LangText.Common("ArmorCraft", armorShopSet.material.Name);
+                TooltipLine helpLine2 = new TooltipLine(Stellamod.Instance, "ArmorHelp", craftString);
+                helpLine2.OverrideColor = Color.White;
+                tooltipLines.Add(helpLine2);
+            }
+
+
+            var renderer = ModContent.GetInstance<ExpandableTooltipRenderer>();
+            renderer.SetTooltipsToDraw(tooltipLines, 28, 16);
+        }
     }
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -220,11 +262,29 @@ public class CollectionItemTabSlot : UIElement
         Vector2 pos = rectangle.TopLeft();
         Texture2D value = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}CollectionTabSlotArmor").Value;
         Vector2 centerPos = rectangle.TopLeft() + value.Size() * 0.5f + new Vector2(-10, -10);
-        spriteBatch.Draw(value, rectangle.TopLeft(), null, Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-
         RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
         SamplerState anisotropicClamp = SamplerState.PointClamp;
         SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
+        if (IsMouseHovering)
+        {
+            float outlineOffset = 2;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, whiteShader.Effect, Main.UIScaleMatrix);
+
+            for (float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
+            {
+                Vector2 offset = f.ToRotationVector2() * outlineOffset;
+                spriteBatch.Draw(value, rectangle.TopLeft() + offset, null, Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+            }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
+        }
+
+
+        spriteBatch.Draw(value, rectangle.TopLeft(), null, Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+
+
         spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
 
@@ -234,12 +294,24 @@ public class CollectionItemTabSlot : UIElement
         spriteBatch.End();
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
 
+
+        //Drawing the number of things you have unlocked
+        {
+            var armorPlayer = Main.LocalPlayer.GetModPlayer<DiscoveredArmorsPlayer>();
+            var armorSetSystem = ModContent.GetInstance<ArmorSetSystem>();
+            string amountYouHave = $"{armorPlayer.CountDiscoveredArmors()} / {ArmorSetSystem.GetArmorSets().Length}";
+            Vector2 textSize = FontAssets.MouseText.Value.MeasureString(item.Name);
+            Vector2 origin = new Vector2(0f, textSize.Y * 0.5f);
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, amountYouHave, centerPos + Vector2.UnitX * 48,
+                Color.White, 0, origin, Vector2.One);
+        }
+
         //Draw the name of the item
         {
             string drawString = "Armors";
             Vector2 textSize = FontAssets.MouseText.Value.MeasureString(drawString);
             Vector2 origin = new Vector2(0f, textSize.Y * 0.5f);
-            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, drawString, centerPos + Vector2.UnitX * 128,
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, drawString, centerPos + Vector2.UnitX * 128 + Vector2.UnitY * 13,
                 Color.White, 0, origin, Vector2.One);
         }
 
@@ -317,8 +389,10 @@ public class CollectionItemTabSlot : UIElement
                 DrawArmorSet(spriteBatch);
                 break;
         }
+        this.QuickMouseInteraction();
     }
 }
+
 public class CollectionItemRecipesUI : UIPanel
 {
     private UIList _uiList;
@@ -639,7 +713,7 @@ public class CollectionArmorInfoUI : UIPanel
         Top.Pixels = RelativeTop;
         Width.Pixels = 48 * 8;
         _slotGrid.ListPadding = 16;
-        _slotGrid.PaddingRight = 52;
+        _slotGrid.PaddingLeft = 16;
         _panel.Height.Pixels = _slotGrid.GetTotalHeight() + 32;
         float progress = _panel.Height.Pixels / Height.Pixels;
         progress = MathHelper.Clamp(progress, 0f, 1f);

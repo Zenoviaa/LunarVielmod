@@ -3,6 +3,7 @@ using Stellamod.Content.Areas.Ishtar.TilesIS;
 using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.TilesSH;
 using Stellamod.Content.Areas.Terror.TilesTR;
+using Stellamod.Content.Areas.Underground.TilesUG;
 using Stellamod.Content.Areas.WorldsEnd.TilesWE;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
@@ -127,6 +128,9 @@ namespace Stellamod
         public int MoonspiralTowerCount;
         public static bool InMoonspiralTower => ModContent.GetInstance<BiomeTileCounts>().MoonspiralTowerCount >= 50;
 
+        public int SacredUnknownsCount;
+        public static bool InSacredUnknowns => ModContent.GetInstance<BiomeTileCounts>().SacredUnknownsCount >= 50;
+
         public int AegislavCount;
         public static bool InAegislav => ModContent.GetInstance<BiomeTileCounts>().AegislavCount >= 50;
         public int ForestCount;
@@ -140,7 +144,7 @@ namespace Stellamod
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             AegislavCount = tileCounts[ModContent.TileType<VeilBrickTile>()] + tileCounts[ModContent.TileType<AegislavSandTile>()] + tileCounts[TileID.CrimsonGrass] + tileCounts[TileID.Crimstone];
-           // Main.NewText(AegislavCount);
+            SacredUnknownsCount = tileCounts[ModContent.TileType<MimicTileBlock>()];
             JunkyardCount = tileCounts[ModContent.TileType<JunkyTile>()];
             ForestCount = tileCounts[TileID.Grass];
             MoonspiralTowerCount = tileCounts[ModContent.TileType<CathediteTile>()];

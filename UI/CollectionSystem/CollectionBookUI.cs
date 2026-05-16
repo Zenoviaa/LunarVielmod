@@ -1,70 +1,74 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Stellamod.Core.Utilities;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 
-namespace Stellamod.UI.CollectionSystem
+namespace Stellamod.UI.CollectionSystem;
+
+public class CollectionBookUI : UIPanel
 {
-    public class CollectionBookUI : UIPanel
+    public Book book;
+
+    public const int width = 432;
+    public const int height = 800;
+
+    public QuestTab questTab;
+    public LoreTab loreTab;
+    public CollectionTab collectionTab;
+
+    public int RelativeLeft => Main.screenWidth / 2 - width / 2;
+    public int RelativeTop => Main.screenHeight / 2 - height / 2 + 128;
+
+    public override void OnInitialize()
     {
-        public Book book;
+        base.OnInitialize();
+        Width.Pixels = 700;
+        Height.Pixels = 600;
+        Left.Pixels = RelativeLeft;
+        Top.Pixels = RelativeTop;
+        BackgroundColor = Color.Transparent;
+        BorderColor = Color.Transparent;
 
-        public const int width = 432;
-        public const int height = 800;
+        book = new Book();
+        Append(book);
 
-        public QuestTab questTab;
-        public LoreTab loreTab;
-        public CollectionTab collectionTab;
+        questTab = new QuestTab();
+        questTab.Left.Pixels = 0;
+        questTab.Top.Pixels = 0;
+        Append(questTab);
 
-        public int RelativeLeft => Main.screenWidth / 2 - width / 2;
-        public int RelativeTop => Main.screenHeight / 2 - height / 2 + 128;
+        loreTab = new LoreTab();
+        int o = 64;
+        loreTab.Left.Pixels = questTab.Left.Pixels + o;
+        loreTab.Top.Pixels = questTab.Top.Pixels;
+        Append(loreTab);
 
-        public override void OnInitialize()
-        {
-            base.OnInitialize();
-            Width.Pixels = width;
-            Height.Pixels = height;
-            Left.Pixels = RelativeLeft;
-            Top.Pixels = RelativeTop;
-            BackgroundColor = Color.Transparent;
-            BorderColor = Color.Transparent;
+        collectionTab = new CollectionTab();
+        collectionTab.Left.Pixels = loreTab.Left.Pixels + o;
+        collectionTab.Top.Pixels = loreTab.Top.Pixels;
+        Append(collectionTab);
+    }
 
-            book = new Book();
-            Append(book);
+    public override void Update(GameTime gameTime)
+    {
+        base.Update(gameTime);
 
-            questTab = new QuestTab();
-            questTab.Left.Pixels = 0;
-            questTab.Top.Pixels = 0;
-            Append(questTab);
+        Left.Pixels = RelativeLeft;
+        Top.Pixels = RelativeTop;
 
-            loreTab = new LoreTab();
-            int o = 64;
-            loreTab.Left.Pixels = questTab.Left.Pixels + o;
-            loreTab.Top.Pixels = questTab.Top.Pixels;
-            Append(loreTab);
+        questTab.Left.Pixels = 252;
+        questTab.Top.Pixels = 464;
 
-            collectionTab = new CollectionTab();
-            collectionTab.Left.Pixels = loreTab.Left.Pixels + o;
-            collectionTab.Top.Pixels = loreTab.Top.Pixels;
-            Append(collectionTab);
-        }
+        int o = 64;
+        loreTab.Left.Pixels = questTab.Left.Pixels + o;
+        loreTab.Top.Pixels = questTab.Top.Pixels;
 
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
+        collectionTab.Left.Pixels = loreTab.Left.Pixels + o;
+        collectionTab.Top.Pixels = loreTab.Top.Pixels;
+    }
 
-            //Constantly lock the UI in the position regardless of resolution changes
-            Left.Pixels = RelativeLeft;
-            Top.Pixels = RelativeTop;
-
-            questTab.Left.Pixels = 252;
-            questTab.Top.Pixels = 464;
-
-            int o = 64;
-            loreTab.Left.Pixels = questTab.Left.Pixels + o;
-            loreTab.Top.Pixels = questTab.Top.Pixels;
-
-            collectionTab.Left.Pixels = loreTab.Left.Pixels + o;
-            collectionTab.Top.Pixels = loreTab.Top.Pixels;
-        }
+    protected override void DrawSelf(SpriteBatch spriteBatch)
+    {
+        base.DrawSelf(spriteBatch);
+        this.QuickMouseInteraction();
     }
 }
