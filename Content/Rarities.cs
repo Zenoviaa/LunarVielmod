@@ -155,6 +155,72 @@ namespace Stellamod.Content
             return Type; // no 'lower' tier to go to, so return the type of this rarity.
         }
     }
+    public class PearlescentScrapRarity : ModRarity
+    {
+        public override Color RarityColor => new Color(170, 22, 40);
+        public override int GetPrefixedRarity(int offset, float valueMult)
+        {
+            if (offset > 0)
+            { // If the offset is 1 or 2 (a positive modifier).
+              //    return ModContent.RarityType<ExampleHigherTierModRarity>(); // Make the rarity of items that have this rarity with a positive modifier the higher tier one.
+            }
+
+            return Type; // no 'lower' tier to go to, so return the type of this rarity.
+        }
+    }
+    public class KaleidoscopicInkRarity : ModRarity
+    {
+        public override Color RarityColor => Main.DiscoColor;
+        public override int GetPrefixedRarity(int offset, float valueMult)
+        {
+            if (offset > 0)
+            { // If the offset is 1 or 2 (a positive modifier).
+              //    return ModContent.RarityType<ExampleHigherTierModRarity>(); // Make the rarity of items that have this rarity with a positive modifier the higher tier one.
+            }
+
+            return Type; // no 'lower' tier to go to, so return the type of this rarity.
+        }
+    }
+    public class MiracleThreadRarity : ModRarity
+    {
+        public override Color RarityColor => Color.MediumPurple;
+        public override int GetPrefixedRarity(int offset, float valueMult)
+        {
+            if (offset > 0)
+            { // If the offset is 1 or 2 (a positive modifier).
+              //    return ModContent.RarityType<ExampleHigherTierModRarity>(); // Make the rarity of items that have this rarity with a positive modifier the higher tier one.
+            }
+
+            return Type; // no 'lower' tier to go to, so return the type of this rarity.
+        }
+    }
+    public class AlcaricMushRarity : ModRarity
+    {
+        public override Color RarityColor => Color.Lerp(Color.MediumPurple, Color.Black, 0.75f);
+        public override int GetPrefixedRarity(int offset, float valueMult)
+        {
+            if (offset > 0)
+            { // If the offset is 1 or 2 (a positive modifier).
+              //    return ModContent.RarityType<ExampleHigherTierModRarity>(); // Make the rarity of items that have this rarity with a positive modifier the higher tier one.
+            }
+
+            return Type; // no 'lower' tier to go to, so return the type of this rarity.
+        }
+    }
+    public class HypnotizedSoulRarity : ModRarity
+    {
+        public override Color RarityColor => new Color(135, 255, 255);
+        public override int GetPrefixedRarity(int offset, float valueMult)
+        {
+            if (offset > 0)
+            { // If the offset is 1 or 2 (a positive modifier).
+              //    return ModContent.RarityType<ExampleHigherTierModRarity>(); // Make the rarity of items that have this rarity with a positive modifier the higher tier one.
+            }
+
+            return Type; // no 'lower' tier to go to, so return the type of this rarity.
+        }
+    }
+
 
     public class RadiantNectarRarity : ModRarity
     {

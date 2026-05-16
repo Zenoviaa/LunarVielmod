@@ -6,7 +6,6 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Stellamod.Visual.Particles;
 using Terraria;

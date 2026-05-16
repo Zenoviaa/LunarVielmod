@@ -103,7 +103,7 @@ namespace Stellamod.Items.Weapons.Melee.Greatswords
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<VirulentPlating>());
+         //   this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<VirulentPlating>());
         }
     }
 }

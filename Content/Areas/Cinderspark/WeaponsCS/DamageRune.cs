@@ -7,7 +7,6 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;

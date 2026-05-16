@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankBag>(), material: ModContent.ItemType<VirulentPlating>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankBag>(), material: ModContent.ItemType<MarshScrap>());
         }
 
     }

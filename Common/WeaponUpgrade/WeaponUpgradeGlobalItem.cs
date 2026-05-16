@@ -1,4 +1,4 @@
-﻿using Stellamod.Content.Items.Materials;
+﻿
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
 using System;

@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;

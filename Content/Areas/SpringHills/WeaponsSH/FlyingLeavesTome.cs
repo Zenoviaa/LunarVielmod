@@ -2,7 +2,6 @@
 using Stellamod.Assets;
 using Stellamod.Content.Areas.MoonspiralTower.WeaponsMT;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Helpers;

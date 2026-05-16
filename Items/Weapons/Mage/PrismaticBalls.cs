@@ -1,5 +1,4 @@
 ﻿using Stellamod.Content.CommonMaterials;
-using Stellamod.Items.Ores;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

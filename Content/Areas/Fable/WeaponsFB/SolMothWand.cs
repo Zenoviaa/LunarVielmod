@@ -1,7 +1,6 @@
 ﻿using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Terraria;
 
 namespace Stellamod.Content.Areas.Fable.WeaponsFB

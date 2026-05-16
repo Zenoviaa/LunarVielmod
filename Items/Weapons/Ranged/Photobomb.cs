@@ -1,5 +1,4 @@
 ﻿using Stellamod.Content.CommonMaterials;
-using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Paint;
 using Terraria;
 using Terraria.GameContent.Creative;

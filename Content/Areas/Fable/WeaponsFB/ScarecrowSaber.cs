@@ -5,7 +5,6 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Stellamod.Trailing;
 using System.IO;
 using Terraria;

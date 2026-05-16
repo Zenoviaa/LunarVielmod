@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Items.Materials;
 using System.Collections.Generic;
 
 using Terraria;

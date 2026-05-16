@@ -1,5 +1,4 @@
 ﻿using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Items.Materials;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Items;
 

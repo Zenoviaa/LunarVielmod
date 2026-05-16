@@ -4,7 +4,6 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using Stellamod.Projectiles.Magic;
 using Stellamod.Visual.Particles;

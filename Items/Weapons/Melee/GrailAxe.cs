@@ -110,7 +110,7 @@ namespace Stellamod.Items.Weapons.Melee
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<GrailBar>());
+         //   this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<GrailBar>());
         }
     }
 }

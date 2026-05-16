@@ -1,5 +1,5 @@
 ﻿using Stellamod.Common.QuestSystem;
-using Stellamod.Content.Items.Materials;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Items.Accessories;
 using Stellamod.NPCs.Underground;
 using Terraria;

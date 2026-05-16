@@ -7,7 +7,6 @@ using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Accessories.Players;
-using Stellamod.Items.Harvesting;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;

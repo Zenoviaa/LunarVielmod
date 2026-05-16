@@ -4,7 +4,6 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Stellamod.Trails;
 using System;
 using Terraria;

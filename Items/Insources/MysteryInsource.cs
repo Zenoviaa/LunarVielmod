@@ -1,6 +1,5 @@
 ﻿using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.ID;
 

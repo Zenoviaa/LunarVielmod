@@ -47,6 +47,20 @@ namespace Stellamod.Items
                 Crafts.Add(item);
         }
 
+        public int CountCraftsInMaterial(int materialType)
+        {
+            int count = 0;
+            var cauldron = ModContent.GetInstance<Cauldron>();
+            foreach(var craft in Crafts)
+            {
+                int type = craft.type;
+                if (cauldron.IsMaterial(type))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
         public bool HasMadeItem(Item item)
         {
             return Crafts.Find(x => x.type == item.type) != null;
@@ -118,6 +132,7 @@ namespace Stellamod.Items
     }
     public class Cauldron : ModSystem
     {
+        public static int[] MaterialOrder = ItemID.Sets.Factory.CreateIntSet(0);
         public static int[] MaterialRarity = ItemID.Sets.Factory.CreateIntSet(0);
         public static bool[] IsBrewingMaterial = ItemID.Sets.Factory.CreateBoolSet();
         public static bool[] IsBrewingMold = ItemID.Sets.Factory.CreateBoolSet();
@@ -210,6 +225,11 @@ namespace Stellamod.Items
                 (x => x.material == material && materialCount >= x.materialAmount).ToList();
             return possibleBrews;
         }
+        public int CountCraftsInMaterial(int materialType)
+        {
+            return _brews.Count(x => x.material == materialType);
+        }
+
         public Item FindMaterial(Item item)
         {
             foreach (var brew in _brews)

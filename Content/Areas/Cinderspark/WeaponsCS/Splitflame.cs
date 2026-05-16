@@ -10,7 +10,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;

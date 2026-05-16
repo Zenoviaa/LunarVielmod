@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Items.Materials;
+
 using Stellamod.Core.Particles;
 using Stellamod.Items.Materials;
 using Stellamod.Items.Ores;

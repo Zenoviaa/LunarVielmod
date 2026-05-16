@@ -2,7 +2,6 @@
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;

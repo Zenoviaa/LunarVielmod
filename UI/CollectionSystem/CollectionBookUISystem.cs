@@ -174,7 +174,6 @@ namespace Stellamod.UI.CollectionSystem
 
         public void OpenCollectionTabUI()
         {
-            collectionItemTabUI.ui.Glow = 1f;
             _tabsUserInterface.SetState(collectionItemTabUI);
             _rightInfoUserInterface.SetState(null);
         }

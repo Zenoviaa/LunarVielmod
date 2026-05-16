@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 using Terraria;
 
-namespace Stellamod.Content.Items.Materials
+namespace Stellamod.Content.CommonMaterials
 {
     public class DragonShard : ModItem
     {

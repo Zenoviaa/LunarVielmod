@@ -5,7 +5,6 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Gun;
 using Stellamod.Visual.Particles;
 using System;

@@ -7,7 +7,6 @@ using Stellamod.Core.Effects;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Stellamod.Trailing;
 using Terraria;
 using Terraria.Audio;

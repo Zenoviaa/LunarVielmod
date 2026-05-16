@@ -4,6 +4,7 @@ using ReLogic.Utilities;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.PunkerTown.TilesPT;
 using Stellamod.Content.Areas.Terror.TilesTR;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
 using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Swords.Altride;
@@ -3425,7 +3426,7 @@ public static class VeilGen
                         }
                     }
 
-                    itemsToAdd.Add((ModContent.ItemType<GrailBar>(), genRand.Next(3, 5)));
+                    itemsToAdd.Add((ModContent.ItemType<MinersGold>(), genRand.Next(3, 5)));
                     if (genRand.NextBool(3))
                     {
                         switch (genRand.Next(0, 2))

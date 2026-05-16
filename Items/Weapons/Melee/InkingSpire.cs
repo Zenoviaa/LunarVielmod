@@ -2,7 +2,6 @@
 using Stellamod.Core.Bases;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
-using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Trailing;
 using Terraria;

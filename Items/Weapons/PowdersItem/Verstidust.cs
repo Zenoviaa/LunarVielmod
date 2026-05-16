@@ -24,7 +24,7 @@ namespace Stellamod.Items.Weapons.PowdersItem
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<GrailBar>());
+          //  this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<GrailBar>());
         }
     }
 }

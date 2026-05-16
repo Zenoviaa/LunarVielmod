@@ -5,6 +5,7 @@ using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander;
 using Stellamod.Content.Areas.Collosseum.BossesCL.Gustbeak;
 using Stellamod.Content.Areas.Collosseum.Event;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.TitleSystem;
 using Stellamod.Helpers;
 using Stellamod.Items.Ores;

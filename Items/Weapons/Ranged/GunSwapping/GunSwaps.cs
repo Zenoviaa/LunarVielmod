@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Items.Materials;
 using Stellamod.Gores;
 using Stellamod.Helpers;
 using Stellamod.Items.Materials;
@@ -1436,7 +1435,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<GrailBar>());
+       //     this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<GrailBar>());
         }
     }
 
@@ -1480,7 +1479,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<VirulentPlating>());
+        //    this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<VirulentPlating>());
         }
     }
 
@@ -1556,7 +1555,7 @@ namespace Stellamod.Items.Weapons.Ranged.GunSwapping
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<VirulentPlating>());
+       //     this.RegisterBrew(mold: ModContent.ItemType<BlankGun>(), material: ModContent.ItemType<VirulentPlating>());
         }
     }
 

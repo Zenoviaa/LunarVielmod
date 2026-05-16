@@ -2,7 +2,7 @@
 using Stellamod.Common;
 using Stellamod.Common.Animations;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Items.Materials;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;

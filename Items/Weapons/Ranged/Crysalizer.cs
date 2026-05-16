@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Bow;
 using Terraria;
 using Terraria.Audio;

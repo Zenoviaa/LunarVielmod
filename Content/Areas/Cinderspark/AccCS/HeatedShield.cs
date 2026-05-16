@@ -7,7 +7,6 @@ using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.ProjectileHelpers;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;

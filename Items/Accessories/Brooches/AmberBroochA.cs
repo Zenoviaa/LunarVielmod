@@ -1,7 +1,6 @@
 ﻿using Stellamod.Buffs.Charms;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
-using Stellamod.Items.Harvesting;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Common;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Items.Materials;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Astar;
 using Stellamod.Core.Particles;
 using Stellamod.Dusts;

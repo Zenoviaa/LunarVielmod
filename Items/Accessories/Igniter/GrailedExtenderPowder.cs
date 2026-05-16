@@ -44,7 +44,7 @@ namespace Stellamod.Items.Accessories.Igniter
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<GrailBar>());
+         //   this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<GrailBar>());
         }
         public override void SetDefaults()
         {

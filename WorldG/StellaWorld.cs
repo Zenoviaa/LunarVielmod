@@ -14,7 +14,6 @@ using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Content.Areas.WorldsEnd.TilesWE;
 using Stellamod.Content.Armors.Alcalite;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Items.Materials;
 using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.Utilities;
 using Stellamod.Core.ZTileSystem;

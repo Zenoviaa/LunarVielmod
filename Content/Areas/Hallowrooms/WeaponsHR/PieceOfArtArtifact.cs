@@ -11,7 +11,6 @@ using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Ores;
 using Stellamod.Projectiles.Paint;
 using Stellamod.Projectiles.Visual;
 using Stellamod.Trails;

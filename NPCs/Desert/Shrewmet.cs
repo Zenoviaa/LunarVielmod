@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Stellamod.Items.Harvesting;
+using Stellamod.Content.CommonMaterials;
 using System.IO;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;

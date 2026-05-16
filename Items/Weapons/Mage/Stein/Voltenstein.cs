@@ -104,7 +104,7 @@ namespace Stellamod.Items.Weapons.Mage.Stein
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankStein>(), material: ModContent.ItemType<VirulentPlating>());
+        //    this.RegisterBrew(mold: ModContent.ItemType<BlankStein>(), material: ModContent.ItemType<VirulentPlating>());
         }
 
 

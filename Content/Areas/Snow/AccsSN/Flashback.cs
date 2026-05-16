@@ -1,5 +1,4 @@
 ﻿using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Items.Materials;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Visual.Particles;

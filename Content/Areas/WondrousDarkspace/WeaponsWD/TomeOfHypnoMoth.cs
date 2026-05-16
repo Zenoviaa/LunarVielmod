@@ -19,7 +19,6 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Stellamod.Core.Effects;
 using Stellamod.Trailing;
 using Stellamod.Content.CommonMaterials;

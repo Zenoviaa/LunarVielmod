@@ -5,7 +5,6 @@ using Stellamod.Core.SwingSystem;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles.Swords;
 using Stellamod.Trailing;
 using Terraria;

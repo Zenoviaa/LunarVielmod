@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets.Biomes;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Items.Harvesting;
 using Stellamod.Items.Materials;
 using System.IO;

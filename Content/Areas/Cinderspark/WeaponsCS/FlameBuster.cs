@@ -4,7 +4,6 @@ using Stellamod.Common.Players;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Harvesting;
 using Stellamod.Projectiles.Gun;
 using Terraria;
 using Terraria.Audio;

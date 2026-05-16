@@ -1,7 +1,7 @@
 ﻿using Stellamod.Assets.Biomes;
 using Stellamod.Content.Biomes;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;

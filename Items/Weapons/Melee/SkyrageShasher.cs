@@ -7,7 +7,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Stellamod.Visual.Particles;
 
 using Terraria;

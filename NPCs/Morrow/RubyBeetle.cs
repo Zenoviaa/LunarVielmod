@@ -1,6 +1,5 @@
 ﻿using Stellamod.Content.Biomes;
-using Stellamod.Items.Harvesting;
-using Stellamod.Items.Materials;
+using Stellamod.Content.CommonMaterials;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;

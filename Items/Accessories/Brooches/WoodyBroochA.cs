@@ -26,7 +26,7 @@ namespace Stellamod.Items.Accessories.Brooches
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankBrooch>(), material: ModContent.ItemType<VirulentPlating>());
+         //   this.RegisterBrew(mold: ModContent.ItemType<BlankBrooch>(), material: ModContent.ItemType<VirulentPlating>());
         }
 
     }

@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 using Stellamod.Common.ArmorRework;
-using Stellamod.Content.Items.Materials;
+
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent.Creative;

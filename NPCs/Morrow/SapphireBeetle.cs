@@ -1,5 +1,5 @@
 ﻿using Stellamod.Assets.Biomes;
-using Stellamod.Items.Materials;
+using Stellamod.Content.CommonMaterials;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;

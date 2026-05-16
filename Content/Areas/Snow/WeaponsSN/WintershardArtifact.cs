@@ -3,7 +3,6 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Items.Materials;
 using Stellamod.Content.Items.MoonlightMagic.Elements;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;

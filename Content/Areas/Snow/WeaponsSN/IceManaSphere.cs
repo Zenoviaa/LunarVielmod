@@ -4,7 +4,6 @@ using Stellamod.Common.WeaponTypes;
 using Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Gores;
-using Stellamod.Content.Items.Materials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;

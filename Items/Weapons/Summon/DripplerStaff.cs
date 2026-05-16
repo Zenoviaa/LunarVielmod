@@ -3,7 +3,6 @@ using Stellamod.Common.SummonerSystem;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Helpers;
-using Stellamod.Items.Materials;
 using Stellamod.Projectiles;
 using System;
 using Terraria;

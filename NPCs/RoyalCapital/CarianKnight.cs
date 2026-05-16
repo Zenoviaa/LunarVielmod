@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Stellamod.Assets.Biomes;
-using Stellamod.Items.Materials;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Projectiles;
 using Terraria;
 using Terraria.Audio;

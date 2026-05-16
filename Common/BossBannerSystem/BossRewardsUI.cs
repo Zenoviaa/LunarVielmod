@@ -1,5 +1,5 @@
 ﻿using ReLogic.Content;
-using Stellamod.Content.Items.Materials;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;

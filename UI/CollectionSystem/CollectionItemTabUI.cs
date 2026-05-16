@@ -1,14 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
+using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Materials.Molds;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
+using Terraria.UI.Chat;
 
 namespace Stellamod.UI.CollectionSystem;
 
@@ -100,54 +104,54 @@ public class CollectionItemTabCraft : UIElement
         spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
         Main.inventoryScale = oldScale;
     }
+
+
 }
+
+
+/// <summary>
+/// The individual slot that you click on to open up all the items you can create with that material
+/// </summary>
 public class CollectionItemTabSlot : UIElement
 {
-    public Item Item;
-    private readonly int _context;
-    private readonly float _scale;
-    public CollectionItemTabSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f)
+    private Vector2 _hoverScale;
+    public CollectionItemTabSlot()
     {
-        _context = context;
-        _scale = scale;
-        Item = new Item();
-        Item.SetDefaults(ItemID.None);
+        item = new Item();
+        item.SetDefaults(ItemID.None);
 
         var value = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}CollectionTabSlot",
             ReLogic.Content.AssetRequestMode.ImmediateLoad);
-        Width.Set(value.Width() * scale, 0f);
-        Height.Set(value.Height() * scale, 0f);
+        Width.Set(value.Width() * 16, 0f);
+        Height.Set(value.Height(), 0f);
         OnLeftClick += OnButtonClick;
         OnMouseOver += OnMouseHover;
     }
 
-    public float Glow { get; set; }
-
+    public Item item;
     private void OnButtonClick(UIMouseEvent evt, UIElement listeningElement)
     {
         CollectionBookUISystem uiSystem = ModContent.GetInstance<CollectionBookUISystem>();
-        uiSystem.OpenRecipesInfoUI(Item);
+        uiSystem.OpenRecipesInfoUI(item);
     }
 
     private void OnMouseHover(UIMouseEvent evt, UIElement listeningElement)
     {
 
     }
-
-    public override void Update(GameTime gameTime)
+    public override int CompareTo(object obj)
     {
-        base.Update(gameTime);
-        bool contains = ContainsPoint(Main.MouseScreen);
-        if (contains && !PlayerInput.IgnoreMouseInterface)
+        if (obj is CollectionItemTabSlot other)
         {
-            Main.LocalPlayer.mouseInterface = true;
+            Item itemA = item;
+            Item itemB = other.item;
+            return Cauldron.MaterialOrder[itemA.type].CompareTo(Cauldron.MaterialOrder[itemB.type]);
         }
-    }
 
+        return base.CompareTo(obj);
+    }
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
-        float oldScale = Main.inventoryScale;
-        Main.inventoryScale = _scale;
         Rectangle rectangle = GetDimensions().ToRectangle();
 
         bool contains = ContainsPoint(Main.MouseScreen);
@@ -156,38 +160,62 @@ public class CollectionItemTabSlot : UIElement
             Main.LocalPlayer.mouseInterface = true;
         }
 
+        Vector2 targetHoverScale = contains ? new Vector2(1.2f) : Vector2.One;
+        _hoverScale = Vector2.Lerp(_hoverScale, targetHoverScale, 0.25f);
+
         //Draw Backing
-        Color color2 = Main.inventoryBack;
         Vector2 pos = rectangle.TopLeft();
         Texture2D value = ModContent.Request<Texture2D>($"{CollectionBookUISystem.RootTexturePath}CollectionTabSlot").Value;
-        Vector2 centerPos = pos + rectangle.Size() / 2f;
-
-        spriteBatch.Draw(value, rectangle.TopLeft(), null, color2, 0f, default(Vector2), _scale, SpriteEffects.None, 0f);
-        ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos, _scale, 32, Color.White);
-
+        Vector2 centerPos = rectangle.TopLeft() + new Vector2(18, rectangle.Height * 0.5f);
+        spriteBatch.Draw(value, rectangle.TopLeft(), null, Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
 
         if (contains)
         {
-            Main.hoverItemName = Item.Name;
-            Main.HoverItem = Item;
+            var whiteShader = SpriteWhiteShader.Instance;
+            float outlineOffset = 2;
+            RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+            SamplerState anisotropicClamp = SamplerState.PointClamp;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, Main.Rasterizer, whiteShader.Effect, Main.UIScaleMatrix);
+   
+            for(float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver2)
+            {
+                Vector2 offset = f.ToRotationVector2() * outlineOffset;
+                ItemSlot.DrawItemIcon(item, ItemSlot.Context.InventoryItem, spriteBatch, centerPos + offset, _hoverScale.X, 32, Color.White);
+            }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, default, Main.UIScaleMatrix);
         }
 
+        ItemSlot.DrawItemIcon(item, ItemSlot.Context.InventoryItem, spriteBatch, centerPos, _hoverScale.X, 32, Color.White);
 
-        spriteBatch.End();
-        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, default, default, default, default, Main.UIScaleMatrix);
 
-        for (int i = 0; i < 8f; i++)
+        //Drawing the number of things you have unlocked
         {
-            Color glowColor = Color.White * Glow;
-            float progress = (float)i / 8f;
-            float rot = progress * MathHelper.TwoPi;
-            Vector2 offset = rot.ToRotationVector2() * 8 * Glow;
-            ItemSlot.DrawItemIcon(Item, _context, spriteBatch, centerPos + offset, _scale, 32, glowColor);
+            var cauldronPlayer = ModContent.GetInstance<CauldronPlayer>();
+            var cauldron = ModContent.GetInstance<Cauldron>();
+            string amountYouHave = $"{cauldronPlayer.CountCraftsInMaterial(item.type)} / {cauldron.CountCraftsInMaterial(item.type)}";
+            Vector2 textSize = FontAssets.MouseText.Value.MeasureString(item.Name);
+            Vector2 origin = new Vector2(0f, textSize.Y * 0.5f);
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, amountYouHave, centerPos + Vector2.UnitX * 32,
+                Color.White, 0, origin, Vector2.One);
         }
 
-        spriteBatch.End();
-        spriteBatch.Begin(default, default, default, default, default, default, Main.UIScaleMatrix);
-        Main.inventoryScale = oldScale;
+        //Draw the name of the item
+        {
+            Vector2 textSize = FontAssets.MouseText.Value.MeasureString(item.Name);
+            Vector2 origin = new Vector2(0f, textSize.Y * 0.5f);
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, item.Name, centerPos + Vector2.UnitX * 128,
+                Color.White, 0, origin, Vector2.One);
+        }
+
+        //Hovering text
+        if (contains)
+        {
+            Main.hoverItemName = item.Name;
+            Main.HoverItem = item;
+        }
     }
 }
 public class CollectionItemRecipesUI : UIPanel
@@ -316,13 +344,12 @@ public class CollectionItemTabUI : UIPanel
     public const int width = 480;
     public const int height = 155;
 
-    public int RelativeLeft => Main.screenWidth / 2 - width / 2 - 64;
+    public int RelativeLeft => Main.screenWidth / 2 - width / 2 - 128;
     public int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
-    public float Glow { get; set; }
     public override void OnInitialize()
     {
         base.OnInitialize();
-        Width.Pixels = 48 * 6f;
+        Width.Pixels = 48 * 8;
         Height.Pixels = 48 * 9;
         Left.Pixels = RelativeLeft;
         Top.Pixels = RelativeTop;
@@ -346,7 +373,7 @@ public class CollectionItemTabUI : UIPanel
         _scrollbar = new FancyScrollbar();
         _scrollbar.Width.Set(20, 0);
         _scrollbar.Height.Set(340, 0);
-        _scrollbar.Left.Set(0, 0.9f);
+        _scrollbar.Left.Set(0, 0.94f);
         _scrollbar.Top.Set(0, 0.05f);
 
         float maxViewSize = 48 * 8f;
@@ -360,34 +387,21 @@ public class CollectionItemTabUI : UIPanel
         _uiList.Add(_panel);
         _uiList.SetScrollbar(_scrollbar);
         Append(_uiList);
-        Glow = 1;
     }
 
-    public override void Recalculate()
+    public override void OnActivate()
     {
-        //Recalculate the UI when there is some sort of update
-        Left.Pixels = RelativeLeft;
-        Top.Pixels = RelativeTop;
-        _slotGrid?.Clear();
-        if (Main.gameMenu)
-            return;
-
-        //We just need to get the number of unique materials since that's how we're sorting things
-
+        base.OnActivate();
+        _slotGrid.Clear();
         var cauldron = ModContent.GetInstance<Cauldron>();
         Item[] materialsYouCanCraftWith = cauldron.GetMaterials();
         for (int i = 0; i < materialsYouCanCraftWith.Length; i++)
         {
             Item mat = materialsYouCanCraftWith[i];
             CollectionItemTabSlot slot = new CollectionItemTabSlot();
-            slot.Item = mat;
-            slot.Glow = Glow;
+            slot.item = mat;
             _slotGrid.Add(slot);
         }
-
-        _slotGrid.Recalculate();
-        base.Recalculate();
-
     }
 
     public override void Update(GameTime gameTime)
@@ -396,8 +410,7 @@ public class CollectionItemTabUI : UIPanel
         //Constantly lock the UI in the position regardless of resolution changes
         Left.Pixels = RelativeLeft;
         Top.Pixels = RelativeTop;
-        Glow *= 0.985f;
-
+        
         _panel.Height.Pixels = _slotGrid.GetTotalHeight() + 32;
         float progress = _panel.Height.Pixels / Height.Pixels;
         progress = MathHelper.Clamp(progress, 0f, 1f);
@@ -412,5 +425,6 @@ public class CollectionItemTabUI : UIPanel
         {
             _scrollbar.Top.Set(0, 0f);
         }
+ 
     }
 }

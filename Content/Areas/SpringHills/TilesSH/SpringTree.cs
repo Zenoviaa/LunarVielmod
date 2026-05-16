@@ -1,5 +1,5 @@
 ﻿using ReLogic.Content;
-using Stellamod.Content.Items.Materials;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent;
