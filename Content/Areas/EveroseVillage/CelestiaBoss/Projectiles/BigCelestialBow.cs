@@ -21,7 +21,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.EveroseVillage.CelestiaBoss.Projectiles;
 
-public class BigCelestialBow : ModProjectile
+public class BigCelestialBow : ModProjectile,
+    IDrawToRenderTarget
 {
     private int _growthIndex;
     private float _growthTimer;
@@ -393,7 +394,7 @@ public class BigCelestialBow : ModProjectile
         arrowDrawer.worldPosition += _arrowOffset + _bowOffset;
 
         Main.spriteBatch.Draw(arrowDrawer);
-        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedPrims);
+
         return false;
     }
     private MagicCircleRenderer _magicCircleRenderer;
@@ -431,6 +432,11 @@ public class BigCelestialBow : ModProjectile
             dp.Scale *= 1.5f;
             dp.innerColor = Color.Lerp(Color.White, Color.Turquoise, Main.rand.NextFloat(0f, 1f));
         }
+    }
+
+    public void DrawToRenderTargets()
+    {
+        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedPrims);
     }
 }
 

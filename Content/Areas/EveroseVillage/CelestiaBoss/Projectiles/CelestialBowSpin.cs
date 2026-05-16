@@ -12,7 +12,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.EveroseVillage.CelestiaBoss.Projectiles;
 
-public class CelestialBowSpin : ModProjectile
+public class CelestialBowSpin : ModProjectile,
+    IDrawToRenderTarget
 {
     private Vector2 _mirageOffset;
     private ref float Timer => ref Projectile.ai[0];
@@ -210,8 +211,13 @@ public class CelestialBowSpin : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
+
+        return false;
+    }
+
+    public void DrawToRenderTargets()
+    {
         PixelationManager.QueuePrimitivesDrawAction(DrawCelestialTrail, DrawLayer.BehindNPCsWithOutline);
         PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedBows);
-        return false;
     }
 }
