@@ -55,16 +55,16 @@ namespace Stellamod.Core.Pixelation
         public delegate void SpritebatchDrawAction(SpriteBatch spriteBatch, Vector2 screenPos);
 
         private int _renderCount = 0;
-        private ManagedRenderTarget _downScaleRenderTarget;
+        private ManagedRenderTarget _downscaleRenderTarget;
         private ManagedRenderTarget _originalRenderTarget;
         private Queue<SpritebatchDrawAction> _spritebatchActionsQueue;
         private Queue<PrimitivesDrawAction> _primitivesActionsQueue;
         private float _downSamples;
         private BlendState _blendState;
-        public PixelTarget(int downSamples = 2, BlendState blendState = null, bool mipMap = false)
+        public PixelTarget(ManagedRenderTarget downScaleRenderTarget, int downSamples = 2, BlendState blendState = null, bool mipMap = false)
         {
             _downSamples = downSamples;
-            _downScaleRenderTarget = ManagedRenderTarget.New(null, downSamples, mipMap);
+            _downscaleRenderTarget = downScaleRenderTarget;
             _originalRenderTarget = ManagedRenderTarget.New(mipMap: mipMap);
             _spritebatchActionsQueue = new Queue<SpritebatchDrawAction>(100);
             _primitivesActionsQueue = new Queue<PrimitivesDrawAction>(100);
@@ -85,14 +85,8 @@ namespace Stellamod.Core.Pixelation
 
         public void Render()
         {
-            RenderToOriginalRenderTarget();
-            RenderToDownscaledRenderTarget();
-        }
-
-        private void RenderToOriginalRenderTarget()
-        {
             _renderCount = 0;
-            if(_primitivesActionsQueue.Count <= 0 && _spritebatchActionsQueue.Count <= 0)
+            if (_primitivesActionsQueue.Count <= 0 && _spritebatchActionsQueue.Count <= 0)
             {
                 return;
             }
@@ -100,7 +94,7 @@ namespace Stellamod.Core.Pixelation
             GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
             graphicsDevice.SetRenderTarget(_originalRenderTarget);
             graphicsDevice.Clear(Color.Transparent);
-         
+
             //Primitives cannot draw within the spritebatch cause they modify the graphics state
             //Which would cause inconsistent results if they drew within the spritebatch
             //To get around this we just have them draw before
@@ -112,43 +106,29 @@ namespace Stellamod.Core.Pixelation
                 _renderCount++;
             }
 
-
-       
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
 
             while (_spritebatchActionsQueue.Count > 0)
-                {
-                    SpritebatchDrawAction drawAction = _spritebatchActionsQueue.Dequeue();
-                    drawAction(spriteBatch, Main.screenPosition);
-                    _renderCount++;
-                }
+            {
+                SpritebatchDrawAction drawAction = _spritebatchActionsQueue.Dequeue();
+                drawAction(spriteBatch, Main.screenPosition);
+                _renderCount++;
+            }
             spriteBatch.End();
 
-        }
-
-        private void RenderToDownscaledRenderTarget()
-        {
-            if (_renderCount <= 0)
-                return;
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-            graphicsDevice.SetRenderTarget(_downScaleRenderTarget);
+            //Draw to the downscaled render target
+            graphicsDevice.SetRenderTarget(_downscaleRenderTarget);
             graphicsDevice.Clear(Color.Transparent);
 
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
             float downScale = 1f / _downSamples;
             spriteBatch.Draw(_originalRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, downScale, SpriteEffects.None, 0);
             spriteBatch.End();
-        }
 
-        public void DrawToScreen()
-        {
-            if (_renderCount <= 0)
-                return;
+            //Draw back to the original render target
+            graphicsDevice.SetRenderTarget(_originalRenderTarget);
+            graphicsDevice.Clear(Color.Transparent);
 
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            
             if (outlineColor.HasValue)
             {
                 Vector2 v = Vector2.UnitX * 2;
@@ -158,39 +138,31 @@ namespace Stellamod.Core.Pixelation
                 SpriteWhiteShader whiteShader = SpriteWhiteShader.Instance;
                 spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, whiteShader.Effect);
 
-                spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero + v, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
-                spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero - v, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
-                spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero + h, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
-                spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero - h, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+                spriteBatch.Draw(_downscaleRenderTarget, Vector2.Zero + v, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+                spriteBatch.Draw(_downscaleRenderTarget, Vector2.Zero - v, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+                spriteBatch.Draw(_downscaleRenderTarget, Vector2.Zero + h, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+                spriteBatch.Draw(_downscaleRenderTarget, Vector2.Zero - h, null, oColor, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
 
                 spriteBatch.End();
             }
-            
-           // DrawWithPixelateShader();
-            DrawByUpScale();
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+            spriteBatch.Draw(_downscaleRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, _downSamples, SpriteEffects.None, 0);
+            spriteBatch.End();
         }
 
-        private void DrawWithPixelateShader()
+
+        public void DrawToScreen()
         {
+            if (_renderCount <= 0)
+                return;
+
             SpriteBatch spriteBatch = Main.spriteBatch;
-            PixelateShader pixelateShader = ShaderContent.GetInstance<PixelateShader>();
-            pixelateShader.Width = _originalRenderTarget.Width / 2;
-            pixelateShader.Height = _originalRenderTarget.Height / 2;
-
-            spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, pixelateShader.Effect);
-
+            spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
             spriteBatch.Draw(_originalRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
         }
 
-        private void DrawByUpScale()
-        {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred, _blendState, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
-            spriteBatch.Draw(_downScaleRenderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
-            spriteBatch.End();
-
-        }
     }
 
     public interface IRenderer
@@ -256,12 +228,50 @@ namespace Stellamod.Core.Pixelation
         }
     }
 
+    public interface IDrawToRenderTarget
+    {
+        void DrawToRenderTargets();
+    }
+
+
+    [Autoload(Side = ModSide.Client)]
+    public class PrepareRenderTargetDrawsSystem : ModSystem
+    {
+        public static event Action OnRenderTargetDrawsReady;
+        public override void Load()
+        {
+            base.Load();
+            On_Main.CheckMonoliths += CheckRenderTargetDraws;
+        }
+
+        private void CheckRenderTargetDraws(On_Main.orig_CheckMonoliths orig)
+        {
+            if (!Main.gameMenu)
+            {
+                foreach (var proj in Main.ActiveProjectiles)
+                {
+                    if (proj.ModProjectile is IDrawToRenderTarget drawToRenderTarget)
+                        drawToRenderTarget.DrawToRenderTargets();
+                }
+
+                foreach (var npc in Main.ActiveNPCs)
+                {
+                    if (npc.ModNPC is IDrawToRenderTarget drawToRenderTarget)
+                        drawToRenderTarget.DrawToRenderTargets();
+                }
+                OnRenderTargetDrawsReady?.Invoke();
+            }
+
+            orig();
+        }
+    }
     /// <summary>
     /// Manages create a pixelation effect for our weapons
     /// </summary>
     [Autoload(Side = ModSide.Client)]
     public class PixelationManager : ModSystem
     {
+        private ManagedRenderTarget _downscaledTarget;
         private PixelTarget _overNPCsPixelTarget;
         private PixelTarget _overNPCsPixelTargetAdditive;
         private PixelTarget _overNPCsPixelTargetWithOutline;
@@ -279,6 +289,7 @@ namespace Stellamod.Core.Pixelation
         public override void Load()
         {
             base.Load();
+            PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady += Render;
             On_FilterManager.EndCapture += RenderToPixelRTs;
             On_Main.DoDraw_Tiles_NonSolid += RenderBehindTiles2;
             On_Main.DoDraw_DrawNPCsBehindTiles += RenderBehindTiles;
@@ -308,11 +319,12 @@ namespace Stellamod.Core.Pixelation
             FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, 
             Color clearColor)
         {
+            /*
             if (!Main.gameMenu)
             {
-                OnPreRender?.Invoke();
+          
                 Render();
-            }
+            }*/
              orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
 
         }
@@ -320,27 +332,27 @@ namespace Stellamod.Core.Pixelation
         public override void OnModLoad()
         {
             base.OnModLoad();
-            _overNPCsPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
-            _overNPCsPixelTargetWithOutline = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+            _downscaledTarget = ManagedRenderTarget.New(ManagedRenderTarget.GetHalfScreenTargetSize);
+            _overNPCsPixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
+            _overNPCsPixelTargetWithOutline = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
             _overNPCsPixelTargetWithOutline.outlineColor = Color.Black;
 
-            _behindNPCsPixelTargetWithOutline = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+            _behindNPCsPixelTargetWithOutline = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
             _behindNPCsPixelTargetWithOutline.outlineColor = Color.Black;
 
-            _overNPCsPixelTargetAdditive = new PixelTarget(downSamples: 2, BlendState.Additive);
+            _overNPCsPixelTargetAdditive = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.Additive);
 
-            _frontGrassPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend, true);
+            _frontGrassPixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend, true);
             _frontGrassPixelTarget.outlineColor = Color.Lerp(Color.Goldenrod, Color.Black, 0.7f);
 
-            _backGrassPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend, true);
+            _backGrassPixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend, true);
             _backGrassPixelTarget.outlineColor = Color.Lerp(Color.Goldenrod, Color.Black, 0.7f);
 
-            _overPlayersPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+            _overPlayersPixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
 
 
-            _behindTilesPixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
-
-            _behindTilesOutlinePixelTarget = new PixelTarget(downSamples: 2, BlendState.AlphaBlend);
+            _behindTilesPixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
+            _behindTilesOutlinePixelTarget = new PixelTarget(_downscaledTarget, downSamples: 2, BlendState.AlphaBlend);
         }
         public override void Unload()
         {
