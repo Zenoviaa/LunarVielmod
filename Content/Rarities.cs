@@ -196,7 +196,7 @@ namespace Stellamod.Content
     }
     public class AlcaricMushRarity : ModRarity
     {
-        public override Color RarityColor => Color.Lerp(Color.MediumPurple, Color.Black, 0.75f);
+        public override Color RarityColor => Color.Lerp(Color.LightPink, Color.Black, 0.25f);
         public override int GetPrefixedRarity(int offset, float valueMult)
         {
             if (offset > 0)

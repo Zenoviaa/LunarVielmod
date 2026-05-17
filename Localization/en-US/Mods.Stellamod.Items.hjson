@@ -11225,3 +11225,8 @@ MimicTileItem: {
 	DisplayName: Mimic Tile Item
 	Tooltip: ""
 }
+
+SparklestarArtifact: {
+	DisplayName: Sparklestar Artifact
+	Tooltip: "Throws forth a sparkling orb that lets out small starry dust exploding into larger stars! Go crazy, make fireworks!"
+}
