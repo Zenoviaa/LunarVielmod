@@ -4211,8 +4211,8 @@ for (int beamX = structureRectangle.Location.X;
         progress.Message = "Set Xix Village";
         string path = "Structures/WitchTown";
         var rectangle = Structurizer.ReadRectangle(path);
-        int yOffset = Structurizer.OffsetToGround(path);
-        Mod.Logger.Debug($"Witch Town Offset to Ground {yOffset}");
+       // int yOffset = Structurizer.OffsetToGround(path);
+      //  Mod.Logger.Debug($"Witch Town Offset to Ground {yOffset}");
 
         bool placed = false;
         int attempts = 0;

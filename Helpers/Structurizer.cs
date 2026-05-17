@@ -134,15 +134,20 @@ namespace Stellamod.Helpers
             return true;
         }
 
+        public struct StructureTile
+        {
+            public bool hasTile;
+            public ushort tileType;
+        }
         public static int OffsetToGround(string structurePath)
         {
-            Tile[,] tileMap = ReadTileData(structurePath);
+          var tileMap = ReadTileData(structurePath);
             int yOffset = 0;
-            for(int y = 0; y < tileMap.GetLength(1); y++)
+            for(int y = 0; y < tileMap.GetLength(0); y++)
             {
-                Tile tile = tileMap[0, tileMap.GetLength(1) - y - 1];
+                StructureTile tile = tileMap[0, tileMap.GetLength(1) - y - 1];
 
-                if (tile.HasTile && Main.tileSolid[tile.TileType])
+                if (tile.hasTile && Main.tileSolid[tile.tileType])
                 {
                     yOffset = y;
                     break;
@@ -153,7 +158,7 @@ namespace Stellamod.Helpers
                 Console.WriteLine();
                 for (int y =0; y < tileMap.GetLength(1); y++)
                 {
-                    Console.Write(tileMap[x, y].HasTile);
+                    Console.Write(tileMap[x, y].hasTile);
                 }
             }
 
@@ -162,22 +167,22 @@ namespace Stellamod.Helpers
             return yOffset;
         }
 
-        public static Tile[,] ReadTileData(string structurePath)
+        public static StructureTile[,] ReadTileData(string structurePath)
         {
             using Stream stream = Mod.GetFileStream(structurePath + ".str");
             return ReadTileData(stream);
         }
 
-        public static Tile[,] ReadTileData(Stream stream)
+        public static StructureTile[,] ReadTileData(Stream stream)
         {
             using var reader = new BinaryReader(stream, Encoding.UTF8, false);
             int width = reader.ReadInt32();
             int height = reader.ReadInt32();
-      
-            Tile[,] tileMap = new Tile[width+1, height+1];
+
+            StructureTile[,] tilemap = new StructureTile[width + 1, height + 1];
             void InnerLoop(int i, int j)
             {
-                Tile t = tileMap[i, j];
+                Tile t = new Tile();
                 t.ClearEverything();
 
                 //tile
@@ -190,11 +195,12 @@ namespace Stellamod.Helpers
                 t.YellowWire = reader.ReadBoolean();
                 t.HasActuator = reader.ReadBoolean();
                 t.IsActuated = reader.ReadBoolean();
+                int TileType = 0;
                 if (hastile)
                 {
                     t.HasTile = hastile;
                     bool Modded = reader.ReadBoolean();
-                    int TileType = 0;
+                
                     if (Modded)
                     {
                         TileType = ReadModTile(reader);
@@ -236,8 +242,12 @@ namespace Stellamod.Helpers
                 t.WallColor = reader.ReadByte();
                 t.IsWallInvisible = reader.ReadBoolean();
                 t.IsWallFullbright = reader.ReadBoolean();
-   
 
+                tilemap[i, j] = new StructureTile
+                {
+                    hasTile = hastile,
+                    tileType = (ushort)TileType
+                };
             }
 
             for (int i = 0; i <= width; i++)
@@ -248,7 +258,7 @@ namespace Stellamod.Helpers
                 }
             }
 
-            return tileMap;
+            return tilemap;
         }
 
 
