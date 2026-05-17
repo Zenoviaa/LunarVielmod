@@ -93,8 +93,8 @@ namespace Stellamod.NPCs.Town
         }
         public override void SetPointSpawnerDefaults(ref NPCPointSpawner spawner)
         {
-            spawner.structureToSpawnIn = "Struct/Overworld/WitchTown";
-            spawner.spawnTileOffset = new Point(150, -25);
+            spawner.structureToSpawnIn = "Structures/WitchTown";
+            spawner.spawnTileOffset = new Point(150, -25 - 38);
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
