@@ -109,6 +109,7 @@ public partial class StellaWorld : ModSystem
     public Point MarshLocation { get; private set; }
     public Point AlcadLocation { get; private set; }
     public Point CoralwaysLocation { get; private set; }
+    public Point SnowClumpOriginPoint { get; private set; }
     public Point GothiviaSpawnOffset => new Point(246, -99);
     public Point BublbtrifierSpawnOffset => new Point(246, -99);
 
@@ -356,6 +357,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Water Wobble Cave", WorldGen_WaterWobbleCave));
         passWriter.NextPass(new PassLegacy("Craftsman Cave", WorldGen_CraftsMenCaves));
         passWriter.NextPass(new PassLegacy("Treasure Trove", WorldGen_TreasureTrove));
+        passWriter.NextPass(new PassLegacy("Moonspiral Tower", WorldGen_MoonspiralTower));
 
         passWriter.SetInsertionIndex("Generate Ice Biome");
 
@@ -394,6 +396,20 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Stone Golem Cave", WorldGenStoneGolemCave));
         passWriter.NextPass(new PassLegacy("Grassing Caves", WorldGenGrassPass));
     }
+
+    private void WorldGen_MoonspiralTower(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Moonspiral Tower";
+        Point snowCenter = SnowClumpOriginPoint;
+
+        string structurePath = $"Structures/MoonspiralTower";
+        Rectangle structureRect = Structurizer.ReadRectangle(structurePath);
+        snowCenter.X -= structureRect.Width / 2;
+        snowCenter.Y -= 120;
+        snowCenter.Y += 8;
+        Structurizer.ReadStruct(snowCenter, structurePath);
+    }
+
     private void WorldGen_TreasureTrove(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Treasure Trove";
@@ -1561,19 +1577,10 @@ public partial class StellaWorld : ModSystem
             GenVars.dungeonX = point.X;
             GenVars.dungeonY = point.Y;
 
-            /*
-            //Spawn old man
-            Point oldManPoint = point;
-            oldManPoint.X += 10;
-            oldManPoint.Y -= 20;
+            //Here we need to get the first room and like draw some blocks downward
+            Rectangle firstRoomRect = Structurizer.ReadRectangle(map[0].prefab);
+            //This hsould give us an outline of bricks, I think
 
-            int npcType = NPCID.OldMan;
-            int num297 = NPC.NewNPC(new EntitySource_WorldGen(), oldManPoint.X, oldManPoint.Y, npcType);
-            Main.npc[num297].homeTileX = oldManPoint.X;
-            Main.npc[num297].homeTileY = oldManPoint.Y;
-            Main.npc[num297].direction = 1;
-            Main.npc[num297].homeless = true;
-            */
 
             //The first room is the starting room, we don't want to outline that one
             //So we're just gonna start from index 1 to skip it
@@ -1610,6 +1617,31 @@ public partial class StellaWorld : ModSystem
                 bottomLeft.Y += tileY;
                 bottomLeft.Y -= map[0].bounds.Height;
                 Structurizer.ReadStruct(bottomLeft, room.prefab, tileBlend);
+                if(r == 0)
+                {
+                    Rectangle rect = Structurizer.ReadRectangle(room.prefab);
+                    rect.Location = bottomLeft;
+                    Point start = bottomLeft;
+                    for (int x = start.X; x < start.X + rect.Width; x++)
+                    {
+                        Point downPoint = new Point(x, start.Y + 1);
+                        for (int y = 0; y < 50; y++)
+                        {
+                            Tile tile = Main.tile[downPoint];
+                            //Checking for walls cause we don't wanna break the inside of the dungeon
+                            if (tile.WallType == 0)
+                            {
+                                tile.ClearEverything();
+                                tile.TileType = TileID.Dirt;
+                                tile.HasTile = true;
+                                tile.TileFrameX = -1;
+                                tile.TileFrameY = -1;
+
+                            }
+                            downPoint.Y++;
+                        }
+                    }
+                }
                 Structurizer.ProtectStructure(bottomLeft, room.prefab);
             }
             placed = true;
@@ -4180,6 +4212,7 @@ for (int beamX = structureRectangle.Location.X;
         string path = "Structures/WitchTown";
         var rectangle = Structurizer.ReadRectangle(path);
         int yOffset = Structurizer.OffsetToGround(path);
+        Mod.Logger.Debug($"Witch Town Offset to Ground {yOffset}");
 
         bool placed = false;
         int attempts = 0;
@@ -5826,37 +5859,35 @@ for (int beamX = structureRectangle.Location.X;
         }
 
 
-        for (int da = 0; da < 1; da++)
-        {
-            Point Loc7 = new Point(smx, smy);
-            Point Loc8 = new Point(smx, smy + 100);
+        Point Loc7 = new Point(smx, smy);
+        SnowClumpOriginPoint = new Point(smx, smy + 100);
 
-            WorldUtils.Gen(Loc8, new Shapes.Mound(450, 150), Actions.Chain(new GenAction[]
-                {
-                        new Actions.ClearWall(true),
-                        new Actions.SetTile(TileID.SnowBlock),
-                        new Actions.Smooth(true)
-                }));
-
-
-            // Spawn in Ice Chunks
-            WorldGen.TileRunner(Loc7.X, Loc7.Y, 1000, 6, TileID.SnowBlock, false, 0f, 0f, true, true);
-            WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 1200, 7, TileID.IceBlock, false, 0f, 0f, true, true);
-            WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 1000, 2, TileID.IceBlock, false, 0f, 0f, true, true);
-            WorldGen.TileRunner(Loc7.X, Loc7.Y + 900, 500, 2, TileID.IceBlock, false, 0f, 0f, true, true);
-            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1200, 500, 2, TileID.IceBlock, false, 0f, 0f, true, true);
-
-
-            WorldUtils.Gen(Loc7, new Shapes.Circle(500, 300), Actions.Chain(new GenAction[]
+        WorldUtils.Gen(SnowClumpOriginPoint, new Shapes.Mound(450, 150), Actions.Chain(new GenAction[]
             {
                     new Actions.ClearWall(true),
-                    new Actions.PlaceWall(WallID.SnowWallUnsafe)
+                    new Actions.SetTile(TileID.SnowBlock),
+                    new Actions.Smooth(true)
             }));
 
-            // Dig big chasm at top
+
+        // Spawn in Ice Chunks
+        WorldGen.TileRunner(Loc7.X, Loc7.Y, 1000, 6, TileID.SnowBlock, false, 0f, 0f, true, true);
+        WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 1200, 7, TileID.IceBlock, false, 0f, 0f, true, true);
+        WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 1000, 2, TileID.IceBlock, false, 0f, 0f, true, true);
+        WorldGen.TileRunner(Loc7.X, Loc7.Y + 900, 500, 2, TileID.IceBlock, false, 0f, 0f, true, true);
+        WorldGen.TileRunner(Loc7.X, Loc7.Y + 1200, 500, 2, TileID.IceBlock, false, 0f, 0f, true, true);
 
 
-        }
+        WorldUtils.Gen(Loc7, new Shapes.Circle(500, 300), Actions.Chain(new GenAction[]
+        {
+                new Actions.ClearWall(true),
+                new Actions.PlaceWall(WallID.SnowWallUnsafe)
+        }));
+
+        // Dig big chasm at top
+
+
+        
 
         for (int daa = 0; daa < 30; daa++)
         {

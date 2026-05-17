@@ -94,7 +94,7 @@ public class BarrierBlockSystem : ModSystem
     {
         base.PostUpdatePlayers();
         Main.tileSolid[ModContent.TileType<BossBarrierBlock>()] = NPC.AnyDanger();
-        Main.tileSolid[ModContent.TileType<SingularityBarrierBlock>()] = !DownedBossTracker.IsDowned(DownedBossFlag.Verlian_Singularity);
+        Main.tileSolid[ModContent.TileType<SingularityBarrierBlock>()] = !DownedBossTracker.IsDowned(DownedBossFlag.Verlian_Singularity) || !DownedBossTracker.IsDowned(DownedBossFlag.Cariya);
         Main.tileSolid[ModContent.TileType<StarrVeriplantBarrierBlock>()] = !DownedBossTracker.IsDowned(DownedBossFlag.StoneGolem);
         Main.tileSolid[ModContent.TileType<STARBOMBERBarrierBlock>()] = !DownedBossTracker.IsDowned(DownedBossFlag.StarBomber);
         Main.tileSolid[ModContent.TileType<RavagerBarrierBlock>()] = !DownedBossTracker.IsDowned(DownedBossFlag.Woodland_Ravager);

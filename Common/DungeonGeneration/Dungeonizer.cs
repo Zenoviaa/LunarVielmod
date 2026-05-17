@@ -507,6 +507,7 @@ namespace Stellamod.Common.DungeonGeneration
             for (int i = 0; i < prefabs.Length; i++)
             {
                 Room room = prefabs[i];
+                
                 if (room.roomType == RoomType.Start)
                 {
                     startingRoom = room.Clone();

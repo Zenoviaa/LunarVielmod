@@ -34,7 +34,8 @@
         CauldronSync,
         WaypointActivate,
         SpawnNPC,
-        ZTileSync
+        ZTileSync,
+        ChangeNPCAI,
     }
 
     public enum DialogueType : byte

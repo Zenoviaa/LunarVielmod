@@ -106,7 +106,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             NPC.spriteDirection = -NPC.direction;
             if (NPC.AnyNPCs(ModContent.NPCType<Bishinine>()))
             {
-                NPC.Kill();
+                NPC.active = false;
             }
         }
 

@@ -140,15 +140,25 @@ namespace Stellamod.Helpers
             int yOffset = 0;
             for(int y = 0; y < tileMap.GetLength(1); y++)
             {
-                if (tileMap[0, y].HasTile)
+                Tile tile = tileMap[0, tileMap.GetLength(1) - y - 1];
+
+                if (tile.HasTile && Main.tileSolid[tile.TileType])
                 {
                     yOffset = y;
                     break;
                 }
             }
+            for(int x = 0; x < tileMap.GetLength(0); x++)
+            {
+                Console.WriteLine();
+                for (int y =0; y < tileMap.GetLength(1); y++)
+                {
+                    Console.Write(tileMap[x, y].HasTile);
+                }
+            }
 
             //Invert it so we know how much downward to move the structure
-            yOffset = tileMap.GetLength(1) - yOffset;
+          //  yOffset = tileMap.GetLength(1) - yOffset;
             return yOffset;
         }
 
@@ -163,10 +173,11 @@ namespace Stellamod.Helpers
             using var reader = new BinaryReader(stream, Encoding.UTF8, false);
             int width = reader.ReadInt32();
             int height = reader.ReadInt32();
+      
             Tile[,] tileMap = new Tile[width+1, height+1];
             void InnerLoop(int i, int j)
             {
-                Tile t = new Tile();
+                Tile t = tileMap[i, j];
                 t.ClearEverything();
 
                 //tile
@@ -204,6 +215,8 @@ namespace Stellamod.Helpers
 
                     t.TileColor = reader.ReadByte();
                     t.IsTileInvisible = reader.ReadBoolean();
+                    t.IsTileFullbright = reader.ReadBoolean();
+                    bool chest = reader.ReadBoolean();
                 }
 
                 //wall
@@ -223,7 +236,8 @@ namespace Stellamod.Helpers
                 t.WallColor = reader.ReadByte();
                 t.IsWallInvisible = reader.ReadBoolean();
                 t.IsWallFullbright = reader.ReadBoolean();
-                tileMap[i, height - j] = t;
+   
+
             }
 
             for (int i = 0; i <= width; i++)

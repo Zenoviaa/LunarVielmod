@@ -148,6 +148,7 @@ namespace Stellamod.Common.DungeonGeneration
             foreach (var file in mod.GetFileNames())
             {
                 //Dungeon file
+   
                 if (file.Contains(DungeonGenerationHelper.FileExtension))
                 {
                     string structureFile = file.Replace(DungeonGenerationHelper.FileExtension, ".str");
@@ -167,6 +168,7 @@ namespace Stellamod.Common.DungeonGeneration
 
                     Room room = new Room(prefab, rectangle, placedDoors);
                     rooms.Add(room);
+                    Console.WriteLine($"Room: {file} Room Type: {room.roomType}");
                 }
             }
             return rooms.ToArray();

@@ -80,6 +80,7 @@ namespace Stellamod.Core.DialogueSystem
         List,
         E,
         EreshDark,
-        Bulbtrifier
+        Bulbtrifier,
+        Cariya
     }
 }

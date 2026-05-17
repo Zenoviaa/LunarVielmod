@@ -1,9 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using Terraria.ModLoader;
+using static Stellamod.Helpers.FunctionRepeatHelper;
 
 namespace Stellamod.Helpers
 {
+    public class DelayHelper : ModSystem
+    {
+        private List<InvokeOnDelay> _functionsToInvoke;
+        public class InvokeOnDelay
+        {
+            public InvokeOnDelay(float delay, Action action)
+            {
+                Delay = delay;
+                InvokeAction = action;
+            }
+            public float Delay { get; set; }
+            public readonly Action InvokeAction;
+        }
+
+
+        public override void OnModLoad()
+        {
+            base.OnModLoad();
+            _functionsToInvoke ??= new List<InvokeOnDelay>();
+        }
+        public override void OnModUnload()
+        {
+            base.OnModUnload();
+            _functionsToInvoke = null;
+        }
+        public override void PostUpdateEverything()
+        {
+            base.PostUpdateEverything();
+            for(int i = 0; i < _functionsToInvoke.Count; i++)
+            {
+                InvokeOnDelay invokeOnDelay = _functionsToInvoke[i];
+                invokeOnDelay.Delay--;
+                if (invokeOnDelay.Delay <= 0)
+                    invokeOnDelay.InvokeAction();
+            }
+            _functionsToInvoke.RemoveAll(x => x.Delay <= 0);
+        }
+
+        public static void Invoke(float delay, Action action)
+        {
+            ModContent.GetInstance<DelayHelper>()._functionsToInvoke.Add(new InvokeOnDelay(delay, action));
+        }
+    }
     public class FunctionRepeatHelper : ModSystem
     {
         private List<Repeater> _repeaters;

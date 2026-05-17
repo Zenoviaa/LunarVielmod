@@ -6,6 +6,7 @@ using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Special.DeadRomancesExcalibur;
 using Stellamod.Core;
 using Stellamod.Core.RibbonSystem;
+using Stellamod.Core.Utilities;
 using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -135,17 +136,6 @@ namespace Stellamod
                     }
 
                     break;
-
-                /*
-            case MessageType.BreakString:
-                if (Main.netMode == NetmodeID.Server)
-                {
-                    int x = reader.ReadInt32();
-                    int y = reader.ReadInt32();
-                    SilkManager.DestroySilk(x, y);
-                }
-                break;
-                */
                 case MessageType.DashPlayerSync:
                     {
 
@@ -296,6 +286,16 @@ namespace Stellamod
                 case MessageType.WaypointActivate:
                     {
                         ModContent.GetInstance<OrganWaypointTracker>().HandleWaypointActivatePacket(reader);
+                    }
+                    break;
+                case MessageType.ChangeNPCAI:
+                    {
+                        int npcWhoAmI = reader.ReadInt32();
+                        float ai0 = reader.ReadSingle();
+                        float ai1 = reader.ReadSingle();
+                        float ai2 = reader.ReadSingle();
+                        float ai3 = reader.ReadSingle();
+                        NPCUtilities.HandleNPCAIChange(npcWhoAmI, ai0, ai1, ai2, ai3);
                     }
                     break;
             }

@@ -2,6 +2,7 @@ Talk: Talk
 Quest: Quest
 Shop: Shop
 Brew: Brew
+Kill: Kill
 Challenge: Challenge
 NewQuest: Your quest book has updated!
 CompleteQuest: You've completed a quest!
@@ -16,6 +17,8 @@ TestDialogue:
 	This world is corrupt with power and I'm sending you to purge it, I'm a bit too tired to do anything right now. I was playing my piano for too long.
 	'''
 ZuiOpenDialogue1: Well, you seem to be having quite a bit of fun around here! What's up?
+VerliaOpenDialogue: Hi hi!! Thank you for saving me again! I'd be glad to lend you a helping hand.
+NothingDialogue: ...
 ZuiIdleChat1:
 	'''
 	I'm glad you decided to enroll at our little magic school!
@@ -481,4 +484,249 @@ ListZuiDialogue: {
 	Line5: ""
 	Line6: ""
 	Line7: ""
+}
+
+CariyaStartDialogue: {
+	DisplayName: Cariya Start
+	Line0:
+		'''
+		[PORTRAIT=Cariya]
+		Oh, warrior from afar...
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Cariya]
+		You dare trespass this sacred tower to get to my friend Verlia?
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Cariya]
+		She was wronged...
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Cariya]
+		I will not let you pass me, for I feel as the last person on her side keeping her alive.
+		'''
+	Line4:
+		'''
+		[PORTRAIT=Cariya]
+		Unfortunately for you, your journey ends here.
+		'''
+	Line5:
+		'''
+		[PORTRAIT=Cariya]
+		Prepare your blade, witch.
+		'''
+}
+
+VerliaKillDialogue: {
+	DisplayName: Kill your Friend
+	Line0:
+		'''
+		[PORTRAIT=Verlia]
+		Wait, what??
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Verlia]
+		I knew it was too good to be true..
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Verlia]
+		Ereshkigal sent you to finish the job, huh?
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Verlia]
+		Well, guess what?
+		'''
+	Line4:
+		'''
+		[PORTRAIT=Verlia]
+		I'm not letting you kill me, I gotta live.
+		'''
+	Line5:
+		'''
+		[PORTRAIT=Verlia]
+		Even if it means defeating you and the entire Illuria who has betrayed me.
+		'''
+	Line6:
+		'''
+		[PORTRAIT=Verlia]
+		I want to see my family again.
+		'''
+}
+
+VerliaFreeingDialogue: {
+	DisplayName: Freed
+	Line0:
+		'''
+		[PORTRAIT=Verlia]
+		Holy shit, I'm actually free!
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Verlia]
+		Wait, where am I?
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Verlia]
+		The last thing I remember was being down in that ishtar place with queen right after I was supposed to be executed?
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Verlia]
+		What happened to me?
+		'''
+	Line4:
+		'''
+		[PORTRAIT=Verlia]
+		I mean how long have I been gone? I'm glad I'm alive, but what year is it??
+		'''
+	Line5:
+		'''
+		[PORTRAIT=Verlia]
+		It's been 8 years? What happened in the war?? Is that damned Ereshkigal dead??
+		'''
+	Line6:
+		'''
+		[PORTRAIT=Verlia]
+		I need to see my family, I'll head out soon, but thank you so so very much!
+		'''
+	Line7:
+		'''
+		[PORTRAIT=Verlia]
+		I guess while I was trapped I still grew? Interesting, and- oh yeah, I got some little small spells out of this book I learned too, so if you want I guess I can sell these to you before I go!
+		'''
+	Line8:
+		'''
+		[PORTRAIT=Verlia]
+		Be careful though, since these are charged with moi, must've been Zui who made them since they are so old, but be careful!
+		'''
+	Line9:
+		'''
+		[PORTRAIT=Verlia]
+		Again, thank you so much. I need to find my sister.
+		'''
+}
+
+VerliaHappenedDialogue: {
+	DisplayName: What happened to you??
+	Line0:
+		'''
+		[PORTRAIT=Verlia]
+		Ugh...
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Verlia]
+		Long story short, I got framed for an execution by the queen Ereshkigal, and she staged an entire execution for some plan of hers-
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Verlia]
+		And I wanna like destroy the shit out of her, but I have not a clue where she is.
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Verlia]
+		She said something about a plan, but I'm not too sure about everything, I'm just really glad I'm out!
+		'''
+	Line4:
+		'''
+		[PORTRAIT=Verlia]
+		Speaking of, I hope Fenix doesn't hate me, I mean she probably does since she most likely thinks I killed her parents, but I swear I didn't!
+		'''
+	Line5:
+		'''
+		[PORTRAIT=Verlia]
+		There's something wrong with Ereshkigal, I don't even want to call her my queen anymore.
+		'''
+	Line6:
+		'''
+		[PORTRAIT=Verlia]
+		I'm just gonna get going soon anyway, I don't need to think about this stuff.
+		'''
+}
+
+VerliaFamilyDialogue: {
+	DisplayName: Family?
+	Line0:
+		'''
+		[PORTRAIT=Verlia]
+		Yeah!
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Verlia]
+		I love my family dude, my bigger sister is like, super cool, you gotta meet her sometime! I bet she'd kiss you freed me, haha.
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Verlia]
+		I'm so glad to get back to them sometime, I mean if you want I'd be more than happy to introduce you to them!
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Verlia]
+		Dude, I'm so excited to go back you have no idea.
+		'''
+	Line4:
+		'''
+		[PORTRAIT=Verlia]
+		I wonder how Irradia is doing too, she's probably also worried sick about me- the entire village! Oh, I wanna see the look on their faces when I show up smiling and safe.
+		'''
+	Line5:
+		'''
+		[PORTRAIT=Verlia]
+		Thanks to you of course! If you ever need anything, I'll always be here to help you, afterall you did king of save my life, so I'm in your debt.
+		'''
+	Line6: ""
+}
+
+VerliaWingsDialogue: {
+	DisplayName: You have wings?
+	Line0:
+		'''
+		[PORTRAIT=Verlia]
+		I do?? Since when?
+		'''
+	Line1:
+		'''
+		[PORTRAIT=Verlia]
+		I didn't have these before...
+		'''
+	Line2:
+		'''
+		[PORTRAIT=Verlia]
+		Wait.
+		'''
+	Line3:
+		'''
+		[PORTRAIT=Verlia]
+		Oh my Lunar Veils.
+		'''
+	Line4:
+		'''
+		[PORTRAIT=Verlia]
+		When Ereshkigal chained me down in her dungeon thing, she punched a whole ass singularity next to me, and I got absorbed into a crystal or something, or at least that’s the last I saw.
+		'''
+	Line5:
+		'''
+		[PORTRAIT=Verlia]
+		But, before I went into that crystal, I saw so much knowledge just overflowing my brain. I think these wings are a part of my moi? 
+		'''
+	Line6:
+		'''
+		[PORTRAIT=Verlia]
+		My body also grew quite a bit too so maybe being that crystal for 8 years actually did something, but I don’t remember anything during that time.
+		'''
+	Line7:
+		'''
+		[PORTRAIT=Verlia]
+		Well, I guess I’ll have to see what I can do now! I bet I’m the strongest in my hometown finally! Maybe I can even get a rematch against Ashoti, I’m definitely stronger now!
+		'''
 }
