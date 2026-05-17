@@ -11228,5 +11228,5 @@ MimicTileItem: {
 
 SparklestarArtifact: {
 	DisplayName: Sparklestar Artifact
-	Tooltip: "Throws forth a sparkling orb that lets out small starry dust exploding into larger stars! Go crazy, make fireworks!"
+	Tooltip: Throws forth a sparkling orb that lets out small starry dust exploding into larger stars! Go crazy, make fireworks!
 }
