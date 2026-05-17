@@ -36,6 +36,10 @@ public class CariyaSitting : VeilTownNPC,
         }
     }
 
+    public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+    {
+        return false;
+    }
 
     public override void SetStaticDefaults()
     {
