@@ -492,8 +492,9 @@ public static class MagicTileUtility
         int height = snapShot.BottomRight.Y - snapShot.TopLeft.Y;
         width += 1;
         height += 1;
-        NetMessage.SendTileSquare(-1, snapShot.TopLeft.X, snapShot.TopLeft.Y, width, height);
-     
+
+        SendTileData(snapShot.TopLeft.X, snapShot.TopLeft.Y, width, height);
+
     }
     public static void FloodFill(Point tilePoint, in MagicTileParams tileParams)
     {
@@ -552,6 +553,30 @@ public static class MagicTileUtility
         int height = bottomRight.Y - topLeft.Y;
         width += 1;
         height += 1;
-        NetMessage.SendTileSquare(-1, topLeft.X, topLeft.Y, width, height);
+
+        SendTileData(topLeft.X, topLeft.Y, width, height);
+    }
+
+    public static void SendTileData(int i, int j, int width, int height)
+    {
+        int maxSquareSize = 25;
+
+        //ints round downward, we need to round up to make sure we actually get all the tiles
+        int numXLoops = (int)MathF.Ceiling((float)width / (float)maxSquareSize);
+        int numYLoops = (int)MathF.Ceiling((float)height / (float)maxSquareSize);
+
+        //Here we are dividing up the tile squares because if we pack too much data in the same square 
+        for(int x = 0; x < numXLoops; x++)
+        {
+            for(int y = 0; y < numYLoops; y++)
+            {
+                Point topLeft = new Point();
+                topLeft.X = i + x * maxSquareSize;
+                topLeft.Y = j + y * maxSquareSize;
+
+
+                NetMessage.SendTileSquare(-1, topLeft.X, topLeft.Y, maxSquareSize, maxSquareSize);
+            }
+        }
     }
 }

@@ -38,7 +38,7 @@ public class DecorationBuilder : ModItem
             ZTileMap tileMap = ModContent.GetInstance<ZTileMap>();
             if (player.altFunctionUse == 2)
             {
-                tileMap.KillTile(renderLayer, Main.MouseWorld, z);
+                tileMap.KillTile(Main.MouseWorld);
             }
             else
             {

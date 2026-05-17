@@ -140,15 +140,17 @@ namespace Stellamod.Core.WallBackgroundSystem
                     QueueDraw(new Point(x, y));
                 }
             }
+            _renderTimer = 64;
 
         }
         private void DrawWalls(On_Main.orig_DoDraw_WallsTilesNPCs orig, Main self)
         {
 
+
             _renderTimer--;
             if (_renderTimer > 0 && _activeMaskedWallBackground != null)
             {
-                QueueDraws();
+               
                 DrawMaskedBG();
             }
 
@@ -203,11 +205,17 @@ namespace Stellamod.Core.WallBackgroundSystem
         public void Render()
         {
             SelectActiveMaskedWallBackground();
+            if (_activeMaskedWallBackground != null)
+            {
+                QueueDraws();
+            }
             if (_activeMaskedWallBackground == null)
                 return;
 
+            if (_drawQueue.Count <= 0)
+                return;
+
             RenderMask();
-            _renderTimer = 64;
         }
 
         private void RenderMask()

@@ -264,18 +264,15 @@ namespace Stellamod
 
                 case MessageType.BreakDecoration:
                     {
-                        ZRenderLayer layer = (ZRenderLayer)reader.ReadByte();
-                        ZTilePosition tilePosition = new ZTilePosition();
-                        tilePosition.x = reader.ReadUInt16();
-                        tilePosition.y = reader.ReadUInt16();
-                        tilePosition.z = reader.ReadUInt16();
-
+                        Point tilePosition = new Point();
+                        tilePosition.X = reader.ReadUInt16();
+                        tilePosition.Y = reader.ReadUInt16();
                         ZTileMap tileMap = ModContent.GetInstance<ZTileMap>();
-                        tileMap.Remove(layer, tilePosition);
+                        tileMap.KillAnyTile(tilePosition);
                         if (Main.netMode == NetmodeID.Server)
                         {
                             //Forward all changes to other clients
-                            tileMap.SyncBreakTile(-1, whoAmI, layer, tilePosition);
+                            tileMap.SyncBreakTile(-1, whoAmI, tilePosition);
                         }
                     }
 

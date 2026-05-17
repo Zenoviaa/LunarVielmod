@@ -820,33 +820,21 @@ public class ZTileMap : ModSystem
     /// <param name="renderLayer"></param>
     /// <param name="mouseWorld"></param>
     /// <param name="z"></param>
-    public void KillTile(ZRenderLayer renderLayer, Vector2 mouseWorld, int z)
+    public void KillTile(Vector2 mouseWorld)
     {
         Point tileCoordinates = mouseWorld.ToTileCoordinates();
-        ZTilePosition zTilePosition = new ZTilePosition();
-        zTilePosition.x = tileCoordinates.X;
-        zTilePosition.y = tileCoordinates.Y;
-        zTilePosition.z = z;
-
+        foreach (var layer in _renderLayers)
+        {
+            layer.Remove(tileCoordinates);
+        }
         if (Main.netMode != NetmodeID.SinglePlayer)
         {
             int clientToIgnore = Main.LocalPlayer.whoAmI;
             Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.BreakDecoration,
-                (byte)renderLayer,
-                (ushort)zTilePosition.x,
-                (ushort)zTilePosition.y,
-                (ushort)zTilePosition.z).Send(ignoreClient: clientToIgnore);
+                (ushort)tileCoordinates.X,
+                (ushort)tileCoordinates.Y).Send(ignoreClient: clientToIgnore);
         }
 
-        Remove(renderLayer, zTilePosition);
-    }
-    public void KillTileNoSync(ZRenderLayer renderLayer, Point tileCoordinates, int z)
-    {
-        ZTilePosition zTilePosition = new ZTilePosition();
-        zTilePosition.x = tileCoordinates.X;
-        zTilePosition.y = tileCoordinates.Y;
-        zTilePosition.z = z;
-        Remove(renderLayer, zTilePosition);
     }
 
     public void KillAnyTile(Point tileCoordinates)
@@ -905,14 +893,12 @@ public class ZTileMap : ModSystem
             tileData.type,
             tileData.value).Send(toWho, fromWho);
     }
-    public void SyncBreakTile(int toWho, int fromWho, ZRenderLayer renderLayer, ZTilePosition tilePosition)
+    public void SyncBreakTile(int toWho, int fromWho, Point tilePosition)
     {
         int clientToIgnore = Main.LocalPlayer.whoAmI;
         Stellamod.WriteToPacket(Stellamod.Instance.GetPacket(), (byte)MessageType.BreakDecoration,
-            (byte)renderLayer,
-            (ushort)tilePosition.x,
-            (ushort)tilePosition.y,
-            (ushort)tilePosition.z).Send(toWho, fromWho);
+            (ushort)tilePosition.X,
+            (ushort)tilePosition.Y).Send(toWho, fromWho);
     }
 
 
