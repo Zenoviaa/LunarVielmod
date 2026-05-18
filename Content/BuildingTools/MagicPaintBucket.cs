@@ -2,9 +2,11 @@
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -62,29 +64,63 @@ public class TileEyeDropper : ModItem
             point = TileUtilities.Clamp(point);
             Tile tile = Main.tile[point];
             Point playerPoint = player.position.ToTileCoordinates();
+
+
+            //Not sure how to just access the wall loader's wall type to item type
+            //So I'm just reconstructing it, not like this code is gonna be needed anywhere else anyway
+            //So whatever, low priority to have a better solution
+            Dictionary<int, int> paintTypeToItemType = new Dictionary<int, int>();
+            Dictionary<int, int> wallTypeToItemType = new Dictionary<int, int>();
+            for (int i = 0; i < ItemLoader.ItemCount; i++)
+            {
+                Item item = ContentSamples.ItemsByType[i];
+                if (!ItemID.Sets.DisableAutomaticPlaceableDrop[i] && item.createWall > -1)
+                {
+                    wallTypeToItemType.TryAdd(item.createWall, item.type);
+                }
+
+                if(item.paint > 0)
+                {
+                    paintTypeToItemType.TryAdd(item.paint, item.type);
+                }
+            }
+
+
             if(player.altFunctionUse == 2)
             {
+                //When right clicking it'll give you paints
+                if (tile.WallColor > 0)
+                {
+                    int itemType = paintTypeToItemType[tile.WallColor];
+                    player.QuickSpawnItem(new EntitySource_TileBreak(point.X, point.Y), itemType, Item.CommonMaxStack);
+                }
+                else if (tile.TileColor > 0)
+                {
+                    int itemType = paintTypeToItemType[tile.TileColor];
+                    player.QuickSpawnItem(new EntitySource_TileBreak(point.X, point.Y), itemType, Item.CommonMaxStack);
+                }
+            }
+            else
+            {
+
                 if (tile.WallType > WallID.None)
                 {
-                    int itemType = 0;
-                    //int itemType = WallLoader.Drop[tile.WallType];
-                    WallLoader.Drop(playerPoint.X, playerPoint.Y, tile.WallType, ref itemType);
-                    player.QuickSpawnItem(new EntitySource_TileBreak(point.X, point.Y), itemType, Item.CommonMaxStack);
-            
-                    //TODO: See if there's a way to get the paint item associatied with a paint ID
-                    if(tile.WallColor > PaintID.None)
+                    if(wallTypeToItemType.TryGetValue(tile.WallType, out int itemType))
                     {
-                     
+                        player.QuickSpawnItem(new EntitySource_TileBreak(point.X, point.Y), itemType, Item.CommonMaxStack);
                     }
+
                 }
-            } else
-            {
-                if (tile.HasTile)
+                else if (tile.HasTile)
                 {
+
                     int dropItem = TileLoader.GetItemDropFromTypeAndStyle(tile.TileType);
                     player.QuickSpawnItem(new EntitySource_TileBreak(point.X, point.Y), dropItem, Item.CommonMaxStack);
                 }
             }
+
+
+
             //Main.NewText("Collected Tile!");    
         }
 
@@ -157,6 +193,18 @@ public class MagicPaintBucketPreview : ModSystem
     {
         base.PostDrawTiles();
         Player player = Main.LocalPlayer;
+        if(player.HeldItem.type == ModContent.ItemType<TileEyeDropper>())
+        {
+
+            SpriteBatch sb = Main.spriteBatch;
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+            SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Vector2.Zero);
+            drawer2.color = Color.Green * 0.5f * ExtraMath.Osc(0.5f, 1f, speed: 6);
+            drawer2.worldPosition = Main.MouseWorld.ToTileCoordinates().ToWorldCoordinates();
+            sb.Draw(drawer2);
+            sb.End();
+        }
         if (player.HeldItem.type != ModContent.ItemType<MagicPaintBucket>())
             return;
         

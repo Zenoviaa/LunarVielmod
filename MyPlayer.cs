@@ -59,7 +59,6 @@ namespace Stellamod
         public bool ReflectionS;
 
 
-        private Vector2 RandomOrig3;
         public int GoldenRingCooldown = 0;
         public int GoldenSparkleCooldown = 0;
         public int RayCooldown = 0;
@@ -353,6 +352,7 @@ namespace Stellamod
         }
 
 
+     
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)/* tModPorter Override ImmuneTo, FreeDodge or ConsumableDodge instead to prevent taking damage */
         {
             if (WindRune && !Player.HasBuff(ModContent.BuffType<GintzelSheildCD>()) && !Player.HasBuff(ModContent.BuffType<GintzelSheild>()))

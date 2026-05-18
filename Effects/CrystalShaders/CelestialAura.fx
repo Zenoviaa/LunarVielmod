@@ -40,6 +40,13 @@ float2 PolarCoordinates(float2 coords)
     return polarUV;
 }
 
+float Distance(float2 value1, float2 value2)
+{
+    float v1 = value1.x - value2.x;
+    float v2 = value1.y - value2.y;
+    return sqrt((v1 * v1) + (v2 * v2));
+}
+
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
     //All we have to do is sample the white to black of the texture, using that as an interpolant for the colors
@@ -54,9 +61,11 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     float r = tex2D(uImage0, polarUV);
     
     //Apply vignette bloom
-    float maxDistance = length(float2(0.0, 0.0) - float2(0.5, 0.5));
-    float distance = length(coords - float2(0.5, 0.5));
+    float maxDistance = 0.5;
+    float distance = Distance(coords, float2(0.5, 0.5));
+    
     float interp = distance / maxDistance;
+    interp = saturate(interp);
     float3 color = lerp(innerColor, outerColor, interp);
     float4 myColor = float4(color * r * sampleColor.rgb, sampleColor.a);
     return myColor;

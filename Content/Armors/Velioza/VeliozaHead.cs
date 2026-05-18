@@ -228,7 +228,7 @@ public class VeliozaPlayer : ModPlayer
         float ease = EasingFunction.InOutSine(alphaTimer);
         Color drawColor = Color.White;
         drawColor.A = 0;
-        Color drawColor2 = Color.Red * 0.4f;
+        Color drawColor2 = Color.Red * 0.8f;
         drawColor2.A = 0;
         //     drawColor *= 0.5f;
 
@@ -239,7 +239,7 @@ public class VeliozaPlayer : ModPlayer
         shader.InnerColor = Color.Red;
         shader.OuterColor = Color.Black;
 
-        float time = MathHelper.Lerp(0.8f, 1f, ExtraMath.Osc(0f, 1f, speed: 3)) - 1;
+        float time = MathHelper.Lerp(0.95f, 1f, ExtraMath.Osc(0f, 1f, speed: 3)) - 1;
         shader.Time = time;
         shader.Tiling = Vector2.One * 0.1f;
         spriteBatch.Restart(effect: shader.Effect);

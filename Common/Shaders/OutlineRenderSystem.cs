@@ -102,6 +102,7 @@ namespace Stellamod.Common.Shaders
 
                 spriteBatch.End();
                 graphicsDevice.SetRenderTarget(null);
+                OutlineRenderer.Queue(DrawWhite);
             }
             orig();
         }
@@ -120,30 +121,24 @@ namespace Stellamod.Common.Shaders
                 return;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, SpriteWhiteShader.Instance.Effect, Main.GameViewMatrix.TransformationMatrix);
-            spriteBatch.Draw(_playerOutlineRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            spriteBatch.End();
+
         }
 
 
+        private void DrawWhite(SpriteBatch sb)
+        {
+            sb.Draw(_playerOutlineRenderRT, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+        }
 
         private void DrawLocalPlayer(Player player)
         {
-            float outlineOffset = 2;
             Vector2 drawPosition = player.position;
             drawPosition.Y += player.gfxOffY;
-            Vector2 left = drawPosition + Vector2.UnitX * -outlineOffset;
-            Vector2 right = drawPosition + Vector2.UnitX * outlineOffset;
-            Vector2 up = drawPosition + Vector2.UnitY * -outlineOffset;
-            Vector2 dowm = drawPosition + Vector2.UnitY * outlineOffset;
             float rotation = player.fullRotation;
 
 
             IPlayerRenderer playerRenderer = Main.PlayerRenderer;
-            playerRenderer.DrawPlayer(Main.Camera, player, left, rotation, player.fullRotationOrigin);
-            playerRenderer.DrawPlayer(Main.Camera, player, right, rotation, player.fullRotationOrigin);
-            playerRenderer.DrawPlayer(Main.Camera, player, up, rotation, player.fullRotationOrigin);
-            playerRenderer.DrawPlayer(Main.Camera, player, dowm, rotation, player.fullRotationOrigin);
+            playerRenderer.DrawPlayer(Main.Camera, player, drawPosition, rotation, player.fullRotationOrigin);;
         }
         private void DrawOutlines(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {

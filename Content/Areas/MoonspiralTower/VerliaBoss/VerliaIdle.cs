@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Animations;
+using Stellamod.Content.Areas.Abyss.AccAB;
 using Stellamod.Content.Dialogue;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
@@ -192,7 +193,16 @@ public class VerliaIdle : VeilTownNPC,
             NPC.active = false;
         }
     }
-
+    public override void AddShops()
+    {
+        var npcShop = new NPCShop(Type, "Shop")
+         .Add(new Item(ModContent.ItemType<MoonFlight>())
+         {
+             shopCustomPrice = 50,
+             shopSpecialCurrency = Stellamod.MedalCurrencyID
+         });
+        npcShop.Register();
+    }
     public bool CanSpawn()
     {
         if (NPC.AnyNPCs(ModContent.NPCType<VerliaIdle>()))

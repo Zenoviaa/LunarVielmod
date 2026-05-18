@@ -11230,3 +11230,12 @@ SparklestarArtifact: {
 	DisplayName: Sparklestar Artifact
 	Tooltip: Throws forth a sparkling orb that lets out small starry dust exploding into larger stars! Go crazy, make fireworks!
 }
+
+MoonFlight: {
+	DisplayName: Moon Flight
+	Tooltip:
+		'''
+		While Fast Flight is equipped, you have 25% more flight time, 5% more damage, and slightly increased movement speed!
+		Also, your wings radiate just like Verlia's!
+		'''
+}

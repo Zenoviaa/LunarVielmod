@@ -43,7 +43,7 @@ VertexShaderOutput VertexShaderFunction(in VertexShaderInput input)
 //TODO: custom vertex structure for inputting light data
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-    const float MAX_ATTENTUATION_DISTANCE = length(float2(0.0, 0.0) - float2(0.5, 0.5));
+
     
     float4 sampleColor = input.Color;
     float2 coords = input.TextureCoordinates;
@@ -80,8 +80,8 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 
     float4 light = float4(input.Color.rgb, 1.0);    
 
-    float dist = MAX_ATTENTUATION_DISTANCE - 0.05;
-    float attenuation = lerp(1.0, 0.0, pixelLength / dist);
+    float dist = 0.5;
+    float attenuation = lerp(1.0, 0.0, saturate(pixelLength / dist));
     light *= falloff * attenuation;
     return light;
 }

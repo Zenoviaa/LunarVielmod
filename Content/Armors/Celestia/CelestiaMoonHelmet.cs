@@ -83,6 +83,7 @@ namespace Stellamod.Content.Armors.Celestia
             Color drawColor = Color.Lerp(Color.White, Color.Black, EasingFunction.InOutSine(AlphaTimer / 30f));
             drawColor.A = 0;
 
+
             var shader = CelestialAuraShader.Instance;
             shader.InnerColor = Color.Lerp(Color.LightGreen, Color.Turquoise, ExtraMath.Osc(0f, 1f, 0.5f));
             shader.OuterColor = Color.Black;

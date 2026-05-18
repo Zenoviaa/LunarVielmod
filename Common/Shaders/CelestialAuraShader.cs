@@ -24,7 +24,7 @@ namespace Stellamod.Common.Shaders
         {
             set
             {
-                _innerColorParam ??= Effect.Parameters["innerColor"];
+                _innerColorParam = Effect.Parameters["innerColor"];
                 _innerColorParam.SetValue(value.ToVector3());
             }
         }
@@ -33,7 +33,7 @@ namespace Stellamod.Common.Shaders
         {
             set
             {
-                _outerColorParam ??= Effect.Parameters["outerColor"];
+                _outerColorParam = Effect.Parameters["outerColor"];
                 _outerColorParam.SetValue(value.ToVector3());
             }
         }
@@ -42,7 +42,7 @@ namespace Stellamod.Common.Shaders
         {
             set
             {
-                _timeParam ??= Effect.Parameters["time"];
+                _timeParam = Effect.Parameters["time"];
                 _timeParam.SetValue(value);
             }
         }
@@ -50,7 +50,7 @@ namespace Stellamod.Common.Shaders
         {
             set
             {
-                _tilingParam ??= Effect.Parameters["tiling"];
+                _tilingParam = Effect.Parameters["tiling"];
                 _tilingParam.SetValue(value);
             }
         }
