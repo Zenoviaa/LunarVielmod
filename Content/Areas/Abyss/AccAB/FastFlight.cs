@@ -87,7 +87,7 @@ public class MoonFlightRenderer : ModSystem
     {
         get
         {
-            return -24;
+            return -12;
         }
     }
 
@@ -357,7 +357,7 @@ public class FastFlightPlayer : ModPlayer
         Vector2 drawScale = Vector2.One * 0.75f;
         Vector2 drawPosition = Player.Center - Main.screenPosition;
 
-        drawPosition.Y -= 6;
+        drawPosition.Y += 3;
         drawPosition.Y += Player.gfxOffY;
 
         //This draws it in persepctive

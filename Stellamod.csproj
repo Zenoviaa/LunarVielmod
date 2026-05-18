@@ -12,6 +12,7 @@
 	<ItemGroup>
 	  <Folder Include="Effects\Palettes\" />
 	  <Folder Include="Properties\" />
+	  <Folder Include="Structures\Mineshafts\" />
 	</ItemGroup>
 
 </Project>

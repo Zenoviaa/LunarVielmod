@@ -198,7 +198,7 @@ public class VerliaIdle : VeilTownNPC,
         var npcShop = new NPCShop(Type, "Shop")
          .Add(new Item(ModContent.ItemType<MoonFlight>())
          {
-             shopCustomPrice = 50,
+             shopCustomPrice = 30,
              shopSpecialCurrency = Stellamod.MedalCurrencyID
          });
         npcShop.Register();

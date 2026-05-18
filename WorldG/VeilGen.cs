@@ -223,19 +223,99 @@ public class VeilGenTester : ModItem
 
     public override bool? UseItem(Player player)
     {
-        var progress = new GenerationProgress();
-        var configuration = new GameConfiguration(null);
-        StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
-     //   stellaWorld.SetXixVillageLocation(progress, configuration);
-        
-        stellaWorld.WorldGenFableTerrain(progress, configuration);
-        stellaWorld.WorldGenXixVillage(progress, configuration);
-        stellaWorld.WorldGenFabiliaRuin(progress, configuration);
-
-
+        MineshaftTest();
         return true;
     }
 
+    private static void MineshaftTest()
+    {
+        Vector2 mouseWorld = Main.MouseWorld;
+        Point startTile = mouseWorld.ToTileCoordinates();
+        Room[] prefabs = DungeonSaveUtility.GetDungeonPrefabs("Mineshafts");
+        DungeonChart simpleChart = new DungeonChart(new Point(0, 0), new Point(0, 1), new Point(0, 2), new Point(0, 3), new Point(0, 4));
+        simpleChart.Connect(0, 1, Vector2.UnitY);
+        simpleChart.Connect(1, 2, Vector2.UnitY);
+        simpleChart.Connect(2, 3, Vector2.UnitY);
+
+        simpleChart.Connect(3, 4, Vector2.UnitY);
+
+
+
+        Room[] map = Dungeonizer.GenerateFromChart(prefabs, simpleChart, Main.rand);
+        int[] tileBlend = new int[]
+        {
+            TileID.RubyGemspark
+        };
+
+
+        Point topLeft = Point.Zero;
+        Point bottomRight = Point.Zero;
+        for (int r = 0; r < map.Length; r++)
+        {
+            Room room = map[r];
+            if (topLeft.X > room.bounds.Left)
+                topLeft.X = room.bounds.Left;
+            if (topLeft.Y > room.bounds.Top)
+                topLeft.Y = room.bounds.Top;
+
+            if (bottomRight.X < room.bounds.Right)
+                bottomRight.X = room.bounds.Right;
+            if (bottomRight.Y < room.bounds.Bottom)
+                bottomRight.Y = room.bounds.Bottom;
+        }
+        Rectangle rectangle = new Rectangle(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y);
+
+        Point point = startTile;
+        Point vectorToOrigin = (point - rectangle.Top().ToPoint());
+        rectangle.Location += vectorToOrigin;
+
+        //Just a failsafe
+        while (rectangle.Right().X >= Main.maxTilesX)
+            rectangle.Location -= new Point(32, 0);
+
+        int width = rectangle.Width;
+        width -= 150;
+        int height = rectangle.Height;
+
+        /*
+
+        //So we're just gonna start from index 1 to skip it
+        for (int r = 1; r < map.Length; r++)
+        {
+            Room room = map[r];
+            int padding = 10;
+            Rectangle roomRectangle = Structurizer.ReadRectangle(room.prefab);
+            int outlineWidth = roomRectangle.Width + padding;
+            int outlineHeight = roomRectangle.Height + padding;
+
+            //This hsould give us an outline of bricks, I think
+            Point topLeftRoom = room.bounds.TopLeft().ToPoint() + new Point(-padding / 2, -padding / 2);
+            Point offset = rectangle.Top().ToPoint();
+            offset.Y -= outlineHeight;
+            topLeftRoom += offset;
+            WorldUtils.Gen(topLeftRoom, new Shapes.Rectangle(outlineWidth, outlineHeight),
+               Actions.Chain(
+                    new Actions.ClearWall(),
+                    new Actions.SetTile((ushort)ModContent.TileType<MothlightBrick>()))
+               );
+        }
+        */
+        for (int r = 0; r < map.Length; r++)
+        {
+            Room room = map[r];
+            Point bottomLeft = room.bounds.BottomLeft().ToPoint();
+            Point offset = rectangle.Top().ToPoint();
+
+            int tileX = offset.X;
+            int tileY = offset.Y;
+
+            bottomLeft.X += tileX;
+            bottomLeft.Y += tileY;
+            bottomLeft.Y -= map[0].bounds.Height;
+            Structurizer.ReadStruct(bottomLeft, room.prefab, tileBlend);
+            Structurizer.ProtectStructure(bottomLeft, room.prefab);
+        }
+    }
     private static void MistyDungeonTest()
     {
         Vector2 mouseWorld = Main.MouseWorld;

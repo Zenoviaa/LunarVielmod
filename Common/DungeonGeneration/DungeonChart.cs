@@ -70,7 +70,7 @@ public class DungeonChart
     public readonly Vector2[,] Edges;
     public readonly HashSet<Point> Corridors;
     public readonly HashSet<Point> VerticeHashSet;
-    public DungeonChart(Point[] vertices)
+    public DungeonChart(params Point[] vertices)
     {
         Vertices = new List<Point>(vertices);
         Edges = new Vector2[vertices.Length, vertices.Length];

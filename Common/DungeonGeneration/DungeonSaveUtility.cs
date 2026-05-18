@@ -126,7 +126,7 @@ namespace Stellamod.Common.DungeonGeneration
 
 
                 string fileName = $"Room{r}";
-                string structurePath = $"Dungeon/{fileName}";
+                string structurePath = $"Mineshafts/{fileName}";
                 string savePath = Main.SavePath + $"/ModSources/{Mod.Name}/Structures/{structurePath}{DungeonGenerationHelper.FileExtension}";
                 using var doorStream = File.Open(savePath, FileMode.Create);
                 DungeonGenerationHelper.SaveDoors(doorStream, bottomLeft, topRight);
@@ -150,6 +150,39 @@ namespace Stellamod.Common.DungeonGeneration
                 //Dungeon file
    
                 if (file.Contains(DungeonGenerationHelper.FileExtension))
+                {
+                    string structureFile = file.Replace(DungeonGenerationHelper.FileExtension, ".str");
+                    string prefab = structureFile.Replace(".str", string.Empty);
+
+                    Rectangle rectangle = default;
+                    using (var stream = mod.GetFileStream(structureFile))
+                    {
+                        rectangle = Structurizer.ReadRectangle(stream);
+                    }
+                    PlacedDoor[] placedDoors;
+                    using (var stream = mod.GetFileStream(file))
+                    {
+                        placedDoors = DungeonGenerationHelper.DoorsFromStream(stream);
+                    }
+
+
+                    Room room = new Room(prefab, rectangle, placedDoors);
+                    rooms.Add(room);
+                    Console.WriteLine($"Room: {file} Room Type: {room.roomType}");
+                }
+            }
+            return rooms.ToArray();
+        }
+
+        public static Room[] GetDungeonPrefabs(string subDirectory)
+        {
+            Mod mod = Stellamod.Instance;
+            List<Room> rooms = new List<Room>();
+            foreach (var file in mod.GetFileNames())
+            {
+                //Dungeon file
+
+                if (file.Contains(subDirectory) && file.Contains(DungeonGenerationHelper.FileExtension))
                 {
                     string structureFile = file.Replace(DungeonGenerationHelper.FileExtension, ".str");
                     string prefab = structureFile.Replace(".str", string.Empty);

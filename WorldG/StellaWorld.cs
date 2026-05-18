@@ -1510,7 +1510,7 @@ public partial class StellaWorld : ModSystem
     private void GenerateMistyDungeon(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Mistying the Dungeon";
-        Room[] prefabs = DungeonSaveUtility.ReadDungeonPrefabsFromFiles();
+        Room[] prefabs = DungeonSaveUtility.GetDungeonPrefabs("Dungeon");
 
 
         int dungeonLayoutCount = 1;

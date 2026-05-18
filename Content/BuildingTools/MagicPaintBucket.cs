@@ -103,19 +103,20 @@ public class TileEyeDropper : ModItem
             else
             {
 
-                if (tile.WallType > WallID.None)
-                {
-                    if(wallTypeToItemType.TryGetValue(tile.WallType, out int itemType))
-                    {
-                        player.QuickSpawnItem(new EntitySource_TileBreak(point.X, point.Y), itemType, Item.CommonMaxStack);
-                    }
-
-                }
-                else if (tile.HasTile)
+              
+                if (tile.HasTile)
                 {
 
                     int dropItem = TileLoader.GetItemDropFromTypeAndStyle(tile.TileType);
                     player.QuickSpawnItem(new EntitySource_TileBreak(point.X, point.Y), dropItem, Item.CommonMaxStack);
+                }
+                else if (tile.WallType > WallID.None)
+                {
+                    if (wallTypeToItemType.TryGetValue(tile.WallType, out int itemType))
+                    {
+                        player.QuickSpawnItem(new EntitySource_TileBreak(point.X, point.Y), itemType, Item.CommonMaxStack);
+                    }
+
                 }
             }
 
