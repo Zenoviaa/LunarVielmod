@@ -3,6 +3,7 @@ using ReLogic.Utilities;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.PunkerTown.TilesPT;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
@@ -20,6 +21,7 @@ using Terraria.ModLoader;
 using Terraria.ObjectData;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
+using static Stellamod.Content.BuildingTools.MagicTileUtility.TileSnapshot;
 
 namespace Stellamod.WorldG;
 
@@ -320,10 +322,20 @@ public class VeilGenTester : ModItem
     public override bool? UseItem(Player player)
     {
         // LayoutTest();
-        MineshaftTest();
+        //MineshaftTest();
+        AegislavTest();
         return true;
     }
+    private static void AegislavTest()
+    {
+        Point aegislavCastlePoint = Main.MouseWorld.ToTileCoordinates() + new Point(0, -100);
+        aegislavCastlePoint = TileUtilities.FallToSolidTile(aegislavCastlePoint);
 
+        string path = "Structures/BloodletCastle";
+        aegislavCastlePoint.Y += 15;
+        Structurizer.ReadStruct(aegislavCastlePoint, path, Structurizer.DefaultTileBlend);
+        Structurizer.ProtectStructure(aegislavCastlePoint, path);
+    }
     private static void LayoutTest()
     {
         (int, int)[] layout = DungeonLayouter.GenerateLayout(16, Main.rand);
@@ -359,7 +371,7 @@ public class VeilGenTester : ModItem
         DungeonChart simpleChart = DungeonChart.FromMap(layout);
 
 
-        Room[] map = Dungeonizer.GenerateFromChart(prefabs, simpleChart, Main.rand);
+        Room[] map = Dungeonizer.CreateDungeonFromChart(prefabs, simpleChart, Main.rand);
         int[] tileBlend = new int[]
         {
             TileID.RubyGemspark

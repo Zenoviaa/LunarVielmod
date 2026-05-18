@@ -407,7 +407,7 @@ public partial class StellaWorld : ModSystem
         snowCenter.X -= structureRect.Width / 2;
         snowCenter.Y -= 120;
         snowCenter.Y += 8;
-        Structurizer.ReadStruct(snowCenter, structurePath);
+        Structurizer.ReadStruct(snowCenter, structurePath, Structurizer.DefaultTileBlend);
     }
 
     private void WorldGen_TreasureTrove(GenerationProgress progress, GameConfiguration configuration)
@@ -609,10 +609,6 @@ public partial class StellaWorld : ModSystem
                 }
             }
         }
-        int[] tileBlend = new int[]
-        {
-            TileID.RubyGemspark
-        };
 
         Point aegislavCastlePoint = new Point();
         aegislavCastlePoint = endTile;
@@ -622,7 +618,7 @@ public partial class StellaWorld : ModSystem
 
         string path = "Structures/BloodletCastle";
         aegislavCastlePoint.Y += 15;
-        Structurizer.ReadStruct(aegislavCastlePoint, path, tileBlend);
+        Structurizer.ReadStruct(aegislavCastlePoint, path, Structurizer.DefaultTileBlend);
         Structurizer.ProtectStructure(aegislavCastlePoint, path);
     }
 

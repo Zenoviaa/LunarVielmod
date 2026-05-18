@@ -496,7 +496,121 @@ namespace Stellamod.Common.DungeonGeneration
             roomLookup[3] = downDoorsList.ToArray();
             return roomLookup;
         }
+        public static Room[] CreateDungeonFromChart(Room[] prefabs, DungeonChart chart, UnifiedRandom random)
+        {
+            Room[] instancedRooms = null;
+            void GenerateInner()
+            {
+                //Before we do anything lets create a lookup table of rooms that have doors
+                //That'll make the room hunt easier
 
+                bool[] isPlaced = new bool[chart.Vertices.Count];
+                instancedRooms = new Room[chart.Vertices.Count];
+                for (int i = 0; i < instancedRooms.Length; i++)
+                {
+                    Point vertex = chart.Vertices[i];
+                    Point left = vertex + new Point(-1, 0);
+                    Point right = vertex + new Point(1, 0);
+                    Point up = vertex + new Point(0, -1);
+                    Point down = vertex + new Point(0, 1);
+                    DoorsFlag reqDoors = DoorsFlag.None;
+                    if (chart.VerticeHashSet.Contains(left))
+                        reqDoors |= DoorsFlag.Left;
+                    if (chart.VerticeHashSet.Contains(right))
+                        reqDoors |= DoorsFlag.Right;
+                    if (chart.VerticeHashSet.Contains(up))
+                        reqDoors |= DoorsFlag.Up;
+                    if (chart.VerticeHashSet.Contains(down))
+                        reqDoors |= DoorsFlag.Down;
+
+                    Room prefab = GetRandomRoomWithDoors(prefabs, random, reqDoors);
+                    instancedRooms[i] = prefab.Clone();
+                }
+
+                void ConnectRoom(int start, int end)
+                {
+                    Point startNode = chart.Vertices[start];
+                    Point endNode = chart.Vertices[end];
+
+                    //ALGORITHM
+                    //Take the start node
+                    //Take the end node
+                    //Choose a direction and move the end node in that direction until it isn't overlapping with anything (if it's not placed)
+                    //Set room
+
+                    if (!isPlaced[end])
+                    {
+                        Point dir = endNode - startNode;
+                        Door door = Door.Left;
+                        if (dir.X == 1)
+                        {
+                            door = Door.Right;
+                        }
+                        else if (dir.X == -1)
+                        {
+                            door = Door.Left;
+                        }
+                        else if (dir.Y == -1)
+                        {
+                            door = Door.Up;
+                        }
+                        else if (dir.Y == 1)
+                        {
+                            door = Door.Down;
+                        }
+
+                        int index = instancedRooms[start].GetDoorway(door);
+                        ref Doorway doorWay = ref instancedRooms[start].doors[index];
+                        instancedRooms[end].MoveTo(instancedRooms[start], ref doorWay);
+                        instancedRooms[end].ConnectTo(instancedRooms[start], ref doorWay);
+                        isPlaced[end] = true;
+                    }
+                }
+
+                //DO BFS Search and connect rooms to each other
+                DungeonChartTraversal.DoBFS(chart.Edges, chart.Vertices.Count,
+                    new bool[chart.Vertices.Count], ConnectRoom);
+            }
+
+            GenerateInner();
+            bool IsDungeonValid()
+            {
+                for(int r = 0; r < instancedRooms.Length; r++)
+                {
+                    for(int r2 = 0; r2 < instancedRooms.Length; r2++)
+                    {
+                        if (r == r2)
+                            continue;
+
+                        Room myRoom = instancedRooms[r];
+                        Room otherRoom = instancedRooms[r2];
+                        if (myRoom.bounds.Intersects(otherRoom.bounds))
+                            return false;
+                    }
+                }
+
+                return true;
+            }
+
+            int maxAttempts = 100;
+            for(int a = 0; a < maxAttempts; a++)
+            {
+                if(a == maxAttempts - 1)
+                {
+                    Main.NewText("Always overlapping :(");
+                }
+
+                if (!IsDungeonValid())
+                {
+                    GenerateInner();
+                } else
+                {
+                    break;
+                }
+            }
+            //Place boss room
+            return instancedRooms;
+        }
         public static Room[] GenerateFromChart(Room[] prefabs, DungeonChart chart, UnifiedRandom random)
         {
 

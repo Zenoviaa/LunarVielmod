@@ -160,6 +160,7 @@ namespace Stellamod.Common.DungeonGeneration
                 {
                     Vector2 position = point.ToWorldCoordinates();
                     SpritebatchDrawer blackTileDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Main.screenPosition + position);
+                    blackTileDrawer.color = Color.White;
                     spriteBatch.Draw(blackTileDrawer);
                 }
 
