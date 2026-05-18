@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -125,6 +126,7 @@ namespace Stellamod.Common.DungeonGeneration
     {
         public const string FileExtension = ".drs";
         private static Dictionary<Point, Door> _doorsInWorld;
+        public static Point[] vertices;
         public override void OnModLoad()
         {
             base.OnModLoad();
@@ -143,11 +145,31 @@ namespace Stellamod.Common.DungeonGeneration
         private void DrawDebug(On_Main.orig_DrawDust orig, Main self)
         {
             orig(self);
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            if (vertices != null)
+            {
+               
+                spriteBatch.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.PointWrap,
+                    DepthStencilState.None,
+                    RasterizerState.CullCounterClockwise,
+                    null,
+                    Main.GameViewMatrix.TransformationMatrix);
+                foreach (var point in vertices)
+                {
+                    Vector2 position = point.ToWorldCoordinates();
+                    SpritebatchDrawer blackTileDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Main.screenPosition + position);
+                    spriteBatch.Draw(blackTileDrawer);
+                }
+
+                spriteBatch.End();
+     
+            }
             if (_doorsInWorld.Count <= 0)
                 return;
 
 
-            SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Deferred,
                 BlendState.AlphaBlend,
                 SamplerState.PointWrap,
@@ -164,6 +186,8 @@ namespace Stellamod.Common.DungeonGeneration
                 Vector2 drawOrigin = frame.Size() / 2f;
                 spriteBatch.Draw(arrowTexture, drawPosition, frame, Color.White, 0, drawOrigin, 1, SpriteEffects.None, 0);
             }
+
+  
             spriteBatch.End();
         }
 

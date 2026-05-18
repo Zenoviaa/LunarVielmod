@@ -1,6 +1,7 @@
 ﻿using Stellamod.WorldG;
 using System;
 using System.Collections.Generic;
+using Terraria;
 
 namespace Stellamod.Common.DungeonGeneration;
 
@@ -89,6 +90,96 @@ public class DungeonChart
         Edges[start, end] = direction;
         Edges[end, start] = -direction;
         Corridors.Add(new Point(start, end));
+    }
+
+
+    public static DungeonChart FromMap((int, int)[] map)
+    {
+        List<Point> vertices = new List<Point>();
+        //This gonna be slow but idc
+        HashSet<Point> verticeHash = new HashSet<Point>();
+        for (int r = 0; r < map.Length; r++)
+        {
+            Point node = new Point(map[r].Item1, map[r].Item2);
+            vertices.Add(node);
+            verticeHash.Add(node);
+        }
+     
+
+        Point origin = new Point();
+        for(int i = 0; i < vertices.Count; i++)
+        {
+            Point vertex = vertices[i];
+            Point left = vertex + new Point(-1, 0);
+            Point right = vertex + new Point(1, 0);
+            Point up = vertex + new Point(0, -1);
+            Point down = vertex + new Point(0, 1);
+            int count = 0;
+            if (verticeHash.Contains(left))
+            {
+                count++;
+            }
+            if (verticeHash.Contains(right))
+            {
+                count++;
+            }
+            if (verticeHash.Contains(up))
+            {
+                count++;
+            }
+            if (verticeHash.Contains(down))
+            {
+                count++;
+            }
+
+            if(count <= 1)
+            {
+                origin = vertex;
+                break;
+            }
+        }
+
+
+        //Top botom left right
+        for (int i = 0; i < vertices.Count; i++)
+        {
+            Point vertex = vertices[i];
+            vertex -= origin;
+            vertices[i] = vertex;
+        }
+
+        //bruh
+        DungeonChart chart = new DungeonChart(vertices.ToArray());
+        for (int i = 0; i < vertices.Count; i++)
+        {
+            Point vertex = vertices[i];
+            Point left = vertex + new Point(-1, 0);
+            Point right = vertex + new Point(1, 0);
+            Point up = vertex + new Point(0, -1);
+            Point down = vertex + new Point(0, 1);
+            if (chart.VerticeHashSet.Contains(left))
+            {
+                int index = chart.Vertices.IndexOf(left);
+                chart.Connect(i, index, Vector2.One);
+            }
+            if (chart.VerticeHashSet.Contains(right))
+            {
+                int index = chart.Vertices.IndexOf(right);
+                chart.Connect(i, index, Vector2.One);
+            }
+            if (chart.VerticeHashSet.Contains(up))
+            {
+                int index = chart.Vertices.IndexOf(up);
+                chart.Connect(i, index, Vector2.One);
+            }
+            if (chart.VerticeHashSet.Contains(down))
+            {
+                int index = chart.Vertices.IndexOf(down);
+                chart.Connect(i, index, Vector2.One);
+            }
+        }
+
+        return chart;
     }
     public static DungeonChart FromPrefab(GenerationPrefab prefab)
     {

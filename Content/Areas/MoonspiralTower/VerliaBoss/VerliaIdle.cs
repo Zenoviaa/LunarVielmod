@@ -1,30 +1,23 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
-using Stellamod.Common.Animations;
 using Stellamod.Content.Areas.Abyss.AccAB;
 using Stellamod.Content.Dialogue;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.Particles;
-using Stellamod.Core.Pixelation;
 using Stellamod.Core.TriggersSystem.Triggers;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.NPCs;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static Stellamod.Core.AssetReferences.Assets.NoiseTextures;
 
 namespace Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 
@@ -165,7 +158,7 @@ public class VerliaIdle : VeilTownNPC,
     public override void AI()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             var npc = NPC;
             float numDust = 16;
@@ -187,7 +180,7 @@ public class VerliaIdle : VeilTownNPC,
         NPC.velocity = velocity;
         NPC.spriteDirection = NPC.direction;
         if (NPC.AnyNPCs(ModContent.NPCType<Verlia>()) ||
-            DownedBossTracker.IsDowned(DownedBossFlag.Verlia) || 
+            DownedBossTracker.IsDowned(DownedBossFlag.Verlia) ||
             !DownedBossTracker.IsDowned(DownedBossFlag.VerliaPrison))
         {
             NPC.active = false;
@@ -254,7 +247,7 @@ public class VerliaIdle : VeilTownNPC,
         {
             Vector2 leftWingScale = Vector2.One;
             leftWingScale.X = MathHelper.Lerp(1f, 0.6f, EasingFunction.Clamp(NPC.velocity.X / -WingVelocity));
-         //   leftWingScale *= _wingScale;
+            //   leftWingScale *= _wingScale;
             return leftWingScale;
         }
     }
@@ -272,7 +265,7 @@ public class VerliaIdle : VeilTownNPC,
         {
             Vector2 leftWingScale = Vector2.One;
             leftWingScale.X = MathHelper.Lerp(1f, 0.6f, EasingFunction.Clamp(NPC.velocity.X / WingVelocity));
-         //   leftWingScale *= _wingScale;
+            //   leftWingScale *= _wingScale;
             return leftWingScale;
         }
     }
@@ -309,7 +302,7 @@ public class VerliaIdle : VeilTownNPC,
         glowDrawer.color.A = 0;
         glowDrawer.scale.Y *= 0.66f;
         glowDrawer.scale *= 0.6f;
-     //   glowDrawer.scale *= _wingScale;
+        //   glowDrawer.scale *= _wingScale;
         glowDrawer.rotation = MathHelper.ToRadians(degrees);
 
         glowDrawer.drawOrigin = new Vector2(AssetManager.GlowMask.SimpleGlowCircle.Width() * 0.2f, AssetManager.GlowMask.SimpleGlowCircle.Height() * 0.5f);

@@ -1,13 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using ReLogic.Content;
+﻿using ReLogic.Content;
 using ReLogic.Utilities;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.PunkerTown.TilesPT;
-using Stellamod.Content.Areas.Terror.TilesTR;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
-using Stellamod.Items.Ores;
-using Stellamod.Projectiles.Swords.Altride;
 using Stellamod.Tiles;
 using Stellamod.Tiles.Abyss;
 using Stellamod.Tiles.Veil;
@@ -15,13 +11,14 @@ using Stellamod.TilesNew.MothlightTiles;
 using Stellamod.TilesNew.RainforestTiles;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
 namespace Stellamod.WorldG;
@@ -209,6 +206,105 @@ public class GenerationTextureManager : ModSystem
     public GenerationPrefab GetPrefab(string name) => Prefabs[name];
 }
 
+
+public static class DungeonLayouter
+{
+
+    public static (int, int)[] GenerateLayout(int roomCount, UnifiedRandom rand)
+    {
+        Stopwatch sw = Stopwatch.StartNew();
+        int size = 16;
+        bool[,] map = new bool[size, size];
+        int[,] costs = new int[size, size];
+
+        int halfSize = size / 2;
+        int x = halfSize;
+        int y = halfSize;
+        int placedRooms = 0;
+        int adjacentIndex = 0;
+
+        (int, int)[] adjacent = new (int, int)[4];
+        (int, int)[] roomsOnMap = new (int, int)[roomCount];
+
+
+        void PlaceRoom(int x, int y)
+        {
+            if (map[x, y])
+                return;
+
+            //Increase costs of neighbouring nodes
+            for (int a = 0; a < adjacentIndex; a++)
+            {
+                (int ax, int ay) = adjacent[a];
+                costs[ax, ay] += 1;
+            }
+
+            map[x, y] = true;
+            roomsOnMap[placedRooms] = (x, y);
+            placedRooms++;
+        }
+
+        void PushAdjacent(int ax, int ay)
+        {
+            if (ax < 0 || ax >= size || ay <= 0 || ay >= size)
+                return;
+
+            if (costs[ax, ay] >= 2)
+                return;
+
+            if (map[ax, ay])
+                return;
+
+            adjacent[adjacentIndex++] = (ax, ay);
+        }
+
+        void FindAdjacents()
+        {
+            adjacentIndex = 0;
+            PushAdjacent(x - 1, y);
+            PushAdjacent(x + 1, y);
+            PushAdjacent(x, y - 1);
+            PushAdjacent(x, y + 1);
+        }
+
+        int snakeLength = 4;
+
+        while (placedRooms < roomCount)
+        {
+            //Get Adjacent Points to current node
+            FindAdjacents();
+
+            //Place at the current position if possible
+            PlaceRoom(x, y);
+
+            //Recalculate the adjacent nodes since the costs have changed
+            FindAdjacents();
+
+            snakeLength--;
+
+            //We've come to a dead end if the adjacent index = 0
+            //In this case we should go to a different room and keep moving around
+            if (adjacentIndex <= 0 || snakeLength <= 0)
+            {
+                snakeLength = rand.Next(4);
+                //Just go to a random room we placed
+                int positionToMoveTo = rand.Next(placedRooms);
+                (x, y) = roomsOnMap[positionToMoveTo];
+            }
+            else
+            {
+                int positionToMoveTo = rand.Next(adjacentIndex);
+                (int ax, int ay) = adjacent[positionToMoveTo];
+                x = ax;
+                y = ay;
+            }
+            //We now have all open spots next to this room
+        }
+        sw.Stop();
+        Main.NewText($"Layout Generation: Elapsed {sw.ElapsedMilliseconds}ms");
+        return roomsOnMap;
+    }
+}
 public class VeilGenTester : ModItem
 {
     public override void SetDefaults()
@@ -223,22 +319,44 @@ public class VeilGenTester : ModItem
 
     public override bool? UseItem(Player player)
     {
+        // LayoutTest();
         MineshaftTest();
         return true;
     }
 
+    private static void LayoutTest()
+    {
+        (int, int)[] layout = DungeonLayouter.GenerateLayout(16, Main.rand);
+        for(int r = 0; r < layout.Length; r++)
+        {
+            Main.NewText(layout[r]);
+        }
+
+
+        Point[] vertices = new Point[layout.Length];
+        for(int v =0; v < vertices.Length; v++)
+        {
+            vertices[v] = new Point(layout[v].Item1, layout[v].Item2);
+        }
+        DungeonGenerationHelper.vertices = vertices;
+    }
     private static void MineshaftTest()
     {
         Vector2 mouseWorld = Main.MouseWorld;
         Point startTile = mouseWorld.ToTileCoordinates();
+
+
+        (int, int)[] layout = DungeonLayouter.GenerateLayout(16, Main.rand);
+
+        Point[] vertices = new Point[layout.Length];
+        for (int v = 0; v < vertices.Length; v++)
+        {
+            vertices[v] = new Point(layout[v].Item1, layout[v].Item2);
+        }
+        DungeonGenerationHelper.vertices = vertices;
+
         Room[] prefabs = DungeonSaveUtility.GetDungeonPrefabs("Mineshafts");
-        DungeonChart simpleChart = new DungeonChart(new Point(0, 0), new Point(0, 1), new Point(0, 2), new Point(0, 3), new Point(0, 4));
-        simpleChart.Connect(0, 1, Vector2.UnitY);
-        simpleChart.Connect(1, 2, Vector2.UnitY);
-        simpleChart.Connect(2, 3, Vector2.UnitY);
-
-        simpleChart.Connect(3, 4, Vector2.UnitY);
-
+        DungeonChart simpleChart = DungeonChart.FromMap(layout);
 
 
         Room[] map = Dungeonizer.GenerateFromChart(prefabs, simpleChart, Main.rand);
@@ -419,7 +537,7 @@ public class VeilGenTester : ModItem
     private void GenerateMarsh(Point startTile, int length)
     {
         var genRand = WorldGen.genRand;
-     
+
         //Generate the terrain
         Point endTile = startTile + new Point(length, 0);
         int mountainHeight = 200;
@@ -428,9 +546,9 @@ public class VeilGenTester : ModItem
         for (int x = startTile.X; x < endTile.X; x++)
         {
             float localX = x - startTile.X;
-        
-            float ratio = localX / (float)length;
-           // Console.WriteLine(ratio);
+
+            float ratio = localX / length;
+            // Console.WriteLine(ratio);
             int height = (int)(GetMarshHeight(ratio) * mountainHeight);
             heights[x - startTile.X] = height;
             for (int y = 0; y < height; y++)
@@ -444,7 +562,7 @@ public class VeilGenTester : ModItem
         for (int x = startTile.X; x < endTile.X; x++)
         {
             float localX = x - startTile.X;
-            float ratio = localX / (float)length;
+            float ratio = localX / length;
             int heightIndex = x - startTile.X;
             int height = heights[heightIndex];
 
@@ -457,7 +575,7 @@ public class VeilGenTester : ModItem
             WorldUtils.Gen(point, new Shapes.Rectangle(scanArea.Width, scanArea.Height), new Actions.TileScanner(uGrassTileType).Output(dictionary));
             int tileCount = dictionary[uGrassTileType];
 
-            if(tileCount >= 5)
+            if (tileCount >= 5)
             {
                 if (genRand.NextBool(16))
                 {
@@ -472,7 +590,7 @@ public class VeilGenTester : ModItem
         for (int x = startTile.X; x < endTile.X; x++)
         {
             float localX = x - startTile.X;
-            float ratio = localX / (float)length;
+            float ratio = localX / length;
             int heightIndex = x - startTile.X;
             int height = heights[heightIndex];
 
@@ -498,7 +616,7 @@ public class VeilGenTester : ModItem
 
         //Spawn surface waters
         int numWaterBlotches = Main.rand.Next(5, 10);
-        for(int n = 0; n < numWaterBlotches; n++)
+        for (int n = 0; n < numWaterBlotches; n++)
         {
             int randX = genRand.Next(startTile.X, endTile.X);
 
@@ -682,7 +800,7 @@ public class VeilGenTester : ModItem
 
         int maxRadius = 64;
         int radius = genRand.Next(24, 64);
-        float sizeMultiplier = (float)radius / (float)maxRadius;
+        float sizeMultiplier = radius / (float)maxRadius;
         WorldUtils.Gen(granitePoint, new Shapes.Circle(radius, radius),
             new Actions.SetTile(TileID.Marble));
         for (int n = 0; n < 150; n++)
@@ -742,7 +860,7 @@ public class VeilGenTester : ModItem
         {
 
             Vector2 newVelocity = caveVelocity;
-            newVelocity.Y += MathF.Sin((float)j * 2f) * 8;
+            newVelocity.Y += MathF.Sin(j * 2f) * 8;
             if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
             {
                 ushort wallType = wallTypes[genRand.Next(0, wallTypes.Length)];
@@ -831,7 +949,7 @@ public class VeilGenTester : ModItem
         {
 
             Vector2 newVelocity = caveVelocity;
-            newVelocity.X += MathF.Sin((float)j) * 8;
+            newVelocity.X += MathF.Sin(j) * 8;
             if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
             {
                 ushort wallType = wallTypes[genRand.Next(0, wallTypes.Length)];
@@ -916,7 +1034,7 @@ public class VeilGenTester : ModItem
         float pokey = 12;
         for (int n = 0; n < pokey; n++)
         {
-            float progress = (float)n / pokey;
+            float progress = n / pokey;
             float rot = progress * MathHelper.TwoPi;
             Vector2 velocity = rot.ToRotationVector2() * 66;
             Point cavePoint = evilPoint + velocity.ToPoint();
@@ -929,47 +1047,47 @@ public class VeilGenTester : ModItem
 
         for (int n = 0; n < 800; n++)
         {
-            float progress = (float)n / 800f;
+            float progress = n / 800f;
             float rot = progress * MathHelper.TwoPi;
             Vector2 velocity = rot.ToRotationVector2() * genRand.NextFloat(50, 80);
             Point cavePoint = evilPoint + velocity.ToPoint();
             Vector2 strength = new Vector2(3, 4);
 
-            WorldGen.TileRunner((int)cavePoint.X, (int)cavePoint.Y,
+            WorldGen.TileRunner(cavePoint.X, cavePoint.Y,
                 genRand.NextFloat(strength.X, strength.Y),
                 genRand.Next(4, 5), -1);
         }
 
         for (int n = 0; n < 800; n++)
         {
-            float progress = (float)n / 800f;
+            float progress = n / 800f;
             float rot = progress * MathHelper.TwoPi;
             Vector2 velocity = rot.ToRotationVector2() * genRand.NextFloat(50, 80);
             Point cavePoint = evilPoint + velocity.ToPoint();
             Vector2 strength = new Vector2(3, 4);
 
 
-            WorldGen.TileRunner((int)cavePoint.X, (int)cavePoint.Y,
+            WorldGen.TileRunner(cavePoint.X, cavePoint.Y,
                 genRand.NextFloat(strength.X, strength.Y),
                 genRand.Next(4, 5), decorativeBlock);
         }
 
         for (int n = 0; n < 800; n++)
         {
-            float progress = (float)n / 800f;
+            float progress = n / 800f;
             float rot = progress * MathHelper.TwoPi;
             Vector2 velocity = rot.ToRotationVector2() * genRand.NextFloat(60, 100);
             Point cavePoint = evilPoint + velocity.ToPoint();
             Vector2 strength = new Vector2(3, 4);
 
-            WorldGen.TileRunner((int)cavePoint.X, (int)cavePoint.Y,
+            WorldGen.TileRunner(cavePoint.X, cavePoint.Y,
                 genRand.NextFloat(strength.X, strength.Y),
                 genRand.Next(4, 5), decorativeBlock);
         }
 
         for (int n = 0; n < 10; n++)
         {
-            float progress = (float)n / 10f;
+            float progress = n / 10f;
             float rot = progress * MathHelper.TwoPi;
             rot += MathHelper.ToRadians(30);
             Vector2 velocity = rot.ToRotationVector2() * 10;
@@ -979,7 +1097,7 @@ public class VeilGenTester : ModItem
 
         for (int n = 0; n < 10; n++)
         {
-            float progress = (float)n / 10f;
+            float progress = n / 10f;
             float rot = progress * MathHelper.TwoPi;
             rot += MathHelper.ToRadians(60);
             Vector2 velocity = rot.ToRotationVector2() * 30;
@@ -989,7 +1107,7 @@ public class VeilGenTester : ModItem
 
         for (int n = 0; n < 10; n++)
         {
-            float progress = (float)n / 10f;
+            float progress = n / 10f;
             float rot = progress * MathHelper.TwoPi;
             Vector2 velocity = rot.ToRotationVector2() * 50;
             Point shadowOrbPoint = evilPoint + velocity.ToPoint();
@@ -1095,7 +1213,7 @@ public class VeilGenTester : ModItem
         //Decorate arena with walls
         for (int w = 0; w < 80; w++)
         {
-            float progressOnCircle = (float)w / 80f;
+            float progressOnCircle = w / 80f;
             float rot = progressOnCircle * MathHelper.TwoPi;
             Vector2 vel = rot.ToRotationVector2() * radius;
             Point pointToWall = arenaPoint + vel.ToPoint();
@@ -1334,7 +1452,7 @@ public static class VeilGen
         for (int x = startTile.X; x < endTile.X; x++)
         {
             float localX = x - startTile.X;
-            float ratio = localX / (float)length;
+            float ratio = localX / length;
             int height = (int)(GetMarshHeight(ratio) * mountainHeight);
             heights[x - startTile.X] = height;
         }
@@ -1344,7 +1462,7 @@ public static class VeilGen
         for (int x = startTile.X; x < endTile.X; x++)
         {
             float localX = x - startTile.X;
-            float ratio = localX / (float)length;
+            float ratio = localX / length;
             int heightIndex = x - startTile.X;
             int height = heights[heightIndex];
 
@@ -1372,7 +1490,7 @@ public static class VeilGen
         for (int x = startTile.X; x < endTile.X; x++)
         {
             float localX = x - startTile.X;
-            float ratio = localX / (float)length;
+            float ratio = localX / length;
             int heightIndex = x - startTile.X;
             int height = heights[heightIndex];
 
@@ -1484,7 +1602,7 @@ public static class VeilGen
         {
             float localX = x - startTile.X;
 
-            float ratio = localX / (float)length;
+            float ratio = localX / length;
             int height = (int)(GetMarshHeight(ratio) * mountainHeight);
             heights[x - startTile.X] = height;
             for (int y = 0; y < height; y++)
@@ -1687,7 +1805,7 @@ public static class VeilGen
         WorldGen.PlaceTile(treex, treey, ModContent.TileType<AcaciaTree>(), true, true);
         for (int y = 0; y < height; y++)
         {
-            if(y == height -1 )
+            if (y == height - 1)
             {
                 WorldGen.PlaceTile(treex, treey - (y + 1), ModContent.TileType<AcaciaTreeTop>(), true, true);
             }
@@ -1696,7 +1814,7 @@ public static class VeilGen
                 WorldGen.PlaceTile(treex, treey - (y + 1), ModContent.TileType<AcaciaTree>(), true, true);
 
             }
- 
+
         }
 
         for (int y = 0; y < (height + 2); y++)
@@ -1876,7 +1994,7 @@ public static class VeilGen
         var genRand = WorldGen.genRand;
         int maxRadius = (int)radiusSize.Y;
         int radius = genRand.Next((int)radiusSize.X, (int)radiusSize.Y);
-        float sizeMultiplier = (float)radius / (float)maxRadius;
+        float sizeMultiplier = radius / (float)maxRadius;
         WorldUtils.Gen(granitePoint, new Shapes.Circle(radius, radius),
             new Actions.SetTile(TileID.Marble));
         for (int n = 0; n < 150; n++)
@@ -1936,7 +2054,7 @@ public static class VeilGen
         {
 
             Vector2 newVelocity = caveVelocity;
-            newVelocity.Y += MathF.Sin((float)j * 2f) * 8;
+            newVelocity.Y += MathF.Sin(j * 2f) * 8;
             if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
             {
                 ushort wallType = wallTypes[genRand.Next(0, wallTypes.Length)];
@@ -1962,7 +2080,7 @@ public static class VeilGen
 
 
         int radius = genRand.Next((int)radiusSize.X, (int)radiusSize.Y);
-        float sizeMultiplier = (float)radius / (float)radiusSize.Y;
+        float sizeMultiplier = radius / radiusSize.Y;
         WorldUtils.Gen(granitePoint, new Shapes.Circle(radius, radius),
             new Actions.SetTile(TileID.Granite));
         for (int n = 0; n < 150; n++)
@@ -2022,7 +2140,7 @@ public static class VeilGen
         {
 
             Vector2 newVelocity = caveVelocity;
-            newVelocity.X += MathF.Sin((float)j) * 8;
+            newVelocity.X += MathF.Sin(j) * 8;
             if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
             {
                 ushort wallType = wallTypes[genRand.Next(0, wallTypes.Length)];
@@ -2560,7 +2678,7 @@ public static class VeilGen
             cavePosition += caveDirection * 4;
 
 
-            float ratio = (float)n / (float)caveSteps;
+            float ratio = n / (float)caveSteps;
             float extraWidth = MathHelper.Lerp(0, caveWidth, EasingFunction.QuadraticBump(ratio));
             if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
             {
@@ -2581,7 +2699,7 @@ public static class VeilGen
             Vector2 caveDirection = caveInitialDirection.RotatedBy(rotation);
             cavePosition += caveDirection * 3;
 
-            float ratio = (float)n / (float)caveSteps;
+            float ratio = n / (float)caveSteps;
             float extraWidth = MathHelper.Lerp(0, caveWidth, EasingFunction.QuadraticBump(ratio));
             if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
             {
@@ -3108,7 +3226,7 @@ public static class VeilGen
         for (int j = 0; j < caveSteps; j++)
         {
             float divisor = 2f;
-            float sample = fastNoiseLite.GetNoise((float)cavePosition.X / divisor, (float)cavePosition.Y / divisor);
+            float sample = fastNoiseLite.GetNoise(cavePosition.X / divisor, cavePosition.Y / divisor);
             float caveOffsetAngleAtStep = sample * MathHelper.TwoPi * 1.9f;
             Vector2 caveDirection = baseCaveDirection.RotatedBy(caveOffsetAngleAtStep);
 
@@ -3138,7 +3256,7 @@ public static class VeilGen
         for (int j = 0; j < caveSteps; j++)
         {
             float divisor = 50f;
-            float sample = fastNoiseLite.GetNoise((float)cavePosition.X / divisor, (float)cavePosition.Y / divisor);
+            float sample = fastNoiseLite.GetNoise(cavePosition.X / divisor, cavePosition.Y / divisor);
             float caveOffsetAngleAtStep = sample * MathHelper.TwoPi * 1.9f;
             Vector2 caveDirection = baseCaveDirection.RotatedBy(caveOffsetAngleAtStep);
 
@@ -3191,7 +3309,7 @@ public static class VeilGen
         }
 
         int tileM = width * height;
-        float tilePercent = (float)count / (float)tileM;
+        float tilePercent = count / (float)tileM;
         return tilePercent;
     }
 
@@ -3233,7 +3351,7 @@ public static class VeilGen
         }
 
         int tileM = width * height;
-        float tilePercent = (float)count / (float)tileM;
+        float tilePercent = count / (float)tileM;
         return tilePercent;
     }
     public static void GenerateColosseum(Point tilePoint, StructureMap structureMap = null)
@@ -3709,7 +3827,7 @@ public static class VeilGen
         for (int j = 0; j < caveSteps; j++)
         {
             float divisor = 2f;
-            float sample = fastNoiseLite.GetNoise((float)cavePosition.X / divisor, (float)cavePosition.Y / divisor);
+            float sample = fastNoiseLite.GetNoise(cavePosition.X / divisor, cavePosition.Y / divisor);
             sample = MathF.Sin(sample * 8);
             float caveOffsetAngleAtStep = sample * MathHelper.TwoPi * 1.9f;
             Vector2 caveDirection = baseCaveDirection.RotatedBy(caveOffsetAngleAtStep);
@@ -3744,7 +3862,7 @@ public static class VeilGen
         for (int j = 0; j < caveSteps; j++)
         {
             float divisor = 2f;
-            float sample = fastNoiseLite.GetNoise((float)cavePosition.X / divisor, (float)cavePosition.Y / divisor);
+            float sample = fastNoiseLite.GetNoise(cavePosition.X / divisor, cavePosition.Y / divisor);
             sample = MathF.Sin(sample * 4);
             float caveOffsetAngleAtStep = sample * MathHelper.TwoPi * 1.9f;
             Vector2 caveDirection = baseCaveDirection.RotatedBy(caveOffsetAngleAtStep);
@@ -3783,7 +3901,7 @@ public static class VeilGen
         for (int j = 0; j < caveSteps; j++)
         {
             float divisor = 1f;
-            float sample = fastNoiseLite.GetNoise((float)cavePosition.X / divisor, (float)cavePosition.Y / divisor);
+            float sample = fastNoiseLite.GetNoise(cavePosition.X / divisor, cavePosition.Y / divisor);
 
             float angleOffset = sample * MathHelper.Pi;
             Vector2 caveDirection = baseCaveDirection.RotatedBy(angleOffset);
