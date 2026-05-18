@@ -154,7 +154,7 @@ public class SparkleStarSwing : ModProjectile,
         {
             if (this.OwnedByLocalClient())
             {
-                Projectile.NewProjectile(Projectile.GetItemSource_FromThis(), Projectile.Center, Vector2.Zero, 
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, 
                     ModContent.ProjectileType<SparklePowder>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
         }
