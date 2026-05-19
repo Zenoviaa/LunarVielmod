@@ -21,6 +21,7 @@ using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Default;
 using Terraria.UI;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
@@ -331,6 +332,7 @@ namespace Stellamod
 
         private void DrawWorldSelectItemOverlay(UIWorldListItem uiItem, SpriteBatch spriteBatch)
         {
+
             UIElement WorldIcon = (UIElement)typeof(UIWorldListItem).GetField("_worldIcon", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
             WorldFileData Data = (WorldFileData)typeof(AWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
             WorldIcon.RemoveAllChildren();

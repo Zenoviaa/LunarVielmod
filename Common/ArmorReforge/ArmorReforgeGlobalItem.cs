@@ -204,7 +204,7 @@ namespace Stellamod.Common.ArmorReforge
         }
         public TooltipLine GetNameTooltip(Item item)
         {
-            TooltipLine line = new TooltipLine("ItemName", $"{LangText.AccessoryReforge(accessoryReforgeType, "DisplayName")} {item.Name}");
+            TooltipLine line = new TooltipLine(Mod, "ItemName", $"{LangText.AccessoryReforge(accessoryReforgeType, "DisplayName")} {item.Name}");
             return line;
         }
 
@@ -473,7 +473,7 @@ namespace Stellamod.Common.ArmorReforge
         }
         public TooltipLine GetNameTooltip(Item item)
         {
-            TooltipLine line = new TooltipLine("ItemName", $"{LangText.ArmorReforge(reforgeType, "DisplayName")} {item.Name}");
+            TooltipLine line = new TooltipLine(Mod, "ItemName", $"{LangText.ArmorReforge(reforgeType, "DisplayName")} {item.Name}");
             return line;
         }
 
