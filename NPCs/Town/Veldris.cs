@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.ArmorReforgeSystem;
+using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items.Weapons.Melee.Swords;
 using Stellamod.Items.Weapons.Ranged;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
 using Stellamod.Items.Weapons.Thrown;
-
-using Stellamod.UI.ArmorReforgeSystem;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -154,6 +154,7 @@ namespace Stellamod.NPCs.Town
             Main.playerInventory = true;
             ReforgeUISystem uiSystem = ModContent.GetInstance<ReforgeUISystem>();
             uiSystem.OpenUI();
+            CloseTownDialogue();
         }
 
         public override void AddShops()

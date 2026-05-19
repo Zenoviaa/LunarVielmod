@@ -18,19 +18,11 @@ namespace Stellamod.Items.Consumables
 
         public override void SetDefaults()
         {
-            Item.useAnimation = 30;
-            Item.useTime = 30;
             Item.width = 20; // The item texture's width
             Item.height = 20; // The item texture's height
-            Item.maxStack = 99; // The item's max stack value
+            Item.maxStack = Item.CommonMaxStack;
             Item.value = Item.buyPrice(gold: 1);
-            Item.useStyle = ItemUseStyleID.HoldUp;
-
             Item.rare = ItemRarityID.Blue;
-            Item.noMelee = true;
-            Item.consumable = false;
-            Item.autoReuse = false;
-            Item.UseSound = SoundID.Item43;
         }
 
         public override void AddRecipes()

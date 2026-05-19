@@ -1,5 +1,7 @@
 ﻿using ReLogic.Content;
+using Stellamod.Common.UI;
 using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.UI;
 using System;
@@ -64,7 +66,7 @@ namespace Stellamod.Common.WeaponUpgrade.UI
         }
         private Item ItemToUpgrade => reforgeUIState.ui.reforgeSlot.Item;
         public static float ForgeGlow;
-        public float easeInTime => 60f;
+        public float easeInTime => 30f;
         public override int uiSlot => Slot_MajorUI;
         public override void OnModLoad()
         {
@@ -72,8 +74,29 @@ namespace Stellamod.Common.WeaponUpgrade.UI
             _userInterface = new UserInterface();
             reforgeUIState = new WeaponUpgradeUIState();
             reforgeUIState.Activate();
+            On_Main.CheckMonoliths += RenderUI;
         }
 
+        private void RenderUI(On_Main.orig_CheckMonoliths orig)
+        {
+            if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
+            {
+                PlayerInput.SetZoom_UI();
+                Main.spriteBatch.GraphicsDevice.SetRenderTarget(UITarget);
+                Main.spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
+                        Main.UIScaleMatrix);
+
+                _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+
+                Main.spriteBatch.End();
+                PlayerInput.SetZoom_World();
+            }
+
+            orig();
+        }
+
+        public ManagedRenderTarget UITarget => ModContent.GetInstance<UIRenderTargets>().uiTarget;
         public override void UpdateUI(GameTime gameTime)
         {
             ForgeGlow = MathHelper.Lerp(ForgeGlow, 0f, (float)gameTime.ElapsedGameTime.TotalSeconds * 3);
@@ -189,27 +212,18 @@ namespace Stellamod.Common.WeaponUpgrade.UI
                     {
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                         {
-                            float scale = 1f / Main.UIScale;
-                            Main.screenWidth = (int)((float)PlayerInput.RealScreenWidth * scale);
-                            Main.screenHeight = (int)((float)PlayerInput.RealScreenHeight * scale);
 
-                            Vector2 pivot = new Vector2();
-                            pivot.X = reforgeUIState.ui.RelativeLeft;
-                            pivot.Y = reforgeUIState.ui.RelativeTop;
-                            UIScaler uiScaler;
-                            uiScaler.scalePivot = pivot + new Vector2(reforgeUIState.ui.Width.Pixels, reforgeUIState.ui.Height.Pixels) * 0.5f;
+                            SpriteBatch spriteBatch = Main.spriteBatch;
+                            spriteBatch.End();
+                            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
 
-                            Easer easer = _isClosing ? EasingFunction.InOutSine : EasingFunction.OutExpo;
-                            uiScaler.adjustedUIScale = Vector2.One * easer(_inRatio);
-                            Main.spriteBatch.End();
-                            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
-                                uiScaler.UIScaleMatrix());
-                            
-                            _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+     
+                            Vector2 offset = Vector2.Lerp(-Vector2.UnitX * 100, Vector2.Zero, EasingFunction.OutCirc(_inRatio));
+                            Color color = Color.Lerp(Color.Transparent, Color.White, _inRatio);
+                            spriteBatch.Draw(UITarget, offset + UITarget.Size() * 0.5f, null, color, 0, UITarget.Size() * 0.5f, MathHelper.Lerp(0f, 1f, EasingFunction.OutCirc(_inRatio)), SpriteEffects.None, 0);
 
-                            Main.spriteBatch.End();
-                            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, 
-                                Main.UIScaleMatrix);
+                            spriteBatch.End();
+                            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null);
                         }
                         return true;
                     },

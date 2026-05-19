@@ -7,6 +7,7 @@ Headers: {
 	Experiment: Experiment
 	Lighting: Lighting
 	Experimental: Experimental
+	Dev: Dev Header
 }
 
 FocusMode: {
@@ -222,4 +223,9 @@ Foreground: {
 ShadowQuality: {
 	Label: Shadow Quality
 	Tooltip: Affects how precise shadow calculations are, reduce this if you're having issues with performance, this does not do anything if Beaming Lights is off.
+}
+
+skipMapAutoSave: {
+	Label: skip Map Auto Save
+	Tooltip: ""
 }

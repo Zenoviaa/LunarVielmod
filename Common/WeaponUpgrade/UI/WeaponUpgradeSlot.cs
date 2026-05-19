@@ -90,6 +90,10 @@ public class WeaponUpgradeSlot : UIElement
         ItemSlot.DrawItemIcon(Item, _context, spriteBatch, drawPos, _scale * scale, 32 * scale, Color.White);
 
 
+        spriteBatch.End();
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null,
+              Main.UIScaleMatrix);
+
         if (Item.stack > 1)
             ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, Item.stack.ToString(),
                 centerPos + new Vector2(10f, 26f) * _scale, Color.White, 0f, Vector2.Zero, new Vector2(_scale), -1f, _scale);
@@ -127,6 +131,9 @@ public class WeaponUpgradeSlot : UIElement
 
         }
         DrawHelp(spriteBatch);
+        spriteBatch.End();
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null,
+              Main.UIScaleMatrix);
 
         //   WeaponUpgradeGlobalItem weaponUpgradeGlobalItem = Item.GetGlobalItem<WeaponUpgradeGlobalItem>();
 

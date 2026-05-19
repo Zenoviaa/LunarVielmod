@@ -1,4 +1,6 @@
 Common: {
+	ArmorSlotHelp: Place a piece of armor to reforge here!
+	AccessorySlotHelp: Place an accessory to reforge here!
 	ArmorCraft: ManMan will craft this for you with [c/FFA500:{0}]!
 	Armor: Armor
 	Unbound: "[UNBOUND]"

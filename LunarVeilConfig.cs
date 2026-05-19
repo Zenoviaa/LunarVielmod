@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using Terraria;
+using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
@@ -26,6 +27,25 @@ public class DisableBossNameHover : GlobalNPC
         {
             npc.ShowNameOnHover = false;
         }
+    }
+
+}
+
+public class NoMapAutoSave : ModSystem
+{
+    public override void Load()
+    {
+        base.Load();
+        On_Player.SavePlayer += DisableMapAutoSave;
+    }
+
+    private void DisableMapAutoSave(On_Player.orig_SavePlayer orig, PlayerFileData playerFile, bool skipMapSave)
+    {
+        if (ModContent.GetInstance<LunarVeilClientConfig>().skipMapAutoSave)
+        {
+            skipMapSave = true;
+        }
+        orig(playerFile, skipMapSave);
     }
 }
 
@@ -140,4 +160,7 @@ public class LunarVeilClientConfig : ModConfig
     public float AmmoBarX = 50;
     [Range(0f, 100f)]
     public float AmmoBarY = 50;
+
+    [Header("Dev")]
+    public bool skipMapAutoSave;
 }

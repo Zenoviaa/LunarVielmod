@@ -193,6 +193,21 @@ namespace Stellamod.Common.ArmorReforge
             tooltips.Add(line);
 
         }
+        public void ModifyTooltipsWithoutName(Item item, List<TooltipLine> tooltips)
+        {
+            if (accessoryReforgeType == AccessoryReforgeType.None)
+                return;
+
+            var line = new TooltipLine(Mod, "ReforgeUpside", LangText.AccessoryReforge(accessoryReforgeType, "Upside"));
+            line.OverrideColor = new Color(80, 187, 124);
+            tooltips.Add(line);
+        }
+        public TooltipLine GetNameTooltip(Item item)
+        {
+            TooltipLine line = new TooltipLine("ItemName", $"{LangText.AccessoryReforge(accessoryReforgeType, "DisplayName")} {item.Name}");
+            return line;
+        }
+
         public override void NetSend(Item item, BinaryWriter writer)
         {
             base.NetSend(item, writer);
@@ -440,7 +455,14 @@ namespace Stellamod.Common.ArmorReforge
             /*TooltipLine line = new TooltipLine(Mod, "ReforgeDisplayName", LangText.ArmorReforge(reforgeType, "DisplayName"));
             line.OverrideColor = new Color(80, 187, 124);
             tooltips.Add(line);*/
+            ModifyTooltipsWithoutName(item, tooltips);
 
+        }
+
+        public void ModifyTooltipsWithoutName(Item item, List<TooltipLine> tooltips)
+        {
+            if (reforgeType == ArmorReforgeType.None)
+                return;
             var line = new TooltipLine(Mod, "ReforgeUpside", LangText.ArmorReforge(reforgeType, "Upside"));
             line.OverrideColor = new Color(80, 187, 124);
             tooltips.Add(line);
@@ -448,6 +470,11 @@ namespace Stellamod.Common.ArmorReforge
             line = new TooltipLine(Mod, "ReforgeDownside", LangText.ArmorReforge(reforgeType, "Downside"));
             line.OverrideColor = Color.IndianRed;
             tooltips.Add(line);
+        }
+        public TooltipLine GetNameTooltip(Item item)
+        {
+            TooltipLine line = new TooltipLine("ItemName", $"{LangText.ArmorReforge(reforgeType, "DisplayName")} {item.Name}");
+            return line;
         }
 
         public override void NetSend(Item item, BinaryWriter writer)
