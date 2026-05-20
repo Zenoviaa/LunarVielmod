@@ -220,6 +220,14 @@ public class TexturedQuad
         vertices[3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), Color.White, new Vector2(1, 1));
     }
 
+    public void Push(ref VertexPositionColorTexture[] buffer, ref int index)
+    {
+        buffer[index++] = vertices[0];
+        buffer[index++] = vertices[1];
+        buffer[index++] = vertices[2];
+        buffer[index++] = vertices[3];
+    }
+
     public void Transform(Vector2 center, float length, float width, Matrix transformMatrix, float rotation = 0)
     {
         Vector3 topLeftOffset = new Vector3(-1, -1, 0);
@@ -258,6 +266,26 @@ public class TexturedQuad
         vertices[2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), Color.White, new Vector2(0, 1));
         vertices[3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), Color.White, new Vector2(1, 1));
     }
+
+    public void VerticalFrame(float frameNumber, float numFrames)
+    {
+        ref var topLeft = ref vertices[0];
+        ref var topRight = ref vertices[1];
+        ref var bottomLeft = ref vertices[2];
+        ref var bottomRight = ref vertices[3];
+
+        float spacingBetweenFrames = 1f / numFrames;
+        float yOffset = frameNumber / numFrames;
+        float right = yOffset + spacingBetweenFrames;
+        float left = yOffset;
+
+        topLeft.TextureCoordinate.Y = left;
+        topRight.TextureCoordinate.Y = left;
+
+        bottomLeft.TextureCoordinate.Y = right;
+        bottomRight.TextureCoordinate.Y = right;
+    }
+
     public void CalculateVertices(Vector2 position, Vector2 direction, float length, float width)
     {            //Triangle 1
 

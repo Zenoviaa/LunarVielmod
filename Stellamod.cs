@@ -3,12 +3,15 @@ global using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Backgrounds;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas;
 using Stellamod.Content.Areas.Terror;
 using Stellamod.Content.Areas.WorldsEnd;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Currencies;
+using Stellamod.Core.UI;
 using Stellamod.Helpers;
 using Stellamod.Skies;
+using System;
 using System.IO;
 using System.Reflection;
 using Terraria;
@@ -16,6 +19,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -233,11 +237,34 @@ namespace Stellamod
                 TextureAssets.ScrollLeftButton = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/BackButton");
                 TextureAssets.ScrollRightButton = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/ForwardButton");
             }
+
+            On_UIPanel.DrawPanel += SetPanelColors;
             On_UIWorldListItem.DrawSelf += DrawWorldIconHook;
 
             // Instance = this;
         }
 
+        private void SetPanelColors(On_UIPanel.orig_DrawPanel orig, UIPanel self, SpriteBatch spriteBatch, Texture2D texture, Color color)
+        {
+            if (ModContent.GetInstance<MainMenuOverhaul>().IsMenuActive)
+            {
+                if (texture == self._borderTexture.Value)
+                    color = Color.White;
+                else
+                {
+                    float brightness = MathF.Max(color.R, color.B);
+                    brightness = MathF.Max(brightness, color.G);
+                    //   Console.WriteLine(color);
+                    float alpha = brightness / 255f;
+                    Color baseColor = Color.Black * 0.95f;
+                    Color litColor = Color.White;
+                    color = Color.Lerp(baseColor, litColor, alpha / 6f);
+                }
+
+            }
+
+            orig(self, spriteBatch, texture, color);
+        }
 
         private void DrawWorldIconHook(On_UIWorldListItem.orig_DrawSelf orig, UIWorldListItem self, SpriteBatch spriteBatch)
         {
@@ -353,19 +380,21 @@ namespace Stellamod
         private const string menuAssetPath = "Stellamod/Assets/Textures/Menu";
         public override Asset<Texture2D> Logo => ModContent.Request<Texture2D>($"{menuAssetPath}/Logo");
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/BeforeTheFlames");
-        public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<StarbloomBackgroundStyle>();
+        public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<NoBackgroundStyle>();
         public override string DisplayName => "Lunar Veil";
         public override void OnSelected()
         {
             SoundEngine.PlaySound(SoundID.Tink);
         }
 
+     
         public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor)
         {
             Texture2D logo = MenuLoader.CurrentMenu.Logo.Value;
-            Vector2 logoDrawPos = new Vector2(Main.screenWidth / 2, 100f);
+            Vector2 logoDrawPos = new Vector2(275, 100f);
             float scale = logoScale;
-            scale *= 0.3f;
+            scale *= 0.28f;
+            drawColor = Color.White;
             drawColor.A = 0;
             spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), drawColor, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), scale, SpriteEffects.None, 0f);
             return false;
