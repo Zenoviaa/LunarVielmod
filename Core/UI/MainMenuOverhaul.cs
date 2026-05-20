@@ -362,6 +362,7 @@ public class MainMenuOverhaul : ModSystem
                 return 0.5f;
             });
 
+           
             //Since the text is now left aligned, the hitbox for clicking on them is in the wrong spot
             //Thankfully we can just move it over by 50% to the right
             c.GotoNext(MoveType.After, i => i.MatchLdcI4(-2));

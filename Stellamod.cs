@@ -237,11 +237,18 @@ namespace Stellamod
                 TextureAssets.ScrollLeftButton = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/BackButton");
                 TextureAssets.ScrollRightButton = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/ForwardButton");
             }
-
+            On_UICharacterSelect.OnInitialize += ChangeColor;
+           // On_Main.UpdateMenu += EditCharacterSelectColor;
             On_UIPanel.DrawPanel += SetPanelColors;
             On_UIWorldListItem.DrawSelf += DrawWorldIconHook;
+        }
 
-            // Instance = this;
+
+        private void ChangeColor(On_UICharacterSelect.orig_OnInitialize orig, UICharacterSelect self)
+        {
+            orig(self);
+            var containerPanel = (UIPanel)typeof(UICharacterSelect).GetField("_containerPanel", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
+            containerPanel.BackgroundColor = Color.Black * 0.8f;
         }
 
         private void SetPanelColors(On_UIPanel.orig_DrawPanel orig, UIPanel self, SpriteBatch spriteBatch, Texture2D texture, Color color)
