@@ -246,9 +246,10 @@ namespace Stellamod
 
         private void SetPanelColors(On_UIPanel.orig_DrawPanel orig, UIPanel self, SpriteBatch spriteBatch, Texture2D texture, Color color)
         {
+            var borderTexture = (Asset<Texture2D>)typeof(UIPanel).GetField("_borderTexture", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
             if (ModContent.GetInstance<MainMenuOverhaul>().IsMenuActive)
             {
-                if (texture == self._borderTexture.Value)
+                if (texture == borderTexture.Value)
                     color = Color.White;
                 else
                 {
