@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia.Hands;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
@@ -25,9 +26,10 @@ namespace Stellamod.Content.Areas.Underground.BunnyStormBoss;
 
 public class BunnyStormBunny : ModProjectile
 {
-
+    private Vector2 _scale;
     private ref float Timer => ref Projectile.ai[0];
     private ref float Style => ref Projectile.ai[1];
+    private NPC Parent => Main.npc[(int)Projectile.ai[2]];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -57,6 +59,8 @@ public class BunnyStormBunny : ModProjectile
     }
     public override bool CanHitPlayer(Player target)
     {
+        if (Style == 2)
+            return false;
         return base.CanHitPlayer(target);
     }
     public override void AI()
@@ -66,9 +70,125 @@ public class BunnyStormBunny : ModProjectile
         switch (Style)
         {
             case 0:
+                _scale = Vector2.One;
                 AI_Falling();
                 break;
+            case 1:
+                _scale = Vector2.One;
+                AI_ShootOut();
+                break;
+            case 2:
+                AI_Suck();
+                break;
         }
+      //  TileCollideWhenBelowPlayer();
+    }
+
+    private void TileCollideWhenBelowPlayer()
+    {
+        Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 2048);
+        if (player != null && Projectile.Bottom.Y > player.Top.Y && Projectile.velocity.Y > 5)
+            Projectile.tileCollide = true;
+    }
+
+    private void AI_Suck()
+    {
+        _scale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.InOutSine(Timer / 30f));
+        Vector2 velocityToParent = (Parent.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+        velocityToParent = velocityToParent.RotatedBy(0.5f);
+        Projectile.velocity = velocityToParent * 12;
+
+        if(Vector2.Distance(Projectile.Center, Parent.Center) < 16)
+        {
+            Projectile.Kill();
+        }
+
+
+        Projectile.frameCounter++;
+        if (Projectile.frameCounter >= 5)
+        {
+            Projectile.frameCounter = 0;
+            Projectile.frame++;
+            if (Projectile.frame >= 2)
+                Projectile.frame = 0;
+        }
+        Projectile.rotation += 0.05f;
+    }
+
+    private void AI_ShootOut()
+    {
+        if(Timer == 1)
+        {
+            var p = FXUtil.GlowCircleBoom(Projectile.Center, Color.Yellow, Color.OrangeRed, Color.Black);
+            p.Scale *= Main.rand.NextFloat(0.4f, 0.65f);
+
+            var sp = SmokeParticle.SpawnInAlphaLayer(Projectile.Center, Projectile.velocity * 0.2f, Color.DarkGray);
+            sp.initialColor = Color.Lerp(Color.Red, Color.Black, 0.6f);
+            sp.fast = true;
+
+            MuzzleFlashParticle flashParticle = MuzzleFlashParticle.Spawn(Projectile.Center, Projectile.velocity, Color.Yellow);
+            flashParticle.innerColor = Color.Yellow;
+            flashParticle.bloomColor = Color.OrangeRed;
+            flashParticle.Scale *= Main.rand.NextFloat(0.15f, 0.3f);
+
+
+            FaintSmokeParticle faintSmoke = FaintSmokeParticle.SpawnInAlphaLayer(Projectile.Center, Projectile.velocity, Scale: Main.rand.NextFloat(0.2f, 0.4f));
+            faintSmoke.color = Color.Lerp(Color.Lerp(Color.Orange, Color.Red, Main.rand.NextFloat(0f, 1f)), Color.Black, 0.7f);
+            faintSmoke.fadeToColor = Color.DarkGray;
+            faintSmoke.Scale = Main.rand.NextFloat(0.15f, 0.3f);
+            for (float f = 0; f < 4; f++)
+            {
+                DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+                {
+                    gravity = 0f,
+                    innerColor = Color.Yellow,
+                    outerColor = Color.OrangeRed,
+                    scaleRange = new Vector2(0.3f, 1f)
+                };
+                var dp = DustParticle.Spawn(Projectile.Center, Projectile.velocity.RotatedByRandom(0.3f) * Main.rand.NextFloat(0.5f, 1f), spawnParams);
+                dp.dampening = 0.1f;
+            }
+
+            SoundStyle gunShotSound = new SoundStyle("Stellamod/Assets/Sounds/GunShot2") with { PitchVariance = 0.3f };
+            SoundEngine.PlaySound(gunShotSound, Projectile.position);
+
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+            ShakeScreenPosition.Shake = 4;
+            var donut = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 0.3f);
+            donut.Scale *= 0.5f;
+            float numDust = 8;
+            for(float n = 0; n < numDust; n++)
+            {
+                Vector2 vel = Projectile.velocity * Main.rand.NextFloat(0.3f, 0.6f);
+                vel = vel.RotatedByRandom(MathHelper.ToRadians(35));
+                var dp = DustParticle.Spawn(Projectile.Center, vel);
+                dp.outerColor = Color.DarkGray;
+                dp.Scale *= 0.6f;
+            }
+        }
+
+        Projectile.rotation += 0.015f;
+        if (Timer % 8 == 0)
+        {
+            Vector2 pos = new Vector2();
+            pos.X = Main.rand.Next(0, Projectile.width);
+            pos.Y = Main.rand.Next(0, Projectile.height);
+            pos += Projectile.position;
+            var sp = SparkleParticle.Spawn(pos, -Vector2.UnitY * 0.3f, Scale: 0.3f);
+            sp.outerColor = Color.SkyBlue;
+            sp.noTileCollide = true;
+            sp.gravity = 0;
+        }
+
+        if (Timer % 24 == 0)
+        {
+            var fx = FXUtil.GlowStretch(Projectile.Center + Main.rand.NextVector2Circular(32, 32), -Projectile.velocity * 0.05f);
+            fx.VectorScale *= 0.5f;
+        }
+
+
+        Projectile.rotation += Projectile.velocity.Length() * 0.025f;
+        Projectile.rotation += 0.015f;
     }
 
     private void AI_Falling()
@@ -94,9 +214,7 @@ public class BunnyStormBunny : ModProjectile
             Projectile.velocity.Y += 0.15f;
         Projectile.rotation += Projectile.velocity.Length() * 0.025f;
         Projectile.rotation += 0.015f;
-        Player player = PlayerHelper.FindClosestPlayer(Projectile.position, 2048);
-        if (player != null && Projectile.Bottom.Y > player.Top.Y && Projectile.velocity.Y > 5)
-            Projectile.tileCollide = true;
+
         Projectile.frameCounter++;
         if(Projectile.frameCounter >= 5)
         {
@@ -108,6 +226,7 @@ public class BunnyStormBunny : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
+
         for (int i = 0; i < Projectile.oldPos.Length; i++)
         {
             Vector2 pos = Projectile.oldPos[i] + Projectile.Size * 0.5f;
@@ -116,14 +235,17 @@ public class BunnyStormBunny : ModProjectile
             afDrawer.rotation = Projectile.oldRot[i];
             afDrawer.color = Color.Lerp(Color.White, Color.Black, (float)i / (float)Projectile.oldPos.Length) * 0.05f;
             afDrawer.color.A = 0;
+            afDrawer.scale = _scale;
             Main.spriteBatch.Draw(afDrawer);
         }
 
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
-
+        sbDrawer.scale = _scale;
 
         Main.spriteBatch.Draw(sbDrawer);
 
+        if (Style == 2)
+            return false;
         sbDrawer.VerticalFrame(Projectile.frame + 4, 6);
         sbDrawer.color = Color.Red;
         Main.spriteBatch.Draw(sbDrawer);
@@ -133,43 +255,11 @@ public class BunnyStormBunny : ModProjectile
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
-    }
-}
+        if (Main.netMode == NetmodeID.Server)
+            return;
 
-public class BunnyStormShader : CrystalShader<BunnyStormShader>
-{
-    private EffectParameter _tilingParam;
-    private EffectParameter _mixTextureParam;
-    private EffectParameter _offsetParam;
-    public Vector2 Tiling
-    {
-        set
-        {
-            _tilingParam = Effect.Parameters["tiling"];
-            _tilingParam.SetValue(value);
-        }
-    }
-    public Vector2 Offset
-    {
-        set
-        {
-            _offsetParam = Effect.Parameters["offset"];
-            _offsetParam.SetValue(value);
-        }
-    }
-    public Texture2D MixTexture
-    {
-        set
-        {
-            _mixTextureParam = Effect.Parameters["mixTexture"];
-            _mixTextureParam.SetValue(value);
-        }
-    }
-
-    public override void SetDefaults()
-    {
-        base.SetDefaults();
-
+        int headGore = Mod.Find<ModGore>($"BunnyStorm_Gore").Type;
+        Gore.NewGore(Projectile.GetSource_Death(), Projectile.Center, Main.rand.NextVector2Circular(8, 8) + new Vector2(0, -8), headGore, 1f);
     }
 }
 public class BunnyStorm : ScarletBoss
@@ -190,7 +280,10 @@ public class BunnyStorm : ScarletBoss
 
     private int _stormFrame;
     private float _stormRotation;
+    private float _startRotation;
     private bool _contactDamage;
+    private bool _showTrail;
+    private float _trailAlpha;
     private Vector2 _initialVelocity;
     private Vector2 _boundPoint;
     private Vector2 _stormScale;
@@ -198,6 +291,7 @@ public class BunnyStorm : ScarletBoss
     private Asset<Texture2D> _bunnyNoiseTextureAsset;
     private Asset<Texture2D> _bunnyMaskTextureAsset;
     private Asset<Texture2D> _earTextureAsset;
+    private Asset<Texture2D> _whiskersTextureAsset;
     private ref float Timer => ref NPC.ai[0];
     private AIState State
     {
@@ -232,6 +326,7 @@ public class BunnyStorm : ScarletBoss
     private float MaxIdleHoverDistance => 180;
 
     private int ShockwaveDamage => 24;
+    private int GunDamage => 36;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
@@ -303,8 +398,18 @@ public class BunnyStorm : ScarletBoss
             sp.gravity = 0;
         }
 
+        _showTrail = false;
         _contactDamage = false;
         _outliner.SetDefaults();
+        /*
+        if(MultiplayerHelper.IsHost && Main.rand.NextBool(120))
+        {
+            Vector2 offset = new Vector2();
+            offset.X = Main.rand.NextFloat(-512, 512);
+            offset.Y -= 252;
+            Projectile.NewProjectile(NPC.GetSource_FromThis(), _boundPoint  + offset, Vector2.Zero,
+                ModContent.ProjectileType<BunnyStormBunny>(), ShockwaveDamage, 1, Main.myPlayer);
+        }*/
         switch (State)
         {
             case AIState.Spawn:
@@ -333,6 +438,7 @@ public class BunnyStorm : ScarletBoss
                 break;
         }
         _outliner.Update();
+        _trailAlpha = MathHelper.Lerp(_trailAlpha, _showTrail ? 1f : 0f, 0.1f);
     }
 
 
@@ -342,17 +448,148 @@ public class BunnyStorm : ScarletBoss
         {
             SwitchState(PatternManager.NextPattern());
         }
-        SwitchState(AIState.Bunny_Fist);
+    }
+
+    private void PlayReadySound()
+    {
+        SoundStyle readySound = new SoundStyle($"Stellamod/Assets/Sounds/OverGrowth_TP{Main.rand.Next(1, 3)}");
+        readySound = readySound with { PitchVariance = 0.5f };
+        readySound.Volume = 0.3f;
+        SoundEngine.PlaySound(readySound, NPC.position);
     }
 
     private void AI_BunnyRemerge()
     {
-
+       
     }
 
     private void AI_BunnyGun()
     {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        PlayReadySound();
+                        _initialVelocity = NPC.velocity;
+                        NPC.TargetClosest();
+                    }
+                    _outliner.warning = true;
 
+                    float speedUp = MathHelper.Lerp(1f, 0.75f, AttackCounter / 5f);
+                    float fistingTime = 120 * speedUp;
+                    float ratio = Timer / fistingTime;
+                    float ease = EasingFunction.InOutSine(ratio);
+                    Vector2 s1 = Vector2.Lerp(Vector2.One, Vector2.Zero, ease);
+                    Vector2 s2 = Vector2.Lerp(Vector2.Zero, Vector2.One, ease);
+                    _stormScale = Vector2.Lerp(s1, s2, ease);
+
+
+                    if (Timer >= fistingTime / 2f)
+                    {
+                        _stormFrame = 1;
+                    }
+
+                    float inTime = 90 * speedUp;
+                    float ratio2 = Timer / inTime;
+                    Vector2 upOffset = Vector2.UnitY * MathHelper.Lerp(352, 232, EasingFunction.InOutSine(ratio2));
+                    upOffset = upOffset.RotatedBy((AttackCounter / 6f ) * MathHelper.TwoPi);
+                    Vector2 startupPoint = MyTarget.Center - upOffset;
+              
+                //    startupPoint -= Vector2.UnitX * MathHelper.Lerp(0, 300, EasingFunction.InOutSine(ratio2));
+                    startupPoint.Y -= MathHelper.Lerp(0f, 100, EasingFunction.InExpo(ratio));
+                    Vector2 velocityToPoint = (startupPoint - NPC.Center);
+                    NPC.velocity = Vector2.Lerp(_initialVelocity, velocityToPoint, EasingFunction.InOutExpo(ratio2));
+
+
+                    _stormRotation = MathHelper.Lerp(0, MathHelper.TwoPi * 2, EasingFunction.InOutExpo(ratio)) + MathHelper.PiOver2;
+                    if (Timer >= fistingTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    if(Timer == 1)
+                    {
+                        _stormFrame = 1;
+                        _startRotation = _stormRotation;
+                    }
+
+                    Vector2 slowMoveVelocity = (MyTarget.Center - NPC.Center);
+
+                    float speed = MathHelper.Lerp(0.5f, 9f, Vector2.Distance(NPC.Center, MyTarget.Center) / 384f);
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, slowMoveVelocity.SafeNormalize(Vector2.Zero) * speed, EasingFunction.InOutSine(Timer / 24f));
+                    _outliner.attacking = true;
+                    float targetRotation = (MyTarget.Center - NPC.Center).ToRotation();
+        
+
+                    _stormRotation = Utils.AngleLerp(_startRotation, targetRotation, EasingFunction.InOutSine(Timer / 24f));
+                    if(Timer >= 24f)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+
+            case 2:
+                {
+                    Vector2 fireVelocity = _stormRotation.ToRotationVector2() * 12;
+                    Vector2 offset = new Vector2(32, -57);
+                    Vector2 firePoint = NPC.Center + offset.RotatedBy(_stormRotation);
+                    if (Timer == 1)
+                    {
+                        for(int i = 0; i < 4; i++)
+                        {
+                            CreateBunnyGore(firePoint, fireVelocity.RotatedByRandom(0.8f) * 0.5f);
+                        }
+                
+                        _startRotation = _stormRotation;
+                    }
+
+                    _stormRotation = Utils.AngleLerp(_startRotation, _startRotation - MathHelper.ToRadians(60), EasingFunction.QuadraticBump(Timer / 25f));
+                    if(Timer == 1 && MultiplayerHelper.IsHost)
+                    {
+ 
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), firePoint, (MyTarget.Center - firePoint).SafeNormalize(Vector2.Zero) * 12,
+                            ModContent.ProjectileType<BunnyStormBunny>(), GunDamage, 1, Main.myPlayer, ai1: 1);
+                    }
+                    Vector2 s1 = Vector2.Lerp(Vector2.One, new Vector2(0.5f), EasingFunction.OutExpo(Timer / 50f));
+                    Vector2 s2 = Vector2.Lerp(new Vector2(0.5f), Vector2.One, EasingFunction.InOutSine(Timer / 50f));
+                    Vector2 s = Vector2.Lerp(s1, s2, Timer / 50f);
+                    _stormScale = s;
+                    float dir = AttackCounter % 2 == 0 ? 1 : -1;
+                    _startRotation += MathHelper.TwoPi / 50f * dir;
+                    NPC.velocity += ((NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero) * MathHelper.Lerp(4f, 0f, EasingFunction.OutExpo(Timer / 50f)));
+                    NPC.velocity *= 0.8f;
+                    if (Timer >= 25)
+                    {
+                        _stormFrame = 0;
+                    }
+
+                    if (Timer >= 50)
+                    {
+
+                        AttackCounter++;
+                        if(AttackCounter >= 7)
+                        {
+               
+                            SwitchState(AIState.Idle);
+                        }
+                        else
+                        {
+                            Timer = 0;
+                            AttackCycle--;
+                        }
+                    }
+                }
+                break;
+        }
     }
     private bool IsGrounded()
     {
@@ -365,6 +602,7 @@ public class BunnyStorm : ScarletBoss
     }
     private void AI_BunnyFist()
     {
+        _showTrail = true;
         Timer++;
         switch (AttackCycle)
         {
@@ -372,12 +610,17 @@ public class BunnyStorm : ScarletBoss
                 {
                     if (Timer == 1)
                     {
+                        PlayReadySound();
                         _initialVelocity = NPC.velocity;
                         NPC.TargetClosest();
                     }
 
                     float speedUp = MathHelper.Lerp(1f, 0.75f, AttackCounter / 3f);
                     float fistingTime = 150 * speedUp;
+                    if(AttackCounter >= 3)
+                    {
+                        fistingTime *= 2f;
+                    }
                     float ratio = Timer / fistingTime;
                     float ease = EasingFunction.InOutSine(ratio);
                     Vector2 s1 = Vector2.Lerp(Vector2.One, Vector2.Zero, ease);
@@ -386,8 +629,15 @@ public class BunnyStorm : ScarletBoss
 
 
                     float inTime = 120f * speedUp;
+                    if (AttackCounter >= 3)
+                    {
+                        inTime *= 2f;
+                    }
                     float ratio2 = Timer / inTime;
-                    Vector2 startupPoint = _boundPoint - Vector2.UnitY * MathHelper.Lerp(100, 50, EasingFunction.InOutSine(ratio2));
+
+                    float mult = AttackCounter >= 3 ? 4 : 1;
+
+                    Vector2 startupPoint = _boundPoint - Vector2.UnitY * MathHelper.Lerp(100, 50, EasingFunction.InOutSine(ratio2)) * mult;
                     float dir = AttackCounter % 2 == 0 ? 1 : -1;
                     if (AttackCounter >= 3)
                         dir = 0;
@@ -432,7 +682,7 @@ public class BunnyStorm : ScarletBoss
                         NPC.noTileCollide = true;
                     else
                         NPC.noTileCollide = false;
-                    if (IsGrounded() && Timer > 15)
+                    if ((IsGrounded() && Timer > 15) || Timer >= 80)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -493,17 +743,39 @@ public class BunnyStorm : ScarletBoss
 
                         if (MultiplayerHelper.IsHost)
                         {
-                            //This is the part where you spawn the cool ahh shockwaves
-                            //But we have to make cool ahh shockwaves :(
                             int shockwaveDamage = ShockwaveDamage;
                             int knockback = 1;
-                            Vector2 velocity = Vector2.UnitX;
-                            velocity *= 4;
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
-                                ModContent.ProjectileType<WindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
-                            velocity = -velocity;
-                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
-                           ModContent.ProjectileType<WindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                            if (AttackCounter == 3)
+                            {
+                                //This is the part where you spawn the cool ahh shockwaves
+                                //But we have to make cool ahh shockwaves :(
+            
+                                Vector2 velocity = Vector2.UnitX;
+                                velocity *= 4;
+
+                                Point tile = TileUtilities.FallToSolidTile(NPC.Top.ToTileCoordinates());
+                                tile.Y -= 4;
+                                Vector2 pos = tile.ToWorldCoordinates();
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, velocity,
+                                    ModContent.ProjectileType<SuperWindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                                velocity = -velocity;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), pos, velocity,
+                               ModContent.ProjectileType<SuperWindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                            }
+                            else
+                            {
+                                //This is the part where you spawn the cool ahh shockwaves
+                                //But we have to make cool ahh shockwaves :(
+                     
+                                Vector2 velocity = Vector2.UnitX;
+                                velocity *= 4;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
+                                    ModContent.ProjectileType<WindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                                velocity = -velocity;
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Bottom, velocity,
+                               ModContent.ProjectileType<WindShockwave>(), shockwaveDamage, knockback, Main.myPlayer);
+                            }
+    
                             for(int i = 0; i < 8; i++)
                             {
                                 Vector2 fireVelocity = Vector2.Lerp(-Vector2.UnitX, Vector2.UnitX, (float)i / 8f) * 8;
@@ -551,9 +823,113 @@ public class BunnyStorm : ScarletBoss
                 break;
         }
     }
+
+
     private void AI_HandWiggleBunnyDrop()
     {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        PlayReadySound();
+                        _initialVelocity = NPC.velocity;
+                        NPC.TargetClosest();
+                    }
 
+                    float fistingTime = 120;
+                    float ratio = Timer / fistingTime;
+                    float ease = EasingFunction.InOutSine(ratio);
+                    Vector2 s1 = Vector2.Lerp(Vector2.One, Vector2.Zero, ease);
+                    Vector2 s2 = Vector2.Lerp(Vector2.Zero, Vector2.One, ease);
+                    _stormScale = Vector2.Lerp(s1, s2, ease);
+
+                    if (Timer >= fistingTime / 2f)
+                    {
+                        _stormFrame = 2;
+                    }
+
+                    float inTime = 90;
+                    float ratio2 = Timer / inTime;
+                    Vector2 upOffset = Vector2.UnitY * MathHelper.Lerp(352, 232, EasingFunction.InOutSine(ratio2));
+                    Vector2 startupPoint = MyTarget.Center - upOffset;
+                    _stormRotation *= 0.98f;
+                    //    startupPoint -= Vector2.UnitX * MathHelper.Lerp(0, 300, EasingFunction.InOutSine(ratio2));
+                    startupPoint.Y -= MathHelper.Lerp(0f, 100, EasingFunction.InExpo(ratio));
+                    Vector2 velocityToPoint = (startupPoint - NPC.Center);
+                    NPC.velocity = Vector2.Lerp(_initialVelocity, velocityToPoint, EasingFunction.InOutExpo(ratio2));
+                    if (Timer >= fistingTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    Vector2 startupPoint = MyTarget.Center - Vector2.UnitY * 352;
+                    Vector2 movement = (startupPoint - NPC.Center);
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, movement, 0.2f);
+                    _stormRotation = Utils.AngleLerp(_stormRotation, NPC.velocity.X * 0.02f, 0.05f);
+
+                    if (Timer % 15 == 0)
+                    {
+                        _stormScale *= 1.1f;
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Vector2 offset = new Vector2();
+                            offset.X = Main.rand.NextFloat(-64, 64);
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + offset, Vector2.Zero,
+                                ModContent.ProjectileType<BunnyStormBunny>(), ShockwaveDamage, 1, Main.myPlayer);
+                        }
+                    }
+
+                    if (Timer >= 400)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+
+                    Vector2 targetScale = Vector2.Lerp(Vector2.One, Vector2.Zero, Timer / 400f);
+                    _stormScale = Vector2.Lerp(_stormScale, targetScale, 0.2f);
+                    _outliner.attacking = true;
+                    NPC.velocity *= 0.9f;
+                }
+                break;
+            case 2:
+                {
+                    _stormFrame = 0;
+                    if(Timer % 10 == 0 && Timer < 60)
+                    {
+                        PixelPrimitiveCircleFactory.CreateInWhiteSuck(NPC.Center);
+                    }
+                    ShakeScreenPosition.Shake = MathHelper.Lerp(0f, 3f, EasingFunction.QuadraticBump(Timer / 80f));
+                    NPC.velocity *= 0.9f;
+                    if(Timer == 59)
+                    {
+                        var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightGray, Color.DarkGray, duration: 25, baseSize: 0.24f);
+                        fx.Scale *= 1.2f;
+                        float numDust = 12;
+                        for(float n = 0; n < numDust; n++)
+                        {
+                            var d = DustParticle.Spawn(NPC.Center, Main.rand.NextVector2Circular(16, 16));
+                            d.noTileCollide = true;
+                            d.gravity = 0;
+                            d.dampening = 0.05f;
+                        }
+
+
+                    }
+                    _stormScale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.InExpo(Timer / 80f));
+                    if(Timer >= 80f)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
     }
     private void AI_Idle()
     {
@@ -596,6 +972,24 @@ public class BunnyStorm : ScarletBoss
             NPC.netUpdate = true;
         }
 
+        if(Timer % 10 == 0 && MultiplayerHelper.IsHost)
+        {
+            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + Main.rand.NextVector2CircularEdge(600, 600), Vector2.Zero, ModContent.ProjectileType<BunnyStormBunny>(), 1, 1, Main.myPlayer, ai1: 2, ai2: NPC.whoAmI);
+        }
+        CreateSuckLines();
+        CameraTargetSystem.AddTarget(NPC.Center);
+        CameraTargetSystem.SetLingerTime(120);
+        NPC.velocity.Y = MathHelper.Lerp(-1f, 0f, EasingFunction.InOutSine(Timer / SpawnTime));
+        _stormScale = Vector2.Lerp(Vector2.Zero, Vector2.One, Timer / SpawnTime);
+        if (Timer >= SpawnTime)
+        {
+            SwitchState(AIState.Idle);
+        }
+    }
+
+    private void CreateSuckLines()
+    {
+
         if (Timer % 2 == 0)
         {
             float range = Main.rand.NextFloat(252, 512);
@@ -617,19 +1011,83 @@ public class BunnyStorm : ScarletBoss
             fx.VectorScale *= 0.25f;
         }
 
-        CameraTargetSystem.AddTarget(NPC.Center);
-        CameraTargetSystem.SetLingerTime(120);
-        NPC.velocity.Y = MathHelper.Lerp(-1f, 0f, EasingFunction.InOutSine(Timer / SpawnTime));
-        _stormScale = Vector2.Lerp(Vector2.Zero, Vector2.One, Timer / SpawnTime);
-        if (Timer >= SpawnTime)
-        {
-            SwitchState(AIState.Idle);
-        }
+    }
+    public void CreateBunnyGore(Vector2 position, Vector2 velocity)
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        int headGore = Mod.Find<ModGore>($"{Name}_Gore").Type;
+        Gore.NewGore(NPC.GetSource_Death(), position, velocity, headGore, 1f);
     }
 
     private void AI_Death()
     {
+        Timer++;
+        if (Timer % 2 == 0)
+        {
+            float range = Main.rand.NextFloat(252, 512);
+            Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
+            Vector2 vel = ( pos - NPC.Center);
+            vel *= 0.1f;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            fx.VectorScale *= 0.5f;
+        }
 
+        if (Timer % 2 == 0)
+        {
+            float range = Main.rand.NextFloat(384, 666);
+            Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
+            Vector2 vel = (pos - NPC.Center);
+            vel *= 0.1f;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            fx.OuterGlowColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
+            fx.VectorScale *= 0.25f;
+        }
+        if(Timer % 7 == 0)
+        {
+            CreateBunnyGore(NPC.Center, Main.rand.NextVector2Circular(16, 16));
+            _stormScale *= 1.25f;
+        }
+
+        NPC.velocity *= 0.8f;
+
+        Vector2 targetScale = Vector2.Lerp(Vector2.One, Vector2.Zero, EasingFunction.InOutSine(Timer / 180f));
+        _stormScale = Vector2.Lerp(_stormScale, targetScale, 0.1f);
+        _stormFrame = 0;
+        CameraTargetSystem.AddTarget(NPC.Center);
+        CameraTargetSystem.SetLingerTime(120);
+        if (Timer >= 180)
+        {
+            FXUtil.GlowCircleBoom(NPC.Center,
+               innerColor: Color.White,
+               glowColor: Color.Black,
+               outerGlowColor: Color.Black, duration: 25, baseSize: 0.24f);
+            for (float i = 0; i < 4; i++)
+            {
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(240);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleDetailedBoom1(NPC.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Black,
+                    outerGlowColor: Color.Black,
+                    baseSize: 0.24f);
+                particle.Rotation = rot + MathHelper.ToRadians(45);
+            }
+
+            for (int i = 0; i < 7; i++)
+            {
+                Vector2 velocity = -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(30)) * Main.rand.NextFloat(15f, 35f);
+                var particle = FXUtil.GlowStretch(NPC.Center, velocity);
+                particle.InnerColor = Color.White;
+                particle.GlowColor = Color.LightCyan;
+                particle.OuterGlowColor = Color.Black;
+                particle.Duration = Main.rand.NextFloat(25, 50);
+                particle.BaseSize = Main.rand.NextFloat(0.045f, 0.09f);
+                particle.VectorScale *= 0.5f;
+            }
+            NPC.Kill();
+        }
     }
 
     private void AI_Despawn()
@@ -664,6 +1122,14 @@ public class BunnyStorm : ScarletBoss
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
+        if(NPC.life <= 0)
+        {
+            NPC.life = 1;
+            if(State != AIState.Death)
+            {
+                SwitchState(AIState.Death);
+            }
+        }
     }
     private void DrawMask(SpriteBatch sb, int frameOffset)
     {
@@ -709,7 +1175,7 @@ public class BunnyStorm : ScarletBoss
     }
     private Color DashTrailColorFunction(float completionRatio)
     {
-        return Color.Lerp(Color.White, Color.Transparent, completionRatio);
+        return Color.Lerp(Color.White, Color.Transparent, completionRatio) * _trailAlpha;
     }
 
     private float DashTrailWidthFunction(float completionRatio)
@@ -731,6 +1197,7 @@ public class BunnyStorm : ScarletBoss
         _bunnyNoiseTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Noise");
         _bunnyMaskTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Hand");
         _earTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Ear");
+        _whiskersTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Whiskers");
 
         SpritebatchDrawer spiralVortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, NPC.Center);
         spiralVortexDrawer.rotation = Main.GlobalTimeWrappedHourly * 8;
@@ -792,6 +1259,12 @@ public class BunnyStorm : ScarletBoss
         earDrawer.rotation = NPC.velocity.X * -0.05f + ExtraMath.Osc(0.3f, -0.3f, offset: 1);
         spriteBatch.Draw(earDrawer);
 
+
+        SpritebatchDrawer whiskersDrawer = SpritebatchDrawer.FromTextureAsset(_whiskersTextureAsset, NPC.Center);
+        whiskersDrawer.CenterOrigin();
+        whiskersDrawer.rotation = NPC.velocity.X * 0.05f + ExtraMath.Osc(-0.3f, 0.3f);
+        whiskersDrawer.scale *= _stormScale;
+        spriteBatch.Draw(whiskersDrawer);
 
         PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedDashTrail);
         /*
