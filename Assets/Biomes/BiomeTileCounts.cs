@@ -140,7 +140,7 @@ namespace Stellamod
         public static bool InJunkyard => ModContent.GetInstance<BiomeTileCounts>().JunkyardCount >= 25;
 
         public int EveroseCount;
-        public static bool InEveroseVillage => ModContent.GetInstance<BiomeTileCounts>().EveroseCount >= 25;
+        public static bool InEveroseVillage => ModContent.GetInstance<BiomeTileCounts>().EveroseCount >= 80;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
             AegislavCount = tileCounts[ModContent.TileType<VeilBrickTile>()] + tileCounts[ModContent.TileType<AegislavSandTile>()] + tileCounts[TileID.CrimsonGrass] + tileCounts[TileID.Crimstone];
