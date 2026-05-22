@@ -112,6 +112,7 @@ namespace Stellamod.Content.LostItems
         {
             Item.DefaultToAccessory();
         }
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             base.UpdateAccessory(player, hideVisual);

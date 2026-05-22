@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using Stellamod.Content.CommonMaterials;
+using Stellamod.Items;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -13,6 +15,13 @@ namespace Stellamod.Content.LostItems
 
             Item.shoot = ModContent.ProjectileType<Mort>(); // "Shoot" your pet projectile.
             Item.buffType = ModContent.BuffType<MortBuff>(); // Apply buff upon usage of the Item.
+        }
+
+
+        public override void AddRecipes()
+        {
+            base.AddRecipes();
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<FallenEyes>());
         }
 
         public override bool? UseItem(Player player)
