@@ -1,4 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Backgrounds;
+using Stellamod.Content.Areas.Ishtar;
+using Stellamod.Core.Biomes;
 using Terraria;
 using Terraria.Graphics.Capture;
 using Terraria.ModLoader;
@@ -6,14 +9,14 @@ using Terraria.ModLoader;
 namespace Stellamod.Assets.Biomes
 {
     // Shows setting up two basic biomes. For a more complicated example, please request.
-    public class FableBiome : ModBiome
+    public class FableBiome : BaseUrdveilBiome
     {
         public bool IsPrimaryBiome = true; // Allows this biome to impact NPC prices
 
 
         // Select all the scenery
-        public override ModWaterStyle WaterStyle => ModContent.Find<ModWaterStyle>("Stellamod/IshtarWaterStyle"); // Sets a water style for when inside this biome
-        public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("Stellamod/FabledBackgroundStyle");
+        public override ModWaterStyle WaterStyle => ModContent.GetInstance<IshtarWaterStyle>(); // Sets a water style for when inside this biome
+        public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<FabledBackgroundStyle>(); //ModContent.Find<ModSurfaceBackgroundStyle>("Stellamod/FabledBackgroundStyle");
         public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 
         // Select Music

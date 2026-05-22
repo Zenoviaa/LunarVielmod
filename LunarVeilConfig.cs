@@ -137,6 +137,9 @@ public class LunarVeilClientConfig : ModConfig
     public bool LowDetailShadersToggle;
 
     [Header("UI")]
+    [DefaultValue(true)]
+    public bool fontReplace;
+
     [Range(0f, 100f)]
     public float EnchantMenuX = 50;
     [Range(0f, 100f)]

@@ -229,3 +229,8 @@ skipMapAutoSave: {
 	Label: skip Map Auto Save
 	Tooltip: ""
 }
+
+fontReplace: {
+	Label: font Replace
+	Tooltip: ""
+}

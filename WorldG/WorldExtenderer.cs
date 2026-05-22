@@ -21,6 +21,7 @@ namespace Stellamod.WorldG
         //Original 8400x 2400y
         public override void Load()
         {
+
             IL_WorldGen.CreateNewWorld += WorldGen_EditWorldSize;
             IL_WorldFile.LoadWorld += WorldGen_EditWorldSize;
         }
