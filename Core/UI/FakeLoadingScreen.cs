@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
@@ -149,7 +150,15 @@ public class FakeLoadingScreen : ModSystem
         {
             case Visibility.Invisible:
                 _timer -= 1;
-                _blackTimer -= 1;
+                if(_blackTimer > 0)
+                {
+                    _blackTimer -= 1;
+                    if (_blackTimer <= 0)
+                    {
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GotInWorld"));
+                    }
+                }
+         
                 break;
             case Visibility.Visible:
                 _timer += 1;
