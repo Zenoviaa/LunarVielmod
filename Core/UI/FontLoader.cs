@@ -34,7 +34,7 @@ public class FontLoader : ModSystem
     {
         orig(self, gameTime);
         var config = ModContent.GetInstance<LunarVeilClientConfig>();
-        if (FontAssets.DeathText == _deathText && !config.fontReplace)
+        if (FontAssets.DeathText == _deathText && (!config.fontReplace))
         {
             UnloadFonts();
         }

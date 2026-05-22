@@ -10,6 +10,7 @@ using System;
 using System.Reflection;
 using Terraria;
 using Terraria.Graphics.Effects;
+using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 namespace Stellamod.Core.UI;
@@ -38,6 +39,7 @@ public class MainMenuFallingLeavesParticleSystem
     private float _godraySpawnTimer;
     private readonly int[] _indexBuffer;
     private readonly Asset<Texture2D> _leavesTextureAsset;
+    private int _drawSkip;
     public MainMenuFallingLeavesParticleSystem(int maxParticleCount)
     {
         _leavesTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/FallingLeavesNPetals");
@@ -141,7 +143,7 @@ public class MainMenuFallingLeavesParticleSystem
             if (spawnIndex != -1)
             {
                 Vector2 newParticlePosition = new Vector2(0);
-                newParticlePosition.X = Main.screenWidth;
+                newParticlePosition.X = Main.screenWidth + Main.rand.Next(-500 ,0);
                 newParticlePosition.Y = Main.rand.Next(-200, 200);
 
                 Vector2 initialVelocity = Main.rand.NextVector2Circular(1, 1);
@@ -187,6 +189,7 @@ public class MainMenuFallingLeavesParticleSystem
             primCount += 2;
             if (index >= vertexBuffer.Length)
                 break;
+            i += _drawSkip;
         }
 
         SpriteDrawingShader shader = ShaderContent.GetInstance<SpriteDrawingShader>();
@@ -199,6 +202,12 @@ public class MainMenuFallingLeavesParticleSystem
 
     }
 
+    public void DrawFrontLeaves(GraphicsDevice graphicsDevice)
+    {
+        _drawSkip = 8;
+        Draw(graphicsDevice);
+        _drawSkip = 0;
+    }
     public void DrawGodrays()
     {
         SpriteBatch spriteBatch = Main.spriteBatch;
@@ -211,23 +220,48 @@ public class MainMenuFallingLeavesParticleSystem
 
             SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, position);
             //    drawer.worldPosition += new Vector2(Main.screenWidth, 0);
-            drawer.worldPosition += new Vector2(256, -64);
+            drawer.worldPosition += new Vector2(80, -256);
             drawer.scale = new Vector2(0.25f * ExtraMath.Osc(0.5f, 1f, 0, offset: i), 2f) * 1.5f;
-            drawer.rotation = MathHelper.ToRadians(55 + 180);
+            drawer.scale.X *= 2f;
+            drawer.rotation = MathHelper.ToRadians(55 + 180 - 25);
             drawer.BottomCenterOrigin();
 
             float outAlpha = EasingFunction.InOutSine(timeLeft / 180f);
             float inAlpha = EasingFunction.InOutSine((600 - timeLeft) / 180f);
             Color color = Color.Lerp(Color.Transparent, Color.White, inAlpha * outAlpha);
-            color *= 0.5f;
- color.A = 0;
+            color *= 0.078f;
+            color.A = 0;
             drawer.color = color;
 
             //   drawer.color.A = 0;
             spriteBatch.Draw(drawer);
+        
         }
 
 
+    }
+}
+
+public class PerfectMagicBackgroundShader : CrystalShader<PerfectMagicBackgroundShader>
+{
+    
+    private EffectParameter _timeParam;
+    public float Time
+    {
+        set
+        {
+            _timeParam = Effect.Parameters["time"];
+            _timeParam.SetValue(value);
+        }
+    }
+
+    public Texture2D OutlineTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+        }
     }
 }
 
@@ -236,17 +270,30 @@ public class MainMenuOverhaul : ModSystem
 {
     private MainMenuFallingLeavesParticleSystem _leavesParticleSystem;
     private RenderTarget2D _pixelTarget;
+    private RenderTarget2D _pixelTarget2;
     private RenderTarget2D _fullTarget;
+    private Asset<Texture2D> _ereshkigalTextureAsset;
+    private Asset<Texture2D> _cloudsTextureAsset;
+    private Asset<Texture2D> _cloudsOutlineTextureAsset;
     private Point _oldScreenSize;
     private bool _initTargets;
     public override void Load()
     {
         base.Load();
+        _cloudsOutlineTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/Clouds6_Outline");
+        _cloudsTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/Clouds6");
+        _ereshkigalTextureAsset = ModContent.Request<Texture2D>($"{this.GetTypeDirectoryWithSlash()}Ereshkigal");
         MethodInfo baseMethod = typeof(Interface).GetMethod("AddMenuButtons", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
         MonoModHooks.Add(baseMethod, DetourMenuButtons);
         IL_Main.DrawMenu += LeftAlignButtons;
         On_OverlayManager.Draw += BlackOutBackground;
         On_Main.UpdateMenu += UpdateParticleSystem;
+    }
+    public override void Unload()
+    {
+        base.Unload();
+        _cloudsTextureAsset = null;
+        _ereshkigalTextureAsset = null;
     }
 
     public override void OnModLoad()
@@ -271,6 +318,8 @@ public class MainMenuOverhaul : ModSystem
 
     private void ResizeRTs()
     {
+        _pixelTarget2?.Dispose();
+        _pixelTarget2 = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.ScreenSize.X / 2, Main.ScreenSize.Y / 2, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents);
         _pixelTarget?.Dispose();
         _pixelTarget = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.ScreenSize.X / 2, Main.ScreenSize.Y / 2, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents);
         _fullTarget?.Dispose();
@@ -292,6 +341,21 @@ public class MainMenuOverhaul : ModSystem
         
             spriteBatch.GraphicsDevice.SetRenderTarget(_fullTarget);
             spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+
+
+            var perfectMagicShader = ShaderContent.GetInstance<PerfectMagicBackgroundShader>();
+            perfectMagicShader.Time = Main.GlobalTimeWrappedHourly;
+            perfectMagicShader.OutlineTexture = _cloudsOutlineTextureAsset.Value;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+                perfectMagicShader.Effect);
+
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(_cloudsTextureAsset, Main.screenPosition);
+            sbDrawer.drawOrigin = Vector2.Zero;
+            sbDrawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+            sbDrawer.color = Color.Lerp(Color.White, Color.Black, 0.9f);
+            spriteBatch.Draw(sbDrawer);
+            spriteBatch.End();
+
             _leavesParticleSystem?.Draw(spriteBatch.GraphicsDevice);
 
 
@@ -301,10 +365,67 @@ public class MainMenuOverhaul : ModSystem
             spriteBatch.Draw(_fullTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
             spriteBatch.End();
 
+
+            spriteBatch.GraphicsDevice.SetRenderTarget(_fullTarget);
+            spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+            _leavesParticleSystem?.DrawFrontLeaves(spriteBatch.GraphicsDevice);
+
+            spriteBatch.GraphicsDevice.SetRenderTarget(_pixelTarget2);
+            spriteBatch.GraphicsDevice.Clear(Color.Transparent);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+            spriteBatch.Draw(_fullTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+            spriteBatch.End();
+
+
+
+
             spriteBatch.GraphicsDevice.SetRenderTarget(null);
             spriteBatch.GraphicsDevice.Clear(Color.Black);
+
+
+
+            var starsTexture = TextureRegistry.StarNoise2;
+            var noiseTexture = TextureRegistry.BlurryPerlinNoise2;
+            MiscShaderData eff = GameShaders.Misc["LunarVeil:RoyalCapitalStars"];
+
+            eff.Shader.Parameters["primaryTexture"].SetValue(starsTexture.Value);
+            eff.Shader.Parameters["primaryTextureSize"].SetValue(starsTexture.Value.Size());
+            eff.Shader.Parameters["resolution"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
+            eff.UseImage2(noiseTexture);
+            Vector2 _parallax = new Vector2(Main.GlobalTimeWrappedHourly, Main.GlobalTimeWrappedHourly * -196);
+            eff.Shader.Parameters["uImageOffset"].SetValue(-_parallax * 0.0005f);
+            eff.UseOpacity(1f);
+            eff.Apply();
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, Main.Rasterizer, eff.Shader, Main.BackgroundViewMatrix.TransformationMatrix);
+            spriteBatch.Draw(starsTexture.Value,
+               new Rectangle(0, 0, Main.screenWidth, Main.screenHeight),
+                null, Color.White * 0.3f);
+
+
+            /*
+            spriteBatch.Draw(starsTexture.Value, 
+                new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), 
+                new Rectangle((int)-_parallax.X, (int)-_parallax.Y, Main.screenWidth, Main.screenHeight), Color.White * 0.3f);
+            */
+            spriteBatch.End();
+
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
             spriteBatch.Draw(_pixelTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+
+            int width = spriteBatch.GraphicsDevice.Viewport.Bounds.Width;
+            int height = spriteBatch.GraphicsDevice.Viewport.Bounds.Height;
+            SpritebatchDrawer ereshDrawer = SpritebatchDrawer.FromTextureAsset(_ereshkigalTextureAsset, Main.screenPosition);
+            ereshDrawer.scale = Vector2.One * 0.5f;
+            //ereshDrawer.drawOrigin = Vector2.Zero;
+
+            ereshDrawer.worldPosition.X += (float)width * 0.9f - _ereshkigalTextureAsset.Width() * 0.5f;
+            ereshDrawer.worldPosition += _ereshkigalTextureAsset.Size() * 0.5f * 0.5f;
+            float radians = 0.03f;
+            ereshDrawer.rotation = MathHelper.Lerp(-radians, radians, ExtraMath.Osc(0f, 1f, speed: 0.35f));
+            spriteBatch.Draw(ereshDrawer);
+
+            spriteBatch.Draw(_pixelTarget2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
 
             _leavesParticleSystem?.DrawGodrays();
 

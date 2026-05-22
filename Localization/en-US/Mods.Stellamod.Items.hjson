@@ -1,4 +1,5 @@
 Common: {
+	Create: Create
 	Loading: Loading...
 	ArmorSlotHelp: Place a piece of armor to reforge here!
 	AccessorySlotHelp: Place an accessory to reforge here!

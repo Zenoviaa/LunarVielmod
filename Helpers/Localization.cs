@@ -8,6 +8,7 @@ using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
+
 namespace Stellamod.Helpers
 {
     public static class LangText
