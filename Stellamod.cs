@@ -240,7 +240,6 @@ namespace Stellamod
             On_UICharacterSelect.OnInitialize += ChangeColor;
            // On_Main.UpdateMenu += EditCharacterSelectColor;
             On_UIPanel.DrawPanel += SetPanelColors;
-            On_UIWorldListItem.DrawSelf += DrawWorldIconHook;
         }
 
 
@@ -274,11 +273,6 @@ namespace Stellamod
             orig(self, spriteBatch, texture, color);
         }
 
-        private void DrawWorldIconHook(On_UIWorldListItem.orig_DrawSelf orig, UIWorldListItem self, SpriteBatch spriteBatch)
-        {
-            orig(self, spriteBatch);
-            DrawWorldSelectItemOverlay(self, spriteBatch);
-        }
 
         private void UnloadTile(int tileID)
         {
@@ -361,25 +355,6 @@ namespace Stellamod
                 UnloadTile(TileID.Pearlsand);
                 UnloadTile(TileID.SnowCloud);
             }
-            On_UIWorldListItem.DrawSelf -= DrawWorldIconHook;
-        }
-
-
-        private void DrawWorldSelectItemOverlay(UIWorldListItem uiItem, SpriteBatch spriteBatch)
-        {
-
-            UIElement WorldIcon = (UIElement)typeof(UIWorldListItem).GetField("_worldIcon", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
-            WorldFileData Data = (WorldFileData)typeof(AWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
-            WorldIcon.RemoveAllChildren();
-
-            UIElement worldIcon = WorldIcon;
-            UIImage element = new UIImage(ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Menu/LunarTree"))
-            {
-                Top = new StyleDimension(-10f, 0f),
-                Left = new StyleDimension(-6f, 0f),
-                IgnoresMouseInteraction = true
-            };
-            worldIcon.Append(element);
         }
     }
 

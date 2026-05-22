@@ -9,10 +9,12 @@ using Stellamod.NPCs.Town;
 using System;
 using System.Reflection;
 using Terraria;
+using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 namespace Stellamod.Core.UI;
 
 public class MainMenuFallingLeavesParticleSystem
@@ -229,7 +231,7 @@ public class MainMenuFallingLeavesParticleSystem
             float outAlpha = EasingFunction.InOutSine(timeLeft / 180f);
             float inAlpha = EasingFunction.InOutSine((600 - timeLeft) / 180f);
             Color color = Color.Lerp(Color.Transparent, Color.White, inAlpha * outAlpha);
-            color *= 0.078f;
+            color *= 0.098f;
             color.A = 0;
             drawer.color = color;
 
@@ -288,7 +290,36 @@ public class MainMenuOverhaul : ModSystem
         IL_Main.DrawMenu += LeftAlignButtons;
         On_OverlayManager.Draw += BlackOutBackground;
         On_Main.UpdateMenu += UpdateParticleSystem;
+        On_AWorldListItem.GetIcon += InitializeIconElement;
+
+        //   AWorldListItem
     }
+
+    private Asset<Texture2D> InitializeIconElement(On_AWorldListItem.orig_GetIcon orig, AWorldListItem self)
+    {
+        if(self.Data.WorldSizeX > 8400)
+            return ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Menu/LunarTree", AssetRequestMode.ImmediateLoad);
+        return orig(self);
+    }
+
+    private Asset<Texture2D> InitializeIconElement(On_AWorldListItem.orig_GetSeedIcon orig, AWorldListItem self, string seed)
+    {
+        return ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Menu/LunarTree", AssetRequestMode.ImmediateLoad);
+        orig(self, seed);
+    }
+
+    private UIElement InitializeIconElement(On_AWorldListItem.orig_GetIconElement orig, AWorldListItem self)
+    {
+    
+        UIImage element = new UIImage(ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Menu/LunarTree", AssetRequestMode.ImmediateLoad))
+        {
+            Top = new StyleDimension(-10f, 0f),
+            Left = new StyleDimension(-6f, 0f),
+            IgnoresMouseInteraction = true
+        };
+        return element;
+    }
+
     public override void Unload()
     {
         base.Unload();
@@ -431,13 +462,6 @@ public class MainMenuOverhaul : ModSystem
 
             spriteBatch.End();
         }
-
-
-        //Create and simulate all the particles ,spawn from right side of screen and move left
-        //Make sure offset them when transforming them
-        //Loop over all the particles and push their vertices to the batch
-        //Then draw them
-
     }
     private void DetourMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
     {
