@@ -317,24 +317,6 @@ public class MainMenuOverhaul : ModSystem
         return orig(self);
     }
 
-    private Asset<Texture2D> InitializeIconElement(On_AWorldListItem.orig_GetSeedIcon orig, AWorldListItem self, string seed)
-    {
-        return ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Menu/LunarTree", AssetRequestMode.ImmediateLoad);
-        orig(self, seed);
-    }
-
-    private UIElement InitializeIconElement(On_AWorldListItem.orig_GetIconElement orig, AWorldListItem self)
-    {
-    
-        UIImage element = new UIImage(ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Menu/LunarTree", AssetRequestMode.ImmediateLoad))
-        {
-            Top = new StyleDimension(-10f, 0f),
-            Left = new StyleDimension(-6f, 0f),
-            IgnoresMouseInteraction = true
-        };
-        return element;
-    }
-
     public override void Unload()
     {
         base.Unload();
