@@ -285,8 +285,6 @@ public class MainMenuOverhaul : ModSystem
         _cloudsOutlineTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/Clouds6_Outline");
         _cloudsTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/Clouds6");
         _ereshkigalTextureAsset = ModContent.Request<Texture2D>($"{this.GetTypeDirectoryWithSlash()}Ereshkigal");
-        MethodInfo baseMethod = typeof(Interface).GetMethod("AddMenuButtons", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
-        MonoModHooks.Add(baseMethod, DetourMenuButtons);
         IL_Main.DrawMenu += LeftAlignButtons;
         On_OverlayManager.Draw += BlackOutBackground;
         On_Main.UpdateMenu += UpdateParticleSystem;
@@ -497,7 +495,7 @@ public class MainMenuOverhaul : ModSystem
             });
 
 
-            /*
+            
             
             c.GotoNext(MoveType.After, i => i.MatchLdcI4(220));
             c.Emit(OpCodes.Pop);
@@ -512,7 +510,7 @@ public class MainMenuOverhaul : ModSystem
                 return 220;
             });
 
-            */
+            
             //Need to set the X Origin point of the button texts to be 0
             c.GotoNext(MoveType.After, i => i.MatchLdcR4(215));
 
