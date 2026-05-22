@@ -42,6 +42,9 @@ public class MainMenuFallingLeavesParticleSystem
     private readonly int[] _indexBuffer;
     private readonly Asset<Texture2D> _leavesTextureAsset;
     private int _drawSkip;
+    private float _darken;
+    private bool _drawBack;
+
     public MainMenuFallingLeavesParticleSystem(int maxParticleCount)
     {
         _leavesTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/FallingLeavesNPetals");
@@ -167,11 +170,23 @@ public class MainMenuFallingLeavesParticleSystem
         //Batch together all of the quads
         VertexPositionColorTexture[] vertexBuffer = new VertexPositionColorTexture[4 * 400];
 
+
         for (int i = 0; i < _leafParticles.length; i++)
         {
             ref float timeLeft = ref _leafParticles.timeLeft[i];
             if (timeLeft <= 0)
                 continue;
+            if (_drawBack)
+            {
+                if (i % 2 != 0)
+                    continue;
+            }
+            else
+            {
+                if (i % 2 == 0)
+                    continue;
+            }
+        
             ref Vector2 position = ref _leafParticles.positions[i];
             float radians = Main.GlobalTimeWrappedHourly * 2 + i * 2;
             float rotation = Main.GlobalTimeWrappedHourly * 1 + i;
@@ -185,13 +200,13 @@ public class MainMenuFallingLeavesParticleSystem
             _quad.VerticalFrame(frame, 8);
 
             Color color = Color.Lerp(Color.Transparent, Color.White, EasingFunction.Clamp(timeLeft / 60f));
+            color = Color.Lerp(Color.Black, color, _darken);
             _quad.SetColor(color);
             _quad.Push(ref vertexBuffer, ref index);
 
             primCount += 2;
             if (index >= vertexBuffer.Length)
                 break;
-            i += _drawSkip;
         }
 
         SpriteDrawingShader shader = ShaderContent.GetInstance<SpriteDrawingShader>();
@@ -206,9 +221,11 @@ public class MainMenuFallingLeavesParticleSystem
 
     public void DrawFrontLeaves(GraphicsDevice graphicsDevice)
     {
-        _drawSkip = 8;
+        _darken = 1f;
+        _drawBack = false;
         Draw(graphicsDevice);
-        _drawSkip = 0;
+        _darken = 0.25f;
+        _drawBack = true;
     }
     public void DrawGodrays()
     {
