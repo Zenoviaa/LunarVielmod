@@ -767,7 +767,7 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                         {
                             //This is the part where you spawn the cool ahh shockwaves
                             //But we have to make cool ahh shockwaves :(
-                            int shockwaveDamage = 80;
+                            int shockwaveDamage = 40;
                             int knockback = 1;
                             Vector2 velocity = Vector2.UnitX;
                             velocity *= 4;

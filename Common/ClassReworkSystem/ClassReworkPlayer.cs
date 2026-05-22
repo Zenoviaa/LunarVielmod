@@ -15,6 +15,7 @@ namespace Stellamod.Common.ClassReworkSystem
         public PlayerClass playerClass;
         public DamageClass damageClass;
         public int heldShield;
+        public int healTimer;
         public bool defaultShield => heldShield == ModContent.ProjectileType<MeleeShield>();
 
         public override void ResetEffects()
@@ -118,10 +119,34 @@ namespace Stellamod.Common.ClassReworkSystem
             base.PreUpdateMovement();
 
         }
+
+        public override void OnRespawn()
+        {
+            base.OnRespawn();
+            int healthToHeal = (int)MathF.Max(Player.statLifeMax2, 1000);
+            Player.Heal(healthToHeal);
+        }
+
         public override void PostUpdateEquips()
         {
             base.PostUpdateEquips();
-  
+
+            if (Player.ConsumedLifeCrystals < 5)
+            {
+                Player.ConsumedLifeCrystals = 5;
+                healTimer = 5;
+        
+            }
+            if(healTimer > 0)
+            {
+                healTimer--;
+
+                if(healTimer <= 0)
+                {
+                    Player.statLife += 100;
+                }
+            }
+
             switch (playerClass)
             {
                 case PlayerClass.Melee:
@@ -148,6 +173,7 @@ namespace Stellamod.Common.ClassReworkSystem
                 Player.GetDamage(Player.HeldItem.DamageType) *= 0.05f;
             }
         }
+
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);

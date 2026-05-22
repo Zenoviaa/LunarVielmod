@@ -230,7 +230,7 @@ namespace Stellamod.Common.ArmorReforge
                     player.GetDamage(DamageClass.Generic) += 0.05f;
                     break;
                 case AccessoryReforgeType.Sirestiased:
-                    player.GetModPlayer<SirestiasedPlayer>().healChance += 0.1f;
+                    player.GetModPlayer<SirestiasedPlayer>().healChance += 10;
                     break;
                 case AccessoryReforgeType.Broken:
                     player.GetDamage(DamageClass.Generic) -= 0.1f;

@@ -482,11 +482,11 @@ Zemmified: {
 	Side: +1 Zemmie
 	Downside: -50% damage
 }
+
 Vampirical: {
 	DisplayName: Vampirical
 	Upside: +4 life regen
 	Downside: -150 max life;
-
 }
 
 Greedy: {
