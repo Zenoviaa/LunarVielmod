@@ -293,13 +293,11 @@ public class MainMenuOverhaul : ModSystem
     private RenderTarget2D _fullTarget;
     private Asset<Texture2D> _ereshkigalTextureAsset;
     private Asset<Texture2D> _cloudsTextureAsset;
-    private Asset<Texture2D> _cloudsOutlineTextureAsset;
     private Point _oldScreenSize;
     private bool _initTargets;
     public override void Load()
     {
         base.Load();
-        _cloudsOutlineTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/Clouds6_Outline");
         _cloudsTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/Clouds6");
         _ereshkigalTextureAsset = ModContent.Request<Texture2D>($"{this.GetTypeDirectoryWithSlash()}Ereshkigal");
         IL_Main.DrawMenu += LeftAlignButtons;
@@ -373,7 +371,6 @@ public class MainMenuOverhaul : ModSystem
 
             var perfectMagicShader = ShaderContent.GetInstance<PerfectMagicBackgroundShader>();
             perfectMagicShader.Time = Main.GlobalTimeWrappedHourly;
-            perfectMagicShader.OutlineTexture = _cloudsOutlineTextureAsset.Value;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                 perfectMagicShader.Effect);
 
@@ -459,10 +456,6 @@ public class MainMenuOverhaul : ModSystem
 
             spriteBatch.End();
         }
-    }
-    private void DetourMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
-    {
-        offY += 100;
     }
 
     /// <summary>

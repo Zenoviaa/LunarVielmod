@@ -44,5 +44,13 @@
         Critical,
         Credited,
 
+        Accessorous,
+        Villainnous,
+        Cooked,
+        Burnt,
+        Zemmified,
+        Vampirical,
+        Greedy,
+        Inventorious
     }
 }

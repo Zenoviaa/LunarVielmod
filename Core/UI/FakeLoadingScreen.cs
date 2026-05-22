@@ -308,12 +308,6 @@ public class FakeLoadingScreen : ModSystem
     private void DrawLoadingScreen(On_Main.orig_PostDrawMenu orig, Point screenSizeCache, Point screenSizeCacheAfterScaling)
     {
         orig(screenSizeCache, screenSizeCacheAfterScaling);
-
-        DrawLoadingScreen_Inner();
-    }
-    private void DrawLoadingScreen(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime)
-    {
-        orig(self, gameTime);
         DrawLoadingScreen_Inner();
     }
 
@@ -336,7 +330,5 @@ public class FakeLoadingScreen : ModSystem
         _tip = Main.rand.Next(MaxTips);
         _playFunction = orig;
         _invokeDelay = (int)DelayTime;
-   
-        //      orig();
     }
 }

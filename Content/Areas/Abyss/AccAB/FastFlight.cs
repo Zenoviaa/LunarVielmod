@@ -309,9 +309,7 @@ public class FastFlightPlayer : ModPlayer
 
         if (hasMoonFlight)
         {
-            float inc = Player.wingTimeMax * 0.25f;
-
-            Player.wingTimeMax = Player.wingTimeMax + (int)inc;
+            Player.wingTimeMax = Player.wingTimeMax + 7;
             Player.GetDamage(DamageClass.Generic) += 0.05f;
             Player.moveSpeed += 0.2f;
         }

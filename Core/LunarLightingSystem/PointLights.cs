@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.Utilities;
+﻿using Stellamod.Common.ArmorReforge;
+using Stellamod.Core.Utilities;
 using System.Reflection;
 using Terraria;
 using Terraria.Graphics.Light;
@@ -37,14 +38,19 @@ public class PointLights
     public float GetPlayerLightRadius(Player player)
     {
         Item heldItem = player.HeldItem;
+        float lightRadius;
         if (LightingSets.EmissiveHeldItems[heldItem.type].A > 0)
         {
-            return 400;
+            lightRadius = 400;
         }
         else
         {
-            return 50;
+            lightRadius =  50;
         }
+
+        ShiningPlayer shiningPlayer = player.GetModPlayer<ShiningPlayer>();
+        lightRadius *= 1.0f + shiningPlayer.extraLight;
+        return lightRadius;
     }
     public Vector3 GetPlayerLightColor(Player player)
     {

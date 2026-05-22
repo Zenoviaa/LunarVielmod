@@ -398,3 +398,104 @@ MeleeSpeed: {
 	DisplayName: Melee Speed
 	Upside: +7% melee attack speed
 }
+
+EnemyDurance: {
+	DisplayName: Enemy Durance
+	Upside: +4% enemy endurance
+}
+
+Durundaled: {
+	DisplayName: Durundaled
+	Upside:
+		'''
+		+2% critical strike chance
+		+10% critical strike damage
+		'''
+}
+
+Pirated: {
+	DisplayName: Pirated
+	Upside: +20% luck
+}
+
+Speeedy: {
+	DisplayName: Speeedy
+	Upside: 7% increased running acceleration
+}
+
+Ereshkigaled: {
+	DisplayName: Ereshkigaled
+	Upside: 5% increased damage
+}
+
+Sirestiased: {
+	DisplayName: Sirestiased
+	Upside: 10% increased chance to heal 1 on each hit
+}
+
+Broken: {
+	DisplayName: Broken
+	Downside: -10% damage
+}
+
+Demolished: {
+	DisplayName: Demolished
+	Downside: +50% increased incoming damage
+}
+
+Backpacking: {
+	DisplayName: Backpacking
+	Upside: +2 inventory slots
+}
+
+Shining: {
+	DisplayName: Mr. Shining
+	Upside: Double natural brightness
+}
+
+Accessorous: {
+	DisplayName: Accessorous
+	Upside: +2 accessory slots
+	Downside: -50% damage
+}
+
+Villainnous: {
+	DisplayName: Villainnous
+	Upside: +50% damage
+	Downside: -2 accessory slots
+}
+
+Cooked: {
+	DisplayName: Cooked
+	Upside: +5% damage
+	Downside: -5% critical strike chance
+}
+
+Burnt: {
+	DisplayName: Burnt
+	Upside: +200% critical strike damage
+	Downside: -45% critical strike chance
+}
+
+Zemmified: {
+	DisplayName: Zemmified
+	Side: +1 Zemmie
+	Downside: -50% damage
+}
+Vampirical: {
+	DisplayName: Vampirical
+	Upside: +4 life regen
+	Downside: -150 max life;
+
+}
+
+Greedy: {
+	DisplayName: Greedy
+	Upside: +25% damage
+	Downside: +100% incoming damage
+}
+
+Inventorious: {
+	DisplayName: Inventorious
+	Upside: +5 inventory slots
+}

@@ -112,6 +112,47 @@ namespace Stellamod.Common.ArmorReforge
 
     }
 
+    public class SirestiasedPlayer : ModPlayer
+    {
+        public float healChance;
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            healChance = 0f;
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(target, hit, damageDone);
+            if(healChance <= 0) return;
+            if (Main.rand.Next(0, 100) > healChance) return;
+            Player.Heal(1);
+        }
+    }
+
+    public class ShiningPlayer : ModPlayer
+    {
+        public float extraLight;
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            extraLight = 0f;
+        }
+        public override void PostUpdateMiscEffects()
+        {
+            base.PostUpdateMiscEffects();
+        }
+    }
+
+    public class ZemmiePlayer : ModPlayer
+    {
+        public float zemmies;
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            zemmies = 0f;
+        }
+    }
     public class AccessoryReforgeGlobalItem : GlobalItem
     {
         public AccessoryReforgeType accessoryReforgeType;
@@ -172,7 +213,38 @@ namespace Stellamod.Common.ArmorReforge
                 case AccessoryReforgeType.MeleeSpeed:
                     player.GetStats().meleeAttackSpeed += 0.07f;
                     break;
-
+                case AccessoryReforgeType.EnemyDurance:
+                    player.GetStats().enemyEndurance += 0.04f;
+                    break;
+                case AccessoryReforgeType.Durundaled:
+                    player.GetStats().criticalStrikeChance += 0.02f;
+                    player.GetStats().criticalStrikeDamage += 0.1f;
+                    break;
+                case AccessoryReforgeType.Pirated:
+                    player.luck += 0.2f;
+                    break;
+                case AccessoryReforgeType.Speeedy:
+                    player.moveSpeed += 0.07f;
+                    break;
+                case AccessoryReforgeType.Ereshkigaled:
+                    player.GetDamage(DamageClass.Generic) += 0.05f;
+                    break;
+                case AccessoryReforgeType.Sirestiased:
+                    player.GetModPlayer<SirestiasedPlayer>().healChance += 0.1f;
+                    break;
+                case AccessoryReforgeType.Broken:
+                    player.GetDamage(DamageClass.Generic) -= 0.1f;
+                    break;
+                case AccessoryReforgeType.Demolished:
+                    player.endurance -= 0.5f;
+                    break;
+                case AccessoryReforgeType.Backpacking:
+                    player.GetStats().inventorySlots += 2;
+                    break;
+                case AccessoryReforgeType.Shining:
+                    player.GetModPlayer<ShiningPlayer>().extraLight += 1f;
+                    break;
+                
             }
         }
 
@@ -188,19 +260,28 @@ namespace Stellamod.Common.ArmorReforge
             line.OverrideColor = new Color(80, 187, 124);
             tooltips.Add(line);*/
 
-            var line = new TooltipLine(Mod, "ReforgeUpside", LangText.AccessoryReforge(accessoryReforgeType, "Upside"));
-            line.OverrideColor = new Color(80, 187, 124);
-            tooltips.Add(line);
-
+            ModifyTooltipsWithoutName(item, tooltips);
         }
         public void ModifyTooltipsWithoutName(Item item, List<TooltipLine> tooltips)
         {
             if (accessoryReforgeType == AccessoryReforgeType.None)
                 return;
 
-            var line = new TooltipLine(Mod, "ReforgeUpside", LangText.AccessoryReforge(accessoryReforgeType, "Upside"));
-            line.OverrideColor = new Color(80, 187, 124);
-            tooltips.Add(line);
+            string upsideText = LangText.AccessoryReforge(accessoryReforgeType, "Upside");
+            if (!upsideText.Contains("Mods"))
+            {
+                var line = new TooltipLine(Mod, "ReforgeUpside", upsideText);
+                line.OverrideColor = new Color(80, 187, 124);
+                tooltips.Add(line);
+            }
+
+            string downSideText = LangText.AccessoryReforge(accessoryReforgeType, "Downside");
+            if (!downSideText.Contains("Mods"))
+            {
+                var line = new TooltipLine(Mod, "ReforgeDownside", downSideText);
+                line.OverrideColor = Color.IndianRed;
+                tooltips.Add(line);
+            }
         }
         public TooltipLine GetNameTooltip(Item item)
         {
@@ -427,6 +508,45 @@ namespace Stellamod.Common.ArmorReforge
                     player.GetStats().healthBonus -= 50;
                     player.GetStats().criticalStrikeDamage += 0.75f;
                     break;
+
+                case ArmorReforgeType.Accessorous:
+                    player.GetStats().accessorySlots += 2;
+                    player.GetDamage(DamageClass.Generic) -= 0.5f;
+                    break;
+
+                case ArmorReforgeType.Villainnous:
+                    player.GetStats().accessorySlots -= 2;
+                    player.GetDamage(DamageClass.Generic) += 0.5f;
+                    break;
+
+                case ArmorReforgeType.Cooked:
+                    player.GetDamage(DamageClass.Generic) += 0.05f;
+                    player.GetCritChance(DamageClass.Generic) -= 0.05f;
+                    break;
+
+                case ArmorReforgeType.Burnt:
+                    player.GetStats().criticalStrikeChance -= 0.45f;
+                    player.GetStats().criticalStrikeDamage += 2;
+                    break;
+
+                case ArmorReforgeType.Zemmified:
+                    player.GetModPlayer<ZemmiePlayer>().zemmies += 1;
+                    player.GetDamage(DamageClass.Generic) -= 0.35f;
+                    break;
+
+                case ArmorReforgeType.Vampirical:
+                    player.statLifeMax2 -= 150;
+                    player.lifeRegen += 4;
+                    break;
+
+                case ArmorReforgeType.Greedy:
+                    player.endurance -= 1f;
+                    player.GetDamage(DamageClass.Generic) += 0.25f;
+                    break;
+
+                case ArmorReforgeType.Inventorious:
+                    player.GetStats().inventorySlots += 5;
+                    break;
             }
         }
 
@@ -459,17 +579,25 @@ namespace Stellamod.Common.ArmorReforge
 
         }
 
+
         public void ModifyTooltipsWithoutName(Item item, List<TooltipLine> tooltips)
         {
             if (reforgeType == ArmorReforgeType.None)
                 return;
-            var line = new TooltipLine(Mod, "ReforgeUpside", LangText.ArmorReforge(reforgeType, "Upside"));
-            line.OverrideColor = new Color(80, 187, 124);
-            tooltips.Add(line);
+            void AddLine(string key, Color color)
+            {
+                string localizedText = LangText.ArmorReforge(reforgeType, key);
+                if (localizedText.Contains("Mods"))
+                    return;
 
-            line = new TooltipLine(Mod, "ReforgeDownside", LangText.ArmorReforge(reforgeType, "Downside"));
-            line.OverrideColor = Color.IndianRed;
-            tooltips.Add(line);
+                var line = new TooltipLine(Mod, key, localizedText);
+                line.OverrideColor = color;
+                tooltips.Add(line);
+            }
+
+            AddLine("Upside", new Color(80, 187, 124));
+            AddLine("Downside", Color.IndianRed);
+            AddLine("Side", Color.Yellow);
         }
         public TooltipLine GetNameTooltip(Item item)
         {
