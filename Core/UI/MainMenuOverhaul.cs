@@ -231,7 +231,7 @@ public class MainMenuFallingLeavesParticleSystem
             float outAlpha = EasingFunction.InOutSine(timeLeft / 180f);
             float inAlpha = EasingFunction.InOutSine((600 - timeLeft) / 180f);
             Color color = Color.Lerp(Color.Transparent, Color.White, inAlpha * outAlpha);
-            color *= 0.098f;
+            color *= 0.11f;
             color.A = 0;
             drawer.color = color;
 
@@ -447,7 +447,7 @@ public class MainMenuOverhaul : ModSystem
             SpritebatchDrawer ereshDrawer = SpritebatchDrawer.FromTextureAsset(_ereshkigalTextureAsset, Main.screenPosition);
             ereshDrawer.scale = Vector2.One * 0.5f;
             //ereshDrawer.drawOrigin = Vector2.Zero;
-
+            ereshDrawer.color = Color.Lerp(Color.White, Color.Black, 0.2f);
             ereshDrawer.worldPosition.X += (float)width * 0.9f - _ereshkigalTextureAsset.Width() * 0.5f;
             ereshDrawer.worldPosition += _ereshkigalTextureAsset.Size() * 0.5f * 0.5f;
             float radians = 0.03f;

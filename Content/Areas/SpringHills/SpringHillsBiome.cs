@@ -41,6 +41,13 @@ namespace Stellamod.Content.Areas.SpringHills
                 return false;
             if (player.InModBiome<AegislavBiome>())
                 return false;
+            if (player.InModBiome<XixVillageBiome>())
+                return false;
+
+            if (player.ZoneBeach)
+                return false;
+            if (player.ZoneSnow)
+                return false;
 
             if (player.InZonePurity())
                 return true;

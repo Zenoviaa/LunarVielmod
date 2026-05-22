@@ -262,7 +262,7 @@ public class HarmonicBlasphemyBomb : ModProjectile
         if (this.OwnedByLocalClient())
         {
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<HarmonicBlasphemyBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                ModContent.ProjectileType<HarmonicBlasphemyBoom>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
         }
     }
 }

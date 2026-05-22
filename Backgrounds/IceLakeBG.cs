@@ -19,7 +19,7 @@ namespace Stellamod.Backgrounds
                 return -1;
             }
         }
-        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
+        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeMedium;
         public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<NoBackgroundStyle>();
         public override bool IsBiomeActive(Player player)
         {
