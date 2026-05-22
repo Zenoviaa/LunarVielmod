@@ -7,9 +7,11 @@ using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.NPCs.Town;
 using System;
+using System.Reflection;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
+using Terraria.ModLoader.UI;
 namespace Stellamod.Core.UI;
 
 public class MainMenuFallingLeavesParticleSystem
@@ -240,7 +242,8 @@ public class MainMenuOverhaul : ModSystem
     public override void Load()
     {
         base.Load();
-
+        MethodInfo baseMethod = typeof(Interface).GetMethod("AddMenuButtons", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+        MonoModHooks.Add(baseMethod, DetourMenuButtons);
         IL_Main.DrawMenu += LeftAlignButtons;
         On_OverlayManager.Draw += BlackOutBackground;
         On_Main.UpdateMenu += UpdateParticleSystem;
@@ -248,8 +251,7 @@ public class MainMenuOverhaul : ModSystem
 
     public override void OnModLoad()
     {
-        base.OnModLoad();
-   
+        base.OnModLoad();   
         _leavesParticleSystem = new MainMenuFallingLeavesParticleSystem(400);
     }
 
@@ -316,6 +318,10 @@ public class MainMenuOverhaul : ModSystem
         //Then draw them
 
     }
+    private void DetourMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
+    {
+        offY += 100;
+    }
 
     /// <summary>
     /// Reorients the butons on the main menu to be aligned to the left side of the screen
@@ -326,6 +332,7 @@ public class MainMenuOverhaul : ModSystem
         try
         {
             ILCursor c = new ILCursor(il);
+
 
             // Terraria sets the button offset to be half the screen width
             //We just want a slight offset from the left side of the screen
@@ -344,6 +351,23 @@ public class MainMenuOverhaul : ModSystem
                 return Main.screenWidth;
             });
 
+
+            /*
+            
+            c.GotoNext(MoveType.After, i => i.MatchLdcI4(220));
+            c.Emit(OpCodes.Pop);
+            c.EmitDelegate<Func<int>>(() =>
+            {
+                if (IsMenuActive)
+                {
+                    return 350;
+                }
+
+                //We didn't pop the division operation, so just return the screen width, it's alr dividing in 2
+                return 220;
+            });
+
+            */
             //Need to set the X Origin point of the button texts to be 0
             c.GotoNext(MoveType.After, i => i.MatchLdcR4(215));
 

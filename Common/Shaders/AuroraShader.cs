@@ -2,12 +2,11 @@
 using Stellamod.Assets;
 using Stellamod.Content.Special.DeadRomancesExcalibur;
 using Stellamod.Helpers;
-using Stellamod.Trails;
-using System;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Common.Shaders;
+
 public class AuroraShader : BaseShader
 {
     private static AuroraShader _instance;
@@ -155,7 +154,7 @@ public class GoldenAuroraEffectRenderer : ModSystem
     }
 }
 
-public class GoldenAuroraShader : 
+public class GoldenAuroraShader :
     CrystalShader<GoldenAuroraShader>
 {
     private EffectParameter _distortionAmtParam;

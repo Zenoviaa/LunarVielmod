@@ -1,10 +1,8 @@
-using Microsoft.Xna.Framework.Input;
 using Stellamod.Common.ArmorReforge;
 using Stellamod.Common.BossBannerSystem;
 using Stellamod.Common.QuestSystem;
 using Stellamod.Core.DialogueSystem;
 using Stellamod.Core.ZTileSystem;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Localization;
@@ -19,6 +17,29 @@ namespace Stellamod.Helpers
             return Language.GetTextValue($"Mods.Stellamod.TownDialogue.{dialogue.Name}." + Path);
         }
 
+
+        public static int TipCount
+        {
+            get
+            {
+                //This is an extremely stupid way to calculate this,
+                //But I don't want to try doing a better way right now.
+                int maxPossibleTipCount = 1000;
+                for(int i = 0; i < maxPossibleTipCount; i++)
+                {
+                    string loadingScreenTip = Tip(i);
+                    if (loadingScreenTip.Contains("Mods"))
+                    {
+                        return i;
+                    }
+                }
+                return maxPossibleTipCount;
+            }
+        }
+        public static string Tip(int helpNumber)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.LoadingScreen.Tips.T{helpNumber}");
+        }
         public static string Quest(Quest quest, string Path)
         {
             return Language.GetTextValue($"Mods.Stellamod.Quests.{quest.Name}." + Path);
@@ -121,14 +142,15 @@ namespace Stellamod.Helpers
             string value = Language.GetTextValue($"Mods.Stellamod.Armor.{item.Name}." + key);
 
             List<string> assignedKeys = LunarVeilKeybinds.AbilityKeybind.GetAssignedKeys();
-            if(assignedKeys.Count > 0)
+            if (assignedKeys.Count > 0)
             {
                 value = value.Replace("[ABILITY]", assignedKeys[0]);
-            } else
-            {
-                value = value.Replace("[ABILITY]",LangText.Common("Unbound"));
             }
-            
+            else
+            {
+                value = value.Replace("[ABILITY]", LangText.Common("Unbound"));
+            }
+
             return value;
         }
 

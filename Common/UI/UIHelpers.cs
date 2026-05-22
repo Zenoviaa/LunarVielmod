@@ -5,12 +5,18 @@ using System.Linq;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
+using Terraria.UI;
 using Terraria.UI.Chat;
 
 namespace Stellamod.Common.UI;
 
 public static class UIHelpers
 {
+    public static Vector2 Position(this UIElement uiElement)
+    {
+        return uiElement.GetDimensions().ToRectangle().TopLeft();
+    }
+
     public static float CalculateTooltipsHeight(List<TooltipLine> lines)
     {
         float height = 0;
