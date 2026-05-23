@@ -1,9 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Stellamod.Common.QuestSystem;
+﻿using Stellamod.Common.QuestSystem;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.DialogueSystem;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Helpers;
 using Stellamod.NPCs;
 using Stellamod.UI.DialogueTowning;
@@ -11,12 +9,26 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core
 {
+    public class VeilTownGlobalNPC : GlobalNPC
+    {
+        public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
+        {
+            return base.AppliesToEntity(entity, lateInstantiation) && entity.ModNPC is VeilTownNPC;
+        }
+
+        public override void SetDefaults(NPC entity)
+        {
+            base.SetDefaults(entity);
+            NPCSets.Heavy[entity.type] = true;
+            entity.dontTakeDamage = true;
+            entity.dontTakeDamageFromHostiles = true;
+        }
+    }
     public abstract class VeilTownNPC : ModNPC,
         IDrawOutlines
     {
@@ -71,10 +83,10 @@ namespace Stellamod.Core
             spriteBatch.Draw(texture, up, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
             spriteBatch.Draw(texture, down, NPC.frame, outlineColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0f);
         }
-        
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            if(NoSpecialInteract)
+            if (NoSpecialInteract)
                 return PreDraw(spriteBatch, screenPos, drawColor);
             string texturePath = Texture;
             Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
@@ -117,9 +129,9 @@ namespace Stellamod.Core
                 Texture2D chatBubble = TextureAssets.Chat.Value;
                 Vector2 drawOrigin = chatBubble.Size() / 2f;
                 drawPosition -= new Vector2(0, NPC.frame.Size().Y / 2f);
-                spriteBatch.Draw(chatBubble, drawPosition, null, Color.White, 0, drawOrigin, 1, SpriteEffects.None,0);
+                spriteBatch.Draw(chatBubble, drawPosition, null, Color.White, 0, drawOrigin, 1, SpriteEffects.None, 0);
             }
-            if (Main.mouseRight && Main.mouseRightRelease && mouseIntersects )
+            if (Main.mouseRight && Main.mouseRightRelease && mouseIntersects)
             {
                 Interact();
             }
@@ -181,7 +193,7 @@ namespace Stellamod.Core
         public Quest GetNextQuest(List<Quest> quests)
         {
             for (int i = 0; i < quests.Count; i++)
-            { 
+            {
                 Quest quest = quests[i];
                 if (quest.IsQuestAvailable(Main.LocalPlayer))
                 {

@@ -2,6 +2,7 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
+using Stellamod.Core.NPCHelpers;
 using Stellamod.Core.Particles;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
@@ -122,6 +123,11 @@ public class ReavestingScytheSpinningSlash : BaseSwingProjectileV2
         float strength = 0.05f;
         foreach (var npc in Main.ActiveNPCs)
         {
+            if (NPCSets.Heavy[npc.type])
+                continue;
+            if (npc.friendly)
+                continue;
+
             GlobalNPCSucker npcSucker = npc.GetGlobalNPC<GlobalNPCSucker>();
             float dist = Vector2.Distance(Owner.Center, npc.Center);
             if (dist <= 444)
