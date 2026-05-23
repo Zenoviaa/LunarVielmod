@@ -290,7 +290,7 @@ namespace Stellamod.Content
     }
     public class FallenEyesRarity : ModRarity
     {
-        public override Color RarityColor => new Color(44, 111, 97);
+        public override Color RarityColor => new Color(212, 80, 18);
         public override int GetPrefixedRarity(int offset, float valueMult)
         {
             if (offset > 0)
