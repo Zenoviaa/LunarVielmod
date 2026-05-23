@@ -38,6 +38,8 @@ public class NoBeaches : ModSystem
 
     private bool RemoveBeachWater(On_WorldGen.orig_oceanDepths orig, int x, int y)
     {
+        if (Main.gameMenu)
+            return orig(x, y);
         if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneHarmonicCoralways)
             return false;
         return orig(x, y);
