@@ -11,6 +11,7 @@ namespace Stellamod.Assets
         {
             public static Asset<Texture2D> AuroraRays;
             public static Asset<Texture2D> Whirly;
+            public static Asset<Texture2D> FlamethrowerNoise;
         }
 
         public class GlowMask
@@ -111,6 +112,7 @@ namespace Stellamod.Assets
             Noise.Whirly = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Whirly");
 
             Noise.AuroraRays = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/AuroraRays");
+            Noise.FlamethrowerNoise = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/FlameNoise");
         }
         public override void OnModUnload()
         {
@@ -160,6 +162,7 @@ namespace Stellamod.Assets
 
     Noise.Whirly = null;
             Noise.AuroraRays = null;
+            Noise.FlamethrowerNoise = null;
         }
 
         public static Asset<Texture2D> LoadBackground(string name)
