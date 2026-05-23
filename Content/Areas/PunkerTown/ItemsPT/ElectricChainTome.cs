@@ -115,7 +115,7 @@ public class ElectricChain : ModProjectile
     {
         //This damages everything in the trail
         float collisionPoint = 0;
-        if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), _hitPoint, Projectile.Center, 12, ref collisionPoint))
+        if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), _hitPoint + (_hitPoint - Projectile.Center).SafeNormalize(Vector2.Zero) * 32, Projectile.Center, 12, ref collisionPoint))
             return true;
 
         for (int i = 1; i < _targets.Count; i++)
