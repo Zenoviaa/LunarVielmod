@@ -39,8 +39,8 @@ GovheilCastle: {
 }
 
 FableBiome: {
-	TownNPCDialogueName: the Fable Biome
-	DisplayName: Fable Biome
+	TownNPCDialogueName: the Fable
+	DisplayName: The Fable
 }
 
 EngineerShop: {

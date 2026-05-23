@@ -57,7 +57,15 @@ namespace Stellamod.Assets.Biomes
 
         // Calculate when the biome is active.
         public override bool IsBiomeActive(Player player) => BiomeTileCounts.InFable;
-        public override void OnEnter(Player player) => player.GetModPlayer<MyPlayer>().ZoneFable = true;
-        public override void OnLeave(Player player) => player.GetModPlayer<MyPlayer>().ZoneFable = false;
+        public override void OnEnter(Player player)
+        {
+            base.OnEnter(player);
+            player.GetModPlayer<MyPlayer>().ZoneFable = true;
+        }
+        public override void OnLeave(Player player)
+        {
+            base.OnLeave(player);
+            player.GetModPlayer<MyPlayer>().ZoneFable = false;
+        }
     }
 }
