@@ -54,7 +54,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     
     //Clamp to 1.0 so it doesn't get mega bright
     //Then we're gonna interp colors and fade it out on the edges
-    totalContribution = saturate(totalContribution);
+   // totalContribution = saturate(totalContribution);
     float3 metaballColorInner = lerp(outerColor, innerColor, InExpo(totalContribution));
     float3 metaballColorOuter = lerp(float3(0.2, 0.2, 0.2), float3(0.0, 0.0, 0.0), InExpo(totalContribution));
     float3 metaballColor = lerp(metaballColorOuter, metaballColorInner, totalContribution);

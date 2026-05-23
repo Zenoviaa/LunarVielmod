@@ -152,7 +152,9 @@ public class FlamethrowerRenderer : ModSystem
         shader.Distortion = 0.009f;
         shader.DistortionTexture = _fireTarget;
         sb.Restart(effect: shader.Effect);
-        sb.Draw(_metaballTarget, Vector2.Zero, Color.White);
+        Color additive = Color.White * 1f;
+      //  additive.A = 0;
+        sb.Draw(_metaballTarget, Vector2.Zero, additive);
         sb.RestartDefaults();
         //    sb.Draw(_fireTarget, Vector2.Zero, Color.White);
     }

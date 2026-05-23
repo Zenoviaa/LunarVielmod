@@ -30,7 +30,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     float2 distortionOffset = float2(cos(distortionNoise * 6.28), sin(distortionNoise * 6.28)) * distortion * strength;
 
     float4 flameColor = tex2D(uImage0, frac(uv + distortionOffset));
-    return flameColor;
+    return flameColor * sampleColor;
 }
 
 technique SpriteDrawing
