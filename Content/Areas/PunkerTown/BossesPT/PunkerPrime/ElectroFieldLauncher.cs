@@ -39,7 +39,8 @@ public class ElectroLightningRenderer : PixelPrimitiveRenderer<ElectroLightningR
     }
 }
 
-public class ElectroField : ModProjectile
+public class ElectroField : ModProjectile,
+    IDrawToRenderTarget
 {
     private Vector2[] _shockPos;
     private Vector2[] _sparkPos;
@@ -151,10 +152,14 @@ public class ElectroField : ModProjectile
     }
     public override bool PreDraw(ref Color lightColor)
     {
+        return false;
+    }
+
+    public void DrawToRenderTargets()
+    {
         PixelationManager.QueueSpritebatchDrawAction(DrawBloom);
         ElectroLightningRenderer.Queue(_shockPos);
         ElectroLightningRenderer.Queue(_sparkPos);
-        return false;
     }
 }
 

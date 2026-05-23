@@ -27,7 +27,7 @@ public abstract class PixelPrimitiveRenderer<T> : BasePixelPrimitiveRenderer whe
     {
         base.Load();
         _primitiveDrawQueue = new Queue<Vector2[]>();
-        PixelationManager.OnPreRender += QueueDraws;
+        PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady += QueueDraws;
     }
 
 
@@ -37,7 +37,7 @@ public abstract class PixelPrimitiveRenderer<T> : BasePixelPrimitiveRenderer whe
         base.Unload();
         _primitiveDrawQueue.Clear();
         _primitiveDrawQueue = null;
-        PixelationManager.OnPreRender -= QueueDraws;
+        PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady -= QueueDraws;
     }
     private void QueueDraws()
     {

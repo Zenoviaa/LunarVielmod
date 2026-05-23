@@ -9,10 +9,12 @@ using Stellamod.NPCs.Town;
 using System;
 using System.Reflection;
 using Terraria;
+using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 namespace Stellamod.Core.UI;
 
 public class MainMenuFallingLeavesParticleSystem
@@ -40,6 +42,9 @@ public class MainMenuFallingLeavesParticleSystem
     private readonly int[] _indexBuffer;
     private readonly Asset<Texture2D> _leavesTextureAsset;
     private int _drawSkip;
+    private float _darken;
+    private bool _drawBack;
+
     public MainMenuFallingLeavesParticleSystem(int maxParticleCount)
     {
         _leavesTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/FallingLeavesNPetals");
@@ -165,11 +170,23 @@ public class MainMenuFallingLeavesParticleSystem
         //Batch together all of the quads
         VertexPositionColorTexture[] vertexBuffer = new VertexPositionColorTexture[4 * 400];
 
+
         for (int i = 0; i < _leafParticles.length; i++)
         {
             ref float timeLeft = ref _leafParticles.timeLeft[i];
             if (timeLeft <= 0)
                 continue;
+            if (_drawBack)
+            {
+                if (i % 2 != 0)
+                    continue;
+            }
+            else
+            {
+                if (i % 2 == 0)
+                    continue;
+            }
+        
             ref Vector2 position = ref _leafParticles.positions[i];
             float radians = Main.GlobalTimeWrappedHourly * 2 + i * 2;
             float rotation = Main.GlobalTimeWrappedHourly * 1 + i;
@@ -183,13 +200,13 @@ public class MainMenuFallingLeavesParticleSystem
             _quad.VerticalFrame(frame, 8);
 
             Color color = Color.Lerp(Color.Transparent, Color.White, EasingFunction.Clamp(timeLeft / 60f));
+            color = Color.Lerp(Color.Black, color, _darken);
             _quad.SetColor(color);
             _quad.Push(ref vertexBuffer, ref index);
 
             primCount += 2;
             if (index >= vertexBuffer.Length)
                 break;
-            i += _drawSkip;
         }
 
         SpriteDrawingShader shader = ShaderContent.GetInstance<SpriteDrawingShader>();
@@ -204,9 +221,11 @@ public class MainMenuFallingLeavesParticleSystem
 
     public void DrawFrontLeaves(GraphicsDevice graphicsDevice)
     {
-        _drawSkip = 8;
+        _darken = 1f;
+        _drawBack = false;
         Draw(graphicsDevice);
-        _drawSkip = 0;
+        _darken = 0.25f;
+        _drawBack = true;
     }
     public void DrawGodrays()
     {
@@ -229,7 +248,7 @@ public class MainMenuFallingLeavesParticleSystem
             float outAlpha = EasingFunction.InOutSine(timeLeft / 180f);
             float inAlpha = EasingFunction.InOutSine((600 - timeLeft) / 180f);
             Color color = Color.Lerp(Color.Transparent, Color.White, inAlpha * outAlpha);
-            color *= 0.078f;
+            color *= 0.11f;
             color.A = 0;
             drawer.color = color;
 
@@ -274,21 +293,28 @@ public class MainMenuOverhaul : ModSystem
     private RenderTarget2D _fullTarget;
     private Asset<Texture2D> _ereshkigalTextureAsset;
     private Asset<Texture2D> _cloudsTextureAsset;
-    private Asset<Texture2D> _cloudsOutlineTextureAsset;
     private Point _oldScreenSize;
     private bool _initTargets;
     public override void Load()
     {
         base.Load();
-        _cloudsOutlineTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/Clouds6_Outline");
         _cloudsTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/Clouds6");
         _ereshkigalTextureAsset = ModContent.Request<Texture2D>($"{this.GetTypeDirectoryWithSlash()}Ereshkigal");
-        MethodInfo baseMethod = typeof(Interface).GetMethod("AddMenuButtons", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
-        MonoModHooks.Add(baseMethod, DetourMenuButtons);
         IL_Main.DrawMenu += LeftAlignButtons;
         On_OverlayManager.Draw += BlackOutBackground;
         On_Main.UpdateMenu += UpdateParticleSystem;
+        On_AWorldListItem.GetIcon += InitializeIconElement;
+
+        //   AWorldListItem
     }
+
+    private Asset<Texture2D> InitializeIconElement(On_AWorldListItem.orig_GetIcon orig, AWorldListItem self)
+    {
+        if(self.Data.WorldSizeX > 8400)
+            return ModContent.Request<Texture2D>("Stellamod/Assets/Textures/Menu/LunarTree", AssetRequestMode.ImmediateLoad);
+        return orig(self);
+    }
+
     public override void Unload()
     {
         base.Unload();
@@ -345,7 +371,6 @@ public class MainMenuOverhaul : ModSystem
 
             var perfectMagicShader = ShaderContent.GetInstance<PerfectMagicBackgroundShader>();
             perfectMagicShader.Time = Main.GlobalTimeWrappedHourly;
-            perfectMagicShader.OutlineTexture = _cloudsOutlineTextureAsset.Value;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                 perfectMagicShader.Effect);
 
@@ -418,7 +443,7 @@ public class MainMenuOverhaul : ModSystem
             SpritebatchDrawer ereshDrawer = SpritebatchDrawer.FromTextureAsset(_ereshkigalTextureAsset, Main.screenPosition);
             ereshDrawer.scale = Vector2.One * 0.5f;
             //ereshDrawer.drawOrigin = Vector2.Zero;
-
+            ereshDrawer.color = Color.Lerp(Color.White, Color.Black, 0.2f);
             ereshDrawer.worldPosition.X += (float)width * 0.9f - _ereshkigalTextureAsset.Width() * 0.5f;
             ereshDrawer.worldPosition += _ereshkigalTextureAsset.Size() * 0.5f * 0.5f;
             float radians = 0.03f;
@@ -431,17 +456,6 @@ public class MainMenuOverhaul : ModSystem
 
             spriteBatch.End();
         }
-
-
-        //Create and simulate all the particles ,spawn from right side of screen and move left
-        //Make sure offset them when transforming them
-        //Loop over all the particles and push their vertices to the batch
-        //Then draw them
-
-    }
-    private void DetourMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons)
-    {
-        offY += 100;
     }
 
     /// <summary>
@@ -473,7 +487,7 @@ public class MainMenuOverhaul : ModSystem
             });
 
 
-            /*
+            
             
             c.GotoNext(MoveType.After, i => i.MatchLdcI4(220));
             c.Emit(OpCodes.Pop);
@@ -488,7 +502,7 @@ public class MainMenuOverhaul : ModSystem
                 return 220;
             });
 
-            */
+            
             //Need to set the X Origin point of the button texts to be 0
             c.GotoNext(MoveType.After, i => i.MatchLdcR4(215));
 

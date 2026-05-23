@@ -1,16 +1,9 @@
 ﻿using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
-using Terraria.GameContent.UI.States;
 using Terraria.IO;
 using Terraria.ModLoader;
-using Terraria.ModLoader.UI;
 
 namespace Stellamod.Core.UI;
 
@@ -32,10 +25,6 @@ public class CharacterListUIOverhaul : ModSystem
     private Asset<Texture2D> LoadTexture(string name)
     {
         return ModContent.Request<Texture2D>($"Stellamod/Assets/Textures/UI/{name}");
-    }
-    private static Asset<Texture2D> LoadEmbeddedTexture(string name)
-    {
-        return ModContent.Request<Texture2D>("Terraria.ModLoader." + name);
     }
 
     public override void Load()
@@ -73,7 +62,7 @@ public class CharacterListUIOverhaul : ModSystem
         _scrollbarTexture = null;
         _buttonSeedTexture = null;
         _buttonExclamationTexture = null;
-  
+
         On_UIScrollbar.DrawSelf -= ReplaceScrollbarAsset;
         On_UICharacterListItem.InitializeTmlFields -= ReplaceAsset;
         On_UIWorldListItem.LoadTmlTextures -= ReplaceAssets;
@@ -89,6 +78,12 @@ public class CharacterListUIOverhaul : ModSystem
 
 
         orig(self, spriteBatch);
+
+        if (ModContent.GetInstance<MainMenuOverhaul>().IsMenuActive && Main.gameMenu)
+        {
+            typeof(UIScrollbar).GetField("_texture", BindingFlags.Instance | BindingFlags.NonPublic)
+                .SetValue(self, ModContent.Request<Texture2D>("Terraria/Images/UI/Scrollbar"));
+        }
     }
 
     private void ReplaceAssets(On_UIWorldListItem.orig_LoadTmlTextures orig, UIWorldListItem self)
@@ -150,10 +145,10 @@ public class CharacterListUIOverhaul : ModSystem
 
     private void UnloadTMLCommon()
     {
-    //    UICommon.ButtonCollapsedTexture = LoadEmbeddedTexture("Config.UI.ButtonCollapsed");
- //       UICommon.ButtonExpandedTexture = LoadEmbeddedTexture("Config.UI.ButtonExpanded");
-     //   UICommon.ButtonErrorTexture = LoadEmbeddedTexture("UI.ButtonError");
- //       UICommon.ButtonExclamationTexture = LoadEmbeddedTexture("UI.ButtonExclamation");
+        //    UICommon.ButtonCollapsedTexture = LoadEmbeddedTexture("Config.UI.ButtonCollapsed");
+        //       UICommon.ButtonExpandedTexture = LoadEmbeddedTexture("Config.UI.ButtonExpanded");
+        //   UICommon.ButtonErrorTexture = LoadEmbeddedTexture("UI.ButtonError");
+        //       UICommon.ButtonExclamationTexture = LoadEmbeddedTexture("UI.ButtonExclamation");
     }
 
 

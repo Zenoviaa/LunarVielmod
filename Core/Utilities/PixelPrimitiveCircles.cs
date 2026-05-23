@@ -555,7 +555,7 @@ public static class PixelPrimitiveCircleFactory
         {
             float GetTrailWidthFunction(float interpolant)
             {
-                return MathHelper.SmoothStep(64, 0, completionRatio);
+                return MathHelper.SmoothStep(128, 0, completionRatio);
             }
             ;
             Color GetTrailColorFunction(float interpolant)
@@ -570,12 +570,14 @@ public static class PixelPrimitiveCircleFactory
             blackFireShader.OuterColor = Color.Red;
             blackFireShader.BackColor = Color.DarkRed;
             blackFireShader.PrimaryTexture2 = AssetManager.LaserTextures.Lightning2;
+            blackFireShader.InnerEmitColor = Color.White;
+            blackFireShader.OuterEmiteColor = Color.White;
             TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
         }
         PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
         circle.circleParams.minRadius = 0;
         circle.circleParams.maxRadius = 450;
-        circle.circleParams.time = 19;
+        circle.circleParams.time = 38;
         circle.renderPixelPrimitivesFunction = RenderPrimitives;
         circle.position = position;
         ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);

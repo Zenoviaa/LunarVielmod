@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
@@ -32,17 +34,17 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
 
             // Weapon Properties
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 250;
+            Item.damage = 280;
             Item.knockBack = 4;
             Item.noMelee = true;
 
             // Gun Properties
             Item.shoot = ModContent.ProjectileType<IncineratorProj>();
-            Item.useTime = 8;
-            Item.useAnimation = 8;
+            Item.useTime = Item.useAnimation = 4;
             Item.shootSpeed = 1;
             // Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
             Item.value = Item.sellPrice(gold: 25);
+            muzzleOrigin = new Vector2(45, 10);
         }
 
         public override void SetMagazine(ref GunReloadParams fireParams)
@@ -51,54 +53,92 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             fireParams.maxAmmo = 32;
             fireParams.reloadWindow = 120;
         }
+        public override Vector2? HoldoutOffset()
+        {
+            muzzleOrigin = new Vector2(45, 24);
+            return new Vector2(16, 0);
+        }
         public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+
+
             type = ModContent.ProjectileType<IncineratorProj>();
-         
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+
+            for(int i = 0; i < 2; i++)
+            {
+                Vector2 fvelocity = velocity.RotatedByRandom(MathHelper.ToRadians(5));
+                fvelocity *= Main.rand.NextFloat(1.8f, 2.2f);
+                Projectile.NewProjectile(source, position + velocity * 9, fvelocity, type, damage, knockback, player.whoAmI);
+            }
+
             return false;
         }
 
         public override void ShootEffects(Vector2 position, Vector2 velocity)
         {
-            //base.ShootEffects(position, velocity);
-            for (int i = 0; i < 2; i++)
+            Color innerColor = Color.Yellow;
+            Color outerColor = Color.Red;
+            var sp = SmokeParticle.SpawnInAlphaLayer(position, velocity * 0.2f, Color.DarkGray);
+            sp.initialColor = Color.Lerp(Color.Red, Color.Black, 0.6f);
+            sp.fast = true;
+
+            MuzzleFlashParticle flashParticle = MuzzleFlashParticle.Spawn(position, velocity, innerColor);
+            flashParticle.innerColor = innerColor;
+            flashParticle.bloomColor = outerColor;
+            flashParticle.Scale *= Main.rand.NextFloat(0.2f, 0.4f);
+
+
+
+            for (float f = 0; f < 2; f++)
             {
-                DustParticle dp = Particle<DustParticle>.Spawn(position, velocity.RotatedByRandom(MathHelper.ToRadians(22)) * Main.rand.NextFloat(3f, 8f), Color.White, Scale: Main.rand.NextFloat(0.3f, 0.5f));
+                DustParticleSpawnParams spawnParams = new DustParticleSpawnParams
+                {
+                    gravity = 0f,
+                    innerColor = innerColor,
+                    outerColor = outerColor,
+                    scaleRange = new Vector2(0.8f, 1f)
+                };
+                var dp = DustParticle.Spawn(position, velocity.RotatedByRandom(0.3f) * Main.rand.NextFloat(1.5f, 3f), spawnParams);
+                dp.dampening = 0.1f;
+                dp.Scale *= 1;
+            }
+
+            for (int i = 0; i < 1; i++)
+            {
+                DustParticle dp = Particle<DustParticle>.Spawn(position, velocity.RotatedByRandom(MathHelper.ToRadians(22)) * Main.rand.NextFloat(3f, 8f), Color.White, Scale: Main.rand.NextFloat(0.5f, 1.35f));
                 dp.gravity = 0;
                 dp.dampening = 0.1f;
+                dp.innerColor = Color.Yellow;
             }
         }
 
     }
 
-    public class IncineratorProj : ModProjectile
+    public class IncineratorProj : ModProjectile,
+        IDrawToRenderTarget
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 
         private ref float Timer => ref Projectile.ai[0];
-        private Vector2[] IncineratorPos;
-        private float LifeTime => 32;
-        private int NumPoints => 64;
+        private ref float RotationDir => ref Projectile.ai[1];
+        private ref float DeathTimer => ref Projectile.ai[2];
+        private float LifeTime => 60;
         public override void SetDefaults()
         {
             base.SetDefaults();
-            IncineratorPos = new Vector2[NumPoints];
-            Projectile.width = 150;
-            Projectile.height = 150;
+            Projectile.width = 32;
+            Projectile.height = 32;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = -1;
             Projectile.idStaticNPCHitCooldown = 7;
             Projectile.usesIDStaticNPCImmunity = true;
-            Projectile.tileCollide = false;
+            Projectile.tileCollide = true;
             Projectile.timeLeft = (int)LifeTime;
+
         }
 
-        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
-        {
-            return ProjectileHelper.OldPosColliding(IncineratorPos, projHitbox, targetHitbox, 64);
-        }
+
         public override bool ShouldUpdatePosition()
         {
             return true;
@@ -106,35 +146,75 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
 
         public override void AI()
         {
-            float numPoints = NumPoints;
-            Vector2 start = Projectile.Center;
-            Vector2 end = start + Projectile.velocity * 100;
-
-            float progress = Timer / LifeTime;
-            float easeOut = EasingFunction.InOutSine(progress);
-            start = Vector2.Lerp(start, end, easeOut * 0.5f);
-            for (int i = 0; i < numPoints; i++)
-            {
-                float f = (float)i;
-                float ratio = f / numPoints;
-                Vector2 point = Vector2.Lerp(start, end, ratio);
-                IncineratorPos[i] = point;
-            }
 
             Timer++;
             if (Timer == 1 && Main.rand.NextBool(8))
             {
+                SoundStyle fireballShoot = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireballShoot1") with { PitchVariance = 0.5f };
+                SoundEngine.PlaySound(fireballShoot, Projectile.position);
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
-                SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy, Projectile.position);
             }
 
-         //   Lighting.AddLight(Projectile.Center + Projectile.velocity * 64, TorchID.Torch);
+            if (Main.rand.NextBool(32))
+            {
+                float time = (float)Projectile.timeLeft / LifeTime;
+                FaintSmokeParticle faintSmoke = FaintSmokeParticle.SpawnInAlphaLayer(Projectile.Center, Projectile.velocity, Scale: Main.rand.NextFloat(0.2f, 0.4f));
+                faintSmoke.color = Color.Lerp(Color.Lerp(Color.Orange, Color.Red, Main.rand.NextFloat(0f, 1f)), Color.Black, 0.7f) * 0.5f;
+                faintSmoke.fadeToColor = Color.DarkGray * 0.5f;
+                faintSmoke.Scale = Main.rand.NextFloat(0.5f, 0.9f) * time;
+                faintSmoke.behindLayer = true;
+            }
+
+            if (Main.rand.NextBool(12))
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, Scale: Main.rand.NextFloat(0.5f, 1f));
+            }
+
+            if(this.OwnedByLocalClient() && Main.rand.NextBool(128))
+            {
+                RotationDir = Main.rand.NextFloat(-1f, 1f);
+                Projectile.netUpdate = true;
+            }
+            if (RotationDir != 0)
+            {
+                Timer++;
+                Projectile.velocity = Projectile.velocity.RotatedBy(RotationDir * 0.05f);
+            }
+            if(DeathTimer == 1)
+            {
+                Timer++;
+                Projectile.velocity *= 0.98f;
+            }
+            if (Timer >= LifeTime)
+                Projectile.Kill();
+            Lighting.AddLight(Projectile.Center, TorchID.Torch);
             Projectile.rotation += 0.05f;
+
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
+            DeathTimer = 1;
             return false;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+          //  PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedFlames, DrawLayer.OverNPCsWithOutline);
+            return false;
+        }
+
+        public void DrawToRenderTargets()
+        {
+            float time = (float)Timer / LifeTime;
+            time = 1f - time;
+            float inverseTime = 1f - time;
+            float maxRadius = 0.065f;
+            float radius1 = MathHelper.Lerp(0f, maxRadius, EasingFunction.OutExpo(inverseTime));
+            float radius2 = MathHelper.Lerp(maxRadius, 0f, EasingFunction.InExpo(inverseTime));
+            float radius = MathHelper.Lerp(radius1, radius2, inverseTime);
+            FlamethrowerRenderer.AddMetaball(Projectile.Center, time, radius);
+            PixelationManager.QueueSpritebatchDrawAction(DrawBloom);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -143,86 +223,21 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             target.AddBuff(BuffID.OnFire3, 120);
         }
 
-        private float WidthFunction(float completionRatio)
+        private void DrawBloom(SpriteBatch sb, Vector2 screenPos)
         {
-            float width = 300;
-            float w = MathHelper.SmoothStep(16, width, completionRatio);
-            float o = MathHelper.Lerp(1f, 0f, EasingFunction.InCirc(completionRatio));
-            float progress = Timer / LifeTime;
-            float o2 = MathHelper.Lerp(1f, 2f, progress);
-            float i = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(progress));
-            return w * o * o2 * i;
-        }
+            float time = (float)Timer / LifeTime;
+            time = 1f - time;
+            float inverseTime = 1f - time;
+            float maxRadius = 1f;
+            float radius1 = MathHelper.Lerp(0f, maxRadius, EasingFunction.OutExpo(inverseTime));
+            float radius2 = MathHelper.Lerp(maxRadius, 0f, EasingFunction.InExpo(inverseTime));
+            float radius = MathHelper.Lerp(radius1, radius2, inverseTime);
 
-        private Color ColorFunction(float completionRatio)
-        {
-            Color tipColor = Color.Lerp(Color.Goldenrod, Color.DarkRed, completionRatio);
-            Color finalColor = Color.Lerp(Color.Red, tipColor, EasingFunction.QuadraticBump(MathF.Pow(completionRatio, 0.5f)));
-            Color finalColor2 = Color.Lerp(Color.White, finalColor, EasingFunction.QuadraticBump(completionRatio));
-            finalColor2 *= EasingFunction.QuadraticBump(completionRatio);
-            float progress = Timer / LifeTime;
-            float o2 = MathHelper.Lerp(1f, 0f, progress);
-            finalColor2 *= o2;
-            finalColor2 *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(completionRatio));
-            return finalColor2;
-        }
-        public float SmokeWidthFunction(float completionRatio)
-        {
-            return WidthFunction(completionRatio) * 0.85f;
-        }
-
-        public Color SmokeColorFunction(float completionRatio)
-        {
-            return ColorFunction(completionRatio) * 0.5f;
-        }
-        private Color ColorFunction2(float completionRatio)
-        {
-            Color finalColor2 = Color.White;
-            finalColor2 *= EasingFunction.QuadraticBump(completionRatio);
-            float progress = Timer / LifeTime;
-            float o2 = MathHelper.Lerp(1f, 0f, progress);
-            finalColor2 *= o2;
-            finalColor2 *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(completionRatio));
-            finalColor2 *= EasingFunction.QuadraticBump(completionRatio);
-            return finalColor2;
-        }
-        private float WidthFunction2(float completionRatio)
-        {
-            float width = 96;
-            float w = MathHelper.SmoothStep(16, width, completionRatio);
-            float o = MathHelper.Lerp(1f, 0f, EasingFunction.InCirc(completionRatio));
-            float progress = Timer / LifeTime;
-            float o2 = MathHelper.Lerp(1f, 2f, progress);
-            float i = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(progress));
-            return w * o * o2 * i;
-        }
-
-        private void DrawMainShader(Vector2[] oldPos)
-        {
-            BlackFireShader blackFireShader = BlackFireShader.Instance;
-            blackFireShader.InnerEmitColor = Color.Yellow;
-            blackFireShader.OuterEmiteColor = Color.Red;
-
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, null, ColorFunction, WidthFunction, blackFireShader, Vector2.Zero);
-
-            var shader = RichLaserShader.Instance;
-            shader.LaserColor = Color.Yellow * 0.2f;
-            shader.InnerColor = Color.Lerp(Color.Yellow, Color.Red, 0.75f) * 0.2f;
-            shader.OuterColor = Color.Yellow * 0.2f;
-            shader.LaserTexture = TrailRegistry.Beamlight;
-            shader.BloomTexture = TrailRegistry.SmallWhispyTrail;
-            TrailDrawer.Draw(Main.spriteBatch, oldPos, ColorFunction2, WidthFunction2, shader);
-
-        }
-
-        private void DrawPixelatedFlames(GraphicsDevice graphicsDevice)
-        {
-            DrawMainShader(IncineratorPos);
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
-            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedFlames, DrawLayer.OverNPCsWithOutline);
-            return false;
+            SpritebatchDrawer bloomDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            bloomDrawer.color = Color.DarkRed * 0.15f * MathHelper.Lerp(1f, 0f, Timer / LifeTime); 
+            bloomDrawer.color.A = 0;
+            bloomDrawer.scale *= 0.6f * radius;
+            sb.Draw(bloomDrawer);
         }
     }
 }

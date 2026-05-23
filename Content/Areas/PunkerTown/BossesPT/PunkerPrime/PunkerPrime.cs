@@ -58,19 +58,19 @@ public class PunkerBoom : ModProjectile
         {
             if (this.OwnedByLocalClient())
             {
-                for(float f = 0; f < 7; f++)
+                for (float f = 0; f < 7; f++)
                 {
                     float ratio = (f + 1) / 7;
                     Vector2 vel = Vector2.Lerp(-Vector2.UnitX, Vector2.UnitX, ratio);
                     vel *= 7;
                     vel.Y -= 1;
                     Vector2 offset = Projectile.Center + vel;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), offset, vel, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), offset, vel, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner, ai1: 1);
                 }
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Vector2.UnitX * 6, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.UnitX * 6, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
-            }
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Vector2.UnitX * 6, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner, ai1: 1);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.UnitX * 6, ModContent.ProjectileType<AssaultBullet>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner, ai1: 1);
 
+            }
             PixelPrimitiveCircleFactory.CreatePunkerBoom(Projectile.Center);
             SoundStyle smash = AssetRegistry.Sounds.Melee.HammerSmash3;
             smash.PitchVariance = 0.3f;
@@ -81,6 +81,8 @@ public class PunkerBoom : ModProjectile
             steaming.Volume = 0.5f;
             SoundEngine.PlaySound(steaming, Projectile.position);
 
+            var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Red, Color.DarkRed, 35, 0.24f);
+            fx.Scale *= 2;
             int[] gores = AutoGoreLoader.FindGores("GrayRock");
             foreach (int g in gores)
             {
@@ -96,7 +98,7 @@ public class PunkerBoom : ModProjectile
             sear.outerColor = Color.Blue;
             sear.fadeToColor = Color.Black;
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
-            ShakeScreenPosition.Shake = 2;
+    
             for (float f = 0; f < 4f; f++)
             {
                 Vector2 pos = Projectile.Center;
@@ -148,16 +150,21 @@ public class PunkerBoom : ModProjectile
                     ModContent.DustType<GlowSparkleDust>(), newColor: Color.Gray, Scale: Main.rand.NextFloat(0f, 2f), Velocity: vel);
             }
 
-            for (float f = 0; f < 16; f++)
+            for (float f = 0; f < 24; f++)
             {
                 Vector2 vel = -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(80));
                 vel *= Main.rand.NextFloat(8f, 50);
                 var spawnParams = DustParticleSpawnParams.Default;
                 spawnParams.scaleRange *= 2f;
                 spawnParams.outerColor = Color.Red;
-                DustParticle.Spawn(Projectile.Center, vel, spawnParams);
+                var dp = DustParticle.Spawn(Projectile.Center, vel, spawnParams);
+                dp.noTileCollide = true;
+                dp.dampening = 0.05f;
+                dp.gravity = 0;
             }
         }
+        float alpha = (float)Projectile.timeLeft / 12f;
+        ShakeScreenPosition.Shake = MathHelper.Lerp(8, 2, alpha);
     }
     public override bool PreDraw(ref Color lightColor)
     {

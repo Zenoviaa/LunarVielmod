@@ -10,7 +10,7 @@ namespace Stellamod.Content.Areas.SpringHills
     // Shows setting up two basic biomes. For a more complicated example, please request.
     public class XixVillageBiome : BaseUrdveilBiome
     {
-        public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<StarbloomBackgroundStyle>();
+        public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<NoBackgroundStyle>();
         public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 
         // Select Music

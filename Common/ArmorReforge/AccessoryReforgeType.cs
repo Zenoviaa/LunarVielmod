@@ -18,6 +18,17 @@
         Protected,
         Bossy,
         Penetrative,
-        MeleeSpeed
+        MeleeSpeed,
+
+        EnemyDurance,
+        Durundaled,
+        Pirated,
+        Speeedy,
+        Ereshkigaled,
+        Sirestiased,
+        Broken,
+        Demolished,
+        Backpacking,
+        Shining,
     }
 }

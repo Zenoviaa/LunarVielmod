@@ -126,13 +126,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
         {
             base.OnKill(timeLeft);
             float numDust = 3f;
-            for(float d = 0; d <numDust; d++)
-            {
-                Vector2 velocity = Main.rand.NextVector2Circular(8, 8);
-                Dust.NewDustPerfect(Projectile.Center, 
-                    ModContent.DustType<GlowDust>(), velocity, newColor: Color.Yellow, Scale: Main.rand.NextFloat(0.5f, 2f));
-            }
-            for (float f = 0; f < 4; f++)
+            for (float f = 0; f < 7; f++)
             {
                 Vector2 fireVelocity = -Projectile.oldVelocity.SafeNormalize(Vector2.Zero);
                 fireVelocity = fireVelocity.RotatedByRandom(MathHelper.ToRadians(60));
@@ -141,7 +135,10 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.PunkerPrime
                 DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
                 spawnParams.outerColor = Color.Red;
                 spawnParams.scaleRange *= 0.5f;
-                DustParticle.Spawn(Projectile.Center, fireVelocity, spawnParams);
+                var d = DustParticle.Spawn(Projectile.Center, fireVelocity, spawnParams);
+                d.noTileCollide = true;
+                d.gravity = 0;
+                d.dampening = 0.05f;
             }
         }
     }
