@@ -90,7 +90,7 @@ public partial class AegislavSurfaceBackground : CustomBG
 
         spriteBatch.Begin(SpriteSortMode.Deferred,
             BlendState.AlphaBlend, 
-            SamplerState.PointClamp, 
+            SamplerState.PointWrap, 
             DepthStencilState.None,
             RasterizerState.CullNone,
             backgroundShader.Effect);
@@ -99,10 +99,12 @@ public partial class AegislavSurfaceBackground : CustomBG
         baseColor = Color.Lerp(baseColor, Main.ColorOfTheSkies, 0.5f);
         Color drawColor = baseColor * Alpha;
         Vector2 drawScale = Vector2.One * 2;
+
+        Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         spriteBatch.Draw(
             _closeTextureAsset.Value,
             Vector2.Zero,
-            null,
+            drawRect,
             drawColor,
             0f,
             default,

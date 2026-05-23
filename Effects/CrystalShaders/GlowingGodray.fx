@@ -32,7 +32,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     const float maxDistance = length(float2(0.5, 0.5));
     float distanceFromCenter = length(uv - float2(0.5, 0.5));
-    float interp = saturate(distanceFromCenter / maxDistance);
+    float interp = saturate(distanceFromCenter / 0.4);
     float alphaFactor = smoothstep(1.0, 0.0, interp);
     
     float3 glowingColor = lerp(input.Color2.rgb, input.Color.rgb, alphaFactor);
