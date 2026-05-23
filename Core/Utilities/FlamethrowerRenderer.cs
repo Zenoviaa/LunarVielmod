@@ -112,9 +112,9 @@ public class FlamethrowerRenderer : ModSystem
         gDevice.Clear(Color.Transparent);
 
         FlamethrowerNoiseShader shader = ShaderContent.GetInstance<FlamethrowerNoiseShader>();
-        shader.Time = Main.GlobalTimeWrappedHourly * -3;
+        shader.Time = Main.GlobalTimeWrappedHourly * -16;
         sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, shader.Effect);
-        sb.Draw(ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/LavaDepths").Value,
+        sb.Draw(ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/CloudNoise2").Value,
     Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
         sb.End();
     }
