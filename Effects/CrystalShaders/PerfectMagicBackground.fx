@@ -20,6 +20,7 @@ float uSaturation;
 float4 uSourceRect;
 float2 uZoom;
 float time;
+float yGradient;
 
 float SampleNoise(float2 coords, float2 offset)
 {

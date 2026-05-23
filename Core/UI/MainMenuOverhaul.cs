@@ -10,6 +10,7 @@ using System;
 using System.Reflection;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
@@ -261,6 +262,10 @@ public class MainMenuFallingLeavesParticleSystem
     }
 }
 
+public class MenuFadeShader : CrystalShader<MenuFadeShader>
+{
+
+}
 public class PerfectMagicBackgroundShader : CrystalShader<PerfectMagicBackgroundShader>
 {
     
@@ -274,6 +279,13 @@ public class PerfectMagicBackgroundShader : CrystalShader<PerfectMagicBackground
         }
     }
 
+    public float Alpha
+    {
+        set
+        {
+            Effect.Parameters["yGradient"].SetValue(value);
+        }
+    }
     public Texture2D OutlineTexture
     {
         set
@@ -304,8 +316,43 @@ public class MainMenuOverhaul : ModSystem
         On_OverlayManager.Draw += BlackOutBackground;
         On_Main.UpdateMenu += UpdateParticleSystem;
         On_AWorldListItem.GetIcon += InitializeIconElement;
+        On_UIImage.DrawSelf += ReplaceImages;
+
+ //     UICharacterSelect
 
         //   AWorldListItem
+    }
+
+    private void ReplaceImages(On_UIImage.orig_DrawSelf orig, UIImage self, SpriteBatch spriteBatch)
+    {
+        int style = 0;
+        if (IsMenuActive && Main.gameMenu)
+        {
+            Asset<Texture2D> texture = (Asset<Texture2D>)typeof(UIImage).GetField("_texture", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(self);
+            if(texture == UICommon.ButtonCollapsedTexture)
+            {
+                style = 1;
+                typeof(UIImage).GetField("_texture", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).SetValue(self, ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/ButtonCollapsed"));
+            }
+            if (texture == UICommon.ButtonExpandedTexture)
+            {
+                style = 2;
+                typeof(UIImage).GetField("_texture", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).SetValue(self, ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/ButtonExpanded"));
+            }
+        }
+
+        orig(self, spriteBatch);
+        if (IsMenuActive && Main.gameMenu)
+        {
+            Asset<Texture2D> texture = (Asset<Texture2D>)typeof(UIImage).GetField("_texture", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(self);
+            if(style == 1)
+            {
+                typeof(UIImage).GetField("_texture", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).SetValue(self, UICommon.ButtonCollapsedTexture);
+            } else if (style == 2)
+            {
+                typeof(UIImage).GetField("_texture", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).SetValue(self, UICommon.ButtonExpandedTexture);
+            }
+        }
     }
 
     private Asset<Texture2D> InitializeIconElement(On_AWorldListItem.orig_GetIcon orig, AWorldListItem self)
@@ -359,6 +406,8 @@ public class MainMenuOverhaul : ModSystem
             Main.QueueMainThreadAction(ResizeRTs);
             _oldScreenSize = Main.ScreenSize;
         }
+
+
         // throw new NotImplementedException();
         orig(self, spriteBatch, layer, beginSpriteBatch);
         if (Main.gameMenu && layer == RenderLayers.Landscape && IsMenuActive && _initTargets)
@@ -371,7 +420,7 @@ public class MainMenuOverhaul : ModSystem
 
             var perfectMagicShader = ShaderContent.GetInstance<PerfectMagicBackgroundShader>();
             perfectMagicShader.Time = Main.GlobalTimeWrappedHourly;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
                 perfectMagicShader.Effect);
 
             SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(_cloudsTextureAsset, Main.screenPosition);
@@ -437,7 +486,10 @@ public class MainMenuOverhaul : ModSystem
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
             spriteBatch.Draw(_pixelTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+            spriteBatch.End();
 
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, effect: ShaderContent.GetInstance<MenuFadeShader>().Effect);
             int width = spriteBatch.GraphicsDevice.Viewport.Bounds.Width;
             int height = spriteBatch.GraphicsDevice.Viewport.Bounds.Height;
             SpritebatchDrawer ereshDrawer = SpritebatchDrawer.FromTextureAsset(_ereshkigalTextureAsset, Main.screenPosition);
@@ -449,6 +501,11 @@ public class MainMenuOverhaul : ModSystem
             float radians = 0.03f;
             ereshDrawer.rotation = MathHelper.Lerp(-radians, radians, ExtraMath.Osc(0f, 1f, speed: 0.35f));
             spriteBatch.Draw(ereshDrawer);
+
+            spriteBatch.End();
+
+         
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
 
             spriteBatch.Draw(_pixelTarget2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
 
