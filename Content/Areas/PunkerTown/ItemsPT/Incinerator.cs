@@ -50,7 +50,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         public override void SetMagazine(ref GunReloadParams fireParams)
         {
             base.SetMagazine(ref fireParams);
-            fireParams.maxAmmo = 32;
+            fireParams.maxAmmo = 48;
             fireParams.reloadWindow = 120;
         }
         public override Vector2? HoldoutOffset()
