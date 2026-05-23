@@ -2,6 +2,7 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -83,6 +84,7 @@ public class FlamethrowerRenderer : ModSystem
     private ManagedRenderTarget _metaballTarget;
     private ManagedRenderTarget _fireTarget;
     private Vector4[] _metaballPositions;
+    private List<Vector2> _metaballWorldPositions;
     private int _index;
     public override void Load()
     {
@@ -134,6 +136,24 @@ public class FlamethrowerRenderer : ModSystem
         sb.Draw(_fireTarget, Vector2.Zero, Color.White);
         sb.End();
         _index = 0;
+        _metaballWorldPositions.Clear();
+    }
+    private void RenderMetaballs2()
+    {
+        SpriteBatch sb = Main.spriteBatch;
+        GraphicsDevice gDevice = sb.GraphicsDevice;
+        gDevice.SetRenderTarget(_metaballTarget);
+        gDevice.Clear(Color.Transparent);
+        sb.Begin(SpriteSortMode.Immediate, CustomBlendStates.Brightest, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone,null);
+        for(int i = 0; i < _metaballWorldPositions.Count; i++)
+        {
+            SpritebatchDrawer ballDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, _metaballWorldPositions[i]);
+            ballDrawer.color.A = 0;
+            sb.Draw(ballDrawer);
+        }
+        sb.End();
+        _index = 0;
+        _metaballWorldPositions.Clear();
 
     }
     private void RenderFull()
@@ -161,6 +181,10 @@ public class FlamethrowerRenderer : ModSystem
 
     public static void AddMetaball(Vector2 pos, float time, float radius)
     {
+        FlamethrowerRenderer renderer = ModContent.GetInstance<FlamethrowerRenderer>();
+        renderer._metaballWorldPositions ??= new List<Vector2>();
+        renderer._metaballWorldPositions.Add(pos);
+
         Matrix screenPosMatrix = TrailDrawer.WorldViewPoint2;
 
         Vector2 screenPos = new Vector2();
@@ -168,7 +192,7 @@ public class FlamethrowerRenderer : ModSystem
         screenPos.Y = (pos.Y - Main.screenPosition.Y) / Main.screenHeight;
 
         Vector4 metaballPos = new Vector4(screenPos, time, radius);
-        FlamethrowerRenderer renderer = ModContent.GetInstance<FlamethrowerRenderer>();
+    
         if (renderer._index >= renderer._metaballPositions.Length)
             return;
 

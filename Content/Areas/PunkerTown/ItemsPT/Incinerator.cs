@@ -34,7 +34,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
 
             // Weapon Properties
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 250;
+            Item.damage = 280;
             Item.knockBack = 4;
             Item.noMelee = true;
 
@@ -209,7 +209,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             float time = (float)Timer / LifeTime;
             time = 1f - time;
             float inverseTime = 1f - time;
-            float maxRadius = 0.073f;
+            float maxRadius = 0.065f;
             float radius1 = MathHelper.Lerp(0f, maxRadius, EasingFunction.OutExpo(inverseTime));
             float radius2 = MathHelper.Lerp(maxRadius, 0f, EasingFunction.InExpo(inverseTime));
             float radius = MathHelper.Lerp(radius1, radius2, inverseTime);
