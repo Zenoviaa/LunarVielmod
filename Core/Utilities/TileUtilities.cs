@@ -124,4 +124,17 @@ public static class TileUtilities
         bottomRightTile = Clamp(bottomRightTile);
         return (topLeftTile, bottomRightTile);
     }
+    public static (Point topLeft, Point bottomRight) CenterTileBounds(Vector2 centerWorld, int width, int height)
+    {
+        Vector2 cameraTopLeft = centerWorld - new Vector2(width, height) / 2;
+        Vector2 cameraBottomRight = centerWorld + new Vector2(width, height) / 2;
+
+        
+        Point topLeftTile = cameraTopLeft.ToTileCoordinates();
+        Point bottomRightTile = cameraBottomRight.ToTileCoordinates();
+
+        topLeftTile = Clamp(topLeftTile);
+        bottomRightTile = Clamp(bottomRightTile);
+        return (topLeftTile, bottomRightTile);
+    }
 }

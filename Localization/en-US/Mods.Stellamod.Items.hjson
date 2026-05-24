@@ -11249,3 +11249,8 @@ DogBone: {
 	DisplayName: Dog Bone
 	Tooltip: ""
 }
+
+TotemOfTheVeil: {
+	DisplayName: Totem Of The Veil
+	Tooltip: ""
+}

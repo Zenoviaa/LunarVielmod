@@ -30,7 +30,7 @@ namespace Stellamod.NPCs.Special
             base.SetDefaults();
             NPC.width = 32;
             NPC.height = 32;
-            NPC.lifeMax = 10;
+            NPC.lifeMax = 5;
             NPC.damage = 1;
             NPC.defense = 9999;
             NPC.noGravity = true;
