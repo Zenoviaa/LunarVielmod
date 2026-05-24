@@ -18,7 +18,7 @@ namespace Stellamod.Assets.Videos;
 
 
 //NOTES:
-//This is the imeplementation written by Mirsari for Terraria Overhaul to read a .ogv file into memory, since the Video class can only read form external URLs which is sad
+//This is the imeplementation written by Mirsario for Terraria Overhaul to read a .ogv file into memory, since the Video class can only read form external URLs which is sad
 //I tried writing my own implementation for this, but couldn't figure out why I was getting a protected memory exception when parsing the asset,
 //I need to read up more on memory management lol
 //I'll come back to this later
