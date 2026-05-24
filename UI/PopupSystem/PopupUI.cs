@@ -27,8 +27,8 @@ namespace Stellamod.UI.PopupSystem
             _scale = 1f;
             Width.Pixels = 48 * 5f;
             Height.Pixels = 48 * 16;
-            Left.Pixels = RelativeLeft;
-            Top.Pixels = RelativeTop;
+            Left.Pixels = RelativeLeft + Offset.X - (Width.Pixels / 2);
+            Top.Pixels = RelativeTop + Offset.Y;
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 

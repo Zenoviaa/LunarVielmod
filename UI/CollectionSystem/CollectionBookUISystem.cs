@@ -273,7 +273,8 @@ namespace Stellamod.UI.CollectionSystem
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-            int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+            //This should prevent it from interacting with some other things
+            int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
             if (mouseTextIndex != -1)
             {
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
@@ -287,6 +288,21 @@ namespace Stellamod.UI.CollectionSystem
                         {
                             _hudUserInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
                         }
+                        return true;
+                    },
+                    InterfaceScaleType.UI));
+            }
+
+            mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+            if (mouseTextIndex != -1)
+            {
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "LunarVeil: Collection Book UI",
+                    delegate
+                    {
+                        SpriteBatch spriteBatch = Main.spriteBatch;
+                        spriteBatch.End();
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, spriteBatch.GraphicsDevice.RasterizerState, default, Main.UIScaleMatrix);
                         if (_lastUpdateUiGameTime != null && _userInterface?.CurrentState != null)
                         {
                             _userInterface.Draw(Main.spriteBatch, _lastUpdateUiGameTime);

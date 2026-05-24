@@ -19,6 +19,7 @@ namespace Stellamod.Common.XixianFlaskSystem
         public int maxInsourceCount;
         public int insourceTime;
         public bool unlockedFlask;
+        public bool openedFlask;
         public float insourceSecondsBonusPerInsource;
         public static event Action<Player> OnProc;
         public override void ResetEffects()
@@ -46,6 +47,7 @@ namespace Stellamod.Common.XixianFlaskSystem
             unlockedFlask = false;
             _unlockedInsources.Clear();
             ManageUnlockedInsources();
+            openedFlask = false;
         }
         public void GrantAllProgress()
         {
@@ -174,6 +176,7 @@ namespace Stellamod.Common.XixianFlaskSystem
             tag["insources"] = _insources;
             tag["unlockedinsources"] = _unlockedInsources;
             tag["unlockedFlask"] = unlockedFlask;
+            tag["openedFlask"] = openedFlask;
         }
 
         public override void LoadData(TagCompound tag)
@@ -187,6 +190,7 @@ namespace Stellamod.Common.XixianFlaskSystem
             ManageUnlockedInsources();
 
             unlockedFlask = tag.GetBool("unlockedFlask");
+            openedFlask = tag.GetBool("openedFlask");
         }
     }
 }

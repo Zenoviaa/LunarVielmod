@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common.UI;
+using Stellamod.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -8,7 +10,6 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Stellamod.Helpers;
 
 namespace Stellamod.Core.TabletSystem
 {
@@ -21,11 +22,13 @@ namespace Stellamod.Core.TabletSystem
         public Asset<Texture2D> InnerTexture;
         public UIText Title;
         public UIText Text;
+        public CommonBackButton backButton;
         public Color TabletColor;
         public Vector2 DrawOffset;
         public float Alpha;
         public TabletUI() : base()
         {
+            Alpha = 0f;
             TabletCardTexture = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/TabletCard");
             Text = new UIText("This is placeholder text");
             Title = new UIText("This is placeholder text", large: true);
@@ -36,6 +39,8 @@ namespace Stellamod.Core.TabletSystem
             base.OnInitialize();
             Width.Pixels = 660;
             Height.Pixels = 492;
+            Left.Pixels = RelativeLeft + DrawOffset.X;
+            Top.Pixels = RelativeTop + DrawOffset.Y;
             TabletColor = Color.White;
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
@@ -48,8 +53,18 @@ namespace Stellamod.Core.TabletSystem
             Text.DynamicallyScaleDownToWidth = true;
             Text.Top.Set(0, 0.75f);
             Text.IsWrapped = true;
+
+
+            Title.TextColor = TabletColor * Alpha;
+            Text.TextColor = TabletColor * Alpha;
             Append(Text);
             Append(Title);
+
+            backButton = new CommonBackButton(ModContent.GetInstance<TabletUISystem>().CloseUI);
+            backButton.alpha = Alpha;
+            backButton.asXButton = true;
+            backButton.Left.Pixels = Width.Pixels - 48;
+            Append(backButton);
         }
 
 
@@ -66,9 +81,10 @@ namespace Stellamod.Core.TabletSystem
             base.Update(gameTime);
             Left.Pixels = RelativeLeft + DrawOffset.X;
             Top.Pixels = RelativeTop + DrawOffset.Y;
-     
             Title.TextColor = TabletColor * Alpha;
             Text.TextColor = TabletColor * Alpha;
+            backButton.alpha = Alpha;
+
             bool contains = ContainsPoint(Main.MouseScreen);
             if (contains && !PlayerInput.IgnoreMouseInterface)
             {
@@ -90,7 +106,6 @@ namespace Stellamod.Core.TabletSystem
             Color frontColor = Color.White * Alpha;
             spriteBatch.Draw(InnerTexture.Value, drawRectangle, null, frontColor);
             spriteBatch.Draw(TabletCardTexture.Value, drawRectangle, null, backingColor);
-
         }
     }
 }

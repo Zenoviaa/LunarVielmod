@@ -92,8 +92,6 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
             _scrollbar.Top.Set(12, 0f);
             Append(_scrollbar);
 
-
-
             _effectUIList = new UIList();
             _effectUIList.Top.Pixels = 260;
             _effectUIList.Width.Pixels = Width.Pixels;

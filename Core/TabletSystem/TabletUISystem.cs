@@ -166,8 +166,6 @@ namespace Stellamod.Core.TabletSystem
             if (_state != AIState.Close)
             {
                 ClearSlot();
-                SoundStyle soundStyle = SoundID.MenuClose;
-                SoundEngine.PlaySound(soundStyle);
                 SwitchState(AIState.Close);
             }
         }
@@ -184,7 +182,7 @@ namespace Stellamod.Core.TabletSystem
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-            int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+            int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Player Chat"));
             if (mouseTextIndex != -1)
             {
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(

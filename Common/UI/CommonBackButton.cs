@@ -19,17 +19,20 @@ public class CommonBackButton : UIPanel
     private UIText _backText;
     public CommonBackButton(Action closeFunction) : base()
     {
+        alpha = 1f;
         _commonXTextureAsset = ModContent.Request<Texture2D>(this.GetType().DirectoryHere() + "/CommonX");
         _closeFunction = closeFunction;
         _backText = new UIText("Back", large: true);
     }
 
     public bool asXButton;
+    public float alpha;
     public override void OnInitialize()
     {
         base.OnInitialize();
         Width.Pixels = 160;
         Height.Pixels = 54;
+    
         _backText.Width.Pixels = Width.Pixels;
         _backText.Height.Pixels = Height.Pixels;
         _backText.HAlign = 0.5f;
@@ -70,7 +73,7 @@ public class CommonBackButton : UIPanel
             drawer.drawOrigin = Vector2.Zero;
             int frame = IsMouseHovering ? 1 : 0;
             drawer.VerticalFrame(frame, 2);
-            drawer.color = Color.White;
+            drawer.color = Color.White * alpha;
             spriteBatch.Draw(drawer);
         }
         if (IsMouseHovering)

@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using Stellamod.Items.Insources;
 using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -222,6 +223,7 @@ public class XixianFlaskCollectible : BaseCollectibleTile
     public override void Collect(Player player, Vector2 position)
     {
         base.Collect(player, position);
-        //   player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<HealthyInsource>());
+        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Harv1"));
+        player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<HealthInsource>());
     }
 }

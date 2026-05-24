@@ -1,4 +1,6 @@
-﻿using Terraria.UI;
+﻿using Stellamod.Common.UI;
+using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Stellamod.Core.TabletSystem
 {
@@ -14,6 +16,14 @@ namespace Stellamod.Core.TabletSystem
         {
             tabletUI = new TabletUI();
             Append(tabletUI);
+
+
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
         }
     }
 }

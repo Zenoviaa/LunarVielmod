@@ -471,7 +471,7 @@ public class ClassSystem : ModSystem
         if (index >= 5)
             return;
         Asset<Texture2D> btnTexture = ModContent.Request<Texture2D>($"{this.GetTypeDirectoryWithSlash()}Classes_{index}");
-        spriteBatch.Draw(btnTexture.Value, self.GetDimensions().ToRectangle().TopLeft() + new Vector2(580, 0), Color.White);
+        spriteBatch.Draw(btnTexture.Value, self.GetDimensions().ToRectangle().TopLeft() + new Vector2(540, 0), Color.White);
     }
 
     private void OpenSelectCharacterClass(On_UICharacterSelect.orig_NewCharacterClick orig, UICharacterSelect self, UIMouseEvent evt, UIElement listeningElement)

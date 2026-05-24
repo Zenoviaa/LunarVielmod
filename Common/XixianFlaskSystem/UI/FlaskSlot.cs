@@ -1,13 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.XixianFlaskSystem;
+using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
+using Terraria.UI.Chat;
 
 namespace Stellamod.Common.XixianFlaskSystem.UI
 {
@@ -117,7 +121,7 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
 
             XixianFlaskUISystem uiSystem = ModContent.GetInstance<XixianFlaskUISystem>();
             uiSystem.ToggleUI();
-
+            flaskPlayer.openedFlask = true;
         }
 
         public override void Update(GameTime gameTime)
@@ -176,6 +180,24 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
             spriteBatch.Draw(backingTexture, rectangle.TopLeft(), null, color2, 0f, default, _scale, SpriteEffects.None, 0f);
 
             ItemSlot.DrawItemIcon(_item, _context, spriteBatch, centerPos, _scale, 32, Color.White);
+
+            FlaskPlayer flaskPlayer = Main.LocalPlayer.GetModPlayer<FlaskPlayer>();
+            if(flaskPlayer.unlockedFlask && !flaskPlayer.openedFlask)
+            {
+                Color glowColor = Color.White * ExtraMath.Osc(0f, 1f, speed: 12f);
+                glowColor.A = 0;
+                ItemSlot.DrawItemIcon(_item, _context, spriteBatch, centerPos, _scale, 32, glowColor);
+            
+                SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Main.screenPosition + pos);
+                glowDrawer.scale *= 0.18f;
+                glowDrawer.color = glowColor * 0.25f;
+                glowDrawer.color.A = 0;
+                spriteBatch.Draw(glowDrawer);
+
+                string text = LangText.Common("New");
+                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, pos, glowColor, 0, FontAssets.MouseText.Value.MeasureString(text) * new Vector2(0.5f), Vector2.One);
+            }
+
             Main.inventoryScale = oldScale;
         }
     }

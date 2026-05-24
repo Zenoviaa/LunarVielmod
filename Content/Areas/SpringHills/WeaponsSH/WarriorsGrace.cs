@@ -4,6 +4,7 @@ using Stellamod.Core.Bases;
 using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
+using Stellamod.Trailing;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -42,33 +43,36 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
     public class WarriorsSwordSlash : BaseSwingProjectileV2
     {
         public bool Hit;
-        public SlashEffect SlashEffect { get; set; }
-        public SlashTrailer SlashTrailer { get; set; }
         public override void SetDefaults2()
         {
             base.SetDefaults2();
         }
-        private float GetTrailWidth(float interpolant)
+        
+        private float GetBloomWidth(float ratio)
         {
-            return EasingFunction.QuadraticBump(interpolant) * 12;
+            return MathHelper.SmoothStep(4, 32, ratio) * 1.15f * MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Interpolant));
         }
+
+        private Color GetBloomColor(float ratio)
+        {
+            Color blue = Color.Lerp(Color.Lerp(Color.White, Color.DarkGray, 0.5f), Color.DarkGray, ExtraMath.Osc(0f, 1f, speed: 4));
+            return Color.Lerp(blue * 0.9f, Color.Black, ratio);
+        }
+
+
         public override void DefineCombo()
         {
             base.DefineCombo();
+            SlashTrailBuilder slashTrailBuilder = new SlashTrailBuilder();
+            SlashTrailer slashTrailer = slashTrailBuilder.Instantiate();
+            slashTrailer.invert = ComboIndex % 2 != 0;
+            Trailer = slashTrailer;
 
-            //Setup the slash effect
-            SlashEffect = new SlashEffect()
-            {
-                BaseColor = Color.Gray,
-                WindColor = Color.Gray,
-                LightColor = Color.LightGray,
-                RimHighlightColor = Color.White,
-                BlendState = Microsoft.Xna.Framework.Graphics.BlendState.Additive
-            };
-            SlashTrailer = new();
-            SlashTrailer.TrailWidthFunction = GetTrailWidth;
-            SlashTrailer.Shader = SlashEffect;
-            Trailer = SlashTrailer;
+            useBloom = true;
+            bloom.innerBloomColor = Color.White;
+            bloom.outerBloomColor = Color.DarkGray;
+            bloom.bloomWidthFunction = GetBloomWidth;
+            bloom.bloomColorFunction = GetBloomColor;       
             SwingV2Helper.AddSwordSwingStyle(this); 
         }
 
@@ -83,7 +87,6 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
                     innerColor: Color.White,
                     glowColor: Color.Black,
                     outerGlowColor: Color.Black, duration: 12, baseSize: 0.24f);
-
 
                 Hit = true;
             }
@@ -247,7 +250,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             SwingPlayerV2 comboPlayer = Owner.GetModPlayer<SwingPlayerV2>();
             int combo = ComboIndex + 1;
             int dir = comboPlayer.ComboDirection;
-            if (ComboIndex < 2)
+            if (ComboIndex < 2 && this.OwnedByLocalClient())
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity, Projectile.type, Projectile.damage, Projectile.knockBack,
                             Owner.whoAmI, ai2: combo, ai1: dir);

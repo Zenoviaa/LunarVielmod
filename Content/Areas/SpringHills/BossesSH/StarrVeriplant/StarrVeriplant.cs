@@ -5,6 +5,7 @@ using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -294,18 +295,18 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
             CameraTargetSystem.AddTarget(NPC.Center);
             CameraTargetSystem.SetLingerTime(120);
 
-            if (Timer % 2 == 0)
+            if (Timer % 4 == 0)
             {
-                float range = Main.rand.NextFloat(252, 512);
+                float range = Main.rand.NextFloat(128, 256);
                 Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
                 Vector2 vel = (NPC.Center - pos);
                 vel *= 0.1f;
                 FXUtil.GlowStretch(pos, vel);
             }
 
-            if (Timer % 2 == 0)
+            if (Timer % 4 == 0)
             {
-                float range = Main.rand.NextFloat(384, 666);
+                float range = Main.rand.NextFloat(252, 400);
                 Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
                 Vector2 vel = (NPC.Center - pos);
                 vel *= 0.1f;
@@ -316,7 +317,22 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
 
             if (Timer >= 120)
             {
-                ShakeScreenPosition.Shake = 4;
+                var fx = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightGray, Color.Black, duration: 45, baseSize: 0.24f);
+                fx.Scale *= 1.5f;
+
+                var fx2 = FXUtil.GlowCircleBoom(NPC.Center, Color.White, Color.LightGray, Color.Black, duration: 45, baseSize: 0.18f);
+                fx2.Scale *= 1.5f;
+                for(float f = 0; f < 32; f++)
+                {
+                    var d = DustParticle.Spawn(NPC.Center, Main.rand.NextVector2Circular(24, 24));
+                    d.outerColor = Color.Black;
+                    d.Scale *= 2.1f;
+                    d.dampening = 0.05f;
+                    d.noTileCollide = true;
+                    d.gravity = 0;
+                }
+
+                ShakeScreenPosition.Shake = 8;
                 FXUtil.ShakeCamera(NPC.Center, 1024, 4);
                 if (Main.netMode != NetmodeID.Server)
                 {

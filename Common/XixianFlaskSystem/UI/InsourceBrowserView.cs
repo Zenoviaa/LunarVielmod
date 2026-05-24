@@ -119,7 +119,8 @@ public class InsourceBrowserView : UIPanel
         int startIndex = numRowsDownward * elementsPerRow;
         int endIndex = startIndex + elementsPerRow * 6;
 
-
+        FlaskPlayer flaskPlayer = Main.LocalPlayer.GetModPlayer<FlaskPlayer>();
+        HoveringItem = new Item(0);
         //Now we're only loading the items that are in view! Yippee! Optimization!
         for (int i = startIndex; i < endIndex && i < itemArr.Length; i++)
         {
@@ -137,8 +138,19 @@ public class InsourceBrowserView : UIPanel
             Vector2 centerPos = tl + new Vector2(16);
 
             Vector2 iconCenterPos = tl + slotTexture.Size() / 2;
+
+            bool isUnlocked = flaskPlayer.HasUnlocked(item);
+            Color iconColor = Color.White;
+            if (!isUnlocked)
+            {
+                iconColor = Color.Lerp(iconColor, Color.Black, 0.75f);
+            }
             spriteBatch.Draw(slotTexture, centerPos, null, drawColor, 0f, drawOrigin, _scale, SpriteEffects.None, 0f);
-            ItemSlot.DrawItemIcon(item, _context, spriteBatch, centerPos, drawScale, 32, Color.White);
+            ItemSlot.DrawItemIcon(item, _context, spriteBatch, centerPos, drawScale, 32, iconColor);
+            if (!isUnlocked)
+            {
+                continue;
+            }
             if (HoveringItem.stack > 1)
             {
                 ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, item.stack.ToString(),

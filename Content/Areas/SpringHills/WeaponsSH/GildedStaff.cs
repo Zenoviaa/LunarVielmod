@@ -121,12 +121,19 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
                 Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
             }
 
-            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
-            Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
+            float rotOffset = 90f;
+            if(Owner.direction == -1)
+            {
+                rotOffset += 90;
+            }
+
+
+            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(rotOffset)); // set arm position (90 degree offset since arm starts lowered)
+            Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(rotOffset)); // get position of hand
 
             armPosition.Y += Owner.gfxOffY;
             Projectile.Center = armPosition; // Set projectile to arm position
-            Owner.heldProj = Projectile.whoAmI;
+           // Owner.heldProj = Projectile.whoAmI;
             if (Projectile.spriteDirection == -1)
             {
                 // Projectile.rotation += MathHelper.ToRadians(90);
@@ -171,7 +178,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
                 {
                     Vector2 spawnPos = EndPoint + Main.rand.NextVector2CircularEdge(64, 64);
                     Vector2 vel = (EndPoint - spawnPos).SafeNormalize(Vector2.Zero) * 4;
-                    Dust.NewDustPerfect(spawnPos, ModContent.DustType<GlyphDust>(), vel, newColor: Color.White, Scale: Main.rand.NextFloat(0.5f, 1.5f));
+                    Dust.NewDustPerfect(spawnPos, ModContent.DustType<GlyphDust>(), vel, newColor: Color.White, Scale: Main.rand.NextFloat(0.25f, 0.66f));
                 }
             }
             ChargeProgress = Timer / MaxChargeTime;
@@ -234,7 +241,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             Vector2 ballDrawPosition = centerPos + Projectile.velocity * 64;
             SpritebatchDrawer glowballDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ballDrawPosition);
             glowballDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.InOutSine(Timer / 30f));
-            glowballDrawer.scale *= 0.5f;
+            glowballDrawer.scale *= 0.5f * MathHelper.Lerp(0.2f, 0.4f, Timer / 30f) * 0.2f;
             glowballDrawer.color.A = 0;
             Main.spriteBatch.Draw(glowballDrawer);
         }
@@ -319,12 +326,16 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             //Draw Code for the orb
             Texture2D texture = ModContent.Request<Texture2D>(TextureRegistry.EmptyGlowParticle).Value;
             Vector2 centerPos = Projectile.Center;
-            Vector2 ballDrawPosition = centerPos + Projectile.velocity * 64;
-            SpritebatchDrawer glowballDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ballDrawPosition);
-            glowballDrawer.color = Color.Lerp(Color.Black, Color.White, Charge);
-            glowballDrawer.scale *= MathHelper.Lerp(0.2f, 0.5f, Charge);
-            glowballDrawer.color.A = 0;
-            Main.spriteBatch.Draw(glowballDrawer);
+            Vector2 ballDrawPosition = centerPos;
+            for(int i = 0; i < 4; i++)
+            {
+                SpritebatchDrawer glowballDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ballDrawPosition);
+                glowballDrawer.color = Color.Lerp(Color.Black, Color.White, Charge);
+                glowballDrawer.scale *= MathHelper.Lerp(0.2f, 0.5f, Charge) * 0.1f;
+                glowballDrawer.color.A = 0;
+                Main.spriteBatch.Draw(glowballDrawer);
+            }
+
         }
 
         public override void OnKill(int timeLeft)
@@ -383,7 +394,7 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
         private Color ColorFunction(float completionRatio)
         {
             Color inColor = Color.White;
-            Color trailColor = Color.Lerp(Color.SpringGreen, Color.DarkBlue, completionRatio);
+            Color trailColor = Color.Lerp(Color.White, Color.Black, completionRatio);
             Color easeColor = Color.Lerp(inColor, trailColor, EasingFunction.InExpo(Timer / 60f));
             return easeColor;
         }
