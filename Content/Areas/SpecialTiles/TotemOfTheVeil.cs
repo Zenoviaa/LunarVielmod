@@ -229,7 +229,7 @@ public class TotemOfTheVeilTile : ModTile
         TileObjectData.newTile.StyleWrapLimit = 2; //not really necessary but allows me to add more subtypes of chairs below the example chair texture
         TileObjectData.newTile.StyleMultiplier = 2; //same as above
         TileObjectData.newTile.StyleHorizontal = true;
-        TileObjectData.newTile.Origin = new Point16(1, 5);
+        TileObjectData.newTile.Origin = new Point16(1, 4);
         TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop, TileObjectData.newTile.Width, 0);
         TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
         TileObjectData.addTile(Type);

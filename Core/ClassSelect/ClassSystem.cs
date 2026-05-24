@@ -313,11 +313,11 @@ public class ClassTooltip : UIElement
         base.DrawSelf(spriteBatch);
         (string, string, string) classText = ModContent.GetInstance<ClassSystem>().GetClassText();
         List<TooltipLine> lines = new List<TooltipLine>();
-        TooltipLine nameTooltipLine = new TooltipLine(classText.Item1, classText.Item1);
+        TooltipLine nameTooltipLine = new TooltipLine(ModContent.GetInstance<Stellamod>(), classText.Item1, classText.Item1);
         nameTooltipLine.OverrideColor = Color.Yellow;
         lines.Add(nameTooltipLine);
 
-        TooltipLine flavorTooltipLine = new TooltipLine(classText.Item2, classText.Item2);
+        TooltipLine flavorTooltipLine = new TooltipLine(ModContent.GetInstance<Stellamod>(), classText.Item2, classText.Item2);
         flavorTooltipLine.OverrideColor = Color.White;
         lines.Add(flavorTooltipLine);
 
@@ -334,7 +334,7 @@ public class ClassTooltip : UIElement
         position.X -= 20;
         position.Y += 8;
         List<TooltipLine> statLines = new List<TooltipLine>();
-        TooltipLine statLine = new TooltipLine(classText.Item3, classText.Item3);
+        TooltipLine statLine = new TooltipLine(ModContent.GetInstance<Stellamod>(), classText.Item3, classText.Item3);
         statLine.OverrideColor = Color.White;
         statLines.Add(statLine);
         UIHelpers.DrawTooltips(spriteBatch, statLines, position, 250, 1, yOffset: 0);
