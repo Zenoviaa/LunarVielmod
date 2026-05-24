@@ -1,11 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Stellamod.Assets;
 using Stellamod.Content.Areas.Collosseum.BossesCL.EliteCommander.Projectiles;
 using Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant.Projectiles;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.Items.Placeable;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +12,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -27,7 +25,9 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
             Idle,
             Stomp,
             Stomp_Multi,
-            Stomp_Super
+            Stomp_Super,
+            Despawn,
+            Death
         }
 
         private ActionState State
@@ -44,7 +44,6 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
 
         private Color OutlineColor;
 
-        private bool _showNamePlate;
         private bool InPhase2 => NPC.life < NPC.lifeMax / 2;
         private bool HasDoneStomp;
         private bool CanSuperStomp;
@@ -53,8 +52,6 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
         private float OutlineOpacity;
         private float StompSpeed = 1;
         private Vector2 StompPos;
-        private float Spawner;
-
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             bool isInStompState = State == ActionState.Stomp || State == ActionState.Stomp_Multi || State == ActionState.Stomp_Super;
@@ -200,6 +197,11 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
             // You could also return null here to apply vanilla behavior (which is the same as false for custom AI)
         }
 
+        public override bool AllowNameplateToBeShown()
+        {
+            return true;
+        }
+
         public override void AI()
         {
             base.AI();
@@ -210,7 +212,6 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
             //Only check vertically
             endPos.X = startPos.X;
             NPC.noTileCollide = !Collision.CanHitLine(startPos, 1, 1, endPos, 1, 1);
-            Spawner++;
             if (InPhase2)
             {
                 float finalStompSpeed = 0.5f;
@@ -233,26 +234,24 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
             if (!NPC.HasValidTarget)
             {
                 NPC.TargetClosest();
-                if (!NPC.HasValidTarget)
+                if (!NPC.HasValidTarget && State != ActionState.Despawn)
                 {
-                    NPC.noTileCollide = true;
-                    NPC.EncourageDespawn(60);
-                    NPC.velocity -= Vector2.UnitY;
+                    SwitchState(ActionState.Despawn);
                     return;
                 }
 
             }
 
+
             //AI States
             switch (State)
             {
+                case ActionState.Despawn:
+                    AI_Despawn();
+                    break;
                 case ActionState.Spawn:
                     AI_Spawn();
-                    if (!_showNamePlate)
-                    {
-                        ShowNamePlate();
-                        _showNamePlate = true;
-                    }
+
                     break;
                 case ActionState.Idle:
                     AI_Idle();
@@ -266,6 +265,73 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
                 case ActionState.Stomp_Super:
                     AI_StompSuper();
                     break;
+                case ActionState.Death:
+                    AI_Death();
+                    break;
+            }
+        }
+
+        private void AI_Despawn()
+        {
+            Timer++;
+            if (Timer >= 90)
+                NPC.active = false;
+            NPC.noTileCollide = true;
+            NPC.velocity -= Vector2.UnitY;
+        }
+        private void AI_Death()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+
+            NPC.velocity.X *= 0.94f;
+            NPC.velocity.Y *= 0.94f;
+            NPC.rotation *= 0.94f;
+            NPC.noTileCollide = false;
+            CameraTargetSystem.AddTarget(NPC.Center);
+            CameraTargetSystem.SetLingerTime(120);
+
+            if (Timer % 2 == 0)
+            {
+                float range = Main.rand.NextFloat(252, 512);
+                Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
+                Vector2 vel = (NPC.Center - pos);
+                vel *= 0.1f;
+                FXUtil.GlowStretch(pos, vel);
+            }
+
+            if (Timer % 2 == 0)
+            {
+                float range = Main.rand.NextFloat(384, 666);
+                Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(range, range);
+                Vector2 vel = (NPC.Center - pos);
+                vel *= 0.1f;
+                var fx = FXUtil.GlowStretch(pos, vel);
+                fx.OuterGlowColor = Color.Lerp(Color.White, Color.Blue, Main.rand.NextFloat(0f, 1f));
+                fx.VectorScale *= 0.5f;
+            }
+
+            if (Timer >= 120)
+            {
+                ShakeScreenPosition.Shake = 4;
+                FXUtil.ShakeCamera(NPC.Center, 1024, 4);
+                if (Main.netMode != NetmodeID.Server)
+                {
+                    int headGore = Mod.Find<ModGore>($"{Name}_Gore_0").Type;
+                    int legGore = Mod.Find<ModGore>($"{Name}_Gore_1").Type;
+                    int legGore2 = Mod.Find<ModGore>($"{Name}_Gore_2").Type;
+
+                    // Spawn the gores. The positions of the arms and legs are lowered for a more natural look.
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, headGore, 1f);
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore);
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.position + new Vector2(0, 34), NPC.velocity, legGore2);
+                }
+                SoundStyle roarSound = new SoundStyle("Stellamod/Assets/Sounds/SunStalker_Bomb_Explode") with { PitchVariance = 0.3f };
+                SoundEngine.PlaySound(roarSound, MyTarget.Center);
+                NPC.Kill();
             }
         }
 
@@ -315,16 +381,6 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
 
         private void AI_Idle()
         {
-            //Despawn code
-            if (!NPC.HasValidTarget)
-            {
-                NPC.TargetClosest();
-                if (!NPC.HasValidTarget)
-                {
-                    NPC.EncourageDespawn(60);
-                }
-            }
-
             //Idle state and then choose attack
             Timer++;
             if (Timer >= 90)
@@ -806,6 +862,18 @@ namespace Stellamod.Content.Areas.SpringHills.BossesSH.StarrVeriplant
             NPC.netUpdate = true;
         }
 
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            base.HitEffect(hit);
+            if(NPC.life <= 0)
+            {
+                if(State != ActionState.Death)
+                {
+                    SwitchState(ActionState.Death);
+                }
+                NPC.life = 1;
+            }
+        }
         public override void OnKill()
         {
             DownedBossTracker.ClearFlag(DownedBossFlag.StoneGolem);

@@ -67,15 +67,30 @@ public class BossFightTimer : ModSystem
         Main.NewText($"{displayName} - Fight Time: {timeString}", Color.SkyBlue);
     }
 }
+
+public class ScarletBossGlobalNPC : GlobalNPC
+{
+    public override bool InstancePerEntity => true;
+    public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
+    {
+        return base.AppliesToEntity(entity, lateInstantiation) && entity.ModNPC is ScarletBoss;
+    }
+}
 public abstract class ScarletBoss : ModNPC
 {
     private Vector2 _arenaCenter;
     private float _bossHealthbarDelay;
 
     private bool _startTimer;
+    private bool _hasShownNamePlate;
     public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
     {
         DifficultyChanges.ApplyDifficultyAndScaling(NPC, numPlayers);
+    }
+
+    public virtual bool AllowNameplateToBeShown()
+    {
+        return false;
     }
 
     public override void OnSpawn(IEntitySource source)
@@ -141,6 +156,11 @@ public abstract class ScarletBoss : ModNPC
         if (!NPC.boss)
             return;
 
+        if(!_hasShownNamePlate && AllowNameplateToBeShown())
+        {
+            ShowNamePlate();
+            _hasShownNamePlate = true;
+        }
         if (!_startTimer)
         {
             ModContent.GetInstance<BossFightTimer>().StartTimer(NPC.whoAmI);
