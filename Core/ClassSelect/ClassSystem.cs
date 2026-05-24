@@ -8,7 +8,6 @@ using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Core.Tooltips;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.Items.Weapons.Mage;
 using System;
 using System.Collections.Generic;
 using Terraria;

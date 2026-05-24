@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.CommonMaterials;
+using Stellamod.Core.Bases;
+using Stellamod.Core.Pixelation;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Trails;
@@ -9,29 +9,16 @@ using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Items.Weapons.Mage
+namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
-    public class GildedStaff : ClassSwapItem
+    public class GildedStaff : ModItem
     {
-        public int dir;
-        public override DamageClass AlternateClass => DamageClass.Ranged;
-
-        public override void SetClassSwappedDefaults()
-        {
-            Item.damage = 6;
-            Item.mana = 6;
-        }
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Gilded Staff");
-            // Tooltip.SetDefault("Shoots two spinning pieces of spiritual magic at your foes!\nThe fabric is super magical, it turned wood into something like a flamethrower! :>");
-        }
         public override void SetDefaults()
         {
+            Item.DefaultToArtifact();
             Item.damage = 13;
             Item.mana = 50;
             Item.width = 40;
@@ -47,21 +34,16 @@ namespace Stellamod.Items.Weapons.Mage
             Item.value = Item.sellPrice(silver: 10);
             Item.rare = ItemRarityID.Blue;
 
-
             Item.shoot = ModContent.ProjectileType<GildedStaffHold>();
             Item.shootSpeed = 8f;
             Item.channel = true;
             Item.autoReuse = false;
             Item.crit = 22;
         }
+
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
-        }
-        public override void AddRecipes()
-        {
-            base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankStaff>(), material: ModContent.ItemType<AlcadizScrap>());
         }
     }
 
@@ -213,7 +195,8 @@ namespace Stellamod.Items.Weapons.Mage
             {
                 if (Main.myPlayer == Projectile.owner)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity, ModContent.ProjectileType<GildedStaffBlast>(), (int)(Projectile.damage * ChargeProgress * 3f), Projectile.knockBack, Projectile.owner, ai1: ChargeProgress);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Projectile.velocity,
+                        ModContent.ProjectileType<GildedStaffBlast>(), (int)(Projectile.damage * ChargeProgress * 3f), Projectile.knockBack, Projectile.owner, ai1: ChargeProgress);
                 }
                 FXUtil.ShakeCamera(Projectile.position, 1024, 2);
 
@@ -236,78 +219,39 @@ namespace Stellamod.Items.Weapons.Mage
             float drawScale = 1f;
             SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(texture, drawPos + Projectile.velocity * 24, null, drawColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
-            spriteBatch.Restart(blendState: BlendState.Additive);
 
-            for (int i = 0; i < 6; i++)
-            {
-                spriteBatch.Draw(texture, drawPos + Projectile.velocity * 24, null, drawColor * ChargeProgress, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
-            }
+            Color glowColor = drawColor * ChargeProgress;
+            glowColor.A = 0;
+            spriteBatch.Draw(texture, drawPos + Projectile.velocity * 24, null, glowColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
             spriteBatch.RestartDefaults();
         }
 
-        private void DrawEnergyBall(ref Color lightColor)
+        private void DrawPixelatedEnergyBall(SpriteBatch sb, Vector2 sp)
         {
             //Draw Code for the orb
             Texture2D texture = ModContent.Request<Texture2D>(TextureRegistry.EmptyGlowParticle).Value;
-            Vector2 centerPos = Projectile.Center - Main.screenPosition;
-            GlowCircleShader shader = GlowCircleShader.Instance;
-
-            //How quickly it lerps between the colors
-            shader.Speed = 10f;
-
-            //This effects the distribution of colors
-            shader.BasePower = 2.5f;
-
-            //Radius of the circle
-            shader.Size = MathHelper.Lerp(0f, 0.06f, Easing.OutCubic(ChargeProgress));
-
-
-            //Colors
-            Color startInner = Color.White;
-            Color startGlow = Color.Lerp(Color.LightGoldenrodYellow, Color.LightBlue, VectorHelper.Osc(0f, 1f, speed: 32));
-            Color startOuterGlow = Color.Lerp(Color.Black, Color.Black, VectorHelper.Osc(0f, 1f, speed: 64));
-
-            shader.InnerColor = startInner;
-            shader.GlowColor = startGlow;
-            shader.OuterGlowColor = startOuterGlow;
-
-            //Idk i just included this to see how it would look
-            //Don't go above 0.5;
-            shader.Pixelation = 0.005f;
-
-            //This affects the outer fade
-            shader.OuterPower = 3.5f;
-            shader.Apply();
-
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
-            for (int i = 0; i < 2; i++)
-            {
-                spriteBatch.Draw(texture, centerPos + Projectile.velocity * 64, null, Color.White, Projectile.rotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
-            }
-
-            spriteBatch.RestartDefaults();
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            Color glowColor = Color.White;
-            glowColor.A = 0;
-            glowColor *= Timer / 30f;
-            for (int i = 0; i < 2; i++)
-            {
-                Main.spriteBatch.Draw(texture2D4, centerPos + Projectile.velocity * 64, null, glowColor, Projectile.rotation, new Vector2(32, 32), 0.17f * (7 + 0.6f) * ChargeProgress * VectorHelper.Osc(0.75f, 1f, speed: 3), SpriteEffects.None, 0f);
-            }
+            Vector2 centerPos = Projectile.Center;
+            Vector2 ballDrawPosition = centerPos + Projectile.velocity * 64;
+            SpritebatchDrawer glowballDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ballDrawPosition);
+            glowballDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.InOutSine(Timer / 30f));
+            glowballDrawer.scale *= 0.5f;
+            glowballDrawer.color.A = 0;
+            Main.spriteBatch.Draw(glowballDrawer);
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
             DrawStaff(ref lightColor);
             if (State == AIState.Charge)
-                DrawEnergyBall(ref lightColor);
+            {
+                PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedEnergyBall);
+            }
             return false;
         }
     }
 
-    public class GildedStaffBlast : ModProjectile
+    public class GildedStaffBlast : ModProjectile,
+        IDrawToRenderTarget
     {
         private ref float Timer => ref Projectile.ai[0];
         private ref float Charge => ref Projectile.ai[1];
@@ -370,80 +314,17 @@ namespace Stellamod.Items.Weapons.Mage
             Projectile.velocity *= 1.01f;
         }
 
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * MathHelper.Lerp(1f, 3f, Charge);
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 0.7f;
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            Color drawColor = Color.White;
-            drawColor.A = 0;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            for (int i = 0; i < 2; i++)
-                spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, drawColor, Projectile.rotation, new Vector2(32, 32), 1f + Charge, SpriteEffects.None, 0f);
-
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            DrawEnergyBall(ref lightColor);
-            return false;
-        }
-
-        private void DrawEnergyBall(ref Color lightColor)
+        private void DrawPixelatedEnergyBall(SpriteBatch sb, Vector2 sp)
         {
             //Draw Code for the orb
             Texture2D texture = ModContent.Request<Texture2D>(TextureRegistry.EmptyGlowParticle).Value;
-            Vector2 centerPos = Projectile.Center - Main.screenPosition;
-            GlowCircleShader shader = GlowCircleShader.Instance;
-
-            //How quickly it lerps between the colors
-            shader.Speed = 10f;
-
-            //This effects the distribution of colors
-            shader.BasePower = 2.5f;
-
-            //Radius of the circle
-            shader.Size = MathHelper.Lerp(0f, 0.09f, Charge);
-
-
-            //Colors
-            Color startInner = Color.White;
-            Color startGlow = Color.Lerp(Color.White, Color.LightBlue, VectorHelper.Osc(0f, 1f, speed: 3f));
-            Color startOuterGlow = Color.Lerp(Color.LightGoldenrodYellow, Color.Blue, VectorHelper.Osc(0f, 1f, speed: 3f));
-
-            shader.InnerColor = startInner;
-            shader.GlowColor = startGlow;
-            shader.OuterGlowColor = startOuterGlow;
-
-            //Idk i just included this to see how it would look
-            //Don't go above 0.5;
-            shader.Pixelation = 0.005f;
-
-            //This affects the outer fade
-            shader.OuterPower = 13.5f;
-            shader.Apply();
-
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Restart(blendState: BlendState.Additive, effect: shader.Effect);
-            for (int i = 0; i < 2; i++)
-            {
-                spriteBatch.Draw(texture, centerPos, null, Color.White, Projectile.rotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
-            }
-
-            spriteBatch.RestartDefaults();
+            Vector2 centerPos = Projectile.Center;
+            Vector2 ballDrawPosition = centerPos + Projectile.velocity * 64;
+            SpritebatchDrawer glowballDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, ballDrawPosition);
+            glowballDrawer.color = Color.Lerp(Color.Black, Color.White, Charge);
+            glowballDrawer.scale *= MathHelper.Lerp(0.2f, 0.5f, Charge);
+            glowballDrawer.color.A = 0;
+            Main.spriteBatch.Draw(glowballDrawer);
         }
 
         public override void OnKill(int timeLeft)
@@ -483,6 +364,45 @@ namespace Stellamod.Items.Weapons.Mage
                     baseSize: Main.rand.NextFloat(0.01f, 0.05f) * MathHelper.Lerp(1f, 2f, Charge));
                 particle.Rotation = rot + MathHelper.ToRadians(45);
             }
+        }
+        private void DrawPixelatedEnergyTrail(GraphicsDevice gDevice)
+        {
+            var shader2 = RichLaserShader.Instance;
+            shader2.LaserColor = Color.White;
+            shader2.LaserTexture = TrailRegistry.StarTrail;
+            shader2.InnerColor = Color.LightGray * 0.5f;
+            shader2.OuterColor = Color.DarkGray;
+            TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction, shader2, Projectile.Size * 0.5f);
+
+            var bloom = BloomTrailShader.Instance;
+            bloom.InnerColor = Color.LightGray * 0.5f;
+            bloom.OuterColor = Color.DarkGray;
+            TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, ColorFunction, WidthFunction2, bloom, Projectile.Size * 0.5f);
+        }
+
+        private Color ColorFunction(float completionRatio)
+        {
+            Color inColor = Color.White;
+            Color trailColor = Color.Lerp(Color.SpringGreen, Color.DarkBlue, completionRatio);
+            Color easeColor = Color.Lerp(inColor, trailColor, EasingFunction.InExpo(Timer / 60f));
+            return easeColor;
+        }
+
+        private float WidthFunction(float completionRatio)
+        {
+            return MathHelper.SmoothStep(10, 2, completionRatio);
+        }
+
+        private float WidthFunction2(float completionRatio)
+        {
+            return WidthFunction(completionRatio) * 2f;
+        }
+
+
+        public void DrawToRenderTargets()
+        {
+            PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedEnergyTrail);
+            PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedEnergyBall);
         }
     }
 }
