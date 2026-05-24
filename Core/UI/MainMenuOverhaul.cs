@@ -317,10 +317,6 @@ public class MainMenuOverhaul : ModSystem
         On_Main.UpdateMenu += UpdateParticleSystem;
         On_AWorldListItem.GetIcon += InitializeIconElement;
         On_UIImage.DrawSelf += ReplaceImages;
-
- //     UICharacterSelect
-
-        //   AWorldListItem
     }
 
     private void ReplaceImages(On_UIImage.orig_DrawSelf orig, UIImage self, SpriteBatch spriteBatch)
@@ -406,7 +402,6 @@ public class MainMenuOverhaul : ModSystem
             Main.QueueMainThreadAction(ResizeRTs);
             _oldScreenSize = Main.ScreenSize;
         }
-
 
         // throw new NotImplementedException();
         orig(self, spriteBatch, layer, beginSpriteBatch);

@@ -46,3 +46,64 @@ Tips: {
 	T44: Stamina is very very important, make sure you don't overspend all the time and run out of dodges!
 	T45: She lunar on my veil until I 2.0
 }
+
+ClassSelect: Class Select
+
+Melee: {
+	DisplayName: Raging Melee
+	Tooltip: Be up close and personal with your bosses and enemies! Use a variety of close range weapons including greatswords, swords, and spears, etc.
+	Stats:
+		'''
+		- You have a [c/FFA500:shield that blocks enemies], keeping them at bay.
+
+		- You take [c/FFA500:35% less contact damage] from enemies
+
+		- You have [c/FFA500:+1 stamina and 30% increased dash distance and rolling speed]. 
+
+		- [c/cd5555:Enemies would like to attack you more...]
+		'''
+}
+
+Ranger: {
+	DisplayName: Far Ranger
+	Tooltip: Use bows, guns, powders, and machines to shoot your enemies from afar! Ranger offers a large selection of items to stay back and have infinite fun.  Great at being stealthy.
+	Stats:
+		'''
+		- You have an ammo box that has [c/FFA500:endless customizable ammo.]
+
+		- [c/55cd80:Enemies are less likely to target you.]
+
+		- [c/cd5555:-50 max life]
+
+		'''
+}
+
+Mage: {
+	DisplayName: Experienced Mage
+	Tooltip: Use wands, tomes, artifacts, enchantments, and elements to create magical ways of beating your enemies, create your own magic spells through wands and stray out to do tremendous amounts of damage.
+	Stats:
+		'''
+		- Start with all [c/FFA500:mana crystals]
+
+		- [c/FFA500:+60 max mana]
+		'''
+}
+
+Summoner: {
+	DisplayName: Runic Summoner
+	Tooltip: Use summon in a new way through a bell to make your army come to life, these new summons have improved ai and can be attacked, and take charge and defend you. You get better dodging options, as well as using Runes, Chakrams, and Necronomicons to empower your friends and attack your foes to keep them alive.
+	Stats:
+		'''
+		[c/FFA500:+1 summon]
+
+		[c/FFA500:+1 stamina]
+
+		[c/FFA500:+1 insource slots]
+		'''
+}
+
+Omni: {
+	DisplayName: Omni
+	Tooltip: Can use any weapon at an OK level. You have no special buffs or bonuses that you get from specializing.
+	Stats: "[c/cd5555:You have 30% less damage on all weapons.]"
+}

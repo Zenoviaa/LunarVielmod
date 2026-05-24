@@ -11243,3 +11243,8 @@ MoonFlight: {
 		Also, your wings radiate just like Verlia's!
 		'''
 }
+
+DogBone: {
+	DisplayName: Dog Bone
+	Tooltip: ""
+}

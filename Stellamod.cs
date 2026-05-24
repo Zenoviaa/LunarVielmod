@@ -1,7 +1,8 @@
 ﻿global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Stellamod.Backgrounds;
+using ReLogic.Content.Sources;
+using Stellamod.Assets.Videos;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas;
 using Stellamod.Content.Areas.Terror;
@@ -23,10 +24,7 @@ using Terraria.GameContent.UI.States;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
-using Terraria.IO;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Default;
-using Terraria.UI;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Stellamod
@@ -238,7 +236,7 @@ namespace Stellamod
                 TextureAssets.ScrollRightButton = ModContent.Request<Texture2D>("Stellamod/Assets/Textures/UI/ForwardButton");
             }
             On_UICharacterSelect.OnInitialize += ChangeColor;
-           // On_Main.UpdateMenu += EditCharacterSelectColor;
+            // On_Main.UpdateMenu += EditCharacterSelectColor;
             On_UIPanel.DrawPanel += SetPanelColors;
         }
 
@@ -356,6 +354,16 @@ namespace Stellamod
                 UnloadTile(TileID.SnowCloud);
             }
         }
+        public override IContentSource CreateDefaultContentSource()
+        {
+            if (!Main.dedServ)
+            {
+                AddContent(new VideoReader());
+            }
+
+            return base.CreateDefaultContentSource();
+        }
+        //   override co
     }
 
     public class Stellamenu : ModMenu
@@ -369,7 +377,7 @@ namespace Stellamod
         {
             SoundEngine.PlaySound(SoundID.Tink);
         }
-    
+
         public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor)
         {
             Texture2D logo = MenuLoader.CurrentMenu.Logo.Value;

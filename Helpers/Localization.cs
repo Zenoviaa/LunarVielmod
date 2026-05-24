@@ -37,6 +37,10 @@ namespace Stellamod.Helpers
                 return maxPossibleTipCount;
             }
         }
+        public static string LoadingScreen(string category, string key)
+        {
+            return Language.GetTextValue($"Mods.Stellamod.LoadingScreen.{category}.{key}");
+        }
         public static string Tip(int helpNumber)
         {
             return Language.GetTextValue($"Mods.Stellamod.LoadingScreen.Tips.T{helpNumber}");

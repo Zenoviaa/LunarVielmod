@@ -91,21 +91,22 @@ namespace Stellamod.Common.SummonerSystem.UI
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             Player player = Main.player[Main.myPlayer];
-            var flaskPlayer = player.GetModPlayer<BellPlayer>();
-            //Check that this item is equipped
+            if(player.TryGetModPlayer<BellPlayer>(out var flaskPlayer))
+            {
 
-            //Check that you have advanced brooches since these don't work without
-            if (flaskPlayer.CanUseFlask())
-            {
-                //Give backglow to show that the effect is active
-                DrawHelper.DrawAdvancedBroochGlow(Item, spriteBatch, position, new Color(198, 200, 124));
-            }
-            else
-            {
-                float sizeLimit = 28;
-                //Draw the item icon but gray and transparent to show that the effect is not active
-                Main.DrawItemIcon(spriteBatch, Item, position, Color.Gray * 0.8f, sizeLimit);
-                return false;
+                //Check that you have advanced brooches since these don't work without
+                if (flaskPlayer.CanUseFlask())
+                {
+                    //Give backglow to show that the effect is active
+                    DrawHelper.DrawAdvancedBroochGlow(Item, spriteBatch, position, new Color(198, 200, 124));
+                }
+                else
+                {
+                    float sizeLimit = 28;
+                    //Draw the item icon but gray and transparent to show that the effect is not active
+                    Main.DrawItemIcon(spriteBatch, Item, position, Color.Gray * 0.8f, sizeLimit);
+                    return false;
+                }
             }
 
             return true;

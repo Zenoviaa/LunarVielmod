@@ -27,27 +27,81 @@ public static class UIHelpers
         }
         return height;
     }
-
-    public static void DrawTooltips(SpriteBatch spriteBatch, List<TooltipLine> lines, Vector2 position, int width, float alpha)
+    public static float CalculateTooltipsHeight(List<TooltipLine> lines, int width)
     {
         float height = 0;
         List<DrawableTooltipLine> list2 = lines.Select((TooltipLine x, int index) => new DrawableTooltipLine(x, index, 0, 0, Color.White)).ToList();
         for (int num19 = 0; num19 < list2.Count; num19++)
         {
-            height += FontAssets.MouseText.Value.MeasureString(list2[num19].Text).Y;
+
+
+            float textWidth = FontAssets.MouseText.Value.MeasureString(list2[num19].Text).X;
+            if (textWidth > width)
+            {
+                while (textWidth > width)
+                {
+                    textWidth -= width;
+
+                    height += FontAssets.MouseText.Value.MeasureString(list2[num19].Text).Y;
+                }
+            }
+            else
+            {
+                height += FontAssets.MouseText.Value.MeasureString(list2[num19].Text).Y;
+            }
+
+        }
+        return height;
+    }
+
+    public static void DrawTooltips(SpriteBatch spriteBatch, List<TooltipLine> lines, Vector2 position, int width, float alpha, float yOffset = 42, float extraHeight = 32)
+    {
+      
+        float height = 0;
+        List<DrawableTooltipLine> list2 = lines.Select((TooltipLine x, int index) => new DrawableTooltipLine(x, index, 0, 0, Color.White)).ToList();
+        for (int num19 = 0; num19 < list2.Count; num19++)
+        {
+       
+
+            float textWidth = FontAssets.MouseText.Value.MeasureString(list2[num19].Text).X;
+            if(textWidth > width)
+            {
+                while (textWidth > width)
+                {
+                    textWidth -= width;
+
+                    height += FontAssets.MouseText.Value.MeasureString(list2[num19].Text).Y;
+                }
+            } else
+            {
+                height += FontAssets.MouseText.Value.MeasureString(list2[num19].Text).Y;
+            }
+
         }
 
-        Rectangle backgroundRect = ExpandableTooltip.GetBGRectangle((int)position.X, (int)position.Y, width, (int)(height + 32));
+        Rectangle backgroundRect = ExpandableTooltip.GetBGRectangle((int)position.X, (int)position.Y, width, (int)(height + extraHeight));
         Utils.DrawInvBG(spriteBatch, backgroundRect, new Color(23, 25, 81, 255) * 0.925f);
-
-        float yOffset = 42;
         for (int num19 = 0; num19 < list2.Count; num19++)
         {
             float x = position.X;
             float y = position.Y + yOffset;
             Color color = list2[num19].OverrideColor != null ? list2[num19].OverrideColor.Value : list2[num19].Color;
             color *= alpha;
-            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, list2[num19].Font, list2[num19].Text, new Vector2(x, y), color, list2[num19].Rotation, list2[num19].Origin, list2[num19].BaseScale, list2[num19].MaxWidth, list2[num19].Spread);
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, list2[num19].Font, list2[num19].Text, new Vector2(x, y), color, list2[num19].Rotation, list2[num19].Origin, list2[num19].BaseScale, width, list2[num19].Spread);
+            yOffset += FontAssets.MouseText.Value.MeasureString(list2[num19].Text).Y;
+        }
+    }
+    public static void DrawTooltipsNoBG(SpriteBatch spriteBatch, List<TooltipLine> lines, Vector2 position, int width, float alpha)
+    {
+        List<DrawableTooltipLine> list2 = lines.Select((TooltipLine x, int index) => new DrawableTooltipLine(x, index, 0, 0, Color.White)).ToList();
+        float yOffset = 0;
+        for (int num19 = 0; num19 < list2.Count; num19++)
+        {
+            float x = position.X;
+            float y = position.Y + yOffset;
+            Color color = list2[num19].OverrideColor != null ? list2[num19].OverrideColor.Value : list2[num19].Color;
+            color *= alpha;
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, list2[num19].Font, list2[num19].Text, new Vector2(x, y), color, list2[num19].Rotation, list2[num19].Origin, list2[num19].BaseScale, width, list2[num19].Spread);
             yOffset += FontAssets.MouseText.Value.MeasureString(list2[num19].Text).Y;
         }
     }
