@@ -11,7 +11,7 @@ public class LunarBackgroundShader : CrystalShader<LunarBackgroundShader>
     {
         set
         {
-            _timeParam ??= Effect.Parameters["time"];
+            _timeParam = Effect.Parameters["time"];
             _timeParam.SetValue(value);
         }
     }
@@ -19,7 +19,7 @@ public class LunarBackgroundShader : CrystalShader<LunarBackgroundShader>
     {
         set
         {
-            _dustTextureParam ??= Effect.Parameters["dustTexture"];
+            _dustTextureParam = Effect.Parameters["dustTexture"];
             _dustTextureParam.SetValue(value);
         }
     }
@@ -27,7 +27,7 @@ public class LunarBackgroundShader : CrystalShader<LunarBackgroundShader>
     {
         set
         {
-            _parallaxParam ??= Effect.Parameters["parallax"];
+            _parallaxParam = Effect.Parameters["parallax"];
             _parallaxParam.SetValue(value);
         }
     }
@@ -36,7 +36,7 @@ public class LunarBackgroundShader : CrystalShader<LunarBackgroundShader>
     {
         set
         {
-            _fadeToColorParam ??= Effect.Parameters["fadeToColor"];
+            _fadeToColorParam = Effect.Parameters["fadeToColor"];
             _fadeToColorParam.SetValue(value.ToVector4());
         }
     }

@@ -43,7 +43,7 @@ float4 SampleParallaxing(sampler textureSampler, float2 coords, float2 parallax,
     float2 normalCoords = float2(frac(offsetCoords.x), frac(offsetCoords.y));
     float4 backgroundColor = tex2D(textureSampler, normalCoords);
     
-    float yDepth = coords.y * depth * fadeToColor.a;
+    float yDepth = offsetCoords.y * depth * fadeToColor.a * 0.8;
    
     normalCoords.x += time;
     normalCoords.x = frac(normalCoords.x);
