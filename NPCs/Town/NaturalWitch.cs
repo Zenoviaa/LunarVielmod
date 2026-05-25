@@ -110,16 +110,6 @@ namespace Stellamod.NPCs.Town
 
                     break;
 
-                case ActionState.Call:
-                    NPC.damage = 0;
-                    counter++;
-                    NPC.aiStyle = 3;
-                    AIType = NPCID.SnowFlinx;
-                    NPC.velocity.X *= 0;
-                    Call();
-                    break;
-
-
                 case ActionState.Wait:
                     NPC.damage = 0;
                     counter++;
@@ -421,25 +411,7 @@ namespace Stellamod.NPCs.Town
 
 
         }
-        public void Call()
-        {
-            timer++;
-
-            Player player = Main.player[NPC.target];
-
-
-            player.AddBuff(ModContent.BuffType<GintzeSeen>(), 720, false);
-            if (Main.player[NPC.target].Distance(NPC.Center) > 150f)
-            {
-                timer++;
-                if (timer >= 30)
-                {
-                    State = ActionState.Pace;
-                    ResetTimers();
-                }
-            }
-
-        }
+       
         public void ResetTimers()
         {
             timer = 0;

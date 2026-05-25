@@ -355,20 +355,6 @@ namespace Stellamod
      
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)/* tModPorter Override ImmuneTo, FreeDodge or ConsumableDodge instead to prevent taking damage */
         {
-            if (WindRune && !Player.HasBuff(ModContent.BuffType<GintzelSheildCD>()) && !Player.HasBuff(ModContent.BuffType<GintzelSheild>()))
-            {
-
-                if (Main.rand.NextBool(3))
-                {
-                    var EntitySource = Player.GetSource_FromThis();
-                    Projectile.NewProjectile(EntitySource, Player.Center.X, Player.Center.Y, 0, 0, ModContent.ProjectileType<WindeffectGintzl>(), Player.HeldItem.damage * 2, 1, Player.whoAmI, 0, 0);
-                    SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Verispin"), Player.position);
-                    Player.AddBuff(ModContent.BuffType<GintzelSheild>(), 800);
-                    WindRuneOn = true;
-
-                }
-            }
-
             if (StealthRune && StealthTime >= 1800)
             {
                 SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/StealthRune"), Player.position);
@@ -727,19 +713,6 @@ namespace Stellamod
             }
 
 
-
-            //player.extraAccessorySlots = extraAccSlots; dont actually use, it'll fuck things up
-            if (WindRuneOn && !Player.HasBuff(ModContent.BuffType<GintzelSheild>()))
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Player.position);
-                WindRuneOn = false;
-                player.AddBuff(ModContent.BuffType<GintzelSheildCD>(), 900);
-            }
-            if (!WindRune && Player.HasBuff(ModContent.BuffType<GintzelSheild>()))
-            {
-                SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/SwordSlice"), Player.position);
-                player.ClearBuff(ModContent.BuffType<GintzelSheild>());
-            }
             if (GHE)
             {
                 if (GHETarget.active)
