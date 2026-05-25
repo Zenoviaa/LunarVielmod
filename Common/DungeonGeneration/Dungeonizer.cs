@@ -354,6 +354,26 @@ namespace Stellamod.Common.DungeonGeneration
     }
     public static class Dungeonizer
     {
+        public static Rectangle GetDungeonBounds(Room[] map)
+        {
+            Point topLeft = Point.Zero;
+            Point bottomRight = Point.Zero;
+            for (int r = 0; r < map.Length; r++)
+            {
+                Room room = map[r];
+                if (topLeft.X > room.bounds.Left)
+                    topLeft.X = room.bounds.Left;
+                if (topLeft.Y > room.bounds.Top)
+                    topLeft.Y = room.bounds.Top;
+
+                if (bottomRight.X < room.bounds.Right)
+                    bottomRight.X = room.bounds.Right;
+                if (bottomRight.Y < room.bounds.Bottom)
+                    bottomRight.Y = room.bounds.Bottom;
+            }
+            Rectangle rectangle = new Rectangle(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y);
+            return rectangle;
+        }
         private static Door GetInverseDoor(Door doorToInverse)
         {
             switch (doorToInverse)

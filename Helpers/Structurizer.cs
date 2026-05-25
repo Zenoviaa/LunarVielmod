@@ -57,6 +57,13 @@ namespace Stellamod.Helpers
             return rectangle;
         }
 
+        public static bool CanPlaceStructureHere(Rectangle structureRectangle, StructureMap structures = null)
+        {
+            structures ??= GenVars.structures;
+            structures ??= new StructureMap();
+            return structures.CanPlace(structureRectangle);
+        }
+
         public static void ProtectStructure(Point location, string path, StructureMap structures = null)
         {
 

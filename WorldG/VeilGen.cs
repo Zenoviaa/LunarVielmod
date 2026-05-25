@@ -303,10 +303,11 @@ public static class DungeonLayouter
             //We now have all open spots next to this room
         }
         sw.Stop();
-        Main.NewText($"Layout Generation: Elapsed {sw.ElapsedMilliseconds}ms");
+      //  Main.NewText($"Layout Generation: Elapsed {sw.ElapsedMilliseconds}ms");
         return roomsOnMap;
     }
 }
+public record struct CellularAutomataParams(int Steps, float RandomFill, int BirthLimit, int DeathLimit);
 public class VeilGenTester : ModItem
 {
     public override void SetDefaults()
@@ -322,10 +323,22 @@ public class VeilGenTester : ModItem
     public override bool? UseItem(Player player)
     {
         // LayoutTest();
-        MineshaftTest();
+        CaveTest();
        // AegislavTest();
         return true;
     }
+    private static void CaveTest()
+    {
+        CellularAutomataParams @params = new CellularAutomataParams() with { Steps = 5, RandomFill = 55, BirthLimit = 4, DeathLimit = 4 };
+        bool[,] map = VeilGen.CellularAutomataMap(4000, 256, in @params, Main.rand);
+        int width = map.GetLength(0);
+        int height = map.GetLength(1);
+     
+
+
+        VeilGen.Erase(new Point(100, 2500), map);
+    }
+
     private static void AegislavTest()
     {
         Point aegislavCastlePoint = Main.MouseWorld.ToTileCoordinates() + new Point(0, -100);
@@ -356,95 +369,92 @@ public class VeilGenTester : ModItem
     {
         Vector2 mouseWorld = Main.MouseWorld;
         Point startTile = mouseWorld.ToTileCoordinates();
+        var genRand = new UnifiedRandom();
+        FastNoiseLite fnl = new FastNoiseLite();
+        fnl.SetSeed(genRand.Next(0, int.MaxValue));
+        fnl.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        fnl.SetFrequency(0.15f);
+        fnl.SetDomainWarpAmp(10);
+        fnl.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
+        int yMid = startTile.Y;
 
-
-        (int, int)[] layout = DungeonLayouter.GenerateLayout(16, Main.rand);
-
-        Point[] vertices = new Point[layout.Length];
-        for (int v = 0; v < vertices.Length; v++)
+        int minCaveDistance = 35;
+        int maxCaveDistance = 72;
+        (int, int)[] heights = new (int, int)[Main.maxTilesX];
+        for (int x = 0; x < Main.maxTilesX; x++)
         {
-            vertices[v] = new Point(layout[v].Item1, layout[v].Item2);
+            float SampleNoise(int x, int y)
+            {
+                return fnl.GetNoise(x * 0.05f, y * 0.05f) * 0.5f + 0.5f;
+            }
+
+            //These are honestly just random offsets so the cave doesn't look the same on both sides
+            float topNoise = SampleNoise(x, yMid - 4);
+            float bottomNoise = SampleNoise(x + 2, yMid + 3);
+
+            //Cave middle up
+            int topDistance = (int)MathHelper.Lerp(minCaveDistance, maxCaveDistance, topNoise) + genRand.Next(-1, 1);
+            for (int y = 0; y < topDistance; y++)
+            {
+                Tile tile = Main.tile[x, yMid - y];
+                tile.ClearTile();
+            }
+
+            //Cave middle down
+            int bottomDistance = (int)MathHelper.Lerp(minCaveDistance, maxCaveDistance, bottomNoise) + genRand.Next(-1, 1);
+            for (int y = 0; y < bottomDistance; y++)
+            {
+                Tile tile = Main.tile[x, yMid + y];
+                tile.ClearTile();
+            }
+            heights[x] = (topDistance, bottomDistance);
         }
-        DungeonGenerationHelper.vertices = vertices;
 
-        Room[] prefabs = DungeonSaveUtility.GetDungeonPrefabs("Mineshafts");
-        DungeonChart simpleChart = DungeonChart.FromMap(layout);
-
-
-        Room[] map = Dungeonizer.CreateDungeonFromChart(prefabs, simpleChart, Main.rand);
-        int[] tileBlend = new int[]
+        for(int x = 0; x < heights.Length; x++)
         {
-            TileID.RubyGemspark
-        };
+            if (!genRand.NextBool(4))
+                continue;
+            (int, int) height = heights[x];
+            int heightToUse = genRand.NextBool(2) ? -height.Item1 : height.Item2;
+            Point walkerPoint = new Point(x, yMid + heightToUse);
+            Point originalPoint = walkerPoint;
+            int steps = genRand.Next(32, 128);
+            int maxDist = 10;
+            for(int s = 0; s < steps; s++)
+            {
+                switch (genRand.Next(4))
+                {
+                    case 0:
+                        walkerPoint.X--;
+                        break;
+                    case 1:
+                        walkerPoint.X++;
+                        break;
+                    case 2:
+                        walkerPoint.Y++;
+                        break;
+                    case 3:
+                        walkerPoint.Y--;
+                        break;
+                }
+                walkerPoint = TileUtilities.Clamp(walkerPoint);
+                Tile tile = Main.tile[walkerPoint];
+                tile.ClearTile();
+                tile.HasTile = true;
+                tile.TileFrameX = -1;
+                tile.TileFrameY = -1;
+                tile.TileType = TileID.Granite;
 
-
-        Point topLeft = Point.Zero;
-        Point bottomRight = Point.Zero;
-        for (int r = 0; r < map.Length; r++)
-        {
-            Room room = map[r];
-            if (topLeft.X > room.bounds.Left)
-                topLeft.X = room.bounds.Left;
-            if (topLeft.Y > room.bounds.Top)
-                topLeft.Y = room.bounds.Top;
-
-            if (bottomRight.X < room.bounds.Right)
-                bottomRight.X = room.bounds.Right;
-            if (bottomRight.Y < room.bounds.Bottom)
-                bottomRight.Y = room.bounds.Bottom;
+                //Reset if walking too far
+                int dx = Math.Abs(walkerPoint.X - originalPoint.X);
+                int dy = Math.Abs(walkerPoint.Y - originalPoint.Y);
+                if(dx > maxDist || dy > maxDist)
+                {
+                    walkerPoint = originalPoint;
+                }
+            }
         }
-        Rectangle rectangle = new Rectangle(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y);
 
-        Point point = startTile;
-        Point vectorToOrigin = (point - rectangle.Top().ToPoint());
-        rectangle.Location += vectorToOrigin;
-
-        //Just a failsafe
-        while (rectangle.Right().X >= Main.maxTilesX)
-            rectangle.Location -= new Point(32, 0);
-
-        int width = rectangle.Width;
-        width -= 150;
-        int height = rectangle.Height;
-
-        /*
-
-        //So we're just gonna start from index 1 to skip it
-        for (int r = 1; r < map.Length; r++)
-        {
-            Room room = map[r];
-            int padding = 10;
-            Rectangle roomRectangle = Structurizer.ReadRectangle(room.prefab);
-            int outlineWidth = roomRectangle.Width + padding;
-            int outlineHeight = roomRectangle.Height + padding;
-
-            //This hsould give us an outline of bricks, I think
-            Point topLeftRoom = room.bounds.TopLeft().ToPoint() + new Point(-padding / 2, -padding / 2);
-            Point offset = rectangle.Top().ToPoint();
-            offset.Y -= outlineHeight;
-            topLeftRoom += offset;
-            WorldUtils.Gen(topLeftRoom, new Shapes.Rectangle(outlineWidth, outlineHeight),
-               Actions.Chain(
-                    new Actions.ClearWall(),
-                    new Actions.SetTile((ushort)ModContent.TileType<MothlightBrick>()))
-               );
-        }
-        */
-        for (int r = 0; r < map.Length; r++)
-        {
-            Room room = map[r];
-            Point bottomLeft = room.bounds.BottomLeft().ToPoint();
-            Point offset = rectangle.Top().ToPoint();
-
-            int tileX = offset.X;
-            int tileY = offset.Y;
-
-            bottomLeft.X += tileX;
-            bottomLeft.Y += tileY;
-            bottomLeft.Y -= map[0].bounds.Height;
-            Structurizer.ReadStruct(bottomLeft, room.prefab, tileBlend);
-            Structurizer.ProtectStructure(bottomLeft, room.prefab);
-        }
     }
     private static void MistyDungeonTest()
     {
@@ -1440,6 +1450,267 @@ public static class VeilGen
 {
     public static Vector2 TileAdj => (Lighting.Mode == Terraria.Graphics.Light.LightMode.Retro || Lighting.Mode == Terraria.Graphics.Light.LightMode.Trippy) ? Vector2.Zero : Vector2.One * 12;
 
+    public static readonly Room[] MineshaftPrefabs = DungeonSaveUtility.GetDungeonPrefabs("Mineshafts");
+
+    public static void Walker(int x, int y, int steps, int tileType, int maxDist)
+    {
+        Point walkerPoint = new Point(x,y);
+        Point originalPoint = walkerPoint;
+        var genRand = WorldGen.genRand;
+        for (int s = 0; s < steps; s++)
+        {
+            switch (genRand.Next(4))
+            {
+                case 0:
+                    walkerPoint.X--;
+                    break;
+                case 1:
+                    walkerPoint.X++;
+                    break;
+                case 2:
+                    walkerPoint.Y++;
+                    break;
+                case 3:
+                    walkerPoint.Y--;
+                    break;
+            }
+            walkerPoint = TileUtilities.Clamp(walkerPoint);
+            Tile tile = Main.tile[walkerPoint];
+            tile.ClearTile();
+            tile.HasTile = true;
+            tile.TileFrameX = -1;
+            tile.TileFrameY = -1;
+            tile.TileType = (ushort)tileType;
+
+            //Reset if walking too far
+            int dx = Math.Abs(walkerPoint.X - originalPoint.X);
+            int dy = Math.Abs(walkerPoint.Y - originalPoint.Y);
+            if (dx > maxDist || dy > maxDist)
+            {
+                walkerPoint = originalPoint;
+            }
+        }
+
+    }
+
+
+    public static bool IsTileNearby(int x, int y, int distance, bool[] tileSet)
+    {
+        int left = x - distance;
+        int top = y - distance;
+        Rectangle rect = new Rectangle(left, top, distance * 2, distance * 2);
+        rect = TileUtilities.Clamp(rect);
+        for(int i = rect.Left; i < rect.Right; i++)
+        {
+            for(int j = rect.Top; j < rect.Bottom; j++)
+            {
+                Tile tile = Main.tile[i, j];
+                if (!tile.HasTile)
+                    continue;
+                if (tileSet[tile.TileType])
+                    return true;
+            }
+        }
+
+
+        return false;
+    }
+
+    public static int CountAliveNeighbours(int x, int y, bool[,] map)
+    {
+        int width = map.GetLength(0);
+        int height = map.GetLength(1);
+        int count = 0;
+        for (int i = -1; i < 2; i++)
+        {
+            for (int j = -1; j < 2; j++)
+            {
+                if (i == 0 && j == 0)
+                    continue;
+
+                int dx = x + i;
+                int dy = y + j;
+                if(dx < 0 || dy < 0 || dx >= width || dy >= height)
+                {
+                    count++;
+                } else if (map[dx, dy])
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+    public static bool[,] Step(bool[,] oldMap, in CellularAutomataParams @params)
+    {
+        int width = oldMap.GetLength(0);
+        int height = oldMap.GetLength(1);
+        bool[,] newMap = new bool[width, height];
+        for(int x = 0; x < width; x++)
+        {
+            for(int y =0;y < height; y++)
+            {
+                int neighbours = CountAliveNeighbours(x, y, oldMap);
+                if(neighbours > @params.BirthLimit)
+                {
+                    newMap[x, y] = true;
+                } else if (neighbours <= @params.DeathLimit)
+                {
+                    newMap[x, y] = false;
+
+                } else
+                {
+                    newMap[x, y] = oldMap[x, y];
+                }
+            }
+        }
+        return newMap;
+    }
+
+    public static bool[,] CellularAutomataMap(int width, int height, in CellularAutomataParams @params, UnifiedRandom genRand)
+    {
+        bool[,] map = new bool[width, height];
+
+        //First initialize the map with random values
+        for(int x = 0; x < width; x++)
+        {
+            for(int y = 0; y < height; y++)
+            {
+                map[x, y] = genRand.Next(0, 100) < @params.RandomFill;
+            }
+        }
+
+        for(int s = 0; s < @params.Steps; s++)
+        {
+            map = Step(map, in @params);
+        }
+
+
+        //Remove tiles with only 1 neighbour
+        bool[,] lessLonelyMap = new bool[width, height];
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                int neighbourCount = 0;
+                for (int dx = -1; dx < 2; dx++)
+                {
+                    for (int dy = -1; dy < 2; dy++)
+                    {
+                        if (dx != 0 && dy != 0)
+                            continue;
+                        if (dx == 0 && dy == 0)
+                            continue;
+
+                        int newX = x + dx;
+                        int newY = y + dy;
+                        if (newX < 0 || newY < 0 || newX >= width || newY >= height)
+                            neighbourCount++;
+                        else if (map[newX, newY])
+                            neighbourCount++;
+                    }
+                }
+
+                if (neighbourCount <= 1)
+                {
+                    lessLonelyMap[x, y] = false;
+                }
+                else
+                {
+                    lessLonelyMap[x, y] = map[x, y];
+                }
+            }
+        }
+
+        return lessLonelyMap;
+    }
+
+    public static void Erase(Point topLeft, bool[,] map)
+    {
+        int width = map.GetLength(0);
+        int height = map.GetLength(1);
+        Rectangle rect = new Rectangle(topLeft.X, topLeft.Y, width, height);
+        rect = TileUtilities.Clamp(rect);
+        for(int x = rect.Left; x < rect.Right; x++)
+        {
+            for(int y = rect.Top; y < rect.Bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (!map[x - rect.Left, y - rect.Top])
+                {
+                    tile.ClearTile();
+                }
+        
+            }
+        }
+    }
+
+    public static bool PlaceMineshaft(int x, int y) => PlaceMineshaft(new Point(x, y));
+    public static (Rectangle rect, Room[] map) GenerateMineshaft(UnifiedRandom genRand)
+    {
+        (int, int)[] layout = DungeonLayouter.GenerateLayout(16, genRand);
+        Point[] vertices = new Point[layout.Length];
+        for (int v = 0; v < vertices.Length; v++)
+        {
+            vertices[v] = new Point(layout[v].Item1, layout[v].Item2);
+        }
+
+        DungeonChart simpleChart = DungeonChart.FromMap(layout);
+        Room[] map = Dungeonizer.CreateDungeonFromChart(MineshaftPrefabs, simpleChart, genRand);
+        Rectangle rectangle = Dungeonizer.GetDungeonBounds(map);
+        return (rectangle, map);
+    }
+
+    public static bool PlaceMineshaft(Point startTile, Rectangle rectangle, Room[] map)
+    {
+        if (Structurizer.CanPlaceStructureHere(rectangle))
+            return false;
+
+        Point point = startTile;
+        Point vectorToOrigin = (point - rectangle.Top().ToPoint());
+        rectangle.Location += vectorToOrigin;
+
+        //Just a failsafe
+        while (rectangle.Right().X >= Main.maxTilesX)
+            rectangle.Location -= new Point(32, 0);
+
+        int width = rectangle.Width;
+        width -= 150;
+        int height = rectangle.Height;
+
+        for (int r = 0; r < map.Length; r++)
+        {
+            Room room = map[r];
+            Point bottomLeft = room.bounds.BottomLeft().ToPoint();
+            Point offset = rectangle.Top().ToPoint();
+
+            int tileX = offset.X;
+            int tileY = offset.Y;
+
+            bottomLeft.X += tileX;
+            bottomLeft.Y += tileY;
+            bottomLeft.Y -= map[0].bounds.Height;
+
+            Structurizer.ReadStruct(bottomLeft, room.prefab, Structurizer.DefaultTileBlend);
+            Structurizer.ProtectStructure(bottomLeft, room.prefab);
+        }
+        return true;
+    }
+    public static bool PlaceMineshaft(Point startTile)
+    {
+        (int, int)[] layout = DungeonLayouter.GenerateLayout(16, Main.rand);
+        Point[] vertices = new Point[layout.Length];
+        for (int v = 0; v < vertices.Length; v++)
+        {
+            vertices[v] = new Point(layout[v].Item1, layout[v].Item2);
+        }
+  //      DungeonGenerationHelper
+       // DungeonGenerationHelper.vertices = vertices;
+        DungeonChart simpleChart = DungeonChart.FromMap(layout);
+        Room[] map = Dungeonizer.CreateDungeonFromChart(MineshaftPrefabs, simpleChart, Main.rand);
+        Rectangle rectangle = Dungeonizer.GetDungeonBounds(map);
+        return PlaceMineshaft(startTile, rectangle, map);
+    }
     public static float GetMarshHeight(float x)
     {
         float bump = x * (4 - x * 4);

@@ -113,6 +113,10 @@ public partial class StellaWorld : ModSystem
     public Point GothiviaSpawnOffset => new Point(246, -99);
     public Point BublbtrifierSpawnOffset => new Point(246, -99);
 
+    public int CindersparkStart { get; private set; }
+    public int CindersparkEnd { get; private set; }
+    public int DarkspaceStart { get; private set; }
+    public int DarkspaceEnd { get; private set; }
     private void DisableGenTask(List<GenPass> tasks, string passName)
     {
         tasks.Find(x => x.Name.Equals(passName)).Disable();
@@ -327,8 +331,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
         passWriter.NextPass(new PassLegacy("Cinderspark Caves", CindersparkCavesPass));
         passWriter.NextPass(new PassLegacy("Tree Caves", TreeCavesPass));
-        passWriter.NextPass(new PassLegacy("Cavernous Caves", CavernousCavesPass));
-
+        passWriter.NextPass(new PassLegacy("Deep Caves", DeepCavesPass));
 
         passWriter.SetInsertionIndex("Shimmer");
         passWriter.NextPass(new PassLegacy("Fake Shimmer", WorldGenShimmerSpot));
@@ -370,13 +373,13 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Icey Caverns", WorldGenIceCaverns));
         passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
         passWriter.NextPass(new PassLegacy("Ice Housing 3", SurfaceIceHouses));
+ 
 
         passWriter.SetInsertionIndex("Jungle");
         passWriter.NextPass(new MarshJungleMudPass());
         passWriter.NextPass(new PassLegacy("Jungle Surface Caves", WorldGenJungleSurfaceCaves));
-
         passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
-
+        passWriter.NextPass(new PassLegacy("Cavernous Caves", MineshaftsPass));
 
         //Set desert location
         passWriter.SetInsertionIndex("Full Desert");
@@ -1795,9 +1798,13 @@ public partial class StellaWorld : ModSystem
         progress.Message = "Creating a Dark Place.";
 
         var genRand = WorldGen.genRand;
-        int yMax = (Main.UnderworldLayer - (Main.maxTilesY / 6));
+        int yMax = CindersparkStart - 100;
+        if(CindersparkStart == 0)
+        {
+            throw new ArgumentException("The Cinderspark is at the top of the world for some reason.");
+        }
 
-        int yMin = yMax - 12;
+        int yMin = yMax - 250;
         int yMid = (yMin + yMax) / 2;
         int[] wallTypes = new int[]
         {
@@ -1806,94 +1813,117 @@ public partial class StellaWorld : ModSystem
             WallID.Granite
         };
 
+        DarkspaceStart = yMin;
+        DarkspaceEnd = yMax;
+        //Create a wavey blotch of granite
+        //Instead of using GenActions or PlaceTile we can just set the tile directly, fastest way to do it.
         for (int x = 0; x < Main.maxTilesX; x++)
         {
-            if (x % 24 == 0)
+            int dyMin = yMin + (int)MathF.Sin((float)x) * 8 + genRand.Next(-2, 2);
+            int dyMax = yMax + (int)MathF.Sin((float)x * 0.05f) * 8 + genRand.Next(-2, 2);
+            for (int y = dyMin; y < dyMax; y++)
             {
-                void PlaceGranite(int px, int py)
-                {
-                    Point point = new Point(px, py);
-                    int size = genRand.Next(60, 90);
-                    if (x > size && x < Main.maxTilesX - size)
-                    {
-                        WorldUtils.Gen(point, new Shapes.Circle(size, size), Actions.Chain(
-                            new GenAction[] {
-                            new Actions.SetTile(TileID.Granite)}));
-                    }
-
-                    WorldGen.OreRunner(point.X, point.Y,
-                        genRand.Next(50, 50),
-                        genRand.Next(50, 50), TileID.Granite);
-                }
-                PlaceGranite(x, yMin);
-                PlaceGranite(x, yMax);
+                Tile tile = Main.tile[x, y];
+                tile.ClearTile();
+                tile.HasTile = true;
+                tile.TileFrameX = -1;
+                tile.TileFrameY = -1;
+                tile.TileType = TileID.Granite;
             }
         }
+        progress.Set(0.33D);
 
-        //Generate Long Chasm
-        int caveX = 30;
-        int caveY = yMid;
-        Vector2 caveVelocity = Vector2.UnitX;
+        //Here's the algorithm we're going to try
+        //We'll initialize a fast noise lite
+        //We'll sample two points, each far from each other
+        //then slowly move right and using the noise we create the variation in the caves
+        FastNoiseLite topFNL = new FastNoiseLite();
+        topFNL.SetSeed(genRand.Next(0, int.MaxValue));
+        topFNL.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        topFNL.SetFrequency(0.15f);
+        topFNL.SetDomainWarpAmp(10);
+        topFNL.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
 
-        int caveWidth = 11;
-        Vector2 cavePosition = new Vector2(caveX, caveY);
-        Vector2 caveStrength = new Vector2(50, 70);
-        Vector2 pullVelocity = Vector2.Zero;
-        Vector2 startVelocity = Vector2.UnitX;
+        FastNoiseLite bottomFNL = new FastNoiseLite();
+        bottomFNL.SetSeed(genRand.Next(0, int.MaxValue));
+        bottomFNL.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        bottomFNL.SetFrequency(0.15f);
+        bottomFNL.SetDomainWarpAmp(10);
+        bottomFNL.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
 
-        int ignoreTile = ModContent.TileType<AbyssalDirt>();
-        for (int s = 0; s < 2000; s++)
+        int minCaveDistance = 35;
+        int maxCaveDistance = 72;
+        (int, int)[] heights = new (int, int)[Main.maxTilesX];
+        for (int x = 0; x < Main.maxTilesX; x++)
         {
-            float length = caveVelocity.Length();
-            Vector2 newVelocity = caveVelocity * length;
-            caveVelocity = newVelocity;
-
-            if (cavePosition.X < Main.maxTilesX - 35 && cavePosition.X >= 35)
+            float SampleNoise(int x, int y)
             {
-                WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
-                    genRand.NextFloat(caveStrength.X, caveStrength.Y),
-                    genRand.Next(7, 15), -1, ignoreTileType: ignoreTile);
-                WorldGen.TileRunner((int)cavePosition.X, (int)cavePosition.Y,
-                    genRand.NextFloat(caveStrength.X, caveStrength.Y),
-                    genRand.Next(7, 15), -1, ignoreTileType: ignoreTile);
-                if (genRand.NextBool(18))
-                {
-                    int x = (int)cavePosition.X;
-                    int y = (int)cavePosition.Y;
-                    Point point = new Point(x, y);
+                return topFNL.GetNoise(x * 0.05f, y * 0.05f) * 0.5f + 0.5f;
+            }
+            float SampleNoise2(int x, int y)
+            {
+                return bottomFNL.GetNoise(x * 0.05f, y * 0.05f) * 0.5f + 0.5f;
+            }
+            float topNoise = SampleNoise(x, yMid);
+            float bottomNoise = SampleNoise2(x, yMid);
 
-                    int size = genRand.Next(25, 35);
-                    WorldUtils.Gen(point + new Point(0, 35),
-                        new Shapes.Circle(size, size / 2), Actions.Chain(
-                        new Actions.ClearTile(),
-                        new Actions.ClearWall()));
-
-                    WorldUtils.Gen(point, new Shapes.Circle(size / 2, size / 2),
-                        new Actions.SetLiquid(LiquidID.Shimmer));
-
-                }
-
-                if (genRand.NextBool(10))
-                {
-                    int x = (int)cavePosition.X;
-                    int y = (int)cavePosition.Y;
-                    Point point = new Point(x, y);
-
-                    int size = genRand.Next(12, 25);
-                    WorldUtils.Gen(point + new Point(0, 35),
-                        new Shapes.Circle(size, size / 2), new Actions.ClearTile());
-
-                    WorldUtils.Gen(point, new Shapes.Circle(size / 2, size / 2),
-                        new Actions.SetLiquid(LiquidID.Shimmer));
-                }
+            //Cave middle up
+            int topDistance = (int)MathHelper.Lerp(minCaveDistance, maxCaveDistance, topNoise) + genRand.Next(-1, 1);
+            for (int y = 0; y < topDistance; y++)
+            {
+                Tile tile = Main.tile[x, yMid - y];
+                tile.ClearEverything();
             }
 
-
-
-            // Update the cave position.
-            cavePosition += caveVelocity * caveWidth * 0.5f;
+            //Cave middle down
+            int bottomDistance = (int)MathHelper.Lerp(minCaveDistance, maxCaveDistance, bottomNoise) + genRand.Next(-1, 1);
+            for (int y = 0; y < bottomDistance; y++)
+            {
+                Tile tile = Main.tile[x, yMid + y];
+                tile.ClearEverything();
+            }
+            heights[x] = (topDistance, bottomDistance);
         }
 
+        //Walker algorithm over the entire cave to place granite blotches and what not
+        for (int x = 0; x < heights.Length; x++)
+        {
+            if (!genRand.NextBool(4))
+                continue;
+            (int, int) height = heights[x];
+            int heightToUse = genRand.NextBool(2) ? -height.Item1 : height.Item2;
+            VeilGen.Walker(x, yMid + heightToUse, genRand.Next(32, 128), TileID.Granite, 10);
+        }
+
+        //Then we go back through the cave, and create blotches of shimmer water in random spots
+        //Again, not going to use gen actions here
+        //Just going to create squares of shimmer water since it gets settled in a later pass
+        int shimmerBlotchCount = 0;
+        for(int x = 0; x < Main.maxTilesX;x++)
+        {
+            //1 in X chance per tile to generate shimmer pool
+            if (!genRand.NextBool(128))
+                continue;
+
+            int shimmerBlotchSize = genRand.Next(8, 16);
+            Rectangle shimmerRect = new Rectangle(x - shimmerBlotchSize, yMid - shimmerBlotchSize, shimmerBlotchSize * 2, shimmerBlotchSize * 2);
+            shimmerRect = TileUtilities.Clamp(shimmerRect);
+            for(int tx = shimmerRect.Left; tx < shimmerRect.Right; tx++)
+            {
+                for(int ty = shimmerRect.Top; ty < shimmerRect.Bottom; ty++)
+                {
+                    Tile tile = Main.tile[tx, ty];
+                    tile.LiquidType = LiquidID.Shimmer;
+                    tile.LiquidAmount = 255;
+                }
+            }
+            shimmerBlotchCount++;
+        }
+
+        WriteLine($"{shimmerBlotchCount} Darkspace Shimmer Blotches Placed");
+        progress.Set(0.66D);
+
+        //Here we're placing walls and silk tiles, this is a bit slow, so maybe optimize it a bit later.
         for (int x = 0; x < Main.maxTilesX; x++)
         {
             for (int y = yMin - 100; y < yMax + 100; y++)
@@ -1948,6 +1978,9 @@ public partial class StellaWorld : ModSystem
                 }
             }
         }
+
+        progress.Set(1D);
+
 
     }
     #region Cave Formation
@@ -3024,20 +3057,56 @@ public partial class StellaWorld : ModSystem
 
     }
 
-    private void CavernousCavesPass(GenerationProgress progress, GameConfiguration configuration)
+    private void DeepCavesPass(GenerationProgress progress, GameConfiguration configuration)
     {
-        progress.Message = "The deep underground is calling...";
+        progress.Message = "Caves cut deep...";
+
+    }
+    private void MineshaftsPass(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Enriching the underground...";
         var genRand = WorldGen.genRand;
 
-        int numCaves = 120;
-        for (int n = 0; n < numCaves; n++)
+        //Alright so here's our algorithm
+        int padding = 250;
+        float placedShafts = 0;
+        float shaftCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000002f;
+        float maxAttemptCount = shaftCount * 10;
+
+        //Generate all mienshafts in advance, generating them late is much slower
+        //If you're going to do prepare rooms, have them all at the same time
+        Queue<(Rectangle mapBounds, Room[] map)> mineshaftQueue = new Queue<(Rectangle mapBounds, Room[] map)>();
+        for(int i = 0; i < shaftCount; i++)
         {
-            int caveOriginX = genRand.Next(15, Main.maxTilesX - 15);
-            int caveOriginY = genRand.Next((int)GenVars.rockLayerHigh, Main.UnderworldLayer);
-            GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab("CavernCave_1");
-            prefab.PasteErase(caveOriginX, caveOriginY, PrefabPlacementType.FromTopLeft);
+            mineshaftQueue.Enqueue(VeilGen.GenerateMineshaft(genRand));
         }
+
+        (Rectangle mapBounds, Room[] map) = mineshaftQueue.Dequeue();
+        for(float n = 0; n < maxAttemptCount; n++)
+        {
+            int x = genRand.Next(padding, Main.maxTilesX - padding);
+            int y = genRand.Next((int)GenVars.rockLayerHigh, DarkspaceStart);
+            if (VeilGen.IsTileNearby(x, y, distance: 50, TileSets.BlockMineshafts))
+                continue;
+
+            Tile tile = Main.tile[x, y];
+            if (Main.tileSolid[tile.TileType] && tile.HasTile && TileID.Sets.Stone[tile.TileType])
+            {
+                if (VeilGen.PlaceMineshaft(new Point(x, y), mapBounds, map))
+                {
+                    placedShafts++;
+                    if (placedShafts >= shaftCount)
+                        break;
+
+                    (mapBounds, map) = mineshaftQueue.Dequeue();
+                }
+            }
+
+            progress.Set((double)n / placedShafts);
+        }
+        WriteLine($"{placedShafts} Mineshafts Placed");
     }
+
 
     private void TreeCavesPass(GenerationProgress progress, GameConfiguration configuration)
     {
@@ -3714,15 +3783,22 @@ for (int beamX = structureRectangle.Location.X;
         progress.Message = "Searing the deepest caverns";
         ushort dirtTile = (ushort)ModContent.TileType<CindersparkDirt>();
         var genRand = WorldGen.genRand;
+
+        CindersparkStart = Main.maxTilesY - 10;
+        CindersparkEnd = 0;
         for (int x = 0; x < Main.maxTilesX; x++)
         {
             int yMax = (Main.UnderworldLayer - (Main.maxTilesY / 20));
-            int yMin = yMax - 50;
+            int yMin = yMax - 150;
+            
+            CindersparkStart = Math.Min(CindersparkStart, yMin);
+            CindersparkEnd = Math.Max(CindersparkEnd, yMax);
+
 
             float ratio = x / (float)Main.maxTilesX;
 
             float y = yMin;
-            y += MathF.Sin(ratio * 64) * 8;
+            y += MathF.Sin(ratio * 64) * 10;
             y += MathF.Sin(ratio * 64) * 4;
             int startY = (int)y;
             int endY = startY;
@@ -9908,6 +9984,10 @@ for (int beamX = structureRectangle.Location.X;
         tag["MarshLocation"] = MarshLocation;
         tag["FableHillLocation"] = FableHillStartLocation;
         tag["CoralwaysLocation"] = CoralwaysLocation;
+        tag["CindersparkStart"] = CindersparkStart;
+        tag["CindersparkEnd"] = CindersparkEnd;
+        tag["DarkspaceStart"] = DarkspaceStart;
+        tag["DarkspaceEnd"] = DarkspaceEnd;
     }
 
     public override void LoadWorldData(TagCompound tag)
@@ -9915,5 +9995,9 @@ for (int beamX = structureRectangle.Location.X;
         MarshLocation = tag.Get<Point>("MarshLocation");
         FableHillStartLocation = tag.Get<Point>("FableHillLocation");
         CoralwaysLocation = tag.Get<Point>("CoralwaysLocation");
+        CindersparkStart = tag.Get<int>("CindersparkStart");
+        CindersparkEnd = tag.Get<int>("CindersparkEnd");
+        DarkspaceStart = tag.Get<int>("DarkspaceStart");
+        DarkspaceEnd = tag.Get<int>("DarkspaceEnd");
     }
 }

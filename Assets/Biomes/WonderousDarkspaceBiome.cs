@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.Biomes;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Particles;
@@ -53,7 +54,24 @@ namespace Stellamod.Assets.Biomes
         }
 
     }
-  
+    public class WonderousDarkspcaeTileGlow : GlobalTile
+    {
+        public override void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
+        {
+            base.ModifyLight(i, j, type, ref r, ref g, ref b);
+            var biomePlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
+            if (!biomePlayer.ZoneWonder)
+                return;
+
+            Tile tile = Main.tile[i, j];
+            if (WorldGen.TileIsExposedToAir(i, j) && tile.LiquidAmount > 0)
+            {
+                r = 0.25f;
+                g = 0.71f;
+                b = 0.8f;
+            }
+        }
+    }
     public class WonderousDarkspaceBiome : BaseUrdveilBiome,
         IBackLightModifier
     {

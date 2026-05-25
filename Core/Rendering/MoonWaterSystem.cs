@@ -223,12 +223,14 @@ public class ShimmerPixelWaterStyle : PixelWaterStyle
     public override void ModifyPixelWater(ref PixelWater pixelWater)
     {
         base.ModifyPixelWater(ref pixelWater);
-        pixelWater.StartGradientColor = Color.Purple;
+        pixelWater.StartGradientColor = Color.White;
         pixelWater.EndGradientColor = Color.DarkBlue;
-        pixelWater.BackgroundColor = Color.Blue;
+        pixelWater.BackgroundColor = Color.Pink;
         pixelWater.CausticsTexture = AssetRegistry.Textures.Noise.ShimmerWaterCaustics;
-        pixelWater.CausticsColor = Color.Violet;
+        pixelWater.CausticsColor = Color.Purple;
         pixelWater.TilingMultiplier = new Vector2(1f, 2);
+        pixelWater.ignoreSkyColor = true;
+     
     }
 }
 
@@ -523,6 +525,8 @@ public class MoonWaterSystem : ModSystem
         float targetWaterAlpha = 1f;
         if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneDeepBelowCoralways)
             targetWaterAlpha = 0.1f;
+        if (Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneWonder)
+            targetWaterAlpha = 0.95f;
         waterAlpha = MathHelper.Lerp(waterAlpha, targetWaterAlpha, 0.1f);
     }
 

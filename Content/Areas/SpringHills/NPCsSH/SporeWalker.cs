@@ -356,7 +356,7 @@ public class SporeWalker : ModNPC,
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         base.ModifyNPCLoot(npcLoot);
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), minimumDropped: 2, maximumDropped: 3));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Mushroom>(), minimumDropped: 5, maximumDropped: 6));
     }
 
     private Vector2 DrawOrigin()

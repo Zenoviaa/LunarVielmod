@@ -95,6 +95,21 @@ public static class TileUtilities
         return Point.Zero;
     }
 
+    public static Rectangle Clamp(Rectangle rectangle)
+    {
+        rectangle.X = (int)MathHelper.Clamp(rectangle.X, 0, Main.maxTilesX - 1);
+        rectangle.Y = (int)MathHelper.Clamp(rectangle.Y, 0, Main.maxTilesY - 1);
+
+        int maxRight = (int)MathHelper.Clamp(rectangle.X + rectangle.Width, 0, Main.maxTilesX - 1);
+        int maxWidth = maxRight - rectangle.Left;
+        rectangle.Width = (int)MathHelper.Min(rectangle.Width, maxWidth);
+
+        int maxBottom = (int)MathHelper.Clamp(rectangle.Y + rectangle.Height, 0, Main.maxTilesY - 1);
+        int maxHeight = maxBottom - rectangle.Top;
+        rectangle.Height = (int)MathHelper.Min(rectangle.Height, maxHeight);
+        return rectangle;
+    }
+
     public static Point Clamp(Point tilePoint)
     {
         if (tilePoint.X < 0)
