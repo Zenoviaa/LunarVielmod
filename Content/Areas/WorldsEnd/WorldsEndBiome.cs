@@ -32,7 +32,8 @@ namespace Stellamod.Content.Areas.WorldsEnd
 
         public override Color OnTileColor(Color inColor)
         {
-            return Color.White * 0.5f * _drawOpacity;
+            return Color.Lerp(inColor, Color.White * 0.5f, _drawOpacity);
+          //  return Color.White * 0.5f * _drawOpacity;
         }
 
         public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
