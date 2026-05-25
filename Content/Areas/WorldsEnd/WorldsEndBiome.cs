@@ -3,6 +3,7 @@ using Stellamod.Assets.Biomes;
 using Stellamod.Backgrounds;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
+using Stellamod.Core.Biomes;
 using Stellamod.Helpers;
 using System;
 using Terraria;
@@ -121,7 +122,7 @@ namespace Stellamod.Content.Areas.WorldsEnd
             return BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/GreyGrassBackgroundClose");
         }
     }
-    public class WorldsEndBiome : ModBiome
+    public class WorldsEndBiome : BaseUrdveilBiome
     {
         public override int Music
         {
@@ -142,7 +143,15 @@ namespace Stellamod.Content.Areas.WorldsEnd
         public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<NoBackgroundStyle>();
 
         public override bool IsBiomeActive(Player player) => (player.ZoneOverworldHeight || player.ZoneDirtLayerHeight) && BiomeTileCounts.InWorldsEnd;
-        public override void OnEnter(Player player) => player.GetModPlayer<BiomePlayer>().ZoneWorldsEnd = true;
-        public override void OnLeave(Player player) => player.GetModPlayer<BiomePlayer>().ZoneWorldsEnd = false;
+        public override void OnEnter(Player player)
+        {
+            base.OnEnter(player);
+            player.GetModPlayer<BiomePlayer>().ZoneWorldsEnd = true;
+        }
+        public override void OnLeave(Player player)
+        {
+            base.OnLeave(player);
+            player.GetModPlayer<BiomePlayer>().ZoneWorldsEnd = false;
+        }
     }
 }

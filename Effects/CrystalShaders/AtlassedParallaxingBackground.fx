@@ -42,7 +42,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     
     float2 finalCoords = offsets[parallaxIndex] + parallaxingCoords;
     float4 spriteColor = tex2D(uImage0, finalCoords) ;
-    spriteColor.rgb = lerp(spriteColor.rgb, fadeToColor.rgb, coords.y * fadeToColor.a);
+    spriteColor.rgb = lerp(spriteColor.rgb, fadeToColor.rgb, finalCoords.y * fadeToColor.a);
     return spriteColor * sampleColor;
 }
 

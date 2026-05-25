@@ -19,23 +19,23 @@ namespace Stellamod.Core.Utilities
         {
             base.ApplyEffect(screenShaderData);
             Effect effect = screenShaderData.Shader;
-            _timeParam ??= effect.Parameters["time"];
-            _timeParam.SetValue(Main.GlobalTimeWrappedHourly * 16);
+            _timeParam = effect.Parameters["time"];
+            _timeParam.SetValue(Main.GlobalTimeWrappedHourly * 12);
 
-            _petalTextureParam ??= effect.Parameters["petalTexture"];
+            _petalTextureParam = effect.Parameters["petalTexture"];
             _petalTextureParam.SetValue(AssetManager.LaserTextures.PetalNoise.Value);
 
 
-            _distortingNoiseTextureParam ??= effect.Parameters["distortingNoiseTexture"];
+            _distortingNoiseTextureParam = effect.Parameters["distortingNoiseTexture"];
             _distortingNoiseTextureParam.SetValue(AssetManager.Noise.Whirly.Value);
 
 
-            _offsetParam ??= effect.Parameters["offset"];
+            _offsetParam = effect.Parameters["offset"];
             _offsetParam.SetValue(Main.Camera.Center * 0.002f);
 
 
-            _tilingParam ??= effect.Parameters["tiling"];
-            _tilingParam.SetValue(new Vector2(2f, 8f));
+            _tilingParam = effect.Parameters["tiling"];
+            _tilingParam.SetValue(new Vector2(1f, 16));
         }
     }
     public class SuperShockwave : ScreenShader

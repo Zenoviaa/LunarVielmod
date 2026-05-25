@@ -58,23 +58,23 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
     //All we have to do is sample the white to black of the texture, using that as an interpolant for the colors
     //Then using the time we can oscillate and add some glow with power?
     float4 screenColor = tex2D(uImage0, coords);
-    
+    float4 screenColor2 = tex2D(uImage0, coords + float2(-0.005 * sin(time * 0.05), 0.0));
     float s = tex2D(distortingTex, coords + float2(time * -0.075, 0.0));
-    float2 distortionOffsetCoords = float2(sin(s), cos(s)) * 0.1;
+    float2 distortionOffsetCoords = float2(sin(s), cos(s)) * 0.03;
     
     float ySin = sin(coords.x * 8.0 + time * 0.05) * 0.0125;
-    float2 petalOffsetCoords = float2(coords.x + time * -0.05, coords.y + ySin);
-    float4 petal = tex2D(petalTex, petalOffsetCoords * tiling + distortionOffsetCoords + offset);
+    float2 petalOffsetCoords = float2(coords.x + time * -0.05 + coords.y * 2, coords.y + ySin);
+    float petal = tex2D(petalTex, petalOffsetCoords * tiling + distortionOffsetCoords + offset).r;
     petal *= bump;
-    petal *= 0.035;
-    
-    float maxDistance = length(float2(0.0, 0.0) - float2(0.5, 0.5));
+    petal *= 0.0235;
+   
     float distance = length(coords - float2(0.5, 0.5));
-    float interp = distance / maxDistance;
+    float interp = distance / 0.5;
     float3 vignette = lerp(float3(0.0, 0.0, 0.0), float3(0.15, 0.15, 0.15), interp);
     
     screenColor.rgb += vignette;
-    screenColor += petal;
+    screenColor -= petal;
+    screenColor += screenColor2 * 0.1;
     return screenColor;
 }
 

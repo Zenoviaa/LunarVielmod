@@ -184,8 +184,8 @@ PunkerTown: {
 }
 
 WorldsEndBiome: {
-	TownNPCDialogueName: the Worlds End Biome
-	DisplayName: Worlds End Biome
+	TownNPCDialogueName: the Worlds End
+	DisplayName: Worlds End
 }
 
 MoonspiralTowerBiome: {

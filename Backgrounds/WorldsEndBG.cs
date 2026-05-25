@@ -1,96 +1,117 @@
-﻿using Stellamod.Content.Biomes;
+﻿using ReLogic.Content;
+using Stellamod.Assets;
+using Stellamod.Common.Shaders;
+using Stellamod.Content.Biomes;
 using Stellamod.Core.Backgrounds;
-using Stellamod.Core.Effects;
 using Terraria;
+using Terraria.ModLoader;
 
-namespace Stellamod.Backgrounds
+namespace Stellamod.Backgrounds;
+
+public class WorldsEndBG : CustomBG
 {
-    public class WorldsEndBG : CustomBG
+    private Asset<Texture2D> _farTextureAsset;
+    private Asset<Texture2D> _midTextureAsset;
+    private Asset<Texture2D> _closeTextureAsset;
+    private Asset<Texture2D> _undergroundTextureAsset;
+    public override void SetStaticDefaults()
     {
-        public CustomBGLayer BackLayer;
-        public CustomBGLayer MidLayer;
-        public CustomBGLayer FrontLayer;
+        base.SetStaticDefaults();
+        _farTextureAsset = AssetManager.LoadBackground("GreyGrassBackgroundFar");
+        _midTextureAsset = AssetManager.LoadBackground("GreyGrassBackgroundMid");
+        _closeTextureAsset = AssetManager.LoadBackground("GreyGrassBackgroundClose");
+        _undergroundTextureAsset = AssetManager.LoadBackground("GreyGrassBackgroundUndergroundLoop");
+    }
+    public override void Unload()
+    {
+        base.Unload();
+        _farTextureAsset = null;
+        _midTextureAsset = null;
+        _closeTextureAsset = null;
+        _undergroundTextureAsset = null;
+    }
 
-        public float FarParallax => 0.08f;
-        public float MidParallax => 0.11f;
-        public float CloseParallax => 0.20f;
+    public override bool UseCustomDrawing()
+    {
+        return true;
+    }
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+        base.Draw(spriteBatch);
+        LunarBackgroundShader backgroundShader = LunarBackgroundShader.Instance;
+        Color fadeToColor = Color.White;
+        fadeToColor.A = 25;
+        backgroundShader.FadeToColor = fadeToColor;
+        backgroundShader.Time = Main.GlobalTimeWrappedHourly * -1 * 0.1f;
+        GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
 
-        private void AddFarLayer()
-        {
-            BackLayer = new CustomBGLayer();
-            BackLayer.SetTexture("Assets/Textures/Backgrounds/GreyGrassBackgroundFar");
-            BackLayer.Parallax = FarParallax;
-            BackLayer.DrawOffset = Vector2.Zero;
-            AddLayer(BackLayer);
+        //Prepare sampler states
+        gDevice.Textures[1] = _midTextureAsset.Value;
+        gDevice.SamplerStates[1] = SamplerState.PointClamp;
 
-            CustomBGLayer backFogLayer = new CustomBGLayer();
-            backFogLayer.SetTexture("Assets/Textures/Backgrounds/RainforestFrontGradient");
-            backFogLayer.Parallax = FarParallax;
-            backFogLayer.DrawOffset = Vector2.Zero;
+        gDevice.Textures[2] = _farTextureAsset.Value;
+        gDevice.SamplerStates[2] = SamplerState.PointClamp;
+
+        gDevice.Textures[3] = _undergroundTextureAsset.Value;
+        gDevice.SamplerStates[3] = SamplerState.PointClamp;
 
 
-            MistShader backMistShader = new MistShader();
-            backMistShader.StartColor = Color.SkyBlue * 0.75f;
-            backMistShader.EndColor = Color.Transparent;
-            backFogLayer.Shader = backMistShader;
-            AddLayer(backFogLayer);
+        Vector2 closeParallax = new Vector2();
+        closeParallax.X = Main.screenPosition.X * LocalParallaxSpeed * 0.0002f;
 
-        }
 
-        private void AddMidLayer()
-        {
-            MidLayer = new CustomBGLayer();
-            MidLayer.SetTexture("Assets/Textures/Backgrounds/GreyGrassBackgroundMid");
-            MidLayer.Parallax = MidParallax;
-            MidLayer.DrawOffset = Vector2.Zero;
-            AddLayer(MidLayer);
 
-            CustomBGLayer midFogLayer = new CustomBGLayer();
-            midFogLayer.SetTexture("Assets/Textures/Backgrounds/RainforestMiddleGradient");
-            midFogLayer.Parallax = MidParallax;
-            midFogLayer.DrawOffset = Vector2.Zero;
+        int worldSurfaceY = GetParallaxYStartHeight();
+        worldSurfaceY -= 0;
+        int diffY = (int)(worldSurfaceY - Main.screenPosition.Y);
+        closeParallax.Y = -diffY * 0.0001f;
+        closeParallax.Y += 0.2f;
 
-            MistShader midMistShader = new MistShader();
-            midMistShader.StartColor = Color.SkyBlue * 0.5f;
-            midMistShader.EndColor = Color.Transparent;
-            midFogLayer.Shader = midMistShader;
-            AddLayer(midFogLayer);
-        }
+        Vector2 midParallax = new Vector2();
+        midParallax.X = Main.screenPosition.X * LocalParallaxSpeed * 0.0002f * 0.5f;
+        midParallax.Y = closeParallax.Y;
 
-        private void AddCloseLayer()
-        {
-            FrontLayer = new CustomBGLayer();
-            FrontLayer.SetTexture("Assets/Textures/Backgrounds/GreyGrassBackgroundClose");
-            FrontLayer.Parallax = CloseParallax;
-            FrontLayer.DrawOffset = Vector2.Zero;
-            AddLayer(FrontLayer);
+        Vector2 farParallax = new Vector2();
+        farParallax.X = Main.screenPosition.X * LocalParallaxSpeed * 0.0002f * 0.25f + 0.25f;
+        farParallax.Y = closeParallax.Y;
+        farParallax.X += 0.35f;
+        //Set up parallax
+        Vector2[] parallax = new Vector2[3];
+        parallax[0] = farParallax;
+        parallax[1] = midParallax;
+        parallax[2] = closeParallax;
+        backgroundShader.Parallax = parallax;
+        backgroundShader.DustTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds").Value;
 
-            CustomBGLayer CloseLayer = new CustomBGLayer();
-            CloseLayer.SetTexture("Assets/Textures/Backgrounds/RainforestFrontGradient");
-            CloseLayer.Parallax = CloseParallax;
-            CloseLayer.DrawOffset = Vector2.Zero;
+        spriteBatch.Begin(SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            SamplerState.PointWrap,
+            DepthStencilState.None,
+            RasterizerState.CullNone,
+            backgroundShader.Effect);
 
-            MistShader frontMistShader = new MistShader();
-            frontMistShader.StartColor = Color.SkyBlue * 0.75f;
-            frontMistShader.EndColor = Color.Transparent;
-            CloseLayer.Shader = frontMistShader;
-            AddLayer(CloseLayer);
-        }
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            DrawScale = 1.5f;
-            AddFarLayer();
-            AddMidLayer();
-            AddCloseLayer();
-        }
+        Color baseColor = Color.White;
+        baseColor = Color.Lerp(baseColor, Main.ColorOfTheSkies, 0.5f);
+        Color drawColor = baseColor * Alpha;
+        Vector2 drawScale = Vector2.One * 2;
 
-        public override bool IsActive()
-        {
-            NoSurfaceOffset = true;
-            DrawScale = 1;
-            DrawOffset = Vector2.Zero;
-            return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneWorldsEnd;
-        }
+        Rectangle drawRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+        spriteBatch.Draw(
+            _closeTextureAsset.Value,
+            Vector2.Zero,
+            drawRect,
+            drawColor,
+            0f,
+            default,
+            scale: drawScale,
+            SpriteEffects.None,
+            0f
+        );
+
+        spriteBatch.End();
+    }
+    public override bool IsActive()
+    {
+        return Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneWorldsEnd;
     }
 }

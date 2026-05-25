@@ -100,6 +100,7 @@ public class AegislavSky : CustomSky
         }
     }
 
+    //This is copied from vanilla code, we just draw the sun again with some edits.
     private void DrawSun(SpriteBatch spriteBatch)
     {
         int num13 = screenWidth;
