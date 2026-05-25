@@ -42,6 +42,11 @@ namespace Stellamod.Common.XixianFlaskSystem
             }
         }
 
+        public bool HasEquippedflask()
+        {
+            return HasUnlockedFlask() && GetInsourceCount() > 0;
+        }
+
         public void ResetProgress()
         {
             unlockedFlask = false;
@@ -81,6 +86,18 @@ namespace Stellamod.Common.XixianFlaskSystem
             unlockedFlask = true;
         }
 
+        public int GetInsourceCount()
+        {
+            var insources = GetInsources();
+            int insoureCount = 0;
+            for (int i = 0; i < maxInsourceCount && i < insources.Count; i++)
+            {
+                insoureCount++;
+          
+            }
+            return insoureCount;
+
+        }
         public void ProcEffects()
         {
             var insources = GetInsources();

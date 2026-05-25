@@ -487,17 +487,18 @@ namespace Stellamod.Common.GunSystem
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.hide = true;
+         //   Projectile.hide = false;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 120;
         }
 
+        /*
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             base.DrawBehind(index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
             overPlayers.Add(index);
-        }
+        }*/
         public override void AI()
         {
             base.AI();
@@ -566,10 +567,11 @@ namespace Stellamod.Common.GunSystem
                 Owner.direction = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
             }
 
-            Owner.itemRotation = rotation * Owner.direction;
+            //Owner.itemRotation = rotation * Owner.direction;
 
             // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90));// set arm position (90 degree offset since arm starts lowered)
+            Owner.heldProj = Projectile.whoAmI;
         }
 
         private void AI_Reload()
@@ -614,6 +616,7 @@ namespace Stellamod.Common.GunSystem
 
         public override bool PreDraw(ref Color lightColor)
         {
+
             if (Owner.HeldItem.ModItem == null)
                 return false;
 

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Common;
 using Stellamod.Core.TabletSystem;
 using Stellamod.Tiles;
+using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -126,6 +128,7 @@ namespace Stellamod.Content.Areas.SpringHills.TabletsSH
         public override void ClickFunction()
         {
             base.ClickFunction();
+            Main.LocalPlayer.GetModPlayer<HelpPlayer>().flaskHelp = true;
 
         }
     }
@@ -140,7 +143,7 @@ namespace Stellamod.Content.Areas.SpringHills.TabletsSH
         public override void ClickFunction()
         {
             base.ClickFunction();
-
+            Main.LocalPlayer.GetModPlayer<HelpPlayer>().dashHelp = true;
         }
     }
     internal class SpringTabletStamina : BaseTablet

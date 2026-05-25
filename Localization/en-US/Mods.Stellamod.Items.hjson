@@ -1,4 +1,7 @@
 Common: {
+	AssignKey: Assign a [{0}] keybind in the settings menu
+	DashHelp: Press {0} to dash!
+	XixianHelp: Press {0} to use your flask!
 	New: New!
 	Create: Create
 	Loading: Loading...

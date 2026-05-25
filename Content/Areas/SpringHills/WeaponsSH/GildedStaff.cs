@@ -230,7 +230,6 @@ namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
             Color glowColor = drawColor * ChargeProgress;
             glowColor.A = 0;
             spriteBatch.Draw(texture, drawPos + Projectile.velocity * 24, null, glowColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
-            spriteBatch.RestartDefaults();
         }
 
         private void DrawPixelatedEnergyBall(SpriteBatch sb, Vector2 sp)

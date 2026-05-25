@@ -1,7 +1,35 @@
-﻿using Terraria.ModLoader;
+﻿
+using System.Collections.Generic;
+using Terraria.ModLoader;
 
 namespace Stellamod
 {
+    public static class ModKeybindExtensions
+    {
+        public static string AssignedKeybindString(this ModKeybind keybind)
+        {
+
+            List<string> keys = keybind.GetAssignedKeys();
+            if(keys.Count == 0)
+            {
+                return string.Empty;
+            }
+            if(keys.Count == 1)
+            {
+                return keys[0];
+            }
+            string assignedKeys = string.Empty;
+            for(int i = 0; i < keys.Count; i++)
+            {
+                assignedKeys += keys[i];
+                if(i + 1 < keys.Count)
+                {
+                    assignedKeys += " ";
+                }
+            }
+            return assignedKeys;
+        }
+    }
     public class LunarVeilKeybinds : ModSystem
     {
         public static ModKeybind AbilityKeybind { get; private set; }
