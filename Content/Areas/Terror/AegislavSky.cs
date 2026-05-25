@@ -32,7 +32,9 @@ public class AegislavSky : CustomSky
 
     public override Color OnTileColor(Color inColor)
     {
-        return Color.White * 0.5f * _drawOpacity;
+        Color targetColor = inColor * 0.5f;
+        Color inbetweenColor = Color.Lerp(inColor, targetColor, _drawOpacity);
+        return inbetweenColor;
     }
 
     public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
