@@ -11257,3 +11257,8 @@ TotemOfTheVeil: {
 	DisplayName: Totem Of The Veil
 	Tooltip: ""
 }
+
+CharredStoneBlock: {
+	DisplayName: Charred Stone Block
+	Tooltip: ""
+}

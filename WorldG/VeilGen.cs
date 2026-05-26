@@ -1499,6 +1499,63 @@ public static class VeilGen
     }
 
 
+    /// <summary>
+    /// Checks if a tile is exposed to air only on cardinal directions, it will not check diagonals
+    /// This function assumes that it will not have an out of bounds exception, clamp boundaries before using it
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public static bool IsTileExposedToAirCardinal(int x, int y)
+    {
+        return  !Main.tile[x - 1, y].HasTile ||
+                !Main.tile[x + 1, y].HasTile ||
+                !Main.tile[x, y - 1].HasTile ||
+                !Main.tile[x, y + 1].HasTile;
+    }
+
+    public static void WallWalker(int x, int y, int steps, int wallType, int maxDist, byte paint = 0)
+    {
+        Point walkerPoint = new Point(x, y);
+        Point originalPoint = walkerPoint;
+        var genRand = WorldGen.genRand;
+        for (int s = 0; s < steps; s++)
+        {
+            switch (genRand.Next(4))
+            {
+                case 0:
+                    walkerPoint.X--;
+                    break;
+                case 1:
+                    walkerPoint.X++;
+                    break;
+                case 2:
+                    walkerPoint.Y++;
+                    break;
+                case 3:
+                    walkerPoint.Y--;
+                    break;
+            }
+            walkerPoint = TileUtilities.Clamp(walkerPoint);
+            Tile tile = Main.tile[walkerPoint];
+            //not sure if i have to do framing manually
+            //we'll find out
+            tile.WallType = (ushort)wallType;
+            tile.WallFrameX = -1;
+            tile.WallFrameY = -1;
+            tile.WallColor = paint;
+
+            //Reset if walking too far
+            int dx = Math.Abs(walkerPoint.X - originalPoint.X);
+            int dy = Math.Abs(walkerPoint.Y - originalPoint.Y);
+            if (dx > maxDist || dy > maxDist)
+            {
+                walkerPoint = originalPoint;
+            }
+        }
+    }
+
+
     public static bool IsTileNearby(int x, int y, int distance, bool[] tileSet)
     {
         int left = x - distance;

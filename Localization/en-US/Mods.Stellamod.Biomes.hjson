@@ -232,3 +232,8 @@ SacredUnknownsBiome: {
 	DisplayName: Sacred Unknowns Biome
 	TownNPCDialogueName: the Sacred Unknowns Biome
 }
+
+HeatedDepthsBiome: {
+	DisplayName: Heated Depths
+	TownNPCDialogueName: the Heated Depths
+}

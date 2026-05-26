@@ -69,6 +69,10 @@ public class LavaStyle : PixelWaterStyle
     public override bool IsActive(Player player)
     {
 
+        BiomePlayer biomePlayer = player.GetModPlayer<BiomePlayer>();
+        if (biomePlayer.ZoneHeatedDepths && !player.GetModPlayer<MyPlayer>().ZoneWonder)
+            return true;
+
         return 
             player.ZoneUnderworldHeight || 
             player.GetModPlayer<MyPlayer>().ZoneCinder || 

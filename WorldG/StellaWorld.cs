@@ -9,6 +9,7 @@ using Stellamod.Content.Areas.Junkyard.TilesJY;
 using Stellamod.Content.Areas.SpringHills.AccSH;
 using Stellamod.Content.Areas.SpringHills.WeaponsSH;
 using Stellamod.Content.Areas.Terror.TilesTR;
+using Stellamod.Content.Areas.Underground.TilesUG;
 using Stellamod.Content.Areas.WaterSide.TilesWS;
 using Stellamod.Content.Areas.WondrousDarkspace.TilesWD;
 using Stellamod.Content.Areas.WorldsEnd.TilesWE;
@@ -57,7 +58,6 @@ using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
-
 
 namespace Stellamod.WorldG;
 
@@ -385,7 +385,8 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Vanilla Caves", ExtraCavesPass));
         passWriter.NextPass(new PassLegacy("Cavern Waters", CavernWaters));
         passWriter.NextPass(new PassLegacy("Black Stones", WorldGenDarkstone));
-
+        passWriter.NextPass(new PassLegacy("Charred Stones", HardRocksPass));
+        passWriter.NextPass(new PassLegacy("Charred Stone Walls", HardWallsPass));
         //Set desert location
         passWriter.SetInsertionIndex("Full Desert");
         passWriter.ReplacePass(new PassLegacy("Full Desert Rework", LockDesert));
@@ -3067,6 +3068,103 @@ public partial class StellaWorld : ModSystem
                 break;
             }
         }
+
+    }
+
+    private void HardWallsPass(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Hardening Walls";
+        var genRand = WorldGen.genRand;
+        int start = DarkspaceStart - 500;
+        int end = Main.UnderworldLayer;
+        int[] wallTypes = new int[]
+        {
+            (int)WallID.ObsidianBackUnsafe,
+            (int)WallID.RocksUnsafe1,
+            (int)WallID.Cave4Unsafe,
+            (int)WallID.Cave5Unsafe
+        };
+
+
+
+        int charredStoneTypeInt = ModContent.TileType<CharredStone>();
+        int padding = 2;
+        for (int x = padding; x < Main.maxTilesX - padding; x++)
+        {
+            for(int y = start; y < end; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (tile.TileType == charredStoneTypeInt && VeilGen.IsTileExposedToAirCardinal(x, y))
+                {
+                    if (genRand.NextBool(3))
+                    {
+                        int steps = genRand.Next(30, 90);
+                        int maxDist = 3;
+                        VeilGen.WallWalker(x, y, steps, wallTypes[genRand.Next(4)], maxDist, PaintID.BlackPaint);
+                    }       
+                }
+            }
+
+            progress.Set(((float)x - (float)padding) / ((float)Main.maxTilesX - (float)padding));
+        }
+    }
+
+    private void HardRocksPass(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Hardening Stones";
+        var genRand = WorldGen.genRand;
+        int start = DarkspaceStart - 500;
+        int end = Main.UnderworldLayer;
+        ushort charredStoneType = (ushort)ModContent.TileType<CharredStone>();
+        for(int x = 0; x < Main.maxTilesX;x++)
+        {
+            for(int y = start; y < end; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                if (tile.TileType == TileID.Stone || tile.TileType == TileID.Dirt)
+                    tile.TileType = charredStoneType;
+            }
+        }
+
+        int charredStoneTypeInt = ModContent.TileType<CharredStone>();
+        for(int x = 0; x < Main.maxTilesX; x++)
+        {
+            if (!genRand.NextBool(8))
+                continue;
+
+            int y = start + genRand.Next(-3, 3);
+            Tile tile = Main.tile[x, y];
+            if (tile.TileType != charredStoneTypeInt)
+                continue;
+
+            int steps = genRand.Next(400, 600);
+            int maxDist = 8;
+            VeilGen.Walker(x, y, steps, charredStoneTypeInt, maxDist);
+
+            //Place at bottom of layer too
+            y = end + genRand.Next(-3, 3);
+            tile = Main.tile[x, y];
+            if (tile.TileType != charredStoneTypeInt)
+                continue;
+            VeilGen.Walker(x, y, steps, charredStoneTypeInt, maxDist);
+        }
+
+        //Turn some of the charred stones to obsidian
+        for(int x = 0; x < Main.maxTilesX; x++)
+        {
+            if (!genRand.NextBool(16))
+                continue;
+
+            int y = (int)MathHelper.Lerp(start, end, genRand.NextFloat());
+            Tile tile = Main.tile[x, y];
+            if(tile.TileType == charredStoneTypeInt)
+            {
+                int steps = genRand.Next(30, 90);
+                int maxDist = 4;
+                VeilGen.Walker(x, y, steps, TileID.Obsidian, maxDist);
+            }
+        }
+
 
     }
 

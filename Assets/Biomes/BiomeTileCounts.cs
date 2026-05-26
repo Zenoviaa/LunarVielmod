@@ -141,8 +141,12 @@ namespace Stellamod
 
         public int EveroseCount;
         public static bool InEveroseVillage => ModContent.GetInstance<BiomeTileCounts>().EveroseCount >= 80;
+
+        public int HeatedDepthsCount;
+        public static bool InHeatedDepths => ModContent.GetInstance<BiomeTileCounts>().HeatedDepthsCount >= 50;
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
+            HeatedDepthsCount = tileCounts[ModContent.TileType<CharredStone>()];
             AegislavCount = tileCounts[ModContent.TileType<VeilBrickTile>()] + tileCounts[ModContent.TileType<AegislavSandTile>()] + tileCounts[TileID.CrimsonGrass] + tileCounts[TileID.Crimstone];
             SacredUnknownsCount = tileCounts[ModContent.TileType<MimicTileBlock>()];
             JunkyardCount = tileCounts[ModContent.TileType<JunkyTile>()];
