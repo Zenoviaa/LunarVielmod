@@ -1596,7 +1596,7 @@ public static class VeilGen
         {
             int randX = genRand.Next(rect.Left, rect.Right);
             int randY = genRand.Next(rect.Top, rect.Bottom);
-            Walker(randX, randY, genRand.Next(30, 60), TileID.Stone, 5);
+            Walker(randX, randY, genRand.Next(60, 120), TileID.Stone, 5);
         }
         CellularAutomataParams @params = new CellularAutomataParams() with { Steps = 3, RandomFill = 55, BirthLimit = 4, DeathLimit = 4 };
         AutomataSmoothErase(rect, in @params);
