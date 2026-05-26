@@ -214,7 +214,6 @@ public static class DungeonLayouter
 
     public static (int, int)[] GenerateLayout(int roomCount, UnifiedRandom rand)
     {
-        Stopwatch sw = Stopwatch.StartNew();
         int size = 16;
         bool[,] map = new bool[size, size];
         int[,] costs = new int[size, size];
@@ -302,8 +301,6 @@ public static class DungeonLayouter
             }
             //We now have all open spots next to this room
         }
-        sw.Stop();
-      //  Main.NewText($"Layout Generation: Elapsed {sw.ElapsedMilliseconds}ms");
         return roomsOnMap;
     }
 }

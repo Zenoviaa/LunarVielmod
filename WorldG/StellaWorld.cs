@@ -3244,7 +3244,7 @@ public partial class StellaWorld : ModSystem
                 Vector2 initialDirection = Vector2.UnitY.RotateRandom(MathHelper.Pi);
                 int caveSteps = 800;
                 int walkerSteps = genRand.Next(200, 400);
-                int walkerWidth = (int)MathHelper.Lerp(3, 5, (float)((float)y - (float)GenVars.rockLayerHigh) / ((float)DarkspaceStart - (float)GenVars.rockLayerHigh));
+                int walkerWidth = (int)MathHelper.Lerp(2, 5, (float)((float)y - (float)GenVars.rockLayerHigh) / ((float)DarkspaceStart - (float)GenVars.rockLayerHigh));
                 VeilGen.PlaceDeepCuttingCave(new Point(x, y).ToWorldCoordinates(), initialDirection, caveSteps, walkerSteps, walkerWidth, genRand, fnl);
                 placedCaves++;
                 if (placedCaves >= maxCaveCount)

@@ -503,8 +503,9 @@ public class ClassSystem : ModSystem
         if (Main.PendingPlayer != null)
         {
             Main.PendingPlayer.GetModPlayer<ClassReworkPlayer>().playerClass = (PlayerClass)ModContent.GetInstance<ClassSystem>().selectedClass;
+            Main.MenuUI.Recalculate();
         }
-        Main.MenuUI.Recalculate();
+    
         orig(self, gameTime);
 
 

@@ -617,7 +617,7 @@ namespace Stellamod.Common.DungeonGeneration
             {
                 if(a == maxAttempts - 1)
                 {
-                    Main.NewText("Always overlapping :(");
+                   // Main.NewText("Always overlapping :(");
                 }
 
                 if (!IsDungeonValid())
