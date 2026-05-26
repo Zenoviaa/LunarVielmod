@@ -331,7 +331,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
         passWriter.NextPass(new PassLegacy("Cinderspark Caves", CindersparkCavesPass));
         passWriter.NextPass(new PassLegacy("Tree Caves", TreeCavesPass));
-        passWriter.NextPass(new PassLegacy("Deep Caves", DeepCavesPass));
+ 
 
         passWriter.SetInsertionIndex("Shimmer");
         passWriter.NextPass(new PassLegacy("Fake Shimmer", WorldGenShimmerSpot));
@@ -342,7 +342,7 @@ public partial class StellaWorld : ModSystem
         passWriter.SetInsertionIndex("Micro Biomes");
         passWriter.DisablePass("Micro Biomes");
         passWriter.NextPass(new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
-        passWriter.NextPass(new PassLegacy("World Gen Other stones", WorldGenDarkstone));
+
         passWriter.NextPass(new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
         passWriter.NextPass(new PassLegacy("World Gen Illuria", WorldGenIlluria));
         passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
@@ -379,7 +379,12 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new MarshJungleMudPass());
         passWriter.NextPass(new PassLegacy("Jungle Surface Caves", WorldGenJungleSurfaceCaves));
         passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
+        passWriter.NextPass(new PassLegacy("Ravine Caves", RavinesPass));
+        passWriter.NextPass(new PassLegacy("Deep Caves", DeepCavesPass));
         passWriter.NextPass(new PassLegacy("Cavernous Caves", MineshaftsPass));
+        passWriter.NextPass(new PassLegacy("Vanilla Caves", ExtraCavesPass));
+        passWriter.NextPass(new PassLegacy("Cavern Waters", CavernWaters));
+        passWriter.NextPass(new PassLegacy("Black Stones", WorldGenDarkstone));
 
         //Set desert location
         passWriter.SetInsertionIndex("Full Desert");
@@ -1298,6 +1303,7 @@ public partial class StellaWorld : ModSystem
         DisableGenTask(tasks, "Granite");
         DisableGenTask(tasks, "Jungle");
         DisableGenTask(tasks, "Wall Variety");
+        DisableGenTask(tasks, "Mushroom Patches");
         //  DisableAllGenTasks(tasks);
         //    AddWorldGenTasks(tasks, ref totalWeight);
         AddNewGenerationPasses(tasks, ref totalWeight);
@@ -1895,6 +1901,13 @@ public partial class StellaWorld : ModSystem
             VeilGen.Walker(x, yMid + heightToUse, genRand.Next(32, 128), TileID.Granite, 10);
         }
 
+        for(int x = 0; x < Main.maxTilesX; x++)
+        {
+            if (!genRand.NextBool(4))
+                continue;
+            VeilGen.Walker(x, DarkspaceStart, genRand.Next(64, 128), TileID.Granite, 15);
+            VeilGen.Walker(x, DarkspaceEnd, genRand.Next(64, 128), TileID.Granite, 15);
+        }
         //Then we go back through the cave, and create blotches of shimmer water in random spots
         //Again, not going to use gen actions here
         //Just going to create squares of shimmer water since it gets settled in a later pass
@@ -3057,9 +3070,187 @@ public partial class StellaWorld : ModSystem
 
     }
 
+    private void CavernWaters(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Cave Waters...";
+        var genRand = WorldGen.genRand;
+        float maxCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.0000003f;
+        float maxAttemptCount = maxCount * 10;
+        float placed = 0;
+        int padding = 250;
+
+        for (int i = 0; i < maxAttemptCount; i++)
+        {
+            int x = genRand.Next(padding, Main.maxTilesX - padding);
+            int y = genRand.Next((int)GenVars.rockLayerHigh, DarkspaceStart);
+            if (VeilGen.IsTileNearby(x, y, distance: 50, TileSets.BlockMineshafts))
+                continue;
+
+            Tile startTile = Main.tile[x, y];
+            if (!startTile.HasTile)
+            {
+                int waterBlotchSize = genRand.Next(12, 20);
+                Rectangle placementRect = new Rectangle(x - waterBlotchSize, y - waterBlotchSize, waterBlotchSize * 2, waterBlotchSize * 2);
+                placementRect = TileUtilities.Clamp(placementRect);
+                for (int tx = placementRect.Left; tx < placementRect.Right; tx++)
+                {
+                    for (int ty = placementRect.Top; ty < placementRect.Bottom; ty++)
+                    {
+                        Tile tile = Main.tile[tx, ty];
+                        tile.LiquidType = LiquidID.Water;
+                        tile.LiquidAmount = 255;
+                    }
+                }
+
+                placed++;
+                if (placed >= maxCount)
+                    break;
+            }
+        }
+    }
+
+    private void RavinesPass(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Giant Ravines";
+        
+        int walkerWidth = 64;
+        int walkerSteps = 4000;
+        var genRand = WorldGen.genRand;
+        void Carve(int x, int y)
+        {
+            Point walkerPoint = new Point(x, y);
+            Point originalPoint = walkerPoint;
+            for (int s = 0; s < walkerSteps; s++)
+            {
+                switch (genRand.Next(4))
+                {
+                    case 0:
+                        walkerPoint.X--;
+                        break;
+                    case 1:
+                        walkerPoint.X++;
+                        break;
+                    case 2:
+                        walkerPoint.Y++;
+                        break;
+                    case 3:
+                        walkerPoint.Y--;
+                        break;
+                }
+                walkerPoint = TileUtilities.Clamp(walkerPoint);
+                Tile tile = Main.tile[walkerPoint];
+                tile.ClearTile();
+
+                //Reset if walking too far
+                int dx = Math.Abs(walkerPoint.X - originalPoint.X);
+                int dy = Math.Abs(walkerPoint.Y - originalPoint.Y);
+                if (dx > walkerWidth || dy > walkerWidth)
+                {
+                    walkerPoint = originalPoint;
+                }
+            }
+        }
+
+        for (int s = 0; s < Main.maxTilesX; s+=4)
+        {
+            int x = s;
+            int y = DarkspaceStart - 100;
+            Carve(x, y);
+            //Random chance to skip several steps, which will create gaps in the caves
+            if (genRand.NextBool(128))
+            {
+                s += 144;
+            }
+        }
+
+        CellularAutomataParams @params = new CellularAutomataParams() with { Steps = 3, RandomFill = 55, BirthLimit = 4, DeathLimit = 4 };
+        Rectangle smoothRectangle = new Rectangle(0, DarkspaceStart - 200, Main.maxTilesX, 300);
+        VeilGen.AutomataSmoothErase(smoothRectangle, in @params);
+    }
+
+    private void WorldGenDarkstone(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Blackening Stones for racist effect";
+        var genRand = WorldGen.genRand;
+        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.00008f;
+        for (int k = 0; k < maxCaveCount; k++)
+        {
+            int x = genRand.Next(0, Main.maxTilesX);
+            int y = genRand.Next((int)GenVars.rockLayerHigh, DarkspaceStart);
+            if (!TileID.Sets.Stone[Main.tile[x, y].TileType])
+                continue;
+
+            VeilGen.Walker(x, y, WorldGen.genRand.Next(128, 256), ModContent.TileType<DiminishedStone>(), 24);
+        }
+    }
+
+    private void ExtraCavesPass(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Simple Caves";
+        var genRand = WorldGen.genRand;
+        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000015f;
+        float maxAttemptCount = maxCaveCount * 10;
+        float placedCaves = 0;
+        int padding = 250;
+        for (int i = 0; i < maxAttemptCount; i++)
+        {
+            int x = genRand.Next(padding, Main.maxTilesX - padding);
+            int y = genRand.Next((int)GenVars.rockLayerHigh, DarkspaceStart);
+            if (VeilGen.IsTileNearby(x, y, distance: 50, TileSets.BlockMineshafts))
+                continue;
+
+            Tile tile = Main.tile[x, y];
+            if (Main.tileSolid[tile.TileType] && tile.HasTile && TileID.Sets.Stone[tile.TileType])
+            {
+                WorldGen.Caverer(x, y);
+                placedCaves++;
+                if (placedCaves >= maxCaveCount)
+                    break;
+            }
+        }
+    }
+
     private void DeepCavesPass(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Caves cut deep...";
+        //Bottom Ravines
+
+
+        //First we should generate corridors starting from the top of the stone layer all the way to darkspace
+        //Actually they just cut through the whole world, ignoring ice and jungle / desert
+        var genRand = WorldGen.genRand;
+        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000006f;
+        float maxAttemptCount = maxCaveCount * 10;
+        float placedCaves = 0;
+        int padding = 450;
+
+        FastNoiseLite fnl = new FastNoiseLite();
+        fnl.SetSeed(genRand.Next(0, int.MaxValue));
+        fnl.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        fnl.SetFrequency(0.15f);
+        fnl.SetDomainWarpAmp(10);
+        fnl.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
+        for (int i = 0; i < maxAttemptCount; i++)
+        {
+            int x = genRand.Next(padding, Main.maxTilesX - padding);
+            int y = genRand.Next((int)GenVars.rockLayerHigh, DarkspaceStart);
+            if (VeilGen.IsTileNearby(x, y, distance: 50, TileSets.BlockMineshafts))
+                continue;
+
+            Tile tile = Main.tile[x, y];
+            if (Main.tileSolid[tile.TileType] && tile.HasTile && TileID.Sets.Stone[tile.TileType])
+            {
+                fnl.SetSeed(genRand.Next(0, int.MaxValue));
+                Vector2 initialDirection = Vector2.UnitY.RotateRandom(MathHelper.Pi);
+                int caveSteps = 800;
+                int walkerSteps = genRand.Next(200, 400);
+                int walkerWidth = (int)MathHelper.Lerp(3, 5, (float)((float)y - (float)GenVars.rockLayerHigh) / ((float)DarkspaceStart - (float)GenVars.rockLayerHigh));
+                VeilGen.PlaceDeepCuttingCave(new Point(x, y).ToWorldCoordinates(), initialDirection, caveSteps, walkerSteps, walkerWidth, genRand, fnl);
+                placedCaves++;
+                if (placedCaves >= maxCaveCount)
+                    break;
+            }
+        }
 
     }
     private void MineshaftsPass(GenerationProgress progress, GameConfiguration configuration)
@@ -3070,7 +3261,7 @@ public partial class StellaWorld : ModSystem
         //Alright so here's our algorithm
         int padding = 250;
         float placedShafts = 0;
-        float shaftCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000002f;
+        float shaftCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.0000015f;
         float maxAttemptCount = shaftCount * 10;
 
         //Generate all mienshafts in advance, generating them late is much slower
@@ -3085,7 +3276,7 @@ public partial class StellaWorld : ModSystem
         for(float n = 0; n < maxAttemptCount; n++)
         {
             int x = genRand.Next(padding, Main.maxTilesX - padding);
-            int y = genRand.Next((int)GenVars.rockLayerHigh, DarkspaceStart);
+            int y = genRand.Next((int)GenVars.rockLayerHigh, DarkspaceStart - 200);
             if (VeilGen.IsTileNearby(x, y, distance: 50, TileSets.BlockMineshafts))
                 continue;
 
@@ -8211,46 +8402,6 @@ for (int beamX = structureRectangle.Location.X;
             // 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
             WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 10), WorldGen.genRand.Next(2, 10), ModContent.TileType<GlisteningOreTile>());
         }
-    }
-    private void WorldGenDarkstone(GenerationProgress progress, GameConfiguration configuration)
-    {
-        // 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
-        progress.Message = "Blackening Stones for racist effect";
-
-
-        for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
-        {
-            // 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
-            int x = WorldGen.genRand.Next(0, Main.maxTilesX);
-            int y = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY);
-
-            // 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-            WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 50), WorldGen.genRand.Next(2, 150), ModContent.TileType<DiminishedStone>());
-        }
-
-
-        //NO MOSSY STONES
-        /*
-			for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
-			{
-
-
-				int xz = WorldGen.genRand.Next(0, Main.maxTilesX);
-				int yz = WorldGen.genRand.Next((int)GenVars.rockLayer, Main.maxTilesY - 300);
-				Tile tile = Main.tile[xz, yz];
-				// If the type of the tile we are placing the tower on doesn't match what we want, try again
-				if ((tile.TileType == TileID.JungleGrass
-					|| tile.TileType == TileID.Mud
-					|| tile.TileType == TileID.Stone))
-				{
-					continue;
-				}
-				// 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-				WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(3, 50), WorldGen.genRand.Next(2, 100), ModContent.TileType<MossyStone>());
-			}*/
-
-
-
     }
 
 

@@ -323,10 +323,18 @@ public class VeilGenTester : ModItem
     public override bool? UseItem(Player player)
     {
         // LayoutTest();
-        CaveTest();
-       // AegislavTest();
+        //  CaveTest();
+        // AegislavTest();
+        CaveTest2();
         return true;
     }
+
+    private static void CaveTest2() 
+    {
+        Point mousePoint = Main.MouseWorld.ToTileCoordinates();
+        WorldGen.CaveOpenater(mousePoint.X, mousePoint.Y);
+    }
+
     private static void CaveTest()
     {
         CellularAutomataParams @params = new CellularAutomataParams() with { Steps = 5, RandomFill = 55, BirthLimit = 4, DeathLimit = 4 };
@@ -1567,6 +1575,153 @@ public static class VeilGen
         return newMap;
     }
 
+    public static bool PlaceCavePrefab(int x, int y, UnifiedRandom genRand)
+    {
+        if (VeilGen.IsTileNearby(x, y, 50, TileSets.BlockMineshafts))
+            return false;
+
+        int maxCaveCount = 9;
+        string caveToPlace = $"CavernCave_{genRand.Next(maxCaveCount) + 1}";
+        GenerationPrefab prefab = ModContent.GetInstance<GenerationTextureManager>().GetPrefab(caveToPlace);
+        prefab.PasteErase(x, y, PrefabPlacementType.FromCenter);
+
+        //Basically we're just sprinkling blotches everywhere and then smoothing it out with automata to create variation within the same room type
+        //Honestly it's genius
+        int left = x - prefab.Width / 2;
+        int top = y - prefab.Height / 2;
+        Rectangle rect = new Rectangle(left, top, prefab.Width, prefab.Height);
+        rect = TileUtilities.Clamp(rect);
+        int numBlotches = prefab.Width / 3;
+        for(int n = 0; n < numBlotches; n++)
+        {
+            int randX = genRand.Next(rect.Left, rect.Right);
+            int randY = genRand.Next(rect.Top, rect.Bottom);
+            Walker(randX, randY, genRand.Next(30, 60), TileID.Stone, 5);
+        }
+        CellularAutomataParams @params = new CellularAutomataParams() with { Steps = 3, RandomFill = 55, BirthLimit = 4, DeathLimit = 4 };
+        AutomataSmoothErase(rect, in @params);
+        return true;
+    }
+    public static void PlaceDeepCuttingCave(Vector2 position, Vector2 initialDirection, int caveSteps, int walkerSteps, int walkerWidth, UnifiedRandom genRand, FastNoiseLite fnl)
+    {
+        void Carve(int x, int y)
+        {
+            Point walkerPoint = new Point(x, y);
+            Point originalPoint = walkerPoint;
+            for (int s = 0; s < walkerSteps; s++)
+            {
+                switch (genRand.Next(4))
+                {
+                    case 0:
+                        walkerPoint.X--;
+                        break;
+                    case 1:
+                        walkerPoint.X++;
+                        break;
+                    case 2:
+                        walkerPoint.Y++;
+                        break;
+                    case 3:
+                        walkerPoint.Y--;
+                        break;
+                }
+                walkerPoint = TileUtilities.Clamp(walkerPoint);
+                Tile tile = Main.tile[walkerPoint];
+                tile.ClearTile();
+
+                //Reset if walking too far
+                int dx = Math.Abs(walkerPoint.X - originalPoint.X);
+                int dy = Math.Abs(walkerPoint.Y - originalPoint.Y);
+                if (dx > walkerWidth || dy > walkerWidth)
+                {
+                    walkerPoint = originalPoint;
+                }
+            }
+        }
+        //ALGO:
+        //Pick a random point on the world
+        //Use that as a starting coordinate
+        //Move the tunnel in an initial direction, for us likely diagonally down
+        //After each step, the tunnel turns its direction by a  small amount based on noise
+        //At each step, do a walker algorithm to cut away at the terrain
+        bool placedCave = false;
+        for(int s = 0; s < caveSteps; s++)
+        {
+            Point tile = position.ToTileCoordinates();
+            Carve(tile.X, tile.Y);
+            position += initialDirection * walkerWidth * 2;
+            float noise = fnl.GetNoise(s, 0);
+            initialDirection = initialDirection.RotatedBy(noise * 0.1D);
+            if (genRand.NextBool(caveSteps) && !placedCave)
+            {
+                placedCave = PlaceCavePrefab(tile.X, tile.Y, genRand);
+            }
+        }
+    }
+
+    public static void AutomataSmoothErase(Rectangle rectangle, in CellularAutomataParams @params)
+    {
+        bool[,] map = new bool[rectangle.Width, rectangle.Height];
+        for(int x = rectangle.Left; x < rectangle.Right; x++)
+        {
+            for(int y = rectangle.Top; y < rectangle.Bottom; y++)
+            {
+                int lx = x - rectangle.Left;
+                int ly = y - rectangle.Top;
+                map[lx, ly] = Main.tile[x, y].HasTile;
+            }
+        }
+        map = AutomataSmooth(map, in @params);
+        Erase(new Point(rectangle.X, rectangle.Y), map);
+    }
+
+    public static bool[,] AutomataSmooth(bool[,] map, in CellularAutomataParams @params)
+    {
+        int width = map.GetLength(0);
+        int height = map.GetLength(1);
+        for (int s = 0; s < @params.Steps; s++)
+        {
+            map = Step(map, in @params);
+        }
+
+        //Remove tiles with only 1 neighbour
+        bool[,] lessLonelyMap = new bool[width, height];
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                int neighbourCount = 0;
+                for (int dx = -1; dx < 2; dx++)
+                {
+                    for (int dy = -1; dy < 2; dy++)
+                    {
+                        if (dx != 0 && dy != 0)
+                            continue;
+                        if (dx == 0 && dy == 0)
+                            continue;
+
+                        int newX = x + dx;
+                        int newY = y + dy;
+                        if (newX < 0 || newY < 0 || newX >= width || newY >= height)
+                            neighbourCount++;
+                        else if (map[newX, newY])
+                            neighbourCount++;
+                    }
+                }
+
+                if (neighbourCount <= 1)
+                {
+                    lessLonelyMap[x, y] = false;
+                }
+                else
+                {
+                    lessLonelyMap[x, y] = map[x, y];
+                }
+            }
+        }
+
+        return lessLonelyMap;
+    }
     public static bool[,] CellularAutomataMap(int width, int height, in CellularAutomataParams @params, UnifiedRandom genRand)
     {
         bool[,] map = new bool[width, height];
@@ -1690,6 +1845,9 @@ public static class VeilGen
             bottomLeft.X += tileX;
             bottomLeft.Y += tileY;
             bottomLeft.Y -= map[0].bounds.Height;
+
+            if (VeilGen.IsTileNearby(tileX, tileY, 50, TileSets.BlockMineshafts))
+                break;
 
             Structurizer.ReadStruct(bottomLeft, room.prefab, Structurizer.DefaultTileBlend);
             Structurizer.ProtectStructure(bottomLeft, room.prefab);

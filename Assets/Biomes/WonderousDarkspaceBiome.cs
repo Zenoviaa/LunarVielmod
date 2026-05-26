@@ -4,6 +4,7 @@ using Stellamod.Core.Biomes;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Core.Particles;
 using Stellamod.Visual.Particles;
+using Stellamod.WorldG;
 using Terraria;
 using Terraria.Graphics.Capture;
 using Terraria.Graphics.Effects;
@@ -102,7 +103,9 @@ namespace Stellamod.Assets.Biomes
 
         public override bool IsBiomeActive(Player player)
         {
-            return BiomeTileCounts.InDarkspace && !player.ZoneOverworldHeight && !player.ZoneSkyHeight;
+            StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
+
+            return BiomeTileCounts.InDarkspace && !player.ZoneOverworldHeight && !player.ZoneSkyHeight && player.position.ToTileCoordinates().Y > stellaWorld.DarkspaceStart;
         }
 
         public override string BestiaryIcon => base.BestiaryIcon;

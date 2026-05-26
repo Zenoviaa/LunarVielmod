@@ -39,8 +39,7 @@ namespace Stellamod.WorldG.MarshJungle
             int minMaxY = darkspaceMinY - 700;
             int maxMaxY = darkspaceMinY;
 
-            int increment = 4;
-            for (int x = GenVars.jungleMinX; x < GenVars.jungleMaxX; x += increment)
+            for (int x = GenVars.jungleMinX; x < GenVars.jungleMaxX; x ++)
             {
                 int jungleRange = GenVars.jungleMaxX - GenVars.jungleMinX;
                 float xRatio = (float)(x - GenVars.jungleMinX) / (float)jungleRange;
@@ -50,24 +49,15 @@ namespace Stellamod.WorldG.MarshJungle
                 int steps = (int)MathHelper.Lerp(1, 8, bump);
                 int maxY = (int)MathHelper.Lerp(minMaxY, maxMaxY, bump);
 
-                for (int y = minY; y < maxY; y += increment)
+                for (int y = minY; y < maxY; y ++)
                 {
-                    GenVars.mudWall = true;
-
-                    int i = x;
-                    int j = y;
-                    int innerSteps = steps;
-                    double innerStrength = strength;
-
-                    //Just create some variation in the shape
-                    //We want a large ovular shape but we also want it to not be so repetitive
-                    i += genRand.Next(-10, 10);
-                    j += genRand.Next(-10, 10);
-                    innerSteps += genRand.Next(-3, 3);
-                    innerStrength += genRand.NextDouble() * 4f;
-
-                    WorldGen.TileRunner(i, j, innerStrength, innerSteps, TileID.Mud, false);
-                    GenVars.mudWall = false;
+                    Tile tile = Main.tile[x, y];
+                    if (tile.HasTile)
+                    {
+                        //tile.ClearTile();
+                        tile.TileType = TileID.Mud;
+                    }
+                    //WorldGen.TileRunner(i, j, innerStrength, innerSteps, TileID.Mud, false);
                 }
             }
         }
