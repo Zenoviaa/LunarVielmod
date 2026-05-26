@@ -1,4 +1,5 @@
-﻿using ReLogic.Utilities;
+﻿using Iced.Intel;
+using ReLogic.Utilities;
 using Stellamod.Common.DungeonGeneration;
 using Stellamod.Content.Areas.Abyss.WeaponsAB;
 using Stellamod.Content.Areas.Cinderspark.WeaponsCS;
@@ -251,56 +252,81 @@ public partial class StellaWorld : ModSystem
     {
         progress.Message = "Making Cinderspark Caves";
         var genRand = WorldGen.genRand;
-        for (int x = 0; x < Main.maxTilesX; x++)
+
+
+        //Here we're going to use the same technique i used in the darkspace
+        FastNoiseLite topFNL = new FastNoiseLite();
+        topFNL.SetSeed(genRand.Next(0, int.MaxValue));
+        topFNL.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        topFNL.SetFrequency(0.15f);
+        topFNL.SetDomainWarpAmp(10);
+        topFNL.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
+
+        FastNoiseLite bottomFNL = new FastNoiseLite();
+        bottomFNL.SetSeed(genRand.Next(0, int.MaxValue));
+        bottomFNL.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        bottomFNL.SetFrequency(0.15f);
+        bottomFNL.SetDomainWarpAmp(10);
+        bottomFNL.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
+
+        //The cinderspark is defined by long narrow passage ways
+        //So just pick a random point, decide to go left and right, and go from there
+        //Then sprinkle vertical caves so you can actually move down in the place
+        float numCaves = Main.maxTilesX * Main.maxTilesY * 0.000004f;
+        for(float f = 0; f < numCaves; f++)
         {
-            int caveMakerSteps = 32;
-            for (int j = 0; j < caveMakerSteps; j++)
+            //Reset the seed for each cave
+            topFNL.SetSeed(genRand.Next(0, int.MaxValue));
+            bottomFNL.SetSeed(genRand.Next(0, int.MaxValue));
+
+            int sx = genRand.Next(0, Main.maxTilesX);
+            int sy = genRand.Next(CindersparkStart, Main.UnderworldLayer);
+            int minCaveDistance = genRand.Next(4, 5);
+            int maxCaveDistance = genRand.Next(8, 10);
+            int steps = genRand.Next(128, 600);
+            int dir = genRand.NextBool(2) ? 1 : -1;
+            for (int s = 0; s < steps; s++)
             {
-                int y = genRand.Next(Main.maxTilesY - 600, Main.maxTilesY - 350);
-                Tile tile = Main.tile[x, y];
-                if (!genRand.NextBool(1512))
-                    continue;
-
-                int clearingCaveWidth = 15;
-                int clearingCaveSteps = 500;
-
-                //Cave position in tiles
-                Vector2 clearingPosition = new Vector2(x, y);
-
-                //Starting cave direction
-
-                Vector2 clearingCaveDirection = Main.rand.NextVector2Circular(1, 1);//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
-
-                //How much the tile runner is gonna carve out
-                Vector2 clearingCaveStrength = new Vector2(20, 25);
-
-                VeilGen.GenerateOpenCaveClearing(clearingPosition,
-                    clearingCaveDirection,
-                    clearingCaveStrength,
-                    clearingCaveWidth,
-                    clearingCaveSteps);
-
-                int numBranches = genRand.Next(3, 6);
-                for (int k = 0; k < numBranches; k++)
+                float SampleNoise(int x, int y)
                 {
-                    int caveWidth = genRand.Next(2, 8);
-                    int caveSteps = genRand.Next(25, 50);
+                    return topFNL.GetNoise(x * 0.05f, y * 0.05f) * 0.5f + 0.5f;
+                }
+                float SampleNoise2(int x, int y)
+                {
+                    return bottomFNL.GetNoise(x * 0.05f, y * 0.05f) * 0.5f + 0.5f;
+                }
 
-                    //Cave position in tiles
-                    Vector2 cavePosition = new Vector2(x, y);
+                int x = sx + s * dir;
+                if (x < 0 || x >= Main.maxTilesX)
+                    break;
 
-                    //Starting cave direction
-                    Vector2 baseCaveDirection = -Vector2.UnitY.RotateRandom(MathHelper.ToRadians(80));//.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+                float topNoise = SampleNoise(x, sy);
+                float bottomNoise = SampleNoise2(x, sy);
 
-                    //How much the tile runner is gonna carve out
-                    Vector2 caveStrength = new Vector2(5, 7);
+                //Cave middle up
+                int topDistance = (int)MathHelper.Lerp(minCaveDistance, maxCaveDistance, topNoise) + genRand.Next(-1, 1);
+                for (int y = 0; y < topDistance; y++)
+                {
+                    Tile tile = Main.tile[x, sy - y];
+                    tile.ClearEverything();
+                }
 
-                    //Chance to open up
-                    VeilGen.GenerateStraightCaves(cavePosition, baseCaveDirection, caveStrength, caveWidth, caveSteps);
+                //Cave middle down
+                int bottomDistance = (int)MathHelper.Lerp(minCaveDistance, maxCaveDistance, bottomNoise) + genRand.Next(-1, 1);
+                for (int y = 0; y < bottomDistance; y++)
+                {
+                    Tile tile = Main.tile[x, sy + y];
+                    tile.ClearEverything();
                 }
             }
         }
+
+        //Smoothing will get rid of the lonely tiles
+        Rectangle smoothingRect = new Rectangle(0, CindersparkStart, Main.maxTilesX, Main.UnderworldLayer - CindersparkStart);
+        CellularAutomataParams @params = new CellularAutomataParams() with { Steps = 3, RandomFill = 55, BirthLimit = 4, DeathLimit = 4 };
+        VeilGen.AutomataSmoothErase(smoothingRect, in @params);
     }
+
     private void AddNewGenerationPasses(List<GenPass> tasks, ref double totalWeight)
     {
         PassWriter passWriter = new PassWriter(tasks);
@@ -325,9 +351,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("MarshTerrain", WorldGenMarsh));
         passWriter.NextPass(new PassLegacy("Veizal Hill Terrain", WorldGenVeizalHillsTerrain));
         passWriter.NextPass(new PassLegacy("Misty Dungeon Hill Terrain", WorldGenMistyDungeonHill));
-        // passWriter.NextPass(new PassLegacy("Jungle Caves", JungleCavesPass));
         passWriter.NextPass(new PassLegacy("RoyalCapitalTerrain", WorldGenCapitalTerrain));
-
         passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenCinderspark));
         passWriter.NextPass(new PassLegacy("Cinderspark Caves", CindersparkCavesPass));
         passWriter.NextPass(new PassLegacy("Tree Caves", TreeCavesPass));
@@ -342,10 +366,8 @@ public partial class StellaWorld : ModSystem
         passWriter.SetInsertionIndex("Micro Biomes");
         passWriter.DisablePass("Micro Biomes");
         passWriter.NextPass(new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
-
         passWriter.NextPass(new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
         passWriter.NextPass(new PassLegacy("World Gen Illuria", WorldGenIlluria));
-        passWriter.NextPass(new PassLegacy("World Gen Cinderspark", WorldGenMoreFlameOre));
         passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
         passWriter.NextPass(new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
         passWriter.NextPass(new PassLegacy("World Gen Hills and Veizal House", WorldGenHillsAndVeizal));
@@ -386,7 +408,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("Cavern Waters", CavernWaters));
         passWriter.NextPass(new PassLegacy("Black Stones", WorldGenDarkstone));
         passWriter.NextPass(new PassLegacy("Charred Stones", HardRocksPass));
-        passWriter.NextPass(new PassLegacy("Charred Stone Walls", HardWallsPass));
+    
         //Set desert location
         passWriter.SetInsertionIndex("Full Desert");
         passWriter.ReplacePass(new PassLegacy("Full Desert Rework", LockDesert));
@@ -403,6 +425,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Colosseum", WorldGenColosseum));
         passWriter.NextPass(new PassLegacy("World Gen Xix Village", WorldGenXixVillage));
         passWriter.NextPass(new PassLegacy("World Gen Stone Golem Cave", WorldGenStoneGolemCave));
+        passWriter.NextPass(new PassLegacy("Charred Stone Walls", HardWallsPass));
         passWriter.NextPass(new PassLegacy("Grassing Caves", WorldGenGrassPass));
     }
 
@@ -2961,6 +2984,7 @@ public partial class StellaWorld : ModSystem
 
     private void WorldGenGrassPass(GenerationProgress progress, GameConfiguration configuration)
     {
+        progress.Message = "Grassing Caves";
         var genRand = WorldGen.genRand;
         int fluff = 10;
         int startFloweringY = (int)(Main.worldSurface - 25);
@@ -2972,33 +2996,13 @@ public partial class StellaWorld : ModSystem
                 Tile tile = Main.tile[x, y];
                 if (!tile.HasTile)
                     continue;
+                if (!VeilGen.IsTileExposedToAirCardinal(x, y)) 
+                    continue;
 
-                bool hasRight = (x + 1 < Main.maxTilesX) && !WorldGen.SolidOrSlopedTile(x + 1, y);
-                bool hasLeft = (x - 1 > 0) && !WorldGen.SolidOrSlopedTile(x - 1, y);
-                bool hasTop = (y + 1 < Main.maxTilesY) && !WorldGen.SolidOrSlopedTile(x, y + 1);
-                bool hasBottom = (y - 1 > 0) && !WorldGen.SolidOrSlopedTile(x, y - 1);
-                bool hasAny = hasRight || hasLeft || hasTop || hasBottom;
-
-                if (hasAny && (tile.TileType == TileID.Dirt || tile.TileType == TileID.Stone || tile.TileType == TileID.Grass))
+                if ((tile.TileType == TileID.Dirt || tile.TileType == TileID.Stone || tile.TileType == TileID.Grass))
                 {
-                    WorldGen.PlaceTile(x, y, TileID.Grass, forced: true);
-                    if (y < startFloweringY)
-                        continue;
-                    Point point = new Point(x, y);
-                    int steps = genRand.Next(1, 4);
-                    Vector2 baseDirection = -Vector2.UnitY;
-                    int caveWidth = 3;
-
-                    for (int s = 0; s < steps; s++)
-                    {
-                        if (point.X - caveWidth > 0 && point.X + caveWidth < Main.maxTilesX && point.Y + caveWidth < Main.maxTilesY && point.Y - caveWidth > 0)
-                        {
-                            WorldUtils.Gen(point, new Shapes.Circle(caveWidth, caveWidth),
-                                new Actions.PlaceWall(WallID.FlowerUnsafe));
-                        }
-
-                        point += (baseDirection * caveWidth).RotatedByRandom(MathHelper.ToRadians(30)).ToPoint();
-                    }
+                    tile.TileType = TileID.Grass;
+                    VeilGen.WallWalker(x, y, genRand.Next(2, 6) * 3, WallID.FlowerUnsafe, 3);
                 }
             }
         }
@@ -3094,7 +3098,7 @@ public partial class StellaWorld : ModSystem
             for(int y = start; y < end; y++)
             {
                 Tile tile = Main.tile[x, y];
-                if (tile.TileType == charredStoneTypeInt && VeilGen.IsTileExposedToAirCardinal(x, y))
+                if (tile.TileType == charredStoneTypeInt && tile.HasTile && VeilGen.IsTileExposedToAirCardinal(x, y))
                 {
                     if (genRand.NextBool(3))
                     {
@@ -8402,107 +8406,59 @@ for (int beamX = structureRectangle.Location.X;
     #endregion
 
     #region Ores
+
     private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)
-    {
-        // 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
+    {     
         progress.Message = "Scorching Gild and Arnchar burning into the world";
-
-
+        int tileType = ModContent.TileType<VerianoreTile>();
         for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
-        {
-            // 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
+        {   
             int x = WorldGen.genRand.Next(0, Main.maxTilesX / 2);
             int y = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
 
-            // 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-            WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 14), WorldGen.genRand.Next(2, 9), ModContent.TileType<VerianoreTile>());
+            Tile tile = Main.tile[x, y];
+            if (!tile.HasTile)
+                continue;
 
-
+            VeilGen.QuickOrePatch(x, y, tileType);
         }
-
-
-        // 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
-
-
     }
 
-    private void WorldGenMoreFlameOre(GenerationProgress progress, GameConfiguration configuration)
-    {
-        // 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
-        progress.Message = "Scorching more Arnchar into the world";
-
-
-        for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
-        {
-
-
-            int xz = WorldGen.genRand.Next(0, Main.maxTilesX);
-            int yz = WorldGen.genRand.Next(Main.UnderworldLayer - (Main.maxTilesY / 20), Main.UnderworldLayer);
-
-            // 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-            WorldGen.TileRunner(xz, yz, WorldGen.genRand.Next(4, 20), WorldGen.genRand.Next(5, 15), ModContent.TileType<VerianoreTile>(), false, 0, 0, true, true, -1);
-        }
-
-
-
-
-        // 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
-
-
-    }
     private void WorldGenFrileOre(GenerationProgress progress, GameConfiguration configuration)
     {
-        // 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
         progress.Message = "Freezing the world with Frile";
-
-
+        int tileType = ModContent.TileType<FrileOreTile>();
         double num = (Main.maxTilesX * Main.maxTilesY) * 6E-05;
         num *= 2;
         for (int k = 0; k < (int)(num); k++)
         {
-            // 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
-
-
             int x = WorldGen.genRand.Next(GenVars.snowOriginLeft - 600, GenVars.snowOriginRight + 600);
-
-
-            //Just to be safe, prevent going outside the world
-            if (x <= 0)
-                x = 0;
-            if (x >= Main.maxTilesX)
-                x = Main.maxTilesX - 1;
-
-            int y = WorldGen.genRand.Next((int)GenVars.rockLayerHigh - 500, Main.maxTilesY);
-
+            int y = WorldGen.genRand.Next((int)GenVars.rockLayerHigh - 500, Main.maxTilesY - 400);
 
             //Only spawn on ice/snow
             Tile tile = Main.tile[x, y];
             if (tile.TileType != TileID.IceBlock && tile.TileType != TileID.SnowBlock)
                 continue;
 
-            // 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-            WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 10), WorldGen.genRand.Next(4, 16), ModContent.TileType<FrileOreTile>());
+            VeilGen.QuickOrePatch(x, y, tileType);
         }
     }
 
     private void WorldGenGlisteningOre(GenerationProgress progress, GameConfiguration configuration)
     {
-        // 7. Setting a progress message is always a good idea. This is the message the user sees during world generation and can be useful for identifying infinite loops.      
         progress.Message = "World Glistens with shines of the Glistening Moon";
-
-
+        int tileType = ModContent.TileType<GlisteningOreTile>();
         for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
         {
-            // 10. We randomly choose an x and y coordinate. The x coordinate is choosen from the far left to the far right coordinates. The y coordinate, however, is choosen from between WorldGen.worldSurfaceLow and the bottom of the map. We can use this technique to determine the depth that our ore should spawn at.
             int x = WorldGen.genRand.Next(0, Main.maxTilesX);
             int y = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
+            Tile tile = Main.tile[x, y];
+            if (!tile.HasTile)
+                continue;
 
-            // 11. Finally, we do the actual world generation code. In this example, we use the WorldGen.TileRunner method. This method spawns splotches of the Tile type we provide to the method. The behavior of TileRunner is detailed in the Useful Methods section below.
-            WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 10), WorldGen.genRand.Next(2, 10), ModContent.TileType<GlisteningOreTile>());
+            VeilGen.QuickOrePatch(x, y, tileType);
         }
     }
-
-
 
     #endregion
 

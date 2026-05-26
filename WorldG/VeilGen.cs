@@ -1457,6 +1457,11 @@ public static class VeilGen
 
     public static readonly Room[] MineshaftPrefabs = DungeonSaveUtility.GetDungeonPrefabs("Mineshafts");
 
+
+    public static void QuickOrePatch(int x, int y, int tileType)
+    {
+        VeilGen.Walker(x, y, WorldGen.genRand.Next(20, 40), tileType, maxDist: 3);
+    }
     public static void Walker(int x, int y, int steps, int tileType, int maxDist)
     {
         Point walkerPoint = new Point(x,y);
