@@ -118,6 +118,8 @@ public partial class StellaWorld : ModSystem
     public int CindersparkEnd { get; private set; }
     public int DarkspaceStart { get; private set; }
     public int DarkspaceEnd { get; private set; }
+    public int HeatedDepthsStart { get; private set; }
+    public int HeatedDepthsEnd { get; private set; }
     private void DisableGenTask(List<GenPass> tasks, string passName)
     {
         tasks.Find(x => x.Name.Equals(passName)).Disable();
@@ -428,7 +430,9 @@ public partial class StellaWorld : ModSystem
         passWriter.SetInsertionIndex("Micro Biomes");
         passWriter.DisablePass("Micro Biomes");
         passWriter.NextPass(new PassLegacy("World Gen Worlds End", WorldGenWorldsEnd));
+        passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
         passWriter.NextPass(new PassLegacy("World Gen Flame Ores", WorldGenFlameOre));
+        passWriter.NextPass(new PassLegacy("World Gen Dragon Ores", WorldGenDragonpieceOre));
         passWriter.NextPass(new PassLegacy("World Gen Illuria", WorldGenIlluria));
         passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
         passWriter.NextPass(new PassLegacy("World Gen Royal Castle", WorldGenRoyalCapital));
@@ -454,7 +458,6 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("World Gen Abysm Caves", NewCaveFormationAbysm));
         passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenFrileOre));
         passWriter.NextPass(new PassLegacy("Icey Caverns", WorldGenIceCaverns));
-        passWriter.NextPass(new PassLegacy("World Gen Ice Ores", WorldGenGlisteningOre));
         passWriter.NextPass(new PassLegacy("Ice Housing 3", SurfaceIceHouses));
  
 
@@ -462,14 +465,14 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new MarshJungleMudPass());
         passWriter.NextPass(new PassLegacy("Jungle Surface Caves", WorldGenJungleSurfaceCaves));
         passWriter.NextPass(new PassLegacy("Wonderous Darkspace", WorldGenDarkspace));
+        passWriter.NextPass(new PassLegacy("Charred Stones", HardRocksPass));
         passWriter.NextPass(new PassLegacy("Ravine Caves", RavinesPass));
         passWriter.NextPass(new PassLegacy("Deep Caves", DeepCavesPass));
         passWriter.NextPass(new PassLegacy("Cavernous Caves", MineshaftsPass));
         passWriter.NextPass(new PassLegacy("Vanilla Caves", ExtraCavesPass));
         passWriter.NextPass(new PassLegacy("Cavern Waters", CavernWaters));
         passWriter.NextPass(new PassLegacy("Black Stones", WorldGenDarkstone));
-        passWriter.NextPass(new PassLegacy("Charred Stones", HardRocksPass));
-    
+     
         //Set desert location
         passWriter.SetInsertionIndex("Full Desert");
         passWriter.ReplacePass(new PassLegacy("Full Desert Rework", LockDesert));
@@ -1891,7 +1894,7 @@ public partial class StellaWorld : ModSystem
         progress.Message = "Creating a Dark Place.";
 
         var genRand = WorldGen.genRand;
-        int yMax = CindersparkStart - 100;
+        int yMax = CindersparkStart - 600;
         if(CindersparkStart == 0)
         {
             throw new ArgumentException("The Cinderspark is at the top of the world for some reason.");
@@ -3180,8 +3183,10 @@ public partial class StellaWorld : ModSystem
     {
         progress.Message = "Hardening Stones";
         var genRand = WorldGen.genRand;
-        int start = DarkspaceStart - 500;
+        int start = DarkspaceEnd;
         int end = Main.UnderworldLayer;
+        HeatedDepthsStart = start;
+        HeatedDepthsEnd = CindersparkStart;
         ushort charredStoneType = (ushort)ModContent.TileType<CharredStone>();
         for(int x = 0; x < Main.maxTilesX;x++)
         {
@@ -3316,20 +3321,107 @@ public partial class StellaWorld : ModSystem
             }
         }
 
-        for (int s = 0; s < Main.maxTilesX; s+=4)
+        float numRavines = 5;
+        for(float ravines =0; ravines < numRavines; ravines++)
         {
-            int x = s;
-            int y = DarkspaceStart - 100;
-            Carve(x, y);
-            //Random chance to skip several steps, which will create gaps in the caves
-            if (genRand.NextBool(128))
+            for (int s = 0; s < Main.maxTilesX; s += 4)
             {
-                s += 144;
+                float p = ravines / numRavines;
+                int x = s;
+                int y = (int)MathHelper.Lerp(HeatedDepthsEnd, HeatedDepthsStart, p);
+                walkerWidth = (int)MathHelper.Lerp(16, 3, p);
+                Carve(x, y);
+                //Random chance to skip several steps, which will create gaps in the caves
+                if (genRand.NextBool(128))
+                {
+                    s += 144;
+                }
+            }
+        }
+
+
+
+        //Vertical Caves
+
+        //Here we're going to use the same technique i used in the darkspace
+        FastNoiseLite topFNL = new FastNoiseLite();
+        topFNL.SetSeed(genRand.Next(0, int.MaxValue));
+        topFNL.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        topFNL.SetFrequency(0.15f);
+        topFNL.SetDomainWarpAmp(10);
+        topFNL.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
+
+        FastNoiseLite bottomFNL = new FastNoiseLite();
+        bottomFNL.SetSeed(genRand.Next(0, int.MaxValue));
+        bottomFNL.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        bottomFNL.SetFrequency(0.15f);
+        bottomFNL.SetDomainWarpAmp(10);
+        bottomFNL.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
+
+        float numCaves = (float)Main.maxTilesX * (float)Main.maxTilesY * 0.00012f;
+        for (float f = 0; f < numCaves; f++)
+        {
+            //Reset the seed for each cave
+            topFNL.SetSeed(genRand.Next(0, int.MaxValue));
+            bottomFNL.SetSeed(genRand.Next(0, int.MaxValue));
+
+            int sx = genRand.Next(0, Main.maxTilesX);
+            int sy = genRand.Next(HeatedDepthsStart, HeatedDepthsEnd);
+            Tile startTile = Main.tile[sx, sy];
+
+            //Only place on air, guaranteeing that the cave connects to another cave
+            if (startTile.HasTile)
+                continue;
+
+            int minCaveDistance = genRand.Next(3, 4);
+            int maxCaveDistance = genRand.Next(6, 8);
+            int steps = genRand.Next(32, 154);
+            int dir = genRand.NextBool(2) ? -1 : 1;
+            for (int s = 0; s < steps; s++)
+            {
+                float SampleNoise(int x, int y)
+                {
+                    return topFNL.GetNoise(x * 0.05f, y * 0.05f) * 0.5f + 0.5f;
+                }
+                float SampleNoise2(int x, int y)
+                {
+                    return bottomFNL.GetNoise(x * 0.05f, y * 0.05f) * 0.5f + 0.5f;
+                }
+
+                int y = sy + s * dir;
+                if (y <= 0 || y >= Main.maxTilesY)
+                    break;
+
+                float topNoise = SampleNoise(sx, y);
+                float bottomNoise = SampleNoise2(sx, y);
+
+                //Cave middle up
+                int topDistance = (int)MathHelper.Lerp(minCaveDistance, maxCaveDistance, topNoise) + genRand.Next(-1, 1);
+                for (int x = 0; x < topDistance; x++)
+                {
+                    int newX = sx - x;
+                    if (newX <= 0)
+                        break;
+
+                    Tile tile = Main.tile[newX, y];
+                    tile.ClearEverything();
+                }
+
+                //Cave middle down
+                int bottomDistance = (int)MathHelper.Lerp(minCaveDistance, maxCaveDistance, bottomNoise) + genRand.Next(-1, 1);
+                for (int x = 0; x < bottomDistance; x++)
+                {
+                    int newX = sx + x;
+                    if (newX >= Main.maxTilesX)
+                        break;
+                    Tile tile = Main.tile[newX, y];
+                    tile.ClearEverything();
+                }
             }
         }
 
         CellularAutomataParams @params = new CellularAutomataParams() with { Steps = 3, RandomFill = 55, BirthLimit = 4, DeathLimit = 4 };
-        Rectangle smoothRectangle = new Rectangle(0, DarkspaceStart - 200, Main.maxTilesX, 300);
+        Rectangle smoothRectangle = new Rectangle(0, HeatedDepthsStart, Main.maxTilesX, HeatedDepthsEnd - HeatedDepthsStart);
         VeilGen.AutomataSmoothErase(smoothRectangle, in @params);
     }
 
@@ -3384,7 +3476,7 @@ public partial class StellaWorld : ModSystem
         //First we should generate corridors starting from the top of the stone layer all the way to darkspace
         //Actually they just cut through the whole world, ignoring ice and jungle / desert
         var genRand = WorldGen.genRand;
-        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000008f;
+        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000007f;
         float maxAttemptCount = maxCaveCount * 10;
         float placedCaves = 0;
         int padding = 1000;
@@ -3397,7 +3489,7 @@ public partial class StellaWorld : ModSystem
         fnl.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
         for (int i = 0; i < maxAttemptCount; i++)
         {
-            int x = genRand.Next(padding, Main.maxTilesX - padding);
+            int x = genRand.Next(padding + 1200, Main.maxTilesX - padding);
             int y = genRand.Next((int)GenVars.rockLayerHigh, DarkspaceStart);
             if (VeilGen.IsTileNearby(x, y, distance: 50, TileSets.BlockMineshafts))
                 continue;
@@ -8469,6 +8561,24 @@ for (int beamX = structureRectangle.Location.X;
     #endregion
 
     #region Ores
+    private void WorldGenDragonpieceOre(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Dragons Scorch the Earth...";
+        int tileType = ModContent.TileType<DragonpieceOre>();
+        int count = (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05);
+        for (int k = 0; k < count; k++)
+        {
+            int x = WorldGen.genRand.Next(0, Main.maxTilesX);
+            int y = WorldGen.genRand.Next(HeatedDepthsStart, HeatedDepthsEnd);
+
+            Tile tile = Main.tile[x, y];
+            if (!tile.HasTile)
+                continue;
+
+            VeilGen.QuickOrePatch(x, y, tileType);
+            progress.Set((float)k / (float)count);
+        }
+    }
 
     private void WorldGenFlameOre(GenerationProgress progress, GameConfiguration configuration)
     {     
@@ -8476,7 +8586,7 @@ for (int beamX = structureRectangle.Location.X;
         int tileType = ModContent.TileType<VerianoreTile>();
         for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
         {   
-            int x = WorldGen.genRand.Next(0, Main.maxTilesX / 2);
+            int x = WorldGen.genRand.Next(0, Main.maxTilesX);
             int y = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
 
             Tile tile = Main.tile[x, y];
@@ -8514,7 +8624,7 @@ for (int beamX = structureRectangle.Location.X;
         for (int k = 0; k < (int)((Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
         {
             int x = WorldGen.genRand.Next(0, Main.maxTilesX);
-            int y = WorldGen.genRand.Next((int)GenVars.rockLayerLow, Main.maxTilesY);
+            int y = WorldGen.genRand.Next((int)GenVars.rockLayerHigh, DarkspaceStart);
             Tile tile = Main.tile[x, y];
             if (!tile.HasTile)
                 continue;
@@ -10256,6 +10366,8 @@ for (int beamX = structureRectangle.Location.X;
         tag["CindersparkEnd"] = CindersparkEnd;
         tag["DarkspaceStart"] = DarkspaceStart;
         tag["DarkspaceEnd"] = DarkspaceEnd;
+        tag["HeatedDepthsStart"] = HeatedDepthsStart;
+        tag["HeatedDepthsEnd"] = HeatedDepthsEnd;
     }
 
     public override void LoadWorldData(TagCompound tag)
@@ -10267,5 +10379,7 @@ for (int beamX = structureRectangle.Location.X;
         CindersparkEnd = tag.Get<int>("CindersparkEnd");
         DarkspaceStart = tag.Get<int>("DarkspaceStart");
         DarkspaceEnd = tag.Get<int>("DarkspaceEnd");
+        HeatedDepthsStart = tag.Get<int>("HeatedDepthsStart");
+        HeatedDepthsEnd = tag.Get<int>("HeatedDepthsEnd");
     }
 }

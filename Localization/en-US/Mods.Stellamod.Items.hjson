@@ -11262,3 +11262,8 @@ CharredStoneBlock: {
 	DisplayName: Charred Stone Block
 	Tooltip: ""
 }
+
+Dragonpiece: {
+	DisplayName: Dragonpiece
+	Tooltip: ""
+}

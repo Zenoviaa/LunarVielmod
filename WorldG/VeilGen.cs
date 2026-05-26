@@ -1460,7 +1460,7 @@ public static class VeilGen
 
     public static void QuickOrePatch(int x, int y, int tileType)
     {
-        VeilGen.Walker(x, y, WorldGen.genRand.Next(20, 40), tileType, maxDist: 3);
+        VeilGen.Walker(x, y, WorldGen.genRand.Next(50, 90), tileType, maxDist: 3);
     }
     public static void Walker(int x, int y, int steps, int tileType, int maxDist)
     {
@@ -1862,7 +1862,7 @@ public static class VeilGen
     public static bool PlaceMineshaft(int x, int y) => PlaceMineshaft(new Point(x, y));
     public static (Rectangle rect, Room[] map) GenerateMineshaft(UnifiedRandom genRand)
     {
-        (int, int)[] layout = DungeonLayouter.GenerateLayout(16, genRand);
+        (int, int)[] layout = DungeonLayouter.GenerateLayout(40, genRand);
         Point[] vertices = new Point[layout.Length];
         for (int v = 0; v < vertices.Length; v++)
         {

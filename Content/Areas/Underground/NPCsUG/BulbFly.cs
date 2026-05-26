@@ -15,6 +15,7 @@ public class BulbFly : ModNPC
 {
     private int _frame;
     private ref float Timer => ref NPC.ai[0];
+    private ref float Dir => ref NPC.ai[1];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -59,6 +60,15 @@ public class BulbFly : ModNPC
     {
         base.AI();
         Timer++;
+        if(Timer >= 200)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                Timer = 0;
+                Dir = Main.rand.NextFloat(-2f, 2f);
+                NPC.netUpdate = true;
+            }
+        }
         NPC.rotation = NPC.velocity.X * 0.04f;
         Lighting.AddLight(NPC.position, TorchID.Torch);
         if (Main.rand.NextBool(32))
@@ -66,10 +76,7 @@ public class BulbFly : ModNPC
             Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Torch);
         }
 
-        if (NPC.velocity == Vector2.Zero)
-            NPC.velocity = -Vector2.UnitY;
-        else
-            NPC.velocity = NPC.velocity.RotatedBy(0.05f);
+        NPC.velocity = Dir.ToRotationVector2() * 0.3f;
     }
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

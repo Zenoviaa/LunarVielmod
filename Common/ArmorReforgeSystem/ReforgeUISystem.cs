@@ -1,8 +1,8 @@
 ﻿using Stellamod.Common.ArmorReforge;
 using Stellamod.Common.UI;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.Items.Consumables;
 using Stellamod.UI;
 using System;
 using System.Collections.Generic;

@@ -79,8 +79,8 @@ namespace Stellamod.Content.Biomes
 
 
                     StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
-                    float top = stellaWorld.DarkspaceStart - 500;
-                    float end = Main.UnderworldLayer;
+                    float top = stellaWorld.HeatedDepthsStart;
+                    float end = stellaWorld.HeatedDepthsEnd;
                     float steps = end - top;
                     float progress = (Player.position.ToTileCoordinates().Y - top) / steps;
                     Vector3 gradientStrength = new Vector3();
@@ -91,40 +91,23 @@ namespace Stellamod.Content.Biomes
                     depthGradient.gradientColor = Color.Red.ToVector3();
                 }
 
-                if (ZoneWorldsEnd)
+                if (ZoneHeatedDepths)
                 {
-                    ActivateWorldsEndSky();
+                    if (Main.rand.NextBool(24))
+                    {
+                        Vector2 pos = new Vector2();
+                        pos.X = Main.rand.Next(0, Main.screenWidth);
+                        pos.Y = Main.rand.Next(0, Main.screenHeight);
+                        pos += Main.screenPosition;
 
+
+                    }
                 }
-                else
-                {
-                    DeActivateWorldsEndSkyy();
-                }
-
-            }
-            //  Main.NewText(SkyManager.Instance["Stellamod:WorldsEndSky"].IsActive());
-
-        }
-        private void ActivateWorldsEndSky()
-        {
-            if (!SkyManager.Instance["Stellamod:WorldsEndSky"].IsActive())
-            {
-                Vector2 targetCenter = Player.Center;
-                SkyManager.Instance.Activate("Stellamod:WorldsEndSky", targetCenter);
             }
         }
 
-        private void DeActivateWorldsEndSkyy()
-        {
-            if (SkyManager.Instance["Stellamod:WorldsEndSky"].IsActive())
-            {
-                Vector2 targetCenter = Player.Center;
-                SkyManager.Instance.Deactivate("Stellamod:WorldsEndSky", targetCenter);
-            }
-        }
         private void AddForegroundOrBackground()
         {
-
             MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneIlluria || myPlayer.ZoneIshtar || myPlayer.ZoneAbyss)
             {
@@ -135,7 +118,6 @@ namespace Stellamod.Content.Biomes
 
                 if (Main.rand.NextBool(5))
                 {
-                    //Main.NewText("E");
                     ForegroundParticleRenderer.NewParticle<Snowstrike>();
                 }
             }

@@ -1,6 +1,6 @@
 ﻿using ReLogic.Content;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Utilities;
-using Stellamod.Items.Consumables;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;

@@ -8,6 +8,7 @@ using Stellamod.Helpers;
 using System;
 using Terraria;
 using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
@@ -123,36 +124,39 @@ namespace Stellamod.Content.Areas.WorldsEnd
             return BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/GreyGrassBackgroundClose");
         }
     }
+
     public class WorldsEndBiome : BaseUrdveilBiome
     {
         public override int Music
         {
             get
             {
-                //Put your if statement here
-
-                //Normal music
                 return MusicLoader.GetMusicSlot(Mod, "Assets/Music/WorldsEnd");
             }
         }
+
         public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => MapBackground;
         public override Color? BackgroundColor => base.BackgroundColor;
-
         public override ModWaterStyle WaterStyle => ModContent.GetInstance<StarbloomWaterStyle>();
         public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<NoBackgroundStyle>();
-
         public override bool IsBiomeActive(Player player) => (player.ZoneOverworldHeight || player.ZoneDirtLayerHeight) && BiomeTileCounts.InWorldsEnd;
         public override void OnEnter(Player player)
         {
             base.OnEnter(player);
             player.GetModPlayer<BiomePlayer>().ZoneWorldsEnd = true;
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            SkyManager.Instance.Activate("Stellamod:WorldsEndSky", player.Center);
         }
         public override void OnLeave(Player player)
         {
             base.OnLeave(player);
             player.GetModPlayer<BiomePlayer>().ZoneWorldsEnd = false;
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            SkyManager.Instance.Deactivate("Stellamod:WorldsEndSky", player.Center);
         }
     }
 }
