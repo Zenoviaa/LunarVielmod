@@ -1,6 +1,7 @@
 ﻿using Stellamod.Content.Areas.PunkerTown;
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Areas.Terror;
+using Stellamod.Content.Areas.Underground;
 using Stellamod.Content.Areas.WaterSide;
 using System.Collections.Generic;
 using Terraria;
@@ -20,6 +21,7 @@ namespace Stellamod.Common
             HarmonicEnemy = new List<int>();
             MarshEnemy = new List<int>();
             AegislavSurfaceEnemy = new List<int>();
+            HeatedDepthsEnemy = new List<int>();
             ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
             base.SetupContent();
 
@@ -28,6 +30,7 @@ namespace Stellamod.Common
         public static List<int> HarmonicEnemy;
         public static List<int> MarshEnemy;
         public static List<int> AegislavSurfaceEnemy;
+        public static List<int> HeatedDepthsEnemy;
         public static float[] ModifiedWeights;
     }
 
@@ -47,6 +50,10 @@ namespace Stellamod.Common
         public static void AddToHarmonicCoralways(this ModNPC npc)
         {
             SpawnSets.HarmonicEnemy.Add(npc.Type);
+        }
+        public static void AddToHeatedDepths(this ModNPC npc)
+        {
+            SpawnSets.HeatedDepthsEnemy.Add(npc.Type);
         }
 
         public static void ModifySpawnWeight(this ModNPC npc, float multiplier)
@@ -102,6 +109,10 @@ namespace Stellamod.Common
                 pool.TryAdd(NPCID.BloodCrawler, 0.1f);
                 pool.TryAdd(NPCID.FaceMonster, 0.1f);
                 pool.TryAdd(NPCID.Crimera, 0.1f);
+            }
+            if (spawnInfo.Player.InModBiome<HeatedDepthsBiome>())
+            {
+                AddEnemiesFromSpawnSet(SpawnSets.HeatedDepthsEnemy, pool, spawnInfo);
             }
         }
     }

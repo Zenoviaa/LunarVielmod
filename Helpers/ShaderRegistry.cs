@@ -141,6 +141,7 @@ namespace Stellamod.Helpers
             RegisterScreenShader("LunarVeil:DarkSmear", "Effects/DarkSmear");
             RegisterScreenShader("LunarVeil:PetalStorm", "Effects/PetalStorm");
             RegisterScreenShader("LunarVeil:SuperShockwave", "Effects/SuperShockwave");
+            RegisterScreenShader("LunarVeil:WorldDepthGradient", "Effects/WorldDepthGradient");
 
 
             Mod mod = Stellamod.Instance;

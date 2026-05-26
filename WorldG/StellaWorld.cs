@@ -283,7 +283,7 @@ public partial class StellaWorld : ModSystem
             int sy = genRand.Next(CindersparkStart, Main.UnderworldLayer);
             int minCaveDistance = genRand.Next(4, 5);
             int maxCaveDistance = genRand.Next(8, 10);
-            int steps = genRand.Next(128, 600);
+            int steps = genRand.Next(128, 900);
             int dir = genRand.NextBool(2) ? 1 : -1;
             for (int s = 0; s < steps; s++)
             {
@@ -316,6 +316,68 @@ public partial class StellaWorld : ModSystem
                 for (int y = 0; y < bottomDistance; y++)
                 {
                     Tile tile = Main.tile[x, sy + y];
+                    tile.ClearEverything();
+                }
+            }
+        }
+
+
+        //Vertical Caves
+        for (float f = 0; f < numCaves; f++)
+        {
+            //Reset the seed for each cave
+            topFNL.SetSeed(genRand.Next(0, int.MaxValue));
+            bottomFNL.SetSeed(genRand.Next(0, int.MaxValue));
+
+            int sx = genRand.Next(0, Main.maxTilesX);
+            int sy = genRand.Next(CindersparkStart, Main.UnderworldLayer);
+            Tile startTile = Main.tile[sx, sy];
+
+            //Only place on air, guaranteeing that the cave connects to another cave
+            if (startTile.HasTile)
+                continue;
+
+            int minCaveDistance = genRand.Next(3, 4);
+            int maxCaveDistance = genRand.Next(6, 8);
+            int steps = genRand.Next(32, 100);
+            for (int s = 0; s < steps; s++)
+            {
+                float SampleNoise(int x, int y)
+                {
+                    return topFNL.GetNoise(x * 0.05f, y * 0.05f) * 0.5f + 0.5f;
+                }
+                float SampleNoise2(int x, int y)
+                {
+                    return bottomFNL.GetNoise(x * 0.05f, y * 0.05f) * 0.5f + 0.5f;
+                }
+
+                int y = sy + s;
+                if (y <= 0 || y >= Main.maxTilesY)
+                    break;
+
+                float topNoise = SampleNoise(sx, y);
+                float bottomNoise = SampleNoise2(sx, y);
+
+                //Cave middle up
+                int topDistance = (int)MathHelper.Lerp(minCaveDistance, maxCaveDistance, topNoise) + genRand.Next(-1, 1);
+                for (int x = 0; x < topDistance; x++)
+                {
+                    int newX = sx - x;
+                    if (newX <= 0)
+                        break;
+
+                    Tile tile = Main.tile[newX, y];
+                    tile.ClearEverything();
+                }
+
+                //Cave middle down
+                int bottomDistance = (int)MathHelper.Lerp(minCaveDistance, maxCaveDistance, bottomNoise) + genRand.Next(-1, 1);
+                for (int x = 0; x < bottomDistance; x++)
+                {
+                    int newX = sx + x;
+                    if (newX >= Main.maxTilesX)
+                        break;
+                    Tile tile = Main.tile[newX, y];
                     tile.ClearEverything();
                 }
             }
@@ -375,8 +437,7 @@ public partial class StellaWorld : ModSystem
         passWriter.NextPass(new PassLegacy("HillsnFable", WorldGenFabiliaRuin));
         passWriter.NextPass(new PassLegacy("World Gen Rysa House", WorldGenRysaHouse));
         passWriter.NextPass(new PassLegacy("MistyDungeon", GenerateMistyDungeon));
-        passWriter.NextPass(new PassLegacy("Runica Waterside Underwater", WorldGenRunicaUnderwaterCaves));
-        passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
+
         passWriter.NextPass(new PassLegacy("Marsh Housing", WorldGenMarshHousing));
         passWriter.NextPass(new PassLegacy("Aegislav", WorldGen_AegislavFull));
         passWriter.NextPass(new PassLegacy("Water Wobble Cave", WorldGen_WaterWobbleCave));
@@ -415,6 +476,8 @@ public partial class StellaWorld : ModSystem
 
         //Final Structures and Whatnot
         passWriter.SetInsertionIndex("Final Cleanup");
+        passWriter.NextPass(new PassLegacy("Runica Waterside Underwater", WorldGenRunicaUnderwaterCaves));
+        passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
         passWriter.NextPass(new PassLegacy("World Gen Manor", WorldGenManor));
         passWriter.NextPass(new PassLegacy("World Gen Skullrunner", WorldGenSkullrunner));
         passWriter.NextPass(new PassLegacy("World Gen Dock", WorldGenDock));
@@ -3079,7 +3142,7 @@ public partial class StellaWorld : ModSystem
     {
         progress.Message = "Hardening Walls";
         var genRand = WorldGen.genRand;
-        int start = DarkspaceStart - 500;
+        int start = DarkspaceStart - 700;
         int end = Main.UnderworldLayer;
         int[] wallTypes = new int[]
         {
@@ -3293,7 +3356,7 @@ public partial class StellaWorld : ModSystem
         float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000015f;
         float maxAttemptCount = maxCaveCount * 10;
         float placedCaves = 0;
-        int padding = 250;
+        int padding = 800;
         for (int i = 0; i < maxAttemptCount; i++)
         {
             int x = genRand.Next(padding, Main.maxTilesX - padding);
@@ -3321,10 +3384,10 @@ public partial class StellaWorld : ModSystem
         //First we should generate corridors starting from the top of the stone layer all the way to darkspace
         //Actually they just cut through the whole world, ignoring ice and jungle / desert
         var genRand = WorldGen.genRand;
-        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000006f;
+        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000008f;
         float maxAttemptCount = maxCaveCount * 10;
         float placedCaves = 0;
-        int padding = 450;
+        int padding = 1000;
 
         FastNoiseLite fnl = new FastNoiseLite();
         fnl.SetSeed(genRand.Next(0, int.MaxValue));

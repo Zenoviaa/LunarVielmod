@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
+using static Stellamod.Core.AssetReferences.Effects;
 
 namespace Stellamod.Core.Utilities
 {
@@ -38,6 +39,25 @@ namespace Stellamod.Core.Utilities
             _tilingParam.SetValue(new Vector2(1f, 16));
         }
     }
+
+    public class WorldDepthGradient : ScreenShader
+    {
+        private EffectParameter _gradientStrengthParam;
+        private EffectParameter _gradientColorParam;
+        public Vector3 gradientStrength;
+        public Vector3 gradientColor;
+        public override void ApplyEffect(ScreenShaderData screenShaderData)
+        {
+            base.ApplyEffect(screenShaderData);
+            Effect effect = screenShaderData.Shader;
+            _gradientStrengthParam = effect.Parameters["gradientStrength"];
+            _gradientStrengthParam.SetValue(gradientStrength);
+
+            _gradientColorParam = effect.Parameters["gradientColor"];
+            _gradientColorParam.SetValue(gradientColor);
+        }
+    }
+
     public class SuperShockwave : ScreenShader
     {
         private EffectParameter _interpParam;

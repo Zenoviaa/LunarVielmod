@@ -71,6 +71,26 @@ namespace Stellamod.Content.Biomes
                 AddForegroundOrBackground();
                 Player.ManageSpecialBiomeVisuals("Stellamod:Marsh", ZoneMarsh);
                 Player.ManageSpecialBiomeVisuals("Stellamod:Aegislav", ZoneAegislavSurface);
+                Player.ManageSpecialBiomeVisuals("Stellamod:HeatedDepths", ZoneHeatedDepths);
+                if (ZoneHeatedDepths && !Player.GetModPlayer<MyPlayer>().ZoneWonder)
+                {
+                    WorldDepthGradient depthGradient = ScreenShader.GetInstance<WorldDepthGradient>();
+                    depthGradient.alpha = 1;
+
+
+                    StellaWorld stellaWorld = ModContent.GetInstance<StellaWorld>();
+                    float top = stellaWorld.DarkspaceStart - 500;
+                    float end = Main.UnderworldLayer;
+                    float steps = end - top;
+                    float progress = (Player.position.ToTileCoordinates().Y - top) / steps;
+                    Vector3 gradientStrength = new Vector3();
+                    gradientStrength.X = MathHelper.Lerp(0f, 0.2f, progress);
+                    gradientStrength.Y = MathHelper.Lerp(0.4f, 0.8f, progress);
+                    gradientStrength.Z = 0.125f * 0.5f;
+                    depthGradient.gradientStrength = gradientStrength;
+                    depthGradient.gradientColor = Color.Red.ToVector3();
+                }
+
                 if (ZoneWorldsEnd)
                 {
                     ActivateWorldsEndSky();
