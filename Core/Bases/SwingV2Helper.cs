@@ -602,6 +602,108 @@ namespace Stellamod.Core.Bases
                 HitCount=6
             });
         }
+        public static void AddGreatswordSwingStyle2(ISwingProjectile swings)
+        {
+            SoundStyle swingSound1 = SoundRegistry.HeavySwordSlash1;
+            swingSound1.PitchVariance = 0.5f;
+
+            SoundStyle swingSound2 = SoundRegistry.HeavySwordSlash2;
+            swingSound2.PitchVariance = 0.5f;
+
+            SoundStyle swingSound3 = SoundRegistry.NSwordSpin1;
+            swingSound3.PitchVariance = 0.5f;
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 66,
+                XSwingRadius = 64,
+                YSwingRadius = 48,
+                SwingDegrees = 330,
+                Easing = EasingFunction.GreatswordAnticipation,
+                Sound = swingSound1,
+            });
+
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 90,
+                XSwingRadius = 1,
+                YSwingRadius = 1,
+                SwingDegrees = 2000,
+                SpinThrowDistance = 40,
+                SpinDegrees = 1,
+                AlwaysShowTrail = true,
+                Easing = (float lerpValue) => lerpValue,
+                Sound = swingSound3,
+                HitCount = 12
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 70,
+                XSwingRadius = 84 / 1.5f,
+                YSwingRadius = 70 / 1.5f,
+                SwingDegrees = 270,
+                Easing = EasingFunction.GreatswordAnticipation,
+                Sound = swingSound2,
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 70,
+                XSwingRadius = 84 / 1.5f,
+                YSwingRadius = 70 / 1.5f,
+                SwingDegrees = 270,
+                Easing = EasingFunction.GreatswordAnticipation,
+                Sound = swingSound2,
+            });
+
+            swings.Add(new OvalSwing
+            {
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                Duration = 48,
+                SwingDegrees = 330,
+                Easing = EasingFunction.GreatswordAnticipation,
+                Sound = swingSound1,
+            });
+
+            swings.Add(new OvalSwing
+            {
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                Duration = 96,
+                SwingDegrees = 330,
+                Easing = EasingFunction.GreatswordAnticipation,
+                Sound = swingSound1,
+            });
+
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 100,
+                XSwingRadius = 1,
+                YSwingRadius = 1,
+                SwingDegrees = 2000,
+                SpinThrowDistance = 40,
+                SpinDegrees = 1,
+                AlwaysShowTrail = true,
+                Easing = (float lerpValue) => lerpValue,
+                Sound = swingSound3,
+                HitCount = 6
+            });
+
+            swings.Add(new OvalSwing
+            {
+                Duration = 115,
+                XSwingRadius = 64,
+                YSwingRadius = 64,
+                SwingDegrees = 770,
+                Easing = EasingFunction.GreatswordSpinAnticipation,
+                Sound = swingSound3,
+                HitCount = 6
+            });
+        }
 
         public static void AddSpearSwingStyle(ISwingProjectile swings)
         {
@@ -758,12 +860,12 @@ namespace Stellamod.Core.Bases
 
             swings.Add(new OvalSwing
             {
-                Duration = 60,
+                Duration = 120,
                 SwingDegrees = 360 * 2,
                 XSwingRadius = 64,
                 YSwingRadius = 64,
-                HitCount = 8,
-                Easing = (float lerpValue) => EasingFunction.InOutExpo7(lerpValue),
+                HitCount = 16,
+                Easing = (float lerpValue) => EasingFunction.GreatswordAnticipation(lerpValue),
                 Sound = nSpin
             });
 

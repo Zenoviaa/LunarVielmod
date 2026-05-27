@@ -57,6 +57,7 @@ namespace Stellamod.Core.SwingSystem
 
         public void SetDirection(int direction)
         {
+            direction = (int)Math.Clamp(direction, -1, 1);
             _dir = direction;
         }
 

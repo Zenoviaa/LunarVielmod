@@ -40,7 +40,7 @@ public struct Bloom
 public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     ISwingProjectile
 {
-    public static int SwingTrailCacheLength => 64;
+    public static int SwingTrailCacheLength => 128;
     public static int AfterImageCacheLength => 16;
 
     private bool _hasInitializedRendering;

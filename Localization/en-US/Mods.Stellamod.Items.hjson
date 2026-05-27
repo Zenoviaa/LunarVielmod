@@ -5743,6 +5743,8 @@ PointedEdge: {
 Swingaling: {
 	DisplayName: Swingaling
 	Tooltip: Swing swing, Swingaling! Swihing
+	BasicSlash: ""
+	StaminaSlash: No Effect
 }
 
 TornCarianPage: {
@@ -7225,6 +7227,8 @@ DogmaBalls: {
 Tulahal: {
 	Tooltip: Create a flaming hurricane from the old irradiated power of the Govheil. Control the wind and flame.
 	DisplayName: Tulahal
+	BasicSlash: ""
+	StaminaSlash: No Effect
 }
 
 BasicBaseball: {
@@ -8555,6 +8559,8 @@ LightKnives: {
 RuneSmasher: {
 	Tooltip: ""
 	DisplayName: Rune Smasher
+	BasicSlash: ""
+	StaminaSlash: No Effect
 }
 
 Zhielhander: {
@@ -8585,6 +8591,8 @@ Vaikus: {
 CrystalPointer: {
 	DisplayName: Crystal Pointer
 	Tooltip: ""
+	BasicSlash: ""
+	StaminaSlash: No Effect
 }
 
 CrystallineSlasher: {
@@ -11312,4 +11320,32 @@ DragoncrestMold: {
 		Weapons with no dragonshard upgrades now deal 5% more damage, and are imbued with the flame element if possible
 		Also, will inflict fire on hit!
 		'''
+}
+
+GhetsisKeyblade: {
+	BasicSlash: ""
+	StaminaSlash: No Effect
+	DisplayName: Ghetsis Keyblade
+	Tooltip: ""
+}
+
+GhetsisSpear: {
+	BasicSlash: ""
+	StaminaSlash: No Effect
+	DisplayName: Ghetsis Spear
+	Tooltip: ""
+}
+
+HammerofGhetsis: {
+	BasicSlash: ""
+	StaminaSlash: No Effect
+	DisplayName: Hammerof Ghetsis
+	Tooltip: ""
+}
+
+SwordoftheFlies: {
+	BasicSlash: ""
+	StaminaSlash: No Effect
+	DisplayName: Swordofthe Flies
+	Tooltip: ""
 }
