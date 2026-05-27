@@ -3542,7 +3542,7 @@ public partial class StellaWorld : ModSystem
                 if (tile.LiquidType == LiquidID.Lava || tile.LiquidType == LiquidID.Water)
                 {
                     tile.LiquidType = LiquidID.Shimmer;
-                    tile.LiquidAmount = (byte)WorldGen.genRand.Next(125, 255);
+                   // tile.LiquidAmount = (byte)WorldGen.genRand.Next(125, 255);
                 }
             }
         }
