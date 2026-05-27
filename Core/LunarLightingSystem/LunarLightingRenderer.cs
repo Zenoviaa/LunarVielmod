@@ -644,10 +644,10 @@ namespace Stellamod.Core.LunarLightingSystem
 
             BiomePlayer biomePlayer = Main.LocalPlayer.GetModPlayer<BiomePlayer>();
             MyPlayer myPlayer = Main.LocalPlayer.GetModPlayer<MyPlayer>();
-            if (myPlayer.ZoneDrakonic || myPlayer.ZoneCinder)
+            /*if (myPlayer.ZoneDrakonic || myPlayer.ZoneCinder)
             {
                 BackLightColor = Color.White * 0.7f;
-            }
+            }*/
 
             foreach (var backLightModifier in _backLightModifiers)
             {

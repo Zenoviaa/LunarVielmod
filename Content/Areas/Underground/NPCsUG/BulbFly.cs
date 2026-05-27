@@ -96,7 +96,7 @@ public class BulbFly : ModNPC
     public override void ModifyNPCLoot(NPCLoot npcLoot)
     {
         base.ModifyNPCLoot(npcLoot);
-        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 1, minimumDropped: 5, maximumDropped: 6));
+        npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), 1, minimumDropped: 2, maximumDropped: 3));
     }
 
     public override void OnKill()

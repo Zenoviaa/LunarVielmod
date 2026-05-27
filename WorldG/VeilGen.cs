@@ -22,6 +22,7 @@ using Terraria.ObjectData;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
 using static Stellamod.Content.BuildingTools.MagicTileUtility.TileSnapshot;
+using static tModPorter.ProgressUpdate;
 
 namespace Stellamod.WorldG;
 
@@ -319,10 +320,11 @@ public class VeilGenTester : ModItem
 
     public override bool? UseItem(Player player)
     {
+        MineshaftTest();
         // LayoutTest();
         //  CaveTest();
         // AegislavTest();
-        CaveTest2();
+     //   CaveTest2();
         return true;
     }
 
@@ -372,94 +374,8 @@ public class VeilGenTester : ModItem
     }
     private static void MineshaftTest()
     {
-        Vector2 mouseWorld = Main.MouseWorld;
-        Point startTile = mouseWorld.ToTileCoordinates();
-        var genRand = new UnifiedRandom();
-        FastNoiseLite fnl = new FastNoiseLite();
-        fnl.SetSeed(genRand.Next(0, int.MaxValue));
-        fnl.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        fnl.SetFrequency(0.15f);
-        fnl.SetDomainWarpAmp(10);
-        fnl.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
-        int yMid = startTile.Y;
-
-        int minCaveDistance = 35;
-        int maxCaveDistance = 72;
-        (int, int)[] heights = new (int, int)[Main.maxTilesX];
-        for (int x = 0; x < Main.maxTilesX; x++)
-        {
-            float SampleNoise(int x, int y)
-            {
-                return fnl.GetNoise(x * 0.05f, y * 0.05f) * 0.5f + 0.5f;
-            }
-
-            //These are honestly just random offsets so the cave doesn't look the same on both sides
-            float topNoise = SampleNoise(x, yMid - 4);
-            float bottomNoise = SampleNoise(x + 2, yMid + 3);
-
-            //Cave middle up
-            int topDistance = (int)MathHelper.Lerp(minCaveDistance, maxCaveDistance, topNoise) + genRand.Next(-1, 1);
-            for (int y = 0; y < topDistance; y++)
-            {
-                Tile tile = Main.tile[x, yMid - y];
-                tile.ClearTile();
-            }
-
-            //Cave middle down
-            int bottomDistance = (int)MathHelper.Lerp(minCaveDistance, maxCaveDistance, bottomNoise) + genRand.Next(-1, 1);
-            for (int y = 0; y < bottomDistance; y++)
-            {
-                Tile tile = Main.tile[x, yMid + y];
-                tile.ClearTile();
-            }
-            heights[x] = (topDistance, bottomDistance);
-        }
-
-        for(int x = 0; x < heights.Length; x++)
-        {
-            if (!genRand.NextBool(4))
-                continue;
-            (int, int) height = heights[x];
-            int heightToUse = genRand.NextBool(2) ? -height.Item1 : height.Item2;
-            Point walkerPoint = new Point(x, yMid + heightToUse);
-            Point originalPoint = walkerPoint;
-            int steps = genRand.Next(32, 128);
-            int maxDist = 10;
-            for(int s = 0; s < steps; s++)
-            {
-                switch (genRand.Next(4))
-                {
-                    case 0:
-                        walkerPoint.X--;
-                        break;
-                    case 1:
-                        walkerPoint.X++;
-                        break;
-                    case 2:
-                        walkerPoint.Y++;
-                        break;
-                    case 3:
-                        walkerPoint.Y--;
-                        break;
-                }
-                walkerPoint = TileUtilities.Clamp(walkerPoint);
-                Tile tile = Main.tile[walkerPoint];
-                tile.ClearTile();
-                tile.HasTile = true;
-                tile.TileFrameX = -1;
-                tile.TileFrameY = -1;
-                tile.TileType = TileID.Granite;
-
-                //Reset if walking too far
-                int dx = Math.Abs(walkerPoint.X - originalPoint.X);
-                int dy = Math.Abs(walkerPoint.Y - originalPoint.Y);
-                if(dx > maxDist || dy > maxDist)
-                {
-                    walkerPoint = originalPoint;
-                }
-            }
-        }
-
+        Point startTile = Main.MouseWorld.ToTileCoordinates();
+        VeilGen.PlaceMineshaft(startTile);
     }
     private static void MistyDungeonTest()
     {
@@ -1875,6 +1791,56 @@ public static class VeilGen
         return (rectangle, map);
     }
 
+    public static void SettleLiquids()
+    {
+        Liquid.QuickWater(3);
+        WorldGen.WaterCheck();
+        int num = 0;
+        Liquid.quickSettle = true;
+        int num2 = 10;
+        while (num < num2)
+        {
+            int num3 = Liquid.numLiquid + LiquidBuffer.numLiquidBuffer;
+            num++;
+            double num4 = 0.0;
+            int num5 = num3 * 5;
+            while (Liquid.numLiquid > 0)
+            {
+                num5--;
+                if (num5 < 0)
+                {
+                    break;
+                }
+
+                double num6 = (double)(num3 - (Liquid.numLiquid + LiquidBuffer.numLiquidBuffer)) / (double)num3;
+                if (Liquid.numLiquid + LiquidBuffer.numLiquidBuffer > num3)
+                {
+                    num3 = Liquid.numLiquid + LiquidBuffer.numLiquidBuffer;
+                }
+
+                if (num6 > num4)
+                {
+                    num4 = num6;
+                }
+                else
+                {
+                    num6 = num4;
+                }
+
+                int num7 = 10;
+                if (num > num7)
+                {
+                    num7 = num;
+                }
+
+                Liquid.UpdateLiquid();
+            }
+
+            WorldGen.WaterCheck();
+        }
+
+        Liquid.quickSettle = false;
+    }
     public static bool PlaceMineshaft(Point startTile, Rectangle rectangle, Room[] map)
     {
         if (Structurizer.CanPlaceStructureHere(rectangle))
@@ -1883,7 +1849,7 @@ public static class VeilGen
         Point point = startTile;
         Point vectorToOrigin = (point - rectangle.Top().ToPoint());
         rectangle.Location += vectorToOrigin;
-
+        //Main.NewText(map.Length);
         //Just a failsafe
         while (rectangle.Right().X >= Main.maxTilesX)
             rectangle.Location -= new Point(32, 0);
@@ -1905,9 +1871,11 @@ public static class VeilGen
             bottomLeft.Y += tileY;
             bottomLeft.Y -= map[0].bounds.Height;
 
-            if (VeilGen.IsTileNearby(tileX, tileY, 50, TileSets.BlockMineshafts))
-                break;
-
+            
+            /*
+            if (VeilGen.IsTileNearby(bottomLeft.X, bottomLeft.Y, 25, TileSets.BlockMineshafts))
+                continue;
+            */
             Structurizer.ReadStruct(bottomLeft, room.prefab, Structurizer.DefaultTileBlend);
             Structurizer.ProtectStructure(bottomLeft, room.prefab);
         }
@@ -1915,7 +1883,7 @@ public static class VeilGen
     }
     public static bool PlaceMineshaft(Point startTile)
     {
-        (int, int)[] layout = DungeonLayouter.GenerateLayout(16, Main.rand);
+        (int, int)[] layout = DungeonLayouter.GenerateLayout(42, Main.rand);
         Point[] vertices = new Point[layout.Length];
         for (int v = 0; v < vertices.Length; v++)
         {

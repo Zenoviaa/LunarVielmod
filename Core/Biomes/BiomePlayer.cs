@@ -72,6 +72,13 @@ namespace Stellamod.Content.Biomes
                 Player.ManageSpecialBiomeVisuals("Stellamod:Marsh", ZoneMarsh);
                 Player.ManageSpecialBiomeVisuals("Stellamod:Aegislav", ZoneAegislavSurface);
                 Player.ManageSpecialBiomeVisuals("Stellamod:HeatedDepths", ZoneHeatedDepths);
+
+                if (Player.GetModPlayer<MyPlayer>().ZoneCinder)
+                {
+                    FlameParticles();
+                        return;
+                }
+
                 if (ZoneHeatedDepths && !Player.GetModPlayer<MyPlayer>().ZoneWonder)
                 {
                     WorldDepthGradient depthGradient = ScreenShader.GetInstance<WorldDepthGradient>();
@@ -86,26 +93,37 @@ namespace Stellamod.Content.Biomes
                     Vector3 gradientStrength = new Vector3();
                     gradientStrength.X = MathHelper.Lerp(0f, 0.2f, progress);
                     gradientStrength.Y = MathHelper.Lerp(0.4f, 0.8f, progress);
-                    gradientStrength.Z = 0.125f * 0.5f;
+                    gradientStrength.Z = 0.18f * 0.5f;
                     depthGradient.gradientStrength = gradientStrength;
                     depthGradient.gradientColor = Color.Red.ToVector3();
                 }
 
                 if (ZoneHeatedDepths)
                 {
-                    if (Main.rand.NextBool(24))
-                    {
-                        Vector2 pos = new Vector2();
-                        pos.X = Main.rand.Next(0, Main.screenWidth);
-                        pos.Y = Main.rand.Next(0, Main.screenHeight);
-                        pos += Main.screenPosition;
-
-
-                    }
+                    FlameParticles();
                 }
             }
         }
 
+        private void FlameParticles()
+        {
+            if (Main.rand.NextBool(12))
+            {
+                Vector2 pos = new Vector2();
+                pos.X = Main.rand.Next(0, Main.screenWidth * 2);
+                pos.Y = Main.rand.Next(0, Main.screenHeight);
+                pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
+                UnderworldFlameParticle.Spawn(pos, -Vector2.UnitY * 2 + -Vector2.UnitX, Scale: Main.rand.NextFloat(0.1f, 0.3f));
+            }
+            if (Main.rand.NextBool(3))
+            {
+                Vector2 pos = new Vector2();
+                pos.X = Main.rand.Next(0, Main.screenWidth * 2);
+                pos.Y = Main.rand.Next(0, Main.screenHeight);
+                pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
+                UnderworldSmokeParticle.Spawn(pos, -Vector2.UnitY * 2 + -Vector2.UnitX, Scale: Main.rand.NextFloat(0.5f, 0.8f));
+            }
+        }
         private void AddForegroundOrBackground()
         {
             MyPlayer myPlayer = Player.GetModPlayer<MyPlayer>();

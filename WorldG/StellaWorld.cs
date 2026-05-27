@@ -53,6 +53,7 @@ using System.Diagnostics;
 using System.IO;
 using Terraria;
 using Terraria.GameContent.Biomes;
+using Terraria.GameContent.Biomes.Desert;
 using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.IO;
@@ -92,6 +93,8 @@ public class PassWriter
         Tasks[_insertionIndex] = genPass;
     }
 }
+
+
 public partial class StellaWorld : ModSystem
 {
     public Point RoyalCapitalLocation { get; private set; }
@@ -120,6 +123,22 @@ public partial class StellaWorld : ModSystem
     public int DarkspaceEnd { get; private set; }
     public int HeatedDepthsStart { get; private set; }
     public int HeatedDepthsEnd { get; private set; }
+    public override void Load()
+    {
+        base.Load();
+        On_DesertDescription.CreateFromPlacement += ClampHive;
+    }
+
+    private DesertDescription ClampHive(On_DesertDescription.orig_CreateFromPlacement orig, Point origin)
+    {
+        var description = orig(origin);
+        Rectangle hiveRect = description.Hive;
+        hiveRect.Height = DarkspaceStart - (int)Main.worldSurface;
+        hiveRect.Height -= 32;
+        description.Hive = hiveRect;
+        return description;
+    }
+
     private void DisableGenTask(List<GenPass> tasks, string passName)
     {
         tasks.Find(x => x.Name.Equals(passName)).Disable();
@@ -479,6 +498,7 @@ public partial class StellaWorld : ModSystem
 
         //Final Structures and Whatnot
         passWriter.SetInsertionIndex("Final Cleanup");
+        passWriter.NextPass(new PassLegacy("Shimmer Fix", ReplaceLavaWithShimmerPass));
         passWriter.NextPass(new PassLegacy("Runica Waterside Underwater", WorldGenRunicaUnderwaterCaves));
         passWriter.NextPass(new PassLegacy("Junkyard Caves", WorldGenJunkyardCaves));
         passWriter.NextPass(new PassLegacy("World Gen Manor", WorldGenManor));
@@ -1749,7 +1769,7 @@ public partial class StellaWorld : ModSystem
         GenVars.skipDesertTileCheck = true;
         DesertBiome desertBiome = GenVars.configuration.CreateBiome<DesertBiome>();
         var genRand = WorldGen.genRand;
-
+        
         int desertOffset = -1200;
         int x = (Main.maxTilesX / 2 + desertOffset);
         DesertLocation = new Point(x, (int)GenVars.worldSurfaceHigh + genRand.Next(25, 75));
@@ -3375,7 +3395,7 @@ public partial class StellaWorld : ModSystem
 
             int minCaveDistance = genRand.Next(3, 4);
             int maxCaveDistance = genRand.Next(6, 8);
-            int steps = genRand.Next(32, 154);
+            int steps = genRand.Next(72, 154);
             int dir = genRand.NextBool(2) ? -1 : 1;
             for (int s = 0; s < steps; s++)
             {
@@ -3420,7 +3440,49 @@ public partial class StellaWorld : ModSystem
             }
         }
 
-        CellularAutomataParams @params = new CellularAutomataParams() with { Steps = 3, RandomFill = 55, BirthLimit = 4, DeathLimit = 4 };
+
+        //Place Lava Bowls
+        float numLavaBowls = numCaves * 2;
+        int padding = 30;
+        for (float f = 0; f < numLavaBowls; f++)
+        {
+            //Reset the seed for each cave
+            int sx = genRand.Next(padding, Main.maxTilesX - padding);
+            int sy = genRand.Next(HeatedDepthsStart, HeatedDepthsEnd);
+            Tile startTile = Main.tile[sx, sy];
+
+            //Only place on air, guaranteeing that the lava is inside of a cave/exposed to air
+            if (startTile.HasTile)
+                continue;
+
+            //Gotta land on a solid tile
+            while (!startTile.HasTile && sy < Main.UnderworldLayer)
+            {
+                sy++;
+                startTile = Main.tile[sx, sy];
+            }
+
+            //Dimensions of the lava bowl
+            int width = genRand.Next(5, 12);
+            int depth = genRand.Next(5, 12);
+            int left = sx - width / 2;
+            int right = sx + width / 2;
+            for(int x = left; x < right; x++)
+            {
+                float numSteps = right - left;
+                int d = (int)MathHelper.Lerp(0, depth, EasingFunction.QuadraticBump((float)(x - left) / numSteps));
+                for(int y = sy; y < sy + d; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+                    tile.ClearTile();
+                    tile.LiquidAmount = 255;
+                    tile.LiquidType = LiquidID.Lava;
+                }
+            }
+        }
+
+
+        CellularAutomataParams @params = new CellularAutomataParams() with { Steps = 2, RandomFill = 55, BirthLimit = 4, DeathLimit = 4 };
         Rectangle smoothRectangle = new Rectangle(0, HeatedDepthsStart, Main.maxTilesX, HeatedDepthsEnd - HeatedDepthsStart);
         VeilGen.AutomataSmoothErase(smoothRectangle, in @params);
     }
@@ -3445,10 +3507,10 @@ public partial class StellaWorld : ModSystem
     {
         progress.Message = "Simple Caves";
         var genRand = WorldGen.genRand;
-        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000015f;
+        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.00001f;
         float maxAttemptCount = maxCaveCount * 10;
         float placedCaves = 0;
-        int padding = 800;
+        int padding = 2000;
         for (int i = 0; i < maxAttemptCount; i++)
         {
             int x = genRand.Next(padding, Main.maxTilesX - padding);
@@ -3467,6 +3529,25 @@ public partial class StellaWorld : ModSystem
         }
     }
 
+    private void ReplaceLavaWithShimmerPass(GenerationProgress progress, GameConfiguration configuration)
+    {
+        progress.Message = "Stay Shimmering";
+        Rectangle rec = new Rectangle(0, DarkspaceStart, Main.maxTilesX, DarkspaceEnd - DarkspaceStart);
+        for(int x = rec.Left; x < rec.Right; x++)
+        {
+            for(int y = rec.Top; y < rec.Bottom; y++)
+            {
+                Tile tile = Main.tile[x, y];
+                bool isAethirumBlock = (tile.HasTile && tile.TileType == TileID.ShimmerBlock);
+                if (tile.LiquidType == LiquidID.Lava || tile.LiquidType == LiquidID.Water)
+                {
+                    tile.LiquidType = LiquidID.Shimmer;
+                    tile.LiquidAmount = (byte)WorldGen.genRand.Next(125, 255);
+                }
+            }
+        }
+    }
+
     private void DeepCavesPass(GenerationProgress progress, GameConfiguration configuration)
     {
         progress.Message = "Caves cut deep...";
@@ -3476,7 +3557,7 @@ public partial class StellaWorld : ModSystem
         //First we should generate corridors starting from the top of the stone layer all the way to darkspace
         //Actually they just cut through the whole world, ignoring ice and jungle / desert
         var genRand = WorldGen.genRand;
-        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000007f;
+        float maxCaveCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.000005f;
         float maxAttemptCount = maxCaveCount * 10;
         float placedCaves = 0;
         int padding = 1000;
@@ -3489,7 +3570,7 @@ public partial class StellaWorld : ModSystem
         fnl.SetDomainWarpType(FastNoiseLite.DomainWarpType.OpenSimplex2);
         for (int i = 0; i < maxAttemptCount; i++)
         {
-            int x = genRand.Next(padding + 1200, Main.maxTilesX - padding);
+            int x = genRand.Next(padding + 1700, Main.maxTilesX - padding);
             int y = genRand.Next((int)GenVars.rockLayerHigh, DarkspaceStart);
             if (VeilGen.IsTileNearby(x, y, distance: 50, TileSets.BlockMineshafts))
                 continue;
@@ -3516,9 +3597,9 @@ public partial class StellaWorld : ModSystem
         var genRand = WorldGen.genRand;
 
         //Alright so here's our algorithm
-        int padding = 250;
+        int padding = 1700;
         float placedShafts = 0;
-        float shaftCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.0000015f;
+        float shaftCount = (float)(Main.maxTilesX * Main.maxTilesY) * 0.0000005f;
         float maxAttemptCount = shaftCount * 10;
 
         //Generate all mienshafts in advance, generating them late is much slower
@@ -3534,7 +3615,7 @@ public partial class StellaWorld : ModSystem
         {
             int x = genRand.Next(padding, Main.maxTilesX - padding);
             int y = genRand.Next((int)GenVars.rockLayerHigh, DarkspaceStart - 200);
-            if (VeilGen.IsTileNearby(x, y, distance: 50, TileSets.BlockMineshafts))
+            if (VeilGen.IsTileNearby(x, y, distance: 200, TileSets.BlockMineshafts))
                 continue;
 
             Tile tile = Main.tile[x, y];

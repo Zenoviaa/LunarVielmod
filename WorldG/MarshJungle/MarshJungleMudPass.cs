@@ -34,6 +34,7 @@ namespace Stellamod.WorldG.MarshJungle
             int minY = (int)Main.worldSurface - 100;
 
             int darkspaceMaxY = (Main.UnderworldLayer - (Main.maxTilesY / 6));
+            darkspaceMaxY -= 400;
             int darkspaceMinY = darkspaceMaxY - 12;
 
             int minMaxY = darkspaceMinY - 700;
