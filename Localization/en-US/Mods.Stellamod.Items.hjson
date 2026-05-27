@@ -5230,6 +5230,11 @@ VitalityInsource: {
 	DisplayName: Vitality Insource
 }
 
+FireResistanceInsource: {
+	Tooltip: Negates all fire damage and debuffs for 30 seconds
+	DisplayName: Fire Resistance Insource
+}
+
 HealthyInsource: {
 	Tooltip:
 		'''
@@ -11265,5 +11270,44 @@ CharredStoneBlock: {
 
 Dragonpiece: {
 	DisplayName: Dragonpiece
-	Tooltip: ""
+	Tooltip: Contains a fragment of a dragon's power, perhaps combined they could prove useful...
+}
+
+MagmaBell: {
+	DisplayName: Magma Bell
+	Tooltip: You slowly heal in lava instead of taking damage, but getting wet hurts you instead...
+}
+
+ShiningBell: {
+	DisplayName: Shining Bell
+	Tooltip: All your slight sources have 2x range and power!
+}
+
+CriticalHealer: {
+	DisplayName: Critical Healer
+	Tooltip: Everytime you critically strike, you heal for 4 health!
+}
+
+SpeedflameBoots: {
+	DisplayName: Speedflame Boots
+	Tooltip: Acceleration and max movement speed are increased by 50%
+}
+
+BallNChain: {
+	DisplayName: Ball N' Chain
+	Tooltip: A macelike ball is following you around, gives you 25% boss endurance, but makes you take 50% more damage from enemies, enemies can deal critical strikes to you at a 10% chance
+}
+
+HeatGoggles: {
+	DisplayName: Heat Goggles:
+	Tooltip: You now see in infrared, enemies are bright red and so is lava! You can also see the outlines of blocks
+}
+
+DragoncrestMold: {
+	DisplayName: Dragoncrest Mold
+	Tooltip:
+		'''
+		Weapons with no dragonshard upgrades now deal 5% more damage, and are imbued with the flame element if possible
+		Also, will inflict fire on hit!
+		'''
 }

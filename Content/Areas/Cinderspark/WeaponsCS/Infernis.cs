@@ -27,7 +27,7 @@ namespace Stellamod.Content.Areas.Cinderspark.WeaponsCS
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew<Cinderscrap, BlankStaff>();
+            this.RegisterBrew<Cinderscrap, BlankSword>();
         }
     }
 

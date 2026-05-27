@@ -29,7 +29,7 @@ namespace Stellamod.Tiles
             RegisterItemDrop(ModContent.ItemType<Items.Ores.GlisteningOre>());
             HitSound = SoundID.DD2_CrystalCartImpact;
             MineResist = 1f;
-            MinPick = 55;
+            MinPick = 0;
         }
         public override void NumDust(int i, int j, bool fail, ref int num)
         {

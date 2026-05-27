@@ -1147,3 +1147,8 @@ ManaFire: {
 	DisplayName: Mana Fire
 	Description: Your mana is burning! 50% reduced mana consumption...
 }
+
+FireResistanceInsourceBuff: {
+	DisplayName: Fire Resistance Insource Buff
+	Description: Mods.Stellamod.Buffs.FireResistanceInsourceBuff.Description
+}

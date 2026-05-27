@@ -8,7 +8,7 @@ namespace Stellamod.Assets.Biomes
     {
         //public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.Find<ModUndergroundBackgroundStyle>("SpiritMod/Biomes/SpiritUgBgStyle");
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/Catacombs");
-        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
+        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
         public override string BestiaryIcon => base.BestiaryIcon;
         public override string BackgroundPath => MapBackground;
         public override Color? BackgroundColor => base.BackgroundColor;

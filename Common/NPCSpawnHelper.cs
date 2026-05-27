@@ -1,4 +1,5 @@
-﻿using Stellamod.Content.Areas.PunkerTown;
+﻿using Stellamod.Assets.Biomes;
+using Stellamod.Content.Areas.PunkerTown;
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Areas.Terror;
 using Stellamod.Content.Areas.Underground;
@@ -8,112 +9,123 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Common
+namespace Stellamod.Common;
+
+/// <summary>
+/// Classifies all of our NPCs, keep track of where they spawn and weights
+/// </summary>
+public class SpawnSets : ModSystem
 {
-    /// <summary>
-    /// Classifies all of our NPCs, keep track of where they spawn and weights
-    /// </summary>
-    public class SpawnSets : ModSystem
+    public override void SetupContent()
     {
-        public override void SetupContent()
-        {
-            SpringEnemy = new List<int>();
-            HarmonicEnemy = new List<int>();
-            MarshEnemy = new List<int>();
-            AegislavSurfaceEnemy = new List<int>();
-            HeatedDepthsEnemy = new List<int>();
-            ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
-            base.SetupContent();
+        SpringEnemy = new List<int>();
+        HarmonicEnemy = new List<int>();
+        MarshEnemy = new List<int>();
+        AegislavSurfaceEnemy = new List<int>();
+        HeatedDepthsEnemy = new List<int>();
+        FableEnemy = new List<int>();
+        ModifiedWeights = NPCID.Sets.Factory.CreateFloatSet(1f);
+        base.SetupContent();
 
-        }
-        public static List<int> SpringEnemy;
-        public static List<int> HarmonicEnemy;
-        public static List<int> MarshEnemy;
-        public static List<int> AegislavSurfaceEnemy;
-        public static List<int> HeatedDepthsEnemy;
-        public static float[] ModifiedWeights;
+    }
+    public static List<int> SpringEnemy;
+    public static List<int> HarmonicEnemy;
+    public static List<int> MarshEnemy;
+    public static List<int> AegislavSurfaceEnemy;
+    public static List<int> HeatedDepthsEnemy;
+    public static List<int> FableEnemy;
+    public static float[] ModifiedWeights;
+}
+
+public static class NPCSpawnExtensions
+{
+    //Wrapper functions for this functionality just incase we want to change how this works
+    public static void AddToSpringHills(this ModNPC npc)
+    {
+        SpawnSets.SpringEnemy.Add(npc.Type);
     }
 
-    public static class NPCSpawnExtensions
+    public static void AddToMarsh(this ModNPC npc)
     {
-        //Wrapper functions for this functionality just incase we want to change how this works
-        public static void AddToSpringHills(this ModNPC npc)
-        {
-            SpawnSets.SpringEnemy.Add(npc.Type);
-        }
+        SpawnSets.MarshEnemy.Add(npc.Type);
+    }
 
-        public static void AddToMarsh(this ModNPC npc)
-        {
-            SpawnSets.MarshEnemy.Add(npc.Type);
-        }
+    public static void AddToHarmonicCoralways(this ModNPC npc)
+    {
+        SpawnSets.HarmonicEnemy.Add(npc.Type);
+    }
 
-        public static void AddToHarmonicCoralways(this ModNPC npc)
-        {
-            SpawnSets.HarmonicEnemy.Add(npc.Type);
-        }
-        public static void AddToHeatedDepths(this ModNPC npc)
-        {
-            SpawnSets.HeatedDepthsEnemy.Add(npc.Type);
-        }
+    public static void AddToHeatedDepths(this ModNPC npc)
+    {
+        SpawnSets.HeatedDepthsEnemy.Add(npc.Type);
+    }
 
-        public static void ModifySpawnWeight(this ModNPC npc, float multiplier)
+    public static void AddToFable(this ModNPC npc)
+    {
+        SpawnSets.FableEnemy.Add(npc.Type);
+    }
+
+    public static void ModifySpawnWeight(this ModNPC npc, float multiplier)
+    {
+        SpawnSets.ModifiedWeights[npc.Type] = multiplier;
+    }
+}
+
+public class NPCSpawnHelper : GlobalNPC
+{
+
+    private void AddEnemiesFromSpawnSet(List<int> set, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
+    {
+        for (int i = 0; i < set.Count; i++)
         {
-            SpawnSets.ModifiedWeights[npc.Type] = multiplier;
+            int enemyType = set[i];
+            float totalWeight = 1f;
+            float weight = totalWeight / (float)set.Count;
+
+            //If we want to make an enemy rarer we'd do it here
+            weight *= SpawnSets.ModifiedWeights[enemyType];
+            pool.TryAdd(enemyType, weight);
         }
     }
 
-    public class NPCSpawnHelper : GlobalNPC
+    public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
     {
-
-        private void AddEnemiesFromSpawnSet(List<int> set, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
+        base.EditSpawnPool(pool, spawnInfo);
+        if (spawnInfo.Player.ZoneForest || spawnInfo.Player.ZonePurity || spawnInfo.Player.InModBiome<SpringHillsBiome>())
         {
-            for (int i = 0; i < set.Count; i++)
-            {
-                int enemyType = set[i];
-                float totalWeight = 1f;
-                float weight = totalWeight / (float)set.Count;
-
-                //If we want to make an enemy rarer we'd do it here
-                weight *= SpawnSets.ModifiedWeights[enemyType];
-                pool.TryAdd(enemyType, weight);
-            }
+            AddEnemiesFromSpawnSet(SpawnSets.SpringEnemy, pool, spawnInfo);
         }
 
-        public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
+        if (spawnInfo.Player.InModBiome<BiomeMarsh>())
         {
-            base.EditSpawnPool(pool, spawnInfo);
-            if (spawnInfo.Player.ZoneForest || spawnInfo.Player.ZonePurity || spawnInfo.Player.InModBiome<SpringHillsBiome>())
-            {
-                AddEnemiesFromSpawnSet(SpawnSets.SpringEnemy, pool, spawnInfo);
-            }
-
-            if (spawnInfo.Player.InModBiome<BiomeMarsh>())
-            {
-                AddEnemiesFromSpawnSet(SpawnSets.MarshEnemy, pool, spawnInfo);
-            }
-            if (spawnInfo.Player.InModBiome<HarmonicCoralwaysBiome>())
-            {
-                pool.Clear();
-                AddEnemiesFromSpawnSet(SpawnSets.HarmonicEnemy, pool, spawnInfo);
-                pool.TryAdd(NPCID.Piranha, 0.1f);
-                pool.TryAdd(NPCID.Shark, 0.1f);
-                pool.TryAdd(NPCID.BlueJellyfish, 0.1f);
-                pool.TryAdd(NPCID.PinkJellyfish, 0.1f);
-                pool.TryAdd(NPCID.Squid, 0.1f);
-                pool.TryAdd(NPCID.Crab, 0.1f);
-            }
-            if (spawnInfo.Player.InModBiome<AegislavBiome>())
-            {
-                pool.Clear();
-                AddEnemiesFromSpawnSet(SpawnSets.AegislavSurfaceEnemy, pool, spawnInfo);
-                pool.TryAdd(NPCID.BloodCrawler, 0.1f);
-                pool.TryAdd(NPCID.FaceMonster, 0.1f);
-                pool.TryAdd(NPCID.Crimera, 0.1f);
-            }
-            if (spawnInfo.Player.InModBiome<HeatedDepthsBiome>())
-            {
-                AddEnemiesFromSpawnSet(SpawnSets.HeatedDepthsEnemy, pool, spawnInfo);
-            }
+            AddEnemiesFromSpawnSet(SpawnSets.MarshEnemy, pool, spawnInfo);
+        }
+        if (spawnInfo.Player.InModBiome<HarmonicCoralwaysBiome>())
+        {
+            pool.Clear();
+            AddEnemiesFromSpawnSet(SpawnSets.HarmonicEnemy, pool, spawnInfo);
+            pool.TryAdd(NPCID.Piranha, 0.1f);
+            pool.TryAdd(NPCID.Shark, 0.1f);
+            pool.TryAdd(NPCID.BlueJellyfish, 0.1f);
+            pool.TryAdd(NPCID.PinkJellyfish, 0.1f);
+            pool.TryAdd(NPCID.Squid, 0.1f);
+            pool.TryAdd(NPCID.Crab, 0.1f);
+        }
+        if (spawnInfo.Player.InModBiome<AegislavBiome>())
+        {
+            pool.Clear();
+            AddEnemiesFromSpawnSet(SpawnSets.AegislavSurfaceEnemy, pool, spawnInfo);
+            pool.TryAdd(NPCID.BloodCrawler, 0.1f);
+            pool.TryAdd(NPCID.FaceMonster, 0.1f);
+            pool.TryAdd(NPCID.Crimera, 0.1f);
+        }
+        if (spawnInfo.Player.InModBiome<HeatedDepthsBiome>())
+        {
+            AddEnemiesFromSpawnSet(SpawnSets.HeatedDepthsEnemy, pool, spawnInfo);
+        }
+        if (spawnInfo.Player.InModBiome<FableBiome>())
+        {
+            AddEnemiesFromSpawnSet(SpawnSets.FableEnemy, pool, spawnInfo);
         }
     }
 }

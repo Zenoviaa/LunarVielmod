@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Buffs;
+using Stellamod.Common.ArmorReforge;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.LunarLightingSystem;
 using Stellamod.Helpers;
@@ -119,6 +120,7 @@ namespace Stellamod.Core.Bases
         }
 
         protected abstract ILight GetLight();
+        private float GetLightMultiplier() => 1f + Owner.GetModPlayer<ShiningPlayer>().extraLight;
         private void AI_Pet()
         {
 
@@ -133,7 +135,11 @@ namespace Stellamod.Core.Bases
             Projectile.rotation = Projectile.velocity.X / 60f;
 
             _light = GetLight();
-            _light.RayCast(Projectile.Center, _lightVelocity, FlashlightWidth, FlashlightLength);
+
+            float width = FlashlightWidth * GetLightMultiplier();
+            float length = FlashlightLength * GetLightMultiplier();
+
+            _light.RayCast(Projectile.Center, _lightVelocity, width, length);
         }
 
         private void AI_Flashlight()
@@ -161,7 +167,14 @@ namespace Stellamod.Core.Bases
             }
 
             _light = GetLight();
-            _light.RayCast(Projectile.Center, _lightVelocity, FlashlightWidth * 1.5f, FlashlightLength * 2f);
+
+            float width = FlashlightWidth * 1.5f;
+            float length = FlashlightLength * 2f;
+            width *= GetLightMultiplier();
+            length *= GetLightMultiplier();
+            _light.RayCast(Projectile.Center, _lightVelocity, 
+                width,
+                length);
         }
 
         protected virtual void DrawLanternSprite(ref Color lightColor)

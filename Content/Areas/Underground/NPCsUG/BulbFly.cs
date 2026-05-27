@@ -23,6 +23,7 @@ public class BulbFly : ModNPC
         NPCID.Sets.TrailCacheLength[Type] = 16;
         NPCID.Sets.TrailingMode[Type] = 3;
         this.AddToHeatedDepths();
+        this.AddToFable();
     }
 
     public override void SetDefaults()

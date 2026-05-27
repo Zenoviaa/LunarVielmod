@@ -5,6 +5,7 @@ using Stellamod.Common.GunSystem;
 using Stellamod.Common.IgnitersNPowders;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Common.XixianFlaskSystem;
+using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
@@ -558,7 +559,7 @@ namespace Stellamod.Common.ArmorReforge
 
             Texture2D iconTexture = null;
             Vector2 drawOrigin = Vector2.Zero;
-            iconTexture = ModContent.Request<Texture2D>("Stellamod/Items/Consumables/GlisteningPearl").Value;
+            iconTexture = ModContent.Request<Texture2D>(ModContent.GetInstance<GlisteningPearl>().Texture).Value;
             drawOrigin = iconTexture.Size();
             Vector2 drawPosition = position + drawOrigin;
             spriteBatch.Draw(iconTexture, drawPosition, null, drawColor, 0f, drawOrigin, 0.5f, SpriteEffects.None, 0);
