@@ -77,7 +77,7 @@ namespace Stellamod.Content.Areas.Illuria.WeaponsIL
         
         public override Asset<Texture2D> RequestHologramTexture()
         {
-            return TextureRegistry.GlowSword_Chillrend;
+            return TextureRegistry.GlowSword_Spear;
         }
 
         public override void AI()

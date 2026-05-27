@@ -79,7 +79,7 @@ public class InfraredRenderer : ModSystem
 
         OutlineShader outlineShader = ShaderContent.GetInstance<OutlineShader>();
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, effect: outlineShader.Effect);
-        spriteBatch.Draw(_tileRenderTarget, Vector2.Zero + new Vector2(Main.offScreenRange), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+        spriteBatch.Draw(_tileRenderTarget, Vector2.Zero - new Vector2(Main.offScreenRange), null, Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         spriteBatch.End();
     }
 }

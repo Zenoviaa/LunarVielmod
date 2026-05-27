@@ -698,6 +698,13 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         swordBeamShader.InnerColor = outlineColor;
         swordBeamShader.OuterColor = glowAfterImageColor;
 
+        SpriteEffects spriteEffects = SpriteEffects.None;
+        if (SwingDirection == 1)
+        {
+            spriteEffects = SpriteEffects.FlipHorizontally;
+        }
+
+
         Texture2D texture = RequestHologramTexture().Value;
         Vector2 offset = (Projectile.rotation + MathHelper.ToRadians(-45)).ToRotationVector2() * swordBeamLength / 2;
         Vector2 origin = texture.Size() / 2f;
@@ -727,7 +734,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             position += offset2;
             spriteBatch.Draw(texture,
               position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-                null, drawColor2, drawRotation + rotationOffset, origin, drawScale, SpriteEffects.None, 0); // drawing the sword itself
+                null, drawColor2, drawRotation + rotationOffset, origin, drawScale, spriteEffects, 0); // drawing the sword itself
         }
 
 
@@ -735,7 +742,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
         spriteBatch.Draw(texture,
            drawPos,
-              null, drawColor, Projectile.rotation + rotationOffset, origin, drawScale, SpriteEffects.None, 0);
+              null, drawColor, Projectile.rotation + rotationOffset, origin, drawScale, spriteEffects, 0);
 
         spriteBatch.RestartDefaults();
     }

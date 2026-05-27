@@ -2739,7 +2739,9 @@ StalkersTallon: {
 
 TheIrradiaspear: {
 	DisplayName: The Irradiaspear
-	Tooltip: Shoots spectral versions of itself, but acidic!
+	Tooltip: Thrust n' thrust
+	BasicSlash: Thrusts a lot more than your usual spear
+	StaminaSlash: Hold to charge, then release to throw a powerful spear that explodes into cluster bombs!
 }
 
 StarKeeper: {

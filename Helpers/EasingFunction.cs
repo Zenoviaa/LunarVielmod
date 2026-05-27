@@ -333,6 +333,18 @@ namespace Stellamod.Helpers
             return t * (factor - t * factor);
         } 
         
+        public static float QuickOutSlowIn(float t)
+        {
+            float easeIn = EasingFunction.OutExpo(t);
+            float easeOut = MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(t));
+            return easeIn * easeOut;
+        }
+        public static float QuickInLinear(float t)
+        {
+            float easeIn = EasingFunction.InCirc(t / 0.5f);
+            float newTime = MathHelper.Lerp(0f, t, easeIn);
+            return newTime;
+        }
         public static  float QuadraticBumpP05 (float t)
         {
             t = Clamp(t);
