@@ -248,6 +248,19 @@ namespace Stellamod.Common.ArmorReforge
                 
             }
         }
+        public override void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            base.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+            if (accessoryReforgeType == AccessoryReforgeType.None)
+                return;
+
+            Texture2D iconTexture = null;
+            Vector2 drawOrigin = Vector2.Zero;
+            iconTexture = ModContent.Request<Texture2D>(ModContent.GetInstance<GlisteningPearl>().Texture).Value;
+            drawOrigin = iconTexture.Size();
+            Vector2 drawPosition = position + drawOrigin;
+            spriteBatch.Draw(iconTexture, drawPosition, null, drawColor, 0f, drawOrigin, 0.5f, SpriteEffects.None, 0);
+        }
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
