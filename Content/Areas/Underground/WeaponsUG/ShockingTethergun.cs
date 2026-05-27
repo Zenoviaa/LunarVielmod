@@ -1,31 +1,23 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.GunSystem;
 using Stellamod.Common.Shaders;
-using Stellamod.Content.Areas.Collosseum.WeaponsCL;
-using Stellamod.Content.Areas.Dock.WeaponsDK;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Items.Ores;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
+namespace Stellamod.Content.Areas.Underground.WeaponsUG
 {
     public class TetheredBuff : ModBuff
     {
@@ -66,7 +58,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             Retract
         }
         private ref float Timer => ref Projectile.ai[0];
-     
+
         private AIState State
         {
             get => (AIState)Projectile.ai[1];
@@ -151,11 +143,11 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         {
             Projectile.extraUpdates = 2;
             Timer++;
-            if(Timer >= 2)
+            if (Timer >= 2)
             {
                 float traveledDistance = Vector2.Distance(Projectile.position, Projectile.oldPosition);
                 _traveledDistance += traveledDistance;
-                if(_traveledDistance >= Max_Distance)
+                if (_traveledDistance >= Max_Distance)
                 {
                     SwitchState(AIState.Retract);
                 }
@@ -168,7 +160,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             Timer++;
             Projectile.velocity = (Owner.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * Projectile.velocity.Length();
             float distanceToOwner = Vector2.Distance(Projectile.Center, Owner.Center);
-            if(distanceToOwner <= 32)
+            if (distanceToOwner <= 32)
             {
                 Projectile.Kill();
             }
@@ -178,14 +170,14 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         {
             Projectile.extraUpdates = 0;
             Timer++;
-            if(Timer == 1)
+            if (Timer == 1)
             {
                 float pointLength = 8;
                 VerletChain = new VerletChain(Owner.Center, TetheredNPC.Center, pointLength);
             }
 
 
-            if(_shockTimer <= 0)
+            if (_shockTimer <= 0)
             {
                 if (this.OwnedByLocalClient())
                 {
@@ -224,7 +216,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             start.pinned = true;
             start.position = Owner.Center;
             ref VerletPoint end = ref VerletChain.points[VerletChain.points.Length - 1];
-   
+
             VerletChain?.Update();
 
 
@@ -240,7 +232,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            if(State == AIState.Shoot)
+            if (State == AIState.Shoot)
             {
                 TetheredNPC = target;
                 SwitchState(AIState.Tether);
@@ -323,7 +315,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
 
             //This just applis the shader changes
             TrailDrawer.Draw(Main.spriteBatch, GrappleLinePoints, ColorFunction, WidthFunction, shader);
-            if(_shockTimer > 0)
+            if (_shockTimer > 0)
             {
                 shader.BlendState = BlendState.Additive;
                 TrailDrawer.Draw(Main.spriteBatch, GrappleLinePoints, ColorFunction, WidthFunction, shader, offset: Main.rand.NextVector2Circular(8, 8));
@@ -335,8 +327,8 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
     {
         public override void SetDefaults()
         {
-           // base.SetDefaults();
-            Item.damage = 24;
+            // base.SetDefaults();
+            Item.damage = 18;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 56;
             Item.height = 56;
@@ -358,6 +350,12 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             fireParams.maxAmmo = 4;
             fireParams.reloadWindow = 60;
         }
+        
+        public override bool ShootProjectile(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            return base.ShootProjectile(player, source, position, velocity, type, damage, knockback);
+        }
+
         public override void ShootEffects(Vector2 position, Vector2 velocity)
         {
             SoundStyle shootSound = AssetRegistry.Sounds.Gun.ShockLineShoot;
@@ -369,7 +367,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
             base.AddRecipes();
             this.RegisterBrew(
                 mold: ModContent.ItemType<BlankGun>(),
-                material: ModContent.ItemType<GintzlMetal>());
+                material: ModContent.ItemType<MinersGold>());
         }
     }
 }
