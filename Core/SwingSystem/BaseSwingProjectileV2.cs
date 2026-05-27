@@ -40,6 +40,9 @@ public struct Bloom
 public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     ISwingProjectile
 {
+    public static int SwingTrailCacheLength => 64;
+    public static int AfterImageCacheLength => 16;
+
     private bool _hasInitializedRendering;
     private bool _hasInitialized;
     private bool _canHurtThings;
@@ -169,6 +172,8 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             ArrayPool<float>.Shared.Return(oldTime);
         }
     }
+
+  
     private void AI_Initialize()
     {
         if (!_hasInitialized)
@@ -176,8 +181,8 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             _swings = new List<ISwing>();
 
             //Rent arrays so we're not constantly allocating new ones
-            int cacheLength = 128;
-            int afterImageCacheLength = 16;
+            int cacheLength = SwingTrailCacheLength;
+            int afterImageCacheLength = AfterImageCacheLength;
             swingTrailCache = ArrayPool<Vector2>.Shared.Rent(cacheLength);
             bigSwingTrailCache = ArrayPool<Vector2>.Shared.Rent(cacheLength);
             afterImageCache = ArrayPool<Vector2>.Shared.Rent(afterImageCacheLength);
@@ -192,7 +197,6 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             {
                 float duration = swing.GetDuration(1f / Owner.GetTotalAttackSpeed(Projectile.DamageType)) / hitCount;
                 duration *= EXTRA_UPDATE_COUNT - 1;
-
                 Projectile.localNPCHitCooldown = (int)duration;
             }
             Projectile.ResetLocalNPCHitImmunity();
@@ -668,21 +672,6 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
         }
 
-        //gonna try something
-        /*
-        Texture2D glowSlashTexture = ModContent.Request<Texture2D>("Stellamod/Visual/Particles/CrescentSlashParticle").Value;
-        Vector2 drawOrigin = glowSlashTexture.Size() * 0.5f;
-        Color glowingColor = Color.LightSkyBlue;
-        glowingColor *= 0.5f;
-        glowingColor *= EasingFunction.QuadraticBump(Interpolant);
-        glowingColor.A = 0;
-        float rotation = rotation - MathHelper.PiOver2;
-
-        Vector2 center = Vector2.Lerp(Projectile.Center, Owner.Center, 0.5f);
-        Vector2 slashPosition = center - Main.screenPosition;
- 
-        spriteBatch.Draw(glowSlashTexture, slashPosition, null, glowingColor, rotation, drawOrigin, Projectile.scale * 0.75f, SpriteEffects.None, 0);
-        */
     }
 
     public virtual void PostDrawSword(Vector2 position, Rectangle srcRect, Color drawColor, float rotation, Vector2 origin, Vector2 drawScale, SpriteEffects spriteEffect, float layerDepth)
