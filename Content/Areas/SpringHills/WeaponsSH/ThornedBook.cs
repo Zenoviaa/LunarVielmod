@@ -7,7 +7,7 @@ using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
+namespace Stellamod.Content.Areas.SpringHills.WeaponsSH
 {
     public class ThornedBookPlayer : ModPlayer
     {
@@ -64,7 +64,7 @@ namespace Stellamod.Content.Areas.PunkerTown.ItemsPT
         public override void AddRecipes()
         {
             base.AddRecipes();
-            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<MarshScrap>());
+            this.RegisterBrew(mold: ModContent.ItemType<BlankAccessory>(), material: ModContent.ItemType<Ivythorn>());
         }
     }
 }

@@ -567,7 +567,7 @@ Steali: {
 }
 
 ThornedBook: {
-	DisplayName: Thorned Book
+	DisplayName: Book of Thorns
 	Tooltip:
 		'''
 		Deal 5x damage back when an enemy hits you!
