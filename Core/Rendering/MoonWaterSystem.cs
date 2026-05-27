@@ -820,7 +820,8 @@ public class MoonWaterSystem : ModSystem
         DrawWaterGradient(spriteBatch);
         DrawWaterCaustics(spriteBatch);
         //  DrawWaterSparkle(spriteBatch);
-        DrawWaterFoam(spriteBatch);
+        if(!_pixelWater.affectsLava)
+            DrawWaterFoam(spriteBatch);
         if(!_pixelWater.noReflection)
             DrawReflection(spriteBatch);
         // 
