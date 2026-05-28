@@ -3,6 +3,7 @@ using Stellamod.Assets;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -144,10 +145,15 @@ public class RadianthalGlobalProjectile : GlobalProjectile
  
         if (!hasHitSomething)
         {
-            if (player.hasSetBonus)
+
+            if(projectile.ModProjectile is BaseSwingProjectileV2)
             {
-                player.stacks++;
+                if (player.hasSetBonus)
+                {
+                    player.stacks++;
+                }
             }
+        
 
             if (player.stacks >= 3)
             {

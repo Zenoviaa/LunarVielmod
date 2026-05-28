@@ -138,7 +138,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         private int RisingScytheDamage => 40;
         private int GrimmSpikesDamage => 60;
         private int MagicMissileDamage => 60;
-        private int CometDamage => 50;
+        private int CometDamage => 66;
         private int BellBalancingBounceDamage => 60;
         private int BouncingScytheDamage => 25;
         private int BaseballDamage => 25;
@@ -1858,6 +1858,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
         {
             if (!MultiplayerHelper.IsHost)
                 return;
+
             if (_patternManager == null)
             {
                 if (InPhase2)
@@ -1902,6 +1903,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine
             {
                 SwitchState(state);
             }
+          //  SwitchState(AIState.CometJump_Startup);
         }
         #endregion
 

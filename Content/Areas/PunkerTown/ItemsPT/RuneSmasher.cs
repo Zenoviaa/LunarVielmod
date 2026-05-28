@@ -50,7 +50,7 @@ public class RuneSmasher : BaseSwingItemV2
         staminaProjectileShoot = ModContent.ProjectileType<RuneSmasherCharge>();
         meleeWeaponType = MeleeWeaponType.Hammer;
         staminaCost = 3;
-        staminaDamageMultiplier = 2;
+        staminaDamageMultiplier = 3;
     }
 
     public override void AddRecipes()

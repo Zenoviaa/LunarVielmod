@@ -282,6 +282,8 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
     public class BishinineComet : ModProjectile
     {
         private float _flameTimer;
+        private Vector2 _predictionPosition;
+        private float _predictionSteps;
         private ref float Timer => ref Projectile.ai[0];
         private ref float RotateRadians => ref Projectile.ai[1];
         private ref float Size => ref Projectile.ai[2];
@@ -303,7 +305,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             Projectile.timeLeft = 600;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
-            Projectile.extraUpdates = 3;
+            Projectile.extraUpdates = 2;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -322,6 +324,34 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                 RotateRadians = Main.rand.NextFloat(-0.1f, 0);
                 Size = Main.rand.NextFloat(1f, 2f);
                 Projectile.netUpdate = true;
+                bool alive = true;
+                Vector2 predictionVelocity = Projectile.velocity;
+                float predictionTimer = 0;
+                _predictionPosition = Projectile.position;
+                while (alive)
+                {
+                    if (_predictionPosition == Vector2.Zero)
+                        _predictionPosition = Projectile.position;
+                    predictionTimer++;
+                    predictionVelocity.X += RotateRadians * 0.1f;
+                    predictionVelocity.Y *= 1.002f;
+                    if(predictionTimer > 240)
+                    {
+                        Tile tile = Main.tile[_predictionPosition.ToTileCoordinates()];
+                        if(tile.HasTile && Main.tileSolid[tile.TileType])
+                        {
+                            alive = false;
+                            break;
+                        }
+                        if(predictionTimer > 360)
+                        {
+                            alive = false;
+                            break;
+                        }
+                    }
+                    _predictionSteps = predictionTimer;
+                    _predictionPosition += predictionVelocity;
+                }
             }
             if (Timer % 10 == 0)
             {
@@ -334,6 +364,15 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             {
                 Projectile.tileCollide = true;
             }
+            if(Timer % 48 == 0)
+            {
+                var dp = SparkleParticle.Spawn(_predictionPosition + Main.rand.NextVector2Circular(32, 16), -Vector2.UnitY);
+                dp.noTileCollide = true;
+                dp.gravity = 0;
+                dp.Scale *= 0.4f;
+                dp.outerColor = Color.Blue;
+                dp.flickering = true;
+            }
 
             if (Main.rand.NextBool(6))
             {
@@ -341,6 +380,7 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
                     DustID.GemDiamond, newColor: Color.Gray, Scale: Main.rand.NextFloat(0f, 0.5f) * Size);
 
             }
+            
             Size *= 0.9985f;
             Projectile.velocity.X += RotateRadians * 0.1f;
             Projectile.velocity.Y *= 1.002f;
@@ -389,6 +429,18 @@ namespace Stellamod.Content.Areas.Dungeon.BossesDG.Bisinine.Projectiles
             }
             spriteBatch.Draw(starTexture, drawPosition, null, cometColor * 0.4f, Projectile.rotation, drawOrigin, Projectile.scale * Size * 2, SpriteEffects.None, 0);
             spriteBatch.Draw(starTexture, drawPosition, null, cometColor, Projectile.rotation, drawOrigin, Projectile.scale * Size, SpriteEffects.None, 0);
+            SpritebatchDrawer predictionDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, _predictionPosition);
+            predictionDrawer.color = Color.SkyBlue * ExtraMath.Osc(0.5f, 1f, speed: 6, Projectile.whoAmI) * 0.3f * MathHelper.Lerp(0f, 1f, Timer / _predictionSteps);
+            predictionDrawer.color.A = 0;
+            predictionDrawer.scale = new Vector2(0.5f, 0.2f);
+            spriteBatch.Draw(predictionDrawer);
+
+            predictionDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, _predictionPosition);
+            predictionDrawer.BottomCenterOrigin();
+            predictionDrawer.color = Color.SkyBlue * 0.9f * MathHelper.Lerp(0f, 1f, Timer / _predictionSteps);
+            predictionDrawer.color.A = 0;
+           // predictionDrawer.scale = new Vector2(0.5f, 0.2f);
+            spriteBatch.Draw(predictionDrawer);
         }
         public override bool PreDraw(ref Color lightColor)
         {
