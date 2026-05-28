@@ -51,7 +51,7 @@ namespace Stellamod.Core.SwingSystem
                 OldHeldItem = Player.HeldItem.type;
             }
 
-            if (Player.itemTime <= 0)
+            if (Player.itemTime > 0)
             {
                 _comboWaitTimer = 0;
                 return;

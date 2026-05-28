@@ -31,7 +31,7 @@ public class Swingaling : BaseSwingItemV2
     public override void SetDefaults2()
     {
         base.SetDefaults2();
-        Item.damage = 60;
+        Item.damage = 100;
         Item.shoot = ModContent.ProjectileType<SwingalingSlash>();
         staminaProjectileShoot = ModContent.ProjectileType<SwingalingCharge>();
         meleeWeaponType = MeleeWeaponType.Sword;
@@ -172,13 +172,33 @@ public class SwingalingBlast : ModProjectile,
         {
             if (Style == 0)
             {
-                SoundStyle lightningSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
-                lightningSoundStyle.PitchVariance = 0.4f;
-                SoundEngine.PlaySound(lightningSoundStyle, Projectile.position);
-
-                SoundStyle hitSound = AssetRegistry.Sounds.Melee.Vinger2;
-                hitSound.PitchVariance = 0.2f;
-                SoundEngine.PlaySound(hitSound, Projectile.position);
+                SoundStyle zapSound;
+                int rand = Main.rand.Next(4);
+                switch (rand)
+                {
+                    default:
+                    case 0:
+                        zapSound = AssetRegistry.Sounds.LeviathanEel.LeviZap1 with { PitchVariance = 0.3f };
+                        break;
+                    case 1:
+                        zapSound = AssetRegistry.Sounds.LeviathanEel.LeviZap2 with { PitchVariance = 0.3f };
+                        break;
+                    case 2:
+                        zapSound = AssetRegistry.Sounds.LeviathanEel.LeviZap3 with { PitchVariance = 0.3f };
+                        break;
+                    case 3:
+                        zapSound = AssetRegistry.Sounds.LeviathanEel.LeviZap4 with { PitchVariance = 0.3f };
+                        break;
+                }
+                zapSound.MaxInstances = 3;
+             //   zapSound.Volume = 0.3f;
+                SoundEngine.PlaySound(zapSound, Projectile.position);
+                if (Main.rand.NextBool(4))
+                {
+                    SoundStyle lightningSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
+                    lightningSoundStyle.PitchVariance = 0.4f;
+                    SoundEngine.PlaySound(lightningSoundStyle, Projectile.position);
+                }
             }
 
 
@@ -351,6 +371,12 @@ public class SwingalingCharge : ModProjectile
     private void AI_Blast()
     {
         Timer++;
+        if(Timer == 1)
+        {
+            SoundStyle lightningSoundStyle = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_LightingZap");
+            lightningSoundStyle.PitchVariance = 0.4f;
+            SoundEngine.PlaySound(lightningSoundStyle, Projectile.position);
+        }
         Vector2 mouseWorld = Main.MouseWorld;
         Vector2 directionToMouseWorld = Owner.Center.DirectionTo(mouseWorld);
         Vector2 playerCenter = Owner.RotatedRelativePoint(Owner.MountedCenter, true);
