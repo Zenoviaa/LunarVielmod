@@ -14,8 +14,10 @@ using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Stellamod.Core.AssetReferences.Content.Items.MoonlightMagic.Forms;
 
 namespace Stellamod.Content.Areas.PunkerTown.ItemsPT;
 
@@ -24,12 +26,39 @@ public class Tulahal : BaseSwingItemV2
     public override void SetDefaults2()
     {
         base.SetDefaults2();
-        Item.damage = 49;
+        Item.damage = 60;
         Item.shoot = ModContent.ProjectileType<TulahalSlash>();
         staminaProjectileShoot = ModContent.ProjectileType<TulahalThrow>();
         meleeWeaponType = MeleeWeaponType.Greatsword;
-        staminaCost = 4;
-        staminaDamageMultiplier = 4;
+        staminaCost = 3;
+        staminaDamageMultiplier = 5;
+    }
+    public override void ShootSwing(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+    {
+        //base.ShootSwing(player, source, position, velocity, type, damage, knockback);
+        
+        SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
+        
+        int combo = comboPlayer.ComboCounter;
+        if(combo == 1 || combo == 2 || combo == 3)
+        {
+            int style = 1;
+            if (combo == 1)
+                style = 2;
+            Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(4)), staminaProjectileShoot, damage, knockback, player.whoAmI, ai1: style);
+            comboPlayer.IncreaseCombo();
+        } else
+        {
+            int dir = comboPlayer.ComboDirection;
+            Projectile p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback,
+                player.whoAmI, ai1: dir, ai2: combo);
+            if (p.ModProjectile is BaseSwingProjectileV2 swingV2)
+            {
+                comboPlayer.IncreaseCombo();
+            }
+        }
+        
+
     }
     public override void AddRecipes()
     {
@@ -40,6 +69,7 @@ public class Tulahal : BaseSwingItemV2
 
 public class TulahalSlash : BaseSwingProjectileV2
 {
+    private float _flashTimer;
     private float _traveledRotation;
     private float _oldRot;
     private bool _hit;
@@ -59,6 +89,8 @@ public class TulahalSlash : BaseSwingProjectileV2
         slashTrailer.invert = ComboIndex % 2 != 0;
         Trailer = slashTrailer;
 
+        trailVisibilityOffset = 0.45f;
+
         useBloom = true;
         bloom.innerBloomColor = Color.White;
         bloom.outerBloomColor = Color.Violet;
@@ -72,6 +104,18 @@ public class TulahalSlash : BaseSwingProjectileV2
         hitStopTime = EXTRA_UPDATE_COUNT * 8;
     }
     private Color GetTrailColor(float completionRatio)
+    {
+        Color trailColor = Color.Lerp(Color.Purple, Color.Red, EasingFunction.InCirc(completionRatio)) * MathHelper.Lerp(0f, 1f, EasingFunction.InCirc(completionRatio));
+        trailColor = Color.Lerp(trailColor, Color.Gold, _flashTimer / 180);
+        return trailColor;
+    }
+    private Color GetTrailColor3(float completionRatio)
+    {
+        Color trailColor = Color.Lerp(Color.Purple, Color.Red, EasingFunction.InCirc(completionRatio));
+        trailColor = Color.Lerp(trailColor, Color.Gold, _flashTimer / 180);
+        return trailColor;
+    }
+    private Color GetTrailColor2(float completionRatio)
     {
         return Color.Lerp(Color.Purple, Color.Red, EasingFunction.InCirc(completionRatio)) * MathHelper.Lerp(0f, 1f, EasingFunction.InCirc(completionRatio));
     }
@@ -89,6 +133,10 @@ public class TulahalSlash : BaseSwingProjectileV2
     private float GetBigTrailWidth(float completionRatio)
     {
         return MathHelper.SmoothStep(0, 200, completionRatio) * EasingFunction.QuadraticBump(Interpolant);
+    }
+    private float GetBigTrailWidth2(float completionRatio)
+    {
+        return MathHelper.SmoothStep(0, 152, completionRatio) * EasingFunction.QuadraticBump(Interpolant);
     }
     private float GetTrailWidth2(float ratio)
     {
@@ -113,11 +161,20 @@ public class TulahalSlash : BaseSwingProjectileV2
 
     public override Asset<Texture2D> RequestHologramTexture()
     {
-        return TextureRegistry.GlowSword_Chillrend;
+        return TextureRegistry.GlowSword_TulaSword;
     }
     public override void PostDrawSword(Vector2 position, Rectangle srcRect, Color drawColor, float rotation, Vector2 origin, Vector2 drawScale, SpriteEffects spriteEffect, float layerDepth)
     {
         base.PostDrawSword(position, srcRect, drawColor, rotation, origin, drawScale, spriteEffect, layerDepth);
+        if (IsFinishingSwing())
+        {
+            SpritebatchDrawer spiralVortexDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SpiralVortex, Owner.Center);
+            spiralVortexDrawer.rotation = Main.GlobalTimeWrappedHourly * 4;
+            spiralVortexDrawer.color = Color.DarkViolet * 0.3f * EasingFunction.QuadraticBump(Interpolant);
+            spiralVortexDrawer.color.A = 0;
+            spiralVortexDrawer.scale *= 1.5f;
+            Main.spriteBatch.Draw(spiralVortexDrawer);
+        }
         if (SwingDirection != 2)
             return;
 
@@ -162,7 +219,13 @@ public class TulahalSlash : BaseSwingProjectileV2
     public override void DrawSwingTrail(ref Color lightColor, Vector2[] swingTrailCache)
     {
         base.DrawSwingTrail(ref lightColor, swingTrailCache);
-
+        /*
+        FixedRichLaserShader laserShade2r = FixedRichLaserShader.Instance;
+        laserShade2r.LaserColor = Color.White;
+        laserShade2r.BloomTexture = AssetManager.LaserTextures.Bloom;
+        laserShade2r.LaserTexture = TrailRegistry.StarTrail;
+        TrailDrawer.Draw(Main.spriteBatch, swingTrailCache, GetTrailColor, GetBigTrailWidth, laserShader);
+        */
         if (SwingDirection != 2)
             return;
         if (Interpolant < 0.4f)
@@ -178,11 +241,11 @@ public class TulahalSlash : BaseSwingProjectileV2
             p += diff * 128;
         }
 
-        RichLaserShader laserShader = RichLaserShader.Instance;
+        FixedRichLaserShader laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
         laserShader.LaserColor = Color.White;
         laserShader.BloomTexture = AssetManager.LaserTextures.Bloom;
         laserShader.LaserTexture = TrailRegistry.StarTrail;
-        TrailDrawer.Draw(Main.spriteBatch, swingPos, GetTrailColor, GetBigTrailWidth, laserShader);
+        TrailDrawer.Draw(Main.spriteBatch, swingPos, GetTrailColor3, GetBigTrailWidth, laserShader);
 
         BloomTrailShader b = BloomTrailShader.Instance;
         b.InnerColor = Color.Violet;
@@ -193,11 +256,23 @@ public class TulahalSlash : BaseSwingProjectileV2
     public override void DrawSwingTrail2(ref Color lightColor, Vector2[] swingTrailCache)
     {
         base.DrawSwingTrail2(ref lightColor, swingTrailCache);
+        if (ComboIndex == 6)
+            return;
+        FixedRichLaserShader laserShader =ShaderContent.GetInstance<FixedRichLaserShader>();
+        laserShader.LaserColor = Color.IndianRed;
+        laserShader.InnerColor = Color.DarkViolet;
+        laserShader.OuterColor = Color.Black;
+        laserShader.BloomTexture = AssetManager.LaserTextures.Bloom;
+        laserShader.LaserTexture = TrailRegistry.StarTrail;
+        TrailDrawer.Draw(Main.spriteBatch, swingTrailCache, GetTrailColor, GetBigTrailWidth, laserShader);
     }
+    
 
     public override void AI()
     {
         base.AI();
+        if (_flashTimer > 0)
+            _flashTimer--;
         if(Timer == 1 && SwingDirection == 2)
         {
             SoundStyle growSound = new SoundStyle("Stellamod/Assets/Sounds/FenixSummonGrav") with { Pitch = -0.3f };
@@ -206,7 +281,7 @@ public class TulahalSlash : BaseSwingProjectileV2
         if(SwingDirection == 2)
         {
 
-            swordBeamLength = 360;
+            swordBeamLength = 420;
         }
 
         _traveledRotation += MathF.Abs(Projectile.rotation - _oldRot);
@@ -224,7 +299,7 @@ public class TulahalSlash : BaseSwingProjectileV2
             if(Owner.velocity.Y > 0)
                 Owner.velocity.Y *= 0.98f;
         }
-        if (_traveledRotation > 0.05f)
+        if (_traveledRotation > 0.1f)
         {
             _traveledRotation = 0f;
             int index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
@@ -236,7 +311,7 @@ public class TulahalSlash : BaseSwingProjectileV2
                 spawnPos += diff * 64;
             }
             FaintSmokeParticle sp = FaintSmokeParticle.SpawnInAlphaLayer(spawnPos, Vector2.Zero);
-            sp.color = Color.Lerp(Color.Lerp(Color.Black, Color.DarkViolet, 0.15f), Color.Black, Main.rand.NextFloat(0f, 1f)) * 0.125f;
+            sp.color = Color.Lerp(Color.Lerp(Color.Black, Color.DarkViolet, 0.15f), Color.Black, Main.rand.NextFloat(0f, 1f)) * 0.25f;
             sp.Scale *= 0.48f;
             if (SwingDirection == 2)
                 sp.Scale *= 2;
@@ -256,7 +331,7 @@ public class TulahalSlash : BaseSwingProjectileV2
             {
                 Color color = new Color(41, 43, 66);
                 var sp2 = FaintSmokeParticle.SpawnInAlphaLayer(spawnPos + Main.rand.NextVector2Circular(32, 32), spawnVelocity * 0.02f);
-                sp2.color = Color.Lerp(color, Color.White, 0.25f) * 0.125f;
+                sp2.color = Color.Lerp(color, Color.White, 0.25f) * 0.25f;
                 sp2.Scale *= 0.5f;
             }
 
@@ -289,6 +364,7 @@ public class TulahalSlash : BaseSwingProjectileV2
         SoundEngine.PlaySound(soundStyle, target.position);
         if (!_hit)
         {
+            _flashTimer = 180;
             ShakeScreenPosition.Shake = 4;
             FXUtil.GlowCircleBoom(target.Center, Color.IndianRed, Color.DarkRed, Color.DarkViolet, duration: 30, baseSize: 0.2f);
         
@@ -356,6 +432,8 @@ public class TulahalThrow : ModProjectile
     private Asset<Texture2D> _chainTextureAsset;
     private Player Owner => Main.player[Projectile.owner];
     private ref float Timer => ref Projectile.ai[0];
+    private ref float Style => ref Projectile.ai[1];
+    private float ThrowDistance => 444;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -376,9 +454,9 @@ public class TulahalThrow : ModProjectile
         Projectile.timeLeft = 180;
         Projectile.extraUpdates = 1;
     }
-    public override void AI()
+
+    private void AI_GrappleSwing()
     {
-        base.AI();
         if (_hit)
         {
             NPC npc = Main.npc[_hitNPC];
@@ -416,7 +494,8 @@ public class TulahalThrow : ModProjectile
             Owner.velocity = (Projectile.Center - Owner.Center).SafeNormalize(Vector2.Zero) * MathHelper.Lerp(0f, 36, EasingFunction.InExpo((Timer - 60f) / 20f));
             if (Timer >= 130 || (Vector2.Distance(Owner.Center, Projectile.Center) < 32))
             {
-                Owner.velocity = -Owner.oldVelocity + Vector2.UnitY * -18;
+                Owner.velocity.Y = 0;
+                Owner.velocity = -Owner.oldVelocity + Vector2.UnitY * -15;
                 Projectile.Kill();
             }
         }
@@ -436,6 +515,65 @@ public class TulahalThrow : ModProjectile
             Projectile.velocity *= 0.7f;
         Projectile.velocity *= 0.92f;
         Projectile.rotation = _initialVelocity.ToRotation() + MathHelper.PiOver4;
+    }
+
+    private void AI_GrappleSlash()
+    {
+        if (_flashTimer > 0)
+            _flashTimer--;
+        Timer++;
+        if (Timer == 1)
+        {
+            _initialVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
+//            Projectile.velocity *= 6;
+        }
+
+        if (Main.rand.NextBool(12))
+        {
+            DustParticle dp = DustParticle.Spawn(Projectile.Center, -Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(60)) * Main.rand.NextFloat(0.5f, 1f));
+            dp.innerColor = Color.IndianRed;
+            dp.outerColor = Color.DarkRed;
+            dp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Red, 0.1f), Color.Black, Main.rand.NextFloat(0f, 1f));
+            dp.gravity = 0;
+            dp.noTileCollide = true;
+            dp.dampening = 0.1f;
+            dp.Scale *= 0.85f;
+        }
+
+        float time = 90;
+        if (Style == 2)
+            time = 120;
+        float ratio = Timer / time;
+        float ease1 = EasingFunction.QuickOutSlowIn(ratio);
+        float startup = 1f;
+        if(Style == 2)
+        {
+            startup = MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(Timer / 45f));
+        }
+        Vector2 targetPosition = Vector2.Lerp(Owner.Center, Owner.Center + _initialVelocity * ThrowDistance, startup * ease1);
+        Vector2 targetVelocity = (targetPosition - Projectile.Center);
+        Projectile.velocity = targetVelocity;
+        Projectile.rotation = _initialVelocity.ToRotation() + MathHelper.PiOver4;
+      //  Owner.itemTime = 2;
+        if(Timer >= time)
+        {
+            Projectile.Kill();
+        }
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        switch (Style)
+        {
+            case 0:
+                AI_GrappleSwing();
+                break;
+            case 1:
+            case 2:
+                AI_GrappleSlash();
+                break;
+        }
     }
 
     public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -528,8 +666,17 @@ public class TulahalThrow : ModProjectile
             SwingPlayerV2 comboPlayer = Owner.GetModPlayer<SwingPlayerV2>();
             int combo = comboPlayer.ComboCounter;
             int dir = comboPlayer.ComboDirection;
+            int bigDir = 2;
+            int ai2 = 5;
+            if(Style == 1 || Style == 2)
+            {
+                return;
+            }
+
+        
+
             Projectile p = Projectile.NewProjectileDirect(Projectile.GetItemSource_FromThis(), Owner.Center, Vector2.UnitY.RotatedBy(Owner.direction * MathHelper.ToRadians(-30)), ModContent.ProjectileType<TulahalSlash>(), Projectile.damage, Projectile.knockBack,
-                Owner.whoAmI, ai1: 2, ai2: 5);
+                Owner.whoAmI, ai1: bigDir, ai2: ai2);
         }
     }
 }

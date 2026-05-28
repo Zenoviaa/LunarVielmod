@@ -2738,7 +2738,7 @@ StalkersTallon: {
 }
 
 TheIrradiaspear: {
-	DisplayName: The Irradiaspear
+	DisplayName: Lab Spear
 	Tooltip: Thrust n' thrust
 	BasicSlash: Thrusts a lot more than your usual spear
 	StaminaSlash: Hold to charge, then release to throw a powerful spear that explodes into cluster bombs!
@@ -5744,7 +5744,7 @@ Swingaling: {
 	DisplayName: Swingaling
 	Tooltip: Swing swing, Swingaling! Swihing
 	BasicSlash: ""
-	StaminaSlash: No Effect
+	StaminaSlash: Hold to charge and aim to unleash a fury of lightning bolts
 }
 
 TornCarianPage: {
@@ -7228,7 +7228,7 @@ Tulahal: {
 	Tooltip: Create a flaming hurricane from the old irradiated power of the Govheil. Control the wind and flame.
 	DisplayName: Tulahal
 	BasicSlash: ""
-	StaminaSlash: No Effect
+	StaminaSlash: Throws the sword out on a chain, if it hits an enemy, you grapple to them and do a very powerful swipe
 }
 
 BasicBaseball: {
@@ -8559,8 +8559,8 @@ LightKnives: {
 RuneSmasher: {
 	Tooltip: ""
 	DisplayName: Rune Smasher
-	BasicSlash: ""
-	StaminaSlash: No Effect
+	BasicSlash: Hitting enemies builds up electric charge in your hammer...
+	StaminaSlash: Releases all of your charge into several lightning bolts
 }
 
 Zhielhander: {

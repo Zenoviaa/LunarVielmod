@@ -261,7 +261,7 @@ namespace Stellamod.Core.SwingSystem
             Vector2 velocity = swingProjectile.Projectile.velocity;
             if (!AlwaysShowTrail)
             {
-                if (time - 0.3f < 0)
+                if (time - swingProjectile.trailVisibilityOffset < 0)
                     return;
             }
             //Set Offset, now we can take this and offset it more in the projectile

@@ -74,7 +74,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     
     //0.0 alpha for additive draw
     float3 combinedCol = innerCol + bloomCol;
-    //combinedCol = lerp(float3(0.0, 0.0, 0.0), combinedCol, input.Color.a);
+    combinedCol = lerp(float3(0.0, 0.0, 0.0), combinedCol, input.Color.a);
     return float4(combinedCol, 0.0);
 
 }

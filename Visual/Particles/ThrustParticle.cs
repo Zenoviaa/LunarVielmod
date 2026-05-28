@@ -16,9 +16,11 @@ namespace Stellamod.Visual.Particles
         public Color innerColor;
         public Color bloomColor;
         public float time;
+        public Vector2 scale2;
        
         public override void OnSpawn()
         {
+            scale2 = Vector2.One;
             _stretchScale = new Vector2(1.2f, 0.4f);
             time = 15;
             innerColor = Color.White;
@@ -51,11 +53,11 @@ namespace Stellamod.Visual.Particles
 
             Color multiplyColor = Color.Lerp(Color.White, Color.Black, _completionRatio);
             var textureAsset = GetTexture();
-            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, multiplyColor, Rotation, Frame.Size() / 2f, Scale * _stretchScale * 0.4f, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, multiplyColor, Rotation, Frame.Size() / 2f, Scale * _stretchScale * 0.4f * scale2, SpriteEffects.None, 0);
             
-            multiplyColor = Color.Lerp(Color.Lerp(Color.White, bloomColor, _completionRatio), Color.Black, _completionRatio);
-            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, multiplyColor, Rotation, Frame.Size() / 2f, Scale * _stretchScale * 1.2f, SpriteEffects.None, 0);
-            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, multiplyColor, Rotation, Frame.Size() / 2f, Scale * _stretchScale, SpriteEffects.None, 0);
+            multiplyColor = Color.Lerp(Color.Lerp(color, bloomColor, _completionRatio), Color.Black, _completionRatio);
+            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, multiplyColor, Rotation, Frame.Size() / 2f, Scale * _stretchScale * 1.2f * scale2, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureAsset.Value, centerPos, Frame, multiplyColor, Rotation, Frame.Size() / 2f, Scale * _stretchScale * scale2, SpriteEffects.None, 0);
         }
     }
 }

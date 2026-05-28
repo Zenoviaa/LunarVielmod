@@ -1,15 +1,21 @@
 ﻿using ReLogic.Content;
+using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Trailers;
 using Stellamod.Core.Bases;
+using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
+using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trailing;
+using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -43,24 +49,89 @@ public class SwordoftheFlies : BaseSwingItemV2
 }
 
 
-public class SwordofTheFliesStorm : ModProjectile
+public class SwordofTheFliesStorm : ModProjectile,
+    IDrawToRenderTarget
 {
+    private ref float Timer => ref Projectile.ai[0];
     public override string Texture => ModContent.GetInstance<FlyStorm>().Texture;
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
+        Main.projFrames[Type] = 5;
+        ProjectileID.Sets.TrailCacheLength[Type] = 32;
+        ProjectileID.Sets.TrailingMode[Type] = 2;
     }
+
+
     public override void SetDefaults()
     {
         base.SetDefaults();
+        Projectile.width = 24;
+        Projectile.height = 24;
+        Projectile.friendly = true;
+        Projectile.extraUpdates = 2;
+        Projectile.tileCollide = false;
+        Projectile.penetrate = -1;
+        Projectile.idStaticNPCHitCooldown = 5;
+        Projectile.usesIDStaticNPCImmunity = true;
+        Projectile.timeLeft = 320;
     }
     public override void AI()
     {
         base.AI();
+        Timer++;
+        if (Timer == 1)
+        {
+            SoundStyle sound = AssetRegistry.Sounds.Jiitas.JiitasLightSpin;
+            sound.PitchVariance = 0.4f;
+            sound.Volume = 0.5f;
+            SoundEngine.PlaySound(sound, Projectile.position);
+        }
+
+
+        if (Main.rand.NextBool(32))
+        {
+            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt);
+        }
+
+
+        NPC nearest = NPCHelper.FindClosestNPC(Projectile.Center, 1024);
+        if(nearest != null)
+        {
+            Vector2 targetVelocity = (nearest.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 13;
+            Projectile.velocity = Projectile.velocity.MoveTowards(targetVelocity, 1);
+        }
+        Projectile.rotation = Projectile.velocity.X * 0.05f;
+        Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
+        Projectile.scale = 0.75f;
+        Projectile.scale *= MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine((float)Projectile.timeLeft / 30f));
+        DrawHelper.AnimateTopToBottom(Projectile, 4);
     }
+
+    private Color GetTrailColor(float completionRatio)
+    {
+        return Color.Black * EasingFunction.QuadraticBump(completionRatio);
+    }
+
+    private float GetTrailWidth(float completionRatio)
+    {
+        float outScale = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine((float)Projectile.timeLeft / 30f));
+        return EasingFunction.QuadraticBump(completionRatio) * 10 * outScale;
+    }
+
     public override bool PreDraw(ref Color lightColor)
     {
-        return base.PreDraw(ref lightColor);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        Main.spriteBatch.Draw(sbDrawer);
+        return false;
+    }
+
+    private void RenderFlyTrail(GraphicsDevice graphicsDevice)
+    {
+        var shader = BasicLaserAlphaShader.Instance;
+        shader.BlendState = BlendState.AlphaBlend;
+        shader.LaserTexture = TrailRegistry.LightningTrail2Outline;
+        TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, GetTrailColor, GetTrailWidth, shader);
     }
     public override void OnKill(int timeLeft)
     {
@@ -71,14 +142,19 @@ public class SwordofTheFliesStorm : ModProjectile
     {
         base.OnHitNPC(target, hit, damageDone);
     }
+
+    public void DrawToRenderTargets()
+    {
+        PixelationManager.QueuePrimitivesDrawAction(RenderFlyTrail);
+
+    }
 }
 
 public class SwordoftheFliesSlash : BaseSwingProjectileV2
 {
     private float _oldRot;
     private float _traveledRotation;
-    public bool Hit;
-    public bool AuroraProj1;
+    private bool _summonedFly;
     public override void DefineCombo()
     {
         base.DefineCombo();
@@ -116,9 +192,10 @@ public class SwordoftheFliesSlash : BaseSwingProjectileV2
     {
         base.AI();
         bloomScale = MathHelper.Lerp(0.08f, 0f, EasingFunction.InExpo(Interpolant));
-        if (!AuroraProj1 && Interpolant > 0.5f)
+        if (!_summonedFly && Interpolant > 0.5f && this.OwnedByLocalClient())
         {
-            AuroraProj1 = true;
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, -Vector2.UnitY, ModContent.ProjectileType<SwordofTheFliesStorm>(), (int)(Projectile.damage * 0.3f), Projectile.knockBack, Projectile.owner);
+            _summonedFly = true;
         }
 
         if (Timer % 16 == 0)

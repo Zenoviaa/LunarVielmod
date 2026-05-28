@@ -88,6 +88,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     public float swordRotation;
     public bool useBloom;
     public Bloom bloom;
+    public float trailVisibilityOffset;
 
     public float bloomScale;
     public const int EXTRA_UPDATE_COUNT = 7;
@@ -114,6 +115,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
         Projectile.DamageType = DamageClass.Melee;
+        trailVisibilityOffset = 0.3f;
 
         //We're using extra updates to ensure the sword doesn't just pass through things
         Projectile.extraUpdates = EXTRA_UPDATE_COUNT - 1;
@@ -257,7 +259,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     public override void AI()
     {
         base.AI();
-
+        
 
         //We want to initalize like this for better MP compatibility, using a timer might not always be seen on all clients
         AI_Initialize();

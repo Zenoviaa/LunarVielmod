@@ -2,8 +2,8 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
-using Stellamod.Content.Trailers;
 using Stellamod.Core.Bases;
+using Stellamod.Core.Effects.Trails;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
@@ -33,7 +33,7 @@ public class TheIrradiaspear : BaseSwingItemV2
     public override void SetDefaults2()
     {
         base.SetDefaults2();
-        Item.damage = 77;
+        Item.damage = 68;
         Item.width = 50;
         Item.height = 50;
         Item.useStyle = ItemUseStyleID.Swing;
@@ -49,7 +49,7 @@ public class TheIrradiaspear : BaseSwingItemV2
         Item.shootSpeed = 15;
         Item.useAnimation = 20;
         Item.useTime = 20;
-        staminaDamageMultiplier = 2.5f;
+        staminaDamageMultiplier = 1.5f;
     }
 
     public override void AddRecipes()
@@ -61,35 +61,131 @@ public class TheIrradiaspear : BaseSwingItemV2
 
 public class IrradiaspearSlash : BaseSwingProjectileV2
 {
+    private bool _init;
+    private bool _hit;
+    private bool _didHitStop;
+    private float _traveledRotation;
+    private float _oldRot;
     public override void DefineCombo()
     {
         base.DefineCombo();
         SwingV2Helper.AddSpearSwingStyle2(this);
         swordBeamLength = 180;
-        glowAfterImageColor = Color.Green * 0.5f;
+
+        hitStopTime = EXTRA_UPDATE_COUNT * 8;
+        glowAfterImageColor = Color.Green * 0.13f;
+        outlineColor = Color.Green;
+        useBloom = true;
+        bloom.innerBloomColor = Color.White;
+        bloom.outerBloomColor = Color.Violet;
+        bloom.bloomWidthFunction = GetBloomWidth;
+        bloom.bloomColorFunction = GetBloomColor;
         useAfterImage = true;
     }
-    
+    private Color GetTrailColor(float completionRatio)
+    {
+        return Color.Lerp(Color.Green, Color.LightGreen, EasingFunction.InCirc(completionRatio)) * MathHelper.Lerp(0f, 1f, EasingFunction.InCirc(completionRatio));
+    }
+    private float GetTrailWidth(float completionRatio)
+    {
+        if (Interpolant < 0.3f)
+            return 0;
+        return MathHelper.Lerp(0, 24, EasingFunction.InOutSine(completionRatio));
+    }
+
+    private float GetBloomWidth(float ratio)
+    {
+        return MathHelper.SmoothStep(0, 32, ratio) * 1.15f * MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Interpolant));
+    }
+    private Color GetBloomColor(float ratio)
+    {
+        return Color.Lerp(Color.LightGreen, Color.DarkBlue, ratio) * MathHelper.SmoothStep(0f, 1f, ratio) * 0.5f;
+    }
     public override Asset<Texture2D> RequestHologramTexture()
     {
-        return ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash()+"IrradiaspearSlash_Glow");
+        return TextureRegistry.GlowSword_Irradiaspear;
     }
 
     public float WidthFunction(float completionRatio)
     {
-        return MathHelper.SmoothStep(64, 3.5f, completionRatio);
+        return MathHelper.SmoothStep(8, 3.5f, completionRatio);
     }
 
     public Color ColorFunction(float completionRatio)
     {
-        return Color.Lerp(Color.Transparent, ColorFunctions.AcidFlame, EasingFunction.QuadraticBump(completionRatio));
+        return Color.Lerp(Color.Transparent, ColorFunctions.AcidFlame, EasingFunction.QuadraticBump(completionRatio)) * 0.5f;
     }
 
     public override void AI()
     {
         base.AI();
 
-        outlineColor = Color.Lerp(Color.White, Color.Green, Interpolant);
+        if (Interpolant > 0.1f && IsFinishingSwing() && !_init)
+        {
+            _init = true;
+  
+            SlashTrailBuilder slashTrailBuilder = new SlashTrailBuilder();
+            slashTrailBuilder.baseColor = Color.DarkGreen;
+            slashTrailBuilder.windColor = Color.DarkGray;
+            slashTrailBuilder.lightColor = Color.WhiteSmoke;
+            slashTrailBuilder.colorFunction = GetTrailColor;
+            slashTrailBuilder.widthFunction = GetTrailWidth;
+            SlashTrailer slashTrailer = slashTrailBuilder.Instantiate();
+            FixedRichLaserShader rls = new FixedRichLaserShader();
+            rls.SetDefaults();
+            rls.LaserColor = Color.LightGreen;
+            rls.InnerColor = Color.Green;
+            rls.OuterColor = Color.DarkGray;
+            rls.LaserTexture = TrailRegistry.BeamTrail;
+            rls.BloomTexture = AssetManager.LaserTextures.Bloom;
+            slashTrailer.Shader = rls;
+
+            slashTrailer.invert = ComboIndex % 2 != 0;
+            Trailer = slashTrailer;
+
+        }
+        _traveledRotation += MathF.Abs(Projectile.rotation - _oldRot);
+        _oldRot = Projectile.rotation;
+        if (IsFinishingSwing())
+        {
+            if (_traveledRotation > 0.05f)
+            {
+                _traveledRotation = 0f;
+                int index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
+                Vector2 spawnPos = swingTrailCache[index];
+                if (SwingDirection == 2)
+                {
+                    Vector2 diff = (spawnPos - Owner.Center);
+                    diff = diff.SafeNormalize(Vector2.Zero);
+                    spawnPos += diff * 64;
+                }
+                FaintSmokeParticle sp = FaintSmokeParticle.SpawnInAlphaLayer(spawnPos, Vector2.Zero);
+                sp.color = Color.Lerp(Color.Lerp(Color.Black, Color.DarkGreen, 0.15f), Color.Black, Main.rand.NextFloat(0f, 1f)) * 0.125f * 0.5f;
+                sp.Scale *= 0.48f;
+                if (SwingDirection == 2)
+                    sp.Scale *= 2;
+                sp.behindLayer = true;
+
+                index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
+                int nextIndex = index + 4;
+                nextIndex %= swingTrailCache.Length;
+
+                spawnPos = swingTrailCache[index];
+                Vector2 spawnPos2 = swingTrailCache[nextIndex];
+                Vector2 spawnVelocity = spawnPos2 - spawnPos;
+                spawnVelocity = spawnVelocity.SafeNormalize(Vector2.Zero);
+                spawnVelocity *= 24;
+
+                if (Main.rand.NextBool(2))
+                {
+                    Color color = new Color(41, 43, 66);
+                    var sp2 = FaintSmokeParticle.SpawnInAlphaLayer(spawnPos + Main.rand.NextVector2Circular(32, 32), spawnVelocity * 0.02f);
+                    sp2.color = Color.Lerp(color, Color.White, 0.25f) * 0.125f * 0.5f;
+                    sp2.Scale *= 0.5f;
+                }
+            }
+        }
+        outlineColor = Color.Lerp(Color.Green, Color.White, Interpolant);
 
     }
 
@@ -102,6 +198,14 @@ public class IrradiaspearSlash : BaseSwingProjectileV2
     public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
     {
         base.ModifyHitNPC(target, ref modifiers);
+        if (!_hit)
+        {
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
+                ModContent.ProjectileType<IrradiaspearBoom>(),
+                Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
+            _hit = true;
+        }
+   
         SoundStyle spearHit = SoundRegistry.SpearHit1;
         spearHit.PitchVariance = 0.5f;
         SoundEngine.PlaySound(spearHit, Projectile.position);
@@ -138,10 +242,10 @@ public class IrradiaspearBoom : ModProjectile,
         Timer++;
         if (Timer == 1)
         {
-            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Missile_Land") with { PitchVariance = 0.3f };
+            SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/IrradiatedNest_Missile_Land") with { PitchVariance = 0.6f };
             SoundEngine.PlaySound(soundStyle, Projectile.position);
             PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.LightGreen, 45, 64);
-    
+
 
             for (int i = 0; i < 16; i++)
             {
@@ -349,7 +453,7 @@ public class TheIrradiaspearP : ModProjectile,
             {
                 Timer = 0;
                 State = ActionState.Out;
-               
+
             }
             else
             {
@@ -696,7 +800,7 @@ public class TheIrradiaspearSparkProj : ModProjectile,
     public override void AI()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             _originalPoint = Projectile.Center;
             Projectile.velocity *= 3f;
@@ -718,12 +822,12 @@ public class TheIrradiaspearSparkProj : ModProjectile,
         Projectile.rotation = Projectile.velocity.ToRotation() + Projectile.velocity.Length() * 0.05f;
 
         float lifeTime = LifeTime + RandOffset;
-        if(Timer >= lifeTime / 2f)
+        if (Timer >= lifeTime / 2f)
         {
             Projectile.velocity += (_originalPoint - Projectile.Center) * 0.006f;
         }
 
-        if(Timer >= lifeTime - 20)
+        if (Timer >= lifeTime - 20)
         {
             Projectile.scale *= 1.01f;
         }

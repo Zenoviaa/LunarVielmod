@@ -6,6 +6,7 @@ using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
+using Stellamod.Content.Armors.Radianthal;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Gores;
 using Stellamod.Core.Bases;
@@ -28,6 +29,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.GameContent.Animations.Actions.Sprites;
 
 
 namespace Stellamod.Content.Areas.PunkerTown.ItemsPT;
@@ -43,11 +45,12 @@ public class RuneSmasher : BaseSwingItemV2
     public override void SetDefaults2()
     {
         base.SetDefaults2();
-        Item.damage = 80;
+        Item.damage = 192;
         Item.shoot = ModContent.ProjectileType<RuneSmasherSwing>();
         staminaProjectileShoot = ModContent.ProjectileType<RuneSmasherCharge>();
         meleeWeaponType = MeleeWeaponType.Hammer;
         staminaCost = 3;
+        staminaDamageMultiplier = 2;
     }
 
     public override void AddRecipes()
@@ -149,6 +152,10 @@ public class RuneSmasherSwing : BaseSwingProjectileV2
             SoundEngine.PlaySound(leafSound, Projectile.position);
             _playSound = true;
         }
+        if (_hit)
+        {
+            Projectile.damage = Owner.HeldItem.OriginalDamage;
+        }
         outlineColor = Color.Lerp(Color.DarkGoldenrod, Color.White, ExtraMath.Osc(0f, 1f, speed: 6));
 
         int denom = (int)MathHelper.Lerp(64, 8, LevelOfCharge / 30f);
@@ -240,7 +247,40 @@ public class RuneSmasherSwing : BaseSwingProjectileV2
                 Projectile.Center,
                 Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(20)), g, 1f);
         }
-        if (_hitCount < 2)
+
+        for (float f = 0; f < 3; f++)
+        {
+            var dp = DustParticle.Spawn(target.Center, Main.rand.NextVector2Circular(24, 24));
+            dp.innerColor = Color.Lerp(Color.White, Color.Gold, Main.rand.NextFloat(0f, 1f));
+            dp.outerColor = Color.DarkGoldenrod;
+            dp.Scale *= 0.5f;
+            dp.dampening = 0.1f;
+            dp.gravity = 0;
+        }
+        for (float f = 0; f < 3; f++)
+        {
+            var sp = SparkleParticle.Spawn(target.Center, Main.rand.NextVector2Circular(24, 24));
+            sp.innerColor = Color.Lerp(Color.White, Color.Gold, Main.rand.NextFloat(0f, 1f));
+            sp.outerColor = Color.DarkGoldenrod;
+            sp.Scale *= 0.5f;
+            sp.dampening = 0.1f;
+            sp.gravity = 0;
+            sp.flickering = true;
+        }
+
+        Vector2 pos2 = target.Center;
+        pos2 += Main.rand.NextVector2Circular(128, 64);
+        pos2.Y -= 444;
+        Vector2 targetPos2 = target.Center;
+        targetPos2 += Main.rand.NextVector2Circular(32, 8);
+        Projectile.NewProjectile(Projectile.GetSource_FromThis(), pos2, (targetPos2 - pos2).SafeNormalize(Vector2.Zero) * 10,
+                ModContent.ProjectileType<RuneSmasherSword>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai2: Main.rand.NextFloat(0, 45));
+
+        Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<RadianthalAura>(),
+                (int)(Projectile.damage * 0.5f),
+                Projectile.knockBack,
+                Projectile.owner);
+        if (_hitCount < 4)
         {
             Bounce(8);
         }
@@ -261,15 +301,7 @@ public class RuneSmasherSwing : BaseSwingProjectileV2
         {
 
 
-            for(float f = 0; f < 3; f++)
-            {
-                var dp = DustParticle.Spawn(target.Center, Main.rand.NextVector2Circular(24, 24));
-                dp.innerColor = Color.Lerp(Color.White, Color.Gold, Main.rand.NextFloat(0f, 1f));
-                dp.outerColor = Color.DarkGoldenrod;
-                dp.Scale *= 0.5f;
-                dp.dampening = 0.1f;
-                dp.gravity = 0;
-            }
+
             FXUtil.ShakeCamera(target.Center, 1024, 16);
             FXUtil.PunchCamera(target.Center, Projectile.velocity, 0.5f, 2, 30);
             _hit = true;
@@ -439,6 +471,8 @@ public class RuneSmasherCharge : BaseSwingProjectileV2
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), pos, targetPos - pos, 
                 ModContent.ProjectileType<RuneSmasherLightning>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai2: Main.rand.NextFloat(0, 45));
         }
+
+
         Owner.velocity.Y -= 6;
         Owner.GetModPlayer<RuneSmasherPlayer>().levelOfCharge=0;
         _hitCount++;
@@ -484,6 +518,104 @@ public class RuneSmasherCharge : BaseSwingProjectileV2
     }
 }
 
+public class RuneSmasherSword : ModProjectile,
+    IDrawToRenderTarget
+{
+    private float _scale;
+    private float _randScale;
+    private ref float Timer => ref Projectile.ai[0];
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+        ProjectileID.Sets.TrailCacheLength[Type] = 16;
+        ProjectileID.Sets.TrailingMode[Type] = 2;
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 32;
+        Projectile.height = 32;
+        Projectile.friendly = true;
+        Projectile.penetrate = -1;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = -1;
+    }
+
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if(Timer == 1)
+        {
+            _randScale = Main.rand.NextFloat(0.7f, 1f);
+        }
+        Projectile.velocity *= 1.1f;
+        Projectile.rotation = Projectile.velocity.ToRotation();
+        _scale = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / 60f));
+    }
+
+    public override bool PreDraw(ref Color lightColor)
+    {
+
+        return false;
+    }
+    private void DrawPixelatedSwords(SpriteBatch sb, Vector2 screenPos)
+    {
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        sbDrawer.color = Color.Lerp(Color.Gold, Color.DarkGoldenrod, ExtraMath.Osc(0f, 1f, 0, Projectile.whoAmI));
+        sbDrawer.color.A = 0;
+        sbDrawer.scale *= _scale * _randScale * new Vector2(1f, 0.4f);
+        Main.spriteBatch.Draw(sbDrawer);
+        for (int i = 0; i < Projectile.oldPos.Length; i++)
+        {
+            Vector2 pos = Projectile.oldPos[i] + Projectile.Size * 0.5f;
+            sbDrawer.worldPosition = pos;
+            float ratio = i / (float)Projectile.oldPos.Length;
+            sbDrawer.color = Color.Lerp(Color.Gold, Color.DarkGoldenrod, ratio);
+            sbDrawer.color *= MathHelper.SmoothStep(1f, 0f, EasingFunction.OutExpo(ratio));
+            sbDrawer.color.A = 0;
+            Main.spriteBatch.Draw(sbDrawer);
+        }
+        sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        sbDrawer.color = Color.White * ExtraMath.Osc(0.35f, 0.6f, speed: 6, Projectile.whoAmI);
+        sbDrawer.color.A = 0;
+        sbDrawer.scale *= _scale * _randScale * new Vector2(1f, 0.4f);
+        sbDrawer.scale *= 0.9f;
+        Main.spriteBatch.Draw(sbDrawer);
+    }
+    
+    public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+    {
+        base.OnHitNPC(target, hit, damageDone);
+
+    }
+
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+        float numDust = 8;
+        for (float n = 0; n < numDust; n++)
+        {
+            Vector2 vel = -Projectile.oldVelocity;
+            vel = vel.RotatedByRandom(MathHelper.ToRadians(60));
+            vel = vel.SafeNormalize(Vector2.Zero);
+            vel *= Main.rand.NextFloat(6, 12f);
+            DustParticleSpawnParams spawnParams = DustParticleSpawnParams.Default;
+            spawnParams.outerColor = Color.Gold;
+            var dp = DustParticle.Spawn(Projectile.Center, vel, spawnParams);
+            dp.fast = true;
+            dp.noTileCollide = true;
+            dp.dampening = 0.05f;
+        }
+        FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+    }
+
+    public void DrawToRenderTargets()
+    {
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedSwords);
+    }
+}
 public class RuneSmasherLightning : ModProjectile,
     IDrawToRenderTarget
 {
