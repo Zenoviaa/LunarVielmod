@@ -17,7 +17,6 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.Core.AssetReferences.Content.Items.MoonlightMagic.Forms;
 
 namespace Stellamod.Content.Areas.PunkerTown.ItemsPT;
 
@@ -36,18 +35,19 @@ public class Tulahal : BaseSwingItemV2
     public override void ShootSwing(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
         //base.ShootSwing(player, source, position, velocity, type, damage, knockback);
-        
+
         SwingPlayerV2 comboPlayer = player.GetModPlayer<SwingPlayerV2>();
-        
+
         int combo = comboPlayer.ComboCounter;
-        if(combo == 1 || combo == 2 || combo == 3)
+        if (combo == 1 || combo == 2 || combo == 3)
         {
             int style = 1;
             if (combo == 1)
                 style = 2;
             Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(4)), staminaProjectileShoot, damage, knockback, player.whoAmI, ai1: style);
             comboPlayer.IncreaseCombo();
-        } else
+        }
+        else
         {
             int dir = comboPlayer.ComboDirection;
             Projectile p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback,
@@ -57,7 +57,7 @@ public class Tulahal : BaseSwingItemV2
                 comboPlayer.IncreaseCombo();
             }
         }
-        
+
 
     }
     public override void AddRecipes()
@@ -232,7 +232,6 @@ public class TulahalSlash : BaseSwingProjectileV2
             return;
 
         Vector2[] swingPos = new Vector2[swingTrailCache.Length];
-        float radians = MathHelper.PiOver4 * 0.5f;
         for (int i = 0; i < swingPos.Length; i++)
         {
             ref Vector2 p = ref swingPos[i];
@@ -258,7 +257,7 @@ public class TulahalSlash : BaseSwingProjectileV2
         base.DrawSwingTrail2(ref lightColor, swingTrailCache);
         if (ComboIndex == 6)
             return;
-        FixedRichLaserShader laserShader =ShaderContent.GetInstance<FixedRichLaserShader>();
+        FixedRichLaserShader laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
         laserShader.LaserColor = Color.IndianRed;
         laserShader.InnerColor = Color.DarkViolet;
         laserShader.OuterColor = Color.Black;
@@ -266,19 +265,19 @@ public class TulahalSlash : BaseSwingProjectileV2
         laserShader.LaserTexture = TrailRegistry.StarTrail;
         TrailDrawer.Draw(Main.spriteBatch, swingTrailCache, GetTrailColor, GetBigTrailWidth, laserShader);
     }
-    
+
 
     public override void AI()
     {
         base.AI();
         if (_flashTimer > 0)
             _flashTimer--;
-        if(Timer == 1 && SwingDirection == 2)
+        if (Timer == 1 && SwingDirection == 2)
         {
             SoundStyle growSound = new SoundStyle("Stellamod/Assets/Sounds/FenixSummonGrav") with { Pitch = -0.3f };
             SoundEngine.PlaySound(growSound, Projectile.position);
         }
-        if(SwingDirection == 2)
+        if (SwingDirection == 2)
         {
 
             swordBeamLength = 420;
@@ -293,10 +292,10 @@ public class TulahalSlash : BaseSwingProjectileV2
         _npcSucker ??= new NPCSucker();
 
 
-        if(SwingDirection == 2)
+        if (SwingDirection == 2)
         {
             Owner.SetImmuneTimeForAllTypes(10);
-            if(Owner.velocity.Y > 0)
+            if (Owner.velocity.Y > 0)
                 Owner.velocity.Y *= 0.98f;
         }
         if (_traveledRotation > 0.1f)
@@ -304,7 +303,7 @@ public class TulahalSlash : BaseSwingProjectileV2
             _traveledRotation = 0f;
             int index = (int)(Interpolant * swingTrailCache.Length) % swingTrailCache.Length;
             Vector2 spawnPos = swingTrailCache[index];
-            if(SwingDirection == 2)
+            if (SwingDirection == 2)
             {
                 Vector2 diff = (spawnPos - Owner.Center);
                 diff = diff.SafeNormalize(Vector2.Zero);
@@ -367,8 +366,8 @@ public class TulahalSlash : BaseSwingProjectileV2
             _flashTimer = 180;
             ShakeScreenPosition.Shake = 4;
             FXUtil.GlowCircleBoom(target.Center, Color.IndianRed, Color.DarkRed, Color.DarkViolet, duration: 30, baseSize: 0.2f);
-        
-      
+
+
             for (float n = 0; n < 8; n++)
             {
                 DustParticle dp = DustParticle.Spawn(target.Center, Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(60)) * Main.rand.NextFloat(0.5f, 5f));
@@ -380,7 +379,7 @@ public class TulahalSlash : BaseSwingProjectileV2
                 dp.dampening = 0.1f;
                 dp.Scale *= 0.85f;
             }
-       
+
             if (SwingDirection == 2)
             {
                 SoundStyle e = new SoundStyle("Stellamod/Assets/Sounds/ClockworkCity1") with { Pitch = -0.25f };
@@ -391,7 +390,7 @@ public class TulahalSlash : BaseSwingProjectileV2
                 fx.Scale *= 2;
                 for (float n = 0; n < 24; n++)
                 {
-                    DustParticle dp = DustParticle.Spawn(target.Center, (Projectile.rotation-MathHelper.PiOver4).ToRotationVector2().RotatedByRandom(MathHelper.ToRadians(60)) * Main.rand.NextFloat(0.5f, 50));
+                    DustParticle dp = DustParticle.Spawn(target.Center, (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2().RotatedByRandom(MathHelper.ToRadians(60)) * Main.rand.NextFloat(0.5f, 50));
                     dp.innerColor = Color.IndianRed;
                     dp.outerColor = Color.DarkRed;
                     dp.color = Color.Lerp(Color.Lerp(Color.Black, Color.Red, 0.1f), Color.Black, Main.rand.NextFloat(0f, 1f));
@@ -525,7 +524,7 @@ public class TulahalThrow : ModProjectile
         if (Timer == 1)
         {
             _initialVelocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
-//            Projectile.velocity *= 6;
+            //            Projectile.velocity *= 6;
         }
 
         if (Main.rand.NextBool(12))
@@ -546,7 +545,7 @@ public class TulahalThrow : ModProjectile
         float ratio = Timer / time;
         float ease1 = EasingFunction.QuickOutSlowIn(ratio);
         float startup = 1f;
-        if(Style == 2)
+        if (Style == 2)
         {
             startup = MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(Timer / 45f));
         }
@@ -554,8 +553,8 @@ public class TulahalThrow : ModProjectile
         Vector2 targetVelocity = (targetPosition - Projectile.Center);
         Projectile.velocity = targetVelocity;
         Projectile.rotation = _initialVelocity.ToRotation() + MathHelper.PiOver4;
-      //  Owner.itemTime = 2;
-        if(Timer >= time)
+        //  Owner.itemTime = 2;
+        if (Timer >= time)
         {
             Projectile.Kill();
         }
@@ -630,17 +629,17 @@ public class TulahalThrow : ModProjectile
             Main.spriteBatch.Draw(chainDrawer);
         }
 
-        
-        for(int i = 0; i < Projectile.oldPos.Length; i++)
+
+        for (int i = 0; i < Projectile.oldPos.Length; i++)
         {
             Vector2 pos = Projectile.oldPos[i];
             SpritebatchDrawer afterImageDrawer = SpritebatchDrawer.FromProjectile(Projectile);
             afterImageDrawer.worldPosition = pos + Projectile.Size * 0.5f;
-            afterImageDrawer.color = Color.Lerp(Color.Red, Color.Transparent, (float)i / (float)Projectile.oldPos.Length) * 0.1f;
+            afterImageDrawer.color = Color.Lerp(Color.Red, Color.Transparent, i / (float)Projectile.oldPos.Length) * 0.1f;
             afterImageDrawer.VerticalFrame(1, 3);
             Main.spriteBatch.Draw(afterImageDrawer);
         }
-        
+
         SpritebatchDrawer swordDrawer = SpritebatchDrawer.FromProjectile(Projectile);
         Main.spriteBatch.Draw(swordDrawer);
 
@@ -668,14 +667,14 @@ public class TulahalThrow : ModProjectile
             int dir = comboPlayer.ComboDirection;
             int bigDir = 2;
             int ai2 = 5;
-            if(Style == 1 || Style == 2)
+            if (Style == 1 || Style == 2)
             {
                 return;
             }
 
-        
 
-            Projectile p = Projectile.NewProjectileDirect(Projectile.GetItemSource_FromThis(), Owner.Center, Vector2.UnitY.RotatedBy(Owner.direction * MathHelper.ToRadians(-30)), ModContent.ProjectileType<TulahalSlash>(), Projectile.damage, Projectile.knockBack,
+
+            Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Owner.Center, Vector2.UnitY.RotatedBy(Owner.direction * MathHelper.ToRadians(-30)), ModContent.ProjectileType<TulahalSlash>(), Projectile.damage, Projectile.knockBack,
                 Owner.whoAmI, ai1: bigDir, ai2: ai2);
         }
     }

@@ -50,7 +50,10 @@ public class InfraredRenderer : ModSystem
         spriteBatch.GraphicsDevice.SetRenderTarget(_infraredMask);
         spriteBatch.GraphicsDevice.Clear(Color.Transparent);
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        Main.instance.DrawNPCs();
+       
+
+        //TODO:
+        //Main.instance.DrawNPCs();
         spriteBatch.End();
 
 

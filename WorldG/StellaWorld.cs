@@ -132,10 +132,13 @@ public partial class StellaWorld : ModSystem
     private DesertDescription ClampHive(On_DesertDescription.orig_CreateFromPlacement orig, Point origin)
     {
         var description = orig(origin);
+
+        //TODO:
+        /*
         Rectangle hiveRect = description.Hive;
         hiveRect.Height = DarkspaceStart - (int)Main.worldSurface;
         hiveRect.Height -= 32;
-        description.Hive = hiveRect;
+        description.Hive = hiveRect;*/
         return description;
     }
 

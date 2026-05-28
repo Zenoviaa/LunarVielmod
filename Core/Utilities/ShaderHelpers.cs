@@ -5,7 +5,6 @@ using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
-using static Stellamod.Core.AssetReferences.Effects;
 
 namespace Stellamod.Core.Utilities
 {
