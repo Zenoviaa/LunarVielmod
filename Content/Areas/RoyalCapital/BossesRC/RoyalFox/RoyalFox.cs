@@ -2,11 +2,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
+using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
+using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -680,6 +683,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
     public partial class RoyalFox : ScarletBoss,
         IDrawToRenderTarget
     {
+        private float _dashTrailAlpha;
+        private bool _renderDashTrail;
+        private float _direction;
         private Outliner _outliner;
         private bool _contactDamage;
         private RoyalFoxRig _rigBackingField;
@@ -789,17 +795,201 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public override void AI()
         {
             base.AI();
+            _renderDashTrail = false;
             _outliner.SetDefaults();
             switch (State)
             {
+                default:
+                case AIState.Idle:
+                    AI_Idle();
+                    break;
                 case AIState.Zoom_DashDance:
                     AI_ZoomDashDance();
                     break;
             }
+            float targetDashTrailAlpha = _renderDashTrail ? 1f : 0f;
+            _dashTrailAlpha = MathHelper.Lerp(_dashTrailAlpha, targetDashTrailAlpha, 0.01f);
             _outliner.Update();
-            AI_DebugRig();
+           // AI_DebugRig();
             UpdateRig();
         }
+
+        private void SwitchState(AIState state)
+        {
+            Timer = 0;
+            AttackCycle = 0;
+            AttackCounter = 0;
+            State = state;
+            NPC.netUpdate = true;
+            Main.NewText(state);
+        }
+
+        private void DebugTeleportLeftOfPlayer()
+        {
+
+            Vector2 pos = (MyTarget.Center + new Vector2(-512, 0));
+            NPC.velocity = Vector2.Zero;
+            NPC.Center = pos;
+        }
+
+        private void AI_Idle()
+        {
+            Timer++;
+            if(Timer == 1)
+            {
+                NPC.TargetClosest();
+            }
+            DebugTeleportLeftOfPlayer();
+            NPC.velocity *= 0.8f;
+            if(Timer >= 100)
+            {
+                ChooseAttack();
+            }
+            AnimateStanding();
+        }
+        private void ChooseAttack()
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                SwitchState(AIState.Zoom_DashDance);
+            }
+        }
+
+        private float Zoom_Prepare_Time => 80;
+
+        private void PoofParticles()
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            RoyalMagicRenderer royalMagicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
+
+
+            for(float f = 0; f < 24; f++)
+            {
+
+                Vector2 vel = -Vector2.UnitY * Main.rand.NextFloat(3f, 7f);
+                royalMagicRenderer.SpawnParticle(NPC.Center + Main.rand.NextVector2Circular(64, 128), vel, 180);
+
+                if (Main.rand.NextBool(2))
+                {
+                    var sp = RoyalMagicStarParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(64, 64), -vel, Scale: Main.rand.NextFloat(0.25f, 0.6f));
+                    sp.color = Color.Lerp(new Color(117, 100, 210), Color.White, Main.rand.NextFloat(0f, 1f));
+                }
+                if (Main.rand.NextBool(2))
+                {
+                    var sp = RoyalMagicSwordParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(64, 64), vel, Scale: Main.rand.NextFloat(0.25f, 0.6f));
+                    sp.color = Color.Lerp(new Color(117, 100, 210), Color.White, Main.rand.NextFloat(0f, 1f));
+                    sp.behindLayer = Main.rand.NextBool(2);
+                }
+                if (Main.rand.NextBool(2))
+                {
+                    var sp = FaintSmokeParticle.SpawnInAlphaLayer(NPC.Center + Main.rand.NextVector2Circular(64, 64), -vel, Scale: Main.rand.NextFloat(0.25f, 0.6f));
+                    sp.Scale *= 0.5f;
+                    sp.color = Color.Lerp(Color.Black, Color.White, Main.rand.NextFloat(0f, 0.33f));
+                    sp.behindLayer = true;
+                }
+            }
+        }
+        private void WalkParticles()
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            RoyalMagicRenderer royalMagicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
+
+
+            if (!Main.rand.NextBool(2))
+                return;
+
+
+            Vector2 vel = -NPC.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(3f, 7f);
+            royalMagicRenderer.SpawnParticle(NPC.Center + Main.rand.NextVector2Circular(64, 64), vel, 180);
+
+            vel = -NPC.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(3f, 7f);
+            royalMagicRenderer.SpawnParticle(NPC.Center + Main.rand.NextVector2Circular(64, 64), vel, 180);
+
+            if (!Main.rand.NextBool(4))
+                return;
+
+            if (Main.rand.NextBool(2))
+            {
+                var sp = RoyalMagicStarParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(64, 64), vel, Scale: Main.rand.NextFloat(0.25f, 0.6f));
+                sp.color = Color.Lerp(new Color(117, 100, 210), Color.White, Main.rand.NextFloat(0f, 1f));
+            }
+            if (Main.rand.NextBool(2))
+            {
+                var sp = RoyalMagicSwordParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(64, 64), -vel, Scale: Main.rand.NextFloat(0.25f, 0.6f));
+                sp.color = Color.Lerp(new Color(117, 100, 210), Color.White, Main.rand.NextFloat(0f, 1f));
+                sp.behindLayer = Main.rand.NextBool(2);
+            }
+            if (Main.rand.NextBool(2))
+            {
+                var sp = FaintSmokeParticle.SpawnInAlphaLayer(NPC.Center + Main.rand.NextVector2Circular(64, 64), -vel, Scale: Main.rand.NextFloat(0.25f, 0.6f));
+                sp.Scale *= 0.5f;
+                sp.color = Color.Lerp(Color.Black, Color.White, Main.rand.NextFloat(0f, 0.33f));
+                sp.behindLayer = true;
+            }
+        }
+        private void AnimateStanding()
+        {
+            float start = MathHelper.ToRadians(-2);
+            float end = MathHelper.ToRadians(2);
+
+            float runningSpeed = 4;
+            float frontFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed);
+            //     float easeing = EasingFunction.InOutSine(legPair1);
+            Rig.frontFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontFrontLeg);
+            Rig.frontFrontLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontFrontLeg);
+
+            float frontBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 1);
+            Rig.frontBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontBackLeg);
+            Rig.frontBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontBackLeg);
+
+
+            //Back Legs
+            float backFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3);
+            Rig.backFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, backFrontLeg);
+            Rig.backFrontLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backFrontLeg);
+
+
+            float backBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3 + 1);
+            Rig.backBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, backBackLeg);
+            Rig.backBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backBackLeg);
+
+
+            float headRotOffset = MathHelper.Lerp(start, end, ExtraMath.Osc(0f, 1f, speed: runningSpeed));
+            Rig.bodyParts[3].eulerAngles.Z = MathHelper.ToRadians(19) + headRotOffset;
+        }
+        private void AnimateRunning()
+        {
+            float start = MathHelper.ToRadians(-25);
+            float end = MathHelper.ToRadians(25);
+
+            float runningSpeed = 9;
+            float frontFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed);
+       //     float easeing = EasingFunction.InOutSine(legPair1);
+            Rig.frontFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontFrontLeg);
+            Rig.frontFrontLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontFrontLeg);
+
+            float frontBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 1);
+            Rig.frontBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontBackLeg);
+            Rig.frontBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontBackLeg);
+
+
+            //Back Legs
+            float backFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3);
+            Rig.backFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, backFrontLeg);
+            Rig.backFrontLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backFrontLeg);
+
+
+            float backBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3 + 1);
+            Rig.backBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, backBackLeg);
+            Rig.backBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backBackLeg);
+
+
+            Rig.bodyParts[3].eulerAngles.Z = MathHelper.ToRadians(15);
+            //   Rig.frontFrontLeg[2].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, legPair1);
+        }
+
         #region Zoom Mode 
         private void AI_ZoomDashDance()
         {
@@ -826,7 +1016,38 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                     if(Timer == 1)
                     {
                         NPC.TargetClosest();
+                        _direction = FacingDirectionToTarget;
                     }
+
+                    if (Main.rand.NextBool(4))
+                    {
+                      var d =  Dust.NewDustPerfect(NPC.Center + Main.rand.NextVector2Circular(16, 16), DustID.GemDiamond, Scale: 1f);
+                        d.noGravity = true;
+                    }
+
+                    //I want fenix to move forward and then go up while rotating it'll look so cool, then she poofs
+                    float progress = Timer / Zoom_Prepare_Time;
+                    NPC.velocity.X = MathHelper.Lerp(_direction * 2, _direction * 8, EasingFunction.QuadraticBump(Timer / Zoom_Prepare_Time));
+
+                    float yVelcoity = MathHelper.Lerp(0f, -14, EasingFunction.InOutExpo(progress));
+                    NPC.velocity.Y = yVelcoity;
+                    Rig.rootSegment.eulerAngles.W = MathHelper.Lerp(0f, MathHelper.ToRadians(-90), EasingFunction.InOutSine(progress));
+                    Rig.rootSegment.eulerAngles.X = MathHelper.Lerp(0f, MathHelper.ToRadians(90 + 360), EasingFunction.InOutSine(progress));
+
+                    _renderDashTrail = true;
+                    AnimateRunning();
+                    WalkParticles();
+                    if (Timer >= Zoom_Prepare_Time)
+                    {
+                        PoofParticles();
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                    break;
+       
+
+                default:
+                    SwitchState(AIState.Idle);
                     break;
             }
         }
@@ -856,6 +1077,23 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             }
         }
 
+        private Color DashTrailColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(completionRatio)) * _dashTrailAlpha;
+        }
+
+        private float DashTrailWidthFunction(float completionRatio)
+        {
+            return MathHelper.SmoothStep(128, 128, completionRatio);
+        }
+        private void RenderPixelatedDashTrail(GraphicsDevice gDevice)
+        {
+            BasicLaserShader laserShader = BasicLaserShader.Instance;
+            laserShader.LaserTexture = AssetManager.LaserTextures.SplittingTrail;
+            laserShader.InnerColor = Color.White;
+            laserShader.OuterColor = Color.Lerp(Color.White, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 16));
+            TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, DashTrailColorFunction, DashTrailWidthFunction, laserShader, NPC.Size * 0.5f);
+        }
         private void UpdateRig()
         {
             //Calling update twice sine it has to calculate the new x axis position
@@ -884,6 +1122,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public void DrawToRenderTargets()
         {
             OutlineRenderer.Queue(DrawOutlines);
+            if (_dashTrailAlpha > 0)
+            {
+                PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedDashTrail);
+            }
         }
     }
 }

@@ -35,7 +35,7 @@ public class RoyalMagicSwordParticle :
         starColor = Color.Lerp(starColor, Color.Black, fadeIn / 45f);
         Vector2 scale = Vector2.One * Scale;
         scale.X *= Velocity.Length() / 3f;
-        scale.X = MathHelper.Clamp(scale.X, 0f, 2f);
+        scale.X = MathHelper.Clamp(scale.X, 1f, 3f);
         scale.Y *= 0.5f;
        // starColor *= ExtraMath.Osc(0.4f, 1f, speed: 3, _flickerOffset);
         spriteBatch.Draw(textureAsset.Value, DrawPosition, Frame, starColor, Rotation, Frame.Size() / 2f, scale, SpriteEffects.None, 0);

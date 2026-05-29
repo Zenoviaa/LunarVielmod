@@ -108,6 +108,12 @@ public sealed class RippleRenderer : ModSystem
         base.Unload();
         PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady -= RenderRipples;
     }
+
+    public void CreateRipple(Vector2 position)
+    {
+        _particleManager.SpawnParticle(position, Vector2.Zero, Vector2.One, 100);
+    }
+
     public override void PostUpdateDusts()
     {
         base.PostUpdateDusts();
@@ -189,6 +195,7 @@ public sealed class RippleRenderer : ModSystem
     {
        // sb.Draw(_rippleRT, Vector2.Zero, Color.White);
     }
+
 }
 
 public class RippleWriteShader : CrystalShader<RippleWriteShader>

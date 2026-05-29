@@ -156,7 +156,7 @@ public class RoyalMagicRenderer : ModSystem
 
             maskDrawer.color = Color.Lerp(Color.Transparent, brighterColor, progress);
 
-            float offset = MathHelper.Lerp(1f, 1.25f, MathHelper.Lerp(0f, 1f, (i % 8f) / 8f));
+            float offset = MathHelper.Lerp(0.8f, 1f, MathHelper.Lerp(0f, 1f, (i % 8f) / 8f));
             maskDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One * offset, progress);
             spriteBatch.Draw(maskDrawer);
         }
