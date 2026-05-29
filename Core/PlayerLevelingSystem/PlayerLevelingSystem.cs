@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.ArmorRework;
+using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Helpers;
 using System.IO;
 using Terraria;
@@ -8,6 +9,21 @@ using Terraria.ModLoader.IO;
 namespace Stellamod.Core.PlayerLevelingSystem;
 
 
+public class RocketTimeBooster : ModSystem
+{
+    public override void Load()
+    {
+        base.Load();
+        On_Player.RefreshMovementAbilities += IncreaseRocketTime;
+    }
+
+    private void IncreaseRocketTime(On_Player.orig_RefreshMovementAbilities orig, Player self, bool doubleJumps)
+    {
+
+        orig(self, doubleJumps);
+
+    }
+}
 public class LevelingPlayer : ModPlayer
 {
     public float[] stats = new float[7];
@@ -37,11 +53,13 @@ public class LevelingPlayer : ModPlayer
         get
         {
             int numBossesDefeated = DownedBossTracker.DownedBossCount;
+            if (numBossesDefeated > DownedBossTracker.MaxPossiblePoints)
+                numBossesDefeated = DownedBossTracker.MaxPossiblePoints;
             return numBossesDefeated - (int)AppliedPoints;
         }
     }
 
- 
+
     public bool CanApplyPoints(float proposedPoints)
     {
         float diff = RemainingPoints - proposedPoints;
@@ -95,12 +113,33 @@ public class LevelingPlayer : ModPlayer
         //The debuff reduction time is in a separate class, since we have to override the hook for applying debuff tiem
         Player.statDefense += (int)Veil;
         Player.luck += 0.05f * Veil;
+
+
     }
 
+    public override void PostUpdateEquips()
+    {
+        base.PostUpdateEquips();
+        float wingTimeMax = Player.wingTimeMax;
+        float wingTimeToIncrease = wingTimeMax * 0.01f * Dexterity;
+        wingTimeMax += wingTimeToIncrease;
+        Player.wingTimeMax = (int)wingTimeMax;
+
+
+        //TODO: Hardcode base rocket time max and increase based off dexterity
+        float rocketTimeMax = 7;
+        float r = rocketTimeMax * 0.01f * Player.GetModPlayer<LevelingPlayer>().Dexterity;
+        rocketTimeMax += r;
+        Player.rocketTimeMax = (int)rocketTimeMax;
+    }
     public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
     {
         base.ModifyWeaponDamage(item, ref damage);
         //TOOD: Apply Elemental Damage Bonus Here
+        if (item.ModItem is AbstractMagicWand magicWand)
+        {
+            damage += Veil * 0.02f;
+        }
     }
 
     public override void PostUpdateMiscEffects()

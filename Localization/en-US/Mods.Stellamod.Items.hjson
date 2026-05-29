@@ -35,8 +35,9 @@ Common: {
 		Stat:
 			'''
 			{0} attack speed
+			{1} flight time
 
-			[c/FFA500:Gain 1% attack speed for each point.]
+			[c/FFA500:Gain 1% attack speed and flight time for each point.]
 			'''
 	}
 
@@ -59,7 +60,7 @@ Common: {
 			{0} insource duration
 			{1} less debuff time against you
 
-			[c/FFA500:Gain 5% more potion and insource duration, and 5% less debuff time against you for each point.]
+			[c/FFA500:Gain 5% more potion and insource duration, and 1.5% less debuff time against you for each point.]
 			'''
 	}
 

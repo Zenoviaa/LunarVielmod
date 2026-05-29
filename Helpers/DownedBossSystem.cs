@@ -133,6 +133,7 @@ namespace Stellamod.Helpers
     {
         public static bool[] downedBossFlags = new bool[64];
         public static int TotalBossCount => 52;
+        public static int MaxPossiblePoints => 50;
         public static int DownedBossCount
         {
             get

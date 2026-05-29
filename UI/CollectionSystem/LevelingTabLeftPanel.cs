@@ -162,7 +162,7 @@ public class LevelTabStatsPanel : UIPanel
             statIconDrawer.color = Color.White;
             spriteBatch.Draw(statIconDrawer);
 
-            for (int j = 0; j < DownedBossTracker.TotalBossCount; j++)
+            for (int j = 0; j < DownedBossTracker.MaxPossiblePoints; j++)
             {
                 Vector2 uiPosition = GetDimensions().ToRectangle().TopLeft();
                 uiPosition.X += j * wPadding;
@@ -184,7 +184,7 @@ public class LevelTabStatsPanel : UIPanel
                
             }
 
-            for (int j = 0; j < DownedBossTracker.TotalBossCount; j++)
+            for (int j = 0; j < DownedBossTracker.MaxPossiblePoints; j++)
             {
                 Vector2 uiPosition = GetDimensions().ToRectangle().TopLeft();
                 uiPosition.X += j * wPadding;
@@ -280,6 +280,7 @@ public static class Leveler
                 break;
             case 3:
                 baseStats[0] = 0.01f;
+                baseStats[1] = 0.01f;
                 break;
             case 4:
                 baseStats[0] = 0.05f;
@@ -288,7 +289,7 @@ public static class Leveler
                 break;
             case 5:
                 baseStats[0] = 0.05f;
-                baseStats[1] = 0.05f;
+                baseStats[1] = 0.015f;
                 break;
             case 6:
                 baseStats[0] = 1;
