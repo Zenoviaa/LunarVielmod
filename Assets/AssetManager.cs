@@ -12,10 +12,17 @@ namespace Stellamod.Assets
             public static Asset<Texture2D> AuroraRays;
             public static Asset<Texture2D> Whirly;
             public static Asset<Texture2D> FlamethrowerNoise;
+            public static Asset<Texture2D> Swirl;
+            public static Asset<Texture2D> PerlinBlurred;
+            public static void Load(ref Asset<Texture2D> asset, string path)
+            {
+                asset = ModContent.Request<Texture2D>($"Stellamod/Assets/Noise/{path}");
+            }
         }
 
         public class GlowMask
         {
+            public static Asset<Texture2D> WhiteCircle;
             public static Asset<Texture2D> Wave;
             public static Asset<Texture2D> BlastPillar;
             public static Asset<Texture2D> SolarEye;
@@ -100,6 +107,7 @@ namespace Stellamod.Assets
             GlowMask.AuroraBackGradient = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/AuroraBackGradient");
             GlowMask.ShootingStarGlint = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/ShootingStarGlint");
             GlowMask.ShootingStarTrail = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/ShootingStarParticle");
+            GlowMask.WhiteCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/WhiteCircle");
             LaserTextures.TexturedLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser");
             LaserTextures.TexturedLaser2 = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser2");
             LaserTextures.SnowflakeLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/SnowflakeLaser");
@@ -113,10 +121,16 @@ namespace Stellamod.Assets
 
             Noise.AuroraRays = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/AuroraRays");
             Noise.FlamethrowerNoise = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/FlameNoise");
+            Noise.Swirl = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Swirl");
+            Noise.PerlinBlurred = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/PerlinBlurred");
+            //  Noise.Load(ref Noise.PerlinBlurred, "PerlinBlurred");
         }
         public override void OnModUnload()
         {
             base.OnModUnload();
+            GlowMask.WhiteCircle = null;
+           Noise.PerlinBlurred = null;
+            Noise.Swirl = null;
             GlowMask.Wave = null;
             GlowMask.BlastPillar = null;
             GlowMask.SolarEye = null;

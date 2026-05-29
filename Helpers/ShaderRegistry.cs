@@ -104,9 +104,6 @@ namespace Stellamod.Helpers
             Asset<Effect> glowingDustShader = Assets.Request<Effect>("Effects/GlowingDust");
             GameShaders.Misc[ShaderRegistry.GlowingDustShader] = new MiscShaderData(glowingDustShader, "GlowingDustPass");
 
-            Asset<Effect> SuperSimpleTrailRef = Assets.Request<Effect>("Effects/SimpleTrail");
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"] = new MiscShaderData(SuperSimpleTrailRef, "TrailPass");
-
             Asset<Effect> DaedusRobeRef = Assets.Request<Effect>("Effects/DaedusRobe");
             GameShaders.Misc["LunarVeil:DaedusRobe"] = new MiscShaderData(DaedusRobeRef, "PixelPass");
 

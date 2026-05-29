@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.GunSystem;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Tooltips;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Explosions;
@@ -159,7 +160,8 @@ namespace Stellamod.Core.SwingSystem
             {
                 Projectile.NewProjectile(source, position, velocity, type, staminaDamage, knockback, player.whoAmI);
             }
-            Projectile.NewProjectile(source, player.Center, Vector2.Zero, ModContent.ProjectileType<BasicStaminaExplosion>(), damage, knockback, player.whoAmI);
+            PixelPrimitiveCircleFactory.CreateGenericInBoom(player.Center, Color.White, Color.White, 24, 128);
+           // Projectile.NewProjectile(source, player.Center, Vector2.Zero, ModContent.ProjectileType<BasicStaminaExplosion>(), damage, knockback, player.whoAmI);
         }
 
         public override bool AltFunctionUse(Player player)

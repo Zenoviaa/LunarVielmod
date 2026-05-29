@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
+using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -674,11 +676,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
     {
 
     }
+
     public partial class RoyalFox : ScarletBoss,
-        IDrawOutlines
+        IDrawToRenderTarget
     {
-        private Color _outlineColor;
-        private Color TargetOutlineColor;
+        private Outliner _outliner;
+        private bool _contactDamage;
         private RoyalFoxRig _rigBackingField;
         private RoyalFoxRig Rig
         {
@@ -694,7 +697,17 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         {
             Spawn,
             Despawn,
-            Idle
+            Idle,
+
+            Zoom_SparkleStarRain,
+            Zoom_DashDance,
+            Zoom_CometStarDash,
+            Zoom_BigFatLaser,
+
+            Precision_OutOfBreathTransition,
+            Precision_SwordSlashChase,
+            Precision_SpinningCharge,
+            Precision_CometTeleportShots
         }
 
         private AIState State
@@ -703,6 +716,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             set => NPC.ai[1] = (float)value;
         }
 
+        private ref float AttackCycle => ref NPC.ai[2];
+        private ref float AttackCounter => ref NPC.ai[3];
         public Texture2D GetSubTexture(string fileName)
         {
             string path = Texture + $"_{fileName}";
@@ -733,11 +748,16 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             return rig;
         }
 
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
+        }
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
             Main.npcFrameCount[NPC.type] = 1;
-            NPCID.Sets.TrailCacheLength[NPC.type] = 16;
+            NPCID.Sets.TrailCacheLength[NPC.type] = 32;
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPC.type] = true;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
@@ -769,16 +789,53 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public override void AI()
         {
             base.AI();
-            _outlineColor = Color.Lerp(_outlineColor, TargetOutlineColor, 0.1f);
-            NPC.velocity.X *= 0;
+            _outliner.SetDefaults();
+            switch (State)
+            {
+                case AIState.Zoom_DashDance:
+                    AI_ZoomDashDance();
+                    break;
+            }
+            _outliner.Update();
             AI_DebugRig();
             UpdateRig();
         }
+        #region Zoom Mode 
+        private void AI_ZoomDashDance()
+        {
+            //Fenix flies up and does the like cogwork dancers thing where a bunch of lines appear and she dashes through them really fast, this is a two shot btw
+            //For this attack, we'll create a new blurring shader for the motion blur
+            //And also have cool effects for the trailing
+            
+            //PART ONE:
+            //Let's break it down
+            //First, fenix, with a bit of anticipation, slowly flies up and teleports/fades out, cool starry/smoke visuals on this
+            //For the starry/smoke part, we'll create a new smoke effect
+           
+            //PART TWO:
+            //We generate a bunch of positions that Fenix will dash through, this can just be a projectile, they fade in around her target
+            //She then dashes through each of the lines one by one with a really fast and cool blurring shader
+
+            //PART THREE
+            //She probably does the attack 3 times before ending the attack and going back to her cycle
+            //The first dash has quite a bit of anticipation btw.
+            Timer++;
+            switch (AttackCycle)
+            {
+                case 0:
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    break;
+            }
+        }
+        #endregion
 
 
         private void AI_DebugRig()
         {
-            TargetOutlineColor = Color.Transparent;
+            //TargetOutlineColor = Color.Transparent;
             if (Main.mouseRight)
             {
                 Rig.rootSegment.eulerAngles.W += 0.02f;
@@ -801,11 +858,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         private void UpdateRig()
         {
-
-
             //Calling update twice sine it has to calculate the new x axis position
             //Yeah this is technically inefficient but it's too inexpensive to matter, quick and dirty solution :p
-
             Rig.rootSegment.worldPosition = NPC.Center;
             Rig.Update();
             Rig.Update();
@@ -822,16 +876,14 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             return false;
         }
 
-        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        private void DrawOutlines(SpriteBatch sb)
         {
+            Rig.Draw(sb, Main.screenPosition, _outliner.outlineColor);
+        }
 
-            float outlineOffset = 2;
-            Vector2 h = Vector2.UnitX * outlineOffset;
-            Vector2 v = Vector2.UnitY * outlineOffset;  
-            Rig.Draw(spriteBatch, screenPos + h, _outlineColor);
-            Rig.Draw(spriteBatch, screenPos - h, _outlineColor);
-            Rig.Draw(spriteBatch, screenPos + v, _outlineColor);
-            Rig.Draw(spriteBatch, screenPos - v, _outlineColor);
+        public void DrawToRenderTargets()
+        {
+            OutlineRenderer.Queue(DrawOutlines);
         }
     }
 }
