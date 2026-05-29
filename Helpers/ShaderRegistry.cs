@@ -139,7 +139,7 @@ namespace Stellamod.Helpers
             RegisterScreenShader("LunarVeil:PetalStorm", "Effects/PetalStorm");
             RegisterScreenShader("LunarVeil:SuperShockwave", "Effects/SuperShockwave");
             RegisterScreenShader("LunarVeil:WorldDepthGradient", "Effects/WorldDepthGradient");
-
+            RegisterScreenShader("LunarVeil:Rippler", "Effects/Rippler");
 
             Mod mod = Stellamod.Instance;
             foreach (var file in mod.GetFileNames())

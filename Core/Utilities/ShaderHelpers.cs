@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Helpers;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Graphics.Effects;
@@ -54,6 +55,43 @@ namespace Stellamod.Core.Utilities
 
             _gradientColorParam = effect.Parameters["gradientColor"];
             _gradientColorParam.SetValue(gradientColor);
+        }
+    }
+
+    public class Rippler : ScreenShader
+    {
+
+        private Vector4[] _ripples;
+        public Texture2D rippleTexture;
+        public Vector4[] Ripples
+        {
+            get
+            {
+                if (_ripples == null)
+                    _ripples = new Vector4[8];
+                return _ripples;
+            }
+        }
+        public int rippleLength;
+        public override void ApplyEffect(ScreenShaderData screenShaderData)
+       
+        {
+            base.ApplyEffect(screenShaderData);
+            Effect effect = screenShaderData.Shader;
+            effect.Parameters["rippleTexture"].SetValue(rippleTexture);
+            Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
+            effect.Parameters["texelSize"].SetValue(texelSize);
+            effect.Parameters["ripples"].SetValue(Ripples);
+            effect.Parameters["rippleLength"].SetValue(rippleLength);
+        }
+
+        public void PrepareShader(IList<Vector4> ripples)
+        {
+            for(int i = 0; i < Ripples.Length && i < ripples.Count; i++)
+            {
+                Ripples[i] = ripples[i];
+            }
+            rippleLength = ripples.Count;
         }
     }
 

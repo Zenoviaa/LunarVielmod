@@ -14,6 +14,7 @@ namespace Stellamod.Effects.RoyalMagic;
 [Autoload(Side = ModSide.Client)]
 public class RoyalMagicRenderer : ModSystem
 {
+    public delegate void SpritebatchDrawAction(SpriteBatch sb);
     public struct Particles
     {
         public Particles(int maxParticles)
@@ -34,6 +35,8 @@ public class RoyalMagicRenderer : ModSystem
     private ManagedRenderTarget _directionRT;
     private ManagedRenderTarget _swirlRT;
     private ManagedRenderTarget _maskRT;
+
+    
     private Asset<Texture2D> _royalSmokeMaskTextureAsset;
     public override void Load()
     {
@@ -160,6 +163,7 @@ public class RoyalMagicRenderer : ModSystem
 
 
     }
+
     private void RenderSwirls()
     {
         // return;
@@ -261,9 +265,20 @@ public class RoyalMagicRenderer : ModSystem
         // sb.Draw(_swirlRT, Vector2.Zero, Color.White);
     }
 }
+
+public class DashBlurShader : CrystalShader<DashBlurShader>
+{
+    public float BlurStrength
+    {
+        set
+        {
+            Effect.Parameters["blurStrength"].SetValue(value);
+        }
+    }
+}
+
 public class RoyalMixShader : CrystalShader<RoyalMixShader>
 {
-    private EffectParameter _texelSizeParam;
     public Vector2 TexelSize
     {
         set
