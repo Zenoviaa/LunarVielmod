@@ -14,9 +14,10 @@ public class DebuffReduction : ModSystem
 
     private int ReduceDebuffTime(On_Player.orig_AddBuff_DetermineBuffTimeToAdd orig, Player self, int type, int time1)
     {
-        if (Main.debuff[type] &&
-            type != BuffID.PotionSickness &&
-            type != BuffID.ManaSickness)
+        if (type == BuffID.PotionSickness || type == BuffID.ManaSickness)
+            return orig(self, type, time1);
+
+        if (Main.debuff[type])
         {
             float baseTime = time1;
             float strength = self.GetModPlayer<LevelingPlayer>().Resourcefulness * 0.05f;
