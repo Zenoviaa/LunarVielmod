@@ -1293,6 +1293,7 @@ public class PunkerPrime : ScarletBoss,
     }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+      //  return false;
         if (_arms == null)
         {
             InitializeArmsIfDead();

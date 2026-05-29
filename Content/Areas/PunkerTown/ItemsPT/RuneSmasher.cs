@@ -49,7 +49,7 @@ public class RuneSmasher : BaseSwingItemV2
         Item.shoot = ModContent.ProjectileType<RuneSmasherSwing>();
         staminaProjectileShoot = ModContent.ProjectileType<RuneSmasherCharge>();
         meleeWeaponType = MeleeWeaponType.Hammer;
-        staminaCost = 3;
+        staminaCost = 1;
         staminaDamageMultiplier = 3;
     }
 
