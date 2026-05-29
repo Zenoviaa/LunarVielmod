@@ -59,7 +59,7 @@ namespace Stellamod.Visual.Particles
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Vector2 centerPos = Center - Main.screenPosition;
+            Vector2 centerPos = DrawPosition;
             DustShader shader = DustShader.Instance;
             shader.InnerColor = innerColor;
             shader.OuterColor = outerColor;

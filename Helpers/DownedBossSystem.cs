@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -131,6 +132,22 @@ namespace Stellamod.Helpers
     public class DownedBossTracker : ModSystem
     {
         public static bool[] downedBossFlags = new bool[64];
+        public static int TotalBossCount => 52;
+        public static int DownedBossCount
+        {
+            get
+            {
+                int count = 0;
+                for(int i = 0; i < downedBossFlags.Length; i++)
+                {
+                    if (downedBossFlags[i])
+                    {
+                        count++;
+                    }
+                }
+                return count;
+            }
+        }
         public static void ResetFlags()
         {
             for (int i = 0; i < downedBossFlags.Length; i++)
@@ -155,6 +172,13 @@ namespace Stellamod.Helpers
             downedBossFlags = tag.Get<bool[]>("downedBossFlags");
         }
 
+        public static void AllBosses()
+        {
+            for(int i = 0; i < TotalBossCount; i++)
+            {
+                downedBossFlags[i] = true;
+            }
+        }
         public static bool IsDowned(DownedBossFlag flag)
         {
             return IsDowned((int)flag);

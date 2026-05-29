@@ -1,4 +1,83 @@
 Common: {
+	Strength: {
+		$parentVal: Strength
+		Stat:
+			'''
+			{0} damage
+
+			[c/FFA500:Gain 1% damage for each point.]
+			'''
+	}
+
+	Endurance: {
+		$parentVal: Endurance
+		Stat:
+			'''
+			{0} general endurance
+
+			[c/FFA500:Gain 1% general endurance for each point.]
+			'''
+	}
+
+	Agility: {
+		$parentVal: Agility
+		Stat:
+			'''
+			{0} movement speed
+			{0} acceleration
+
+			[c/FFA500:Gain 1% movement speed and acceleration for each point.]
+			'''
+	}
+
+	Dexterity: {
+		$parentVal: Dexterity
+		Stat:
+			'''
+			{0} attack speed
+
+			[c/FFA500:Gain 1% attack speed for each point.]
+			'''
+	}
+
+	Focus: {
+		$parentVal: Focus
+		Stat:
+			'''
+			{0} critical strike damage 
+			{1} critical strike chance
+
+			[c/FFA500:Gain 5% critical strike damage and 0.5% critical strike chance for each point.]
+			'''
+	}
+
+	Resourcefulness: {
+		$parentVal: Resourcefulness
+		Stat:
+			'''
+			{0} potion duration
+			{0} insource duration
+			{1} less debuff time against you
+
+			[c/FFA500:Gain 5% more potion and insource duration, and 5% less debuff time against you for each point.]
+			'''
+	}
+
+	Veil: {
+		$parentVal: Veil
+		Stat:
+			'''
+			{0} defense
+			{1} more luck
+			{2} elemental weapon damage
+
+			[c/FFA500:Gain 1 defense, 5% more luck and 2% elemental damage for each point.]
+			'''
+	}
+
+	Cancel: CANCEL
+	Ok: OK
+	Plus: +
 	AssignKey: Assign a [{0}] keybind in the settings menu
 	DashHelp: Press {0} to dash!
 	XixianHelp: Press {0} to use your flask!
@@ -11347,5 +11426,10 @@ SwordoftheFlies: {
 	BasicSlash: ""
 	StaminaSlash: No Effect
 	DisplayName: Swordofthe Flies
+	Tooltip: ""
+}
+
+OrbofCleanliness: {
+	DisplayName: Orbof Cleanliness
 	Tooltip: ""
 }

@@ -1,9 +1,51 @@
-﻿using Terraria.UI;
+﻿using ReLogic.Content;
+using Stellamod.Common.ArmorRework;
+using Stellamod.Core.Utilities;
+using Stellamod.Items;
+using Terraria;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.UI.Elements;
+using Terraria.UI;
 
 namespace Stellamod.UI.CollectionSystem
 {
 
 
+
+    public class LevelingTabStatsPanelUIState : UIState
+    {
+        public LevelTabStatsPanel ui;
+        public LevelingTabStatsPanelUIState() : base()
+        {
+
+        }
+
+        public override void OnInitialize()
+        {
+            ui = new LevelTabStatsPanel();
+            Append(ui);
+        }
+    }
+
+
+
+
+    public class LevelingLeftPanelUIState : UIState
+    {
+        public LevelingTabLeftPanel ui;
+        public LevelingLeftPanelUIState() : base()
+        {
+
+        }
+
+        public override void OnInitialize()
+        {
+            ui = new LevelingTabLeftPanel();
+            Append(ui);
+        }
+    }
 
 
     public class CollectionArmorUIState : UIState

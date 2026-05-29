@@ -75,7 +75,26 @@ public class ScarletBossGlobalNPC : GlobalNPC
     {
         return base.AppliesToEntity(entity, lateInstantiation) && entity.ModNPC is ScarletBoss;
     }
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+    }
+
+    public override void SetDefaults(NPC entity)
+    {
+        base.SetDefaults(entity);
+        NPCID.Sets.MPAllowedEnemies[entity.type] = true;
+        entity.boss = true;
+
+        /*
+         *  Net Always makes sure the NPC will always exist for all clients
+         *  Since by default npcs will not sync if too far from the player
+         *  I wonder if we need this for our special town NPCs too
+         */
+        entity.netAlways = true;
+    }
 }
+
 public abstract class ScarletBoss : ModNPC
 {
     private Vector2 _arenaCenter;
@@ -103,10 +122,15 @@ public abstract class ScarletBoss : ModNPC
         }
     }
 
+    public override void SetStaticDefaults()
+    {
+        base.SetStaticDefaults();
+ 
+    }
+
     public override void SetDefaults()
     {
         base.SetDefaults();
-        NPC.boss = true;
 
     }
 
