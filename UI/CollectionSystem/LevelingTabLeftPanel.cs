@@ -25,7 +25,7 @@ public class LevelTabStatsPanel : UIPanel
     public const int width = 480;
     public const int height = 155;
 
-    public int RelativeLeft => Main.screenWidth / 2 - width / 2 + 280;
+    public int RelativeLeft => Main.screenWidth / 2 - width / 2 + 288;
     public int RelativeTop => Main.screenHeight / 2 - height / 2 - 196;
     public LevelTabStatsPanel() : base()
     {
@@ -86,7 +86,7 @@ public class LevelTabStatsPanel : UIPanel
             Vector2 iconPosition = GetDimensions().ToRectangle().TopLeft();
             iconPosition.Y += offsetDist * i;
             iconPosition.Y += yOffset;
-            iconPosition.X += -22;
+            iconPosition.X += -26;
             iconPosition.Y += 12;
 
             string e = $"{totalPoints}";
@@ -131,7 +131,7 @@ public class LevelTabStatsPanel : UIPanel
         base.DrawSelf(spriteBatch);
 
         Rectangle targetDrawRect = GetDimensions().ToRectangle();
-        targetDrawRect.Width = 336;
+        targetDrawRect.Width = 332;
         targetDrawRect.Height = 210;
         DrawPanel(spriteBatch, _helpBackgroundTextureAsset.Value, targetDrawRect, Color.White);
 
