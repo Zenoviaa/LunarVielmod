@@ -27,7 +27,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             children = new List<FoxSegment>(Default_Capacity);
             initialForwardVectors = new List<Vector3>(Default_Capacity);
             forwardVectors = new List<Vector3>(Default_Capacity);
-
+            alpha = 1f;
             //Add to the parent
             parent?.children.Add(this);
             parent?.initialForwardVectors.Add(Vector3.UnitX);
@@ -39,6 +39,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         public Texture2D texture;
         public Color drawColor;
+        public float alpha;
         public Rectangle? frame;
         public FoxSegment parent;
 
@@ -320,7 +321,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             Vector2 drawPosition = worldPosition - screenPos;
 
 
-            Color finalColor = drawColor.MultiplyRGBA(lightColor);
+            Color finalColor = drawColor.MultiplyRGBA(lightColor) * alpha;
 
             Vector2 drawOrigin = origin;
             SpriteEffects spriteEffects = SpriteEffects.None;

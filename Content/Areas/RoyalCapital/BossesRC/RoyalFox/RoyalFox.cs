@@ -1,9 +1,11 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
@@ -17,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -137,6 +140,194 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         }
     }
 
+    public class RoyalMagicMiniStar : ModProjectile,
+        IDrawToRenderTarget
+    {
+        private Vector2 _targetPosition;
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float Mode => ref Projectile.ai[1];
+        private ref float FlashTimer => ref Projectile.ai[2];
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.TrailCacheLength[Type] = 24;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+            Main.projFrames[Type] = 2;
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 32;
+            Projectile.height = 32;
+            Projectile.timeLeft = 360;
+            Projectile.hostile = false;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.ignoreWater = true;
+        }
+
+        public override bool ShouldUpdatePosition()
+        {
+            return base.ShouldUpdatePosition();
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            if(FlashTimer > 0)
+            {
+                FlashTimer--;
+            }
+
+
+            if(Mode == 1)
+            {
+                Timer = 0;
+                Mode = 2;
+                FlashTimer = 30;
+                Projectile.netUpdate = true;
+            }
+
+            if(Mode == 2)
+            {
+                if (Main.rand.NextBool(4))
+                {
+                    var dp = DustParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(4, 4));
+                    dp.outerColor = Color.DarkViolet;
+                    dp.gravity = 0;
+                    dp.noTileCollide = true;
+                    dp.dampening = 0.05f;
+                }
+                Projectile.hostile = true;
+                if(Timer < 30)
+                {
+                    Player closest = PlayerHelper.FindClosestPlayer(Projectile.Center, 2048);
+                    if(closest != null)
+                    {
+                        _targetPosition = closest.Center;
+                    }
+                  
+                }
+
+                Vector2 vel = (_targetPosition - Projectile.Center).SafeNormalize(Vector2.Zero) * 35;
+                Projectile.velocity = Projectile.velocity.MoveTowards(vel, MathHelper.Lerp(0f, 1f, Timer / 30f));
+                if(Timer >= 70)
+                {
+                    Projectile.Kill();
+                }
+            }
+            else
+            {
+                Projectile.velocity *= 0.96f;
+            }
+            Projectile.scale = ExtraMath.Osc(0.5f, 0.75f, speed: 3, Projectile.whoAmI);
+        }
+
+        private Color StarryTrailColorFunction(float completionRatio)
+        {
+            return Color.Lerp(Color.White, Color.Transparent, completionRatio);
+        }
+
+        private float StarryTrailWidthFunction(float completionRatio)
+        {
+            return MathHelper.SmoothStep(32, 0, completionRatio);
+        }
+
+        private void RenderStarryDashTrail(GraphicsDevice gDevice)
+        {
+            FixedRichLaserShader laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
+            laserShader.LaserTexture = TrailRegistry.Beamlight;
+            laserShader.InnerColor = Color.White;
+            laserShader.OuterColor = Color.Lerp(Color.White, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 16));
+            TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, StarryTrailColorFunction, StarryTrailWidthFunction, laserShader, Projectile.Size * 0.5f);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
+
+            for(int i = 0; i < Projectile.oldPos.Length; i++)
+            {
+                drawer.worldPosition = Projectile.oldPos[i] + Projectile.Size * 0.5f;
+                drawer.color = Color.Lerp(Color.White, Color.Black, (float)i / (float)Projectile.oldPos.Length) * 0.05f;
+                drawer.color.A = 0;
+                Main.spriteBatch.Draw(drawer);
+            }
+            drawer.color = Color.White * ExtraMath.Osc(0.75f, 1f, speed: 6);
+            drawer.color.A = 0;
+
+            drawer.worldPosition = Projectile.Center;
+            Main.spriteBatch.Draw(drawer);
+
+            drawer.rotation = MathHelper.Lerp(0, MathHelper.TwoPi * 1, EasingFunction.InOutSine(FlashTimer / 30f));
+            drawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One * 2, EasingFunction.InOutSine(FlashTimer / 30f));
+            drawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.InOutSine(FlashTimer / 30f)) * 0.7f;
+            drawer.color.A = 0;
+            Main.spriteBatch.Draw(drawer);
+
+            Color targetColor = Projectile.hostile ? Color.Red : Color.Yellow;
+            drawer.color = targetColor * ExtraMath.Osc(0.5f, 1f, speed: 12);
+            drawer.color.A = 0;
+            drawer.scale = Vector2.One;
+            drawer.rotation = 0;
+            drawer.VerticalFrame(1, 2);
+            Main.spriteBatch.Draw(drawer);
+
+
+            float alpha = MathHelper.Lerp(0f, 1f, FlashTimer / 30f);
+            var ta = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4");
+            SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(ta, Projectile.Center) ;
+            lineDrawer.color = Color.Lerp(Color.Black, Color.White, alpha);
+            lineDrawer.color.A = 0;
+            lineDrawer.rotation = (_targetPosition - Projectile.Center).ToRotation();
+            lineDrawer.LeftCenterOrigin();
+
+            Vector2 scale = Vector2.Lerp(new Vector2(0f, 1f), new Vector2(2f, 1f), alpha);
+            scale.Y = 0.5f;
+
+            float xScale = (Vector2.Distance(Projectile.Center, _targetPosition))/ ta.Width() ;
+            scale.X *= xScale;
+            lineDrawer.scale = scale;
+            Main.spriteBatch.Draw(lineDrawer);
+            return false;
+        }
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.Violet, 30, Main.rand.NextFloat(100, 200));
+            FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.DarkGray, Color.DarkViolet, duration: 45, baseSize: Main.rand.NextFloat(0.06f, 0.24f));
+            for(float n = 0; n < 8; n++)
+            {
+                var dp = DustParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(16, 16));
+                dp.outerColor = Color.DarkGray;
+                dp.dampening = 0.05f;
+                dp.gravity = 0;
+                dp.noTileCollide = true;
+            }
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+
+            for(float f = 0; f < 4; f++)
+            {
+                RoyalMagicRenderer royalMagicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
+                Vector2 vel = Main.rand.NextVector2Circular(4, 4);
+                royalMagicRenderer.SpawnParticle(Projectile.Center + Main.rand.NextVector2Circular(64, 64), vel, 90);
+
+            }
+        }
+
+        public void DrawToRenderTargets()
+        {
+            if (Mode != 2)
+                return;
+
+            PixelationManager.QueuePrimitivesDrawAction(RenderStarryDashTrail);
+           // throw new NotImplementedException();
+        }
+    }
+
     public class RoyalMagicDashTrail : ModProjectile,
         IDrawToRenderTarget
     {
@@ -214,6 +405,100 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         }
     }
 
+    public class FenixDomainShader : CrystalShader<FenixDomainShader>
+    {
+        public float Time
+        {
+            set
+            {
+                Effect.Parameters["time"].SetValue(value);
+            }
+        }
+        public Texture2D GradientMap
+        {
+            set
+            {
+                Main.graphics.GraphicsDevice.Textures[1] = value;
+                Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.LinearClamp;
+            }
+        }
+
+        public Color[] Gradient
+        {
+            set
+            {
+                Vector3[] colors = new Vector3[value.Length];
+                for(int i = 0; i < colors.Length; i++)
+                {
+                    colors[i] = value[i].ToVector3();
+                }
+                Effect.Parameters["gradient"].SetValue(colors);
+            }
+        }
+    }
+    [Autoload(Side = ModSide.Client)]
+    public class FenixDomain : ModSystem
+    {
+
+        public bool drawFenix;
+        public override void OnModLoad()
+        {
+            On_Main.DrawNPCs += DrawBlack;
+        }
+        public override void Unload()
+        {
+            base.Unload();
+        }
+
+        public override void OnModUnload()
+        {
+            base.OnModUnload();
+            On_Main.DrawNPCs -= DrawBlack;
+        }
+
+        private void DrawBlack(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            if (drawFenix)
+            {
+                GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
+                graphicsDevice.Clear(Color.Transparent);
+                FenixDomainShader fenixDomainShader = ShaderContent.GetInstance<FenixDomainShader>();
+                fenixDomainShader.GradientMap = TextureRegistry.CloudNoise3.Value;
+                fenixDomainShader.Time = Main.GlobalTimeWrappedHourly;
+                spriteBatch.Restart(effect: fenixDomainShader.Effect);
+
+                Rectangle targetRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+                spriteBatch.Draw(TextureAssets.BlackTile.Value, targetRect, Color.White);
+
+                spriteBatch.RestartDefaults();
+  
+            
+                DomainExpansionManager singularityFallSystem = ModContent.GetInstance<DomainExpansionManager>();
+                if (singularityFallSystem.hoveringPlatform)
+                {
+                    Texture2D bloomLine = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
+                    Vector2 drawOrigin = new Vector2(bloomLine.Size().X / 2, 0);
+                    float rotation = MathHelper.PiOver2;
+                    Color drawColor = Color.White;
+                    drawColor.A = 0;
+                    drawColor *= 0.5f;
+                    drawColor *= ExtraMath.Osc(0.5f, 1f);
+                    Vector2 drawPosition = new Vector2(Main.LocalPlayer.Center.X, singularityFallSystem.hoverPlatformY);
+                    drawPosition -= Main.screenPosition;
+                    drawPosition.Y += 48;
+                    Vector2 drawScale = new Vector2(1, 2);
+                    spriteBatch.Draw(bloomLine, drawPosition, null, drawColor, rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+                    spriteBatch.Draw(bloomLine, drawPosition, null, drawColor, -rotation, drawOrigin, drawScale, SpriteEffects.None, 0);
+                }
+
+          
+                drawFenix = false;
+            }
+
+            orig(self, behindTiles);
+        }
+    }
     public partial class RoyalFox : ScarletBoss,
         IDrawToRenderTarget
     {
@@ -225,6 +510,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         private bool _renderMotionBlur;
         private float _invisibleAlpha;
         private bool _goInvisible;
+        private bool _dontRender;
 
         private float _direction;
         private Outliner _outliner;
@@ -267,6 +553,39 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         private ref float AttackCounter => ref NPC.ai[3];
 
         private float _miniAttackCount;
+
+        private Chain _chain;
+        private Chain Chain
+        {
+            get
+            {
+                if (_chain == null)
+                {
+
+                    _chain = new Chain(NPC.Center, 4, 128);
+                }
+                return _chain;
+            }
+        }
+        private Chain[] _chains;
+        private Chain[] Chains
+        {
+            get
+            {
+                if (_chains == null)
+                {
+                    _chains = new Chain[3];
+                    for(int i = 0; i < 3; i++)
+                    {
+
+                        _chains[i] = new Chain(NPC.Center, 4, 128);
+                    }
+                }
+                return _chains;
+            }
+        }
+
+
         //Dash Dance Attack
         private int DashDanceDamage => 80;
         private float NumDashDanceLines => 7;
@@ -308,6 +627,22 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
         }
 
+        public override BossLevel GetBossLevel()
+        {
+            return BossLevel.Superboss;
+        }
+        private void EnablePlatformArena()
+        {
+            DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
+            fallSystem.noWings = true;
+            fallSystem.inSpace = true;
+            fallSystem.hoveringPlatform = true;
+            fallSystem.hoverPlatformY = 16000;
+            fallSystem.noProjTileCollide = true;
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            ModContent.GetInstance<FenixDomain>().drawFenix = true;
+        }
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
@@ -373,7 +708,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             _renderMotionBlur = false;
             _renderDashTrail = false;
             _goInvisible = false;
+            _dontRender = false;
             _outliner.SetDefaults();
+            EnablePlatformArena();
             switch (State)
             {
                 default:
@@ -387,6 +724,10 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
             if(_teleportPosition != Vector2.Zero)
             {
+                for(int i = 0; i < Chain.points.Length; i++)
+                {
+                    Chain.points[i] = NPC.Center;
+                }
                 NPC.Center = _teleportPosition;
                 _teleportPosition = Vector2.Zero;
         
@@ -400,6 +741,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             _outliner.Update();
            // AI_DebugRig();
             UpdateRig();
+            SimulateHair();
         }
 
         private void SwitchState(AIState state)
@@ -652,6 +994,16 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             }
 
         }
+
+        private void CommandStars()
+        {
+            foreach(var proj in Main.ActiveProjectiles)
+            {
+                if (proj.type != ModContent.ProjectileType<RoyalMagicMiniStar>())
+                    continue;
+                proj.ai[1] = 1;
+            }
+        }
         private void AI_ZoomDashDance()
         {
             (Vector2, Vector2) NextDashLine()
@@ -761,7 +1113,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                     if(Timer == 1)
                     {
                    
-                        PoofParticles();
+                      //  PoofParticles();
                         (Vector2 position, Vector2 velocity) = NextDashLine();
                         if(position != default(Vector2))
                         {
@@ -798,9 +1150,22 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                             var tp = ThrustParticle.Spawn(_startDashPoint, _dashLineVelocity * 14 * i, Scale: 2);
                             tp.bloomColor = Color.White;
                         }
-              
+                        for (int i = 1; i < 16; i++)
+                        {
+                            var tp = DustParticle.Spawn(_startDashPoint + Main.rand.NextVector2Circular(40, 40), _dashLineVelocity * 14 * i);
+                            tp.Scale *= 2;
+                            tp.outerColor = Color.Violet;
+                            tp.gravity = 0;
+                            tp.dampening = 0.1f;
+                            tp.noTileCollide = true;
+                            
+                        }
                     }
 
+                    if(Timer < 3)
+                    {
+                        _dontRender = true;
+                    }
                     if(Timer == 3)
                     {
                      
@@ -810,6 +1175,15 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                     if(_miniAttackCount > 0)
                     {
                         easing = 1f;
+                    }
+
+                    if(Timer % 10 == 0)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center, _dashLineVelocity * 35, 
+                                ModContent.ProjectileType<RoyalMagicMiniStar>(), DashDanceDamage, 1, Main.myPlayer);
+                        }
                     }
 
                     if(Timer > 3)
@@ -841,31 +1215,34 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                     fx.VectorScale *= 0.5f;
                     if (Timer >= DashDanceTime)
                     {
+                        if (!HasNextDashLine())
+                        {
+                            AttackCycle++;
+                        }
                         Timer = 0;
-                        AttackCycle++;
+                     
                     }
                     break;
                 case 3:
                     if(Timer == 1)
                     {
-                        if (HasNextDashLine())
-                        {
-                            _miniAttackCount++;
-                            Timer = 0;
-                            AttackCycle--;
-                        }
+                        PixelPrimitiveCircleFactory.CreateGenericInBoom(MyTarget.Center, Color.Transparent, Color.White * 0.35f, 45, 512);
+                        CommandStars();
+                        if (_direction == 0)
+                            _direction = 1;
                         else
-                        {
-                            if (_direction == 0)
-                                _direction = 1;
-                            else
-                                _direction *= -1;
-                            PoofParticles();
-                            Teleport(MyTarget.Center);
-                        }
+                            _direction *= -1;
+                 //       PoofParticles();
+                        Teleport(MyTarget.Center);
                     }
 
-                    _goInvisible = true;
+                    bool hasAnotherAttack = false;
+
+                    if(Timer < 10)
+                    {
+                        _goInvisible = true;
+                    }
+                  
 
                     {
                         //I want fenix to move forward and then go up while rotating it'll look so cool, then she poofs
@@ -883,6 +1260,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                         Rig.rootSegment.eulerAngles.X = MathHelper.Lerp(0f, MathHelper.ToRadians(90 + 360 * _direction), EasingFunction.InOutSine(progress));
 
                     }
+                    WalkParticles();
 
                     if(Timer == Zoom_Prepare_Time - 25 && (AttackCounter+1) < NumDashDanceBursts)
                     {
@@ -934,7 +1312,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         private float DashTrailWidthFunction(float completionRatio)
         {
-            return MathHelper.SmoothStep(128, 128, completionRatio);
+            return MathHelper.SmoothStep(80, 80, completionRatio);
         }
         private void RenderPixelatedDashTrail(GraphicsDevice gDevice)
         {
@@ -945,6 +1323,54 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, DashTrailColorFunction, DashTrailWidthFunction, laserShader, NPC.Size * 0.5f);
         }
 
+
+        #region Hair
+        private void SimulateHair()
+        {
+            Vector2 up = (Rig.rootSegment.eulerAngles.W-MathHelper.PiOver2).ToRotationVector2();
+            for(int c = 0; c < Chains.Length; c++)
+            {
+                var chain = Chains[c];
+
+                chain.points[0] = NPC.Center + ExtraMath.Osc(-32, 32, speed: 2, c) * up;
+                chain.points[0].Y -= 4 + ExtraMath.Osc(0f, 16, speed: 2);
+                chain.pinned[0] = true;
+
+                for(int k = 0; k < chain.points.Length; k++)
+                {
+                 //   chain.points[k] += ExtraMath.Osc(0f, 16, speed: 2, offset: k + c * 4) * -NPC.velocity.SafeNormalize(Vector2.Zero);
+                }
+
+                for (int i = 0; i < 32; i++)
+                {
+                    chain.ResolveBackToRoot();
+                }
+            }
+
+        }
+        private float GetHairWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(80, 0, ratio) * _invisibleAlpha * EasingFunction.QuadraticBump(ratio);
+        }
+        private Color GetHairColor(float ratio)
+        {
+            return Color.White * _invisibleAlpha * EasingFunction.OutExpo(ratio + 0.5f);
+        }
+
+        private void DrawHair(GraphicsDevice gDevice)
+        {
+            HairShader shader = ShaderContent.GetInstance<HairShader>();
+            shader.LaserTexture = TrailRegistry.GlowTrailNoBlack;
+            shader.Time = Main.GlobalTimeWrappedHourly * 0.2f;
+            shader.WaveFrequency = 8;
+            shader.XOffset = 12;
+            for(int i = 0; i < Chains.Length; i++)
+            {
+                TrailDrawer.Draw(Main.spriteBatch, Chains[i].points, GetHairColor, GetHairWidth, shader);
+            }
+        }
+
+        #endregion
         private void UpdateRig()
         {
             //Calling update twice sine it has to calculate the new x axis position
@@ -961,11 +1387,29 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (_dontRender)
+                return false;
             if (_renderMotionBlur)
             {
                 DashBlurShader dashBlurShader = ShaderContent.GetInstance<DashBlurShader>();
                 spriteBatch.Restart(effect: dashBlurShader.Effect);
             }
+
+            for(int i =0; i < NPC.oldPos.Length; i++)
+            {
+                Vector2 offset = ((NPC.oldPos[i] + NPC.Size * 0.5f) - NPC.Center);
+                float alpha = MathHelper.Lerp(0.04f, 0f, (float)i / (float)NPC.oldPos.Length) * _invisibleAlpha;
+                for (int j = 0; j < Rig.segmentsByZLayer.Length; j++)
+                {
+                    Rig.segmentsByZLayer[j].alpha = alpha;
+                }
+                Rig.Draw(spriteBatch, screenPos - offset, drawColor);
+            }
+            for(int i = 0; i < Rig.segmentsByZLayer.Length; i++)
+            {
+                Rig.segmentsByZLayer[i].alpha = _invisibleAlpha;
+            }
+
             Rig.Draw(spriteBatch, screenPos, drawColor);
 
             if (_renderMotionBlur)
@@ -987,6 +1431,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             {
                 PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedDashTrail);
             }
+            PixelationManager.QueuePrimitivesDrawAction(DrawHair);
         }
     }
 }

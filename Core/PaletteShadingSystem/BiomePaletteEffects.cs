@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
+using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Palettes;
 using Terraria;
@@ -89,9 +90,9 @@ namespace Stellamod.Core.PaletteShadingSystem
 
         public override bool IsActive(Player player)
         {
-
+        
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
-            return myPlayer.ZoneAlcadzia;
+            return myPlayer.ZoneAlcadzia || NPC.AnyNPCs(ModContent.NPCType<RoyalFox>());
         }
     }
 

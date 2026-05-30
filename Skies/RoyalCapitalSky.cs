@@ -4,6 +4,7 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity;
 using Stellamod.Content.Areas.Illuria.BossesIL.EStyr;
+using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 using Stellamod.Content.Biomes;
 using Stellamod.Helpers;
 using System;
@@ -19,7 +20,7 @@ namespace Stellamod.Skies
     {
         private Vector2 _parallax;
         private Vector2 _lastCameraPos;
-        public bool IsActive => Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia || NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>()) || NPC.AnyNPCs(ModContent.NPCType<E>()) || Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower;
+        public bool IsActive => Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia || NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>()) || NPC.AnyNPCs(ModContent.NPCType<E>()) || Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower || NPC.AnyNPCs(ModContent.NPCType<RoyalFox>());
         public float Opacity;
         public bool inStarField;
         public override void PreUpdateEntities()
