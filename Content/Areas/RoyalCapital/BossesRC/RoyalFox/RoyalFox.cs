@@ -6,6 +6,7 @@ using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.Ishtar.BossesIS.SanguineSingularity;
+using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
@@ -328,54 +329,53 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         }
     }
 
-    public class RoyalMagicDashTrail : ModProjectile,
+    public class RoyalMagicComet : ModProjectile,
         IDrawToRenderTarget
     {
+        
         private ref float Timer => ref Projectile.ai[0];
-        private NPC Parent => Main.npc[(int)Projectile.ai[1]];
-        private ref float ShouldDie => ref Projectile.ai[2];
-        public override string Texture => TextureRegistry.EmptyTexture;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ProjectileID.Sets.TrailCacheLength[Type] = 32;
+            ProjectileID.Sets.TrailCacheLength[Type] = 24;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+            Main.projFrames[Type] = 2;
         }
         public override void SetDefaults()
         {
             base.SetDefaults();
             Projectile.width = 32;
             Projectile.height = 32;
+            Projectile.timeLeft = 360;
+            Projectile.hostile = false;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 60;
+            Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
         }
+
+        public override bool ShouldUpdatePosition()
+        {
+            return base.ShouldUpdatePosition();
+        }
+
         public override void AI()
         {
             base.AI();
             Timer++;
-            ProjectileID.Sets.TrailingMode[Type] = 2;
-            float movement = Vector2.Distance(Parent.position, Parent.oldPosition);
-            if(movement > 64)
-            {
-                ShouldDie = 1;
-            }
-            if (ShouldDie >= 1)
-                return;
-
-            Vector2 vel = (Parent.Center - Projectile.Center);
-            Projectile.velocity = vel;
+            Projectile.velocity.Y += 0.15f;
+            if (Timer >= 45)
+                Projectile.hostile = true;
+            Projectile.scale = ExtraMath.Osc(0.5f, 0.75f, speed: 3, Projectile.whoAmI);
         }
 
         private Color StarryTrailColorFunction(float completionRatio)
         {
-
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 
-                MathHelper.Lerp(0f, 1f, EasingFunction.Clamp((float)Projectile.timeLeft / 30f));
+            return Color.Lerp(Color.White, Color.Transparent, completionRatio);
         }
 
         private float StarryTrailWidthFunction(float completionRatio)
         {
-            return MathHelper.SmoothStep(96, 0, completionRatio);
+            return MathHelper.SmoothStep(32, 0, completionRatio);
         }
 
         private void RenderStarryDashTrail(GraphicsDevice gDevice)
@@ -389,6 +389,161 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         public override bool PreDraw(ref Color lightColor)
         {
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
+
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
+            {
+                drawer.worldPosition = Projectile.oldPos[i] + Projectile.Size * 0.5f;
+                drawer.color = Color.Lerp(Color.White, Color.Black, (float)i / (float)Projectile.oldPos.Length) * 0.05f;
+                drawer.color.A = 0;
+                Main.spriteBatch.Draw(drawer);
+            }
+            drawer.color = Color.White * ExtraMath.Osc(0.75f, 1f, speed: 6);
+            drawer.color.A = 0;
+
+            drawer.worldPosition = Projectile.Center;
+            Main.spriteBatch.Draw(drawer);
+
+            
+            Color targetColor = Projectile.hostile ? Color.Red : Color.Yellow;
+            drawer.color = targetColor * ExtraMath.Osc(0.5f, 1f, speed: 12);
+            drawer.color.A = 0;
+            drawer.scale = Vector2.One;
+            drawer.rotation = 0;
+            drawer.VerticalFrame(1, 2);
+            Main.spriteBatch.Draw(drawer);
+            return false;
+        }
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.Violet, 30, Main.rand.NextFloat(100, 200));
+            FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.DarkGray, Color.DarkViolet, duration: 45, baseSize: Main.rand.NextFloat(0.06f, 0.24f));
+            for (float n = 0; n < 8; n++)
+            {
+                var dp = DustParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(16, 16));
+                dp.outerColor = Color.DarkGray;
+                dp.dampening = 0.05f;
+                dp.gravity = 0;
+                dp.noTileCollide = true;
+            }
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+
+            for (float f = 0; f < 4; f++)
+            {
+                RoyalMagicRenderer royalMagicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
+                Vector2 vel = Main.rand.NextVector2Circular(4, 4);
+                royalMagicRenderer.SpawnParticle(Projectile.Center + Main.rand.NextVector2Circular(64, 64), vel, 90);
+
+            }
+        }
+
+        public void DrawToRenderTargets()
+        {
+            PixelationManager.QueuePrimitivesDrawAction(RenderStarryDashTrail);
+            // throw new NotImplementedException();
+        }
+    }
+
+    public class RoyalMagicStarryDashTrail : ModProjectile,
+        IDrawToRenderTarget
+    {
+        private float Time => 30f;
+        private ref float Timer => ref Projectile.ai[0];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+         
+        }
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 32;
+            Projectile.height = 32;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = (int)Time;
+            Projectile.ignoreWater = true;
+        }
+
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+        }
+
+        private Color StarryTrailColorFunction(float completionRatio)
+        {
+
+            return Color.White;
+        }
+
+        private float StarryTrailWidthFunction(float completionRatio)
+        {
+            return MathHelper.SmoothStep(24, 88, completionRatio) * MathHelper.SmoothStep(1f, 0f,Timer/ Time) * EasingFunction.QuadraticBump(completionRatio);
+        }
+        private float StarryTrailWidthFunction2(float completionRatio)
+        {
+            return StarryTrailWidthFunction(completionRatio) * 1.5f;
+        }
+
+
+        private void RenderStarryDashTrail(GraphicsDevice gDevice)
+        {
+            Vector2 startPos = Projectile.Center;
+            Vector2 endPos = Projectile.Center + Projectile.velocity;
+            List<Vector2> points = new List<Vector2>();
+
+            float ratio = Timer / Time;
+            Vector2 startTrailPoint = Vector2.Lerp(startPos, endPos, ratio);
+            Vector2 endTrailPoint = startTrailPoint - Projectile.velocity.SafeNormalize(Vector2.Zero) * 1500;
+            float numPoints = 32;
+            for(float f = 0; f < numPoints; f++)
+            {
+                float ratio2 = f / numPoints;
+                points.Add(Vector2.Lerp(endTrailPoint, startTrailPoint, ratio2));
+            }
+            Vector2[] trailPoints = points.ToArray();
+            BasicLaserAlphaShader alphaShader = ShaderContent.GetInstance<BasicLaserAlphaShader>();
+            alphaShader.LaserTexture = TrailRegistry.BeamTrail;
+            TrailDrawer.Draw(Main.spriteBatch, trailPoints, StarryTrailColorFunction, StarryTrailWidthFunction2, alphaShader);
+
+
+
+        }
+
+        private void RenderNormalStarryTrail(GraphicsDevice gDevice)
+        {
+            Vector2 startPos = Projectile.Center;
+            Vector2 endPos = Projectile.Center + Projectile.velocity;
+            List<Vector2> points = new List<Vector2>();
+
+            float ratio = Timer / Time;
+            Vector2 startTrailPoint = Vector2.Lerp(startPos, endPos, ratio);
+            Vector2 endTrailPoint = startTrailPoint - Projectile.velocity.SafeNormalize(Vector2.Zero) * 1500;
+            float numPoints = 32;
+            for (float f = 0; f < numPoints; f++)
+            {
+                float ratio2 = f / numPoints;
+                points.Add(Vector2.Lerp(endTrailPoint, startTrailPoint, ratio2));
+            }
+            Vector2[] trailPoints = points.ToArray();
+            FixedRichLaserShader laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
+            laserShader.LaserTexture = TrailRegistry.Beamlight;
+            laserShader.InnerColor = Color.White;
+            laserShader.OuterColor = Color.Lerp(Color.White, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 16));
+            TrailDrawer.Draw(Main.spriteBatch, trailPoints, StarryTrailColorFunction, StarryTrailWidthFunction, laserShader);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
             return false;
             //return base.PreDraw(ref lightColor);
         }
@@ -400,10 +555,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         public void DrawToRenderTargets()
         {
+            RoyalMagicRenderer.Queue(RenderStarryDashTrail);
+            PixelationManager.QueuePrimitivesDrawAction(RenderNormalStarryTrail, DrawLayer.OverPlayers);
             // throw new NotImplementedException();
         //    PixelationManager.QueuePrimitivesDrawAction(RenderStarryDashTrail);
         }
     }
+
 
     public class FenixDomainShader : CrystalShader<FenixDomainShader>
     {
@@ -502,12 +660,19 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
     public partial class RoyalFox : ScarletBoss,
         IDrawToRenderTarget
     {
+        private Vector2 _eyeFlashPosition;
+        private Vector2 _eyeFlashOffset;
+        private float _eyeFlashAlpha;
+
         private Vector2 _teleportPosition;
         private Vector2 _startDashPoint;
         private Vector2 _dashLineVelocity;
         private float _dashTrailAlpha;
         private bool _renderDashTrail;
         private bool _renderMotionBlur;
+
+        private float _telegraphLineAlpha;
+        private bool _showTelegraphLine;
         private float _invisibleAlpha;
         private bool _goInvisible;
         private bool _dontRender;
@@ -586,11 +751,20 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         }
 
 
+        private ref float RegularRotation => ref Rig.rootSegment.eulerAngles.W;
+        private ref float ZRotation => ref Rig.rootSegment.eulerAngles.X;
         //Dash Dance Attack
         private int DashDanceDamage => 80;
         private float NumDashDanceLines => 7;
         private int NumDashDanceBursts => 3;
         private float DashDanceTime => 15;
+
+        //Comet Star Dash
+        private int CometStarDamage => 100;
+        private float CometStarDashPrepTime => 150;
+        private float CometStarDashTime => 12;
+        private float CometStarDashMiniPrepTime => 45;
+        private float CometStarDashEndingTime => 70;
         private float DelayBetweenDashDanceBursts => 25;
         public Texture2D GetSubTexture(string fileName)
         {
@@ -674,9 +848,9 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             base.SetDefaults();
             NPC.width = 90;
             NPC.height = 90;
-            NPC.damage = 100;
+            NPC.damage = 150;
             NPC.defense = 20;
-            NPC.lifeMax = 24000;
+            NPC.lifeMax = 200000;
             NPC.scale = 1f;
             NPC.aiStyle = -1;
 
@@ -704,11 +878,14 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public override void AI()
         {
             base.AI();
+            NPCID.Sets.MustAlwaysDraw[Type] = true;
             _contactDamage = false;
             _renderMotionBlur = false;
             _renderDashTrail = false;
             _goInvisible = false;
             _dontRender = false;
+            _showTelegraphLine = false;
+            _eyeFlashAlpha = MathHelper.Lerp(_eyeFlashAlpha, 0f, 0.1f);
             _outliner.SetDefaults();
             EnablePlatformArena();
             switch (State)
@@ -720,7 +897,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                 case AIState.Zoom_DashDance:
                     AI_ZoomDashDance();
                     break;
+                case AIState.Zoom_CometStarDash:
+                    AI_CometStarDash();
+                    break;
             }
+            float targetTelegraphLineAlpha = _showTelegraphLine ? 1f : 0f;
+            _telegraphLineAlpha = MathHelper.Lerp(_telegraphLineAlpha, targetTelegraphLineAlpha, 0.1f);
 
             if(_teleportPosition != Vector2.Zero)
             {
@@ -906,6 +1088,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                 sp.behindLayer = true;
             }
         }
+
+        private void AnimateCrouching()
+        {
+
+        }
+
         private void AnimateStanding()
         {
             float start = MathHelper.ToRadians(-2);
@@ -1002,6 +1190,290 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                 if (proj.type != ModContent.ProjectileType<RoyalMagicMiniStar>())
                     continue;
                 proj.ai[1] = 1;
+            }
+        }
+        private void AI_CometStarDash()
+        {
+            /*
+             * 
+             * Squishes in her body parts as a starting charge (first time this happens is at the drop, 
+             * then it's random), then she starts her zoom mode,
+             * before she takes off she has an arrow deciding which direction she’ll go, 
+             * and it tries to follow the player loosely. And she does an extremely fast dash, 
+             * with a super star trail and comets flying down from her starting point in a lobbing motion, 
+             * she zooms, straight and goes off screen, and then another line will come 
+             * and you have to dodge before she zooms really fast with the same attack, 
+             * this is a one shot btw, having the cool uh circles and whatnot idk look at bayle
+
+             */
+            Timer++;
+            switch (AttackCycle)
+            {
+                case 0:
+                    {
+                        if(Timer == 1)
+                        {
+                            _dashLineVelocity = Vector2.Zero;
+                            NPC.TargetClosest();
+                        }
+
+                        Vector2 directionToTarget = (MyTarget.Center - NPC.Center);
+                        directionToTarget = directionToTarget.SafeNormalize(Vector2.Zero);
+                        _dashLineVelocity = _dashLineVelocity.MoveTowards(directionToTarget, 0.5f);
+                        _startDashPoint = NPC.Center;
+
+                        NPC.velocity *= 0.98f;
+                        RegularRotation = MathHelper.Lerp(RegularRotation, _dashLineVelocity.ToRotation(), 0.1f);
+                        ZRotation = MathHelper.Lerp(ZRotation, MathHelper.ToRadians(90), 0.1f);
+                        
+                        _outliner.warning = true;
+                        AnimateCrouching();
+                        _showTelegraphLine = true;
+                        if(Timer % 30 == 0)
+                        {
+                            PixelPrimitiveCircleFactory.CreateGenericInBoom(NPC.Center, Color.Transparent, Color.White * 0.5f, 35, 500);
+                        }
+
+                        if(Timer % 4 == 0)
+                        {
+                            Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(252, 252);
+                            Vector2 vel = (NPC.Center - pos);
+                            vel *= 0.1f;
+                            var fx = FXUtil.GlowStretch(pos, vel);
+                            fx.VectorScale *= 0.5f;
+                        }
+
+                        if(Timer % 4 == 0)
+                        {
+                            Vector2 pos = NPC.Center + Main.rand.NextVector2CircularEdge(252, 252);
+                            Vector2 vel = (NPC.Center - pos);
+                            vel *= 0.15f;
+                            var dp = DustParticle.Spawn(pos, vel);
+                            dp.dampening = 0.1f;
+                            dp.noTileCollide = true;
+                            dp.Scale *= 0.35f;
+                            dp.outerColor = Color.Violet;
+                        }
+
+
+
+                        if(Timer >= CometStarDashPrepTime - 60)
+                        {
+                            float t = Timer - (CometStarDashPrepTime - 60);
+                            float pr = t / 30f;
+                            _eyeFlashAlpha = EasingFunction.QuadraticBump(pr);
+                            _eyeFlashPosition = Rig.headPart.worldPosition;
+                            _eyeFlashOffset = Vector2.Zero;
+
+                            float pr2 = t / 60f;
+                            NPC.velocity = Vector2.Lerp(_dashLineVelocity , -_dashLineVelocity , EasingFunction.QuickOutSlowIn(pr2)) * MathHelper.Lerp(1f, 8f, EasingFunction.InOutSine(pr2));
+                        }
+
+                        if(Timer >= CometStarDashPrepTime)
+                        {
+                            Timer = 0;
+                            AttackCycle++;
+                        }
+                    }
+                    break;
+                case 1:
+                    {
+                        if(Timer == 1)
+                        {
+                            NPC.TargetClosest();
+                        }
+                        if (Timer == 3)
+                        {
+                            if(AttackCounter == 0)
+                            {
+                                ShockwavePlayer shockwavePlayer = Main.LocalPlayer.GetModPlayer<ShockwavePlayer>();
+                                shockwavePlayer.Bee = 120;
+                                shockwavePlayer.shockwavePosition = NPC.Center;
+                                shockwavePlayer.rippleSize = 5;
+                            }
+                     
+                            if (MultiplayerHelper.IsHost)
+                            {
+                                Projectile.NewProjectile(SourceFromThis, _startDashPoint, _dashLineVelocity * 2500, ModContent.ProjectileType<RoyalMagicStarryDashTrail>(), 0, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                                Vector2 launchVelocity = _dashLineVelocity.RotatedBy(MathHelper.ToRadians(-45)) * 15;
+                                for(int i = 0; i < 5; i++)
+                                {
+                                    Projectile.NewProjectile(SourceFromThis, _startDashPoint + (_dashLineVelocity * (i) * 384) - _dashLineVelocity * 192, launchVelocity, ModContent.ProjectileType<RoyalMagicComet>(), CometStarDamage, 1, Main.myPlayer);
+                                }
+                            }
+                            FXUtil.CreateRipple(_startDashPoint);
+                            FXUtil.ShakeCamera(_startDashPoint, 1024, 2);
+                            ShakeScreenPosition.Shake = 2;
+
+                            for (int i = 1; i < 5; i++)
+                            {
+                                var tp = ThrustParticle.Spawn(_startDashPoint, _dashLineVelocity * 14 * i, Scale: 2);
+                                tp.bloomColor = Color.White;
+                            }
+                            for (int i = 1; i < 16; i++)
+                            {
+                                var tp = DustParticle.Spawn(_startDashPoint + Main.rand.NextVector2Circular(40, 40), _dashLineVelocity * 14 * i);
+                                tp.Scale *= 2;
+                                tp.outerColor = Color.Violet;
+                                tp.gravity = 0;
+                                tp.dampening = 0.1f;
+                                tp.noTileCollide = true;
+                            }
+                        }
+
+                        var sp = RoyalMagicStarParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(64, 64), _dashLineVelocity, Scale: Main.rand.NextFloat(0.15f, 0.25f));
+                        sp.color = Color.Lerp(new Color(117, 100, 210), Color.White, Main.rand.NextFloat(0f, 1f));
+                        if (Timer % 4 == 0)
+                        {
+                            var donute = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -_dashLineVelocity * 3);
+                        }
+
+                        var swordParticle = RoyalMagicSwordParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(64, 64), _dashLineVelocity * 13);
+
+                        float ratio = Timer / CometStarDashTime;
+
+                        var d = Dust.NewDustPerfect(NPC.Center + Main.rand.NextVector2Circular(32, 32), DustID.GemDiamond);
+                        d.noGravity = true;
+                        
+                        RegularRotation = _dashLineVelocity.ToRotation();
+                        ZRotation = 0; 
+
+                        //Velocity is unreliable for how fast this movement is
+                        //So we just set the position directly.
+                        Vector2 endDashPoint = _startDashPoint + _dashLineVelocity * 3000;
+                        Vector2 pointToMoveTo = Vector2.Lerp(_startDashPoint, endDashPoint, ratio);
+                        NPC.velocity = Vector2.Zero;
+                        NPC.Center = pointToMoveTo;
+
+                        for(int i =0; i < 3; i++)
+                        {
+                            Vector2 spawnPos = NPC.Center;
+                            spawnPos += Main.rand.NextVector2Circular(64, 64);
+                            SirestiasSparkleParticle sireSparkle = SirestiasSparkleParticle.Spawn(spawnPos, Vector2.Zero);
+                            sireSparkle.gravity = 0;
+                            sireSparkle.noTileCollide = true;
+                            sireSparkle.Scale *= 0.1f;
+                            sireSparkle.fast = true;
+                            sireSparkle.outerColor = Color.Yellow;
+                        }
+
+
+                        for (int i = 0; i < 3; i++)
+                        {
+                            Vector2 spawnPos = NPC.Center;
+                            spawnPos += Main.rand.NextVector2Circular(64, 64);
+                            SparkleParticle sireSparkle = SparkleParticle.Spawn(spawnPos, Vector2.Zero);
+                            sireSparkle.gravity = 0;
+                            sireSparkle.noTileCollide = true;
+                            sireSparkle.Scale *= 0.1f;
+                            sireSparkle.fast = true;
+                            sireSparkle.outerColor = Color.Yellow;
+                        }
+
+
+                        WalkParticles2();
+                        AnimateRunning();
+
+                        _contactDamage = true;
+                        _outliner.attacking = true;
+                        if(Timer >= CometStarDashTime)
+                        {
+                            Timer = 0;
+                            AttackCycle++;
+                            if(AttackCounter < 3)
+                            {
+                                AttackCounter++;
+                            }
+                            else
+                            {
+                                AttackCycle++;
+                            }
+                       
+                        }
+                    }
+                    break;
+                case 2:
+                    {
+                        if (Timer == 1)
+                        {
+                            _startDashPoint = MyTarget.Center + new Vector2(-1000, 0);
+                            PoofParticles();
+                            NPC.TargetClosest();
+                          //  Teleport(MyTarget.Center - new Vector2(1000, 0));
+                        }
+               //         NPC.velocity = _dashLineVelocity * 25;
+                        _goInvisible = true;
+                        
+                        Vector2 targetDashLineVElocity = (MyTarget.Center - _startDashPoint).SafeNormalize(Vector2.Zero);
+                        _dashLineVelocity = _dashLineVelocity.MoveTowards(targetDashLineVElocity, 0.5f);
+                        _outliner.warning = true;
+                        _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(Timer / CometStarDashMiniPrepTime));
+                        _showTelegraphLine = true;
+                        if (Timer >= CometStarDashMiniPrepTime)
+                        {
+                            Timer = 0;
+                            AttackCycle--;
+                        }
+                    }
+                    break;
+                case 3:
+                    {
+                        if(Timer == 1)
+                        {
+                            _startDashPoint = MyTarget.Center - new Vector2(1000, 0);
+                            _dashLineVelocity = (MyTarget.Center - _startDashPoint);
+                            PoofParticles();
+                            Teleport(MyTarget.Center - new Vector2(1000, 0));
+                            NPC.TargetClosest();
+                        }
+
+                        float ratio = Timer / CometStarDashEndingTime;
+                        Vector2 endDashPoint = _startDashPoint + _dashLineVelocity;
+                        Vector2 pointToMoveTo = Vector2.Lerp(_startDashPoint, endDashPoint, EasingFunction.OutExpo(ratio));
+                        RegularRotation = _dashLineVelocity.ToRotation();
+                        ZRotation = MathHelper.Lerp(MathHelper.ToRadians(90), MathHelper.ToRadians(360), EasingFunction.OutExpo(ratio));
+                        AnimateRunning();
+                        NPC.velocity = Vector2.Zero;
+                        NPC.Center = pointToMoveTo;
+                        //Timer++;
+                        if (Timer >= CometStarDashEndingTime)
+                        {
+                            Timer = 0;
+                            AttackCycle++;
+                        }
+                    }
+                    break;
+                case 4:
+                    {
+                        //I want fenix to move forward and then go up while rotating it'll look so cool, then she poofs
+                        float progress = Timer / Zoom_Prepare_Time;
+                    
+                        NPC.velocity.X = MathHelper.Lerp(_direction * 2, _direction * 8, EasingFunction.QuadraticBump(Timer / Zoom_Prepare_Time));
+
+                        float yVelcoity = MathHelper.Lerp(0f, -14, EasingFunction.InOutExpo(progress));
+                        NPC.velocity.Y = yVelcoity;
+                       // NPC.velocity = NPC.velocity.RotatedBy(progress * MathHelper.Pi);
+                        Rig.rootSegment.eulerAngles.W = MathHelper.Lerp(0f, MathHelper.ToRadians(-90), EasingFunction.InOutSine(progress));
+                        Rig.rootSegment.eulerAngles.X = MathHelper.Lerp(0f, MathHelper.ToRadians(90 + 360), EasingFunction.InOutSine(progress));
+
+                    
+
+
+                        _outliner.warning = true;
+                        _renderDashTrail = true;
+                        AnimateRunning();
+                        WalkParticles();
+                        if(Timer >= Zoom_Prepare_Time)
+                        {
+                            PoofParticles();
+                            Timer = 0;
+                            AttackCycle++;
+                        }
+                    }
+                    break;
+                default:
+                    SwitchState(AIState.Idle);
+                    break;
             }
         }
         private void AI_ZoomDashDance()
@@ -1125,15 +1597,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                             NPC.netUpdate = true;
                         }
                     }
-                    if(Timer == 3)
-                    {
-                    
-                        if (MultiplayerHelper.IsHost)
-                        {
-                            Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero, ModContent.ProjectileType<RoyalMagicDashTrail>(), 0, 1, Main.myPlayer, ai1: NPC.whoAmI);
-                        }
-                    }
-
+ 
                     if(Timer < 3)
                     {
                         _goInvisible = true;
@@ -1290,6 +1754,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                     }
                     break;
                 case 4:
+                  
                     _goInvisible = true;
                     if(Timer >= DelayBetweenDashDanceBursts)
                     {
@@ -1385,6 +1850,30 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             base.OnKill();
         }
 
+        private void DrawTelegraphLine(SpriteBatch spriteBatch)
+        {
+            SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(
+                ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4"), _startDashPoint);
+            sbDrawer.LeftCenterOrigin();
+            sbDrawer.color = Color.White * _telegraphLineAlpha * ExtraMath.Osc(0.6f, 1f, speed: 14);
+            sbDrawer.color.A = 0;
+            sbDrawer.rotation = _dashLineVelocity.ToRotation();
+            sbDrawer.scale.X *= 7;
+            sbDrawer.scale.Y *= 0.5f;
+            spriteBatch.Draw(sbDrawer);
+        }
+
+        private void DrawEyeFlash(SpriteBatch spriteBatch)
+        {
+            SpritebatchDrawer eyeFlashDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, _eyeFlashPosition);
+            eyeFlashDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One, EasingFunction.OutSine(_eyeFlashAlpha)) * 1.3f;
+            eyeFlashDrawer.color = Color.White;
+            eyeFlashDrawer.color.A = 0;
+            eyeFlashDrawer.worldPosition += _eyeFlashOffset;
+            eyeFlashDrawer.rotation = Main.GlobalTimeWrappedHourly * 4;
+            Main.spriteBatch.Draw(eyeFlashDrawer);
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (_dontRender)
@@ -1411,7 +1900,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             }
 
             Rig.Draw(spriteBatch, screenPos, drawColor);
-
+            DrawTelegraphLine(spriteBatch);
+            DrawEyeFlash(spriteBatch);
             if (_renderMotionBlur)
             {
                 spriteBatch.RestartDefaults();

@@ -6,6 +6,7 @@ using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -14,6 +15,7 @@ namespace Stellamod.Effects.RoyalMagic;
 [Autoload(Side = ModSide.Client)]
 public class RoyalMagicRenderer : ModSystem
 {
+    public delegate void PrimitiveDrawAction(GraphicsDevice gDevice);
     public delegate void SpritebatchDrawAction(SpriteBatch sb);
     public struct Particles
     {
@@ -35,12 +37,13 @@ public class RoyalMagicRenderer : ModSystem
     private ManagedRenderTarget _directionRT;
     private ManagedRenderTarget _swirlRT;
     private ManagedRenderTarget _maskRT;
-
+    private Queue<PrimitiveDrawAction> _primitiveDrawActions;// = new Queue<PrimitiveDrawAction>();
     
     private Asset<Texture2D> _royalSmokeMaskTextureAsset;
     public override void Load()
     {
         base.Load();
+        _primitiveDrawActions = new Queue<PrimitiveDrawAction>();
         _royalSmokeMaskTextureAsset = ModContent.Request<Texture2D>("Stellamod/Effects/RoyalMagic/RoyalSmokeMask");
         PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady += RenderSwirls;
     }
@@ -55,6 +58,12 @@ public class RoyalMagicRenderer : ModSystem
         base.OnModLoad();
         //Temporary, delete later cause these render targest aren't always needed
         PrepareRenderTargets();
+    }
+
+    public static void Queue(PrimitiveDrawAction drawAction)
+    {
+        RoyalMagicRenderer magicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
+        magicRenderer._primitiveDrawActions.Enqueue(drawAction);
     }
 
     private void PrepareRenderTargets()
@@ -176,6 +185,10 @@ public class RoyalMagicRenderer : ModSystem
         DrawMaskParticles(spriteBatch);
         spriteBatch.End();
 
+        while(_primitiveDrawActions.Count > 0)
+        {
+            _primitiveDrawActions.Dequeue()(gDevice);
+        }
 
         gDevice.SetRenderTarget(_directionRT);
         gDevice.Clear(Color.Transparent);

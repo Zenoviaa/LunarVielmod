@@ -168,7 +168,7 @@ public sealed class RippleRenderer : ModSystem
             Vector2 worldPos = _particleManager.Particles.position[i];
             Vector2 screenPos = (worldPos - Main.screenPosition) / new Vector2(Main.screenWidth, Main.screenHeight);
             float strength = MathHelper.Lerp(0f, 1f, timeLeft / 50f);
-            Vector4 ripple = new Vector4(screenPos, _particleManager.Particles.scale[i].X * 0.3f, strength * 252);
+            Vector4 ripple = new Vector4(screenPos, _particleManager.Particles.scale[i].X * 0.2f, strength * 252);
             ripples.Add(ripple);
         }
 
