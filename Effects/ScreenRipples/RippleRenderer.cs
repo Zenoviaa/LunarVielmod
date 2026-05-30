@@ -87,7 +87,7 @@ public sealed class RippleParticleManager : ParticleManager
         position += velocity;
 
         ref Vector2 scale = ref Particles.scale[i];
-        scale = Vector2.Lerp(Vector2.One * 2, Vector2.Zero, EasingFunction.InExpo(timeLeft / 90f));
+        scale = Vector2.Lerp(Vector2.One * 2, Vector2.Zero, EasingFunction.InExpo(timeLeft / 50f));
     }
 }
 
@@ -111,7 +111,7 @@ public sealed class RippleRenderer : ModSystem
 
     public void CreateRipple(Vector2 position)
     {
-        _particleManager.SpawnParticle(position, Vector2.Zero, Vector2.One, 100);
+        _particleManager.SpawnParticle(position, Vector2.Zero, Vector2.One, 50);
     }
 
     public override void PostUpdateDusts()
@@ -167,8 +167,8 @@ public sealed class RippleRenderer : ModSystem
             anyRipples = true;
             Vector2 worldPos = _particleManager.Particles.position[i];
             Vector2 screenPos = (worldPos - Main.screenPosition) / new Vector2(Main.screenWidth, Main.screenHeight);
-            float strength = MathHelper.Lerp(0f, 1f, timeLeft / 100f);
-            Vector4 ripple = new Vector4(screenPos, _particleManager.Particles.scale[i].X * 0.1f, strength * 256);
+            float strength = MathHelper.Lerp(0f, 1f, timeLeft / 50f);
+            Vector4 ripple = new Vector4(screenPos, _particleManager.Particles.scale[i].X * 0.1f, strength * 252);
             ripples.Add(ripple);
         }
 

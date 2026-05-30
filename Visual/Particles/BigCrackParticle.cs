@@ -10,13 +10,16 @@ public class BigCrackParticle : Particle<BigCrackParticle>
     public int FrameWidth = 256;
     public int FrameHeight = 256;
     public int MaxFrameCount = 1;
+    public bool fast;
+    public float time => fast ? 90 : 180;
     public override int GetPoolSize()
     {
-        return 3;
+        return 25;
     }
 
     public override void OnSpawn()
     {
+        fast = false;
         color = Color.White;
         Frame = new Rectangle(0, FrameHeight * Main.rand.Next(MaxFrameCount), FrameWidth, FrameHeight);
     }
@@ -25,7 +28,7 @@ public class BigCrackParticle : Particle<BigCrackParticle>
     {
        
         fadeIn++;
-        if (fadeIn > 180 || Scale < 0.1f)
+        if (fadeIn > time || Scale < 0.1f)
             active = false;
     }
 
@@ -34,7 +37,7 @@ public class BigCrackParticle : Particle<BigCrackParticle>
         Vector2 centerPos = DrawPosition;
         var textureAsset = GetTexture();
 
-        Color color2 = Color.Lerp(color, Color.Black, EasingFunction.InExpo(fadeIn / 180f));
+        Color color2 = Color.Lerp(color, Color.Black, EasingFunction.InExpo(fadeIn / time));
         spriteBatch.Draw(textureAsset.Value, centerPos, Frame, color2, Rotation, Frame.Size() / 2f, Scale, SpriteEffects.None, 0);
     }
 }

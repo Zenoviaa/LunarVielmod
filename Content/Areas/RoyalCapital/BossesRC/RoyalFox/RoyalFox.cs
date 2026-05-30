@@ -1,17 +1,20 @@
-﻿using Microsoft.CodeAnalysis;
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -20,671 +23,209 @@ using Terraria.ModLoader;
 namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 {
 
-    /// <summary>
-    /// Represents the degrees rotation of this frame, going counter clockwise
-    /// </summary>
-    public enum FoxDegrees : byte
-    {
-        _0_CC,
-        _45_CC,
-        _90_CC,
-        _135_CC,
-        _180_CC,
-        _225_CC,
-        _270_CC,
-        _315_CC
-    }
-
-    /// <summary>
-    /// Manages a single segment of Fenix
-    /// </summary>
-    public class FoxSegment
-    {
-        //Represents a body part
-        public FoxSegment(Texture2D texture, FoxSegment parent, Vector2 origin)
-        {
-            this.texture = texture;
-            this.parent = parent;
-            this.origin = origin;
-            this.scale = Vector2.One;
-
-            drawColor = Color.White;
-            frameWidth = texture.Width;
-            frameHeight = texture.Height / Num_Perspectives;
-            perspectiveRotation = FoxDegrees._0_CC;
-
-            children = new List<FoxSegment>(Default_Capacity);
-            initialForwardVectors = new List<Vector3>(Default_Capacity);
-            forwardVectors = new List<Vector3>(Default_Capacity);
-
-            //Add to the parent
-            parent?.children.Add(this);
-            parent?.initialForwardVectors.Add(Vector3.UnitX);
-            parent?.forwardVectors.Add(Vector3.UnitX);
-        }
-
-        public const int Num_Perspectives = 8;
-        public const int Default_Capacity = 3;
-
-        public Texture2D texture;
-        public Color drawColor;
-        public Rectangle? frame;
-        public FoxSegment parent;
-
-        //Keep track of all of our children and our relationships to them
-        public List<FoxSegment> children;
-        public List<Vector3> initialForwardVectors;
-        public List<Vector3> forwardVectors;
-        public float angleOffset;
-        public Vector3 position;
-        public Vector3 initialPosition;
-        public Vector2 worldPosition;
-
-        public Vector2 origin;
-        public Vector2 scale;
-
-
-
-        public bool flipX;
-
-
-        public Vector4 eulerAngles;
-        public float fullRotation;
-        public bool useFreeAngle;
-        public float angle;
-        public int frameHeight;
-        public int frameWidth;
-        public FoxDegrees perspectiveRotation;
-        public bool noDarken;
-
-        private void SetPerspective()
-        {
-
-            //We need to have different lengths depending on the perpsective
-            //We'll store it in an array
-            int directionIndex = (int)perspectiveRotation;
-
-            //So now do the same hting but for the frame
-            //The assets have 8 frames be default so
-            int y = directionIndex * frameHeight;
-            frame = new Rectangle(0, y, frameWidth, frameHeight);
-
-            float xRotation = GetFullEulerAngles().X;
-            Vector3 axis = new Vector3(1, 0, 0);
-            Quaternion quaternion = Quaternion.CreateFromAxisAngle(axis, xRotation);
-            Vector3 currentVector = new Vector3(0, 1, 0);
-            currentVector = Vector3.Transform(currentVector, quaternion);
-
-            for (int i = 0; i < 8; i++)
-            {
-                FoxDegrees degrees = (FoxDegrees)i;
-                if(SetIfInPerspective(degrees, currentVector))
-                {
-                    break;
-                }
-            }
-        }
-
-
-        public int GetChildIndex()
-        {
-            int index = 0;
-            FoxSegment next = parent;
-            while (next != null)
-            {
-                index++;
-                next = next.parent;
-            }
-            return index;
-        }
-        private bool SetIfInPerspective(FoxDegrees degrees, Vector3 currentVector)
-        {
-            Vector3 forwardVector = new Vector3(0, 1, 0);
-            currentVector.Y = MathF.Round(currentVector.Y);
-            currentVector.Z = MathF.Round(currentVector.Z);
-         
-            switch (degrees)
-            {
-                default:
-                case FoxDegrees._0_CC:
-                    forwardVector = new Vector3(0, 1, 0);
-                    break;
-                case FoxDegrees._45_CC:
-                    forwardVector = new Vector3(0, 1, 1);
-                    break;
-                case FoxDegrees._90_CC:
-                    forwardVector = new Vector3(0, 0, 1);
-                    break;
-                case FoxDegrees._135_CC:
-                    forwardVector = new Vector3(0, -1, 1);
-                    break;
-                case FoxDegrees._180_CC:
-                    forwardVector = new Vector3(0, -1, 0);
-                    break;
-                case FoxDegrees._225_CC:
-                    forwardVector = new Vector3(0, -1, -1);
-                    break;
-                case FoxDegrees._270_CC:
-                    forwardVector = new Vector3(0, 0, -1);
-                    break;
-                case FoxDegrees._315_CC:
-                    forwardVector = new Vector3(0, 1, -1);
-                    break;
-            }
-
-            if (currentVector == forwardVector)
-            {
-                perspectiveRotation = degrees;
-                return true;
-            }
-            return false;
-
-        }
-
-        private void SetDrawColor()
-        {
-            if (position.Z <= 0)
-            {
-                drawColor = Color.White;
-            }
-            else if (position.Z >= 12 && !noDarken)
-            {
-                drawColor = Color.Lerp(Color.White, Color.Black, 0.75f);
-            }
-        }
-        public FoxSegment GetRoot()
-        {
-            FoxSegment root = this;
-            while (root.parent != null)
-                root = root.parent;
-            return root;
-        }
-
-        public Vector4 GetFullEulerAngles()
-        {
-            Vector4 angles = eulerAngles;
-            FoxSegment next = parent;
-            while (next != null)
-            {
-                angles += next.eulerAngles;
-                next = next.parent;
-            }
-            return angles;
-        }
-
-        public void ResetTransformations()
-        {
-            //Set to the initial positions of the rig
-            //Default to facing right if there's no parent
-            for (int i = 0; i < children.Count; i++)
-            {
-                var child = children[i];
-                Vector3 initialForwardVector = child.initialPosition - initialPosition;
-                initialForwardVectors[i] = initialForwardVector;
-                forwardVectors[i] = initialForwardVector;
-            }
-        }
-
-        public void ApplyEulerAngles()
-        {
-            Vector4 eulerAngles = GetFullEulerAngles();
-
-            //We have 2 z transformations here, which may be a bit confusing
-            //This is because the first z transformation happens in 2D space,
-            //The second Z tranformation is in 3d space and actually gives us the full range of rotations
-            ApplyZTransformations(eulerAngles.Z);
-            ApplyXTransformations(eulerAngles.X);
-            ApplyYTransformations(eulerAngles.Y);
-            ApplyZTransformations(eulerAngles.W);
-        }
-        public void ApplyZTransformations(float zRotation)
-        {
-            //Let's just split it, I think we're getting race conditioned?
-            //So first we apply the z rotation to the forward vector so it rotates around the joints properly
-            Vector3 zAxis = new Vector3(0, 0, 1);
-            Quaternion rotation = Quaternion.CreateFromAxisAngle(zAxis, zRotation);
-            for(int i = 0; i < children.Count; i++)
-            {
-                forwardVectors[i] = Vector3.Transform(forwardVectors[i], rotation);
-            }
-        }
-        public void ApplyYTransformations(float yRotation)
-        {
-            Vector3 yAxis = new Vector3(0, 1, 0);
-            Quaternion yQuaternion = Quaternion.CreateFromAxisAngle(yAxis, yRotation);
-            for (int i = 0; i < children.Count; i++)
-            {
-                forwardVectors[i] = Vector3.Transform(forwardVectors[i], yQuaternion);
-            }
-        }
-
-        public void ApplyXTransformations(float xRotation)
-        {
-            Vector3 xAxis = new Vector3(1, 0, 0);
-            Quaternion xQuaternion = Quaternion.CreateFromAxisAngle(xAxis, xRotation);
-            for (int i = 0; i < children.Count; i++)
-            {
-                forwardVectors[i] = Vector3.Transform(forwardVectors[i], xQuaternion);
-            }
-        }
-
-        public Vector3 GetForwardVector(FoxSegment child)
-        {
-            int indexOfChild = children.IndexOf(child);
-            if (indexOfChild == -1)
-                return new Vector3(1, 0, 0);
-            return forwardVectors[indexOfChild];
-        }
-        public void SetWorldTransformations()
-        {
-            if(parent != null)
-            {
-                Vector3 forwardVector = parent.GetForwardVector(this);
-                position = parent.position + forwardVector;
-                if (children.Count > 0)
-                {
-                    Vector3 rotationVector = forwardVectors[0];
-                    angle = MathF.Atan2(rotationVector.Y, rotationVector.X);
-                    
-                }
-                else
-                {
-                    angle = MathF.Atan2(forwardVector.Y, forwardVector.X);
-                }
-
-                if(angleOffset != 0 && !useFreeAngle)
-                {
-                    //225
-                    //180
-                    //135
-                    float direction = 1;
-                    switch (perspectiveRotation)
-                    {
-                        case FoxDegrees._225_CC:
-                        case FoxDegrees._180_CC:
-                        case FoxDegrees._135_CC:
-                            direction = -1;
-                            break;
-                    }
-
-                    Vector4 eulers = GetFullEulerAngles();
-                    angle += angleOffset * direction;
-                    if (perspectiveRotation == FoxDegrees._270_CC || perspectiveRotation == FoxDegrees._90_CC)
-                    {
-                        angle = eulers.W;
-                    }
-                }
-            } 
-            else
-            {
-                position = Vector3.Zero;
-                if (children.Count > 0)
-                {
-                    Vector3 rotationVector = forwardVectors[0];
-                    angle = MathF.Atan2(rotationVector.Y, rotationVector.X);
-
-                }
-            }
-
    
-            Vector2 rootPosition = GetRoot().worldPosition;
-            worldPosition = rootPosition + new Vector2(position.X, position.Y);
-        }
-
-        public void Update()
-        {
-      
-            SetWorldTransformations();
-            SetPerspective();
-            SetDrawColor();
-        }
-
-
-
-
-        public void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
-        {
-            Texture2D textureToDraw = texture;
-         
-            Vector2 drawPosition = worldPosition - screenPos;
-
-
-            Color finalColor = drawColor.MultiplyRGBA(lightColor);
-
-            Vector2 drawOrigin = origin;
-            SpriteEffects spriteEffects = SpriteEffects.None;
-            if (flipX)
-            {
-                spriteEffects = SpriteEffects.FlipHorizontally;
-                if (frame != null)
-                {
-                    drawOrigin.X = frame.Value.Width - origin.X;
-                }
-                else
-                {
-                    drawOrigin.X = texture.Width - origin.X;
-                }
-            }
-
-            float drawAngle = angle;
-
-            //Just calculate the angle based on the direction
-            spriteBatch.Draw(textureToDraw, drawPosition, frame, finalColor, drawAngle, drawOrigin, scale, spriteEffects, 0);
-            //DrawWireframe(spriteBatch, drawPosition);
-        }
-
-        private void DrawWireframe(SpriteBatch spriteBatch, Vector2 drawPosition)
-        {
-            Vector3 forwardVector = Vector3.Zero;
-            if (children.Count > 0)
-                forwardVector = GetForwardVector(children[0]);
-            Vector2 start = drawPosition;
-            Vector2 end = start + new Vector2(forwardVector.X, forwardVector.Y);
-
-    
-            Primitives2D.DrawCircle(spriteBatch, start, 4, 8, Color.Red);
-            Primitives2D.DrawLine(spriteBatch, start, end, Color.Wheat);
-            Primitives2D.DrawCircle(spriteBatch, end, 4, 8, Color.Red);
-        }
-
-        public void DrawOutlines(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
-        {
-            float offset = 2;
-            Draw(spriteBatch, screenPos + Vector2.UnitX * offset, lightColor);
-            Draw(spriteBatch, screenPos - Vector2.UnitX * offset, lightColor);
-            Draw(spriteBatch, screenPos + Vector2.UnitY * offset, lightColor);
-            Draw(spriteBatch, screenPos - Vector2.UnitY * offset, lightColor);
-        }
-    }
-    public class FoxSegmentComparer : IComparer<FoxSegment>
+    public class DashLine : ModProjectile,
+        IDrawToRenderTarget
     {
-        public int Compare(FoxSegment x, FoxSegment y)
+        private float DeathTime => 25;
+        private ref float Timer => ref Projectile.ai[0];
+        private ref float IsUsed => ref Projectile.ai[1];
+        private ref float DeathTimer => ref Projectile.ai[2];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetStaticDefaults()
         {
-            return y.position.Z.CompareTo(x.position.Z);
+            base.SetStaticDefaults();
         }
-    }
-    public class FoxChildComparer : IComparer<FoxSegment>
-    {
-        public int Compare(FoxSegment x, FoxSegment y)
+        public override void SetDefaults()
         {
-            return y.GetChildIndex().CompareTo(x.GetChildIndex());
-        }
-    }
-    public class RoyalFoxRig
-    {
-        public FoxSegment[] segmentsByZLayer;
-        public FoxSegment[] segmentsByNumberOfParents;
-
-        public FoxSegmentComparer zComparer;
-        public FoxChildComparer parentsComparer;
-
-        public readonly FoxSegment rootSegment;
-
-        public readonly FoxSegment backLegFrontThighSegment;
-        public readonly FoxSegment backLegBehindThighSegment;
-        public readonly FoxSegment frontLegFrontThighSegment;
-        public readonly FoxSegment frontLegBehindThighSegment;
-
-        public readonly FoxSegment[] backFrontLeg;
-        public readonly FoxSegment[] backBehindLeg;
-        public readonly FoxSegment[] frontFrontLeg;
-        public readonly FoxSegment[] frontBehindLeg;
-        public readonly FoxSegment[] bodyParts;
-        public readonly FoxSegment headPart;
-        public float LegDepth => 17;
-        public RoyalFoxRig
-            (Texture2D[] backLeg,
-            Texture2D[] frontLeg,
-            Texture2D[] body,
-            Texture2D head)
-        {
-            zComparer = new FoxSegmentComparer();
-            parentsComparer = new FoxChildComparer();
-            //This needs to be built from back t o front
-            //So we should start with the butt
-            //Only segment with no parent
-            FoxSegment butt = new FoxSegment(body[0], null, new Vector2(33, 27));
- 
-
-            FoxSegment mid = new FoxSegment(body[1], butt, new Vector2(22, 20));
-            mid.initialPosition = new Vector3(25, 0, -0.01f);
-
-            FoxSegment body3 = new FoxSegment(body[2], mid, new Vector2(36, 26));
-            body3.initialPosition = new Vector3(62, 0, -0.02f);
-
-            FoxSegment neck = new FoxSegment(body[3], body3, new Vector2(25, 20));
-            neck.initialPosition = new Vector3(108, 0, 0.01f);
-
-            FoxSegment headSegment = new FoxSegment(head, neck, new Vector2(48, 42));
-            headSegment.initialPosition = new Vector3(140, -13, -0.05f);
-            headSegment.noDarken = true;
-
-            bodyParts = new FoxSegment[5];
-            bodyParts[0] = butt;
-            bodyParts[1] = mid;
-            bodyParts[2] = body3;
-            bodyParts[3] = neck;
-            bodyParts[4] = headSegment;
-
-
-          
-            //Create back leg
-            backFrontLeg = CreateBackLeg(backLeg, butt, false);
-            backBehindLeg = CreateBackLeg(backLeg, butt, isBehind: true);
-
-            MakeBehind(backBehindLeg);
-            MakeFront(backFrontLeg);
-
-            //Create front leg
-            frontFrontLeg = CreateFrontLeg(frontLeg, body3, false);
-            frontBehindLeg = CreateFrontLeg(frontLeg, body3, true);
-
-            MakeBehind(frontBehindLeg);
-            MakeFront(frontFrontLeg);
-            MakeMiddle(bodyParts);
-
-
-            //Create the segments list
-            List<FoxSegment> segmentsList = new List<FoxSegment>();
-            segmentsList.Add(butt);
-            segmentsList.Add(mid);
-            segmentsList.Add(body3);
-            segmentsList.Add(neck);
-            segmentsList.Add(headSegment);
-            segmentsList.AddRange(backFrontLeg);
-            segmentsList.AddRange(backBehindLeg);
-            segmentsList.AddRange(frontFrontLeg);
-            segmentsList.AddRange(frontBehindLeg);
-
-            rootSegment = butt;
-            
-            backLegFrontThighSegment = backFrontLeg[0];
-            backLegBehindThighSegment = backBehindLeg[0];
-            frontLegFrontThighSegment = frontFrontLeg[0];
-            frontLegBehindThighSegment = frontBehindLeg[0];
-
-
-            headPart = headSegment;
-            segmentsByZLayer = segmentsList.ToArray();
-
-
-            segmentsByNumberOfParents = segmentsList.ToArray();
-            Array.Sort(segmentsByNumberOfParents, parentsComparer);
+            base.SetDefaults();
+            Projectile.width = 32;
+            Projectile.height = 32;
+            Projectile.timeLeft = 300;
+            Projectile.tileCollide = false;
+            Projectile.ignoreWater = true;
         }
 
-        public void MakeBehind(FoxSegment[] segments)
+        public override void AI()
         {
-            Color darkenColor = Color.Lerp(Color.White, Color.Black, 0.6f);
-            SetColor(segments, darkenColor);
-        }
-
-        public void MakeMiddle(FoxSegment[] segments)
-        {
-            Color darkenColor = Color.White;
-            SetColor(segments, darkenColor);
-        }
-
-        public void MakeFront(FoxSegment[] segments)
-        {
-            Color darkenColor = Color.White;
-            SetColor(segments, darkenColor);
-        }
-
-        public void SetColor(FoxSegment[] segments, Color color)
-        {
-
-            for(int i = 0; i < segments.Length; i++)
+            base.AI();
+            Timer++;
+            if(IsUsed == 1)
             {
-                FoxSegment segment = segments[i];
-                segment.drawColor = color;
+                IsUsed = 2;
+                Projectile.netUpdate = true;
             }
-        }
-
-
-        public FoxSegment[] CreateBackLeg(Texture2D[] backLeg, FoxSegment butt, bool isBehind)
-        {
-            FoxSegment[] segments = new FoxSegment[3];
-            FoxSegment backLegThighFront = new FoxSegment(backLeg[0], butt, new Vector2(19, 25));
-
-            float depth = LegDepth;
-            backLegThighFront.initialPosition = new Vector3(0, -7, -depth);
-
-            //backLegThighFront.attachmentPoint = 0f;
-            //backLegThighFront.localHeight = 16;
-
-            FoxSegment backLegLegFront = new FoxSegment(backLeg[1], backLegThighFront, new Vector2(19, 45));
-            backLegLegFront.initialPosition = backLegThighFront.initialPosition + new Vector3(5, 23, 0.1f);
-            //backLegLegFront.drawAngleOffset = MathHelper.ToRadians(-90);
-            //backLegLegFront.attachmentPoint = 0.5f;
-            //backLegLegFront.localLength = 25;
-
-            FoxSegment backFootFront = new FoxSegment(backLeg[2], backLegLegFront, new Vector2(7, 6));
-            backFootFront.initialPosition = backLegLegFront.initialPosition + new Vector3(0, 32, -0.1f);
-
-            segments[0] = backLegThighFront;
-            segments[1] = backLegLegFront;
-            segments[2] = backFootFront;
-            for (int i = 0; i < segments.Length; i++)
+            if (IsUsed == 2)
             {
-                segments[i].angleOffset = -MathHelper.PiOver2;
-            }
-            if (isBehind)
-            {
-                for(int i = 0; i < segments.Length; i++)
+                DeathTimer++;
+                if(DeathTimer >= 25f)
                 {
-                    segments[i].initialPosition.X += 8;
-                    segments[i].initialPosition.Z *= -1;
+                    Projectile.Kill();
                 }
             }
-            return segments;
         }
 
-        public FoxSegment[] CreateFrontLeg(Texture2D[] frontLeg, FoxSegment neck, bool isBehind)
+        public override bool PreDraw(ref Color lightColor)
         {
-            FoxSegment[] segments = new FoxSegment[3];
-
-            float depth = LegDepth;
-
-            FoxSegment frontLegThighFront = new FoxSegment(frontLeg[0], neck, new Vector2(8, 21));
-            frontLegThighFront.initialPosition = new Vector3(90, 3, -depth);
-
-            FoxSegment frontLegLegFront = new FoxSegment(frontLeg[1], frontLegThighFront, new Vector2(12, 40));
-            frontLegLegFront.initialPosition = frontLegThighFront.initialPosition + new Vector3(5, 13, 0.01f);
-
-            FoxSegment frontLegFootFront = new FoxSegment(frontLeg[2], frontLegLegFront, new Vector2(7, 6));
-            frontLegFootFront.initialPosition = frontLegLegFront.initialPosition + new Vector3(0, 32, 0f);
-
-
-
-            segments[0] = frontLegThighFront;
-            segments[1] = frontLegLegFront;
-            segments[2] = frontLegFootFront;
-            for(int i = 0; i < segments.Length; i++)
-            {
-                segments[i].angleOffset = -MathHelper.PiOver2;
-            }
-            if (isBehind)
-            {
-                for (int i = 0; i < segments.Length; i++)
-                {
-                    segments[i].initialPosition.X += 8;
-                    segments[i].initialPosition.Z *= -1;
-                }
-            }
-            return segments;
+            return false;
         }
 
-        public void Update()
+        public override void OnKill(int timeLeft)
         {
-
-            for (int i = 0; i < segmentsByNumberOfParents.Length; i++)
-            {
-                var segment = segmentsByNumberOfParents[i];
-                segment.ResetTransformations();
-            }
-            for (int i = 0; i < segmentsByNumberOfParents.Length; i++)
-            {
-                var segment = segmentsByNumberOfParents[i];
-                segment.ApplyEulerAngles();
-            }
-            for (int i = 0; i < segmentsByNumberOfParents.Length; i++)
-            {
-                var segment = segmentsByNumberOfParents[i];
-                segment.Update();
-            }
-            for (int i = 0; i < segmentsByNumberOfParents.Length; i++)
-            {
-                var segment = segmentsByNumberOfParents[i];
-                segment.Update();
-            }
-            //Sort by the sorting order
-            Array.Sort(segmentsByZLayer, zComparer);
-        }
-        public void Draw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
-        {
-            for (int i = 0; i < segmentsByZLayer.Length; i++)
-            {
-                var segment = segmentsByZLayer[i];
-                segment.Draw(spriteBatch, screenPos, lightColor);
-            }
-        }
-    }
-    public class FoxTail
-    {
-
-        public FoxTail(int segmentCount)
-        {
-            positions = new Vector2[segmentCount];
+            base.OnKill(timeLeft);
         }
 
-        public Vector2 rootPosition;
-        public Vector2 endPosition;
-        public Vector2[] positions;
-    
-        public void Update()
+        public override bool ShouldUpdatePosition()
         {
-
-            //So I'm thinking we just lerp between the root and end position and add some sining motions?
-            //That'd be the easiest way to do it I think
-
+            return false;
         }
 
-        public void Draw()
+        private void DrawLine(SpriteBatch sb, Vector2 screenPos)
+        {
+            float alpha = EasingFunction.OutSine(Timer / 60) * MathHelper.Lerp(1f, 0f, DeathTimer / DeathTime);
+            SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4"), Projectile.Center - Projectile.velocity * 1200);
+            lineDrawer.color = Color.Lerp(Color.Black, Color.White, alpha);
+            lineDrawer.color.A = 0;
+            lineDrawer.rotation = Projectile.velocity.ToRotation();
+            lineDrawer.LeftCenterOrigin();
+
+            Vector2 scale = Vector2.Lerp(new Vector2(0f, 1f), new Vector2(2f, 1f), alpha);
+            scale.Y = 0.5f;
+            scale.X *= 12;
+            lineDrawer.scale = scale;
+            sb.Draw(lineDrawer);
+        }
+        private Color StarryTrailColorFunction(float completionRatio)
         {
 
+            return Color.Lerp(Color.White, Color.Transparent, completionRatio) *
+                MathHelper.Lerp(0f, 1f, EasingFunction.Clamp((float)Projectile.timeLeft / 30f)) * EasingFunction.QuadraticBump(DeathTimer / DeathTime);
+        }
+
+        private float StarryTrailWidthFunction(float completionRatio)
+        {
+            return MathHelper.SmoothStep(80, 0, completionRatio);
+        }
+
+        private void RenderStarryDashTrail(GraphicsDevice gDevice)
+        {
+            List<Vector2> points = new List<Vector2>();
+            float numPoints = 24;
+            Vector2 endPoint = Vector2.Lerp(Projectile.Center - Projectile.velocity * 1000, Projectile.Center + Projectile.velocity * 1200, DeathTimer / DeathTime);
+            Vector2 startPoint = endPoint - Projectile.velocity * 3500;
+            for(float f = 0; f < numPoints; f++)
+            {
+                Vector2 p = Vector2.Lerp(endPoint, startPoint, f / numPoints);
+                points.Add(p);
+            }
+            Vector2[] trailPoints = points.ToArray();
+            FixedRichLaserShader laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
+            laserShader.LaserTexture = TrailRegistry.Beamlight;
+            laserShader.InnerColor = Color.White;
+            laserShader.OuterColor = Color.Lerp(Color.White, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 16));
+            TrailDrawer.Draw(Main.spriteBatch, trailPoints, StarryTrailColorFunction, StarryTrailWidthFunction, laserShader);
+        }
+
+        public void DrawToRenderTargets()
+        {
+            PixelationManager.QueueSpritebatchDrawAction(DrawLine);
+            if (DeathTimer <= 0)
+                return;
+
+            PixelationManager.QueuePrimitivesDrawAction(RenderStarryDashTrail);
+            //  throw new NotImplementedException();
         }
     }
 
-    public class RoyalFoxTails
+    public class RoyalMagicDashTrail : ModProjectile,
+        IDrawToRenderTarget
     {
+        private ref float Timer => ref Projectile.ai[0];
+        private NPC Parent => Main.npc[(int)Projectile.ai[1]];
+        private ref float ShouldDie => ref Projectile.ai[2];
+        public override string Texture => TextureRegistry.EmptyTexture;
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.TrailCacheLength[Type] = 32;
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 32;
+            Projectile.height = 32;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 60;
+            Projectile.ignoreWater = true;
+        }
+        public override void AI()
+        {
+            base.AI();
+            Timer++;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+            float movement = Vector2.Distance(Parent.position, Parent.oldPosition);
+            if(movement > 64)
+            {
+                ShouldDie = 1;
+            }
+            if (ShouldDie >= 1)
+                return;
 
+            Vector2 vel = (Parent.Center - Projectile.Center);
+            Projectile.velocity = vel;
+        }
+
+        private Color StarryTrailColorFunction(float completionRatio)
+        {
+
+            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 
+                MathHelper.Lerp(0f, 1f, EasingFunction.Clamp((float)Projectile.timeLeft / 30f));
+        }
+
+        private float StarryTrailWidthFunction(float completionRatio)
+        {
+            return MathHelper.SmoothStep(96, 0, completionRatio);
+        }
+
+        private void RenderStarryDashTrail(GraphicsDevice gDevice)
+        {
+            FixedRichLaserShader laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
+            laserShader.LaserTexture = TrailRegistry.Beamlight;
+            laserShader.InnerColor = Color.White;
+            laserShader.OuterColor = Color.Lerp(Color.White, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 16));
+            TrailDrawer.Draw(Main.spriteBatch, Projectile.oldPos, StarryTrailColorFunction, StarryTrailWidthFunction, laserShader, Projectile.Size * 0.5f);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            return false;
+            //return base.PreDraw(ref lightColor);
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            base.OnKill(timeLeft);
+        }
+
+        public void DrawToRenderTargets()
+        {
+            // throw new NotImplementedException();
+        //    PixelationManager.QueuePrimitivesDrawAction(RenderStarryDashTrail);
+        }
     }
 
     public partial class RoyalFox : ScarletBoss,
         IDrawToRenderTarget
     {
+        private Vector2 _teleportPosition;
+        private Vector2 _startDashPoint;
+        private Vector2 _dashLineVelocity;
         private float _dashTrailAlpha;
         private bool _renderDashTrail;
+        private bool _renderMotionBlur;
+        private float _invisibleAlpha;
+        private bool _goInvisible;
+
         private float _direction;
         private Outliner _outliner;
         private bool _contactDamage;
@@ -724,6 +265,14 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         private ref float AttackCycle => ref NPC.ai[2];
         private ref float AttackCounter => ref NPC.ai[3];
+
+        private float _miniAttackCount;
+        //Dash Dance Attack
+        private int DashDanceDamage => 80;
+        private float NumDashDanceLines => 7;
+        private int NumDashDanceBursts => 3;
+        private float DashDanceTime => 15;
+        private float DelayBetweenDashDanceBursts => 25;
         public Texture2D GetSubTexture(string fileName)
         {
             string path = Texture + $"_{fileName}";
@@ -759,6 +308,22 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
         }
 
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(_startDashPoint);
+            writer.WriteVector2(_dashLineVelocity);
+            writer.WriteVector2(_teleportPosition);
+            writer.Write(_miniAttackCount);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            _startDashPoint = reader.ReadVector2();
+            _dashLineVelocity = reader.ReadVector2();
+            _teleportPosition = reader.ReadVector2();
+            _miniAttackCount = reader.ReadSingle();
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -772,8 +337,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public override void SetDefaults()
         {
             base.SetDefaults();
-            NPC.width = 128;
-            NPC.height = 200;
+            NPC.width = 90;
+            NPC.height = 90;
             NPC.damage = 100;
             NPC.defense = 20;
             NPC.lifeMax = 24000;
@@ -792,10 +357,22 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         }
 
+
+        private void Teleport(Vector2 position)
+        {
+            if (!MultiplayerHelper.IsHost)
+                return;
+            _teleportPosition = position;
+            NPC.netUpdate = true;
+        }
+
         public override void AI()
         {
             base.AI();
+            _contactDamage = false;
+            _renderMotionBlur = false;
             _renderDashTrail = false;
+            _goInvisible = false;
             _outliner.SetDefaults();
             switch (State)
             {
@@ -807,8 +384,19 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                     AI_ZoomDashDance();
                     break;
             }
+
+            if(_teleportPosition != Vector2.Zero)
+            {
+                NPC.Center = _teleportPosition;
+                _teleportPosition = Vector2.Zero;
+        
+            }
+
+            float targetInvisibleAlpha = _goInvisible ? 0f : 1f;
+            _invisibleAlpha = MathHelper.Lerp(_invisibleAlpha, targetInvisibleAlpha, 0.1f);
+
             float targetDashTrailAlpha = _renderDashTrail ? 1f : 0f;
-            _dashTrailAlpha = MathHelper.Lerp(_dashTrailAlpha, targetDashTrailAlpha, 0.01f);
+            _dashTrailAlpha = MathHelper.Lerp(_dashTrailAlpha, targetDashTrailAlpha, 0.1f);
             _outliner.Update();
            // AI_DebugRig();
             UpdateRig();
@@ -816,6 +404,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         private void SwitchState(AIState state)
         {
+            _miniAttackCount = 0;
             Timer = 0;
             AttackCycle = 0;
             AttackCounter = 0;
@@ -864,7 +453,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             RoyalMagicRenderer royalMagicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
 
 
-            for(float f = 0; f < 24; f++)
+            for(float f = 0; f < 13; f++)
             {
 
                 Vector2 vel = -Vector2.UnitY * Main.rand.NextFloat(3f, 7f);
@@ -897,6 +486,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             RoyalMagicRenderer royalMagicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
 
 
+            if (Main.rand.NextBool(4))
+            {
+                var d = Dust.NewDustPerfect(NPC.Center + Main.rand.NextVector2Circular(16, 16), DustID.GemDiamond, Scale: 1f);
+                d.noGravity = true;
+            }
+
             if (!Main.rand.NextBool(2))
                 return;
 
@@ -910,6 +505,46 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             if (!Main.rand.NextBool(4))
                 return;
 
+            if (Main.rand.NextBool(2))
+            {
+                var sp = RoyalMagicStarParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(64, 64), vel, Scale: Main.rand.NextFloat(0.25f, 0.6f));
+                sp.color = Color.Lerp(new Color(117, 100, 210), Color.White, Main.rand.NextFloat(0f, 1f));
+            }
+            if (Main.rand.NextBool(2))
+            {
+                var sp = RoyalMagicSwordParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(64, 64), -vel, Scale: Main.rand.NextFloat(0.25f, 0.6f));
+                sp.color = Color.Lerp(new Color(117, 100, 210), Color.White, Main.rand.NextFloat(0f, 1f));
+                sp.behindLayer = Main.rand.NextBool(2);
+            }
+            if (Main.rand.NextBool(2))
+            {
+                var sp = FaintSmokeParticle.SpawnInAlphaLayer(NPC.Center + Main.rand.NextVector2Circular(64, 64), -vel, Scale: Main.rand.NextFloat(0.25f, 0.6f));
+                sp.Scale *= 0.5f;
+                sp.color = Color.Lerp(Color.Black, Color.White, Main.rand.NextFloat(0f, 0.33f));
+                sp.behindLayer = true;
+            }
+        }
+        private void WalkParticles2()
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            RoyalMagicRenderer royalMagicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
+
+
+            if (Main.rand.NextBool(4))
+            {
+                var d = Dust.NewDustPerfect(NPC.Center + Main.rand.NextVector2Circular(16, 16), DustID.GemDiamond, Scale: 1f);
+                d.noGravity = true;
+            }
+
+            if (!Main.rand.NextBool(2))
+                return;
+
+
+            if (!Main.rand.NextBool(4))
+                return;
+
+            Vector2 vel = -NPC.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(2f, 5f);
             if (Main.rand.NextBool(2))
             {
                 var sp = RoyalMagicStarParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(64, 64), vel, Scale: Main.rand.NextFloat(0.25f, 0.6f));
@@ -991,8 +626,64 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         }
 
         #region Zoom Mode 
+
+
+        private void CreateDashLines()
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+                for (int i = 0; i < NumDashDanceLines; i++)
+                {
+                    Vector2 posToPutLine = Vector2.Zero;
+                    posToPutLine.X = MathHelper.Lerp(-350, 350, (float)i / NumDashDanceLines);
+                    posToPutLine.Y = Main.rand.NextFloat(-300, 300);
+                    posToPutLine += MyTarget.Center;
+
+                    Vector2 velocity = (posToPutLine - MyTarget.Center).RotatedByRandom(MathHelper.ToDegrees(45)).SafeNormalize(Vector2.Zero);
+                    if (i == 0)
+                    {
+                        velocity = (posToPutLine - MyTarget.Center).SafeNormalize(Vector2.Zero);
+                    }
+                    Projectile.NewProjectile(SourceFromThis, posToPutLine, velocity, ModContent.ProjectileType<DashLine>(), DashDanceDamage, 1,
+                        Main.myPlayer, ai0: i * -2);
+                }
+
+
+            }
+
+        }
         private void AI_ZoomDashDance()
         {
+            (Vector2, Vector2) NextDashLine()
+            {
+
+                (Vector2 position, Vector2 velocity) dashLine = new(Vector2.Zero, Vector2.Zero);
+                foreach(var proj in Main.ActiveProjectiles)
+                {
+                    if (proj.type != ModContent.ProjectileType<DashLine>())
+                        continue;
+                    if (proj.ai[1] > 0)
+                        continue;
+                    proj.ai[1] = 1;
+                    dashLine.position = proj.Center;
+                    dashLine.velocity = proj.velocity;
+                    break;
+                }
+                return dashLine;
+            }
+
+            bool HasNextDashLine()
+            {
+                foreach (var proj in Main.ActiveProjectiles)
+                {
+                    if (proj.type != ModContent.ProjectileType<DashLine>())
+                        continue;
+                    if (proj.ai[1] > 0)
+                        continue;
+                    return true;
+                }
+                return false;
+            }
             //Fenix flies up and does the like cogwork dancers thing where a bunch of lines appear and she dashes through them really fast, this is a two shot btw
             //For this attack, we'll create a new blurring shader for the motion blur
             //And also have cool effects for the trailing
@@ -1018,25 +709,27 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                         NPC.TargetClosest();
                         _direction = FacingDirectionToTarget;
                     }
-
-                    if (Main.rand.NextBool(4))
                     {
-                      var d =  Dust.NewDustPerfect(NPC.Center + Main.rand.NextVector2Circular(16, 16), DustID.GemDiamond, Scale: 1f);
-                        d.noGravity = true;
+                        //I want fenix to move forward and then go up while rotating it'll look so cool, then she poofs
+                        float progress = Timer / Zoom_Prepare_Time;
+                        NPC.velocity.X = MathHelper.Lerp(_direction * 2, _direction * 8, EasingFunction.QuadraticBump(Timer / Zoom_Prepare_Time));
+
+                        float yVelcoity = MathHelper.Lerp(0f, -14, EasingFunction.InOutExpo(progress));
+                        NPC.velocity.Y = yVelcoity;
+                        Rig.rootSegment.eulerAngles.W = MathHelper.Lerp(0f, MathHelper.ToRadians(-90), EasingFunction.InOutSine(progress));
+                        Rig.rootSegment.eulerAngles.X = MathHelper.Lerp(0f, MathHelper.ToRadians(90 + 360), EasingFunction.InOutSine(progress));
+
                     }
 
-                    //I want fenix to move forward and then go up while rotating it'll look so cool, then she poofs
-                    float progress = Timer / Zoom_Prepare_Time;
-                    NPC.velocity.X = MathHelper.Lerp(_direction * 2, _direction * 8, EasingFunction.QuadraticBump(Timer / Zoom_Prepare_Time));
 
-                    float yVelcoity = MathHelper.Lerp(0f, -14, EasingFunction.InOutExpo(progress));
-                    NPC.velocity.Y = yVelcoity;
-                    Rig.rootSegment.eulerAngles.W = MathHelper.Lerp(0f, MathHelper.ToRadians(-90), EasingFunction.InOutSine(progress));
-                    Rig.rootSegment.eulerAngles.X = MathHelper.Lerp(0f, MathHelper.ToRadians(90 + 360), EasingFunction.InOutSine(progress));
-
+                    _outliner.warning = true;
                     _renderDashTrail = true;
                     AnimateRunning();
                     WalkParticles();
+                    if(Timer == Zoom_Prepare_Time - 5)
+                    {
+                        CreateDashLines();
+                    }
                     if (Timer >= Zoom_Prepare_Time)
                     {
                         PoofParticles();
@@ -1044,8 +737,188 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                         AttackCycle++;
                     }
                     break;
-       
 
+                    //how htis is gonna work is dash line sare gonna appear
+                   //and as logn as a dash line projectile exists she'll dash through them all
+
+                case 1:
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+          
+                    }
+                    _goInvisible = true;
+                    if(Timer >= DelayBetweenDashDanceBursts)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+
+                    NPC.velocity *= 0.98f;
+                    break;
+                case 2:
+
+                    if(Timer == 1)
+                    {
+                   
+                        PoofParticles();
+                        (Vector2 position, Vector2 velocity) = NextDashLine();
+                        if(position != default(Vector2))
+                        {
+                      
+                            _dashLineVelocity = velocity;
+                            position -= velocity * 384;
+                            _startDashPoint = position;
+                            Teleport(position);
+                            NPC.netUpdate = true;
+                        }
+                    }
+                    if(Timer == 3)
+                    {
+                    
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero, ModContent.ProjectileType<RoyalMagicDashTrail>(), 0, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                        }
+                    }
+
+                    if(Timer < 3)
+                    {
+                        _goInvisible = true;
+                    }
+
+                    if(Timer == 3)
+                    {
+                        FXUtil.CreateRipple(_startDashPoint);
+                        FXUtil.ShakeCamera(_startDashPoint, 1024, 2);
+                        ShakeScreenPosition.Shake = 2;
+
+                        for(int i = 1; i < 5; i++)
+                        {
+                            var tp = ThrustParticle.Spawn(_startDashPoint, _dashLineVelocity * 14 * i, Scale: 2);
+                            tp.bloomColor = Color.White;
+                        }
+              
+                    }
+
+                    if(Timer == 3)
+                    {
+                     
+                    }
+                    float ratio = Timer / DashDanceTime;
+                    float easing = EasingFunction.InOutExpo(ratio);
+                    if(_miniAttackCount > 0)
+                    {
+                        easing = 1f;
+                    }
+
+                    if(Timer > 3)
+                    {
+                        Vector2 pointToMoveTo = Vector2.Lerp(_startDashPoint, _startDashPoint + _dashLineVelocity * 700, ratio);
+                        Vector2 vel = pointToMoveTo - NPC.Center;
+                        NPC.velocity = Vector2.Zero;
+                        NPC.Center = pointToMoveTo;
+
+                    }
+                    var sp = RoyalMagicStarParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(64, 64), _dashLineVelocity, Scale: Main.rand.NextFloat(0.15f, 0.25f));
+                    sp.color = Color.Lerp(new Color(117, 100, 210), Color.White, Main.rand.NextFloat(0f, 1f));
+
+                    if (Timer % 4 == 0)
+                    {
+                        var donute = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -_dashLineVelocity * 3);
+                    }
+
+                    Rig.rootSegment.eulerAngles.W = _dashLineVelocity.ToRotation();
+                    Rig.rootSegment.eulerAngles.X = MathHelper.Lerp(0f, MathHelper.ToRadians(360), EasingFunction.InOutSine(_miniAttackCount / NumDashDanceLines));
+
+                    _contactDamage = true;
+                    _outliner.attacking = true;
+                    _renderMotionBlur = true;
+                    AnimateRunning();
+                    WalkParticles2();
+
+                    var fx = FXUtil.GlowStretch(NPC.Center + Main.rand.NextVector2Circular(32, 32), _dashLineVelocity);
+                    fx.VectorScale *= 0.5f;
+                    if (Timer >= DashDanceTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                    break;
+                case 3:
+                    if(Timer == 1)
+                    {
+                        if (HasNextDashLine())
+                        {
+                            _miniAttackCount++;
+                            Timer = 0;
+                            AttackCycle--;
+                        }
+                        else
+                        {
+                            if (_direction == 0)
+                                _direction = 1;
+                            else
+                                _direction *= -1;
+                            PoofParticles();
+                            Teleport(MyTarget.Center);
+                        }
+                    }
+
+                    _goInvisible = true;
+
+                    {
+                        //I want fenix to move forward and then go up while rotating it'll look so cool, then she poofs
+                        float progress = Timer / Zoom_Prepare_Time;
+                        NPC.velocity.X = MathHelper.Lerp(_direction * 25, _direction * 2, EasingFunction.OutExpo(Timer / Zoom_Prepare_Time));
+
+                        float yVelcoity = MathHelper.Lerp(0f, -14, EasingFunction.InOutExpo(progress));
+                        if (_direction == -1)
+                            yVelcoity *= -1;
+                        NPC.velocity.Y = yVelcoity;
+                     //   Rig.rootSegment.eulerAngles.X = _direction == -1 ? MathHelper.ToRadians(-180) : 0;
+                        Rig.rootSegment.eulerAngles.W = MathHelper.Lerp(0f, MathHelper.ToRadians(-90), EasingFunction.InOutSine(progress));
+                        if (_direction == -1)
+                            Rig.rootSegment.eulerAngles.W += MathHelper.ToRadians(-180);
+                        Rig.rootSegment.eulerAngles.X = MathHelper.Lerp(0f, MathHelper.ToRadians(90 + 360 * _direction), EasingFunction.InOutSine(progress));
+
+                    }
+
+                    if(Timer == Zoom_Prepare_Time - 25 && (AttackCounter+1) < NumDashDanceBursts)
+                    {
+                        CreateDashLines();
+                    }
+
+                    if(AttackCounter + 1 < NumDashDanceBursts)
+                    {
+                        _outliner.warning = true;
+                    }
+
+                    AnimateRunning();
+
+                    if (Timer >= Zoom_Prepare_Time)
+                    {
+                        AttackCounter++;
+                        Timer = 0;
+                        if(AttackCounter >= NumDashDanceBursts)
+                        {
+                            AttackCycle++;
+                        }
+                        else
+                        {
+                            AttackCycle -= 2;
+                        }
+               
+                    }
+                    break;
+                case 4:
+                    _goInvisible = true;
+                    if(Timer >= DelayBetweenDashDanceBursts)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                    break;
                 default:
                     SwitchState(AIState.Idle);
                     break;
@@ -1053,29 +926,6 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         }
         #endregion
 
-
-        private void AI_DebugRig()
-        {
-            //TargetOutlineColor = Color.Transparent;
-            if (Main.mouseRight)
-            {
-                Rig.rootSegment.eulerAngles.W += 0.02f;
-            }
-            if (Main.mouseLeft && Main.mouseLeftRelease)
-            {
-                Rig.rootSegment.eulerAngles.X -= MathHelper.PiOver4;
-                Main.mouseLeftRelease = false;
-            }
-
-           // Rig.rootSegment.eulerAngles.Z += 0.025f;
-            Rig.rootSegment.eulerAngles.Z = 0;
-            Rig.frontFrontLeg[1].eulerAngles.Z += 0.02f;
-            if (Main.mouseMiddle)
-            {
-                Rig.rootSegment.eulerAngles = Vector4.Zero;
-
-            }
-        }
 
         private Color DashTrailColorFunction(float completionRatio)
         {
@@ -1094,6 +944,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             laserShader.OuterColor = Color.Lerp(Color.White, Color.SkyBlue, ExtraMath.Osc(0f, 1f, speed: 16));
             TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, DashTrailColorFunction, DashTrailWidthFunction, laserShader, NPC.Size * 0.5f);
         }
+
         private void UpdateRig()
         {
             //Calling update twice sine it has to calculate the new x axis position
@@ -1110,7 +961,17 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (_renderMotionBlur)
+            {
+                DashBlurShader dashBlurShader = ShaderContent.GetInstance<DashBlurShader>();
+                spriteBatch.Restart(effect: dashBlurShader.Effect);
+            }
             Rig.Draw(spriteBatch, screenPos, drawColor);
+
+            if (_renderMotionBlur)
+            {
+                spriteBatch.RestartDefaults();
+            }
             return false;
         }
 

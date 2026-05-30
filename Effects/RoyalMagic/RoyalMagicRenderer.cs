@@ -31,7 +31,7 @@ public class RoyalMagicRenderer : ModSystem
     }
 
     private Vector2 _oldMouseWorld;
-    private readonly Particles _smearParticles = new Particles(100);
+    private readonly Particles _smearParticles = new Particles(252);
     private ManagedRenderTarget _directionRT;
     private ManagedRenderTarget _swirlRT;
     private ManagedRenderTarget _maskRT;
