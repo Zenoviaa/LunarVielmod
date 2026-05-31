@@ -1,8 +1,11 @@
-﻿using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox.Projectiles;
+﻿using Stellamod.Assets;
+using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox.Projectiles;
+using Stellamod.Core.Particles;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,6 +13,59 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 
 public partial class RoyalFox
 {
+    private float _stepDistance;
+
+    public static void CreateRoyalStarSmoke(Vector2 position, Vector2 velocity)
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        RoyalMagicRenderer royalMagicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
+        royalMagicRenderer.SpawnParticle(position, velocity, 180);
+    }
+    public static void CreateRoyalStarSmallSmoke(Vector2 position, Vector2 velocity)
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        RoyalMagicRenderer royalMagicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
+        royalMagicRenderer.SpawnParticle(position, velocity, 130);
+    }
+
+    public static void PlayDashSound(Vector2 position)
+    {
+        int soundIndex = Main.rand.Next(4);
+        SoundStyle dashSound;
+        switch (soundIndex)
+        {
+            default:
+            case 0:
+                dashSound = AssetRegistry.Sounds.AlcaricFox.FenixFastdash1;
+                break;
+            case 1:
+                dashSound = AssetRegistry.Sounds.AlcaricFox.FenixFastdash2;
+                break;
+            case 2:
+                dashSound = AssetRegistry.Sounds.AlcaricFox.FenixFastdash3;
+                break;
+            case 3:
+                dashSound = AssetRegistry.Sounds.AlcaricFox.FenixFastdash4;
+                break;
+        }
+        SoundEngine.PlaySound(dashSound, position);
+    }
+    public void CreateFootsteps()
+    {
+        float traveledDistance = Vector2.Distance(NPC.position, NPC.oldPosition);
+        _stepDistance += traveledDistance;
+        if (_stepDistance >= 100)
+        {
+            Vector2 pos = NPC.Bottom + new Vector2(Main.rand.NextFloat(-32f, 32f), 0);
+            pos.Y += 24;
+            var circleStep = LegacyParticle.NewParticle<CircleStepParticle>(pos, Vector2.UnitY);
+            circleStep.color = Color.Blue;
+            circleStep.Rotation = NPC.rotation;
+            _stepDistance = 0;
+        }
+    }
     public static void SpawnCometStarParticle(Vector2 center, Vector2 velocity, float timeLeft)
     {
         if (Main.netMode == NetmodeID.Server)

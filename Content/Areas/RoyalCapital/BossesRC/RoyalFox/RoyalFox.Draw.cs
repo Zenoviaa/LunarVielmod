@@ -39,6 +39,8 @@ public partial class RoyalFox
     {
         if (_dontRender)
             return false;
+
+        _sigilTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Sigil");
         if (_renderMotionBlur)
         {
             DashBlurShader dashBlurShader = ShaderContent.GetInstance<DashBlurShader>();
@@ -60,9 +62,26 @@ public partial class RoyalFox
             Rig.segmentsByZLayer[i].alpha = _invisibleAlpha;
         }
 
+
+
         Rig.Draw(spriteBatch, screenPos, drawColor);
         DrawTelegraphLine(spriteBatch);
         DrawEyeFlash(spriteBatch);
+
+        Vector2 drawPos = Rig.headPart.worldPosition;
+
+        float rot = RegularRotation + MathHelper.PiOver4;
+        drawPos += (rot-MathHelper.PiOver2).ToRotationVector2() * 45;
+        SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureAsset(_sigilTextureAsset, drawPos);
+        headDrawer.rotation =rot - MathHelper.PiOver4; ;
+       // headDrawer.scale *= 5;
+        Main.spriteBatch.Draw(headDrawer);
+
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, drawPos);
+        glowDrawer.color = Color.White * 0.3f * ExtraMath.Osc(0.5f, 1f, speed: 3);
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= 0.25f;
+        Main.spriteBatch.Draw(glowDrawer);
         if (_renderMotionBlur)
         {
             spriteBatch.RestartDefaults();

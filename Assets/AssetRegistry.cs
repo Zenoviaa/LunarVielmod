@@ -48,6 +48,12 @@ namespace Stellamod.Assets
 
             public static class AlcaricFox
             {
+                public static readonly SoundStyle FenixStarballgrow1 = new SoundStyle($"{Path}AlcaricFox/FenixStarballgrow1") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle FenixStarballgrow2 = new SoundStyle($"{Path}AlcaricFox/FenixStarballgrow2") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle FenixStarballgrow3 = new SoundStyle($"{Path}AlcaricFox/FenixStarballgrow3") with { PitchVariance = 0.33f };
+
+                public static readonly SoundStyle FenixStarsactivate = new SoundStyle($"{Path}AlcaricFox/FenixStarsactivate") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle FenixSmallStarExplode = new SoundStyle($"{Path}AlcaricFox/FenixSmallStarExplode") with { PitchVariance = 0.33f };
                 public static readonly SoundStyle FenixAirbounce1 = new SoundStyle($"{Path}AlcaricFox/FenixAirbounce1") with { PitchVariance = 0.33f };
                 public static readonly SoundStyle FenixAirbounce2 = new SoundStyle($"{Path}AlcaricFox/FenixAirbounce2") with { PitchVariance = 0.33f };
                 public static readonly SoundStyle FenixAppeartired = new SoundStyle($"{Path}AlcaricFox/FenixAppeartired") with { PitchVariance = 0.33f };

@@ -16,6 +16,17 @@ public class DashLine : ModProjectile,
     private ref float IsUsed => ref Projectile.ai[1];
     private ref float DeathTimer => ref Projectile.ai[2];
     public override string Texture => TextureRegistry.EmptyTexture;
+
+    private Vector2 StartPoint => EndPoint - Projectile.velocity * 9000;
+    private Vector2 EndPoint => Projectile.Center + Projectile.velocity * 3000;
+    public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+    {
+        float collisionPoint = 0;
+        if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), EndPoint, StartPoint, 24, ref collisionPoint))
+            return true;
+
+        return false;
+    }
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
@@ -34,15 +45,43 @@ public class DashLine : ModProjectile,
     {
         base.AI();
         Timer++;
-        if(IsUsed == 1)
+        if (IsUsed == 1)
         {
             IsUsed = 2;
             Projectile.netUpdate = true;
         }
         if (IsUsed == 2)
         {
+
+            Projectile.hostile = true;
+            if(DeathTimer >= 16)
+            {
+                Projectile.hostile = false;
+            }
+
             DeathTimer++;
-            if(DeathTimer >= 25f)
+            if (DeathTimer == 1)
+            {
+                Vector2 endPoint = Projectile.Center + Projectile.velocity * 3000;
+                Vector2 startPoint = endPoint - Projectile.velocity * 9000;
+                Rectangle screenREct = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+                float numPoints = 48;
+                for (float f = 0; f < numPoints; f++)
+                {
+                    float ratio = f / numPoints;
+                    Vector2 pos = Vector2.Lerp(startPoint, endPoint, ratio);
+                    if (screenREct.Contains(pos.ToPoint()))
+                    {
+                        float numParticles = 4;
+                        for (float n = 0; n < numParticles; n++)
+                        {
+                            RoyalFox.CreateRoyalStarSmallSmoke(pos + Main.rand.NextVector2Circular(64, 64), Main.rand.NextVector2Circular(2, 2));
+                        }
+                    }
+                }
+                //    ShakeScreenPosition.Shake = 10;
+            }
+            if (DeathTimer >= 25f)
             {
                 Projectile.Kill();
             }
@@ -83,21 +122,21 @@ public class DashLine : ModProjectile,
     {
 
         return Color.Lerp(Color.White, Color.Transparent, completionRatio) *
-            MathHelper.Lerp(0f, 1f, EasingFunction.Clamp((float)Projectile.timeLeft / 30f)) * EasingFunction.QuadraticBump(DeathTimer / DeathTime);
+            MathHelper.Lerp(0f, 1f, EasingFunction.Clamp(Projectile.timeLeft / 30f)) * EasingFunction.QuadraticBump(DeathTimer / DeathTime);
     }
 
     private float StarryTrailWidthFunction(float completionRatio)
     {
-        return MathHelper.SmoothStep(180, 0, completionRatio);
+        return MathHelper.SmoothStep(354, 0, completionRatio) * EasingFunction.QuadraticBump(DeathTimer / DeathTime);
     }
 
     private void RenderStarryDashTrail(GraphicsDevice gDevice)
     {
         List<Vector2> points = new List<Vector2>();
-        float numPoints = 24;
-        Vector2 endPoint = Vector2.Lerp(Projectile.Center - Projectile.velocity * 1000, Projectile.Center + Projectile.velocity * 1200, DeathTimer / DeathTime);
-        Vector2 startPoint = endPoint - Projectile.velocity * 3500;
-        for(float f = 0; f < numPoints; f++)
+        float numPoints = 64;
+        Vector2 endPoint = Projectile.Center + Projectile.velocity * 3000;
+        Vector2 startPoint = endPoint - Projectile.velocity * 9000;
+        for (float f = 0; f < numPoints; f++)
         {
             Vector2 p = Vector2.Lerp(endPoint, startPoint, f / numPoints);
             points.Add(p);

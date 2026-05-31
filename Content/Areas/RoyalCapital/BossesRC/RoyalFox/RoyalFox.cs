@@ -17,6 +17,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Stellamod.Core.AssetReferences.Content.Items.MoonlightMagic.Forms;
 
 namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 
@@ -24,6 +25,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 public partial class RoyalFox : ScarletBoss,
     IDrawToRenderTarget
 {
+    private Asset<Texture2D> _sigilTextureAsset;
     private enum TailAnimation : byte
     {
         Limp = 0,
@@ -138,14 +140,14 @@ public partial class RoyalFox : ScarletBoss,
 
     //Dash Dance Attack
     private int DashDanceDamage => 80;
-    private float NumDashDanceLines => 7;
-    private int NumDashDanceBursts => 3;
-    private float DashDanceTime => 15;
+    private float NumDashDanceLines => 10;
+    private int NumDashDanceBursts => 4;
+    private float DashDanceTime => 11;
 
     //Comet Star Dash
     private int CometStarDamage => 100;
     private float CometStarDashPrepTime => 180;
-    private float CometStarDashTime => 12;
+    private float CometStarDashTime => 15;
     private float CometStarDashMiniPrepTime => 45;
     private float CometStarDashEndingTime => 70;
     private float DelayBetweenDashDanceBursts => 25;
@@ -369,11 +371,11 @@ public partial class RoyalFox : ScarletBoss,
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.Zoom_CometStarDash);
+            SwitchState(AIState.Zoom_DashDance);
         }
     }
 
-    private float Zoom_Prepare_Time => 80;
+    private float Zoom_Prepare_Time => 280;
     private void AnimateCrouching()
     {
 
@@ -437,6 +439,42 @@ public partial class RoyalFox : ScarletBoss,
 
         Rig.bodyParts[3].eulerAngles.Z = MathHelper.ToRadians(15);
     }
+    private void AnimateTorpedo()
+    {
+        float start = MathHelper.ToRadians(65);
+        float end = start + MathHelper.ToRadians(2);
+
+        float runningSpeed = 9;
+        float frontFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed);
+        float targetAngle = MathHelper.Lerp(start, end, frontFrontLeg);
+        Rig.frontFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(Rig.frontFrontLeg[0].eulerAngles.Z, targetAngle, 0.1f);
+        Rig.frontFrontLeg[1].eulerAngles.Z = 0;
+
+        float frontBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 1);
+        targetAngle = MathHelper.Lerp(start, end, frontBackLeg);
+
+        Rig.frontBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(Rig.frontBehindLeg[0].eulerAngles.Z, targetAngle, 0.1f);
+        Rig.frontBehindLeg[1].eulerAngles.Z = 0;
+
+        //Back Legs
+        float backFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3);
+        start = MathHelper.ToRadians(65);
+        end = start + MathHelper.ToRadians(2);
+        targetAngle = MathHelper.Lerp(start, end, backFrontLeg);
+        Rig.backFrontLeg[0].fakeAngle = MathHelper.Lerp(Rig.backFrontLeg[0].fakeAngle, MathHelper.ToRadians(35), 0.1f);
+        Rig.backFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(Rig.backFrontLeg[0].eulerAngles.Z, targetAngle, 0.1f);
+        Rig.backFrontLeg[1].eulerAngles.Z = 0;
+        Rig.backFrontLeg[2].fakeAngle = MathHelper.Lerp(Rig.backFrontLeg[2].fakeAngle, MathHelper.ToRadians(45), 0.1f);
+
+        float backBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3 + 1);
+        targetAngle = MathHelper.Lerp(start, end, backBackLeg);
+        Rig.backBehindLeg[0].fakeAngle = MathHelper.Lerp(Rig.backBehindLeg[0].fakeAngle, MathHelper.ToRadians(35), 0.1f);
+        Rig.backBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(Rig.backBehindLeg[0].eulerAngles.Z, targetAngle, 0.1f);
+        Rig.backBehindLeg[1].eulerAngles.Z = 0;
+        Rig.backBehindLeg[2].fakeAngle = MathHelper.Lerp(Rig.backBehindLeg[2].fakeAngle, MathHelper.ToRadians(-45), 0.1f);
+
+        Rig.bodyParts[3].eulerAngles.Z = MathHelper.ToRadians(15);
+    }
     private void AnimateStretched()
     {
         float start = MathHelper.ToRadians(-45);
@@ -478,7 +516,7 @@ public partial class RoyalFox : ScarletBoss,
             for (int i = 0; i < NumDashDanceLines; i++)
             {
                 Vector2 posToPutLine = Vector2.Zero;
-                posToPutLine.X = MathHelper.Lerp(-350, 350, i / NumDashDanceLines);
+                posToPutLine.X = MathHelper.Lerp(-750, 750, i / NumDashDanceLines);
                 posToPutLine.Y = Main.rand.NextFloat(-300, 300);
                 posToPutLine += MyTarget.Center;
 
@@ -1281,29 +1319,55 @@ public partial class RoyalFox : ScarletBoss,
                     NPC.TargetClosest();
                     _direction = FacingDirectionToTarget;
                 }
-                {
-                    //I want fenix to move forward and then go up while rotating it'll look so cool, then she poofs
-                    float progress = Timer / Zoom_Prepare_Time;
-                    NPC.velocity.X = MathHelper.Lerp(_direction * 2, _direction * 8, EasingFunction.QuadraticBump(Timer / Zoom_Prepare_Time));
-
-                    float yVelcoity = MathHelper.Lerp(0f, -14, EasingFunction.InOutExpo(progress));
-                    NPC.velocity.Y = yVelcoity;
-                    Rig.rootSegment.eulerAngles.W = MathHelper.Lerp(0f, MathHelper.ToRadians(-90), EasingFunction.InOutSine(progress));
-                    Rig.rootSegment.eulerAngles.X = MathHelper.Lerp(0f, MathHelper.ToRadians(90 + 360), EasingFunction.InOutSine(progress));
-
-                }
-
 
                 _outliner.warning = true;
                 _renderDashTrail = true;
 
-                AnimateRunning();
-                WalkParticles();
-                if (Timer == Zoom_Prepare_Time - 5)
+                {
+                    float progress = Timer / Zoom_Prepare_Time;
+
+                 //  float xBackUp = MathHelper.Lerp(0, _direction * -8, EasingFunction.QuadraticBump(Timer / Zoom_Prepare_Time));
+                    float xSpeedUp1 = MathHelper.Lerp(MathHelper.Lerp(_direction * 15, _direction * 0, EasingFunction.InExpo(Timer / (Zoom_Prepare_Time/2))), _direction * 180, EasingFunction.InOutExpo(Timer / Zoom_Prepare_Time));
+                    float xSpeedUp2 = MathHelper.Lerp(MathHelper.Lerp(0.4f, 0f, EasingFunction.InExpo(Timer / (Zoom_Prepare_Time  * 0.5f))), 1f, EasingFunction.InExpo(Timer / (Zoom_Prepare_Time)));
+                    float xSpeedUp = MathHelper.SmoothStep(xSpeedUp2, xSpeedUp1, progress);
+                    NPC.velocity.X = xSpeedUp;
+                    NPC.velocity.X += MathHelper.Lerp(_direction * 5, 0, EasingFunction.InOutExpo(Timer / (Zoom_Prepare_Time*0.5f)));
+                    RegularRotation = NPC.velocity.ToRotation();
+               //     ZRotation = MathHelper.Lerp(0f, MathHelper.ToRadians(90 + 360), EasingFunction.InOutExpo(progress));
+                //    AnimateRunning();
+                    WalkParticles();
+                    CreateFootsteps();
+                }
+
+                ZRotation += MathHelper.Lerp(0.08f, 0.45f, EasingFunction.InOutExpo(Timer/Zoom_Prepare_Time));
+                AnimateTorpedo();
+
+
+                if (Timer > Zoom_Prepare_Time / 2f)
+                {
+                    if (Timer % 2 == 0)
+                    {
+                        var donute = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 3);
+                        donute.Scale *= 2f;
+                    }
+
+              
+               
+
+                    int zT = (int)(Zoom_Prepare_Time / 2f);
+                    zT += 4;
+                    if(Timer == zT)
+                    {
+                        SoundStyle fastDash = AssetRegistry.Sounds.AlcaricFox.FenixWindStartup;
+                        SoundEngine.PlaySound(fastDash, NPC.position);
+                    }
+                }
+
+                if (Timer == Zoom_Prepare_Time - 75)
                 {
                     CreateDashLines();
                 }
-                if (Timer >= Zoom_Prepare_Time)
+                if (Timer >= Zoom_Prepare_Time - 60)
                 {
                     PoofParticles();
                     Timer = 0;
@@ -1355,9 +1419,10 @@ public partial class RoyalFox : ScarletBoss,
 
                 if (Timer == 3)
                 {
+                    PlayDashSound(MyTarget.Center);
                     FXUtil.CreateRipple(_startDashPoint);
                     FXUtil.ShakeCamera(_startDashPoint, 1024, 2);
-                    ShakeScreenPosition.Shake = 2;
+                    ShakeScreenPosition.Shake = 8;
 
                     for (int i = 1; i < 5; i++)
                     {
@@ -1395,14 +1460,22 @@ public partial class RoyalFox : ScarletBoss,
                 {
                     if (MultiplayerHelper.IsHost)
                     {
-                        Projectile.NewProjectile(SourceFromThis, NPC.Center, _dashLineVelocity * 18,
+                        Projectile.NewProjectile(SourceFromThis, Vector2.Lerp(_startDashPoint, _startDashPoint + _dashLineVelocity * 1200, 0.5f), _dashLineVelocity * 9,
                             ModContent.ProjectileType<RoyalMagicMiniStar>(), DashDanceDamage, 1, Main.myPlayer);
                     }
                 }
 
                 if (Timer > 3)
                 {
-                    Vector2 pointToMoveTo = Vector2.Lerp(_startDashPoint, _startDashPoint + _dashLineVelocity * 700, ratio);
+                    Vector2 startDashPoint = _startDashPoint;
+                    if (!HasNextDashLine())
+                    {
+                        startDashPoint -= _dashLineVelocity * 1200;
+                        // targetPosition = startDashPoint + _dashLineVelocity * 350;
+                    }
+                    Vector2 targetPosition = startDashPoint + _dashLineVelocity * 700;
+    
+                    Vector2 pointToMoveTo = Vector2.Lerp(_startDashPoint, targetPosition, ratio);
                     Vector2 vel = pointToMoveTo - NPC.Center;
                     NPC.velocity = Vector2.Zero;
                     NPC.Center = pointToMoveTo;
@@ -1422,7 +1495,7 @@ public partial class RoyalFox : ScarletBoss,
                 _contactDamage = true;
                 _outliner.attacking = true;
                 _renderMotionBlur = true;
-                AnimateRunning();
+                AnimateTorpedo();
 
 
                 _tailAnimation = TailAnimation.Loose;
@@ -1441,6 +1514,7 @@ public partial class RoyalFox : ScarletBoss,
                 }
                 break;
             case 3:
+                float time = Zoom_Prepare_Time / 2f;
                 if (Timer == 1)
                 {
                     PixelPrimitiveCircleFactory.CreateGenericInBoom(MyTarget.Center, Color.Transparent, Color.White * 0.35f, 45, 512);
@@ -1449,36 +1523,48 @@ public partial class RoyalFox : ScarletBoss,
                         _direction = 1;
                     else
                         _direction *= -1;
-                    //       PoofParticles();
-                    Teleport(MyTarget.Center);
                 }
+
+                Vector2 easeIn = _dashLineVelocity * MathHelper.Lerp(50, 0, EasingFunction.OutExpo(Timer / time));
+                Vector2 easeOut = _dashLineVelocity * MathHelper.Lerp(0f, 150, EasingFunction.InOutExpo(Timer / time));
+                NPC.velocity = Vector2.Lerp(easeIn, easeOut, EasingFunction.InOutSine(Timer / time));
 
                 if (Timer < 10)
                 {
                     _goInvisible = true;
                 }
 
-
+                ZRotation += 0.12f;
+                if (Timer > time / 2f)
                 {
-                    //I want fenix to move forward and then go up while rotating it'll look so cool, then she poofs
-                    float progress = Timer / Zoom_Prepare_Time;
-                    NPC.velocity.X = MathHelper.Lerp(_direction * 25, _direction * 2, EasingFunction.OutExpo(Timer / Zoom_Prepare_Time));
+                    if (Timer % 2 == 0)
+                    {
+                        var donute = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero) * 3);
+                        donute.Scale *= 2f;
+                    }
 
-                    float yVelcoity = MathHelper.Lerp(0f, -14, EasingFunction.InOutExpo(progress));
-                    if (_direction == -1)
-                        yVelcoity *= -1;
-                    NPC.velocity.Y = yVelcoity;
-                    //   Rig.rootSegment.eulerAngles.X = _direction == -1 ? MathHelper.ToRadians(-180) : 0;
-                    Rig.rootSegment.eulerAngles.W = MathHelper.Lerp(0f, MathHelper.ToRadians(-90), EasingFunction.InOutSine(progress));
-                    if (_direction == -1)
-                        Rig.rootSegment.eulerAngles.W += MathHelper.ToRadians(-180);
-                    Rig.rootSegment.eulerAngles.X = MathHelper.Lerp(0f, MathHelper.ToRadians(90 + 360 * _direction), EasingFunction.InOutSine(progress));
 
+                    AnimateTorpedo();
+
+
+                    int zT = (int)(time / 2f);
+                    zT += 4;
+                    if (Timer == zT)
+                    {
+                        SoundStyle fastDash = AssetRegistry.Sounds.AlcaricFox.FenixWindStartup;
+                        SoundEngine.PlaySound(fastDash, NPC.position);
+                    }
                 }
+                else
+                {
+
+                    AnimateTorpedo();
+                }
+
 
                 WalkParticles();
 
-                if (Timer == Zoom_Prepare_Time - 25 && (AttackCounter + 1) < NumDashDanceBursts)
+                if (Timer == time - 25 && (AttackCounter + 1) < NumDashDanceBursts)
                 {
                     CreateDashLines();
                 }
@@ -1488,9 +1574,9 @@ public partial class RoyalFox : ScarletBoss,
                     _outliner.warning = true;
                 }
 
-                AnimateRunning();
+                AnimateTorpedo();
 
-                if (Timer >= Zoom_Prepare_Time)
+                if (Timer >= time)
                 {
                     AttackCounter++;
                     Timer = 0;

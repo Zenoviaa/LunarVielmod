@@ -64,6 +64,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public float fullRotation;
         public bool useFreeAngle;
         public float angle;
+        public float fakeAngle;
         public int frameHeight;
         public int frameWidth;
         public FoxDegrees perspectiveRotation;
@@ -338,7 +339,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
                 }
             }
 
-            float drawAngle = angle;
+            float drawAngle = angle + fakeAngle;
 
             //Just calculate the angle based on the direction
             spriteBatch.Draw(textureToDraw, drawPosition, frame, finalColor, drawAngle, drawOrigin, scale, spriteEffects, 0);
