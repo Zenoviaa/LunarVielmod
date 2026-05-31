@@ -272,6 +272,7 @@ namespace Stellamod.Core.Pixelation
     public class PixelationManager : ModSystem
     {
         private ManagedRenderTarget _downscaledTarget;
+
         private PixelTarget _overNPCsPixelTarget;
         private PixelTarget _overNPCsPixelTargetAdditive;
         private PixelTarget _overNPCsPixelTargetWithOutline;
@@ -281,6 +282,7 @@ namespace Stellamod.Core.Pixelation
         private PixelTarget _overPlayersPixelTarget;
         private PixelTarget _behindTilesPixelTarget;
         private PixelTarget _behindTilesOutlinePixelTarget;
+        private PixelTarget _behindNPCsPixelTarget;
         //This one needs to go last
         public int Priority => 10;
         public static event Action OnBehindGrass;
@@ -358,6 +360,7 @@ namespace Stellamod.Core.Pixelation
         {
             base.Unload();
             ZTileMap.OnRenderForeground -= RenderLater;
+            _behindNPCsPixelTarget = null;
             _overNPCsPixelTarget = null;
             _overNPCsPixelTargetWithOutline = null;
             _behindNPCsPixelTargetWithOutline = null;

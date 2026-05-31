@@ -194,7 +194,17 @@ public class RoyalMagicMiniStar : ModProjectile,
         if (Mode != 2)
             return;
 
-        PixelationManager.QueuePrimitivesDrawAction(RenderStarryDashTrail);
+        Vector2[] points = new Vector2[Projectile.oldPos.Length];
+        for(int i = 0; i < points.Length; i++)
+        {
+            points[i] = Projectile.oldPos[i] + Projectile.Size * 0.5f;
+        }
+        RoyalMagicBlackStarsRenderer.Queue(new RoyalMagicBlackStarsRenderer.RoyalMagicMiniDraw
+        {
+            points = points,
+            trailColorFunction = StarryTrailColorFunction,
+            trailWidthFunction = StarryTrailWidthFunction
+        });
        // throw new NotImplementedException();
     }
 }

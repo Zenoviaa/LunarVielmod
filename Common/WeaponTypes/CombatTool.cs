@@ -77,6 +77,7 @@ namespace Stellamod.Common.WeaponTypes
 
         public override bool PreItemCheck()
         {
+            return false;
             if (Main.myPlayer == Player.whoAmI)
             {
                 if (LunarVeilKeybinds.ToolKeybind.JustReleased)

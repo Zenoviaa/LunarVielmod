@@ -143,6 +143,8 @@ public class RoyalMagicRenderer : ModSystem
     private ManagedRenderTarget _directionRT;
     private ManagedRenderTarget _swirlRT;
     private ManagedRenderTarget _maskRT;
+
+    private ManagedRenderTarget _outlineRT;
     private Queue<PrimitiveDrawAction> _primitiveDrawActions;// = new Queue<PrimitiveDrawAction>();
     
     private Asset<Texture2D> _royalSmokeMaskTextureAsset;
@@ -177,6 +179,7 @@ public class RoyalMagicRenderer : ModSystem
         _maskRT = ManagedRenderTarget.New();
         _directionRT = ManagedRenderTarget.New();
         _swirlRT = ManagedRenderTarget.New();
+        _outlineRT = ManagedRenderTarget.New();
     }
 
     public override void PostUpdateDusts()
@@ -278,7 +281,15 @@ public class RoyalMagicRenderer : ModSystem
 
 
     }
-
+    private Vector2 GetScreenOffset(float scale)
+    {
+        //Apply an offset so the texture doesn't move when you're moving
+        //This will wrap inside the shader
+        Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
+        Vector2 screenoffset = Main.screenPosition * texelSize;
+        screenoffset *= (1f / scale);
+        return screenoffset;
+    }
     private void RenderSwirls()
     {
         // return;
@@ -333,7 +344,7 @@ public class RoyalMagicRenderer : ModSystem
         RoyalSwirlsShader swirlsShader = ShaderContent.GetInstance<RoyalSwirlsShader>();
         swirlsShader.Time = Main.GlobalTimeWrappedHourly;
         swirlsShader.Resolution = new Vector2(Main.screenWidth, Main.screenHeight);
-
+        swirlsShader.ScreenOffset = GetScreenOffset(scale: 1);
         Color lightColor = new Color(34, 41, 59);
         lightColor = Color.Lerp(lightColor, Color.White, 0.25f);
 
@@ -342,7 +353,7 @@ public class RoyalMagicRenderer : ModSystem
         swirlsShader.DarkColor = darkColor;
         swirlsShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
         swirlsShader.DirectionTexture = _directionRT;
-        swirlsShader.StarTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Stars").Value;
+        swirlsShader.StarTexture =  ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/FogEmpty").Value;
 
         //So, For this effect we want the swirls to be swiling around and scrolling around probably
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, swirlsShader.Effect);
@@ -355,26 +366,39 @@ public class RoyalMagicRenderer : ModSystem
         spriteBatch.End();
 
 
-        //This texture has alr been used so we can just use the render target gaain
-        Color outlineColor = new Color(34, 45, 70);
-        RoyalMixShader mixerShader = ShaderContent.GetInstance<RoyalMixShader>();
-        mixerShader.MixTexture = _swirlRT;
 
+        Color outlineColor = new Color(150, 150, 235) * 0.5f;
         Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight) * 2;
-        mixerShader.TexelSize = texelSize;
-        mixerShader.OutlineColor = new Color(150, 150, 180);
+        gDevice.SetRenderTarget(_outlineRT);
+        gDevice.Clear(Color.Transparent);
+
+        RoyalOutlineShader mixerShader2 = ShaderContent.GetInstance<RoyalOutlineShader>();
+        mixerShader2.TexelSize = texelSize;
+        mixerShader2.OutlineColor = outlineColor;
+        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, mixerShader2.Effect);
+        spriteBatch.Draw(_swirlRT, Vector2.Zero, Color.White);
+        spriteBatch.End();
 
         gDevice.SetRenderTarget(_directionRT);
         gDevice.Clear(Color.Transparent);
+
+
+
+        RoyalMixShader mixerShader = ShaderContent.GetInstance<RoyalMixShader>();
+        mixerShader.MixTexture = _outlineRT;
+
+        mixerShader.TexelSize = texelSize;
+        mixerShader.OutlineColor = outlineColor;
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, mixerShader.Effect);
         spriteBatch.Draw(_maskRT, Vector2.Zero, Color.White);
         spriteBatch.End();
 
 
 
-        PixelationManager.QueueSpritebatchDrawAction(DrawPixelated, DrawLayer.OverNPCs);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelated, DrawLayer.BehindNPCsWithOutline);
         //    throw new NotImplementedException();
     }
+
 
     private void DrawPixelated(SpriteBatch sb, Vector2 sp)
     {
@@ -422,6 +446,37 @@ public class RoyalMixShader : CrystalShader<RoyalMixShader>
     }
 
 }
+public class RoyalOutlineShader : CrystalShader<RoyalOutlineShader>
+{
+    public Vector2 TexelSize
+    {
+        set
+        {
+            Effect.Parameters["texelSize"].SetValue(value);
+        }
+    }
+
+    public Color OutlineColor
+    {
+        set
+        {
+            Effect.Parameters["outlineColor"].SetValue(value.ToVector4());
+        }
+    }
+
+    public float Levels
+    {
+        set
+        {
+            Effect.Parameters["levels"].SetValue(value);
+        }
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Levels = 16.0f;
+    }
+}
 public class RoyalSwirlsShader : CrystalShader<RoyalSwirlsShader>
 {
 
@@ -460,6 +515,14 @@ float3 darkColor;
             Main.graphics.GraphicsDevice.SamplerStates[3] = SamplerState.PointClamp;
             Main.graphics.GraphicsDevice.Textures[3] = value;
             Effect.Parameters["primaryTextureSize"].SetValue(value.Size());
+        }
+    }
+
+    public Vector2 ScreenOffset
+    {
+        set
+        {
+            Effect.Parameters["screenOffset"].SetValue(value);
         }
     }
 

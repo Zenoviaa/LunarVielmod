@@ -68,7 +68,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     float interpolant = saturate(length(adjustedCoords - float2(0.5, 0.5)) / 0.4);
     interpolant = 1.0 - interpolant;
     float3 color = lerp(bloomColor, float3(1.0, 1.0, 1.0), smoothstep(0.0, 1.0, interpolant));
-    color = lerp(color, SampleStars(adjustedCoords).rgb, interpolant + interpolant * (sin(time * 0.15) * 0.5 + 1.0));
+    color = lerp(color, float3(0.0, 0.0, 0.0), interpolant + interpolant * (sin(time * 0.15) * 0.5 + 1.0));
     float4 finalColor = float4(color, 1.0) * sampleColor * interpolant * 2.0;
     
     return finalColor;

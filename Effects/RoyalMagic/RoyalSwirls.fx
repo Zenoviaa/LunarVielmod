@@ -25,6 +25,7 @@ float3 lightColor;
 float3 darkColor;
 float2 resolution;
 float2 primaryTextureSize;
+float2 screenOffset;
 float4 SampleStars(float2 coords, in float4 dir)
 {
 
@@ -57,6 +58,9 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     //Basically we're going to pass in a texture that tells which direction to blow the swirls in
     //So it'll look really cool when scrolling the noise instead of just a general texture
    
+    coords += screenOffset;
+    coords = frac(coords);
+    
     float4 dir = tex2D(uImage2, coords);
     float2 tiledCoords = coords * float2(2.0, 2.0);
  

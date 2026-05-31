@@ -505,6 +505,46 @@ public partial class RoyalFox : ScarletBoss,
 
     private void AI_BigFatLaser()
     {
+        bool FindBall(out Projectile ball)
+        {
+            foreach (var proj in Main.ActiveProjectiles)
+            {
+                if (proj.type != ModContent.ProjectileType<RoyalStarBomb>())
+                    continue;
+                if (proj.ai[1] != NPC.whoAmI)
+                    continue;
+                ball = proj;
+                return true;
+            }
+            ball = null;
+            return false;
+        }
+
+        void BounceBall(float rot)
+        {
+            if (FindBall(out Projectile ball))
+            {
+                ball.ai[2] = rot;
+            }
+        }
+
+        void GrabBall()
+        {
+            if(FindBall(out Projectile ball))
+            {
+                ball.ai[2] = 10;
+            }
+        }
+
+        void ExplodeBall()
+        {
+            if (FindBall(out Projectile ball))
+            {
+                ball.ai[2] = 11;
+            }
+        }
+
+
         Timer++;
         switch (AttackCycle)
         {
@@ -585,7 +625,7 @@ public partial class RoyalFox : ScarletBoss,
                         tailEndEffector = Vector2.Lerp(tailEndEffector, targetPosition, 0.15f);
                         //                        tailEndEffector = tailEndEffector.MoveTowards(targetPosition, MathHelper.Lerp(8f, 16, EasingFunction.InOutSine((Timer-60) / 120f)));
                     }
-                    _tailAnimation = TailAnimation.Full_Control;
+                 //   _tailAnimation = TailAnimation.Loose;
 
                     Vector2 rotationPos = _ballPosition + Vector2.UnitY * MathHelper.Lerp(64, 300, EasingFunction.InOutExpo(Timer / BigFatLaserChargeTime));
                     rotationPos = rotationPos.RotatedBy(Timer * 0.05f, _ballPosition);
@@ -625,7 +665,7 @@ public partial class RoyalFox : ScarletBoss,
 
                     _outliner.warning = true;
 
-                    _tailAnimation = TailAnimation.Loose;
+                    _tailAnimation = TailAnimation.Limp;
                     AnimateCrouching();
 
                     if (Timer % 30 == 0)
@@ -721,7 +761,9 @@ public partial class RoyalFox : ScarletBoss,
                     {
                         if (MultiplayerHelper.IsHost)
                         {
+                      
                             Vector2 vel = (_ballPosition - NPC.Center).SafeNormalize(Vector2.Zero);
+                            BounceBall(vel.ToRotation());
                             //   vel *= -1;
                             vel *= 3500;
                             Projectile.NewProjectile(SourceFromThis, _ballPosition, vel,
@@ -788,14 +830,109 @@ public partial class RoyalFox : ScarletBoss,
                     NPC.Center = pos;
                     if (Timer >= time)
                     {
-                        if (MultiplayerHelper.IsHost)
-                        {
-                            Vector2 vel = (_ballPosition - NPC.Center).SafeNormalize(Vector2.Zero);
-                            //   vel *= -1;
-                            vel *= 3500;
-                            Projectile.NewProjectile(SourceFromThis, _ballPosition, vel,
-                                ModContent.ProjectileType<RoyalMagicBeam>(), BigFatLaserDamage, 1, Main.myPlayer);
-                        }
+                        Vector2 vel = (_ballPosition - NPC.Center).SafeNormalize(Vector2.Zero);
+                        _dashLineVelocity = vel;
+                        GrabBall();
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+
+            case 5:
+                {
+                    NPC.velocity = _dashLineVelocity * 80;
+                    RegularRotation = _dashLineVelocity.ToRotation();
+                    ZRotation += 0.25f;
+
+                    AnimateStretched();
+                    WalkParticles();
+                    _renderDashTrail = true;
+                    if (Timer >= 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+
+            case 6:
+                {
+                    _goInvisible = true;
+                    NPC.velocity *= 0.98f;
+                    if(Timer >= 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+
+            case 7:
+                {
+                    float time = BigFatLaserFireTime * 4.5f;
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        Vector2 tteleportPos = MyTarget.Center - new Vector2(1500, 0);
+                        Teleport(tteleportPos);
+                        PoofParticles(tteleportPos);
+                        _startDashPoint = tteleportPos;
+                        _dashLineVelocity = Vector2.Lerp(tteleportPos, MyTarget.Center, 0.5f);
+                        _dashLineVelocity.Y -= 0;
+                    }
+
+                    WalkParticles();
+                    AnimateStretched();
+                    _renderDashTrail = true;
+
+                    float rotAmount = MathHelper.ToRadians(180) / time;
+
+                    _startDashPoint = _startDashPoint.RotatedBy(rotAmount, MyTarget.Center);
+                    _dashLineVelocity = _dashLineVelocity.RotatedBy(rotAmount, MyTarget.Center);
+
+
+                    float ratio = Timer / time;
+                    float inOut = EasingFunction.OutExpo(ratio);
+                    // _dashLineVelocity = _dashLineVelocity.Resize(MathHelper.Lerp(1500, 900, ratio));
+
+                    float slowInRatio = Timer - time * 0.78f;
+                    float slowEase = EasingFunction.InExpo(slowInRatio / (time * 0.22f));
+                    float slowIn = MathHelper.Lerp(0f, 1f, slowEase);
+                    Vector2 movementPos = Vector2.Lerp(_startDashPoint, _dashLineVelocity, inOut);
+                    Vector2 backPos = Vector2.Lerp(_dashLineVelocity, MyTarget.Center, slowIn);
+                    Vector2 pos = Vector2.Lerp(movementPos, backPos, ratio * 0.99f);
+                    
+                    /*
+                    if (Timer >= time - 60)
+                    {
+                        float t = Timer - (time - 60);
+                        float pr = t / 30f;
+                        _eyeFlashAlpha = EasingFunction.QuadraticBump(pr);
+                        _eyeFlashPosition = Rig.headPart.worldPosition;
+
+                        Vector2 posToPlayer = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                        _eyeFlashOffset = posToPlayer * 144;
+                    }
+                    */
+                    if (Timer % 4 == 0)
+                    {
+                        var donute = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -_dashLineVelocity * 3);
+                    }
+
+
+                    Vector2 targetPos = Vector2.Lerp(MyTarget.Center, NPC.Center, 0.5f);
+                    CameraTargetSystem.AddTarget(targetPos);
+                    RegularRotation = (pos - NPC.Center).ToRotation();
+                    ZRotation += MathHelper.Lerp(0f, 0.25f, EasingFunction.InOutExpo(Timer / time));
+
+                    _outliner.attacking = true;
+                    NPC.velocity = Vector2.Zero;
+                    NPC.Center = pos;
+
+                    if (Timer >= time)
+                    {
+                        ExplodeBall();
                         Timer = 0;
                         AttackCycle++;
                     }
