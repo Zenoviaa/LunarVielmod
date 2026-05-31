@@ -9,6 +9,7 @@ namespace Stellamod.Assets
     {
         public class Noise
         {
+            public static Asset<Texture2D> CometStars;
             public static Asset<Texture2D> AuroraRays;
             public static Asset<Texture2D> Whirly;
             public static Asset<Texture2D> FlamethrowerNoise;
@@ -22,6 +23,7 @@ namespace Stellamod.Assets
 
         public class GlowMask
         {
+            public static Asset<Texture2D> Impact;
             public static Asset<Texture2D> WhiteCircle;
             public static Asset<Texture2D> Wave;
             public static Asset<Texture2D> BlastPillar;
@@ -58,6 +60,7 @@ namespace Stellamod.Assets
  
         public class LaserTextures
         {
+            public static Asset<Texture2D> CometTrail;
             public static Asset<Texture2D> SplittingTrail;
             public static Asset<Texture2D> Bloom;
             public static Asset<Texture2D> HeavenlySlashTrail;
@@ -76,6 +79,7 @@ namespace Stellamod.Assets
         public override void OnModLoad()
         {
             base.OnModLoad();
+            GlowMask.Impact = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Impact");
             GlowMask.Wave = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Wave");
             GlowMask.BlastPillar = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/BlastPillar");
             GlowMask.SolarEye = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/SolarEye");
@@ -117,8 +121,9 @@ namespace Stellamod.Assets
             LaserTextures.HeavenlySlashTrail = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/HeavenlySlashTrail");
             LaserTextures.Bloom = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Bloom");
             LaserTextures.SplittingTrail = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/SplittingTrail");
+            LaserTextures.CometTrail = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/CometTrail");
             Noise.Whirly = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Whirly");
-
+            Noise.CometStars = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/CometStars");
             Noise.AuroraRays = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/AuroraRays");
             Noise.FlamethrowerNoise = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/FlameNoise");
             Noise.Swirl = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Swirl");
@@ -128,6 +133,9 @@ namespace Stellamod.Assets
         public override void OnModUnload()
         {
             base.OnModUnload();
+            Noise.CometStars = null;
+            LaserTextures.CometTrail = null;
+            GlowMask.Impact = null;
             GlowMask.WhiteCircle = null;
            Noise.PerlinBlurred = null;
             Noise.Swirl = null;

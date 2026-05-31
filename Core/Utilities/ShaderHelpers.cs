@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Utilities
 {
+
     public class PetalStorm : ScreenShader
     {
         private EffectParameter _timeParam;

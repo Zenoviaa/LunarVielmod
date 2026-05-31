@@ -47,6 +47,7 @@ public partial class RoyalFox : ScarletBoss,
 
     private float _telegraphLineAlpha;
     private bool _showTelegraphLine;
+
     private float _invisibleAlpha;
     private bool _goInvisible;
     private bool _dontRender;
@@ -134,6 +135,7 @@ public partial class RoyalFox : ScarletBoss,
 
     private ref float RegularRotation => ref Rig.rootSegment.eulerAngles.W;
     private ref float ZRotation => ref Rig.rootSegment.eulerAngles.X;
+
     //Dash Dance Attack
     private int DashDanceDamage => 80;
     private float NumDashDanceLines => 7;
@@ -367,7 +369,7 @@ public partial class RoyalFox : ScarletBoss,
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.Zoom_BigFatLaser);
+            SwitchState(AIState.Zoom_CometStarDash);
         }
     }
 
@@ -903,18 +905,6 @@ public partial class RoyalFox : ScarletBoss,
                     Vector2 backPos = Vector2.Lerp(_dashLineVelocity, MyTarget.Center, slowIn);
                     Vector2 pos = Vector2.Lerp(movementPos, backPos, ratio * 0.99f);
                     
-                    /*
-                    if (Timer >= time - 60)
-                    {
-                        float t = Timer - (time - 60);
-                        float pr = t / 30f;
-                        _eyeFlashAlpha = EasingFunction.QuadraticBump(pr);
-                        _eyeFlashPosition = Rig.headPart.worldPosition;
-
-                        Vector2 posToPlayer = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-                        _eyeFlashOffset = posToPlayer * 144;
-                    }
-                    */
                     if (Timer % 4 == 0)
                     {
                         var donute = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -_dashLineVelocity * 3);
@@ -1154,7 +1144,6 @@ public partial class RoyalFox : ScarletBoss,
                         _startDashPoint = MyTarget.Center + new Vector2(-1000, 0);
                         PoofParticles();
                         NPC.TargetClosest();
-                        //  Teleport(MyTarget.Center - new Vector2(1000, 0));
                     }
 
                     _tailAnimation = TailAnimation.Loose;

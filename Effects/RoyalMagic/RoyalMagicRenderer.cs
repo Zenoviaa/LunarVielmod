@@ -12,6 +12,87 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Effects.RoyalMagic;
 
+
+public class CometTrailShader : CrystalShader<CometTrailShader>
+{
+    public Matrix TransformMatrix
+    {
+        set
+        {
+            Effect.Parameters["transformMatrix"].SetValue(value);
+        }
+    }
+
+    public Asset<Texture2D> LaserTexture
+    {
+        set
+        {
+            Effect.Parameters["laserTexture"].SetValue(value.Value);
+        }
+    }
+
+
+    public Color BloomColor
+    {
+        set
+        {
+            Effect.Parameters["bloomColor"].SetValue(value.ToVector3());
+        }
+    }
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        TransformMatrix = TrailDrawer.WorldViewPoint2;
+        BloomColor = Color.BlueViolet;
+        BlendState = BlendState.AlphaBlend;
+        LaserTexture = AssetManager.LaserTextures.CometTrail;
+        Time = Main.GlobalTimeWrappedHourly * 24;
+    }
+}
+public class StarMixShader : CrystalShader<StarMixShader>
+{
+    public Texture2D MixTexture
+    {
+        set
+        {
+            Effect.Parameters["mixTexture"].SetValue(value);
+        }
+    }
+}
+
+public class RoyalMagicStarsShader : CrystalShader<RoyalMagicStarsShader>
+{
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+        }
+    }
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+    public Vector2 ScreenOffset
+    {
+        set
+        {
+            Effect.Parameters["screenOffset"].SetValue(value);
+        }
+    }
+}
 public class RoyalMagicBallShader : CrystalShader<RoyalMagicBallShader>
 {
     public Texture2D NoiseTexture
@@ -139,14 +220,14 @@ public class RoyalMagicRenderer : ModSystem
     }
 
     private Vector2 _oldMouseWorld;
-    private readonly Particles _smearParticles = new Particles(252);
+    private readonly Particles _smearParticles = new Particles(384);
     private ManagedRenderTarget _directionRT;
     private ManagedRenderTarget _swirlRT;
     private ManagedRenderTarget _maskRT;
 
     private ManagedRenderTarget _outlineRT;
     private Queue<PrimitiveDrawAction> _primitiveDrawActions;// = new Queue<PrimitiveDrawAction>();
-    
+
     private Asset<Texture2D> _royalSmokeMaskTextureAsset;
     public override void Load()
     {
@@ -186,10 +267,6 @@ public class RoyalMagicRenderer : ModSystem
     {
         base.PostUpdateDusts();
         SimulateParticles();
-        if (Main.GameUpdateCount % 2 == 0 && Main.mouseLeft)
-        {
-            //FenixSmoke();
-        }
     }
 
     private void FenixSmoke()
@@ -302,7 +379,7 @@ public class RoyalMagicRenderer : ModSystem
         DrawMaskParticles(spriteBatch);
         spriteBatch.End();
 
-        while(_primitiveDrawActions.Count > 0)
+        while (_primitiveDrawActions.Count > 0)
         {
             _primitiveDrawActions.Dequeue()(gDevice);
         }
@@ -353,7 +430,7 @@ public class RoyalMagicRenderer : ModSystem
         swirlsShader.DarkColor = darkColor;
         swirlsShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
         swirlsShader.DirectionTexture = _directionRT;
-        swirlsShader.StarTexture =  ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/FogEmpty").Value;
+        swirlsShader.StarTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/FogEmpty").Value;
 
         //So, For this effect we want the swirls to be swiling around and scrolling around probably
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, swirlsShader.Effect);
@@ -479,18 +556,6 @@ public class RoyalOutlineShader : CrystalShader<RoyalOutlineShader>
 }
 public class RoyalSwirlsShader : CrystalShader<RoyalSwirlsShader>
 {
-
-    /*
-     * sampler uImage0 : register(s0);
-sampler uImage1 : register(s1);
-sampler uImage2 : register(s2);
-     */
-    /*
-     * float time;
-float3 lightColor;
-float3 darkColor;
-     */
-
     public Texture2D NoiseTexture
     {
         set

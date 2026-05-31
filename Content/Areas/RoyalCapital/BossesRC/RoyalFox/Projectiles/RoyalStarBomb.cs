@@ -1,9 +1,7 @@
-﻿using ReLogic.Peripherals.RGB;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Core.Palettes;
-using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Effects.RoyalMagic;
@@ -43,24 +41,102 @@ public class RoyalStarBombBoom : ModProjectile,
     {
         base.AI();
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             ShockwavePlayer shockwavePlayer = Main.LocalPlayer.GetModPlayer<ShockwavePlayer>();
-            shockwavePlayer.Bee = 120;
+            shockwavePlayer.Bee = 220;
             shockwavePlayer.shockwavePosition = Projectile.Center;
             shockwavePlayer.rippleSize = 5;
         }
+
+        /*
+        if (Timer > 5 && Timer < 15 && Main.netMode == NetmodeID.Server)
+        {
+            Invert invert = ModContent.GetInstance<Invert>();
+            invert.alpha = 1f;
+        }
+        else
+        {
+            Invert invert = ModContent.GetInstance<Invert>();
+            invert.alpha = 0;
+        }
+        */
+        if (Timer == 2)
+        {
+            for (float f = 0; f < 32; f++)
+            {
+                Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(252, 252);
+                Vector2 vel = (pos - Projectile.Center);
+                vel = vel.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 80f);
+                var dp = DustParticle.Spawn(pos, vel);
+                dp.outerColor = Color.Gray;
+                dp.dampening = 0.1f;
+                dp.noTileCollide = true;
+            }
+
+            for (float f = 0; f < 32f; f++)
+            {
+                Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(384, 384);
+                RoyalMagicStarParticle.Spawn(pos, Vector2.Zero, Scale: Main.rand.NextFloat(0.4f, 0.7f));
+            }
+
+            if (Main.netMode != NetmodeID.Server)
+            {
+                RoyalMagicRenderer renderer = ModContent.GetInstance<RoyalMagicRenderer>();
+                for (float f = 0; f < 64; f++)
+                {
+                    Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(252, 252);
+                    Vector2 vel = (pos - Projectile.Center);
+                    vel = vel.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 15f);
+                    renderer.SpawnParticle(pos, vel, 180);
+                }
+            }
+            var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Blue, Color.DarkBlue, 45, baseSize: 0.24f);
+            fx.Scale *= 3;
+            FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+            FXUtil.CreateRipple(Projectile.Center);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.Transparent, Color.White, 35, 1768);
+        }
+
+        ShakeScreenPosition.Shake = MathHelper.Lerp(6, 0, EasingFunction.InExpo(Timer / Time));
         if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
         {
             SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
-            effectsPlayer.darknessCurve = MathHelper.Lerp(0.5f, 0f, EasingFunction.InExpo(Timer / Time));
+            effectsPlayer.darknessCurve = MathHelper.Lerp(1.8f, 0f, EasingFunction.InExpo(Timer / (Time/3f)));
         }
     }
 
+    private void DrawImpactFrames(SpriteBatch sb, Vector2 screenPos)
+    {
+
+        if (Timer < 3)
+        {
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.Impact, Projectile.Center);
+            drawer.color = Color.White;
+            drawer.color.A = 0;
+            drawer.scale *= 1.5f;
+            drawer.rotation = Main.GlobalTimeWrappedHourly * 24;
+            Main.spriteBatch.Draw(drawer);
+        }
+    }
     public override bool PreDraw(ref Color lightColor)
     {
+
+        if (Timer < 3)
+        {
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.Impact, Projectile.Center);
+            drawer.color = Color.White;
+            drawer.color.A = 0;
+            drawer.scale *= 1.5f;
+            drawer.rotation = Main.GlobalTimeWrappedHourly * 24;
+            Main.spriteBatch.Draw(drawer);
+        }
+        else if (Timer < 6)
+        {
+
+        }
         return false;
-    //    return base.PreDraw(ref lightColor);
+        //    return base.PreDraw(ref lightColor);
     }
     public override void OnKill(int timeLeft)
     {
@@ -68,6 +144,7 @@ public class RoyalStarBombBoom : ModProjectile,
     }
     public void DrawToRenderTargets()
     {
+        PixelationManager.QueueSpritebatchDrawAction(DrawImpactFrames, DrawLayer.OverPlayers);
 
     }
 }
@@ -99,7 +176,7 @@ public class RoyalStarBombRenderer : ModSystem
         gDevice.Clear(Color.Transparent);
         var sb = Main.spriteBatch;
         sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null);
-        while(_drawQueue.Count > 0)
+        while (_drawQueue.Count > 0)
         {
             _drawQueue.Dequeue()(sb);
         }
@@ -115,9 +192,9 @@ public class RoyalStarBombRenderer : ModSystem
         outlineShader.TexelSize = texelSize;
         outlineShader.OutlineColor = outlineColor;
         outlineShader.Levels = 2;
-       // sb.Restart(effect: outlineShader.Effect);
-       // sb.Draw(_bombRT, Vector2.Zero, Color.White);
-       // sb.RestartDefaults();
+        // sb.Restart(effect: outlineShader.Effect);
+        // sb.Draw(_bombRT, Vector2.Zero, Color.White);
+        // sb.RestartDefaults();
 
         sb.Draw(_bombRT, Vector2.Zero, Color.White);
     }
@@ -203,7 +280,7 @@ public class RoyalStarBomb : ModProjectile,
             {
                 FXUtil.CreateRipple(Projectile.Center);
                 PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, Color.Transparent, Color.White, 35, 768);
-                if(Main.netMode != NetmodeID.Server)
+                if (Main.netMode != NetmodeID.Server)
                 {
                     ScreenShaderSystem system = ModContent.GetInstance<ScreenShaderSystem>();
                     system.TintScreen(Color.Pink, 0.2f, 15);
@@ -212,11 +289,11 @@ public class RoyalStarBomb : ModProjectile,
             }
         }
 
-        if(Timer % 4 == 0)
+        if (Timer % 4 == 0)
         {
             Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(256, 256);
             RoyalMagicStarParticle.Spawn(pos, Vector2.Zero, Scale: Main.rand.NextFloat(0.4f, 0.7f));
-            if(Main.netMode != NetmodeID.Server)
+            if (Main.netMode != NetmodeID.Server)
             {
                 pos = Projectile.Center + Main.rand.NextVector2Circular(128, 129);
                 RoyalMagicRenderer renderer = ModContent.GetInstance<RoyalMagicRenderer>();
@@ -228,10 +305,11 @@ public class RoyalStarBomb : ModProjectile,
 
         if (!_holding)
         {
-            if(State != 0)
+            if (State != 0)
             {
-                if(State == 10)
-                {                 _bounceOffset = State.ToRotationVector2();
+                if (State == 10)
+                {
+                    _bounceOffset = State.ToRotationVector2();
                     _bounceOffset *= 115;
                     _holding = true;
                     Projectile.netUpdate = true;
@@ -241,13 +319,13 @@ public class RoyalStarBomb : ModProjectile,
                     _bounceOffset = State.ToRotationVector2();
                     _bounceOffset *= 115;
                     State = 0;
-                 
+
                     Projectile.netUpdate = true;
                 }
             }
         }
 
-        if(State == 11)
+        if (State == 11)
         {
             Projectile.netUpdate = true;
             Projectile.Kill();
@@ -262,8 +340,8 @@ public class RoyalStarBomb : ModProjectile,
                 RoyalMagicStarParticle.Spawn(pos, Vector2.Zero, Scale: Main.rand.NextFloat(0.4f, 0.7f));
             }
         }
-    
-        if(_bounceOffset.Length() > 0)
+
+        if (_bounceOffset.Length() > 0)
         {
             _bounceOffset *= 0.96f;
         }
@@ -346,7 +424,7 @@ public class RoyalStarBomb : ModProjectile,
         glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SolarRing, Projectile.Center + _bounceOffset);
         glowBall.color = Color.Lerp(Color.Blue, Color.Magenta, ExtraMath.Osc(0f, 1f, speed: 3)) * 0.08f;
         glowBall.color.A = 0;
-        glowBall.scale *= 2 * _scale  * MathHelper.Lerp(0f, 2f, EasingFunction.InExpo((_bounceOffset.Length() / 115f)));
+        glowBall.scale *= 2 * _scale * MathHelper.Lerp(0f, 2f, EasingFunction.InExpo((_bounceOffset.Length() / 115f)));
         sb.Draw(glowBall);
 
 

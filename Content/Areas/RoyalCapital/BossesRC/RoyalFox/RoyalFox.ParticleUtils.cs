@@ -1,4 +1,5 @@
-﻿using Stellamod.Effects.RoyalMagic;
+﻿using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox.Projectiles;
+using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -9,6 +10,14 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 
 public partial class RoyalFox
 {
+    public static void SpawnCometStarParticle(Vector2 center, Vector2 velocity, float timeLeft)
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        RoyalMagicCometStarsRenderer starsRender = ModContent.GetInstance<RoyalMagicCometStarsRenderer>();
+        starsRender.SpawnParticle(center, velocity, timeLeft);
+    }
+
     public static void ChargeParticles(Vector2 center, in float timer)
     {
         if (timer % 4 == 0)
