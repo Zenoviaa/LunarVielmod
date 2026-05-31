@@ -115,9 +115,11 @@ public class RoyalStarBombRenderer : ModSystem
         outlineShader.TexelSize = texelSize;
         outlineShader.OutlineColor = outlineColor;
         outlineShader.Levels = 2;
-        sb.Restart(effect: outlineShader.Effect);
+       // sb.Restart(effect: outlineShader.Effect);
+       // sb.Draw(_bombRT, Vector2.Zero, Color.White);
+       // sb.RestartDefaults();
+
         sb.Draw(_bombRT, Vector2.Zero, Color.White);
-        sb.RestartDefaults();
     }
 
     public override void OnModLoad()
@@ -351,7 +353,7 @@ public class RoyalStarBomb : ModProjectile,
         glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
         glowBall.color = Color.White * 0.92f;
         glowBall.color.A = 0;
-        glowBall.scale *= 2 * _scale * MathHelper.Lerp(0, 2f, EasingFunction.InExpo((_bounceOffset.Length() / 115f)));
+        glowBall.scale *= 2 * _scale * MathHelper.Lerp(0, 5f, EasingFunction.InExpo((_bounceOffset.Length() / 115f)));
         sb.Draw(glowBall);
     }
     private float StarryTrailWidthFunction(float completionRatio)

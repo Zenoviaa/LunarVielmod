@@ -45,6 +45,35 @@ namespace Stellamod.Assets
         public static class Sounds
         {
             private static string Path => "Stellamod/Assets/Sounds/";
+
+            public static class AlcaricFox
+            {
+                public static readonly SoundStyle FenixAirbounce1 = new SoundStyle($"{Path}AlcaricFox/FenixAirbounce1") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle FenixAirbounce2 = new SoundStyle($"{Path}AlcaricFox/FenixAirbounce2") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle FenixAppeartired = new SoundStyle($"{Path}AlcaricFox/FenixAppeartired") with { PitchVariance = 0.33f };
+                
+                public static readonly SoundStyle FenixBooma = new SoundStyle($"{Path}AlcaricFox/FenixBooma") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle FenixExplosion = new SoundStyle($"{Path}AlcaricFox/FenixExplosion") with { PitchVariance = 0.33f };
+                
+                public static readonly SoundStyle FenixFastdash1 = new SoundStyle($"{Path}AlcaricFox/FenixFastdash1") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle FenixFastdash2 = new SoundStyle($"{Path}AlcaricFox/FenixFastdash2") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle FenixFastdash3 = new SoundStyle($"{Path}AlcaricFox/FenixFastdash3") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle FenixFastdash4 = new SoundStyle($"{Path}AlcaricFox/FenixFastdash4") with { PitchVariance = 0.33f };
+
+                public static readonly SoundStyle Fenixslash1 = new SoundStyle($"{Path}AlcaricFox/Fenixslash1") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle Fenixslash2 = new SoundStyle($"{Path}AlcaricFox/Fenixslash2") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle Fenixslash3 = new SoundStyle($"{Path}AlcaricFox/Fenixslash3") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle Fenixslash4 = new SoundStyle($"{Path}AlcaricFox/Fenixslash4") with { PitchVariance = 0.33f };
+
+                public static readonly SoundStyle Fenixsmallcrash1 = new SoundStyle($"{Path}AlcaricFox/Fenixsmallcrash1") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle Fenixsmallcrash2 = new SoundStyle($"{Path}AlcaricFox/Fenixsmallcrash2") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle Fenixsmallcrash3 = new SoundStyle($"{Path}AlcaricFox/Fenixsmallcrash3") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle Fenixsmallcrash4 = new SoundStyle($"{Path}AlcaricFox/Fenixsmallcrash4") with { PitchVariance = 0.33f };
+
+                public static readonly SoundStyle FenixSonicSpeedBoost = new SoundStyle($"{Path}AlcaricFox/FenixSonicSpeedBoost") with { PitchVariance = 0.33f };
+                public static readonly SoundStyle FenixWindStartup = new SoundStyle($"{Path}AlcaricFox/FenixWindStartup") with { PitchVariance = 0.33f };
+            }
+
             public static class LeviathanEel
             {
                 public static SoundStyle Electrify = new SoundStyle($"{Path}LeviathanEel/Electrify");
