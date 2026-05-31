@@ -12,6 +12,112 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Effects.RoyalMagic;
 
+public class RoyalMagicBallShader : CrystalShader<RoyalMagicBallShader>
+{
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+        }
+    }
+    public Texture2D StarTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointClamp;
+            Main.graphics.GraphicsDevice.Textures[2] = value;
+            Effect.Parameters["primaryTextureSize"].SetValue(value.Size());
+        }
+    }
+
+    public Vector2 Resolution
+    {
+        set
+        {
+            Effect.Parameters["resolution"].SetValue(value);
+        }
+    }
+
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+
+    public Color BloomColor
+    {
+        set
+        {
+            Effect.Parameters["bloomColor"].SetValue(value.ToVector3());
+        }
+    }
+
+    public float Distortion
+    {
+        set
+        {
+            Effect.Parameters["distortion"].SetValue(value);
+        }
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+    }
+}
+
+public class RoyalMagicBeamShader : CrystalShader<RoyalMagicBeamShader>
+{
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+        }
+    }
+
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+
+    public Vector2 Tiling
+    {
+        set
+        {
+            Effect.Parameters["tiling"].SetValue(value);
+        }
+    }
+
+    public Color BloomColor
+    {
+        set
+        {
+            Effect.Parameters["bloomColor"].SetValue(value.ToVector3());
+        }
+    }
+
+    public float Distortion
+    {
+        set
+        {
+            Effect.Parameters["distortion"].SetValue(value);
+        }
+    }
+
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+    }
+}
 [Autoload(Side = ModSide.Client)]
 public class RoyalMagicRenderer : ModSystem
 {

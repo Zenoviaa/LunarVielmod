@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 
 namespace Stellamod.Core.InverseKinematics
@@ -29,6 +30,40 @@ namespace Stellamod.Core.InverseKinematics
         }
         public Vector2 oldTargetPosition;
         public float timer;
+
+        private void ResolveInner(int index)
+        {
+
+            ref Segment s2 = ref segments[index - 1];
+            ref Segment s1 = ref segments[index];
+
+            ref Vector2 p2 = ref s2.a;//ref points[index - 1];
+            ref Vector2 p1 = ref s1.a;
+            float dx = p2.X - p1.X;
+            float dy = p2.Y - p1.Y;
+            float distance = MathF.Sqrt(dx * dx + dy * dy);
+
+            //Calculating one direction is one way to get around the bounciness the other verlet integration implementation has
+            //This looks a lot cleaner and way less stiff
+            if (distance > s1.length)
+            {
+                float difference = s1.length - distance;
+                float percent = difference / distance;
+                float offsetX = dx * percent;
+                float offsetY = dy * percent;
+                p1.X -= offsetX;
+                p1.Y -= offsetY;
+            }
+        }
+
+        public void ResolveBackToRoot()
+        {
+            for (int i = segments.Length - 1; i >= 1; i--)
+            {
+                ResolveInner(i);
+            }
+        }
+
 
         public void IK(Vector2 rootPosition, Vector2 targetPosition)
         {

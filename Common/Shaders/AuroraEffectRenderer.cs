@@ -82,6 +82,8 @@ public class AuroraEffectRenderer : ModSystem
                       null);
                 Color rayColor = Color.White;
                 spriteBatch.Draw(_auroraRT, new Vector2(0, -256), null, rayColor, 0, Vector2.Zero, 4, SpriteEffects.None, 0);
+
+
                 rayColor *= 0.5f;
                 rayColor.A = 0;
                 spriteBatch.Draw(_auroraRT, new Vector2(0, -256), null, rayColor, 0, Vector2.Zero, 4, SpriteEffects.None, 0);
@@ -186,7 +188,7 @@ public class AuroraEffectRenderer : ModSystem
 
 
         Rectangle targetRectangle = new Rectangle(0, 0, _auroraRT.Width, _auroraRT.Height);
-        spriteBatch.Draw(AssetManager.GlowMask.EmptyGradient.Value, targetRectangle, Color.White * ease * 0.02f);
+        spriteBatch.Draw(AssetManager.GlowMask.EmptyGradient.Value, targetRectangle, Color.Blue * ease * 0.72f);
         spriteBatch.End();
 
         AuroraShader auroraShader = AuroraShader.Instance;
