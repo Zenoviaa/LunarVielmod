@@ -1,14 +1,17 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Gores;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
+using Stellamod.Dusts;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -178,10 +181,13 @@ public class RoyalMagicComet : ModProjectile,
 {
 
     private ref float Timer => ref Projectile.ai[0];
+    private ref float Style => ref Projectile.ai[1];
+
+    private ref float Size => ref Projectile.ai[2];
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        ProjectileID.Sets.TrailCacheLength[Type] = 24;
+        ProjectileID.Sets.TrailCacheLength[Type] = 32;
         ProjectileID.Sets.TrailingMode[Type] = 2;
         Main.projFrames[Type] = 2;
     }
@@ -192,7 +198,7 @@ public class RoyalMagicComet : ModProjectile,
         Projectile.height = 32;
         Projectile.timeLeft = 360;
         Projectile.hostile = false;
-        Projectile.tileCollide = false;
+        Projectile.tileCollide = true;
         Projectile.penetrate = -1;
         Projectile.ignoreWater = true;
     }
@@ -205,8 +211,17 @@ public class RoyalMagicComet : ModProjectile,
     public override void AI()
     {
         base.AI();
-        ProjectileID.Sets.TrailCacheLength[Type] = 32;
+
         Timer++;
+        if(Timer == 1)
+        {
+            if (this.OwnedByLocalClient())
+            {
+                Size = Main.rand.NextFloat(0.66f, 1.2f);
+                Style = Main.rand.Next(3);
+                Projectile.netUpdate = true;
+            }
+        }
 
         Rectangle screenRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
         if (screenRect.Contains(Projectile.position.ToPoint()))
@@ -246,28 +261,46 @@ public class RoyalMagicComet : ModProjectile,
             }
         }
 
-        Projectile.velocity.Y += 0.15f;
-        if (Timer >= 45)
+        float ratio = (Size - 0.66f) / 0.66f;
+        float gravity = MathHelper.SmoothStep(1f, 0.15f, ratio);
+        if(Projectile.velocity.Y < 20)
+            Projectile.velocity.Y += gravity;
+        Projectile.velocity.X *= 0.98f;
+        if(Projectile.velocity.Y > 0)
             Projectile.hostile = true;
         Projectile.scale = ExtraMath.Osc(0.5f, 0.75f, speed: 3, Projectile.whoAmI);
     }
 
+
+    private Color GetCometColor()
+    {
+        switch (Style)
+        {
+            default:
+            case 0:
+                return Color.Blue;
+            case 1:
+                return Color.SkyBlue;
+            case 2:
+                return Color.Pink;
+        }
+    }
     private Color StarryTrailColorFunction(float completionRatio)
     {
-        Color trailColorFunction = Color.Lerp(Color.White, Color.Blue, completionRatio) * 0.3f * MathHelper.Lerp(1f, 0f, EasingFunction.OutSine(completionRatio));
+        Color trailColorFunction = Color.Lerp(Color.White, GetCometColor(), completionRatio) * 0.3f * MathHelper.Lerp(1f, 0f, EasingFunction.OutSine(completionRatio));
         trailColorFunction.A = 0;
         return trailColorFunction;
     }
 
     private float StarryTrailWidthFunction(float completionRatio)
     {
-        return MathHelper.SmoothStep(36, 24, EasingFunction.InOutSine(completionRatio));
+        return MathHelper.SmoothStep(36, 24, EasingFunction.InOutSine(completionRatio)) * Size;
     }
 
     private void RenderStarryDashTrail(GraphicsDevice gDevice)
     {
         CometTrailShader cometTrail = ShaderContent.GetInstance<CometTrailShader>();
-        cometTrail.BloomColor = Color.Blue;
+        cometTrail.BloomColor = GetCometColor();
         TrailDrawer.Draw(Projectile.oldPos, StarryTrailColorFunction, StarryTrailWidthFunction, cometTrail, Projectile.Size * 0.5f);
 
 
@@ -288,11 +321,11 @@ public class RoyalMagicComet : ModProjectile,
             drawer.color.A = 0;
 
 
-            drawer.scale = Vector2.Lerp(Vector2.One, Vector2.One * 0.5f, ratio) * 0.4f;
+            drawer.scale = Vector2.Lerp(Vector2.One, Vector2.One * 0.5f, ratio) * 0.4f * Size;
             Main.spriteBatch.Draw(drawer);
         }
-        drawer.scale =  Vector2.One * 0.4f;
-        drawer.color = Color.Blue * 0.35f * ExtraMath.Osc(0.75f, 1f, speed: 6, offset: Projectile.whoAmI);
+        drawer.scale =  Vector2.One * 0.4f * Size;
+        drawer.color = Color.Blue * 0.35f * ExtraMath.Osc(0.75f, 1f, speed: 18, offset: Projectile.whoAmI);
         drawer.color.A = 0;
 
         drawer.worldPosition = Projectile.Center;
@@ -309,14 +342,14 @@ public class RoyalMagicComet : ModProjectile,
 
 
         drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare1, Projectile.Center);
-        drawer.color = Color.White * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 3, Projectile.whoAmI);
+        drawer.color = Color.White * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 9, Projectile.whoAmI);
         drawer.color.A = 0;
-        drawer.scale *= 0.4f;
+        drawer.scale *= 0.4f * Size;
         Main.spriteBatch.Draw(drawer);
 
         SpritebatchDrawer blackStar = SpritebatchDrawer.FromProjectile(Projectile);
         blackStar.color = Color.Black;
-        blackStar.scale = Vector2.One * ExtraMath.Osc(0.75f, 1f, speed: 3, Projectile.whoAmI) * 0.6f;
+        blackStar.scale = Vector2.One * ExtraMath.Osc(0.75f, 1f, speed: 9, Projectile.whoAmI) * 0.6f * Size;
         Main.spriteBatch.Draw(blackStar);
 
 
@@ -335,6 +368,7 @@ public class RoyalMagicComet : ModProjectile,
             dp.gravity = 0;
             dp.noTileCollide = true;
         }
+        ImpactEffect();
         if (Main.netMode == NetmodeID.Server)
             return;
 
@@ -346,6 +380,96 @@ public class RoyalMagicComet : ModProjectile,
             royalMagicRenderer.SpawnParticle(Projectile.Center + Main.rand.NextVector2Circular(64, 64), vel, 90);
 
         }
+    }
+
+    private void ImpactEffect()
+    {
+        int[] gores = AutoGoreLoader.FindGores("GrayRock");
+        foreach (int g in gores)
+        {
+            Gore.NewGore(Projectile.GetSource_FromThis(),
+                Projectile.Center,
+                -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
+        }
+
+
+        var sear = LegacyParticle.NewParticle<SearParticle>(Projectile.Center, Vector2.Zero);
+        sear.innerColor = Color.Gray;
+        sear.outerColor = GetCometColor();
+        sear.fadeToColor = Color.Black;
+        FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
+        ShakeScreenPosition.Shake = 2;
+
+
+        for (float f = 0; f < 4f; f++)
+        {
+            Vector2 pos = Projectile.Center;
+            pos += Main.rand.NextVector2Circular(80, 80);
+            var zap = LegacyParticle.NewParticle<ZapParticle>(pos, Vector2.UnitY.RotatedByRandom(10) * Main.rand.NextFloat(2, 15));
+            zap.innerColor = Color.Gray;
+            zap.outerColor = GetCometColor();
+            zap.fadeToColor = Color.Black;
+            zap.Scale *= Main.rand.NextFloat(0f, 0.5f);
+            zap.Rotation = Main.rand.NextFloat(0f, 3f);
+        }
+
+        SoundStyle smashSound;
+        int sound = Main.rand.Next(3);
+        switch (sound)
+        {
+            default:
+            case 0:
+                smashSound = Main.rand.NextBool(2) ? SoundRegistry.HammerHit1 : SoundRegistry.HammerHit2;
+                break;
+            case 1:
+                smashSound = AssetRegistry.Sounds.Bishinine.Comet1;
+                break;
+            case 2:
+                smashSound = AssetRegistry.Sounds.Bishinine.Comet2;
+                foreach (int g in gores)
+                {
+                    Gore.NewGore(Projectile.GetSource_FromThis(),
+                        Projectile.Center,
+                        -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(20)) * Main.rand.NextFloat(5f, 15f), g, Main.rand.NextFloat(0f, 1f));
+                }
+                FXUtil.ShakeCamera(Projectile.Center, 1024, 32);
+                var p3 = FXUtil.GlowCircleBoom(Projectile.Center,
+                   innerColor: Color.Gray,
+                   glowColor: GetCometColor(),
+                   outerGlowColor: GetCometColor(), duration: 15, baseSize: .09f);
+                p3.Scale *= 4;
+                break;
+        }
+
+
+        smashSound.PitchVariance = 0.2f;
+        SoundEngine.PlaySound(smashSound, Projectile.position);
+
+
+        var part = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+        part.fadeToColor = Color.Black;
+        part.outerColor = Color.Gray;
+        part.noStretch = true;
+        part.shrink = true;
+
+        var part2 = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, Vector2.Zero, Color.White);
+        part2.fadeToColor = Color.Black;
+        part2.outerColor = Color.Gray;
+        part2.noStretch = true;
+        part2.color *= 0.5f;
+        for (float f = 0; f < 5; f++)
+        {
+            Vector2 vel = Main.rand.NextVector2Circular(16, 16);
+            vel.Y -= 10;
+            var d = Dust.NewDustPerfect(Projectile.Center,
+                ModContent.DustType<GlowSparkleDust>(), newColor: Color.Gray, Scale: Main.rand.NextFloat(0f, 2f), Velocity: vel);
+        }
+
+        float boomSize = Main.rand.NextFloat(0.06f, 0.08f);
+        FXUtil.GlowCircleBoom(Projectile.Center,
+           innerColor: Color.Gray,
+           glowColor: GetCometColor(),
+           outerGlowColor: GetCometColor(), duration: 15, baseSize: boomSize * 2);
     }
 
     public void DrawToRenderTargets()

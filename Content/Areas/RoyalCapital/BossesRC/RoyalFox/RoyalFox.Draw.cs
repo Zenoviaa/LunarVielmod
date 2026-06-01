@@ -86,6 +86,15 @@ public partial class RoyalFox
         {
             spriteBatch.RestartDefaults();
         }
+
+        if(_roaringCircleAlpha > 0)
+        {
+            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, HeadPosition);
+            circleDrawer.color = _roaringCircleColor * _roaringCircleAlpha * 0.3f;
+            circleDrawer.color.A = 0;
+            circleDrawer.scale = Vector2.One * _roaringCircleScale;
+            Main.spriteBatch.Draw(circleDrawer);
+        }
         return false;
     }
 
@@ -101,6 +110,6 @@ public partial class RoyalFox
         {
             PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedDashTrail);
         }
-        PixelationManager.QueuePrimitivesDrawAction(DrawHair);
+        PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.BehindNPCsWithOutline);
     }
 }

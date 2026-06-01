@@ -97,6 +97,46 @@ public partial class RoyalFox
             dp.outerColor = Color.Violet;
         }
     }
+    public static void ChargeParticlesBig(Vector2 center, in float timer)
+    {
+        if (timer % 4 == 0)
+        {
+            Vector2 pos = center + Main.rand.NextVector2CircularEdge(768, 768);
+            Vector2 vel = (center - pos);
+            vel *= 0.09f;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            fx.VectorScale *= 0.5f;
+        }
+        if (timer % 4 == 0)
+        {
+            Vector2 pos = center + Main.rand.NextVector2CircularEdge(768, 768);
+            Vector2 vel = (center - pos);
+            vel *= 0.09f;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            //   fx.VectorScale *= 0.5f;
+        }
+        if (timer % 4 == 0)
+        {
+            Vector2 pos = center + Main.rand.NextVector2CircularEdge(768, 768);
+            Vector2 vel = (center - pos);
+            vel *= 0.09f;
+            var fx = FXUtil.GlowStretch(pos, vel);
+            //   fx.VectorScale *= 0.5f;
+        }
+
+        if (timer % 4 == 0)
+        {
+            Vector2 pos = center + Main.rand.NextVector2CircularEdge(768, 768);
+            Vector2 vel = (center - pos);
+            vel *= 0.09f;
+            var dp = DustParticle.Spawn(pos, vel);
+            dp.dampening = 0.1f;
+            dp.noTileCollide = true;
+            dp.Scale *= 0.35f;
+            dp.outerColor = Color.Violet;
+            dp.gravity = 0;
+        }
+    }
 
     private void PoofParticles()
     {
