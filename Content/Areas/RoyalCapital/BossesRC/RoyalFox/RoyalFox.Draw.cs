@@ -2,8 +2,10 @@
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
+using Stellamod.Core.ZTileSystem;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
+using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -11,6 +13,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 
 public partial class RoyalFox
 {
+   
     private void DrawTelegraphLine(SpriteBatch spriteBatch)
     {
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(
@@ -35,11 +38,81 @@ public partial class RoyalFox
         Main.spriteBatch.Draw(eyeFlashDrawer);
     }
 
+    private void DrawBackWing(bool darkened) => DrawWings(true, darkened);
+    private void DrawFrontWing(bool darkened) => DrawWings(false, darkened);
+
+    private void DrawWings(bool backWings, bool darkened)
+    {
+        if (!_canDrawWings)
+            return;
+
+        Main.spriteBatch.End();
+        Main.graphics.GraphicsDevice.Textures[0] = ModContent.Request<Texture2D>($"{Texture}_Wing").Value;
+        Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+        PerfectWingShader perfectWingShader = ShaderContent.GetInstance<PerfectWingShader>();
+        perfectWingShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+        perfectWingShader.StarTexture = AssetManager.Noise.FlamethrowerNoise.Value;
+        perfectWingShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
+        perfectWingShader.Distortion = 0.1f;
+        perfectWingShader.Time = Main.GlobalTimeWrappedHourly * 3;
+
+        //I believe we just get the perspective matrix, transform it, and then offset it to the correct spot???
+        var segmentToDrawOn = Rig.bodyParts[2];
+        Matrix perspectiveMatrix = segmentToDrawOn.GetFullMatrix();
+        Vector2 worldPos = _wingPos;
+        for(int i = 0; i < 3; i++)
+        {
+            Vector3 yAxis = new Vector3(0, 1, 0);
+            float zRotation = MathHelper.Lerp(MathHelper.ToRadians(-35), MathHelper.ToRadians(35), ExtraMath.Osc(0f, 1f, speed: 3, offset: i));
+            if (backWings)
+                zRotation *= -1;
+            Quaternion zQuaternion = Quaternion.CreateFromAxisAngle(yAxis, zRotation);
+            Matrix flapMatrix = Matrix.CreateFromQuaternion(zQuaternion);
+
+            Vector3 xAxis = new Vector3(1, 0, 0);
+            float xRot = MathHelper.Lerp(MathHelper.ToRadians(30), 0, (float)i / 3f);
+            if (backWings)
+                xRot *= -1;
+            Quaternion offsetWingQuaternion = Quaternion.CreateFromAxisAngle(xAxis, xRot);
+            Matrix m = Matrix.CreateFromQuaternion(offsetWingQuaternion);
+
+
+            Vector3 zAxis = new Vector3(0, 0, 1);
+            float zRot = MathHelper.Lerp(MathHelper.ToRadians(25), MathHelper.ToRadians(-25), ExtraMath.Osc(0f, 1f, speed: 3, offset: i));
+            Quaternion zWingQuat = Quaternion.CreateFromAxisAngle(zAxis, zRot);
+            Matrix z = Matrix.CreateFromQuaternion(zWingQuat);
+
+
+            Vector3 offset = -Rig.bodyParts[3].forwardVectors[0] * 0.8f * MathHelper.Lerp(1f, 0f, (float)i / 3f);
+            Matrix translationMatrix = Matrix.CreateTranslation(offset);
+            Matrix fullMatrix = z * flapMatrix * m  * perspectiveMatrix * translationMatrix;
+            WingQuad.CalculateBottomCenterVertices(worldPos, 256, 128, fullMatrix);
+
+            Color glowColor = Color.Lerp(Color.Blue, Color.Pink, ExtraMath.Osc(0f, 1f, speed: 3));
+            Color wingColor = Color.Lerp(Color.White, glowColor, ExtraMath.Osc(0f, 0.8f, speed: 1.5f));
+            wingColor = Color.Lerp(Color.Lerp(Color.White, Color.Black, 0.8f), wingColor, (float)i / 3f);
+            if (darkened)
+            {
+        //        wingColor = Color.Lerp(wingColor, Color.Black, 0.5f);
+            }
+
+            wingColor *= 0.5f;
+            wingColor.A = 0;
+            WingQuad.SetColor(wingColor * _invisibleAlpha);
+            //  WingQuad.vertices[0].Color = Color.Transparent;
+            WingQuad.DrawWithShader(perfectWingShader);
+        }
+        Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+    }
+
+
+
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
         if (_dontRender)
             return false;
 
+     
         _sigilTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Sigil");
         if (_renderMotionBlur)
         {
@@ -64,7 +137,12 @@ public partial class RoyalFox
 
 
 
+
+        _canDrawWings = true;
         Rig.Draw(spriteBatch, screenPos, drawColor);
+        _canDrawWings = false;
+    
+
         DrawTelegraphLine(spriteBatch);
         DrawEyeFlash(spriteBatch);
 
@@ -99,20 +177,6 @@ public partial class RoyalFox
         return false;
     }
 
-    private void DrawLaserTelegraph(SpriteBatch sb)
-    {
-        if (_laserTelegraphAlpha <= 0)
-            return;
-
-        Vector2 endPoint = CalculateLaserSpawnPoint(1);
-        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, endPoint);
-        glowDrawer.color = Color.White * ExtraMath.Osc(0.6f, 1f, speed: 12);
-        glowDrawer.color.A = 0;
-      //  glowDrawer.scale.Y *= 0.5f;
-     //   glowDrawer.scale *= 0.5f * 4;
-        glowDrawer.rotation = CalculateLaserSpawnVelocity().ToRotation();
-        sb.Draw(glowDrawer);
-    }
     private void DrawLaserTelegraph(SpriteBatch sb, Vector2 sp)
     {
         if (_laserTelegraphAlpha <= 0)

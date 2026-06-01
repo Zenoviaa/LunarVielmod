@@ -1,4 +1,5 @@
 ﻿using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
+using Stellamod.Core.ZTileSystem;
 using Stellamod.Helpers;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
     /// </summary>
     public class FoxSegment
     {
+        public delegate void ExtraDraws(bool darkened);
         //Represents a body part
         public FoxSegment(Texture2D texture, FoxSegment parent, Vector2 origin)
         {
@@ -65,11 +67,12 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public bool useFreeAngle;
         public float angle;
         public float fakeAngle;
+        public float? angleOverride;
         public int frameHeight;
         public int frameWidth;
         public FoxDegrees perspectiveRotation;
         public bool noDarken;
-
+        public ExtraDraws postDraw;
         private void SetPerspective()
         {
 
@@ -241,6 +244,36 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             }
         }
 
+        public Matrix GetFullMatrix()
+        {
+            Vector4 eulerAngles = GetFullEulerAngles();
+            return GetFullMatrix(eulerAngles.Z, eulerAngles.Y, eulerAngles.X, eulerAngles.W);
+        }
+
+        public Matrix GetFullMatrix(float zRotation, float yRotation, float xRotation, float wRotation)
+        {
+            Vector3 xAxis = new Vector3(1, 0, 0);
+            Vector3 yAxis = new Vector3(0, 1, 0);
+            Vector3 zAxis = new Vector3(0, 0, 1);
+    
+            Quaternion xQuaternion = Quaternion.CreateFromAxisAngle(xAxis, xRotation);
+            Quaternion yQuaternion = Quaternion.CreateFromAxisAngle(yAxis, yRotation);
+            Quaternion zQuaternion = Quaternion.CreateFromAxisAngle(zAxis, zRotation);
+            Quaternion zQuaternion2 = Quaternion.CreateFromAxisAngle(zAxis, wRotation);
+
+            Matrix[] matrices = new Matrix[4];
+            matrices[0] = Matrix.CreateFromQuaternion(zQuaternion);
+            matrices[1] = Matrix.CreateFromQuaternion(xQuaternion);
+            matrices[2] = Matrix.CreateFromQuaternion(yQuaternion);
+            matrices[3] = Matrix.CreateFromQuaternion(zQuaternion2);
+
+            Matrix m = matrices[0];
+            for(int i = 1; i < matrices.Length; i++)
+            {
+                m *= matrices[i];
+            }
+            return m;
+        }
         public Vector3 GetForwardVector(FoxSegment child)
         {
             int indexOfChild = children.IndexOf(child);
@@ -306,7 +339,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
         public void Update()
         {
-      
+           // angleOverride = null;
             SetWorldTransformations();
             SetPerspective();
             SetDrawColor();
@@ -340,9 +373,25 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             }
 
             float drawAngle = angle + fakeAngle;
+            if (angleOverride.HasValue)
+                drawAngle = angleOverride.Value;
 
             //Just calculate the angle based on the direction
             spriteBatch.Draw(textureToDraw, drawPosition, frame, finalColor, drawAngle, drawOrigin, scale, spriteEffects, 0);
+
+
+
+            bool darkened = false;
+            if (position.Z <= 0)
+            {
+
+            }
+            else if (position.Z >= 12 && !noDarken)
+            {
+                darkened = true;
+            }
+            if (postDraw != null)
+                postDraw(darkened);
             //DrawWireframe(spriteBatch, drawPosition);
         }
 
@@ -493,6 +542,10 @@ public class RoyalFoxRig
         frontLegFrontThighSegment = frontFrontLeg[0];
         frontLegBehindThighSegment = frontBehindLeg[0];
 
+        for(int i = 0; i < bodyParts.Length; i++)
+        {
+            bodyParts[i].noDarken = true;
+        }
 
         headPart = headSegment;
         segmentsByZLayer = segmentsList.ToArray();
@@ -604,6 +657,14 @@ public class RoyalFoxRig
         return segments;
     }
 
+    public void ResetOverrides()
+    {
+        for (int i = 0; i < segmentsByNumberOfParents.Length; i++)
+        {
+            var segment = segmentsByNumberOfParents[i];
+            segment.angleOverride = null;
+        }
+    }
     public void Update()
     {
 
@@ -638,34 +699,4 @@ public class RoyalFoxRig
             segment.Draw(spriteBatch, screenPos, lightColor);
         }
     }
-}
-public class FoxTail
-{
-
-    public FoxTail(int segmentCount)
-    {
-        positions = new Vector2[segmentCount];
-    }
-
-    public Vector2 rootPosition;
-    public Vector2 endPosition;
-    public Vector2[] positions;
-
-    public void Update()
-    {
-
-        //So I'm thinking we just lerp between the root and end position and add some sining motions?
-        //That'd be the easiest way to do it I think
-
-    }
-
-    public void Draw()
-    {
-
-    }
-}
-
-public class RoyalFoxTails
-{
-
 }

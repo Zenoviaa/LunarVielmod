@@ -306,5 +306,40 @@ public partial class RoyalFox
             sp.behindLayer = true;
         }
     }
+    private void FloatParticles()
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        RoyalMagicRenderer royalMagicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
+
+
+        if (Main.rand.NextBool(4))
+        {
+            var d = Dust.NewDustPerfect(NPC.Center + Main.rand.NextVector2Circular(16, 16), DustID.GemDiamond, Scale: 1f);
+            d.noGravity = true;
+        }
+
+        if (!Main.rand.NextBool(2))
+            return;
+
+
+        if (!Main.rand.NextBool(4))
+            return;
+
+        Vector2 vel = -NPC.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(2f, 5f);
+        if (Main.rand.NextBool(2))
+        {
+            var sp = RoyalMagicStarParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(64, 64), vel, Scale: Main.rand.NextFloat(0.25f, 0.6f));
+            sp.color = Color.Lerp(new Color(117, 100, 210), Color.White, Main.rand.NextFloat(0f, 1f));
+        }
+
+        if (Main.rand.NextBool(2))
+        {
+            var sp = FaintSmokeParticle.SpawnInAlphaLayer(NPC.Center + Main.rand.NextVector2Circular(64, 64), -vel, Scale: Main.rand.NextFloat(0.25f, 0.6f));
+            sp.Scale *= 0.5f;
+            sp.color = Color.Lerp(Color.Black, Color.White, Main.rand.NextFloat(0f, 0.33f));
+            sp.behindLayer = true;
+        }
+    }
 
 }

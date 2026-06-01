@@ -12,6 +12,66 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Effects.RoyalMagic;
 
+
+public class PerfectWingShader : CrystalShader<PerfectWingShader>
+{
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+        }
+    }
+    
+    public Texture2D StarTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[2] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
+        }
+    }
+
+    public Matrix TransformMatrix
+    {
+        set
+        {
+            Effect.Parameters["transformMatrix"].SetValue(value);
+        }
+    }
+
+    public Vector2 Resolution
+    {
+        set
+        {
+            Effect.Parameters["resolution"].SetValue(value);
+        }
+    }
+
+    public Vector2 PrimaryTextureSize
+    {
+        set
+        {
+            Effect.Parameters["primaryTextureSize"].SetValue(value);
+        }
+    }
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+
+    public float Distortion
+    {
+        set
+        {
+            Effect.Parameters["distortion"].SetValue(value);
+        }
+    }
+}
 public class StarBombBoomShader : CrystalShader<StarBombBoomShader>
 {
     public float Time

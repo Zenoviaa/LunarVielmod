@@ -12,6 +12,7 @@ using Stellamod.Core.Utilities;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -32,6 +33,8 @@ public partial class RoyalFox : ScarletBoss,
         Full_Control = 2
     }
 
+    private Vector2 _wingPos;
+    private float _wingZ;
     private float _roaringCircleScale;
     private float _roaringCircleAlpha;
     private Color _roaringCircleColor;
@@ -58,6 +61,7 @@ public partial class RoyalFox : ScarletBoss,
     private bool _showTelegraphLine;
 
     private float _invisibleAlpha;
+    private bool _canDrawWings;
     private bool _goInvisible;
     private bool _dontRender;
     private bool _tailInFront;
@@ -104,6 +108,16 @@ public partial class RoyalFox : ScarletBoss,
 
     private float _miniAttackCount;
 
+    private TexturedQuad _wingQuad;
+    private TexturedQuad WingQuad
+    {
+        get
+        {
+            _wingQuad ??= new TexturedQuad();
+            return _wingQuad;
+        }
+    }
+
     private Vector2[] _tailEndIK;
     private Vector2[] TailEndIK
     {
@@ -114,6 +128,26 @@ public partial class RoyalFox : ScarletBoss,
                 _tailEndIK = new Vector2[3];
             }
             return _tailEndIK;
+        }
+    }
+
+    private Armature _wing;
+    private Armature Wing
+    {
+        get
+        {
+            if(_wing == null)
+            {
+                _wing = new Armature(64, 4);
+                for (int k = 0; k < _wing.segments.Length; k++)
+                {
+                    var segment = _wing.segments[k];
+                    segment.rangeOfMotion = 10f;
+                    segment.rootDirection = -Vector2.UnitX;
+                }
+                _wing.SetDefaults();
+            }
+            return _wing;
         }
     }
 
@@ -143,6 +177,8 @@ public partial class RoyalFox : ScarletBoss,
         }
     }
 
+    private bool _zoomMode;
+
     private ref float RegularRotation => ref Rig.rootSegment.eulerAngles.W;
     private ref float ZRotation => ref Rig.rootSegment.eulerAngles.X;
 
@@ -169,6 +205,7 @@ public partial class RoyalFox : ScarletBoss,
             return time;
         }
     }
+    private float Zoom_Prepare_Time => 280;
     private float CometStarDashMiniPrepTime => 90;
     private float CometStarDashEndingTime => 70;
     private float DelayBetweenDashDanceBursts => 25;
@@ -180,6 +217,12 @@ public partial class RoyalFox : ScarletBoss,
     private float BigFatLaserPrepTime => 100;
     private float BigFatLaserChargeTime => 100;
     private float BigFatLaserFireTime => 72;
+
+    //Sparkle Star Rain
+    private int SparkleStarDamage => 70;
+    private float SparkleStarRainTime => 490;
+    private float TimeBetweenSparkleStars => 15;
+
     public Texture2D GetSubTexture(string fileName)
     {
         string path = Texture + $"_{fileName}";
@@ -207,6 +250,8 @@ public partial class RoyalFox : ScarletBoss,
         bodyTextures[3] = GetSubTexture("Neck");
 
         var rig = new RoyalFoxRig(backLegTextures, frontLegTextures, bodyTextures, head);
+        rig.frontLegFrontThighSegment.postDraw = DrawFrontWing;
+        rig.frontLegBehindThighSegment.postDraw = DrawBackWing;
         return rig;
     }
 
@@ -265,6 +310,7 @@ public partial class RoyalFox : ScarletBoss,
     public override void SetDefaults()
     {
         base.SetDefaults();
+        _zoomMode = true;
         NPC.width = 90;
         NPC.height = 90;
         NPC.damage = 150;
@@ -311,13 +357,29 @@ public partial class RoyalFox : ScarletBoss,
         _eyeFlashAlpha = MathHelper.Lerp(_eyeFlashAlpha, 0f, 0.1f);
         _outliner.SetDefaults();
         EnablePlatformArena();
+
+        if (!NPC.HasValidTarget)
+        {
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget)
+            {
+                if(State != AIState.Despawn)
+                {
+                    SwitchState(AIState.Despawn);
+                }
+            }
+        }
+        PreUpdateRig();
         switch (State)
         {
             default:
+ 
             case AIState.Idle:
                 AI_Idle();
                 break;
-
+            case AIState.Despawn:
+                AI_Despawn();
+                break;
             case AIState.Zoom_DashDance:
                 AI_ZoomDashDance();
                 break;
@@ -329,6 +391,10 @@ public partial class RoyalFox : ScarletBoss,
             case AIState.Zoom_BigFatLaser:
                 _tailInFront = true;
                 AI_BigFatLaser();
+                break;
+
+            case AIState.Zoom_SparkleStarRain:
+                AI_SparkleStarRain();
                 break;
         }
 
@@ -371,6 +437,10 @@ public partial class RoyalFox : ScarletBoss,
         _dashTrailAlpha = MathHelper.Lerp(_dashTrailAlpha, targetDashTrailAlpha, 0.1f);
         _outliner.Update();
         UpdateRig();
+
+        Vector2 diff = Rig.bodyParts[3].worldPosition - _wingPos;
+        diff *= 0.8f;
+        _wingPos += diff; //Vector2.Lerp(_wingPos, Rig.bodyParts[3].worldPosition, 0.4f);
     }
 
     private void SwitchState(AIState state)
@@ -392,6 +462,22 @@ public partial class RoyalFox : ScarletBoss,
         NPC.Center = pos;
     }
 
+    private void AI_Despawn()
+    {
+        Timer++;
+        if(Timer >= 90)
+        {
+            NPC.active = false;
+        }
+        NPC.velocity.X *= 0.98f;
+        NPC.velocity.Y -= 0.05f;
+        AnimateTorpedo();
+        ZRotation += 0.12f;
+        RegularRotation = NPC.velocity.ToRotation();
+        _renderDashTrail = true;
+        WalkParticles();
+    }
+
     private void AI_Idle()
     {
         Timer++;
@@ -401,7 +487,7 @@ public partial class RoyalFox : ScarletBoss,
         }
         DebugTeleportLeftOfPlayer();
         NPC.velocity *= 0.8f;
-        if (Timer >= 100)
+        if (Timer >= 100 || _zoomMode)
         {
             ChooseAttack();
         }
@@ -412,16 +498,11 @@ public partial class RoyalFox : ScarletBoss,
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.Zoom_CometStarDash);
+            SwitchState(AIState.Zoom_SparkleStarRain);
         }
     }
 
-    private float Zoom_Prepare_Time => 280;
-    private void AnimateCrouching()
-    {
-
-    }
-
+ 
     public Vector2 CalculateLaserSpawnPoint(float ratio = 1f)
     {
         Vector2 startDashPoint = _initialStartDashPosition.RotatedBy(MathHelper.PiOver4, _ballPosition);
@@ -442,134 +523,106 @@ public partial class RoyalFox : ScarletBoss,
         return (endPoint - pointBefore).SafeNormalize(Vector2.Zero);
     }
 
-    private void AnimateStanding()
-    {
-        float start = MathHelper.ToRadians(-2);
-        float end = MathHelper.ToRadians(2);
-
-        float runningSpeed = 4;
-        float frontFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed);
-        //     float easeing = EasingFunction.InOutSine(legPair1);
-        Rig.frontFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontFrontLeg);
-        Rig.frontFrontLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontFrontLeg);
-
-        float frontBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 1);
-        Rig.frontBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontBackLeg);
-        Rig.frontBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontBackLeg);
-
-
-        //Back Legs
-        float backFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3);
-        Rig.backFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, backFrontLeg);
-        Rig.backFrontLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backFrontLeg);
-
-
-        float backBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3 + 1);
-        Rig.backBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, backBackLeg);
-        Rig.backBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backBackLeg);
-
-
-        float headRotOffset = MathHelper.Lerp(start, end, ExtraMath.Osc(0f, 1f, speed: runningSpeed));
-        Rig.bodyParts[3].eulerAngles.Z = MathHelper.ToRadians(19) + headRotOffset;
-    }
-
-    private void AnimateRunning()
-    {
-        float start = MathHelper.ToRadians(-25);
-        float end = MathHelper.ToRadians(25);
-
-        float runningSpeed = 9;
-        float frontFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed);
-        Rig.frontFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontFrontLeg);
-        Rig.frontFrontLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontFrontLeg);
-
-        float frontBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 1);
-        Rig.frontBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontBackLeg);
-        Rig.frontBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontBackLeg);
-
-        //Back Legs
-        float backFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3);
-        Rig.backFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, backFrontLeg);
-        Rig.backFrontLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backFrontLeg);
-
-
-        float backBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3 + 1);
-        Rig.backBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, backBackLeg);
-        Rig.backBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backBackLeg);
-
-
-        Rig.bodyParts[3].eulerAngles.Z = MathHelper.ToRadians(15);
-    }
-    private void AnimateTorpedo()
-    {
-        float start = MathHelper.ToRadians(65);
-        float end = start + MathHelper.ToRadians(2);
-
-        float runningSpeed = 9;
-        float frontFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed);
-        float targetAngle = MathHelper.Lerp(start, end, frontFrontLeg);
-        Rig.frontFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(Rig.frontFrontLeg[0].eulerAngles.Z, targetAngle, 0.1f);
-        Rig.frontFrontLeg[1].eulerAngles.Z = 0;
-
-        float frontBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 1);
-        targetAngle = MathHelper.Lerp(start, end, frontBackLeg);
-
-        Rig.frontBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(Rig.frontBehindLeg[0].eulerAngles.Z, targetAngle, 0.1f);
-        Rig.frontBehindLeg[1].eulerAngles.Z = 0;
-
-        //Back Legs
-        float backFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3);
-        start = MathHelper.ToRadians(65);
-        end = start + MathHelper.ToRadians(2);
-        targetAngle = MathHelper.Lerp(start, end, backFrontLeg);
-        Rig.backFrontLeg[0].fakeAngle = MathHelper.Lerp(Rig.backFrontLeg[0].fakeAngle, MathHelper.ToRadians(35), 0.1f);
-        Rig.backFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(Rig.backFrontLeg[0].eulerAngles.Z, targetAngle, 0.1f);
-        Rig.backFrontLeg[1].eulerAngles.Z = 0;
-        Rig.backFrontLeg[2].fakeAngle = MathHelper.Lerp(Rig.backFrontLeg[2].fakeAngle, MathHelper.ToRadians(45), 0.1f);
-
-        float backBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3 + 1);
-        targetAngle = MathHelper.Lerp(start, end, backBackLeg);
-        Rig.backBehindLeg[0].fakeAngle = MathHelper.Lerp(Rig.backBehindLeg[0].fakeAngle, MathHelper.ToRadians(35), 0.1f);
-        Rig.backBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(Rig.backBehindLeg[0].eulerAngles.Z, targetAngle, 0.1f);
-        Rig.backBehindLeg[1].eulerAngles.Z = 0;
-        Rig.backBehindLeg[2].fakeAngle = MathHelper.Lerp(Rig.backBehindLeg[2].fakeAngle, MathHelper.ToRadians(-45), 0.1f);
-
-        Rig.bodyParts[3].eulerAngles.Z = MathHelper.ToRadians(15);
-    }
-    private void AnimateStretched()
-    {
-        float start = MathHelper.ToRadians(-45);
-        float end = MathHelper.ToRadians(-15);
-
-        float runningSpeed = 9;
-        float frontFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed);
-        Rig.frontFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontFrontLeg);
-        Rig.frontFrontLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontFrontLeg);
-
-        float frontBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 1);
-        Rig.frontBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontBackLeg);
-        Rig.frontBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontBackLeg);
-
-        start = MathHelper.ToRadians(45);
-        end = MathHelper.ToRadians(15);
-
-        //Back Legs
-        float backFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3);
-        Rig.backFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, backFrontLeg);
-        Rig.backFrontLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backFrontLeg);
-
-
-        float backBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3 + 1);
-        Rig.backBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, backBackLeg);
-        Rig.backBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backBackLeg);
-
-
-        Rig.bodyParts[3].eulerAngles.Z = MathHelper.ToRadians(15);
-    }
-
-
     #region Zoom Mode 
 
+    private void AI_SparkleStarRain()
+    {
+        void FaceTargetWhileFlying()
+        {
+            Vector2 facingDirection = Vector2.UnitX * FacingDirectionToTarget;
+            Vector2 up = facingDirection.RotatedBy(-MathHelper.ToRadians(75) * FacingDirectionToTarget);
+            RegularRotation = up.ToRotation();
+
+        }
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        PoofParticles(NPC.Center);
+                        float dir = Main.rand.NextBool(2) ? 1 : -1;
+                        Vector2 pointToTeleportTo = MyTarget.Center + new Vector2(300 * dir, -64);
+
+                        Teleport(pointToTeleportTo);
+                        PoofParticles(pointToTeleportTo);
+                        
+                        ShakeScreenPosition.Shake = 8;
+                        var fx = FXUtil.GlowCircleBoom(pointToTeleportTo, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 30, baseSize: 0.2f); ;
+                        fx.Scale *= 2f;
+                        for (int i = 0; i < 32; i++)
+                        {
+                            var dp = DustParticle.Spawn(pointToTeleportTo, Main.rand.NextVector2Circular(24, 24));
+                            dp.outerColor = Color.DarkBlue;
+                            dp.dampening = 0.1f;
+                            dp.noTileCollide = true;
+                            dp.gravity = 0;
+                            dp.Scale *= 1.5f;
+                        }
+
+                        PixelPrimitiveCircleFactory.CreateGenericInBoom(pointToTeleportTo, Color.White, Color.Transparent, 60, 512);
+                        PixelPrimitiveCircleFactory.CreateGenericBoom(pointToTeleportTo, Color.White, Color.Transparent, 60, 512);
+                    }
+                    if(Timer == 1)
+                    {
+                        NPC.velocity.Y = -10;
+                    }
+
+                    _tailAnimation = TailAnimation.Loose;
+                    FaceTargetWhileFlying();
+                    AnimateFlying();
+                    ZRotation = Utils.AngleLerp(ZRotation, 0, 0.1f);
+                    NPC.velocity *= 0.94f;
+                    _outliner.warning = true;
+                    if(Timer >= 30)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    if(Timer % TimeBetweenSparkleStars == 0)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Vector2 centerPos = MyTarget.Center;
+                            centerPos.X += MathHelper.Lerp(-2500 * TargetDirection, -1200 * TargetDirection, Main.rand.NextFloat(0f, 1f));
+                            centerPos.Y -= 1800;
+                            Vector2 velocity = Vector2.UnitY;
+                            velocity = velocity.RotatedBy(MathHelper.ToRadians(-45) * TargetDirection);
+                            velocity *= 16;
+                            Projectile.NewProjectile(SourceFromThis, centerPos, velocity, ModContent.ProjectileType<MagicFallingStar>(), SparkleStarDamage, 1, Main.myPlayer);
+                        }
+                    }
+
+
+                    OffsetCameraModifier.FocusTargetOffset = new Vector2(0, -100);
+                    //We want to face the entire body slightly up and then we're going to angle each part manually with forward kinematics
+                    _tailAnimation = TailAnimation.Loose;
+                    FaceTargetWhileFlying();
+                    ZRotation = Utils.AngleLerp(ZRotation, 0, 0.1f);
+
+                    NPC.velocity.X *= 0.98f;
+                    NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 0.3f;
+                    AnimateFlying();
+                    FloatParticles();
+                    _outliner.attacking = true;
+                    if(Timer >= SparkleStarRainTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            default:
+                SwitchState(AIState.Zoom_CometStarDash);
+                break;
+        }
+    }
     private void CreateDashLines()
     {
         if (MultiplayerHelper.IsHost)
@@ -1643,6 +1696,11 @@ public partial class RoyalFox : ScarletBoss,
         }
     }
     #endregion
+
+    private void PreUpdateRig()
+    {
+        Rig.ResetOverrides();
+    }
     private void UpdateRig()
     {
         //Calling update twice sine it has to calculate the new x axis position
