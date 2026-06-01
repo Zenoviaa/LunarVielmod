@@ -95,9 +95,39 @@ public partial class RoyalFox
             circleDrawer.scale = Vector2.One * _roaringCircleScale;
             Main.spriteBatch.Draw(circleDrawer);
         }
+      //  DrawLaserTelegraph(Main.spriteBatch);
         return false;
     }
 
+    private void DrawLaserTelegraph(SpriteBatch sb)
+    {
+        if (_laserTelegraphAlpha <= 0)
+            return;
+
+        Vector2 endPoint = CalculateLaserSpawnPoint(1);
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, endPoint);
+        glowDrawer.color = Color.White * ExtraMath.Osc(0.6f, 1f, speed: 12);
+        glowDrawer.color.A = 0;
+      //  glowDrawer.scale.Y *= 0.5f;
+     //   glowDrawer.scale *= 0.5f * 4;
+        glowDrawer.rotation = CalculateLaserSpawnVelocity().ToRotation();
+        sb.Draw(glowDrawer);
+    }
+    private void DrawLaserTelegraph(SpriteBatch sb, Vector2 sp)
+    {
+        if (_laserTelegraphAlpha <= 0)
+            return;
+
+        Vector2 endPoint = CalculateLaserSpawnPoint(1);
+        Vector2 vel = CalculateLaserSpawnVelocity();
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, endPoint + vel * 92);
+        glowDrawer.color = Color.White * ExtraMath.Osc(0.6f, 1f, speed: 12);
+        glowDrawer.color.A = 0;
+        glowDrawer.scale.X *= 0.5f;
+        glowDrawer.scale *= 0.5f;
+        glowDrawer.rotation = CalculateLaserSpawnVelocity().ToRotation();
+        sb.Draw(glowDrawer);
+    }
     private void DrawOutlines(SpriteBatch sb)
     {
         Rig.Draw(sb, Main.screenPosition, _outliner.outlineColor);
@@ -110,6 +140,10 @@ public partial class RoyalFox
         {
             PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedDashTrail);
         }
-        PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.BehindNPCsWithOutline);
+        PixelationManager.QueueSpritebatchDrawAction(DrawLaserTelegraph, DrawLayer.OverPlayers);
+        if(!_tailInFront)
+            PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.BehindNPCsWithOutline);
+        else
+            PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.OverNPCs);
     }
 }

@@ -12,6 +12,57 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Effects.RoyalMagic;
 
+public class StarBombBoomShader : CrystalShader<StarBombBoomShader>
+{
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+
+}
+
+public class RoyalShockwaveCircleShader : CrystalShader<RoyalShockwaveCircleShader>
+{
+    private EffectParameter _timeParam;
+    private EffectParameter _frequencyParam;
+    private EffectParameter _amplitudeParam;
+    public float Time
+    {
+        set
+        {
+            _timeParam ??= Effect.Parameters["time"];
+            _timeParam.SetValue(value);
+        }
+    }
+
+    public float Frequency
+    {
+        set
+        {
+            _frequencyParam ??= Effect.Parameters["frequency"];
+            _frequencyParam.SetValue(value);
+        }
+    }
+
+    public float Amplitude
+    {
+        set
+        {
+            _amplitudeParam ??= Effect.Parameters["amplitude"];
+            _amplitudeParam.SetValue(value);
+        }
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Amplitude = 0.5f;
+        Frequency = 4.0f;
+    }
+}
+
 
 public class CometTrailShader : CrystalShader<CometTrailShader>
 {

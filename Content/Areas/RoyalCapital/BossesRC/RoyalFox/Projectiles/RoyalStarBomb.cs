@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
@@ -11,6 +12,7 @@ using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -40,27 +42,17 @@ public class RoyalStarBombBoom : ModProjectile,
     public override void AI()
     {
         base.AI();
+
         Timer++;
         if (Timer == 1)
         {
+            SoundStyle explosionSound = AssetRegistry.Sounds.AlcaricFox.FenixExplosion;
+            SoundEngine.PlaySound(explosionSound);
             ShockwavePlayer shockwavePlayer = Main.LocalPlayer.GetModPlayer<ShockwavePlayer>();
             shockwavePlayer.Bee = 220;
             shockwavePlayer.shockwavePosition = Projectile.Center;
             shockwavePlayer.rippleSize = 5;
         }
-
-        /*
-        if (Timer > 5 && Timer < 15 && Main.netMode == NetmodeID.Server)
-        {
-            Invert invert = ModContent.GetInstance<Invert>();
-            invert.alpha = 1f;
-        }
-        else
-        {
-            Invert invert = ModContent.GetInstance<Invert>();
-            invert.alpha = 0;
-        }
-        */
         if (Timer == 2)
         {
             for (float f = 0; f < 32; f++)
@@ -98,11 +90,14 @@ public class RoyalStarBombBoom : ModProjectile,
             PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.Transparent, Color.White, 35, 1768);
         }
 
+        if (Timer >= 27)
+            Projectile.hostile = false;
+
         ShakeScreenPosition.Shake = MathHelper.Lerp(6, 0, EasingFunction.InExpo(Timer / Time));
         if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
         {
             SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
-            effectsPlayer.darknessCurve = MathHelper.Lerp(1.8f, 0f, EasingFunction.InExpo(Timer / (Time/3f)));
+            effectsPlayer.darknessCurve = MathHelper.Lerp(1.2f, 0f, EasingFunction.InExpo(Timer / (Time/3f)));
         }
     }
 
@@ -119,6 +114,33 @@ public class RoyalStarBombBoom : ModProjectile,
             Main.spriteBatch.Draw(drawer);
         }
     }
+
+    private void DrawWaveBoom(SpriteBatch sb, Vector2 screenPos)
+    {
+        RoyalShockwaveCircleShader shockwaevShader = RoyalShockwaveCircleShader.Instance;
+        shockwaevShader.Time = -Timer * 0.02f + 0.8f;
+        sb.Restart(effect: shockwaevShader.Effect);
+        SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+        sbDrawer.CenterOrigin();
+        sbDrawer.scale.X *= MathHelper.Lerp(0f, 3.8f, EasingFunction.OutExpo(Timer / Time));
+        sbDrawer.scale.Y += MathHelper.Lerp(8f, 0f, EasingFunction.InOutExpo(Timer / Time));
+        sbDrawer.scale.Y *= MathHelper.Lerp(0.2f, 2f, EasingFunction.QuadraticBump(Timer / Time));
+        sbDrawer.color *= 0.5f;
+        sbDrawer.color.A = 0;
+        sb.Draw(sbDrawer);
+
+
+        sbDrawer.CenterOrigin();
+        sbDrawer.scale.X *= MathHelper.Lerp(0f, 1.9f, EasingFunction.OutExpo(Timer / Time));
+        sbDrawer.scale.Y += MathHelper.Lerp(4f, 0f, EasingFunction.InOutExpo(Timer / Time));
+        sbDrawer.scale.Y *= MathHelper.Lerp(0.2f, 2f, EasingFunction.QuadraticBump(Timer / Time));
+        sbDrawer.color *= 0.5f;
+        sbDrawer.color.A = 0;
+        sb.Draw(sbDrawer);
+
+        sb.RestartDefaults();
+    }
+
     public override bool PreDraw(ref Color lightColor)
     {
 
@@ -145,7 +167,7 @@ public class RoyalStarBombBoom : ModProjectile,
     public void DrawToRenderTargets()
     {
         PixelationManager.QueueSpritebatchDrawAction(DrawImpactFrames, DrawLayer.OverPlayers);
-
+        PixelationManager.QueueSpritebatchDrawAction(DrawWaveBoom, DrawLayer.OverPlayers);
     }
 }
 
@@ -221,13 +243,16 @@ public class RoyalStarBomb : ModProjectile,
     private Vector2 _originalPosition;
     private Vector2 _bounceOffset;
     private float _scale;
+    private float _shaker;
+    private float _shockTimer;
     private ref float Timer => ref Projectile.ai[0];
     private NPC Parent => Main.npc[(int)Projectile.ai[1]];
     private ref float State => ref Projectile.ai[2];
     private float Size;
     private float MaxScale = 0.8f;
     private float NumPulses => 3;
-    private float Scale => MathHelper.Lerp(0.25f, MaxScale, EasingFunction.InExpo(Size / NumPulses));
+    private float Scale => MathHelper.Lerp(0.35f, MaxScale, EasingFunction.InExpo(Size / NumPulses));
+
 
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -272,23 +297,45 @@ public class RoyalStarBomb : ModProjectile,
     {
         base.AI();
         Timer++;
-
+        if (!NPC.AnyNPCs(ModContent.NPCType<RoyalFox>()))
+            Projectile.Kill();
         if (Size < NumPulses)
         {
-            RoyalFox.ChargeParticles(Projectile.Center, in Timer);
-            if (Timer % 65 == 0)
+            RoyalFox.ChargeParticlesBig(Projectile.Center, in Timer);
+            if (Timer == 1 || Timer % 65 == 0)
             {
                 FXUtil.CreateRipple(Projectile.Center);
                 PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, Color.Transparent, Color.White, 35, 768);
+      
                 if (Main.netMode != NetmodeID.Server)
                 {
                     ScreenShaderSystem system = ModContent.GetInstance<ScreenShaderSystem>();
-                    system.TintScreen(Color.Pink, 0.2f, 15);
+                    system.TintScreen(Color.Pink, 0.4f, 15);
                 }
+                SoundStyle sound;
+                switch (Size)
+                {
+                    default:
+                    case 0:
+                        sound = AssetRegistry.Sounds.AlcaricFox.FenixStarballgrow1;
+                        break;
+                    case 1:
+                        sound = AssetRegistry.Sounds.AlcaricFox.FenixStarballgrow2;
+                        break;
+                    case 2:
+                        sound = AssetRegistry.Sounds.AlcaricFox.FenixStarballgrow3;
+                        break;
+                }
+                SoundEngine.PlaySound(sound);
+                _shockTimer = 0;
+                _bounceOffset = Main.rand.NextFloat(-2f, 2f).ToRotationVector2();
+                _bounceOffset *= 115;
                 Size++;
             }
         }
 
+        _shockTimer++;
+        _shaker *= 0.98f;
         if (Timer % 4 == 0)
         {
             Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(256, 256);
@@ -303,6 +350,11 @@ public class RoyalStarBomb : ModProjectile,
             }
         }
 
+
+        if (_holding)
+        {
+            Projectile.hostile = false;
+        }
         if (!_holding)
         {
             if (State != 0)
@@ -358,7 +410,8 @@ public class RoyalStarBomb : ModProjectile,
         base.OnKill(timeLeft);
         if (this.OwnedByLocalClient())
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<RoyalStarBombBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                ModContent.ProjectileType<RoyalStarBombBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
     }
 
@@ -374,6 +427,13 @@ public class RoyalStarBomb : ModProjectile,
 
     private void DrawStarBomb(SpriteBatch sb)
     {
+        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Projectile.Center + _bounceOffset);
+        Color color = Color.Lerp(Color.Blue, Color.Pink, _shockTimer / 30);
+        circleDrawer.color = color * 0.75f * MathHelper.Lerp(1f, 0f, EasingFunction.Clamp(_shockTimer / 30));
+        circleDrawer.color.A = 0;
+        circleDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One * 12, _shockTimer / 30f);
+        Main.spriteBatch.Draw(circleDrawer);
+
         SpritebatchDrawer glowBall2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
         glowBall2.color = Color.White * 0.9f * ExtraMath.Osc(0.5f, 1f, speed: 6);
         glowBall2.color.A = 0;
@@ -431,7 +491,7 @@ public class RoyalStarBomb : ModProjectile,
         glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center + _bounceOffset);
         glowBall.color = Color.White * 0.92f;
         glowBall.color.A = 0;
-        glowBall.scale *= 2 * _scale * MathHelper.Lerp(0, 5f, EasingFunction.InExpo((_bounceOffset.Length() / 115f)));
+        glowBall.scale *= 2 * _scale * MathHelper.Lerp(0, 6.4f, EasingFunction.InExpo((_bounceOffset.Length() / 115f)));
         sb.Draw(glowBall);
     }
     private float StarryTrailWidthFunction(float completionRatio)

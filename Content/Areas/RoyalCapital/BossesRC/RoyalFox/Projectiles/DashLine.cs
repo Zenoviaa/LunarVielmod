@@ -22,7 +22,7 @@ public class DashLine : ModProjectile,
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
         float collisionPoint = 0;
-        if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), EndPoint, StartPoint, 24, ref collisionPoint))
+        if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), EndPoint, StartPoint, 10, ref collisionPoint))
             return true;
 
         return false;
@@ -106,7 +106,7 @@ public class DashLine : ModProjectile,
     private void DrawLine(SpriteBatch sb, Vector2 screenPos)
     {
         float alpha = EasingFunction.OutSine(Timer / 60) * MathHelper.Lerp(1f, 0f, DeathTimer / DeathTime);
-        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4"), Projectile.Center - Projectile.velocity * 1200);
+        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/RayLight4"), Projectile.Center - Projectile.velocity * 3000);
         lineDrawer.color = Color.Lerp(Color.Black, Color.White, alpha);
         lineDrawer.color.A = 0;
         lineDrawer.rotation = Projectile.velocity.ToRotation();
@@ -114,7 +114,7 @@ public class DashLine : ModProjectile,
 
         Vector2 scale = Vector2.Lerp(new Vector2(0f, 1f), new Vector2(2f, 1f), alpha);
         scale.Y = 0.75f;
-        scale.X *= 12;
+        scale.X *= 18;
         lineDrawer.scale = scale;
         sb.Draw(lineDrawer);
     }

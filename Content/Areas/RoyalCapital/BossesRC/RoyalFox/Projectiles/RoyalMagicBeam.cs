@@ -1,5 +1,6 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Effects.RoyalMagic;
@@ -8,6 +9,7 @@ using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox.Projectiles;
@@ -15,6 +17,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox.Projectiles;
 public class RoyalMagicBeam : ModProjectile,
     IDrawToRenderTarget
 {
+    private float Multiplier => 8;
     public override string Texture => TextureRegistry.EmptyTexture;
     private ref float Timer => ref Projectile.ai[0];
     private ref float InitialRadians => ref Projectile.ai[1];
@@ -57,8 +60,9 @@ public class RoyalMagicBeam : ModProjectile,
         Projectile.hostile = true;
         Projectile.tileCollide = false;
         Projectile.penetrate = -1;
-        Projectile.timeLeft = 80;
+        Projectile.timeLeft = 80 * (int)Multiplier;
         Projectile.ignoreWater = true;
+        Projectile.extraUpdates = (int)Multiplier - 1;
     }
     public override void AI()
     {
@@ -66,6 +70,8 @@ public class RoyalMagicBeam : ModProjectile,
         Timer++;
         if(Timer == 1)
         {
+
+
             FXUtil.CreateRipple(Projectile.Center);
             FXUtil.CreateRipple(Projectile.Center);
             for(float n =0; n < 32; n++)
@@ -95,13 +101,17 @@ public class RoyalMagicBeam : ModProjectile,
             InitialRadians = Projectile.velocity.ToRotation();
         }
 
-        float ratio = Timer / 80f;
+        float ratio = Timer / (80f * Multiplier);
         float ease1 = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(ratio));
         float ease2 = MathHelper.Lerp(1f, 0, EasingFunction.OutExpo(ratio));
         float ease3 = MathHelper.Lerp(ease1, ease2, EasingFunction.InOutSine(ratio));
         float newRadians = Utils.AngleLerp(InitialRadians, InitialRadians + TargetRadiansOffset, ease3);
-        Projectile.velocity = newRadians.ToRotationVector2();
-
+        Projectile.velocity = newRadians.ToRotationVector2() * 4000;
+        if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
+        {
+            SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
+            effectsPlayer.darknessCurve = MathHelper.Lerp(0.5f, 0f, EasingFunction.InOutExpo(Timer / (60f*Multiplier)));
+        }
 
         ShakeScreenPosition.Shake = MathHelper.Lerp(6, 0, ratio);
     }
@@ -120,12 +130,42 @@ public class RoyalMagicBeam : ModProjectile,
         base.OnHitNPC(target, hit, damageDone);
     }
 
+    private void DrawCircles(SpriteBatch sb, Vector2 screenPos)
+    {
+        float time = 25 * Multiplier;
+        StarBombBoomShader shockwave = ShaderContent.GetInstance<StarBombBoomShader>();
+        shockwave.Time = MathHelper.Lerp(0f, 0.5f, EasingFunction.InExpo(Timer / time));
+        sb.Restart(effect: shockwave.Effect);
+        for (int i = 0; i < 3; i++)
+        {
+            float offset = 192;
+            float between = 128;
+            Vector2 offse2t = Projectile.velocity.SafeNormalize(Vector2.Zero) * offset;
+            Vector2 pos = Projectile.Center + offse2t + Projectile.velocity.SafeNormalize(Vector2.Zero) * between * i;
+            
+            float scale = MathHelper.Lerp(1f, 0.2f, (float)i / 4f);
+            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<StarBombLaserShockwave>()], pos);
+            float yScale = MathHelper.Lerp(0.2f, 2.3f, EasingFunction.OutExpo(Timer / time)) * scale * 0.7f;
+            circleDrawer.scale.Y *= yScale;
+            circleDrawer.scale *= 0.75f;
+            circleDrawer.rotation = Projectile.velocity.ToRotation();
+
+            Color color = Color.Lerp(Color.Blue, Color.Pink, scale);
+            color = Color.Lerp(color, Color.Pink, EasingFunction.OutExpo(Timer / (time/2f)));
+          //  color *= MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(Timer / time)) * 0.8f;
+
+            circleDrawer.color = color;
+            Main.spriteBatch.Draw(circleDrawer);
+        }
+        sb.RestartDefaults();
+    }
+
     private void DrawRoyalBeam(SpriteBatch sb, Vector2 screenPos)
     {
         RoyalMagicBeamShader beamShader = ShaderContent.GetInstance<RoyalMagicBeamShader>();
         beamShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
         beamShader.Tiling = new Vector2(3f, 1f);
-        beamShader.BloomColor = Color.Lerp(Color.Blue, Color.Violet, EasingFunction.OutExpo(Timer / 80f));
+        beamShader.BloomColor = Color.Lerp(Color.Blue, Color.Violet, EasingFunction.OutExpo(Timer / (80f * Multiplier)));
         beamShader.Distortion = 0.2f;
         beamShader.Time = Main.GlobalTimeWrappedHourly * 4;
         sb.Restart(SpriteSortMode.Immediate, effect: beamShader.Effect);
@@ -134,8 +174,9 @@ public class RoyalMagicBeam : ModProjectile,
         beamDrawer.rotation = Projectile.velocity.ToRotation();
         beamDrawer.LeftCenterOrigin();
         beamDrawer.scale.X *= 3;
-        beamDrawer.scale.Y *= MathHelper.Lerp(0.5f, 1f, EasingFunction.OutExpo(Timer / 80f));
-        beamDrawer.scale.Y *= MathHelper.Lerp(0.15f, 0f, EasingFunction.InExpo(Timer / 80f));
+        beamDrawer.scale.Y *= MathHelper.Lerp(0.5f, 1f, EasingFunction.OutExpo(Timer / (80f * Multiplier)));
+        beamDrawer.scale.Y *= MathHelper.Lerp(0.15f, 0f, EasingFunction.InExpo(Timer / (80f * Multiplier)));
+        beamDrawer.scale.Y *= MathHelper.Lerp(1.5f, 1f, EasingFunction.OutExpo(Timer / (40f * Multiplier)));
         beamDrawer.color = Color.White * 0.5f;
         beamDrawer.color.A = 0;
         sb.Draw(beamDrawer);
@@ -151,6 +192,7 @@ public class RoyalMagicBeam : ModProjectile,
 
     public void DrawToRenderTargets()
     {
+        PixelationManager.QueueSpritebatchDrawAction(DrawCircles, DrawLayer.OverPlayers);
         PixelationManager.QueueSpritebatchDrawAction(DrawRoyalBeam);
     }
 }

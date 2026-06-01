@@ -31,8 +31,8 @@ public class RoyalMagicMiniStar : ModProjectile,
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 32;
-        Projectile.height = 32;
+        Projectile.width = 16;
+        Projectile.height = 16;
         Projectile.timeLeft = 360;
         Projectile.hostile = false;
         Projectile.tileCollide = false;

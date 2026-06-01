@@ -29,7 +29,28 @@ public partial class RoyalFox
         RoyalMagicRenderer royalMagicRenderer = ModContent.GetInstance<RoyalMagicRenderer>();
         royalMagicRenderer.SpawnParticle(position, velocity, 130);
     }
-
+    public static void PlayImpactSound(Vector2 position)
+    {
+        int soundIndex = Main.rand.Next(4);
+        SoundStyle dashSound;
+        switch (soundIndex)
+        {
+            default:
+            case 0:
+                dashSound = AssetRegistry.Sounds.AlcaricFox.Fenixsmallcrash1;
+                break;
+            case 1:
+                dashSound = AssetRegistry.Sounds.AlcaricFox.Fenixsmallcrash2;
+                break;
+            case 2:
+                dashSound = AssetRegistry.Sounds.AlcaricFox.Fenixsmallcrash3;
+                break;
+            case 3:
+                dashSound = AssetRegistry.Sounds.AlcaricFox.Fenixsmallcrash4;
+                break;
+        }
+        SoundEngine.PlaySound(dashSound, position);
+    }
     public static void PlayDashSound(Vector2 position)
     {
         int soundIndex = Main.rand.Next(4);
