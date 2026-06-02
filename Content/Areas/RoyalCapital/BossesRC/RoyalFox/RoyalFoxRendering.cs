@@ -39,6 +39,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public const int Num_Perspectives = 8;
         public const int Default_Capacity = 3;
 
+
         public Texture2D texture;
         public Color drawColor;
         public float alpha;
@@ -60,8 +61,8 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
 
 
         public bool flipX;
-
-
+        public bool useOriginalZForLayering;
+        public float compareZ => useOriginalZForLayering ? initialPosition.Z : position.Z;
         public Vector4 eulerAngles;
         public float fullRotation;
         public bool useFreeAngle;
@@ -73,6 +74,13 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
         public FoxDegrees perspectiveRotation;
         public bool noDarken;
         public ExtraDraws postDraw;
+        
+        public void SetTexure(Texture2D newTexture)
+        {
+            texture = newTexture;
+            frameWidth = texture.Width;
+            frameHeight = texture.Height / Num_Perspectives;
+        }
         private void SetPerspective()
         {
 
@@ -395,6 +403,16 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox
             //DrawWireframe(spriteBatch, drawPosition);
         }
 
+        public float FinalAngle
+        {
+            get
+            {
+                float drawAngle = angle + fakeAngle;
+                if (angleOverride.HasValue)
+                    drawAngle = angleOverride.Value;
+                return drawAngle;
+            }
+        }
         private void DrawWireframe(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
             Vector3 forwardVector = Vector3.Zero;
@@ -439,7 +457,7 @@ public class FoxSegmentComparer : IComparer<FoxSegment>
 {
     public int Compare(FoxSegment x, FoxSegment y)
     {
-        return y.position.Z.CompareTo(x.position.Z);
+        return y.compareZ.CompareTo(x.compareZ);
     }
 }
 public class FoxChildComparer : IComparer<FoxSegment>
@@ -470,13 +488,22 @@ public class RoyalFoxRig
     public readonly FoxSegment[] frontBehindLeg;
     public readonly FoxSegment[] bodyParts;
     public readonly FoxSegment headPart;
+
+    public Texture2D headSwordTexture;
+    public Texture2D headTexture;
+    public bool useSword;
     public float LegDepth => 17;
     public RoyalFoxRig
         (Texture2D[] backLeg,
         Texture2D[] frontLeg,
         Texture2D[] body,
-        Texture2D head)
+        Texture2D head,
+        Texture2D headSword)
     {
+        headTexture = head;
+        headSwordTexture = headSword;
+        useSword = false;
+
         zComparer = new FoxSegmentComparer();
         parentsComparer = new FoxChildComparer();
         //This needs to be built from back t o front
@@ -545,6 +572,7 @@ public class RoyalFoxRig
         for(int i = 0; i < bodyParts.Length; i++)
         {
             bodyParts[i].noDarken = true;
+            bodyParts[i].useOriginalZForLayering = true;
         }
 
         headPart = headSegment;
@@ -667,7 +695,9 @@ public class RoyalFoxRig
     }
     public void Update()
     {
-
+        headPart.SetTexure(useSword ? headSwordTexture : headTexture);
+        headPart.origin = useSword ?  new Vector2(35, 96) : new Vector2(48, 42) ;
+       // headPart.origin = new Vector2(48, 42);
         for (int i = 0; i < segmentsByNumberOfParents.Length; i++)
         {
             var segment = segmentsByNumberOfParents[i];

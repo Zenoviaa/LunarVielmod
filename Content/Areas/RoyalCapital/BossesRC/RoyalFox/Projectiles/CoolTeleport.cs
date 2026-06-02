@@ -34,7 +34,7 @@ public class CoolTeleport : ModProjectile,
         Timer++;
         if (Timer == 1)
         {
-            RoyalFox.PlayAirbounceSuond(Projectile.position);
+            RoyalFox.PlayImpactSound(Projectile.position);
             PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, Color.White, Color.Transparent, 45, 384);
             for (float f = 0; f < 4; f++)
             {

@@ -8,6 +8,7 @@ using Stellamod.Core.InverseKinematics;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.SwingSystem;
 using Stellamod.Core.Utilities;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
@@ -18,6 +19,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Stellamod.Core.AssetReferences.Effects;
 
 namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 
@@ -34,6 +36,12 @@ public partial class RoyalFox : ScarletBoss,
         Full_Control = 2
     }
 
+    private float _spiralDashTrailAlpha;
+
+    private float _swingTrailEndRatio;
+    private float _swingTrailAlpha;
+    private Vector2 _swingVelocity;
+    
     //Teleport
     private float _teleportAlpha;
     private Vector2 _teleportTelegraphPosition;
@@ -102,6 +110,7 @@ public partial class RoyalFox : ScarletBoss,
         Precision_SwordSlashChase,
         Precision_SpinningCharge,
         Precision_CometTeleportShots,
+        Precision_Beyblade,
 
         Phase2_Transition,
         Tired,
@@ -190,7 +199,7 @@ public partial class RoyalFox : ScarletBoss,
     private ref float RegularRotation => ref Rig.rootSegment.eulerAngles.W;
     private ref float ZRotation => ref Rig.rootSegment.eulerAngles.X;
 
-    private Vector2 HeadPosition => Rig.headPart.worldPosition;
+    public Vector2 HeadPosition => Rig.headPart.worldPosition;
 
     //Dash Dance Attack
     private int DashDanceDamage => 80;
@@ -229,23 +238,30 @@ public partial class RoyalFox : ScarletBoss,
     //Sparkle Star Rain
     private int SparkleStarDamage => 70;
     private float SparkleStarRainTime => 490;
-    private float TimeBetweenSparkleStars => 15;
+    private float TimeBetweenSparkleStars => 60;
 
     //Tired
-    private float TiredTime => 180;
+    private float TiredTime => 600;
 
     //Spinning Charge
     private float SpinningChargePrepTime => 120;
-    private float SpinningChargeSpeed => 25;
-    private float AirbounceChainCount => 3;
+    private float SpinningChargeSpeed => MathHelper.Lerp(75, 25, _miniAttackCount / AirbounceChainCount);
+    private float AirbounceChainCount => 7;
     private float SpinningChargeBurstCount => 3;
 
     //Comet Teleport Prep Time
     private float CometTeleportPrepTime => 80;
-    private int CometTeleportDamage => 100;
-    private float CometBackflipTime => MathHelper.Lerp(90, 60, EasingFunction.OutSine(AttackCounter / CometTeleportCount));
+    private int CometTeleportDamage => 60;
+    private float CometBackflipTime => MathHelper.Lerp(100, 50, EasingFunction.OutSine(AttackCounter / CometTeleportCount));
     private float CometTeleportCount => 21;
     private float CometTeleportEndTime => 45f;
+
+    //Sword Slash
+    private float SwordSlashPrepTime => 100;
+    private float SwordSlashSlashTime => 100;
+    private float SwordSlashBetweenTime => 60;
+    private float SwordSlashCount => 4;
+    private int SwordSlashDamage => 80;
     public Texture2D GetSubTexture(string fileName)
     {
         string path = Texture + $"_{fileName}";
@@ -272,7 +288,8 @@ public partial class RoyalFox : ScarletBoss,
         bodyTextures[2] = GetSubTexture("Body1");
         bodyTextures[3] = GetSubTexture("Neck");
 
-        var rig = new RoyalFoxRig(backLegTextures, frontLegTextures, bodyTextures, head);
+        Texture2D headSwordTexture = GetSubTexture("HeadSword");
+        var rig = new RoyalFoxRig(backLegTextures, frontLegTextures, bodyTextures, head, headSwordTexture);
         rig.frontLegFrontThighSegment.postDraw = DrawFrontWing;
         rig.frontLegBehindThighSegment.postDraw = DrawBackWing;
         return rig;
@@ -395,7 +412,11 @@ public partial class RoyalFox : ScarletBoss,
             }
         }
         PreUpdateRig();
+        _swingTrailAlpha = MathHelper.Lerp(_swingTrailAlpha, 0f, 0.1f);
         _gravityFieldAlpha = MathHelper.Lerp(_gravityFieldAlpha, 0f, 0.1f);
+        _spiralDashTrailAlpha = MathHelper.Lerp(_spiralDashTrailAlpha, 0f, 0.1f);
+        Rig.useSword = false;
+        _tailInFront = true;
         switch (State)
         {
             default:
@@ -418,7 +439,7 @@ public partial class RoyalFox : ScarletBoss,
                 break;
 
             case AIState.Zoom_BigFatLaser:
-                _tailInFront = true;
+               
                 AI_BigFatLaser();
                 break;
 
@@ -429,9 +450,11 @@ public partial class RoyalFox : ScarletBoss,
             case AIState.Precision_CometTeleportShots:
                 AI_CometTeleportShots();
                 break;
+            
             case AIState.Precision_SpinningCharge:
                 AI_SpinningCharge();
                 break;
+
             case AIState.Precision_SwordSlashChase:
                 AI_SwordChase();
                 break;
@@ -501,6 +524,16 @@ public partial class RoyalFox : ScarletBoss,
         NPC.Center = pos;
     }
 
+    public Vector2 CalculateSwingOffset(Vector2 shootVelocity, float interpolant)
+    {
+        float swingRange = MathHelper.ToRadians(270);
+        float ease = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuickOutSlowIn(interpolant));
+        float ease2 = MathHelper.Lerp(0f, 1f, EasingFunction.InOutCirc(interpolant));
+        float ease3 = MathHelper.Lerp(ease, ease2, EasingFunction.InOutCirc(interpolant));
+        Vector2 swingOffset = OvalSwing.CalculateXY(ease3, shootVelocity, swingRange, new Vector2(192, 192), 1);
+        return swingOffset;
+    }
+
     #region Precision Mode
 
 
@@ -516,7 +549,201 @@ public partial class RoyalFox : ScarletBoss,
                         NPC.TargetClosest();
                     }
 
-                
+                    NPC.velocity.X += 0.05f;
+                    RegularRotation = Utils.AngleLerp(RegularRotation, NPC.velocity.ToRotation(), 0.1f);
+                    ZRotation = Utils.AngleLerp(ZRotation, MathHelper.ToRadians(90), 0.1f);
+                    _goInvisible = true;
+                    _outliner.warning = true;
+                    if(Timer >= SwordSlashPrepTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    if(Timer == 1)
+                    {
+                        Vector2 teleportOffset = -Vector2.UnitY * 384;
+                        float radiansOffset = AttackCounter / 4 * MathHelper.TwoPi;
+                        teleportOffset = teleportOffset.RotatedBy(radiansOffset);
+                        _dashLineVelocity = teleportOffset;
+                        Vector2 teleportPosition = MyTarget.Center + teleportOffset;
+                   //     TeleportEffect(teleportPosition);
+                        Teleport(teleportPosition);
+                 
+   
+                    }
+
+                    if(Timer == 3)
+                    {
+
+                        PixelPrimitiveCircleFactory.CreateGenericInBoom(NPC.Center, Color.White, Color.Transparent, 60, 384);
+                    }
+
+                    Rig.useSword = true;
+
+                    //OKAY
+                    //So we have the point to make hte slash, it's just like any other slash
+                    if(Timer < SwordSlashSlashTime * 0.75f)
+                        _startDashPoint = MyTarget.Center + _dashLineVelocity;
+                    if (Timer >= SwordSlashSlashTime * 0.79f)
+                        _goInvisible = true;
+
+                    int halfTime = (int)(SwordSlashSlashTime * 0.5f);
+ 
+                    Vector2 shootVelocity = -_dashLineVelocity;
+               
+                    float swingRange = MathHelper.ToRadians(245);
+                    float interpolant = Timer / SwordSlashSlashTime;
+                    float ease = MathHelper.Lerp(0f, 0.3f, EasingFunction.QuickOutSlowIn(interpolant));
+                    float ease2 = MathHelper.Lerp(0f, 1f, EasingFunction.InOutCirc(interpolant));
+                    float ease3 = MathHelper.Lerp(ease, ease2, EasingFunction.InOutCirc(interpolant));
+                    Vector2 swingOffset = CalculateSwingOffset(shootVelocity, interpolant);//OvalSwing.CalculateXY(ease3, shootVelocity, swingRange, new Vector2(128, 192), 1);
+                    Vector2 swingPosition = _startDashPoint + swingOffset;
+
+                    Vector2 point = swingPosition;
+                    point += _swingVelocity.SafeNormalize(Vector2.Zero) * 196;
+                  
+                    if (Timer == halfTime)
+                    {
+                        ShakeScreenPosition.Shake = 4;
+                        FXUtil.ShakeCamera(NPC.Center, 1024, 4);
+                        if (MultiplayerHelper.IsHost)
+                        {
+                      
+                            Projectile.NewProjectile(SourceFromThis, _startDashPoint + shootVelocity, Vector2.Zero, ModContent.ProjectileType<MagicSwordSlash>(), SwordSlashDamage, 1, Main.myPlayer);
+                        }
+                        PlaySwordSwingSword(MyTarget.Center);
+                    }
+
+                    if(Timer >= SwordSlashSlashTime * 0.5f)
+                    {
+                        _swingTrailEndRatio = MathHelper.Lerp(0f, 1f, ease3);
+                        _swingTrailAlpha = EasingFunction.QuadraticBump(ease3 * EasingFunction.InSine(interpolant));
+                    }
+
+                    if (Timer < 30 && Timer > 6)
+                    {
+                        float t = Timer; 
+                        float pr = t / 30f;
+                        _eyeFlashAlpha = EasingFunction.QuadraticBump(pr);
+                        _eyeFlashPosition = Rig.headPart.worldPosition;
+                        _eyeFlashOffset = Vector2.Zero;
+
+                    }
+                    if (Timer == SwordSlashSlashTime - 10)
+                    {
+                        float endPoint = _swingTrailEndRatio;
+                        Vector2 p = _startDashPoint + CalculateSwingOffset(_swingVelocity, endPoint);
+                        p += _swingVelocity.SafeNormalize(Vector2.Zero) * 200;
+                        var fx = FXUtil.GlowCircleBoom(p, Color.White, Color.Blue, Color.DarkBlue, 35, 0.24f);
+                        fx.Scale *= 1.9f;
+                        for(float f = 0; f < 18; f++)
+                        {
+                            Vector2 ve = (p - _startDashPoint).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 45f);
+                            ve = ve.RotatedByRandom(MathHelper.ToRadians(65));
+                            ve = ve.RotatedBy(MathHelper.ToRadians(-90));
+                            var d = DustParticle.Spawn(p, ve);
+                            d.outerColor = Color.Lerp(Color.Blue, Color.Pink, Main.rand.NextFloat(0.00f, 1.00f));
+                            d.noTileCollide = true;
+                            d.dampening = 0.1f;
+                            d.gravity = 0;
+                            d.Scale *= 2;
+                        }
+                    }
+                  
+                    _swingVelocity = shootVelocity;
+                    for(int i = 0; i < Rig.bodyParts.Length; i++)
+                    {
+                        var part = Rig.bodyParts[i];
+                        float radians = MathHelper.ToRadians(MathHelper.Lerp(45, -45, ease3));
+                        part.eulerAngles.W = radians;// MathHelper.Lerp(radians, 0, (float)i / (float)Rig.bodyParts.Length);
+                    }
+
+                    if(Timer < SwordSlashSlashTime * 0.05f)
+                    {
+                        _goInvisible = true;
+                    }
+                    if(Timer >= SwordSlashSlashTime * 0.4f)
+                    {
+                        Vector2 so = CalculateSwingOffset(shootVelocity, Main.rand.NextFloat(0f, 1f));//OvalSwing.CalculateXY(ease3, shootVelocity, swingRange, new Vector2(128, 192), 1);
+                        Vector2 sp = _startDashPoint + so;
+                        sp += _swingVelocity.SafeNormalize(Vector2.Zero) * 196;
+                        SpawnCometStarParticle(sp, Vector2.Zero, 70);
+                        SpawnSmokeParticle(sp + Main.rand.NextVector2Circular(32, 32), Vector2.Zero, 100);
+             
+                        if (Main.rand.NextBool(4))
+                        {
+                            var dp = DustParticle.Spawn(sp, Vector2.Zero);
+                            dp.outerColor = Color.DarkGray;
+                            dp.gravity = 0;
+                            dp.noTileCollide = true;
+                            dp.dampening = 0.07f;
+                        }
+                        if (Main.rand.NextBool(4))
+                        {
+                            var dp = RoyalMagicStarParticle.Spawn(sp, Vector2.Zero);
+                            dp.color = Color.LightBlue;
+                            dp.Scale *= 0.3f;
+                        }
+                    }
+                  
+                    if(Timer <= SwordSlashSlashTime * 0.1f)
+                    {
+                        ZRotation =0;
+                    }
+                    else if(Timer >= SwordSlashSlashTime * 0.5f)
+                    {
+                 
+                       // WalkParticles();
+                        ZRotation += 0.12f;
+                    }
+                    else
+                    {
+                  //      _renderDashTrail = true;
+                        ZRotation = Utils.AngleLerp(ZRotation, MathHelper.ToRadians(90), 0.1f);
+                    }
+           
+                    AnimateTorpedo();
+
+                    Vector2 moveVelocity = swingPosition - NPC.Center;
+                    NPC.velocity = moveVelocity;
+
+                    float targetRotation = (swingPosition - _startDashPoint).ToRotation();
+                    RegularRotation = targetRotation;
+              
+                    _outliner.attacking = true;
+                    if(Timer >= SwordSlashSlashTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    _goInvisible = true;
+                    NPC.velocity *= 0.98f;
+                    if(Timer >= SwordSlashBetweenTime)
+                    {
+                        Timer = 0;
+                        AttackCounter++;
+                        if(AttackCounter >= SwordSlashCount)
+                        {
+                            AttackCycle++;
+                        }
+                        else
+                        {
+                            AttackCycle = 1;
+                        }
+                    }
+                }
+                break;
+            case 3:
+                {
+                    SwitchState(AIState.Idle);
                 }
                 break;
         }
@@ -575,8 +802,8 @@ public partial class RoyalFox : ScarletBoss,
                             midVelocity = midVelocity.SafeNormalize(Vector2.Zero);
                             midVelocity *= 15;
 
-                            float spread = MathHelper.ToRadians(60);
-                            float num = 3;
+                            float spread = MathHelper.ToRadians(MathHelper.Lerp(60, 180, AttackCounter / CometTeleportCount));
+                            float num = MathHelper.Lerp(3, 6, AttackCounter / CometTeleportCount);
                             for(int i = 0; i < num; i++)
                             {
                                 float ratio = (float)i / num;
@@ -659,7 +886,7 @@ public partial class RoyalFox : ScarletBoss,
                     _dashLineVelocity = _dashLineVelocity.MoveTowards(directionToTarget, 0.5f);
                     _startDashPoint = NPC.Center;
 
-                    RegularRotation = MathHelper.Lerp(RegularRotation, _dashLineVelocity.ToRotation(), 0.1f);
+                    RegularRotation = Utils.AngleLerp(RegularRotation, _dashLineVelocity.ToRotation(), 0.1f);
 
                     float ratio = Timer / SpinningChargePrepTime;
                     _roaringCircleScale = MathHelper.SmoothStep(5f, 0f, ratio);
@@ -702,17 +929,24 @@ public partial class RoyalFox : ScarletBoss,
                     {
                         //So basically
                         //Take the current point, then get a point behind the player
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, HeadPosition, Vector2.Zero, ModContent.ProjectileType<SpiralDashTrail>(), 1, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                        }
                     }
 
                     Vector2 directionToTarget = (MyTarget.Center - NPC.Center);
                     directionToTarget = directionToTarget.SafeNormalize(Vector2.Zero);
                     Vector2 targetVelocity = directionToTarget * SpinningChargeSpeed;
-                    ZRotation += 0.15f;
-                    RegularRotation = Utils.AngleLerp(RegularRotation, targetVelocity.ToRotation(), 0.1f);
+                    ZRotation += MathHelper.Lerp(0.45f, 0.12f, EasingFunction.InOutExpo(Timer /40f));
+                    RegularRotation = NPC.velocity.ToRotation();
                     AnimateTorpedo();
                     WalkParticles();
+                    RoyalFox.SpawnCometStarParticle(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero), 65);
+                    _spiralDashTrailAlpha = EasingFunction.QuadraticBump(Timer / 40f);
                     _contactDamage = true;
                     _outliner.attacking = true;
+                    _renderDashTrail = true;
                     if(Timer % 8 == 0)
                     {
                         var donut = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero));
@@ -721,9 +955,11 @@ public partial class RoyalFox : ScarletBoss,
                     float dp = Vector2.Dot(directionToTarget, NPC.velocity.SafeNormalize(Vector2.Zero));
                     if(dp > 0)
                     {
-                        NPC.velocity = NPC.velocity.MoveTowards(targetVelocity, 3);
+                        NPC.velocity = NPC.velocity.MoveTowards(targetVelocity, 0.6f);
+                        NPC.velocity *= MathHelper.Lerp(1.02f, 1f, _miniAttackCount / SpinningChargeBurstCount);
                     }
-                    else
+                    
+                    if(Timer >= 40)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -738,7 +974,7 @@ public partial class RoyalFox : ScarletBoss,
                     RegularRotation = NPC.velocity.ToRotation();
                     AnimateTorpedo();
                     _outliner.warning = true;
-                    if (Timer >= 25)
+                    if (Timer >= 10)
                     {
                  
                         Timer = 0;
@@ -757,6 +993,7 @@ public partial class RoyalFox : ScarletBoss,
                         }
                         else
                         {
+                            NPC.velocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 15;
                             PlayAirbounceSuond(MyTarget.Center);
                             FXUtil.CreateRipple(HeadPosition);
                             FXUtil.GlowCircleBoom(HeadPosition, Color.White, Color.Blue, Color.DarkBlue, duration: 40, baseSize: 0.23f);
@@ -764,10 +1001,12 @@ public partial class RoyalFox : ScarletBoss,
                             {
                                 Vector2 vel = NPC.velocity.SafeNormalize(Vector2.Zero);
                                 vel *= MathHelper.Lerp(3f, 9f, f / 3f);
-                                var donut = LegacyParticle.NewParticle<GlowDonutParticle>(HeadPosition, vel.SafeNormalize(Vector2.Zero));
+                                var donut = LegacyParticle.NewParticle<GlowDonutParticle>(HeadPosition + vel * 38, vel.SafeNormalize(Vector2.Zero));
+                                donut.Scale *= 3 * MathHelper.Lerp(1f, 1.5f, f / 3f);
+
                             }
 
-                            for(float f = 0; f < 10; f++)
+                            for(float f = 0; f < 16; f++)
                             {
                                 Vector2 vel = NPC.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5, 45);
                                 vel = vel.RotatedByRandom(MathHelper.ToRadians(60));
@@ -815,6 +1054,25 @@ public partial class RoyalFox : ScarletBoss,
         {
             case 0:
                 {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        Teleport(MyTarget.Center + new Vector2(0, -1500));
+                    }
+
+                    NPC.velocity *= Vector2.Zero;
+              
+                    FaceTargetWhileFlying();
+                    AnimateFlying();
+                    if(Timer >= 180)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
                     _zoomMode = false;
                     if(Timer == 1)
                     {
@@ -829,6 +1087,14 @@ public partial class RoyalFox : ScarletBoss,
     
                     FaceTargetWhileFlying();
                     AnimateFlying();
+                    if (Main.rand.NextBool(8))
+                    {
+                        Vector2 velocity = Rig.headPart.FinalAngle.ToRotationVector2();
+                        var sp = SmokeParticle.SpawnInAlphaLayer(HeadPosition, velocity * 4);
+                        sp.initialColor = Color.White;
+                        sp.fadeToColor = Color.DarkGray;
+                    }
+
                     if (Main.rand.NextBool(4))
                     {
                         var dp = SparkleParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(128, 128), Main.rand.NextVector2Circular(4, 4));
@@ -839,7 +1105,8 @@ public partial class RoyalFox : ScarletBoss,
                         dp.Scale *= 0.6f;
                     }
 
-                    NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer * 0.5f) * 0.2f, 0.1f);
+                    _tailAnimation = TailAnimation.Loose;
+                    NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer * 0.5f) * 1f, 0.1f);
                     _gravityFieldAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / 60f));
                     if(Timer >= TiredTime)
                     {
@@ -848,10 +1115,29 @@ public partial class RoyalFox : ScarletBoss,
                     }
                 }
                 break;
-
-            case 1:
+            case 2:
                 {
-                    SwitchState(AIState.Idle);
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        Vector2 teleportPoint = MyTarget.Center + new Vector2(0, -2000);
+                        TeleportEffect(teleportPoint);
+                        PixelPrimitiveCircleFactory.CreateGenericInBoom(HeadPosition, Color.Transparent, Color.White, 60, 512);
+                        Teleport(teleportPoint);
+                    }
+                    NPC.velocity *= 0.98f;
+                    AnimateFlying();
+                    FaceTargetWhileFlying();
+                    if(Timer >= 180)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    ChooseAttack();
                 }
                 break;
         }
@@ -880,8 +1166,14 @@ public partial class RoyalFox : ScarletBoss,
         if (Timer == 1)
         {
             NPC.TargetClosest();
+
         }
+
         NPC.velocity *= 0.8f;
+        FaceTargetWhileFlying();
+        AnimateFlying();
+
+       // NPC.velocity *= 0.8f;
         if (Timer >= 100 || _zoomMode)
         {
             ChooseAttack();
@@ -898,7 +1190,8 @@ public partial class RoyalFox : ScarletBoss,
             else
                 SwitchState(PrecisionModePatternManager.NextPattern());
         }
-        SwitchState(AIState.Precision_CometTeleportShots);
+
+     //    SwitchState(AIState.Precision_SwordSlashChase);
     }
 
  
@@ -926,14 +1219,14 @@ public partial class RoyalFox : ScarletBoss,
 
     private void FaceTargetWhileFlying()
     {
-        Vector2 facingDirection = Vector2.UnitX * FacingDirectionToTarget;
-        Vector2 up = facingDirection.RotatedBy(-MathHelper.ToRadians(75) * FacingDirectionToTarget);
+        Vector2 facingDirection = Vector2.UnitX ;
+        Vector2 up = facingDirection.RotatedBy(-MathHelper.ToRadians(85));
         RegularRotation = up.ToRotation();
 
         float targetRotation = 0;
         if (FacingDirectionToTarget == -1)
-            targetRotation = MathHelper.Pi;
-        ZRotation = Utils.AngleLerp(ZRotation, targetRotation, 0.1f);
+            targetRotation = -MathHelper.Pi;
+        ZRotation = Utils.AngleLerp(ZRotation, targetRotation, 0.05f);
     }
 
     private void AI_SparkleStarRain()

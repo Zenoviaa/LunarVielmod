@@ -82,6 +82,36 @@ namespace Stellamod.Core.SwingSystem
             yOffset = yRadius * MathF.Cos(rads);
 
         }
+
+        public static Vector2 CalculateXY(float interpolant, Vector2 velocity, float swingRadians, Vector2 swingRadius, float direction = 1)
+        {
+            float range = swingRadians;
+            float startRads = -range / 2;
+            float endRads = range / 2;
+
+            startRads *= direction;
+            endRads *= direction;
+
+            float rads = MathHelper.Lerp(startRads, endRads, interpolant);
+            rads += MathHelper.PiOver2;
+
+            // rads += targetRotation;
+            float xRadius = swingRadius.X ;
+            float yRadius = swingRadius.Y ;
+
+
+            Vector2 xyOffset = new Vector2();
+            xyOffset.X = xRadius * MathF.Sin(rads);
+            xyOffset.Y = yRadius * MathF.Cos(rads);
+
+
+            float targetRotation = velocity.ToRotation();
+
+            //Set Offset
+            xyOffset = xyOffset.RotatedBy(targetRotation);
+
+            return xyOffset;
+        }
         private void CalculateXY2(float interpolant, Vector2 velocity, out float xOffset, out float yOffset)
         {
             float range = _swingRadians;

@@ -12,7 +12,7 @@ float SampleNoise(in float2 coords)
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
-    float flicker = sin(SampleNoise(coords));
+    float flicker = sin(SampleNoise(coords * 8.0));
   
     //Make a cool little circle
     float dist = length(coords - float2(0.5, 0.5));
@@ -22,12 +22,11 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     
     
     //Get the raindrops
-    float2 rainCoords = float2(0.0, time * 0.5);
-    rainCoords = frac(rainCoords);
+    float2 rainCoords = coords + float2(0.0, time * -0.5);
+    rainCoords = frac(rainCoords  * 2.0);
     float4 rainColor = tex2D(uImage0, rainCoords);
-    rainColor *= flicker;
     rainColor.a = 0;
-    return circleColor + rainColor * circleColor.a;
+    return (circleColor + rainColor * circleColor.a) * sampleColor.a * 0.4;
 }
 
 technique Technique1

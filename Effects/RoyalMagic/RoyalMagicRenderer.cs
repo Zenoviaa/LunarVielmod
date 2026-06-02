@@ -12,6 +12,62 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Effects.RoyalMagic;
 
+public class AlcadSlashShader : CrystalShader<AlcadSlashShader>
+{
+    public Matrix TransformMatrix
+    {
+        set
+        {
+            Effect.Parameters["transformMatrix"].SetValue(value);
+        }
+    }
+    public Texture2D Slash
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[0] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+        }
+    }
+    public Texture2D Noise
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+        }
+    }
+    public Texture2D ScrollingLaser
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[2] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
+        }
+    }
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+    public Color BloomColor
+    {
+        set
+        {
+            Effect.Parameters["bloomColor"].SetValue(value.ToVector3());
+        }
+    }
+
+    public float Distortion
+    {
+        set
+        {
+            Effect.Parameters["distortion"].SetValue(value);
+        }
+    }
+}
 public class TeleportFadeShader : CrystalShader<TeleportFadeShader> { }
 
 public class GravityFieldShader : CrystalShader<GravityFieldShader>

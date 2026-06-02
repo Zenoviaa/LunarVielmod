@@ -132,7 +132,7 @@ public class MagicFallingStar : ModProjectile,
         Projectile.rotation = ExtraMath.Osc(-0.5f, 0.5f, speed: 0f, offset: Projectile.whoAmI);
         if(Timer >= 150 && WillReTarget == 1)
         {
-            SwitchState(1);
+          //  SwitchState(1);
         }
     }
 

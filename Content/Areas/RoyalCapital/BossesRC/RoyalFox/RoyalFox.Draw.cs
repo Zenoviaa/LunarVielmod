@@ -8,12 +8,87 @@ using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.ModLoader;
+using static Stellamod.Core.AssetReferences.Effects;
 
 namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 
 public partial class RoyalFox
 {
-   
+
+    private float GetTrailWidth(float ratio)
+    {
+        return MathHelper.Lerp(150, 89, ratio);
+    }
+    private float GetTrailWidth2(float ratio)
+    {
+        return GetTrailWidth(ratio) * 1.5f;
+    }
+    private float GetTrailWidth3(float ratio)
+    {
+        return GetTrailWidth(ratio) * 2f;
+    }
+
+    private Color GetTrailColor(float ratio)
+    {
+        Color c = Color.Lerp(Color.White, Color.Lerp(Color.Pink, Color.Blue, ExtraMath.Osc(0f, 1f, speed: 16)), ratio) * _swingTrailAlpha * EasingFunction.QuadraticBump(ratio);// * EasingFunction.QuadraticBump(_swingTrailAlpha);
+       // c.A = 0;
+        return c;
+    }
+    private Color GetTrailColor2(float ratio)
+    {
+        Color c = Color.Lerp(Color.White, Color.Lerp(Color.Pink, Color.Blue, ExtraMath.Osc(0f, 1f, speed: 16)), ratio) * _swingTrailAlpha * 0.24f * EasingFunction.QuadraticBump(ratio);// * EasingFunction.QuadraticBump(_swingTrailAlpha);                                                                                                                     // c.A = 0;
+        return c;
+    }
+    
+    private void DrawSwordSlash(SpriteBatch sb, Vector2 sp)
+    {
+        float endPoint = _swingTrailEndRatio;
+        Vector2 point = _startDashPoint + CalculateSwingOffset(_swingVelocity, endPoint);
+        point += _swingVelocity.SafeNormalize(Vector2.Zero) * 200;
+        SpritebatchDrawer glowSword = SpritebatchDrawer.FromTextureAsset(
+            ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Sword"), point);
+        glowSword.rotation = (point - _startDashPoint).ToRotation() + MathHelper.PiOver4 / 2f;
+        Color startColor = Color.White;
+        Color glowColor = Color.Lerp(Color.Blue, Color.Pink, ExtraMath.Osc(0f, 1f, speed: 3));
+        Color mixColor = Color.Lerp(startColor, glowColor, ExtraMath.Osc(0f, 1f, speed: 6));
+        glowSword.color = mixColor * ExtraMath.Osc(0.8f, 1f, speed: 3) * _swingTrailAlpha;
+        glowSword.color.A = 0;
+        glowSword.scale *= 1.6f;
+        sb.Draw(glowSword);
+        sb.Draw(glowSword);
+    }
+
+    private void DrawSlashEffect(GraphicsDevice gDevice)
+    {
+        Vector2[] position = new Vector2[128];
+        float endPoint = _swingTrailEndRatio;
+        float startPoint = endPoint - 0.35f;
+        for(int i = 0; i < position.Length; i++)
+        {
+            float ratio = (float)i / (float)position.Length;
+            float interp = MathHelper.Lerp(endPoint, startPoint, ratio);
+            Vector2 point = _startDashPoint + CalculateSwingOffset(_swingVelocity, interp);
+            point += _swingVelocity.SafeNormalize(Vector2.Zero) * 200;
+            position[i] = point;
+        }
+
+        //FixedRichLaserShader shader = ShaderContent.GetInstance<FixedRichLaserShader>();
+        AlcadSlashShader shader = ShaderContent.GetInstance<AlcadSlashShader>();
+        shader.ScrollingLaser = TrailRegistry.Beamlight.Value;
+        shader.Noise = AssetManager.Noise.Whirly.Value;
+        shader.Slash = AssetManager.GlowMask.SwordSlash.Value;
+        shader.BloomColor = Color.Purple;
+        shader.Time = Main.GlobalTimeWrappedHourly * 24;
+        shader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+        shader.Distortion = 0.15f;
+        TrailDrawer.Draw(position, GetTrailColor, GetTrailWidth, shader);
+        TrailDrawer.Draw(position, GetTrailColor, GetTrailWidth2, shader);
+
+        FixedRichLaserShader shader2 = ShaderContent.GetInstance<FixedRichLaserShader>();
+        shader2.LaserTexture = TrailRegistry.BeamTrail;
+        TrailDrawer.Draw(position, GetTrailColor2, GetTrailWidth3, shader2);
+    }
+
     private void DrawTelegraphLine(SpriteBatch spriteBatch)
     {
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromTextureAsset(
@@ -68,8 +143,9 @@ public partial class RoyalFox
         gravityFieldShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
         sb.Restart(effect: gravityFieldShader.Effect);
 
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_gravityFieldTextureAsset, HeadPosition);
-        drawer.color = Color.Lerp(Color.DarkBlue, Color.DarkViolet, ExtraMath.Osc(0f, 1f, speed: 3));
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_gravityFieldTextureAsset, Rig.bodyParts[2].worldPosition);
+        drawer.color = Color.Lerp(Color.Blue, Color.DarkViolet, ExtraMath.Osc(0f, 1f, speed: 3)) * _gravityFieldAlpha;
+        drawer.scale *= 2;
         sb.Draw(drawer);
 
         sb.RestartDefaults();
@@ -189,11 +265,12 @@ public partial class RoyalFox
         drawPos += (rot-MathHelper.PiOver2).ToRotationVector2() * 45;
         SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureAsset(_sigilTextureAsset, drawPos);
         headDrawer.rotation =rot - MathHelper.PiOver4; ;
+        headDrawer.color *= _invisibleAlpha;
        // headDrawer.scale *= 5;
         spriteBatch.Draw(headDrawer);
 
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, drawPos);
-        glowDrawer.color = Color.White * 0.3f * ExtraMath.Osc(0.5f, 1f, speed: 3);
+        glowDrawer.color = Color.White * 0.3f * ExtraMath.Osc(0.5f, 1f, speed: 3) * _invisibleAlpha;
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.25f;
         spriteBatch.Draw(glowDrawer);
@@ -248,5 +325,7 @@ public partial class RoyalFox
             PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.BehindNPCsWithOutline);
         else
             PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.OverNPCs);
+        PixelationManager.QueuePrimitivesDrawAction(DrawSlashEffect, DrawLayer.OverNPCs);
+        PixelationManager.QueueSpritebatchDrawAction(DrawSwordSlash, DrawLayer.OverNPCs);
     }
 }

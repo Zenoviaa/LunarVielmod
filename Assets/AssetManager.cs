@@ -23,6 +23,7 @@ namespace Stellamod.Assets
 
         public class GlowMask
         {
+            public static Asset<Texture2D> SwordSlash;
             public static Asset<Texture2D> Impact;
             public static Asset<Texture2D> WhiteCircle;
             public static Asset<Texture2D> Wave;
@@ -80,6 +81,7 @@ namespace Stellamod.Assets
         public override void OnModLoad()
         {
             base.OnModLoad();
+            GlowMask.SwordSlash = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/SwordSlash");
             GlowMask.Impact = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Impact");
             GlowMask.Wave = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Wave");
             GlowMask.BlastPillar = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/BlastPillar");
@@ -135,6 +137,7 @@ namespace Stellamod.Assets
         public override void OnModUnload()
         {
             base.OnModUnload();
+            GlowMask.SwordSlash = null;
             LaserTextures.Aura = null;
             Noise.CometStars = null;
             LaserTextures.CometTrail = null;

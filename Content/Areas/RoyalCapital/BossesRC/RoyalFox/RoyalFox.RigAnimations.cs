@@ -8,47 +8,77 @@ public partial class RoyalFox
 
     private void AnimateFlying()
     {
-        float start = MathHelper.ToRadians(-2);
-        float end = MathHelper.ToRadians(2);
+        float start = MathHelper.ToRadians(-2) * FacingDirectionToTarget;
+        float end = MathHelper.ToRadians(2) * FacingDirectionToTarget;
 
         float runningSpeed = 4;
         float frontFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed);
-        //     float easeing = EasingFunction.InOutSine(legPair1);
+
         Rig.frontFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontFrontLeg);
-        Rig.frontFrontLeg[0].eulerAngles.Z += MathHelper.ToRadians(42);
+        Rig.frontFrontLeg[0].eulerAngles.Z += MathHelper.ToRadians(52);
         Rig.frontFrontLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontFrontLeg);
+        Rig.frontFrontLeg[2].angleOverride = MathHelper.ToRadians(45);
 
         float frontBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 1);
-        Rig.frontBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontBackLeg);
-        Rig.frontBehindLeg[0].eulerAngles.Z += MathHelper.ToRadians(42);
-        Rig.frontBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontBackLeg);
 
+        Rig.frontBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, frontBackLeg);
+        Rig.frontBehindLeg[0].eulerAngles.Z += MathHelper.ToRadians(52);
+        Rig.frontBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, frontBackLeg);
+        Rig.frontBehindLeg[2].angleOverride = MathHelper.ToRadians(45);
 
         //Back Legs
         float backFrontLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3);
+
         Rig.backFrontLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, backFrontLeg);
-        Rig.backFrontLeg[0].eulerAngles.Z += MathHelper.ToRadians(40);
+        Rig.backFrontLeg[0].eulerAngles.Z += MathHelper.ToRadians(48);
         Rig.backFrontLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backFrontLeg);
 
 
         float backBackLeg = ExtraMath.Osc(0f, 1f, speed: runningSpeed, offset: 3 + 1);
+
         Rig.backBehindLeg[0].eulerAngles.Z = MathHelper.Lerp(start, end, backBackLeg);
-        Rig.backBehindLeg[0].eulerAngles.Z += MathHelper.ToRadians(40);
+        Rig.backBehindLeg[0].eulerAngles.Z += MathHelper.ToRadians(48);
         Rig.backBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backBackLeg);
-        start = MathHelper.ToRadians(4);
-        end = MathHelper.ToRadians(9);
+        start = MathHelper.ToRadians(8);
+        end = MathHelper.ToRadians(15);
+
+   
+        float rotToPlayer = (MyTarget.Center - HeadPosition).ToRotation();
         for (int i = 0; i < Rig.bodyParts.Length; i++)
         {
             ref float zAngle = ref Rig.bodyParts[i].eulerAngles.Z;
             zAngle = MathHelper.Lerp(start, end, ExtraMath.Osc(0f, 1f, offset: i, speed: runningSpeed));
             if(i == 3)
             {
-                float rotToPlayer = (MyTarget.Center - HeadPosition).ToRotation();
-                zAngle = rotToPlayer;
+       
+                /*
+                if (FacingDirectionToTarget == 1)
+                    zAngle += MathHelper.ToRadians(60);
+                else
+                    zAngle += MathHelper.ToRadians(52);
+                */           
+
+                //
+
+
             }
+        //    zAngle = 0;
+       
         }
 
-        Rig.headPart.fakeAngle = MathHelper.ToRadians(45);
+
+        Rig.headPart.fakeAngle = MathHelper.ToRadians(87 * FacingDirectionToTarget);
+
+        /*
+        Vector2 rootDirection = Vector2.UnitX * FacingDirectionToTarget;
+        Vector2 directionToTarget = (MyTarget.Center - HeadPosition).SafeNormalize(Vector2.Zero);
+        float dp = Vector2.Dot(rootDirection, directionToTarget);
+        if(dp > 0.35f)
+            Rig.headPart.angleOverride = rotToPlayer;*/
+        if(FacingDirectionToTarget == -1)
+        {
+        //    Rig.headPart.angleOverride += MathHelper.ToRadians(135);
+        }
     }
     private void AnimateStanding()
     {
@@ -143,6 +173,28 @@ public partial class RoyalFox
         Rig.backBehindLeg[1].eulerAngles.Z = 0;
         Rig.backBehindLeg[2].fakeAngle = MathHelper.Lerp(Rig.backBehindLeg[2].fakeAngle, MathHelper.ToRadians(-45), 0.1f);
 
+
+        float rotToPlayer = (MyTarget.Center - HeadPosition).ToRotation();
+        for (int i = 0; i < Rig.bodyParts.Length; i++)
+        {
+            ref float zAngle = ref Rig.bodyParts[i].eulerAngles.Z;
+            zAngle = 0;
+            if (i == 3)
+            {
+
+                /*
+                if (FacingDirectionToTarget == 1)
+                    zAngle += MathHelper.ToRadians(60);
+                else
+                    zAngle += MathHelper.ToRadians(52);
+                */
+
+                //
+
+
+            }
+        }
+           
         Rig.bodyParts[3].eulerAngles.Z = MathHelper.ToRadians(15);
     }
     private void AnimateStretched()

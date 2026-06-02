@@ -16,6 +16,28 @@ public partial class RoyalFox
 {
     private float _stepDistance;
 
+    public static void PlaySwordSwingSword(Vector2 position)
+    {
+        int soundIndex = Main.rand.Next(4);
+        SoundStyle swingSound;
+        switch (soundIndex)
+        {
+            default:
+            case 0:
+                swingSound = AssetRegistry.Sounds.AlcaricFox.Fenixslash1;
+                break;
+            case 1:
+                swingSound = AssetRegistry.Sounds.AlcaricFox.Fenixslash2;
+                break;
+            case 2:
+                swingSound = AssetRegistry.Sounds.AlcaricFox.Fenixslash3;
+                break;
+            case 3:
+                swingSound = AssetRegistry.Sounds.AlcaricFox.Fenixslash4;
+                break;
+        }
+        SoundEngine.PlaySound(swingSound, position);
+    }
     public static void PlayAirbounceSuond(Vector2 position)
     {
         int soundIndex = Main.rand.Next(2);
@@ -104,6 +126,14 @@ public partial class RoyalFox
             _stepDistance = 0;
         }
     }
+    public static void SpawnSmokeParticle(Vector2 center, Vector2 velocity, float timeLeft)
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        RoyalMagicRenderer starsRender = ModContent.GetInstance<RoyalMagicRenderer>();
+        starsRender.SpawnParticle(center, velocity, timeLeft);
+    }
+
     public static void SpawnCometStarParticle(Vector2 center, Vector2 velocity, float timeLeft)
     {
         if (Main.netMode == NetmodeID.Server)

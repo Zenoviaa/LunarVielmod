@@ -67,7 +67,7 @@ public class RoyalMagicStarryDashTrail : ModProjectile,
             }
         }
 
-        if (Timer >= 31)
+        if (Timer >= 33)
             Projectile.hostile = false;
         if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
         {
