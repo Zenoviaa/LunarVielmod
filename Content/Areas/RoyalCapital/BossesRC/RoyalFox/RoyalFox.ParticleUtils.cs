@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox.Projectiles;
 using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -15,6 +16,22 @@ public partial class RoyalFox
 {
     private float _stepDistance;
 
+    public static void PlayAirbounceSuond(Vector2 position)
+    {
+        int soundIndex = Main.rand.Next(2);
+        SoundStyle airbounce;
+        switch (soundIndex)
+        {
+            default:
+            case 0:
+                airbounce = AssetRegistry.Sounds.AlcaricFox.FenixAirbounce1;
+                break;
+            case 1:
+                airbounce = AssetRegistry.Sounds.AlcaricFox.FenixAirbounce2;
+                break;
+        }
+        SoundEngine.PlaySound(airbounce, position);
+    }
     public static void CreateRoyalStarSmoke(Vector2 position, Vector2 velocity)
     {
         if (Main.netMode == NetmodeID.Server)
@@ -265,6 +282,29 @@ public partial class RoyalFox
             sp.color = Color.Lerp(Color.Black, Color.White, Main.rand.NextFloat(0f, 0.33f));
             sp.behindLayer = true;
         }
+    }
+    public void TeleportEffect(Vector2 position)
+    {
+        PoofParticles(NPC.Center);
+        float dir = Main.rand.NextBool(2) ? 1 : -1;
+        Teleport(position);
+        PoofParticles(position);
+
+        ShakeScreenPosition.Shake = 8;
+        var fx = FXUtil.GlowCircleBoom(position, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 30, baseSize: 0.2f); ;
+        fx.Scale *= 2f;
+        for (int i = 0; i < 32; i++)
+        {
+            var dp = DustParticle.Spawn(position, Main.rand.NextVector2Circular(24, 24));
+            dp.outerColor = Color.DarkBlue;
+            dp.dampening = 0.1f;
+            dp.noTileCollide = true;
+            dp.gravity = 0;
+            dp.Scale *= 1.5f;
+        }
+
+        PixelPrimitiveCircleFactory.CreateGenericInBoom(position, Color.White, Color.Transparent, 60, 512);
+        PixelPrimitiveCircleFactory.CreateGenericBoom(position, Color.White, Color.Transparent, 60, 512);
     }
     private void WalkParticles2()
     {

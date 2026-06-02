@@ -38,6 +38,42 @@ public partial class RoyalFox
         Main.spriteBatch.Draw(eyeFlashDrawer);
     }
 
+    private void DrawTeleportTelegraph(SpriteBatch sb)
+    {
+        if (_teleportAlpha < 0.01f)
+            return;
+        SpritebatchDrawer flare = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare2, _teleportTelegraphPosition);
+        Color startColor = Color.White;
+        Color glowColor = Color.Lerp(Color.Blue, Color.Pink, ExtraMath.Osc(0f, 1f, speed: 3));
+        Color mixColor = Color.Lerp(startColor, glowColor, ExtraMath.Osc(0f, 1f, speed: 6));
+        flare.color = mixColor * ExtraMath.Osc(0.8f, 1f, speed: 3); 
+        flare.color.A = 0;
+        flare.scale *= 0.5f * MathHelper.Lerp(0.7f, 1f, _teleportAlpha) * _teleportAlpha;
+        flare.rotation = Main.GlobalTimeWrappedHourly * 4;
+        sb.Draw(flare);
+
+        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, _teleportTelegraphPosition);
+        circleDrawer.color = glowColor * _teleportAlpha * 0.2f;
+        circleDrawer.color.A = 0;
+        circleDrawer.scale = Vector2.One * MathHelper.Lerp(0f, 1f, _teleportAlpha) * 3;
+        sb.Draw(circleDrawer);
+    }
+
+    private void DrawGravityField(SpriteBatch sb)
+    {
+        if (_gravityFieldAlpha < 0.01f)
+            return;
+        GravityFieldShader gravityFieldShader = ShaderContent.GetInstance<GravityFieldShader>();
+        gravityFieldShader.Time = Main.GlobalTimeWrappedHourly * 4;
+        gravityFieldShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
+        sb.Restart(effect: gravityFieldShader.Effect);
+
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_gravityFieldTextureAsset, HeadPosition);
+        drawer.color = Color.Lerp(Color.DarkBlue, Color.DarkViolet, ExtraMath.Osc(0f, 1f, speed: 3));
+        sb.Draw(drawer);
+
+        sb.RestartDefaults();
+    }
     private void DrawBackWing(bool darkened) => DrawWings(true, darkened);
     private void DrawFrontWing(bool darkened) => DrawWings(false, darkened);
 
@@ -112,7 +148,8 @@ public partial class RoyalFox
         if (_dontRender)
             return false;
 
-     
+
+        _gravityFieldTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_GravityField");
         _sigilTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Sigil");
         if (_renderMotionBlur)
         {
@@ -153,13 +190,13 @@ public partial class RoyalFox
         SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureAsset(_sigilTextureAsset, drawPos);
         headDrawer.rotation =rot - MathHelper.PiOver4; ;
        // headDrawer.scale *= 5;
-        Main.spriteBatch.Draw(headDrawer);
+        spriteBatch.Draw(headDrawer);
 
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, drawPos);
         glowDrawer.color = Color.White * 0.3f * ExtraMath.Osc(0.5f, 1f, speed: 3);
         glowDrawer.color.A = 0;
         glowDrawer.scale *= 0.25f;
-        Main.spriteBatch.Draw(glowDrawer);
+        spriteBatch.Draw(glowDrawer);
         if (_renderMotionBlur)
         {
             spriteBatch.RestartDefaults();
@@ -171,8 +208,10 @@ public partial class RoyalFox
             circleDrawer.color = _roaringCircleColor * _roaringCircleAlpha * 0.3f;
             circleDrawer.color.A = 0;
             circleDrawer.scale = Vector2.One * _roaringCircleScale;
-            Main.spriteBatch.Draw(circleDrawer);
+            spriteBatch.Draw(circleDrawer);
         }
+        DrawGravityField(spriteBatch);
+        DrawTeleportTelegraph(spriteBatch);
       //  DrawLaserTelegraph(Main.spriteBatch);
         return false;
     }

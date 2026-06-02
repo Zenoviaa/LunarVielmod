@@ -25,6 +25,7 @@ namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 public partial class RoyalFox : ScarletBoss,
     IDrawToRenderTarget
 {
+    private Asset<Texture2D> _gravityFieldTextureAsset;
     private Asset<Texture2D> _sigilTextureAsset;
     private enum TailAnimation : byte
     {
@@ -33,8 +34,14 @@ public partial class RoyalFox : ScarletBoss,
         Full_Control = 2
     }
 
+    //Teleport
+    private float _teleportAlpha;
+    private Vector2 _teleportTelegraphPosition;
+
+    //Gravity Field effect
+    private float _gravityFieldAlpha;
+
     private Vector2 _wingPos;
-    private float _wingZ;
     private float _roaringCircleScale;
     private float _roaringCircleAlpha;
     private Color _roaringCircleColor;
@@ -94,13 +101,33 @@ public partial class RoyalFox : ScarletBoss,
         Precision_OutOfBreathTransition,
         Precision_SwordSlashChase,
         Precision_SpinningCharge,
-        Precision_CometTeleportShots
+        Precision_CometTeleportShots,
+
+        Phase2_Transition,
+        Tired,
+        Death
     }
 
     private AIState State
     {
         get => (AIState)NPC.ai[1];
         set => NPC.ai[1] = (float)value;
+    }
+
+    private PatternManager<AIState> _precisionModePatternManager;
+    private PatternManager<AIState> PrecisionModePatternManager
+    {
+        get
+        {
+            if (_precisionModePatternManager == null)
+            {
+                _precisionModePatternManager = new();
+                _precisionModePatternManager.AddPattern(AIState.Precision_SwordSlashChase, 1f);
+                _precisionModePatternManager.AddPattern(AIState.Precision_SpinningCharge, 1f);
+                _precisionModePatternManager.AddPattern(AIState.Precision_CometTeleportShots, 1f);
+            }
+            return _precisionModePatternManager;
+        }
     }
 
     private ref float AttackCycle => ref NPC.ai[2];
@@ -131,25 +158,6 @@ public partial class RoyalFox : ScarletBoss,
         }
     }
 
-    private Armature _wing;
-    private Armature Wing
-    {
-        get
-        {
-            if(_wing == null)
-            {
-                _wing = new Armature(64, 4);
-                for (int k = 0; k < _wing.segments.Length; k++)
-                {
-                    var segment = _wing.segments[k];
-                    segment.rangeOfMotion = 10f;
-                    segment.rootDirection = -Vector2.UnitX;
-                }
-                _wing.SetDefaults();
-            }
-            return _wing;
-        }
-    }
 
     private Armature[] _tails;
     private Armature[] Tails
@@ -223,6 +231,21 @@ public partial class RoyalFox : ScarletBoss,
     private float SparkleStarRainTime => 490;
     private float TimeBetweenSparkleStars => 15;
 
+    //Tired
+    private float TiredTime => 180;
+
+    //Spinning Charge
+    private float SpinningChargePrepTime => 120;
+    private float SpinningChargeSpeed => 25;
+    private float AirbounceChainCount => 3;
+    private float SpinningChargeBurstCount => 3;
+
+    //Comet Teleport Prep Time
+    private float CometTeleportPrepTime => 80;
+    private int CometTeleportDamage => 100;
+    private float CometBackflipTime => MathHelper.Lerp(90, 60, EasingFunction.OutSine(AttackCounter / CometTeleportCount));
+    private float CometTeleportCount => 21;
+    private float CometTeleportEndTime => 45f;
     public Texture2D GetSubTexture(string fileName)
     {
         string path = Texture + $"_{fileName}";
@@ -286,6 +309,7 @@ public partial class RoyalFox : ScarletBoss,
         writer.WriteVector2(_teleportPosition);
         writer.WriteVector2(_ballPosition);
         writer.Write(_miniAttackCount);
+        writer.Write(_zoomMode);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -295,6 +319,7 @@ public partial class RoyalFox : ScarletBoss,
         _teleportPosition = reader.ReadVector2();
         _ballPosition = reader.ReadVector2();
         _miniAttackCount = reader.ReadSingle();
+        _zoomMode = reader.ReadBoolean();
     }
     public override void SetStaticDefaults()
     {
@@ -370,12 +395,16 @@ public partial class RoyalFox : ScarletBoss,
             }
         }
         PreUpdateRig();
+        _gravityFieldAlpha = MathHelper.Lerp(_gravityFieldAlpha, 0f, 0.1f);
         switch (State)
         {
             default:
  
             case AIState.Idle:
                 AI_Idle();
+                break;
+            case AIState.Tired:
+                AI_Tired();
                 break;
             case AIState.Despawn:
                 AI_Despawn();
@@ -395,6 +424,16 @@ public partial class RoyalFox : ScarletBoss,
 
             case AIState.Zoom_SparkleStarRain:
                 AI_SparkleStarRain();
+                break;
+
+            case AIState.Precision_CometTeleportShots:
+                AI_CometTeleportShots();
+                break;
+            case AIState.Precision_SpinningCharge:
+                AI_SpinningCharge();
+                break;
+            case AIState.Precision_SwordSlashChase:
+                AI_SwordChase();
                 break;
         }
 
@@ -462,6 +501,363 @@ public partial class RoyalFox : ScarletBoss,
         NPC.Center = pos;
     }
 
+    #region Precision Mode
+
+
+    private void AI_SwordChase()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+
+                
+                }
+                break;
+        }
+    }
+    private void AI_CometTeleportShots()
+    {
+        void MoveTeleportIndicator(float time)
+        {
+
+            float ratio = Timer / time;
+            float dist = Vector2.Distance(_teleportTelegraphPosition, MyTarget.Center);
+            float strength = dist / 384f;
+            strength = EasingFunction.InOutSine(strength);
+            float maxAllowToMove = MathHelper.Lerp(16, 1, strength);
+            _teleportAlpha = EasingFunction.QuadraticBump(ratio);
+            Vector2 targetPos = MyTarget.Center;
+            Vector2 offset = -Vector2.UnitY * 128;
+            offset = offset.RotatedBy(ratio * MathHelper.TwoPi + (MathHelper.TwoPi * 3 * (AttackCounter / CometTeleportCount)));
+            targetPos += offset;
+            _teleportTelegraphPosition = Vector2.Lerp(_teleportTelegraphPosition, targetPos, MathHelper.Lerp(0.18f, 0.0f, EasingFunction.InOutExpo(ratio)));
+          //  _teleportTelegraphPosition = _teleportTelegraphPosition.MoveTowards(MyTarget.Center, maxAllowToMove);
+        }
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        _teleportTelegraphPosition = MyTarget.Center;
+                     
+                    }
+                    MoveTeleportIndicator(CometTeleportPrepTime);
+                    FaceTargetWhileFlying();
+                    AnimateFlying();
+                    _outliner.warning = true;
+                    if(Timer >= CometTeleportPrepTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    if(Timer == 1)
+                    {
+                       // TeleportEffect(_teleportTelegraphPosition);
+                        Teleport(_teleportTelegraphPosition);
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, _teleportTelegraphPosition, Vector2.Zero, 
+                                ModContent.ProjectileType<CoolTeleport>(), 1, 1, Main.myPlayer);
+                            Vector2 midVelocity = (MyTarget.Center - _teleportTelegraphPosition);
+                            midVelocity = midVelocity.SafeNormalize(Vector2.Zero);
+                            midVelocity *= 15;
+
+                            float spread = MathHelper.ToRadians(60);
+                            float num = 3;
+                            for(int i = 0; i < num; i++)
+                            {
+                                float ratio = (float)i / num;
+
+                                Vector2 vel = midVelocity.RotatedBy(MathHelper.Lerp(-spread * 0.5f, spread * 0.5f, (float)i / num));
+                                vel = vel.RotatedBy(spread * 0.25f);
+                                Projectile.NewProjectile(SourceFromThis, _teleportTelegraphPosition, vel,
+                                    ModContent.ProjectileType<SpiralComet>(), CometTeleportDamage, 1, Main.myPlayer);
+                            }
+                        }
+
+                        _startDashPoint = _teleportTelegraphPosition;
+                        Vector2 backflipOffset = (_teleportTelegraphPosition - MyTarget.Center).SafeNormalize(Vector2.Zero);
+                        backflipOffset *= 1200 * -1;
+                        _dashLineVelocity = _startDashPoint + backflipOffset;
+                    }
+
+                    float ratio2 = Timer / CometBackflipTime;
+                    Vector2 endPoint = _dashLineVelocity.RotatedBy(MathHelper.ToRadians(245), _startDashPoint);
+                    Vector2 v1 = Vector2.Lerp(_startDashPoint, _dashLineVelocity, ratio2);
+                    Vector2 v2 = Vector2.Lerp(_dashLineVelocity, endPoint, ratio2);
+                    Vector2 v3 = Vector2.Lerp(v1, v2, EasingFunction.InExpo(ratio2));
+                    Vector2 v4 = (v3 - NPC.Center);
+                    NPC.velocity = v4;
+
+                    _renderDashTrail = true;
+                    AnimateTorpedo();
+                    if (Timer < CometBackflipTime * 0.5f)
+                        WalkParticles();
+                    else
+                        _goInvisible = true;
+                    MoveTeleportIndicator(CometBackflipTime);
+                    RegularRotation = NPC.velocity.ToRotation();
+                    ZRotation += 0.12f;
+                    _outliner.attacking = true;
+                    if(Timer >= CometBackflipTime)
+                    {
+                        Timer = 0;
+                        AttackCounter++;
+                        if(AttackCounter >= CometTeleportCount)
+                        {
+                            Timer = 0;
+                            AttackCycle++;
+                        }
+                    }
+                }
+                break;
+            case 2:
+                {
+                    NPC.velocity *= 0.96f;
+                    RegularRotation = NPC.velocity.ToRotation();
+                    ZRotation += 0.12f;
+                    if (Timer >= CometTeleportEndTime)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
+    }
+
+    private void AI_SpinningCharge()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    _miniAttackCount = 0;
+                    if (Timer == 1)
+                    {
+                        _dashLineVelocity = Vector2.Zero;
+                        NPC.TargetClosest();
+                        SoundStyle dashSound = AssetRegistry.Sounds.AlcaricFox.FenixChargin;
+                        SoundEngine.PlaySound(dashSound, MyTarget.Center);
+                    }
+
+                    Vector2 directionToTarget = (MyTarget.Center - NPC.Center);
+                    directionToTarget = directionToTarget.SafeNormalize(Vector2.Zero);
+                    _dashLineVelocity = _dashLineVelocity.MoveTowards(directionToTarget, 0.5f);
+                    _startDashPoint = NPC.Center;
+
+                    RegularRotation = MathHelper.Lerp(RegularRotation, _dashLineVelocity.ToRotation(), 0.1f);
+
+                    float ratio = Timer / SpinningChargePrepTime;
+                    _roaringCircleScale = MathHelper.SmoothStep(5f, 0f, ratio);
+                    _roaringCircleAlpha = MathHelper.SmoothStep(0f, 1f, EasingFunction.QuadraticBump(ratio));
+                    _roaringCircleColor = Color.Lerp(Color.Pink, Color.Blue, ratio);
+                    _outliner.warning = true;
+
+                    ZRotation += MathHelper.Lerp(0.05f, 0.15f, EasingFunction.InOutExpo(ratio));
+
+                    Vector2 lerp1 = Vector2.Lerp(Vector2.Zero, -_dashLineVelocity * 32, EasingFunction.InOutExpo(ratio));
+                    Vector2 lerp2 = Vector2.Lerp(Vector2.Zero, _dashLineVelocity * 8, EasingFunction.InExpo(ratio));
+                    Vector2 lerp3 = Vector2.Lerp(lerp1, lerp2, ratio);
+                    Vector2 lerp4 = Vector2.Lerp(Vector2.Zero, _dashLineVelocity * 8, EasingFunction.InExpo(ratio));
+                    Vector2 lerp5 = Vector2.Lerp(lerp3, lerp4, ratio);
+
+                    NPC.velocity = lerp5;
+                    AnimateTorpedo();
+                    _showTelegraphLine = true;
+                    if (Timer % 60 == 0)
+                    {
+                        PixelPrimitiveCircleFactory.CreateGenericInBoom(HeadPosition, Color.Transparent, Color.White, 35, 500);
+                    }
+
+                    ChargeParticles(HeadPosition, in Timer);
+                    if (Timer >= SpinningChargePrepTime)
+                    {
+                        SoundStyle airdashSound = AssetRegistry.Sounds.AlcaricFox.FenixWindStartup;
+                        SoundEngine.PlaySound(airdashSound, HeadPosition);
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                    //For the spinning charge, the startup is pretty similar to the big dash but it's a bit faster
+                    //ALright, first step is to wind up like the other dash attack, then she's gonna jump and spiral towards you
+                }
+                break;
+
+            case 1:
+                {
+                    if(Timer == 1)
+                    {
+                        //So basically
+                        //Take the current point, then get a point behind the player
+                    }
+
+                    Vector2 directionToTarget = (MyTarget.Center - NPC.Center);
+                    directionToTarget = directionToTarget.SafeNormalize(Vector2.Zero);
+                    Vector2 targetVelocity = directionToTarget * SpinningChargeSpeed;
+                    ZRotation += 0.15f;
+                    RegularRotation = Utils.AngleLerp(RegularRotation, targetVelocity.ToRotation(), 0.1f);
+                    AnimateTorpedo();
+                    WalkParticles();
+                    _contactDamage = true;
+                    _outliner.attacking = true;
+                    if(Timer % 8 == 0)
+                    {
+                        var donut = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero));
+                    }
+
+                    float dp = Vector2.Dot(directionToTarget, NPC.velocity.SafeNormalize(Vector2.Zero));
+                    if(dp > 0)
+                    {
+                        NPC.velocity = NPC.velocity.MoveTowards(targetVelocity, 3);
+                    }
+                    else
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                 
+                }
+                break;
+            case 2:
+                {
+                    NPC.velocity *= 0.96f;
+                    ZRotation += MathHelper.Lerp(0.15f, 0f, EasingFunction.InOutExpo(Timer / 25f));
+                    RegularRotation = NPC.velocity.ToRotation();
+                    AnimateTorpedo();
+                    _outliner.warning = true;
+                    if (Timer >= 25)
+                    {
+                 
+                        Timer = 0;
+                        _miniAttackCount++;
+                        if(_miniAttackCount >= AirbounceChainCount)
+                        {
+                            AttackCounter++;
+                            if(AttackCounter >= SpinningChargeBurstCount)
+                            {
+                                AttackCycle++;
+                            }
+                            else
+                            {
+                                AttackCycle = 0;
+                            }
+                        }
+                        else
+                        {
+                            PlayAirbounceSuond(MyTarget.Center);
+                            FXUtil.CreateRipple(HeadPosition);
+                            FXUtil.GlowCircleBoom(HeadPosition, Color.White, Color.Blue, Color.DarkBlue, duration: 40, baseSize: 0.23f);
+                            for(float f = 0; f < 3; f++)
+                            {
+                                Vector2 vel = NPC.velocity.SafeNormalize(Vector2.Zero);
+                                vel *= MathHelper.Lerp(3f, 9f, f / 3f);
+                                var donut = LegacyParticle.NewParticle<GlowDonutParticle>(HeadPosition, vel.SafeNormalize(Vector2.Zero));
+                            }
+
+                            for(float f = 0; f < 10; f++)
+                            {
+                                Vector2 vel = NPC.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5, 45);
+                                vel = vel.RotatedByRandom(MathHelper.ToRadians(60));
+                                var d = DustParticle.Spawn(HeadPosition, vel);
+                                d.outerColor = Color.Blue;
+                                d.dampening = 0.1f;
+                                d.noTileCollide = true;
+                                d.gravity = 0;
+                                d.Scale *= 1.2f;
+                            }
+
+                            ShakeScreenPosition.Shake = 3;
+                            AttackCycle--;
+                        }
+                        //bounce
+                    }
+                }
+                break;
+            case 3:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        float dir = Main.rand.NextBool(2) ? 1 : -1;
+                        Vector2 pointToTeleportTo = MyTarget.Center + new Vector2(300 * dir, -64);
+                        TeleportEffect(pointToTeleportTo);
+                        Teleport(pointToTeleportTo);
+                    }
+
+                    FaceTargetWhileFlying();
+                    AnimateFlying();
+                    NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer * 0.5f) * 0.2f, 0.1f);
+                    if (Timer >= 60)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
+    }
+    private void AI_Tired()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    _zoomMode = false;
+                    if(Timer == 1)
+                    {
+                        SoundStyle tired = AssetRegistry.Sounds.AlcaricFox.FenixAppeartired;
+                        SoundEngine.PlaySound(tired, MyTarget.position);
+                        NPC.TargetClosest();
+                        float dir = Main.rand.NextBool(2) ? 1 : -1;
+                        Vector2 pointToTeleportTo = MyTarget.Center + new Vector2(300 * dir, -64);
+                        TeleportEffect(pointToTeleportTo);
+                        Teleport(pointToTeleportTo);
+                    }
+    
+                    FaceTargetWhileFlying();
+                    AnimateFlying();
+                    if (Main.rand.NextBool(4))
+                    {
+                        var dp = SparkleParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(128, 128), Main.rand.NextVector2Circular(4, 4));
+                        dp.noTileCollide = true;
+                        dp.gravity = 0;
+                        dp.dampening = 0.1f;
+                        dp.outerColor = Color.Pink;
+                        dp.Scale *= 0.6f;
+                    }
+
+                    NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer * 0.5f) * 0.2f, 0.1f);
+                    _gravityFieldAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / 60f));
+                    if(Timer >= TiredTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+
+            case 1:
+                {
+                    SwitchState(AIState.Idle);
+                }
+                break;
+        }
+    }
+
+    #endregion
     private void AI_Despawn()
     {
         Timer++;
@@ -485,7 +881,6 @@ public partial class RoyalFox : ScarletBoss,
         {
             NPC.TargetClosest();
         }
-        DebugTeleportLeftOfPlayer();
         NPC.velocity *= 0.8f;
         if (Timer >= 100 || _zoomMode)
         {
@@ -498,8 +893,12 @@ public partial class RoyalFox : ScarletBoss,
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AIState.Zoom_SparkleStarRain);
+            if (_zoomMode)
+                SwitchState(AIState.Zoom_SparkleStarRain);
+            else
+                SwitchState(PrecisionModePatternManager.NextPattern());
         }
+        SwitchState(AIState.Precision_CometTeleportShots);
     }
 
  
@@ -525,15 +924,21 @@ public partial class RoyalFox : ScarletBoss,
 
     #region Zoom Mode 
 
+    private void FaceTargetWhileFlying()
+    {
+        Vector2 facingDirection = Vector2.UnitX * FacingDirectionToTarget;
+        Vector2 up = facingDirection.RotatedBy(-MathHelper.ToRadians(75) * FacingDirectionToTarget);
+        RegularRotation = up.ToRotation();
+
+        float targetRotation = 0;
+        if (FacingDirectionToTarget == -1)
+            targetRotation = MathHelper.Pi;
+        ZRotation = Utils.AngleLerp(ZRotation, targetRotation, 0.1f);
+    }
+
     private void AI_SparkleStarRain()
     {
-        void FaceTargetWhileFlying()
-        {
-            Vector2 facingDirection = Vector2.UnitX * FacingDirectionToTarget;
-            Vector2 up = facingDirection.RotatedBy(-MathHelper.ToRadians(75) * FacingDirectionToTarget);
-            RegularRotation = up.ToRotation();
 
-        }
         Timer++;
         switch (AttackCycle)
         {
@@ -542,28 +947,12 @@ public partial class RoyalFox : ScarletBoss,
                     if(Timer == 1)
                     {
                         NPC.TargetClosest();
-                        PoofParticles(NPC.Center);
                         float dir = Main.rand.NextBool(2) ? 1 : -1;
                         Vector2 pointToTeleportTo = MyTarget.Center + new Vector2(300 * dir, -64);
 
+                        TeleportEffect(pointToTeleportTo);
                         Teleport(pointToTeleportTo);
-                        PoofParticles(pointToTeleportTo);
-                        
-                        ShakeScreenPosition.Shake = 8;
-                        var fx = FXUtil.GlowCircleBoom(pointToTeleportTo, Color.White, Color.SkyBlue, Color.DarkBlue, duration: 30, baseSize: 0.2f); ;
-                        fx.Scale *= 2f;
-                        for (int i = 0; i < 32; i++)
-                        {
-                            var dp = DustParticle.Spawn(pointToTeleportTo, Main.rand.NextVector2Circular(24, 24));
-                            dp.outerColor = Color.DarkBlue;
-                            dp.dampening = 0.1f;
-                            dp.noTileCollide = true;
-                            dp.gravity = 0;
-                            dp.Scale *= 1.5f;
-                        }
 
-                        PixelPrimitiveCircleFactory.CreateGenericInBoom(pointToTeleportTo, Color.White, Color.Transparent, 60, 512);
-                        PixelPrimitiveCircleFactory.CreateGenericBoom(pointToTeleportTo, Color.White, Color.Transparent, 60, 512);
                     }
                     if(Timer == 1)
                     {
@@ -573,7 +962,7 @@ public partial class RoyalFox : ScarletBoss,
                     _tailAnimation = TailAnimation.Loose;
                     FaceTargetWhileFlying();
                     AnimateFlying();
-                    ZRotation = Utils.AngleLerp(ZRotation, 0, 0.1f);
+            
                     NPC.velocity *= 0.94f;
                     _outliner.warning = true;
                     if(Timer >= 30)
@@ -604,7 +993,7 @@ public partial class RoyalFox : ScarletBoss,
                     //We want to face the entire body slightly up and then we're going to angle each part manually with forward kinematics
                     _tailAnimation = TailAnimation.Loose;
                     FaceTargetWhileFlying();
-                    ZRotation = Utils.AngleLerp(ZRotation, 0, 0.1f);
+
 
                     NPC.velocity.X *= 0.98f;
                     NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 0.3f;
@@ -1060,7 +1449,7 @@ public partial class RoyalFox : ScarletBoss,
                 }
                 break;
             default:
-                SwitchState(AIState.Idle);
+                SwitchState(AIState.Tired);
                 break;
         }
     }

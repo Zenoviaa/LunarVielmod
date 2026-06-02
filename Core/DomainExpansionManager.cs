@@ -73,7 +73,7 @@ namespace Stellamod.Core
         {
             if (hoveringPlatform)
             {
-                if (Position.Y > hoverPlatformY)
+                if ((Position.Y-8) > hoverPlatformY)
                     return Vector2.Zero;
                 return orig(Position, Velocity, Width, Height, fallThrough, fall2, gravDir);
             }

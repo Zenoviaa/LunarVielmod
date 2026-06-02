@@ -12,6 +12,27 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Effects.RoyalMagic;
 
+public class TeleportFadeShader : CrystalShader<TeleportFadeShader> { }
+
+public class GravityFieldShader : CrystalShader<GravityFieldShader>
+{
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+        }
+    }
+
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+}
 
 public class PerfectWingShader : CrystalShader<PerfectWingShader>
 {
