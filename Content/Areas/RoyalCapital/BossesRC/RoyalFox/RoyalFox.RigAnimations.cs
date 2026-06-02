@@ -193,8 +193,14 @@ public partial class RoyalFox
 
 
             }
+
         }
-           
+        for (int i = 0; i < Rig.bodyParts.Length; i++)
+        {
+            var part = Rig.bodyParts[i];
+            part.eulerAngles.W = 0;// MathHelper.Lerp(radians, 0, (float)i / (float)Rig.bodyParts.Length);
+        }
+
         Rig.bodyParts[3].eulerAngles.Z = MathHelper.ToRadians(15);
     }
     private void AnimateStretched()

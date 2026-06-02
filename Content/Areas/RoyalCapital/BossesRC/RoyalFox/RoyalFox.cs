@@ -257,8 +257,8 @@ public partial class RoyalFox : ScarletBoss,
     private float CometTeleportEndTime => 45f;
 
     //Sword Slash
-    private float SwordSlashPrepTime => 100;
-    private float SwordSlashSlashTime => 100;
+    private float SwordSlashPrepTime => 180;
+    private float SwordSlashSlashTime => 100 * (AttackCounter == 0 ? 1.5f : 1);
     private float SwordSlashBetweenTime => 60;
     private float SwordSlashCount => 4;
     private int SwordSlashDamage => 80;
@@ -547,12 +547,22 @@ public partial class RoyalFox : ScarletBoss,
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
+                        float dir = Main.rand.NextBool(2) ? 1 : -1;
+                        Vector2 pointToTeleportTo = MyTarget.Center + new Vector2(300 * dir, -64);
+                        TeleportEffect(pointToTeleportTo);
+                        Teleport(pointToTeleportTo);
                     }
 
-                    NPC.velocity.X += 0.05f;
-                    RegularRotation = Utils.AngleLerp(RegularRotation, NPC.velocity.ToRotation(), 0.1f);
+                    Rig.useSword = true;
+                    NPC.velocity += (NPC.Center - MyTarget.Center).SafeNormalize(Vector2.Zero) * 0.02f;
+                    if (NPC.velocity.Length() > 15)
+                        NPC.velocity *= 0.98f;
+                    RegularRotation = Utils.AngleLerp(RegularRotation, (MyTarget.Center - NPC.Center).ToRotation(), 0.1f);
                     ZRotation = Utils.AngleLerp(ZRotation, MathHelper.ToRadians(90), 0.1f);
-                    _goInvisible = true;
+                    AnimateTorpedo();
+                    WalkParticles();
+                    if(Timer >= SwordSlashPrepTime * 0.75f)
+                        _goInvisible = true;
                     _outliner.warning = true;
                     if(Timer >= SwordSlashPrepTime)
                     {
@@ -1168,6 +1178,11 @@ public partial class RoyalFox : ScarletBoss,
             NPC.TargetClosest();
 
         }
+        for (int i = 0; i < Rig.bodyParts.Length; i++)
+        {
+            var part = Rig.bodyParts[i];
+            part.eulerAngles.W = 0;// MathHelper.Lerp(radians, 0, (float)i / (float)Rig.bodyParts.Length);
+        }
 
         NPC.velocity *= 0.8f;
         FaceTargetWhileFlying();
@@ -1191,7 +1206,7 @@ public partial class RoyalFox : ScarletBoss,
                 SwitchState(PrecisionModePatternManager.NextPattern());
         }
 
-     //    SwitchState(AIState.Precision_SwordSlashChase);
+       SwitchState(AIState.Precision_SwordSlashChase);
     }
 
  

@@ -18,7 +18,7 @@ public class MagicSwordSlash : ModProjectile,
         Projectile.hostile = true;
         Projectile.width = 256;
         Projectile.height = 256;
-        Projectile.timeLeft = 34;
+        Projectile.timeLeft = 32;
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
         Projectile.ignoreWater = true;
