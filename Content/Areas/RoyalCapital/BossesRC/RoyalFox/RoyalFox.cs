@@ -966,7 +966,7 @@ public partial class RoyalFox : ScarletBoss,
                     if(dp > 0)
                     {
                         NPC.velocity = NPC.velocity.MoveTowards(targetVelocity, 0.6f);
-                        NPC.velocity *= MathHelper.Lerp(1.02f, 1f, _miniAttackCount / SpinningChargeBurstCount);
+                        NPC.velocity *= MathHelper.Lerp(1.02f, 1.01f, _miniAttackCount / SpinningChargeBurstCount);
                     }
                     
                     if(Timer >= 40)
@@ -979,7 +979,7 @@ public partial class RoyalFox : ScarletBoss,
                 break;
             case 2:
                 {
-                    NPC.velocity *= 0.96f;
+                    NPC.velocity *= 0.975f;
                     ZRotation += MathHelper.Lerp(0.15f, 0f, EasingFunction.InOutExpo(Timer / 25f));
                     RegularRotation = NPC.velocity.ToRotation();
                     AnimateTorpedo();
@@ -1206,7 +1206,7 @@ public partial class RoyalFox : ScarletBoss,
                 SwitchState(PrecisionModePatternManager.NextPattern());
         }
 
-       SwitchState(AIState.Precision_SwordSlashChase);
+       SwitchState(AIState.Precision_SpinningCharge);
     }
 
  
