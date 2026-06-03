@@ -294,6 +294,11 @@ public class MagicFallingStar : ModProjectile,
             dp.gravity = 0;
             dp.noTileCollide = true;
         }
+        if (this.OwnedByLocalClient())
+        {
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                ModContent.ProjectileType<RoyalMagicMiniStarBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+        }
 
         if (Main.netMode == NetmodeID.Server)
             return;

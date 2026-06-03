@@ -1,4 +1,5 @@
 ﻿using ReLogic.Content;
+using Steamworks;
 using Stellamod.Assets;
 using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss.Projectiles;
 using Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox.Projectiles;
@@ -35,6 +36,8 @@ public partial class RoyalFox : ScarletBoss,
         Full_Control = 2
     }
 
+    private float _oldButtRotation;
+    private int _precisionAttackCycle;
     private bool _slowDown;
     private float _spinningPredictionSpeed;
     private float _spinningCRot;
@@ -89,6 +92,20 @@ public partial class RoyalFox : ScarletBoss,
         {
             _rigBackingField ??= CreateRig();
             return _rigBackingField;
+        }
+    }
+
+    private VerletChain _verletTail;
+    private VerletChain VerletTail
+    {
+        get
+        {
+            if(_verletTail == null)
+            {
+                _verletTail = new VerletChain(128, NPC.Center, -Vector2.UnitX);
+                _verletTail.gravity = 0;
+            }
+            return _verletTail;
         }
     }
 
@@ -332,6 +349,7 @@ public partial class RoyalFox : ScarletBoss,
         writer.WriteVector2(_ballPosition);
         writer.Write(_miniAttackCount);
         writer.Write(_zoomMode);
+        writer.Write(_precisionAttackCycle);
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -342,6 +360,7 @@ public partial class RoyalFox : ScarletBoss,
         _ballPosition = reader.ReadVector2();
         _miniAttackCount = reader.ReadSingle();
         _zoomMode = reader.ReadBoolean();
+        _precisionAttackCycle = reader.ReadInt32();
     }
     public override void SetStaticDefaults()
     {
@@ -472,7 +491,11 @@ public partial class RoyalFox : ScarletBoss,
                 AI_Beyblade();
                 break;
         }
-
+        //  AddAngularVelocity();
+        if(State == AIState.Precision_Beyblade)
+            FakeButtTail2();
+        else
+            FakeButtTail();
         switch (_tailAnimation)
         {
             case TailAnimation.Limp:
@@ -491,17 +514,22 @@ public partial class RoyalFox : ScarletBoss,
 
         if (_teleportPosition != Vector2.Zero)
         {
-            if(_tailAnimation == TailAnimation.Loose)
+
+            NPC.Center = _teleportPosition;
+            for (int i = 0; i < Tails.Length; i++)
             {
-                for(int i = 0; i < Tails.Length; i++)
+                Vector2 start = _teleportPosition;
+                Vector2 end = start - RegularRotation.ToRotationVector2() * 3980;
+                for (int j = 0; j < Tails[i].segments.Length; j++)
                 {
-                  for(int j = 0; j < Tails[i].segments.Length; j++)
-                    {
-                        Tails[i].segments[j].a = NPC.Center;
-                    }
+                    Vector2 p =Vector2.Lerp(start, end, (float)j / (float)(Tails[i].segments.Length));
+                    ref Vector2 a = ref Tails[i].segments[j].a;
+                    ref Vector2 b = ref Tails[i].segments[j].b;
+
+                    a = p;
+                    b = p;
                 }
             }
-            NPC.Center = _teleportPosition;
             _teleportPosition = Vector2.Zero;
         }
 
@@ -512,12 +540,100 @@ public partial class RoyalFox : ScarletBoss,
         _dashTrailAlpha = MathHelper.Lerp(_dashTrailAlpha, targetDashTrailAlpha, 0.1f);
         _outliner.Update();
         UpdateRig();
-
+ 
         Vector2 diff = Rig.bodyParts[3].worldPosition - _wingPos;
         diff *= 0.8f;
+      
         _wingPos += diff; //Vector2.Lerp(_wingPos, Rig.bodyParts[3].worldPosition, 0.4f);
+
     }
 
+    private void AddAngularVelocity()
+    {
+        float angleDiff = RegularRotation - _oldButtRotation;
+        Vector2 angularVelocity = angleDiff.ToRotationVector2() * 64;
+        for (int i = 0; i < Tails.Length; i++)
+        {
+            for (int j = 0; j < Tails[i].segments.Length; j++)
+            {
+                ref Vector2 a = ref Tails[i].segments[j].a;
+                ref Vector2 b = ref Tails[i].segments[j].b;
+
+                float ratio = (float)j / (float)Tails[i].segments.Length;
+               // ratio = 1f - ratio;
+                a += angularVelocity;
+                b += angularVelocity;
+            }
+        }
+        _oldButtRotation = RegularRotation;
+    }
+
+    private float Diff(float a, float b)
+    {
+        float a1 = MathHelper.ToDegrees(a);
+        float a2 = MathHelper.ToDegrees(b);
+
+        float dif = (float)Math.Abs(a1 - a2) % 360;
+
+        if (dif > 180)
+            dif = 360 - dif;
+
+        dif = MathHelper.ToRadians(dif);
+        return dif;
+    }
+
+    private void FakeButtTail2()
+    {
+        float m = 0.03f;
+        float newAngle = Rig.rootSegment.eulerAngles.W;
+        float oldAngle = _oldButtRotation;
+        float angleDiff = newAngle - oldAngle;
+        angleDiff = MathHelper.Clamp(angleDiff, -0.5f, 0.5f);
+        for (int i = 0; i < Tails.Length; i++)
+        {
+            for (int j = 0; j < Tails[i].segments.Length; j++)
+            {
+                ref Vector2 a = ref Tails[i].segments[j].a;
+                ref Vector2 b = ref Tails[i].segments[j].b;
+
+                float ratio = (float)j / (float)Tails[i].segments.Length;
+                ratio = 1f - ratio;
+                a = a.RotatedBy(angleDiff * ratio, Rig.rootSegment.worldPosition);
+                b = b.RotatedBy(angleDiff * ratio, Rig.rootSegment.worldPosition);
+
+            }
+        }
+
+        _oldButtRotation += angleDiff;
+    }
+    private void FakeButtTail()
+    {
+        float m = 0.03f;
+        float newAngle = Rig.rootSegment.eulerAngles.W;
+       
+        float oldAngle = _oldButtRotation;
+
+        float f = 0.02f;
+        float angleDiff = Diff(oldAngle, newAngle) * f;
+
+        //angleDiff = MathHelper.Clamp(angleDiff, -1f, 1f);
+        for (int i = 0; i < Tails.Length; i++)
+        {
+            for (int j = 0; j < Tails[i].segments.Length; j++)
+            {
+                ref Vector2 a = ref Tails[i].segments[j].a;
+                ref Vector2 b = ref Tails[i].segments[j].b;
+
+                float ratio = (float)j / (float)Tails[i].segments.Length;
+                ratio = 1f - ratio;
+                a = a.RotatedBy(angleDiff * ratio, Rig.rootSegment.worldPosition);
+                b = b.RotatedBy(angleDiff * ratio, Rig.rootSegment.worldPosition);
+
+            }
+        }
+
+        _oldButtRotation += angleDiff;
+    }
     private void SwitchState(AIState state)
     {
         _miniAttackCount = 0;
@@ -842,7 +958,7 @@ public partial class RoyalFox : ScarletBoss,
                     RegularRotation -= 0.1f;
                     if (Timer >= 100)
                     {
-                        SwitchState(AIState.Idle);
+                        SwitchState(AIState.Tired);
                     }
                 }
                 break;
@@ -1111,6 +1227,7 @@ public partial class RoyalFox : ScarletBoss,
                 {
                     if(Timer == 1)
                     {
+                        _slowDown = false;
                        // TeleportEffect(_teleportTelegraphPosition);
                         Teleport(_teleportTelegraphPosition);
                         if (MultiplayerHelper.IsHost)
@@ -1140,13 +1257,32 @@ public partial class RoyalFox : ScarletBoss,
                         _dashLineVelocity = _startDashPoint + backflipOffset;
                     }
 
-                    float ratio2 = Timer / CometBackflipTime;
-                    Vector2 endPoint = _dashLineVelocity.RotatedBy(MathHelper.ToRadians(245), _startDashPoint);
-                    Vector2 v1 = Vector2.Lerp(_startDashPoint, _dashLineVelocity, ratio2);
-                    Vector2 v2 = Vector2.Lerp(_dashLineVelocity, endPoint, ratio2);
-                    Vector2 v3 = Vector2.Lerp(v1, v2, EasingFunction.InExpo(ratio2));
-                    Vector2 v4 = (v3 - NPC.Center);
-                    NPC.velocity = v4;
+                    if (!_slowDown)
+                    {
+                        float ratio2 = Timer / CometBackflipTime;
+                        Vector2 endPoint = _dashLineVelocity.RotatedBy(MathHelper.ToRadians(245), _startDashPoint);
+                        Vector2 v1 = Vector2.Lerp(_startDashPoint, _dashLineVelocity, ratio2);
+                        Vector2 v2 = Vector2.Lerp(_dashLineVelocity, endPoint, ratio2);
+                        Vector2 v3 = Vector2.Lerp(v1, v2, EasingFunction.InExpo(ratio2));
+                        Vector2 v4 = (v3 - NPC.Center);
+                        NPC.velocity = v4;
+
+                        if(AttackCounter == CometTeleportCount - 1)
+                        {
+                            float dp = Vector2.Dot(NPC.velocity.SafeNormalize(Vector2.Zero), (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero));
+                            if (dp < 0)
+                            {
+                                _slowDown = true;
+                            }
+                        }
+                      
+                    }
+
+                    if (_slowDown)
+                    {
+                        NPC.velocity *= 0.97f;
+                    }
+            
 
                     _renderDashTrail = true;
                     AnimateTorpedo();
@@ -1349,15 +1485,13 @@ public partial class RoyalFox : ScarletBoss,
                     if(Timer == 1)
                     {
                         NPC.TargetClosest();
-                        float dir = Main.rand.NextBool(2) ? 1 : -1;
-                        Vector2 pointToTeleportTo = MyTarget.Center + new Vector2(300 * dir, -64);
-                        TeleportEffect(pointToTeleportTo);
-                        Teleport(pointToTeleportTo);
-                    }
 
-                    FaceTargetWhileFlying();
-                    AnimateFlying();
-                    NPC.velocity.Y = MathHelper.Lerp(NPC.velocity.Y, MathF.Sin(Timer * 0.5f) * 0.2f, 0.1f);
+                    }
+                    if(NPC.velocity.Length() < 30)
+                        NPC.velocity *= 1.1f;
+                    ZRotation += MathHelper.Lerp(0.15f, 0f, EasingFunction.InOutExpo(Timer / 25f));
+                    RegularRotation = NPC.velocity.ToRotation();
+                    AnimateTorpedo();
                     if (Timer >= 60)
                     {
                         SwitchState(AIState.Idle);
@@ -1385,6 +1519,7 @@ public partial class RoyalFox : ScarletBoss,
                     AnimateFlying();
                     if(Timer >= 180)
                     {
+                        _zoomMode = !_zoomMode;
                         Timer = 0;
                         AttackCycle++;
                     }
@@ -1392,7 +1527,7 @@ public partial class RoyalFox : ScarletBoss,
                 break;
             case 1:
                 {
-                    _zoomMode = false;
+                
                     if(Timer == 1)
                     {
                         SoundStyle tired = AssetRegistry.Sounds.AlcaricFox.FenixAppeartired;
@@ -1402,6 +1537,10 @@ public partial class RoyalFox : ScarletBoss,
                         Vector2 pointToTeleportTo = MyTarget.Center + new Vector2(300 * dir, -64);
                         TeleportEffect(pointToTeleportTo);
                         Teleport(pointToTeleportTo);
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, pointToTeleportTo, Vector2.Zero, ModContent.ProjectileType<CoolTeleport>(), 1, 1, Main.myPlayer, ai1: 2);
+                        }
                     }
     
                     FaceTargetWhileFlying();
@@ -1409,9 +1548,16 @@ public partial class RoyalFox : ScarletBoss,
                     if (Main.rand.NextBool(8))
                     {
                         Vector2 velocity = Rig.headPart.FinalAngle.ToRotationVector2();
-                        var sp = SmokeParticle.SpawnInAlphaLayer(HeadPosition, velocity * 4);
+                        Vector2 pos = HeadPosition;
+                        pos += velocity * 40;
+
+                        Vector2 down = velocity.RotatedBy(MathHelper.PiOver2 * FacingDirectionToTarget);
+                        pos += down * 18;
+                        var sp = SmokeParticle.SpawnInAlphaLayer(pos, velocity * Main.rand.NextFloat(1f, 2f));
                         sp.initialColor = Color.White;
                         sp.fadeToColor = Color.DarkGray;
+                        sp.behindLayer = true;
+                        sp.Scale *= 0.6f;
                     }
 
                     if (Main.rand.NextBool(4))
@@ -1442,7 +1588,10 @@ public partial class RoyalFox : ScarletBoss,
                         Vector2 teleportPoint = MyTarget.Center + new Vector2(0, -2000);
                         TeleportEffect(teleportPoint);
                         PixelPrimitiveCircleFactory.CreateGenericInBoom(HeadPosition, Color.Transparent, Color.White, 60, 512);
-                        Teleport(teleportPoint);
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, teleportPoint, Vector2.Zero, ModContent.ProjectileType<CoolTeleport>(), 1, 1, Main.myPlayer, ai1: 2);
+                        }
                     }
                     NPC.velocity *= 0.98f;
                     AnimateFlying();
@@ -1497,11 +1646,7 @@ public partial class RoyalFox : ScarletBoss,
         FaceTargetWhileFlying();
         AnimateFlying();
 
-       // NPC.velocity *= 0.8f;
-        if (Timer >= 100 || _zoomMode)
-        {
-            ChooseAttack();
-        }
+        ChooseAttack();
         AnimateStanding();
     }
 
@@ -1512,10 +1657,32 @@ public partial class RoyalFox : ScarletBoss,
             if (_zoomMode)
                 SwitchState(AIState.Zoom_SparkleStarRain);
             else
-                SwitchState(PrecisionModePatternManager.NextPattern());
+            {
+                switch (_precisionAttackCycle)
+                {
+                    case 0:
+                        SwitchState(AIState.Precision_CometTeleportShots);
+                        break;
+                    case 1:
+                        SwitchState(AIState.Precision_SpinningCharge);
+                        break;
+                    case 2:
+                        SwitchState(AIState.Precision_SwordSlashChase);
+                        break;
+                    case 3:
+                        SwitchState(AIState.Precision_Beyblade);
+                        break;
+                }
+                _precisionAttackCycle++;
+                _precisionAttackCycle %= 4;
+            }
         }
-
-       SwitchState(AIState.Precision_Beyblade);
+        if (_zoomMode)
+        {
+            _zoomMode = false;
+            SwitchState(AIState.Precision_CometTeleportShots);
+        }
+  //   
     }
 
  

@@ -40,7 +40,8 @@ public partial class RoyalFox
         Rig.backBehindLeg[0].eulerAngles.Z += MathHelper.ToRadians(48);
         Rig.backBehindLeg[1].eulerAngles.Z = MathHelper.Lerp(start * 2, end * 2, backBackLeg);
         start = MathHelper.ToRadians(8);
-        end = MathHelper.ToRadians(15);
+        start += MathHelper.ToRadians(2);
+        end = start + MathHelper.ToRadians(7);
 
    
         float rotToPlayer = (MyTarget.Center - HeadPosition).ToRotation();
@@ -50,6 +51,7 @@ public partial class RoyalFox
             zAngle = MathHelper.Lerp(start, end, ExtraMath.Osc(0f, 1f, offset: i, speed: runningSpeed));
             if(i == 3)
             {
+                zAngle += MathHelper.ToRadians(45);
        
                 /*
                 if (FacingDirectionToTarget == 1)
@@ -67,7 +69,7 @@ public partial class RoyalFox
         }
 
 
-        Rig.headPart.fakeAngle = MathHelper.ToRadians(87 * FacingDirectionToTarget);
+        Rig.headPart.fakeAngle = MathHelper.ToRadians(36 * FacingDirectionToTarget);
 
         /*
         Vector2 rootDirection = Vector2.UnitX * FacingDirectionToTarget;
