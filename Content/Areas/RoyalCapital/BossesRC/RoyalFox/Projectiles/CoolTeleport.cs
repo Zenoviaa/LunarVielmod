@@ -17,6 +17,7 @@ public class CoolTeleport : ModProjectile,
 {
     private float Time => 25;
     private ref float Timer => ref Projectile.ai[0];
+    private ref float Style => ref Projectile.ai[1];
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -34,7 +35,8 @@ public class CoolTeleport : ModProjectile,
         Timer++;
         if (Timer == 1)
         {
-            RoyalFox.PlayImpactSound(Projectile.position);
+            if(Style == 0)
+                RoyalFox.PlayImpactSound(Projectile.position);
             PixelPrimitiveCircleFactory.CreateGenericInBoom(Projectile.Center, Color.White, Color.Transparent, 45, 384);
             for (float f = 0; f < 4; f++)
             {
@@ -56,7 +58,7 @@ public class CoolTeleport : ModProjectile,
         if (ModContent.GetInstance<LunarVeilClientConfig>().DramaticEffects)
         {
             SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
-           // effectsPlayer.darknessCurve = MathHelper.Lerp(0.6f, 0f, EasingFunction.InExpo(Timer / Time));
+            effectsPlayer.darknessCurve = MathHelper.Lerp(0.6f, 0f, EasingFunction.InExpo(Timer / Time));
         }
         if (Main.rand.NextBool(8))
         {
@@ -86,6 +88,17 @@ public class CoolTeleport : ModProjectile,
         flashDrawer.color.A = 0;
         flashDrawer.scale = Vector2.Lerp(Vector2.One * 1.5f, Vector2.Zero, EasingFunction.OutExpo(Timer / Time));
         sb.Draw(flashDrawer);
+
+        if(Style == 1)
+        {
+
+            SpritebatchDrawer glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center);
+            glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center);
+            glowBall.color = Color.White * 0.92f;
+            glowBall.color.A = 0;
+            glowBall.scale *= 2 * MathHelper.Lerp(10, 0f, EasingFunction.OutExpo(Timer / Time));
+            sb.Draw(glowBall);
+        }
 
 
     }

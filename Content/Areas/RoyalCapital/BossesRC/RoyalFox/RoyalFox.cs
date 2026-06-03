@@ -19,7 +19,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Stellamod.Core.AssetReferences.Effects;
 
 namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 
@@ -36,8 +35,10 @@ public partial class RoyalFox : ScarletBoss,
         Full_Control = 2
     }
 
+    private bool _slowDown;
+    private float _spinningPredictionSpeed;
+    private float _spinningCRot;
     private float _spiralDashTrailAlpha;
-
     private float _swingTrailEndRatio;
     private float _swingTrailAlpha;
     private Vector2 _swingVelocity;
@@ -54,7 +55,6 @@ public partial class RoyalFox : ScarletBoss,
     private float _roaringCircleAlpha;
     private Color _roaringCircleColor;
     private TailAnimation _tailAnimation;
-    private Vector2 _startPosition;
     private Vector2 _ballPosition;
     private Vector2 _eyeFlashPosition;
     private Vector2 _eyeFlashOffset;
@@ -62,7 +62,6 @@ public partial class RoyalFox : ScarletBoss,
 
     private Vector2 _initialStartDashPosition;
     private Vector2 _initialStartDashVelocity;
-
     private Vector2 _teleportPosition;
     private Vector2 _startDashPoint;
     private Vector2 _dashLineVelocity;
@@ -70,7 +69,6 @@ public partial class RoyalFox : ScarletBoss,
     private bool _renderDashTrail;
     private bool _renderMotionBlur;
     private float _laserTelegraphAlpha;
-
 
     private float _telegraphLineAlpha;
     private bool _showTelegraphLine;
@@ -262,6 +260,13 @@ public partial class RoyalFox : ScarletBoss,
     private float SwordSlashBetweenTime => 60;
     private float SwordSlashCount => 4;
     private int SwordSlashDamage => 80;
+
+    //Beyblade
+    private int FenixSawDamage => 70;
+    private float BeybladePrepTime => 120;
+    private float BeybladeChargeSpeed => MathHelper.Lerp(75, 25, _miniAttackCount / BeybladeAirbounceChainCount);
+    private float BeybladeAirbounceChainCount => 7;
+    private float BeybladeChargeBurstCount => 3;
     public Texture2D GetSubTexture(string fileName)
     {
         string path = Texture + $"_{fileName}";
@@ -415,6 +420,7 @@ public partial class RoyalFox : ScarletBoss,
         _swingTrailAlpha = MathHelper.Lerp(_swingTrailAlpha, 0f, 0.1f);
         _gravityFieldAlpha = MathHelper.Lerp(_gravityFieldAlpha, 0f, 0.1f);
         _spiralDashTrailAlpha = MathHelper.Lerp(_spiralDashTrailAlpha, 0f, 0.1f);
+        _spinningCRot = MathHelper.Lerp(_spinningCRot, 0f, 0.1f);
         Rig.useSword = false;
         _tailInFront = true;
         switch (State)
@@ -424,12 +430,15 @@ public partial class RoyalFox : ScarletBoss,
             case AIState.Idle:
                 AI_Idle();
                 break;
+
             case AIState.Tired:
                 AI_Tired();
                 break;
+
             case AIState.Despawn:
                 AI_Despawn();
                 break;
+
             case AIState.Zoom_DashDance:
                 AI_ZoomDashDance();
                 break;
@@ -457,6 +466,10 @@ public partial class RoyalFox : ScarletBoss,
 
             case AIState.Precision_SwordSlashChase:
                 AI_SwordChase();
+                break;
+
+            case AIState.Precision_Beyblade:
+                AI_Beyblade();
                 break;
         }
 
@@ -534,9 +547,307 @@ public partial class RoyalFox : ScarletBoss,
         return swingOffset;
     }
 
+    public override void HitEffect(NPC.HitInfo hit)
+    {
+        base.HitEffect(hit);
+    }
+
+    public override bool? CanBeHitByProjectile(Projectile projectile)
+    {
+        return base.CanBeHitByProjectile(projectile);
+    }
+
+    public override bool? CanBeHitByItem(Player player, Item item)
+    {
+        return base.CanBeHitByItem(player, item);
+    }
+
     #region Precision Mode
 
+    private void AI_Beyblade()
+    {
+        void SpinFaster()
+        {
+            foreach(var proj in Main.ActiveProjectiles)
+            {
+                if (proj.type != ModContent.ProjectileType<FenixSaw>())
+                    continue;
+                if (proj.ai[1] != NPC.whoAmI)
+                    continue;
+                proj.ai[2] = 110;
+            }
+        }
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.velocity *= 0f;
+                        NPC.TargetClosest();
+                        Vector2 teleportPoint = MyTarget.Center + new Vector2(550, -100);
+                        TeleportEffect(teleportPoint);
+                        Teleport(teleportPoint);
+                    }
 
+                    float time = BeybladePrepTime * 0.5f;
+                    _spinningCRot = MathHelper.Lerp(0f, 1f, Timer / time);
+                    AnimateC();
+                    AnimateTorpedo();
+
+                    _outliner.warning = true;
+                    _renderDashTrail = true;
+                    Rig.useSword = true;
+                    NPC.velocity *= 0.8f;
+    
+                    RegularRotation -= MathHelper.Lerp(0f, 0.1f, Timer / time);
+                    ZRotation = Utils.AngleLerp(ZRotation, MathHelper.ToRadians(90), 0.1f);
+                    if (Timer >= time)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+
+                            Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero,
+                                ModContent.ProjectileType<FenixSaw>(), FenixSawDamage, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                        }
+                        Timer = 0;
+                        AttackCycle++;
+                    } 
+                }
+                break;
+            case 1:
+                {
+                    _spinningCRot = 1f;
+                    _miniAttackCount = 0;
+                    if (Timer == 1)
+                    {
+                        _dashLineVelocity = Vector2.Zero;
+                        NPC.TargetClosest();
+                        SoundStyle dashSound = AssetRegistry.Sounds.AlcaricFox.FenixChargin;
+                        SoundEngine.PlaySound(dashSound, MyTarget.Center);
+                    }
+
+                    _outliner.warning = true;
+                    Rig.useSword = true;
+
+                    _startDashPoint = NPC.Center;
+             
+                    float ratio = Timer / SpinningChargePrepTime;
+                    _roaringCircleScale = MathHelper.SmoothStep(5f, 0f, ratio);
+                    _roaringCircleAlpha = MathHelper.SmoothStep(0f, 1f, EasingFunction.QuadraticBump(ratio));
+                    _roaringCircleColor = Color.Lerp(Color.Pink, Color.Blue, ratio);
+               
+                    RegularRotation -= MathHelper.Lerp(0f, 0.25f, EasingFunction.InOutExpo(ratio));
+                    ZRotation = Utils.AngleLerp(ZRotation, MathHelper.ToRadians(90), 0.1f); 
+
+                    Vector2 lerp1 = Vector2.Lerp(Vector2.Zero, -_dashLineVelocity * 32, EasingFunction.InOutExpo(ratio));
+                    Vector2 lerp2 = Vector2.Lerp(Vector2.Zero, _dashLineVelocity * 8, EasingFunction.InExpo(ratio));
+                    Vector2 lerp3 = Vector2.Lerp(lerp1, lerp2, ratio);
+                    Vector2 lerp4 = Vector2.Lerp(Vector2.Zero, _dashLineVelocity * 8, EasingFunction.InExpo(ratio));
+                    Vector2 lerp5 = Vector2.Lerp(lerp3, lerp4, ratio);
+
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, NPC.Center, 0.3f));
+                    Vector2 targetVelocity = lerp5;
+                    if (Timer < 30)
+                    {
+                        NPC.velocity *= 0.95f;
+                    }
+                    else
+                    {
+                        NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, MathHelper.Lerp(0f, 0.1f, EasingFunction.InExpo(ratio)));
+
+                    }
+
+                    AnimateTorpedo();
+                
+                    if (Timer % 60 == 0)
+                    {
+                        PixelPrimitiveCircleFactory.CreateGenericInBoom(HeadPosition, Color.Transparent, Color.White, 35, 500);
+                    }
+
+                    ChargeParticles(HeadPosition, in Timer);
+                    if (Timer >= SpinningChargePrepTime)
+                    {
+          
+                        SoundStyle airdashSound = AssetRegistry.Sounds.AlcaricFox.FenixWindStartup;
+                        SoundEngine.PlaySound(airdashSound, HeadPosition);
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+
+            case 2:
+                {
+                    _spinningCRot = 1f;
+                    if (Timer == 1)
+                    {
+          
+                        _startDashPoint = NPC.Center;
+                        Vector2 pointToJumpTo = MyTarget.Center;
+                        pointToJumpTo.Y += 200;
+
+                        float directionToJumpFrom = (_startDashPoint.X < MyTarget.Center.X) ? 1 : -1;
+                        pointToJumpTo.X += directionToJumpFrom * 600;
+                        _dashLineVelocity = pointToJumpTo;
+                        SpinFaster();
+                        _slowDown = false;
+                       
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, HeadPosition, Vector2.Zero, ModContent.ProjectileType<SpiralDashTrail>(), 1, 1, Main.myPlayer, ai1: NPC.whoAmI);
+                        }
+                    }
+
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, NPC.Center, 0.12f));
+                    float time = 62;
+                    float ease = Timer / time;
+
+                    float direction = _dashLineVelocity.X < _startDashPoint.X ? 1 : -1;
+                    Vector2 up = (_dashLineVelocity - _startDashPoint).SafeNormalize(Vector2.Zero);
+                    up = up.RotatedBy(MathHelper.PiOver2 * direction);
+
+                    Vector2 midPoint = MyTarget.Center;
+                    midPoint += up * 600;
+                    Vector2 startPoint = _startDashPoint;
+                    Vector2 endPoint = _dashLineVelocity;
+
+
+                    Vector2 m1 = Vector2.Lerp(_startDashPoint, midPoint, ease);
+                    Vector2 m2 = Vector2.Lerp(midPoint, _dashLineVelocity, ease);
+                    Vector2 m3 = Vector2.Lerp(m1, m2, ease);
+                    Vector2 vel = (m3 - NPC.Center);
+                    NPC.velocity = vel;
+
+                    /*
+                    float dir = _startDashPoint.X < _dashLineVelocity.X ? 1 : -1;
+                    float distance = MathF.Max(1300, Vector2.Distance(_startDashPoint, _dashLineVelocity) + 500);
+                    Vector2 offset = Vector2.UnitX * dir * distance;
+                    Vector2 endPoint = _startDashPoint + offset;
+                    endPoint += Vector2.UnitY * 100;
+                    Vector2 m1 = Vector2.Lerp(_startDashPoint, _dashLineVelocity, ease);
+                    Vector2 m2 = Vector2.Lerp(_dashLineVelocity, endPoint, ease);
+                    Vector2 m3 = Vector2.Lerp(m1, m2, ease);
+
+                    Vector2 arc = Vector2.Lerp(Vector2.Zero, -Vector2.UnitY * _spinningPredictionSpeed, EasingFunction.QuadraticBump(ease));
+                    m3 += arc;
+                    Vector2 vel = (m3 - NPC.Center);
+                    NPC.velocity = vel;
+                    */
+                       
+                    ZRotation = Utils.AngleLerp(ZRotation, MathHelper.ToRadians(90), 0.1f);
+                    RegularRotation -= (0.25f + MathHelper.Lerp(0.25f, 0f, EasingFunction.InOutExpo(ease)));
+                    Rig.useSword = true;
+
+                    AnimateC();
+                    AnimateTorpedo();
+                    WalkParticles();
+                    RoyalFox.SpawnCometStarParticle(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero), 65);
+
+                    _spiralDashTrailAlpha = EasingFunction.QuadraticBump(Timer / 40f);
+                    _contactDamage = true;
+                    _outliner.attacking = true;
+                    _renderDashTrail = true;
+                    if (Timer % 8 == 0)
+                    {
+                        var donut = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero));
+                    }
+
+    
+
+                    if(Timer == 30)
+                    {
+                        SoundStyle soundS = AssetRegistry.Sounds.AlcaricFox.FenixCloseBounce;
+                        SoundEngine.PlaySound(soundS, MyTarget.Center);
+                    }
+
+                    if (Timer >= time)
+                    {
+                        Timer = 0;
+                        _miniAttackCount++;
+                        AttackCycle++;
+                        if(_miniAttackCount >= AirbounceChainCount)
+                        {
+                            AttackCycle++;
+                        }
+                    }
+
+                }
+                break;
+            case 3:
+                {
+                    _spinningCRot = 1f;
+                    NPC.velocity *= 0.8f;
+                    ZRotation += MathHelper.Lerp(0.15f, 0f, EasingFunction.InOutExpo(Timer / 25f));
+                    RegularRotation -= 0.1f;
+
+                    AnimateTorpedo();
+
+                    AnimateC();
+                    _outliner.warning = true;
+                    if (Timer >= 10)
+                    {
+
+                        Timer = 0;
+                     
+                        if (_miniAttackCount >= AirbounceChainCount)
+                        {
+                            AttackCycle++;
+                        }
+                        else
+                        {
+                            NPC.velocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 15;
+                            PlayAirbounceSuond2(MyTarget.Center);
+                            if (MultiplayerHelper.IsHost)
+                            {
+                                Projectile.NewProjectile(SourceFromThis, NPC.Center, Vector2.Zero, ModContent.ProjectileType<CoolTeleport>(), 1, 1, Main.myPlayer, ai1: 1);
+                            }
+
+                            FXUtil.CreateRipple(HeadPosition);
+                            FXUtil.GlowCircleBoom(HeadPosition, Color.White, Color.Blue, Color.DarkBlue, duration: 40, baseSize: 0.23f);
+                            for (float f = 0; f < 3; f++)
+                            {
+                                Vector2 vel = NPC.velocity.SafeNormalize(Vector2.Zero);
+                                vel *= MathHelper.Lerp(3f, 9f, f / 3f);
+                                var donut = LegacyParticle.NewParticle<GlowDonutParticle>(HeadPosition + vel * 38, vel.SafeNormalize(Vector2.Zero));
+                                donut.Scale *= 3 * MathHelper.Lerp(1f, 1.5f, f / 3f);
+
+                            }
+
+                            for (float f = 0; f < 16; f++)
+                            {
+                                Vector2 vel = NPC.velocity.SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5, 45);
+                                vel = vel.RotatedByRandom(MathHelper.ToRadians(60));
+                                var d = DustParticle.Spawn(HeadPosition, vel);
+                                d.outerColor = Color.Blue;
+                                d.dampening = 0.1f;
+                                d.noTileCollide = true;
+                                d.gravity = 0;
+                                d.Scale *= 1.2f;
+                            }
+
+                            ShakeScreenPosition.Shake = 3;
+                            AttackCycle--;
+                        }
+                        //bounce
+                    }
+                }
+                break;
+            case 4:
+                {
+                    _spinningCRot = 1f;
+                    NPC.velocity.Y += 0.4f;
+                    ZRotation += MathHelper.Lerp(0.15f, 0f, EasingFunction.InOutExpo(Timer / 25f));
+                    RegularRotation -= 0.1f;
+                    if (Timer >= 100)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
+    }
     private void AI_SwordChase()
     {
         Timer++;
@@ -579,11 +890,9 @@ public partial class RoyalFox : ScarletBoss,
                         float radiansOffset = AttackCounter / 4 * MathHelper.TwoPi;
                         teleportOffset = teleportOffset.RotatedBy(radiansOffset);
                         _dashLineVelocity = teleportOffset;
+
                         Vector2 teleportPosition = MyTarget.Center + teleportOffset;
-                   //     TeleportEffect(teleportPosition);
                         Teleport(teleportPosition);
-                 
-   
                     }
 
                     if(Timer == 3)
@@ -1206,7 +1515,7 @@ public partial class RoyalFox : ScarletBoss,
                 SwitchState(PrecisionModePatternManager.NextPattern());
         }
 
-       SwitchState(AIState.Precision_SpinningCharge);
+       SwitchState(AIState.Precision_Beyblade);
     }
 
  

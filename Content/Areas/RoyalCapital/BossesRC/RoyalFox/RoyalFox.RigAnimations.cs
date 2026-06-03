@@ -138,6 +138,19 @@ public partial class RoyalFox
 
         Rig.bodyParts[3].eulerAngles.Z = MathHelper.ToRadians(15);
     }
+
+    private void AnimateC()
+    {
+        for (int i = 1; i < Rig.bodyParts.Length; i++)
+        {
+            var part = Rig.bodyParts[i];
+            float ratio = (float)i / (float)Rig.bodyParts.Length;
+            float radians = MathHelper.ToRadians(MathHelper.Lerp(0, 130, ratio * _spinningCRot));
+            part.eulerAngles.W = radians;// MathHelper.Lerp(radians, 0, (float)i / (float)Rig.bodyParts.Length);
+        }
+   //     Rig.bodyParts[0].eulerAngles.W += _spinningCRot;
+  ;
+    }
     private void AnimateTorpedo()
     {
         Rig.headPart.fakeAngle = 0;

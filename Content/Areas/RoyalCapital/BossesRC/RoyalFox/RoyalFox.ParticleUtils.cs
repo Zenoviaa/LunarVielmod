@@ -38,6 +38,22 @@ public partial class RoyalFox
         }
         SoundEngine.PlaySound(swingSound, position);
     }
+    public static void PlayAirbounceSuond2(Vector2 position)
+    {
+        int soundIndex = Main.rand.Next(2);
+        SoundStyle airbounce;
+        switch (soundIndex)
+        {
+            default:
+            case 0:
+                airbounce = AssetRegistry.Sounds.AlcaricFox.FenixSawbounce1;
+                break;
+            case 1:
+                airbounce = AssetRegistry.Sounds.AlcaricFox.FenixSawbounce2;
+                break;
+        }
+        SoundEngine.PlaySound(airbounce, position);
+    }
     public static void PlayAirbounceSuond(Vector2 position)
     {
         int soundIndex = Main.rand.Next(2);
