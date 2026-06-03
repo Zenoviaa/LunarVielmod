@@ -8,6 +8,7 @@ public partial class RoyalFox
 
     private void AnimateFlying()
     {
+        ResetW();
         float start = MathHelper.ToRadians(-2) * FacingDirectionToTarget;
         float end = MathHelper.ToRadians(2) * FacingDirectionToTarget;
 
@@ -141,6 +142,14 @@ public partial class RoyalFox
         Rig.bodyParts[3].eulerAngles.Z = MathHelper.ToRadians(15);
     }
 
+    private void ResetW()
+    {
+        for (int i = 1; i < Rig.bodyParts.Length; i++)
+        {
+            var part = Rig.bodyParts[i];
+            part.eulerAngles.W = 0;// MathHelper.Lerp(radians, 0, (float)i / (float)Rig.bodyParts.Length);
+        }
+    }
     private void AnimateC()
     {
         for (int i = 1; i < Rig.bodyParts.Length; i++)

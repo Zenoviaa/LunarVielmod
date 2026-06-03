@@ -1,17 +1,72 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Areas.MoonspiralTower.VerliaBoss;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
-using Stellamod.Core.ZTileSystem;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
 using Stellamod.Trails;
+using System;
+using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ModLoader;
-using static Stellamod.Core.AssetReferences.Effects;
+using static Terraria.GameContent.Animations.Actions.Sprites;
 
 namespace Stellamod.Content.Areas.RoyalCapital.BossesRC.RoyalFox;
 
+[Autoload(Side = ModSide.Client)]
+public class RoyalFoxCloneRenderer : ModSystem
+{
+    private ManagedRenderTarget _cloneRT;
+    private readonly Queue<Action> _cloneDrawActions = new();
+    public override void Load()
+    {
+        base.Load();
+        PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady += RenderClones;
+        On_Main.DoDraw_DrawNPCsOverTiles += DrawClones;
+    }
+
+    private void DrawClones(On_Main.orig_DoDraw_DrawNPCsOverTiles orig, Main self)
+    {
+        orig(self);
+        SpriteBatch spriteBatch = Main.spriteBatch;
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, Main.Rasterizer, null);
+        spriteBatch.Draw(_cloneRT, Vector2.Zero, null, Main.DiscoColor * 0.4f * ExtraMath.Osc(0.5f, 1f, speed: 32), 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+        spriteBatch.End(); 
+    }
+
+    public override void Unload()
+    {
+        base.Unload();
+        PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady -= RenderClones;
+    }
+
+    public override void OnModLoad()
+    {
+        base.OnModLoad();
+        _cloneRT = ManagedRenderTarget.New();
+    }
+    private void RenderClones()
+    {
+        GraphicsDevice gDevice = Main.graphics.GraphicsDevice;
+        gDevice.SetRenderTarget(_cloneRT);
+        gDevice.Clear(Color.Transparent);
+
+        SpriteBatch sb = Main.spriteBatch;
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null);
+        while (_cloneDrawActions.Count > 0)
+        {
+            _cloneDrawActions.Dequeue()();
+        }
+        sb.End();
+    }
+    public static void Queue(Action drawAction)
+    {
+        RoyalFoxCloneRenderer clone = ModContent.GetInstance<RoyalFoxCloneRenderer>();
+        clone._cloneDrawActions.Enqueue(drawAction);
+    }
+}
 public partial class RoyalFox
 {
 
@@ -31,7 +86,7 @@ public partial class RoyalFox
     private Color GetTrailColor(float ratio)
     {
         Color c = Color.Lerp(Color.White, Color.Lerp(Color.Pink, Color.Blue, ExtraMath.Osc(0f, 1f, speed: 16)), ratio) * _swingTrailAlpha * EasingFunction.QuadraticBump(ratio);// * EasingFunction.QuadraticBump(_swingTrailAlpha);
-       // c.A = 0;
+                                                                                                                                                                                // c.A = 0;
         return c;
     }
     private Color GetTrailColor2(float ratio)
@@ -39,7 +94,7 @@ public partial class RoyalFox
         Color c = Color.Lerp(Color.White, Color.Lerp(Color.Pink, Color.Blue, ExtraMath.Osc(0f, 1f, speed: 16)), ratio) * _swingTrailAlpha * 0.24f * EasingFunction.QuadraticBump(ratio);// * EasingFunction.QuadraticBump(_swingTrailAlpha);                                                                                                                     // c.A = 0;
         return c;
     }
-    
+
     private void DrawSwordSlash(SpriteBatch sb, Vector2 sp)
     {
         float endPoint = _swingTrailEndRatio;
@@ -57,15 +112,50 @@ public partial class RoyalFox
         sb.Draw(glowSword);
         sb.Draw(glowSword);
     }
+    private void DrawPixelatedMoon(SpriteBatch sb, Vector2 screenPos)
+    {
+        if (_darkMoonTimer <= 0)
+            return;
 
+        float alpha = _darkMoonTimer / 60f;
+        Vector2 scale = Vector2.One * 0.2f;
+        var scrollingMoonTextureAsset = ModContent.Request<Texture2D>(Texture + "_ScrollingMoon");
+        var maskTextureAsset = ModContent.Request<Texture2D>(Texture + "_Moon");
+        SpritebatchDrawer moonSprite = SpritebatchDrawer.FromTextureAsset(maskTextureAsset, _moonPosition);
+
+        ScrollingMoonShader scrollingMoonShader = ScrollingMoonShader.Instance;
+        scrollingMoonShader.ScrollingTexture = scrollingMoonTextureAsset.Value;
+        scrollingMoonShader.MaskSize = maskTextureAsset.Value.Size();
+
+        float time = Main.GlobalTimeWrappedHourly * 0.6f * 1;
+        scrollingMoonShader.ScrollOffset = new Vector2(time, 0f);
+        scrollingMoonShader.BendStrength = 1.8f;
+        scrollingMoonShader.Tiling = new Vector2(0.13f, 0.45f);
+
+
+        //Draw the moon itself
+        sb.Restart(effect: scrollingMoonShader.Effect);
+        moonSprite.rotation = MathHelper.ToRadians(-12);
+        moonSprite.color = Color.White * alpha; // Color.Lerp(Color.White, Color.DarkBlue, 0.5f);
+        moonSprite.scale *= scale;
+        Main.spriteBatch.Draw(moonSprite);
+        sb.RestartDefaults();
+
+        var shadowMoonTextureAsset = ModContent.Request<Texture2D>(Texture + "_Shadow");
+        SpritebatchDrawer shadowDrawer = SpritebatchDrawer.FromTextureAsset(shadowMoonTextureAsset, _moonPosition);
+
+        shadowDrawer.color *= alpha;
+        shadowDrawer.scale *= scale * 1.05f;
+        Main.spriteBatch.Draw(shadowDrawer);
+    }
     private void DrawSlashEffect(GraphicsDevice gDevice)
     {
         Vector2[] position = new Vector2[128];
         float endPoint = _swingTrailEndRatio;
         float startPoint = endPoint - 0.35f;
-        for(int i = 0; i < position.Length; i++)
+        for (int i = 0; i < position.Length; i++)
         {
-            float ratio = (float)i / (float)position.Length;
+            float ratio = i / (float)position.Length;
             float interp = MathHelper.Lerp(endPoint, startPoint, ratio);
             Vector2 point = _startDashPoint + CalculateSwingOffset(_swingVelocity, interp);
             point += _swingVelocity.SafeNormalize(Vector2.Zero) * 200;
@@ -121,7 +211,7 @@ public partial class RoyalFox
         Color startColor = Color.White;
         Color glowColor = Color.Lerp(Color.Blue, Color.Pink, ExtraMath.Osc(0f, 1f, speed: 3));
         Color mixColor = Color.Lerp(startColor, glowColor, ExtraMath.Osc(0f, 1f, speed: 6));
-        flare.color = mixColor * ExtraMath.Osc(0.8f, 1f, speed: 3); 
+        flare.color = mixColor * ExtraMath.Osc(0.8f, 1f, speed: 3);
         flare.color.A = 0;
         flare.scale *= 0.5f * MathHelper.Lerp(0.7f, 1f, _teleportAlpha) * _teleportAlpha;
         flare.rotation = Main.GlobalTimeWrappedHourly * 4;
@@ -172,7 +262,7 @@ public partial class RoyalFox
         var segmentToDrawOn = Rig.bodyParts[2];
         Matrix perspectiveMatrix = segmentToDrawOn.GetFullMatrix();
         Vector2 worldPos = _wingPos;
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             Vector3 yAxis = new Vector3(0, 1, 0);
             float zRotation = MathHelper.Lerp(MathHelper.ToRadians(-35), MathHelper.ToRadians(35), ExtraMath.Osc(0f, 1f, speed: 3, offset: i));
@@ -182,7 +272,7 @@ public partial class RoyalFox
             Matrix flapMatrix = Matrix.CreateFromQuaternion(zQuaternion);
 
             Vector3 xAxis = new Vector3(1, 0, 0);
-            float xRot = MathHelper.Lerp(MathHelper.ToRadians(30), 0, (float)i / 3f);
+            float xRot = MathHelper.Lerp(MathHelper.ToRadians(30), 0, i / 3f);
             if (backWings)
                 xRot *= -1;
             Quaternion offsetWingQuaternion = Quaternion.CreateFromAxisAngle(xAxis, xRot);
@@ -195,17 +285,17 @@ public partial class RoyalFox
             Matrix z = Matrix.CreateFromQuaternion(zWingQuat);
 
 
-            Vector3 offset = -Rig.bodyParts[3].forwardVectors[0] * 0.8f * MathHelper.Lerp(1f, 0f, (float)i / 3f);
+            Vector3 offset = -Rig.bodyParts[3].forwardVectors[0] * 0.8f * MathHelper.Lerp(1f, 0f, i / 3f);
             Matrix translationMatrix = Matrix.CreateTranslation(offset);
-            Matrix fullMatrix = z * flapMatrix * m  * perspectiveMatrix * translationMatrix;
+            Matrix fullMatrix = z * flapMatrix * m * perspectiveMatrix * translationMatrix;
             WingQuad.CalculateBottomCenterVertices(worldPos, 256, 128, fullMatrix);
 
             Color glowColor = Color.Lerp(Color.Blue, Color.Pink, ExtraMath.Osc(0f, 1f, speed: 3));
             Color wingColor = Color.Lerp(Color.White, glowColor, ExtraMath.Osc(0f, 0.8f, speed: 1.5f));
-            wingColor = Color.Lerp(Color.Lerp(Color.White, Color.Black, 0.8f), wingColor, (float)i / 3f);
+            wingColor = Color.Lerp(Color.Lerp(Color.White, Color.Black, 0.8f), wingColor, i / 3f);
             if (darkened)
             {
-        //        wingColor = Color.Lerp(wingColor, Color.Black, 0.5f);
+                //        wingColor = Color.Lerp(wingColor, Color.Black, 0.5f);
             }
 
             wingColor *= 0.5f;
@@ -219,11 +309,8 @@ public partial class RoyalFox
 
 
 
-    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    private void DrawFox(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-        if (_dontRender)
-            return false;
-
 
         _gravityFieldTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_GravityField");
         _sigilTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Sigil");
@@ -254,7 +341,7 @@ public partial class RoyalFox
         _canDrawWings = true;
         Rig.Draw(spriteBatch, screenPos, drawColor);
         _canDrawWings = false;
-    
+
 
         DrawTelegraphLine(spriteBatch);
         DrawEyeFlash(spriteBatch);
@@ -262,11 +349,11 @@ public partial class RoyalFox
         Vector2 drawPos = Rig.headPart.worldPosition;
 
         float rot = RegularRotation + MathHelper.PiOver4;
-        drawPos += (rot-MathHelper.PiOver2).ToRotationVector2() * 45;
+        drawPos += (rot - MathHelper.PiOver2).ToRotationVector2() * 45;
         SpritebatchDrawer headDrawer = SpritebatchDrawer.FromTextureAsset(_sigilTextureAsset, drawPos);
-        headDrawer.rotation =rot - MathHelper.PiOver4; ;
+        headDrawer.rotation = rot - MathHelper.PiOver4; ;
         headDrawer.color *= _invisibleAlpha;
-       // headDrawer.scale *= 5;
+        // headDrawer.scale *= 5;
         spriteBatch.Draw(headDrawer);
 
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, drawPos);
@@ -279,7 +366,7 @@ public partial class RoyalFox
             spriteBatch.RestartDefaults();
         }
 
-        if(_roaringCircleAlpha > 0)
+        if (_roaringCircleAlpha > 0)
         {
             SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, HeadPosition);
             circleDrawer.color = _roaringCircleColor * _roaringCircleAlpha * 0.3f;
@@ -288,8 +375,21 @@ public partial class RoyalFox
             spriteBatch.Draw(circleDrawer);
         }
         DrawGravityField(spriteBatch);
+   
+    }
+    private void DrawMoonTeleport(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
         DrawTeleportTelegraph(spriteBatch);
-      //  DrawLaserTelegraph(Main.spriteBatch);
+    }
+    public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+    {
+        if (_dontRender)
+            return false;
+        if (IsAClone)
+            return false;
+        DrawFox(spriteBatch, screenPos, drawColor);
+
+        //  DrawLaserTelegraph(Main.spriteBatch);
         return false;
     }
 
@@ -313,19 +413,40 @@ public partial class RoyalFox
         Rig.Draw(sb, Main.screenPosition, _outliner.outlineColor);
     }
 
+
+    private void DrawFull()
+    {
+
+        RenderPixelatedDashTrail(Main.graphics.GraphicsDevice);
+        DrawHair(Main.graphics.GraphicsDevice);
+        DrawFox(Main.spriteBatch, Main.screenPosition, Color.White);
+        DrawSlashEffect(Main.graphics.GraphicsDevice);
+        DrawSwordSlash(Main.spriteBatch, Main.screenPosition);
+    }
     public void DrawToRenderTargets()
     {
+
+        if (IsAClone)
+        {
+            OutlineRenderer.Queue(DrawOutlines);
+            RoyalFoxCloneRenderer.Queue(DrawFull);
+            PixelationManager.QueueSpritebatchDrawAction(DrawLaserTelegraph, DrawLayer.OverPlayers);
+            return;
+        }
+        PixelationManager.QueueSpritebatchDrawAction(DrawLaserTelegraph, DrawLayer.OverPlayers);
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedMoon);
         OutlineRenderer.Queue(DrawOutlines);
         if (_dashTrailAlpha > 0)
         {
             PixelationManager.QueuePrimitivesDrawAction(RenderPixelatedDashTrail);
         }
-        PixelationManager.QueueSpritebatchDrawAction(DrawLaserTelegraph, DrawLayer.OverPlayers);
-        if(!_tailInFront)
+   
+        if (!_tailInFront)
             PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.BehindNPCsWithOutline);
         else
             PixelationManager.QueuePrimitivesDrawAction(DrawHair, DrawLayer.OverNPCs);
         PixelationManager.QueuePrimitivesDrawAction(DrawSlashEffect, DrawLayer.OverNPCs);
         PixelationManager.QueueSpritebatchDrawAction(DrawSwordSlash, DrawLayer.OverNPCs);
+        PixelationManager.QueueSpritebatchDrawAction(DrawMoonTeleport, DrawLayer.OverPlayers);
     }
 }
