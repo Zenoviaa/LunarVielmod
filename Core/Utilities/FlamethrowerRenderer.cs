@@ -36,6 +36,32 @@ public class FlamethrowerNoiseShader : CrystalShader<FlamethrowerNoiseShader>
         }
     }
 }
+public class FlamethrowerV2Shader : CrystalShader<FlamethrowerV2Shader>
+{
+    public Color InnerColor
+    {
+        set
+        {
+            Effect.Parameters["innerColor"].SetValue(value.ToVector3());
+        }
+    }
+
+    public Color OuterColor
+    {
+        set
+        {
+            Effect.Parameters["outerColor"].SetValue(value.ToVector3());
+        }
+    }
+
+    public float Threshold
+    {
+        set
+        {
+            Effect.Parameters["threshold"].SetValue(value);
+        }
+    }
+}
 public class FlamethrowerShader : CrystalShader<FlamethrowerShader>
 {
     public Vector4[] Metaballs
@@ -138,31 +164,57 @@ public class FlamethrowerRenderer : ModSystem
         _index = 0;
         _metaballWorldPositions.Clear();
     }
-    private void RenderMetaballs2()
+    private void RenderMetaballsV2()
     {
+        FlamethrowerV2Shader shader = ShaderContent.GetInstance<FlamethrowerV2Shader>();
+        shader.InnerColor = Color.Yellow;
+        shader.OuterColor = Color.Red;
+        shader.Threshold = 0.75f;
         SpriteBatch sb = Main.spriteBatch;
         GraphicsDevice gDevice = sb.GraphicsDevice;
+        gDevice.SetRenderTarget(_fireTarget);
+        gDevice.Clear(Color.Transparent);
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null);
+
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Vector2.Zero);
+        drawer.color = Color.White;
+        drawer.color.A = 0;
+        drawer.scale *= 0.3f;
+
+        int index = 0;
+        foreach(Vector2 wp in _metaballWorldPositions)
+        {
+            drawer.worldPosition = wp;
+            if(index < _metaballPositions.Length)
+            {
+                drawer.color = Color.White * _metaballPositions[index].Z;
+                drawer.color.A = 0;
+                drawer.scale = Vector2.One * 0.3f;
+                drawer.scale *= (_metaballPositions[index].W / 0.065f);
+            }
+            sb.Draw(drawer);
+            index++;
+        }
+        //sb.Draw(_fireTarget, Vector2.Zero, Color.White);
+        sb.End();
+
         gDevice.SetRenderTarget(_metaballTarget);
         gDevice.Clear(Color.Transparent);
-        sb.Begin(SpriteSortMode.Immediate, CustomBlendStates.Brightest, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone,null);
-        for(int i = 0; i < _metaballWorldPositions.Count; i++)
-        {
-            SpritebatchDrawer ballDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, _metaballWorldPositions[i]);
-            ballDrawer.color.A = 0;
-            sb.Draw(ballDrawer);
-        }
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, shader.Effect);
+        sb.Draw(_fireTarget, Vector2.Zero, Color.White);
         sb.End();
+
         _index = 0;
         _metaballWorldPositions.Clear();
-
     }
+
     private void RenderFull()
     {
         if (_index <= 0)
             return;
-
-        RenderFlameNoise();
         RenderMetaballs();
+        RenderFlameNoise();
+      
         PixelationManager.QueueSpritebatchDrawAction(DrawToScreen);
     }
 

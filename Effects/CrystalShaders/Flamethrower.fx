@@ -27,6 +27,7 @@ float3 innerColor;
 float3 outerColor;
 int length;
         
+float threshold;
 float2 texelSize;
 float InExpo(float t)
 {
