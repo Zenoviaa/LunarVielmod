@@ -339,9 +339,7 @@ public partial class RoyalFox : ScarletBoss,
         fallSystem.hoveringPlatform = true;
         fallSystem.hoverPlatformY = Ground;
    //     fallSystem.noProjTileCollide = true;
-        if (Main.netMode == NetmodeID.Server)
-            return;
-        ModContent.GetInstance<FenixDomain>().drawFenix = true;
+  
     }
     public override void SendExtraAI(BinaryWriter writer)
     {
@@ -422,7 +420,6 @@ public partial class RoyalFox : ScarletBoss,
         if (IsAClone)
             return;
 
-        Main.NewText("EVIL");
         _darkMoon = true;
         NPC.netUpdate = true;
     }
@@ -540,6 +537,8 @@ public partial class RoyalFox : ScarletBoss,
         _spinningCRot = MathHelper.Lerp(_spinningCRot, 0f, 0.1f);
         Rig.useSword = false;
         _tailInFront = true;
+      //  _darkMoon = true;
+        /*
         if (!_pressed && Keyboard.GetState().IsKeyDown(Keys.L))
         {
             _pressed = true;
@@ -547,9 +546,10 @@ public partial class RoyalFox : ScarletBoss,
         if (_pressed && Keyboard.GetState().IsKeyUp(Keys.L) && !IsAClone)
         {
             _pressed = false;
-            NPC.life = (int)(NPC.lifeMax * 0.5f);
-        }
-     //   NPC.active = false;
+            _phase2 = true;
+            NPC.life = (int)(NPC.lifeMax * 0.49f);
+            SwitchState(AIState.Precision_Beyblade);
+        }*/
 
         if (!_killYoSelf)
         {
@@ -776,7 +776,6 @@ public partial class RoyalFox : ScarletBoss,
         AttackCounter = 0;
         State = state;
         NPC.netUpdate = true;
-        Main.NewText(state);
     }
 
     private void DebugTeleportLeftOfPlayer()
@@ -836,6 +835,20 @@ public partial class RoyalFox : ScarletBoss,
                 proj.ai[2] = 110;
             }
         }
+
+        void KillSaws()
+        {
+            foreach (var proj in Main.ActiveProjectiles)
+            {
+                if (proj.type != ModContent.ProjectileType<FenixSaw>())
+                    continue;
+                if (proj.ai[1] != NPC.whoAmI)
+                    continue;
+                FenixSaw saw = proj.ModProjectile as FenixSaw;
+                saw.shouldDie = true;
+            }
+        }
+
         Timer++;
         switch (AttackCycle)
         {
@@ -849,7 +862,9 @@ public partial class RoyalFox : ScarletBoss,
                         if (IsAClone)
                         {
                             teleportPoint = NPC.Center;
+                            teleportPoint.Y += 32;
                         }
+
                         TeleportEffect(teleportPoint);
                         Teleport(teleportPoint);
                         if (CanMakeClones())
@@ -958,7 +973,11 @@ public partial class RoyalFox : ScarletBoss,
                     _spinningCRot = 1f;
                     if (Timer == 1)
                     {
-          
+                        float nextCount = _miniAttackCount + 1;
+                        if (nextCount >= AirbounceChainCount)
+                        {
+                            KillSaws();
+                        }
                         _startDashPoint = NPC.Center;
                         Vector2 pointToJumpTo = MyTarget.Center;
                         pointToJumpTo.Y += 200;
@@ -977,6 +996,9 @@ public partial class RoyalFox : ScarletBoss,
 
                     CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, NPC.Center, 0.12f));
                     float time = 62 * SlowdownMult;
+                    bool secondVersion = InPhase2 || IsAClone;
+                    if(secondVersion)
+                        time *= 1.2f;
                     float ease = Timer / time;
 
                     float direction = _dashLineVelocity.X < _startDashPoint.X ? 1 : -1;
@@ -984,7 +1006,12 @@ public partial class RoyalFox : ScarletBoss,
                     up = up.RotatedBy(MathHelper.PiOver2 * direction);
 
                     Vector2 midPoint = MyTarget.Center;
-                    midPoint += up * 600;
+                    float arc = 600;
+                    if (secondVersion)
+                    {
+                        arc *= 1.1f;
+                    }
+                    midPoint += up * arc;
                     Vector2 startPoint = _startDashPoint;
                     Vector2 endPoint = _dashLineVelocity;
 
@@ -1033,17 +1060,21 @@ public partial class RoyalFox : ScarletBoss,
 
                     if(Timer == 30)
                     {
+         
                         SoundStyle soundS = AssetRegistry.Sounds.AlcaricFox.FenixCloseBounce;
                         SoundEngine.PlaySound(soundS, MyTarget.Center);
                     }
 
                     if (Timer >= time)
                     {
+              
                         Timer = 0;
                         _miniAttackCount++;
+
                         AttackCycle++;
                         if(_miniAttackCount >= AirbounceChainCount)
                         {
+                    
                             AttackCycle++;
                         }
                     }
@@ -1111,6 +1142,7 @@ public partial class RoyalFox : ScarletBoss,
                 break;
             case 4:
                 {
+
                     _spinningCRot = 1f;
                     NPC.velocity.Y += 0.4f;
                     ZRotation += MathHelper.Lerp(0.15f, 0f, EasingFunction.InOutExpo(Timer / 25f));

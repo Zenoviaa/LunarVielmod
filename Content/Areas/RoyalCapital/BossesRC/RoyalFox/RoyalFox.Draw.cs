@@ -425,7 +425,7 @@ public partial class RoyalFox
     }
     public void DrawToRenderTargets()
     {
-
+        ModContent.GetInstance<FenixDomain>().drawFenix = true;
         if (IsAClone)
         {
             OutlineRenderer.Queue(DrawOutlines);

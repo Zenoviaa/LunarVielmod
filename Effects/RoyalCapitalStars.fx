@@ -32,24 +32,35 @@ sampler2D primaryTex = sampler_state
 };
 float2 primaryTextureSize;
 float2 resolution;
-
+float2 screenOffset;
+float2 parallax;
+float gradientFade;
 float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
 {
-    coords += uDirection;
+    float2 uv = coords;
+    //coords += uImageOffset;
+ 
+    coords += parallax;
+    //coords += uDirection;
+ 
     coords = frac(coords);
     float l = length(coords);
     float2 starNoiseCoords = (coords * resolution - uSourceRect.xy) / primaryTextureSize;
-    
     float2 offset = uImageOffset;
     offset += coords * coords;
     
-    float starNoise = tex2D(primaryTex, starNoiseCoords + offset).r;
+    float starNoise = tex2D(primaryTex, starNoiseCoords).r;
     
-    float distortingNoise = tex2D(uImage2, (coords * sin(l * 50.0)) + float2(uTime * -0.03, uTime * -0.015) + offset).r;
+    float distortingNoise = tex2D(uImage2, (coords * sin(l * 50.0)) + float2(uTime * -0.03, uTime * -0.015)).r;
+//    distortingNoise = 1.0;
     starNoise *= lerp(0, 1.4, distortingNoise);
     
     float4 finalColor = float4(starNoise, starNoise, starNoise, 0.0);
     finalColor *= uOpacity;
+    
+    float gf = lerp(1.0, 0.0, uv.y);
+    float a = lerp(1.0, gf, gradientFade);
+    finalColor *= a;
     return finalColor;
 }
 

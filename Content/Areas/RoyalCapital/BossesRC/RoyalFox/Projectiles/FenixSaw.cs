@@ -24,13 +24,14 @@ public class FenixSaw : ModProjectile,
 
     private ref float SpinTimer => ref Projectile.ai[2];
     public override string Texture => TextureRegistry.EmptyTexture;
+    public bool shouldDie;
     public override void SetDefaults()
     {
         base.SetDefaults();
         Projectile.width = 333;
         Projectile.height = 333;
         Projectile.hostile = false;
-        Projectile.timeLeft = 600;
+        Projectile.timeLeft = 900;
         Projectile.penetrate = -1;
         Projectile.tileCollide = false;
     }
@@ -38,6 +39,17 @@ public class FenixSaw : ModProjectile,
     public override void AI()
     {
         base.AI();
+
+        if (shouldDie)
+        {
+            Projectile.netUpdate = true;
+        }
+
+        if(shouldDie && Projectile.timeLeft > 60)
+        {
+            Projectile.timeLeft = 60;
+        }
+
         //Main.NewText("E");
         if(SpinTimer > 100 && this.OwnedByLocalClient())
         {

@@ -20,9 +20,14 @@ namespace Stellamod.Skies
     {
         private Vector2 _parallax;
         private Vector2 _lastCameraPos;
-        public bool IsActive => Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia || NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>()) || NPC.AnyNPCs(ModContent.NPCType<E>()) || Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower || NPC.AnyNPCs(ModContent.NPCType<RoyalFox>());
+        public bool IsActive => Main.LocalPlayer.GetModPlayer<MyPlayer>().ZoneAlcadzia 
+            || NPC.AnyNPCs(ModContent.NPCType<VerlianSingularity>()) 
+            || NPC.AnyNPCs(ModContent.NPCType<E>()) 
+            || Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneMoonspiralTower 
+            || NPC.AnyNPCs(ModContent.NPCType<RoyalFox>());
         public float Opacity;
         public bool inStarField;
+        public bool UseFade => NPC.AnyNPCs(ModContent.NPCType<RoyalFox>());
         public override void PreUpdateEntities()
         {
             base.PreUpdateEntities();
@@ -93,6 +98,15 @@ namespace Stellamod.Skies
             _parallax += diff * parallaxAmt;
             _lastCameraPos = refPosition;
         }
+        private Vector2 GetScreenOffset(float scale)
+        {
+            //Apply an offset so the texture doesn't move when you're moving
+            //This will wrap inside the shader
+            Vector2 texelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
+            Vector2 screenoffset = Main.screenPosition * texelSize;
+            screenoffset *= (1f / scale);
+            return screenoffset;
+        }
 
         private void DrawStars(On_Main.orig_DrawDust orig, Main self)
         {
@@ -106,8 +120,10 @@ namespace Stellamod.Skies
                 eff.Shader.Parameters["primaryTexture"].SetValue(starsTexture.Value);
                 eff.Shader.Parameters["primaryTextureSize"].SetValue(starsTexture.Value.Size());
                 eff.Shader.Parameters["resolution"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
+                eff.Shader.Parameters["screenOffset"].SetValue(GetScreenOffset(scale: 1));
                 eff.UseImage2(noiseTexture);
-                eff.Shader.Parameters["uImageOffset"].SetValue(-_parallax * 0.0005f);
+                eff.Shader.Parameters["parallax"].SetValue(-_parallax * 0.00005f);
+                eff.Shader.Parameters["gradientFade"].SetValue(UseFade ? 1.0f : 0.0f);
                 eff.UseOpacity(Opacity);
                 eff.Apply();
 

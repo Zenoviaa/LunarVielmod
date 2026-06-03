@@ -56,7 +56,7 @@ public class RuneSmasher : BaseSwingItemV2
     public override void AddRecipes()
     {
         base.AddRecipes();
-        this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<MarshScrap>());
+        this.RegisterBrew(mold: ModContent.ItemType<BlankSword>(), material: ModContent.ItemType<RadiantNectar>());
     }
 }
 

@@ -27,6 +27,8 @@ float quadraticBump(float t)
     float factor = 4.0;
     return t * (factor - t * factor);
 }
+
+
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
     // Normalized pixel coordinates (from 0 to 1)

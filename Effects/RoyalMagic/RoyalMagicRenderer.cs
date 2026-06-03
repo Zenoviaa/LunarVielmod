@@ -12,6 +12,25 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Effects.RoyalMagic;
 
+public class FenixBackClouds : CrystalShader<FenixBackClouds>
+{
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+
+    public Texture2D SwirlTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+        }
+    }
+}
 public class AlcadSlashShader : CrystalShader<AlcadSlashShader>
 {
     public Matrix TransformMatrix
