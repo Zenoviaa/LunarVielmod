@@ -287,7 +287,7 @@ public class MiracleHead : ModItem
         var stats = player.GetStats();
         stats.defenseBonus += 7;
         stats.artifactManaReduction += 0.5f;
-        stats.accessorySlots += 1;
+        stats.accessorySlots += 2;
     }
 
     public override void UpdateArmorSet(Player player)

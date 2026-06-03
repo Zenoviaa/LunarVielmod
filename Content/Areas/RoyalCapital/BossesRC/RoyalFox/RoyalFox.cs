@@ -387,8 +387,8 @@ public partial class RoyalFox : ScarletBoss,
         NPC.width = 90;
         NPC.height = 90;
         NPC.damage = 150;
-        NPC.defense = 20;
-        NPC.lifeMax = 200000;
+        NPC.defense = 66;
+        NPC.lifeMax = 300000;
         NPC.scale = 1f;
         NPC.aiStyle = -1;
 
@@ -503,7 +503,7 @@ public partial class RoyalFox : ScarletBoss,
         _darkMoonTimer = MathHelper.Clamp(_darkMoonTimer, 0f, 60);
         Vector2 targetPos = -Vector2.UnitY * 128;
         targetPos = targetPos.RotatedBy(Main.GlobalTimeWrappedHourly);
-        Vector2 targetMoonPos = NPC.Center + targetPos;
+        Vector2 targetMoonPos = MyTarget.Center + targetPos;
         _moonPosition = Vector2.Lerp(_moonPosition, targetMoonPos, 0.2f);
       
 
@@ -547,8 +547,7 @@ public partial class RoyalFox : ScarletBoss,
         if (_pressed && Keyboard.GetState().IsKeyUp(Keys.L) && !IsAClone)
         {
             _pressed = false;
-            _phase2 = true;
-        //    SwitchState(AIState.Zoom_BigFatLaser);
+            NPC.life = (int)(NPC.lifeMax * 0.5f);
         }
      //   NPC.active = false;
 
@@ -2099,6 +2098,10 @@ public partial class RoyalFox : ScarletBoss,
                         NPC.TargetClosest();
                         PoofParticles(NPC.Center);
                         float dir = Main.rand.NextBool(2) ? 1 : -1;
+                        if (_phase2)
+                        {
+                            dir = 1;
+                        }
 
                         Vector2 pointToTeleportTo = MyTarget.Center + new Vector2(600 * dir, -192);
 
