@@ -67,6 +67,7 @@ namespace Stellamod.Content.Armors.HeavyMetal
             Projectile.scale = 1f;
             Projectile.width = 32;
             Projectile.height = 32;
+            Projectile.ignoreWater = true;
 
             // Makes the minion go through tiles freely
             Projectile.tileCollide = false;

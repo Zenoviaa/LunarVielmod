@@ -9,6 +9,8 @@ using Stellamod.Content.Areas.Terror;
 using Stellamod.Content.Areas.WorldsEnd;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Currencies;
+using Stellamod.Content.Scrolls;
+using Stellamod.Core.Bases;
 using Stellamod.Core.UI;
 using Stellamod.Helpers;
 using Stellamod.Skies;
@@ -76,6 +78,7 @@ namespace Stellamod
         }
         public override void Load()
         {
+
 
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             //   Instance = this;
@@ -355,6 +358,7 @@ namespace Stellamod
                 UnloadTile(TileID.SnowCloud);
             }
         }
+
         public override IContentSource CreateDefaultContentSource()
         {
             if (!Main.dedServ)

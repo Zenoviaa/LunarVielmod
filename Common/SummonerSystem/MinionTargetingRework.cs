@@ -214,7 +214,7 @@ namespace Stellamod.Common.SummonerSystem
                   //  player.ResetEffects();
                     player.active = true;
                     player.dead = false;
-                    player.position = proj.position;
+                    player.Center = proj.Center;
                     player.name = proj.Name;
 
                     ArmorStatsPlayer statsPlayer = Main.player[proj.owner].GetModPlayer<ArmorStatsPlayer>();
@@ -226,9 +226,9 @@ namespace Stellamod.Common.SummonerSystem
             }
         }
 
-        public override void PostUpdateNPCs()
+        public override void PostUpdateProjectiles()
         {
-            base.PostUpdateNPCs();
+            base.PostUpdateProjectiles();
             for (int i = 0; i < _needsFixing.Length; i++)
             {
                 if (_needsFixing[i])
@@ -238,6 +238,15 @@ namespace Stellamod.Common.SummonerSystem
                     _needsFixing[i] = false;
                 }
             }
+        }
+        public override void PostUpdateNPCs()
+        {
+            base.PostUpdateNPCs();
+
+        }
+        public override void PostUpdateEverything()
+        {
+            base.PostUpdateEverything();
         }
     }
 }

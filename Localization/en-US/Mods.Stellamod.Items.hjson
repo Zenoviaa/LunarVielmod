@@ -1,4 +1,7 @@
 Common: {
+	ScrollEnchantment: Enchanted with a scroll!
+	ScrollEnchantHelp: Right-click a weapon in your inventory to enchant it with [c/FFA500:{0}]!
+
 	Strength: {
 		$parentVal: Strength
 		Stat:
@@ -7038,6 +7041,11 @@ PoisonPistol: {
 		'''
 }
 
+Poison: {
+	DisplayName: Poison
+	Tooltip: ""
+}
+
 GunHolster: {
 	DisplayName: Gun Holster
 	Tooltip:
@@ -10424,6 +10432,11 @@ FlamelashChakrams: {
 	StaminaEffectLocalizedText: No Effect
 }
 
+Flame: {
+	DisplayName: Flame
+	Tooltip: ""
+}
+
 ArncharBallBuster: {
 	DisplayName: Arnchar Ball Buster
 	Tooltip: ""
@@ -11432,5 +11445,65 @@ SwordoftheFlies: {
 
 OrbofCleanliness: {
 	DisplayName: Orbof Cleanliness
+	Tooltip: ""
+}
+
+Enrager: {
+	DisplayName: Enrager
+	Tooltip: ""
+}
+
+MyScarab: {
+	DisplayName: My Scarab
+	Tooltip: ""
+}
+
+Anger: {
+	DisplayName: Anger
+	Tooltip: ""
+}
+
+Endurance: {
+	DisplayName: Endurance
+	Tooltip: ""
+}
+
+SimpleHome: {
+	DisplayName: Simple Home
+	Tooltip: ""
+}
+
+EnragerScroll: {
+	DisplayName: Enrager Scroll
+	Tooltip: ""
+}
+
+AngerScroll: {
+	DisplayName: Anger Scroll
+	Tooltip: ""
+}
+
+FlameScroll: {
+	DisplayName: Flame Scroll
+	Tooltip: ""
+}
+
+PoisonScroll: {
+	DisplayName: Poison Scroll
+	Tooltip: ""
+}
+
+EnduranceScroll: {
+	DisplayName: Endurance Scroll
+	Tooltip: ""
+}
+
+SimpleHomeScroll: {
+	DisplayName: Simple Home Scroll
+	Tooltip: ""
+}
+
+MyScarabScroll: {
+	DisplayName: My Scarab Scroll
 	Tooltip: ""
 }

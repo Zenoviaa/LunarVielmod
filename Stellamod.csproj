@@ -16,5 +16,8 @@
 	  <Folder Include="Properties\" />
 	  <Folder Include="Structures\Mineshafts\" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="Content\Scrolls\ScrollAbilitySystem.cs" />
+	</ItemGroup>
 
 </Project>
