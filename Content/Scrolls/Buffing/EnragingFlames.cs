@@ -102,13 +102,13 @@ public class EnragingFlames : ModProjectile
         SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureAsset(bloomLine, Projectile.Center + new Vector2(0f, 12));
         //      drawer2.BottomCenterOrigin();
         drawer2.scale *= new Vector2(0.55f, 0.55f) * ExtraMath.Osc(0.8f, 1f, speed: 3) * inScale;
-        drawer2.color = Color.Red * fade * 0.5f; ;
+        drawer2.color = Color.Red * fade * 0.15f; ;
         drawer2.color.A = 0;
         drawer2.rotation = Projectile.rotation;
         sb.Draw(drawer2);
 
         drawer2.scale *= 2;
-        drawer2.color = Color.Red * fade * 0.5f; ;
+        drawer2.color = Color.Red * fade * 0.08f; ;
         drawer2.color.A = 0;
         sb.Draw(drawer2);
 

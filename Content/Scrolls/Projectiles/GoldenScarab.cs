@@ -179,13 +179,6 @@ public class GoldenScarab : ModProjectile,
             SwitchState(AIState.Bounce);
         }
         
-
-        _hitCount++;
-        if(_hitCount >= 5)
-        {
-            BoomEffect();
-            Projectile.Kill();
-        }
         SoundStyle hitSound = AssetRegistry.Sounds.Magic.HolyCast1 with { PitchVariance = 0.6f };
        SoundStyle hitSound2 = AssetRegistry.Sounds.Magic.HolyCast2 with { PitchVariance = 0.6f };
         switch (Main.rand.Next(2))

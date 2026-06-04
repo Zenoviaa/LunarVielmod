@@ -43,6 +43,7 @@ public class Anger : ModBuff
     {
         base.Update(player, ref buffIndex);
         player.GetDamage(DamageClass.Generic) += 0.05f * player.GetModPlayer<AngerPlayer>().stacks;
+
         if (Main.rand.NextBool(14))
         {
             var dp = DustParticle.Spawn(player.Center + Main.rand.NextVector2Circular(24, 24), -(Vector2.UnitY * Main.rand.NextFloat(1f, 5f)).RotatedByRandom(MathHelper.ToRadians(45)));
@@ -63,6 +64,7 @@ public class Endurance : ModBuff
     public override void Update(Player player, ref int buffIndex)
     {
         base.Update(player, ref buffIndex);
+        player.GetStats().generalEndurance += 0.1f * player.GetModPlayer<AngerPlayer>().enduranceStacks;
     }
 }
 
@@ -76,7 +78,7 @@ public class Enrager : ModBuff
     public override void Update(Player player, ref int buffIndex)
     {
         base.Update(player, ref buffIndex);
-        player.GetAttackSpeed(DamageClass.Generic) += 0.1f;
+        player.GetAttackSpeed(DamageClass.Generic) += 0.1f * player.GetModPlayer<AngerPlayer>().enrageStacks;
     }
 }
 public class Flame : ModBuff
@@ -152,6 +154,19 @@ public class SimpleWhiteHomingBolt : ModProjectile,
       //  throw new NotImplementedException();
     }
 }
+public class ScrollHelpExpandingTooltip : AbstractExpandingTooltip
+{
+    public override void ModifyExpandableTooltips(Item item, List<TooltipLine> lines)
+    {
+        if (item.ModItem is not ScrollItem scrollItem)
+            return;
+        TooltipLine line;
+        line = new TooltipLine(Mod, "ScrollHelp", LangText.Common("ScrollHelp"));
+        line.OverrideColor = Color.White;
+        lines.Add(line);
+    }
+}
+
 public class ScrollExpandingTooltip : AbstractExpandingTooltip
 {
     public override void ModifyExpandableTooltips(Item item, List<TooltipLine> lines)

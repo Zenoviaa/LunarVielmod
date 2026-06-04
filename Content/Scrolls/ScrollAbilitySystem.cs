@@ -21,19 +21,33 @@ namespace Stellamod.Content.Scrolls;
 public class AngerPlayer : ModPlayer
 {
     public int stacks = 0;
+    public int enrageStacks = 0;
+    public int enduranceStacks = 0;
     public override void PostUpdateBuffs()
     {
         base.PostUpdateBuffs();
+        if (!Player.HasBuff<Endurance>())
+        {
+            enduranceStacks = 0;
+        }
+        if (!Player.HasBuff<Enrager>())
+        {
+            enrageStacks = 0;
+        
+        }
         if (!Player.HasBuff<Anger>())
         {
             stacks = 0;
+
         }
     }
 }
 public class ScrollAbilityDrawPlayer : ModPlayer
 {
     private float _timer;
+    private float _enduranceTimer;
     private Asset<Texture2D> _angerSymbol;
+    private Asset<Texture2D> _shield;
     public override void Load()
     {
         base.Load();
@@ -44,7 +58,8 @@ public class ScrollAbilityDrawPlayer : ModPlayer
         base.PostUpdateBuffs();
         _timer += Player.HasBuff<Anger>() ? 1 : -1;
         _timer = MathHelper.Clamp(_timer, 0f, 60);
-        
+        _enduranceTimer += Player.HasBuff<Endurance>() ? 1 : -1;
+        _enduranceTimer = MathHelper.Clamp(_enduranceTimer, 0f, 60);
     }
     public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
     {
@@ -52,11 +67,19 @@ public class ScrollAbilityDrawPlayer : ModPlayer
         if (drawInfo.shadow != 0f)
             return;
         _angerSymbol ??= ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "AngerSymbol");
+        _shield ??= ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "Shield");
         SpriteBatch spriteBatch = Main.spriteBatch;
         if (drawInfo.drawPlayer.HasBuff<Anger>())
         {
             SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_angerSymbol, drawInfo.drawPlayer.Center + new Vector2(18, -36));
             drawer.color = Color.Red * EasingFunction.InOutSine(_timer / 60f) * ExtraMath.Osc(0.5f, 1f, speed: 12);
+            drawer.color.A = 0;
+            Main.spriteBatch.Draw(drawer);
+        }
+        if (drawInfo.drawPlayer.HasBuff<Endurance>())
+        {
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_shield, drawInfo.drawPlayer.Center + new Vector2(0, -72));
+            drawer.color = Color.SkyBlue * EasingFunction.InOutSine(_enduranceTimer / 60f) * ExtraMath.Osc(0.5f, 1f, speed: 12);
             drawer.color.A = 0;
             Main.spriteBatch.Draw(drawer);
         }
@@ -224,6 +247,7 @@ public class ScrollAbilitySystem : ModSystem
             case ScrollAbility.Enrager:
                 {
                     player.AddBuff(ModContent.BuffType<Enrager>(), 600);
+                    player.GetModPlayer<AngerPlayer>().enrageStacks++;
                     hintColor = Color.Red;
                     Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<EnragingFlames>(), damage, knockback, player.whoAmI);
                 }
@@ -247,6 +271,25 @@ public class ScrollAbilitySystem : ModSystem
                     }
                 }
                 break;
+            case ScrollAbility.Endurance:
+                {
+                    player.AddBuff(ModContent.BuffType<Endurance>(), 300);
+                    player.GetModPlayer<AngerPlayer>().enduranceStacks++;
+                    hintColor = Color.SkyBlue;
+                    SoundStyle useSound = new SoundStyle("Stellamod/Assets/Sounds/TOTS1") with { Volume = 0.5f };
+                    SoundEngine.PlaySound(useSound, player.position);
+                    FXUtil.GlowCircleBoom(player.Center, Color.White, Color.SkyBlue, Color.DarkBlue, 12, 0.18f);
+                    PixelPrimitiveCircleFactory.CreateGenericBoom(player.Center, Color.SkyBlue, Color.DarkBlue, 18, 100);
+                    ShakeScreenPosition.Shake = 2;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        var dp = DustParticle.Spawn(player.Center + Main.rand.NextVector2Circular(40, 40), -Vector2.UnitY.RotatedByRandom(MathHelper.ToRadians(60)) * Main.rand.NextFloat(3f, 6f));
+                        dp.innerColor = Color.SkyBlue;
+                        dp.dampening = 0.08f;
+
+                    }
+                    break;
+                }
             case ScrollAbility.MyScarab:
                 {
                     hintColor = Color.Gold;

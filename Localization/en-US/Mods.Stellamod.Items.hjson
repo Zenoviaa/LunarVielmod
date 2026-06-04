@@ -1,4 +1,9 @@
 Common: {
+	ScrollHelp:
+		'''
+		Use to enchant a weapon with a special move! 
+		This will override any existing special attacks on a weapon, so choose wisely...
+		'''
 	ScrollEnchantment: Enchanted with a scroll!
 	ScrollEnchantHelp: Right-click a weapon in your inventory to enchant it with [c/FFA500:{0}]!
 
@@ -11475,12 +11480,20 @@ SimpleHome: {
 
 EnragerScroll: {
 	DisplayName: Enrager Scroll
-	Tooltip: ""
+	Tooltip:
+		'''
+		Increases your attack speed by 10% for 10 seconds
+		Repeatedly using it will stack the boost and reset the duration!
+		'''
 }
 
 AngerScroll: {
 	DisplayName: Anger Scroll
-	Tooltip: ""
+	Tooltip:
+		'''
+		Increases your damage by 5% for 10 seconds
+		Repeatedly using it will stack the boost and reset the duration!
+		'''
 }
 
 FlameScroll: {
@@ -11495,7 +11508,11 @@ PoisonScroll: {
 
 EnduranceScroll: {
 	DisplayName: Endurance Scroll
-	Tooltip: ""
+	Tooltip:
+		'''
+		Increases your endurance by 10% for 5 seconds
+		Repeatedly using it will stack the boost and reset the duration!
+		'''
 }
 
 SimpleHomeScroll: {
@@ -11505,5 +11522,5 @@ SimpleHomeScroll: {
 
 MyScarabScroll: {
 	DisplayName: My Scarab Scroll
-	Tooltip: ""
+	Tooltip: Summons a golden scarab that seeks out and repeatedly attacks and bounces of enemies...
 }

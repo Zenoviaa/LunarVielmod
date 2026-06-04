@@ -1,4 +1,5 @@
 ﻿using Stellamod.Common.GunSystem;
+using Stellamod.Content.Scrolls;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Tooltips;
 using Stellamod.Core.Utilities;
@@ -25,6 +26,19 @@ namespace Stellamod.Core.SwingSystem
         {
             if (item.ModItem == null)
                 return;
+            bool noStamina = false;
+            if(item.TryGetGlobalItem<ScrollGlobalItem>(out var g))
+            {
+                if (g.scroll != ScrollAbility._None)
+
+                {
+                    noStamina = true;
+                }
+                        //    return;
+
+            }
+
+            Color noStaminaColor = new Color(50, 50, 50);
             TooltipLine line;
             if (item.ModItem is BaseSwingItemV2 swingItem)
             {
@@ -40,11 +54,19 @@ namespace Stellamod.Core.SwingSystem
                 lines.Add(line);
 
                 line = new TooltipLine(Mod, "StaminaSlash", staminaAttack.StaminaEffectLocalizedText);
+                if (noStamina)
+                {
+                    line.OverrideColor = noStaminaColor;
+                }
                 lines.Add(line);
 
                 line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost",
                     staminaAttack.StaminaCost.ToString()));
                 line.OverrideColor = Color.Goldenrod;
+                if (noStamina)
+                {
+                    line.OverrideColor = noStaminaColor;
+                }
                 lines.Add(line);
             }
 
