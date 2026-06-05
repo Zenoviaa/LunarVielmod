@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Content;
 using Stellamod.Common.WeaponTypes;
+using Stellamod.Core.Tooltips;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -9,11 +10,10 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.Bases
 {
-    public class TomeExpandingTooltip : ExpandingArtifactTooltip
+    public sealed class TomeExpandingTooltip : AbstractExpandingTooltip
     {
         public override void ModifyExpandableTooltips(Item item, List<TooltipLine> lines)
         {
-            base.ModifyExpandableTooltips(item, lines);
             if(item.ModItem is AbstractMagicTome tome)
             {
                 TooltipLine helpLine = new TooltipLine(Mod, "TomeHelp", LangText.Common("TomeHelp"));

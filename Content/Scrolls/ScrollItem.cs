@@ -24,7 +24,7 @@ public sealed class ScrollItem : ModItem
     {
         get
         {
-            int staminaCost = ScrollAbilitySystem.GetStaminaCost(Ability);
+            int staminaCost = ScrollAbilities.GetStaminaCost(Ability);
             string texturePath = $"{this.GetTypeDirectoryWithSlash()}Scroll_{staminaCost}";
             return texturePath;
         }
@@ -81,8 +81,8 @@ public sealed class ScrollItem : ModItem
     public override bool? UseItem(Player player)
     {
 
-        ScrollAbilitySystem.enchant = Ability;
-        ScrollAbilitySystem.usingScroll = this;
+        ScrollAbilities.enchant = Ability;
+        ScrollAbilities.usingScroll = this;
         return true;
         //return base.UseItem(player);
     }

@@ -1,7 +1,5 @@
-﻿using ReLogic.Content;
-using Stellamod.Assets;
+﻿using Stellamod.Assets;
 using Stellamod.Content.Areas.Collosseum.WeaponsCL;
-using Stellamod.Content.Scrolls.Buffing;
 using Stellamod.Content.Scrolls.Projectiles;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -17,10 +15,9 @@ using Terraria.UI;
 using Terraria.UI.Chat;
 
 namespace Stellamod.Content.Scrolls;
-
-public class AngerPlayer : ModPlayer
+public class ScrollBuffPlayer : ModPlayer
 {
-    public int stacks = 0;
+    public int angerStacks = 0;
     public int enrageStacks = 0;
     public int enduranceStacks = 0;
     public override void PostUpdateBuffs()
@@ -30,63 +27,21 @@ public class AngerPlayer : ModPlayer
         {
             enduranceStacks = 0;
         }
+        
         if (!Player.HasBuff<Enrager>())
         {
             enrageStacks = 0;
-        
         }
+
         if (!Player.HasBuff<Anger>())
         {
-            stacks = 0;
-
-        }
-    }
-}
-public class ScrollAbilityDrawPlayer : ModPlayer
-{
-    private float _timer;
-    private float _enduranceTimer;
-    private Asset<Texture2D> _angerSymbol;
-    private Asset<Texture2D> _shield;
-    public override void Load()
-    {
-        base.Load();
-        _angerSymbol = ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "AngerSymbol");
-    }
-    public override void PostUpdateBuffs()
-    {
-        base.PostUpdateBuffs();
-        _timer += Player.HasBuff<Anger>() ? 1 : -1;
-        _timer = MathHelper.Clamp(_timer, 0f, 60);
-        _enduranceTimer += Player.HasBuff<Endurance>() ? 1 : -1;
-        _enduranceTimer = MathHelper.Clamp(_enduranceTimer, 0f, 60);
-    }
-    public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
-    {
-        base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
-        if (drawInfo.shadow != 0f)
-            return;
-        _angerSymbol ??= ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "AngerSymbol");
-        _shield ??= ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "Shield");
-        SpriteBatch spriteBatch = Main.spriteBatch;
-        if (drawInfo.drawPlayer.HasBuff<Anger>())
-        {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_angerSymbol, drawInfo.drawPlayer.Center + new Vector2(18, -36));
-            drawer.color = Color.Red * EasingFunction.InOutSine(_timer / 60f) * ExtraMath.Osc(0.5f, 1f, speed: 12);
-            drawer.color.A = 0;
-            Main.spriteBatch.Draw(drawer);
-        }
-        if (drawInfo.drawPlayer.HasBuff<Endurance>())
-        {
-            SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(_shield, drawInfo.drawPlayer.Center + new Vector2(0, -72));
-            drawer.color = Color.SkyBlue * EasingFunction.InOutSine(_enduranceTimer / 60f) * ExtraMath.Osc(0.5f, 1f, speed: 12);
-            drawer.color.A = 0;
-            Main.spriteBatch.Draw(drawer);
+            angerStacks = 0;
         }
     }
 }
 
-public class ScrollAbilitySystem : ModSystem
+
+public class ScrollAbilities : ModSystem
 {
     public static Dictionary<ScrollAbility, Item> scrollsToContentTemplates;
     public static float Alpha { get; private set; }
@@ -112,6 +67,9 @@ public class ScrollAbilitySystem : ModSystem
     {
         base.Load();
         On_Main.DrawPlayers_AfterProjectiles += RenderBlackOverlay;
+        //We're not autoloading scrolls because the items are being auto-generated from the enum
+        //This removes a lot of boiler plate with setting up item classes and having overrides etc
+        //And it's a bit easier to edit how they work in bulk if need-be
         ScrollAbility[] abilities = Enum.GetValues<ScrollAbility>();
         for (int i = 0; i < abilities.Length; i++)
         {
@@ -182,19 +140,12 @@ public class ScrollAbilitySystem : ModSystem
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();
- //       Main.NewText(enchant);
-
-        /*
-        foreach(var item in ModContent.GetContent<ScrollItem>())
-        {
-            Main.NewText(item.Ability);
-        }*/
         if (!IsEnchanting())
         {
             Alpha = MathHelper.Lerp(Alpha, 0f, 0.1f);
             return;
         }
-        //    return;
+  
         Alpha = MathHelper.Lerp(Alpha, 0.6f, 0.1f);
         if (Main.rand.NextBool(4))
         {
@@ -247,15 +198,16 @@ public class ScrollAbilitySystem : ModSystem
             case ScrollAbility.Enrager:
                 {
                     player.AddBuff(ModContent.BuffType<Enrager>(), 600);
-                    player.GetModPlayer<AngerPlayer>().enrageStacks++;
+                    player.GetModPlayer<ScrollBuffPlayer>().enrageStacks++;
                     hintColor = Color.Red;
                     Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<EnragingFlames>(), damage, knockback, player.whoAmI);
                 }
                 break;
+
             case ScrollAbility.Anger:
                 {
                     player.AddBuff(ModContent.BuffType<Anger>(), 600);
-                    player.GetModPlayer<AngerPlayer>().stacks++;
+                    player.GetModPlayer<ScrollBuffPlayer>().angerStacks++;
                     hintColor = Color.Red;
                     SoundStyle useSound = new SoundStyle("Stellamod/Assets/Sounds/Jack_Spawn") with { Volume = 0.5f } ;
                     SoundEngine.PlaySound(useSound, player.position);
@@ -271,10 +223,11 @@ public class ScrollAbilitySystem : ModSystem
                     }
                 }
                 break;
+
             case ScrollAbility.Endurance:
                 {
                     player.AddBuff(ModContent.BuffType<Endurance>(), 300);
-                    player.GetModPlayer<AngerPlayer>().enduranceStacks++;
+                    player.GetModPlayer<ScrollBuffPlayer>().enduranceStacks++;
                     hintColor = Color.SkyBlue;
                     SoundStyle useSound = new SoundStyle("Stellamod/Assets/Sounds/TOTS1") with { Volume = 0.5f };
                     SoundEngine.PlaySound(useSound, player.position);
@@ -290,6 +243,69 @@ public class ScrollAbilitySystem : ModSystem
                     }
                     break;
                 }
+            
+            case ScrollAbility.Flame:
+                {
+                    hintColor = Color.OrangeRed;
+                    player.AddBuff(ModContent.BuffType<Flame>(), 60 * 20);
+                    SoundStyle fireSound = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireballShoot1") with { PitchVariance = 0.3f };
+                    SoundEngine.PlaySound(fireSound, position);
+                }
+                break;
+            
+            case ScrollAbility.Poison:
+                {
+                    hintColor = Color.DarkGreen;
+                    player.AddBuff(ModContent.BuffType<Poison>(), 60 * 20);
+                    SoundStyle greenSound = new SoundStyle("Stellamod/Assets/Sounds/Irradieagle_Flare1") with { PitchVariance = 0.5f, Volume = 0.3f };
+                    SoundEngine.PlaySound(greenSound, position);
+                }
+                break;
+
+            case ScrollAbility.SimpleHome:
+                {
+                    hintColor = Color.LightGray;
+                    for (float f = 0; f < 3; f++)
+                    {
+                        float progress = f / 3f;
+                        float radians = MathHelper.TwoPi * progress;
+                        Vector2 offset = radians.ToRotationVector2();
+                        offset *= 48;
+                        Vector2 fireVelocity = Vector2.Zero;
+                        Projectile.NewProjectile(source, player.Center + offset, fireVelocity,
+                            ModContent.ProjectileType<SimpleWhiteHomingBolt>(), damage, knockback, player.whoAmI);
+                    }
+                }
+                break;
+
+            case ScrollAbility.SimpleFireball:
+                {
+                    hintColor = Color.OrangeRed;
+                    Projectile.NewProjectile(source, position, velocity.Resize(15), ModContent.ProjectileType<SimpleFireball>(), damage, knockback, player.whoAmI);
+                }
+                break;
+
+            case ScrollAbility.SimpleMeteor:
+                {
+                    hintColor = Color.Purple;
+                    Projectile.NewProjectile(source, Main.MouseWorld - new Vector2(0, 1000), Vector2.UnitY * 5, ModContent.ProjectileType<SimpleMeteor>(), damage * 2, knockback, player.whoAmI);
+                }
+                break;
+
+            case ScrollAbility.SimpleSpikeball:
+                {
+                    hintColor = Color.DarkGray;
+                    for(int i = 0; i < Main.rand.Next(3, 5); i++)
+                    {
+                        Vector2 throwVelocity = velocity;
+                        throwVelocity = throwVelocity.RotatedByRandom(MathHelper.ToRadians(35)) * Main.rand.NextFloat(0.35f, 1f);
+                        throwVelocity.Y -= 2;
+                        Projectile.NewProjectile(source, position, throwVelocity, ModContent.ProjectileType<SimpleSpikeball>(), damage, knockback, player.whoAmI);
+                    }
+                }
+                break;
+
+
             case ScrollAbility.MyScarab:
                 {
                     hintColor = Color.Gold;

@@ -538,7 +538,7 @@ public partial class RoyalFox : ScarletBoss,
         Rig.useSword = false;
         _tailInFront = true;
       //  _darkMoon = true;
-        /*
+        
         if (!_pressed && Keyboard.GetState().IsKeyDown(Keys.L))
         {
             _pressed = true;
@@ -548,8 +548,7 @@ public partial class RoyalFox : ScarletBoss,
             _pressed = false;
             _phase2 = true;
             NPC.life = (int)(NPC.lifeMax * 0.49f);
-            SwitchState(AIState.Precision_Beyblade);
-        }*/
+        }
 
         if (!_killYoSelf)
         {

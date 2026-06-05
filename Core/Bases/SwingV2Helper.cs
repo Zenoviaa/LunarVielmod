@@ -450,14 +450,16 @@ namespace Stellamod.Core.Bases
 
             SoundStyle swingSound1 = SoundRegistry.NSwordSlash2;
             swingSound1.PitchVariance = 0.5f;
+            swingSound1.Volume = 0.5f;
 
             SoundStyle swingSound2 = SoundRegistry.NSwordSlash2;
             swingSound2.PitchVariance = 0.5f;
             swingSound2.Pitch = 0.5f;
+            swingSound2.Volume = 0.5f;
 
             SoundStyle swingSound3 = SoundRegistry.NSwordSlash1;
             swingSound3.PitchVariance = 0.5f;
-
+            swingSound3.Volume = 0.5f;
 
             swings.Add(new OvalSwing
             {

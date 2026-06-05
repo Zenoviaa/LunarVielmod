@@ -1155,25 +1155,25 @@ ManaFire: {
 
 FireResistanceInsourceBuff: {
 	DisplayName: Fire Resistance Insource Buff
-	Description: Mods.Stellamod.Buffs.FireResistanceInsourceBuff.Description
+	Description: Your are immune to fire and lava!
 }
 
 Anger: {
 	DisplayName: Anger
-	Description: Mods.Stellamod.Buffs.Anger.Description
+	Description: Increased damage
 }
 
 Endurance: {
 	DisplayName: Endurance
-	Description: Mods.Stellamod.Buffs.Endurance.Description
+	Description: Increased general endurance
 }
 
 Enrager: {
 	DisplayName: Enrager
-	Description: Mods.Stellamod.Buffs.Enrager.Description
+	Description: Increased attack speed
 }
 
 Poison: {
 	DisplayName: Poison
-	Description: Mods.Stellamod.Buffs.Poison.Description
+	Description: Your attacks inflict poison!
 }

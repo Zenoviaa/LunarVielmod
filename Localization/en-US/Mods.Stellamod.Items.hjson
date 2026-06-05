@@ -229,8 +229,8 @@ Common: {
 	MagicArtifact: Magic Artifact
 	MagicArtifactHelp:
 		'''
-		This is a magical artifact, which have all sorts of cool effects! 
-		Who knows what they might do?
+		Magical artifacts have all sorts of interesting effects, they can just do about anything!
+		They typically require a higher mana investment, but deal great burst damage.
 		'''
 	MinionLifetime: "{0} seconds of life"
 	RuinMedal: Ruin Medals
@@ -11498,12 +11498,12 @@ AngerScroll: {
 
 FlameScroll: {
 	DisplayName: Flame Scroll
-	Tooltip: ""
+	Tooltip: Enchants you with fire for 20 seconds, all of your attacks will inflict On Fire! for 5 seconds
 }
 
 PoisonScroll: {
 	DisplayName: Poison Scroll
-	Tooltip: ""
+	Tooltip: Enchants you with poison for 20 seconds, all of your attacks will inflict Poisoned for 5 seconds
 }
 
 EnduranceScroll: {
@@ -11517,10 +11517,65 @@ EnduranceScroll: {
 
 SimpleHomeScroll: {
 	DisplayName: Simple Home Scroll
-	Tooltip: ""
+	Tooltip: Summons 3 white bolts around you that will home to nearby enemies after a short while...
 }
 
 MyScarabScroll: {
 	DisplayName: My Scarab Scroll
 	Tooltip: Summons a golden scarab that seeks out and repeatedly attacks and bounces of enemies...
+}
+
+SimpleFireballScroll: {
+	DisplayName: Simple Fireball Scroll
+	Tooltip: Summons a fireball that leaves behind a lingering pile of fire when it hits a tile!
+}
+
+SimpleConstellationScroll: {
+	DisplayName: Simple Constellation Scroll
+	Tooltip: ""
+}
+
+SimpleMeteorScroll: {
+	DisplayName: Simple Meteor Scroll
+	Tooltip: ""
+}
+
+SimpleBoltScroll: {
+	DisplayName: Simple Bolt Scroll
+	Tooltip: ""
+}
+
+SimpleSpikeballScroll: {
+	DisplayName: Simple Spikeball Scroll
+	Tooltip: ""
+}
+
+SimpleSporeScroll: {
+	DisplayName: Simple Spore Scroll
+	Tooltip: ""
+}
+
+SimpleRadianceScroll: {
+	DisplayName: Simple Radiance Scroll
+	Tooltip: ""
+}
+
+SimplePrismaboltsScroll: {
+	DisplayName: Simple Prismabolts Scroll
+	Tooltip: ""
+}
+
+SimpleGustScroll: {
+	DisplayName: Simple Gust Scroll
+	Tooltip: ""
+}
+
+HookspotScroll: {
+	DisplayName: Hookspot Scroll
+	Tooltip: ""
+}
+
+LightingScroll: {
+	DisplayName: Lighting Scroll
+	Tooltip: ""
 }

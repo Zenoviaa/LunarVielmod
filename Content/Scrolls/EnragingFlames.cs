@@ -10,7 +10,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Stellamod.Content.Scrolls.Buffing;
+namespace Stellamod.Content.Scrolls;
 
 public class EnragingFlames : ModProjectile
 {
