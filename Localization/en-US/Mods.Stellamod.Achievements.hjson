@@ -1,0 +1,39 @@
+Level2: {
+	FriendlyName: Level 2?
+	Description: Upgrade your medallion once and become level 2
+}
+
+RockyBeginnings: {
+	FriendlyName: Rocky Beginnings
+	Description: Beat Stone Golem and the tutorial in Act I
+}
+
+AlcoholicMuch: {
+	FriendlyName: Alcoholic Much
+	Description: Mods.Stellamod.Achievements.AlcoholicMuch.Description
+}
+
+EnrolledintheWitchAcademy: {
+	FriendlyName: Enrolledinthe Witch Academy
+	Description: Mods.Stellamod.Achievements.EnrolledintheWitchAcademy.Description
+}
+
+FirstSingularity: {
+	FriendlyName: First Singularity
+	Description: Mods.Stellamod.Achievements.FirstSingularity.Description
+}
+
+GintzingWinds: {
+	FriendlyName: Gintzing Winds
+	Description: Mods.Stellamod.Achievements.GintzingWinds.Description
+}
+
+WhistlingoftheSeas: {
+	FriendlyName: Whistlingofthe Seas
+	Description: Mods.Stellamod.Achievements.WhistlingoftheSeas.Description
+}
+
+WitchsBabySteps: {
+	FriendlyName: Witchs Baby Steps
+	Description: Mods.Stellamod.Achievements.WitchsBabySteps.Description
+}

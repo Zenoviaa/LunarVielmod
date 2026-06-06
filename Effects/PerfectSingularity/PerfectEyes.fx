@@ -34,7 +34,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     coords.x *= 7;
     //Scroll the eyes and wiggle them up and down
     float2 offsetCoords = coords;
-    offsetCoords.y += sin(time + coords.x * 4.0) * 0.025;
+    offsetCoords.y += sin(time + coords.x * 4.0) * distortionStrength;
     offsetCoords.x += time * 0.05;
     offsetCoords.x = frac(offsetCoords.x);
     float4 trailColor = tex2D(uImage0, offsetCoords);

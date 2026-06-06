@@ -3,9 +3,10 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
+using Stellamod.Trails;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
-using System.Collections.Generic;
 
 namespace Stellamod.Content.Areas.TheFalling.PerfectSingularityBoss;
 
@@ -14,12 +15,24 @@ public partial class PerfectSingularity :
 {
     private Asset<Texture2D> _chainTextureAsset;
     private Asset<Texture2D> _eyesTextureAsset;
+    private Asset<Texture2D> _eyes2TextureAsset;
+    private float IntensityInterpolant => _intensityTimeLeft / ChainWhip_StartupTime;
+    private Vector2 GetIntensityScale()
+    {
+        float lerp = EasingFunction.QuadraticBump(IntensityInterpolant);
+        float ease = EasingFunction.OutExpo(IntensityInterpolant);
+        float lerp3 = MathHelper.SmoothStep(lerp, ease, IntensityInterpolant);
+        return Vector2.Lerp(Vector2.One, Vector2.One * 0.75f, lerp3 );
+    }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-    {    
+    {
         LazyLoadTextureAssets();
+
+        Vector2 shake = _intensityShake * IntensityInterpolant;
         PerfectSingularityShader perfectSingularityShader = ShaderContent.GetInstance<PerfectSingularityShader>();
         perfectSingularityShader.Time = Main.GlobalTimeWrappedHourly * 4;
         perfectSingularityShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
+        perfectSingularityShader.Eyes = _eyes2TextureAsset.Value;
         spriteBatch.Restart(effect: perfectSingularityShader.Effect);
 
         SpritebatchDrawer drawer = SpritebatchDrawer.FromNPC(NPC);
@@ -27,15 +40,79 @@ public partial class PerfectSingularity :
         // drawer.scale *= 2;
         drawer.color = Color.White * 0.125f;
         drawer.rotation = 0;
-        drawer.scale = new Vector2(1.5f, 1f);
+        drawer.scale = new Vector2(1.5f, 1f) * GetIntensityScale();
+        drawer.worldPosition += shake;
         spriteBatch.Draw(drawer);
 
         drawer.color = Color.White;
         drawer.rotation += Main.GlobalTimeWrappedHourly * 0.3f;
         // drawer.scale *= 2;
         drawer.color = Color.White;
-      
-        drawer.scale = Vector2.One;
+
+        drawer.scale = Vector2.One * GetIntensityScale();
+        spriteBatch.Draw(drawer);
+
+
+
+        spriteBatch.RestartDefaults();
+
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        glowDrawer.color = Color.White * ExtraMath.Osc(0.9f, 1f, speed: 6) * EasingFunction.InExpo(IntensityInterpolant);
+        glowDrawer.color.A = 0;
+        glowDrawer.scale *= 3;
+        glowDrawer.scale *= new Vector2(2f, 0.7f);
+        glowDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.QuadraticBump(IntensityInterpolant));
+        spriteBatch.Draw(glowDrawer);
+
+        /*
+        drawer = SpritebatchDrawer.FromNPC(NPC);
+        drawer.rotation += Main.GlobalTimeWrappedHourly;
+
+        PerfectRingShader perfectRingShader = ShaderContent.GetInstance<PerfectRingShader>();
+        perfectRingShader.Time = Main.GlobalTimeWrappedHourly * 1;
+        spriteBatch.Restart(effect: perfectRingShader.Effect);
+
+        drawer.color = Color.White * 0.75f;
+
+        drawer.rotation += Main.GlobalTimeWrappedHourly;
+       // spriteBatch.Draw(drawer);
+
+        drawer.color = Color.White * 1f;
+        drawer.rotation = ExtraMath.Osc(0.2f, 0.1f);
+        drawer.scale = new Vector2(3f, 0.6f) ;
+        spriteBatch.Draw(drawer);
+
+        drawer.color = Color.White * 0.05f;
+        drawer.rotation = ExtraMath.Osc(-0.7f, -0.5f);
+        drawer.scale = new Vector2(3f, 0.6f) ;
+        spriteBatch.Draw(drawer);
+        spriteBatch.RestartDefaults();*/
+        return false;
+    }
+    private void DrawOutlines(SpriteBatch spriteBatch)
+    {
+        LazyLoadTextureAssets();
+
+        Vector2 shake = _intensityShake * IntensityInterpolant;
+        PerfectSingularityShader perfectSingularityShader = ShaderContent.GetInstance<PerfectSingularityShader>();
+        perfectSingularityShader.Time = Main.GlobalTimeWrappedHourly * 4;
+        perfectSingularityShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
+
+        spriteBatch.Restart(effect: perfectSingularityShader.Effect);
+
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromNPC(NPC);
+        drawer.rotation += Main.GlobalTimeWrappedHourly * 0.03f;
+        // drawer.scale *= 2;
+        drawer.color = Color.White * 0.125f;
+        drawer.rotation = 0;
+        drawer.scale = new Vector2(1.5f, 1f) * GetIntensityScale();
+        drawer.worldPosition += shake;
+
+        drawer.rotation += Main.GlobalTimeWrappedHourly * 0.3f;
+        // drawer.scale *= 2;
+        drawer.color = _outliner.outlineColor;
+
+        drawer.scale = Vector2.One * GetIntensityScale();
         spriteBatch.Draw(drawer);
 
 
@@ -65,12 +142,12 @@ public partial class PerfectSingularity :
         drawer.scale = new Vector2(3f, 0.6f) ;
         spriteBatch.Draw(drawer);
         spriteBatch.RestartDefaults();*/
-        return false;
     }
     private void LazyLoadTextureAssets()
     {
         _chainTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Chain");
         _eyesTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Eyes");
+        _eyes2TextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Eyes2");
     }
     private void DrawSingularity(SpriteBatch spriteBatch, Vector2 screenPos)
     {
@@ -130,9 +207,11 @@ public partial class PerfectSingularity :
         Main.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
         float numPoints = 64;
         List<Vector2> eyePoints = new List<Vector2>();
-        Vector2 start = NPC.Center - Vector2.UnitX * 455;
-        Vector2 end = NPC.Center + Vector2.UnitX * 455;
-        for(float f = 0; f < numPoints; f++)
+
+        float scaleMult = MathHelper.Lerp(1f, 0.46f, EasingFunction.QuadraticBump(IntensityInterpolant));
+        Vector2 start = NPC.Center - Vector2.UnitX * 455 * scaleMult;
+        Vector2 end = NPC.Center + Vector2.UnitX * 455 * scaleMult;
+        for (float f = 0; f < numPoints; f++)
         {
             float ratio = f / numPoints;
             Vector2 p = Vector2.Lerp(start, end, EasingFunction.InOutQuad(ratio));
@@ -165,8 +244,8 @@ public partial class PerfectSingularity :
         TrailDrawer.Draw(eyePoints.ToArray(), GetTrailColorFunc, GetTrailWidthFunc, eyesShader);
 
 
-        start = NPC.Center + Vector2.UnitY * 450;
-        end = NPC.Center - Vector2.UnitY * 450;
+        start = NPC.Center + Vector2.UnitY * 450 * scaleMult;
+        end = NPC.Center - Vector2.UnitY * 450 * scaleMult;
         start = start.RotatedBy(0.5f, NPC.Center);
         end = end.RotatedBy(0.5f, NPC.Center);
         eyePoints.Clear();
@@ -175,7 +254,7 @@ public partial class PerfectSingularity :
         {
             float ratio = f / numPoints;
             Vector2 p = Vector2.Lerp(start, end, EasingFunction.InOutQuad(ratio));
-   
+
             p += v2 * MathHelper.Lerp(0f, 256, EasingFunction.QuadraticBump(ratio));
             eyePoints.Add(p);
 
@@ -191,8 +270,10 @@ public partial class PerfectSingularity :
         Main.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
         float numPoints = 64;
         List<Vector2> eyePoints = new List<Vector2>();
-        Vector2 start = NPC.Center - Vector2.UnitX * 455;
-        Vector2 end = NPC.Center + Vector2.UnitX * 455;
+
+        float scaleMult = MathHelper.Lerp(1f, 0.46f, EasingFunction.QuadraticBump(IntensityInterpolant));
+        Vector2 start = NPC.Center - Vector2.UnitX * 455 * scaleMult;
+        Vector2 end = NPC.Center + Vector2.UnitX * 455 * scaleMult;
         start = start.RotatedBy(0.5f, NPC.Center);
         end = end.RotatedBy(0.5f, NPC.Center);
         for (float f = 0; f < numPoints; f++)
@@ -208,6 +289,7 @@ public partial class PerfectSingularity :
         eyesShader.Texture = _chainTextureAsset.Value;
         eyesShader.Time = Main.GlobalTimeWrappedHourly * 6;
         eyesShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+        eyesShader.DistortionStrength = MathHelper.Lerp(0.025f, 0.2f, EasingFunction.QuadraticBump(IntensityInterpolant));
         TrailDrawer.Draw(eyePoints.ToArray(), GetTrailColorFunc2, GetTrailWidthFunc, eyesShader);
 
 
@@ -225,11 +307,11 @@ public partial class PerfectSingularity :
 
         }
 
-       TrailDrawer.Draw(eyePoints.ToArray(), GetTrailColorFunc2, GetTrailWidthFunc, eyesShader);
+        TrailDrawer.Draw(eyePoints.ToArray(), GetTrailColorFunc2, GetTrailWidthFunc, eyesShader);
 
 
-        start = NPC.Center + Vector2.UnitY * 450;
-        end = NPC.Center - Vector2.UnitY * 450;
+        start = NPC.Center + Vector2.UnitY * 450 * scaleMult;
+        end = NPC.Center - Vector2.UnitY * 450 * scaleMult;
         start = start.RotatedBy(1.5f, NPC.Center);
         end = end.RotatedBy(1.5f, NPC.Center);
         eyePoints.Clear();
@@ -243,15 +325,16 @@ public partial class PerfectSingularity :
             eyePoints.Add(p);
 
         }
-       TrailDrawer.Draw(eyePoints.ToArray(), GetTrailColorFunc2, GetTrailWidthFunc, eyesShader);
+        TrailDrawer.Draw(eyePoints.ToArray(), GetTrailColorFunc2, GetTrailWidthFunc, eyesShader);
 
 
     }
 
     public void DrawToRenderTargets()
     {
+        //  OutlineRenderer.Queue(DrawOutlines);
         PixelationManager.QueueSpritebatchDrawAction(DrawRings, DrawLayer.OverNPCs);
-       
+
         PixelationManager.QueuePrimitivesDrawAction(DrawEyes, DrawLayer.OverNPCs);
 
         PixelationManager.QueuePrimitivesDrawAction(DrawChains, DrawLayer.OverNPCsAdditive);

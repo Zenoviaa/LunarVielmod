@@ -1,8 +1,10 @@
 ﻿using Stellamod.Common.ArmorRework;
+using Stellamod.Content.Achievements;
 using Stellamod.Content.Items.MoonlightMagic;
 using Stellamod.Helpers;
 using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -131,6 +133,10 @@ public class LevelingPlayer : ModPlayer
         float r = rocketTimeMax * 0.01f * Player.GetModPlayer<LevelingPlayer>().Dexterity;
         rocketTimeMax += r;
         Player.rocketTimeMax = (int)rocketTimeMax;
+        if(AppliedPoints > 0 && Main.netMode != NetmodeID.Server)
+        {
+            ModContent.GetInstance<Level2>().LevelCountCondition.Value = (int)(AppliedPoints + 1);
+        }
     }
     public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
     {

@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Content.Achievements;
 using Stellamod.Core;
 using Stellamod.Helpers;
 using Stellamod.Items;
@@ -157,6 +158,10 @@ public class MagicWitchCauldron : VeilTownNPC
                 ItemType = result.item;
                 NPC.netUpdate = true;
                 NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemIndex, 1f);
+            }
+            if(Main.netMode != NetmodeID.Server)
+            {
+                ModContent.GetInstance<WitchsBabySteps>().BrewCountCondition.Value++;
             }
             Spew();
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/CauldronCraft");
