@@ -1974,3 +1974,9 @@ EnragingFlames.DisplayName: Enraging Flames
 SimpleFireball.DisplayName: Simple Fireball
 SimpleMeteor.DisplayName: Simple Meteor
 SimpleMeteorBoom.DisplayName: Simple Meteor Boom
+ChainHitscan.DisplayName: Chain Hitscan
+PerfectChain.DisplayName: Perfect Chain
+PerfectEruption.DisplayName: Perfect Eruption
+PerfectLaser.DisplayName: Perfect Laser
+PerfectMeteor.DisplayName: Perfect Meteor
+PerfectMeteorBoom.DisplayName: Perfect Meteor Boom
