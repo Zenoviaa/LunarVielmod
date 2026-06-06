@@ -10,30 +10,30 @@ RockyBeginnings: {
 
 AlcoholicMuch: {
 	FriendlyName: Alcoholic Much
-	Description: Mods.Stellamod.Achievements.AlcoholicMuch.Description
+	Description: Use 25 potions from Bulbtrifier the bartender.
 }
 
 EnrolledintheWitchAcademy: {
-	FriendlyName: Enrolledinthe Witch Academy
-	Description: Mods.Stellamod.Achievements.EnrolledintheWitchAcademy.Description
+	FriendlyName: Enrolled in the Witch Academy!
+	Description: Beat Jack, your first teacher!
 }
 
 FirstSingularity: {
-	FriendlyName: First Singularity
-	Description: Mods.Stellamod.Achievements.FirstSingularity.Description
+	FriendlyName: First Singularity??
+	Description: Beat Verlian Singularity, the first singularity out of many!
 }
 
 GintzingWinds: {
 	FriendlyName: Gintzing Winds
-	Description: Mods.Stellamod.Achievements.GintzingWinds.Description
+	Description: Beat Commander Ginztia in the colosseum.
 }
 
 WhistlingoftheSeas: {
-	FriendlyName: Whistlingofthe Seas
-	Description: Mods.Stellamod.Achievements.WhistlingoftheSeas.Description
+	FriendlyName: Whistling of the Seas...
+	Description: Beat Harmonic Eel, the dragon of the deep.
 }
 
 WitchsBabySteps: {
-	FriendlyName: Witchs Baby Steps
-	Description: Mods.Stellamod.Achievements.WitchsBabySteps.Description
+	FriendlyName: Witchs' Baby Steps
+	Description: Brew something in the cauldron once
 }
