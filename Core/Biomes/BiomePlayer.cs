@@ -38,6 +38,7 @@ namespace Stellamod.Content.Biomes
         public bool ZoneHarmonicCoralways;
         public bool ZoneAegislavSurface;
         public bool ZoneHeatedDepths;
+        public bool ZoneEdgeoftheMoon;
         public bool ZoneDeepBelowCoralways
         {
             get

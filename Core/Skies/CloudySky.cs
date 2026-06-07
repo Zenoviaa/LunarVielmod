@@ -111,6 +111,8 @@ namespace Stellamod.Core.Skies
                 Color cloudColor = Color.Lerp(primaryColor, Color.Black, 0.5f);
                 if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneAegislavSurface)
                     cloudColor = Color.IndianRed;
+                if (Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneEdgeoftheMoon)
+                    cloudColor = Color.Lerp(Color.White, Color.Black, 0.99f);
                 cloudColor.A = 0;
        
                 return cloudColor;

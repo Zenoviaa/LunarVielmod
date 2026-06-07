@@ -9,6 +9,9 @@ namespace Stellamod.Assets
     {
         public class Noise
         {
+            public static Asset<Texture2D> CloudsMask;
+            public static Asset<Texture2D> Clouds;
+            public static Asset<Texture2D> PainterlyNoise;
             public static Asset<Texture2D> CometStars;
             public static Asset<Texture2D> AuroraRays;
             public static Asset<Texture2D> Whirly;
@@ -81,6 +84,10 @@ namespace Stellamod.Assets
         public override void OnModLoad()
         {
             base.OnModLoad();
+            Noise.Clouds = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Clouds");
+            Noise.CloudsMask = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/CloudsMask");
+            Noise.PainterlyNoise = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/PainterlyNoise");
+
             GlowMask.SwordSlash = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/SwordSlash");
             GlowMask.Impact = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Impact");
             GlowMask.Wave = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Wave");
@@ -137,6 +144,9 @@ namespace Stellamod.Assets
         public override void OnModUnload()
         {
             base.OnModUnload();
+            Noise.Clouds = null;
+            Noise.CloudsMask = null;
+            Noise.PainterlyNoise = null;
             GlowMask.SwordSlash = null;
             LaserTextures.Aura = null;
             Noise.CometStars = null;

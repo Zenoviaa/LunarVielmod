@@ -51,7 +51,7 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0) : COLOR0
     
     float starNoise = tex2D(primaryTex, starNoiseCoords).r;
     
-    float distortingNoise = tex2D(uImage2, (coords * sin(l * 50.0)) + float2(uTime * -0.03, uTime * -0.015)).r;
+    float distortingNoise = tex2D(uImage2, frac((coords * sin(l * 50.0)) + float2(uTime * -0.03, uTime * -0.015))).r;
 //    distortingNoise = 1.0;
     starNoise *= lerp(0, 1.4, distortingNoise);
     
