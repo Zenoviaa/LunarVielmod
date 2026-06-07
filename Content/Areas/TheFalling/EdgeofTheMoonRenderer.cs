@@ -49,6 +49,13 @@ public class GoldenSpiralCloudsShader : CrystalShader<GoldenSpiralCloudsShader>
             Effect.Parameters["time"].SetValue(value);
         }
     }
+    public Vector2 Parallax
+    {
+        set
+        {
+            Effect.Parameters["parallax"].SetValue(value);
+        }
+    }
 }
 public class EdgeyCloudsShader : CrystalShader<EdgeyCloudsShader>
 {
@@ -58,6 +65,13 @@ public class EdgeyCloudsShader : CrystalShader<EdgeyCloudsShader>
         {
             Main.graphics.GraphicsDevice.Textures[1] = value;
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+        }
+    }
+    public Vector2 Parallax
+    {
+        set
+        {
+            Effect.Parameters["parallax"].SetValue(value);
         }
     }
     public float Time
@@ -104,6 +118,13 @@ public class CrystalSkyMixShader :
             Main.graphics.GraphicsDevice.SamplerStates[3] = SamplerState.PointClamp;
         }
     }
+    public Vector2 Parallax
+    {
+        set
+        {
+            Effect.Parameters["parallax"].SetValue(value);
+        }
+    }
 
     public float Time
     {
@@ -146,7 +167,7 @@ public class EdgeofTheMoonRenderer : ModSystem
         gDevice.SetRenderTarget(MaskRT);
         gDevice.Clear(Color.Transparent);
 
-        SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/EreshkigalClouds"), Main.screenPosition);
+        SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6"), Main.screenPosition);
         maskDrawer.color = Color.White;
         maskDrawer.color.A = 0;
       //  maskDrawer.VerticalFrame(1, 4);
@@ -157,12 +178,13 @@ public class EdgeofTheMoonRenderer : ModSystem
         fadeShader.Time = Main.GlobalTimeWrappedHourly * 0.2f;
         fadeShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
         fadeShader.DistortionStrength = 0.015f;
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, fadeShader.Effect); 
+        fadeShader.Parallax = new Vector2(Main.screenPosition.X * 0.00005f, 0f);
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, fadeShader.Effect); 
 
         maskDrawer.scale = Vector2.One * 2;
         maskDrawer.scale.X *= 2;
         maskDrawer.scale.Y *= 0.3f;
-        maskDrawer.dstRect = new Rectangle(-Main.screenWidth / 2, 0, Main.screenWidth * 2, Main.screenHeight);
+        maskDrawer.dstRect = new Rectangle(-215, 0, Main.screenWidth + 450, Main.screenHeight);
         maskDrawer.drawOrigin = Vector2.Zero;
         maskDrawer.worldPosition = Main.screenPosition + new Vector2(1250, 950);
         spriteBatch.Draw(maskDrawer);
@@ -178,9 +200,10 @@ public class EdgeofTheMoonRenderer : ModSystem
         var mixShader = ShaderContent.GetInstance<CrystalSkyMixShader>();
         mixShader.MaskTexture = MaskRT;
         mixShader.Time = Main.GlobalTimeWrappedHourly * 0.25f;
-        mixShader.DistortionStrength = 0.5f;
+        mixShader.DistortionStrength = 0.05f;
         mixShader.NoiseTexture = AssetManager.Noise.PainterlyNoise.Value;
         mixShader.CloudTexture = TextureRegistry.CloudNoise2.Value;//AssetManager.Noise.PainterlyNoise.Value;
+        mixShader.Parallax = Vector2.Zero;
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone,
             mixShader.Effect);
 
@@ -190,7 +213,7 @@ public class EdgeofTheMoonRenderer : ModSystem
         cloudDrawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         
         cloudDrawer.drawOrigin = Vector2.Zero;
-        cloudDrawer.color = Color.Lerp(Color.White, Color.Black, 0.15f);
+        cloudDrawer.color = Color.Lerp(Color.White, Color.Black, 0f) * 0.9f;
         spriteBatch.Draw(cloudDrawer);
 
 
@@ -200,10 +223,11 @@ public class EdgeofTheMoonRenderer : ModSystem
         gDevice.SetRenderTarget(MaskRT);
         gDevice.Clear(Color.Transparent);
         GoldenSpiralCloudsShader outlineShader = ShaderContent.GetInstance<GoldenSpiralCloudsShader>();
-        outlineShader.GlowColor = Color.Goldenrod * 0.4f ;
+        outlineShader.GlowColor = Color.Orange * 0.4f ;
         outlineShader.Threshold = 0.1f;
-        outlineShader.ColorationTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/EreshkigalStars").Value;
+        outlineShader.ColorationTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/LavaDepths").Value;
         outlineShader.Time = Main.GlobalTimeWrappedHourly;
+        outlineShader.Parallax = Main.screenPosition * 0.005f;
 
         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
             outlineShader.Effect);
@@ -218,8 +242,11 @@ public class EdgeofTheMoonRenderer : ModSystem
         {
             if(!Main.gameMenu && Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneEdgeoftheMoon)
             {
+                spriteBatch.Draw(MaskRT, Vector2.Zero, Color.DarkBlue);
+         //       spriteBatch.Draw(MaskRT, Vector2.Zero, Color.Blue);
 
                 spriteBatch.Draw(MaskRT, Vector2.Zero, Color.White);
+                //spriteBatch.Draw(MaskRT, Vector2.Zero, Color.White);
             }
 
         }
@@ -323,8 +350,8 @@ public class EdgeofTheMoonSky :
             skyGradientShader.H = 0.15f;
             skyGradientShader.Bend = -0.25f;
             skyGradientShader.StartColor = Color.Black;
-            skyGradientShader.MidColor = Color.Lerp(Color.White, Color.Black, 0.87f);
-            skyGradientShader.EndColor = Color.Lerp(Color.White, Color.Black, 0.97f);
+            skyGradientShader.MidColor = Color.Lerp(Color.DarkBlue, Color.Black, 0.85f);
+            skyGradientShader.EndColor = Color.Lerp(Color.White, Color.Black, 0.99f);
             spriteBatch.Restart(effect: skyGradientShader.Effect);
             Rectangle targetRectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
             spriteBatch.Draw(AssetManager.GlowMask.EmptyGradient.Value, targetRectangle, Color.White * _drawOpacity);

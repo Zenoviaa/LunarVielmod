@@ -1,62 +1,95 @@
 sampler pixelCloudSampler : register(s0);
 sampler shadingCloudSampler : register(s1);
 float4 glowColor;
+float2 parallax;
 float threshold;
 float time;
 
-//Simple hash function
-float Hash(in float2 x)
+
+float4 Stars(float2 coords, float2 noiseCoords)
 {
-    float xhash = cos(x.x * 37.0);
-    float yhash = cos(x.y * 57.0);
-    return frac(415.92653 * (xhash + yhash));
+    float2 starCoords = coords * 6.0;
+    starCoords = frac(starCoords);
+    
+    
+    
+    float4 stars = tex2D(shadingCloudSampler, starCoords);
+    float d = stars.r > 0.95;
+    stars *= d;
+    stars = pow(stars, 0.8);
+    
+    float2 noiseChannelCoords = float2(time * 0.015 + noiseCoords.x, noiseCoords.y);
+    noiseChannelCoords *= 0.5;
+    noiseChannelCoords = frac(noiseChannelCoords);
+
+    float n = tex2D(shadingCloudSampler, noiseChannelCoords).r;
+    n = pow(n, 2.0);
+    stars *= sin( n * 1.5);
+    stars *= (1.0 - coords.y);
+    return stars;
 }
 
-float4 Stars(float2 coords)
+
+float SampleAverage(float2 coords)
 {
-    float n = Hash(coords);
-    float threshold = 0.985;
+    float2 texelSize = float2(0.01, 0.01);
+    float2 leftCoords = coords + float2(-texelSize.x, 0.0);
+    float2 rightCoords = coords + float2(texelSize.x, 0.0);
+    float2 topCoords = coords + float2(0.0, -texelSize.y);
+    float2 bottomCoords = coords + float2(0.0, texelSize.y);
     
-    float l = length(coords);
-    float h = sin(l * 50.0) + time * -0.03;
-    h = frac(h);
+    float left = tex2D(pixelCloudSampler, leftCoords).r;
+    float right = tex2D(pixelCloudSampler, rightCoords).r;
+    float top = tex2D(pixelCloudSampler, topCoords).r;
+    float bottom = tex2D(pixelCloudSampler, bottomCoords).r;
     
-    if (n >= threshold)
-        n = pow((n - threshold) / (1.0 - threshold), 6.0) * h;
-    else
-        n = 0.0;
-    return float4(n, n, n, n);
+    float avg = left + right + top + bottom;
+    avg *= 0.25;
+    return avg;
 }
-
-
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
-    float4 aboveCloudColor = tex2D(pixelCloudSampler, coords - float2(0.0, 0.001));
+    
+    
     float4 cloudColor = tex2D(pixelCloudSampler, coords);
-    float4 belowCloudColor = tex2D(pixelCloudSampler, coords + float2(0.0, 0.01));
+    float d = cloudColor.r > 0.5;
+
+    float avgSample = SampleAverage(coords);
     
-    float diff = abs(aboveCloudColor.r - cloudColor.r);
-    float diff2 = abs(belowCloudColor.r - cloudColor.r);
-    float d =  aboveCloudColor.r < cloudColor.r;
-    float4 finalColor = cloudColor + cloudColor.r * glowColor * d;
+    float4 shineColor = lerp(float4(0.02, 0.02, 0.08, 1.0), glowColor, avgSample);
+    float4 finalColor = cloudColor + avgSample * shineColor * d;
+    
     finalColor *= sampleColor;
-    finalColor *= 0.5;
+
+    finalColor *= 0.75;
     
-    float3 gradientAdd = lerp(float3(0.0, 0.0, 0.0), glowColor.rgb, coords.y * coords.y * coords.y);
+    float3 gradientAdd = lerp(float3(0.0, 0.0, 0.0), glowColor.rgb, coords.y);
     gradientAdd *= 0.25;
     
 
    // finalColor *= 0.36;
-    finalColor = pow(finalColor, 2.0);
+    finalColor = pow(finalColor, 2.5);
   
     finalColor.rgb += cloudColor.r * gradientAdd * 3.0;
    // finalColor -= diff < threshold * 0.05 * cloudColor.r;
 
     
-    float4 stars = Stars(coords);
+    float2 starCoords = coords;
+    starCoords += float2(time * -0.005, time * 0.005);
+    starCoords = frac(starCoords);
+    float4 stars = Stars(starCoords, coords);
+    
+    float2 stars2Coords = starCoords;
+    stars2Coords += float2(time * -0.005, time * 0.005);
+    stars2Coords.x = 1.0 - stars2Coords.x;
+    stars2Coords += float2(0.2, 0.4);
+    stars2Coords = frac(stars2Coords);
+    float4 stars2 = Stars(stars2Coords, coords);
 //    brightness *= 1.0 - finalColor.r;
 
-    finalColor.rg += stars.r;
+    finalColor.rgb += stars.rgb;
+    finalColor.rgb += stars2.rgb;
+   // finalColor = pow(finalColor, 2.0);
     // finalColor.rgb = lerp(finalColor.rgb, float3(1.0, 1.0, 1.0), n * finalColor.r);
     // finalColor.rgb += pow(tex2D(shadingCloudSampler, coords), 2.0).rgb;
     //finalColor = 1.0 - finalColor;

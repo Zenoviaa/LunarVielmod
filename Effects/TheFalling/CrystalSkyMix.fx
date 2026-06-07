@@ -4,6 +4,7 @@ sampler cloudSampler : register(s2);
 sampler noiseSampler : register(s3);
 float time;
 float distortionStrength;
+float2 parallax;
 
 float2 SampleDistortionOffset(float2 coords)
 {
@@ -19,12 +20,13 @@ float2 SampleDistortionOffset(float2 coords)
 
 float4 SampleClouds(float2 coords)
 {
-    float2 cloudCoords = coords + SampleDistortionOffset(coords);
+    float strength2 = tex2D(pixelCloudSampler, coords);
+    float2 cloudCoords = coords + SampleDistortionOffset(coords) * strength2;
     cloudCoords += float2(time * 0.05, time * -0.05);
     cloudCoords = frac(cloudCoords);
     float4 cloudColor = tex2D(pixelCloudSampler, cloudCoords);
     
-    float2 cloudCoords2 = coords + SampleDistortionOffset(coords);
+    float2 cloudCoords2 = coords + SampleDistortionOffset(coords) * strength2;
     cloudCoords2 += float2(time * -0.05 + 0.3, time * 0.05);
     cloudCoords2 = frac(cloudCoords2);
     cloudCoords2.x = 1.0 - cloudCoords2.x;
@@ -44,12 +46,17 @@ float4 SampleClouds2(float2 coords)
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
+
     float maskColor = tex2D(maskSampler, coords).r;
+    
+    coords += parallax;
+    coords = frac(coords);
     coords *= 6.0;
     float4 baseClouds = SampleClouds(coords);
+ 
     float4 painterlyClouds = SampleClouds2(coords);
     float4 mixedClouds = baseClouds;
-    mixedClouds.rgb -= (painterlyClouds.rgb * 0.3);
+    //mixedClouds.rgb -= (painterlyClouds.rgb * 0.3);
     float4 finalClouds = mixedClouds;
     finalClouds *= maskColor * sampleColor;
    // finalClouds = round(finalClouds * 6.0) / 6.0;

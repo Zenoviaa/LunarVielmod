@@ -1,10 +1,14 @@
 sampler pixelCloudSampler : register(s0);
 sampler noiseSampler : register(s1);
 
+float2 parallax;
 float time;
 float distortionStrength;
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
+    coords += parallax;
+    coords = frac(coords);
+    
     float2 noiseSampelCoords = coords;
     noiseSampelCoords += float2(time * -0.025, time * -0.025);
     noiseSampelCoords = frac(noiseSampelCoords);
