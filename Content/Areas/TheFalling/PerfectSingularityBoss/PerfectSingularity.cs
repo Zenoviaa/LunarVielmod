@@ -120,7 +120,7 @@ public partial class PerfectSingularity : ScarletBoss
 
     //CHAIN WHIP ATTACK 
     private int ChainWhip_Damage => 90;
-    private float ChainWhip_Count => 5;
+    private float ChainWhip_Count => 1;
     private float ChainWhip_TimeBetweenAttacks => 30;
     private float ChainWhip_StartupTime => 90;
     private float ChainWhip_FireTime => 55;
@@ -415,7 +415,7 @@ public partial class PerfectSingularity : ScarletBoss
     {
         Timer++;
         NPC.velocity.X *= 0.8f;
-        NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 0.5f;
+    //    NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 0.5f;
     }
     private void AI_Despawn()
     {

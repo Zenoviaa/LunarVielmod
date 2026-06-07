@@ -52,7 +52,7 @@ public class ChainHitscan : ModProjectile
             switch (Style)
             {
                 case ChainStyle.ChainWhip:
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), _originalPoint, Projectile.Center - _originalPoint, 
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), _originalPoint, (Projectile.Center - _originalPoint), 
                         ModContent.ProjectileType<PerfectChain>(), Projectile.damage, 1, Projectile.owner, 0, (float)Style);
                     break;
             }

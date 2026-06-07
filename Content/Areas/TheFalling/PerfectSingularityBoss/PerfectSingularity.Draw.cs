@@ -32,8 +32,7 @@ public partial class PerfectSingularity :
         PerfectSingularityShader perfectSingularityShader = ShaderContent.GetInstance<PerfectSingularityShader>();
         perfectSingularityShader.Time = Main.GlobalTimeWrappedHourly * 4;
         perfectSingularityShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
-        perfectSingularityShader.Eyes = _eyes2TextureAsset.Value;
-        spriteBatch.Restart(effect: perfectSingularityShader.Effect);
+        spriteBatch.Restart(SpriteSortMode.Immediate, effect: perfectSingularityShader.Effect);
 
         SpritebatchDrawer drawer = SpritebatchDrawer.FromNPC(NPC);
         drawer.rotation += Main.GlobalTimeWrappedHourly * 0.03f;
@@ -42,14 +41,21 @@ public partial class PerfectSingularity :
         drawer.rotation = 0;
         drawer.scale = new Vector2(1.5f, 1f) * GetIntensityScale();
         drawer.worldPosition += shake;
-        spriteBatch.Draw(drawer);
+        perfectSingularityShader.Eyes = null;
+    //    spriteBatch.Draw(drawer);
 
         drawer.color = Color.White;
-        drawer.rotation += Main.GlobalTimeWrappedHourly * 0.3f;
+   //     drawer.rotation += Main.GlobalTimeWrappedHourly * 0.3f;
         // drawer.scale *= 2;
         drawer.color = Color.White;
 
         drawer.scale = Vector2.One * GetIntensityScale();
+        perfectSingularityShader.Eyes = _eyes2TextureAsset.Value;
+        SpritebatchDrawer singDrawer = drawer;
+        singDrawer.scale *= 1.25f;
+        //spriteBatch.Draw(singDrawer);
+
+
         spriteBatch.Draw(drawer);
 
 
@@ -159,12 +165,12 @@ public partial class PerfectSingularity :
 
     private Color GetTrailColorFunc(float ratio)
     {
-        return Color.White;
+        return Color.White * 0.55f;
         //return Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(ratio));
     }
     private Color GetTrailColorFunc2(float ratio)
     {
-        return Color.Lerp(Color.White, Color.Black, 0.76f);
+        return Color.Lerp(Color.White, Color.Black, 0.46f);
         //return Color.White;
         //return Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(ratio));
     }

@@ -19,8 +19,12 @@ float2 PolarCoordinates(float2 coords)
     return polarUV;
 }
 
-
-
+float QuadraticBump(float t)
+{
+          
+    const float factor = 4.0;
+    return t * (factor - t * factor);
+}
 
 float4 Eyes(float2 uv)
 {
@@ -31,7 +35,7 @@ float4 Eyes(float2 uv)
     uv += float2(time, time) * 0.2;
     uv = frac(uv);
     
-    uv *= 6.0;
+    uv *= 7.0;
 
  
     // Time varying pixel color
@@ -44,17 +48,29 @@ float4 Eyes(float2 uv)
 }
 float4 Eyes2(float2 uv)
 {
-
-     uv *= 4.0;
+    float bulgeRadius = 2.0;
+    float bulgeStrength = 0.35;
+    
+    uv -= float2(0.5, 0.5);
+    float l = length(uv);
+    float d = smoothstep(0., 1., l / bulgeRadius);
+    d = pow(d, bulgeStrength);
+    float a = atan2(uv.y, uv.x);
+    uv = l * d * float2(cos(a), sin(a));
+    
+ //   uv.x = QuadraticBump(uv.x);
+ //   uv.y = QuadraticBump(uv.y);
+    uv *= 7.0;
     
     float distortion = tex2D(uImage1, frac(uv + float2(time * -0.15, time * -0.15))).r;
     float2 offset = float2(cos(distortion), sin(distortion)) * 0.1;
     float strength = pow(uv.x, 3.0);
-    uv += float2(time * -0.05, time * -0.05);
+    uv += float2(time * 0.05, time * -0.05);
     uv += offset;
     uv = frac(uv);
 
-    float4 eye2 = tex2D(uImage2, uv);
+
+    float4 eye2 = tex2D(uImage2, uv );
     return eye2;
 }
 
