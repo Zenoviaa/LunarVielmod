@@ -36,6 +36,13 @@ public class DarkCloudsShader : CrystalShader<DarkCloudsShader>
             Effect.Parameters["parallax"].SetValue(value);
         }
     }
+    public Vector2 TexelSize
+    {
+        set
+        {
+            Effect.Parameters["texelSize"].SetValue(value);
+        }
+    }
     public float Time
     {
         set
@@ -88,6 +95,13 @@ public class GoldenSpiralCloudsShader : CrystalShader<GoldenSpiralCloudsShader>
         }
     }
 
+    public Vector2 TexelSize
+    {
+        set
+        {
+            Effect.Parameters["texelSize"].SetValue(value);
+        }
+    }
     public float Threshold
     {
         set
@@ -211,7 +225,6 @@ public class EdgeofTheMoonRenderer : ModSystem
 
     private void RenderBackground(On_Main.orig_CheckMonoliths orig)
     {
-
         orig();
         if (Main.gameMenu)
             return;
@@ -222,6 +235,14 @@ public class EdgeofTheMoonRenderer : ModSystem
         gDevice.Clear(Color.Transparent);
 
         Vector2 moonPosition = Main.screenPosition + new Vector2(MaskRT.Width, MaskRT.Height) * 0.5f + new Vector2(0, 0);
+
+
+        int halfX = Main.maxTilesX / 2;
+        Point halfPoint = new Point(halfX, 0);
+        Vector2 halfWorld = halfPoint.ToWorldCoordinates();
+        float diffX = Main.screenPosition.X - halfWorld.X;
+        moonPosition.X += diffX * -0.004f;
+
         //First we draw the mask texture that the clouds are going to be scrolling over
         SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6"), Main.screenPosition);
         maskDrawer.color = Color.White;
@@ -239,7 +260,7 @@ public class EdgeofTheMoonRenderer : ModSystem
 
         maskDrawer.scale = Vector2.One * 2;
         maskDrawer.scale.X *= 2;
-        maskDrawer.scale.Y *= 0.3f;
+        maskDrawer.scale.Y *= 0.5f;
         maskDrawer.dstRect = new Rectangle(-215, 0, Main.screenWidth + 450, Main.screenHeight);
         maskDrawer.drawOrigin = Vector2.Zero;
         maskDrawer.worldPosition = Main.screenPosition + new Vector2(1250, 950);
@@ -261,6 +282,7 @@ public class EdgeofTheMoonRenderer : ModSystem
         mixShader.NoiseTexture = AssetManager.Noise.PainterlyNoise.Value;
         mixShader.CloudTexture = TextureRegistry.CloudNoise2.Value;//AssetManager.Noise.PainterlyNoise.Value;
         mixShader.Parallax = Vector2.Zero;
+     
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone,
             mixShader.Effect);
 
@@ -336,7 +358,7 @@ public class EdgeofTheMoonRenderer : ModSystem
         outlineShader.ColorationTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/LavaDepths").Value;
         outlineShader.Time = Main.GlobalTimeWrappedHourly;
         outlineShader.Parallax = Main.screenPosition * 0.005f;
-
+        outlineShader.TexelSize = Vector2.One / new Vector2(Main.screenWidth, Main.screenHeight);
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
             outlineShader.Effect);
 
@@ -344,20 +366,22 @@ public class EdgeofTheMoonRenderer : ModSystem
 
         //
         spriteBatch.End();
-    
+
         //Draw darkened clouds over top of the bright clouds
+
+        Asset<Texture2D> frontClouds = AssetManager.Noise.FrontClouds;
+        int height = frontClouds.Height();
         var darkShader = ShaderContent.GetInstance<DarkCloudsShader>();
         darkShader.DistortionStrength = 0.03f;
         darkShader.Time = Main.GlobalTimeWrappedHourly * 0.3f;
         darkShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
         darkShader.Parallax = new Vector2(Main.screenPosition.X * 0.0003f, 0f);
         darkShader.GoldColor = Color.Gold;
+        darkShader.TexelSize = Vector2.One / new Vector2(Main.screenWidth, height);
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
             darkShader.Effect);
 
 
-        Asset<Texture2D> frontClouds = AssetManager.Noise.FrontClouds;
-        int height = frontClouds.Height();
         cloudDrawer = SpritebatchDrawer.FromTextureAsset(frontClouds, Main.screenPosition);
 
         cloudDrawer.dstRect = new Rectangle(0, Main.screenHeight / 2 + 120, Main.screenWidth, height);
@@ -422,7 +446,7 @@ public class EdgeofTheMoonBiome : ModBiome
     public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 
     // Select Music
-    public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
+    public override SceneEffectPriority Priority => SceneEffectPriority.Environment;
 
     public override int Music
     {

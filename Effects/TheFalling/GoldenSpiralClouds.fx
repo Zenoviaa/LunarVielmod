@@ -2,6 +2,7 @@ sampler pixelCloudSampler : register(s0);
 sampler shadingCloudSampler : register(s1);
 float4 glowColor;
 float2 parallax;
+float2 texelSize;
 float threshold;
 float time;
 
@@ -46,12 +47,45 @@ float SampleAverage(float2 coords)
     return avg;
 }
 
+float4 SampleMixedColor(float2 coords)
+{
+    float4 outlineColor = float4(0.75, 0.75, 0.75, 1.0);
+    float2 tSize = texelSize * 2.0;
+    float levels = 8.0;
+    
+    float2 leftCoords = coords + float2(-tSize.x, 0.0);
+    float2 rightCoords = coords + float2(tSize.x, 0.0);
+    float2 upCoords = coords + float2(0.0, -tSize.y);
+    float2 downCoords = coords + float2(0.0, tSize.y);
+ 
+    
+    float4 left = tex2D(pixelCloudSampler, leftCoords);
+    float4 right = tex2D(pixelCloudSampler, rightCoords);
+    float4 up = tex2D(pixelCloudSampler, upCoords);
+    float4 down = tex2D(pixelCloudSampler, downCoords);
+    
+    float4 colorToMix = tex2D(pixelCloudSampler, coords);
+    
+    
+    float4 avgColor = (left + right + up + down) / 4.0;
+    avgColor = round(avgColor * levels) / levels;
+    colorToMix = round(colorToMix * levels) / levels;
+    
+    
+    float r = abs(avgColor.r - colorToMix.r);
+    float g = abs(avgColor.g - colorToMix.g);
+    float b = abs(avgColor.b - colorToMix.b);
+    float diff = r + g + b;
+    float d = diff > 0.06;
+
+    return colorToMix * (1.0 - d) + (colorToMix.a * outlineColor * d);
+}
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {   
-    float4 cloudColor = tex2D(pixelCloudSampler, coords);
+    float4 cloudColor = SampleMixedColor(coords);
     float d = cloudColor.r > 0.5;
 
-    float avgSample = SampleAverage(coords);
+    float avgSample = SampleMixedColor(coords);
     
     float4 shineColor = lerp(float4(0.02, 0.02, 0.08, 1.0), glowColor, avgSample);
     float4 finalColor = cloudColor + avgSample * shineColor * d;

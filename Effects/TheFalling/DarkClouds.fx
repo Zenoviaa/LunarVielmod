@@ -3,8 +3,48 @@ sampler noiseSampler : register(s1);
 
 float3 goldColor;
 float2 parallax;
+float2 texelSize;
 float time;
 float distortionStrength;
+
+float4 SampleMixedColor(float2 coords)
+{
+    float4 outlineColor = float4(goldColor, 1.0);
+    float2 tSize = texelSize * 2.0;
+    float levels = 8.0;
+    
+    float2 leftCoords = coords + float2(-tSize.x, 0.0);
+    float2 rightCoords = coords + float2(tSize.x, 0.0);
+    float2 upCoords = coords + float2(0.0, -tSize.y);
+    float2 downCoords = coords + float2(0.0, tSize.y);
+ 
+    
+    float4 left = tex2D(pixelCloudSampler, leftCoords);
+    float4 right = tex2D(pixelCloudSampler, rightCoords);
+    float4 up = tex2D(pixelCloudSampler, upCoords);
+    float4 down = tex2D(pixelCloudSampler, downCoords);
+    
+    float4 colorToMix = tex2D(pixelCloudSampler, coords);
+    
+    
+    float4 avgColor = (left + right + up + down) / 4.0;
+    avgColor = round(avgColor * levels) / levels;
+    colorToMix = round(colorToMix * levels) / levels;
+    
+    
+    float r = abs(avgColor.r - colorToMix.r);
+    float g = abs(avgColor.g - colorToMix.g);
+    float b = abs(avgColor.b - colorToMix.b);
+    float diff = r + g + b;
+    float d = diff > 0.06;
+
+    colorToMix.rgb = float3(1.0, 1.0, 1.0) - colorToMix.rgb;
+    colorToMix.rgb *= colorToMix.a;
+    colorToMix.rgb *= 0.1;
+    return colorToMix * (1.0 - d) + (outlineColor * d * colorToMix.a * 0.00005);
+}
+
+
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
     float2 uv = coords;
@@ -27,17 +67,8 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     sampleCoords = frac(sampleCoords);
     sampleCoords += distortionoffset;
 
-    float4 col = tex2D(pixelCloudSampler, sampleCoords);
-    float d = 1.0 - saturate(sampleCoords.y / 0.6);
-    d = pow(d, 0.5);
-    
-    float r = col.r;
- //   r = pow(r, 4.0);
-
-    col.rgb = float3(1.0, 1.0, 1.0) - col.rgb;
-    col.rgb *= col.a;
-    col.rgb *= 0.1;
-    col.rgb += goldColor * d * r * 1.5;
+  //  float4 col = tex2D(pixelCloudSampler, sampleCoords);
+    float4 col = SampleMixedColor(sampleCoords);
     return col * sampleColor;
 }
 
