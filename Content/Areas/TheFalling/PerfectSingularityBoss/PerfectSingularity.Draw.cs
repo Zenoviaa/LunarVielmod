@@ -65,8 +65,6 @@ public partial class PerfectSingularity :
 
         spriteBatch.Draw(drawer);
 
-
-
         spriteBatch.RestartDefaults();
 
         SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
@@ -76,30 +74,6 @@ public partial class PerfectSingularity :
         glowDrawer.scale *= new Vector2(2f, 0.7f);
         glowDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.QuadraticBump(IntensityInterpolant));
         spriteBatch.Draw(glowDrawer);
-
-        /*
-        drawer = SpritebatchDrawer.FromNPC(NPC);
-        drawer.rotation += Main.GlobalTimeWrappedHourly;
-
-        PerfectRingShader perfectRingShader = ShaderContent.GetInstance<PerfectRingShader>();
-        perfectRingShader.Time = Main.GlobalTimeWrappedHourly * 1;
-        spriteBatch.Restart(effect: perfectRingShader.Effect);
-
-        drawer.color = Color.White * 0.75f;
-
-        drawer.rotation += Main.GlobalTimeWrappedHourly;
-       // spriteBatch.Draw(drawer);
-
-        drawer.color = Color.White * 1f;
-        drawer.rotation = ExtraMath.Osc(0.2f, 0.1f);
-        drawer.scale = new Vector2(3f, 0.6f) ;
-        spriteBatch.Draw(drawer);
-
-        drawer.color = Color.White * 0.05f;
-        drawer.rotation = ExtraMath.Osc(-0.7f, -0.5f);
-        drawer.scale = new Vector2(3f, 0.6f) ;
-        spriteBatch.Draw(drawer);
-        spriteBatch.RestartDefaults();*/
         return false;
     }
     private void DrawOutlines(SpriteBatch spriteBatch)

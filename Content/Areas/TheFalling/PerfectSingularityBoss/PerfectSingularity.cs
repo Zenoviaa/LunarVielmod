@@ -3,6 +3,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.TheFalling.PerfectSingularityBoss.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Utilities;
+using Stellamod.Helpers;
 using System;
 using System.IO;
 using Terraria;
@@ -108,6 +109,8 @@ public partial class PerfectSingularity : ScarletBoss
         Alien_Laser_Beam
     }
 
+    private float _tugTimer;
+    private Vector2 _arenaTopRoot;
     private Vector2 _intensityShake;
     private float _intensityTimeLeft;
     private float _intensity;
@@ -121,6 +124,10 @@ public partial class PerfectSingularity : ScarletBoss
     }
     private ref float AttackCycle => ref NPC.ai[2];
     private ref float AttackCounter => ref NPC.ai[3];
+
+
+    //Yanking
+    private float Max_Chain_Move_Distance => 300;
 
     //CHAIN WHIP ATTACK 
     private int ChainWhip_Damage => 90;
@@ -166,14 +173,20 @@ public partial class PerfectSingularity : ScarletBoss
         NPC.HitSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Hit") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
         NPC.DeathSound = new SoundStyle("Stellamod/Assets/Sounds/Gintze_Death") with { PitchVariance = 0.1f, Pitch = -0.5f, Volume = 0.2f };
     }
+    
+   
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
+        writer.WriteVector2(_arenaTopRoot);
     }
+    
     public override void ReceiveExtraAI(BinaryReader reader)
     {
         base.ReceiveExtraAI(reader);
+        _arenaTopRoot = reader.ReadVector2();
     }
+
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
         return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
@@ -256,6 +269,27 @@ public partial class PerfectSingularity : ScarletBoss
         }
         _outliner.Update();
         NPC.rotation = NPC.velocity.X * 0.05f;
+    }
+
+
+
+    private void SetArenaTop()
+    {
+        Point point = NPC.position.ToTileCoordinates();
+        for(int i = 0; i < 300; i++)
+        {
+            Tile tile = Main.tile[point];
+            if(tile.HasTile && Main.tileSolid[tile.TileType])
+            {
+                break;
+            }
+            else
+            {
+                point.Y--;
+            }
+
+        }
+        _arenaTopRoot = point.ToWorldCoordinates();
     }
 
     private void ChooseAttack()
@@ -412,13 +446,37 @@ public partial class PerfectSingularity : ScarletBoss
     }
     private void AI_Spawn()
     {
+        SetArenaTop();
         SwitchState(PerfectSingularityPhase.Idle);
     }
 
     private void AI_Idle()
     {
         Timer++;
-        NPC.velocity.X *= 0.8f;
+        if (Timer == 1)
+        {
+            NPC.TargetClosest();
+        }
+
+     //   NPC.Center = _arenaTopRoot;
+
+        Vector2 velToCenter = _arenaTopRoot - NPC.Center;
+        velToCenter = velToCenter.SafeNormalize(Vector2.Zero);
+        float dist = Vector2.Distance(NPC.Center, _arenaTopRoot);
+        float pullBackStrength = 1f - MathHelper.Clamp(dist / Max_Chain_Move_Distance, 0, 1);
+        float pullStrength = 15 * pullBackStrength;
+        NPC.velocity = Vector2.Lerp(NPC.velocity, velToCenter * pullStrength, 0.1f);
+      
+        if(Timer % 90 == 0)
+        {
+            _tugTimer = 60;
+
+        }
+        if(_tugTimer > 0)
+        {
+            _tugTimer--;
+        }
+
     //    NPC.velocity.Y = MathF.Sin(Timer * 0.05f) * 0.5f;
     }
     private void AI_Despawn()
