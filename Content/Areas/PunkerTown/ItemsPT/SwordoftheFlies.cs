@@ -64,7 +64,7 @@ public class SwordofTheFliesStorm : ModProjectile,
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
-        Main.projFrames[Type] = 5;
+        Main.projFrames[Type] = 10;
         ProjectileID.Sets.TrailCacheLength[Type] = 32;
         ProjectileID.Sets.TrailingMode[Type] = 2;
     }
@@ -117,7 +117,19 @@ public class SwordofTheFliesStorm : ModProjectile,
         Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
         Projectile.scale = 0.75f;
         Projectile.scale *= MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine((float)Projectile.timeLeft / 30f));
-        DrawHelper.AnimateTopToBottom(Projectile, 4);
+
+        Main.projFrames[Type] = 10;
+        Projectile.frameCounter++;
+        if (Projectile.frameCounter >= 6)
+        {
+            Projectile.frameCounter = 0;
+            Projectile.frame++;
+
+            if (Projectile.frame >= 5)
+            {
+                Projectile.frame = 0;
+            }
+        }
     }
 
     private Color GetTrailColor(float completionRatio)
@@ -134,6 +146,10 @@ public class SwordofTheFliesStorm : ModProjectile,
     public override bool PreDraw(ref Color lightColor)
     {
         SpritebatchDrawer sbDrawer = SpritebatchDrawer.FromProjectile(Projectile);
+        Main.spriteBatch.Draw(sbDrawer);
+
+        sbDrawer.VerticalFrame(Projectile.frame + 5, 10);
+        sbDrawer.color = Color.White * ExtraMath.Osc(0.6f, 1f, speed: 12, Projectile.identity);
         Main.spriteBatch.Draw(sbDrawer);
         return false;
     }
