@@ -29,24 +29,31 @@ public partial class PerfectSingularity :
         LazyLoadTextureAssets();
 
         Vector2 shake = _intensityShake * IntensityInterpolant;
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromNPC(NPC);
+        drawer.rotation += Main.GlobalTimeWrappedHourly * 0.03f;
+        drawer.color = Color.White;
+        drawer.rotation = 0;
+        drawer.scale = new Vector2(1.5f, 1f) * GetIntensityScale();
+        drawer.worldPosition += shake;
+
+
+
+        //Draw a dark shadow behind the singularity
+        //Using a shader for this so it isn't pixelated, also no need to save a whole ass new texture for this
+        PerfectDarknessShader darknessShader = ShaderContent.GetInstance<PerfectDarknessShader>();
+        spriteBatch.Restart(SpriteSortMode.Immediate, effect: darknessShader.Effect);
+
+        drawer.scale = Vector2.One * 2;
+
+        spriteBatch.Draw(drawer);
+
         PerfectSingularityShader perfectSingularityShader = ShaderContent.GetInstance<PerfectSingularityShader>();
         perfectSingularityShader.Time = Main.GlobalTimeWrappedHourly * 4;
         perfectSingularityShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
         spriteBatch.Restart(SpriteSortMode.Immediate, effect: perfectSingularityShader.Effect);
 
-        SpritebatchDrawer drawer = SpritebatchDrawer.FromNPC(NPC);
-        drawer.rotation += Main.GlobalTimeWrappedHourly * 0.03f;
-        // drawer.scale *= 2;
-        drawer.color = Color.White * 0.125f;
-        drawer.rotation = 0;
-        drawer.scale = new Vector2(1.5f, 1f) * GetIntensityScale();
-        drawer.worldPosition += shake;
-        perfectSingularityShader.Eyes = null;
-    //    spriteBatch.Draw(drawer);
 
-        drawer.color = Color.White;
-   //     drawer.rotation += Main.GlobalTimeWrappedHourly * 0.3f;
-        // drawer.scale *= 2;
+        perfectSingularityShader.Eyes = null;
         drawer.color = Color.White;
 
         drawer.scale = Vector2.One * GetIntensityScale();

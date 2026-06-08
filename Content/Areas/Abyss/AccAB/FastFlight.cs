@@ -35,6 +35,17 @@ public class MoonFlightRenderer : ModSystem
 
     private void RenderWings()
     {
+        bool shouldDrawMoonflight = false;
+        foreach (var player in Main.ActivePlayers)
+        {           
+            if (player.GetModPlayer<FastFlightPlayer>().hasMoonFlight)
+            {
+                shouldDrawMoonflight = true;
+                break;
+            }
+        }
+        if (!shouldDrawMoonflight)
+            return;
 
         string texture = ModContent.GetInstance<Verlia>().Texture;
         _wingTextureAsset ??= ModContent.Request<Texture2D>(texture + "_Wing");

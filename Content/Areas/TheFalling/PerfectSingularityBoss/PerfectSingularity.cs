@@ -54,6 +54,10 @@ public class PerfectRingShader : CrystalShader<PerfectRingShader>
         }
     }
 }
+public class PerfectDarknessShader : CrystalShader<PerfectDarknessShader>
+{
+
+}
 
 public class PerfectSingularityShader : CrystalShader<PerfectSingularityShader>
 {
