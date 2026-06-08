@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
@@ -71,6 +72,12 @@ namespace Stellamod.Content.Areas.Terror.AccTR
             bandShader.Time = Main.GlobalTimeWrappedHourly * 2;
 
             SpriteBatch spriteBatch = Main.spriteBatch;
+
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            glowDrawer.color = Color.Red * 0.2f;
+            glowDrawer.color.A = 0;
+            glowDrawer.scale = Vector2.One * scale * 0.5f;
+            spriteBatch.Draw(glowDrawer);
             spriteBatch.Restart(effect: bandShader.Effect);
             drawer.worldPosition = owner.Center + new Vector2(0, owner.gfxOffY + 0);
             spriteBatch.Draw(drawer);

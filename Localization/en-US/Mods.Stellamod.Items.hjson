@@ -11442,10 +11442,10 @@ HammerofGhetsis: {
 }
 
 SwordoftheFlies: {
-	BasicSlash: ""
-	StaminaSlash: No Effect
-	DisplayName: Swordofthe Flies
-	Tooltip: ""
+	BasicSlash: "Releases homing flies with each swing..."
+	StaminaSlash: "Charges up a powerful sword that slashes down with big range and explodes into more flies!"
+	DisplayName: Sword of the Flies
+	Tooltip: "Yes..."
 }
 
 OrbofCleanliness: {
