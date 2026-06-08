@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.Utilities;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
@@ -9,6 +10,7 @@ namespace Stellamod.Assets
     {
         public class Noise
         {
+            public static LazyAsset<Texture2D> FrontClouds;
             public static Asset<Texture2D> CloudsMask;
             public static Asset<Texture2D> Clouds;
             public static Asset<Texture2D> PainterlyNoise;
@@ -84,6 +86,8 @@ namespace Stellamod.Assets
         public override void OnModLoad()
         {
             base.OnModLoad();
+            Noise.FrontClouds = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/FrontClouds");
+
             Noise.Clouds = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Clouds");
             Noise.CloudsMask = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/CloudsMask");
             Noise.PainterlyNoise = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/PainterlyNoise");
@@ -144,6 +148,7 @@ namespace Stellamod.Assets
         public override void OnModUnload()
         {
             base.OnModUnload();
+            Noise.FrontClouds?.Unload();
             Noise.Clouds = null;
             Noise.CloudsMask = null;
             Noise.PainterlyNoise = null;

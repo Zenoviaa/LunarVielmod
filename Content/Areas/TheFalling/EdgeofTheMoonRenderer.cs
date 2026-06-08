@@ -3,19 +3,72 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Biomes;
 using Stellamod.Core.Utilities;
-using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
-using Stellamod.Trails;
-using System;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.Graphics.Capture;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.Main;
 
 namespace Stellamod.Content.Areas.TheFalling;
+
+public class DarkCloudsShader : CrystalShader<DarkCloudsShader>
+{
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+        }
+    }
+    public Color GoldColor
+    {
+        set
+        {
+            Effect.Parameters["goldColor"].SetValue(value.ToVector3());
+        }
+    }
+    public Vector2 Parallax
+    {
+        set
+        {
+            Effect.Parameters["parallax"].SetValue(value);
+        }
+    }
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+    public float DistortionStrength
+    {
+        set
+        {
+            Effect.Parameters["distortionStrength"].SetValue(value);
+        }
+    }
+}
+public class CrystalMoonShader : CrystalShader<CrystalMoonShader>
+{
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+        }
+    }
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+}
 
 public class GoldenSpiralCloudsShader : CrystalShader<GoldenSpiralCloudsShader>
 {
@@ -89,7 +142,7 @@ public class EdgeyCloudsShader : CrystalShader<EdgeyCloudsShader>
         }
     }
 }
-public class CrystalSkyMixShader : 
+public class CrystalSkyMixShader :
     CrystalShader<CrystalSkyMixShader>
 {
     public Texture2D MaskTexture
@@ -146,9 +199,10 @@ public class CrystalSkyMixShader :
 [Autoload(Side = ModSide.Client)]
 public class EdgeofTheMoonRenderer : ModSystem
 {
-    
+
     public ManagedRenderTarget MaskRT { get; private set; }
     public ManagedRenderTarget CloudsRT { get; private set; }
+    public ManagedRenderTarget DarkCloudsRT { get; private set; }
     public override void Load()
     {
         base.Load(); On_OverlayManager.Draw += DrawBackgrounds;
@@ -167,19 +221,21 @@ public class EdgeofTheMoonRenderer : ModSystem
         gDevice.SetRenderTarget(MaskRT);
         gDevice.Clear(Color.Transparent);
 
+        Vector2 moonPosition = Main.screenPosition + new Vector2(MaskRT.Width, MaskRT.Height) * 0.5f + new Vector2(0, 0);
+        //First we draw the mask texture that the clouds are going to be scrolling over
         SpritebatchDrawer maskDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6"), Main.screenPosition);
         maskDrawer.color = Color.White;
         maskDrawer.color.A = 0;
-      //  maskDrawer.VerticalFrame(1, 4);
         maskDrawer.CenterOrigin();
 
 
+        //This shader distorts the mask a little bit
         EdgeyCloudsShader fadeShader = ShaderContent.GetInstance<EdgeyCloudsShader>();
         fadeShader.Time = Main.GlobalTimeWrappedHourly * 0.2f;
         fadeShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
         fadeShader.DistortionStrength = 0.015f;
         fadeShader.Parallax = new Vector2(Main.screenPosition.X * 0.00005f, 0f);
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, fadeShader.Effect); 
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, fadeShader.Effect);
 
         maskDrawer.scale = Vector2.One * 2;
         maskDrawer.scale.X *= 2;
@@ -187,6 +243,7 @@ public class EdgeofTheMoonRenderer : ModSystem
         maskDrawer.dstRect = new Rectangle(-215, 0, Main.screenWidth + 450, Main.screenHeight);
         maskDrawer.drawOrigin = Vector2.Zero;
         maskDrawer.worldPosition = Main.screenPosition + new Vector2(1250, 950);
+        //Draw it twice since we're drawing additively
         spriteBatch.Draw(maskDrawer);
         spriteBatch.Draw(maskDrawer);
 
@@ -209,41 +266,130 @@ public class EdgeofTheMoonRenderer : ModSystem
 
 
         SpritebatchDrawer cloudDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.Clouds, Main.screenPosition);
-        
         cloudDrawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
-        
         cloudDrawer.drawOrigin = Vector2.Zero;
         cloudDrawer.color = Color.Lerp(Color.White, Color.Black, 0f) * 0.9f;
         spriteBatch.Draw(cloudDrawer);
-
-
         spriteBatch.End();
 
 
+
+
+
+      
         gDevice.SetRenderTarget(MaskRT);
+
+        CrystalMoonShader crystalShader = ShaderContent.GetInstance<CrystalMoonShader>();
+        crystalShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
+        crystalShader.Time = Main.GlobalTimeWrappedHourly;
+
         gDevice.Clear(Color.Transparent);
+        spriteBatch.Begin();
+
+        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine"), moonPosition);
+        lineDrawer.color = Color.White * 0.05f * ExtraMath.Osc(0.5f, 1f, speed: 1f);
+        lineDrawer.color.A = 0;
+        lineDrawer.BottomCenterOrigin();
+        lineDrawer.scale.X *= 0.5f;
+        lineDrawer.scale.Y *= 1f;
+
+        float numLines = 32;
+        for (float i = 0; i < numLines; i++)
+        {
+            Vector2 offset = -Vector2.UnitY;
+            offset = offset.RotatedBy(i / numLines * MathHelper.TwoPi + Main.GlobalTimeWrappedHourly * 0.025f);
+            offset *= 384;
+            float rot = offset.ToRotation();
+            lineDrawer.rotation = rot + MathHelper.PiOver2;
+            lineDrawer.worldPosition = moonPosition + offset;
+            spriteBatch.Draw(lineDrawer);
+        }
+
+        spriteBatch.End();
+
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+            crystalShader.Effect);
+
+        Asset<Texture2D> moonTextureAsset = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Crystals");
+        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(moonTextureAsset, moonPosition);
+        circleDrawer.color = Color.White;
+       // circleDrawer.color.A = 0;
+        //circleDrawer.scale *= 3;
+        spriteBatch.Draw(circleDrawer);
+        spriteBatch.End();
+
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+    null);
+;
+        SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, moonPosition);
+        glowDrawer.color = Color.White * 0.3f;
+        glowDrawer.color.A = 0;
+        // circleDrawer.color.A = 0;
+        glowDrawer.scale *= 3;
+        spriteBatch.Draw(glowDrawer);
+        spriteBatch.End();
+
+
         GoldenSpiralCloudsShader outlineShader = ShaderContent.GetInstance<GoldenSpiralCloudsShader>();
-        outlineShader.GlowColor = Color.Orange * 0.4f ;
+        outlineShader.GlowColor = Color.Orange * 0.4f;
         outlineShader.Threshold = 0.1f;
         outlineShader.ColorationTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/LavaDepths").Value;
         outlineShader.Time = Main.GlobalTimeWrappedHourly;
         outlineShader.Parallax = Main.screenPosition * 0.005f;
 
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
             outlineShader.Effect);
 
         spriteBatch.Draw(CloudsRT, Vector2.Zero, Color.White);
+
+        //
         spriteBatch.End();
+    
+        //Draw darkened clouds over top of the bright clouds
+        var darkShader = ShaderContent.GetInstance<DarkCloudsShader>();
+        darkShader.DistortionStrength = 0.03f;
+        darkShader.Time = Main.GlobalTimeWrappedHourly * 0.3f;
+        darkShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
+        darkShader.Parallax = new Vector2(Main.screenPosition.X * 0.0003f, 0f);
+        darkShader.GoldColor = Color.Gold;
+        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
+            darkShader.Effect);
+
+
+        Asset<Texture2D> frontClouds = AssetManager.Noise.FrontClouds;
+        int height = frontClouds.Height();
+        cloudDrawer = SpritebatchDrawer.FromTextureAsset(frontClouds, Main.screenPosition);
+
+        cloudDrawer.dstRect = new Rectangle(0, Main.screenHeight / 2 + 120, Main.screenWidth, height);
+        cloudDrawer.drawOrigin = Vector2.Zero;
+
+        cloudDrawer.color = Color.White;
+        // cloudDrawer.color = Color.Lerp(Color.White, Color.Black, 0f) * 0.9f;
+        spriteBatch.Draw(cloudDrawer);
+        spriteBatch.End();
+
+        spriteBatch.Begin();
+
+        circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, moonPosition);
+        circleDrawer.color = Color.White * 0.6f;
+        circleDrawer.color.A = 0;
+        circleDrawer.scale *= 3;
+        spriteBatch.Draw(circleDrawer);
+
+
+        spriteBatch.End();
+
+
 
     }
     private void DrawBackgrounds(On_OverlayManager.orig_Draw orig, OverlayManager self, SpriteBatch spriteBatch, RenderLayers layer, bool beginSpriteBatch)
     {
         if (layer == RenderLayers.Background)
         {
-            if(!Main.gameMenu && Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneEdgeoftheMoon)
+            if (!Main.gameMenu && Main.LocalPlayer.GetModPlayer<BiomePlayer>().ZoneEdgeoftheMoon)
             {
-                spriteBatch.Draw(MaskRT, Vector2.Zero, Color.DarkBlue);
-         //       spriteBatch.Draw(MaskRT, Vector2.Zero, Color.Blue);
+             //   spriteBatch.Draw(MaskRT, Vector2.Zero, Color.DarkBlue);
+                //       spriteBatch.Draw(MaskRT, Vector2.Zero, Color.Blue);
 
                 spriteBatch.Draw(MaskRT, Vector2.Zero, Color.White);
                 //spriteBatch.Draw(MaskRT, Vector2.Zero, Color.White);
@@ -264,13 +410,14 @@ public class EdgeofTheMoonRenderer : ModSystem
         base.OnModLoad();
         MaskRT = ManagedRenderTarget.New();
         CloudsRT = ManagedRenderTarget.New();
+        DarkCloudsRT = ManagedRenderTarget.New();
     }
 }
 
 
 public class EdgeofTheMoonBiome : ModBiome
 {
- //   public override ModWaterStyle WaterStyle => nul
+    //   public override ModWaterStyle WaterStyle => nul
     public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<NoBackgroundStyle>();
     public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Normal;
 
@@ -291,7 +438,7 @@ public class EdgeofTheMoonBiome : ModBiome
     public override Color? BackgroundColor => base.BackgroundColor;
     public override bool IsBiomeActive(Player player)
     {
-        return player.Bottom.ToTileCoordinates().Y < 1500;
+        return player.Bottom.ToTileCoordinates().Y < 700;
     }
 
     public override void OnEnter(Player player)
@@ -315,7 +462,7 @@ public class EdgeofTheMoonBiome : ModBiome
     }
 }
 
-public class EdgeofTheMoonSky : 
+public class EdgeofTheMoonSky :
     CustomSky
 {
     private bool _isActive;

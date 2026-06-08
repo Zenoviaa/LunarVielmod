@@ -8,6 +8,17 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Core.PaletteShadingSystem
 {
+    public class PerfectPaletteEffect : PaletteEffect
+    {
+        public override PaletteType PaletteType => PaletteType.LunarShader;
+        public override PalettePriority Priority => PalettePriority.Medium;
+        public override bool IsActive(Player player)
+        {
+
+            BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
+            return myPlayer.ZoneEdgeoftheMoon;
+        }
+    }
     public class AegislavPaletteEffect : PaletteEffect
     {
         public override PaletteType PaletteType => PaletteType.LunarShader;
@@ -25,8 +36,8 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PalettePriority Priority => PalettePriority.Medium;
         public override bool IsActive(Player player)
         {
-
-
+         
+           
             BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
             return myPlayer.ZoneMoonspiralTower;
         }
@@ -37,7 +48,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PalettePriority Priority => PalettePriority.Medium;
         public override bool IsActive(Player player)
         {
-
+          //  return true;
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneAbyss)
                 return true;
@@ -69,7 +80,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
-
+         
 
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneCinder)
@@ -90,6 +101,7 @@ namespace Stellamod.Core.PaletteShadingSystem
 
         public override bool IsActive(Player player)
         {
+      
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             return myPlayer.ZoneAlcadzia || NPC.AnyNPCs(ModContent.NPCType<RoyalFox>());
         }
@@ -115,6 +127,8 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.VanillaShader;
         public override bool IsActive(Player player)
         {
+         
+
             if (player.ZoneUndergroundDesert && !Main.LocalPlayer.ZoneOverworldHeight)
                 return true;
             return false;
@@ -150,7 +164,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
-
+           
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (myPlayer.ZoneFable)
                 return true;
@@ -164,6 +178,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
+  
             return player.GetModPlayer<BiomePlayer>().ZoneMistyDungeon || player.GetModPlayer<BiomePlayer>().ZoneMistyDungeonAnywhere;
         }
     }
@@ -174,7 +189,7 @@ namespace Stellamod.Core.PaletteShadingSystem
         public override PaletteType PaletteType => PaletteType.LunarShader;
         public override bool IsActive(Player player)
         {
-
+    
             //       return true;
             MyPlayer myPlayer = player.GetModPlayer<MyPlayer>();
             if (Main.dayTime)

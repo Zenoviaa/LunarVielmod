@@ -11,8 +11,6 @@ float4 Stars(float2 coords, float2 noiseCoords)
     float2 starCoords = coords * 6.0;
     starCoords = frac(starCoords);
     
-    
-    
     float4 stars = tex2D(shadingCloudSampler, starCoords);
     float d = stars.r > 0.95;
     stars *= d;
@@ -47,10 +45,9 @@ float SampleAverage(float2 coords)
     avg *= 0.25;
     return avg;
 }
+
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
-{
-    
-    
+{   
     float4 cloudColor = tex2D(pixelCloudSampler, coords);
     float d = cloudColor.r > 0.5;
 
@@ -65,13 +62,8 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     
     float3 gradientAdd = lerp(float3(0.0, 0.0, 0.0), glowColor.rgb, coords.y);
     gradientAdd *= 0.25;
-    
-
-   // finalColor *= 0.36;
-    finalColor = pow(finalColor, 2.5);
-  
+    finalColor = pow(finalColor, 2.5); 
     finalColor.rgb += cloudColor.r * gradientAdd * 3.0;
-   // finalColor -= diff < threshold * 0.05 * cloudColor.r;
 
     
     float2 starCoords = coords;
@@ -84,15 +76,10 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     stars2Coords.x = 1.0 - stars2Coords.x;
     stars2Coords += float2(0.2, 0.4);
     stars2Coords = frac(stars2Coords);
+    
     float4 stars2 = Stars(stars2Coords, coords);
-//    brightness *= 1.0 - finalColor.r;
-
     finalColor.rgb += stars.rgb;
     finalColor.rgb += stars2.rgb;
-   // finalColor = pow(finalColor, 2.0);
-    // finalColor.rgb = lerp(finalColor.rgb, float3(1.0, 1.0, 1.0), n * finalColor.r);
-    // finalColor.rgb += pow(tex2D(shadingCloudSampler, coords), 2.0).rgb;
-    //finalColor = 1.0 - finalColor;
     return finalColor;
 }
 

@@ -32,35 +32,19 @@ float4 SampleClouds(float2 coords)
     cloudCoords2.x = 1.0 - cloudCoords2.x;
     float4 cloudColor2 = tex2D(pixelCloudSampler, cloudCoords2);
     float4 mixedClouds = cloudColor + cloudColor2;
-    mixedClouds *= 0.6;
+    mixedClouds.rgb *= 0.6;
     return mixedClouds;
 }
 
-float4 SampleClouds2(float2 coords)
-{
-    coords += float2(time * -0.025, time * 0.025);
-    coords = frac(coords);
-    float4 cloudColor = tex2D(cloudSampler, coords);
-    return cloudColor;
-}
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 {
-
     float maskColor = tex2D(maskSampler, coords).r;
-    
     coords += parallax;
     coords = frac(coords);
     coords *= 6.0;
     float4 baseClouds = SampleClouds(coords);
- 
-    float4 painterlyClouds = SampleClouds2(coords);
-    float4 mixedClouds = baseClouds;
-    //mixedClouds.rgb -= (painterlyClouds.rgb * 0.3);
-    float4 finalClouds = mixedClouds;
-    finalClouds *= maskColor * sampleColor;
-   // finalClouds = round(finalClouds * 6.0) / 6.0;
-
+    float4 finalClouds = baseClouds * maskColor * sampleColor;
     return finalClouds;
 }
 
