@@ -30,7 +30,7 @@ namespace Stellamod.Content.Areas.SpringHills
 
         public override bool IsBiomeActive(Player player)
         {
-            bool isaActive = BiomeTileCounts.InForest && player.ZoneOverworldHeight;
+            bool isaActive = BiomeTileCounts.InForest && player.ZoneOverworldHeight || BiomeTileCounts.InSpringHills;
             if (!isaActive)
                 return false;
             if (player.InModBiome<FableBiome>())

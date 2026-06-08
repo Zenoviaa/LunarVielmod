@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -13,7 +15,6 @@ namespace Stellamod.Content.Areas.Terror.AccTR
 {
     public class RuneOfStealthGlow : ModProjectile
     {
-        public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
         public override void SetDefaults()
         {
@@ -21,6 +22,13 @@ namespace Stellamod.Content.Areas.Terror.AccTR
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 10;
+            Projectile.hide = true;
+        }
+
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            base.DrawBehind(index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
+            overPlayers.Add(index);
         }
 
         public override void AI()
@@ -34,43 +42,49 @@ namespace Stellamod.Content.Areas.Terror.AccTR
             }
 
             Projectile.Center = owner.Center;
+            if (runeOfStealthPlayer.hideVisual)
+                return;
             Timer++;
             if (Timer % 32 == 0)
             {
-                Dust.NewDust(owner.position, owner.width, owner.height, DustID.Firework_Red, Scale: 0.2f);
+                Dust.NewDust(owner.position, owner.width, owner.height, DustID.Firework_Red, Scale: 1f);
             }
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            string texture = "Stellamod/Assets/NoiseTextures/ZuiEffect";
-            Texture2D maskTexture = ModContent.Request<Texture2D>(texture).Value;
-            Vector2 drawOrigin = maskTexture.Size() / 2;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            //Lerping
             Player owner = Main.player[Projectile.owner];
             RuneOfStealthPlayer runeOfStealthPlayer = owner.GetModPlayer<RuneOfStealthPlayer>();
+            if (runeOfStealthPlayer.hideVisual)
+                return false;
+
             float progress = runeOfStealthPlayer.stealthProgress;
             float scale = MathHelper.Lerp(0f, 1f, progress) + VectorHelper.Osc(0f, 0.1f, speed: 2);
             Color drawColor = Color.Lerp(Color.Transparent, Color.Red, progress);
-            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
-            for (int i = 0; i < 2; i++)
-            {
-                spriteBatch.Draw(maskTexture, drawPosition, null, drawColor, Projectile.rotation, drawOrigin, scale, SpriteEffects.None, 0f);
-            }
+  
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
+            drawer.color = drawColor * ExtraMath.Osc(0.7f, 1f, speed: 12) *  1f;
+            drawer.color.A = 0;
+            drawer.scale *= 1;
+            drawer.scale.Y *= 1f;
+            MagicBandShader bandShader = ShaderContent.GetInstance<MagicBandShader>();
+            bandShader.Time = Main.GlobalTimeWrappedHourly * 2;
 
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            return base.PreDraw(ref lightColor);
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Restart(effect: bandShader.Effect);
+            drawer.worldPosition = owner.Center + new Vector2(0, owner.gfxOffY + 0);
+            spriteBatch.Draw(drawer);
+
+
+            spriteBatch.RestartDefaults();
+            return false;
         }
     }
 
     public class RuneOfStealthPlayer : ModPlayer
     {
         public bool hasStealthRune;
+        public bool hideVisual;
         public float stealthRuneTimer;
         public float stealthProgress => stealthRuneTimer / 900f;
         public override void ResetEffects()
@@ -135,6 +149,7 @@ namespace Stellamod.Content.Areas.Terror.AccTR
         {
             RuneOfStealthPlayer runeOfStealthPlayer = player.GetModPlayer<RuneOfStealthPlayer>();
             runeOfStealthPlayer.hasStealthRune = true;
+            runeOfStealthPlayer.hideVisual = hideVisual;
             if (player.ownedProjectileCounts[ModContent.ProjectileType<RuneOfStealthGlow>()] == 0)
             {
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
