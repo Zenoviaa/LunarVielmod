@@ -42,7 +42,7 @@ public class SwordoftheFlies : BaseSwingItemV2
         Item.shoot = ModContent.ProjectileType<SwordoftheFliesSlash>();
         staminaProjectileShoot = ModContent.ProjectileType<SwordoftheFliesSuperSword>();
         meleeWeaponType = MeleeWeaponType.Sword;
-        staminaCost = 3;
+        staminaCost = 4;
         staminaDamageMultiplier = 2f;
     }
     public override void AddRecipes()
@@ -315,19 +315,22 @@ public class SwordoftheFliesSlash : BaseSwingProjectileV2
         });
 
         swordBeamLength = 180;
-        outlineColor = Color.Brown;
+        outlineColor = Color.Gold;
         additive = true;
         useAfterImage = true;
-        hitStopTime = EXTRA_UPDATE_COUNT * 5;
+    //    hitStopTime = EXTRA_UPDATE_COUNT * 5;
 
     }
     private Color GetTrailColor(float completionRatio)
     {
-        return Color.Lerp(Color.Lerp(Color.DarkGreen, Color.Black, 0.5f), Color.RosyBrown, completionRatio);
+        return Color.Lerp(Color.Orange, Color.Black, completionRatio);
     }
     private Color GetTrailColor2(float completionRatio)
     {
-        return GetTrailColor(completionRatio) * 0.3f;
+        Color trailColor = Color.Orange ;
+        trailColor.A = 55;
+       // trailColor.A = 0;
+        return trailColor;
     }
 
 
@@ -337,7 +340,7 @@ public class SwordoftheFliesSlash : BaseSwingProjectileV2
     }
     private float GetTrailWidth2(float completionRatio)
     {
-        return GetTrailWidth(completionRatio) * 2;
+        return GetTrailWidth(completionRatio) * 3;
     }
 
     public override void RenderSwingTrail(ref Color lightColor, Vector2[] points)
@@ -357,15 +360,17 @@ public class SwordoftheFliesSlash : BaseSwingProjectileV2
     public override void DrawSwingTrail2(ref Color lightColor, Vector2[] swingTrailCache)
     {
         base.DrawSwingTrail2(ref lightColor, swingTrailCache);
-        AlcadSlashShader shader = ShaderContent.GetInstance<AlcadSlashShader>();
-        shader.ScrollingLaser = TrailRegistry.Beamlight.Value;
-        shader.Noise = AssetManager.Noise.Whirly.Value;
-        shader.Slash = AssetManager.GlowMask.SwordSlashForward.Asset.Value;
-        shader.BloomColor = Color.Purple;
-        shader.Time = Main.GlobalTimeWrappedHourly * 24;
-        shader.TransformMatrix = TrailDrawer.WorldViewPoint2;
-        shader.Distortion = 0.15f;
-        TrailDrawer.Draw(swingTrailCache, GetTrailColor2, GetTrailWidth2, shader);
+
+        FixedRichLaserShader laserShader = ShaderContent.GetInstance<FixedRichLaserShader>();
+        laserShader.LaserColor = Color.White;
+        laserShader.BloomTexture = AssetManager.LaserTextures.Bloom;
+        laserShader.LaserTexture = TrailRegistry.StarTrail;
+        TrailDrawer.Draw(Main.spriteBatch, swingTrailCache, GetTrailColor2, GetTrailWidth2, laserShader);
+
+        BloomTrailShader b = BloomTrailShader.Instance;
+        b.InnerColor = Color.Goldenrod;
+        b.OuterColor = Color.DarkGoldenrod;
+        TrailDrawer.Draw(Main.spriteBatch, swingTrailCache, GetTrailColor2, GetTrailWidth2, b);
     }
 
     public override Asset<Texture2D> RequestHologramTexture()
