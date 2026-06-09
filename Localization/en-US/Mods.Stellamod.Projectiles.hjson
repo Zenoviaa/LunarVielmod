@@ -1157,6 +1157,7 @@ VoidBlasterSpawnEffect.DisplayName: Void Blaster Spawn Effect
 FigureEightTestProj.DisplayName: Figure Eight Test Proj
 KickboomSun.DisplayName: Kickboom Sun
 KickboomBurn.DisplayName: Kickboom Burn
+Kickboom.DisplayName: Kickboom
 GothBlastExplosionProj2.DisplayName: Goth Blast Explosion Proj2
 GothBlastExplosionProj.DisplayName: Goth Blast Explosion Proj
 SmallCircleExplosionProj.DisplayName: Small Circle Explosion Proj
@@ -1981,3 +1982,6 @@ PerfectLaser.DisplayName: Perfect Laser
 PerfectMeteor.DisplayName: Perfect Meteor
 PerfectMeteorBoom.DisplayName: Perfect Meteor Boom
 FliesSuperBoom.DisplayName: Flies Super Boom
+BouncingRazorSuns.DisplayName: Bouncing Razor Suns
+GothinTorch.DisplayName: Gothin Torch
+RedSun.DisplayName: Red Sun

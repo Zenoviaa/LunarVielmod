@@ -1177,6 +1177,7 @@ NiiviCrystalLightning.DisplayName: Niivi Crystal Lightning
 NiiviCrystalFrost.DisplayName: Niivi Crystal Frost
 NiiviRoaming.DisplayName: Niivi Roaming
 GothiviaDeath.DisplayName: Gothivia Death
+Gothivia.DisplayName: Gothivia
 
 EreshkigalIdle: {
 	DisplayName: Ereshkigal Idle

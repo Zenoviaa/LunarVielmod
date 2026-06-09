@@ -184,9 +184,6 @@ namespace Stellamod.Helpers
             SkyManager.Instance["Stellamod:NaxtrinSky"] = new NaxtrinSky();
             SkyManager.Instance["Stellamod:NaxtrinSky"].Load();
 
-            SkyManager.Instance["Stellamod:NaxtrinSky2"] = new NaxtrinSky2();
-            SkyManager.Instance["Stellamod:NaxtrinSky2"].Load();
-
             SkyManager.Instance["Stellamod:AlcadSky"] = new NaxtrinSky3();
             SkyManager.Instance["Stellamod:AlcadSky"].Load();
 
