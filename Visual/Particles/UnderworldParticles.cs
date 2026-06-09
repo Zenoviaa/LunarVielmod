@@ -96,9 +96,9 @@ public class UnderworldSmokeParticle : Particle<UnderworldSmokeParticle>
         float easeIn = EasingFunction.OutExpo(fadeIn / 80f);
         float easeOut = MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(fadeIn / 180f));
         float alpha = easeIn * easeOut;
-        Color glowColor = Color.White * alpha;
+        Color glowColor = Color.Lerp(Color.Black, Color.White, alpha);
         Vector2 centerPos = DrawPosition;
         var textureAsset = GetTexture();
-        spriteBatch.Draw(textureAsset.Value, centerPos, null, glowColor * alpha, Rotation, textureAsset.Value.Size() * 0.5f, Scale, SpriteEffects.None, 0);
+        spriteBatch.Draw(textureAsset.Value, centerPos, null, glowColor, Rotation, textureAsset.Value.Size() * 0.5f, Scale, SpriteEffects.None, 0);
     }
 }
