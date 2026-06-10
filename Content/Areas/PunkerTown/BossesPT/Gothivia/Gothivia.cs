@@ -2,6 +2,7 @@
 using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia.Projectiles;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -347,7 +348,7 @@ public partial class Gothivia : ScarletBoss
         float ai1 = NPC.whoAmI;
         if (Timer == 1)
         {
-            FXUtil.ApplyVignette(2f, timer: 150);
+            FXUtil.ApplyVignette(2f, timer: 100);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSummon") { PitchVariance = 0.3f }, NPC.Center);
             PixelPrimitiveCircleFactory.CreateGenericInBoom(NPC.Center, Color.White, Color.White, 80, 460);
             if (MultiplayerHelper.IsHost)
@@ -356,6 +357,7 @@ public partial class Gothivia : ScarletBoss
                     ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
             }
         }
+        CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, NPC.Center, 0.35f));
 
         if (Timer == 80)
         {
@@ -470,10 +472,13 @@ public partial class Gothivia : ScarletBoss
                 _circleDegrees += _circleSpeed;
                 Circle();
 
-                     
-                Vector2 targetAimingVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-                _aimingVelocity = Vector2.Lerp(_aimingVelocity, targetAimingVelocity, 1f);
-                _telegraphLineAlpha = MathHelper.Lerp(_telegraphLineAlpha, 1f, 0.3f);
+                {
+                    Vector2 targetAimingVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                    _aimingVelocity = Vector2.Lerp(_aimingVelocity, targetAimingVelocity, 1f);
+                    _telegraphLineAlpha = MathHelper.Lerp(_telegraphLineAlpha, 1f, 0.3f);
+                }                     
+                
+       
                 if(Timer % 8 == 0 && _bowFrame < 3)
                 {
                     _bowFrame++;
@@ -485,14 +490,19 @@ public partial class Gothivia : ScarletBoss
                 Animator.PlayAnimation(Anim_Arrowhold);
                 break;
             case 1:
-//                Circle();
+                //                Circle();
+                {
+                    Vector2 targetAimingVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                    _aimingVelocity = Vector2.Lerp(_aimingVelocity, targetAimingVelocity, 0.02f);
+                    
+                }
 
                 _accelTimer = 0;
                 if (_bowDissipateAlpha < 1)
                     _bowDissipateAlpha += 0.045f;
                 _telegraphLineAlpha = MathHelper.Lerp(_telegraphLineAlpha, 1f, 0.3f);
                 _bowFrame = 3;
-                NPC.velocity *= 0.94f;
+                NPC.velocity *= 0.98f;
                 break;
             case 2:
                 if (Timer % 8 == 0 && _bowFrame < 6)
@@ -510,7 +520,7 @@ public partial class Gothivia : ScarletBoss
 
         void PrepareBowShot(int time)
         {
-            if(Timer == time - 15)
+            if(Timer == time - 48)
             {
                 AttackCycle = 1;
             }

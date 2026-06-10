@@ -173,6 +173,15 @@ public partial class Gothivia :
         if (npcDrawer.spriteEffects == SpriteEffects.FlipHorizontally)
             npcDrawer.drawOrigin.X = npcDrawer.sourceRect!.Value.Width - npcDrawer.drawOrigin.X;
         spriteBatch.Draw(npcDrawer);
+
+        Asset<Texture2D> wings = GetWingsTextureAsset();
+        Rectangle srcRec = wings.Value.GetFrame(_wingAnimationFrame.frame, _wingAnimationFrame.maxFrame);
+        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureAsset(wings, NPC.Center);
+        wingDrawer.sourceRect = srcRec;
+        wingDrawer.scale *= 2;
+        wingDrawer.color = _outliner.outlineColor;
+        wingDrawer.CenterOrigin();
+        spriteBatch.Draw(wingDrawer);
     }
 
     public void DrawToRenderTargets()
