@@ -31,19 +31,30 @@ public class BouncingRazorSuns : ModProjectile,
         Chase
     }
 
+    private bool _lockTarget;
+    private float _inTimer;
     private float _squishTimer;
     private Vector2 _offset;
     private Vector2 _startOffset;
+    private Vector2 _startPoint;
     private AnimationFramer _discAnimationFrame;
     private AnimationFramer _auraAnimationFrame;
-    private Vector2 _startPoint;
+    private float InScale
+    {
+        get
+        {
+            return EasingFunction.InOutSine(_inTimer / 60f);
+        }
+    }
+
     private Vector2 DrawScale
     {
         get
         {
-            return Vector2.One * 1.4f * MathHelper.Lerp(1f, 1.4f, EasingFunction.OutExpo(_squishTimer / 60f));
+            return Vector2.One * 1.4f * MathHelper.Lerp(1f, 1.4f, EasingFunction.OutExpo(_squishTimer / 60f)) * InScale;
         }
     }
+
     private ref float Timer => ref Projectile.ai[0];
     private AIState State
     {
@@ -77,6 +88,10 @@ public class BouncingRazorSuns : ModProjectile,
         base.SendExtraAI(writer);
         writer.WriteVector2(_startPoint);
         writer.Write(_squishTimer);
+        writer.Write(orbitSpeed);
+        writer.Write(fastAnimateTimer);
+        writer.WriteVector2(_startOffset);
+        writer.WriteVector2(_offset);
     }
 
     public override void ReceiveExtraAI(BinaryReader reader)
@@ -84,6 +99,10 @@ public class BouncingRazorSuns : ModProjectile,
         base.ReceiveExtraAI(reader);
         _startPoint = reader.ReadVector2();
         _squishTimer = reader.ReadSingle();
+        orbitSpeed = reader.ReadSingle();
+        fastAnimateTimer = reader.ReadSingle();
+        _startOffset = reader.ReadVector2();
+        _offset = reader.ReadVector2();
     }
 
     public override void SetStaticDefaults()
@@ -103,7 +122,7 @@ public class BouncingRazorSuns : ModProjectile,
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
         //Circular hitbox
-        float collisionRadius = 192;
+        float collisionRadius = 124;
         Vector2 centerPoint = targetHitbox.Center();
         Vector2 myPoint = projHitbox.Center();
         return Vector2.Distance(myPoint, centerPoint) <= collisionRadius;
@@ -141,7 +160,7 @@ public class BouncingRazorSuns : ModProjectile,
     public override void AI()
     {
         base.AI();
-
+        _inTimer++;
         if (_squishTimer > 0)
             _squishTimer--;
         if (fastAnimateTimer > 0)
@@ -167,6 +186,7 @@ public class BouncingRazorSuns : ModProjectile,
                 AI_Bounce();
                 break;
             case AIState.Chase:
+                _lockTarget = true;
                 Projectile.hostile = true;
                 AI_Chase();
                 break;
@@ -202,11 +222,12 @@ public class BouncingRazorSuns : ModProjectile,
         float maxRadians = MathHelper.Pi * 5;
         float radiansToRotate = maxRadians * EasingFunction.InOutSine(Timer / InTime);
         Vector2 rotatedPoint = _startPoint.RotatedBy(radiansToRotate, targetPoint);
-        Vector2 closerPoint = Vector2.Lerp(rotatedPoint, targetPoint, EasingFunction.InExpo(Timer / InTime));
+        Vector2 closerPoint = Vector2.Lerp(rotatedPoint, targetPoint, EasingFunction.InExpo(Timer / InTime) * 0.98f);
         Projectile.Center = closerPoint;
         if(Timer >= InTime)
         {
-            Projectile.velocity = (_startPoint - targetPoint).SafeNormalize(Vector2.Zero) * 16;
+            _startPoint = Projectile.Center;
+            //  Projectile.velocity = (_startPoint - targetPoint).SafeNormalize(Vector2.Zero) * 16;
             SwitchState(AIState.Bounce);
         }
     }
@@ -234,14 +255,26 @@ public class BouncingRazorSuns : ModProjectile,
         float ease = EasingFunction.InOutSine(ratio);
         float radians = ease * maxRadians;
 
+        float maxDetectDistance = 4000;
+        Player player = PlayerHelper.FindClosestPlayer(Projectile.position, maxDetectDistance);
+        if (player != null)
+        {
+            if (_lockTarget)
+            {
+                //Main.NewText("E");
+                _startPoint = player.Center;
+            }
+        }
+
         orbitSpeed = MathHelper.Lerp(0, 0.5f, EasingFunction.InExpo(ratio));
         Vector2 offset = _offset;
-        Vector2 o = Vector2.Lerp(offset * 0.15f, offset, EasingFunction.OutExpo(ratio));
+        Vector2 o = Vector2.Lerp(offset * 0.15f, offset * 1.76f, EasingFunction.OutExpo(ratio));
         Projectile.velocity = Vector2.Zero;
         Projectile.Center = _startPoint + o;
 
         if(Timer >= BounceTime)
         {
+            _startPoint = Projectile.Center;
             _startOffset = _startOffset.RotatedBy(radians);
             SwitchState(AIState.Chase);
         }
@@ -268,28 +301,22 @@ public class BouncingRazorSuns : ModProjectile,
         Projectile.velocity = Vector2.Zero;
 
         Vector2 targetPoint = player.Center + o;
-        Projectile.Center = Vector2.Lerp(Projectile.Center, targetPoint, MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(ratio)));
+        Vector2 proposedPoint = Vector2.Lerp(Projectile.Center, targetPoint, MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(ratio)));
+        float d = Vector2.Distance(proposedPoint, player.Center);
+        if(d < 200 && Timer < 60)
+        {
+           
+        } else if (Timer > 60 || d > 200)
+        {
+            Projectile.Center = proposedPoint;
+        }
+      
         if (Timer >= AnticipationTime)
         {
             _startOffset = _startOffset.RotatedBy(radians);
             _startPoint = Projectile.Center;
             SwitchState(AIState.Bounce);
         }
-
-        /*
-        Rectangle myRect = Projectile.getRect();
-        foreach (var proj in Main.ActiveProjectiles)
-        {
-            if (proj.type != Type)
-                continue;
-            if (proj == Projectile)
-                continue;
-
-            Rectangle otherRect = proj.getRect();
-            if (!Projectile.Colliding(myRect, otherRect))
-                continue;
-            SwitchState(AIState.Bounce);
-        }*/
     }
 
     private Asset<Texture2D> GetDiscTextureAsset()
@@ -426,7 +453,6 @@ public class BouncingRazorSuns : ModProjectile,
             discDrawer.color = Color.White * ExtraMath.Osc(0.1f, 0.5f, speed: 24) * 0.12f;
             discDrawer.color.A = 0;
             spriteBatch.Draw(discDrawer);
-
         }
     }
 
@@ -453,12 +479,9 @@ public class BouncingRazorSuns : ModProjectile,
         basicLaserShader.InnerColor = GetDiscAuraColor3();
         basicLaserShader.OuterColor =GetDiscAuraColor3();
         TrailDrawer.Draw(Projectile.oldPos, GetSpiralDashTrailColor2, GetSpiralDashTrailWidth2, basicLaserShader, Projectile.Size * 0.5f);
-
-       // basicLaserShader.LaserTexture = AssetManager.LaserTextures.TexturedLaser2;
-      //  basicLaserShader.InnerColor = Color.White;
-      //   basicLaserShader.OuterColor = Color.DarkGray;
         TrailDrawer.Draw(Projectile.oldPos, GetSpiralDashTrailColor, GetSpiralDashTrailWidth, basicLaserShader, Projectile.Size * 0.5f);
     }
+
     private Color DashTrailColorFunction(float completionRatio)
     {
         return Color.Lerp(Color.Transparent, Color.White, EasingFunction.QuadraticBump(completionRatio));
@@ -466,7 +489,7 @@ public class BouncingRazorSuns : ModProjectile,
 
     private float DashTrailWidthFunction(float completionRatio)
     {
-        return MathHelper.SmoothStep(172, 172, completionRatio);
+        return MathHelper.SmoothStep(172, 172, completionRatio) * InScale;
     }
 
     private void RenderPixelatedDashTrail(GraphicsDevice gDevice)
@@ -485,24 +508,36 @@ public class BouncingRazorSuns : ModProjectile,
     }
     private float GetSpiralDashTrailWidth2(float completionRatio)
     {
-        return GetSpiralDashTrailWidth(completionRatio) * 1.3f;
+        return GetSpiralDashTrailWidth(completionRatio) * 1.3f * InScale;
     }
     private Color GetSpiralDashTrailColor(float completionRatio)
     {
         Color secondaryLerp = Color.Lerp(GetDiscAuraColor2(), Color.Black, completionRatio);
         return Color.Lerp(GetDiscAuraColor(), secondaryLerp, completionRatio);
     }
+
     private Color GetSpiralDashTrailColor2(float completionRatio)
     {
         Color secondaryLerp = Color.Lerp(GetDiscAuraColor3(), Color.Black, completionRatio);
         return Color.Lerp(GetDiscAuraColor2(), secondaryLerp, completionRatio);
     }
-
-
-
+    
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        Color primaryColor = GetDiscAuraColor();
+        var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, primaryColor, Color.Lerp(primaryColor, Color.Black, 0.5f), duration: 25, baseSize: 0.23f);
+        fx.Scale *= 1.8f;
+        for(float f =0; f < 10; f++)
+        {
+            var dp = DustParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(16, 16));
+            dp.Scale *= 1.5f;
+            dp.gravity = 0.05f;
+            dp.dampening = 0.05f;
+            dp.noTileCollide = true;
+            dp.outerColor = primaryColor;
+        }
+        ShakeScreenPosition.Shake = 6;
     }
 
     public void DrawToRenderTargets()
@@ -534,6 +569,12 @@ public class RazorFireBoom : ModProjectile,
     public override void AI()
     {
         base.AI();
+
+
+        if(Timer > 25)
+        {
+            Projectile.hostile = false;
+        }
         Timer++;
         if(Timer == 1)
         {
@@ -543,15 +584,7 @@ public class RazorFireBoom : ModProjectile,
             var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Red, Color.Black, duration: 25, baseSize: 0.2f);
             fx.Scale *= 3f;
 
-            for(float f = 0; f < 16; f++)
-            {
-                var sp = FaintSmokeParticle.SpawnInAlphaLayer(Projectile.Center + Main.rand.NextVector2Circular(100, 100), Vector2.Zero);
-                sp.behindLayer = true;
-                sp.color = Color.Lerp(Color.OrangeRed, Color.Black, 0.8f);
-                sp.fadeToColor = Color.Black;
-                sp.Scale *= 2.4f;
-                //   sp.noShrink = true;
-            }
+
             for (float i = 0; i < 8; i++)
             {
                 float progress = i / 4f;
@@ -567,7 +600,7 @@ public class RazorFireBoom : ModProjectile,
                 particle.VectorScale *= 4;
                 particle.Rotation = rot + MathHelper.ToRadians(45);
             }
-            for (float f = 0; f< 35; f++)
+            for (float f = 0; f< 14; f++)
             {
                 var dp = DustParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(32, 32));
                 dp.dampening = 0.05f;
@@ -578,7 +611,6 @@ public class RazorFireBoom : ModProjectile,
         var dp2 = DustParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(384, 384), Vector2.Zero );
         dp2.dampening = 0.05f;
         dp2.gravity *= 0.05f;
-       // dp2.Scale *= 2;
         dp2.fast = true;
     }
 

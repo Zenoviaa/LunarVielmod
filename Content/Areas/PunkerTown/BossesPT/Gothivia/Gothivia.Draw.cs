@@ -1,7 +1,10 @@
 ﻿using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Animations;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
+using Stellamod.Effects.GothinFlames;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
@@ -13,6 +16,7 @@ public partial class Gothivia :
 {
     private Asset<Texture2D> _wings3QTextureAsset;
     private Asset<Texture2D> _wings4QTextureAsset;
+    private Asset<Texture2D> _bowTextureAsset;
     private Animator _animator;
     private Animator Animator
     {
@@ -23,7 +27,10 @@ public partial class Gothivia :
             return _animator;
         }
     }
+
+
     private const string Anim_Floating = "Floating";
+    private const string Anim_Arrowhold = "ArrowHold";
     private const string Anim_Arrowshot = "Arrowshot";
     private const string Anim_Dichotamy = "Dichotamy";
     private const string Anim_Explode = "Explode";
@@ -40,7 +47,10 @@ public partial class Gothivia :
         var floating = new SpriteAnimation(0, 7, isLooping: true, drawOriginOverride: animationDrawOrigin, frameSpeed: 0.35f);
         _animator.AddAnimation(Anim_Floating, floating);
 
-        var arrowshot = new SpriteAnimation(0, 13, isLooping: false, drawOriginOverride: animationDrawOrigin, frameSpeed: 0.15f);
+        var arrowhold = new SpriteAnimation(0, 8, isLooping: false, drawOriginOverride: animationDrawOrigin);
+        _animator.AddAnimation(Anim_Arrowhold, arrowhold);
+
+        var arrowshot = new SpriteAnimation(0, 4, isLooping: false, drawOriginOverride: animationDrawOrigin);
         _animator.AddAnimation(Anim_Arrowshot, arrowshot);
 
         var kickstart = new SpriteAnimation(0, 7, isLooping: false, drawOriginOverride: animationDrawOrigin);
@@ -67,8 +77,11 @@ public partial class Gothivia :
     {
     
         ModContent.GetInstance<GothiviaDomain>().drawGothivia = true;
+        DrawTelegraphLine(spriteBatch);
+    
         DrawWings(spriteBatch);
         DrawSprite(spriteBatch);
+        DrawBow(spriteBatch);
         return false;
     }
 
@@ -86,6 +99,49 @@ public partial class Gothivia :
         }
     }
 
+    private void DrawTelegraphLine(SpriteBatch spriteBatch)
+    {
+        Asset<Texture2D> bloomLineTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/BloomLine");
+        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(bloomLineTextureAsset, NPC.Center);
+        lineDrawer.rotation = _aimingVelocity.ToRotation() - MathHelper.PiOver2;
+        lineDrawer.color = Color.White * _telegraphLineAlpha * ExtraMath.Osc(0.4f, 1f, speed: 32) ;
+        lineDrawer.color.A = 0;
+        lineDrawer.TopCenterOrigin();
+        lineDrawer.scale.Y *= 4;
+        lineDrawer.scale.X *= 0.4f;
+        spriteBatch.Draw(lineDrawer);
+    }
+
+    private void DrawBow(SpriteBatch spriteBatch)
+    {
+        FlameBowShader flamebowShader = ShaderContent.GetInstance<FlameBowShader>();
+        flamebowShader.Time = Main.GlobalTimeWrappedHourly * -24;
+        flamebowShader.FlameNoiseTexture = AssetManager.Noise.InvertedVoronoi;
+        flamebowShader.InsideColor = Color.Yellow;
+        flamebowShader.BloomColor = Color.Red;
+        flamebowShader.DissipateThreshold = MathHelper.Lerp(1f, 0f, _bowDissipateAlpha);
+
+        _bowTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Bow");
+        Vector2 bowholdPosition = NPC.Center;
+        bowholdPosition += _aimingVelocity * 100;
+        bowholdPosition += Vector2.Lerp(_aimingVelocity * 700, Vector2.Zero, EasingFunction.OutExpo(_bowDissipateAlpha));
+        spriteBatch.Restart(effect: flamebowShader.Effect);
+        SpritebatchDrawer bowDrawer = SpritebatchDrawer.FromTextureAsset(_bowTextureAsset, bowholdPosition);
+        bowDrawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 18) * _telegraphLineAlpha;
+        bowDrawer.color.A = 0;
+        bowDrawer.rotation = _aimingVelocity.ToRotation();
+        bowDrawer.sourceRect = _bowTextureAsset.Value.GetFrame(_bowFrame, 7);
+        bowDrawer.CenterOrigin();
+        spriteBatch.Draw(bowDrawer);
+
+
+        bowDrawer.color = Color.DarkRed * ExtraMath.Osc(0.8f, 1f, speed: 12) * _telegraphLineAlpha * 0.35f;
+        bowDrawer.color.A = 0;
+        bowDrawer.scale *= 1.2f;
+        bowDrawer.worldPosition -= _aimingVelocity * 32;
+        spriteBatch.Draw(bowDrawer);
+        spriteBatch.RestartDefaults();
+    }
     private void DrawWings(SpriteBatch spriteBatch)
     {
         Asset<Texture2D> wings = GetWingsTextureAsset();
@@ -99,7 +155,7 @@ public partial class Gothivia :
 
     private void DrawSprite(SpriteBatch spriteBatch)
     {
-        string texture = Texture + Animator.GetAnimation();
+        string texture = Texture + "_" + Animator.GetAnimation();
         Asset<Texture2D> textureAsset = ModContent.Request<Texture2D>(texture);
         SpritebatchDrawer npcDrawer = SpritebatchDrawer.FromNPC(NPC);
         npcDrawer.texture = textureAsset.Value;
@@ -109,7 +165,7 @@ public partial class Gothivia :
     }
     private void DrawOutline(SpriteBatch spriteBatch)
     {
-        string texture = Texture + Animator.GetAnimation();
+        string texture = Texture + "_" + Animator.GetAnimation();
         Asset<Texture2D> textureAsset = ModContent.Request<Texture2D>(texture);
         SpritebatchDrawer npcDrawer = SpritebatchDrawer.FromNPC(NPC);
         npcDrawer.texture = textureAsset.Value;
