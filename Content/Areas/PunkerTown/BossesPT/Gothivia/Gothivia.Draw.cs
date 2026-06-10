@@ -11,6 +11,8 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 public partial class Gothivia :
     IDrawToRenderTarget
 {
+    private Asset<Texture2D> _wings3QTextureAsset;
+    private Asset<Texture2D> _wings4QTextureAsset;
     private Animator _animator;
     private Animator Animator
     {
@@ -63,9 +65,36 @@ public partial class Gothivia :
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+    
         ModContent.GetInstance<GothiviaDomain>().drawGothivia = true;
+        DrawWings(spriteBatch);
         DrawSprite(spriteBatch);
         return false;
+    }
+
+    private Asset<Texture2D> GetWingsTextureAsset()
+    {
+        _wings3QTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Gwings3Q");
+        _wings4QTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Gwings4Q");
+        switch (_wingsPerspective)
+        {
+            default:
+            case WingsPerspective.ThreeQ:
+                return _wings3QTextureAsset;
+            case WingsPerspective.FourQ:
+                return _wings4QTextureAsset;
+        }
+    }
+
+    private void DrawWings(SpriteBatch spriteBatch)
+    {
+        Asset<Texture2D> wings = GetWingsTextureAsset();
+        Rectangle srcRec = wings.Value.GetFrame(_wingAnimationFrame.frame, _wingAnimationFrame.maxFrame);
+        SpritebatchDrawer wingDrawer = SpritebatchDrawer.FromTextureAsset(wings, NPC.Center);
+        wingDrawer.sourceRect = srcRec;
+        wingDrawer.scale *= 2;
+        wingDrawer.CenterOrigin();
+        spriteBatch.Draw(wingDrawer);
     }
 
     private void DrawSprite(SpriteBatch spriteBatch)

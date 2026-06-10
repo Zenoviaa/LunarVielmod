@@ -10,6 +10,7 @@ namespace Stellamod.Assets
     {
         public class Noise
         {
+            public static LazyAsset<Texture2D> InvertedVoronoi;
             public static LazyAsset<Texture2D> FlameVortexNoise;
             public static LazyAsset<Texture2D> FrontClouds;
             public static Asset<Texture2D> CloudsMask;
@@ -88,6 +89,7 @@ namespace Stellamod.Assets
         public override void OnModLoad()
         {
             base.OnModLoad();
+            Noise.InvertedVoronoi = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/InvertedVoronoi");
             Noise.FlameVortexNoise = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/FlameVortexNoise");
             GlowMask.SwordSlashForward = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/SwordSlashForward");
             Noise.FrontClouds = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/FrontClouds");
@@ -152,6 +154,7 @@ namespace Stellamod.Assets
         public override void OnModUnload()
         {
             base.OnModUnload();
+            Noise.InvertedVoronoi?.Unload();
             Noise.FlameVortexNoise?.Unload();
             GlowMask.SwordSlashForward?.Unload();
             Noise.FrontClouds?.Unload();

@@ -1,5 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
+using Stellamod.Common.WeaponUpgrade.UI;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
@@ -9,10 +11,12 @@ using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using Stellamod.WorldG;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Stellamod.Core.AssetReferences.Projectiles;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 
@@ -254,6 +258,11 @@ public class GothiviaDomain : ModSystem
 
 public partial class Gothivia : ScarletBoss
 {
+    private enum WingsPerspective : byte
+    {
+        ThreeQ,
+        FourQ
+    }
     private enum AIState
     {
         Spawn,
@@ -300,8 +309,10 @@ public partial class Gothivia : ScarletBoss
         Invisible,
     }
 
+    private WingsPerspective _wingsPerspective;
     private bool _contactDamage;
     private Outliner _outliner;
+    private AnimationFramer _wingAnimationFrame;
     private ref float Timer => ref NPC.ai[0];
 
     private AIState State
@@ -333,6 +344,7 @@ public partial class Gothivia : ScarletBoss
         base.SetStaticDefaults();
         Main.npcFrameCount[Type] = 1;
 
+        NPCID.Sets.MustAlwaysDraw[Type] = true;
     }
 
     public override void SetDefaults()
@@ -385,36 +397,55 @@ public partial class Gothivia : ScarletBoss
     {
         return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
     }
+
+    private void CreateFlameNSmokeParticles()
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        Main.windSpeedTarget = 0.5f;
+        if (Main.rand.NextBool(8))
+        {
+            Vector2 pos = new Vector2();
+            pos.X = Main.rand.Next(0, Main.screenWidth * 2);
+            pos.Y = Main.rand.Next(Main.screenHeight, Main.screenHeight + 300);
+            pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
+            var ufp = UnderworldFlameParticle.Spawn(pos, -Vector2.UnitY * 10 + Vector2.UnitX * 5, Scale: Main.rand.NextFloat(0.1f, 0.3f));
+            ufp.ySlow = false;
+        }
+        if (Main.rand.NextBool(3))
+        {
+            Vector2 pos = new Vector2();
+            pos.X = Main.rand.Next(0, Main.screenWidth * 2);
+            pos.Y = Main.rand.Next(0, Main.screenHeight);
+            pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
+            UnderworldSmokeParticle.Spawn(pos, -Vector2.UnitY * 2 + -Vector2.UnitX, Scale: Main.rand.NextFloat(0.5f, 0.8f));
+        }
+    }
+
+    public override BossLevel GetBossLevel()
+    {
+        return BossLevel.Superboss;
+    }
+
     public override void AI()
     {
         base.AI();
         EnablePlatformArena();
-
-        NPCID.Sets.MustAlwaysDraw[Type] = true;
-        if(Main.netMode != NetmodeID.Server)
-        {
-            Main.windSpeedTarget = 0.5f;
-            if (Main.rand.NextBool(8))
-            {
-                Vector2 pos = new Vector2();
-                pos.X = Main.rand.Next(0, Main.screenWidth * 2);
-                pos.Y = Main.rand.Next(Main.screenHeight, Main.screenHeight + 300);
-                pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-                var ufp = UnderworldFlameParticle.Spawn(pos, -Vector2.UnitY * 10 + Vector2.UnitX * 5, Scale: Main.rand.NextFloat(0.1f, 0.3f));
-                ufp.ySlow = false;
-            }
-            if (Main.rand.NextBool(3))
-            {
-                Vector2 pos = new Vector2();
-                pos.X = Main.rand.Next(0, Main.screenWidth * 2);
-                pos.Y = Main.rand.Next(0, Main.screenHeight);
-                pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-                UnderworldSmokeParticle.Spawn(pos, -Vector2.UnitY * 2 + -Vector2.UnitX, Scale: Main.rand.NextFloat(0.5f, 0.8f));
-            }
-        }
+        CreateFlameNSmokeParticles();
         _outliner.SetDefaults();
+
+        //Animate the wings
+        //The perspective only decides which wing texture to use
+        //We'll set that in the ai states, check the original code
+        _wingsPerspective = WingsPerspective.ThreeQ;
+        _wingAnimationFrame.maxFrame = 60;
+        _wingAnimationFrame.frameSpeed = 2;
+        _wingAnimationFrame.UpdateTick();
         switch (State)
         {
+            case AIState.Spawn:
+                SwitchState(AIState.Idle);
+                break;
             case AIState.Idle:
                 AI_Idle();
                 break;
@@ -430,15 +461,202 @@ public partial class Gothivia : ScarletBoss
 
     private void AI_Idle()
     {
+        _wingsPerspective = WingsPerspective.FourQ;
+        NPC.velocity *= 0.96f;
+        Timer++;
+        if (Timer == 1)
+        {
+            NPC.TargetClosest();
+            Vector2 targetCenter = MyTarget.Center;
+            Vector2 targetHoverCenter = targetCenter + new Vector2(312, 0);
+            NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
+       
+            float hoverSpeed = 5;
+            float yVelocity = VectorHelper.Osc(1, -1, hoverSpeed);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, yVelocity), 0.2f);
+        }
 
+        if (Timer < 50)
+        {
+            NPC.velocity.Y -= 0.08f;
+        }
+
+        if (Timer >= 60)
+        {
+            SwitchState(AIState.Dichotamy);
+            NPC.velocity.Y *= 0;
+        }
     }
+
     private void AI_Dichotamy()
     {
+        NPC.velocity *= 0.96f;
+        Timer++;
+        Player player = Main.player[NPC.target];
+        float ai1 = NPC.whoAmI;
+        if(Timer == 1)
+        {
+            FXUtil.ApplyVignette(2f, timer: 150);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothSummon") { PitchVariance = 0.3f }, NPC.Center);
+            PixelPrimitiveCircleFactory.CreateGenericInBoom(NPC.Center, Color.White, Color.White, 80, 460);
+            if (MultiplayerHelper.IsHost)
+            {
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, 
+                    ModContent.ProjectileType<BlinkingStar>(), NPC.damage, 0f, Main.myPlayer, 0f, ai1);
+            }
+        }
 
+        if (Timer == 80)
+        {
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/DUAL2") { PitchVariance = 0.5f }, NPC.Center);
+            ShakeScreenPosition.Shake = 5;
+            if (MultiplayerHelper.IsHost)
+            {
+                for(int i = 0; i < 2; i++)
+                {
+                    Vector2 offset = Vector2.UnitY * 512;
+                    offset = offset.RotatedBy((float)i / 2f * MathHelper.TwoPi);
+                    Vector2 spawnPoint = NPC.Center + offset;
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), spawnPoint, -offset, ModContent.ProjectileType<BouncingRazorSuns>(), 1, 1, Main.myPlayer, ai2: i);
+                }
+            }
+        }
+
+
+        if (Timer >= 150)
+        {
+            SwitchState(AIState.Archery);
+        }
+    }
+
+    private float _circleDegrees;
+    private float _circleDistance;
+    private float _circleSpeed;
+    private float _movementSpeed;
+    private void BowShot()
+    {
+        PixelPrimitiveCircleFactory.CreateGenericInBoom(NPC.Center, Color.White, Color.White, 80, 460);
+        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { PitchVariance = 0.5f }, NPC.Center);
+        if (MultiplayerHelper.IsHost)
+            return;
+
+
+        Vector2 direction = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 24;
+        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction, 
+            ModContent.ProjectileType<GothinTorch>(), 600, 1, Main.myPlayer, 0, 0);
     }
     private void AI_Archery()
     {
+        Timer++;
+        if(Timer == 1)
+        {
+            NPC.TargetClosest();
+        }
 
+        Vector2 velocity = NPC.Center.DirectionTo(MyTarget.Center) * 10;
+        float ai1 = NPC.whoAmI;
+        if (Timer == 3)
+        {
+            _circleDistance = 270;
+        }
+
+        if (Timer == 80)
+        {
+            _movementSpeed = 12;
+            _circleSpeed = 3;
+        }
+
+        if (Timer == 170)
+        {
+            _movementSpeed = 25;
+
+        }
+
+        if (Timer == 210)
+        {
+            _movementSpeed = 16;
+        }
+
+
+        if (Timer == 240)
+        {
+            _movementSpeed = 12;
+            _circleSpeed = 2;
+
+        }
+
+
+        if (Timer > 50)
+        {
+
+            _circleDegrees += _circleSpeed;
+            float circleRadians = MathHelper.ToRadians(_circleDegrees);
+            Vector2 offsetFromPlayer = new Vector2(_circleDistance, 0).RotatedBy(circleRadians);
+            Vector2 circlePosition = MyTarget.Center + offsetFromPlayer;
+
+            //This is just how quickly the NPC will move to the circle position
+            //This number should be higher than the circle speed
+
+            NPC.velocity = VectorHelper.VelocitySlowdownTo(NPC.Center, circlePosition, _movementSpeed);
+
+        }
+
+        if (Timer < 80 && Timer > 134)
+        {
+
+            _circleDegrees += _circleSpeed;
+            float circleRadians = MathHelper.ToRadians(_circleDegrees);
+            Vector2 offsetFromPlayer = new Vector2(_circleDistance, 0).RotatedBy(circleRadians);
+            Vector2 circlePosition = MyTarget.Center + offsetFromPlayer;
+
+            //This is just how quickly the NPC will move to the circle position
+            //This number should be higher than the circle speed
+
+            NPC.velocity = VectorHelper.VelocitySlowdownTo(NPC.Center, circlePosition, _movementSpeed);
+
+        }
+
+        if (Timer < 164 && Timer > 224)
+        {
+
+            _circleDegrees += _circleSpeed;
+            float circleRadians = MathHelper.ToRadians(_circleDegrees);
+            Vector2 offsetFromPlayer = new Vector2(_circleDistance, 0).RotatedBy(circleRadians);
+            Vector2 circlePosition = MyTarget.Center + offsetFromPlayer;
+
+            //This is just how quickly the NPC will move to the circle position
+            //This number should be higher than the circle speed
+
+            NPC.velocity = VectorHelper.VelocitySlowdownTo(NPC.Center, circlePosition, _movementSpeed);
+        }
+
+        NPC.velocity *= 0.96f;
+        if (Timer == 60)
+        {
+            BowShot();
+        }
+
+        if (Timer == 154)
+        {
+            BowShot();
+        }
+
+        if (Timer == 248)
+        {
+            BowShot();
+        }
+
+
+        if (Timer >= 282)
+        {
+            Timer = 0;
+            AttackCounter++;
+            if(AttackCounter >= 3)
+            {
+                //For now, we gotta make the discs first
+                SwitchState(AIState.Idle);
+            }
+        }
     }
 
     public override void HitEffect(NPC.HitInfo hit)

@@ -11,6 +11,13 @@ namespace Stellamod.Helpers;
 
 public static class FXUtil
 {
+    public static void ApplyVignette(float strength, float opacity = 1, float timer = -1)
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+        shaderSystem.VignetteScreen(strength, opacity, timer);
+    }
     public static void CreateRipple(Vector2 position)
     {
         if (Main.netMode == NetmodeID.Server)
