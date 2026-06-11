@@ -32,18 +32,24 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
     float2 coords = input.TextureCoordinates;
     coords += float2(time * -0.05, 0.0);
+    //coords.y *= 1.5;
     coords = frac(coords);
     
     //Applying the same thing here, only going to draw above a threshold and have it scale with the  x coordinate
     //This should create a cool dissipation effect with the right trail and get it looking fire-y, and also just be really good in general
     float4 laserColor = tex2D(laserSampler, coords);
-    float threshold = coords.x;
-    float d = laserColor.r < threshold;
-   
+    float threshold = (input.TextureCoordinates.x);
+    float d = laserColor.r > smoothstep(0.0, 1.0, threshold);
+ //   d = 1.0;
+    d *= laserColor.a;
+    
     //Here we're applying a bit of extra bloom based on the y coordinate distance from the center
     laserColor.rgb *= lerp(insideColor, bloomColor, (abs(input.TextureCoordinates.y - 0.5) / 0.5));
     laserColor *= d;
+    laserColor *= 2.5;
+    laserColor += lerp(1.2, 0.0, input.TextureCoordinates.x) * laserColor.r;
     laserColor *= input.Color;
+ 
     return laserColor;
 }
 

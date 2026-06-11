@@ -29,6 +29,7 @@ public partial class Gothivia :
     }
 
 
+    private const string Anim_Dive = "Dive";
     private const string Anim_Floating = "Floating";
     private const string Anim_Arrowhold = "ArrowHold";
     private const string Anim_Arrowshot = "Arrowshot";
@@ -64,6 +65,11 @@ public partial class Gothivia :
 
         var aura = new SpriteAnimation(0, 7, isLooping: true, drawOriginOverride: animationDrawOrigin);
         _animator.AddAnimation(Anim_Aurafarming, aura);
+
+        var dive = new SpriteAnimation(0, 0, isLooping: true, drawOriginOverride: animationDrawOrigin);
+        _animator.AddAnimation(Anim_Dive, dive);
+
+        _animator.PlayAnimation(Anim_Floating);
     }
 
     public override void FindFrame(int frameHeight)
@@ -99,18 +105,81 @@ public partial class Gothivia :
         }
     }
 
+    private void DrawAuraTrail(GraphicsDevice gDevice)
+    {
+        float GetTrailWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(128, 128, ratio) * _figure8TrailAlpha;
+        }
+        Color GetTrailColor(float ratio)
+        {
+            return Color.Lerp(Color.Lerp(Color.White, Color.Red, ratio), Color.Lerp(Color.Orange, Color.Lerp(Color.Red, Color.Transparent, ratio), ratio), ratio) * MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(ratio))* _figure8TrailAlpha;
+        }
+        Color GetTrailColor2(float ratio)
+        {
+            return Color.Lerp(Color.Lerp(Color.White, Color.Red, ratio), Color.Lerp(Color.Orange, Color.Lerp(Color.Red, Color.Transparent, ratio), ratio), ratio) * MathHelper.Lerp(0f, 1f, EasingFunction.QuadraticBump(ratio)) * _figure8TrailAlpha * 0.5f;
+        }
+        BasicLaserShader auraShader = ShaderContent.GetInstance<BasicLaserShader>();
+        auraShader.LaserTexture = AssetManager.LaserTextures.Aura;
+        auraShader.InnerColor = Color.White;
+        auraShader.OuterColor = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f, speed: 16));
+        TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, GetTrailColor, GetTrailWidth, auraShader, NPC.Size * 0.5f);
+
+        auraShader.InnerColor = Color.Yellow;
+        auraShader.LaserTexture = AssetManager.LaserTextures.Bloom;
+        TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, GetTrailColor2, GetTrailWidth, auraShader, NPC.Size * 0.5f);
+    }
+    private void DrawFlamingFigure8Trail(GraphicsDevice gDevice)
+    {
+        float GetTrailWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(96, 96, ratio) * _figure8TrailAlpha;
+        }
+        Color GetTrailColor(float ratio)
+        {
+            return Color.Lerp(Color.Lerp(Color.White, Color.Yellow, EasingFunction.OutQuad(ratio)), Color.Lerp(Color.Orange, Color.Lerp(Color.Red, Color.Transparent, ratio), EasingFunction.OutQuad(ratio)), EasingFunction.OutExpo(ratio)) * _figure8TrailAlpha;
+        }
+
+        GothinFlameTrailShader flameTrailShader = ShaderContent.GetInstance<GothinFlameTrailShader>();
+        flameTrailShader.InsideColor = Color.Lerp(Color.White, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 12));
+        flameTrailShader.BloomColor = Color.Red;
+        flameTrailShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+        flameTrailShader.LaserTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SmooothTrail").Value;
+        flameTrailShader.Time = Main.GlobalTimeWrappedHourly * 24;
+        TrailDrawer.Draw(NPC.oldPos, GetTrailColor, GetTrailWidth, flameTrailShader, NPC.Size * 0.5f);
+    }
+
     private void DrawTelegraphLine(SpriteBatch spriteBatch)
     {
+
         Asset<Texture2D> bloomLineTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/BloomLine");
-        SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(bloomLineTextureAsset, NPC.Center);
-        lineDrawer.rotation = _aimingVelocity.ToRotation() - MathHelper.PiOver2;
-        lineDrawer.color = Color.White * _telegraphLineAlpha * ExtraMath.Osc(0.4f, 1f, speed: 32) ;
-        lineDrawer.color.A = 0;
-        lineDrawer.TopCenterOrigin();
-        lineDrawer.scale.Y *= 4;
-        lineDrawer.scale.X *= 0.4f;
-        spriteBatch.Draw(lineDrawer);
+        void DrawLineInner(Vector2 direction)
+        {
+            SpritebatchDrawer lineDrawer = SpritebatchDrawer.FromTextureAsset(bloomLineTextureAsset, NPC.Center);
+            lineDrawer.rotation = direction.ToRotation() - MathHelper.PiOver2;
+            lineDrawer.color = Color.White * _telegraphLineAlpha * ExtraMath.Osc(0.4f, 1f, speed: 32);
+            lineDrawer.color.A = 0;
+            lineDrawer.TopCenterOrigin();
+            lineDrawer.scale.Y *= 4;
+            lineDrawer.scale.X *= 0.4f;
+
+            spriteBatch.Draw(lineDrawer);
+        }
+
+        if (_numDirections == 0)
+            DrawLineInner(_aimingVelocity);
+        else
+        {
+            for(float f = 0; f < _numDirections; f++)
+            {
+                float rot = (float)f / (float)_numDirections;
+                rot *= MathHelper.TwoPi;
+                Vector2 offset = rot.ToRotationVector2();
+                DrawLineInner(offset);
+            }
+        }
     }
+
 
     private void DrawBow(SpriteBatch spriteBatch)
     {
@@ -150,18 +219,33 @@ public partial class Gothivia :
         wingDrawer.sourceRect = srcRec;
         wingDrawer.scale *= 2;
         wingDrawer.CenterOrigin();
+        wingDrawer.rotation = NPC.rotation;
         spriteBatch.Draw(wingDrawer);
     }
 
+
     private void DrawSprite(SpriteBatch spriteBatch)
     {
+
         string texture = Texture + "_" + Animator.GetAnimation();
         Asset<Texture2D> textureAsset = ModContent.Request<Texture2D>(texture);
         SpritebatchDrawer npcDrawer = SpritebatchDrawer.FromNPC(NPC);
         npcDrawer.texture = textureAsset.Value;
         if (npcDrawer.spriteEffects == SpriteEffects.FlipHorizontally)
             npcDrawer.drawOrigin.X = npcDrawer.sourceRect!.Value.Width - npcDrawer.drawOrigin.X;
-        spriteBatch.Draw(npcDrawer);
+        SpritebatchDrawer realDrawer = npcDrawer;
+        if (_afterImageAlpha > 0.05f)
+        {
+            for (int i = 0; i < NPC.oldPos.Length; i++)
+            {
+                Vector2 pos = NPC.oldPos[i] + NPC.Size * 0.5f;
+                npcDrawer.color = Color.Lerp(Color.White, Color.Transparent, (float)i / (float)NPC.oldPos.Length) * _afterImageAlpha * 0.5f;
+                npcDrawer.worldPosition = pos;
+                spriteBatch.Draw(npcDrawer);
+            }
+        }
+
+        spriteBatch.Draw(realDrawer);
     }
     private void DrawOutline(SpriteBatch spriteBatch)
     {
@@ -181,11 +265,17 @@ public partial class Gothivia :
         wingDrawer.scale *= 2;
         wingDrawer.color = _outliner.outlineColor;
         wingDrawer.CenterOrigin();
+        wingDrawer.rotation = NPC.rotation;
         spriteBatch.Draw(wingDrawer);
     }
 
     public void DrawToRenderTargets()
     {
         OutlineRenderer.Queue(DrawOutline);
+        if (_figure8TrailAlpha < 0.05f)
+            return;
+
+        PixelationManager.QueuePrimitivesDrawAction(DrawAuraTrail, DrawLayer.OverNPCs);
+        PixelationManager.QueuePrimitivesDrawAction(DrawFlamingFigure8Trail, DrawLayer.BehindNPCsWithOutline);
     }
 }
