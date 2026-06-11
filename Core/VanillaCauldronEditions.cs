@@ -108,6 +108,11 @@ public class VanillaCauldronEditions : ModSystem
         Cauldron.VanillaBrew(result: ItemID.MothronWings);
         Cauldron.VanillaBrew(result: ItemID.BoneWings);
 
+        Cauldron.SetMaterial(ModContent.ItemType<MothlightWing>());
+        Cauldron.VanillaBrew(result: ItemID.RodofDiscord);
+
+
+
         Cauldron.SetMaterial(ModContent.ItemType<MusicalHarmonise>());
         Cauldron.VanillaBrew(result: ItemID.AmphibianBoots);
         Cauldron.VanillaBrew(result: ItemID.FrogLeg);
