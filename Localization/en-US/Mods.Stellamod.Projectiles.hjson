@@ -1157,6 +1157,7 @@ VoidBlasterSpawnEffect.DisplayName: Void Blaster Spawn Effect
 FigureEightTestProj.DisplayName: Figure Eight Test Proj
 KickboomSun.DisplayName: Kickboom Sun
 KickboomBurn.DisplayName: Kickboom Burn
+Kickboom.DisplayName: Kickboom
 GothBlastExplosionProj2.DisplayName: Goth Blast Explosion Proj2
 GothBlastExplosionProj.DisplayName: Goth Blast Explosion Proj
 SmallCircleExplosionProj.DisplayName: Small Circle Explosion Proj
@@ -1927,3 +1928,62 @@ SparklePowder.DisplayName: Sparkle Powder
 SparkleStarSwing.DisplayName: Sparkle Star Swing
 BunnyStormBunny.DisplayName: Bunny Storm Bunny
 HangingBallNChain.DisplayName: Hanging Ball N Chain
+IrradiaspearBoom.DisplayName: Irradiaspear Boom
+IrradiaspearSlash.DisplayName: Irradiaspear Slash
+GhetsisBubble.DisplayName: Ghetsis Bubble
+GhetsisKeybladeSlash.DisplayName: Ghetsis Keyblade Slash
+GhetsisKeybladeStaminaSlash.DisplayName: Ghetsis Keyblade Stamina Slash
+GhetsisSpearFlamethrower.DisplayName: Ghetsis Spear Flamethrower
+GhetsisSpearIncinerator.DisplayName: Ghetsis Spear Incinerator
+GhetsisSpearSlash.DisplayName: Ghetsis Spear Slash
+HammerofGhetsisSlash.DisplayName: Hammerof Ghetsis Slash
+HammerofGhetsisThrow.DisplayName: Hammerof Ghetsis Throw
+RuneSmasherCharge.DisplayName: Rune Smasher Charge
+RuneSmasherLightning.DisplayName: Rune Smasher Lightning
+RuneSmasherSwing.DisplayName: Rune Smasher Swing
+SwingalingCharge.DisplayName: Swingaling Charge
+SwingalingSlash.DisplayName: Swingaling Slash
+SwordoftheFliesSlash.DisplayName: Swordofthe Flies Slash
+SwordofTheFliesStorm.DisplayName: Swordof The Flies Storm
+SwordoftheFliesSuperSword.DisplayName: Swordofthe Flies Super Sword
+TulahalSlash.DisplayName: Tulahal Slash
+TulahalThrow.DisplayName: Tulahal Throw
+CrystalPointerSlash.DisplayName: Crystal Pointer Slash
+SwingalingBlast.DisplayName: Swingaling Blast
+RuneSmasherSword.DisplayName: Rune Smasher Sword
+DashLine.DisplayName: Dash Line
+RoyalMagicDashTrail.DisplayName: Royal Magic Dash Trail
+RoyalMagicMiniStar.DisplayName: Royal Magic Mini Star
+RoyalMagicComet.DisplayName: Royal Magic Comet
+RoyalMagicStarryDashTrail.DisplayName: Royal Magic Starry Dash Trail
+RoyalMagicBeam.DisplayName: Royal Magic Beam
+RoyalStarBomb.DisplayName: Royal Star Bomb
+RoyalStarBombBoom.DisplayName: Royal Star Bomb Boom
+StarBombLaserShockwave.DisplayName: Star Bomb Laser Shockwave
+MagicFallingStar.DisplayName: Magic Falling Star
+CoolTeleport.DisplayName: Cool Teleport
+SpiralComet.DisplayName: Spiral Comet
+SpiralDashTrail.DisplayName: Spiral Dash Trail
+MagicSwordSlash.DisplayName: Magic Sword Slash
+RoyalMagicMiniStarBoom.DisplayName: Royal Magic Mini Star Boom
+FenixSaw.DisplayName: Fenix Saw
+GoldenScarab.DisplayName: Golden Scarab
+ScrollMagicCircle.DisplayName: Scroll Magic Circle
+SimpleSpikeball.DisplayName: Simple Spikeball
+SimpleWhiteHomingBolt.DisplayName: Simple White Homing Bolt
+EnragingFlames.DisplayName: Enraging Flames
+SimpleFireball.DisplayName: Simple Fireball
+SimpleMeteor.DisplayName: Simple Meteor
+SimpleMeteorBoom.DisplayName: Simple Meteor Boom
+ChainHitscan.DisplayName: Chain Hitscan
+PerfectChain.DisplayName: Perfect Chain
+PerfectEruption.DisplayName: Perfect Eruption
+PerfectLaser.DisplayName: Perfect Laser
+PerfectMeteor.DisplayName: Perfect Meteor
+PerfectMeteorBoom.DisplayName: Perfect Meteor Boom
+FliesSuperBoom.DisplayName: Flies Super Boom
+BouncingRazorSuns.DisplayName: Bouncing Razor Suns
+GothinTorch.DisplayName: Gothin Torch
+RedSun.DisplayName: Red Sun
+RazorFireBoom.DisplayName: Razor Fire Boom
+RazorWingDash.DisplayName: Razor Wing Dash

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia.Projectiles;
 using Stellamod.Content.Gores;
 using Stellamod.Core;
 using Stellamod.Core.Camera;

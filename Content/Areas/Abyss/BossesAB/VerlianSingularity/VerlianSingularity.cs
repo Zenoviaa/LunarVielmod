@@ -256,6 +256,7 @@ namespace Stellamod.Content.Areas.Abyss.BossesAB.VerlianSingularity
 
         public override void SetDefaults()
         {
+            base.SetDefaults();
             _chargeColor = Color.White;
             NPC.width = 128;
             NPC.height = 128;

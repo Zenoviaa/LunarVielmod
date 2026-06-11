@@ -138,7 +138,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             NPC.height = 64;
             NPC.damage = 100;
             NPC.defense = 19;
-            NPC.lifeMax = 23000;
+            NPC.lifeMax = 26000;
 
             NPC.value = Item.buyPrice(gold: 5);
             NPC.knockBackResist = 0f;

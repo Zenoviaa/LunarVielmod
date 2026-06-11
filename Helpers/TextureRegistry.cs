@@ -21,17 +21,14 @@ namespace Stellamod.Helpers
         public static string CircleOutline => "Stellamod/Assets/NoiseTextures/Extra_67";
         public static string NormalNoise1 => "Stellamod/Assets/NoiseTextures/NormalNoise1";
         public static string ZuiEffect => "Stellamod/Assets/NoiseTextures/ZuiEffect";
-        public static string VoxTexture3 => "Stellamod/Assets/Effects/VoxTexture3";
-
-        public static string VoxTexture4 => "Stellamod/Assets/Effects/VoxTexture5";
-
-        public static string BoreParticleWhite => "Stellamod/Particles/BoreParticleWhite";
         public static Asset<Texture2D> GlowSword_LightKnives => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_LightKnives");
         public static Asset<Texture2D> GlowSword_Chillrend => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Chillrend");
         public static Asset<Texture2D> GlowSword_Sword => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Sword");
         public static Asset<Texture2D> GlowSword_Spear => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Spear");
         public static Asset<Texture2D> GlowSword_Scythe => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Scythe");
         public static Asset<Texture2D> GlowSword_Scythe2 => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Scythe2");
+        public static Asset<Texture2D> GlowSword_Irradiaspear => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Irradiaspear");
+        public static Asset<Texture2D> GlowSword_TulaSword => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_TulaSword");
         public static Asset<Texture2D> DimLight => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight");
         public static Asset<Texture2D> Clouds6 => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/Clouds6");
         public static Asset<Texture2D> BasicGlow => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BasicGlow");

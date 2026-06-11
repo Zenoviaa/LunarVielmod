@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Stellamod.Core.Utilities;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
@@ -9,13 +10,31 @@ namespace Stellamod.Assets
     {
         public class Noise
         {
+            public static LazyAsset<Texture2D> InvertedVoronoi;
+            public static LazyAsset<Texture2D> FlameVortexNoise;
+            public static LazyAsset<Texture2D> FrontClouds;
+            public static Asset<Texture2D> CloudsMask;
+            public static Asset<Texture2D> Clouds;
+            public static Asset<Texture2D> PainterlyNoise;
+            public static Asset<Texture2D> CometStars;
             public static Asset<Texture2D> AuroraRays;
             public static Asset<Texture2D> Whirly;
             public static Asset<Texture2D> FlamethrowerNoise;
+            public static Asset<Texture2D> Swirl;
+            public static Asset<Texture2D> PerlinBlurred;
+            public static void Load(ref Asset<Texture2D> asset, string path)
+            {
+                asset = ModContent.Request<Texture2D>($"Stellamod/Assets/Noise/{path}");
+            }
         }
 
         public class GlowMask
         {
+            public static LazyAsset<Texture2D> JumbledGlowCircle;
+            public static LazyAsset<Texture2D> SwordSlashForward;
+            public static Asset<Texture2D> SwordSlash;
+            public static Asset<Texture2D> Impact;
+            public static Asset<Texture2D> WhiteCircle;
             public static Asset<Texture2D> Wave;
             public static Asset<Texture2D> BlastPillar;
             public static Asset<Texture2D> SolarEye;
@@ -51,6 +70,8 @@ namespace Stellamod.Assets
  
         public class LaserTextures
         {
+            public static Asset<Texture2D> Aura;
+            public static Asset<Texture2D> CometTrail;
             public static Asset<Texture2D> SplittingTrail;
             public static Asset<Texture2D> Bloom;
             public static Asset<Texture2D> HeavenlySlashTrail;
@@ -69,6 +90,18 @@ namespace Stellamod.Assets
         public override void OnModLoad()
         {
             base.OnModLoad();
+            GlowMask.JumbledGlowCircle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/JumbledGlowCircle");
+            Noise.InvertedVoronoi = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/InvertedVoronoi");
+            Noise.FlameVortexNoise = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/FlameVortexNoise");
+            GlowMask.SwordSlashForward = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/SwordSlashForward");
+            Noise.FrontClouds = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/FrontClouds");
+
+            Noise.Clouds = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Clouds");
+            Noise.CloudsMask = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/CloudsMask");
+            Noise.PainterlyNoise = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/PainterlyNoise");
+
+            GlowMask.SwordSlash = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/SwordSlash");
+            GlowMask.Impact = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Impact");
             GlowMask.Wave = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/Wave");
             GlowMask.BlastPillar = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/BlastPillar");
             GlowMask.SolarEye = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/SolarEye");
@@ -100,6 +133,7 @@ namespace Stellamod.Assets
             GlowMask.AuroraBackGradient = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/AuroraBackGradient");
             GlowMask.ShootingStarGlint = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/ShootingStarGlint");
             GlowMask.ShootingStarTrail = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/ShootingStarParticle");
+            GlowMask.WhiteCircle = ModContent.Request<Texture2D>("Stellamod/Assets/GlowMasks/WhiteCircle");
             LaserTextures.TexturedLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser");
             LaserTextures.TexturedLaser2 = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/TexturedLaser2");
             LaserTextures.SnowflakeLaser = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/SnowflakeLaser");
@@ -109,14 +143,35 @@ namespace Stellamod.Assets
             LaserTextures.HeavenlySlashTrail = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/HeavenlySlashTrail");
             LaserTextures.Bloom = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Bloom");
             LaserTextures.SplittingTrail = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/SplittingTrail");
+            LaserTextures.CometTrail = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/CometTrail");
+            LaserTextures.Aura = ModContent.Request<Texture2D>("Stellamod/Assets/LaserTextures/Aura");
             Noise.Whirly = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Whirly");
-
+            Noise.CometStars = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/CometStars");
             Noise.AuroraRays = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/AuroraRays");
             Noise.FlamethrowerNoise = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/FlameNoise");
+            Noise.Swirl = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/Swirl");
+            Noise.PerlinBlurred = ModContent.Request<Texture2D>("Stellamod/Assets/Noise/PerlinBlurred");
+            //  Noise.Load(ref Noise.PerlinBlurred, "PerlinBlurred");
         }
         public override void OnModUnload()
         {
             base.OnModUnload();
+            GlowMask.JumbledGlowCircle?.Unload();
+            Noise.InvertedVoronoi?.Unload();
+            Noise.FlameVortexNoise?.Unload();
+            GlowMask.SwordSlashForward?.Unload();
+            Noise.FrontClouds?.Unload();
+            Noise.Clouds = null;
+            Noise.CloudsMask = null;
+            Noise.PainterlyNoise = null;
+            GlowMask.SwordSlash = null;
+            LaserTextures.Aura = null;
+            Noise.CometStars = null;
+            LaserTextures.CometTrail = null;
+            GlowMask.Impact = null;
+            GlowMask.WhiteCircle = null;
+           Noise.PerlinBlurred = null;
+            Noise.Swirl = null;
             GlowMask.Wave = null;
             GlowMask.BlastPillar = null;
             GlowMask.SolarEye = null;

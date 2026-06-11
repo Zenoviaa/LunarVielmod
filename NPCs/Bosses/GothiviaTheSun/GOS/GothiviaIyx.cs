@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia.Projectiles;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
@@ -2391,44 +2392,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.GOS
             if (MultiplayerHelper.IsHost)
             {
                 NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<GothiviaDeath>());
-            }
-        }
-
-    }
-
-
-    public class GothiviaSkyPlayer : ModPlayer
-    {
-        public override void PostUpdateMiscEffects()
-        {
-            if (Main.netMode == NetmodeID.Server)
-                return;
-            if (NPC.AnyNPCs(ModContent.NPCType<GothiviaIyx>()))
-            {
-                ActivateGothSky();
-
-            }
-            else
-            {
-                DeActivateGothSky();
-            }
-        }
-
-        private void ActivateGothSky()
-        {
-            if (!SkyManager.Instance["Stellamod:NaxtrinSky2"].IsActive())
-            {
-                Vector2 targetCenter = Player.Center;
-                SkyManager.Instance.Activate("Stellamod:NaxtrinSky2", targetCenter);
-            }
-        }
-
-        private void DeActivateGothSky()
-        {
-            if (SkyManager.Instance["Stellamod:NaxtrinSky2"].IsActive())
-            {
-                Vector2 targetCenter = Player.Center;
-                SkyManager.Instance.Deactivate("Stellamod:NaxtrinSky2", targetCenter);
             }
         }
     }

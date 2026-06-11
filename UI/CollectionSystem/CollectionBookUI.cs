@@ -14,6 +14,7 @@ public class CollectionBookUI : UIPanel
     public QuestTab questTab;
     public LoreTab loreTab;
     public CollectionTab collectionTab;
+    public LevelingTab levelingTab;
 
     public int RelativeLeft => Main.screenWidth / 2 - width / 2;
     public int RelativeTop => Main.screenHeight / 2 - height / 2 + 128;
@@ -46,6 +47,11 @@ public class CollectionBookUI : UIPanel
         collectionTab.Left.Pixels = loreTab.Left.Pixels + o;
         collectionTab.Top.Pixels = loreTab.Top.Pixels;
         Append(collectionTab);
+
+        levelingTab = new LevelingTab();
+        levelingTab.Left.Pixels = collectionTab.Left.Pixels + o;
+        levelingTab.Top.Pixels = collectionTab.Top.Pixels;
+        Append(levelingTab);
     }
 
     public override void Update(GameTime gameTime)
@@ -64,6 +70,9 @@ public class CollectionBookUI : UIPanel
 
         collectionTab.Left.Pixels = loreTab.Left.Pixels + o;
         collectionTab.Top.Pixels = loreTab.Top.Pixels;
+
+        levelingTab.Left.Pixels = collectionTab.Left.Pixels + o;
+        levelingTab.Top.Pixels = collectionTab.Top.Pixels;
     }
 
     protected override void DrawSelf(SpriteBatch spriteBatch)

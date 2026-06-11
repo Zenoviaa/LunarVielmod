@@ -273,7 +273,7 @@ public class SanctorousBody : ModItem
     {
         var stats = player.GetStats();
         stats.defenseBonus += 20;
-        stats.stamina += 3;
+        stats.stamina += 1;
         stats.accessorySlots += 2;
     }
 }
@@ -295,6 +295,6 @@ public class SanctorousLegs : ModItem
         stats.insourceSlots += 5;
         stats.inventorySlots += 20;
         stats.defenseBonus += 16;
-        stats.accessorySlots += 2;
+        stats.accessorySlots += 1;
     }
 }

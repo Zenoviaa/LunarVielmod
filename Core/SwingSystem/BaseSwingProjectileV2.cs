@@ -40,6 +40,9 @@ public struct Bloom
 public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     ISwingProjectile
 {
+    public static int SwingTrailCacheLength => 128;
+    public static int AfterImageCacheLength => 16;
+
     private bool _hasInitializedRendering;
     private bool _hasInitialized;
     private bool _canHurtThings;
@@ -85,6 +88,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     public float swordRotation;
     public bool useBloom;
     public Bloom bloom;
+    public float trailVisibilityOffset;
 
     public float bloomScale;
     public const int EXTRA_UPDATE_COUNT = 7;
@@ -111,6 +115,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         Projectile.usesLocalNPCImmunity = true;
         Projectile.localNPCHitCooldown = -1;
         Projectile.DamageType = DamageClass.Melee;
+        trailVisibilityOffset = 0.3f;
 
         //We're using extra updates to ensure the sword doesn't just pass through things
         Projectile.extraUpdates = EXTRA_UPDATE_COUNT - 1;
@@ -169,6 +174,8 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             ArrayPool<float>.Shared.Return(oldTime);
         }
     }
+
+  
     private void AI_Initialize()
     {
         if (!_hasInitialized)
@@ -176,8 +183,8 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             _swings = new List<ISwing>();
 
             //Rent arrays so we're not constantly allocating new ones
-            int cacheLength = 128;
-            int afterImageCacheLength = 16;
+            int cacheLength = SwingTrailCacheLength;
+            int afterImageCacheLength = AfterImageCacheLength;
             swingTrailCache = ArrayPool<Vector2>.Shared.Rent(cacheLength);
             bigSwingTrailCache = ArrayPool<Vector2>.Shared.Rent(cacheLength);
             afterImageCache = ArrayPool<Vector2>.Shared.Rent(afterImageCacheLength);
@@ -192,7 +199,6 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             {
                 float duration = swing.GetDuration(1f / Owner.GetTotalAttackSpeed(Projectile.DamageType)) / hitCount;
                 duration *= EXTRA_UPDATE_COUNT - 1;
-
                 Projectile.localNPCHitCooldown = (int)duration;
             }
             Projectile.ResetLocalNPCHitImmunity();
@@ -253,7 +259,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
     public override void AI()
     {
         base.AI();
-
+        
 
         //We want to initalize like this for better MP compatibility, using a timer might not always be seen on all clients
         AI_Initialize();
@@ -668,21 +674,6 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
         }
 
-        //gonna try something
-        /*
-        Texture2D glowSlashTexture = ModContent.Request<Texture2D>("Stellamod/Visual/Particles/CrescentSlashParticle").Value;
-        Vector2 drawOrigin = glowSlashTexture.Size() * 0.5f;
-        Color glowingColor = Color.LightSkyBlue;
-        glowingColor *= 0.5f;
-        glowingColor *= EasingFunction.QuadraticBump(Interpolant);
-        glowingColor.A = 0;
-        float rotation = rotation - MathHelper.PiOver2;
-
-        Vector2 center = Vector2.Lerp(Projectile.Center, Owner.Center, 0.5f);
-        Vector2 slashPosition = center - Main.screenPosition;
- 
-        spriteBatch.Draw(glowSlashTexture, slashPosition, null, glowingColor, rotation, drawOrigin, Projectile.scale * 0.75f, SpriteEffects.None, 0);
-        */
     }
 
     public virtual void PostDrawSword(Vector2 position, Rectangle srcRect, Color drawColor, float rotation, Vector2 origin, Vector2 drawScale, SpriteEffects spriteEffect, float layerDepth)
@@ -697,6 +688,13 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
         SwordBeamShader swordBeamShader = SwordBeamShader.Instance;
         swordBeamShader.InnerColor = outlineColor;
         swordBeamShader.OuterColor = glowAfterImageColor;
+
+        SpriteEffects spriteEffects = SpriteEffects.None;
+        if (SwingDirection == 1)
+        {
+            spriteEffects = SpriteEffects.FlipHorizontally;
+        }
+
 
         Texture2D texture = RequestHologramTexture().Value;
         Vector2 offset = (Projectile.rotation + MathHelper.ToRadians(-45)).ToRotationVector2() * swordBeamLength / 2;
@@ -727,7 +725,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
             position += offset2;
             spriteBatch.Draw(texture,
               position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-                null, drawColor2, drawRotation + rotationOffset, origin, drawScale, SpriteEffects.None, 0); // drawing the sword itself
+                null, drawColor2, drawRotation + rotationOffset, origin, drawScale, spriteEffects, 0); // drawing the sword itself
         }
 
 
@@ -735,7 +733,7 @@ public abstract class BaseSwingProjectileV2 : ScarletProjectile,
 
         spriteBatch.Draw(texture,
            drawPos,
-              null, drawColor, Projectile.rotation + rotationOffset, origin, drawScale, SpriteEffects.None, 0);
+              null, drawColor, Projectile.rotation + rotationOffset, origin, drawScale, spriteEffects, 0);
 
         spriteBatch.RestartDefaults();
     }

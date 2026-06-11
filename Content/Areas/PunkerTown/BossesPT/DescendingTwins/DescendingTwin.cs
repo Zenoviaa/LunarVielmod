@@ -175,7 +175,7 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.DescendingTwins
             NPC.height = 64;
             NPC.damage = 100;
             NPC.defense = 20;
-            NPC.lifeMax = 23000;
+            NPC.lifeMax = 26000;
             NPC.scale = 1f;
             NPC.aiStyle = -1;
 

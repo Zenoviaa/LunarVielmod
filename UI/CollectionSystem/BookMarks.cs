@@ -77,6 +77,16 @@ namespace Stellamod.UI.CollectionSystem
     }
 
 
+
+    public class LevelingTab : BaseBookMark
+    {
+        public LevelingTab() : base() { }
+        public override string TextureAsset => "LevelingTab";
+        protected override void Trigger(CollectionBookUISystem uiSystem)
+        {
+            uiSystem.OpenLevelingTabUI();
+        }
+    }
     //Doing it this way to save copy and pasting
     public class CollectionTab : BaseBookMark
     {

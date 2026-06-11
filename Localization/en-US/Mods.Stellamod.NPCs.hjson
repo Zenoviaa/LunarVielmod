@@ -1177,6 +1177,7 @@ NiiviCrystalLightning.DisplayName: Niivi Crystal Lightning
 NiiviCrystalFrost.DisplayName: Niivi Crystal Frost
 NiiviRoaming.DisplayName: Niivi Roaming
 GothiviaDeath.DisplayName: Gothivia Death
+Gothivia.DisplayName: Gothivia
 
 EreshkigalIdle: {
 	DisplayName: Ereshkigal Idle
@@ -1361,3 +1362,4 @@ VerliaIdle.DisplayName: Verlia Idle
 VerliaPrison.DisplayName: Verlia Prison
 BunnyStorm.DisplayName: Bunny Storm
 BulbFly.DisplayName: Bulb Fly
+PerfectSingularity.DisplayName: Perfect Singularity

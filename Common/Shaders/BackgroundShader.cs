@@ -3,6 +3,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Stellamod.Common.Shaders
 {
+    public class MagicBandShader : CrystalShader<MagicBandShader>
+    {
+        public float Time
+        {
+            set
+            {
+                Effect.Parameters["time"].SetValue(value);
+            }
+        }
+    }
     public class MaskedBackgroundParallaxShader : BaseShader
     {
         private EffectParameter _parallaxParam;

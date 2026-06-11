@@ -21,7 +21,7 @@ namespace Stellamod.Content.Areas.Jungle.WeaponsRadiant
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.damage = 108;
+            Item.damage = 216;
             Item.width = 94;
             Item.height = 36;
             Item.useStyle = ItemUseStyleID.Shoot;

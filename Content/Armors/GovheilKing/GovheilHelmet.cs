@@ -84,7 +84,7 @@ public class GovheilKingPlayer : ModPlayer
 
 
         _crownTextureAsset ??= ModContent.Request<Texture2D>(this.GetTypeDirectoryWithSlash() + "GovheilCrown");
-        Vector2 drawCenter = drawInfo.drawPlayer.Center + new Vector2(0, -64) + Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 4, ExtraMath.Osc(0f, 1f));
+        Vector2 drawCenter = drawInfo.drawPlayer.Center + new Vector2(0, -42) + Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 4, ExtraMath.Osc(0f, 1f));
         Texture2D texture = _crownTextureAsset.Value;
         SpritebatchDrawer swordDrawer = SpritebatchDrawer.FromTextureAsset(texture, drawCenter);
         Main.spriteBatch.Draw(swordDrawer);

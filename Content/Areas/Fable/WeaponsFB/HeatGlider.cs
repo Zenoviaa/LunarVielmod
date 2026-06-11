@@ -56,7 +56,7 @@ namespace Stellamod.Content.Areas.Fable.WeaponsFB
             Projectile.light = 0.5f; // How much light emit around the projectile
             Projectile.penetrate = -1;
             Projectile.extraUpdates = 1;
-            AIType = ProjAIStyleID.Arrow;
+            AIType =1;
             Projectile.timeLeft = 300;
         }
 

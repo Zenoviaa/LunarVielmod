@@ -5,6 +5,7 @@ using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Content.Areas.Fable.WeaponsFB;
 using Stellamod.Content.Special.DeadRomancesExcalibur;
 using Stellamod.Core;
+using Stellamod.Core.PlayerLevelingSystem;
 using Stellamod.Core.RibbonSystem;
 using Stellamod.Core.Utilities;
 using Stellamod.Core.ZTileSystem;
@@ -147,6 +148,19 @@ namespace Stellamod
                         {
                             // Forward the changes to the other clients
                             dashPlayer.SyncPlayer(-1, whoAmI, false);
+                        }
+                    }
+                    break;
+                case MessageType.LevelingPlayerSync:
+                    {
+                        byte playernumber = reader.ReadByte();
+                        LevelingPlayer levelingPlayer = Main.player[playernumber].GetModPlayer<LevelingPlayer>();
+                        levelingPlayer.ReceivePlayerSync(reader);
+
+                        if (Main.netMode == NetmodeID.Server)
+                        {
+                            // Forward the changes to the other clients
+                            levelingPlayer.SyncPlayer(-1, whoAmI, false);
                         }
                     }
                     break;

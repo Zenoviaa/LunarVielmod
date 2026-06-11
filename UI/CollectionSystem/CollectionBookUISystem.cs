@@ -26,7 +26,8 @@ namespace Stellamod.UI.CollectionSystem
         public CollectionItemTabUIState collectionItemTabUI;
         public CollectionItemTabRecipeUIState collectionRecipeInfoUI;
         public CollectionArmorUIState collectionArmorInfoUI;
-
+        public LevelingLeftPanelUIState medalUI;
+        public LevelingTabStatsPanelUIState medalStatsUI;
 
         public QuestTabUIState questTabUIState;
         public ActiveQuestUIState activeQuestUIState;
@@ -67,6 +68,13 @@ namespace Stellamod.UI.CollectionSystem
 
             bossBannerTabUIState= new BossBannerTabUIState(bossPageUIState.ui);
             bossBannerTabUIState.Activate();
+
+            medalUI = new LevelingLeftPanelUIState();
+            medalUI.Activate();
+
+            medalStatsUI = new();
+            medalStatsUI.Activate();
+
 
             _userInterface.SetState(null);
             _hudUserInterface.SetState(null);
@@ -182,6 +190,12 @@ namespace Stellamod.UI.CollectionSystem
             _rightInfoUserInterface.SetState(null);
         }
 
+        public void OpenLevelingTabUI()
+        {
+
+            _tabsUserInterface.SetState(medalUI);
+            _rightInfoUserInterface.SetState(medalStatsUI);
+        }
         public void OpenRecipesInfoUI(Item item)
         {
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/BookPageTurn");

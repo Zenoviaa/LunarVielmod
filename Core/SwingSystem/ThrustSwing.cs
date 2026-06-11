@@ -51,7 +51,7 @@ namespace Stellamod.Core.SwingSystem
         {
             float time = swingProjectile.Interpolant;
             float ease = Easing(time);
-            return time > 0f && time <= 0.7f;
+            return time >= 0.35f;
         }
         private void CalculateOffset(float time, Vector2 velocity, out Vector2 offset)
         {
@@ -97,6 +97,15 @@ namespace Stellamod.Core.SwingSystem
 
                 ThrustParticle thrustParticle = ThrustParticle.Spawn(position , velocity * 2, Color.White, Scale: 1f);
                 thrustParticle.bloomColor = Color.LightSkyBlue;
+                if(swingProjectile.swordBeamLength > 0)
+                {
+                    thrustParticle = ThrustParticle.Spawn(position, velocity, swingProjectile.outlineColor, Scale: 1);
+                    thrustParticle.scale2 *= 2;
+                    thrustParticle.time = 60;
+                    thrustParticle.color = swingProjectile.outlineColor;
+                    thrustParticle.innerColor = swingProjectile.outlineColor;
+                    thrustParticle.bloomColor = swingProjectile.outlineColor;
+                }
                 _hasThrust = true;
             }
             if (!_hasPlayedSound && time >= 0.35f && Sound != null)
@@ -114,6 +123,7 @@ namespace Stellamod.Core.SwingSystem
 
         public void CalculateAfterImagePoints(BaseSwingProjectileV2 swingProjectile)
         {
+
             ref Vector2[] trailCache = ref swingProjectile.afterImageCache;
             ref float[] trailRotationCache = ref swingProjectile.swingRotationCache;
             Vector2 velocity = swingProjectile.Projectile.velocity;
@@ -121,11 +131,14 @@ namespace Stellamod.Core.SwingSystem
             for (int t = 0; t < trailCache.Length; t++)
             {
                 float l = trailCache.Length;
-                //Lerp between the points
-                float progressOnTrail = t / l;
-                CalculateOffset(progressOnTrail, velocity, out Vector2 offset);
+                float e = swingProjectile.oldTime[t * 5];
+
+                CalculateOffset(e, velocity, out Vector2 offset);
                 //Set Offset, now we can take this and offset it more in the projectile
-                trailCache[t] = offset;
+                trailCache[t] = swingProjectile.Owner.Center + offset;
+                trailRotationCache[t] = (trailCache[t] - swingProjectile.Owner.Center).ToRotation() + MathHelper.PiOver4;
+
+
             }
         }
 

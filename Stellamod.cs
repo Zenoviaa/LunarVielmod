@@ -6,9 +6,12 @@ using Stellamod.Assets.Videos;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas;
 using Stellamod.Content.Areas.Terror;
+using Stellamod.Content.Areas.TheFalling;
 using Stellamod.Content.Areas.WorldsEnd;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Content.Currencies;
+using Stellamod.Content.Scrolls;
+using Stellamod.Core.Bases;
 using Stellamod.Core.UI;
 using Stellamod.Helpers;
 using Stellamod.Skies;
@@ -77,6 +80,7 @@ namespace Stellamod
         public override void Load()
         {
 
+
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             //   Instance = this;
             if (Main.netMode != NetmodeID.Server)
@@ -108,6 +112,10 @@ namespace Stellamod
 
                 SkyManager.Instance["Stellamod:AegislavSky"] = new AegislavSky();
                 SkyManager.Instance["Stellamod:AegislavSky"].Load();
+
+
+                SkyManager.Instance["Stellamod:EdgeofTheMoonSky"] = new EdgeofTheMoonSky();
+                SkyManager.Instance["Stellamod:EdgeofTheMoonSky"].Load();
 
                 Asset<Effect> GenericLaserShader = Assets.Request<Effect>("Effects/LaserShader");
                 GameShaders.Misc["Stellamod:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");
@@ -355,6 +363,7 @@ namespace Stellamod
                 UnloadTile(TileID.SnowCloud);
             }
         }
+
         public override IContentSource CreateDefaultContentSource()
         {
             if (!Main.dedServ)

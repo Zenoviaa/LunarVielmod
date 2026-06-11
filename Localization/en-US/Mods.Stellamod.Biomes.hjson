@@ -237,3 +237,8 @@ HeatedDepthsBiome: {
 	DisplayName: Heated Depths
 	TownNPCDialogueName: the Heated Depths
 }
+
+EdgeofTheMoonBiome: {
+	DisplayName: Edgeof The Moon Biome
+	TownNPCDialogueName: the Edgeof The Moon Biome
+}

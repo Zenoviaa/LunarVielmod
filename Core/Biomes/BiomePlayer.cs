@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets.Biomes;
+using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 using Stellamod.Content.Areas.SpringHills;
 using Stellamod.Content.Gores.Foreground;
 using Stellamod.Core.Foreground;
@@ -38,6 +39,7 @@ namespace Stellamod.Content.Biomes
         public bool ZoneHarmonicCoralways;
         public bool ZoneAegislavSurface;
         public bool ZoneHeatedDepths;
+        public bool ZoneEdgeoftheMoon;
         public bool ZoneDeepBelowCoralways
         {
             get

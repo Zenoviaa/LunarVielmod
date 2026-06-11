@@ -9,8 +9,10 @@ public class UnderworldFlameParticle : Particle<UnderworldFlameParticle>
 {
     private Vector2 _parallax;
     private float _parallaxStrength;
+    public bool ySlow;
     public override void OnSpawn()
     {
+        ySlow = true;
         _parallax = Vector2.Zero;
         _parallaxStrength = Main.rand.NextFloat(0.3f, 0.6f);
     }
@@ -20,7 +22,10 @@ public class UnderworldFlameParticle : Particle<UnderworldFlameParticle>
         fadeIn++;
         if (fadeIn > 180)
             active = false;
-        Velocity.Y *= 0.98f;
+        if (ySlow)
+            Velocity.Y *= 0.98f;
+        else
+            Scale *= 0.99f;
         Velocity.X *= 0.999f;
         _parallax += (Main.screenPosition - Main.screenLastPosition) * -_parallaxStrength;
         Rotation = Velocity.X * 0.05f;
@@ -91,9 +96,9 @@ public class UnderworldSmokeParticle : Particle<UnderworldSmokeParticle>
         float easeIn = EasingFunction.OutExpo(fadeIn / 80f);
         float easeOut = MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(fadeIn / 180f));
         float alpha = easeIn * easeOut;
-        Color glowColor = Color.White * alpha;
+        Color glowColor = Color.Lerp(Color.Black, Color.White, alpha);
         Vector2 centerPos = DrawPosition;
         var textureAsset = GetTexture();
-        spriteBatch.Draw(textureAsset.Value, centerPos, null, glowColor * alpha, Rotation, textureAsset.Value.Size() * 0.5f, Scale, SpriteEffects.None, 0);
+        spriteBatch.Draw(textureAsset.Value, centerPos, null, glowColor, Rotation, textureAsset.Value.Size() * 0.5f, Scale, SpriteEffects.None, 0);
     }
 }

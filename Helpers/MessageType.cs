@@ -36,6 +36,7 @@
         SpawnNPC,
         ZTileSync,
         ChangeNPCAI,
+        LevelingPlayerSync,
     }
 
     public enum DialogueType : byte

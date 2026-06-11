@@ -346,7 +346,7 @@ public class PunkerPrime : ScarletBoss,
         NPC.height = 128;
         NPC.damage = 100;
         NPC.defense = 28;
-        NPC.lifeMax = 24000;
+        NPC.lifeMax = 27000;
 
         NPC.value = Item.buyPrice(gold: 5);
         NPC.knockBackResist = 0f;
@@ -1293,6 +1293,7 @@ public class PunkerPrime : ScarletBoss,
     }
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
+      //  return false;
         if (_arms == null)
         {
             InitializeArmsIfDead();

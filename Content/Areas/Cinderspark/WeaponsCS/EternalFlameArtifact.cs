@@ -379,7 +379,7 @@ public class EternalFlamePile : ModProjectile
     public override void SetDefaults()
     {
         base.SetDefaults();
-        Projectile.width = 64;
+        Projectile.width = 114;
         Projectile.height = 128;
         Projectile.friendly = true;
         Projectile.timeLeft = 120;

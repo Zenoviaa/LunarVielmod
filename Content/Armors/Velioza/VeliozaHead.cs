@@ -130,12 +130,6 @@ public class VeliozaLifeDrain : ModBuff
     {
         base.Update(npc, ref buffIndex);
         npc.lifeRegen -= 60;
-        if (Main.rand.NextBool(3))
-        {
-            SmokeParticle sp = Particle<SmokeParticle>.Spawn(npc.position + new Vector2(Main.rand.Next(0, npc.width), Main.rand.Next(0, npc.height)), -Vector2.UnitY, Color.DarkRed, Main.rand.NextFloat(0.9f, 1.5f));
-            sp.initialColor = Color.Lerp(Color.Red, Color.DarkRed, Main.rand.NextFloat(0f, 1f)) * 0.4f;
-            sp.expand = true;
-        }
     }
 }
 

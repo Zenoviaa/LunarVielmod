@@ -1,4 +1,92 @@
 Common: {
+	ScrollHelp:
+		'''
+		Use to enchant a weapon with a special move! 
+		This will override any existing special attacks on a weapon, so choose wisely...
+		'''
+	ScrollEnchantment: Enchanted with a scroll!
+	ScrollEnchantHelp: Right-click a weapon in your inventory to enchant it with [c/FFA500:{0}]!
+
+	Strength: {
+		$parentVal: Strength
+		Stat:
+			'''
+			{0} damage
+
+			[c/FFA500:Gain 1% damage for each point.]
+			'''
+	}
+
+	Endurance: {
+		$parentVal: Endurance
+		Stat:
+			'''
+			{0} general endurance
+
+			[c/FFA500:Gain 1% general endurance for each point.]
+			'''
+	}
+
+	Agility: {
+		$parentVal: Agility
+		Stat:
+			'''
+			{0} movement speed
+			{0} acceleration
+
+			[c/FFA500:Gain 1% movement speed and acceleration for each point.]
+			'''
+	}
+
+	Dexterity: {
+		$parentVal: Dexterity
+		Stat:
+			'''
+			{0} attack speed
+			{1} flight time
+
+			[c/FFA500:Gain 1% attack speed and flight time for each point.]
+			'''
+	}
+
+	Focus: {
+		$parentVal: Focus
+		Stat:
+			'''
+			{0} critical strike damage 
+			{1} critical strike chance
+
+			[c/FFA500:Gain 5% critical strike damage and 0.5% critical strike chance for each point.]
+			'''
+	}
+
+	Resourcefulness: {
+		$parentVal: Resourcefulness
+		Stat:
+			'''
+			{0} potion duration
+			{0} insource duration
+			{1} less debuff time against you
+
+			[c/FFA500:Gain 5% more potion and insource duration, and 1.5% less debuff time against you for each point.]
+			'''
+	}
+
+	Veil: {
+		$parentVal: Veil
+		Stat:
+			'''
+			{0} defense
+			{1} more luck
+			{2} elemental weapon damage
+
+			[c/FFA500:Gain 1 defense, 5% more luck and 2% elemental damage for each point.]
+			'''
+	}
+
+	Cancel: CANCEL
+	Ok: OK
+	Plus: +
 	AssignKey: Assign a [{0}] keybind in the settings menu
 	DashHelp: Press {0} to dash!
 	XixianHelp: Press {0} to use your flask!
@@ -141,8 +229,8 @@ Common: {
 	MagicArtifact: Magic Artifact
 	MagicArtifactHelp:
 		'''
-		This is a magical artifact, which have all sorts of cool effects! 
-		Who knows what they might do?
+		Magical artifacts have all sorts of interesting effects, they can just do about anything!
+		They typically require a higher mana investment, but deal great burst damage.
 		'''
 	MinionLifetime: "{0} seconds of life"
 	RuinMedal: Ruin Medals
@@ -567,7 +655,7 @@ Steali: {
 }
 
 ThornedBook: {
-	DisplayName: Thorned Book
+	DisplayName: Book of Thorns
 	Tooltip:
 		'''
 		Deal 5x damage back when an enemy hits you!
@@ -2738,8 +2826,10 @@ StalkersTallon: {
 }
 
 TheIrradiaspear: {
-	DisplayName: The Irradiaspear
-	Tooltip: Shoots spectral versions of itself, but acidic!
+	DisplayName: Lab Spear
+	Tooltip: Thrust n' thrust
+	BasicSlash: Thrusts a lot more than your usual spear, explodes when it hits an enemy
+	StaminaSlash: Hold to charge, then release to throw a powerful spear that explodes into cluster bombs!
 }
 
 StarKeeper: {
@@ -5741,6 +5831,8 @@ PointedEdge: {
 Swingaling: {
 	DisplayName: Swingaling
 	Tooltip: Swing swing, Swingaling! Swihing
+	BasicSlash: ""
+	StaminaSlash: Hold to charge and aim to unleash a fury of lightning bolts
 }
 
 TornCarianPage: {
@@ -6954,6 +7046,11 @@ PoisonPistol: {
 		'''
 }
 
+Poison: {
+	DisplayName: Poison
+	Tooltip: ""
+}
+
 GunHolster: {
 	DisplayName: Gun Holster
 	Tooltip:
@@ -7223,6 +7320,8 @@ DogmaBalls: {
 Tulahal: {
 	Tooltip: Create a flaming hurricane from the old irradiated power of the Govheil. Control the wind and flame.
 	DisplayName: Tulahal
+	BasicSlash: ""
+	StaminaSlash: Throws the sword out on a chain, if it hits an enemy, you grapple to them and do a very powerful swipe
 }
 
 BasicBaseball: {
@@ -8553,6 +8652,8 @@ LightKnives: {
 RuneSmasher: {
 	Tooltip: ""
 	DisplayName: Rune Smasher
+	BasicSlash: Hitting enemies builds up electric charge in your hammer...
+	StaminaSlash: Releases all of your charge into several lightning bolts
 }
 
 Zhielhander: {
@@ -8583,6 +8684,8 @@ Vaikus: {
 CrystalPointer: {
 	DisplayName: Crystal Pointer
 	Tooltip: ""
+	BasicSlash: ""
+	StaminaSlash: No Effect
 }
 
 CrystallineSlasher: {
@@ -10334,6 +10437,11 @@ FlamelashChakrams: {
 	StaminaEffectLocalizedText: No Effect
 }
 
+Flame: {
+	DisplayName: Flame
+	Tooltip: ""
+}
+
 ArncharBallBuster: {
 	DisplayName: Arnchar Ball Buster
 	Tooltip: ""
@@ -11310,4 +11418,164 @@ DragoncrestMold: {
 		Weapons with no dragonshard upgrades now deal 5% more damage, and are imbued with the flame element if possible
 		Also, will inflict fire on hit!
 		'''
+}
+
+GhetsisKeyblade: {
+	BasicSlash: ""
+	StaminaSlash: No Effect
+	DisplayName: Ghetsis Keyblade
+	Tooltip: ""
+}
+
+GhetsisSpear: {
+	BasicSlash: ""
+	StaminaSlash: No Effect
+	DisplayName: Ghetsis Spear
+	Tooltip: ""
+}
+
+HammerofGhetsis: {
+	BasicSlash: ""
+	StaminaSlash: No Effect
+	DisplayName: Hammerof Ghetsis
+	Tooltip: ""
+}
+
+SwordoftheFlies: {
+	BasicSlash: Releases homing flies with each swing...
+	StaminaSlash: Charges up a powerful sword that slashes down with big range and explodes into more flies!
+	DisplayName: Sword of the Flies
+	Tooltip: Yes...
+}
+
+OrbofCleanliness: {
+	DisplayName: Orbof Cleanliness
+	Tooltip: ""
+}
+
+Enrager: {
+	DisplayName: Enrager
+	Tooltip: ""
+}
+
+MyScarab: {
+	DisplayName: My Scarab
+	Tooltip: ""
+}
+
+Anger: {
+	DisplayName: Anger
+	Tooltip: ""
+}
+
+Endurance: {
+	DisplayName: Endurance
+	Tooltip: ""
+}
+
+SimpleHome: {
+	DisplayName: Simple Home
+	Tooltip: ""
+}
+
+EnragerScroll: {
+	DisplayName: Enrager Scroll
+	Tooltip:
+		'''
+		Increases your attack speed by 10% for 10 seconds
+		Repeatedly using it will stack the boost and reset the duration!
+		'''
+}
+
+AngerScroll: {
+	DisplayName: Anger Scroll
+	Tooltip:
+		'''
+		Increases your damage by 5% for 10 seconds
+		Repeatedly using it will stack the boost and reset the duration!
+		'''
+}
+
+FlameScroll: {
+	DisplayName: Flame Scroll
+	Tooltip: Enchants you with fire for 20 seconds, all of your attacks will inflict On Fire! for 5 seconds
+}
+
+PoisonScroll: {
+	DisplayName: Poison Scroll
+	Tooltip: Enchants you with poison for 20 seconds, all of your attacks will inflict Poisoned for 5 seconds
+}
+
+EnduranceScroll: {
+	DisplayName: Endurance Scroll
+	Tooltip:
+		'''
+		Increases your endurance by 10% for 5 seconds
+		Repeatedly using it will stack the boost and reset the duration!
+		'''
+}
+
+SimpleHomeScroll: {
+	DisplayName: Simple Home Scroll
+	Tooltip: Summons 3 white bolts around you that will home to nearby enemies after a short while...
+}
+
+MyScarabScroll: {
+	DisplayName: My Scarab Scroll
+	Tooltip: Summons a golden scarab that seeks out and repeatedly attacks and bounces of enemies...
+}
+
+SimpleFireballScroll: {
+	DisplayName: Simple Fireball Scroll
+	Tooltip: Summons a fireball that leaves behind a lingering pile of fire when it hits a tile!
+}
+
+SimpleConstellationScroll: {
+	DisplayName: Simple Constellation Scroll
+	Tooltip: ""
+}
+
+SimpleMeteorScroll: {
+	DisplayName: Simple Meteor Scroll
+	Tooltip: ""
+}
+
+SimpleBoltScroll: {
+	DisplayName: Simple Bolt Scroll
+	Tooltip: ""
+}
+
+SimpleSpikeballScroll: {
+	DisplayName: Simple Spikeball Scroll
+	Tooltip: ""
+}
+
+SimpleSporeScroll: {
+	DisplayName: Simple Spore Scroll
+	Tooltip: ""
+}
+
+SimpleRadianceScroll: {
+	DisplayName: Simple Radiance Scroll
+	Tooltip: ""
+}
+
+SimplePrismaboltsScroll: {
+	DisplayName: Simple Prismabolts Scroll
+	Tooltip: ""
+}
+
+SimpleGustScroll: {
+	DisplayName: Simple Gust Scroll
+	Tooltip: ""
+}
+
+HookspotScroll: {
+	DisplayName: Hookspot Scroll
+	Tooltip: ""
+}
+
+LightingScroll: {
+	DisplayName: Lighting Scroll
+	Tooltip: ""
 }

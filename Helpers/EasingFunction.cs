@@ -39,7 +39,8 @@ namespace Stellamod.Helpers
             Vector2 control1 = new Vector2(0.8f, -0.4f);
             Vector2 control2 = new Vector2(0.5f, 1f);
             return EasingFunction.BezierEase(t, control1, control2);
-        } 
+        }
+
         public static  float Anticipation3(float t)
         {
             t = Clamp(t);
@@ -331,8 +332,35 @@ namespace Stellamod.Helpers
             t = Clamp(t);
             const float factor = 4;
             return t * (factor - t * factor);
-        } 
-        
+        }
+        public static float GreatswordAnticipation(float t)
+        {
+            float easeIn = MathHelper.Lerp(0f, 1f, EasingFunction.InExpo(t / 0.5f));
+            float easeOut = MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo(t));
+            return MathHelper.Lerp(0f, 1f, easeOut * easeIn);
+        }
+        public static float GreatswordSpinAnticipation(float t)
+        {
+            t = Clamp(t);
+            Vector2 control1 = new Vector2(0.8f, -0.4f);
+            Vector2 control2 = new Vector2(0.5f, 1f);
+            float ease = EasingFunction.BezierEase(t, control1, control2);
+            return MathHelper.Lerp(0f, 1f, ease * EasingFunction.OutExpo(t));
+        }
+
+        public static float QuickOutSlowIn(float t)
+        {
+            float easeIn = EasingFunction.OutExpo(t);
+            float easeOut = MathHelper.Lerp(1f, 0f, EasingFunction.InExpo(t));
+            return easeIn * easeOut;
+        }
+        public static float QuickInLinear(float t)
+        {
+            float easeIn = EasingFunction.InCirc(t / 0.5f);
+            float newTime = MathHelper.Lerp(0f, t, easeIn);
+            return newTime;
+        }
+
         public static  float QuadraticBumpP05 (float t)
         {
             t = Clamp(t);

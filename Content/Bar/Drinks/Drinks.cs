@@ -1,5 +1,6 @@
 ﻿using Stellamod.Common;
 using Stellamod.Common.ArmorRework;
+using Stellamod.Content.Achievements;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Effects;
 using Stellamod.Helpers;
@@ -369,6 +370,10 @@ public class PermamentFoodGlobalItem : GlobalItem
         if (isPermanentFood)
         {
             player.GetModPlayer<PermanentFoodsPlayer>().foods[(int)permanentFoodType] = true;
+        }
+        if(isDrink &&Main.netMode != NetmodeID.Server)
+        {
+            ModContent.GetInstance<AlcoholicMuch>().DrunkenCountCondition.Value++;
         }
         return base.UseItem(item, player);
     }

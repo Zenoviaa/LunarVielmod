@@ -287,7 +287,7 @@ public class MiracleHead : ModItem
         var stats = player.GetStats();
         stats.defenseBonus += 7;
         stats.artifactManaReduction += 0.5f;
-        stats.accessorySlots += 1;
+     //   stats.accessorySlots += 2;
     }
 
     public override void UpdateArmorSet(Player player)
@@ -335,7 +335,7 @@ public class MiracleBody : ModItem
         var stats = player.GetStats();
         stats.defenseBonus += 10;
         stats.magicDamage += 0.18f;
-        stats.accessorySlots += 1;
+        stats.accessorySlots += 3;
     }
 
     public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)

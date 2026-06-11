@@ -1,0 +1,39 @@
+Level2: {
+	FriendlyName: Level 2?
+	Description: Upgrade your medallion once and become level 2
+}
+
+RockyBeginnings: {
+	FriendlyName: Rocky Beginnings
+	Description: Beat Stone Golem and the tutorial in Act I
+}
+
+AlcoholicMuch: {
+	FriendlyName: Alcoholic Much
+	Description: Use 25 potions from Bulbtrifier the bartender.
+}
+
+EnrolledintheWitchAcademy: {
+	FriendlyName: Enrolled in the Witch Academy!
+	Description: Beat Jack, your first teacher!
+}
+
+FirstSingularity: {
+	FriendlyName: First Singularity??
+	Description: Beat Verlian Singularity, the first singularity out of many!
+}
+
+GintzingWinds: {
+	FriendlyName: Gintzing Winds
+	Description: Beat Commander Ginztia in the colosseum.
+}
+
+WhistlingoftheSeas: {
+	FriendlyName: Whistling of the Seas...
+	Description: Beat Harmonic Eel, the dragon of the deep.
+}
+
+WitchsBabySteps: {
+	FriendlyName: Witchs' Baby Steps
+	Description: Brew something in the cauldron once
+}

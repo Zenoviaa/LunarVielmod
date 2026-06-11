@@ -432,7 +432,7 @@ public class Steamroller : ScarletBoss,
         NPC.height = 128;
         NPC.damage = 180;
         NPC.defense = 28;
-        NPC.lifeMax = 12000;
+        NPC.lifeMax = 16000;
 
         NPC.value = Item.buyPrice(gold: 5);
         NPC.knockBackResist = 0f;

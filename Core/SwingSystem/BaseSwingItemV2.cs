@@ -1,6 +1,8 @@
 ﻿using Stellamod.Common.GunSystem;
+using Stellamod.Content.Scrolls;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Tooltips;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories.Players;
 using Stellamod.Visual.Explosions;
@@ -24,6 +26,19 @@ namespace Stellamod.Core.SwingSystem
         {
             if (item.ModItem == null)
                 return;
+            bool noStamina = false;
+            if(item.TryGetGlobalItem<ScrollGlobalItem>(out var g))
+            {
+                if (g.scroll != ScrollAbility._None)
+
+                {
+                    noStamina = true;
+                }
+                        //    return;
+
+            }
+
+            Color noStaminaColor = new Color(50, 50, 50);
             TooltipLine line;
             if (item.ModItem is BaseSwingItemV2 swingItem)
             {
@@ -39,11 +54,19 @@ namespace Stellamod.Core.SwingSystem
                 lines.Add(line);
 
                 line = new TooltipLine(Mod, "StaminaSlash", staminaAttack.StaminaEffectLocalizedText);
+                if (noStamina)
+                {
+                    line.OverrideColor = noStaminaColor;
+                }
                 lines.Add(line);
 
                 line = new TooltipLine(Mod, "StaminaCost", LangText.Common("StaminaCost",
                     staminaAttack.StaminaCost.ToString()));
                 line.OverrideColor = Color.Goldenrod;
+                if (noStamina)
+                {
+                    line.OverrideColor = noStaminaColor;
+                }
                 lines.Add(line);
             }
 
@@ -159,7 +182,8 @@ namespace Stellamod.Core.SwingSystem
             {
                 Projectile.NewProjectile(source, position, velocity, type, staminaDamage, knockback, player.whoAmI);
             }
-            Projectile.NewProjectile(source, player.Center, Vector2.Zero, ModContent.ProjectileType<BasicStaminaExplosion>(), damage, knockback, player.whoAmI);
+            PixelPrimitiveCircleFactory.CreateGenericInBoom(player.Center, Color.White, Color.White, 24, 128);
+           // Projectile.NewProjectile(source, player.Center, Vector2.Zero, ModContent.ProjectileType<BasicStaminaExplosion>(), damage, knockback, player.whoAmI);
         }
 
         public override bool AltFunctionUse(Player player)

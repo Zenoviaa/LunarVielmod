@@ -104,9 +104,6 @@ namespace Stellamod.Helpers
             Asset<Effect> glowingDustShader = Assets.Request<Effect>("Effects/GlowingDust");
             GameShaders.Misc[ShaderRegistry.GlowingDustShader] = new MiscShaderData(glowingDustShader, "GlowingDustPass");
 
-            Asset<Effect> SuperSimpleTrailRef = Assets.Request<Effect>("Effects/SimpleTrail");
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"] = new MiscShaderData(SuperSimpleTrailRef, "TrailPass");
-
             Asset<Effect> DaedusRobeRef = Assets.Request<Effect>("Effects/DaedusRobe");
             GameShaders.Misc["LunarVeil:DaedusRobe"] = new MiscShaderData(DaedusRobeRef, "PixelPass");
 
@@ -142,7 +139,7 @@ namespace Stellamod.Helpers
             RegisterScreenShader("LunarVeil:PetalStorm", "Effects/PetalStorm");
             RegisterScreenShader("LunarVeil:SuperShockwave", "Effects/SuperShockwave");
             RegisterScreenShader("LunarVeil:WorldDepthGradient", "Effects/WorldDepthGradient");
-
+            RegisterScreenShader("LunarVeil:Rippler", "Effects/Rippler");
 
             Mod mod = Stellamod.Instance;
             foreach (var file in mod.GetFileNames())
@@ -186,9 +183,6 @@ namespace Stellamod.Helpers
 
             SkyManager.Instance["Stellamod:NaxtrinSky"] = new NaxtrinSky();
             SkyManager.Instance["Stellamod:NaxtrinSky"].Load();
-
-            SkyManager.Instance["Stellamod:NaxtrinSky2"] = new NaxtrinSky2();
-            SkyManager.Instance["Stellamod:NaxtrinSky2"].Load();
 
             SkyManager.Instance["Stellamod:AlcadSky"] = new NaxtrinSky3();
             SkyManager.Instance["Stellamod:AlcadSky"].Load();

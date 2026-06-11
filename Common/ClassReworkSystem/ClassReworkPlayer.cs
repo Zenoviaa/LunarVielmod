@@ -33,7 +33,7 @@ public class ClassReworkPlayer : ModPlayer
         //Take less from contact damage
         if (Main.npc.IndexInRange(modifiers.DamageSource.SourceNPCIndex))
         {
-            modifiers.IncomingDamageMultiplier *= 0.65f;
+            modifiers.IncomingDamageMultiplier *= 0.9f;
         }
     }
     private void MeleeEffects()

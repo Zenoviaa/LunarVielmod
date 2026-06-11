@@ -888,6 +888,11 @@ FlamecrestShieldBuff: {
 	Description: You'll take greatly reduced damage from the next fire attack!
 }
 
+Flame: {
+	DisplayName: Flame
+	Description: Mods.Stellamod.Buffs.Flame.Description
+}
+
 PrismaticBubbledBuff: {
 	DisplayName: Prismatic Bubbled
 	Description: Aaaaaaaaaaa help me!
@@ -1150,5 +1155,25 @@ ManaFire: {
 
 FireResistanceInsourceBuff: {
 	DisplayName: Fire Resistance Insource Buff
-	Description: Mods.Stellamod.Buffs.FireResistanceInsourceBuff.Description
+	Description: Your are immune to fire and lava!
+}
+
+Anger: {
+	DisplayName: Anger
+	Description: Increased damage
+}
+
+Endurance: {
+	DisplayName: Endurance
+	Description: Increased general endurance
+}
+
+Enrager: {
+	DisplayName: Enrager
+	Description: Increased attack speed
+}
+
+Poison: {
+	DisplayName: Poison
+	Description: Your attacks inflict poison!
 }

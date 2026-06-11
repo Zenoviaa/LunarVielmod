@@ -177,6 +177,18 @@ public struct SpritebatchDrawer
             drawOrigin = new Vector2(texture.Width * 0.5f, texture.Height);
         }
     }
+    public void Origin(float xPct, float yPct)
+    {
+        if (sourceRect.HasValue)
+        {
+            Rectangle rectangle = sourceRect.Value;
+            drawOrigin = new Vector2(rectangle.Width * xPct, rectangle.Height * yPct);
+        }
+        else
+        {
+            drawOrigin = new Vector2(texture.Width * xPct, texture.Height * yPct);
+        }
+    }
     public void TopCenterOrigin()
     {
         if (sourceRect.HasValue)

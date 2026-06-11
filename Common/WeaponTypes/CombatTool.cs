@@ -81,17 +81,22 @@ namespace Stellamod.Common.WeaponTypes
             {
                 if (LunarVeilKeybinds.ToolKeybind.JustReleased)
                 {
-                    CombatTool combatTool = SelectedTool.GetGlobalItem<CombatTool>();
-                    if (combatTool.isCombatTool)
+                    if(SelectedTool.TryGetGlobalItem<CombatTool>(out var combatTool))
                     {
-                        if (combatTool.ammoCount > 0)
+                        if (combatTool.isCombatTool)
                         {
-                            combatTool.ammoCount--;
-                            ItemLoader.Shoot(SelectedTool, Player, new EntitySource_ItemUse_WithAmmo(Player, SelectedTool, -1),
-                                Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * SelectedTool.shootSpeed, SelectedTool.shoot, Player.GetWeaponDamage(SelectedTool), Player.GetWeaponKnockback(SelectedTool));
+                            if (combatTool.ammoCount > 0)
+                            {
+                                combatTool.ammoCount--;
+                                ItemLoader.Shoot(SelectedTool, Player, new EntitySource_ItemUse_WithAmmo(Player, SelectedTool, -1),
+                                    Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * SelectedTool.shootSpeed, SelectedTool.shoot, Player.GetWeaponDamage(SelectedTool), Player.GetWeaponKnockback(SelectedTool));
+                            }
                         }
+
+                        carryingCapacity = (float)combatTool.ammoCount / (float)combatTool.maxAmmoCount;
                     }
-                    carryingCapacity = (float)combatTool.ammoCount / (float)combatTool.maxAmmoCount;
+                   // CombatTool combatTool = SelectedTool.GetGlobalItem<CombatTool>();
+             
                 }
             }
             return base.PreItemCheck();

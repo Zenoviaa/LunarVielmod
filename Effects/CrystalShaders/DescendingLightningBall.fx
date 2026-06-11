@@ -70,7 +70,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 uv : TEXCOORD0) :
     
     
     //Caclulate fading
-    const float maxDistance = length(float2(0.5, 0.5));
+    const float maxDistance = 0.5;
     float distanceFromCenter = length(uv - float2(0.5, 0.5));
     float interp = saturate(distanceFromCenter / maxDistance);
     float alphaFactor = smoothstep(1.0, 0.0, interp);

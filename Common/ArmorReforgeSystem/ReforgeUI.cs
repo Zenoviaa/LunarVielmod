@@ -87,12 +87,14 @@ namespace Stellamod.Common.ArmorReforgeSystem
                     Vector2 pos = new Vector2();
                     pos.X = Main.rand.Next(spawnRect.Left, spawnRect.Right);
                     pos.Y = Main.rand.Next(spawnRect.Top, spawnRect.Bottom);
-                    Vector2 velocity = -Vector2.UnitY * Main.rand.NextFloat(3f, 7f);
+                    Vector2 velocity = -Vector2.UnitY * Main.rand.NextFloat(1f, 2f);
                     velocity = velocity.RotatedByRandom(MathHelper.ToRadians(75));
                     SparkleParticle dp = SparkleParticle.SpawnInUI(pos, velocity, Color.White, Scale: 0.5f);
                     dp.innerColor = Color.Lerp(Color.White, Color.Turquoise, Main.rand.NextFloat(0f, 1f));
                     dp.outerColor = Color.DarkGreen;
                     dp.gravity = 0;
+                    dp.Scale *= 0.4f;
+                    dp.dampening = 0.08f;
                     _particleSpawnTimer -= 0.1f;
                 }
 

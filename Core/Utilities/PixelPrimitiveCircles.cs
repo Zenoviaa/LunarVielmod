@@ -473,6 +473,74 @@ public static class PixelPrimitiveCircleFactory
         circle.position = position;
         ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
     }
+    public static void CreateGenericInBoom(Vector2 position, Color startColor, Color endColor, float time, float endRadius)
+    {
+        void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
+        {
+            float GetTrailWidthFunction(float interpolant)
+            {
+                return MathHelper.SmoothStep(32, 0, completionRatio);
+            }
+            ;
+            Color GetTrailColorFunction(float interpolant)
+            {
+                Color lerp1 = Color.Lerp(startColor, endColor, ExtraMath.Osc(0.5f, 1f, speed: 8));
+                lerp1 = Color.Lerp(lerp1, Color.Lerp(endColor, Color.Black, 0.75f), completionRatio);
+                return lerp1;
+            }
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            blackFireShader.InnerColor = startColor;
+            blackFireShader.OuterColor = endColor;
+            blackFireShader.BackColor = Color.Lerp(endColor, Color.Black, 0.5f);
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
+
+            BloomTrailShader bloomTrail = BloomTrailShader.Instance;
+            bloomTrail.InnerColor = startColor;
+            bloomTrail.OuterColor = endColor;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, bloomTrail);
+        }
+        PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
+        circle.circleParams.minRadius = endRadius;
+        circle.circleParams.maxRadius = 0;
+        circle.circleParams.time = time;
+        circle.renderPixelPrimitivesFunction = RenderPrimitives;
+        circle.position = position;
+        ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
+    }
+    public static void CreateGenericBoom(Vector2 position, Color startColor, Color endColor, float time, float endRadius)
+    {
+        void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
+        {
+            float GetTrailWidthFunction(float interpolant)
+            {
+                return MathHelper.SmoothStep(64, 0, completionRatio);
+            }
+            ;
+            Color GetTrailColorFunction(float interpolant)
+            {
+                Color lerp1 = Color.Lerp(startColor, endColor, ExtraMath.Osc(0.5f, 1f, speed: 8));
+                lerp1 = Color.Lerp(lerp1, Color.Lerp(endColor, Color.Black, 0.75f), completionRatio);
+                return lerp1;
+            }
+            BlackFireShader blackFireShader = BlackFireShader.Instance;
+            blackFireShader.InnerColor = startColor;
+            blackFireShader.OuterColor = endColor;
+            blackFireShader.BackColor = Color.Lerp(endColor, Color.Black, 0.5f);
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, blackFireShader);
+
+            BloomTrailShader bloomTrail = BloomTrailShader.Instance;
+            bloomTrail.InnerColor = startColor;
+            bloomTrail.OuterColor = endColor;
+            TrailDrawer.Draw(Main.spriteBatch, points, GetTrailColorFunction, GetTrailWidthFunction, bloomTrail);
+        }
+        PixelPrimitiveCircle circle = new PixelPrimitiveCircle();
+        circle.circleParams.minRadius = 0;
+        circle.circleParams.maxRadius = endRadius;
+        circle.circleParams.time = time;
+        circle.renderPixelPrimitivesFunction = RenderPrimitives;
+        circle.position = position;
+        ModContent.GetInstance<PixelPrimitiveCircleSystem>().Add(circle);
+    }
     public static void CreateElectricBoom(Vector2 position)
     {
         void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)

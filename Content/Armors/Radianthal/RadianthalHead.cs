@@ -3,6 +3,7 @@ using Stellamod.Assets;
 using Stellamod.Common.ArmorRework;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -29,7 +30,7 @@ public class RadianthalAura : ModProjectile
         Projectile.penetrate = -1;
         Projectile.timeLeft = 60;
         Projectile.usesLocalNPCImmunity = true;
-        Projectile.localNPCHitCooldown = 20;
+        Projectile.localNPCHitCooldown = -1;
     }
 
     public override void AI()
@@ -141,15 +142,20 @@ public class RadianthalGlobalProjectile : GlobalProjectile
     {
         base.OnHitNPC(projectile, target, hit, damageDone);
         RadianthalPlayer player = Main.player[projectile.owner].GetModPlayer<RadianthalPlayer>();
-        if (player.hasSetBonus)
-        {
-            player.stacks++;
-        }
-
+ 
         if (!hasHitSomething)
         {
 
-            if(player.stacks >= 3)
+            if(projectile.ModProjectile is BaseSwingProjectileV2)
+            {
+                if (player.hasSetBonus)
+                {
+                    player.stacks++;
+                }
+            }
+        
+
+            if (player.stacks >= 3)
             {
                 FXUtil.ShakeCamera(target.Center, 1024, 8);
                 Projectile.NewProjectile(projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<RadianthalAura>(),
@@ -262,7 +268,7 @@ public class RadianthalBody : ModItem
     {
         var stats = player.GetStats();
         stats.defenseBonus += 27;
-        stats.stamina += 3;
+        stats.stamina += 1;
         stats.meleeDamage += 0.5f;
         stats.accessorySlots++;
     }

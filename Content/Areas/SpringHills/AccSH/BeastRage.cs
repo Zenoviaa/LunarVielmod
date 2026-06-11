@@ -40,6 +40,7 @@ namespace Stellamod.Content.Areas.SpringHills.AccSH
                 return;
             player.AddBuff(ModContent.BuffType<RagingBeast>(), 240);
             SoundStyle rageSound = new SoundStyle("Stellamod/Assets/Sounds/DMHeart__Spawn");
+            rageSound.Volume = 0.4f;
             SoundEngine.PlaySound(rageSound, player.position);
             FXUtil.ShakeCamera(player.position, 1024, 8);
             ModContent.GetInstance<ScreenShaderSystem>().TintScreen(Color.Red, 0.2f, 15);
