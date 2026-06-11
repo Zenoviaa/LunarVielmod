@@ -298,7 +298,7 @@ public partial class Gothivia : ScarletBoss
 
         if (Keyboard.GetState().IsKeyDown(Keys.L))
         {
-            SwitchState(AIState.Suns);
+            SwitchState(AIState.TheZoomer);
         }
         _numDirections = 0;
         _wingsPerspective = WingsPerspective.ThreeQ;
@@ -828,6 +828,7 @@ public partial class Gothivia : ScarletBoss
 
     private void AI_Idle()
     {
+      
         _wingsPerspective = WingsPerspective.FourQ;
         NPC.velocity *= 0.96f;
         Timer++;

@@ -61,6 +61,7 @@ public class TheIrradiaspear : BaseSwingItemV2
 
 public class IrradiaspearSlash : BaseSwingProjectileV2
 {
+    
     private bool _init;
     private bool _hit;
     private bool _didHitStop;
@@ -309,6 +310,7 @@ public class IrradiaspearBoom : ModProjectile,
 public class TheIrradiaspearP : ModProjectile,
     IDrawToRenderTarget
 {
+    private bool _hit;
     private enum ActionState
     {
         Charge,
@@ -621,6 +623,9 @@ public class TheIrradiaspearP : ModProjectile,
                 sp2.noRot = true;
             }
 
+            if (_hit)
+                return;
+            _hit = true;
             float num = 5;
             for (int i = 0; i < num; i++)
             {

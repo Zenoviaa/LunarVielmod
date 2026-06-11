@@ -59,7 +59,7 @@ public class RedSun : ModProjectile,
     private float BlowtorchTelegraphTime => 40;
     private float TimeBetweenGrows => 90;
     private float TimeBetweenBlasts => 5;
-    private float BlowtorchTime => 24;
+    private float BlowtorchTime => 44;
     private ref float Timer => ref Projectile.ai[0];
     private AIState State
     {
@@ -413,10 +413,10 @@ public class RedSun : ModProjectile,
             spriteBatch.Draw(lineDrawer);
 
             SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
-            glowDrawer.worldPosition += direction.SafeNormalize(Vector2.Zero) * 128;
-            glowDrawer.color = Color.Lerp(Color.Orange, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 24)) * _telegraphAlpha;
+            glowDrawer.worldPosition += direction.SafeNormalize(Vector2.Zero) * 196;
+            glowDrawer.color = Color.Lerp(Color.White, Color.White, ExtraMath.Osc(0f, 1f, speed: 24)) * _telegraphAlpha;
             glowDrawer.color.A = 0;
-            glowDrawer.scale = new Vector2(0.25f, 0.5f) * 0.75f;
+            glowDrawer.scale = new Vector2(0.25f, 0.5f) * 0.65f;
             glowDrawer.rotation = direction.ToRotation();
             spriteBatch.Draw(glowDrawer);
         }
@@ -442,7 +442,7 @@ public class RedSun : ModProjectile,
 
         Color bloomColor = Color.Lerp(Color.Red, Color.Blue, EasingFunction.OutExpo(progress));
         torchShader.BloomColor = Color.Lerp(bloomColor, Color.Black, EasingFunction.InExpo(progress));
-        torchShader.InsideColor = Color.Lerp(Color.Yellow, Color.OrangeRed, EasingFunction.OutExpo(progress));
+        torchShader.InsideColor = Color.Lerp(Color.White, Color.OrangeRed, EasingFunction.OutExpo(progress));
 
         //Drawing all the blowtorches in one projectile so it's optimized and not restarting the spritebatch multiple times times
         //Also not eating up projectile slots
@@ -482,7 +482,7 @@ public class RedSun : ModProjectile,
     {
         DrawTelegraphLine(Main.spriteBatch);
 
-        float scale = _scale * 0.6f * _squishScale;
+        float scale = _scale * 0.9f * _squishScale;
         Asset<Texture2D> sunTextureAsset = TextureAssets.Projectile[Type];
         Rectangle sunFrame = sunTextureAsset.Value.GetFrame(_sunAnimationFrame.frame, HorizontalFrameCount, VerticalFrameCount);
         SpritebatchDrawer sunDrawer = SpritebatchDrawer.FromTextureAsset(sunTextureAsset, Projectile.Center);
@@ -492,6 +492,7 @@ public class RedSun : ModProjectile,
         sunDrawer.sourceRect = sunFrame;
         sunDrawer.CenterOrigin();
         sunDrawer.scale *= 2;
+        sunDrawer.rotation = Main.GlobalTimeWrappedHourly;
         Main.spriteBatch.Draw(sunDrawer);
 
 
