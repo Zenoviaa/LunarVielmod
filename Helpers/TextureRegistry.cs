@@ -21,11 +21,6 @@ namespace Stellamod.Helpers
         public static string CircleOutline => "Stellamod/Assets/NoiseTextures/Extra_67";
         public static string NormalNoise1 => "Stellamod/Assets/NoiseTextures/NormalNoise1";
         public static string ZuiEffect => "Stellamod/Assets/NoiseTextures/ZuiEffect";
-        public static string VoxTexture3 => "Stellamod/Assets/Effects/VoxTexture3";
-
-        public static string VoxTexture4 => "Stellamod/Assets/Effects/VoxTexture5";
-
-        public static string BoreParticleWhite => "Stellamod/Particles/BoreParticleWhite";
         public static Asset<Texture2D> GlowSword_LightKnives => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_LightKnives");
         public static Asset<Texture2D> GlowSword_Chillrend => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Chillrend");
         public static Asset<Texture2D> GlowSword_Sword => ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/GlowSword_Sword");

@@ -11,12 +11,14 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia.Projectiles;
 
+
 public class GothinTorch : ModProjectile,
     IDrawToRenderTarget
 {
     private float Time => 77;
     private ref float Timer => ref Projectile.ai[0];
     private ref float NumDirections => ref Projectile.ai[1];
+    private ref float Variant => ref Projectile.ai[2];
     public override string Texture => TextureRegistry.EmptyTexture;
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {

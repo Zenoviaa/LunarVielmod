@@ -132,7 +132,9 @@ public partial class Gothivia : ScarletBoss
         //Fire Tornado
         FireTornado,
 
-        TheZoomer
+        TheZoomer,
+
+        SniperShot
     }
 
     private PatternManager<AIState> _patternManageBackingField;
@@ -296,7 +298,7 @@ public partial class Gothivia : ScarletBoss
 
         if (Keyboard.GetState().IsKeyDown(Keys.L))
         {
-            SwitchState(AIState.TheZoomer);
+            SwitchState(AIState.Suns);
         }
         _numDirections = 0;
         _wingsPerspective = WingsPerspective.ThreeQ;
@@ -332,6 +334,9 @@ public partial class Gothivia : ScarletBoss
             case AIState.Suns:
                 AI_Suns();
                 break;
+            case AIState.SniperShot:
+                AI_SniperShot();
+                break;
         }
 
         float targetAfterImageAlpha = _drawAfterImage ? 1f : 0f;
@@ -355,9 +360,57 @@ public partial class Gothivia : ScarletBoss
         }
     }
 
+    private void AI_SniperShot()
+    {
+        Timer++;
+    }
     private void AI_Suns()
     {
-        SwitchState(AIState.Idle);
+        float ai1 = NPC.whoAmI;
+
+        Timer++;
+        Animator.PlayAnimation(Anim_Aurafarming);
+        if (Timer == 1)
+        {
+            NPC.TargetClosest();
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BindingBless1") with { PitchVariance = 0.6f }, NPC.Center);
+            CreateInCircle();
+            if (MultiplayerHelper.IsHost)
+            {
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                    ModContent.ProjectileType<BlinkingStar>(), 24, 0f, Main.myPlayer, 0f, ai1);
+            }
+        }
+        if (Timer < 80)
+        {
+            _outliner.warning = true;
+            FaceTarget();
+            Vector2 targetCenter = MyTarget.Center;
+            Vector2 targetHoverCenter = targetCenter + new Vector2(0, -256);
+            NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, Vector2.Zero, 0.1f);
+        }
+
+        if(Timer > 81)
+        {
+            _outliner.attacking = true;
+        }
+
+        //NPC.velocity *= Vector2.Zero;
+        if(Timer == 81)
+        {
+            if (MultiplayerHelper.IsHost)
+            {
+       
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                    ModContent.ProjectileType<RedSun>(), 1, 0, Main.myPlayer, ai2: NPC.whoAmI);
+            }
+        }
+
+        if(Timer >= 900)
+        {
+            SwitchState(AIState.Idle);
+        }
     }
 
     private void AI_TheZoomer()
@@ -377,7 +430,7 @@ public partial class Gothivia : ScarletBoss
             if (MultiplayerHelper.IsHost)
             {
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center,  Vector2.Zero,
-                    ModContent.ProjectileType<BlinkingStar>(), 24, 0f, Main.myPlayer, 0f, ai1);
+                    ModContent.ProjectileType<BlinkingStar>(), 1, 0f, Main.myPlayer, 0f, ai1);
             }
         }
 

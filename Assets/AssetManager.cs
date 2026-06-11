@@ -30,6 +30,7 @@ namespace Stellamod.Assets
 
         public class GlowMask
         {
+            public static LazyAsset<Texture2D> JumbledGlowCircle;
             public static LazyAsset<Texture2D> SwordSlashForward;
             public static Asset<Texture2D> SwordSlash;
             public static Asset<Texture2D> Impact;
@@ -89,6 +90,7 @@ namespace Stellamod.Assets
         public override void OnModLoad()
         {
             base.OnModLoad();
+            GlowMask.JumbledGlowCircle = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/JumbledGlowCircle");
             Noise.InvertedVoronoi = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/InvertedVoronoi");
             Noise.FlameVortexNoise = new LazyAsset<Texture2D>("Stellamod/Assets/Noise/FlameVortexNoise");
             GlowMask.SwordSlashForward = new LazyAsset<Texture2D>("Stellamod/Assets/GlowMasks/SwordSlashForward");
@@ -154,6 +156,7 @@ namespace Stellamod.Assets
         public override void OnModUnload()
         {
             base.OnModUnload();
+            GlowMask.JumbledGlowCircle?.Unload();
             Noise.InvertedVoronoi?.Unload();
             Noise.FlameVortexNoise?.Unload();
             GlowMask.SwordSlashForward?.Unload();
