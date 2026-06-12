@@ -46,6 +46,20 @@ namespace Stellamod.Assets
         {
             private static string Path => "Stellamod/Assets/Sounds/";
 
+            public static class Fire
+            {
+                public static readonly SoundStyle Sungrow3 = new SoundStyle($"{Path}Fire/Sungrow3") with { PitchVariance = 0.5f };
+                public static readonly SoundStyle Sungrow2 = new SoundStyle($"{Path}Fire/Sungrow2") with { PitchVariance = 0.5f };
+                public static readonly SoundStyle Sungrow1 = new SoundStyle($"{Path}Fire/Sungrow1") with { PitchVariance = 0.5f };
+                public static readonly SoundStyle Gothiviaflyaway = new SoundStyle($"{Path}Fire/Gothiviaflyaway") with { PitchVariance = 0.5f };
+                public static readonly SoundStyle BlowtorchBigger1 = new SoundStyle($"{Path}Fire/BlowtorchBigger1") with { PitchVariance = 0.5f };
+                public static readonly SoundStyle BlowtorchBigger2 = new SoundStyle($"{Path}Fire/BlowtorchBigger2") with { PitchVariance = 0.5f };
+                public static readonly SoundStyle FlameoutWheel = new SoundStyle($"{Path}Fire/FlameoutWheel") with { PitchVariance = 0.5f };
+                public static readonly SoundStyle Flamewheel = new SoundStyle($"{Path}Fire/Flamewheel") with { PitchVariance = 0.5f };
+                public static readonly SoundStyle FlaminCharge = new SoundStyle($"{Path}Fire/FlaminCharge") with { PitchVariance = 0.5f };
+                public static readonly SoundStyle FlaminChargeFast = new SoundStyle($"{Path}Fire/FlaminChargeFast") with { PitchVariance = 0.5f };
+            }
+
             public static class AlcaricFox
             {
                 public static readonly SoundStyle FenixSawbounce2 = new SoundStyle($"{Path}AlcaricFox/FenixSawbounce2") with { PitchVariance = 0.33f };

@@ -1,4 +1,5 @@
-﻿using Stellamod.Core.Utilities;
+﻿using Stellamod.Core.Particles;
+using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -11,6 +12,17 @@ public partial class Gothivia
     {
         PixelPrimitiveCircleFactory.CreateGenericInBoom(NPC.Center, Color.White, Color.White, 45, 444);
     }
+    public void MakeCircles(in float timer)
+    {
+        if(timer % 6 == 0)
+        {
+            var gd = LegacyParticle.NewParticle<GlowDonutParticle>(NPC.Center, -NPC.velocity.SafeNormalize(Vector2.Zero));
+            gd.innerColor = Color.Yellow;
+            gd.outerColor = Color.Red;
+            gd.fadeToColor = Color.DarkRed;
+        }
+    }
+
     public static void ChargeParticlesBig(Vector2 center, in float timer)
     {
         if (timer % 4 == 0)

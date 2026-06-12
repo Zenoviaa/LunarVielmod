@@ -1,10 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using Terraria;
 namespace Stellamod.Helpers
 {
     public static class ExtraMath
     {
+        public static float AngleDiff(float a, float b)
+        {
+            float a1 = MathHelper.ToDegrees(a);
+            float a2 = MathHelper.ToDegrees(b);
+
+            float dif = (float)Math.Abs(a1 - a2) % 360;
+
+            if (dif > 180)
+                dif = 360 - dif;
+
+            dif = MathHelper.ToRadians(dif);
+            return dif;
+        }
+
         public static Vector2 CubicBezier(Vector2 start, Vector2 controlPoint1, Vector2 controlPoint2, Vector2 end, float t)
         {
             float tSquared = t * t;

@@ -3,6 +3,79 @@ using Terraria;
 
 namespace Stellamod.Effects.GothinFlames;
 
+public class FlameHurricaneShader : CrystalShader<FlameHurricaneShader>
+{
+    public float Radius
+    {
+        set
+        {
+            Effect.Parameters["radius"].SetValue(value);
+        }
+    }
+
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+    public Color InsideColor
+    {
+        set
+        {
+            Effect.Parameters["flameInsideColor"].SetValue(value.ToVector3());
+        }
+    }
+    public Color BloomColor
+    {
+        set
+        {
+            Effect.Parameters["flameBloomColor"].SetValue(value.ToVector3());
+        }
+    }
+
+}
+
+public class FlameSwirlShader : CrystalShader<FlameSwirlShader>
+{
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+    public Color InsideColor
+    {
+        set
+        {
+            Effect.Parameters["flameInsideColor"].SetValue(value.ToVector3());
+        }
+    }
+    public Color BloomColor
+    {
+        set
+        {
+            Effect.Parameters["flameBloomColor"].SetValue(value.ToVector3());
+        }
+    }
+    public float AngleCenter
+    {
+        set
+        {
+            Effect.Parameters["angleCenter"].SetValue(value);
+        }
+    }
+
+    public float AngleRadius
+    {
+        set
+        {
+            Effect.Parameters["angleRadius"].SetValue(value);
+        }
+    }
+}
 public class BlowTorchShader : CrystalShader<BlowTorchShader>
 {
     public Texture2D FlameNoiseTexture

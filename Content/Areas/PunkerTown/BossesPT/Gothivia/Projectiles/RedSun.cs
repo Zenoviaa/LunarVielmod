@@ -17,6 +17,118 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia.Projectiles;
 
+
+public class RedSunBoom : ModProjectile,
+    IDrawToRenderTarget
+{
+    public override string Texture => TextureRegistry.EmptyTexture;
+    private ref float Timer => ref Projectile.ai[0];
+    private float Time => 45;
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.tileCollide = false;
+        Projectile.timeLeft = (int)Time;
+        Projectile.width = 512;
+        Projectile.height = 512;
+        Projectile.hostile = true;
+        Projectile.ignoreWater = true;
+    }
+    public override void OnHitPlayer(Player target, Player.HurtInfo info)
+    {
+        base.OnHitPlayer(target, info);
+        target.GetModPlayer<GothiviaPlayer>().AddSunStack();
+    }
+    public override void AI()
+    {
+        base.AI();
+
+
+        if (Timer > 35)
+        {
+            Projectile.hostile = false;
+        }
+        Timer++;
+        if (Timer == 1)
+        {
+            FXUtil.CreateRipple(Projectile.Center);
+            ShakeScreenPosition.Shake = 6;
+            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.LightGoldenrodYellow, Color.OrangeRed, 55, 450);
+            var fx = FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.Red, Color.Black, duration: 25, baseSize: 0.2f);
+            fx.Scale *= 3f;
+
+
+            for (float i = 0; i < 8; i++)
+            {
+                float progress = i / 4f;
+                float rot = progress * MathHelper.ToRadians(360);
+                rot += Main.rand.NextFloat(-0.5f, 0.5f);
+                Vector2 offset = rot.ToRotationVector2() * 24;
+                var particle = FXUtil.GlowCircleDetailedBoom1(Projectile.Center,
+                    innerColor: Color.White,
+                    glowColor: Color.Yellow,
+                    outerGlowColor: Color.Red,
+                    baseSize: Main.rand.NextFloat(0.1f, 0.2f),
+                    duration: Main.rand.NextFloat(15, 25));
+                particle.VectorScale *= 4;
+                particle.Rotation = rot + MathHelper.ToRadians(45);
+            }
+            for (float f = 0; f < 14; f++)
+            {
+                var dp = DustParticle.Spawn(Projectile.Center, Main.rand.NextVector2Circular(32, 32));
+                dp.dampening = 0.05f;
+                dp.gravity *= 0.05f;
+                dp.Scale *= 2;
+            }
+        }
+        var dp2 = DustParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(384, 384), Vector2.Zero);
+        dp2.dampening = 0.05f;
+        dp2.gravity *= 0.05f;
+        dp2.fast = true;
+    }
+
+    private void DrawPixelatedBoom(SpriteBatch sb, Vector2 screenPos)
+    {
+        Asset<Texture2D> noiseTextureAsset = AssetManager.Noise.FlamethrowerNoise;
+        FlameyBoomShader boomShader = ShaderContent.GetInstance<FlameyBoomShader>();
+        float t = Timer / Time;
+        boomShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
+        boomShader.Time = EasingFunction.OutSine(t);
+        boomShader.InsideColor = Color.Lerp(Color.White, Color.Yellow, t);
+        boomShader.BloomColor = Color.Lerp(Color.Red, Color.DarkRed, t);
+
+        sb.Restart(effect: boomShader.Effect);
+
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.InvertedVoronoi.Asset.Value, Projectile.Center);
+        drawer.color = Color.White;
+        drawer.color.A = 0;
+        drawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 1, EasingFunction.OutQuad(t)) * 1.5f;
+        sb.Draw(drawer);
+
+
+        drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.Noise.FlamethrowerNoise, Projectile.Center);
+        drawer.color = Color.White;
+        drawer.color.A = 0;
+        drawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 1, EasingFunction.OutQuad(t)) * 12;
+        sb.Draw(drawer);
+        sb.RestartDefaults();
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
+
+        return false;
+    }
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+    }
+
+    public void DrawToRenderTargets()
+    {
+        PixelationManager.QueueSpritebatchDrawAction(DrawPixelatedBoom);
+    }
+}
+
 public class RedSun : ModProjectile,
     IDrawToRenderTarget
 {
@@ -32,7 +144,8 @@ public class RedSun : ModProjectile,
 
         Shotgun,
         Idle,
-        Shrink
+        Shrink,
+        Throw
     }
     private float _rotation;
     private float _rotationDirection;
@@ -67,12 +180,15 @@ public class RedSun : ModProjectile,
         set => Projectile.ai[1] = (float)value;
     }
     private NPC Parent => Main.npc[(int)Projectile.ai[2]];
+
+    public Vector2? throwVelocity;
     public override void SendExtraAI(BinaryWriter writer)
     {
         base.SendExtraAI(writer);
         writer.Write(_blowtorchTimer);
         writer.Write(_attackCounter);
         writer.Write(_rotation);
+       
     }
     public override void ReceiveExtraAI(BinaryReader reader)
     {
@@ -85,6 +201,8 @@ public class RedSun : ModProjectile,
     public override void SetStaticDefaults()
     {
         base.SetStaticDefaults();
+        ProjectileID.Sets.TrailCacheLength[Type] = 32;
+        ProjectileID.Sets.TrailingMode[Type] = 2;
     }
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -155,11 +273,22 @@ public class RedSun : ModProjectile,
             case AIState.Cross:
                 AI_Cross();
                 break;
+            case AIState.Throw:
+                AI_Throw();
+                break;
+        }
+
+        if (this.OwnedByLocalClient() && throwVelocity.HasValue)
+        {
+            Projectile.velocity = throwVelocity.Value;
+            throwVelocity = null;
+            SwitchState(AIState.Throw);
         }
 
         _rotation += 0.015f * _rotationDirection;
         Projectile.rotation = _rotation;
-        Projectile.Center = Parent.Center + new Vector2(0, -256);
+        if(State != AIState.Throw)
+            Projectile.Center = Parent.Center + new Vector2(0, -256);
         _scale = MathHelper.Lerp(_scale, _targetScale, 0.1f);
     }
 
@@ -220,6 +349,24 @@ public class RedSun : ModProjectile,
             dp.Scale *= 0.35f;
             dp.outerColor = Color.Red;
             dp.gravity = 0;
+        }
+    }
+
+    private void AI_Throw()
+    {
+        _targetScale = 1f;
+        Timer++;
+        if(Timer < 30)
+        {
+            Projectile.velocity *= 1.05f;
+        }
+        else
+        {
+            Projectile.velocity *= 0.98f;
+            if(Projectile.velocity.Length() < 0.5f)
+            {
+                Projectile.Kill();
+            }
         }
     }
 
@@ -518,10 +665,20 @@ public class RedSun : ModProjectile,
         Main.spriteBatch.Draw(glowDrawer);
         return false;
     }
+    public override void OnHitPlayer(Player target, Player.HurtInfo info)
+    {
+        base.OnHitPlayer(target, info);
+        target.GetModPlayer<GothiviaPlayer>().AddSunStack();
+    }
 
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);
+        if (this.OwnedByLocalClient())
+        {
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                ModContent.ProjectileType<RedSunBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+        }
     }
 
     public void DrawToRenderTargets()

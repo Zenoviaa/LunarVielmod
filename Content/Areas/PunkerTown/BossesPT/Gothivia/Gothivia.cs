@@ -184,6 +184,7 @@ public partial class Gothivia : ScarletBoss
     private Vector2 _startCDashOffset;
     private Vector2 _endCDashOffset;
 
+    private Vector2 _initialVelocity;
     private Vector2 _aimingVelocity;
     private Vector2 _figureEightStartCenter;
     private Outliner _outliner;
@@ -214,6 +215,13 @@ public partial class Gothivia : ScarletBoss
     private float ComboAttack_SecondZoomTime => 52;
     private float ComboAttack_EndingTime => 30f;
 
+
+
+    private float FireTornado_CircleSpeedUpTime => 180f;
+    private float FireTornado_TimeBetweenCircleWaves => 80;
+    private float FireTornado_EndingTime => 60;
+
+    private float FireTornado_CircleCount => 8;
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
         // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
@@ -244,7 +252,7 @@ public partial class Gothivia : ScarletBoss
     {
         NPC.width = 60;
         NPC.height = 60;
-        NPC.damage = 100;
+        NPC.damage = 1;
         NPC.defense = 150;
         NPC.lifeMax = 300000;
         NPC.HitSound = SoundID.NPCHit1;
@@ -290,6 +298,11 @@ public partial class Gothivia : ScarletBoss
     {
         return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
     }
+    public override void OnHitPlayer(Player target, Player.HurtInfo info)
+    {
+        base.OnHitPlayer(target, info);
+        target.GetModPlayer<GothiviaPlayer>().AddSunStack();
+    }
 
     private void CreateFlameNSmokeParticles()
     {
@@ -328,13 +341,24 @@ public partial class Gothivia : ScarletBoss
         _outliner.SetDefaults();
 
 
+        if (!NPC.HasValidTarget)
+        {
+            NPC.TargetClosest();
+            if (!NPC.HasValidTarget)
+            {
+                if(State != AIState.Despawn)
+                {
+                    SwitchState(AIState.Despawn);
+                }
+            }
+        }
         //Animate the wings
         //The perspective only decides which wing texture to use
         //We'll set that in the ai states, check the original code
 
         if (Keyboard.GetState().IsKeyDown(Keys.L))
         {
-            SwitchState(AIState.ComboAttack);
+            SwitchState(AIState.FireTornado);
         }
         _numDirections = 0;
         _wingsPerspective = WingsPerspective.ThreeQ;
@@ -348,6 +372,9 @@ public partial class Gothivia : ScarletBoss
         ShootRotations.Clear();
         switch (State)
         {
+            case AIState.Despawn:
+                AI_Despawn();
+                break;
             case AIState.Spawn:
                 SwitchState(AIState.Idle);
                 break;
@@ -378,6 +405,9 @@ public partial class Gothivia : ScarletBoss
             case AIState.ComboAttack:
                 AI_ComboAttack();
                 break;
+            case AIState.FireTornado:
+                AI_FireTornado();
+                break;
         }
 
         float targetFingerAlpha = _renderFinger ? 1f : 0f;
@@ -404,6 +434,138 @@ public partial class Gothivia : ScarletBoss
         }
     }
 
+    private void AI_Despawn()
+    {
+        Timer++;
+        if(Timer >= 90)
+        {
+            NPC.active = false;
+        }
+        NPC.velocity.X *= 0.97f;
+        NPC.velocity.Y -= 0.05f;
+    }
+    private void AI_FireTornado()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+
+                    _wingsPerspective = WingsPerspective.FourQ;
+                    Animator.PlayAnimation(Anim_Floating);
+                    Vector2 pointToMoveTo = MyTarget.Center + new Vector2(0, -256);
+                    NPC.velocity *= 0.8f;
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
+                    NPC.Center = Vector2.Lerp(NPC.Center, pointToMoveTo, 0.1f);
+                    if(Timer >= 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    if(Timer == 1)
+                    {
+
+                        _startCDashOffset = MyTarget.Center;
+                        _endCDashOffset = -Vector2.UnitY * 512;
+                        _initialVelocity = NPC.velocity;
+                    }
+
+                    _wingsPerspective = WingsPerspective.ThreeQ;
+             
+                    _outliner.warning = true;
+                    float ratio = Timer / FireTornado_CircleSpeedUpTime;
+                    float ease = EasingFunction.InExpo(ratio);
+                    float radiansToRotateBy = MathHelper.Lerp(0, MathHelper.ToRadians(15), ease);
+                    _endCDashOffset = _endCDashOffset.RotatedBy(radiansToRotateBy);
+
+                    int time = (int)(FireTornado_CircleSpeedUpTime * 0.85f);
+                    if(Timer == time)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), _startCDashOffset, Vector2.Zero,
+                                ModContent.ProjectileType<FlameHurricane>(), 1, 1, Owner: Main.myPlayer);
+                        }
+                    }
+
+                    if(Timer >= time)
+                    {
+                        _renderAfterImage = true;
+                        _renderFigure8Trail = true;
+                        MakeCircles(Timer);
+                    }
+
+                    Vector2 positionToMoveTo = _startCDashOffset + _endCDashOffset;
+                    Vector2 vel = positionToMoveTo - NPC.Center;
+                    NPC.velocity = Vector2.Lerp(_initialVelocity, vel, EasingFunction.InOutSine(Timer / 30f));
+
+                    float targetRotation = vel.ToRotation() + MathHelper.PiOver2;
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRotation, 0.3f);
+                    Animator.PlayAnimation(Anim_Dive);
+                    if(Timer >= FireTornado_CircleSpeedUpTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                  
+                    _endCDashOffset = _endCDashOffset.RotatedBy(MathHelper.ToRadians(15));
+
+                    Vector2 positionToMoveTo = _startCDashOffset + _endCDashOffset;
+                    Vector2 vel = positionToMoveTo - NPC.Center;
+                    NPC.velocity = vel;
+
+                    float targetRotation = vel.ToRotation() + MathHelper.PiOver2;
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRotation, 0.4f);
+                    Animator.PlayAnimation(Anim_Dive);
+
+                    _renderFigure8Trail = true;
+                    _renderAfterImage = true;
+                    _outliner.attacking = true;
+                    if (Timer >= FireTornado_TimeBetweenCircleWaves)
+                    {
+                        Vector2 dirToTarget = (MyTarget.Center - _startCDashOffset).SafeNormalize(Vector2.Zero);
+                        dirToTarget = dirToTarget.RotatedByRandom(MathHelper.ToRadians(24));
+                        float midAngle = dirToTarget.ToRotation();
+                        float angleRadius = 0.55f;
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(SourceFromThis, _startCDashOffset, Vector2.Zero, 
+                                ModContent.ProjectileType<FlameSwirl>(), 1, 1, Main.myPlayer, ai1: midAngle, ai2: angleRadius);
+                        }
+                        Timer = 0;
+                        AttackCounter++;
+                        if(AttackCounter >= FireTornado_CircleCount)
+                        {
+                            AttackCycle++;
+                        }
+                    }
+                }
+                break;
+            case 3:
+                {
+                    NPC.velocity *= 0.8f;
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
+                    if(Timer >= 60)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
+    }
 
     private void AI_ComboAttack()
     {

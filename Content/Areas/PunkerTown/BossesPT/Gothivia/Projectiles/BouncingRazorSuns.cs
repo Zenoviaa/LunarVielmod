@@ -141,7 +141,9 @@ public class BouncingRazorSuns : ModProjectile,
     public override void OnHitPlayer(Player target, Player.HurtInfo info)
     {
         base.OnHitPlayer(target, info);
+        target.GetModPlayer<GothiviaPlayer>().AddSunStack();
     }
+
     private void MakeParticles()
     {
         if (Main.rand.NextBool(2))
@@ -558,6 +560,11 @@ public class RazorFireBoom : ModProjectile,
         Projectile.hostile = true;
         Projectile.ignoreWater=true;
     }
+    public override void OnHitPlayer(Player target, Player.HurtInfo info)
+    {
+        base.OnHitPlayer(target, info);
+        target.GetModPlayer<GothiviaPlayer>().AddSunStack();
+    }
     public override void AI()
     {
         base.AI();
@@ -632,11 +639,7 @@ public class RazorFireBoom : ModProjectile,
         sb.Draw(drawer);
         sb.RestartDefaults();
     }
-    public override bool PreDraw(ref Color lightColor)
-    {
-
-        return false;
-    }
+    public override bool PreDraw(ref Color lightColor) => false;
     public override void OnKill(int timeLeft)
     {
         base.OnKill(timeLeft);

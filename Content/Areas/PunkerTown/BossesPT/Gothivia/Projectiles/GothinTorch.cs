@@ -166,6 +166,11 @@ public class GothinTorch : ModProjectile,
     {
         base.OnKill(timeLeft);
     }
+    public override void OnHitPlayer(Player target, Player.HurtInfo info)
+    {
+        base.OnHitPlayer(target, info);
+        target.GetModPlayer<GothiviaPlayer>().AddSunStack();
+    }
 
     private void DrawBlowtorch(SpriteBatch spriteBatch, Vector2 sp)
     {

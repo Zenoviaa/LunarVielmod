@@ -60,6 +60,11 @@ public class RazorWingDash : ModProjectile,
         UpdateFrame(0.6f, 1, 60);
     }
 
+    public override void OnHitPlayer(Player target, Player.HurtInfo info)
+    {
+        base.OnHitPlayer(target, info);
+        target.GetModPlayer<GothiviaPlayer>().AddSunStack();
+    }
 
     public override void OnKill(int timeLeft)
     {

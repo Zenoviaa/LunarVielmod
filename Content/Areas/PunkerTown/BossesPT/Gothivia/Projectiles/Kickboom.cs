@@ -113,6 +113,11 @@ public class Kickboom : ModProjectile,
         spriteBatch.Draw(glowDrawer);
         return false;
     }
+    public override void OnHitPlayer(Player target, Player.HurtInfo info)
+    {
+        base.OnHitPlayer(target, info);
+        target.GetModPlayer<GothiviaPlayer>().AddSunStack();
+    }
 
     public void DrawToRenderTargets()
     {
