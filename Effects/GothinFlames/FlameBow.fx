@@ -4,6 +4,7 @@ float3 flameInsideColor;
 float3 flameBloomColor;
 float time;
 float dissipateThreshold;
+float distortionStrength;
 float QuadraticBump(float t)
 {
     float factor = 4.0;
@@ -15,15 +16,15 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 bloomColor : COLOR0
     //Applying the same technique again, we scroll a 
     float2 trailCoords = coords + float2(time * -0.05, 0.0);
 
-    trailCoords.y *= 24.0;
+    trailCoords.y *= 24.0 * distortionStrength;
     trailCoords = frac(trailCoords);
     float flameNoise = tex2D(flameSampler, trailCoords).r;
     float d = flameNoise > QuadraticBump(coords.x * coords.x + 0.05);
     float d2 = flameNoise > dissipateThreshold;
     flameNoise *= bloomColor.a;
     
-    coords.y += sin(time * 0.5 + coords.x * 16.0) * 0.001;
-    coords.x += sin(0.3 * coords.y * 32.0 + time * 0.05) * 0.12;
+    coords.y += sin(time * 0.5 + coords.x * 16.0) * 0.001 ;
+    coords.x += sin(0.3 * coords.y * 32.0 + time * 0.05 ) * 0.03 ;
     float4 glowMask = tex2D(glowMaskSampler, coords);
     float3 flameColor = lerp(flameInsideColor, flameBloomColor, saturate(flameNoise / 0.5)) * d;
 

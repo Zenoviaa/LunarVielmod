@@ -43,7 +43,7 @@ public class BlinkingStar : ModProjectile
         float scale = 0.4f * (t + 0.2f);
         if (scale < 0)
             scale = 0;
-        Main.spriteBatch.Draw(texture2D4, Parent.Center - Main.screenPosition, null, color, Projectile.rotation, drawOrigin, scale, SpriteEffects.None, 0f);
+        Main.spriteBatch.Draw(texture2D4, Parent.Center - Main.screenPosition, null, color, Projectile.rotation + Main.GlobalTimeWrappedHourly, drawOrigin, scale, SpriteEffects.None, 0f);
         return false;
     }
 }

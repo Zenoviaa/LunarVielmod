@@ -18,6 +18,7 @@ namespace Stellamod.Common.Shaders
                 return _instance;
             }
         }
+   
     }
 
     public static class ShaderContent
@@ -31,6 +32,7 @@ namespace Stellamod.Common.Shaders
         {
             return CrystalShader<T>.Instance;
         }
+
     }
 
     public abstract class BaseShader : IShader
@@ -97,5 +99,6 @@ namespace Stellamod.Common.Shaders
         {
 
         }
+        public static implicit operator Effect(BaseShader e) => e.Effect;
     }
 }

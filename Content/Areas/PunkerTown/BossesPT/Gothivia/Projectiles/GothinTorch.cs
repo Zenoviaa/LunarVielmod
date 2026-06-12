@@ -1,6 +1,7 @@
 ﻿using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
 using Stellamod.Effects.GothinFlames;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
@@ -15,7 +16,16 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia.Projectiles;
 public class GothinTorch : ModProjectile,
     IDrawToRenderTarget
 {
-    private float Time => 77;
+    private float Time
+    {
+        get
+        {
+            float t = 77;
+            if (Variant == 1)
+                t *= 1.35f;
+            return t;
+        }
+    }
     private ref float Timer => ref Projectile.ai[0];
     private ref float NumDirections => ref Projectile.ai[1];
     private ref float Variant => ref Projectile.ai[2];
@@ -43,6 +53,11 @@ public class GothinTorch : ModProjectile,
         else
         {
             float lineWidth = 12;
+            if(Variant == 1)
+            {
+                lineWidth *= 20;
+            }
+
             float collisionPoint = 0;
             Vector2 position = Projectile.Center;
             Vector2 previousPosition = position + Projectile.velocity;
@@ -77,6 +92,12 @@ public class GothinTorch : ModProjectile,
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
             FXUtil.ShakeCamera(Projectile.Center, 1024, 8);
          
+            if(Variant == 1)
+            {
+                ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+                shaderSystem.TintScreen(Color.OrangeRed, 0.1f, timer: 80);
+                shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.05f, timer: 80);
+            }
             if(NumDirections > 0)
             {
                 for(float r = 0; r < NumDirections; r++)
@@ -115,9 +136,24 @@ public class GothinTorch : ModProjectile,
 
         }
 
-        if(Timer >= 35)
+        if(Variant == 1 && Timer < 35)
         {
-            Projectile.hostile = false;
+            ShakeScreenPosition.Shake = 4;
+        }
+
+        if(Variant == 1)
+        {
+            if(Timer >= 38)
+            {
+                Projectile.hostile = false;
+            }
+        }
+        else
+        {
+            if (Timer >= 35)
+            {
+                Projectile.hostile = false;
+            }
         }
     }
     public override bool ShouldUpdatePosition()
@@ -169,6 +205,9 @@ public class GothinTorch : ModProjectile,
         glowDrawer.Origin(0.1f, 0.5f);
         glowDrawer.scale.X *= MathHelper.Lerp(1.5f, 4.5f, EasingFunction.OutExpo(progress));
         glowDrawer.scale.Y *= MathHelper.Lerp(1f, 0f, EasingFunction.OutExpo(progress));
+        if (Variant == 1)
+            glowDrawer.scale *= 3;
+
         glowDrawer.color = Color.White;
         glowDrawer.color.A = 0;
         glowDrawer.rotation = direction.ToRotation();

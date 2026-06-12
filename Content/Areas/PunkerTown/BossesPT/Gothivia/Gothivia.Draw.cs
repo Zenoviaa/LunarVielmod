@@ -17,6 +17,7 @@ public partial class Gothivia :
     private Asset<Texture2D> _wings3QTextureAsset;
     private Asset<Texture2D> _wings4QTextureAsset;
     private Asset<Texture2D> _bowTextureAsset;
+    private Asset<Texture2D> _fingerTextureAsset;
     private Animator _animator;
     private Animator Animator
     {
@@ -88,6 +89,7 @@ public partial class Gothivia :
         DrawWings(spriteBatch);
         DrawSprite(spriteBatch);
         DrawBow(spriteBatch);
+        DrawFinger(spriteBatch);
         return false;
     }
 
@@ -181,14 +183,38 @@ public partial class Gothivia :
     }
 
 
+    private bool ShouldRenderBow()
+    {
+        if (_bowDissipateAlpha < 0.05f)
+            return false;
+        if (_telegraphLineAlpha < 0.05f)
+            return false;
+        if (_renderFinger)
+            return false;
+        return true;
+    }
+
+    private bool ShouldRenderFinger()
+    {
+        if (_telegraphLineAlpha <= 0.05f)
+            return false;
+        if (!_renderFinger)
+            return false;
+        return true;
+    }
+
     private void DrawBow(SpriteBatch spriteBatch)
     {
+        if (!ShouldRenderBow())
+            return;
+
         FlameBowShader flamebowShader = ShaderContent.GetInstance<FlameBowShader>();
         flamebowShader.Time = Main.GlobalTimeWrappedHourly * -24;
         flamebowShader.FlameNoiseTexture = AssetManager.Noise.InvertedVoronoi;
         flamebowShader.InsideColor = Color.Yellow;
         flamebowShader.BloomColor = Color.Red;
         flamebowShader.DissipateThreshold = MathHelper.Lerp(1f, 0f, _bowDissipateAlpha);
+        flamebowShader.DistortionStrength = 1f;
 
         _bowTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_Bow");
         Vector2 bowholdPosition = NPC.Center;
@@ -211,6 +237,75 @@ public partial class Gothivia :
         spriteBatch.Draw(bowDrawer);
         spriteBatch.RestartDefaults();
     }
+
+    private void DrawFinger(SpriteBatch spriteBatch)
+    {
+        if (!ShouldRenderFinger())
+            return;
+
+        _fingerTextureAsset ??= ModContent.Request<Texture2D>($"{Texture}_HollowFinger");
+        FlameBowShader flamebowShader = ShaderContent.GetInstance<FlameBowShader>();
+        flamebowShader.Time = Main.GlobalTimeWrappedHourly * -24;
+        flamebowShader.FlameNoiseTexture = AssetManager.Noise.InvertedVoronoi;
+        flamebowShader.InsideColor = Color.Yellow;
+        flamebowShader.BloomColor = Color.Red;
+        flamebowShader.DissipateThreshold = MathHelper.Lerp(1f, 0f, _bowDissipateAlpha);
+        flamebowShader.DistortionStrength = 0.125f;
+
+        Vector2 bowholdPosition = NPC.Center;
+        bowholdPosition += _aimingVelocity * 154;
+        bowholdPosition += Vector2.Lerp(_aimingVelocity * 700, Vector2.Zero, EasingFunction.OutExpo(_bowDissipateAlpha));
+
+        SpritebatchParams flameBowShaderParams = SpritebatchParams.InWorldAndZoomed() with { effect = flamebowShader };
+        using (SpritebatchStarter.Begin(spriteBatch, flameBowShaderParams))
+        {
+            SpritebatchDrawer fingerDrawer = SpritebatchDrawer.FromTextureAsset(_fingerTextureAsset, bowholdPosition);
+            fingerDrawer.color = Color.White * ExtraMath.Osc(0.5f, 1f, speed: 18) * _telegraphLineAlpha;
+            fingerDrawer.color.A = 0;
+            fingerDrawer.rotation = _aimingVelocity.ToRotation();
+            if (MyTarget.Center.X < NPC.Center.X)
+            {
+                fingerDrawer.spriteEffects = SpriteEffects.FlipHorizontally;
+                fingerDrawer.rotation += MathHelper.Pi;
+            }
+          
+            fingerDrawer.CenterOrigin();
+            spriteBatch.Draw(fingerDrawer);
+            spriteBatch.Draw(fingerDrawer);
+
+            //Draw a drop shadow type effect for a little bit of extra bloom
+            fingerDrawer.color = Color.DarkRed * ExtraMath.Osc(0.8f, 1f, speed: 12) * _telegraphLineAlpha * 0.35f;
+            fingerDrawer.color.A = 0;
+            fingerDrawer.scale *= 1.2f;
+            fingerDrawer.worldPosition -= _aimingVelocity * 32;
+            spriteBatch.Draw(fingerDrawer);
+
+            SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, bowholdPosition);
+            glowDrawer.color = Color.Lerp(Color.White, Color.Red, ExtraMath.Osc(0f, 1f, speed: 6)) * 0.6f;
+            glowDrawer.color.A = 0;
+            glowDrawer.rotation = fingerDrawer.rotation;
+            glowDrawer.spriteEffects = fingerDrawer.spriteEffects;
+            glowDrawer.scale *= 0.8f;
+            spriteBatch.Draw(glowDrawer);
+        }
+
+        SpritebatchDrawer whiteGlowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, bowholdPosition);
+        whiteGlowDrawer.color = Color.White;
+        whiteGlowDrawer.color.A = 0;
+        whiteGlowDrawer.rotation = _aimingVelocity.ToRotation();
+        whiteGlowDrawer.scale *= 0.12f;
+        whiteGlowDrawer.scale *= new Vector2(1.75f, 1f);
+        whiteGlowDrawer.worldPosition += _aimingVelocity * 80;
+
+        float dir = 1f;
+        if (MyTarget.Center.X < NPC.Center.X)
+        {
+            dir = -1f;
+        }
+        whiteGlowDrawer.worldPosition += _aimingVelocity.RotatedBy(-MathHelper.PiOver2 * dir) * 20;
+        spriteBatch.Draw(whiteGlowDrawer);
+    }
+
     private void DrawWings(SpriteBatch spriteBatch)
     {
         Asset<Texture2D> wings = GetWingsTextureAsset();

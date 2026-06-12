@@ -1,8 +1,10 @@
-﻿using ReLogic.Content;
+﻿using Microsoft.CodeAnalysis.Operations;
+using ReLogic.Content;
 using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
@@ -105,9 +107,197 @@ public static class DrawUtilities
             spriteBatch.Draw(spritebatchDrawer);
         }
     }
-} /// <summary>
-  /// Helper struct for using the spritebatch to draw things
-  /// </summary>
+} 
+
+/// <summary>
+/// Accesses the current parameters of the spritebatch
+/// </summary>
+public struct SpritebatchParams
+{
+    private readonly static FieldInfo _blendStateField;
+    private readonly static FieldInfo _samplerStateField;
+    private readonly static FieldInfo _depthStencilStateField;
+    private readonly static FieldInfo _rasterizerStateField;
+    private readonly static FieldInfo _matrixField;
+    private readonly static FieldInfo _effectField;
+    private readonly static FieldInfo _beginCalledInfoBackingField;
+    private readonly static FieldInfo _sortModeField;
+    static SpritebatchParams()
+    {
+        //Cache reflection fields
+        _sortModeField = GetPrivateSpritebatchField("sortMode");
+        _beginCalledInfoBackingField = GetPrivateSpritebatchField("beginCalled");
+        _effectField = GetPrivateSpritebatchField("customEffect");
+        _matrixField = GetPrivateSpritebatchField("transformMatrix");
+        _rasterizerStateField = GetPrivateSpritebatchField("rasterizerState");
+        _depthStencilStateField = GetPrivateSpritebatchField("depthStencilState");
+        _samplerStateField = GetPrivateSpritebatchField("samplerState");
+        _blendStateField = GetPrivateSpritebatchField("blendState");
+        _sortModeField = GetPrivateSpritebatchField("sortMode");
+    }
+
+    public BlendState blendState;
+    public SamplerState samplerState;
+    public RasterizerState rasterizerState;
+    public DepthStencilState depthStencilState;
+    public Effect effect;
+    public SpriteSortMode sortMode;
+    public Matrix matrix;
+    private static FieldInfo GetPrivateSpritebatchField(string name)
+    {
+        return typeof(SpriteBatch).GetField(name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic)!;
+    }
+
+    public static SpriteSortMode GetSortMode(SpriteBatch spriteBatch)
+    {
+        return (SpriteSortMode)_sortModeField.GetValue(spriteBatch)!;
+    }
+
+    public static BlendState GetBlendState(SpriteBatch spriteBatch)
+    {
+        return (BlendState)_blendStateField.GetValue(spriteBatch)!;
+    }
+
+    public static SamplerState GetSamplerState(SpriteBatch spriteBatch)
+    {
+        return (SamplerState)_samplerStateField.GetValue(spriteBatch)!;
+    }
+
+    public static DepthStencilState GetDepthStencilState(SpriteBatch spriteBatch)
+    {
+        return (DepthStencilState)_depthStencilStateField.GetValue(spriteBatch)!;
+    }
+
+    public static RasterizerState GetRasterizerState(SpriteBatch spriteBatch)
+    {
+        return (RasterizerState)_rasterizerStateField.GetValue(spriteBatch)!;
+    }
+
+    public static Matrix GetTransformMatrix(SpriteBatch spriteBatch)
+    {
+        return (Matrix)_matrixField.GetValue(spriteBatch)!;
+    }
+
+    public static Effect GetEffect(SpriteBatch spriteBatch)
+    {
+        return (Effect)_effectField.GetValue(spriteBatch)!;
+    }
+
+    public static bool GetBeginCalled(SpriteBatch spriteBatch)
+    {
+        bool beginCalled = (bool)_beginCalledInfoBackingField.GetValue(spriteBatch)!;
+        return beginCalled;
+    }
+    public static SpritebatchParams FromSpritebatch(SpriteBatch spriteBatch)
+    {
+        SpritebatchParams starter = new SpritebatchParams();
+        starter.blendState = GetBlendState(spriteBatch);
+        starter.samplerState = GetSamplerState(spriteBatch);
+        starter.sortMode = GetSortMode(spriteBatch);
+        starter.depthStencilState = GetDepthStencilState(spriteBatch);
+        starter.effect = GetEffect(spriteBatch);
+        starter.matrix = GetTransformMatrix(spriteBatch);
+        starter.rasterizerState = GetRasterizerState(spriteBatch);
+        return starter;
+    }
+
+    
+    public void Begin(SpriteBatch spriteBatch)
+    {
+        spriteBatch.Begin(
+            sortMode,
+            blendState,
+            samplerState,
+            depthStencilState,
+            rasterizerState,
+            effect,
+            matrix);
+    }
+
+    public static SpritebatchParams InWorldAndZoomed()
+    {
+        SpritebatchParams starter = new SpritebatchParams();
+        starter.blendState = BlendState.AlphaBlend;
+        starter.samplerState = SamplerState.PointClamp;
+        starter.sortMode = SpriteSortMode.Deferred;
+        starter.depthStencilState = DepthStencilState.None;
+        starter.effect = null!;
+        starter.matrix = Main.GameViewMatrix.TransformationMatrix;
+        starter.rasterizerState = Main.Rasterizer;
+        return starter;
+    }
+}
+
+public static class SpritebatchDrawExtensions
+{
+    public static void Begin(this SpriteBatch spriteBatch, SpritebatchParams spritebatchParams) => spritebatchParams.Begin(spriteBatch);
+}
+
+/// <summary>
+/// Encapsulates parameters for starting a spritebatch so we don't have to call begin and end everytime
+/// This should only be used with a using statement after using one of the static .Begin() functions
+/// </summary>
+public struct SpritebatchStarter :
+    IDisposable
+{
+    private SpritebatchParams? _oldParameters;
+    private SpriteBatch? _spriteBatch;
+
+    public required SpritebatchParams spriteBatchParameters;
+ 
+    //TODO: check if parameters match and do not restart the spritebatch if they do
+    
+    /// <summary>
+    /// Begins a spritebatch with these parameters, if begin has already been called it will be ended
+    /// </summary>
+    /// <param name="spriteBatch"></param>
+    public void Begin(SpriteBatch spriteBatch)
+    {
+        _spriteBatch = spriteBatch;
+        bool beginCalled = SpritebatchParams.GetBeginCalled(spriteBatch);
+        if (beginCalled)
+        {
+            _oldParameters = SpritebatchParams.FromSpritebatch(spriteBatch);
+            spriteBatch.End();
+        }
+        spriteBatch.Begin(spriteBatchParameters);
+    }
+
+    public void EndAndTryResume(SpriteBatch spriteBatch)
+    {
+        //This should only be used with a using statement, which means this will always be called immediately after it exits scope
+        //So begin can be assumed to have been called here
+        spriteBatch.End();
+
+        //If there's old parameters that means a batch is being interuppted, so we shouldresume it right after
+        //It remembers the old parameters so it doesn't matter where this is being called!
+        if (_oldParameters.HasValue)
+        {
+            spriteBatch.Begin(_oldParameters.Value);
+            _oldParameters = null;         
+        }
+    }
+
+    public static SpritebatchStarter Begin(SpriteBatch spriteBatch, SpritebatchParams spritebatchParams)
+    {
+        SpritebatchStarter starter = new SpritebatchStarter()
+        {
+            spriteBatchParameters = spritebatchParams
+        };
+        starter._oldParameters = null;
+        starter.Begin(spriteBatch);
+        return starter;
+    }
+
+    public void Dispose()
+    {
+        EndAndTryResume(_spriteBatch!);
+    }
+}
+
+/// <summary>  
+/// Helper struct for using the spritebatch to draw things
+/// </summary>
 public struct SpritebatchDrawer
 {
     public Texture2D texture;

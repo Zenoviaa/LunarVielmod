@@ -134,6 +134,7 @@ public partial class Gothivia : ScarletBoss
 
         TheZoomer,
 
+
         SniperShot
     }
 
@@ -159,6 +160,8 @@ public partial class Gothivia : ScarletBoss
     private float _afterImageAlpha;
     private bool _drawAfterImage;
     private bool _renderFigure8Trail;
+    private bool _renderFinger;
+    private float _fingerAlpha;
     private float _figure8TrailAlpha;
     private float _numDirections;
     private int _bowFrame;
@@ -178,6 +181,9 @@ public partial class Gothivia : ScarletBoss
     private ref float AttackCounter => ref NPC.ai[3];
 
     private bool InPhase2 => NPC.life < NPC.lifeMax * 0.5f;
+    private float SniperShot_PrepTime => 100;
+    private float SniperShot_TelegraphTime => 360;
+    private float SniperShot_ShootTime => 65;
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
         // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
@@ -298,7 +304,7 @@ public partial class Gothivia : ScarletBoss
 
         if (Keyboard.GetState().IsKeyDown(Keys.L))
         {
-            SwitchState(AIState.TheZoomer);
+            SwitchState(AIState.SniperShot);
         }
         _numDirections = 0;
         _wingsPerspective = WingsPerspective.ThreeQ;
@@ -307,6 +313,7 @@ public partial class Gothivia : ScarletBoss
         _wingAnimationFrame.UpdateTick();
         _telegraphLineAlpha = MathHelper.Lerp(_telegraphLineAlpha, 0f, 0.1f);
         _renderFigure8Trail = false;
+        _renderFinger = false;
         _drawAfterImage = false;
         switch (State)
         {
@@ -339,6 +346,9 @@ public partial class Gothivia : ScarletBoss
                 break;
         }
 
+        float targetFingerAlpha = _renderFinger ? 1f : 0f;
+        _fingerAlpha = MathHelper.Lerp(_fingerAlpha, targetFingerAlpha, 0.1f);
+
         float targetAfterImageAlpha = _drawAfterImage ? 1f : 0f;
         _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, targetAfterImageAlpha, 0.1f);
 
@@ -363,6 +373,136 @@ public partial class Gothivia : ScarletBoss
     private void AI_SniperShot()
     {
         Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+
+                    }
+
+                    if(Timer == 10)
+                    {
+                        SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BindingBless1") with { PitchVariance = 0.6f }, NPC.Center);
+                        CreateInCircle();
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                                ModContent.ProjectileType<BlinkingStar>(), 24, 0f, Main.myPlayer, 0f, NPC.whoAmI);
+                        }
+                    }
+
+                    _wingsPerspective = WingsPerspective.ThreeQ;
+                    Animator.PlayAnimation(Anim_Dichotamy);
+                    _outliner.warning = true;
+                    FaceTarget();
+                    float x = -NPC.spriteDirection;
+                    Vector2 positionToMoveTo = MyTarget.Center + new Vector2(x * 256, 0);
+                    NPC.velocity = Vector2.Zero;
+                    NPC.Center = Vector2.Lerp(NPC.Center, positionToMoveTo, 0.05f);
+                    if (Timer >= SniperShot_PrepTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    if(Timer == 1)
+                    {
+                        FXUtil.ApplyVignette(1f, timer: SniperShot_TelegraphTime);
+                    }
+                    _wingsPerspective = WingsPerspective.ThreeQ;
+                    Animator.PlayAnimation(Anim_Arrowhold);
+                    _outliner.warning = true;
+                    _renderFinger = true;
+                    _bowDissipateAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / 30f));
+                    _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / 60f));
+
+                    Vector2 targetVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                   
+           
+                    float radians = MathHelper.Lerp(MathHelper.ToRadians(360), 0, EasingFunction.InOutExpo(Timer / SniperShot_TelegraphTime));
+
+                    _aimingVelocity = targetVelocity.RotatedBy(radians);
+
+                   Vector2 offset = -Vector2.UnitY;
+                    offset *= 384;
+                    offset = offset.RotatedBy(radians);
+                    Vector2 pointToMoveTo = MyTarget.Center + offset;
+                    NPC.Center = Vector2.Lerp(NPC.Center, pointToMoveTo, MathHelper.Lerp(0f, 0.1f, EasingFunction.InOutExpo(Timer / 60f)));
+                    NPC.velocity = Vector2.Zero;
+                    
+                    if(Timer < SniperShot_TelegraphTime - 30)
+                    {
+                        _drawAfterImage = true;
+
+
+                    }
+
+                    if (Timer == SniperShot_TelegraphTime - 30)
+                    {
+                        CreateInCircle();
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
+                                ModContent.ProjectileType<BlinkingStar>(), 24, 0f, Main.myPlayer, 0f, NPC.whoAmI);
+                        }
+                    }
+                    if(Timer >= SniperShot_TelegraphTime - 30)
+                    {
+                        float t = Timer - (SniperShot_TelegraphTime - 30);
+                        _bowDissipateAlpha = MathHelper.Lerp(1f, 0f, t / 30f);
+
+                    }
+                    if(Timer >= SniperShot_TelegraphTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    if(Timer == 1)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, _aimingVelocity.SafeNormalize(Vector2.Zero) * 2400,
+                                ModContent.ProjectileType<GothinTorch>(), 1, 1, Main.myPlayer, ai2: 1);
+                        }
+                        NPC.velocity = -Vector2.UnitY * 24;
+                    }
+                    Animator.PlayAnimation(Anim_Arrowshot);
+                    NPC.velocity *= 0.96f;
+                    _outliner.attacking = true;
+                    if(Timer >= SniperShot_ShootTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    NPC.velocity *= 0.96f;
+
+                    FaceTarget();
+                    float x = -NPC.spriteDirection;
+                    Vector2 positionToMoveTo = MyTarget.Center + new Vector2(0, -256);
+                    NPC.velocity = Vector2.Zero;
+                    NPC.Center = Vector2.Lerp(NPC.Center, positionToMoveTo, 0.1f);
+
+                    if (Timer >= 30)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
     }
     private void AI_Suns()
     {
@@ -835,24 +975,16 @@ public partial class Gothivia : ScarletBoss
         if (Timer == 1)
         {
             NPC.TargetClosest();
-            Vector2 targetCenter = MyTarget.Center;
-            Vector2 targetHoverCenter = targetCenter + new Vector2(312, 0);
-            NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
-
-            float hoverSpeed = 5;
-            float yVelocity = VectorHelper.Osc(1, -1, hoverSpeed);
-            NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, yVelocity), 0.2f);
         }
 
-        if (Timer < 50)
-        {
-            NPC.velocity.Y -= 0.08f;
-        }
+        Animator.PlayAnimation(Anim_Floating);
+        Vector2 targetCenter = MyTarget.Center;
+        Vector2 targetHoverCenter = targetCenter + new Vector2(0, -196);
+        NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.05f);
 
         if (Timer >= 60)
         {
             SwitchState(AIState.Dichotamy);
-            NPC.velocity.Y *= 0;
         }
     }
 

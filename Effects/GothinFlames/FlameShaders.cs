@@ -108,6 +108,14 @@ public class FlameBowShader : CrystalShader<FlameBowShader>
             Effect.Parameters["dissipateThreshold"].SetValue(value);
         }
     }
+
+    public float DistortionStrength
+    {
+        set
+        {
+            Effect.Parameters["distortionStrength"].SetValue(value);
+        }
+    }
 }
 
 public class GothinFlameTrailShader : CrystalShader<GothinFlameTrailShader>
