@@ -153,6 +153,8 @@ public partial class Gothivia :
 
     private void DrawTelegraphLine(SpriteBatch spriteBatch)
     {
+        if (_telegraphLineAlpha <= 0.05f)
+            return;
 
         Asset<Texture2D> bloomLineTextureAsset = ModContent.Request<Texture2D>($"Stellamod/Assets/NoiseTextures/BloomLine");
         void DrawLineInner(Vector2 direction)
@@ -167,6 +169,18 @@ public partial class Gothivia :
 
             spriteBatch.Draw(lineDrawer);
         }
+
+        if(ShootRotations.Count > 0)
+        {
+            for(int i = 0; i < ShootRotations.Count; i++)
+            {
+                float angle = ShootRotations[i];
+                Vector2 offset = angle.ToRotationVector2();
+                DrawLineInner(offset);
+            }
+            return;
+        }
+
 
         if (_numDirections == 0)
             DrawLineInner(_aimingVelocity);

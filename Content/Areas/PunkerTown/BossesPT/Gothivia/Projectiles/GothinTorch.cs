@@ -150,7 +150,7 @@ public class GothinTorch : ModProjectile,
         }
         else
         {
-            if (Timer >= 35)
+            if (Timer >= 15)
             {
                 Projectile.hostile = false;
             }

@@ -539,17 +539,6 @@ public partial class RoyalFox : ScarletBoss,
         _tailInFront = true;
       //  _darkMoon = true;
         
-        if (!_pressed && Keyboard.GetState().IsKeyDown(Keys.L))
-        {
-            _pressed = true;
-        }
-        if (_pressed && Keyboard.GetState().IsKeyUp(Keys.L) && !IsAClone)
-        {
-            _pressed = false;
-            _phase2 = true;
-            NPC.life = (int)(NPC.lifeMax * 0.49f);
-        }
-
         if (!_killYoSelf)
         {
             switch (State)

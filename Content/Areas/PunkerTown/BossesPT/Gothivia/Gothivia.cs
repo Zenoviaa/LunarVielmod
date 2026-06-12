@@ -6,8 +6,10 @@ using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
+using Stellamod.NPCs.Town;
 using Stellamod.Visual.Particles;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -134,6 +136,7 @@ public partial class Gothivia : ScarletBoss
 
         TheZoomer,
 
+        ComboAttack,
 
         SniperShot
     }
@@ -152,19 +155,35 @@ public partial class Gothivia : ScarletBoss
             return _patternManageBackingField;
         }
     }
+
+    private List<float> _shootRotations;
+    private List<float> ShootRotations
+    {
+        get
+        {
+            _shootRotations ??= new List<float>(capacity: 8);
+            return _shootRotations;
+        }
+    }
+
     private WingsPerspective _wingsPerspective;
     private bool _contactDamage;
     private float _telegraphLineOffTimer;
     private float _telegraphLineAlpha;
     private float _bowDissipateAlpha;
     private float _afterImageAlpha;
-    private bool _drawAfterImage;
+    private bool _renderAfterImage;
     private bool _renderFigure8Trail;
     private bool _renderFinger;
     private float _fingerAlpha;
     private float _figure8TrailAlpha;
     private float _numDirections;
     private int _bowFrame;
+
+    private float _dashDirection;
+    private Vector2 _startCDashOffset;
+    private Vector2 _endCDashOffset;
+
     private Vector2 _aimingVelocity;
     private Vector2 _figureEightStartCenter;
     private Outliner _outliner;
@@ -181,9 +200,20 @@ public partial class Gothivia : ScarletBoss
     private ref float AttackCounter => ref NPC.ai[3];
 
     private bool InPhase2 => NPC.life < NPC.lifeMax * 0.5f;
+
     private float SniperShot_PrepTime => 100;
     private float SniperShot_TelegraphTime => 360;
     private float SniperShot_ShootTime => 65;
+
+    private float ComboAttack_PrepTime => 100f;
+    private float ComboAttack_BlowtorchTelegraphTime => 35;
+    private float ComboAttack_ShootTime => 25f;
+    private float ComboAttack_BlastUpTime => 55f;
+    private float ComboAttack_RotateTime => 55f;
+    private float ComboAttack_ZoomTime => 30f;
+    private float ComboAttack_SecondZoomTime => 52;
+    private float ComboAttack_EndingTime => 30f;
+
     public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
     {
         // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
@@ -304,7 +334,7 @@ public partial class Gothivia : ScarletBoss
 
         if (Keyboard.GetState().IsKeyDown(Keys.L))
         {
-            SwitchState(AIState.SniperShot);
+            SwitchState(AIState.ComboAttack);
         }
         _numDirections = 0;
         _wingsPerspective = WingsPerspective.ThreeQ;
@@ -314,7 +344,8 @@ public partial class Gothivia : ScarletBoss
         _telegraphLineAlpha = MathHelper.Lerp(_telegraphLineAlpha, 0f, 0.1f);
         _renderFigure8Trail = false;
         _renderFinger = false;
-        _drawAfterImage = false;
+        _renderAfterImage = false;
+        ShootRotations.Clear();
         switch (State)
         {
             case AIState.Spawn:
@@ -344,12 +375,15 @@ public partial class Gothivia : ScarletBoss
             case AIState.SniperShot:
                 AI_SniperShot();
                 break;
+            case AIState.ComboAttack:
+                AI_ComboAttack();
+                break;
         }
 
         float targetFingerAlpha = _renderFinger ? 1f : 0f;
         _fingerAlpha = MathHelper.Lerp(_fingerAlpha, targetFingerAlpha, 0.1f);
 
-        float targetAfterImageAlpha = _drawAfterImage ? 1f : 0f;
+        float targetAfterImageAlpha = _renderAfterImage ? 1f : 0f;
         _afterImageAlpha = MathHelper.Lerp(_afterImageAlpha, targetAfterImageAlpha, 0.1f);
 
         float targetAlpha = _renderFigure8Trail ? 1f : 0f;
@@ -367,6 +401,270 @@ public partial class Gothivia : ScarletBoss
         if (MultiplayerHelper.IsHost)
         {
             SwitchState(AttackPattern.NextPattern());
+        }
+    }
+
+
+    private void AI_ComboAttack()
+    {
+        void Blast()
+        {
+            if (!MultiplayerHelper.IsHost)
+                return;
+
+
+            for(int i = 0; i < ShootRotations.Count; i++)
+            {
+                float angle = ShootRotations[i];
+                Vector2 offset = angle.ToRotationVector2();
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, offset * 2400,
+                    ModContent.ProjectileType<GothinTorch>(), 1, 1, Main.myPlayer);
+            }
+        }
+
+        void SetBlowtorchShootRotations()
+        {
+            switch (AttackCounter)
+            {
+                case 0:
+                    {
+                        for(float angle = 0; angle < MathHelper.TwoPi; angle += MathHelper.PiOver2)
+                        {
+                            ShootRotations.Add(angle);
+                        }
+                    }
+                    break;
+                case 1:
+                    {
+                        for (float angle = MathHelper.PiOver4; angle < MathHelper.TwoPi; angle += MathHelper.PiOver2)
+                        {
+                            ShootRotations.Add(angle);
+                        }
+                    }
+                    break;
+                case 2:
+                    {
+                        for (float angle = 0; angle < MathHelper.TwoPi; angle += MathHelper.PiOver4)
+                        {
+                            ShootRotations.Add(angle);
+                        }
+                    }
+                    break;
+                case 3:
+                    {
+                        for (float angle = 0; angle < MathHelper.TwoPi; angle += MathHelper.PiOver4)
+                        {
+                            float a = angle + MathHelper.ToRadians(22.5f);
+                            ShootRotations.Add(a);
+                        }
+                    }
+                    break;
+            }
+
+
+        }
+
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+
+                    _outliner.warning = true;
+                    Animator.PlayAnimation(Anim_Floating);
+                    FaceTarget();
+                    float x = -NPC.spriteDirection;
+                    Vector2 positionToMoveTo = MyTarget.Center + new Vector2(0, -256);
+                    NPC.velocity = Vector2.Zero;
+                    NPC.Center = Vector2.Lerp(NPC.Center, positionToMoveTo, 0.05f);
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
+                    if (Timer >= ComboAttack_PrepTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+
+            case 1:
+                {
+                    _outliner.warning = true;
+                    _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / ComboAttack_BlowtorchTelegraphTime));
+                    Animator.PlayAnimation(Anim_Arrowhold);
+                    FaceTarget();
+                    SetBlowtorchShootRotations();
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
+                    if (Timer >= ComboAttack_BlowtorchTelegraphTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+
+            case 2:
+                {
+                    if(Timer == 1)
+                    {
+                        SetBlowtorchShootRotations();
+                        Blast();
+                    }
+                    Animator.PlayAnimation(Anim_Arrowshot);
+                    _outliner.attacking = true;
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
+                    if (Timer >= ComboAttack_ShootTime)
+                    {
+                        Timer = 0;
+                        AttackCounter++;
+                        if (AttackCounter >= 4)
+                        {
+                            AttackCycle++;
+                        } else
+                        {
+                            AttackCycle--;
+                        }
+                    }
+                }
+                break;
+
+            case 3:
+                {
+                    Animator.PlayAnimation(Anim_Floating);
+                    _outliner.attacking = true;
+                    float ratio = Timer / ComboAttack_BlastUpTime;
+                    ChargeParticlesBig(NPC.Center, Timer);
+                    //I should really stop writing nested interpolations like this
+                    //But it's funny
+                    Vector2 velocity = -Vector2.UnitY * 18;
+                    Vector2 interpolatedVelocity = Vector2.Lerp(Vector2.Lerp(Vector2.Zero, -velocity * 0.5f, EasingFunction.OutCirc(ratio)), velocity, EasingFunction.InOutExpo(ratio));
+                    NPC.velocity = interpolatedVelocity * MathHelper.Lerp(1f, 2.5f, (Timer - ComboAttack_BlastUpTime) / 30f);
+                    NPC.rotation = NPC.velocity.X * 0.05f;
+                    if(Timer >= ComboAttack_BlastUpTime && NPC.Center.Y < MyTarget.Center.Y)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+
+            case 4:
+                {
+                    if(Timer == 1)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+
+                            Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.UnitY * 2400,
+                                ModContent.ProjectileType<GothinTorch>(), 1, 1, Main.myPlayer, ai2: 1);
+                        }
+                    }
+
+                    if(Timer % 4 == 0)
+                    {
+                        var dp = DustParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(32, 32), -NPC.velocity.SafeNormalize(Vector2.Zero));
+                        dp.noTileCollide = true;
+                        dp.gravity = 0;
+                    }
+
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, NPC.Center, 0.3f));
+                    Animator.PlayAnimation(Anim_Dive);
+                    _renderFigure8Trail = true;
+                    _outliner.attacking = true;
+                    NPC.velocity *= 1.05f;
+                    NPC.velocity = NPC.velocity.RotatedBy(0.05f);
+                    if(Timer >= 8)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 5:
+                {
+                    _contactDamage = true;
+                    _renderFigure8Trail = true;
+                    _renderAfterImage = true;
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        _startCDashOffset = NPC.Center;
+                        _endCDashOffset = NPC.velocity;
+                        _dashDirection = NPC.Center.X < MyTarget.Center.X ? -1 : 1;
+                    }
+
+                    Vector2 endPoint = MyTarget.Center;
+
+                    float ratio = Timer / ComboAttack_ZoomTime;
+
+                    Vector2 inBetweenPoint = Vector2.Lerp(_startCDashOffset, endPoint, ratio);
+                    Vector2 offset = Vector2.Lerp(Vector2.Zero, Vector2.UnitX * 445 * _dashDirection, EasingFunction.QuickOutSlowIn(ratio));
+                    Vector2 offset2 = Vector2.Lerp(-Vector2.UnitY * 128, Vector2.Zero, EasingFunction.InOutSine(ratio));
+                    Vector2 pointToMoveTo = inBetweenPoint + offset + offset2;
+                    Vector2 vel = pointToMoveTo - NPC.Center;
+                    NPC.velocity = Vector2.Lerp(_endCDashOffset, vel, EasingFunction.InOutSine(Timer / 20f));
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation() + MathHelper.PiOver2, 0.1f);
+
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, NPC.Center, 0.3f));
+                    Animator.PlayAnimation(Anim_Dive);
+                
+                    if(Timer >= ComboAttack_ZoomTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 6:
+                {
+                    _contactDamage = true;
+                    _renderFigure8Trail = true;
+                    _renderAfterImage = true;
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        _startCDashOffset = NPC.Center;
+                        _endCDashOffset = NPC.velocity;
+                       // _dashDirection = NPC.Center.X < MyTarget.Center.X ? -1 : 1;
+                    //    _dashDirection *= -1;
+                    }
+
+                    Vector2 endPoint = MyTarget.Center;
+
+                    float ratio = Timer / ComboAttack_SecondZoomTime;
+
+                    Vector2 inBetweenPoint = Vector2.Lerp(_startCDashOffset, endPoint, ratio);
+                    Vector2 offset = Vector2.Lerp(Vector2.Zero, Vector2.UnitX * 800 * _dashDirection, EasingFunction.QuickOutSlowIn(ratio));
+                    Vector2 offset2 = Vector2.Lerp(-Vector2.UnitY * 512, Vector2.Zero, EasingFunction.InOutSine(ratio));
+                    Vector2 pointToMoveTo = inBetweenPoint + offset + offset2;
+                    Vector2 vel = pointToMoveTo - NPC.Center;
+                    NPC.velocity = Vector2.Lerp(_endCDashOffset, vel, EasingFunction.InOutSine(Timer / 45));
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation() + MathHelper.PiOver2, 0.1f);
+
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, NPC.Center, 0.3f));
+                    Animator.PlayAnimation(Anim_Dive);
+
+                    if (Timer >= ComboAttack_SecondZoomTime)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 7:
+                {
+                    NPC.velocity *= 0.96f;
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
+                    Animator.PlayAnimation(Anim_Floating);
+                    if (Timer >= ComboAttack_EndingTime)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
         }
     }
 
@@ -438,7 +736,7 @@ public partial class Gothivia : ScarletBoss
                     
                     if(Timer < SniperShot_TelegraphTime - 30)
                     {
-                        _drawAfterImage = true;
+                        _renderAfterImage = true;
 
 
                     }
@@ -610,7 +908,7 @@ public partial class Gothivia : ScarletBoss
         if (Timer > 120 && Timer < 500)
         {
             Animator.PlayAnimation(Anim_Dive);
-            _drawAfterImage = true;
+            _renderAfterImage = true;
             _renderFigure8Trail = true;
             _outliner.attacking = true;
             _contactDamage = true;
@@ -844,7 +1142,7 @@ public partial class Gothivia : ScarletBoss
     private void AI_BoostBounce()
     {
         FaceTarget();
-        _drawAfterImage = true;
+        _renderAfterImage = true;
         NPC.velocity *= 0.96f;
         Timer++;
         if(AttackCounter == 0)
@@ -978,10 +1276,11 @@ public partial class Gothivia : ScarletBoss
         }
 
         Animator.PlayAnimation(Anim_Floating);
+        FaceTarget();
         Vector2 targetCenter = MyTarget.Center;
         Vector2 targetHoverCenter = targetCenter + new Vector2(0, -196);
         NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.05f);
-
+        NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
         if (Timer >= 60)
         {
             SwitchState(AIState.Dichotamy);
