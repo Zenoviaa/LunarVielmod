@@ -52,6 +52,32 @@ public partial class Gothivia :
 
     private void DrawPixelatedTorchWings(GraphicsDevice gDevice)
     {
+        Matrix CalculateMatrix(float zOffset, float tOffset)
+        {
+            Matrix perspectiveMatrix = Matrix.Identity;
+            Vector3 yAxis = new Vector3(0, 1, 0);
+            float zRotation = MathHelper.Lerp(MathHelper.ToRadians(-75), MathHelper.ToRadians(-60),
+                ExtraMath.Osc(0f, 1f, speed: 4, offset: tOffset));
+
+            Quaternion zQuaternion = Quaternion.CreateFromAxisAngle(yAxis, zRotation);
+            Matrix flapMatrix = Matrix.CreateFromQuaternion(zQuaternion);
+
+
+            Vector3 zAxis = new Vector3(0, 0, 1);
+            float range = 9;
+            float zRot = MathHelper.Lerp(MathHelper.ToRadians(range),
+                MathHelper.ToRadians(0), ExtraMath.Osc(0f, 1f, speed: 4, offset: tOffset));
+         
+            Quaternion zWingQuat = Quaternion.CreateFromAxisAngle(zAxis, zRot);
+            Matrix z = Matrix.CreateFromQuaternion(zWingQuat);
+
+
+            Vector3 offset = Vector3.Zero;
+            Matrix translationMatrix = Matrix.CreateTranslation(offset);
+            Matrix zOffsetMatrix = Matrix.CreateRotationZ(zOffset);
+            Matrix fullMatrix = z * flapMatrix  * perspectiveMatrix * translationMatrix * zOffsetMatrix;
+            return fullMatrix;
+        }
         Main.graphics.GraphicsDevice.Textures[0] = AssetManager.GlowMask.JumbledGlowCircle;
         Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
         FlameWingShader flameWingShader = ShaderContent.GetInstance<FlameWingShader>();
@@ -61,35 +87,28 @@ public partial class Gothivia :
         flameWingShader.Time = Main.GlobalTimeWrappedHourly * 10;
         flameWingShader.BloomColor = Color.Red;
         flameWingShader.InsideColor = Color.White;
-        Matrix perspectiveMatrix = Matrix.Identity;
-        Vector3 yAxis = new Vector3(0, 1, 0);
-        float zRotation = MathHelper.Lerp(MathHelper.ToRadians(-75), MathHelper.ToRadians(-60),
-            ExtraMath.Osc(0f, 1f, speed: 4));
-        
-        Quaternion zQuaternion = Quaternion.CreateFromAxisAngle(yAxis, zRotation);
-        Matrix flapMatrix = Matrix.CreateFromQuaternion(zQuaternion);
 
-
-        Vector3 zAxis = new Vector3(0, 0, 1);
-        float range = 9;
-        float zRot = MathHelper.Lerp(MathHelper.ToRadians(range),
-            MathHelper.ToRadians(0), ExtraMath.Osc(0f, 1f, speed: 4));
-        Quaternion zWingQuat = Quaternion.CreateFromAxisAngle(zAxis, zRot);
-        Matrix z = Matrix.CreateFromQuaternion(zWingQuat);
-
-
-        Vector3 offset = Vector3.Zero;
-        Matrix translationMatrix = Matrix.CreateTranslation(offset);
-        Matrix fullMatrix = z * flapMatrix * perspectiveMatrix * translationMatrix;
         Vector2 centerPoint = NPC.Center;
-        centerPoint -= new Vector2(-64, -16);
+        centerPoint -= new Vector2(-64, 0);
         float scale = 0.6f;
-        WingQuad.CalculateRightCenterVertices(centerPoint, 1200 * scale, 200 * scale, fullMatrix);
+
+        Matrix topWingMatrix = CalculateMatrix(zOffset: 0, tOffset: 0);
+        WingQuad.CalculateRightCenterVertices(centerPoint, 1200 * scale, 200 * scale, topWingMatrix);
            
         Color glowColor = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 3));
         Color wingColor = Color.Lerp(Color.Lerp(Color.White, Color.Yellow, 0.5f), glowColor, ExtraMath.Osc(0f, 0.8f, speed: 1.5f));
         wingColor *=MathHelper.Lerp(0.4f, 1f, ExtraMath.Osc(0f, 1f, speed: 4));
         WingQuad.SetColor(wingColor);
+        WingQuad.DrawWithShader(flameWingShader);
+
+        WingQuad.FlipVerticesX(NPC.Center.X);
+        WingQuad.DrawWithShader(flameWingShader);
+
+
+        scale *= 0.9f;
+        Matrix bottomWingMatrix = CalculateMatrix(zOffset: MathHelper.ToRadians(-35), tOffset: -1);
+        WingQuad.CalculateRightCenterVertices(centerPoint, 1200 * scale, 200 * scale, bottomWingMatrix);
+        WingQuad.SetColor(Color.Lerp(wingColor, Color.Red, 0.5f) * 0.75f);
         WingQuad.DrawWithShader(flameWingShader);
 
         WingQuad.FlipVerticesX(NPC.Center.X);
@@ -406,6 +425,7 @@ public partial class Gothivia :
         Asset<Texture2D> textureAsset = ModContent.Request<Texture2D>(texture);
         SpritebatchDrawer npcDrawer = SpritebatchDrawer.FromNPC(NPC);
         npcDrawer.texture = textureAsset.Value;
+        npcDrawer.worldPosition.Y += ExtraMath.Osc(-4f, 4f, speed: 2);
         if (npcDrawer.spriteEffects == SpriteEffects.FlipHorizontally)
             npcDrawer.drawOrigin.X = npcDrawer.sourceRect!.Value.Width - npcDrawer.drawOrigin.X;
         SpritebatchDrawer realDrawer = npcDrawer;
