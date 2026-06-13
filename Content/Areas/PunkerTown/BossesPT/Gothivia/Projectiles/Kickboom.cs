@@ -71,6 +71,9 @@ public class Kickboom : ModProjectile,
             }
         }
 
+
+        if (Timer > 29)
+            Projectile.hostile = false;
         Projectile.rotation = Projectile.velocity.ToRotation();
         Projectile.Center = Parent.Center;
 

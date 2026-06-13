@@ -12,6 +12,11 @@ namespace Stellamod.Buffs
     {
         private int _timer;
         private int _maxHealthLoss;
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+
+        }
         public override void PostUpdateBuffs()
         {
             base.PostUpdateBuffs();

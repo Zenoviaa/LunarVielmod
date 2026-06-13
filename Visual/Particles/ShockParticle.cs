@@ -17,7 +17,7 @@ namespace Stellamod.Visual.Particles
         {
             _timer++;
             Scale *= 1.2f;
-            color *= 0.95f;
+            color = Color.Lerp(Color.White, Color.Black, fadeIn / 60f);
             fadeIn++;
             if (fadeIn > 60)
                 active = false;

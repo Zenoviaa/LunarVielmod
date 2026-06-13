@@ -1,4 +1,5 @@
 ﻿using Stellamod.Assets;
+using Stellamod.Buffs;
 using Stellamod.Common.Shaders;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia.Projectiles;
 using Stellamod.Core.Pixelation;
@@ -16,7 +17,14 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 
 public class GothiviaPlayer : ModPlayer
 {
+    public int maxStacks;
     public int sunStacks;
+    public override void ResetEffects()
+    {
+        base.ResetEffects();
+        maxStacks = 3;
+    }
+
     public override void PostUpdateMiscEffects()
     {
         base.PostUpdateMiscEffects();
@@ -29,7 +37,7 @@ public class GothiviaPlayer : ModPlayer
         if (Player.ownedProjectileCounts[ModContent.ProjectileType<MiniSun>()] >= 1)
             return;
 
-        Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + new Vector2(0, -256), Vector2.Zero, 
+        Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + new Vector2(0, -256), Vector2.Zero,
             ModContent.ProjectileType<MiniSun>(), 1, 1, Player.whoAmI);
     }
 
@@ -70,7 +78,7 @@ public class MiniSun : ModProjectile,
     {
         base.SetStaticDefaults();
     }
-    
+
     public override void SetDefaults()
     {
         base.SetDefaults();
@@ -87,7 +95,7 @@ public class MiniSun : ModProjectile,
     public override void AI()
     {
         base.AI();
-     
+
         switch (State)
         {
             case AIState.Hover:
@@ -97,9 +105,10 @@ public class MiniSun : ModProjectile,
                 AI_Crash();
                 break;
         }
-        float statcks = Owner.GetModPlayer<GothiviaPlayer>().sunStacks;
-    //    Main.NewText(Timer);
-        if (statcks >= 3 && State != AIState.Crash)
+
+        GothiviaPlayer gPlayer = Owner.GetModPlayer<GothiviaPlayer>();
+        float statcks = gPlayer.sunStacks;
+        if (statcks >= gPlayer.maxStacks && State != AIState.Crash)
             SwitchState(AIState.Crash);
     }
 
@@ -125,12 +134,12 @@ public class MiniSun : ModProjectile,
     private void AI_Crash()
     {
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             _startOffset = (Projectile.Center - Owner.Center);
         }
 
-        float crashTime = 100;
+        float crashTime = 1;
         float ratio = Timer / crashTime;
         float ease1 = EasingFunction.OutExpo(ratio);
         float ease2 = EasingFunction.InExpo(ratio);
@@ -139,16 +148,16 @@ public class MiniSun : ModProjectile,
         Vector2 offset3 = Vector2.Lerp(offset1, offset2, ratio);
         Vector2 positionToMoveTo = Owner.Center + offset3;
         Projectile.Center = positionToMoveTo;
-        if(Timer >= crashTime)
+        if (Timer >= crashTime)
         {
             Owner.KillMe(new Terraria.DataStructures.PlayerDeathReason(), 10000000, 1);
-           
+
             if (this.OwnedByLocalClient())
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Owner.Center, Vector2.Zero,
                     ModContent.ProjectileType<RedSunBoom>(), 1, 1, Projectile.owner);
             }
-            
+
             Projectile.Kill();
         }
     }
@@ -156,7 +165,7 @@ public class MiniSun : ModProjectile,
     public override bool PreDraw(ref Color lightColor)
     {
         float statcks = Owner.GetModPlayer<GothiviaPlayer>().sunStacks;
-        float sizeMult = MathHelper.Lerp(1f, 2f, statcks / 3f);
+        float sizeMult = MathHelper.Lerp(1f, 3f, statcks / 3f);
         Vector2 scale = Vector2.One * 0.1f * sizeMult;
         RedSunShader redSunShader = ShaderContent.GetInstance<RedSunShader>();
         redSunShader.Time = Main.GlobalTimeWrappedHourly * 9;

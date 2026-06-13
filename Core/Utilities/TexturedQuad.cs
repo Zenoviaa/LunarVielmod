@@ -201,6 +201,18 @@ public class TexturedQuad
             vertex.Position.X += diff * 2;
         }
     }
+    public void FlipVertices(Vector2 pivot)
+    {
+        Vector3 p = new Vector3(pivot.X, pivot.Y, 0);
+       
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            ref VertexPositionColorTexture vertex = ref vertices[i];
+            Vector3 diff = p - vertex.Position;
+
+            vertex.Position += diff * 2;
+        }
+    }
     public void CalculateLeftCenterVertices(Vector2 center, float length, float width, Matrix transformMatrix)
     {
         Vector2 topLeftOffset = new Vector2(0, -width / 2f);
@@ -229,6 +241,17 @@ public class TexturedQuad
         vertices[2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), Color.White, new Vector2(0, 1));
         vertices[3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), Color.White, new Vector2(1, 1));
     }
+    public void RotateAround2DPoint(Vector2 center, float rotation)
+    {
+        for(int i = 0; i < vertices.Length; i++)
+        {
+            ref VertexPositionColorTexture vertex = ref vertices[i];
+            Vector2 twoDPoint = new Vector2(vertex.Position.X, vertex.Position.Y);
+            Vector2 newPoint = twoDPoint.RotatedBy(rotation, center);
+            vertex.Position = new Vector3(newPoint, vertex.Position.Z);
+        }
+    }
+
     public void CalculateRightCenterVertices(Vector2 center, float length, float width, Matrix transformMatrix)
     {
         Vector2 topLeftOffset = new Vector2(-length, -width / 2f);

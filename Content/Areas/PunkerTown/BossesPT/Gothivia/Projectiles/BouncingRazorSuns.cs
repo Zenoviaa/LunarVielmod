@@ -175,6 +175,8 @@ public class BouncingRazorSuns : ModProjectile,
         _auraAnimationFrame.maxFrame = 90;
         _auraAnimationFrame.UpdateTick();
 
+        if (!NPC.AnyNPCs(ModContent.NPCType<Gothivia>()))
+            Projectile.Kill();
         MakeParticles();
         switch (State)
         {
@@ -182,7 +184,6 @@ public class BouncingRazorSuns : ModProjectile,
                 AI_ComeIn();
                 break;
             case AIState.Bounce:
-                Projectile.hostile = false;
                 AI_Bounce();
                 break;
             case AIState.Chase:
@@ -296,8 +297,7 @@ public class BouncingRazorSuns : ModProjectile,
         float radians = ease * maxRadians;
         _deadAlpha = MathHelper.Lerp(1f, 0f, EasingFunction.InSine(ratio));
         orbitSpeed = MathHelper.Lerp(0.05f, 0f, EasingFunction.InExpo(ratio));
-        if (Timer > AnticipationTime - 50)
-            Projectile.hostile = true;
+
         Vector2 offset = _offset;
         Vector2 o = Vector2.Lerp(offset, offset * 0.05f, EasingFunction.InExpo(ratio * ratio * ratio * ratio));
         Projectile.velocity = Vector2.Zero;
@@ -570,7 +570,7 @@ public class RazorFireBoom : ModProjectile,
         base.AI();
 
 
-        if(Timer > 35)
+        if(Timer > 27)
         {
             Projectile.hostile = false;
         }

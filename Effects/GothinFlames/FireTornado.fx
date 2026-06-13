@@ -9,11 +9,12 @@ float time;
 float2 SampleCoordinates(float2 coords, float2 offset)
 {
     float2 sampleCoords = coords + offset;
-    sampleCoords.x *= 0.3;
-    sampleCoords.y *= 4.0;
-    float roll = sin(coords.x * 1.5);
-    sampleCoords.y += roll;
-    sampleCoords += float2(time * 12.0, 0.0);
+    sampleCoords.x *= 0.15;
+    sampleCoords.y *= 7.0;
+    float roll = sin(coords.x * 3.14) * 0.25;
+    roll = pow(roll, 0.5);
+    sampleCoords.y -= roll;
+    sampleCoords += float2(time * 14.0, 0.0);
     return frac(sampleCoords);
 }
 
@@ -26,9 +27,6 @@ float2 SampleCoordinates2(float2 coords, float2 offset)
     float scale = 1.2;
     float halfScale = scale * 0.5;
     uv = scale * uv - halfScale;
-   // uv.y = asin(uv.y);
-
-
     uv.x = sin(uv.x / cos(uv.y)) - time * 0.7;
     uv.y += time * 2.5;
     uv *= 4.0;
@@ -42,15 +40,16 @@ float2 SampleCoordinates2(float2 coords, float2 offset)
 
 float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR0) : COLOR0
 { 
- 
-    coords.x += sin(time * 24.0 + coords.y * 4.0) * 0.1;
+    float2 baseUv = coords;
+    coords.x += sin(time * 72.0 + coords.y * 12.0) * 0.12;
     //Screen color
     float2 uv = SampleCoordinates(coords, float2(0.0, 0.0));
-
     float2 uv2 = SampleCoordinates2(coords, float2(0.3, -0.25));
     float2 uv3 = SampleCoordinates(coords, float2(0.6, -0.4));
+    float2 uv4 = SampleCoordinates(coords, float2(-0.3, 0.7));
+    
     float smokeColor = tex2D(uImage1, uv3).r;
-    float2 offset = float2(0.0, sin(time * 0.15) * smokeColor * 0.05);
+    float2 offset = float2(0.0, sin(time * 0.1 + coords.x * 4.0 + coords.y * 18.0) * smokeColor * 0.05);
     
     uv3.y = 1.0 - uv3.y;
     uv2 = frac(uv2);
@@ -66,7 +65,6 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     float mixed = color + color2;
     float4 fireColor = lerp(gradientBottomColor, gradientTopColor, mixed);
 
-//    float d = color.r < coords.x;
     fireColor.r += 0.8;
     fireColor = pow(fireColor, 1.4);
     fireColor.rgb -= 0.45;
@@ -77,16 +75,39 @@ float4 PixelShaderFunction(float2 coords : TEXCOORD0, float4 sampleColor : COLOR
     fireColor.rgb /= 2.95;
     fireColor.rgb += mixed * 0.05;
     
-    fireColor *= lerp(1.5, 4.0, sin(coords.x * 3.14));
+    //First pass of color grading
+    fireColor *= lerp(1.5, 6.0, sin(coords.x * 3.14));
     fireColor += 0.07;
     fireColor *= 1.5;
     
-    float l = lerp(-1.0, -5.0, coords.y);
+    //Variable widths at different part of the tornado to make it more violent
+    float n2 = tex2D(uImage1, uv4).r;
+    float r = sin(coords.y * smokeColor + coords.y * 12.0 + time * 74.0 + n2 * 6.0) * 0.5 + 0.5;
+    float width = lerp(0.0, -7.0, r);
+    float l = lerp(0.0, width, coords.y);
     fireColor *= lerp(l, 1.0, sin(coords.x * 3.14));
     fireColor *= lerp(0.0, 1.0, sin(coords.y * 3.14));
+    fireColor *= r;
+    
+    //Add bright segments around the tornado
+    float brightness = lerp(2.5, 4.0, sin(time * 24.0 + coords.y * 6.0) * 0.5 + 0.5);
+    fireColor *= smokeColor * lerp(0.5f, brightness, (sin(time * 24.0 + coords.y * 24.0) * 0.5f + 0.5f));
+    fireColor.rgb -= lerp(0.0, 0.1, saturate(sin(baseUv.y * 36.0)));
+    
+    //Fade it out when it gets near the edges of the texture to prevent cutting
+    float diff = abs(baseUv.x - 0.5);
+    float fade = diff / 0.5;
+    fade = 1.0 - fade;
+    fireColor *= fade;
+    
+ 
+    float4 finalColor = fireColor * sampleColor;
+    //finalColor *= d;
+    //finalColor = round(finalColor * 12.0) / 12.0;
+    //fireColor *= lerp(0.0, 1.0, sin(coords.y * 3.14));
     //fireColor *= lerp(0.0, 1.0, sin(coords.y * 25.0));
    // fireColor *= lerp(, 1.0, coords.y);
-    return fireColor * sampleColor;
+    return finalColor;
 
 }
 

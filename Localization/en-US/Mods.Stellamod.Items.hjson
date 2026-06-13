@@ -11579,3 +11579,12 @@ LightingScroll: {
 	DisplayName: Lighting Scroll
 	Tooltip: ""
 }
+
+MagmaPendant: {
+	DisplayName: Magma Pendant
+	Tooltip:
+		'''
+		Provides heat resistance during an unavoidable sun
+		Makes your stamina cost double, but doubles the damage of it
+		'''
+}

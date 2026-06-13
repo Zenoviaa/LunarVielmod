@@ -56,7 +56,7 @@ public class GothinTorch : ModProjectile,
             float lineWidth = 12;
             if(Variant == 1)
             {
-                lineWidth *= 20;
+                lineWidth *= 27;
             }
 
             float collisionPoint = 0;
@@ -87,7 +87,8 @@ public class GothinTorch : ModProjectile,
         Timer++;
         if(Timer == 1)
         {
-            Gothivia.PlayBlowtorchSound(Projectile.position);
+            if(Variant != 4)
+                Gothivia.PlayBlowtorchSound(Projectile.position);
             //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { PitchVariance = 0.5f }, Projectile.Center);
             SoundStyle fireballShoot = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireballShoot1") with { PitchVariance = 0.5f };
             SoundEngine.PlaySound(fireballShoot, Projectile.position);
@@ -141,7 +142,7 @@ public class GothinTorch : ModProjectile,
         if(Variant == 1 && Timer < 35)
         {
             FXUtil.ApplyContrast(MathHelper.Lerp(0.5f, 0f, EasingFunction.InOutExpo(Timer / 35f)));
-            ShakeScreenPosition.Shake = 4;
+            ShakeScreenPosition.Shake = 8;
         }
 
         if(Variant == 1)
@@ -189,32 +190,37 @@ public class GothinTorch : ModProjectile,
         //Drawing all the blowtorches in one projectile so it's optimized and not restarting the spritebatch 8 times
         //Also not eating up projectile slots
         //I'm so smart guys
-        spriteBatch.Restart(effect: torchShader.Effect);
-        if (NumDirections > 0)
+        if(Variant != 4)
         {
-            for (int i = 0; i < NumDirections; i++)
+            spriteBatch.Restart(effect: torchShader.Effect);
+            if (NumDirections > 0)
             {
-                float rot = (float)i / (float)NumDirections;
-                rot *= MathHelper.TwoPi;
-                Vector2 newVel = Projectile.velocity.RotatedBy(rot);
-                DrawBlowtorchInner(spriteBatch, sp, newVel, progress);
+                for (int i = 0; i < NumDirections; i++)
+                {
+                    float rot = (float)i / (float)NumDirections;
+                    rot *= MathHelper.TwoPi;
+                    Vector2 newVel = Projectile.velocity.RotatedBy(rot);
+                    DrawBlowtorchInner(spriteBatch, sp, newVel, progress);
+                }
             }
+            else
+            {
+                DrawBlowtorchInner(spriteBatch, sp, Projectile.velocity, progress);
+            }
+            spriteBatch.RestartDefaults();
         }
-        else
+        float outRatio = Timer / Time;
+
+        if (Variant == 3 || Variant == 4)
         {
-            DrawBlowtorchInner(spriteBatch, sp, Projectile.velocity, progress);
-        }
-        spriteBatch.RestartDefaults();
-        if(Variant == 3)
-        {
-            float outRatio = Timer / Time;
+     
             RadialShearShader shearShader = RadialShearShader.Instance;
             shearShader.Time = outRatio * 1.4f;
 
             Asset<Texture2D> magicCircle = AssetManager.GlowMask.SpiralVortex;
             SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(magicCircle, Projectile.Center);
             waveDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
-            waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.6f, EasingFunction.OutExpo(outRatio));
+            waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.6f, EasingFunction.OutExpo(outRatio)) * 2;
             waveDrawer.color = Color.Red;
             waveDrawer.color *= MathHelper.SmoothStep(1f, 0f, outRatio);
             waveDrawer.color.A = 0;
@@ -223,16 +229,35 @@ public class GothinTorch : ModProjectile,
             spriteBatch.Draw(waveDrawer);
 
             SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
-            backGlowDrawwer.color = Color.DarkRed * 0.5f;
+            backGlowDrawwer.color = Color.DarkRed;
             backGlowDrawwer.color.A = 0;
-            backGlowDrawwer.scale = Vector2.One * 1f;
+            backGlowDrawwer.scale = Vector2.One * 2f;
+            spriteBatch.Draw(backGlowDrawwer);
             spriteBatch.Draw(backGlowDrawwer);
 
             waveDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.InOutSine(outRatio));
             waveDrawer.color.A = 0;
             spriteBatch.Draw(waveDrawer);
             spriteBatch.RestartDefaults();
+
+
         }
+
+        if(Variant == 1 || Variant == 4)
+        {
+            SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Projectile.Center);
+            Color color = Color.Lerp(Color.Orange, Color.Aquamarine, outRatio);
+            circleDrawer.color = color * 0.75f * MathHelper.Lerp(1f, 0f, EasingFunction.OutExpo(outRatio));
+            circleDrawer.color.A = 0;
+            float size = 12f;
+            if(Variant == 4)
+            {
+                size *= 0.6f;
+            }
+            circleDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One * size, EasingFunction.OutExpo(outRatio));
+            spriteBatch.Draw(circleDrawer);
+        }
+
     }
 
     private void DrawBlowtorchInner(SpriteBatch spriteBatch, Vector2 sp, Vector2 direction, float progress)

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
@@ -84,6 +85,20 @@ namespace Stellamod.Items.Accessories.Players
         }
     }
 
+    public class StaminaDoubleDamage : GlobalProjectile
+    {
+        public override void OnSpawn(Projectile projectile, IEntitySource source)
+        {
+            base.OnSpawn(projectile, source);
+            Player player = Main.player[projectile.owner];
+            DashPlayer dashPlayer = player.GetModPlayer<DashPlayer>();
+            if(dashPlayer.justConsumedStamina && dashPlayer.doubleStaminaCost)
+            {
+                projectile.damage *= 2;
+            }
+        }
+    }
+
     public class DashPlayer : ModPlayer
     {
         private bool _isImmune;
@@ -119,7 +134,8 @@ namespace Stellamod.Items.Accessories.Players
         public float DashVelocityBonus;
         public int ExtraImmunityFramesBonus;
         public bool DashedThisFrame;
-
+        public bool doubleStaminaCost;
+        public bool justConsumedStamina;
         private HashSet<NPC> _dashedThroughSetBacking;
         public HashSet<NPC> DashedThroughSet
         {
@@ -145,6 +161,8 @@ namespace Stellamod.Items.Accessories.Players
             DashVelocity = 10;
             DashDuration = 40;
             DashCooldown = 44;
+            doubleStaminaCost = false;
+            justConsumedStamina = false;
             IsDashing = DashTimer > 0;
 
             // ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
@@ -283,10 +301,15 @@ namespace Stellamod.Items.Accessories.Players
 
         public bool CanConsume(int amount)
         {
+            if (doubleStaminaCost)
+                amount *= 2;
             return DashCount >= amount;
         }
         public void Consume(int amount)
         {
+            if (doubleStaminaCost)
+                amount *= 2;
+            justConsumedStamina = true;
             DashCount -= amount;
             OnUseStamina?.Invoke(Player, amount);
         }

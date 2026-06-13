@@ -3,6 +3,7 @@ using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Core;
+using Stellamod.Core.Camera;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
@@ -16,6 +17,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.GameContent.Animations.Actions.NPCs;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia.Projectiles;
 
@@ -120,6 +122,14 @@ public class RedSunBoom : ModProjectile,
         drawer.scale = Vector2.Lerp(Vector2.One * 0.2f, Vector2.One * 1, EasingFunction.OutQuad(t)) * 12;
         sb.Draw(drawer);
         sb.RestartDefaults();
+
+        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, Projectile.Center);
+        Color color = Color.Lerp(Color.Orange, Color.Aquamarine, t);
+        circleDrawer.color = color * 0.75f * MathHelper.Lerp(1f, 0f, EasingFunction.OutExpo(t));
+        circleDrawer.color.A = 0;
+        float size = 12f;
+        circleDrawer.scale = Vector2.Lerp(Vector2.Zero, Vector2.One * size, EasingFunction.OutExpo(t));
+        sb.Draw(circleDrawer);
     }
     public override bool PreDraw(ref Color lightColor)
     {
@@ -301,6 +311,8 @@ public class RedSun : ModProjectile,
             SwitchState(AIState.Throw);
         }
 
+        CameraTargetSystem.AddTarget(Vector2.Lerp(Main.LocalPlayer.Center, Projectile.Center, 0.6f));
+
         _rotation += 0.015f * _rotationDirection;
         Projectile.rotation = _rotation;
         if(State != AIState.Throw)
@@ -410,14 +422,21 @@ public class RedSun : ModProjectile,
         if(Timer < time)
         {
             _targetScale = 1f;
-            Projectile.velocity *= 0.96f;
+            Projectile.velocity.X *= 0.96f;
+            Projectile.velocity.Y -= 0.1f;
         }
         else
         {
+            for (float f = 0; f < MathHelper.TwoPi; f += MathHelper.PiOver4)
+            {
+                float angle = f;
+                FireRotations.Add(angle);
+            }
+            _telegraphAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo((Timer - 60f) / 40f));
             _whiteTimer = MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo((Timer - 60f) / 40f));
             _targetScale = MathHelper.Lerp(1f, 0.5f, EasingFunction.InOutSine((Timer - 60f) / 40f));
             Projectile.velocity *= 0.98f;
-            Projectile.velocity.Y -= 0.4f;
+            Projectile.velocity.Y -= 0.25f;
             if (Timer >= 100)
             {
                 Projectile.Kill();
@@ -628,7 +647,7 @@ public class RedSun : ModProjectile,
             spriteBatch.Draw(lineDrawer);
 
             SpritebatchDrawer glowDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
-            glowDrawer.worldPosition += direction.SafeNormalize(Vector2.Zero) * 196;
+            glowDrawer.worldPosition += direction.SafeNormalize(Vector2.Zero) * 196 * _targetScale;
             glowDrawer.color = Color.Lerp(Color.White, Color.White, ExtraMath.Osc(0f, 1f, speed: 24)) * _telegraphAlpha;
             glowDrawer.color.A = 0;
             glowDrawer.scale = new Vector2(0.25f, 0.5f) * 0.65f;

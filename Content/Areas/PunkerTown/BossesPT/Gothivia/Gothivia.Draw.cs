@@ -9,8 +9,10 @@ using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using static Terraria.GameContent.Animations.Actions.NPCs;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
+
 
 public partial class Gothivia :
     IDrawToRenderTarget
@@ -100,9 +102,14 @@ public partial class Gothivia :
         Color wingColor = Color.Lerp(Color.Lerp(Color.White, Color.Yellow, 0.5f), glowColor, ExtraMath.Osc(0f, 0.8f, speed: 1.5f));
         wingColor *=MathHelper.Lerp(0.4f, 1f, ExtraMath.Osc(0f, 1f, speed: 4));
         WingQuad.SetColor(wingColor);
+        WingQuad.RotateAround2DPoint(NPC.Center, NPC.rotation);
         WingQuad.DrawWithShader(flameWingShader);
 
+        WingQuad.CalculateRightCenterVertices(centerPoint, 1200 * scale, 200 * scale, topWingMatrix);
         WingQuad.FlipVerticesX(NPC.Center.X);
+        WingQuad.SetColor(wingColor);
+        WingQuad.RotateAround2DPoint(NPC.Center, NPC.rotation);
+
         WingQuad.DrawWithShader(flameWingShader);
 
         /*
@@ -316,6 +323,16 @@ public partial class Gothivia :
         if (!_renderFinger)
             return false;
         return true;
+    }
+
+    private void DrawInCircle(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        SpritebatchDrawer circleDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.WhiteCircle, NPC.Center);
+        Color color = Color.Lerp(Color.Orange, Color.Aquamarine, ExtraMath.Osc(0f, 1f, speed: 16));
+        circleDrawer.color = color * 0.75f * _inCircleAlpha;
+        circleDrawer.color.A = 0;
+        circleDrawer.scale = _inCircleScale;//Vector2.Lerp(Vector2.Zero, Vector2.One * size, EasingFunction.OutExpo(outRatio));
+        spriteBatch.Draw(circleDrawer);
     }
 
     private void DrawBow(SpriteBatch spriteBatch)
@@ -549,6 +566,7 @@ public partial class Gothivia :
         //PixelationManager.QueuePrimitivesDrawAction(DrawFaintFlamingTrail, DrawLayer.BehindNPCsWithOutline);
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTorchWings, DrawLayer.BehindNPCsWithOutline);
         PixelationManager.QueueSpritebatchDrawAction(DrawAura, DrawLayer.BehindNPCsWithOutline);
+        PixelationManager.QueueSpritebatchDrawAction(DrawInCircle, DrawLayer.OverNPCs);
         OutlineRenderer.Queue(DrawOutline);
         if (_figure8TrailAlpha < 0.05f)
             return;
