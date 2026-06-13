@@ -20,7 +20,13 @@ namespace Stellamod.Core
             base.UpdateDead();
 
             if (Main.netMode == NetmodeID.SinglePlayer)
+            {
+                if(!NPC.AnyDanger() && Player.respawnTimer > 2)
+                {
+                    Player.respawnTimer = 2;
+                }
                 return;
+            }
 
             if (!Main.expertMode && !Main.masterMode)
                 return;

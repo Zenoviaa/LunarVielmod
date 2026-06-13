@@ -103,8 +103,8 @@ public class FlameSwirl : ModProjectile,
         }
 
         _insideRadius = _circleRadius - 64;
-        DeadZoneMidAngle -= 0.01f;
-        DeadZoneMidAngle = MathHelper.WrapAngle(DeadZoneMidAngle);
+       // DeadZoneMidAngle -= 0.01f;
+        //DeadZoneMidAngle = MathHelper.WrapAngle(DeadZoneMidAngle);
         Projectile.rotation -= 0.05f;
     }
 

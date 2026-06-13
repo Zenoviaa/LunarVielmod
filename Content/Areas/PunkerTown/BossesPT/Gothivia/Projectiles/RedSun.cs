@@ -471,6 +471,10 @@ public class RedSun : ModProjectile,
             _squishScale = MathHelper.Lerp(1f, 1.35f, c);
             _telegraphAlpha = 0;
             _hitboxActive = true;
+            if(_blowtorchTimer >= BlowtorchTime * 0.5f)
+            {
+                _hitboxActive = false;
+            }
             if (_blowtorchTimer >= BlowtorchTime)
             {
                 SwitchState(AIState.Idle);
@@ -643,7 +647,7 @@ public class RedSun : ModProjectile,
 
     private void DrawBlowtorch(SpriteBatch spriteBatch, Vector2 sp)
     {
-        if (!_hitboxActive)
+        if (_blowtorchTimer >= BlowtorchTime)
             return;
 
         float progress = _blowtorchTimer / BlowtorchTime;

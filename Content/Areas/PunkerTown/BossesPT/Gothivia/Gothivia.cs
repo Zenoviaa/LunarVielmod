@@ -71,8 +71,9 @@ public partial class Gothivia : ScarletBoss
             if (_patternManageBackingField == null)
             {
                 _patternManageBackingField = new PatternManager<AIState>();
+                _patternManageBackingField.AddPattern(AIState.Dichotamy, 1f);
                 _patternManageBackingField.AddPattern(AIState.Kick, 1f);
-                _patternManageBackingField.AddPattern(AIState.BoostBounce, 1f);
+             //   _patternManageBackingField.AddPattern(AIState.BoostBounce, 1f);
                 _patternManageBackingField.AddPattern(AIState.Hurricane, 1f);
                 _patternManageBackingField.AddPattern(AIState.SniperShot, 1f);
                 _patternManageBackingField.AddPattern(AIState.Suns, 1f);
@@ -316,8 +317,9 @@ public partial class Gothivia : ScarletBoss
         if (_keyDown && !Keyboard.GetState().IsKeyDown(Keys.L))
         {
 
+            NPC.life = (int)(NPC.lifeMax * 0.48f);
             _keyDown = false;
-            SwitchState(AIState.Suns);
+        //    SwitchState(AIState.Tornado);
         }
 
         if(_teleportPosition != Vector2.Zero)
@@ -333,6 +335,7 @@ public partial class Gothivia : ScarletBoss
         _telegraphLineAlpha = MathHelper.Lerp(_telegraphLineAlpha, 0f, 0.1f);
         _renderFigure8Trail = false;
         _renderFinger = false;
+        _contactDamage = false;
         _renderAfterImage = false;
         ShootRotations.Clear();
         switch (State)
@@ -687,7 +690,7 @@ public partial class Gothivia : ScarletBoss
                     if (Timer == 1)
                     {
 
-                        _startCDashOffset = MyTarget.Center - Vector2.UnitY* 232;
+                        _startCDashOffset = MyTarget.Center - Vector2.UnitY* 128;
                         _endCDashOffset = -Vector2.UnitY * 512;
                         _initialVelocity = NPC.velocity;
                     }
@@ -751,7 +754,7 @@ public partial class Gothivia : ScarletBoss
                     if (Timer >= FireTornado_TimeBetweenCircleWaves)
                     {
                         Vector2 dirToTarget = (MyTarget.Center - _startCDashOffset).SafeNormalize(Vector2.Zero);
-                        dirToTarget = dirToTarget.RotatedByRandom(MathHelper.ToRadians(24));
+                        dirToTarget = dirToTarget.RotatedByRandom(MathHelper.ToRadians(55));
                         float midAngle = dirToTarget.ToRotation();
                         float angleRadius = 0.55f;
                         if (MultiplayerHelper.IsHost)
@@ -1250,7 +1253,7 @@ public partial class Gothivia : ScarletBoss
             }
         }
 
-        if (Timer >= 900)
+        if (Timer >= 1150)
         {
             SwitchState(AIState.ThrowSun);
         }
@@ -1296,6 +1299,12 @@ public partial class Gothivia : ScarletBoss
         }
 
 
+        if(Timer == 45)
+        {
+            SoundStyle zoomer = AssetReferences.Assets.Sounds.Fire.FlaminChargeFast.Asset;
+            zoomer.PitchVariance = 0.4f;
+            SoundEngine.PlaySound(zoomer, NPC.position);
+        }
         if (Timer < te)
         {
             //I should really stop writing nested interpolations like this
@@ -1712,7 +1721,8 @@ public partial class Gothivia : ScarletBoss
         NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
         if (Timer >= 60)
         {
-            SwitchState(AIState.Dichotamy);
+            ChooseAttack();
+            //SwitchState(AIState.Dichotamy);
         }
     }
 
