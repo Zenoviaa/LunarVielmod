@@ -1,4 +1,5 @@
-﻿using Stellamod.Assets;
+﻿using ReLogic.Content;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
@@ -86,7 +87,8 @@ public class GothinTorch : ModProjectile,
         Timer++;
         if(Timer == 1)
         {
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { PitchVariance = 0.5f }, Projectile.Center);
+            Gothivia.PlayBlowtorchSound(Projectile.position);
+            //SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { PitchVariance = 0.5f }, Projectile.Center);
             SoundStyle fireballShoot = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireballShoot1") with { PitchVariance = 0.5f };
             SoundEngine.PlaySound(fireballShoot, Projectile.position);
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
@@ -138,6 +140,7 @@ public class GothinTorch : ModProjectile,
 
         if(Variant == 1 && Timer < 35)
         {
+            FXUtil.ApplyContrast(MathHelper.Lerp(0.5f, 0f, EasingFunction.InOutExpo(Timer / 35f)));
             ShakeScreenPosition.Shake = 4;
         }
 
@@ -202,6 +205,34 @@ public class GothinTorch : ModProjectile,
             DrawBlowtorchInner(spriteBatch, sp, Projectile.velocity, progress);
         }
         spriteBatch.RestartDefaults();
+        if(Variant == 3)
+        {
+            float outRatio = Timer / Time;
+            RadialShearShader shearShader = RadialShearShader.Instance;
+            shearShader.Time = outRatio * 1.4f;
+
+            Asset<Texture2D> magicCircle = AssetManager.GlowMask.SpiralVortex;
+            SpritebatchDrawer waveDrawer = SpritebatchDrawer.FromTextureAsset(magicCircle, Projectile.Center);
+            waveDrawer.rotation += Main.GlobalTimeWrappedHourly * 4;
+            waveDrawer.scale = Vector2.Lerp(Vector2.One * 0.8f, Vector2.One * 1.6f, EasingFunction.OutExpo(outRatio));
+            waveDrawer.color = Color.Red;
+            waveDrawer.color *= MathHelper.SmoothStep(1f, 0f, outRatio);
+            waveDrawer.color.A = 0;
+
+            spriteBatch.Restart(effect: shearShader.Effect);
+            spriteBatch.Draw(waveDrawer);
+
+            SpritebatchDrawer backGlowDrawwer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, Projectile.Center);
+            backGlowDrawwer.color = Color.DarkRed * 0.5f;
+            backGlowDrawwer.color.A = 0;
+            backGlowDrawwer.scale = Vector2.One * 1f;
+            spriteBatch.Draw(backGlowDrawwer);
+
+            waveDrawer.color = Color.Lerp(Color.Black, Color.White, EasingFunction.InOutSine(outRatio));
+            waveDrawer.color.A = 0;
+            spriteBatch.Draw(waveDrawer);
+            spriteBatch.RestartDefaults();
+        }
     }
 
     private void DrawBlowtorchInner(SpriteBatch spriteBatch, Vector2 sp, Vector2 direction, float progress)
@@ -221,8 +252,10 @@ public class GothinTorch : ModProjectile,
         spriteBatch.Draw(glowDrawer);
 
         glowDrawer.color = Color.DarkRed;
+        if (Variant == 2)
+            glowDrawer.color *= 0.3f;
         glowDrawer.color.A = 0;
-        glowDrawer.scale.Y *= 5;
+        glowDrawer.scale.Y *= 4.5f;
         spriteBatch.Draw(glowDrawer);
     }
 

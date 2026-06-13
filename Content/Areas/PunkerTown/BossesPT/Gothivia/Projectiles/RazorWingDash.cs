@@ -73,7 +73,7 @@ public class RazorWingDash : ModProjectile,
         if (MultiplayerHelper.IsHost)
         {
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Vector2.UnitY * 2400, 
-                ModContent.ProjectileType<GothinTorch>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: numDirections);
+                ModContent.ProjectileType<GothinTorch>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: numDirections, ai2: 2);
         }
         SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
         Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);

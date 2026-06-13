@@ -46,6 +46,7 @@ public partial class Gothivia :
     private const string Anim_Arrowshot = "Arrowshot";
     private const string Anim_Dichotamy = "Dichotamy";
     private const string Anim_Explode = "Explode";
+    private const string Anim_ExplodeReverse = "ExplodeReverse";
     private const string Anim_Kickstart = "Kickstart";
     private const string Anim_Standalone = "Standalone";
     private const string Anim_Aurafarming = "Aurafarming";
@@ -136,8 +137,12 @@ public partial class Gothivia :
         var kickstart = new SpriteAnimation(0, 7, isLooping: false, drawOriginOverride: animationDrawOrigin);
         _animator.AddAnimation(Anim_Kickstart, kickstart);
 
-        var explode = new SpriteAnimation(0, 9, isLooping: false, drawOriginOverride: animationDrawOrigin);
+        var explode = new SpriteAnimation(0, 9, isLooping: false, drawOriginOverride: animationDrawOrigin, frameSpeed: 0.35f);
         _animator.AddAnimation(Anim_Explode, explode);
+
+        var explode2 = new SpriteAnimation(0, 9, isLooping: false, drawOriginOverride: animationDrawOrigin, frameSpeed: 0.35f);
+        explode2.reverse = true;
+        _animator.AddAnimation(Anim_ExplodeReverse, explode2);
 
         var standalone = new SpriteAnimation(0, 4, isLooping: true, drawOriginOverride: animationDrawOrigin);
         _animator.AddAnimation(Anim_Standalone, standalone);

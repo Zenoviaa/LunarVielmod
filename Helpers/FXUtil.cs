@@ -1,4 +1,5 @@
 ﻿using Stellamod.Core.Camera;
+using Stellamod.Core.Palettes;
 using Stellamod.Core.Particles;
 using Stellamod.Effects.ScreenRipples;
 using Stellamod.Visual.Particles;
@@ -11,6 +12,14 @@ namespace Stellamod.Helpers;
 
 public static class FXUtil
 {
+    public static void ApplyContrast(float strength)
+    {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+        SpecialEffectsPlayer effectsPlayer = Main.LocalPlayer.GetModPlayer<SpecialEffectsPlayer>();
+        effectsPlayer.darknessCurve = strength;
+    }
+
     public static void ApplyVignette(float strength, float opacity = 1, float timer = -1)
     {
         if (Main.netMode == NetmodeID.Server)

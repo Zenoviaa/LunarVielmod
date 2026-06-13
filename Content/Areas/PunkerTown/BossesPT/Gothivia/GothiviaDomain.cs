@@ -38,8 +38,7 @@ public class GothiviaDomain : ModSystem
     public override void PostUpdateEverything()
     {
         base.PostUpdateEverything();
-        _darkenAlpha += darken ? 0.05f : -0.05f;
-        _darkenAlpha = MathHelper.Clamp(_darkenAlpha, 0, 0.65f);
+  
     }
     private bool ShouldRender() => drawGothivia;
 
@@ -64,7 +63,8 @@ public class GothiviaDomain : ModSystem
         var config = ModContent.GetInstance<LunarVeilClientConfig>();
         if (config.FocusMode)
             return;
-
+        _darkenAlpha += darken ? 0.05f : -0.05f;
+        _darkenAlpha = MathHelper.Clamp(_darkenAlpha, 0, 0.25f);
         PixelationManager.QueueSpritebatchDrawAction(DrawWind, DrawLayer.OverPlayers);
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
@@ -206,6 +206,7 @@ public class GothiviaDomain : ModSystem
 
 
             drawGothivia = false;
+            darken = false;
         }
 
         orig(self, behindTiles);

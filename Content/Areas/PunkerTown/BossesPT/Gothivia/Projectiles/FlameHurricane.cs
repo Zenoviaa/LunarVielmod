@@ -75,9 +75,8 @@ public class FlameHurricane : ModProjectile,
         if (Timer == 1)
         {
             ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
-            shaderSystem.TintScreen(Color.OrangeRed, 0.1f, timer: 680);
-            shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.025f, timer: 560);
-            shaderSystem.VignetteScreen(1f, timer: 560);
+            shaderSystem.TintScreen(Color.Red, 0.1f, timer: 680);
+            shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.025f, timer: 680);
 
             SoundStyle fireIn = AssetRegistry.Sounds.Fire.Flamewheel;
             SoundEngine.PlaySound(fireIn, Projectile.position);
@@ -167,6 +166,8 @@ public class FlameHurricane : ModProjectile,
 
     public void DrawToRenderTargets()
     {
+
+        ModContent.GetInstance<GothiviaDomain>().darken = true;
         PixelationManager.QueueSpritebatchDrawAction(DrawBigFlameSwirl);
         PixelationManager.QueueSpritebatchDrawAction(DrawFlameSwirl);
     }

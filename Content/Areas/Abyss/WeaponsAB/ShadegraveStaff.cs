@@ -226,9 +226,6 @@ public class SGBolt : ModProjectile
 
         float w = 16;
         return MathHelper.SmoothStep(w, w * 0f, ratio);
-        float outEasing = EasingFunction.InExpo(Projectile.timeLeft / 30f);
-        float outEasing2 = MathHelper.SmoothStep(0.5f, 1f, Timer / 15f);
-        return MathHelper.SmoothStep(w * 0.85f, w, EasingFunction.QuadraticBump(ratio)) * outEasing * outEasing2;
     }
 
     private Color GetTrailColor2(float ratio)

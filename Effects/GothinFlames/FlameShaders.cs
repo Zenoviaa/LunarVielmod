@@ -93,6 +93,54 @@ public class FireVortexSmokeShader : CrystalShader<FireVortexSmokeShader>
         }
     }
 }
+public class FireTornadoShader : CrystalShader<FireTornadoShader>
+{
+    public Texture2D FlameyTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
+        }
+    }
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[2] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.LinearWrap;
+        }
+    }
+    public Color GradientTopColor
+    {
+        set
+        {
+            Effect.Parameters["gradientTopColor"].SetValue(value.ToVector4());
+        }
+    }
+
+    public Color GradientBottomColor
+    {
+        set
+        {
+            Effect.Parameters["gradientBottomColor"].SetValue(value.ToVector4());
+        }
+    }
+    public Vector2 Resolution
+    {
+        set
+        {
+            Effect.Parameters["resolution"].SetValue(value);
+        }
+    }
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+}
 public class FireVortexShader : CrystalShader<FireVortexShader>
 {
     public Texture2D NoiseTexture

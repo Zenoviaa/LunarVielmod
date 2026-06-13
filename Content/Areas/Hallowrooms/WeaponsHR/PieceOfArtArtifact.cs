@@ -480,8 +480,6 @@ public class PieceOfArtRainbow : ModProjectile
     private Color GetTrailColor(float completionRatio)
     {
         return Color.Lerp(Color.White, Color.White * 0.33f, EasingFunction.OutExpo(completionRatio / 0.25f));
-        return Color.White * 0.4f;
-       // return Color.White;
     }
     private Color GetTrailColor2(float completionRatio)
     {

@@ -8,6 +8,7 @@ using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -49,13 +50,17 @@ public partial class Gothivia : ScarletBoss
         SunCharge,
 
         //Fire Tornado
-        FireTornado,
+        Hurricane,
+
+        Tornado,
 
         TheZoomer,
 
         ComboAttack,
 
-        SniperShot
+        SniperShot,
+
+        ThrowSun
     }
 
     private PatternManager<AIState>? _patternManageBackingField;
@@ -68,6 +73,14 @@ public partial class Gothivia : ScarletBoss
                 _patternManageBackingField = new PatternManager<AIState>();
                 _patternManageBackingField.AddPattern(AIState.Kick, 1f);
                 _patternManageBackingField.AddPattern(AIState.BoostBounce, 1f);
+                _patternManageBackingField.AddPattern(AIState.Hurricane, 1f);
+                _patternManageBackingField.AddPattern(AIState.SniperShot, 1f);
+                _patternManageBackingField.AddPattern(AIState.Suns, 1f);
+
+
+                _patternManageBackingField.AddPattern(AIState.ComboAttack, 1f);
+                _patternManageBackingField.AddPattern(AIState.Tornado, 4f);
+                _patternManageBackingField.AddPattern(AIState.TheZoomer, 1f);
             }
             return _patternManageBackingField;
         }
@@ -83,6 +96,7 @@ public partial class Gothivia : ScarletBoss
         }
     }
 
+    private bool _phase2Transition;
     private bool _keyDown;
     private WingsPerspective _wingsPerspective;
     private bool _contactDamage;
@@ -103,6 +117,7 @@ public partial class Gothivia : ScarletBoss
     private int _bowFrame;
     private float _dashDirection;
 
+    private Vector2 _teleportPosition;
     private Vector2 _startCDashOffset;
     private Vector2 _endCDashOffset;
     private Vector2 _initialVelocity;
@@ -207,6 +222,17 @@ public partial class Gothivia : ScarletBoss
         }
     }
     private float Ground => 16000;
+
+    public override void SendExtraAI(BinaryWriter writer)
+    {
+        base.SendExtraAI(writer);
+        writer.WriteVector2(_teleportPosition);
+    }
+    public override void ReceiveExtraAI(BinaryReader reader)
+    {
+        base.ReceiveExtraAI(reader);
+        _teleportPosition = reader.ReadVector2();
+    }
     private void EnablePlatformArena()
     {
         DomainExpansionManager fallSystem = ModContent.GetInstance<DomainExpansionManager>();
@@ -214,10 +240,6 @@ public partial class Gothivia : ScarletBoss
         fallSystem.inSpace = true;
         fallSystem.hoveringPlatform = true;
         fallSystem.hoverPlatformY = Ground;
-        if (Main.netMode == NetmodeID.Server)
-            return;
-
-        
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -295,9 +317,14 @@ public partial class Gothivia : ScarletBoss
         {
 
             _keyDown = false;
-            SwitchState(AIState.FireTornado);
+            SwitchState(AIState.Suns);
         }
 
+        if(_teleportPosition != Vector2.Zero)
+        {
+            NPC.Center = _teleportPosition;
+            _teleportPosition = Vector2.Zero;
+        }
         _numDirections = 0;
         _wingsPerspective = WingsPerspective.ThreeQ;
         _wingAnimationFrame.maxFrame = 60;
@@ -337,17 +364,23 @@ public partial class Gothivia : ScarletBoss
             case AIState.Suns:
                 AI_Suns();
                 break;
+            case AIState.ThrowSun:
+                AI_ThrowSun();
+                break;
             case AIState.SniperShot:
                 AI_SniperShot();
                 break;
             case AIState.ComboAttack:
                 AI_ComboAttack();
                 break;
-            case AIState.FireTornado:
-                AI_FireTornado();
+            case AIState.Hurricane:
+                AI_Hurricane();
+                break;
+            case AIState.Tornado:
+                AI_Tornado();
                 break;
         }
-        if(State != AIState.TheZoomer)
+        if (State != AIState.TheZoomer)
             ResizeTrail(24);
 
         float targetFingerAlpha = _renderFinger ? 1f : 0f;
@@ -366,6 +399,14 @@ public partial class Gothivia : ScarletBoss
         _outliner.Update();
     }
 
+    private void Teleport(Vector2 spot)
+    {
+        if (!MultiplayerHelper.IsHost)
+            return;
+        _teleportPosition = spot;
+        NPC.netUpdate = true;
+    }
+
     private void ResizeTrail(int length)
     {
         if (NPC.oldPos.Length != length)
@@ -373,14 +414,233 @@ public partial class Gothivia : ScarletBoss
             NPC.oldPos = new Vector2[length];
         }
     }
+    private bool IsBanned(AIState state)
+    {
+        if (!InPhase2)
+        {
+            switch (state)
+            {
+                case AIState.ComboAttack:
+                case AIState.Tornado:
+                case AIState.TheZoomer:
+                    return true;
+            }
+        }
+        return false;
+    }
     private void ChooseAttack()
     {
         if (MultiplayerHelper.IsHost)
         {
-            SwitchState(AttackPattern.NextPattern());
+            AIState pattern = AttackPattern.NextPattern();
+            while (IsBanned(pattern))
+            {
+                pattern = AttackPattern.NextPattern();
+            }
+            SwitchState(pattern);
         }
     }
 
+    private void AI_Tornado()
+    {
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    NPC.velocity *= 0.8f;
+                    NPC.rotation *= 0;
+                    Animator.PlayAnimation(Anim_Explode);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    if (Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        float dir = Main.rand.NextBool(2) ? 1 : -1;
+                        Vector2 offset = Vector2.UnitX * dir * 500;
+                        Vector2 teleportSpot = MyTarget.Center + offset + Vector2.UnitY * 384;
+                        Teleport(teleportSpot);
+                        _startCDashOffset = MyTarget.Center.X > teleportSpot.X ? Vector2.UnitX : -Vector2.UnitX;
+                        _endCDashOffset = teleportSpot;
+                    }
+                    NPC.velocity *= 0.8f;
+                    Animator.PlayAnimation(Anim_ExplodeReverse);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    Animator.PlayAnimation(Anim_Dive);
+                    if(Timer == 1)
+                    {
+                        SoundStyle fireCharge = AssetReferences.Assets.Sounds.Fire.FlaminCharge.Asset with { PitchVariance = 0.5f };
+                        SoundEngine.PlaySound(fireCharge, NPC.position);
+
+                        Vector2 vel = _startCDashOffset + -Vector2.UnitY * 0.75f;
+                        vel = vel.SafeNormalize(Vector2.Zero);
+                        NPC.velocity = vel;
+                    }
+                    _renderFigure8Trail = true;
+                    _outliner.attacking = true;
+                    if(Timer == 25)
+                    {
+                        if (MultiplayerHelper.IsHost)
+                        {
+                            Vector2 vel = (NPC.Center - _endCDashOffset);
+                            vel = vel.SafeNormalize(Vector2.Zero);
+                            vel *= 1200;
+                            Projectile.NewProjectile(SourceFromThis, _endCDashOffset, vel, 
+                                ModContent.ProjectileType<FireTornado>(), 1, 1, Main.myPlayer);
+                        }
+                    }
+                    float rot = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation() + MathHelper.PiOver2, 0.1f);
+                    NPC.rotation = rot;
+                    NPC.velocity *= 1.1f;
+                    if(Timer >= 60)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    NPC.velocity *= 0.96f;
+                    Animator.PlayAnimation(Anim_Explode);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                        Teleport(MyTarget.Center - new Vector2(0, 384));
+                    }
+                    NPC.rotation = 0;
+                    NPC.velocity *= 0f;
+                    Animator.PlayAnimation(Anim_ExplodeReverse);
+                    if (Animator.IsFinished())
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+        }
+    }
+    private void AI_ThrowSun()
+    {
+        void ThrowSun()
+        {
+            foreach(var proj in Main.ActiveProjectiles)
+            {
+                if (proj.type != ModContent.ProjectileType<RedSun>())
+                    continue;
+                if (proj.ai[2] != NPC.whoAmI)
+                    continue;
+
+
+                if(proj.ModProjectile is RedSun sun)
+                {
+                    Vector2 throwVelocity = MyTarget.Center.X > NPC.Center.X ? Vector2.UnitX : -Vector2.UnitX;
+                    sun.throwVelocity = throwVelocity * 2;
+                }
+                break;
+            }
+        }
+
+        Timer++;
+        switch (AttackCycle)
+        {
+            case 0:
+                {
+                    if(Timer == 1)
+                    {
+                        NPC.TargetClosest();
+                    }
+                    Animator.PlayAnimation(Anim_Aurafarming);
+                    _outliner.warning = true;
+                    NPC.rotation *= 0;
+                    NPC.velocity.Y += 0.5f;
+                    if(Timer >= 30)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    Animator.PlayAnimation(Anim_Aurafarming);
+                    _outliner.warning = true;
+                    NPC.velocity.Y *= 0.96f;
+                    if(Timer >= 50)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 2:
+                {
+                    FaceTarget();
+                    Animator.PlayAnimation(Anim_Kickstart);
+                    _outliner.attacking = true;
+
+                    if(Timer == 25)
+                    {
+                        ThrowSun();
+                    }
+                    NPC.velocity.Y *= 0.96f;
+                    if(Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 3:
+                {
+                    NPC.velocity *= 0.96f;
+                    Animator.PlayAnimation(Anim_Explode);
+                    if (Animator.IsFinished())
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
+                }
+                break;
+            case 4:
+                {
+                    NPC.velocity *= 0.96f;
+                    if(Timer >= 25)
+                    {
+                        SwitchState(AIState.Idle);
+                    }
+                }
+                break;
+
+        }
+    }
     private void AI_Despawn()
     {
         Timer++;
@@ -391,7 +651,7 @@ public partial class Gothivia : ScarletBoss
         NPC.velocity.X *= 0.97f;
         NPC.velocity.Y -= 0.05f;
     }
-    private void AI_FireTornado()
+    private void AI_Hurricane()
     {
         void ZoomMiddle()
         {
@@ -427,7 +687,7 @@ public partial class Gothivia : ScarletBoss
                     if (Timer == 1)
                     {
 
-                        _startCDashOffset = MyTarget.Center;
+                        _startCDashOffset = MyTarget.Center - Vector2.UnitY* 232;
                         _endCDashOffset = -Vector2.UnitY * 512;
                         _initialVelocity = NPC.velocity;
                     }
@@ -534,7 +794,7 @@ public partial class Gothivia : ScarletBoss
                 float angle = ShootRotations[i];
                 Vector2 offset = angle.ToRotationVector2();
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, offset * 2400,
-                    ModContent.ProjectileType<GothinTorch>(), 1, 1, Main.myPlayer);
+                    ModContent.ProjectileType<GothinTorch>(), 1, 1, Main.myPlayer, ai2: 3);
             }
         }
 
@@ -610,7 +870,7 @@ public partial class Gothivia : ScarletBoss
                 {
                     _outliner.warning = true;
                     _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.InOutSine(Timer / ComboAttack_BlowtorchTelegraphTime));
-                    Animator.PlayAnimation(Anim_Arrowhold);
+                    Animator.PlayAnimation(Anim_Aurafarming);
                     FaceTarget();
                     SetBlowtorchShootRotations();
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
@@ -629,7 +889,7 @@ public partial class Gothivia : ScarletBoss
                         SetBlowtorchShootRotations();
                         Blast();
                     }
-                    Animator.PlayAnimation(Anim_Arrowshot);
+                    Animator.PlayAnimation(Anim_Aurafarming);
                     _outliner.attacking = true;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
                     if (Timer >= ComboAttack_ShootTime)
@@ -992,7 +1252,7 @@ public partial class Gothivia : ScarletBoss
 
         if (Timer >= 900)
         {
-            SwitchState(AIState.Idle);
+            SwitchState(AIState.ThrowSun);
         }
     }
 
@@ -1318,6 +1578,7 @@ public partial class Gothivia : ScarletBoss
             {
                 NPC.TargetClosest();
             }
+
 
             float ai1 = NPC.whoAmI;
             if (Timer == 2)
@@ -1665,6 +1926,11 @@ public partial class Gothivia : ScarletBoss
     public override void HitEffect(NPC.HitInfo hit)
     {
         base.HitEffect(hit);
+        if(NPC.life < NPC.lifeMax * 0.5f && !_phase2Transition)
+        {
+            AttackPattern.ResetToDefaultWeights();
+            _phase2Transition = true;
+        }
     }
 
     public override void OnKill()

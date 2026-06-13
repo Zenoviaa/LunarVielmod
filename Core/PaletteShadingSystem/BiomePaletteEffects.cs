@@ -19,17 +19,7 @@ namespace Stellamod.Core.PaletteShadingSystem
             return myPlayer.ZoneEdgeoftheMoon;
         }
     }
-    public class AegislavPaletteEffect : PaletteEffect
-    {
-        public override PaletteType PaletteType => PaletteType.LunarShader;
-        public override PalettePriority Priority => PalettePriority.Medium;
-        public override bool IsActive(Player player)
-        {
-            return false;
-            BiomePlayer myPlayer = player.GetModPlayer<BiomePlayer>();
-            return myPlayer.ZoneAegislavSurface;
-        }
-    }
+
     public class MoonspiralTowerPaletteEffect : PaletteEffect
     {
         public override PaletteType PaletteType => PaletteType.LunarShader;

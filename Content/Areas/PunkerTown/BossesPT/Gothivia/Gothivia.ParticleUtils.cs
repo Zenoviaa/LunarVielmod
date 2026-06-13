@@ -1,8 +1,10 @@
-﻿using Stellamod.Core.Particles;
+﻿using Stellamod.Assets;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
+using Terraria.Audio;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 
@@ -23,6 +25,26 @@ public partial class Gothivia
         }
     }
 
+    public static void PlayBlowtorchSound(Vector2 position)
+    {
+        int rand = Main.rand.Next(3);
+        SoundStyle fireSound;
+        switch (rand)
+        {
+            default:
+            case 0:
+                fireSound = AssetRegistry.Sounds.Fire.BlowtorchBigger1;
+                break;
+            case 1:
+                fireSound = AssetRegistry.Sounds.Fire.BlowtorchBigger2;
+                break;
+            case 2:
+                fireSound = new SoundStyle("Stellamod/Assets/Sounds/GothingBow");
+                break;
+        }
+        fireSound.PitchVariance = 0.55f;
+        SoundEngine.PlaySound(fireSound, position);
+    }
     public static void ChargeParticlesBig(Vector2 center, in float timer)
     {
         if (timer % 4 == 0)

@@ -2,6 +2,8 @@
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.WeaponUpgrade.UI;
+using Stellamod.Core;
+using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Effects.GothinFlames;
@@ -42,15 +44,20 @@ public class RedSunBoom : ModProjectile,
     public override void AI()
     {
         base.AI();
-
-
         if (Timer > 35)
         {
             Projectile.hostile = false;
         }
+
         Timer++;
         if (Timer == 1)
         {
+            ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
+            shaderSystem.TintScreen(Color.Red, 0.1f, timer: 60);
+            shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.025f, timer: 60);
+
+            SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/Fire/Demoneatsyourmom") with { PitchVariance = 0.5f };
+            SoundEngine.PlaySound(explosionSound);
             FXUtil.CreateRipple(Projectile.Center);
             ShakeScreenPosition.Shake = 6;
             PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.LightGoldenrodYellow, Color.OrangeRed, 55, 450);
@@ -81,6 +88,7 @@ public class RedSunBoom : ModProjectile,
                 dp.Scale *= 2;
             }
         }
+        FXUtil.ApplyContrast(MathHelper.Lerp(1f, 0f, EasingFunction.InOutExpo(Timer / 45f)));
         var dp2 = DustParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(384, 384), Vector2.Zero);
         dp2.dampening = 0.05f;
         dp2.gravity *= 0.05f;
@@ -144,11 +152,14 @@ public class RedSun : ModProjectile,
 
         Shotgun,
         Idle,
-        Shrink,
+        AwaitThrow,
         Throw
     }
+
+    private float _whiteTimer;
     private float _rotation;
     private float _rotationDirection;
+    private float _flashTimer;
     private float _squishScale;
     private float _scale;
     private float _targetScale;
@@ -247,6 +258,8 @@ public class RedSun : ModProjectile,
         _targetScale = 0f;
         if (_blowtorchTimer < BlowtorchTime)
             _blowtorchTimer++;
+        if (_flashTimer > 0)
+            _flashTimer--;
         _squishScale = 1f;
         FireRotations.Clear();
         _hitboxActive = false;
@@ -272,6 +285,9 @@ public class RedSun : ModProjectile,
                 break;
             case AIState.Cross:
                 AI_Cross();
+                break;
+            case AIState.AwaitThrow:
+                AI_AwaitThrow();
                 break;
             case AIState.Throw:
                 AI_Throw();
@@ -352,18 +368,57 @@ public class RedSun : ModProjectile,
         }
     }
 
-    private void AI_Throw()
+    private void AI_AwaitThrow()
     {
         _targetScale = 1f;
         Timer++;
-        if(Timer < 30)
+        if (Timer >= 600 || !Parent.active)
+            Projectile.Kill();
+    }
+
+    private void AI_Throw()
+    {
+
+        Timer++;
+        if(Timer == 1)
         {
-            Projectile.velocity *= 1.05f;
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothKickSlap") with { PitchVariance = 0.7f }, Projectile.Center);
+            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/RazorClash") with { PitchVariance = 0.7f }, Projectile.Center);
+            SoundStyle flyAway = AssetRegistry.Sounds.Fire.Gothiviaflyaway;
+            SoundEngine.PlaySound(flyAway, Projectile.position);
+            Projectile.velocity *= 15;
+        }
+
+        if(Timer < 6)
+        {
+            var gd = LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity.SafeNormalize(Vector2.Zero));
+            gd.outerColor = Color.Red;
+            gd.fadeToColor = Color.Black;
+            gd.Scale *= 2.4f;
+        }
+
+        if(Timer < 16)
+        {
+            ShakeScreenPosition.Shake = 6;
+        }
+
+        var dp = DustParticle.Spawn(Projectile.Center + Main.rand.NextVector2Circular(256, 256), -Projectile.velocity.SafeNormalize(Vector2.Zero));
+        dp.gravity = 0;
+        dp.Scale *= 0.6f;
+
+        float time = 60;
+        if(Timer < time)
+        {
+            _targetScale = 1f;
+            Projectile.velocity *= 0.96f;
         }
         else
         {
+            _whiteTimer = MathHelper.Lerp(0f, 1f, EasingFunction.InOutExpo((Timer - 60f) / 40f));
+            _targetScale = MathHelper.Lerp(1f, 0.5f, EasingFunction.InOutSine((Timer - 60f) / 40f));
             Projectile.velocity *= 0.98f;
-            if(Projectile.velocity.Length() < 0.5f)
+            Projectile.velocity.Y -= 0.4f;
+            if (Timer >= 100)
             {
                 Projectile.Kill();
             }
@@ -377,7 +432,8 @@ public class RedSun : ModProjectile,
         _telegraphAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / BlowtorchTelegraphTime));
         if(Timer == BlowtorchTelegraphTime)
         {
-            SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/GothingBow") { PitchVariance = 0.5f }, Projectile.Center);
+            _flashTimer = 30;
+            Gothivia.PlayBlowtorchSound(Projectile.position);
             SoundStyle fireballShoot = new SoundStyle("Stellamod/Assets/Sounds/Fire/FireballShoot1") with { PitchVariance = 0.5f };
             SoundEngine.PlaySound(fireballShoot, Projectile.position);
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Projectile.position);
@@ -410,6 +466,8 @@ public class RedSun : ModProjectile,
             float a = MathHelper.Lerp(1f, 1.25f, EasingFunction.OutExpo(_blowtorchTimer / BlowtorchTime));
             float b = MathHelper.Lerp(1f, 0f, EasingFunction.InOutSine(_blowtorchTimer / BlowtorchTime));
             float c = a * b;
+            FXUtil.ApplyContrast(MathHelper.Lerp(0.5f, 0f, EasingFunction.InOutExpo(_blowtorchTimer / BlowtorchTime)));
+
             _squishScale = MathHelper.Lerp(1f, 1.35f, c);
             _telegraphAlpha = 0;
             _hitboxActive = true;
@@ -457,7 +515,7 @@ public class RedSun : ModProjectile,
     {
         if(_attackCounter >= 8)
         {
-            SwitchState(AIState.Shrink);
+            SwitchState(AIState.AwaitThrow);
         }
         _targetScale = 1f;
         Timer++;
@@ -500,6 +558,8 @@ public class RedSun : ModProjectile,
         if(Timer == 1)
         {
             CreateShrinkingCircle();
+            SoundStyle growSound1 = AssetRegistry.Sounds.Fire.Sungrow1;
+            SoundEngine.PlaySound(growSound1, Projectile.position);
         }
         CreateInwardParticles();
         _targetScale = 0.2f;
@@ -515,6 +575,8 @@ public class RedSun : ModProjectile,
         if (Timer == 1)
         {
             CreateShrinkingCircle();
+            SoundStyle growSound1 = AssetRegistry.Sounds.Fire.Sungrow2;
+            SoundEngine.PlaySound(growSound1, Projectile.position);
         }
         CreateInwardParticles();
         _targetScale = 0.5f;
@@ -529,6 +591,8 @@ public class RedSun : ModProjectile,
         Timer++;
         if (Timer == 1)
         {
+            SoundStyle growSound1 = AssetRegistry.Sounds.Fire.Sungrow3;
+            SoundEngine.PlaySound(growSound1, Projectile.position);
             ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             shaderSystem.TintScreen(Color.OrangeRed, 0.1f, timer: 680);
             shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.025f, timer: 560);
@@ -615,7 +679,6 @@ public class RedSun : ModProjectile,
         glowDrawer.rotation = direction.ToRotation();
         glowDrawer.worldPosition += direction.SafeNormalize(Vector2.Zero) * 96;
 
-
         spriteBatch.Draw(glowDrawer);
         spriteBatch.Draw(glowDrawer);
 
@@ -663,6 +726,23 @@ public class RedSun : ModProjectile,
         glowDrawer.color.A = 0;
         glowDrawer.scale *= scale * 6;
         Main.spriteBatch.Draw(glowDrawer);
+
+        var glowBall = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.StarFlare3, Projectile.Center);
+        glowBall.color = Color.White * 0.92f;
+        glowBall.color.A = 0;
+        glowBall.scale *= 2 * _squishScale * MathHelper.Lerp(0, 2f, EasingFunction.InExpo((_flashTimer / 30f)));
+        Main.spriteBatch.Draw(glowBall);
+
+        if(_whiteTimer > 0)
+        {
+
+            SpritebatchDrawer glowDrawer2 = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.JumbledGlowCircle.Asset.Value, Projectile.Center);
+            glowDrawer2.color = Color.White * _whiteTimer * ExtraMath.Osc(0.7f, 1f, speed: 28);
+            glowDrawer2.color.A = 0;
+            glowDrawer2.scale *= scale * 2;
+            Main.spriteBatch.Draw(glowDrawer2);
+
+        }
         return false;
     }
     public override void OnHitPlayer(Player target, Player.HurtInfo info)
@@ -676,6 +756,10 @@ public class RedSun : ModProjectile,
         base.OnKill(timeLeft);
         if (this.OwnedByLocalClient())
         {
+            int numDirections = 8;
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.UnitY,
+                ModContent.ProjectileType<GothinTorch>(), Projectile.damage, 
+                Projectile.knockBack, Projectile.owner, ai1: numDirections, ai2: 1);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
                 ModContent.ProjectileType<RedSunBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }

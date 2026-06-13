@@ -145,7 +145,7 @@ namespace Stellamod.Common.DungeonGeneration
         private void DrawDebug(On_Main.orig_DrawDust orig, Main self)
         {
             orig(self);
-            return;
+            /*
             SpriteBatch spriteBatch = Main.spriteBatch;
             if (vertices != null)
             {
@@ -190,7 +190,7 @@ namespace Stellamod.Common.DungeonGeneration
             }
 
   
-            spriteBatch.End();
+            spriteBatch.End();*/
         }
 
         /// <summary>

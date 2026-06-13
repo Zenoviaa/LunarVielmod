@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia.Projectiles;
-
 public class BlinkingStar : ModProjectile
 {
     private ref float Timer => ref Projectile.ai[0];
