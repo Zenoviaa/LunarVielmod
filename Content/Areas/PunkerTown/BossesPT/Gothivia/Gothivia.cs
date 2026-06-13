@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework.Input;
-using Stellamod.Common.Shaders;
 using Stellamod.Common.WeaponUpgrade.UI;
 using Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia.Projectiles;
 using Stellamod.Core;
 using Stellamod.Core.Camera;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.NPCs.Town;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;
@@ -17,87 +15,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
-
-public class FireVortexSmokeShader : CrystalShader<FireVortexSmokeShader>
-{
-    public Texture2D NoiseTexture
-    {
-        set
-        {
-            Main.graphics.GraphicsDevice.Textures[1] = value;
-            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
-        }
-    }
-    public Color GradientTopColor
-    {
-        set
-        {
-            Effect.Parameters["gradientTopColor"].SetValue(value.ToVector4());
-        }
-    }
-
-    public Color GradientBottomColor
-    {
-        set
-        {
-            Effect.Parameters["gradientBottomColor"].SetValue(value.ToVector4());
-        }
-    }
-    public Vector2 Resolution
-    {
-        set
-        {
-            Effect.Parameters["resolution"].SetValue(value);
-        }
-    }
-    public float Time
-    {
-        set
-        {
-            Effect.Parameters["time"].SetValue(value);
-        }
-    }
-}
-public class FireVortexShader : CrystalShader<FireVortexShader>
-{
-    public Texture2D NoiseTexture
-    {
-        set
-        {
-            Main.graphics.GraphicsDevice.Textures[1] = value;
-            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
-        }
-    }
-    public Color GradientTopColor
-    {
-        set
-        {
-            Effect.Parameters["gradientTopColor"].SetValue(value.ToVector4());
-        }
-    }
-
-    public Color GradientBottomColor
-    {
-        set
-        {
-            Effect.Parameters["gradientBottomColor"].SetValue(value.ToVector4());
-        }
-    }
-    public Vector2 Resolution
-    {
-        set
-        {
-            Effect.Parameters["resolution"].SetValue(value);
-        }
-    }
-    public float Time
-    {
-        set
-        {
-            Effect.Parameters["time"].SetValue(value);
-        }
-    }
-}
 
 public partial class Gothivia : ScarletBoss
 {
@@ -141,12 +58,12 @@ public partial class Gothivia : ScarletBoss
         SniperShot
     }
 
-    private PatternManager<AIState> _patternManageBackingField;
+    private PatternManager<AIState>? _patternManageBackingField;
     private PatternManager<AIState> AttackPattern
     {
         get
         {
-            if(_patternManageBackingField == null)
+            if (_patternManageBackingField == null)
             {
                 _patternManageBackingField = new PatternManager<AIState>();
                 _patternManageBackingField.AddPattern(AIState.Kick, 1f);
@@ -156,7 +73,7 @@ public partial class Gothivia : ScarletBoss
         }
     }
 
-    private List<float> _shootRotations;
+    private List<float>? _shootRotations;
     private List<float> ShootRotations
     {
         get
@@ -166,27 +83,32 @@ public partial class Gothivia : ScarletBoss
         }
     }
 
+    private bool _keyDown;
     private WingsPerspective _wingsPerspective;
     private bool _contactDamage;
+    
     private float _telegraphLineOffTimer;
     private float _telegraphLineAlpha;
     private float _bowDissipateAlpha;
     private float _afterImageAlpha;
+    
     private bool _renderAfterImage;
     private bool _renderFigure8Trail;
     private bool _renderFinger;
+    
     private float _fingerAlpha;
     private float _figure8TrailAlpha;
     private float _numDirections;
-    private int _bowFrame;
 
+    private int _bowFrame;
     private float _dashDirection;
+
     private Vector2 _startCDashOffset;
     private Vector2 _endCDashOffset;
-
     private Vector2 _initialVelocity;
     private Vector2 _aimingVelocity;
     private Vector2 _figureEightStartCenter;
+
     private Outliner _outliner;
     private AnimationFramer _wingAnimationFrame;
     private AnimationFramer _bowAnimationFrame;
@@ -212,7 +134,7 @@ public partial class Gothivia : ScarletBoss
     private float ComboAttack_BlastUpTime => 55f;
     private float ComboAttack_RotateTime => 55f;
     private float ComboAttack_ZoomTime => 30f;
-    private float ComboAttack_SecondZoomTime => 52;
+    private float ComboAttack_SecondZoomTime => 45;
     private float ComboAttack_EndingTime => 30f;
 
 
@@ -243,7 +165,8 @@ public partial class Gothivia : ScarletBoss
     {
         base.SetStaticDefaults();
         Main.npcFrameCount[Type] = 1;
-        NPCID.Sets.TrailCacheLength[Type] = 24;
+
+        NPCID.Sets.TrailCacheLength[Type] = 128;
         NPCID.Sets.TrailingMode[Type] = 3;
         NPCID.Sets.MustAlwaysDraw[Type] = true;
     }
@@ -291,9 +214,13 @@ public partial class Gothivia : ScarletBoss
         fallSystem.inSpace = true;
         fallSystem.hoveringPlatform = true;
         fallSystem.hoverPlatformY = Ground;
-        //     fallSystem.noProjTileCollide = true;
+        if (Main.netMode == NetmodeID.Server)
+            return;
 
+        FlameWinds s = ScreenShader.GetInstance<FlameWinds>();
+        s.alpha = 1;
     }
+
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
     {
         return base.CanHitPlayer(target, ref cooldownSlot) && _contactDamage;
@@ -340,13 +267,12 @@ public partial class Gothivia : ScarletBoss
         CreateFlameNSmokeParticles();
         _outliner.SetDefaults();
 
-
         if (!NPC.HasValidTarget)
         {
             NPC.TargetClosest();
             if (!NPC.HasValidTarget)
             {
-                if(State != AIState.Despawn)
+                if (State != AIState.Despawn)
                 {
                     SwitchState(AIState.Despawn);
                 }
@@ -358,8 +284,16 @@ public partial class Gothivia : ScarletBoss
 
         if (Keyboard.GetState().IsKeyDown(Keys.L))
         {
+            _keyDown = true;
+
+        }
+        if (_keyDown && !Keyboard.GetState().IsKeyDown(Keys.L))
+        {
+
+            _keyDown = false;
             SwitchState(AIState.FireTornado);
         }
+
         _numDirections = 0;
         _wingsPerspective = WingsPerspective.ThreeQ;
         _wingAnimationFrame.maxFrame = 60;
@@ -426,6 +360,13 @@ public partial class Gothivia : ScarletBoss
         _outliner.Update();
     }
 
+    private void ResizeTrail(int length)
+    {
+        if (NPC.oldPos.Length != length)
+        {
+            NPC.oldPos = new Vector2[length];
+        }
+    }
     private void ChooseAttack()
     {
         if (MultiplayerHelper.IsHost)
@@ -437,7 +378,7 @@ public partial class Gothivia : ScarletBoss
     private void AI_Despawn()
     {
         Timer++;
-        if(Timer >= 90)
+        if (Timer >= 90)
         {
             NPC.active = false;
         }
@@ -446,12 +387,18 @@ public partial class Gothivia : ScarletBoss
     }
     private void AI_FireTornado()
     {
+        void ZoomMiddle()
+        {
+            CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, _startCDashOffset, 0.3f));
+        }
+
+        ResizeTrail(24);
         Timer++;
         switch (AttackCycle)
         {
             case 0:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         NPC.TargetClosest();
                     }
@@ -462,7 +409,7 @@ public partial class Gothivia : ScarletBoss
                     NPC.velocity *= 0.8f;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
                     NPC.Center = Vector2.Lerp(NPC.Center, pointToMoveTo, 0.1f);
-                    if(Timer >= 60)
+                    if (Timer >= 60)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -471,7 +418,7 @@ public partial class Gothivia : ScarletBoss
                 break;
             case 1:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
 
                         _startCDashOffset = MyTarget.Center;
@@ -480,7 +427,7 @@ public partial class Gothivia : ScarletBoss
                     }
 
                     _wingsPerspective = WingsPerspective.ThreeQ;
-             
+
                     _outliner.warning = true;
                     float ratio = Timer / FireTornado_CircleSpeedUpTime;
                     float ease = EasingFunction.InExpo(ratio);
@@ -488,7 +435,7 @@ public partial class Gothivia : ScarletBoss
                     _endCDashOffset = _endCDashOffset.RotatedBy(radiansToRotateBy);
 
                     int time = (int)(FireTornado_CircleSpeedUpTime * 0.85f);
-                    if(Timer == time)
+                    if (Timer == time)
                     {
                         if (MultiplayerHelper.IsHost)
                         {
@@ -496,8 +443,9 @@ public partial class Gothivia : ScarletBoss
                                 ModContent.ProjectileType<FlameHurricane>(), 1, 1, Owner: Main.myPlayer);
                         }
                     }
+                    ZoomMiddle();
 
-                    if(Timer >= time)
+                    if (Timer >= time)
                     {
                         _renderAfterImage = true;
                         _renderFigure8Trail = true;
@@ -511,7 +459,7 @@ public partial class Gothivia : ScarletBoss
                     float targetRotation = vel.ToRotation() + MathHelper.PiOver2;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, targetRotation, 0.3f);
                     Animator.PlayAnimation(Anim_Dive);
-                    if(Timer >= FireTornado_CircleSpeedUpTime)
+                    if (Timer >= FireTornado_CircleSpeedUpTime)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -520,7 +468,7 @@ public partial class Gothivia : ScarletBoss
                 break;
             case 2:
                 {
-                  
+                    ZoomMiddle();
                     _endCDashOffset = _endCDashOffset.RotatedBy(MathHelper.ToRadians(15));
 
                     Vector2 positionToMoveTo = _startCDashOffset + _endCDashOffset;
@@ -542,12 +490,12 @@ public partial class Gothivia : ScarletBoss
                         float angleRadius = 0.55f;
                         if (MultiplayerHelper.IsHost)
                         {
-                            Projectile.NewProjectile(SourceFromThis, _startCDashOffset, Vector2.Zero, 
+                            Projectile.NewProjectile(SourceFromThis, _startCDashOffset, Vector2.Zero,
                                 ModContent.ProjectileType<FlameSwirl>(), 1, 1, Main.myPlayer, ai1: midAngle, ai2: angleRadius);
                         }
                         Timer = 0;
                         AttackCounter++;
-                        if(AttackCounter >= FireTornado_CircleCount)
+                        if (AttackCounter >= FireTornado_CircleCount)
                         {
                             AttackCycle++;
                         }
@@ -558,7 +506,7 @@ public partial class Gothivia : ScarletBoss
                 {
                     NPC.velocity *= 0.8f;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.1f);
-                    if(Timer >= 60)
+                    if (Timer >= 60)
                     {
                         SwitchState(AIState.Idle);
                     }
@@ -575,7 +523,7 @@ public partial class Gothivia : ScarletBoss
                 return;
 
 
-            for(int i = 0; i < ShootRotations.Count; i++)
+            for (int i = 0; i < ShootRotations.Count; i++)
             {
                 float angle = ShootRotations[i];
                 Vector2 offset = angle.ToRotationVector2();
@@ -590,7 +538,7 @@ public partial class Gothivia : ScarletBoss
             {
                 case 0:
                     {
-                        for(float angle = 0; angle < MathHelper.TwoPi; angle += MathHelper.PiOver2)
+                        for (float angle = 0; angle < MathHelper.TwoPi; angle += MathHelper.PiOver2)
                         {
                             ShootRotations.Add(angle);
                         }
@@ -631,7 +579,7 @@ public partial class Gothivia : ScarletBoss
         {
             case 0:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         NPC.TargetClosest();
                     }
@@ -670,7 +618,7 @@ public partial class Gothivia : ScarletBoss
 
             case 2:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         SetBlowtorchShootRotations();
                         Blast();
@@ -685,7 +633,8 @@ public partial class Gothivia : ScarletBoss
                         if (AttackCounter >= 4)
                         {
                             AttackCycle++;
-                        } else
+                        }
+                        else
                         {
                             AttackCycle--;
                         }
@@ -705,7 +654,7 @@ public partial class Gothivia : ScarletBoss
                     Vector2 interpolatedVelocity = Vector2.Lerp(Vector2.Lerp(Vector2.Zero, -velocity * 0.5f, EasingFunction.OutCirc(ratio)), velocity, EasingFunction.InOutExpo(ratio));
                     NPC.velocity = interpolatedVelocity * MathHelper.Lerp(1f, 2.5f, (Timer - ComboAttack_BlastUpTime) / 30f);
                     NPC.rotation = NPC.velocity.X * 0.05f;
-                    if(Timer >= ComboAttack_BlastUpTime && NPC.Center.Y < MyTarget.Center.Y)
+                    if (Timer >= ComboAttack_BlastUpTime && NPC.Center.Y < MyTarget.Center.Y)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -715,7 +664,7 @@ public partial class Gothivia : ScarletBoss
 
             case 4:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         if (MultiplayerHelper.IsHost)
                         {
@@ -725,7 +674,7 @@ public partial class Gothivia : ScarletBoss
                         }
                     }
 
-                    if(Timer % 4 == 0)
+                    if (Timer % 4 == 0)
                     {
                         var dp = DustParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(32, 32), -NPC.velocity.SafeNormalize(Vector2.Zero));
                         dp.noTileCollide = true;
@@ -738,7 +687,7 @@ public partial class Gothivia : ScarletBoss
                     _outliner.attacking = true;
                     NPC.velocity *= 1.05f;
                     NPC.velocity = NPC.velocity.RotatedBy(0.05f);
-                    if(Timer >= 8)
+                    if (Timer >= 8)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -772,8 +721,8 @@ public partial class Gothivia : ScarletBoss
 
                     CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, NPC.Center, 0.3f));
                     Animator.PlayAnimation(Anim_Dive);
-                
-                    if(Timer >= ComboAttack_ZoomTime)
+
+                    if (Timer >= ComboAttack_ZoomTime)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -785,40 +734,68 @@ public partial class Gothivia : ScarletBoss
                     _contactDamage = true;
                     _renderFigure8Trail = true;
                     _renderAfterImage = true;
+                    _outliner.attacking = true;
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
-                        _startCDashOffset = NPC.Center;
-                        _endCDashOffset = NPC.velocity;
-                       // _dashDirection = NPC.Center.X < MyTarget.Center.X ? -1 : 1;
-                    //    _dashDirection *= -1;
+
+                        _startCDashOffset = (NPC.Center - MyTarget.Center);
+                        _endCDashOffset = MyTarget.Center;
+                        _endCDashOffset.Y -= 512;
+                        _initialVelocity = NPC.velocity;
+                        ;
+                        // _dashDirection = NPC.Center.X < MyTarget.Center.X ? -1 : 1;
+                        //    _dashDirection *= -1;
                     }
 
-                    Vector2 endPoint = MyTarget.Center;
+                    float time = ComboAttack_SecondZoomTime;
+                    float maxRadians = MathHelper.ToRadians(233);
+                    float radians = maxRadians / time;
+                    NPC.velocity = NPC.velocity.RotatedBy(radians);
+                    if (Timer >= time)
+                    {
+                        Timer = 0;
+                        AttackCycle++;
+                    }
 
-                    float ratio = Timer / ComboAttack_SecondZoomTime;
-
-                    Vector2 inBetweenPoint = Vector2.Lerp(_startCDashOffset, endPoint, ratio);
-                    Vector2 offset = Vector2.Lerp(Vector2.Zero, Vector2.UnitX * 800 * _dashDirection, EasingFunction.QuickOutSlowIn(ratio));
-                    Vector2 offset2 = Vector2.Lerp(-Vector2.UnitY * 512, Vector2.Zero, EasingFunction.InOutSine(ratio));
-                    Vector2 pointToMoveTo = inBetweenPoint + offset + offset2;
-                    Vector2 vel = pointToMoveTo - NPC.Center;
-                    NPC.velocity = Vector2.Lerp(_endCDashOffset, vel, EasingFunction.InOutSine(Timer / 45));
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation() + MathHelper.PiOver2, 0.1f);
-
                     CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, NPC.Center, 0.3f));
                     Animator.PlayAnimation(Anim_Dive);
 
-                    if (Timer >= ComboAttack_SecondZoomTime)
+
+                }
+                break;
+            case 7:
+                {
+                    float reelInTime = 90;
+                    _contactDamage = true;
+                    _renderFigure8Trail = true;
+                    _renderAfterImage = true;
+                    _outliner.attacking = true;
+                    Vector2 homingVelocity = ProjectileHelper.SimpleHomingVelocity(NPC.Center, MyTarget.Center, NPC.velocity, 8);
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, homingVelocity, 0.35f);
+
+                    if (Timer < reelInTime * 0.5f)
+                        NPC.velocity *= 0.96f;
+                    else if (NPC.velocity.Length() < 60)
+                    {
+                        MakeCircles(Timer);
+                        NPC.velocity *= 1.4f;
+                    }
+
+                    NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation() + MathHelper.PiOver2, 0.1f);
+                    CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, NPC.Center, 0.3f));
+                    Animator.PlayAnimation(Anim_Dive);
+                    if (Timer >= reelInTime)
                     {
                         Timer = 0;
                         AttackCycle++;
                     }
                 }
                 break;
-            case 7:
+            case 8:
                 {
-                    NPC.velocity *= 0.96f;
+                    NPC.velocity *= 0.92f;
                     NPC.rotation = Utils.AngleLerp(NPC.rotation, NPC.velocity.ToRotation(), 0.1f);
                     Animator.PlayAnimation(Anim_Floating);
                     if (Timer >= ComboAttack_EndingTime)
@@ -843,7 +820,7 @@ public partial class Gothivia : ScarletBoss
 
                     }
 
-                    if(Timer == 10)
+                    if (Timer == 10)
                     {
                         SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BindingBless1") with { PitchVariance = 0.6f }, NPC.Center);
                         CreateInCircle();
@@ -871,7 +848,7 @@ public partial class Gothivia : ScarletBoss
                 break;
             case 1:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         FXUtil.ApplyVignette(1f, timer: SniperShot_TelegraphTime);
                     }
@@ -883,20 +860,20 @@ public partial class Gothivia : ScarletBoss
                     _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo(Timer / 60f));
 
                     Vector2 targetVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-                   
-           
+
+
                     float radians = MathHelper.Lerp(MathHelper.ToRadians(360), 0, EasingFunction.InOutExpo(Timer / SniperShot_TelegraphTime));
 
                     _aimingVelocity = targetVelocity.RotatedBy(radians);
 
-                   Vector2 offset = -Vector2.UnitY;
+                    Vector2 offset = -Vector2.UnitY;
                     offset *= 384;
                     offset = offset.RotatedBy(radians);
                     Vector2 pointToMoveTo = MyTarget.Center + offset;
                     NPC.Center = Vector2.Lerp(NPC.Center, pointToMoveTo, MathHelper.Lerp(0f, 0.1f, EasingFunction.InOutExpo(Timer / 60f)));
                     NPC.velocity = Vector2.Zero;
-                    
-                    if(Timer < SniperShot_TelegraphTime - 30)
+
+                    if (Timer < SniperShot_TelegraphTime - 30)
                     {
                         _renderAfterImage = true;
 
@@ -912,13 +889,13 @@ public partial class Gothivia : ScarletBoss
                                 ModContent.ProjectileType<BlinkingStar>(), 24, 0f, Main.myPlayer, 0f, NPC.whoAmI);
                         }
                     }
-                    if(Timer >= SniperShot_TelegraphTime - 30)
+                    if (Timer >= SniperShot_TelegraphTime - 30)
                     {
                         float t = Timer - (SniperShot_TelegraphTime - 30);
                         _bowDissipateAlpha = MathHelper.Lerp(1f, 0f, t / 30f);
 
                     }
-                    if(Timer >= SniperShot_TelegraphTime)
+                    if (Timer >= SniperShot_TelegraphTime)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -927,7 +904,7 @@ public partial class Gothivia : ScarletBoss
                 break;
             case 2:
                 {
-                    if(Timer == 1)
+                    if (Timer == 1)
                     {
                         if (MultiplayerHelper.IsHost)
                         {
@@ -939,7 +916,7 @@ public partial class Gothivia : ScarletBoss
                     Animator.PlayAnimation(Anim_Arrowshot);
                     NPC.velocity *= 0.96f;
                     _outliner.attacking = true;
-                    if(Timer >= SniperShot_ShootTime)
+                    if (Timer >= SniperShot_ShootTime)
                     {
                         Timer = 0;
                         AttackCycle++;
@@ -991,30 +968,39 @@ public partial class Gothivia : ScarletBoss
             NPC.velocity = Vector2.Lerp(NPC.velocity, Vector2.Zero, 0.1f);
         }
 
-        if(Timer > 81)
+        if (Timer > 81)
         {
             _outliner.attacking = true;
         }
 
         //NPC.velocity *= Vector2.Zero;
-        if(Timer == 81)
+        if (Timer == 81)
         {
             if (MultiplayerHelper.IsHost)
             {
-       
+
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                     ModContent.ProjectileType<RedSun>(), 1, 0, Main.myPlayer, ai2: NPC.whoAmI);
             }
         }
 
-        if(Timer >= 900)
+        if (Timer >= 900)
         {
             SwitchState(AIState.Idle);
         }
     }
 
+    private void ResetTrail()
+    {
+        for (int i = 0; i < NPC.oldPos.Length; i++)
+        {
+            NPC.oldPos[i] = Vector2.Zero;
+        }
+    }
+
     private void AI_TheZoomer()
     {
+        ResizeTrail(128);
         FaceTarget();
 
         Timer++;
@@ -1024,57 +1010,70 @@ public partial class Gothivia : ScarletBoss
         _figureEightStartCenter = Vector2.Lerp(_figureEightStartCenter, target.Center, 0.07f);
         if (Timer == 1)
         {
+            ResetTrail();
             NPC.TargetClosest();
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/BindingBless1") with { PitchVariance = 0.6f }, NPC.Center);
             CreateInCircle();
             if (MultiplayerHelper.IsHost)
             {
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center,  Vector2.Zero,
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero,
                     ModContent.ProjectileType<BlinkingStar>(), 1, 0f, Main.myPlayer, 0f, ai1);
             }
         }
 
-        if(Timer < 120)
+        float te = 90;
+        if (Timer < te)
         {
             NPC.rotation *= 0.4f;
             Animator.PlayAnimation(Anim_Floating);
             _outliner.warning = true;
         }
 
-        if (Timer < 80 && NPC.HasValidTarget)
-        {
-            Vector2 targetCenter = target.Center;
-            Vector2 targetHoverCenter = targetCenter + new Vector2(0, 256);
-            NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, 0.25f);
-            NPC.velocity = Vector2.Lerp(NPC.velocity, Vector2.Zero, 0.1f);
-        }
 
-        if(Timer > 80 && Timer < 120)
+        if (Timer < te)
         {
-            float ratio = Timer - 80;
-            ratio /= 40f;
-
             //I should really stop writing nested interpolations like this
             //But it's funny
-            Vector2 velocity = -Vector2.UnitY * 14;
-            Vector2 interpolatedVelocity = Vector2.Lerp(Vector2.Lerp(Vector2.Zero, -velocity, EasingFunction.InOutSine(ratio)), velocity * 5.5f, EasingFunction.InCirc(ratio));
-            NPC.velocity = interpolatedVelocity;
+            Vector2 goDown = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 14, EasingFunction.InOutSine(Timer / te));
+            Vector2 goUp = Vector2.Lerp(Vector2.Zero, -Vector2.UnitY * 40, EasingFunction.OutExpo(Timer / te));
+            Vector2 combine = Vector2.Lerp(goDown, goUp, EasingFunction.InExpo(Timer / te));
+            NPC.velocity = combine;
+
+
+            float fixTime = 45;
+            if (Timer < fixTime)
+            {
+                Vector2 targetCenter = target.Center;
+                Vector2 targetHoverCenter = targetCenter + new Vector2(0, MathHelper.Lerp(256, 444, EasingFunction.InOutSine(Timer / fixTime)));
+                //     targetHoverCenter.Y += 256;
+                NPC.Center = Vector2.Lerp(NPC.Center, targetHoverCenter, EasingFunction.OutExpo(Timer / fixTime));
+
+            }
+            else
+            {
+                _renderAfterImage = true;
+                _renderFigure8Trail = true;
+            }
+
+
             NPC.rotation = NPC.velocity.X * 0.05f;
         }
 
-        if (Timer == 120)
+        if (Timer == te)
         {
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/WavingGoth2") with { PitchVariance = 0.5f }, MyTarget.Center);
         }
 
-        if (Timer > 120 && Timer < 500)
+        float up = te + 380;
+
+        if (Timer > te && Timer < up)
         {
             Animator.PlayAnimation(Anim_Dive);
             _renderAfterImage = true;
             _renderFigure8Trail = true;
             _outliner.attacking = true;
             _contactDamage = true;
-       
+
             float movementSpeed = 40;
             float size = 812;
             float figureEightSpeed = 0.06f;
@@ -1094,7 +1093,7 @@ public partial class Gothivia : ScarletBoss
                 targetVelocity = NPC.Center.DirectionTo(targetCenter) * distance;
             }
 
-            if(Timer % 3 == 0)
+            if (Timer % 3 == 0)
             {
                 var dp = DustParticle.Spawn(NPC.Center + Main.rand.NextVector2Circular(64, 64), -NPC.velocity.SafeNormalize(Vector2.Zero) * 5);
                 dp.innerColor = Color.Yellow;
@@ -1106,12 +1105,12 @@ public partial class Gothivia : ScarletBoss
                 dp.noTileCollide = true;
             }
 
-            float ratio = (Timer - 120f) / 30f;
+            float ratio = (Timer - te) / 120f;
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
-            NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, EasingFunction.InExpo(ratio));
+            NPC.velocity = Vector2.Lerp(NPC.velocity, targetVelocity, EasingFunction.InOutSine(ratio));
         }
 
-        if (Timer >= 540)
+        if (Timer >= up + 40)
         {
             NPC.velocity *= 0.2f;
             SwitchState(AIState.Suns);
@@ -1164,7 +1163,7 @@ public partial class Gothivia : ScarletBoss
                 float yVelocity = VectorHelper.Osc(1, -1, hoverSpeed);
                 NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(0, yVelocity), 0.2f);
             }
-            else if(AttackCycle == 3)
+            else if (AttackCycle == 3)
             {
                 Vector2 targetCenter = MyTarget.Center;
                 Vector2 targetHoverCenter = targetCenter + new Vector2(300, 0);
@@ -1248,9 +1247,9 @@ public partial class Gothivia : ScarletBoss
 
             }
         }
-        if(Timer >= 70)
+        if (Timer >= 70)
         {
-            _outliner.attacking=true;
+            _outliner.attacking = true;
         }
 
         if (Timer > 70 && Timer < 82)
@@ -1273,7 +1272,7 @@ public partial class Gothivia : ScarletBoss
             ShakeScreenPosition.Shake = 4;
         }
 
-        if(Timer > 100 && Timer < 135)
+        if (Timer > 100 && Timer < 135)
         {
             _telegraphLineAlpha = MathHelper.Lerp(0f, 1f, EasingFunction.OutExpo((Timer - 100) / 30f));
         }
@@ -1288,7 +1287,7 @@ public partial class Gothivia : ScarletBoss
         {
             float numTimes = InPhase2 ? 8 : 4;
             AttackCounter++;
-            if(AttackCounter >= numTimes)
+            if (AttackCounter >= numTimes)
             {
                 SwitchState(AIState.BoostBounce);
             }
@@ -1307,7 +1306,7 @@ public partial class Gothivia : ScarletBoss
         _renderAfterImage = true;
         NPC.velocity *= 0.96f;
         Timer++;
-        if(AttackCounter == 0)
+        if (AttackCounter == 0)
         {
             if (Timer == 1)
             {
@@ -1369,7 +1368,8 @@ public partial class Gothivia : ScarletBoss
                     SwitchState(AIState.Idle);
                 }
             }
-        } else
+        }
+        else
         {
             Player target = Main.player[NPC.target];
             float ai1 = NPC.whoAmI;
@@ -1403,7 +1403,7 @@ public partial class Gothivia : ScarletBoss
                 e = 10;
                 speed += 4;
             }
-          
+
             if (Timer < e)
             {
                 Vector2 dashDirection = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * speed;
@@ -1421,14 +1421,14 @@ public partial class Gothivia : ScarletBoss
                 }
             }
         }
-     
+
 
 
     }
 
     private void AI_Idle()
     {
-      
+
         _wingsPerspective = WingsPerspective.FourQ;
         NPC.velocity *= 0.96f;
         Timer++;
@@ -1516,11 +1516,11 @@ public partial class Gothivia : ScarletBoss
                 return;
 
 
-           // Vector2 direction = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 2400;
+            // Vector2 direction = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 2400;
             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, _aimingVelocity.SafeNormalize(Vector2.Zero) * 2400,
                 ModContent.ProjectileType<GothinTorch>(), 1, 1, Main.myPlayer);
         }
-        
+
         _outliner.attacking = true;
 
         Timer++;
@@ -1586,10 +1586,10 @@ public partial class Gothivia : ScarletBoss
                     Vector2 targetAimingVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                     _aimingVelocity = Vector2.Lerp(_aimingVelocity, targetAimingVelocity, 1f);
                     _telegraphLineAlpha = MathHelper.Lerp(_telegraphLineAlpha, 1f, 0.3f);
-                }                     
-                
-       
-                if(Timer % 8 == 0 && _bowFrame < 3)
+                }
+
+
+                if (Timer % 8 == 0 && _bowFrame < 3)
                 {
                     _bowFrame++;
                 }
@@ -1604,7 +1604,7 @@ public partial class Gothivia : ScarletBoss
                 {
                     Vector2 targetAimingVelocity = (MyTarget.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                     _aimingVelocity = Vector2.Lerp(_aimingVelocity, targetAimingVelocity, 0.02f);
-                    
+
                 }
 
                 _accelTimer = 0;
@@ -1630,11 +1630,11 @@ public partial class Gothivia : ScarletBoss
 
         void PrepareBowShot(int time)
         {
-            if(Timer == time - 48)
+            if (Timer == time - 48)
             {
                 AttackCycle = 1;
             }
-            if(Timer == time)
+            if (Timer == time)
             {
                 BowShot();
             }

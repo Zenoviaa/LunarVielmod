@@ -123,10 +123,6 @@ namespace Stellamod.Core.LunarLightingSystem
         }
         private void ApplyLighting(On_FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.P))
-            {
-                Test();
-            }
             if (!Main.gameMenu && IsLightingEnabled)
             {
                 var glowMaskBloomShader = ShaderContent.GetInstance<LuminanceShader>();
@@ -142,30 +138,6 @@ namespace Stellamod.Core.LunarLightingSystem
                     glowMaskBloomShader.Effect);
                 sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
                 sb.End();
-
-
-                //Now apply pixelationed to the lights so it looks a lot less jarring
-                //Pixelating it should look pretty cool
-                /*          
-              gDevice.SetRenderTarget(_pixelLightTarget);
-              gDevice.Clear(Color.Transparent);
-
-              sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                       null);
-              sb.Draw(_lightsRT, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
-              sb.End();
-
-
-
-              gDevice.SetRenderTarget(_lightsRT);
-              gDevice.Clear(Color.Transparent);
-
-              sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone,
-                       null);
-              sb.Draw(_pixelLightTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
-              sb.End();
-              */
-
 
 
                 //Take the screen target again and multiple the final light RT over it, to apply the lighting

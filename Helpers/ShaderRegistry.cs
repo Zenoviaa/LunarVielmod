@@ -122,9 +122,6 @@ namespace Stellamod.Helpers
             Asset<Effect> vignetteShader = Assets.Request<Effect>("Effects/Vignette");
             Filters.Scene[ShaderRegistry.Screen_Vignette] = new Filter(new ScreenShaderData(vignetteShader, "ScreenPass"), EffectPriority.Medium);
 
-            Asset<Effect> gustArmorRef = Assets.Request<Effect>("Effects/GustArmor");
-            GameShaders.Misc["LunarVeil:GustArmor"] = new MiscShaderData(gustArmorRef, "PixelPass");
-
             //Palette Shaders
 
             RegisterScreenShader("LunarVeil:DarknessVignette", "Effects/DarknessVignette");
@@ -140,6 +137,7 @@ namespace Stellamod.Helpers
             RegisterScreenShader("LunarVeil:SuperShockwave", "Effects/SuperShockwave");
             RegisterScreenShader("LunarVeil:WorldDepthGradient", "Effects/WorldDepthGradient");
             RegisterScreenShader("LunarVeil:Rippler", "Effects/Rippler");
+            RegisterScreenShader("LunarVeil:FlameWinds", "Effects/GothinFlames/FlameWinds");
 
             Mod mod = Stellamod.Instance;
             foreach (var file in mod.GetFileNames())

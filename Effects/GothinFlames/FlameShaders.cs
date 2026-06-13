@@ -3,6 +3,139 @@ using Terraria;
 
 namespace Stellamod.Effects.GothinFlames;
 
+public class FireVortexSmokeShader : CrystalShader<FireVortexSmokeShader>
+{
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
+        }
+    }
+    public Color GradientTopColor
+    {
+        set
+        {
+            Effect.Parameters["gradientTopColor"].SetValue(value.ToVector4());
+        }
+    }
+
+    public Color GradientBottomColor
+    {
+        set
+        {
+            Effect.Parameters["gradientBottomColor"].SetValue(value.ToVector4());
+        }
+    }
+    public Vector2 Resolution
+    {
+        set
+        {
+            Effect.Parameters["resolution"].SetValue(value);
+        }
+    }
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+}
+public class FireVortexShader : CrystalShader<FireVortexShader>
+{
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
+        }
+    }
+    public Color GradientTopColor
+    {
+        set
+        {
+            Effect.Parameters["gradientTopColor"].SetValue(value.ToVector4());
+        }
+    }
+
+    public Color GradientBottomColor
+    {
+        set
+        {
+            Effect.Parameters["gradientBottomColor"].SetValue(value.ToVector4());
+        }
+    }
+    public Vector2 Resolution
+    {
+        set
+        {
+            Effect.Parameters["resolution"].SetValue(value);
+        }
+    }
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+}
+
+public class WildfireShader : CrystalShader<FlameWindsShader>
+{
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
+        }
+    }
+    public Color GradientTopColor
+    {
+        set
+        {
+            Effect.Parameters["gradientTopColor"].SetValue(value.ToVector4());
+        }
+    }
+
+    public Color GradientBottomColor
+    {
+        set
+        {
+            Effect.Parameters["gradientBottomColor"].SetValue(value.ToVector4());
+        }
+    }
+    public Vector2 Resolution
+    {
+        set
+        {
+            Effect.Parameters["resolution"].SetValue(value);
+        }
+    }
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+}
+
+public class FlameWindsShader : CrystalShader<FlameWindsShader>
+{
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+}
+
 public class FlameHurricaneShader : CrystalShader<FlameHurricaneShader>
 {
     public float Radius

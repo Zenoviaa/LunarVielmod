@@ -4,6 +4,7 @@ using Stellamod.Core;
 using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
+using Stellamod.Effects.GothinFlames;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.GameContent;
@@ -55,7 +56,7 @@ public class GothiviaDomain : ModSystem
         fireShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, fireShader.Effect);
 
-        Rectangle targetRect = new Rectangle(0, 0, Main.screenWidth , Main.screenHeight);
+        Rectangle targetRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
         spriteBatch.Draw(AssetManager.Noise.FlameVortexNoise, targetRect, Color.Lerp(Color.White, Color.Black, 0.3f));
 
         spriteBatch.End();
@@ -63,7 +64,7 @@ public class GothiviaDomain : ModSystem
 
         //Draw the smokee
         FireVortexSmokeShader smokeShader = ShaderContent.GetInstance<FireVortexSmokeShader>();
-        smokeShader.GradientTopColor = new Color(125, 125, 125) ;
+        smokeShader.GradientTopColor = new Color(125, 125, 125);
         smokeShader.GradientBottomColor = new Color(22, 22, 22);
         smokeShader.Resolution = new Vector2(Main.screenWidth, Main.screenHeight);
         smokeShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
@@ -72,7 +73,7 @@ public class GothiviaDomain : ModSystem
         targetRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
 
         Color c = Color.Lerp(Color.White, Color.Black, 0.5f);
-         spriteBatch.Draw(AssetManager.Noise.FlameVortexNoise, targetRect, c);
+        spriteBatch.Draw(AssetManager.Noise.FlameVortexNoise, targetRect, c);
 
         spriteBatch.End();
 
@@ -129,7 +130,7 @@ public class GothiviaDomain : ModSystem
             var config = ModContent.GetInstance<LunarVeilClientConfig>();
             if (!config.FocusMode)
             {
-                spriteBatch.Draw(_domainRT, new Rectangle(0, 0, Main.screenWidth * 2 , Main.screenHeight * 2), drawColor2);
+                spriteBatch.Draw(_domainRT, new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2), drawColor2);
                 spriteBatch.Draw(TextureAssets.BlackTile.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * 0.25f);
             }
 
@@ -140,12 +141,12 @@ public class GothiviaDomain : ModSystem
             {
                 Vector2 drawPosition = new Vector2(Main.LocalPlayer.Center.X, singularityFallSystem.hoverPlatformY);
                 SpritebatchDrawer blackDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.BlackTile, Vector2.Zero);
-                blackDrawer.dstRect = new Rectangle(0, (int)(drawPosition.Y-Main.screenPosition.Y)+48, Main.screenWidth, Main.screenHeight);
+                blackDrawer.dstRect = new Rectangle(0, (int)(drawPosition.Y - Main.screenPosition.Y) + 48, Main.screenWidth, Main.screenHeight);
                 blackDrawer.drawOrigin = Vector2.Zero;
                 blackDrawer.color = Color.White * 0.15f;
-            //    spriteBatch.Draw(blackDrawer);
+                //    spriteBatch.Draw(blackDrawer);
                 var bloomLine = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine");
-             
+
                 //drawPosition -= Main.screenPosition;
                 drawPosition.Y += 48;
                 SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(bloomLine, drawPosition);
@@ -155,7 +156,7 @@ public class GothiviaDomain : ModSystem
                 drawer.scale.Y *= 8;
                 spriteBatch.Draw(drawer);
 
- 
+
             }
 
 

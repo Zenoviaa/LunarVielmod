@@ -77,7 +77,7 @@ public class FlameHurricane : ModProjectile,
             ScreenShaderSystem shaderSystem = ModContent.GetInstance<ScreenShaderSystem>();
             shaderSystem.TintScreen(Color.OrangeRed, 0.1f, timer: 680);
             shaderSystem.DistortScreen(TextureRegistry.NormalNoise1, new Vector2(0.001f, 0.001f), blend: 0.025f, timer: 560);
-            shaderSystem.VignetteScreen(-1f, timer: 560);
+            shaderSystem.VignetteScreen(1f, timer: 560);
 
             SoundStyle fireIn = AssetRegistry.Sounds.Fire.Flamewheel;
             SoundEngine.PlaySound(fireIn, Projectile.position);
