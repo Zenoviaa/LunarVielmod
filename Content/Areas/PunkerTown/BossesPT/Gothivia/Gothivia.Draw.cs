@@ -104,7 +104,7 @@ public partial class Gothivia :
         WingQuad.FlipVerticesX(NPC.Center.X);
         WingQuad.DrawWithShader(flameWingShader);
 
-
+        /*
         scale *= 0.9f;
         Matrix bottomWingMatrix = CalculateMatrix(zOffset: MathHelper.ToRadians(-35), tOffset: -1);
         WingQuad.CalculateRightCenterVertices(centerPoint, 1200 * scale, 200 * scale, bottomWingMatrix);
@@ -112,12 +112,7 @@ public partial class Gothivia :
         WingQuad.DrawWithShader(flameWingShader);
 
         WingQuad.FlipVerticesX(NPC.Center.X);
-        WingQuad.DrawWithShader(flameWingShader);
-    }
-
-    private void DrawWings(bool flipped = false)
-    {
-     
+        WingQuad.DrawWithShader(flameWingShader);*/
     }
 
 
@@ -165,12 +160,8 @@ public partial class Gothivia :
 
     public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
     {
-    
         ModContent.GetInstance<GothiviaDomain>().drawGothivia = true;
         DrawTelegraphLine(spriteBatch);
-
-        DrawWings(flipped: false);
-        DrawWings(flipped: true);
         DrawWings(spriteBatch);
         DrawSprite(spriteBatch);
         DrawBow(spriteBatch);
@@ -216,6 +207,26 @@ public partial class Gothivia :
         auraShader.LaserTexture = AssetManager.LaserTextures.Bloom;
         TrailDrawer.Draw(Main.spriteBatch, NPC.oldPos, GetTrailColor2, GetTrailWidth, auraShader, NPC.Size * 0.5f);
     }
+    private void DrawFaintFlamingTrail(GraphicsDevice gDevice)
+    {
+        float GetTrailWidth(float ratio)
+        {
+            return MathHelper.SmoothStep(48, 48, ratio) ;
+        }
+        Color GetTrailColor(float ratio)
+        {
+            return Color.Lerp(Color.Lerp(Color.White, Color.Yellow, EasingFunction.OutQuad(ratio)), Color.Lerp(Color.Orange, Color.Lerp(Color.Red, Color.Transparent, ratio), EasingFunction.OutQuad(ratio)), EasingFunction.OutExpo(ratio)) ;
+        }
+
+        GothinFlameTrailShader flameTrailShader = ShaderContent.GetInstance<GothinFlameTrailShader>();
+        flameTrailShader.InsideColor = Color.Lerp(Color.White, Color.Yellow, ExtraMath.Osc(0f, 1f, speed: 12));
+        flameTrailShader.BloomColor = Color.Red;
+        flameTrailShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+        flameTrailShader.LaserTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/SmooothTrail").Value;
+        flameTrailShader.Time = Main.GlobalTimeWrappedHourly * 24;
+        TrailDrawer.Draw(NPC.oldPos, GetTrailColor, GetTrailWidth, flameTrailShader, NPC.Size * 0.5f);
+    }
+
     private void DrawFlamingFigure8Trail(GraphicsDevice gDevice)
     {
         float GetTrailWidth(float ratio)
@@ -416,7 +427,71 @@ public partial class Gothivia :
         wingDrawer.rotation = NPC.rotation;
         spriteBatch.Draw(wingDrawer);
     }
+    private void DrawAura(SpriteBatch sb, Vector2 sp)
+    {
+        float fade = 1f;
+        float inScale = EasingFunction.OutExpo(Timer / 30f);
+        Asset<Texture2D> waveTexture = AssetManager.GlowMask.Wave;
+        WaveShader waveShader = ShaderContent.GetInstance<WaveShader>();
+        waveShader.Time = Main.GlobalTimeWrappedHourly * 0.5f + NPC.whoAmI;
+        waveShader.Amplitude = 0.3f;
+        waveShader.Frequency = 8;
+        waveShader.XStrength = 6;
+        waveShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
+        sb.Restart(effect: waveShader.Effect);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(waveTexture, NPC.Center);
+        drawer.rotation = NPC.rotation;
+        drawer.BottomCenterOrigin();
+        drawer.color = Color.OrangeRed * fade * ExtraMath.Osc(0.6f, 1f, speed: 32, offset: NPC.whoAmI);
+        drawer.color.A = 0;
+        drawer.scale *= 0.5f * inScale;
+        drawer.scale.Y *= ExtraMath.Osc(1f, 1.1f, offset: NPC.whoAmI);
+        sb.Draw(drawer);
 
+        drawer.TopCenterOrigin();
+        drawer.scale.Y *= 0.4f;
+        drawer.spriteEffects |= SpriteEffects.FlipVertically;
+        drawer.rotation = NPC.rotation;
+        sb.Draw(drawer);
+
+        sb.RestartDefaults();
+
+        Asset<Texture2D> bloomLine = AssetManager.GlowMask.SimpleGlowCircle;
+        SpritebatchDrawer drawer2 = SpritebatchDrawer.FromTextureAsset(bloomLine, NPC.Center + new Vector2(0f, 12));
+        //      drawer2.BottomCenterOrigin();
+        drawer2.scale *= new Vector2(0.55f, 0.55f) * ExtraMath.Osc(0.8f, 1f, speed: 3) * inScale;
+        drawer2.color = Color.Yellow * fade * 0.5f; ;
+        drawer2.color.A = 0;
+        drawer2.rotation = NPC.rotation;
+        sb.Draw(drawer2);
+
+        drawer2.scale *= 2;
+        drawer2.color = Color.Red * fade * 0.5f; ;
+        drawer2.color.A = 0;
+        sb.Draw(drawer2);
+
+        drawer2.scale *= 2;
+        drawer2.color = Color.Red * fade * 0.15f; ;
+        drawer2.color.A = 0;
+        sb.Draw(drawer2);
+
+        SpritebatchDrawer blastPillar = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar, NPC.Center + new Vector2(0f, 12));
+        blastPillar.BottomCenterOrigin();
+        blastPillar.color = Color.Red * 0.5f * ExtraMath.Osc(0.6f, 1f, speed: 32, offset: NPC.whoAmI) * fade;
+        blastPillar.color.A = 0;
+        blastPillar.scale *= 0.6f;
+        blastPillar.rotation = NPC.rotation;
+        sb.Draw(blastPillar);
+
+        /*
+        SpritebatchDrawer auraDrawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.SimpleGlowCircle, NPC.Center);
+        auraDrawer.color = Color.Lerp(Color.OrangeRed, Color.Red, 
+            ExtraMath.Osc(0f, 1f, speed: 6)) * 0.4f;
+        auraDrawer.color.A = 0;
+        auraDrawer.scale *= 0.8f;
+        spriteBatch.Draw(auraDrawer);
+        */
+    }
 
     private void DrawSprite(SpriteBatch spriteBatch)
     {
@@ -466,7 +541,9 @@ public partial class Gothivia :
 
     public void DrawToRenderTargets()
     {
+        //PixelationManager.QueuePrimitivesDrawAction(DrawFaintFlamingTrail, DrawLayer.BehindNPCsWithOutline);
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTorchWings, DrawLayer.BehindNPCsWithOutline);
+        PixelationManager.QueueSpritebatchDrawAction(DrawAura, DrawLayer.BehindNPCsWithOutline);
         OutlineRenderer.Queue(DrawOutline);
         if (_figure8TrailAlpha < 0.05f)
             return;

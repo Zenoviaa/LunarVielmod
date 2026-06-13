@@ -8,16 +8,6 @@ using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Utilities;
-public class FlameWinds : ScreenShader
-{
-    public override void ApplyEffect(ScreenShaderData screenShaderData)
-    {
-        base.ApplyEffect(screenShaderData);
-        Effect effect = screenShaderData.Shader;
-        effect.Parameters["time"].SetValue(Main.GlobalTimeWrappedHourly * 12);
-        effect.Parameters["windTexture"].SetValue(AssetManager.Noise.PerlinBlurred.Value);
-    }
-}
 
 public class PetalStorm : ScreenShader
 {

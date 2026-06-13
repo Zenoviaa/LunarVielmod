@@ -217,8 +217,7 @@ public partial class Gothivia : ScarletBoss
         if (Main.netMode == NetmodeID.Server)
             return;
 
-        FlameWinds s = ScreenShader.GetInstance<FlameWinds>();
-        s.alpha = 1;
+        
     }
 
     public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -235,15 +234,20 @@ public partial class Gothivia : ScarletBoss
     {
         if (Main.netMode == NetmodeID.Server)
             return;
-        Main.windSpeedTarget = 0.5f;
-        if (Main.rand.NextBool(8))
+        Main.windSpeedTarget = -0.5f;
+        Main.windSpeedCurrent = -0.5f;
+        if (Main.rand.NextBool(2))
         {
             Vector2 pos = new Vector2();
-            pos.X = Main.rand.Next(0, Main.screenWidth * 2);
-            pos.Y = Main.rand.Next(Main.screenHeight, Main.screenHeight + 300);
-            pos += Main.screenPosition - Main.screenWidth * Vector2.UnitX;
-            var ufp = UnderworldFlameParticle.Spawn(pos, -Vector2.UnitY * 10 + Vector2.UnitX * 5, Scale: Main.rand.NextFloat(0.1f, 0.3f));
+            pos.X = Main.screenWidth + 500;
+            pos.Y = Main.rand.Next(0, Main.screenHeight + 300);
+            pos += Main.screenPosition;
+            Vector2 vel = -Vector2.UnitX * 48 + -Vector2.UnitY * 0.2f;
+            var ufp = UnderworldFlameParticle.Spawn(pos, vel, Scale: Main.rand.NextFloat(0.1f, 0.3f));
             ufp.ySlow = false;
+          
+//ufp.color *= 0.5f;
+            ufp.gothivian = true;
         }
         if (Main.rand.NextBool(3))
         {
@@ -343,6 +347,8 @@ public partial class Gothivia : ScarletBoss
                 AI_FireTornado();
                 break;
         }
+        if(State != AIState.TheZoomer)
+            ResizeTrail(24);
 
         float targetFingerAlpha = _renderFinger ? 1f : 0f;
         _fingerAlpha = MathHelper.Lerp(_fingerAlpha, targetFingerAlpha, 0.1f);
@@ -392,7 +398,7 @@ public partial class Gothivia : ScarletBoss
             CameraTargetSystem.AddTarget(Vector2.Lerp(MyTarget.Center, _startCDashOffset, 0.3f));
         }
 
-        ResizeTrail(24);
+
         Timer++;
         switch (AttackCycle)
         {
@@ -1303,7 +1309,7 @@ public partial class Gothivia : ScarletBoss
     private void AI_BoostBounce()
     {
         FaceTarget();
-        _renderAfterImage = true;
+       
         NPC.velocity *= 0.96f;
         Timer++;
         if (AttackCounter == 0)

@@ -219,7 +219,6 @@ public class GothinTorch : ModProjectile,
 
  
         spriteBatch.Draw(glowDrawer);
-        spriteBatch.Draw(glowDrawer);
 
         glowDrawer.color = Color.DarkRed;
         glowDrawer.color.A = 0;

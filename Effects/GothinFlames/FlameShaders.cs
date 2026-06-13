@@ -163,7 +163,7 @@ public class WildfireShader : CrystalShader<FlameWindsShader>
     {
         set
         {
-            Effect.Parameters["resolution"].SetValue(value);
+           // Effect.Parameters["resolution"].SetValue(value);
         }
     }
     public float Time

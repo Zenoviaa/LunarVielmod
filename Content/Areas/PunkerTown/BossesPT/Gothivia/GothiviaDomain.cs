@@ -42,16 +42,30 @@ public class GothiviaDomain : ModSystem
         _darkenAlpha = MathHelper.Clamp(_darkenAlpha, 0, 0.65f);
     }
     private bool ShouldRender() => drawGothivia;
+
+    private void DrawWind(SpriteBatch spriteBatch, Vector2 screenPos)
+    {
+        var shader = ShaderContent.GetInstance<FlameWindsShader>();
+        shader.Time = Main.GlobalTimeWrappedHourly * 10;
+        spriteBatch.Restart(effect: shader);
+        SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(ModContent.Request<Texture2D>(
+            "Stellamod/Assets/NoiseTextures/BlurryPerlinNoise"), Vector2.Zero);
+        drawer.dstRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+        drawer.color = Color.White * 0.4f;
+        drawer.drawOrigin = Vector2.Zero;
+        spriteBatch.Draw(drawer);
+        spriteBatch.RestartDefaults();
+    }
+
     private void DrawClouds()
     {
         if (!ShouldRender())
             return;
         var config = ModContent.GetInstance<LunarVeilClientConfig>();
         if (config.FocusMode)
-        {
             return;
-        }
 
+        PixelationManager.QueueSpritebatchDrawAction(DrawWind, DrawLayer.OverPlayers);
         SpriteBatch spriteBatch = Main.spriteBatch;
         GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
         graphicsDevice.SetRenderTarget(_domainRT);
@@ -87,6 +101,23 @@ public class GothiviaDomain : ModSystem
         spriteBatch.End();
 
 
+        /*
+
+        WildfireShader wildfireShader = ShaderContent.GetInstance<WildfireShader>();
+        wildfireShader.GradientTopColor = new Color(125, 125, 125);
+        wildfireShader.GradientBottomColor = new Color(22, 22, 22);
+        wildfireShader.Resolution = new Vector2(Main.screenWidth, Main.screenHeight);
+        wildfireShader.NoiseTexture = AssetManager.Noise.PerlinBlurred.Value;
+        wildfireShader.Time = 1.5f + Main.GlobalTimeWrappedHourly * 0.1f;
+        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, wildfireShader.Effect);
+        targetRect = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
+
+   
+        spriteBatch.Draw(AssetManager.Noise.FlameVortexNoise, targetRect, Color.White);
+
+        spriteBatch.End();
+
+        */
 
         _domainSwapRT ??= ManagedRenderTarget.New();
         graphicsDevice.SetRenderTarget(_domainSwapRT);
@@ -140,7 +171,15 @@ public class GothiviaDomain : ModSystem
             if (!config.FocusMode)
             {
                 spriteBatch.Draw(_domainRT, new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2), drawColor2);
-                spriteBatch.Draw(TextureAssets.BlackTile.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * (0.25f + _darkenAlpha));
+                spriteBatch.Draw(TextureAssets.BlackTile.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * (0.5f + _darkenAlpha));
+
+                SpritebatchDrawer drawer = SpritebatchDrawer.FromTextureAsset(AssetManager.GlowMask.BlastPillar.Value, Vector2.Zero);
+                Rectangle rect = new Rectangle(-Main.screenWidth/2, 384, Main.screenWidth * 2, Main.screenHeight);
+                drawer.dstRect = rect;
+                drawer.drawOrigin = Vector2.Zero;
+                drawer.color = Color.Yellow;
+                drawer.color.A = 0;
+                spriteBatch.Draw(drawer);
             }
 
 
@@ -153,7 +192,6 @@ public class GothiviaDomain : ModSystem
                 blackDrawer.dstRect = new Rectangle(0, (int)(drawPosition.Y - Main.screenPosition.Y) + 48, Main.screenWidth, Main.screenHeight);
                 blackDrawer.drawOrigin = Vector2.Zero;
                 blackDrawer.color = Color.White * 0.15f;
-                //    spriteBatch.Draw(blackDrawer);
                 var bloomLine = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine");
 
                 //drawPosition -= Main.screenPosition;
@@ -164,8 +202,6 @@ public class GothiviaDomain : ModSystem
                 drawer.color.A = 0;
                 drawer.scale.Y *= 8;
                 spriteBatch.Draw(drawer);
-
-
             }
 
 
