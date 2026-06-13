@@ -4,6 +4,7 @@ matrix transformMatrix;
 float3 flameStartColor;
 float3 flameBloomColor;
 float time;
+float distortion;
 
 struct VertexShaderInput
 {
@@ -37,18 +38,36 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float2 noiseCoords = coords + float2(time * 0.05, 0.0);
     noiseCoords = frac(noiseCoords);
     float n = tex2D(noiseSampler, noiseCoords).r;
-    float2 distortionOffset = float2(0.0, sin(n * 3.14 * 8.0)) * 0.01;
+    float2 distortionOffset = float2(0.0, sin(n * 1.2 * 8.0)) * lerp(distortion * sin(time + coords.x * 4.0), 0.0, coords.x);
+    //distortionOffset = round(distortionOffset * 12.0) / 12.0;
     float2 sampleCoords = coords + distortionOffset;
+    sampleCoords += float2(0.0, sin(time + coords.x * 8.0) * 0.015);
     
     //Applying the same technique again, we scroll a 
     //This time we're going to actually apply a gradient to the glow so it isn't the asme glow from the start to the end
     //This will genuinely just look better
     //I think we go from yellow to red
-    float4 glowMask = tex2D(glowMaskSampler, sampleCoords) * tintColor;
-    float3 flameColor = lerp(flameStartColor, flameBloomColor, coords.x);
+    float4 glowMask = tex2D(glowMaskSampler, sampleCoords);
+    float3 flameColor = lerp(flameStartColor, flameBloomColor, sampleCoords.x);
+
     glowMask.rgb *= flameColor;
-    glowMask.rgb += lerp(1.5, 0.0, saturate(coords.x + time)) * glowMask.r * 8.0;
-    return glowMask;
+    glowMask.rgb *= lerp(1.5, 0.0, coords.x) * glowMask.r * 8.0;
+    
+    
+    float2 diff = (sampleCoords - float2(0.5, 0.5));
+    float len = length(diff);
+    float interp = saturate(len / 0.5);
+    interp = 1.0 - interp;
+    interp = pow(interp, 3.0);
+    glowMask.rgb += interp;
+   
+    float d = n < coords.x;
+    float d2 = max(glowMask.r, max(glowMask.g, glowMask.b)) < 0.12;
+    d2 = 1.0 - d2;
+    glowMask *= d;
+    glowMask *= d2;
+    glowMask = round(glowMask * 12.0) / 12.0;
+    return glowMask * tintColor;
 }
 
 technique Technique1

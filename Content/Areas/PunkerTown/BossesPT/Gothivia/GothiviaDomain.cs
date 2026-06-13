@@ -15,9 +15,12 @@ namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 [Autoload(Side = ModSide.Client)]
 public class GothiviaDomain : ModSystem
 {
+    private float _darkenAlpha;
     private ManagedRenderTarget _domainSwapRT;
     private ManagedRenderTarget _domainRT;
     public bool drawGothivia;
+    public bool darken;
+
     public override void OnModLoad()
     {
         _domainSwapRT = ManagedRenderTarget.New();
@@ -32,6 +35,12 @@ public class GothiviaDomain : ModSystem
         PrepareRenderTargetDrawsSystem.OnRenderTargetDrawsReady += DrawClouds;
     }
 
+    public override void PostUpdateEverything()
+    {
+        base.PostUpdateEverything();
+        _darkenAlpha += darken ? 0.05f : -0.05f;
+        _darkenAlpha = MathHelper.Clamp(_darkenAlpha, 0, 0.65f);
+    }
     private bool ShouldRender() => drawGothivia;
     private void DrawClouds()
     {
@@ -131,7 +140,7 @@ public class GothiviaDomain : ModSystem
             if (!config.FocusMode)
             {
                 spriteBatch.Draw(_domainRT, new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2), drawColor2);
-                spriteBatch.Draw(TextureAssets.BlackTile.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * 0.25f);
+                spriteBatch.Draw(TextureAssets.BlackTile.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * (0.25f + _darkenAlpha));
             }
 
 

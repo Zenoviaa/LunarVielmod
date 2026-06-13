@@ -3,6 +3,56 @@ using Terraria;
 
 namespace Stellamod.Effects.GothinFlames;
 
+public class FlameWingShader : CrystalShader<FlameWingShader>
+{
+    public Texture2D NoiseTexture
+    {
+        set
+        {
+            Main.graphics.GraphicsDevice.Textures[1] = value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+        }
+    }
+
+    public Color InsideColor
+    {
+        set
+        {
+            Effect.Parameters["flameStartColor"].SetValue(value.ToVector3());
+        }
+    }
+    public Color BloomColor
+    {
+        set
+        {
+            Effect.Parameters["flameBloomColor"].SetValue(value.ToVector3());
+        }
+    }
+
+    public Matrix TransformMatrix
+    {
+        set
+        {
+            Effect.Parameters["transformMatrix"].SetValue(value);
+        }
+    }
+
+    public float Time
+    {
+        set
+        {
+            Effect.Parameters["time"].SetValue(value);
+        }
+    }
+
+    public float Distortion
+    {
+        set
+        {
+           Effect.Parameters["distortion"].SetValue(value);
+        }
+    }
+}
 public class FireVortexSmokeShader : CrystalShader<FireVortexSmokeShader>
 {
     public Texture2D NoiseTexture

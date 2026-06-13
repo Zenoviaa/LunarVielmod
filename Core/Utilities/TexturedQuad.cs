@@ -191,6 +191,72 @@ public class TexturedQuad
         vertices[2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), Color.White, new Vector2(0, 1));
         vertices[3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), Color.White, new Vector2(1, 1));
     }
+
+    public void FlipVerticesX(float pivot)
+    {
+        for(int i = 0; i < vertices.Length; i++)
+        {
+            ref VertexPositionColorTexture vertex = ref vertices[i];
+            float diff = pivot - vertex.Position.X;
+            vertex.Position.X += diff * 2;
+        }
+    }
+    public void CalculateLeftCenterVertices(Vector2 center, float length, float width, Matrix transformMatrix)
+    {
+        Vector2 topLeftOffset = new Vector2(0, -width / 2f);
+        Vector2 bottomLeftOffset = new Vector2(0, width / 2f);
+        Vector2 topRightOffset = topLeftOffset + new Vector2(length, -width / 2f);
+        Vector2 bottomRightOffset = bottomLeftOffset + new Vector2(length, width / 2f);
+
+        topLeftOffset = Vector2.Transform(topLeftOffset, transformMatrix);
+        bottomLeftOffset = Vector2.Transform(bottomLeftOffset, transformMatrix);
+        topRightOffset = Vector2.Transform(topRightOffset, transformMatrix);
+        bottomRightOffset = Vector2.Transform(bottomRightOffset, transformMatrix);
+
+        Vector2 topLeft = center + topLeftOffset;
+        Vector2 bottomLeft = center + bottomLeftOffset;
+        Vector2 topRight = center + topRightOffset;
+        Vector2 bottomRight = center + bottomRightOffset;
+
+
+        //Rotate around the center pivot
+
+
+
+        vertices[0] = new VertexPositionColorTexture(new Vector3(topLeft, 0), Color.White, new Vector2(0, 0));
+        vertices[1] = new VertexPositionColorTexture(new Vector3(topRight, 0), Color.White, new Vector2(1, 0));
+
+        vertices[2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), Color.White, new Vector2(0, 1));
+        vertices[3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), Color.White, new Vector2(1, 1));
+    }
+    public void CalculateRightCenterVertices(Vector2 center, float length, float width, Matrix transformMatrix)
+    {
+        Vector2 topLeftOffset = new Vector2(-length, -width / 2f);
+        Vector2 bottomLeftOffset = new Vector2(-length, width / 2f);
+        Vector2 topRightOffset = topLeftOffset + new Vector2(length, -width / 2f);
+        Vector2 bottomRightOffset = bottomLeftOffset + new Vector2(length, width / 2f);
+
+        topLeftOffset = Vector2.Transform(topLeftOffset, transformMatrix);
+        bottomLeftOffset = Vector2.Transform(bottomLeftOffset, transformMatrix);
+        topRightOffset = Vector2.Transform(topRightOffset, transformMatrix);
+        bottomRightOffset = Vector2.Transform(bottomRightOffset, transformMatrix);
+
+        Vector2 topLeft = center + topLeftOffset;
+        Vector2 bottomLeft = center + bottomLeftOffset;
+        Vector2 topRight = center + topRightOffset;
+        Vector2 bottomRight = center + bottomRightOffset;
+
+
+        //Rotate around the center pivot
+
+
+
+        vertices[0] = new VertexPositionColorTexture(new Vector3(topLeft, 0), Color.White, new Vector2(0, 0));
+        vertices[1] = new VertexPositionColorTexture(new Vector3(topRight, 0), Color.White, new Vector2(1, 0));
+
+        vertices[2] = new VertexPositionColorTexture(new Vector3(bottomLeft, 0), Color.White, new Vector2(0, 1));
+        vertices[3] = new VertexPositionColorTexture(new Vector3(bottomRight, 0), Color.White, new Vector2(1, 1));
+    }
     public void CalculateCenterVertices2(Vector2 center, float length, float width, Matrix transformMatrix)
     {
         Vector2 topLeftOffset = new Vector2(-length / 2f, -width / 2f);

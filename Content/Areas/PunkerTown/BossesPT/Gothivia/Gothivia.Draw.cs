@@ -8,6 +8,7 @@ using Stellamod.Effects.GothinFlames;
 using Stellamod.Helpers;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace Stellamod.Content.Areas.PunkerTown.BossesPT.Gothivia;
 
@@ -29,6 +30,15 @@ public partial class Gothivia :
         }
     }
 
+    private TexturedQuad _wingQuad;
+    private TexturedQuad WingQuad
+    {
+        get
+        {
+            _wingQuad ??= new TexturedQuad();
+            return _wingQuad;
+        }
+    }
 
     private const string Anim_Dive = "Dive";
     private const string Anim_Floating = "Floating";
@@ -39,6 +49,60 @@ public partial class Gothivia :
     private const string Anim_Kickstart = "Kickstart";
     private const string Anim_Standalone = "Standalone";
     private const string Anim_Aurafarming = "Aurafarming";
+
+    private void DrawPixelatedTorchWings(GraphicsDevice gDevice)
+    {
+        Main.graphics.GraphicsDevice.Textures[0] = AssetManager.GlowMask.JumbledGlowCircle;
+        Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+        FlameWingShader flameWingShader = ShaderContent.GetInstance<FlameWingShader>();
+        flameWingShader.TransformMatrix = TrailDrawer.WorldViewPoint2;
+        flameWingShader.NoiseTexture = AssetManager.Noise.Whirly.Value;
+        flameWingShader.Distortion = 0.15f;
+        flameWingShader.Time = Main.GlobalTimeWrappedHourly * 10;
+        flameWingShader.BloomColor = Color.Red;
+        flameWingShader.InsideColor = Color.White;
+        Matrix perspectiveMatrix = Matrix.Identity;
+        Vector3 yAxis = new Vector3(0, 1, 0);
+        float zRotation = MathHelper.Lerp(MathHelper.ToRadians(-75), MathHelper.ToRadians(-60),
+            ExtraMath.Osc(0f, 1f, speed: 4));
+        
+        Quaternion zQuaternion = Quaternion.CreateFromAxisAngle(yAxis, zRotation);
+        Matrix flapMatrix = Matrix.CreateFromQuaternion(zQuaternion);
+
+
+        Vector3 zAxis = new Vector3(0, 0, 1);
+        float range = 9;
+        float zRot = MathHelper.Lerp(MathHelper.ToRadians(range),
+            MathHelper.ToRadians(0), ExtraMath.Osc(0f, 1f, speed: 4));
+        Quaternion zWingQuat = Quaternion.CreateFromAxisAngle(zAxis, zRot);
+        Matrix z = Matrix.CreateFromQuaternion(zWingQuat);
+
+
+        Vector3 offset = Vector3.Zero;
+        Matrix translationMatrix = Matrix.CreateTranslation(offset);
+        Matrix fullMatrix = z * flapMatrix * perspectiveMatrix * translationMatrix;
+        Vector2 centerPoint = NPC.Center;
+        centerPoint -= new Vector2(-64, -16);
+        float scale = 0.6f;
+        WingQuad.CalculateRightCenterVertices(centerPoint, 1200 * scale, 200 * scale, fullMatrix);
+           
+        Color glowColor = Color.Lerp(Color.OrangeRed, Color.Red, ExtraMath.Osc(0f, 1f, speed: 3));
+        Color wingColor = Color.Lerp(Color.Lerp(Color.White, Color.Yellow, 0.5f), glowColor, ExtraMath.Osc(0f, 0.8f, speed: 1.5f));
+        wingColor *=MathHelper.Lerp(0.4f, 1f, ExtraMath.Osc(0f, 1f, speed: 4));
+        WingQuad.SetColor(wingColor);
+        WingQuad.DrawWithShader(flameWingShader);
+
+        WingQuad.FlipVerticesX(NPC.Center.X);
+        WingQuad.DrawWithShader(flameWingShader);
+    }
+
+    private void DrawWings(bool flipped = false)
+    {
+     
+    }
+
+
+
     private void SetupAnimator()
     {
         _animator = new Animator();
@@ -85,7 +149,9 @@ public partial class Gothivia :
     
         ModContent.GetInstance<GothiviaDomain>().drawGothivia = true;
         DrawTelegraphLine(spriteBatch);
-    
+
+        DrawWings(flipped: false);
+        DrawWings(flipped: true);
         DrawWings(spriteBatch);
         DrawSprite(spriteBatch);
         DrawBow(spriteBatch);
@@ -380,6 +446,7 @@ public partial class Gothivia :
 
     public void DrawToRenderTargets()
     {
+        PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedTorchWings, DrawLayer.BehindNPCsWithOutline);
         OutlineRenderer.Queue(DrawOutline);
         if (_figure8TrailAlpha < 0.05f)
             return;
