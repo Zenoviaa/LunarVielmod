@@ -15,7 +15,6 @@ namespace Stellamod.Projectiles.Thrown.Jugglers;
 public class DaggerDaggerProj : BaseJugglerProjectile
 {
     private Vector2[] BungeeGumAuraPos;
-    public PrimDrawer BungeeGumDrawer { get; private set; } = null;
     public override void SetStaticDefaults()
     {
         ProjectileID.Sets.TrailCacheLength[Type] = 16;
@@ -136,13 +135,6 @@ public class DaggerDaggerProj : BaseJugglerProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
-        BungeeGumDrawer ??= new PrimDrawer(WidthFunctionAura, ColorFunctionAura, GameShaders.Misc["VampKnives:BasicTrail"]);
-        Vector2 textureSize = new Vector2(42, 46);
-        GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SpikyTrail1);
-        BungeeGumDrawer.WidthFunc = WidthFunctionAura;
-        BungeeGumDrawer.ColorFunc = ColorFunctionAura;
-        BungeeGumDrawer.DrawPrims(BungeeGumAuraPos, textureSize * 0.5f - Main.screenPosition, 155);
-
         if (Timer == 0)
         {
             DrawHelper.DrawAdditiveAfterImage(Projectile, Color.White, Color.Transparent, ref lightColor);

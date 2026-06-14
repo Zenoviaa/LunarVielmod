@@ -10,10 +10,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
 {
-    public class HavocLaserBigProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class HavocLaserBigProj : ModProjectile
     {
-        public PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -57,47 +55,6 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Havoc.Projectiles
             Vector2 start = Projectile.Center;
             Vector2 end = start + Projectile.velocity * (LaserLength - 80f);
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, width, ref _);
-        }
-
-        public float WidthFunction(float completionRatio)
-        {
-            float mult = 1;
-            if (Projectile.timeLeft < 60)
-            {
-                mult = (float)Projectile.timeLeft / (float)60;
-            }
-            return Projectile.width * Projectile.scale * 1.3f * mult;
-        }
-
-        public override bool ShouldUpdatePosition() => false;
-        public Color ColorFunction(float completionRatio)
-        {
-            Color color = Color.Lerp(Color.Orange, Color.Red, 0.2f);
-            return color * Projectile.Opacity * MathF.Pow(Utils.GetLerpValue(0f, 0.1f, completionRatio, true), 3f);
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.LightGoldenrodYellow);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.WhispyTrail);
-
-            List<float> originalRotations = new();
-            List<Vector2> points = new();
-            for (int i = 0; i <= 8; i++)
-            {
-                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * LaserLength, i / 8f));
-                originalRotations.Add(MathHelper.PiOver2);
-            }
-
-            BeamDrawer.DrawPixelated(points, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
-            return false;
-        }
-
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-
         }
 
         public override bool? CanDamage() => Time >= 60f;

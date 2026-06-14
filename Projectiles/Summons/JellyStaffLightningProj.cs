@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Summons
 {
-    public class JellyStaffLightningProj : ModProjectile, IPixelPrimitiveDrawer
+    public class JellyStaffLightningProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -104,18 +104,6 @@ namespace Stellamod.Projectiles.Summons
                     return true;
             }
             return base.Colliding(projHitbox, targetHitbox);
-        }
-
-        public PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.LightPink);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

@@ -1,9 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Dusts;
+﻿using Stellamod.Dusts;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -11,13 +7,11 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    public class NiiviLaserBlastProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class NiiviLaserBlastProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
 
         public List<Vector2> BeamPoints;
-        public PrimitiveTrail BeamDrawer;
 
         ref float Size => ref Projectile.ai[0];
         ref float BeamLength => ref Projectile.ai[1];
@@ -95,41 +89,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, width, ref _);
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float osc = VectorHelper.Osc(0.75f, 1f);
-
-            float width = Projectile.timeLeft / 60f;
-            float easedWidth = Easing.InExpo(width);
-            return (Projectile.width * Projectile.scale) * osc * easedWidth * Size;
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            Color color = Color.Lerp(Color.LightCyan, Color.White, VectorHelper.Osc(0, 1));
-            return color;
-        }
-
         public override bool PreDraw(ref Color lightColor) => false;
         public override bool ShouldUpdatePosition() => false;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.White);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            //Put in the points
-            //This is just a straight beam that collides with tiles
-            BeamPoints.Clear();
-            Vector2 direction = Projectile.velocity.SafeNormalize(Vector2.Zero);
-            for (int i = 0; i <= 8; i++)
-            {
-                BeamPoints.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + direction * BeamLength, i / 8f));
-            }
-
-            BeamDrawer.DrawPixelated(BeamPoints, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
-        }
     }
 }

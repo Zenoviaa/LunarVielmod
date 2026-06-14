@@ -1,8 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Content.CommonMaterials;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Gothivia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Weapons.Ranged.GunSwapping;
@@ -19,7 +16,6 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 {
-    [AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head ic
     public class Irradia : ModNPC
     {
         private bool _resetTimers;
@@ -130,7 +126,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
             NPC.boss = true;
             NPC.npcSlots = 10f;
             NPC.scale = 1f;
-     //       NPC.BossBar = ModContent.GetInstance<IrradiaBossBar>();
+            //       NPC.BossBar = ModContent.GetInstance<IrradiaBossBar>();
             NPC.takenDamageMultiplier = 0.8f;
 
             // Take up open spawn slots, preventing random NPCs from spawning during the fight
@@ -1354,9 +1350,7 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Irradia
 
             // All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
-            notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,
-                ModContent.ItemType<BurningGBroochA>(),
-                ModContent.ItemType<BurnBlast>()));
+            notExpertRule.OnSuccess(ItemDropRule.OneFromOptions(1,                ModContent.ItemType<BurnBlast>()));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Plate>(), minimumDropped: 200, maximumDropped: 1300));
             notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AlcadizScrap>(), minimumDropped: 4, maximumDropped: 55));
 

@@ -69,10 +69,12 @@ namespace Stellamod.Projectiles.IgniterExplosions
             Vector2 origin = new Vector2(width / 2, height / 2);
             int frameSpeed = 1;
             int frameCount = 60;
+            Color w = Color.White;
+            w.A = 0;
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Draw(texture, drawPosition,
                 texture.AnimationFrame(ref _frameCounter, ref _frameTick, frameSpeed, frameCount, false),
-                (Color)GetAlpha(lightColor), 0f, origin, 3.5f, SpriteEffects.None, 0f);
+                w, 0f, origin, 3.5f, SpriteEffects.None, 0f);
             return false;
         }
 

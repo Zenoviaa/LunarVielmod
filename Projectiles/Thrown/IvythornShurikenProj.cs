@@ -1,10 +1,5 @@
-﻿using Stellamod.Assets;
-using Stellamod.Helpers;
-using Stellamod.Trails;
-using Terraria;
+﻿using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -56,28 +51,7 @@ public class IvythornShurikenProj : ModProjectile
         return Color.White;
     }
 
-    public PrimDrawer TrailDrawer { get; private set; } = null;
-    public float WidthFunction(float completionRatio)
-    {
-        float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-        return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-    }
 
-    public Color ColorFunction(float completionRatio)
-    {
-        return Color.Lerp(Color.DarkGreen, Color.Transparent, completionRatio) * 0.1f;
-    }
-
-    public override bool PreDraw(ref Color lightColor)
-    {
-        Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-        Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-        TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-        GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.StringTrail);
-        TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-        DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.VortexTrail);
-        return false;
-    }
 }
 
 

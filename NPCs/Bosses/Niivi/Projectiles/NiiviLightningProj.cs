@@ -1,8 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Helpers;
-using Stellamod.Trails;
+﻿using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -11,14 +7,12 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    public class NiiviLightningProj : ModProjectile, IPixelPrimitiveDrawer
+    public class NiiviLightningProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
         private float Lifetime => 24;
         private Vector2[] LightningPos;
-
-        public PrimitiveTrail BeamDrawer;
 
         public override void SetDefaults()
         {
@@ -98,19 +92,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     return true;
             }
             return base.Colliding(projHitbox, targetHitbox);
-        }
-
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            if (LightningPos == null || LightningPos.Length == 0)
-                return;
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.White);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.VortexTrail);
-
-            BeamDrawer.DrawPixelated(LightningPos, -Main.screenPosition, LightningPos.Length);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

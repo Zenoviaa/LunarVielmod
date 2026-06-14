@@ -71,30 +71,7 @@ namespace Stellamod.Projectiles.Summons.Minions
         {
             return Color.White;
         }
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.RoyalBlue, Color.Transparent, completionRatio) * 0.7f;
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(15f * alphaCounter), (int)(15f * alphaCounter), (int)(45f * alphaCounter), 0), Projectile.rotation, new Vector2(64 / 2, 64 / 2), 0.2f * (counter + 0.3f), SpriteEffects.None, 0f);
-            Main.spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, new Color((int)(05f * alphaCounter), (int)(05f * alphaCounter), (int)(55f * alphaCounter), 0), Projectile.rotation, new Vector2(64 / 2, 64 / 2), 0.2f * (counter + 0.3f * 2), SpriteEffects.None, 0f);
 
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
-            return false;
-        }
 
         public override void AI()
         {

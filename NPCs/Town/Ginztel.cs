@@ -1,16 +1,12 @@
-﻿using Stellamod.Assets.Biomes;
-using Stellamod.Content.Areas.Collosseum.WeaponsCL;
+﻿using Stellamod.Content.Areas.Collosseum.WeaponsCL;
 using Stellamod.Content.Areas.Shop.ItemsShop;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items.Accessories;
-using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Pieces.RareMetals;
-using Stellamod.Items.Ores;
 using Stellamod.Items.Placeable;
 using Stellamod.Items.Weapons.Mage;
-using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Thrown;
 using System;
 using System.Collections.Generic;
@@ -305,7 +301,7 @@ namespace Stellamod.NPCs.Town
                 .Add(new Item(ModContent.ItemType<GintzlSpear>()) { shopCustomPrice = Item.buyPrice(copper: 10) })
                 .Add(new Item(ModContent.ItemType<BroochesTableI>()) { shopCustomPrice = Item.buyPrice(gold: 1) })
                 .Add(new Item(ModContent.ItemType<AivanPowder>()) { shopCustomPrice = Item.buyPrice(gold: 7) })
-                .Add(new Item(ModContent.ItemType<MalShieldBroochA>()) { shopCustomPrice = Item.buyPrice(gold: 10) })
+                
                 .Add(new Item(ItemID.HermesBoots) { shopCustomPrice = Item.buyPrice(gold: 4) })
                 .Add(new Item(ItemID.CloudinaBottle) { shopCustomPrice = Item.buyPrice(gold: 1) })
                 .Add(new Item(ItemID.Chest) { shopCustomPrice = Item.buyPrice(gold: 5) })

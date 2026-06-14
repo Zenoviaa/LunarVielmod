@@ -13,8 +13,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Thrown
 {
-    public class YourFiredExplosionProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class YourFiredExplosionProj : ModProjectile
     {
         //Texture
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -33,7 +32,7 @@ namespace Stellamod.Projectiles.Thrown
         }
 
         //Draw Code
-        private PrimitiveTrail BeamDrawer;
+
         private int DrawMode;
         private bool SpawnDustCircle;
 
@@ -173,29 +172,6 @@ namespace Stellamod.Projectiles.Thrown
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.OnFire3, 180);
-        }
-
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            float easedProgess = Easing.OutCubic(Progress);
-
-            //Back Trail   
-            DrawMode = 1;
-            BeamDrawer.SpecialShader = BackTrailShader;
-            BeamDrawer.SpecialShader.UseColor(
-                Color.Lerp(BackCircleStartDrawColor, BackCircleEndDrawColor, easedProgess));
-            BeamDrawer.SpecialShader.SetShaderTexture(BackTrailTexture);
-            BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
-
-            //Front Trail
-            DrawMode = 0;
-            BeamDrawer.SpecialShader = FrontTrailShader;
-            BeamDrawer.SpecialShader.UseColor(Color.Lerp(FrontCircleStartDrawColor, FrontCircleEndDrawColor,
-                Easing.OutCirc(Progress)));
-            BeamDrawer.SpecialShader.SetShaderTexture(FrontTrailTexture);
-            BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

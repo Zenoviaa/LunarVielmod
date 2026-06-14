@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
 using Stellamod.Dusts;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.DataStructures;
@@ -37,15 +38,9 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
         {
             base.AI();
             Timer++;
-            if (Timer % 16 == 0)
-            {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<GlyphDust>(),
-                    (Vector2.One * Main.rand.NextFloat(0.2f, 1f)).RotatedByRandom(19.0), 0, Color.LightPink, Main.rand.NextFloat(0.2f, 0.4f)).noGravity = true;
-            }
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         public float WidthFunction(float completionRatio)
         {
             float baseWidth = Projectile.scale * Projectile.width;
@@ -59,19 +54,8 @@ namespace Stellamod.Content.Areas.SpringHills.TilesSH
 
         public override bool PreDraw(ref Color lightColor)
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.LoveTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            Texture2D texture = TextureAssets.Projectile[Type].Value;
-            Vector2 drawOrigin = texture.Size() / 2;
-            float drawRotation = Projectile.rotation;
-            Color drawColor = Color.White.MultiplyRGB(lightColor);
-            float drawScale = Projectile.scale;
-            SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Draw(texture, drawPos, null, drawColor, drawRotation, drawOrigin, drawScale, spriteEffects, 0);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
+            Main.spriteBatch.Draw(drawer);
             return false;
 
         }

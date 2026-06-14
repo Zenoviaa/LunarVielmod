@@ -1,9 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Core.Utilities;
+﻿using Stellamod.Core.Utilities;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -11,8 +7,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    public class DriveRoundProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class DriveRoundProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -77,18 +72,6 @@ namespace Stellamod.Projectiles.Ammo
             SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/Kaboom") { PitchVariance = 0.15f }, Projectile.position);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero,
                 ModContent.ProjectileType<FireBoom>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
-        }
-
-        public PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.Black);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

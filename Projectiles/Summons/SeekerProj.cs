@@ -70,32 +70,6 @@ namespace Stellamod.Projectiles.Summons
             }
 
         }
-        private float WidthFunction(float completionRatio)
-        {
-            return MathHelper.Lerp(24f, 0f, completionRatio);
-        }
-
-        private Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Main.DiscoColor, Color.Transparent, completionRatio);
-        }
-
-        private Color ColorFunction2(float completionRatio)
-        {
-            return Color.Lerp(Main.DiscoColor, Color.Transparent, completionRatio);
-        }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        private void DrawTrail()
-        {
-            Main.spriteBatch.RestartDefaults();
-            Vector2 drawOffset = -Main.screenPosition + Projectile.Size / 2f;
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            TrailDrawer.ColorFunc = ColorFunction;
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, drawOffset, 155);
-        }
 
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -183,7 +157,6 @@ namespace Stellamod.Projectiles.Summons
 
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawTrail();
             DrawEnergyBall(ref lightColor);
             return false;
         }

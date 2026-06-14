@@ -14,7 +14,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
     public class RekFireBallProj : ModProjectile
     {
-        private PrimitiveTrail BeamDrawer;
         private ref float Timer => ref Projectile.ai[0];
 
         public override void SetStaticDefaults()
@@ -80,23 +79,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
-            BeamDrawer.SpecialShader.UseColor(Color.DarkGoldenrod);
-            BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.WaterTrail);
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, Projectile.oldPos.Length);
 
-
-            //If htis actually works I'll be so happy
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, TrailRegistry.LaserShader.Shader, Main.GameViewMatrix.TransformationMatrix);
-
-            spriteBatch.Draw(ModContent.Request<Texture2D>(Texture).Value, Projectile.Center - Main.screenPosition, Projectile.Frame(),
-                Color.White, Projectile.rotation, Projectile.Frame().Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
     }

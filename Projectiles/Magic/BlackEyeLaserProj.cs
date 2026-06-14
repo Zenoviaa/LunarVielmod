@@ -13,7 +13,6 @@ namespace Stellamod.Projectiles.Magic
 {
     public class BlackEyeLaserProj : ModProjectile
     {
-        public PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
 
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -128,21 +127,6 @@ namespace Stellamod.Projectiles.Magic
 
         public override bool PreDraw(ref Color lightColor)
         {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.Lerp(Color.White, Color.OrangeRed, 0.3f));
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.WaterTrail);
-
-
-            List<Vector2> points = new();
-            for (int i = 0; i <= 16; i++)
-            {
-                Vector2 targetPos = Projectile.Center + Projectile.velocity * MaxBeamLength;
-                points.Add(Vector2.Lerp(Projectile.Center, targetPos, i / 8f));
-            }
-
-            BeamDrawer.DrawPixelated(points, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
             return false;
         }
     }

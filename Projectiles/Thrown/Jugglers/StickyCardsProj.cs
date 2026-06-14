@@ -15,7 +15,6 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
     {
         private Vector2[] BungeeGumPos;
         private Vector2[] BungeeGumAuraPos;
-        public PrimDrawer BungeeGumTrailDrawer { get; private set; } = null;
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Type] = 16;
@@ -109,17 +108,6 @@ namespace Stellamod.Projectiles.Thrown.Jugglers
                  innerColor: Color.LightPink,
                  glowColor: Color.Pink,
                  outerGlowColor: Color.Purple, duration: 25, baseSize: 0.18f);
-        }
-
-        public float WidthFunctionAura(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width;
-            return baseWidth * 0.2f;
-        }
-
-        public Color ColorFunctionAura(float completionRatio)
-        {
-            return Color.Pink * VectorHelper.Osc(0.5f, 1f, 3);
         }
 
         public override bool PreDraw(ref Color lightColor)

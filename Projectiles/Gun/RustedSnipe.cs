@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Stellamod.Assets;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
@@ -9,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Gun
 {
-    public class RustedSnipe : ModProjectile, IPixelPrimitiveDrawer
+    public class RustedSnipe : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -59,37 +60,13 @@ namespace Stellamod.Projectiles.Gun
 
         public override void OnKill(int timeLeft)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
-                ModContent.ProjectileType<NailKaboom>(), 0, 0, Projectile.owner);
+            if (this.OwnedByLocalClient())
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+                      ModContent.ProjectileType<NailKaboom>(), 0, 0, Projectile.owner);
+            }
+  
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * 8;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            Color startColor = Color.Cyan;
-            Color endColor = Color.Transparent;
-            return Color.Lerp(startColor, endColor, completionRatio);
-        }
-
-        public PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            Color middleColor = Color.Lerp(Color.White, Color.Red, 0.6f);
-            Color middleColor2 = Color.Lerp(Color.OrangeRed, Color.DarkRed, 0.5f);
-            Color finalColor = Color.Lerp(middleColor, middleColor2, AI_Timer / 600);
-
-            TrailRegistry.LaserShader.UseColor(Color.IndianRed);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
-        }
     }
 }

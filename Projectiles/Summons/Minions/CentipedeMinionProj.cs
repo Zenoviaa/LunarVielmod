@@ -17,8 +17,6 @@ namespace Stellamod.Projectiles.Summons.Minions
 
     public class CentipedeMinionProj : ModProjectile
     {
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         private float SegmentStretch = 0.66f;
         private float ChargeTrailOpacity;
         private bool DrawChargeTrail;
@@ -461,35 +459,7 @@ namespace Stellamod.Projectiles.Summons.Minions
             if (!IsMainSerpent)
                 return false;
 
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
-            Vector2 size = new Vector2(58, 22);
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:BasicTrail"];
-            TrailDrawer.DrawPrims(Projectile.oldPos, size * 0.5f - Main.screenPosition, 155);
 
-            //Draw all the segments
-            for (int i = Segments.Length - 1; i > -1; i--)
-            {
-                SerpentSegment segment = Segments[i];
-                if (segment.Eaten)
-                    continue;
-
-                Vector2 drawPosition = segment.Position - Main.screenPosition + HitboxFixer;
-                float drawRotation = segment.Rotation;
-                Vector2 drawOrigin = segment.Size / 2;
-                if (segment.Frame != null)
-                {
-                    drawOrigin = segment.Frame.Value.Size() / 2;
-                }
-
-                float drawScale = Projectile.scale * segment.Scale * ExtraScale;
-                Color drawColor = Color.White;
-                spriteBatch.Draw(segment.Texture, drawPosition, segment.Frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, 0);
-            }
 
             return false;
         }

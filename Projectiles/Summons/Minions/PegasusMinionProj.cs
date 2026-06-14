@@ -31,7 +31,6 @@ namespace Stellamod.Projectiles.Summons.Minions
         private ref float RotTimer => ref Projectile.ai[2];
         private float WhiteTimer = 0f;
         private IEntitySource EntitySource => Projectile.GetSource_FromThis();
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         private Player Owner => Main.player[Projectile.owner];
         public override void SetStaticDefaults()
         {

@@ -13,8 +13,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
     public class NiiviLaserContinuousProj : ModProjectile
     {
-        public PrimitiveTrail BeamDrawer;
-
         public override string Texture => TextureRegistry.EmptyTexture;
 
         private float LaserLength => 4800;
@@ -126,49 +124,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         public Color ColorFunction(float completionRatio)
         {
             return Main.DiscoColor;
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.White);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.WhispyTrail);
-            DrawMode = 0;
-            List<Vector2> points = new();
-            for (int i = 0; i <= 8; i++)
-            {
-
-                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * LaserLength, i / 8f));
-            }
-
-            BeamDrawer.Draw(points, -Main.screenPosition, 32);
-
-
-            float numOrbPoints = 4;
-            float orbRadius = 32;
-            float numOrbTrails = 32;
-
-
-            DrawMode = 1;
-            for (float j = 0; j < numOrbTrails; j++)
-            {
-                points.Clear();
-                for (float i = 0; i < numOrbPoints; i++)
-                {
-                    float progress = i / numOrbPoints;
-                    Vector2 start = Projectile.Center;
-                    Vector2 velocity = Projectile.velocity.RotatedBy(MathHelper.TwoPi * (j / numOrbTrails)) * orbRadius;
-                    Vector2 end = Projectile.Center + velocity.RotatedBy(MathHelper.PiOver2 * progress);
-                    points.Add(Vector2.Lerp(start, end, progress));
-                }
-                BeamDrawer.Draw(points, -Main.screenPosition, 32);
-
-            }
-
-
-            Main.spriteBatch.ExitShaderRegion();
-            return false;
         }
     }
 }

@@ -16,7 +16,6 @@ namespace Stellamod.Projectiles.Magic
 {
     public class BookOfSkullsIIProg : ModProjectile
     {
-        private PrimDrawer TrailDrawer = null;
         private ref float Timer => ref Projectile.ai[0];
         private bool ChosenFrame;
         public override void SetStaticDefaults()
@@ -77,23 +76,6 @@ namespace Stellamod.Projectiles.Magic
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Texture2D texture2D4 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
-            Color glowColor = Color.OrangeRed;
-            glowColor.A = 0;
-
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            for (int i = 0; i < 5; i++)
-            {
-                spriteBatch.Draw(texture2D4, Projectile.Center - Main.screenPosition, null, glowColor, Projectile.rotation, new Vector2(32, 32), 0.17f * (5 + 0.6f), SpriteEffects.None, 0f);
-            }
-
-
-            spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, Projectile.Frame(), Color.White, Projectile.rotation, Projectile.Frame().Size() / 2f, Projectile.scale, Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.DottedTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             return false;
         }
 

@@ -9,8 +9,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Ammo
 {
-    public class EldritchBolt : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class EldritchBolt : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -55,18 +54,6 @@ namespace Stellamod.Projectiles.Ammo
         {
             // This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
             SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
-        }
-
-        public PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(new Color(93, 203, 243));
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

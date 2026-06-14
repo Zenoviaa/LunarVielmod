@@ -88,16 +88,5 @@ namespace Stellamod.Projectiles.Summons.Minions
         {
             return Color.Red;
         }
-
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public override bool PreDraw(ref Color lightColor)
-        {
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            TrailDrawer.ColorFunc = ColorFunction;
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:SuperSimpleTrail"];
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.LightningTrail2);
-            TrailDrawer.DrawPrims(CirclePos, -Main.screenPosition, 64);
-            return true;
-        }
     }
 }

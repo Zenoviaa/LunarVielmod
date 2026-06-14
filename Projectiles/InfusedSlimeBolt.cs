@@ -11,7 +11,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.Projectiles
 {
-    public class InfusedSlimeBolt : ModProjectile, IPixelPrimitiveDrawer
+    public class InfusedSlimeBolt : ModProjectile
     {
         private ref float AI_Timer => ref Projectile.ai[0];
         private ref float Seed => ref Projectile.ai[1];
@@ -85,18 +85,6 @@ namespace Stellamod.Projectiles
                 d.noGravity = true;
             }
         }
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * 8;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            Color startColor = Color.Cyan;
-            Color endColor = Color.Transparent;
-            return Color.Lerp(startColor, endColor, completionRatio);
-        }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -111,18 +99,6 @@ namespace Stellamod.Projectiles
                     return true;
             }
             return base.Colliding(projHitbox, targetHitbox);
-        }
-
-        public PrimitiveTrail BeamDrawer;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.LightCyan);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

@@ -80,31 +80,7 @@ namespace Stellamod.Projectiles.Thrown
             Projectile.rotation = Projectile.velocity.ToRotation() + _plateRotation;
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 0.7f;
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);
-            }
-
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.Dashtrail);
-            Vector2 trailOffset = -Main.screenPosition + Projectile.Size / 2;
-            TrailDrawer.DrawPrims(Projectile.oldPos, trailOffset, 155);
-            return base.PreDraw(ref lightColor);
-        }
-
+     
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 1; i++)

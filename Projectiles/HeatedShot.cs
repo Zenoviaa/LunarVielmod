@@ -81,24 +81,10 @@ namespace Stellamod.Projectiles
 
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * (Projectile.width / 4) * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.OrangeRed, Color.Transparent, completionRatio) * 0.7f;
-        }
+     
         public override bool PreDraw(ref Color lightColor)
         {
 
-
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BeamTrail2);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             return true;
         }
 

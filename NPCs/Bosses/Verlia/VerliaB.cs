@@ -1,10 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Content.Areas.MoonspiralTower.WeaponsMT;
+﻿using Stellamod.Content.Areas.MoonspiralTower.WeaponsMT;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.Items.Accessories.Brooches;
 using Stellamod.Items.Armors.Vanity.Verlia;
 using Stellamod.Items.Consumables;
 using Stellamod.Items.Quest.Merena;
@@ -13,7 +10,6 @@ using Stellamod.Items.Weapons.Melee;
 using Stellamod.Items.Weapons.Summon;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles;
 using Stellamod.NPCs.Bosses.Verlia.Projectiles.Sword;
-using Stellamod.NPCs.Projectiles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -677,9 +673,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
             if (timer == 6)
             {
-                if (MultiplayerHelper.IsHost)
-                    GeneralStellaUtilities.NewProjectileBetter(NPC.Center.X, NPC.Center.Y + 1000, 0, -10, ModContent.ProjectileType<VRay>(), 600, 0f, -1, 0, NPC.whoAmI);
-                SoundEngine.PlaySound(new SoundStyle($"Stellamod/Assets/Sounds/AbsoluteDistillence"));
+               
             }
 
             if (timer == 110)
@@ -2018,7 +2012,7 @@ namespace Stellamod.NPCs.Bosses.Verlia
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-         //   npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedBravery>(), 1, 1, 1));
+            //   npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ManifestedBravery>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Gambit>(), 1, 1, 3));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StolenMagicTome>(), 1, 1, 1));
 

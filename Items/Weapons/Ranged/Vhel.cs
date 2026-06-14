@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Stellamod.Helpers;
-using Stellamod.NPCs.Bosses.GothiviaTheSun.GOS.Projectiles;
-using Terraria;
+﻿using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -46,14 +43,6 @@ namespace Stellamod.Items.Weapons.Ranged
         {
 
 
-            int numProjectiles = Main.rand.Next(1, 2);
-            for (int p = 0; p < numProjectiles; p++)
-            {
-                // Rotate the velocity randomly by 30 degrees at max.
-                Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
-                newVelocity *= 1f - Main.rand.NextFloat(0.3f);
-                Projectile.NewProjectileDirect(source, position, newVelocity, ModContent.ProjectileType<GothLightBlastProj>(), damage, knockback, player.whoAmI);
-            }
 
 
             return false;

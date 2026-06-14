@@ -1,19 +1,14 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Content.CommonMaterials;
+﻿using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Items;
-using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -149,22 +144,9 @@ namespace Stellamod.Content.Areas.WondrousDarkspace.WeaponsWD
             Projectile.velocity = (targetCenter - Projectile.Center) * 0.5f;
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 2.5f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
 
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(MainColor, Color.Transparent, completionRatio) * 0.7f;
-        }
         public override bool PreDraw(ref Color lightColor)
         {
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.DottedTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             Texture2D texture = TextureAssets.Projectile[Type].Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
             Vector2 drawPos = Projectile.Center - Main.screenPosition;

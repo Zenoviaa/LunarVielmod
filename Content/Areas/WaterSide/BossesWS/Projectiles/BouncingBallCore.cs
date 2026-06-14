@@ -6,7 +6,6 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Dusts;
-using Stellamod.Effects.Primitives;
 using Stellamod.Helpers;
 using Stellamod.Visual.Particles;
 using Terraria;
@@ -59,7 +58,7 @@ public class BouncingBall : ModProjectile
             Main.dust[d].noGravity = true;
         }
 
-        if(Timer >= 90)
+        if (Timer >= 90)
         {
             Projectile.hostile = true;
         }
@@ -80,7 +79,7 @@ public class BouncingBall : ModProjectile
             bp.gravity = 0;
         }
 
-        if(Timer % 30 == 0)
+        if (Timer % 30 == 0)
         {
             ElectricZapParticle.Spawn(
                 Projectile.Center + Main.rand.NextVector2Circular(32, 32),
@@ -173,14 +172,14 @@ public class BouncingBallCore : ModProjectile
     {
         base.AI();
         Timer++;
-        if(Timer == 1)
+        if (Timer == 1)
         {
             SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/FungalFlaceBall3");
             SoundEngine.PlaySound(explosionSound, Projectile.position);
             LegacyParticle.NewParticle<GlowDonutParticle>(Projectile.Center, -Projectile.velocity * 0.2f);
 
 
-     
+
 
             for (float f = 0; f < 16; f++)
             {
@@ -195,9 +194,9 @@ public class BouncingBallCore : ModProjectile
             }
         }
 
-        if(Timer == 100)
+        if (Timer == 100)
         {
-            if(Slavery == 1)
+            if (Slavery == 1)
             {
                 SoundStyle explosionSound = new SoundStyle("Stellamod/Assets/Sounds/StormDragon_Bomb");
                 SoundEngine.PlaySound(explosionSound, Projectile.position);
@@ -228,7 +227,7 @@ public class BouncingBallCore : ModProjectile
                     ModContent.DustType<SeafloorRockDust>(), Main.rand.NextVector2Circular(16, 16), Scale: 2);
                 d.noGravity = true;
             }
-            for(float f = 0; f < 8f; f++)
+            for (float f = 0; f < 8f; f++)
             {
                 Vector2 vel = Main.rand.NextVector2Circular(16, 16);
                 FXUtil.GlowStretch(Projectile.Center + vel * 0.5f, vel);
@@ -271,7 +270,7 @@ public class BouncingBallCore : ModProjectile
             SoundEngine.PlaySound(hammerHit, Projectile.position);
             if (this.OwnedByLocalClient() && Slavery == 1)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, 
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero,
                     ModContent.ProjectileType<ZapShockwave>(), Projectile.damage, Projectile.knockBack, Projectile.owner, ai1: 1);
             }
 
@@ -315,7 +314,7 @@ public class BouncingBallCore : ModProjectile
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, velToPalyer * 25, 0.008f);
         }
 
-    
+
         Projectile.rotation += 0.05f * dir;
         Projectile.rotation += Projectile.velocity.Length() * 0.02f;
 
@@ -394,7 +393,7 @@ public class BouncingBallCore : ModProjectile
     {
         PixelationManager.QueuePrimitivesDrawAction(DrawPixelatedThornTrail);
         SpritebatchDrawer ballCoreDrawer = SpritebatchDrawer.FromProjectile(Projectile);
-        if(Timer < 100f)
+        if (Timer < 100f)
         {
             OutlineRenderer.Queue(DrawWhites);
             ballCoreDrawer = SpritebatchDrawer.FromTextureAsset(TextureAssets.Projectile[ModContent.ProjectileType<BouncingBall>()], Projectile.Center);

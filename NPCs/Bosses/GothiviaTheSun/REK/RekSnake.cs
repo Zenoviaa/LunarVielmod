@@ -58,7 +58,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
     {
         //Draw Code
         private string BaseTexturePath => "Stellamod/NPCs/Bosses/GothiviaTheSun/REK/";
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         private float SegmentStretch = 0.66f;
         private float ChargeTrailOpacity;
         private bool DrawChargeTrail;
@@ -844,8 +843,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                     Projectile.NewProjectile(EntitySource, NPC.Center, laserVelocity, ModContent.ProjectileType<RekFireEyeLaserMiniProj>(),
                         DamagePopoutEyeMiniLaser, knockback);
 
-                    Projectile.NewProjectile(EntitySource, NPC.Center, laserVelocity * 0, ModContent.ProjectileType<CircleExplosionProj>(),
-                        DamagePopoutEyeMiniLaser, knockback);
                 }
 
                 StartSegmentGlow((int)AttackTimer, Color.White);
@@ -909,8 +906,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                         Projectile.NewProjectile(EntitySource, segment.Center, velocity,
                             ModContent.ProjectileType<RekFireBallProj>(), DamageBeamerFireBall, knockback, Main.myPlayer);
 
-                        Projectile.NewProjectile(EntitySource, segment.Center, velocity * 0,
-                            ModContent.ProjectileType<SmallCircleExplosionProj>(), DamageBeamerFireBall, knockback, Main.myPlayer);
                     }
                 }
 
@@ -1222,8 +1217,7 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
                 ModContent.ItemType<SerpentStaff>(),
                 ModContent.ItemType<Incinerator>(),
                 ModContent.ItemType<YourFired>(),
-                ModContent.ItemType<BlackEye>(),
-                ModContent.ItemType<VulcanBreaker>()
+                ModContent.ItemType<BlackEye>()
                 ));
 
             // ItemDropRule.MasterModeDropOnAllPlayers for the pet
@@ -1447,15 +1441,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK
         {
             if (Segments == null)
                 return false;
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunctionCharge, ColorFunctionCharge, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
-
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.FadedStreak);
-            Vector2 size = new Vector2(90, 90);
-            TrailDrawer.Shader = GameShaders.Misc["VampKnives:BasicTrail"];
-            TrailDrawer.DrawPrims(NPC.oldPos, size * 0.5f - screenPos, 155);
 
             //Draw all the segments
             for (int i = Segments.Length - 1; i > -1; i--)

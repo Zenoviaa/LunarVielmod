@@ -1,36 +1,32 @@
 ﻿using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Common.Shaders;
-using Stellamod.Trails;
 using System;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
 namespace Stellamod.Helpers
 {
     public static class DrawHelper
     {
+        public static Rectangle Frame(this Projectile projectile)
+        {
+            int frameHeight = TextureAssets.Projectile[projectile.type].Height() / Main.projFrames[projectile.type];
+            return new Rectangle(0, frameHeight * projectile.frame, TextureAssets.Projectile[projectile.type].Width(), frameHeight);
+        }
+
         public static Texture2D CreateGradient(params Color[] colors)
         {
             Texture2D tex2D = new Texture2D(Main.graphics.GraphicsDevice, colors.Length, 1);
             tex2D.SetData(colors);
             return tex2D;
         }
-        public static void DrawBloomLine(SpriteBatch spriteBatch, Vector2 drawCenter, Color color, float targetRotation, float alpha)
-        {
-            Texture2D bloomLinTexture = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/BloomLine").Value;
-            Vector2 drawOrigin = new Vector2(bloomLinTexture.Width / 2f, 0f);
-            float rotation = targetRotation - MathHelper.PiOver2;
-            Color drawColor = color;
-            drawColor.A = 0;
-            drawColor *= alpha;
-            Vector2 scale = Vector2.One;
-            scale.Y *= 2;
-            spriteBatch.Draw(bloomLinTexture, drawCenter - Main.screenPosition, null, drawColor, rotation, drawOrigin, scale, SpriteEffects.None, 0); ;
-        }
 
+        public static void DrawSimpleTrail(Projectile p, Func<float, float> w, Func<float, Color> c, Asset<Texture2D> t)
+        {
+
+        }
         public static void DrawHalo(Vector2 haloCenter, Color color, float numStars)
         {
             Texture2D texture = AssetRegistry.Textures.Noise.CartoonyStar.Value;
@@ -158,53 +154,6 @@ namespace Stellamod.Helpers
                 Vector2 drawPos = position + (i * MathF.Tau).ToRotationVector2() * (cloneImageDistance + 2f);
                 Main.DrawItemIcon(spriteBatch, item, drawPos, color, sizeLimit);
             }
-        }
-        public static void Draw2(this SpriteBatch spriteBatch, Projectile projectile, ref Color lightColor,
-            Color? drawColor = null,
-            Vector2? drawPosOffset = null,
-            Vector2? drawOriginOffset = null,
-            float rotationOffset = 0f,
-            Vector2? drawScale = null,
-            SpriteEffects spriteEffects = SpriteEffects.None)
-        {
-            Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
-            Vector2 drawPos = projectile.Center - Main.screenPosition;
-            Rectangle frame = projectile.Frame();
-            Vector2 drawOrigin = frame.Size() / 2f;
-
-            if (drawOriginOffset.HasValue)
-                drawOrigin += (Vector2)drawOriginOffset;
-            if (drawPosOffset.HasValue)
-                drawPos += (Vector2)drawPosOffset;
-
-            float rotation = projectile.rotation + rotationOffset;
-            Color finalColor = drawColor.HasValue ? ((Color)drawColor).MultiplyRGB(lightColor) : Color.White.MultiplyRGB(lightColor);
-
-            Vector2 scale = drawScale.HasValue ? (Vector2)drawScale : Vector2.One;
-            spriteBatch.Draw(texture, drawPos, frame, finalColor, rotation, drawOrigin, scale, spriteEffects, 0);
-        }
-        public static void Draw(this SpriteBatch spriteBatch, Projectile projectile, ref Color lightColor,
-            Color? drawColor = null,
-            Vector2? drawPosOffset = null,
-            Vector2? drawOriginOffset = null,
-            float rotationOffset = 0f,
-            float drawScale = 1f,
-            SpriteEffects spriteEffects = SpriteEffects.None)
-        {
-            Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
-            Vector2 drawPos = projectile.Center - Main.screenPosition;
-            Rectangle frame = projectile.Frame();
-            Vector2 drawOrigin = frame.Size() / 2f;
-
-            if (drawOriginOffset.HasValue)
-                drawOrigin += (Vector2)drawOriginOffset;
-            if (drawPosOffset.HasValue)
-                drawPos += (Vector2)drawPosOffset;
-
-            float rotation = projectile.rotation + rotationOffset;
-            Color finalColor = drawColor.HasValue ? ((Color)drawColor).MultiplyRGB(lightColor) : Color.White.MultiplyRGB(lightColor);
-
-            spriteBatch.Draw(texture, drawPos, frame, finalColor, rotation, drawOrigin, drawScale, spriteEffects, 0);
         }
 
         public static void Restart(this SpriteBatch spriteBatch, SpriteSortMode sortMode = SpriteSortMode.Deferred, BlendState blendState = null, Effect effect = null, SamplerState samplerState = null)
@@ -467,8 +416,6 @@ namespace Stellamod.Helpers
         }
 
 
-        public static PrimDrawer TrailDrawer { get; private set; } = null;
-
         public static void DrawLineTelegraph(Vector2 drawPos, Color drawColor, Vector2 velocity, float drawScale = 1f, SpriteEffects spriteEffects = SpriteEffects.None)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -488,61 +435,6 @@ namespace Stellamod.Helpers
         }
 
 
-        /// <summary>
-        /// Draws a simple trail using "VampKnives:BasicTrail"
-        /// <br></br>Don't forget to set the trailing cache and trailing modes on your projectile!
-        /// </summary>
-        /// <param name="projectile"></param>
-        /// <param name="widthFunction"></param>
-        /// <param name="colorFunction"></param>
-        /// <param name="trailTexture"></param>
-        public static void DrawSimpleTrail(Projectile projectile,
-            PrimDrawer.WidthTrailFunction widthFunction,
-            PrimDrawer.ColorTrailFunction colorFunction,
-            Asset<Texture2D> trailTexture,
-            Vector2? frameSize = null,
-            Vector2? offset = null)
-        {
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(widthFunction, colorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
-
-            TrailDrawer.WidthFunc = widthFunction;
-            TrailDrawer.ColorFunc = colorFunction;
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(trailTexture);
-
-            Vector2 trailOffset;
-            if (frameSize != null)
-            {
-                trailOffset = (Vector2)frameSize * 0.5f - Main.screenPosition;
-            }
-            else
-            {
-                trailOffset = projectile.Size * 0.5f - Main.screenPosition;
-            }
-
-            if (offset != null)
-            {
-                trailOffset += (Vector2)offset;
-            }
-
-            TrailDrawer.DrawPrims(projectile.oldPos, trailOffset, 155);
-        }
-
-
-        public static void DrawSimpleTrail(NPC npc, PrimDrawer.WidthTrailFunction widthFunction, PrimDrawer.ColorTrailFunction colorFunction, Asset<Texture2D> trailTexture)
-        {
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(widthFunction, colorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
-
-            TrailDrawer.WidthFunc = widthFunction;
-            TrailDrawer.ColorFunc = colorFunction;
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(trailTexture);
-            TrailDrawer.DrawPrims(npc.oldPos, npc.Size * 0.5f - Main.screenPosition, 155);
-        }
 
         /// <summary>
         /// Draws an after image for the projectile, this should be called in PreDraw
@@ -592,7 +484,6 @@ namespace Stellamod.Helpers
         public static void DrawAdvancedBroochGlow(Item item, SpriteBatch spriteBatch, Vector2 position, Color glowColor)
         {
             float sizeLimit = 34;
-            int numberOfCloneImages = 3;
             Main.DrawItemIcon(spriteBatch, item, position, Color.White * 0.2f, sizeLimit);
         }
 

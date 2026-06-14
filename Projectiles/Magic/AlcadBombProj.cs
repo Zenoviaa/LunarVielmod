@@ -29,24 +29,6 @@ namespace Stellamod.Projectiles.Magic
         public float timer;
         public float scale;
         public float randScale;
-        public Color ColorFunc(float p)
-        {
-            return Color.White;
-        }
-
-        public float WidthFunc(float p)
-        {
-            return MathHelper.Lerp(384, 0, Easing.InCubic(p)) * scale * randScale;
-        }
-
-        public void DrawPrims(PrimDrawer primDrawer)
-        {
-            primDrawer.WidthFunc = WidthFunc;
-            primDrawer.ColorFunc = ColorFunc;
-            GameShaders.Misc["VampKnives:SuperSimpleTrail"].SetShaderTexture(TrailRegistry.SimpleTrail);
-            Vector2 trailOffset = -Main.screenPosition;
-            primDrawer.DrawPrims(oldPos, trailOffset, 155);
-        }
     }
 
     public class AlcadBombProj : ModProjectile,
@@ -277,7 +259,6 @@ namespace Stellamod.Projectiles.Magic
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
-        public PrimDrawer PrimDrawer { get; set; }
         private void DrawSuckParticle(SpriteBatch spriteBatch, AlcadBombSuckDraw draw)
         {
             //PrimDrawer ??= new PrimDrawer(null, null, GameShaders.Misc["VampKnives:SuperSimpleTrail"]);

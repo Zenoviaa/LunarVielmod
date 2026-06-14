@@ -15,7 +15,7 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
     public class NiiviCometProj : ModProjectile
     {
         public override string Texture => TextureRegistry.ZuiEffect;
-        public PrimDrawer TrailDrawer { get; private set; } = null;
+
 
         private float Timer
         {
@@ -130,18 +130,9 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
             Vector2 drawSize = texture.Size();
             Vector2 drawOrigin = drawSize / 2;
 
-            //Draw the trail
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
-
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.WhispyTrail);
-
             Vector2 frameSize = new Vector2(32, 32);
             //Could also set this manually like
             //frameSize = new Vector2(58, 34);
-            TrailDrawer.DrawPrims(Projectile.oldPos, frameSize * 0.5f - Main.screenPosition, 155);
 
             float scale = 2f;
             Color drawColor = (Color)GetAlpha(lightColor);

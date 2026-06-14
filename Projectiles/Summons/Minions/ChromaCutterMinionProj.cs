@@ -702,8 +702,6 @@ namespace Stellamod.Projectiles.Summons.Minions
             return Color.Lerp(startColor, endColor, completionRatio);
         }
 
-        public static PrimDrawer TrailDrawer { get; private set; } = null;
-
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -714,15 +712,6 @@ namespace Stellamod.Projectiles.Summons.Minions
             PreDrawLighting();
             PreDrawAfterImage();
             PreDrawGlow();
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
-
-            TrailDrawer.WidthFunc = WidthFunction;
-            TrailDrawer.ColorFunc = ColorFunction;
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.BeamTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, drawOrigin - Main.screenPosition, 155);
 
             //This code here draws the main blade
             //Since it can have 7 different sprites and they're all different sizes we're doing it a bit weirdly.

@@ -1,9 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Stellamod.Assets;
-using Stellamod.Buffs;
+﻿using Stellamod.Buffs;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -11,12 +7,10 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
 {
-    public class RekFireEyeLaserMiniProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class RekFireEyeLaserMiniProj : ModProjectile
     {
         private ref float Timer => ref Projectile.ai[0];
         public override string Texture => TextureRegistry.EmptyTexture;
-        private PrimitiveTrail BeamDrawer;
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Type] = 16;
@@ -50,27 +44,6 @@ namespace Stellamod.NPCs.Bosses.GothiviaTheSun.REK.Projectiles
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(ModContent.BuffType<GothivianFlames>(), 4 * 20);
-        }
-
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.Orange, Color.RoyalBlue, completionRatio);
-        }
-
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            BeamDrawer.SpecialShader = TrailRegistry.FireVertexShader;
-            BeamDrawer.SpecialShader.UseColor(Color.DarkGoldenrod);
-            BeamDrawer.SpecialShader.SetShaderTexture(TrailRegistry.WaterTrail);
-            BeamDrawer.DrawPixelated(Projectile.oldPos, -Main.screenPosition, Projectile.oldPos.Length);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

@@ -10,8 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
 {
-    public class NiiviSpawnExplosionProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class NiiviSpawnExplosionProj : ModProjectile
     {
         //Texture
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -30,7 +29,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
         }
 
         //Draw Code
-        private PrimitiveTrail BeamDrawer;
         private int DrawMode;
 
         //Trailing
@@ -128,29 +126,6 @@ namespace Stellamod.NPCs.Bosses.Niivi.Projectiles
                     //Back Trail
                     return Color.Transparent;
             }
-        }
-
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            float easedProgess = Easing.OutCubic(Progress);
-
-            //Back Trail   
-            DrawMode = 1;
-            BeamDrawer.SpecialShader = BackTrailShader;
-            BeamDrawer.SpecialShader.UseColor(
-                Color.Lerp(BackCircleStartDrawColor, BackCircleEndDrawColor, easedProgess));
-            BeamDrawer.SpecialShader.SetShaderTexture(BackTrailTexture);
-            BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
-
-            //Front Trail
-            DrawMode = 0;
-            BeamDrawer.SpecialShader = FrontTrailShader;
-            BeamDrawer.SpecialShader.UseColor(Color.Lerp(FrontCircleStartDrawColor, FrontCircleEndDrawColor,
-                Easing.OutCirc(Progress)));
-            BeamDrawer.SpecialShader.SetShaderTexture(FrontTrailTexture);
-            BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

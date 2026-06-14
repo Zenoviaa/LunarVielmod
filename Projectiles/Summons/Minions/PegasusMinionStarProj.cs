@@ -13,7 +13,7 @@ namespace Stellamod.Projectiles.Summons.Minions
     public class PegasusMinionStarProj : ModProjectile
     {
         public override string Texture => TextureRegistry.ZuiEffect;
-        public PrimDrawer TrailDrawer { get; private set; } = null;
+
 
         private Vector2 OldVelocity;
         private float Timer
@@ -122,19 +122,6 @@ namespace Stellamod.Projectiles.Summons.Minions
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Vector2 drawSize = texture.Size();
             Vector2 drawOrigin = drawSize / 2;
-
-            //Draw the trail
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
-
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.WhispyTrail);
-
-            Vector2 frameSize = new Vector2(16, 16);
-            //Could also set this manually like
-            //frameSize = new Vector2(58, 34);
-            TrailDrawer.DrawPrims(Projectile.oldPos, frameSize * 0.5f - Main.screenPosition, 155);
 
             float scale = 1f;
             Color drawColor = (Color)GetAlpha(lightColor);

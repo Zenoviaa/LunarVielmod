@@ -12,7 +12,7 @@ using Terraria.Utilities;
 
 namespace Stellamod.Projectiles.Summons.Minions
 {
-    public class PegasusMinionLightningProj : ModProjectile, IPixelPrimitiveDrawer
+    public class PegasusMinionLightningProj : ModProjectile
     {
         public override string Texture => TextureRegistry.EmptyTexture;
         private ref float Timer => ref Projectile.ai[0];
@@ -24,8 +24,6 @@ namespace Stellamod.Projectiles.Summons.Minions
 
         private float Lifetime => 48;
         private Vector2[] LightningPos;
-
-        public PrimitiveTrail BeamDrawer;
 
         public override void SetDefaults()
         {
@@ -118,19 +116,6 @@ namespace Stellamod.Projectiles.Summons.Minions
                     return true;
             }
             return base.Colliding(projHitbox, targetHitbox);
-        }
-
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            if (LightningPos == null || LightningPos.Length == 0)
-                return;
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.LightGoldenrodYellow);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.VortexTrail);
-
-            BeamDrawer.DrawPixelated(LightningPos, -Main.screenPosition, LightningPos.Length);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }

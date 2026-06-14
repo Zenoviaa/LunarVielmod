@@ -10,10 +10,8 @@ using Terraria.ModLoader;
 
 namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
 {
-    public class IrradiaAxeLaserProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class IrradiaAxeLaserProj : ModProjectile
     {
-        public PrimitiveTrail BeamDrawer;
         public ref float Time => ref Projectile.ai[0];
         public NPC Owner => Main.npc[(int)Projectile.ai[1]];
         public override string Texture => TextureRegistry.EmptyTexture;
@@ -72,24 +70,5 @@ namespace Stellamod.NPCs.Bosses.IrradiaNHavoc.Projectiles
         }
 
         public override bool PreDraw(ref Color lightColor) => false;
-
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-
-            TrailRegistry.LaserShader.UseColor(Color.LightGoldenrodYellow);
-            TrailRegistry.LaserShader.SetShaderTexture(TrailRegistry.BeamTrail);
-
-            List<float> originalRotations = new();
-            List<Vector2> points = new();
-            for (int i = 0; i <= 8; i++)
-            {
-                points.Add(Vector2.Lerp(Projectile.Center, Projectile.Center + Projectile.velocity * LaserLength, i / 8f));
-                originalRotations.Add(MathHelper.PiOver2);
-            }
-
-            BeamDrawer.DrawPixelated(points, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
-        }
     }
 }

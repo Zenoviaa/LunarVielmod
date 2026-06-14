@@ -15,7 +15,6 @@ namespace Stellamod.Projectiles.Magic
 {
     public class AzuretoothDragon : ModProjectile
     {
-        public PrimDrawer TrailDrawer { get; private set; } = null;
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Type] = 16;
@@ -80,18 +79,7 @@ namespace Stellamod.Projectiles.Magic
 
         public override bool PreDraw(ref Color lightColor)
         {
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
 
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
-            Vector2 frameSize = Projectile.Frame().Size();
-
-            //Could also set this manually like
-            //frameSize = new Vector2(58, 34);
-            TrailDrawer.DrawPrims(Projectile.oldPos, frameSize * 0.5f - Main.screenPosition, 155);
-            DrawHelper.DrawAdditiveAfterImage(Projectile, Color.White, Color.Transparent, ref lightColor);
             return base.PreDraw(ref lightColor);
         }
 
@@ -102,40 +90,7 @@ namespace Stellamod.Projectiles.Magic
 
         public override void PostDraw(Color lightColor)
         {
-            float num108 = 4;
-            float glowOsc = (float)Math.Cos((double)(Main.GlobalTimeWrappedHourly % 1.4f / 1.4f * 6.28318548f)) / 2f + 0.5f;
-            float num106 = 0f;
 
-            SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
-            Color glowColor = Color.White * glowOsc * .8f;
-            Rectangle drawFrame = Projectile.Frame();
-            Vector2 drawOrigin = drawFrame.Size() / 2;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            spriteBatch.Draw(
-                GlowTexture,
-                Projectile.position - Main.screenPosition + drawOrigin,
-                drawFrame,
-                glowColor,
-                Projectile.rotation,
-                drawOrigin,
-                Projectile.scale,
-                spriteEffects,
-                0
-            );
-
-            Color glowColorRot = new Color(127 - Projectile.alpha, 127 - Projectile.alpha, 127 - Projectile.alpha, 0)
-                .MultiplyRGBA(Color.LightBlue);
-            for (int num103 = 0; num103 < 1; num103++)
-            {
-                Color drawColor = glowColorRot;
-                drawColor = Projectile.GetAlpha(drawColor);
-                drawColor *= 1f - glowOsc;
-                Vector2 drawPosition = Projectile.position + drawOrigin + (num103 / (float)num108 * 6.28318548f + Projectile.rotation + num106)
-                    .ToRotationVector2() * (4f * glowOsc + 2f) - Main.screenPosition;
-                Main.spriteBatch.Draw(GlowTexture, drawPosition, drawFrame,
-                    drawColor, Projectile.rotation, drawOrigin, Projectile.scale, spriteEffects, 0f);
-            }
         }
 
         private void Visuals()

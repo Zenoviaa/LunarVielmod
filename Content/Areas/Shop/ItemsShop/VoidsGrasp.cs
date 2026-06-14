@@ -4,6 +4,7 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
+using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
 using Stellamod.Trails;
 using Stellamod.Visual.Particles;
@@ -142,15 +143,9 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
 
         protected virtual void DrawSprite(ref Color lightColor)
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D texture = TextureAssets.Projectile[Type].Value;
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            Rectangle frame = Projectile.Frame();
-            Vector2 drawOrigin = frame.Size() / 2f;
-            Color drawColor = Color.White.MultiplyRGB(lightColor);
-            float drawRotation = Projectile.rotation;
-            float drawScale = 1f;
-            spriteBatch.Draw(texture, drawPos, frame, drawColor, drawRotation, drawOrigin, drawScale, SpriteEffects.None, layerDepth: 0);
+
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
+            Main.spriteBatch.Draw(drawer);
         }
 
         public override bool PreDraw(ref Color lightColor)

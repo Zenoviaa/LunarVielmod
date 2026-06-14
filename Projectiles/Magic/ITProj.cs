@@ -1,12 +1,57 @@
-﻿using Stellamod.Dusts;
+﻿using Stellamod.Core.Pixelation;
+using Stellamod.Core.Utilities;
+using Stellamod.Dusts;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
+using Stellamod.Visual.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.Magic;
+
+public class ITExplosionProj : ModProjectile, IDrawToRenderTarget
+{
+    private ref float Timer => ref Projectile.ai[0];
+    public override string Texture => TextureRegistry.EmptyTexture;
+    public override void AI()
+    {
+        base.AI();
+        Timer++;
+        if(Timer == 1)
+        {
+            FXUtil.GlowCircleBoom(Projectile.Center, Color.White, Color.LightGreen, Color.DarkGreen, 6, baseSize: 0.24f);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.LightGreen, 24, 128);
+            PixelPrimitiveCircleFactory.CreateGenericBoom(Projectile.Center, Color.White, Color.LightGreen, 24, 100);
+        }
+    }
+    public override void SetDefaults()
+    {
+        base.SetDefaults();
+        Projectile.width = 256;
+        Projectile.height = 256;
+        Projectile.friendly = true;
+        Projectile.usesLocalNPCImmunity = true;
+        Projectile.localNPCHitCooldown = -1;
+        Projectile.tileCollide = false;
+        Projectile.ignoreWater = true;
+        Projectile.timeLeft = 30;
+    }
+    public override bool PreDraw(ref Color lightColor)
+    {
+        return base.PreDraw(ref lightColor);
+    }
+    public override void OnKill(int timeLeft)
+    {
+        base.OnKill(timeLeft);
+    }
+
+    public void DrawToRenderTargets()
+    {
+
+    }
+}
 
 public class ITProj : ModProjectile
 {
@@ -34,7 +79,9 @@ public class ITProj : ModProjectile
         Projectile.ai[1]++;
         if (!Moved && Projectile.ai[1] >= 0)
         {
-            SoundEngine.PlaySound(new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/IrradiatedNest_Fall"), Projectile.position);
+            SoundStyle useSound = new SoundStyle($"{nameof(Stellamod)}/Assets/Sounds/IrradiatedNest_Fall");
+            useSound = useSound with { PitchVariance = 0.6f, Volume = 0.4f };
+            SoundEngine.PlaySound(useSound, Projectile.position);
             Projectile.spriteDirection = Projectile.direction;
             Moved = true;
         }
@@ -42,6 +89,7 @@ public class ITProj : ModProjectile
         {
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/ITBeep");
             //Between -1 and 1f
+            soundStyle.Volume = 0.35f;
             soundStyle.Pitch = 0.8f;
             SoundEngine.PlaySound(soundStyle, Projectile.position);
             WhiteTimer = 1;
@@ -50,6 +98,7 @@ public class ITProj : ModProjectile
         {
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/ITBeep");
             //Between -1 and 1f
+            soundStyle.Volume = 0.35f;
             soundStyle.Pitch = 0.9f;
             SoundEngine.PlaySound(soundStyle, Projectile.position);
             WhiteTimer = 1;
@@ -58,6 +107,7 @@ public class ITProj : ModProjectile
         {
             SoundStyle soundStyle = new SoundStyle("Stellamod/Assets/Sounds/ITBeep");
             //Between -1 and 1f
+            soundStyle.Volume = 0.35f;
             soundStyle.Pitch = 1f;
             SoundEngine.PlaySound(soundStyle, Projectile.position);
             WhiteTimer = 1;
@@ -70,10 +120,13 @@ public class ITProj : ModProjectile
 
         if (Projectile.ai[1] >= 90)
         {
-            for (int i = 0; i < 2; i++)
+            if (Main.rand.NextBool(2))
             {
-                Dust.NewDustPerfect(base.Projectile.Center, ModContent.DustType<TSmokeDust>(), (Vector2.One * Main.rand.Next(1, 5)).RotatedByRandom(19.0), 150, Color.DarkGray, 1f).noGravity = true;
+            var sp =    SmokeParticle.SpawnInAlphaLayer(Projectile.Center, -Vector2.UnitY);
+                sp.fadeToColor = Color.Black;
+                sp.initialColor = Color.DarkGray;
             }
+            
         }
         WhiteTimer = MathHelper.Lerp(WhiteTimer, 0, 0.1f);
         Rectangle myRect = Projectile.getRect();

@@ -36,22 +36,10 @@ namespace Stellamod.Projectiles.Swords.Fenix
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.White, Color.Transparent, completionRatio) * 0.7f;
-        }
+
         public override bool PreDraw(ref Color lightColor)
         {
 
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
             if (Projectile.spriteDirection != 1)

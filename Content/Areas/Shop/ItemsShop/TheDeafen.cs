@@ -45,7 +45,6 @@ namespace Stellamod.Content.Areas.Shop.ItemsShop
         private float TrailAlpha;
 
         public bool Slowdown;
-        public PrimDrawer Trail { get; set; }
 
         public override void SetStaticDefaults()
         {

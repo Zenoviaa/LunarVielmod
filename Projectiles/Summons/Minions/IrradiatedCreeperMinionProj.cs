@@ -28,7 +28,6 @@ namespace Stellamod.Projectiles.Summons.Minions
             GoToSpot,
             Exploding
         }
-        public PrimDrawer TrailDrawer { get; private set; } = null;
 
         private AIState State
         {
@@ -263,22 +262,8 @@ namespace Stellamod.Projectiles.Summons.Minions
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
         }
 
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * Projectile.width * 0.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(ColorFunctions.AcidFlame, Color.Transparent, completionRatio) * 0.7f;
-        }
-
         public override bool PreDraw(ref Color lightColor)
         {
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
             return true;
         }
     }

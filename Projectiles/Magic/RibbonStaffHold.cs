@@ -13,7 +13,6 @@ namespace Stellamod.Projectiles.Magic
     public class RibbonStaffHold : ModProjectile
     {
         private Vector2[] BungeeGumPos = new Vector2[4];
-        private PrimDrawer TrailDrawer { get; set; } = null;
         private ref float SwordRotation => ref Projectile.ai[1];
         public override void SetDefaults()
         {
@@ -91,33 +90,6 @@ namespace Stellamod.Projectiles.Magic
 
         public override bool PreDraw(ref Color lightColor)
         {
-            //Player player = Main.player[Projectile.owner];
-
-
-
-            if (TrailDrawer == null)
-            {
-                TrailDrawer = new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            }
-
-            Vector2 textureSize = new Vector2(56, 62);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.StarTrail);
-            TrailDrawer.WidthFunc = WidthFunction;
-            TrailDrawer.ColorFunc = ColorFunction;
-            TrailDrawer.DrawPrims(BungeeGumPos, textureSize * 0.5f - Main.screenPosition, 155);
-
-            SpriteEffects spriteEffects = SpriteEffects.None;
-            if (Projectile.spriteDirection == -1)
-                spriteEffects = SpriteEffects.FlipHorizontally;
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            int frameHeight = texture.Height / Main.projFrames[Projectile.type];
-            int startY = frameHeight * Projectile.frame;
-            Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
-            Vector2 origin = sourceRectangle.Size() / 2f;
-            origin.X = Projectile.spriteDirection == 1 ? sourceRectangle.Width - 30 : 30; // Customization of the sprite position
-
-            Color drawColor = Projectile.GetAlpha(lightColor);
-            Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);
 
 
             return false;

@@ -354,9 +354,6 @@ namespace Stellamod.Projectiles.Summons.Orbs
             }
         }
 
-        public TrailRenderer SwordSlash;
-        public TrailRenderer SwordSlash2;
-        public TrailRenderer SwordSlash3;
         public override bool PreDraw(ref Color lightColor)
         {
             Vector3 huntrianColorXyz = DrawHelper.HuntrianColorOscillate(
@@ -364,34 +361,6 @@ namespace Stellamod.Projectiles.Summons.Orbs
                 Color.DarkGoldenrod.ToVector3(),
                 new Vector3(3, 3, 3), 0);
 
-
-            var TrailTex = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/WhiteTrail").Value;
-            var TrailTex2 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/CausticTrail").Value;
-            var TrailTex3 = ModContent.Request<Texture2D>("Stellamod/Assets/NoiseTextures/WaterTrail").Value;
-            Color color = Color.Multiply(new(1.50f, 1.75f, 3.5f, 0), 200);
-
-            float width = 64;
-            if (SwordSlash == null)
-            {
-                SwordSlash = new TrailRenderer(TrailTex, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(width), new Vector2(0), p),
-                    (p) => Color.DarkBlue * (Easing.SpikeInOutCirc(p)) * 0.66f);
-                SwordSlash.drawOffset = Projectile.Size / 2f;
-            }
-            if (SwordSlash2 == null)
-            {
-                SwordSlash2 = new TrailRenderer(TrailTex2, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(width), new Vector2(0), p),
-                    (p) => Color.Blue * (Easing.SpikeInOutCirc(p)) * 0.66f);
-                SwordSlash2.drawOffset = Projectile.Size / 2f;
-            }
-            if (SwordSlash3 == null)
-            {
-                SwordSlash3 = new TrailRenderer(TrailTex3, TrailRenderer.DefaultPass,
-                    (p) => Vector2.Lerp(new Vector2(width), new Vector2(0), p),
-                    (p) => Color.Teal * (Easing.SpikeInOutCirc(p)) * 0.66f);
-                SwordSlash3.drawOffset = Projectile.Size / 2f;
-            }
 
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Texture, null, null, null, null, null, Main.GameViewMatrix.ZoomMatrix);
@@ -401,10 +370,6 @@ namespace Stellamod.Projectiles.Summons.Orbs
             {
                 rotation[i] = Projectile.oldRot[i] - MathHelper.ToRadians(45);
             }
-
-            SwordSlash.Draw(Projectile.oldPos, rotation);
-            SwordSlash2.Draw(Projectile.oldPos, rotation);
-            SwordSlash3.Draw(Projectile.oldPos, rotation);
 
             Main.spriteBatch.End();
             Main.spriteBatch.Begin();

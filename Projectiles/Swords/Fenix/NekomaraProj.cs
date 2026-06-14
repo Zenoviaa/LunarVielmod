@@ -95,41 +95,8 @@ namespace Stellamod.Projectiles.Swords.Fenix
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X + speedXa, Projectile.position.Y + speedYa, speedXa * 0, speedYa * 0, ModContent.ProjectileType<KaBoomSigil>(), (int)(Projectile.damage * 1.5f), 0f, Projectile.owner, 0f, 0f);
             SoundEngine.PlaySound(new SoundStyle("Stellamod/Assets/Sounds/Starblast"), Projectile.position);
             // Item.NewItem(Projectile.GetSource_FromThis(), Projectile.getRect(), ModContent.ItemType<AuroreanStarI>(), Main.rand.Next(1, 1));
-
-
         }
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float WidthFunction(float completionRatio)
-        {
-            float baseWidth = Projectile.scale * (Projectile.width / 4) * 1.3f;
-            return MathHelper.SmoothStep(baseWidth, 3.5f, completionRatio);
-        }
-        public Color ColorFunction(float completionRatio)
-        {
-            return Color.Lerp(Color.LightPink, Color.Transparent, completionRatio) * 0.7f;
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
 
-
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            TrailDrawer ??= new PrimDrawer(WidthFunction, ColorFunction, GameShaders.Misc["VampKnives:BasicTrail"]);
-            GameShaders.Misc["VampKnives:BasicTrail"].SetShaderTexture(TrailRegistry.SmallWhispyTrail);
-            TrailDrawer.DrawPrims(Projectile.oldPos, Projectile.Size * 0.5f - Main.screenPosition, 155);
-
-
-            int frameHeight = texture.Height / Main.projFrames[Projectile.type];
-            int startY = frameHeight * Projectile.frame;
-            Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
-            Vector2 origin = sourceRectangle.Size() / 2f;
-            Color drawColor = new Color(255, 255, 255, 255);
-
-            Main.EntitySpriteDraw(texture,
-                Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-                sourceRectangle, drawColor, Projectile.rotation, origin, Projectile.scale / 2, SpriteEffects.None, 0);
-
-            return false;
-        }
         public override void PostDraw(Color lightColor)
         {
             Texture2D texture2D4 = Request<Texture2D>("Stellamod/Assets/NoiseTextures/DimLight").Value;
@@ -140,7 +107,6 @@ namespace Stellamod.Projectiles.Swords.Fenix
             Lighting.AddLight(Projectile.Center, Color.HotPink.ToVector3() * 2.0f * Main.essScale);
 
         }
-
     }
 
 }

@@ -13,7 +13,6 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
     public class LaughingBlast : ModProjectile
     {
         bool Moved;
-        public PrimDrawer TrailDrawer { get; private set; } = null;
 
         public override void SetStaticDefaults()
         {
@@ -134,37 +133,8 @@ namespace Stellamod.Content.Areas.Fable.BossesFB.JackTheScholar.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawHelper.DrawSimpleTrail(Projectile, WidthFunction, ColorFunction, TrailRegistry.StarTrail);
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Vector2 drawOrigin = texture.Size() / 2f;
-            Color drawColor = Color.White.MultiplyRGB(lightColor);
-            float drawRotation = Projectile.rotation;
-            float drawScale = 1f;
-
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            spriteBatch.Draw(texture, drawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            for (int i = 0; i < 4; i++)
-            {
-                float rot = i / 4f;
-                Vector2 vel = rot.ToRotationVector2() * VectorHelper.Osc(0f, 4f, speed: 16);
-                Vector2 flameDrawPos = drawPos + vel + Main.rand.NextVector2Circular(2, 2);
-                flameDrawPos -= Vector2.UnitY * 4;
-                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
-                Vector2 flameDrawPos = drawPos + Main.rand.NextVector2Circular(2, 2);
-                spriteBatch.Draw(texture, flameDrawPos, Projectile.Frame(), drawColor, drawRotation, Projectile.Frame().Size() / 2f, drawScale, SpriteEffects.None, 0);
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            SpritebatchDrawer drawer = SpritebatchDrawer.FromProjectile(Projectile);
+            Main.spriteBatch.Draw(drawer);
             return false;
         }
 

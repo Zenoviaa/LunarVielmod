@@ -10,6 +10,7 @@ using System;
 using System.Buffers;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Stellamod.Core.Utilities;
@@ -474,6 +475,9 @@ public static class PixelPrimitiveCircleFactory
     }
     public static void CreateGenericInBoom(Vector2 position, Color startColor, Color endColor, float time, float endRadius)
     {
+        if (Main.netMode == NetmodeID.Server)
+            return;
+
         void RenderPrimitives(Vector2[] points, float completionRatio, in PixelPrimitiveCircleParams circleParams)
         {
             float GetTrailWidthFunction(float interpolant)

@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Helpers;
+using System;
 using Terraria;
 using Terraria.Graphics.Shaders;
 
@@ -25,8 +27,8 @@ namespace Stellamod.Trails
 
         public float WidthMultiplier { get; set; }
         public float Width { get; set; }
-        public PrimDrawer.ColorTrailFunction ColorFunction { get; set; }
-        public PrimDrawer.WidthTrailFunction WidthTrailFunction { get; set; }
+        public Func<float, Color> ColorFunction { get; set; }
+        public Func<float, float> WidthTrailFunction { get; set; }
         public LightningTrail[] Trails { get; init; }
         public bool SyncOffsets { get; set; }
         public float DefaultWidthFunction(float completionRatio)
@@ -124,8 +126,7 @@ namespace Stellamod.Trails
             Power = 1.5f;
         }
 
-        public PrimDrawer TrailDrawer { get; private set; } = null;
-        public float LightningRandomOffsetRange = 5;
+        public float LightningRandomOffsetRange = 3;
         public float LightningRandomExpand = 24;
         public Color PrimaryColor;
         public Color NoiseColor;
@@ -168,17 +169,25 @@ namespace Stellamod.Trails
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2[] oldPos, float[] oldRot,
-            PrimDrawer.ColorTrailFunction colorFunc,
-            PrimDrawer.WidthTrailFunction widthFunc, Vector2? offset = null)
+            Func<float, Color> colorFunc,
+            Func<float, float> widthFunc, Vector2? offset = null)
         {
             if (_offsets == null)
                 return;
+            
             Vector2[] lightningTrailPos = new Vector2[oldPos.Length];
             for (int i = 0; i < lightningTrailPos.Length && i < _offsets.Length; i++)
             {
                 lightningTrailPos[i] = oldPos[i] + _offsets[i];
             }
 
+
+            var shader = RichLaserShader.Instance;
+            shader.LaserColor = Color.DarkGoldenrod;
+            shader.OuterColor = Color.Red;
+            shader.InnerColor = Color.Lerp(Color.White, Color.Lerp(Color.White, Color.Gold, 0.5f), ExtraMath.Osc(0f, 1f, speed: 128));
+            TrailDrawer.Draw(lightningTrailPos, colorFunc, widthFunc, shader);
+            /*
             MiscShaderData shaderData = GameShaders.Misc["LunarVeil:LightningBolt"];
             shaderData.Shader.Parameters["primaryColor"].SetValue(PrimaryColor.ToVector3());
             shaderData.Shader.Parameters["noiseColor"].SetValue(NoiseColor.ToVector3());
@@ -187,14 +196,7 @@ namespace Stellamod.Trails
             shaderData.Shader.Parameters["time"].SetValue(Main.GlobalTimeWrappedHourly * Speed);
             shaderData.Shader.Parameters["distortion"].SetValue(Distortion);
             shaderData.Shader.Parameters["power"].SetValue(Power);
-
-            TrailDrawer ??= new PrimDrawer(widthFunc, colorFunc, shaderData);
-            TrailDrawer.WidthFunc = widthFunc;
-            TrailDrawer.ColorFunc = colorFunc;
-
-            Vector2 trailOffset = -Main.screenPosition;
-
-            TrailDrawer.DrawPrims(lightningTrailPos, trailOffset, 155);
+            */
         }
     }
 }

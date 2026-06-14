@@ -10,8 +10,7 @@ using Terraria.ModLoader;
 
 namespace Stellamod.Projectiles.GunHolster
 {
-    public class BasterPartyProj : ModProjectile,
-        IPixelPrimitiveDrawer
+    public class BasterPartyProj : ModProjectile
     {
         private int _color;
         private ref float Timer => ref Projectile.ai[0];
@@ -87,31 +86,6 @@ namespace Stellamod.Projectiles.GunHolster
                 Gore.NewGore(Projectile.GetSource_FromThis(), Projectile.Center, velocity,
                   goreType);
             }
-        }
-
-        public PrimitiveTrail BeamDrawer;
-        public Vector2[] TrailPos;
-        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
-        {
-            BeamDrawer ??= new PrimitiveTrail(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
-            BeamDrawer.SpecialShader = null;
-
-            if (TrailPos == null)
-            {
-                TrailPos = new Vector2[Projectile.oldPos.Length];
-                for (int i = 0; i < TrailPos.Length; i++)
-                {
-                    Projectile.oldPos[i] = Projectile.position;
-                }
-            }
-
-            for (int i = 0; i < TrailPos.Length; i++)
-            {
-                TrailPos[i] = Projectile.oldPos[i];
-                TrailPos[i] += new Vector2(VectorHelper.Osc(0, 16, offset: i));
-            }
-            BeamDrawer.DrawPixelated(TrailPos, -Main.screenPosition, 32);
-            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }
