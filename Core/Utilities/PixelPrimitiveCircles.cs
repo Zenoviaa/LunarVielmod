@@ -6,7 +6,6 @@ using Stellamod.Content.Areas.WaterSide.KingJellyfishBoss;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System;
 using System.Buffers;
 using System.Collections.Generic;

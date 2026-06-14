@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Content.Armors.Artisan;
 using Stellamod.Dusts;
 using Stellamod.Projectiles.Visual;

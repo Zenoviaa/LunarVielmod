@@ -1,5 +1,5 @@
 ﻿using ReLogic.Content;
-using Stellamod.Trails;
+using Stellamod.Assets;
 using Terraria;
 
 namespace Stellamod.Common.Shaders

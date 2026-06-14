@@ -5,7 +5,6 @@ using Stellamod.Content.Areas.Snow.WeaponsSN;
 using Stellamod.Core.Particles;
 using Stellamod.Core.Pixelation;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;

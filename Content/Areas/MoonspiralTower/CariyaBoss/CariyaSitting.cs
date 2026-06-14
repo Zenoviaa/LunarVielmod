@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.Dialogue;
 using Stellamod.Core;
 using Stellamod.Core.DialogueSystem;
@@ -6,7 +7,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.TriggersSystem.Triggers;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using Terraria;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Stellamod.Assets;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.CommonMaterials;
@@ -7,7 +8,6 @@ using Stellamod.Core.Bases;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Items.Ores;
-using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Shaders;

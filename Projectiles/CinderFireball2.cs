@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

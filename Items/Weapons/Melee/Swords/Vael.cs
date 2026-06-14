@@ -1,9 +1,9 @@
-﻿using Stellamod.Common.Players;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Core.Bases;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.Visual.Explosions;
 using Stellamod.Visual.GIFEffects;
 using System.Collections.Generic;

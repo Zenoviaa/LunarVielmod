@@ -8,7 +8,6 @@ using Stellamod.Core.Particles;
 using Stellamod.Core.TriggersSystem.Triggers;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.Collections.Generic;

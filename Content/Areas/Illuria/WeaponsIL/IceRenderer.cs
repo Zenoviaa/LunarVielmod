@@ -1,7 +1,7 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
-using Stellamod.Trails;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;

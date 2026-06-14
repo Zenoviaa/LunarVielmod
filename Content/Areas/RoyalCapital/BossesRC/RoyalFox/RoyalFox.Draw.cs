@@ -5,7 +5,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using Terraria;

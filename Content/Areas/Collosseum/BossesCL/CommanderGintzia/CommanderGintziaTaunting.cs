@@ -6,7 +6,6 @@ using Stellamod.Common.Shaders.MagicTrails;
 using Stellamod.Content.Areas.Collosseum.Event.Common;
 using Stellamod.Helpers;
 using Stellamod.Items.Consumables;
-using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -1,3 +1,4 @@
+using Stellamod.Assets;
 using Stellamod.Common.Players;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;

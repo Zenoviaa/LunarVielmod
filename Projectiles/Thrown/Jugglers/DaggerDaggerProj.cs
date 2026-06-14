@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Stellamod.Assets;
 using Stellamod.Core.Bases;
 using Stellamod.Dusts;
 using Stellamod.Helpers;

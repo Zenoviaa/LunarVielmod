@@ -8,9 +8,9 @@ using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Stellamod.Common.Shaders;
 using Stellamod.Common.Shaders.MagicTrails;
+using Stellamod.Assets;
 
 namespace Stellamod.Content.Areas.Collosseum.BossesCL.CommanderGintzia
 {

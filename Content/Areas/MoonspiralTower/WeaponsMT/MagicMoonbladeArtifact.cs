@@ -12,7 +12,6 @@ using Stellamod.Core.SwingSystem;
 using Stellamod.Helpers;
 using Stellamod.Items;
 using Stellamod.Trailing;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System;
 using System.Buffers;

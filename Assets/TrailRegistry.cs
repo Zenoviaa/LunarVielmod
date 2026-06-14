@@ -3,7 +3,7 @@ using ReLogic.Content;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
-namespace Stellamod.Trails
+namespace Stellamod.Assets
 {
     static class TrailRegistry
     {

@@ -3,7 +3,6 @@ using Stellamod.Common.Shaders;
 using Stellamod.Core.Pixelation;
 using Stellamod.Effects.RoyalMagic;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using System.Linq;

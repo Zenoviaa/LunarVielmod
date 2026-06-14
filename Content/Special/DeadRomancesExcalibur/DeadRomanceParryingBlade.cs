@@ -5,7 +5,6 @@ using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
 using Stellamod.Projectiles.IgniterExplosions;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System.Collections.Generic;
 using System.IO;

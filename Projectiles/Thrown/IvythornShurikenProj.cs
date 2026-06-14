@@ -1,4 +1,5 @@
-﻿using Stellamod.Helpers;
+﻿using Stellamod.Assets;
+using Stellamod.Helpers;
 using Stellamod.Trails;
 using Terraria;
 using Terraria.Audio;

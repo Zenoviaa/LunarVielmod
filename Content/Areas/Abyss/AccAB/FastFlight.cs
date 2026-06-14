@@ -6,7 +6,6 @@ using Stellamod.Core.Palettes;
 using Stellamod.Core.Pixelation;
 using Stellamod.Core.Utilities;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;

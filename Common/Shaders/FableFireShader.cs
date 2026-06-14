@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
 using Stellamod.Helpers;
-using Stellamod.Trails;
 using System;
 using System.Collections.Generic;
 using System.Linq;

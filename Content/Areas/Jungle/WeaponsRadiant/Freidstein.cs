@@ -1,4 +1,5 @@
-﻿using Stellamod.Common.Shaders;
+﻿using Stellamod.Assets;
+using Stellamod.Common.Shaders;
 using Stellamod.Content.CommonMaterials;
 using Stellamod.Core.Bases;
 using Stellamod.Core.Pixelation;
@@ -11,7 +12,6 @@ using Stellamod.Items.Accessories.Players;
 using Stellamod.Items.Weapons.Mage.Stein;
 using Stellamod.Projectiles.IgniterExplosions.Stein;
 using Stellamod.Projectiles.Steins;
-using Stellamod.Trails;
 using Stellamod.Visual.Particles;
 using System.IO;
 using Terraria;
