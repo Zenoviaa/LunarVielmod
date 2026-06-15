@@ -1,9 +1,5 @@
 ﻿
 <Project Sdk="Tomat.Terraria.ModLoader.Sdk/2.1.0">
-
-	
-  <Import Project="..\Tomat.Terraria.ModLoader.Sdk\Sdk\Sdk.props"/>
-  <Import Project="..\Tomat.Terraria.ModLoader.Sdk\Sdk\Sdk.targets"/>
   <Import Project="..\tModLoader.targets" />
 	<PropertyGroup>
 		<AssemblyName>Stellamod</AssemblyName>
