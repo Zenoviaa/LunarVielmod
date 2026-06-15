@@ -13,7 +13,7 @@ namespace Stellamod.Dusts
             dust.noGravity = true;
             dust.frame = new Rectangle(0, 64 * Main.rand.Next(4), 64, 64);
          //   dust.scale *= 4;
-            dust.shader = new Terraria.Graphics.Shaders.ArmorShaderData(AssetReferences.Effects.GlowShard.Asset, "PixelPass");
+            dust.shader = new Terraria.Graphics.Shaders.ArmorShaderData(ModContent.Request<Effect>("Stellamod/Effects/GlowShard"), "PixelPass");
        
         }       
 

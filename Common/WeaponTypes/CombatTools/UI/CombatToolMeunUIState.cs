@@ -57,8 +57,12 @@ namespace Stellamod.Common.WeaponTypes.CombatTools.UI
             float time = 0.5f;
             timer = MathHelper.Clamp(timer, 0, time);
             float t = EasingFunction.InOutSine(timer / time);
-            xixianFlaskUI.InventoryMenu.View?.transitionInterpolant = t;
-            xixianFlaskUI.InventoryMenu.textAlpha = t;
+            if(xixianFlaskUI.InventoryMenu.View != null)
+            {
+                xixianFlaskUI.InventoryMenu.View.transitionInterpolant = t;
+                xixianFlaskUI.InventoryMenu.textAlpha = t;
+            }
+
         }
         public bool FullyClosed()
         {

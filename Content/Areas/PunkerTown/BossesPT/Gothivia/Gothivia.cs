@@ -501,7 +501,7 @@ public partial class Gothivia : ScarletBoss
                             dp.noTileCollide = true;
                         }
                         PixelPrimitiveCircleFactory.CreateGenericBoom(teleportSpot, Color.Red, Color.Red, 45, 256);
-                        SoundStyle flyAway = AssetReferences.Assets.Sounds.Fire.Gothiviaflyaway.Asset;
+                        SoundStyle flyAway = new SoundStyle("Stellamod/Assets/Sounds/Fire/Gothiviaflyaway");//AssetReferences.Assets.Sounds.Fire.Gothiviaflyaway.Asset;
                         flyAway.PitchVariance = 0.4f;
                         SoundEngine.PlaySound(flyAway, MyTarget.Center);
 
@@ -718,7 +718,8 @@ public partial class Gothivia : ScarletBoss
                     Animator.PlayAnimation(Anim_Dive);
                     if(Timer == 1)
                     {
-                        SoundStyle fireCharge = AssetReferences.Assets.Sounds.Fire.FlaminCharge.Asset with { PitchVariance = 0.5f };
+
+                        SoundStyle fireCharge = new SoundStyle("Stellamod/Assets/Sounds/Fire/FlaminCharge") with { PitchVariance = 0.5f };
                         SoundEngine.PlaySound(fireCharge, NPC.position);
 
                         Vector2 vel = _startCDashOffset + -Vector2.UnitY * 0.75f;
@@ -1172,7 +1173,7 @@ public partial class Gothivia : ScarletBoss
                             Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.UnitY * 2400,
                                 ModContent.ProjectileType<GothinTorch>(), 1, 1, Main.myPlayer, ai2: 1);
                         }
-                        SoundStyle chargeSound = AssetReferences.Assets.Sounds.Fire.FlaminChargeFast.Asset;
+                        SoundStyle chargeSound = new SoundStyle("Stellamod/Assets/Sounds/Fire/FlaminChargeFast");//AssetReferences.Assets.Sounds.Fire.FlaminChargeFast.Asset;
                         chargeSound = chargeSound with { PitchVariance = 0.5f };
                         SoundEngine.PlaySound(chargeSound, MyTarget.Center);
                     }
@@ -1205,7 +1206,7 @@ public partial class Gothivia : ScarletBoss
                     if (Timer == 1)
                     {
                         NPC.TargetClosest();
-                        SoundStyle chargeSound = AssetReferences.Assets.Sounds.Fire.FlaminCharge.Asset;
+                        SoundStyle chargeSound = new SoundStyle("Stellamod/Assets/Sounds/Fire/FlaminCharge");// AssetReferences.Assets.Sounds.Fire.FlaminCharge.Asset;
                         chargeSound = chargeSound with { PitchVariance = 0.5f };
                         SoundEngine.PlaySound(chargeSound, MyTarget.Center);
                     }
@@ -1487,7 +1488,7 @@ public partial class Gothivia : ScarletBoss
 
         if(Timer == 45)
         {
-            SoundStyle zoomer = AssetReferences.Assets.Sounds.Fire.FlaminChargeFast.Asset;
+            SoundStyle zoomer = new SoundStyle("Stellamod/Assets/Sounds/Fire/FlaminChargeFast");// AssetReferences.Assets.Sounds.Fire.FlaminChargeFast.Asset;
             zoomer.PitchVariance = 0.4f;
             SoundEngine.PlaySound(zoomer, NPC.position);
         }
@@ -1779,7 +1780,7 @@ public partial class Gothivia : ScarletBoss
             {
                 NPC.TargetClosest();
                 _initialVelocity = NPC.velocity;
-                SoundStyle fireFast = AssetReferences.Assets.Sounds.Fire.FlaminChargeFast.Asset;
+                SoundStyle fireFast = new SoundStyle("Stellamod/Assets/Sounds/Fire/FlaminChargeFast");// AssetReferences.Assets.Sounds.Fire.FlaminChargeFast.Asset;
                 fireFast.PitchVariance = 0.4f;
                 SoundEngine.PlaySound(fireFast, MyTarget.Center);
             }
@@ -1793,7 +1794,7 @@ public partial class Gothivia : ScarletBoss
             if (Timer == (int)(easeInTime * 0.5f))
             {
                 CreateInCircle();
-                SoundStyle fireFast = AssetReferences.Assets.Sounds.Fire.FlaminChargeFast.Asset;
+                SoundStyle fireFast = new SoundStyle("Stellamod/Assets/Sounds/Fire/FlaminChargeFast");
                 fireFast.Pitch = -0.4f;
                 SoundEngine.PlaySound(fireFast, MyTarget.Center);
             }
