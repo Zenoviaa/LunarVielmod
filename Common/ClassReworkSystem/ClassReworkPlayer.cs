@@ -2,7 +2,6 @@
 using Stellamod.Core.ClassSelect;
 using Stellamod.Items.Accessories.Players;
 using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -13,15 +12,39 @@ public class ClassReworkPlayer : ModPlayer
 {
     public PlayerClass playerClass;
     public DamageClass damageClass;
+    private Item _quiverAmmoItem;
+    public Item QuiverAmmoItem
+    {
+        get
+        {
+            if (_quiverAmmoItem == null)
+            {
+                _quiverAmmoItem = new Item(0);
+                _quiverAmmoItem.SetDefaults(0);
+            }
+            return _quiverAmmoItem;
+        }
+        set
+        {
+            _quiverAmmoItem = value;
+        }
+    }
+
     public int heldShield;
     public int healTimer;
     public bool hasSpawned;
     public bool defaultShield => heldShield == ModContent.ProjectileType<MeleeShield>();
 
 
+    public bool HasAmmo(Item item)
+    {
+        //TODO:
+        return true;
+    }
     public override void ResetEffects()
     {
         base.ResetEffects();
+
         heldShield = ModContent.ProjectileType<MeleeShield>();
     }
     public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
@@ -137,7 +160,7 @@ public class ClassReworkPlayer : ModPlayer
         {
             Item[] startingITems = ModContent.GetInstance<ClassSystem>().GetClassStartingItems((int)playerClass);
             Player.inventory[0] = startingITems[0].Clone();
-            for(int i = 1; i < startingITems.Length; i++)
+            for (int i = 1; i < startingITems.Length; i++)
             {
                 Item item = startingITems[i];
                 Player.QuickSpawnItem(Player.GetSource_FromThis(), item.type);
@@ -200,11 +223,13 @@ public class ClassReworkPlayer : ModPlayer
         base.SaveData(tag);
         tag["playerClass"] = (int)playerClass;
         tag["hasSpawned"] = hasSpawned;
+        tag["quiverAmmoItem"] = QuiverAmmoItem;
     }
     public override void LoadData(TagCompound tag)
     {
         base.LoadData(tag);
         playerClass = (PlayerClass)tag.Get<int>("playerClass");
         hasSpawned = tag.Get<bool>("hasSpawned");
+        QuiverAmmoItem = tag.Get<Item>("quiverAmmoItem");
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Common.ClassReworkSystem;
+using Stellamod.Common.UI;
 using Stellamod.Helpers;
 using System.Collections.Generic;
 using Terraria;
@@ -40,32 +41,15 @@ namespace Stellamod.Common.SummonerSystem.UI
     public class BellSlotPanel : UIPanel
     {
         private UIPanel _panel;
+        private Ability _ability;
         public BellHudSlot slot;
-
-
-        public const int width = 432;
-        public const int height = 280;
-
-        public int RelativeLeft
-        {
-            get
-            {
-                if (!Main.playerInventory)
-                {
-                    return 412 + 64;
-                }
-                return 555 + 64;
-            }
-        }
-        public int RelativeTop => 8;
-
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Width.Pixels = 48 * 5f;
-            Height.Pixels = 48 * 16;
-            Left.Pixels = RelativeLeft;
-            Top.Pixels = RelativeTop;
+            Width.Pixels = 48 ;
+            Height.Pixels = 48 ;
+            Left.Pixels = -9999;
+            Top.Pixels = -9999;
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
@@ -74,10 +58,16 @@ namespace Stellamod.Common.SummonerSystem.UI
             _panel.Height.Pixels = Height.Pixels;
             _panel.BackgroundColor = Color.Transparent;
             _panel.BorderColor = Color.Transparent;
+
+
+            Width.Pixels = _panel.Width.Pixels = 96;
+            Height.Pixels = _panel.Height.Pixels = 96;
             Append(_panel);
 
             slot = new();
             _panel.Append(slot);
+            _ability = new Ability(this, 11);
+            AbilityTray.TrayItems.Add(_ability);
         }
 
         public override void Update(GameTime gameTime)
@@ -85,16 +75,18 @@ namespace Stellamod.Common.SummonerSystem.UI
             base.Update(gameTime);
 
             //Constantly lock the UI in the position regardless of resolution changes
-            Left.Pixels = RelativeLeft;
-
+  
             ClassReworkPlayer classReworkPlayer = Main.LocalPlayer.GetModPlayer<ClassReworkPlayer>();
             if (classReworkPlayer.playerClass != PlayerClass.Summoner &&
                 classReworkPlayer.playerClass != PlayerClass.Omni &&
                 classReworkPlayer.playerClass != PlayerClass.God)
             {
-                Left.Pixels += 9999;
+                _ability.isActive = false;
             }
-            Top.Pixels = RelativeTop;
+            else
+            {
+                _ability.isActive = true;
+            }
         }
     }
     public class BellHudSlot : UIElement

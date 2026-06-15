@@ -1,4 +1,4 @@
-﻿using Stellamod.Common.WeaponTypes;
+﻿using Stellamod.Common.WeaponTypes.CombatTools;
 using Terraria;
 using Terraria.ModLoader;
 

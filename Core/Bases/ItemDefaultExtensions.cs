@@ -1,6 +1,7 @@
 ﻿using Stellamod.Common.MagicCauldron;
 using Stellamod.Common.SummonerSystem;
 using Stellamod.Common.WeaponTypes;
+using Stellamod.Common.WeaponTypes.CombatTools;
 using Stellamod.Content.Bar.Drinks;
 using Terraria;
 using Terraria.ID;

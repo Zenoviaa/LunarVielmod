@@ -11588,3 +11588,13 @@ MagmaPendant: {
 		Makes your stamina cost double, but doubles the damage of it
 		'''
 }
+
+ElementalQuiver: {
+	DisplayName: Elemental Quiver
+	Tooltip: ""
+}
+
+FossilLauncher: {
+	DisplayName: Fossil Launcher
+	Tooltip: ""
+}

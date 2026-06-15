@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Stellamod.Assets;
+using Stellamod.Common.UI;
 using Stellamod.Common.XixianFlaskSystem;
 using Stellamod.Helpers;
 using System.Collections.Generic;
@@ -38,26 +39,17 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
         public const int width = 432;
         public const int height = 280;
 
-        public int RelativeLeft
-        {
-            get
-            {
-                if (!Main.playerInventory)
-                {
-                    return 412;
-                }
-                return 555;
-            }
-        }
-        public int RelativeTop => 8;
 
+        public int RelativeTop => 8;
+        
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Width.Pixels = 48 * 5f;
-            Height.Pixels = 48 * 16;
-            Left.Pixels = RelativeLeft;
-            Top.Pixels = RelativeTop;
+       
+            Width.Pixels = 32;
+            Height.Pixels = 32;
+            Left.Pixels = -9999;
+            Top.Pixels = -9999;
             BackgroundColor = Color.Transparent;
             BorderColor = Color.Transparent;
 
@@ -66,21 +58,18 @@ namespace Stellamod.Common.XixianFlaskSystem.UI
             _panel.Height.Pixels = Height.Pixels;
             _panel.BackgroundColor = Color.Transparent;
             _panel.BorderColor = Color.Transparent;
+
+
+            Width.Pixels = _panel.Width.Pixels = 96;
+            Height.Pixels = _panel.Height.Pixels = 96;
             Append(_panel);
 
             slot = new();
             _panel.Append(slot);
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-
-            //Constantly lock the UI in the position regardless of resolution changes
-            Left.Pixels = RelativeLeft;
-            Top.Pixels = RelativeTop;
+            AbilityTray.TrayItems.Add(new Ability(this, 0));
         }
     }
+
     public class FlaskSlot : UIElement
     {
         private readonly int _context;
