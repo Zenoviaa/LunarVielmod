@@ -5,53 +5,9 @@ using Terraria;
 
 namespace Stellamod.Helpers
 {
-    public struct Triangle
-    {
-        public Point a;
-        public Point b;
-        public Point c;
-    }
-
     public static class CollisionHelper
     {
-        //https://www.geeksforgeeks.org/dsa/check-whether-a-given-point-lies-inside-a-triangle-or-not/
-        /* A utility function to calculate area of triangle 
-    formed by (x1, y1) (x2, y2) and (x3, y3) */
-        public static double area(int x1, int y1, int x2,
-                           int y2, int x3, int y3)
-        {
-            return Math.Abs((x1 * (y2 - y3) +
-                             x2 * (y3 - y1) +
-                             x3 * (y1 - y2)) / 2.0);
-        }
 
-        /* A function to check whether point P(x, y) lies
-        inside the triangle formed by A(x1, y1),
-        B(x2, y2) and C(x3, y3) */
-        public static bool isInside(int x1, int y1, int x2,
-                             int y2, int x3, int y3,
-                             int x, int y)
-        {
-            /* Calculate area of triangle ABC */
-            double A = area(x1, y1, x2, y2, x3, y3);
-
-            /* Calculate area of triangle PBC */
-            double A1 = area(x, y, x2, y2, x3, y3);
-
-            /* Calculate area of triangle PAC */
-            double A2 = area(x1, y1, x, y, x3, y3);
-
-            /* Calculate area of triangle PAB */
-            double A3 = area(x1, y1, x2, y2, x, y);
-
-            /* Check if sum of A1, A2 and A3 is same as A */
-            return (A == A1 + A2 + A3);
-        }
-
-        public static bool IsInsideTriangle(Triangle triangle, Point point)
-        {
-            return isInside(triangle.a.X, triangle.a.Y, triangle.b.X, triangle.b.Y, triangle.c.X, triangle.c.Y, point.X, point.Y);
-        }
 
         public static Vector2 RayCast(Vector2 startPosition, Vector2 velocity, float maxBeamLength, int numSamplePoints = 3)
         {
